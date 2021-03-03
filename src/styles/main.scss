@@ -1,0 +1,10 @@
+@import './components/all';
+@import './utils/all';
+
+@import './theming';
+@import './typography';
+
+html.vcs-ui {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}

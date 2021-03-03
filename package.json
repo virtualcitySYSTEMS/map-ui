@@ -1,0 +1,78 @@
+{
+  "name": "virtualcitymap-ui",
+  "version": "5.0.0",
+  "private": true,
+  "scripts": {
+    "start": "vite",
+    "preview": "vite preview",
+    "build": "node build/build.mjs",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "lint": "eslint \"{src,components}/**/*.{js,vue}\""
+  },
+  "dependencies": {
+    "@mdi/font": "^5.9.55",
+    "@vcmap/cesium": "^1.87.2",
+    "@vcmap/core": "^5.0.0-rc.0",
+    "@vcsuite/check": "^1.0.3",
+    "@vcsuite/logger": "^1.0.1",
+    "@vcsuite/parsers": "^1.0.1",
+    "@vue/composition-api": "^1.3.3",
+    "fuse.js": "^6.4.6",
+    "ol": "^6.9.0",
+    "rxjs": "^6.6.6",
+    "sortablejs": "^1.13.0",
+    "uuid": "^8.3.2",
+    "vue": "^2.6.11",
+    "vue-click-outside": "^1.1.0",
+    "vue-i18n": "^8.24.1",
+    "vuedraggable": "^2.24.3",
+    "vuetify": "^2.5.3",
+    "vuetify-draggable-treeview": "^0.0.6"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-essentials": "^6.3.4",
+    "@storybook/vue": "^6.3.4",
+    "@vcmap/rollup-plugin-vcs-ol": "^1.0.1",
+    "@vcsuite/eslint-config": "^2.0.3",
+    "eslint": "^8.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "jsdoc": "^3.6.7",
+    "jsdoc-plugin-typescript": "^2.0.6",
+    "sass": "1.32.13",
+    "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
+    "typescript": "^4.2.4",
+    "vite": "^2.6.13",
+    "vite-plugin-components": "^0.12.2",
+    "vite-plugin-vue2": "^1.9.0",
+    "vue-loader": "^15.9.7",
+    "vue-template-compiler": "^2.6.14",
+    "walk": "^2.3.15"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "selector-pseudo-element-no-unknown": [
+        true,
+        {
+          "ignorePseudoElements": [
+            "v-deep"
+          ]
+        }
+      ]
+    }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "not Chrome < 86",
+    "last 2 Safari versions",
+    "not Safari < 14",
+    "last 2 iOS versions",
+    "not iOS < 12.5",
+    "last 2 Firefox versions",
+    "not Firefox < 78",
+    "last 2 Edge versions",
+    "not Edge < 86"
+  ]
+}

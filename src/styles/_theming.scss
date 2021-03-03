@@ -1,0 +1,15 @@
+:root {
+  --vcs-primary-logo: url('../assets/logo.svg');
+}
+
+.company-logo {
+  background-image: var(--vcs-primary-logo);
+  height: 36px;
+  width: 151px;
+  margin: 0 auto;
+}
+
+// Dev-Only!
+.bg-dev.theme--light.v-application {
+  background-color: var(--v-primary-base);
+}
