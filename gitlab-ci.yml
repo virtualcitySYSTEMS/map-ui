@@ -1,0 +1,48 @@
+default:
+  image: vcs-gitlab-runner:node12
+
+stages:
+  - build
+  - audit
+  - lint
+  - test
+
+build:
+  <<: *job_definition
+  script:
+    - npm set registry 'http://npmregistry:4873'
+    - npm i
+  stage: build
+
+.after_build_template: &after_build_definition
+  <<: *job_definition
+  variables:
+    GIT_STRATEGY: none
+
+lint:
+  <<: *after_build_definition
+  stage: lint
+  only:
+    - /^(feature-.*|master|release-.*)$/
+  script:
+    - npm run lint
+
+audit:
+  <<: *after_build_definition
+  stage: audit
+  only:
+    - /^(feature-.*|master|release-.*)$/
+  script:
+    - npm audit --audit-level=moderate
+
+tests:
+  <<: *after_build_definition
+  stage: test
+  only:
+    - /^(feature-.*|master|release-.*)$/
+  script:
+    - npm run coverage:gitlab
+  coverage: '/^Statements\s*:\s*([^%]+)/'
+  artifacts:
+    reports:
+      junit: test-results.xml
