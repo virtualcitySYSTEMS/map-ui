@@ -1,0 +1,19 @@
+<!-- eslint-disable max-len -->
+
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25.003" viewBox="0 0 25 25.003">
+    <g id="icon_24_splitview" transform="translate(0.5 0.5)">
+      <path
+        id="Union_46"
+        data-name="Union 46"
+        d="M10942,13196v-22a1,1,0,1,1,2,0v22a1,1,0,1,1-2,0Zm9.5-9.25v-.5a.5.5,0,0,0-.5-.5h-4v-2h4a.5.5,0,0,0,.5-.5v-.5a.75.75,0,0,1,1.281-.53l2,2a.747.747,0,0,1,0,1.06l-2,2a.757.757,0,0,1-.529.218A.748.748,0,0,1,10951.5,13186.75Zm-18.279.53-2-2a.75.75,0,0,1,0-1.063l2-2a.736.736,0,0,1,.526-.219.747.747,0,0,1,.752.749v.5a.5.5,0,0,0,.5.5h4v2h-4a.5.5,0,0,0-.5.5v.5a.763.763,0,0,1-.218.534.754.754,0,0,1-1.061,0Zm5.779-1.53Zm8-2Z"
+        transform="translate(-10931 -13172.998)"
+        fill="currentColor"
+        stroke="rgba(0,0,0,0)"
+        stroke-miterlimit="10"
+        stroke-width="1"
+      />
+      <rect id="size" width="24" height="24" fill="none" />
+    </g>
+  </svg>
+</template>

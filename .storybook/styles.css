@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+
+.v-application--wrap {
+  min-height: unset;
+}
+
+body {
+  min-height: 100vh;
+  padding: 0 !important;
+}
+
+html {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+
+.theme--light.v-application {
+  background: transparent;
+}
+
+p.sbdocs.sbdocs-p {
+  white-space: break-spaces;
+  font-family: 'Source Code Pro';
+}
+.vcs-form-section .v-input--selection-controls {
+  margin-top: 0;
+  padding-top: 0;
+}
