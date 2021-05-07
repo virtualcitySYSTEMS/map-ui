@@ -40,4 +40,7 @@ module.exports = {
         name: 'assets/[name].[hash:8].[ext]',
       });
   },
+  devServer: {
+    contentBase: __dirname,
+  },
 };
