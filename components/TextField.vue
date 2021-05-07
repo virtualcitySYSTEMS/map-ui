@@ -26,7 +26,7 @@
             'input--meters': unit === 'm',
             'input--degrees': unit === 'deg',
           }"
-          v-bind="{...$props, ...$attrs, label: useNativeLabel ? $attrs.label : undefined}"
+          v-bind="{...$props, ...$attrs, label: useNativeLabel ? $props.label : undefined}"
         />
       </div>
     </slot>
@@ -52,6 +52,78 @@
     right: 0;
     height: 100%;
   }
+
+  .input--seconds,
+  .input--meters,
+  .input--degrees {
+    position: relative;
+
+    &::after {
+      position: absolute;
+      right: 20px;
+      bottom: 6px;
+      color: black;
+    }
+
+    input.v-input {
+      padding-right: 42px;
+      text-align: right;
+    }
+  }
+
+  .v-input--dense {
+    &.input--meters,
+    &.input--seconds,
+    &.input--degrees {
+      &::after {
+        bottom: 2px;
+      }
+    }
+  }
+
+  .input--seconds {
+    &::after {
+      content: 'sec';
+    }
+  }
+
+  .input--meters {
+    &::after {
+      content: 'm';
+    }
+  }
+
+  .input--degrees {
+    &::after {
+      content: '°';
+    }
+  }
+
+  // Firefox only
+  @-moz-document url-prefix() {
+    .input--seconds {
+      &:after {
+        right: 5px;
+      }
+
+      input {
+        padding-right: 28px !important;
+      }
+    }
+  }
+
+  .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+    > .v-input__control
+    > .v-input__slot {
+    box-shadow: none !important;
+  }
+
+  .v-input--checkbox {
+    .v-icon.v-icon--dense {
+      font-size: 16px;
+    }
+  }
+
 
 </style>
 

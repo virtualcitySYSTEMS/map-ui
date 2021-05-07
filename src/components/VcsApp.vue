@@ -10,6 +10,7 @@
 <script>
   import Vue from 'vue';
 
+  // import { onMounted } from '@/onMounted';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
 
@@ -22,6 +23,9 @@
       return {
         mapId: `mapCollection-${ (Math.random() * 100000).toFixed(0)}`,
       };
+    },
+    mounted() {
+
     },
   });
 </script>
