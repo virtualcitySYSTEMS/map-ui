@@ -4,14 +4,14 @@
       <v-row no-gutters>
         <v-col>
           <v-toolbar-items>
-            <div v-if="$store.state[mapId]" class="d-flex align-center">
+            <div v-if="mapState" class="d-flex align-center">
               <Button
-                v-for="map of $store.state[mapId].maps"
+                v-for="map of mapState.maps"
                 :key="map.name"
                 :toggleable="true"
                 :icon="iconMap[map.name]"
-                @click.native="$store.dispatch(mapId +'/changeMap', map.name)"
-                :value="$store.state[mapId] && $store.state[mapId].activeMap === map.name"
+                @click.native="setMap(map.name)"
+                :value="mapState.activeMap === map.name"
               />
             </div>
           </v-toolbar-items>
@@ -38,6 +38,16 @@
       mapId: {
         type: String,
         default: undefined,
+      },
+    },
+    computed: {
+      mapState() {
+        return this.$store.state[this.mapId];
+      },
+    },
+    methods: {
+      setMap(mapName) {
+        this.$store.dispatch(`${this.mapId}/changeMap`, mapName);
       },
     },
     data() {
