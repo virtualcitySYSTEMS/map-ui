@@ -2,7 +2,8 @@
   <div class="map_container" :id="mapId" />
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
   .map_container {
     height: 100%;
     overflow: hidden;
@@ -13,21 +14,24 @@
     font-size: 0.9rem;
   }
 
-  .mapElement {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    overflow: hidden; /* Fix for iFrame content */
+  ::v-deep {
+    .mapElement {
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      overflow: hidden; /* Fix for iFrame content */
+    }
+
+    .cesium-widget,
+    .cesium-widget canvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
   }
 
-  .cesium-widget,
-  .cesium-widget canvas {
-    width: 100%;
-    height: 100%;
-    touch-action: none;
-  }
 </style>
 
 <script >

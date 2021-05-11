@@ -17,9 +17,11 @@
 </template>
 
 
-<style lang="scss">
-  .v-input .v-input__append-outer{
-    align-self: flex-end;
+<style lang="scss" scoped>
+  ::v-deep {
+    .v-input .v-input__append-outer{
+      align-self: flex-end;
+    }
   }
 </style>
 

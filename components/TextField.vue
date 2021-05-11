@@ -33,24 +33,28 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
+
+  ::v-deep {
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      opacity: 1;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: inner-spin-button !important;
+      width: 25px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  }
+
   label {
     white-space: nowrap;
-  }
-
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-    opacity: 1;
-  }
-
-  input[type=number]::-webkit-outer-spin-button,
-  input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: inner-spin-button !important;
-    width: 25px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
   }
 
   .input--seconds,
@@ -101,7 +105,7 @@
 
   // Firefox only
   @-moz-document url-prefix() {
-    .input--seconds {
+    .v-input.input--seconds {
       &:after {
         right: 5px;
       }
@@ -123,8 +127,6 @@
       font-size: 16px;
     }
   }
-
-
 </style>
 
 
