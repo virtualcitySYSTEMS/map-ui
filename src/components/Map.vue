@@ -43,21 +43,18 @@
     props: {
       mapId: {
         type: String,
-        default: `vcs-map-${(Math.random() * 10000).toFixed(0)}`,
+        default: '1',
+        required: true,
       },
     },
-    data() {
-      return {
-        destroy: undefined,
-      };
-    },
+    destroy: null,
     async mounted() {
       const mapCollection = await onMounted({ targetId: this.mapId });
       const { destroy } = registerMapCollection({ mapCollection, moduleName: this.mapId, $store: this.$store });
-      this.destroy = destroy;
+      this.$options.destroy = destroy;
     },
     beforeDestroy() {
-      this.destroy();
+      if (this.$options.destroy) this.$options.destroy();
     },
   });
 </script>

@@ -37,7 +37,8 @@
     props: {
       mapId: {
         type: String,
-        default: undefined,
+        default: '1',
+        required: true,
       },
     },
     computed: {
@@ -46,6 +47,12 @@
       },
     },
     methods: {
+      /**
+       * @function
+       * @param {string} mapName
+       * @description
+       * Sets the current map type
+       */
       setMap(mapName) {
         this.$store.dispatch(`${this.mapId}/changeMap`, mapName);
       },

@@ -10,7 +10,7 @@
 <script>
   import Vue from 'vue';
 
-  // import { onMounted } from '@/onMounted';
+  import { v4 as uuid } from 'uuid';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
 
@@ -21,7 +21,7 @@
     },
     data() {
       return {
-        mapId: `mapCollection-${ (Math.random() * 100000).toFixed(0)}`,
+        mapId: `mapCollection-${uuid()}`,
       };
     },
     mounted() {
