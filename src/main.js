@@ -10,6 +10,8 @@ import { store } from './store';
 
 Vue.config.productionTip = false;
 
+window.CESIUM_BASE_URL = process.env.VUE_APP_CESIUM_BASE_URL;
+
 new Vue({
   store,
   vuetify,

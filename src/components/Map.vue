@@ -35,9 +35,19 @@
 </style>
 
 <script >
-  import { onMounted } from '@/onMounted';
+  import { obliqueCollectionCollection } from '@vcmap/core/src/vcs/vcm/globalCollections';
+  import OpenStreetMap from '@vcmap/core/src/vcs/vcm/layer/openStreetMap';
+  import Openlayers from '@vcmap/core/src/vcs/vcm/maps/openlayers';
+  import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
+  import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
+  import MapCollection from '@vcmap/core/src/vcs/vcm/util/mapCollection';
+  import Projection from '@vcmap/core/src/vcs/vcm/util/projection';
+  import CesiumMap from '@vcmap/core/src/vcs/vcm/maps/cesium';
+  import ObliqueMap from '@vcmap/core/src/vcs/vcm/maps/oblique';
+
   import { registerMapCollection } from '@/registerMapCollection';
   import Vue from 'vue';
+  import ViewPoint from '@vcmap/core/src/vcs/vcm/util/viewpoint';
 
   export default Vue.extend({
     props: {
@@ -45,19 +55,55 @@
         type: String,
         required: true,
       },
-      mapConfig: {
+      config: {
         type: Object,
         required: true,
       },
     },
     destroy: null,
     async mounted() {
-      const { mapCollection, openlayers } = await onMounted({ targetId: this.mapId });
-      const { destroy } = registerMapCollection({ mapCollection, moduleName: this.mapId, $store: this.$store });
-      this.$options.destroy = destroy;
+      await this.init();
+    },
+    methods: {
+      /**
+       * @method
+       * @description Initializes the map from configuration.
+       */
+      async init() {
+        // 1. Create layers
+        const openlayers = new Openlayers(this.config.openLayersConfig);
+        const mapCollection = new MapCollection();
+        const osm = new OpenStreetMap(this.config.osmConfig);
+        const projection = new Projection(this.config.projectionConfig);
+        const oblique = new ObliqueMap(this.config.obliqueMapConfig);
+        const { dataSetUrls, ...opts } = this.config.obliqueCollectionConfig;
+        const obliqueCollection = new ObliqueCollection({
+          ...opts,
+          dataSets: dataSetUrls.map(url => new ObliqueDataSet(url, projection.proj)),
+        });
+        const cesium = new CesiumMap(this.config.cesiumMapConfig);
 
-      await mapCollection.setActiveMap(this.mapConfig.activeMap);
-      await openlayers.gotoViewPoint(this.mapConfig.viewPoint);
+        // 2. Upate collections
+        mapCollection.add(openlayers);
+        mapCollection.setTarget(this.mapId);
+        mapCollection.layerCollection.add(osm);
+        await osm.activate();
+
+        obliqueCollectionCollection.add(obliqueCollection);
+
+        await oblique.setCollection(obliqueCollection);
+        mapCollection.add(oblique);
+
+        mapCollection.add(cesium);
+
+        // 3. Register store module
+        const { destroy } = registerMapCollection({ mapCollection, moduleName: this.mapId, $store: this.$store });
+        this.$options.destroy = destroy;
+
+        // 4. Initialize initial view
+        await mapCollection.setActiveMap(this.config.initialMap.activeMap);
+        await openlayers.gotoViewPoint(new ViewPoint(this.config.initialMap.viewPointConfig));
+      },
     },
     beforeDestroy() {
       if (this.$options.destroy) this.$options.destroy();

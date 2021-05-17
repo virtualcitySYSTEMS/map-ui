@@ -13,6 +13,10 @@
 
   import VcsApp from './components/VcsApp.vue';
 
+  /**
+   * @description
+   * Base of app. Provides vuetify styling root.
+   */
   export default Vue.extend({
     components: {
       VcsApp,
