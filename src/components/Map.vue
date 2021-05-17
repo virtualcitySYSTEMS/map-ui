@@ -43,7 +43,6 @@
     props: {
       mapId: {
         type: String,
-        default: '1',
         required: true,
       },
     },

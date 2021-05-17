@@ -1,8 +1,8 @@
 <template>
   <v-sheet class="h-full">
-    <Navbar :map-id="mapId" />
+    <Navbar :map-id="$options.mapId" />
 
-    <Map :map-id="mapId" />
+    <Map :map-id="$options.mapId" />
   </v-sheet>
 </template>
 
@@ -19,13 +19,6 @@
       Navbar,
       Map,
     },
-    data() {
-      return {
-        mapId: `mapCollection-${uuid()}`,
-      };
-    },
-    mounted() {
-
-    },
+    mapId: `mapCollection-${uuid()}`,
   });
 </script>
