@@ -3,10 +3,8 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: [
-    '@vcsuite/eslint-config/vue'
-  ],
-  plugins: ["jsdoc"],
+  extends: ['@vcsuite/eslint-config/vue'],
+  plugins: ['jsdoc'],
   settings: {
     'import/resolver': {
       webpack: {
@@ -22,7 +20,7 @@ module.exports = {
         js: 'never',
       },
     ],
-    "jsdoc/check-tag-names": "off",
+    'jsdoc/check-tag-names': 'off',
   },
   overrides: [
     {

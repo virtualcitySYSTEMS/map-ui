@@ -9,6 +9,7 @@
     "test:local": "vue-cli-service test:unit tests/* --watch",
     "coverage": "nyc npm run test:ci",
     "lint": "vue-cli-service lint",
+    "lint:fix": "vue-cli-service lint --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:docs": "./node_modules/.bin/jsdoc --verbose -c jsdoc-conf.js -r ./src -d docs",
