@@ -1,6 +1,5 @@
 
 <template>
-  <!-- <app>,<main>: Must be at the root -->
   <v-app class="bg-dev">
     <v-main>
       <VcsApp />
