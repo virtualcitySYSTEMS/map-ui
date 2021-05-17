@@ -7,38 +7,20 @@ import MapCollection from '@vcmap/core/src/vcs/vcm/util/mapCollection';
 import Projection from '@vcmap/core/src/vcs/vcm/util/projection';
 import CesiumMap from '@vcmap/core/src/vcs/vcm/maps/cesium';
 import ObliqueMap from '@vcmap/core/src/vcs/vcm/maps/oblique';
-import ViewPoint from '@vcmap/core/src/vcs/vcm/util/viewpoint';
+
 
 window.CESIUM_BASE_URL = '/node_modules/@vcmap/cesium/Source/';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function onMounted({ targetId }) {
-  const ol = new Openlayers({
+  const openlayers = new Openlayers({
     name: 'openlayers',
   });
   const mapCollection = new MapCollection();
   const osm = new OpenStreetMap({});
-  mapCollection.add(ol);
+  mapCollection.add(openlayers);
   mapCollection.setTarget(targetId);
   mapCollection.layerCollection.add(osm);
-  await mapCollection.setActiveMap(ol.name);
-  await ol.gotoViewPoint(new ViewPoint({
-    name: 'Berlin',
-    distance: 157.3489399067245,
-    cameraPosition: [
-      13.411394127432544,
-      52.497745299212546,
-      119.75750333776946,
-    ],
-    groundPosition: [
-      13.411253398151665,
-      52.498931077538636,
-      34.57404938876193,
-    ],
-    heading: 355.85726724381027,
-    pitch: -32.777305832704,
-    roll: 359.98398234382154,
-  }));
   await osm.activate();
 
   const projection = new Projection({
@@ -64,6 +46,6 @@ export async function onMounted({ targetId }) {
   });
   mapCollection.add(cesium);
 
-  return mapCollection;
+  return { mapCollection, openlayers };
 }
 

@@ -38,7 +38,7 @@ export function registerMapCollection({ mapCollection, moduleName, $store }) {
    */
   const initialState = {
     maps,
-    activeMap: maps[0].name,
+    activeMap: null,
   };
 
   const storeModule = {

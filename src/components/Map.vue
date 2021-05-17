@@ -45,12 +45,19 @@
         type: String,
         required: true,
       },
+      mapConfig: {
+        type: Object,
+        required: true,
+      },
     },
     destroy: null,
     async mounted() {
-      const mapCollection = await onMounted({ targetId: this.mapId });
+      const { mapCollection, openlayers } = await onMounted({ targetId: this.mapId });
       const { destroy } = registerMapCollection({ mapCollection, moduleName: this.mapId, $store: this.$store });
       this.$options.destroy = destroy;
+
+      await mapCollection.setActiveMap(this.mapConfig.activeMap);
+      await openlayers.gotoViewPoint(this.mapConfig.viewPoint);
     },
     beforeDestroy() {
       if (this.$options.destroy) this.$options.destroy();
