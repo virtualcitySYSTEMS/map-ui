@@ -7,7 +7,7 @@
 
 <style scoped>
   hr {
-    border-color: #B1B1B1;
+    border-color: #b1b1b1;
   }
 </style>
 

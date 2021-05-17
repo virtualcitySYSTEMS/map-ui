@@ -8,7 +8,7 @@
     height: 100%;
     overflow: hidden;
     position: relative;
-    background-color: #ffffff;
+    background-color: #fff;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23acacac' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
     font-family: Arial, sans-serif;
     font-size: 0.9rem;
@@ -17,10 +17,10 @@
   ::v-deep {
     .mapElement {
       position: absolute;
-      top: 0px;
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       overflow: hidden; /* Fix for iFrame content */
     }
 

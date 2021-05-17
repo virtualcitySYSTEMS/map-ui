@@ -49,15 +49,15 @@
 </template>
 
 <style lang="scss" scoped>
- .expand-button {
-    ::v-deep  {
-    max-width: 68px;
+  .expand-button {
+    ::v-deep {
+      max-width: 68px;
 
-    .v-btn__content {
-      max-width: 48px
+      .v-btn__content {
+        max-width: 48px;
+      }
     }
   }
- }
 </style>
 
 <script>

@@ -11,7 +11,6 @@
 
 <style lang="scss" scoped>
   ::v-deep {
-
     .v-icon--dense.v-icon {
       width: 16px;
       height: 16px;

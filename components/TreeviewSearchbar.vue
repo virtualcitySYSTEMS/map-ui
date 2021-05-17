@@ -44,18 +44,18 @@
     border-radius: 9999rem;
     outline-style: none;
     font-size: 12px;
-    box-shadow: 0 0 0 1px #DEDEDE;
+    box-shadow: 0 0 0 1px #dedede;
 
     &:focus {
       box-shadow: 0 0 0 1px var(--v-primary-base);
     }
   }
 
-   ::v-deep {
-
+  ::v-deep {
     .v-input__slot {
-      background-color: transparent  !important;
+      background-color: transparent !important;
     }
+
     .v-input__append-inner {
       height: 20px;
       display: flex;
@@ -89,10 +89,8 @@
       }
     }
 
-    .v-text-field.v-input--dense:not(.v-text-field--outlined)
-      .v-text-field__prefix,
-    .v-text-field.v-input--dense:not(.v-text-field--outlined)
-      .v-text-field__suffix,
+    .v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__prefix,
+    .v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__suffix,
     .v-text-field.v-input--dense:not(.v-text-field--outlined) input {
       padding: 0;
     }

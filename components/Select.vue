@@ -16,8 +16,8 @@
   />
 </template>
 <style lang="scss" scoped>
-   .vcs-select ::v-deep {
-     .v-input__control {
+  .vcs-select ::v-deep {
+    .v-input__control {
       min-height: 32px !important;
     }
   }

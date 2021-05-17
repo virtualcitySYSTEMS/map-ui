@@ -58,7 +58,7 @@
 
 <style lang="scss" scoped>
   .vcs-context-menu {
-    border: 1px solid var(--v-accent-base)
+    border: 1px solid var(--v-accent-base);
   }
 
   ul {
@@ -71,6 +71,10 @@
         opacity: 0;
       }
 
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--v-gray-200-base);
+      }
+
       &:not(.text--disabled) {
         &:hover {
           color: var(--v-primary-base);
@@ -80,26 +84,25 @@
           }
         }
       }
-
-
-      &:not(:last-child) {
-        border-bottom: 1px solid var(--v-gray-200-base);
-      }
     }
   }
 
+  // TODO: find out what stylelint wants here
+  /* stylelint-disable */
   .dense {
     ::v-deep {
       ul {
         font-size: 13px;
-      }
 
-      li {
-        padding-top: 3px;
-        padding-bottom: 3px;
+        li {
+          padding-top: 3px;
+          padding-bottom: 3px;
+        }
       }
     }
   }
+  /* stylelint-enable */
+
 </style>
 
 <script>

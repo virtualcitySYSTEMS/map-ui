@@ -19,7 +19,7 @@
 
 <style lang="scss" scoped>
   ::v-deep {
-    .v-input .v-input__append-outer{
+    .v-input .v-input__append-outer {
       align-self: flex-end;
     }
   }

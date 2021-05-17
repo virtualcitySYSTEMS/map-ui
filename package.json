@@ -11,7 +11,9 @@
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build:docs": "./node_modules/.bin/jsdoc --verbose -c jsdoc-conf.js -r ./src -d docs"
+    "build:docs": "./node_modules/.bin/jsdoc --verbose -c jsdoc-conf.js -r ./src -d docs",
+    "lint:css": "stylelint '**/*.vue' --syntax scss",
+    "lint-fix:css": "stylelint '**/*.vue' --fix"
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
@@ -75,10 +77,26 @@
     "sass-loader": "^10.1.1",
     "sinon": "^10.0.0",
     "style-loader": "^2.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-processor-html": "^1.0.0",
     "vue-cli-plugin-vuetify": "~2.2.2",
     "vue-cli-plugin-webpack-bundle-analyzer": "~4.0.0",
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.7.0"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "selector-pseudo-element-no-unknown": [
+        true,
+        {
+          "ignorePseudoElements": [
+            "v-deep"
+          ]
+        }
+      ]
+    }
   }
 }

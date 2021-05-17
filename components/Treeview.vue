@@ -98,8 +98,8 @@
   }
 
   .update-badge {
-      top: 50%;
-      transform: translateY(-50%) translateX(8px);
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
   }
 
   ::v-deep {
@@ -130,7 +130,6 @@
     .v-list-item {
       min-height: 28px;
 
-
       &:not(:last-child) {
         border-bottom: 1px solid var(--v-accent-base);
       }
@@ -153,7 +152,7 @@
         // white-space: normal;
       }
 
-      .v-treeview-node__root.v-treeview-node--active::before{
+      .v-treeview-node__root.v-treeview-node--active::before {
         opacity: 1 !important;
       }
 
@@ -195,7 +194,7 @@
 
       > .v-treeview-node {
         > .v-treeview-node__root {
-          border-bottom: 1px solid #DEDEDE;
+          border-bottom: 1px solid #dedede;
 
           > .v-treeview-node__content {
             font-weight: 700;
@@ -203,9 +202,8 @@
         }
 
         > .v-treeview-node__children {
-
           .v-treeview-node__root {
-            border-bottom: none
+            border-bottom: none;
           }
 
           .v-treeview-node__content {

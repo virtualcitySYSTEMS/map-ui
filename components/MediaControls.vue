@@ -35,36 +35,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .media-slider {
-    ::v-deep {
-
-      .v-slider__thumb {
-        width: 20px;
-        height: 20px;
-        left: -10px;
-        background-color: white !important;
-        border: 2px solid;
-
-          &::before {
-            left: 50%;
-            transform: translateX(-50%) !important;
-            opacity: 0;
-          }
-      }
-
-      .v-slider__thumb-container--active {
-       .v-slider__thumb {
-
-          &::before {
-            left: 50%;
-            transform: translateX(-50%) !important;
-            top: -16px;
-            opacity: 1  !important;
-          }
-        }
-      }
-    }
-  }
 
   ::v-deep {
     .v-slider__thumb {
@@ -81,6 +51,36 @@
       }
     }
   }
+
+  .media-slider {
+    ::v-deep {
+      .v-slider__thumb {
+        width: 20px;
+        height: 20px;
+        left: -10px;
+        background-color: white !important;
+        border: 2px solid;
+
+        &::before {
+          left: 50%;
+          transform: translateX(-50%) !important;
+          opacity: 0;
+        }
+      }
+
+      .v-slider__thumb-container--active {
+        .v-slider__thumb {
+          &::before {
+            left: 50%;
+            transform: translateX(-50%) !important;
+            top: -16px;
+            opacity: 1 !important;
+          }
+        }
+      }
+    }
+  }
+
 </style>
 
 <script>

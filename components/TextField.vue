@@ -35,13 +35,7 @@
 
 <style lang="scss" scoped>
 
-
   ::v-deep {
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      opacity: 1;
-    }
-
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: inner-spin-button !important;
@@ -50,6 +44,7 @@
       top: 0;
       right: 0;
       height: 100%;
+      opacity: 1;
     }
   }
 
@@ -106,7 +101,7 @@
   // Firefox only
   @-moz-document url-prefix() {
     .v-input.input--seconds {
-      &:after {
+      &::after {
         right: 5px;
       }
 
@@ -116,9 +111,7 @@
     }
   }
 
-  .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
-    > .v-input__control
-    > .v-input__slot {
+  .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
     box-shadow: none !important;
   }
 
