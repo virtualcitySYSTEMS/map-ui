@@ -40,7 +40,6 @@
   import Openlayers from '@vcmap/core/src/vcs/vcm/maps/openlayers';
   import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
   import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
-  import MapCollection from '@vcmap/core/src/vcs/vcm/util/mapCollection';
   import Projection from '@vcmap/core/src/vcs/vcm/util/projection';
   import CesiumMap from '@vcmap/core/src/vcs/vcm/maps/cesium';
   import ObliqueMap from '@vcmap/core/src/vcs/vcm/maps/oblique';
@@ -61,6 +60,7 @@
       },
     },
     destroy: null,
+    inject: ['context'],
     async mounted() {
       await this.init();
     },
@@ -72,7 +72,6 @@
       async init() {
         // 1. Create layers
         const openlayers = new Openlayers(this.config.openLayersConfig);
-        const mapCollection = new MapCollection();
         const osm = new OpenStreetMap(this.config.osmConfig);
         const projection = new Projection(this.config.projectionConfig);
         const oblique = new ObliqueMap(this.config.obliqueMapConfig);
@@ -84,24 +83,28 @@
         const cesium = new CesiumMap(this.config.cesiumMapConfig);
 
         // 2. Upate collections
-        mapCollection.add(openlayers);
-        mapCollection.setTarget(this.mapId);
-        mapCollection.layerCollection.add(osm);
+        this.context.mapCollection.add(openlayers);
+        this.context.mapCollection.setTarget(this.mapId);
+        this.context.mapCollection.layerCollection.add(osm);
         await osm.activate();
 
         obliqueCollectionCollection.add(obliqueCollection);
 
         await oblique.setCollection(obliqueCollection);
-        mapCollection.add(oblique);
+        this.context.mapCollection.add(oblique);
 
-        mapCollection.add(cesium);
+        this.context.mapCollection.add(cesium);
 
         // 3. Register store module
-        const { destroy } = registerMapCollection({ mapCollection, moduleName: this.mapId, $store: this.$store });
+        const { destroy } = registerMapCollection({
+          mapCollection: this.context.mapCollection,
+          moduleName: this.mapId,
+          $store: this.$store,
+        });
         this.$options.destroy = destroy;
 
-        // 4. Initialize initial view
-        await mapCollection.setActiveMap(this.config.initialMap.activeMap);
+        // // 4. Initialize initial view
+        await this.mapCollection.setActiveMap(this.config.initialMap.activeMap);
         await openlayers.gotoViewPoint(new ViewPoint(this.config.initialMap.viewPointConfig));
       },
     },

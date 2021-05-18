@@ -9,6 +9,7 @@
 <script>
   import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
+  import MapCollection from '@vcmap/core/src/vcs/vcm/util/mapCollection';
 
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
@@ -23,6 +24,13 @@
       Map,
     },
     mapId: `mapCollection-${uuid()}`,
+    provide() {
+      return {
+        context: {
+          mapCollection: new MapCollection(),
+        },
+      };
+    },
     config: {
       initialMap: {
         activeMap: 'openlayers',

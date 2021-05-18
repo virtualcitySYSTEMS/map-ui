@@ -48,9 +48,9 @@
       MapNavCompassRegular,
       MapNavCompassOblique,
     },
+    destroy$: new Subject(),
     data() {
       return {
-        destroy$: new Subject(),
         grabbing: false,
       };
     },
@@ -102,7 +102,7 @@
                 self.grabbing = false;
               }),
             )),
-            takeUntil(self.destroy$),
+            takeUntil(self.$options.destroy$),
           ).subscribe();
         }
 

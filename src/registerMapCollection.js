@@ -5,8 +5,9 @@ import MapCollection from '@vcmap/core/src/vcs/vcm/util/mapCollection';
 /**
  * @typedef MapReturnObject
  * @type {Object}
- * @property {void} destroy call this to destroy the map and unregister the store module
+ * @property {Function} destroy call this to destroy the map and unregister the store module
  */
+
 /**
  * @param {Object} obj
  * @param {MapCollection} obj.mapCollection

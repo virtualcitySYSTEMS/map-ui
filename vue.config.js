@@ -1,7 +1,8 @@
-/* eslint-disable */
-const { join } = require('path')
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { join } = require('path');
 
 module.exports = {
+  lintOnSave: false,
   transpileDependencies: ['vuetify'],
   pluginOptions: {
     webpackBundleAnalyzer: {
@@ -13,9 +14,9 @@ module.exports = {
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {
-          '@': join(__dirname, '/src'),
-          '@vcsuite/uicomponents': join(__dirname, '/components')
-      }
+        '@': join(__dirname, '/src'),
+        '@vcsuite/uicomponents': join(__dirname, '/components'),
+      },
     },
   },
   chainWebpack: (config) => {

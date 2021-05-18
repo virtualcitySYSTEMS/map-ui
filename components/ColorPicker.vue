@@ -54,9 +54,9 @@
       },
     },
     mounted() {
-      this.sub.pipe(
+      this.$options.sub.pipe(
         debounceTime(330),
-        takeUntil(this.destroy$),
+        takeUntil(this.$options.destroy$),
       ).subscribe(
         (color) => {
           // this.$vuetify.theme.themes.light.primary = color;
@@ -64,15 +64,11 @@
         },
       );
     },
-    data() {
-      return {
-        sub: new Subject(),
-        destroy$: new Subject(),
-      };
-    },
+    sub: new Subject(),
+    destroy$: new Subject(),
     destroyed() {
-      this.destroy$.next();
-      this.destroy$.unsubscribe();
+      this.$options.destroy$.next();
+      this.$options.destroy$.unsubscribe();
     },
   });
 </script>

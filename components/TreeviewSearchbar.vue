@@ -127,13 +127,9 @@
         default: false,
       },
     },
-    data() {
-      return {
-        sub: new Subject(),
-      };
-    },
+    sub: new Subject(),
     mounted() {
-      this.sub.pipe(debounceTime(330)).subscribe(
+      this.$options.sub.pipe(debounceTime(330)).subscribe(
         (value) => {
           this.$emit('input', value);
         },

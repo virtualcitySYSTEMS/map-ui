@@ -56,44 +56,5 @@
         this.$store.dispatch(`${this.mapId}/changeMap`, mapName);
       },
     },
-    data() {
-      return {
-        iconMap: {
-          'vcs.vcm.maps.Openlayers': '$vcs2d',
-          'vcs.vcm.maps.Cesium': '$vcs3d',
-          'vcs.vcm.maps.Oblique': '$vcsObliqueView',
-        },
-        userMenuItems: [
-          {
-            title: 'Preferences',
-            iconAppend: { name: 'mdi-chevron-right' },
-            children: [
-              { title: 'Open preferences' },
-              { title: 'Language' },
-              { title: 'Render settings' },
-              { title: 'Controls' },
-            ],
-          },
-          {
-            title: 'Display settings',
-            iconAppend: { name: 'mdi-chevron-right' },
-          },
-          { title: 'Presentation mode' },
-          {
-            title: 'Share / Invite',
-            iconPrepend: { name: '$vcsLink' },
-          },
-          {
-            title: 'Create PDF',
-            iconPrepend: { name: '$vcsPdf' },
-          },
-          {
-            title: 'Help',
-            iconPrepend: { name: '$vcsHelp' },
-          },
-          { title: 'About' },
-        ],
-      };
-    },
   });
 </script>
