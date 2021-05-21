@@ -18,10 +18,12 @@
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
+    "@vcmap/cesium": "^1.79.1",
     "@vcmap/core": "git://github.com/virtualcitySYSTEMS/map-core.git#feature-npmPackage",
-    "@vue/composition-api": "*",
+    "@vue/composition-api": "^1.0.0-rc.8",
     "core-js": "^3.6.5",
     "fuse.js": "^6.4.6",
+    "ol": "^6.5.0",
     "rxjs": "^6.6.6",
     "sortablejs": "^1.13.0",
     "storybook": "6.2.9",
