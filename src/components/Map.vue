@@ -104,7 +104,7 @@
         this.$options.destroy = destroy;
 
         // // 4. Initialize initial view
-        await this.mapCollection.setActiveMap(this.config.initialMap.activeMap);
+        await this.context.mapCollection.setActiveMap(this.config.initialMap.activeMap);
         await openlayers.gotoViewPoint(new ViewPoint(this.config.initialMap.viewPointConfig));
       },
     },

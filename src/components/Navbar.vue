@@ -9,7 +9,7 @@
                 v-for="map of mapState.maps"
                 :key="map.name"
                 :toggleable="true"
-                :icon="iconMap[map.className]"
+                :icon="$options.iconMap[map.className]"
                 @click.native="setMap(map.name)"
                 :value="mapState.activeMap === map.name"
               />
@@ -39,6 +39,11 @@
         type: String,
         required: true,
       },
+    },
+    iconMap: {
+      'vcs.vcm.maps.Openlayers': '$vcs2d',
+      'vcs.vcm.maps.Cesium': '$vcs3d',
+      'vcs.vcm.maps.Oblique': '$vcsObliqueView',
     },
     computed: {
       mapState() {

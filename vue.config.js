@@ -3,6 +3,7 @@ const { join } = require('path');
 
 module.exports = {
   lintOnSave: false,
+  indexPath: 'public/index.html',
   transpileDependencies: ['vuetify'],
   pluginOptions: {
     webpackBundleAnalyzer: {
@@ -10,7 +11,12 @@ module.exports = {
     },
   },
   configureWebpack: {
-    entry: ['./src/main.js'],
+    experiments: {
+      outputModule: true,
+    },
+    entry: {
+      app: './src/main.js',
+    },
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {
@@ -18,9 +24,22 @@ module.exports = {
         '@vcsuite/uicomponents': join(__dirname, '/components'),
       },
     },
+    output: {
+      filename: '[name].js',
+      library: {
+        type: 'module',
+      },
+      module: true,
+    },
   },
   chainWebpack: (config) => {
     const svgRule = config.module.rule('svg');
+    config.plugin('html')
+      .tap((args) => {
+        args[0].inject = false;
+        return args;
+      });
+
 
     svgRule.uses.clear();
 

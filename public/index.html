@@ -12,6 +12,14 @@
     />
   </head>
   <body>
+    <% _.forEach(htmlWebpackPlugin.files, function(chunk, key) { %>
+      <% if (key === 'js') { %>
+        <% _.forEach(chunk, function(file) { %>
+          <script defer src="<%= file %>" type="module"></script>
+        <% }) %>
+      <% } %>
+    <% }) %>
+
     <noscript>
       <strong
         >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
