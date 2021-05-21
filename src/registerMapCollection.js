@@ -55,12 +55,6 @@ export function registerMapCollection({ mapCollection, moduleName, $store }) {
         state.activeMap = mapName;
       },
     },
-    actions: {
-      async changeMap(ctx, mapName) {
-        // 1. Triggers mapActivted event when completed
-        await mapCollection.setActiveMap(mapName);
-      },
-    },
   };
 
   const mapActivatedDestroy = mapCollection.mapActivated.addEventListener((map) => {

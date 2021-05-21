@@ -40,6 +40,7 @@
         required: true,
       },
     },
+    inject: ['context'],
     iconMap: {
       'vcs.vcm.maps.Openlayers': '$vcs2d',
       'vcs.vcm.maps.Cesium': '$vcs3d',
@@ -58,7 +59,7 @@
        * Sets the current map type
        */
       setMap(mapName) {
-        this.$store.dispatch(`${this.mapId}/changeMap`, mapName);
+        this.context.mapCollection.setActiveMap(mapName);
       },
     },
   });
