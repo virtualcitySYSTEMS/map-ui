@@ -9,7 +9,7 @@
                 v-for="map of mapState.maps"
                 :key="map.name"
                 :toggleable="true"
-                :icon="$options.iconMap[map.className]"
+                :icon="iconMap[map.className]"
                 @click.native="setMap(map.name)"
                 :value="mapState.activeMap === map.name"
               />
@@ -40,12 +40,16 @@
         required: true,
       },
     },
-    inject: ['context'],
-    iconMap: {
-      'vcs.vcm.maps.Openlayers': '$vcs2d',
-      'vcs.vcm.maps.Cesium': '$vcs3d',
-      'vcs.vcm.maps.Oblique': '$vcsObliqueView',
+    setup() {
+      return {
+        iconMap: {
+          'vcs.vcm.maps.Openlayers': '$vcs2d',
+          'vcs.vcm.maps.Cesium': '$vcs3d',
+          'vcs.vcm.maps.Oblique': '$vcsObliqueView',
+        },
+      };
     },
+    inject: ['context'],
     computed: {
       mapState() {
         return this.$store.state[this.mapId];

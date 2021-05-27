@@ -59,8 +59,12 @@
         required: true,
       },
     },
-    destroy: null,
     inject: ['context'],
+    setup() {
+      return {
+        destroy: null,
+      };
+    },
     async mounted() {
       await this.init();
     },
@@ -101,7 +105,7 @@
           moduleName: this.mapId,
           $store: this.$store,
         });
-        this.$options.destroy = destroy;
+        this.destroy = destroy;
 
         // // 4. Initialize initial view
         await this.context.mapCollection.setActiveMap(this.config.initialMap.activeMap);
@@ -109,7 +113,7 @@
       },
     },
     beforeDestroy() {
-      if (this.$options.destroy) this.$options.destroy();
+      if (this.destroy) this.destroy();
     },
   });
 </script>

@@ -53,10 +53,16 @@
         default: '#000000',
       },
     },
+    setup() {
+      return {
+        sub: new Subject(),
+        destroy$: new Subject(),
+      };
+    },
     mounted() {
-      this.$options.sub.pipe(
+      this.sub.pipe(
         debounceTime(330),
-        takeUntil(this.$options.destroy$),
+        takeUntil(this.destroy$),
       ).subscribe(
         (color) => {
           // this.$vuetify.theme.themes.light.primary = color;
@@ -64,11 +70,9 @@
         },
       );
     },
-    sub: new Subject(),
-    destroy$: new Subject(),
     destroyed() {
-      this.$options.destroy$.next();
-      this.$options.destroy$.unsubscribe();
+      this.destroy$.next();
+      this.destroy$.unsubscribe();
     },
   });
 </script>

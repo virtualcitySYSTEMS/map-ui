@@ -24,6 +24,7 @@
     "core-js": "^3.6.5",
     "fuse.js": "^6.4.6",
     "ol": "^6.5.0",
+    "postcss": "^8.3.0",
     "rxjs": "^6.6.6",
     "sortablejs": "^1.13.0",
     "storybook": "6.2.9",

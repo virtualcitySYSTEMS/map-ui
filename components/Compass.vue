@@ -48,7 +48,6 @@
       MapNavCompassRegular,
       MapNavCompassOblique,
     },
-    destroy$: new Subject(),
     data() {
       return {
         grabbing: false,
@@ -67,6 +66,11 @@
         type: Number,
         default: 1,
       },
+    },
+    setup() {
+      return {
+        destroy$: new Subject(),
+      };
     },
     methods: {
       mouseAngle({ ref, event }) {
@@ -102,7 +106,7 @@
                 self.grabbing = false;
               }),
             )),
-            takeUntil(self.$options.destroy$),
+            takeUntil(self.destroy$),
           ).subscribe();
         }
 

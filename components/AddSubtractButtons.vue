@@ -39,7 +39,11 @@
         default: 100,
       },
     },
-    destroy$: new Subject(),
+    setup() {
+      return {
+        destroy$: new Subject(),
+      };
+    },
     mounted() {
       this.zoomInSubscripton();
       this.zoomOutSubscripton();
@@ -53,7 +57,7 @@
       zoomOutSubscripton() {
         const zoomOutRef = this.$refs['zoom-out'].$el;
         fromEvent(zoomOutRef, 'mousedown').pipe(
-          takeUntil(this.$options.destroy$),
+          takeUntil(this.destroy$),
           switchMap(() => interval(100).pipe(
             takeUntil(fromEvent(document.body, 'mouseup')),
           )),
