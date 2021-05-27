@@ -19,7 +19,7 @@
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "@vcmap/cesium": "^1.79.1",
-    "@vcmap/core": "git://github.com/virtualcitySYSTEMS/map-core.git#feature-npmPackage",
+    "@vcmap/core": "git://github.com/virtualcitySYSTEMS/map-core.git#master",
     "@vue/composition-api": "^1.0.0-rc.8",
     "core-js": "^3.6.5",
     "fuse.js": "^6.4.6",
