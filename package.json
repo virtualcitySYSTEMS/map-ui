@@ -33,6 +33,7 @@
     "vue": "^2.6.11",
     "vue-click-outside": "^1.1.0",
     "vue-i18n": "^8.24.1",
+    "vue-loader": "^15.9.7",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.4.6",
     "vuetify-draggable-treeview": "^0.0.6",
@@ -78,9 +79,10 @@
     "jsdoc-vuejs": "^3.0.9",
     "mocha": "^8.3.2",
     "mocha-junit-reporter": "^2.0.0",
+    "node-sass": "^6.0.0",
     "nyc": "^15.1.0",
     "sass": "1.32.12",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^10.2.0",
     "sinon": "^10.0.0",
     "style-loader": "^2.0.0",
     "stylelint": "^13.13.1",
@@ -88,11 +90,10 @@
     "stylelint-processor-html": "^1.0.0",
     "vue-cli-plugin-vuetify": "~2.2.2",
     "vue-cli-plugin-webpack-bundle-analyzer": "~4.0.0",
-    "vue-loader": "^16.0.0-beta.4",
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.7.0",
-    "webpack": "^5.37.1"
+    "webpack": "^4.46.0"
   },
   "stylelint": {
     "extends": "stylelint-config-standard",

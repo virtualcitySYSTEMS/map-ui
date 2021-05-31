@@ -16,6 +16,7 @@
       off-icon="$vcsCheckbox"
       indeterminate-icon="$vcsCheckboxIndeterminate"
       :search="search"
+      @input="handleInput"
     >
       <template v-slot:prepend="{ item }">
         <v-icon
@@ -26,7 +27,8 @@
       </template>
 
       <template v-slot:label="{item}">
-        <span>{{ item.name }}</span>
+        <!-- TODO: proper translations -->
+        <span>{{ item.title.de || item.title }}</span>
         <Badge
           v-if="item.hasUpdate"
           class="update-badge position-absolute"
@@ -41,16 +43,6 @@
           @click="() => onIconButtonClick(action.title)"
           class="mr-2"
           v-text="action.icon"
-        />
-        <v-checkbox
-          indeterminate
-          :ripple="false"
-          hide-details
-          dense
-          v-if="item.selectable"
-          on-icon="$vcsCheckboxChecked"
-          off-icon="$vcsCheckbox"
-          indeterminate-icon="$vcsCheckboxIndeterminate"
         />
 
         <v-menu
@@ -90,6 +82,7 @@
 
 
 <style lang="scss" scoped>
+
   .search-icon {
     position: absolute;
     top: 50%;
@@ -103,6 +96,17 @@
   }
 
   ::v-deep {
+
+
+    .v-treeview-node__root {
+      position: relative;
+    }
+
+    .v-treeview-node__checkbox {
+      position: absolute;
+      right: 0;
+    }
+
     .v-treeview-node__prepend {
       min-width: 0;
 
@@ -260,6 +264,10 @@
         type: Boolean,
         default: false,
       },
+      nameKey: {
+        type: String,
+        default: undefined,
+      },
     },
     methods: {
       onIconButtonClick(action) {
@@ -267,6 +275,10 @@
       },
       onMenuItemClick(menuItem) {
         this.$emit('menu-item-clicked', menuItem);
+      },
+      handleInput(e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
       },
     },
   });
