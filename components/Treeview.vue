@@ -28,7 +28,7 @@
 
       <template v-slot:label="{item}">
         <!-- TODO: proper translations -->
-        <span>{{ item.title.de || item.title }}</span>
+        <span>{{ item.name || item.title.de || item.title }}</span>
         <Badge
           v-if="item.hasUpdate"
           class="update-badge position-absolute"
@@ -104,7 +104,7 @@
 
     .v-treeview-node__checkbox {
       position: absolute;
-      right: 0;
+      right: 8px;
     }
 
     .v-treeview-node__prepend {
@@ -276,9 +276,12 @@
       onMenuItemClick(menuItem) {
         this.$emit('menu-item-clicked', menuItem);
       },
-      handleInput(e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+      /**
+       * @function
+       * @param {Array<string>} ids
+       */
+      handleInput(ids) {
+        this.$emit('input', ids);
       },
     },
   });

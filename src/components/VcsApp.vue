@@ -2,6 +2,7 @@
   <v-sheet class="h-full">
     <Navbar :map-id="mapId" />
     <Map :map-id="mapId" :config="config" />
+    <LayerTree />
   </v-sheet>
 </template>
 
@@ -14,6 +15,7 @@
 
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
+  import LayerTree from './LayerTree.vue';
 
   /**
    * @description
@@ -23,6 +25,7 @@
     components: {
       Navbar,
       Map,
+      LayerTree,
     },
     setup() {
       return {

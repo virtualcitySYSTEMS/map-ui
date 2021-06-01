@@ -23,7 +23,7 @@ const messages = {
     'flight-viewpoint': 'Flight viewpoint',
     'viewpoint-step': 'Viewpoint step {index}',
   },
-  'layer-view': {
+  'layer-tree': {
     title: 'Inhalte / Umgebung',
     search: {
       placeholder: 'Element, Ansicht...',

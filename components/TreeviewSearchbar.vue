@@ -94,6 +94,11 @@
     .v-text-field.v-input--dense:not(.v-text-field--outlined) input {
       padding: 0;
     }
+
+    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+      box-shadow: none;
+      border-radius: 0;
+    }
   }
 </style>
 
