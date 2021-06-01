@@ -93,7 +93,7 @@
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.7.0",
-    "webpack": "^4.46.0"
+    "webpack": "^5.38.1"
   },
   "stylelint": {
     "extends": "stylelint-config-standard",
