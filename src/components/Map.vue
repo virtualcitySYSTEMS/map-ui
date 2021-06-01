@@ -35,18 +35,9 @@
 </style>
 
 <script >
-  import { obliqueCollectionCollection } from '@vcmap/core/src/vcs/vcm/globalCollections';
-  import OpenStreetMap from '@vcmap/core/src/vcs/vcm/layer/openStreetMap';
-  import Openlayers from '@vcmap/core/src/vcs/vcm/maps/openlayers';
-  import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
-  import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
-  import Projection from '@vcmap/core/src/vcs/vcm/util/projection';
-  import CesiumMap from '@vcmap/core/src/vcs/vcm/maps/cesium';
-  import ObliqueMap from '@vcmap/core/src/vcs/vcm/maps/oblique';
-
   import { registerMapCollection } from '@/registerMapCollection';
   import Vue from 'vue';
-  import ViewPoint from '@vcmap/core/src/vcs/vcm/util/viewpoint';
+  import { addConfigToContext } from '@/context';
 
   export default Vue.extend({
     props: {
@@ -74,42 +65,19 @@
        * @description Initializes the map from configuration.
        */
       async init() {
-        // 1. Create layers
-        const openlayers = new Openlayers(this.config.openLayersConfig);
-        const osm = new OpenStreetMap(this.config.osmConfig);
-        const projection = new Projection(this.config.projectionConfig);
-        const oblique = new ObliqueMap(this.config.obliqueMapConfig);
-        const { dataSetUrls, ...opts } = this.config.obliqueCollectionConfig;
-        const obliqueCollection = new ObliqueCollection({
-          ...opts,
-          dataSets: dataSetUrls.map(url => new ObliqueDataSet(url, projection.proj)),
-        });
-        const cesium = new CesiumMap(this.config.cesiumMapConfig);
-
-        // 2. Upate collections
-        this.context.mapCollection.add(openlayers);
-        this.context.mapCollection.setTarget(this.mapId);
-        this.context.mapCollection.layerCollection.add(osm);
-        await osm.activate();
-
-        obliqueCollectionCollection.add(obliqueCollection);
-
-        await oblique.setCollection(obliqueCollection);
-        this.context.mapCollection.add(oblique);
-
-        this.context.mapCollection.add(cesium);
-
+        const startingMap = await addConfigToContext(this.config, this.context);
+        this.context.maps.setTarget(this.mapId);
         // 3. Register store module
         const { destroy } = registerMapCollection({
-          mapCollection: this.context.mapCollection,
+          mapCollection: this.context.maps,
           moduleName: this.mapId,
           $store: this.$store,
         });
         this.destroy = destroy;
 
         // // 4. Initialize initial view
-        await this.context.mapCollection.setActiveMap(this.config.initialMap.activeMap);
-        await openlayers.gotoViewPoint(new ViewPoint(this.config.initialMap.viewPointConfig));
+        await this.context.maps.setActiveMap(startingMap.name);
+        await startingMap.gotoViewPoint(this.context.startViewPoint);
       },
     },
     beforeDestroy() {

@@ -63,7 +63,7 @@
        * Sets the current map type
        */
       setMap(mapName) {
-        this.context.mapCollection.setActiveMap(mapName);
+        this.context.maps.setActiveMap(mapName);
       },
     },
   });

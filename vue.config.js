@@ -62,5 +62,11 @@ module.exports = {
   },
   devServer: {
     contentBase: __dirname,
+    proxy: {
+      'datasource-data': {
+        target: 'https://berlin.virtualcitymap.de',
+        changeOrigin: true,
+      },
+    },
   },
 };

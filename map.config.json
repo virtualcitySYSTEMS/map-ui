@@ -1,0 +1,2935 @@
+{
+  "mapcontainer": "vcs_map_container",
+  "locale": "de",
+  "availableLocales": [
+    "de",
+    "en",
+    {
+      "locale": "pl",
+      "translation": "./i18n/pl.json"
+    },
+    {
+      "locale": "cz",
+      "translation": "./i18n/cz.json"
+    }
+  ],
+  "startViewPoint": "Berlin",
+  "projection": {
+    "epsg": "25833",
+    "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+  },
+  "selectBehavior": {
+    "highlightStyle": {
+      "selectionset": {
+        "color": "rgb(63, 81, 181)"
+      },
+      "currentItem": {
+        "color": "rgb(244, 67, 54)",
+        "pointStyle": {
+          "icon": {
+            "scale": 1,
+            "src": "{layer}"
+          }
+        },
+        "lineStyle": {
+          "color": "rgb(51, 153, 204)",
+          "width": 1.25
+        },
+        "polygonStyle": {
+          "fill": {
+            "color": "rgba(255, 255, 255, 0.4)"
+          },
+          "stroke": {
+            "color": "rgb(255, 0, 0)",
+            "width": "1"
+          }
+        }
+      }
+    }
+  },
+  "styles": [
+    {
+      "name": "lineColor",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${olcs_geometryType} === 2",
+              "color('#49eb34')"
+            ],
+            [
+              "true",
+              "color('#707070')"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "MeasuredHeightGreen",
+      "title": {
+        "en": "Measured Height (green)",
+        "de": "Measured Height (green)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#006d2c')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bae4b3')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74c476')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#31a354')"
+            ],
+            [
+              "true",
+              "color('#006d2c')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#edf8e9",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#bae4b3",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#74c476",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#31a354",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#006d2c",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "name": "MeasuredHeightBrown",
+      "title": {
+        "en": "Measured Height (brown)",
+        "de": "Measured Height (brown)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#993404')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#ffffd4')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#fed98e')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#fe9929')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#d95f0e')"
+            ],
+            [
+              "true",
+              "color('#993404')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#ffffd4",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#fed98e",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#fe9929",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#d95f0e",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#993404",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "name": "MeasuredHeightBlue",
+      "title": {
+        "en": "Measured Height (blue)",
+        "de": "Measured Height (blue)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#045a8d')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#f1eef6')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bdc9e1')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74a9cf')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#2b8cbe')"
+            ],
+            [
+              "true",
+              "color('#045a8d')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#f1eef6",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#bdc9e1",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#74a9cf",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#2b8cbe",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#045a8d",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "title": {
+        "en": "Classified by Roof Type",
+        "de": "Einfärbung nach Hauptdach"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.roofType} === undefined",
+              "color('#cccccc')"
+            ],
+            [
+              "${attributes.roofType} === '1000' ",
+              "color('#91cf60')"
+            ],
+            [
+              "${attributes.roofType} === '2100' ",
+              "color('#fee08b')"
+            ],
+            [
+              "${attributes.roofType} === '2200' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3100' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3200' ",
+              "color('#fc8d59')"
+            ],
+            [
+              "${attributes.roofType} === '3300' ",
+              "color('#ffffb3')"
+            ],
+            [
+              "${attributes.roofType} === '3400' ",
+              "color('#bebada')"
+            ],
+            [
+              "${attributes.roofType} === '3500' ",
+              "color('#ffffbf')"
+            ],
+            [
+              "${attributes.roofType} === '3600' ",
+              "color('#fdb462')"
+            ],
+            [
+              "${attributes.roofType} === '3700' ",
+              "color('#b3de69')"
+            ],
+            [
+              "${attributes.roofType} === '3800' ",
+              "color('#ecc34e')"
+            ],
+            [
+              "${attributes.roofType} === '3900' ",
+              "color('#fccde5')"
+            ],
+            [
+              "${attributes.roofType} === '4000' ",
+              "color('#d590b3')"
+            ],
+            [
+              "${attributes.roofType} === '5000' ",
+              "color('#888888')"
+            ],
+            [
+              "${attributes.roofType} === '9999' ",
+              "color('#cccccc')"
+            ],
+            [
+              "true",
+              "color('#cccccc')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#91cf60",
+          "title": {
+            "de": "Flachdach",
+            "en": "Flat"
+          }
+        },
+        {
+          "color": "#fee08b",
+          "title": {
+            "de": "Pultdach",
+            "en": "Shed"
+          }
+        },
+        {
+          "color": "#8dd3c7",
+          "title": {
+            "de": "Versetztes Pultdach",
+            "en": "Shifted Shed"
+          }
+        },
+        {
+          "color": "#8dd3c7",
+          "title": {
+            "de": "Satteldach",
+            "en": "Gabled"
+          }
+        },
+        {
+          "color": "#fc8d59",
+          "title": {
+            "de": "Walmdach",
+            "en": "Hipped"
+          }
+        },
+        {
+          "color": "#ffffb3",
+          "title": {
+            "de": "Krüppelwalmdach",
+            "en": "Hipped"
+          }
+        },
+        {
+          "color": "#bebada",
+          "title": {
+            "de": "Mansardendach",
+            "en": "Mansard"
+          }
+        },
+        {
+          "color": "#ffffbf",
+          "title": {
+            "de": "Zeltdach",
+            "en": "Tent"
+          }
+        },
+        {
+          "color": "#fdb462",
+          "title": {
+            "de": "Kegeldach",
+            "en": "Conical"
+          }
+        },
+        {
+          "color": "#b3de69",
+          "title": {
+            "de": "Kuppeldach",
+            "en": "Copular"
+          }
+        },
+        {
+          "color": "#ecc34e",
+          "title": {
+            "de": "Sheddach",
+            "en": "Shed roof"
+          }
+        },
+        {
+          "color": "#fccde5",
+          "title": {
+            "de": "Bogendach",
+            "en": "Arched"
+          }
+        },
+        {
+          "color": "#d590b3",
+          "title": {
+            "de": "Turmdach",
+            "en": "Tower roof"
+          }
+        },
+        {
+          "color": "#888888",
+          "title": {
+            "de": "Mischform",
+            "en": "Mixed roof"
+          }
+        },
+        {
+          "color": "#cccccc",
+          "title": {
+            "de": "Sonstiges",
+            "en": "undefined"
+          }
+        }
+      ],
+      "name": "ClassifiedbyRoofType"
+    },
+    {
+      "title": {
+        "de": "Einfärbung nach Gebäudefunktion",
+        "en": "Building Function"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.function} === undefined",
+              "color('#d9d9d9')"
+            ],
+            [
+              "${attributes.function} === '1121' ",
+              "color('#7fc97f')"
+            ],
+            [
+              "${attributes.function} === '1004' ",
+              "color('#beaed4')"
+            ],
+            [
+              "${attributes.function} === '1799' ",
+              "color('#fdc086')"
+            ],
+            [
+              "${attributes.function} === '1231' ",
+              "color('#ffff99')"
+            ],
+            [
+              "true",
+              "color('#d9d9d9')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#7fc97f",
+          "title": "1121"
+        },
+        {
+          "color": "#fdb462",
+          "title": "1004"
+        },
+        {
+          "color": "#fdc086",
+          "title": "1799"
+        },
+        {
+          "color": "#ffff99",
+          "title": "1231"
+        },
+        {
+          "color": "#cccccc",
+          "title": "other function"
+        }
+      ],
+      "name": "BuildingFunction"
+    },
+    {
+      "name": "Transparentbuildings",
+      "title": {
+        "en": "Transparent buildings",
+        "de": "Transparent buildings"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "true",
+              "color('#cccccc', 0.7)"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#cccccc",
+          "title": "Transparent buildings"
+        }
+      ]
+    },
+    {
+      "name": "CIR",
+      "title": {
+        "en": "CIR",
+        "de": "CIR"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": "rgb(${CIR}[0], ${CIR}[1], ${CIR}[2])",
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "name": "Tree-ID",
+      "title": {
+        "en": "Tree-ID",
+        "de": "Tree-ID"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${TREE_ID} > 0",
+              "mix(color('#00FF00') * (${TREE_ID} % 21) / 20, ${COLOR}, 0.5)"
+            ],
+            [
+              "true",
+              "${COLOR}"
+            ]
+          ]
+        },
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "name": "Distance",
+      "title": {
+        "en": "Distance",
+        "de": "Distance"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${DISTANCE} > 4",
+              "mix(color('#ffff00'), color('#bd0000'), clamp(0, 1, (${DISTANCE}-4)/5))"
+            ],
+            [
+              "true",
+              "${COLOR}"
+            ]
+          ]
+        },
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "name": "Classification",
+      "title": {
+        "en": "Classification",
+        "de": "Classification"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${SEMANTIC} === 1",
+              "mix(color('#9f9f61'), ${COLOR}, 0.3)"
+            ],
+            [
+              "${SEMANTIC} === 3",
+              "mix(color('#dc0000'), ${COLOR}, 0.3)"
+            ],
+            [
+              "${SEMANTIC} === 4",
+              "mix(color('#06ad16'), ${COLOR}, 0.3)"
+            ],
+            [
+              "true",
+              "${COLOR}"
+            ]
+          ]
+        },
+        "pointSize": 2
+      },
+      "toggleOptions": [
+        {
+          "title": "Buildings",
+          "condition": "${SEMANTIC} === 1",
+          "target": "show"
+        }
+      ],
+      "legend": [
+        {
+          "color": "#9f9f61",
+          "title": "Boden"
+        },
+        {
+          "color": "#dc0000",
+          "title": "Gebäude"
+        },
+        {
+          "color": "#06ad16",
+          "title": "Vegetation"
+        }
+      ]
+    }
+  ],
+  "maps": [
+    {
+      "type": "vcs.vcm.maps.Cesium",
+      "name": "cesium",
+      "debugging": false,
+      "fxaa": false,
+      "startingmap": true,
+      "enableLightning": true,
+      "allowSoftwareRendering": false,
+      "maximumScreenSpaceError": 2,
+      "fogEnabled": true,
+      "fogEnabledMobile": true,
+      "fogDensity": 0.0002,
+      "fogDensityMobile": 0.0004,
+      "fogScreenSpaceError": 2,
+      "fogScreenSpaceErrorMobile": 4
+    },
+    {
+      "type": "vcs.vcm.maps.Openlayers",
+      "name": "ol3",
+      "startingmap": false
+    },
+    {
+      "name": "Oblique Map",
+      "showObliqueImageName": true,
+      "obliqueImageNameTemplate": "Oblique Image Name : {0}",
+      "startingmap": false,
+      "type": "vcs.vcm.maps.Oblique",
+      "defaultCollectionName": "Schrägluftbilder WAB"
+    }
+  ],
+  "layers": [
+    {
+      "type": "vcs.vcm.layer.Buildings",
+      "name": "mesh_surface",
+      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh/",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true
+      },
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie",
+        "url": "https://www.berlin-partner.de",
+        "year": "2019"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "PointCloud Changedetection",
+      "url": "./datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
+      "type": "vcs.vcm.layer.PointCloud",
+      "datasourceId": "6MxMnXhaBJsz2utBD",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "pointSize": 2,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      }
+    },
+    {
+      "name": "buildings",
+      "url": "./datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "utxPghp6jfG6oZakL",
+      "activeOnStartup": true,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
+        "url": "http://www.businesslocationcenter.de/downloadportal",
+        "year": "2019"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "buildings_untextured",
+      "url": "./datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "9eRDxjbxHQzE9XiES",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
+        "url": "http://www.businesslocationcenter.de/downloadportal",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "fisbroker-dop-2015",
+      "url": "https://karten.blc.shc.eu/cache/tms/1.0.0/osm-berlin-dop2015-combined/",
+      "type": "vcs.vcm.layer.TMS",
+      "datasourceId": "5dnXzoL27oPYQbEWQ",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          248000,
+          5648000,
+          517000,
+          5968000
+        ],
+        "epsg": "EPSG:25833",
+        "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+      },
+      "format": "jpg",
+      "minLevel": "0",
+      "maxLevel": "20",
+      "tilingSchema": "mercator",
+      "opacity": "1",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Geoportal Berlin / Luftbild 2015, OpenStreetMap contributors",
+        "url": "http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "base"
+      ],
+      "tileSize": [
+        "256",
+        "256"
+      ]
+    },
+    {
+      "name": "Openstreetmap OSM Cache",
+      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "type": "vcs.vcm.layer.WMTS",
+      "datasourceId": "2jEtgBemjJaSNx3AH",
+      "activeOnStartup": true,
+      "layer": "osm",
+      "style": "default",
+      "format": "image/png",
+      "tileMatrixSetID": "osm_grid",
+      "tileMatrixPrefix": "",
+      "maxLevel": 19,
+      "tilingSchema": "mercator",
+      "extent": {
+        "coordinates": [
+          -180,
+          -85,
+          180,
+          85
+        ],
+        "epsg": "EPSG:4326",
+        "proj4": ""
+      },
+      "opacity": "1",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "OpenStreetMap contributors",
+        "url": "http://www.openstreetmap.org/",
+        "year": "2019"
+      },
+      "numberOfLevelZeroTilesX": 1,
+      "numberOfLevelZeroTilesY": 1,
+      "exclusiveGroups": [
+        "base"
+      ]
+    },
+    {
+      "name": "terrain_v3.4",
+      "url": "./datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
+      "type": "vcs.vcm.layer.Terrain",
+      "datasourceId": "CQHSNBZDTkjLLh8Qr",
+      "activeOnStartup": true,
+      "requestVertexNormals": true
+    },
+    {
+      "type": "vcs.vcm.layer.PointCloud",
+      "name": "pointcloud",
+      "activeOnStartup": false,
+      "datasourceId": "g9rXAY6pu2tfNmWf3",
+      "url": "./datasource-data/Open-Data-Berlin/tiergarten/tileset.json",
+      "copyright": {
+        "provider": "Senatsverwaltung für Wirtschaft, Technologie und Forschung. Geodaten Herstellung gefördert durch den Europäischen Fonds für Regionale Entwicklung (EFRE)",
+        "url": "http://www.berlin.de/wirtschaftssenat"
+      },
+      "screenSpaceError": 20,
+      "screenSpaceErrorMobile": 32,
+      "pointSize": 1.6,
+      "exclusiveGroups": [
+        "pointcloud"
+      ]
+    },
+    {
+      "name": "Bäume",
+      "url": "./datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "YXcidK4ijYFB2DhPm",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "tree"
+      ]
+    },
+    {
+      "name": "lod2_solar_jul",
+      "url": "./datasource-data/ae32d27d-e75b-4339-b471-c2e4c1891bea",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "MxKRpGbBemdmvKbep",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "lod2_solar_apr",
+      "url": "./datasource-data/3ece8030-9ca3-487f-8811-7d65c58b9d46",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "6F7MtLWF9Fe44W6XY",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "lod2_solar_jan",
+      "url": "./datasource-data/6336aafe-96eb-4db2-b1ed-5bcc70b4ac54",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "B7ooqvwDgEKnzN6MX",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "lod2_solar_year",
+      "url": "./datasource-data/0866fca1-2b8c-4ac9-b478-cdeffc8d7f38",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "amZp7Mb68MiyesBQN",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "lod_solar_year_shading",
+      "url": "./datasource-data/f931caec-8003-44b1-8e9c-5b5f646f1c11",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "BZGcFpindygyuDwGq",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "citygml_trees_solar",
+      "url": "./datasource-data/ac0d0ab1-1ae3-43b4-93c6-020cb37f7b2b",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "2a8i9Jra6Lm6gGQJ5",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "tree"
+      ]
+    }
+  ],
+  "viewpoints": [
+    {
+      "name": "Berlin",
+      "cameraPosition": [
+        13.370550000000003,
+        52.51230000000001,
+        677.0294500017116
+      ],
+      "groundPosition": [
+        13.377973747219107,
+        52.51718187188212,
+        34.500300497361984
+      ],
+      "distance": 980.8215342887953,
+      "heading": 42.84999999999993,
+      "pitch": -40.93,
+      "roll": 360,
+      "animate": false
+    },
+    {
+      "groundPosition": [
+        13.35948,
+        52.51442,
+        33.35758
+      ],
+      "pitch": -46.14,
+      "type": "vcs.vcm.util.ViewPoint",
+      "heading": 359.84,
+      "distance": 3267.86,
+      "name": "pointcloud",
+      "animate": true
+    },
+    {
+      "groundPosition": [
+        13.50914,
+        52.62997,
+        65.46385
+      ],
+      "cameraPosition": [
+        13.5097,
+        52.62178,
+        781.65344
+      ],
+      "pitch": -38.14,
+      "type": "vcs.vcm.util.ViewPoint",
+      "heading": 357.64,
+      "distance": 1159.67,
+      "name": "changedetection",
+      "animate": true
+    },
+    {
+      "name": "berlin",
+      "distance": 77320.16701493935,
+      "cameraPosition": [
+        13.412246704101557,
+        52.50911685569954,
+        77355.76917050044
+      ],
+      "groundPosition": [
+        13.412246704101555,
+        52.50908981460491,
+        35.60221485835801
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "alexanderplatz",
+      "distance": 1027.743747894252,
+      "cameraPosition": [
+        13.410279816026053,
+        52.52102244255272,
+        1064.4366076344213
+      ],
+      "groundPosition": [
+        13.410279818110775,
+        52.52102207564875,
+        36.69286055319397
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "brandenburger_tor",
+      "distance": 663.6051001967426,
+      "cameraPosition": [
+        13.37790869834864,
+        52.51627705004426,
+        698.3750083957117
+      ],
+      "groundPosition": [
+        13.37790869845283,
+        52.516277047668844,
+        34.76990820023149
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "potsdamer_platz",
+      "distance": 730.0034266375318,
+      "cameraPosition": [
+        13.375567390072897,
+        52.50932719713967,
+        765.2515153338176
+      ],
+      "groundPosition": [
+        13.375567390058034,
+        52.50932719590491,
+        35.24808869690339
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "kaiser_wilhelm_gedächtniskirche",
+      "distance": 1403.6527954713483,
+      "cameraPosition": [
+        13.335352247346847,
+        52.504711542,
+        1439.1391871096814
+      ],
+      "groundPosition": [
+        13.335352247390913,
+        52.504711544012196,
+        35.48639164026276
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "oberbaumbrücke",
+      "distance": 1733.4812812488267,
+      "cameraPosition": [
+        13.446640011241168,
+        52.502524758282966,
+        1768.8521694627193
+      ],
+      "groundPosition": [
+        13.446640014248556,
+        52.50252476179635,
+        35.370888214475826
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "flughafen_ber",
+      "distance": 6450.326141140612,
+      "cameraPosition": [
+        13.515559210543072,
+        52.36279910784842,
+        6492.919065252887
+      ],
+      "groundPosition": [
+        13.515558935672018,
+        52.3627993630547,
+        42.59292420206033
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "name": "euref_campus",
+      "distance": 463.7064949271509,
+      "cameraPosition": [
+        13.356384398240062,
+        52.47789793339715,
+        297.22260731547095
+      ],
+      "groundPosition": [
+        13.355488770218217,
+        52.481330548847595,
+        41.46396807950598
+      ],
+      "heading": 350.9487894837291,
+      "pitch": -33.475339640184025,
+      "roll": 359.9648328660937,
+      "animate": true
+    },
+    {
+      "name": "europacity",
+      "distance": 784.4892150356735,
+      "cameraPosition": [
+        13.37677810572692,
+        52.52180221431084,
+        422.71148045551297
+      ],
+      "groundPosition": [
+        13.36907856919656,
+        52.52557724308259,
+        15.498146231644832
+      ],
+      "heading": 308.79618691277153,
+      "pitch": -31.273617806373675,
+      "roll": 359.830023073689,
+      "animate": true
+    },
+    {
+      "name": "upper_west",
+      "distance": 378.9684151048121,
+      "cameraPosition": [
+        13.336209148039057,
+        52.50595499405514,
+        216.8593550798796
+      ],
+      "groundPosition": [
+        13.331866878885652,
+        52.50458158159935,
+        34.321978261273664
+      ],
+      "heading": 242.60267744079613,
+      "pitch": -28.795962866780794,
+      "roll": 359.81169632176426,
+      "animate": true
+    },
+    {
+      "name": "tegel",
+      "distance": 955.4595809846163,
+      "cameraPosition": [
+        13.285960945895809,
+        52.54673550265861,
+        627.6405329919243
+      ],
+      "groundPosition": [
+        13.289252434219392,
+        52.55315725595927,
+        34.05533446379186
+      ],
+      "heading": 17.349816372226854,
+      "pitch": -38.41127341964261,
+      "roll": 0.0709408893473591,
+      "animate": true
+    },
+    {
+      "name": "citywest",
+      "distance": 1536,
+      "cameraPosition": [
+        13.34683,
+        52.5001,
+        831.64539
+      ],
+      "heading": 308.82,
+      "pitch": -31.28,
+      "roll": 359.83,
+      "animate": true
+    },
+    {
+      "name": "spreeraum",
+      "distance": 1810,
+      "cameraPosition": [
+        13.43302,
+        52.49344,
+        974.96324
+      ],
+      "heading": 12.63,
+      "pitch": -31.28,
+      "roll": 359.83,
+      "animate": true
+    },
+    {
+      "name": "plannings2010",
+      "distance": 1873,
+      "cameraPosition": [
+        13.36251,
+        52.51218,
+        768.65202
+      ],
+      "heading": 12.63,
+      "pitch": -23.1,
+      "roll": 359.83,
+      "animate": true
+    },
+    {
+      "name": "pp_solar",
+      "cameraPosition": [
+        13.372478299069217,
+        52.505740785220674,
+        591.188656405889
+      ],
+      "groundPosition": [
+        13.376231541201832,
+        52.50901730139795,
+        35.18074796926147
+      ],
+      "distance": 712.0686998402006,
+      "heading": 34.95045433027544,
+      "pitch": -51.33904105613322,
+      "roll": 0.17115067480664065,
+      "animate": true
+    }
+  ],
+  "widgets": [
+    {
+      "low": {
+        "sse": 4,
+        "fxaa": false,
+        "fog": {
+          "enabled": true,
+          "density": 0.0008,
+          "screenSpaceErrorFactor": 4
+        },
+        "resolutionScale": 0.9,
+        "layerSSEFactor": 2
+      },
+      "medium": {
+        "sse": 2.333,
+        "fxaa": false,
+        "fog": {
+          "enabled": true,
+          "density": 0.0004,
+          "screenSpaceErrorFactor": 2
+        },
+        "resolutionScale": 1,
+        "layerSSEFactor": 1.1
+      },
+      "high": {
+        "sse": 1.3333333333333333,
+        "fxaa": true,
+        "fog": {
+          "enabled": true,
+          "density": 0,
+          "screenSpaceErrorFactor": 0
+        },
+        "resolutionScale": 1,
+        "layerSSEFactor": 0.5
+      },
+      "type": "vcs.vcm.widgets.DisplayQuality"
+    },
+    {
+      "type": "vcs.vcm.widgets.BalloonInfo",
+      "balloonTypes": [
+        {
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h1 class='balloon-title'> <%= obj.name %></h1>",
+            "<h2 class='balloon-sub-title'> <%= obj.description %></h2>",
+            "<p class='balloon-text'><span class='balloon-street'> <%= obj.address %></span></p>",
+            "</div>",
+            "<div class='balloon-close-col'><button class='close-balloon'><i class='fa fa-times fa-lg'></i></button></div>",
+            "<div class='dialog-image-balloon'></div>",
+            "<div class='balloon-left-edge'></div>",
+            "</div>"
+          ],
+          "minTop": "balloonHeight + 70",
+          "minLeft": "70",
+          "layerTypes": [
+            "vcs.vcm.layer.Vector"
+          ],
+          "layerNames": []
+        },
+        {
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h1 class='balloon-title' align='center'>Solar Radiation Report</h1>",
+            "<svg width='450' height='235'>",
+            "<%= buildGraph(obj) %>",
+            "</svg><table height='50' align='center' style='margin: 0px auto;'>",
+            "<%= buildTable(obj) %>",
+            "</table>",
+            "<div class='balloon-close-col'>",
+            "<button class='close-balloon'><i class='fa fa-times fa-lg'></i></button>",
+            "</div></div>"
+          ],
+          "minTop": "balloonHeight + 30",
+          "minLeft": "70",
+          "layerNames": [
+            "lod_solar_year_shading",
+            "lod2_solar_year"
+          ],
+          "layerTypes": [
+            null
+          ]
+        },
+        {
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h1 class='balloon-title'> Building </h1>",
+            "<h2 class='balloon-sub-title'> <%= obj.gmlId %></h2>",
+            "</div>",
+            "<div class='balloon-close-col'><button class='close-balloon'><i class='fa fa-times fa-lg'></i></button></div>",
+            "<div class='dialog-image-balloon'></div>",
+            "<div class='balloon-left-edge'></div>",
+            "</div>"
+          ],
+          "minTop": "balloonHeight + 30",
+          "minLeft": "70",
+          "layerTypes": [
+            "vcs.vcm.layer.Buildings"
+          ],
+          "layerNames": [
+            "buildings"
+          ]
+        },
+        {
+          "comment": "balloon for building information/details (Cesium)",
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h2 class='balloon-title'>Objektinformationen</h2>",
+            "<% if(obj.Address){ %>",
+            "<p><%= obj.Address.Street %> <%= obj.Address.Housenumber %></p>",
+            "<p><%= obj.Address.City %></p>",
+            "<% } else { %>",
+            "<p>Keine Address-Informationen vorhanden</p>",
+            "<% } %>",
+            "<br />",
+            "<p>Höhe <%= obj.measuredHeight %></p>",
+            "<p>Dachtyp <%= obj.roofType %></p>",
+            "</div>",
+            "<div class='balloon-close-col'><button class='close-balloon'><i class='fa fa-times fa-lg'></i></button></div>",
+            "<div class='dialog-image-balloon'></div>",
+            "<div class='balloon-left-edge'></div>",
+            "</div>"
+          ],
+          "minTop": "balloonHeight + 30",
+          "minLeft": "70",
+          "layerTypes": [
+            "vcs.vcm.layer.Buildings"
+          ],
+          "layerNames": [
+            "buildings_untextured"
+          ]
+        },
+        {
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h2 class='balloon-sub-title'><%= obj.name %></h2>",
+            "<p class='balloon-text'><span class='balloon-street'><%= obj.description %></span><br></p>",
+            "</div>",
+            "<div class='balloon-close-col'><button class='close-balloon'><i class='fa fa-times fa-lg'></i></button></div>",
+            "<div class='dialog-image-balloon'></div>",
+            "<div class='balloon-left-edge'></div>",
+            "</div>"
+          ],
+          "minTop": "balloonHeight + 30",
+          "minLeft": "70",
+          "layerTypes": [
+            "vcs.vcm.layer.cesium.Gltf"
+          ]
+        },
+        {
+          "template": [
+            "<div class='balloon' id='myBalloon'>",
+            "<div class='balloon-content'>",
+            "<h1 class='balloon-title'>Solare Einstrahlung pro Monat in [kWh/m²]</h1>",
+            "<table class='tg'>",
+            "<tr>",
+            "<th class='tg-031e'></th>",
+            "<th class='tg-yw4l'>Jan</th>",
+            "<th class='tg-yw4l'>Apr</th>",
+            "<th class='tg-yw4l'>Jul</th>",
+            "<th class='tg-yw4l'>Okt</th>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Global Gebäude</td>",
+            "<td class='tg-yw4l'><%= obj['globalRadMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Direkt Gebäude</td>",
+            "<td class='tg-yw4l'><%= obj['directRadMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Diffuse Gebäude</td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Global Dach</td>",
+            "<td class='tg-yw4l'><%= obj['globalRadRoofsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadRoofsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadRoofsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadRoofsMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Direkt Dach</td>",
+            "<td class='tg-yw4l'><%= obj['directRadRoofsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadRoofsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadRoofsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadRoofsMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Diffuse Dach</td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadRoofsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadRoofsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadRoofsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadRoofsMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Global Wand</td>",
+            "<td class='tg-yw4l'><%= obj['globalRadWallsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadWallsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadWallsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['globalRadWallsMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Direkt Wand</td>",
+            "<td class='tg-yw4l'><%= obj['directRadWallsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadWallsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadWallsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['directRadWallsMonth_10'] %></td>",
+            "</tr>",
+            "<tr>",
+            "<td class='tg-yw4l'>Diffuse Wand</td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadWallsMonth_01'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadWallsMonth_04'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadWallsMonth_07'] %></td>",
+            "<td class='tg-yw4l'><%= obj['diffuseRadWallsMonth_10'] %></td>",
+            "</tr>",
+            "</table>",
+            "</div>",
+            "<div class='balloon-close-col'><button class='close-balloon'><i class='fa fa-times fa-lg'></i></button>",
+            "</div><div class='dialog-image-balloon'></div><div class='balloon-left-edge'></div></div>"
+          ],
+          "layerTypes": [
+            null
+          ],
+          "layerNames": [
+            "lod2_solar_jan",
+            "lod2_solar_apr",
+            "lod2_solar_jul"
+          ],
+          "minTop": "balloonHeight + 30",
+          "minLeft": "70",
+          "allAvailable": false,
+          "properties": [
+            {
+              "title": "EIG_KL_ST",
+              "name": "EIG_KL_ST"
+            },
+            {
+              "title": "FOLIE",
+              "name": "FOLIE"
+            },
+            {
+              "title": "globalRadRoofsMonth_10",
+              "name": "globalRadRoofsMonth_10"
+            },
+            {
+              "title": "ANZ_LOC",
+              "name": "ANZ_LOC"
+            },
+            {
+              "title": "globalRadYear",
+              "name": "globalRadYear"
+            },
+            {
+              "title": "TexVersion",
+              "name": "TexVersion"
+            },
+            {
+              "title": "HoeheDach",
+              "name": "HoeheDach"
+            },
+            {
+              "title": "SVF_max",
+              "name": "SVF_max"
+            },
+            {
+              "title": "globalRadRoofsMonth_11",
+              "name": "globalRadRoofsMonth_11"
+            },
+            {
+              "title": "globalRadRoofsMonth_12",
+              "name": "globalRadRoofsMonth_12"
+            },
+            {
+              "title": "SVFWalls_max",
+              "name": "SVFWalls_max"
+            },
+            {
+              "title": "LFD",
+              "name": "LFD"
+            },
+            {
+              "title": "HNR",
+              "name": "HNR"
+            },
+            {
+              "title": "STR",
+              "name": "STR"
+            },
+            {
+              "title": "diffuseRadRoofsYear",
+              "name": "diffuseRadRoofsYear"
+            },
+            {
+              "title": "based_on_file_lod",
+              "name": "based_on_file_lod"
+            },
+            {
+              "title": "overlap_filter",
+              "name": "overlap_filter"
+            },
+            {
+              "title": "measuredHeight",
+              "name": "measuredHeight"
+            },
+            {
+              "title": "Direkte Einstrahlung Wand [kWh/m²]",
+              "name": "directRadWallsMonth_01",
+              "active": true
+            },
+            {
+              "title": "directRadWallsMonth_02",
+              "name": "directRadWallsMonth_02"
+            },
+            {
+              "title": "directRadWallsMonth_03",
+              "name": "directRadWallsMonth_03"
+            },
+            {
+              "title": "globalRadRoofsMonth_02",
+              "name": "globalRadRoofsMonth_02"
+            },
+            {
+              "title": "globalRadRoofsMonth_03",
+              "name": "globalRadRoofsMonth_03"
+            },
+            {
+              "title": "Globale Einstrahlung Dach [kWh/m²]",
+              "name": "globalRadRoofsMonth_01",
+              "active": true
+            },
+            {
+              "title": "directRadWallsMonth_04",
+              "name": "directRadWallsMonth_04"
+            },
+            {
+              "title": "directRadWallsMonth_05",
+              "name": "directRadWallsMonth_05"
+            },
+            {
+              "title": "H_First_Max",
+              "name": "H_First_Max"
+            },
+            {
+              "title": "directRadWallsMonth_06",
+              "name": "directRadWallsMonth_06"
+            },
+            {
+              "title": "directRadWallsMonth_07",
+              "name": "directRadWallsMonth_07"
+            },
+            {
+              "title": "directRadWallsMonth_08",
+              "name": "directRadWallsMonth_08"
+            },
+            {
+              "title": "directRadWallsMonth_09",
+              "name": "directRadWallsMonth_09"
+            },
+            {
+              "title": "KREIS",
+              "name": "KREIS"
+            },
+            {
+              "title": "SVFRoofs_max",
+              "name": "SVFRoofs_max"
+            },
+            {
+              "title": "directRadWallsMonth_10",
+              "name": "directRadWallsMonth_10"
+            },
+            {
+              "title": "directRadWallsMonth_11",
+              "name": "directRadWallsMonth_11"
+            },
+            {
+              "title": "directRadWallsMonth_12",
+              "name": "directRadWallsMonth_12"
+            },
+            {
+              "title": "globalRadRoofsMonth_06",
+              "name": "globalRadRoofsMonth_06"
+            },
+            {
+              "title": "globalRadRoofsMonth_07",
+              "name": "globalRadRoofsMonth_07"
+            },
+            {
+              "title": "globalRadRoofsMonth_04",
+              "name": "globalRadRoofsMonth_04"
+            },
+            {
+              "title": "diffuseRadWallsYear",
+              "name": "diffuseRadWallsYear"
+            },
+            {
+              "title": "SVF_min",
+              "name": "SVF_min"
+            },
+            {
+              "title": "globalRadRoofsMonth_05",
+              "name": "globalRadRoofsMonth_05"
+            },
+            {
+              "title": "H_First_Min",
+              "name": "H_First_Min"
+            },
+            {
+              "title": "globalRadRoofsMonth_08",
+              "name": "globalRadRoofsMonth_08"
+            },
+            {
+              "title": "globalRadRoofsMonth_09",
+              "name": "globalRadRoofsMonth_09"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_06",
+              "name": "diffuseRadRoofsMonth_06"
+            },
+            {
+              "title": "DatenquelleDachhoehe",
+              "name": "DatenquelleDachhoehe"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_05",
+              "name": "diffuseRadRoofsMonth_05"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_08",
+              "name": "diffuseRadRoofsMonth_08"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_07",
+              "name": "diffuseRadRoofsMonth_07"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_09",
+              "name": "diffuseRadRoofsMonth_09"
+            },
+            {
+              "title": "DatenquelleBodenhoehe",
+              "name": "DatenquelleBodenhoehe"
+            },
+            {
+              "title": "overlap_file_to_DB",
+              "name": "overlap_file_to_DB"
+            },
+            {
+              "title": "directRadRoofsMonth_10",
+              "name": "directRadRoofsMonth_10"
+            },
+            {
+              "title": "directRadRoofsMonth_12",
+              "name": "directRadRoofsMonth_12"
+            },
+            {
+              "title": "directRadRoofsMonth_11",
+              "name": "directRadRoofsMonth_11"
+            },
+            {
+              "title": "H_Trauf_Max",
+              "name": "H_Trauf_Max"
+            },
+            {
+              "title": "SVFRoofs_min",
+              "name": "SVFRoofs_min"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_02",
+              "name": "diffuseRadRoofsMonth_02"
+            },
+            {
+              "title": "Diffuse Einstrahlung Dach [kWh/m²]",
+              "name": "diffuseRadRoofsMonth_01",
+              "active": true
+            },
+            {
+              "title": "diffuseRadRoofsMonth_04",
+              "name": "diffuseRadRoofsMonth_04"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_03",
+              "name": "diffuseRadRoofsMonth_03"
+            },
+            {
+              "title": "roofType",
+              "name": "roofType"
+            },
+            {
+              "title": "H_Trauf_Min",
+              "name": "H_Trauf_Min"
+            },
+            {
+              "title": "EIG_KL_PV",
+              "name": "EIG_KL_PV"
+            },
+            {
+              "title": "GE_LoD2_zOffset",
+              "name": "GE_LoD2_zOffset"
+            },
+            {
+              "title": "diffuseRadYear",
+              "name": "diffuseRadYear"
+            },
+            {
+              "title": "HoeheGrund",
+              "name": "HoeheGrund"
+            },
+            {
+              "title": "gml:name",
+              "name": "gml:name"
+            },
+            {
+              "title": "SVFWalls_med",
+              "name": "SVFWalls_med"
+            },
+            {
+              "title": "directRadRoofsMonth_03",
+              "name": "directRadRoofsMonth_03"
+            },
+            {
+              "title": "based_on_db_lod",
+              "name": "based_on_db_lod"
+            },
+            {
+              "title": "integrating_person",
+              "name": "integrating_person"
+            },
+            {
+              "title": "directRadRoofsMonth_02",
+              "name": "directRadRoofsMonth_02"
+            },
+            {
+              "title": "directRadRoofsMonth_05",
+              "name": "directRadRoofsMonth_05"
+            },
+            {
+              "title": "directRadRoofsMonth_04",
+              "name": "directRadRoofsMonth_04"
+            },
+            {
+              "title": "Direkte Einstrahlung Dach [kWh/m²]",
+              "name": "directRadRoofsMonth_01",
+              "active": true
+            },
+            {
+              "title": "BezugspunktDachhoehe",
+              "name": "BezugspunktDachhoehe"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_11",
+              "name": "diffuseRadRoofsMonth_11"
+            },
+            {
+              "title": "SVFWalls_avg",
+              "name": "SVFWalls_avg"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_10",
+              "name": "diffuseRadRoofsMonth_10"
+            },
+            {
+              "title": "directRadRoofsMonth_07",
+              "name": "directRadRoofsMonth_07"
+            },
+            {
+              "title": "directRadRoofsMonth_06",
+              "name": "directRadRoofsMonth_06"
+            },
+            {
+              "title": "diffuseRadRoofsMonth_12",
+              "name": "diffuseRadRoofsMonth_12"
+            },
+            {
+              "title": "directRadRoofsMonth_09",
+              "name": "directRadRoofsMonth_09"
+            },
+            {
+              "title": "directRadRoofsMonth_08",
+              "name": "directRadRoofsMonth_08"
+            },
+            {
+              "title": "directRadMonth_09",
+              "name": "directRadMonth_09"
+            },
+            {
+              "title": "directRadMonth_07",
+              "name": "directRadMonth_07"
+            },
+            {
+              "title": "directRadYear",
+              "name": "directRadYear"
+            },
+            {
+              "title": "directRadMonth_08",
+              "name": "directRadMonth_08"
+            },
+            {
+              "title": "directRadMonth_05",
+              "name": "directRadMonth_05"
+            },
+            {
+              "title": "directRadMonth_06",
+              "name": "directRadMonth_06"
+            },
+            {
+              "title": "file_candidate_gmlid",
+              "name": "file_candidate_gmlid"
+            },
+            {
+              "title": "overlap_DB_to_file",
+              "name": "overlap_DB_to_file"
+            },
+            {
+              "title": "externalReference 1 externalObjectName",
+              "name": "externalReference 1 externalObjectName"
+            },
+            {
+              "title": "area_diff",
+              "name": "area_diff"
+            },
+            {
+              "title": "directRadRoofsYear",
+              "name": "directRadRoofsYear"
+            },
+            {
+              "title": "externalReference externalObjectName",
+              "name": "externalReference externalObjectName"
+            },
+            {
+              "title": "globalRadMonth_09",
+              "name": "globalRadMonth_09"
+            },
+            {
+              "title": "globalRadMonth_07",
+              "name": "globalRadMonth_07"
+            },
+            {
+              "title": "globalRadMonth_08",
+              "name": "globalRadMonth_08"
+            },
+            {
+              "title": "DENKMALART",
+              "name": "DENKMALART"
+            },
+            {
+              "title": "function",
+              "name": "function"
+            },
+            {
+              "title": "ADZ",
+              "name": "ADZ"
+            },
+            {
+              "title": "Globale Einstrahlung kWh/m²]",
+              "name": "globalRadMonth_01",
+              "active": true
+            },
+            {
+              "title": "directRadMonth_03",
+              "name": "directRadMonth_03"
+            },
+            {
+              "title": "diffuseRadMonth_10",
+              "name": "diffuseRadMonth_10"
+            },
+            {
+              "title": "globalRadMonth_02",
+              "name": "globalRadMonth_02"
+            },
+            {
+              "title": "directRadMonth_04",
+              "name": "directRadMonth_04"
+            },
+            {
+              "title": "directRadMonth_01",
+              "name": "directRadMonth_01"
+            },
+            {
+              "title": "diffuseRadMonth_12",
+              "name": "diffuseRadMonth_12"
+            },
+            {
+              "title": "directRadMonth_02",
+              "name": "directRadMonth_02"
+            },
+            {
+              "title": "diffuseRadMonth_11",
+              "name": "diffuseRadMonth_11"
+            },
+            {
+              "title": "globalRadMonth_05",
+              "name": "globalRadMonth_05"
+            },
+            {
+              "title": "globalRadMonth_06",
+              "name": "globalRadMonth_06"
+            },
+            {
+              "title": "NiedrigsteTraufeDesGebaeudes",
+              "name": "NiedrigsteTraufeDesGebaeudes"
+            },
+            {
+              "title": "globalRadMonth_03",
+              "name": "globalRadMonth_03"
+            },
+            {
+              "title": "globalRadMonth_04",
+              "name": "globalRadMonth_04"
+            },
+            {
+              "title": "Qualitaet",
+              "name": "Qualitaet"
+            },
+            {
+              "title": "Methode",
+              "name": "Methode"
+            },
+            {
+              "title": "DENK_ID",
+              "name": "DENK_ID"
+            },
+            {
+              "title": "creationDate",
+              "name": "creationDate"
+            },
+            {
+              "title": "diffuseRadMonth_07",
+              "name": "diffuseRadMonth_07"
+            },
+            {
+              "title": "diffuseRadMonth_06",
+              "name": "diffuseRadMonth_06"
+            },
+            {
+              "title": "GE_LoD3_zOffset",
+              "name": "GE_LoD3_zOffset"
+            },
+            {
+              "title": "diffuseRadMonth_09",
+              "name": "diffuseRadMonth_09"
+            },
+            {
+              "title": "diffuseRadMonth_08",
+              "name": "diffuseRadMonth_08"
+            },
+            {
+              "title": "directRadWallsYear",
+              "name": "directRadWallsYear"
+            },
+            {
+              "title": "area_diff_filter",
+              "name": "area_diff_filter"
+            },
+            {
+              "title": "Diffuse Einstrahlung [kWh/m²]",
+              "name": "diffuseRadMonth_01",
+              "active": true
+            },
+            {
+              "title": "gml:description",
+              "name": "gml:description"
+            },
+            {
+              "title": "SVF_avg",
+              "name": "SVF_avg"
+            },
+            {
+              "title": "diffuseRadMonth_03",
+              "name": "diffuseRadMonth_03"
+            },
+            {
+              "title": "SVF_med",
+              "name": "SVF_med"
+            },
+            {
+              "title": "globalRadRoofsYear",
+              "name": "globalRadRoofsYear"
+            },
+            {
+              "title": "diffuseRadMonth_02",
+              "name": "diffuseRadMonth_02"
+            },
+            {
+              "title": "diffuseRadMonth_05",
+              "name": "diffuseRadMonth_05"
+            },
+            {
+              "title": "diffuseRadMonth_04",
+              "name": "diffuseRadMonth_04"
+            },
+            {
+              "title": "diffuseRadWallsMonth_10",
+              "name": "diffuseRadWallsMonth_10"
+            },
+            {
+              "title": "diffuseRadWallsMonth_11",
+              "name": "diffuseRadWallsMonth_11"
+            },
+            {
+              "title": "OAR",
+              "name": "OAR"
+            },
+            {
+              "title": "diffuseRadWallsMonth_12",
+              "name": "diffuseRadWallsMonth_12"
+            },
+            {
+              "title": "Kachel",
+              "name": "Kachel"
+            },
+            {
+              "title": "RBEZ",
+              "name": "RBEZ"
+            },
+            {
+              "title": "GMDE",
+              "name": "GMDE"
+            },
+            {
+              "title": "LAND",
+              "name": "LAND"
+            },
+            {
+              "title": "matching_mode",
+              "name": "matching_mode"
+            },
+            {
+              "title": "globalRadWallsMonth_06",
+              "name": "globalRadWallsMonth_06"
+            },
+            {
+              "title": "globalRadWallsMonth_07",
+              "name": "globalRadWallsMonth_07"
+            },
+            {
+              "title": "globalRadWallsMonth_08",
+              "name": "globalRadWallsMonth_08"
+            },
+            {
+              "title": "globalRadWallsYear",
+              "name": "globalRadWallsYear"
+            },
+            {
+              "title": "globalRadWallsMonth_09",
+              "name": "globalRadWallsMonth_09"
+            },
+            {
+              "title": "globalRadWallsMonth_02",
+              "name": "globalRadWallsMonth_02"
+            },
+            {
+              "title": "globalRadWallsMonth_03",
+              "name": "globalRadWallsMonth_03"
+            },
+            {
+              "title": "globalRadWallsMonth_04",
+              "name": "globalRadWallsMonth_04"
+            },
+            {
+              "title": "globalRadWallsMonth_05",
+              "name": "globalRadWallsMonth_05"
+            },
+            {
+              "title": "SVFRoofs_med",
+              "name": "SVFRoofs_med"
+            },
+            {
+              "title": "Globale Einstrahlung Wand [kWh/m²]",
+              "name": "globalRadWallsMonth_01",
+              "active": true
+            },
+            {
+              "title": "SVFRoofs_avg",
+              "name": "SVFRoofs_avg"
+            },
+            {
+              "title": "Diffuse Einstrahlung Wand [kWh/m²]",
+              "name": "diffuseRadWallsMonth_01"
+            },
+            {
+              "title": "diffuseRadWallsMonth_02",
+              "name": "diffuseRadWallsMonth_02"
+            },
+            {
+              "title": "diffuseRadWallsMonth_07",
+              "name": "diffuseRadWallsMonth_07"
+            },
+            {
+              "title": "TerrainHeight",
+              "name": "TerrainHeight"
+            },
+            {
+              "title": "diffuseRadWallsMonth_08",
+              "name": "diffuseRadWallsMonth_08"
+            },
+            {
+              "title": "diffuseRadWallsMonth_09",
+              "name": "diffuseRadWallsMonth_09"
+            },
+            {
+              "title": "diffuseRadWallsMonth_03",
+              "name": "diffuseRadWallsMonth_03"
+            },
+            {
+              "title": "diffuseRadWallsMonth_04",
+              "name": "diffuseRadWallsMonth_04"
+            },
+            {
+              "title": "diffuseRadWallsMonth_05",
+              "name": "diffuseRadWallsMonth_05"
+            },
+            {
+              "title": "diffuseRadWallsMonth_06",
+              "name": "diffuseRadWallsMonth_06"
+            },
+            {
+              "title": "GE_LoD4_zOffset",
+              "name": "GE_LoD4_zOffset"
+            },
+            {
+              "title": "globalRadMonth_12",
+              "name": "globalRadMonth_12"
+            },
+            {
+              "title": "integration_date",
+              "name": "integration_date"
+            },
+            {
+              "title": "globalRadWallsMonth_10",
+              "name": "globalRadWallsMonth_10"
+            },
+            {
+              "title": "SVFWalls_min",
+              "name": "SVFWalls_min"
+            },
+            {
+              "title": "globalRadWallsMonth_11",
+              "name": "globalRadWallsMonth_11"
+            },
+            {
+              "title": "globalRadMonth_10",
+              "name": "globalRadMonth_10"
+            },
+            {
+              "title": "directRadMonth_12",
+              "name": "directRadMonth_12"
+            },
+            {
+              "title": "Kennung",
+              "name": "Kennung"
+            },
+            {
+              "title": "globalRadWallsMonth_12",
+              "name": "globalRadWallsMonth_12"
+            },
+            {
+              "title": "globalRadMonth_11",
+              "name": "globalRadMonth_11"
+            },
+            {
+              "title": "directRadMonth_10",
+              "name": "directRadMonth_10"
+            },
+            {
+              "title": "directRadMonth_11",
+              "name": "directRadMonth_11"
+            },
+            {
+              "title": "Country",
+              "name": "Address.Country"
+            },
+            {
+              "title": "PostalCode",
+              "name": "Address.PostalCode"
+            },
+            {
+              "title": "City",
+              "name": "Address.City"
+            },
+            {
+              "title": "Street",
+              "name": "Address.Street"
+            },
+            {
+              "title": "HouseNumber",
+              "name": "Address.HouseNumber"
+            },
+            {
+              "title": "AddressLine",
+              "name": "Address.AddressLine"
+            }
+          ],
+          "balloonHeader": "Solare Einstrahlung pro Monat"
+        }
+      ]
+    },
+    {
+      "type": "vcs.vcm.widgets.ClippingTool"
+    },
+    {
+      "type": "vcs.vcm.widgets.Copyright",
+      "name": "Copyright"
+    },
+    {
+      "type": "vcs.vcm.widgets.AdvancedWalkMode",
+      "name": "Advanced walkmode"
+    },
+    {
+      "type": "vcs.vcm.widgets.Export",
+      "serverUrl": "https://demo.virtualcitysystems.de/fmedatadownload/Disclaimer/Multiexport_disclaimer_en.fmw",
+      "tokenUrl": "https://demo.virtualcitysystems.de/fmetoken/service/generate.json",
+      "fmeuser": "publicuser",
+      "fmepassword": "publicuser",
+      "useTokenSecurity": true,
+      "maxareaComment": 2000,
+      "dataSources": [
+        {
+          "type": "oblique",
+          "title": "Schrägluftbilder",
+          "fileExtention": "jpg",
+          "obliqueCollectionName": "Schrägluftbilder WAB"
+        },
+        {
+          "type": "geojson",
+          "title": "3D-Mesh",
+          "baseUrl": "https://download-berlin3d.virtualcitymap.de/download/",
+          "geojsonUrl": "./datasource-data/json/MeshTileOverview_WGS84_withURL_stripped.json"
+        }
+      ],
+      "warehouseVersion": "4.1"
+    },
+    {
+      "type": "vcs.vcm.widgets.heightProfile.HeightProfile",
+      "name": "Höhenprofil"
+    },
+    {
+      "type": "vcs.vcm.widgets.Flight",
+      "name": "Kameraflüge erstellen"
+    },
+    {
+      "type": "vcs.vcm.widgets.CreateLink"
+    },
+    {
+      "style": {
+        "image": {
+          "circle": {
+            "fill": {
+              "color": "rgba(255,255,255,1.0)"
+            },
+            "stroke": {
+              "color": "rgba(0,0,0,1.0)",
+              "width": 1
+            },
+            "radius": 5
+          }
+        }
+      },
+      "type": "vcs.vcm.widgets.Locator"
+    },
+    {
+      "type": "vcs.vcm.widgets.Measurement",
+      "fontString": "18px Helvetica",
+      "decimalPlaces": "1"
+    },
+    {
+      "type": "vcs.vcm.widgets.NavigationControls",
+      "animationDuration": "0.5",
+      "moveFactor": "3",
+      "zoomFactor": "",
+      "tiltFactor": "",
+      "walkModeMoveFactor": "",
+      "rotationPerFrame": 0.05
+    },
+    {
+      "type": "vcs.vcm.widgets.PDFCreator",
+      "name": "PDF Creator",
+      "url": "./templates/$locale$/pdf.html",
+      "pageMargins": 20,
+      "headerLineColor": ""
+    },
+    {
+      "type": "vcs.vcm.widgets.Planning",
+      "serviceUrl": "https://demo.virtualcityplanner.de/",
+      "projectId": "2RQycLhtBSXDjMvai",
+      "isExtendedPlanner": true,
+      "scenarioId": "WkRErvw5s7ecKTMYm",
+      "allowBalloonEditor": true,
+      "useLocalCRS": true,
+      "featureStoreEditorDefaultMode": "edit"
+    },
+    {
+      "type": "vcs.vcm.widgets.PositionDisplay"
+    },
+    {
+      "type": "vcs.vcm.widgets.Shadow"
+    },
+    {
+      "type": "vcs.vcm.widgets.MultiView"
+    },
+    {
+      "type": "vcs.vcm.widgets.viewshed.Viewshed",
+      "shadowColor": "rgba(107, 103, 103, 0.47)",
+      "visibleColor": "rgba(255, 214, 0, 0.4)"
+    },
+    {
+      "type": "vcs.vcm.widgets.swipeTool.SwipeTool",
+      "layers": [
+        {
+          "layerName": "mesh_surface",
+          "splitDirection": -1
+        },
+        {
+          "layerName": "Bäume",
+          "splitDirection": 1
+        }
+      ]
+    },
+    {
+      "type": "vcs.vcm.widgets.search.Search",
+      "searchImplementations": [
+        {
+          "type": "vcs.vcm.widgets.search.Nominatim",
+          "url": null,
+          "city": "Berlin",
+          "state": "Berlin",
+          "limit": "20",
+          "countrycode": "de",
+          "extent": {
+            "coordinates": [
+              12.96780553902229,
+              52.333040051916925,
+              13.81924596870979,
+              52.74232823888374
+            ],
+            "epsg": "EPSG:4326"
+          }
+        }
+      ]
+    },
+    {
+      "type": "vcs.vcm.widgets.TransparentTerrainMode",
+      "name": "Transparent terrain mode"
+    },
+    {
+      "type": "vcs.vcm.widgets.Query",
+      "wfs": {
+        "url": "https://demo.virtualcitywfs.de/berlin/wfs",
+        "projection": {
+          "epsg": "EPSG:25833",
+          "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+        }
+      },
+      "predefinedQueries": [
+        {
+          "name": "Gebäudehöhe",
+          "featureType": "Building",
+          "property": "measuredHeight",
+          "comparison": "GREATER_THAN"
+        },
+        {
+          "name": "Prenzlauer Allee",
+          "featureType": "Building",
+          "property": "street",
+          "comparison": "LIKE",
+          "valueInput": "Prenzlauer Allee",
+          "allowAdditional": "geometry",
+          "maximumLevel": 0
+        },
+        {
+          "name": "DateQuery CreationDate > 5000",
+          "featureType": "Building",
+          "property": "creationDate",
+          "comparison": "GREATER_THAN",
+          "dateInput": {
+            "year": 2015,
+            "month": 1,
+            "date": 12
+          }
+        },
+        {
+          "name": "DateQuery gendate Att ",
+          "featureType": "Building",
+          "property": "dateAttribute",
+          "comparison": "BETWEEN",
+          "dateInputLower": {
+            "year": 2015,
+            "month": 1,
+            "date": 12
+          },
+          "dateInputUpper": {
+            "year": 2018,
+            "month": 1,
+            "date": 12
+          },
+          "genericAttributeName": "Tolles Attribut"
+        }
+      ]
+    },
+    {
+      "type": "vcs.vcm.widgets.Drawing"
+    },
+    {
+      "type": "vcs.vcm.widgets.OverviewMap",
+      "layerName": "Openstreetmap OSM Cache"
+    },
+    {
+      "type": "vcs.vcm.widgets.AttributeEditor",
+      "wfsProjection": {
+        "epsg": "EPSG:25833"
+      },
+      "wfsServiceUrl": "https://demo.virtualcitywfs.de/berlin/wfs",
+      "layerNames": [
+        "buildings"
+      ]
+    },
+    {
+      "type": "vcs.vcm.widgets.legend.Legend",
+      "children": [
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": {
+            "en": "Base Maps",
+            "de": "Grundkarten",
+            "pl": "Mapy podkładowe"
+          },
+          "children": [
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "Bäume",
+              "title": {
+                "en": "Trees",
+                "de": "Bäume",
+                "pl": "Drzew"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "terrain_v3.4",
+              "infoUrl": "",
+              "title": {
+                "en": "Terrain",
+                "de": "Gelände",
+                "pl": "Teren"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "Openstreetmap OSM Cache",
+              "title": {
+                "en": "OpenStreetMap",
+                "de": "OpenStreetMap",
+                "pl": "OpenStreetMap"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "fisbroker-dop-2015",
+              "title": {
+                "en": "Aerial Image (2015)",
+                "de": "Luftbild (2015)",
+                "pl": "Ortofotomapa (2015)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": {
+            "en": "3d Building model",
+            "de": "3D-Gebäude",
+            "pl": "Budynki 3D"
+          },
+          "children": [
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "buildings",
+              "title": {
+                "en": "textured Buildings",
+                "de": "Texturierte Gebäude",
+                "pl": "budynki z teksturą"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "buildings_untextured",
+              "availableStyles": [
+                "MeasuredHeightGreen",
+                "MeasuredHeightBrown",
+                "MeasuredHeightBlue",
+                "ClassifiedbyRoofType",
+                "BuildingFunction",
+                "Transparentbuildings"
+              ],
+              "infoUrl": "",
+              "title": {
+                "en": "untextured Buildings",
+                "de": "Untexturierte Gebäude",
+                "pl": "budynki bez tekstury"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "mesh_surface",
+              "infoUrl": "",
+              "availableStyles": [],
+              "title": "3D-Mesh"
+            }
+          ]
+        },
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": {
+            "en": "solar potential analysis",
+            "de": "Solarpotenzialanalyse",
+            "pl": "Analiza potencjału energii słonecznej"
+          },
+          "children": [
+            {
+              "type": "vcs.vcm.widgets.legend.GroupItem",
+              "clickable": false,
+              "startOpen": false,
+              "title": {
+                "en": "solar irradiation per year",
+                "de": "Einstrahlung pro Jahr",
+                "pl": "promieniowanie słoneczne rocznie"
+              },
+              "children": [
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "lod_solar_year_shading",
+                  "viewpointName": "pp_solar",
+                  "infoUrl": "",
+                  "title": {
+                    "en": "Solar radiation per year with shading",
+                    "de": "Solare Einstrahlung pro Jahr mit Verschattung",
+                    "pl": "Promieniowanie słoneczne rocznie z cieniowaniem"
+                  }
+                },
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "citygml_trees_solar",
+                  "title": {
+                    "en": "Vegetation (shading objects)",
+                    "de": "Bäume (Verschattungsobjekte)",
+                    "pl": "Drzewa (cieniowanie obiektów)"
+                  }
+                },
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "lod2_solar_year",
+                  "title": {
+                    "en": "Solar radiation per year without shading",
+                    "de": "Solare Einstrahlung pro Jahr ohne Verschattung",
+                    "pl": "Promieniowanie słoneczne rocznie bez cieniowania"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.GroupItem",
+              "clickable": false,
+              "startOpen": false,
+              "title": {
+                "en": "monthly solar irradiation",
+                "de": "Einstrahlung ausgewählter Monate",
+                "pl": "miesięczne napromieniowanie słoneczne"
+              },
+              "children": [
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "lod2_solar_jan",
+                  "title": {
+                    "en": "Solar irradiation January",
+                    "de": "Solare Einstrahlung Januar",
+                    "pl": "Promieniowanie słoneczne styczeń"
+                  }
+                },
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "lod2_solar_apr",
+                  "title": {
+                    "en": "Solar irradiation April",
+                    "de": "Solare Einstrahlung April",
+                    "pl": "Promieniowanie słoneczne kwiecień"
+                  }
+                },
+                {
+                  "type": "vcs.vcm.widgets.legend.LayerItem",
+                  "layerName": "lod2_solar_jul",
+                  "title": {
+                    "en": "Solar irradiation July",
+                    "de": "Solare Einstrahlung Juli",
+                    "pl": "Promieniowanie słoneczne lipiec"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": "3D-Objekte"
+        },
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": {
+            "en": "Point Cloud",
+            "de": "Punktwolke",
+            "pl": "Chmury punktów"
+          },
+          "children": [
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "pointcloud",
+              "viewpointName": "pointcloud",
+              "title": {
+                "en": "Tiergarten",
+                "de": "Tiergarten",
+                "pl": "Obszar TierGarten"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.LayerItem",
+              "layerName": "PointCloud Changedetection",
+              "viewpointName": "changedetection",
+              "availableStyles": [
+                "CIR",
+                "Tree-ID",
+                "Distance",
+                "Classification"
+              ],
+              "title": {
+                "en": "Berlin Buch",
+                "de": "Berlin Buch"
+              }
+            }
+          ]
+        },
+        {
+          "type": "vcs.vcm.widgets.legend.ClusterItem",
+          "title": {
+            "en": "Viewpoints",
+            "de": "Ansichten"
+          },
+          "children": [
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "berlin",
+              "title": {
+                "en": "Berlin",
+                "de": "Berlin"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "brandenburger_tor",
+              "title": {
+                "en": "Brandenburg Gate",
+                "de": "Brandenburger Tor"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "alexanderplatz",
+              "title": {
+                "en": "Alexanderplatz",
+                "de": "Alexanderplatz"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "potsdamer_platz",
+              "title": {
+                "en": "Potsdamer Platz",
+                "de": "Potsdamer Platz"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "kaiser_wilhelm_gedächtniskirche",
+              "title": {
+                "en": "Kaiser Wilhelm Memorial Church",
+                "de": "Kaiser-Wilhelm-Gedächtniskirche"
+              }
+            },
+            {
+              "type": "vcs.vcm.widgets.legend.ViewpointItem",
+              "viewpointName": "oberbaumbrücke",
+              "title": {
+                "en": "Oberbaum Bridge",
+                "de": "Oberbaumbrücke"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ui": {
+    "content": {
+      "iframe": {}
+    },
+    "header": {
+      "logoBox": null,
+      "title": "<b>VC Map</b>"
+    },
+    "footer": {
+      "logoBox": {
+        "text": "<div class='featured-company'></div>\n<span class='footer-txt1'>\n        Realisiert durch virtualcitySYSTEMS GmbH | Geodaten aus Open Data Quellen<br>\n        <a class='linkToIframe' href='https://www.virtualcitysystems.de/impressum' target='_blank'>Impressum</a> | \n        <a class='linkToIframe' href='https://www.virtualcitysystems.de/datenschutz'>Datenschutzhinweise</a>\n   <span class=\"social\">\n        <a title=\"Follow us on Twitter\" href=\"https://twitter.com/intent/follow?\n        original_referer=thueringen.virtualcitymap.de&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=virtualcity&amp;tw_p=followbutton\" \n        target=\"_blank\">\n            <img src=\"https://www.virtualcitysystems.de/images/vcs/icons/twitter_32px.png\" alt=\"Follow us on Twitter\" height=\"32px\"></a>&nbsp; \n        <a title=\"virtualcitySYSTEMS at LinkedIn\" href=\"https://www.linkedin.com/company/virtualcitysystems-gmbh\" target=\"_blank\">\n            <img src=\"https://virtualcitysystems.de/images/vcs/icons/linkedin_32px.png\" alt=\"virtualcitySYSTEMS at LinkedIn\" height=\"32px\"></a>&nbsp; \n        <a title=\"YouTube Channel\" href=\"https://www.youtube.com/virtualcitysystems\" target=\"_blank\">\n            <img src=\"https://www.virtualcitysystems.de/images/vcs/icons/youtube_32px.png\" alt=\"YouTube Channel\" height=\"32px\"></a>&nbsp; \n   </span>\n</span>"
+      }
+    }
+  },
+  "i18n": {
+    "de": {
+      "i18n_copyright_footerText": "Realisiert durch virtualcitySYSTEMS GmbH | Geodaten aus Open Data Quellen"
+    },
+    "en": {
+      "i18n_copyright_footerText": "Realized by virtualcitySYSTEMS GmbH | Geodata from open data sources"
+    }
+  },
+  "obliqueCollections": [
+    {
+      "name": "Schrägluftbilder WAB",
+      "dataSets": [
+        {
+          "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques/image.json",
+          "terrainUrl": "./datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
+          "projection": {
+            "epsg": "25833",
+            "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs "
+          }
+        }
+      ],
+      "maxZoom": null,
+      "minZoom": 3,
+      "hideLevels": null
+    }
+  ],
+  "plugins": [
+    {
+      "targetEPSGCode": "25833",
+      "proj4jsdef": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs",
+      "virtualcityCADBaseUrl": "https://demo.virtualcitysystems.de/virtualcityCAD",
+      "formats": [
+        "STEP Archive (stpz)",
+        "STL",
+        "City2Sim Archive (c2sz)"
+      ],
+      "lod": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "citygmlclasses": [
+        "bldg:Building",
+        "brid:Bridge",
+        "gen:GenericCityObject",
+        "veg:SolitaryVegetationObject",
+        "frn:CityFurniture",
+        "tran:Railway",
+        "wtr:WaterBody",
+        "tun:Tunnel",
+        "dem:ReliefFeature"
+      ],
+      "heightmodes": [
+        "absolute",
+        "ellipsoid"
+      ],
+      "maxarea": 10000000,
+      "includeDrawings": true,
+      "includeHiddenObjectIds": true,
+      "databases": [
+        {
+          "title": "db_berlin",
+          "dbHost": "postgis",
+          "dbPort": "5432",
+          "dbType": "POSTGRES",
+          "dbSid": "stadtsicherheit"
+        },
+        {
+          "title": "db_highdecks",
+          "dbHost": "postgis",
+          "dbPort": "5432",
+          "dbType": "POSTGRES",
+          "dbSid": "stadtsicherheit_highdecks"
+        }
+      ],
+      "terrainOptions": [
+        {
+          "title": "From Database",
+          "url": null
+        },
+        {
+          "title": "DGM 1 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 1,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        },
+        {
+          "title": "DGM 2 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 2,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        },
+        {
+          "title": "DGM 4 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 4,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        },
+        {
+          "title": "DGM 8 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 8,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        },
+        {
+          "title": "DGM 16 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 16,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        },
+        {
+          "title": "DGM 32 m Auflösung",
+          "url": "https://opmops.virtualcitysystems.de/geoserver/ows?service=wcs",
+          "coverage": "berlin:Berlin-Basis-DGM1_0_corr_highdeck",
+          "resolution": 32,
+          "auth": "Basic c3RhZHRzaWNoZXJoZWl0OlFvamg4NjU1Zg=="
+        }
+      ],
+      "entry": "plugins/exportStep/exportStep.js",
+      "name": "exportStep"
+    }
+  ]
+}
