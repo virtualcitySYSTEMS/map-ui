@@ -21,16 +21,12 @@ import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection
 
 // XXX missing config-pipeline security
 /**
- * @typedef {Object} Context
+ * @typedef {Object} VcsApp
  * @property {import("@vcmap/core").MapCollection} maps
  * @property {import("@vcmap/core").LayerCollection} layers
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>} viewpoints
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>} styles
- * @property {import("@vcmap/core").Collection<*>} flights
- * @property {import("@vcmap/core").Collection<*>} plugins
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>} obliqueCollections
- * @property {Array<string>} availableLocales
- * @property {import("@vcmap/core").Projection} defaultProjection
  * @property {import("@vcmap/core").ViewPoint} startViewpoint
  * @property {Object<string, *>} config
  * @property {import("@vcmap/core").VcsEvent<void>} destroyed
@@ -45,47 +41,44 @@ function getLogger() {
 }
 
 /**
- * @type {Object<string, Context>}
+ * @type {Map<string, VcsApp>}
  */
-const contexts = {};
+const vcsApps = new Map();
 
 /**
  * @param {string} id
- * @returns {Context}
+ * @returns {VcsApp}
  */
 export function getContextById(id) {
-  return contexts[id];
+  return vcsApps.get(id);
 }
 
 /**
- * @returns {Context}
+ * @returns {VcsApp}
  */
-export function createContext() {
+export function createVcsApp() {
   const maps = new MapCollection();
+  const id = uuidv4();
 
-  const context = {
-    id: uuidv4(),
+  const vcsApp = {
+    id,
     maps,
     layers: maps.layerCollection,
     viewpoints: new Collection(),
     styles: new Collection(),
-    flights: new Collection(),
-    plugins: new Collection(),
     obliqueCollections: new Collection(),
-    availableLocales: ['en', 'de'],
-    defaultProjection: new Projection(),
     startViewpoint: new ViewPoint({}),
     config: {},
     destroyed: new VcsEvent(),
     destroy() {
-      delete contexts[context.id];
+      delete vcsApps.delete(id);
       this.destroyed.raiseEvent();
       // TODO other destroy functions
     },
   };
 
-  contexts[context.id] = context;
-  return context;
+  vcsApps.set(id, vcsApp);
+  return vcsApp;
 }
 
 /**
@@ -226,14 +219,14 @@ async function addMap(mapConfig, context) {
 // XXX should be config typed
 /**
  * @param {Object} config
- * @param {Context} context
+ * @param {Context} context TODO this is the VcsApp for now, this should become a context
  * @returns {Promise<import("@vcmap/core").VcsMap|null>}
  */
 export async function addConfigToContext(config, context) {
-  // XXX this should be an array
+  // IDEA this could be an array
   context.config = config;
   // TODO load plugins here. plugins require config pipeline security to be loaded
-  context.defaultProjection = new Projection(config.projection);
+  // TODO this
 
   if (Array.isArray(config.styles)) {
     config.styles.forEach((styleConfig) => {
@@ -289,4 +282,4 @@ export async function addConfigToContext(config, context) {
 }
 
 window.vcs = window.vcs || {};
-window.vcs.contexts = contexts;
+window.vcs.apps = vcsApps;
