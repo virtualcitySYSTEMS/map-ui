@@ -18,63 +18,13 @@
       :search="search"
       @input="handleInput"
     >
-      <template v-slot:prepend="{ item }">
-        <v-icon
-          v-if="item.iconPrepend"
-          v-text="item.iconPrepend.name"
-          :size="item.iconPrepend.size || 16"
-        />
-      </template>
-
       <template v-slot:label="{item}">
-        <!-- TODO: proper translations -->
-        <span>{{ item.name || item.title.de || item.title }}</span>
-        <Badge
-          v-if="item.hasUpdate"
-          class="update-badge position-absolute"
+        <component
+          v-for="component of availableComponents"
+          :key="component"
+          :is="component"
+          :item="item"
         />
-      </template>
-
-      <template v-slot:append="{ item }">
-        <v-icon
-          v-for="action of item.actions"
-          :key="action.title"
-          size="16"
-          @click="() => onIconButtonClick(action.title)"
-          class="mr-2"
-          v-text="action.icon"
-        />
-
-        <v-menu
-          right
-          v-if="item.menuItems"
-          :close-on-content-click="true"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              v-text="'mdi-dots-vertical'"
-              v-bind="attrs"
-              v-on="on"
-              size="16"
-            />
-          </template>
-
-          <v-list>
-            <v-list-item
-              v-for="(menuItem, index) in item.menuItems"
-              :key="index"
-              @click="() => onMenuItemClick(menuItem)"
-            >
-              <v-icon
-                v-if="menuItem.icon"
-                v-text="menuItem.icon"
-                size="16"
-                class="mr-2"
-              />
-              <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
       </template>
     </v-treeview>
   </div>
@@ -96,8 +46,6 @@
   }
 
   ::v-deep {
-
-
     .v-treeview-node__root {
       position: relative;
     }
@@ -227,9 +175,11 @@
 
 <script>
 
-  import Badge from '@vcsuite/uicomponents/Badge.vue';
+  import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf.vue';
   import TreeviewSearchbar from '@vcsuite/uicomponents/TreeviewSearchbar.vue';
   import Vue from 'vue';
+
+  Vue.component('TreeviewLeaf', TreeviewLeaf);
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
@@ -243,10 +193,7 @@
    */
   export default Vue.extend({
     name: 'VcsTreeview',
-    data() {
-      return { search: '' };
-    },
-    components: { TreeviewSearchbar, Badge },
+    components: { TreeviewSearchbar },
     props: {
       items: {
         type: Array,
@@ -268,6 +215,16 @@
         type: String,
         default: undefined,
       },
+    },
+    data() {
+      return { search: '' };
+    },
+    setup() {
+      return {
+        availableComponents: [
+          'TreeviewLeaf',
+        ],
+      };
     },
     methods: {
       onIconButtonClick(action) {
