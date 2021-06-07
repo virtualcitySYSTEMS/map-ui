@@ -10,8 +10,10 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-docs",
   ],
+  "core": {
+    "builder": "webpack5"
+  },
   webpackFinal: async (config, { configType }) => {
-
     config.module.rules.push({
       test: /\.s(a|c)ss$/,
       use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -23,8 +25,7 @@ module.exports = {
         alias: {
           '@': path.resolve(__dirname, '../src'),
           '@vcsuite/uicomponents': path.resolve(__dirname, '../components'),
-          vue: 'vue/dist/vue.js',
-          'vue$': 'vue/dist/vue.esm.js',          
+          'vue$': 'vue/dist/vue.esm.js'
         },
       },
     });

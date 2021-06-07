@@ -1,7 +1,7 @@
 import '@mdi/font/css/materialdesignicons.css';
 
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import Vuetify from 'vuetify';
 
 import Icons from '@vcsuite/uicomponents/icons/+all';
 
