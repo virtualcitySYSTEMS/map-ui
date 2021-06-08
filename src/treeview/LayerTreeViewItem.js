@@ -3,6 +3,7 @@ import AbstractTreeViewItem, { TreeViewItemState } from '@/treeview/AbstractTree
 /**
  * @typedef {AbstractTreeViewItem.Options} LayerTreeViewItem.Options
  * @property {string} layerName
+ * @property {string|undefined} viewpointName
  */
 
 /**
@@ -29,6 +30,7 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
    */
   constructor(context, options) {
     super(context, options);
+    this.state = TreeViewItemState.INACTIVE;
 
     /**
      * @type {string}
@@ -37,11 +39,16 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
     this._layerName = options.layerName;
 
     /**
+     * An optional viewpoint to activate
+     * @type {string|undefined}
+     * @api
+     */
+    this.viewpointName = options.viewpointName;
+
+    /**
      * @type {vcs.vcm.layer.Layer|undefined}
      */
     this._layer = this._context.layers.getByKey(options.layerName);
-
-    this.state = TreeViewItemState.INACTIVE;
 
     /**
      * @type {Array<Function>}
@@ -91,6 +98,22 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
 
   destroyed() {
     this._clearListeners();
+  }
+
+  async clicked() {
+    if (this._layer) {
+      if (this.state === TreeViewItemState.INACTIVE) {
+        await this._layer.activate();
+        if (this.state === TreeViewItemState.ACTIVE && this.viewpointName && this._context.maps.activeMap) {
+          const vp = this._context.viewpoints.getByKey(this.viewpointName);
+          if (vp) {
+            await this._context.maps.activeMap.gotoViewPoint(vp);
+          }
+        }
+      } else {
+        await this._layer.deactivate();
+      }
+    }
   }
 }
 
