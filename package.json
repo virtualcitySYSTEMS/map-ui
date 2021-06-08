@@ -109,5 +109,17 @@
         }
       ]
     }
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "not Chrome < 86",
+    "last 2 Safari versions",
+    "not Safari < 14",
+    "last 2 iOS versions",
+    "not iOS < 12.5",
+    "last 2 Firefox versions",
+    "not Firefox < 78",
+    "last 2 Edge versions",
+    "not Edge < 86"
+  ]
 }
