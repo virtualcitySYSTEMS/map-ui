@@ -13,7 +13,10 @@ import { VcsClassRegistry } from '@vcmap/core';
  * @abstract
  */
 class AbstractTreeNode {
-  constructor() {
+  /**
+   * @param {Context} context
+   */
+  constructor(context) {
     /**
      * A unique string id
      * @type {string}
@@ -25,6 +28,13 @@ class AbstractTreeNode {
      * @type {Array<AbstractTreeViewItem>}
      */
     this.children = shallowReactive([]);
+
+    /**
+     * The context of this tree node
+     * @type {Context}
+     * @protected
+     */
+    this._context = context;
   }
 
   /**

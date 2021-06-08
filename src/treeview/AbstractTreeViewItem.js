@@ -33,10 +33,11 @@ export const TreeViewItemState = {
  */
 class AbstractTreeViewItem extends AbstractTreeNode {
   /**
+   * @param {Context} context
    * @param {AbstractTreeViewItem.Options} options
    */
-  constructor(options) {
-    super();
+  constructor(context, options) {
+    super(context);
 
     /**
      * Whether to display this item or not.

@@ -6,8 +6,11 @@ import AbstractTreeNode from '@/treeview/AbstractTreeNode';
  * @abstract
  */
 class AbstractTree extends AbstractTreeNode {
-  constructor() {
-    super();
+  /**
+   * @param {Context} context
+   */
+  constructor(context) {
+    super(context);
 
     /**
      * Whether this tree can be filtered using the search API
