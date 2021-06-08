@@ -11,7 +11,7 @@
 
     <slot name="label">
       <!-- TODO: proper translations -->
-      <span>{{ item.name || item.title.de || item.title }}</span>
+      <span @click="clicked">{{ item.name || item.title.de || item.title }}</span>
       <Badge
         v-if="item.hasUpdate"
         class="update-badge position-absolute"
@@ -83,6 +83,10 @@
       return {
         iconTypes,
         iconType: undefined,
+        clicked() {
+          console.log(this.item);
+          this.item.clicked();
+        },
       };
     },
     mounted() {

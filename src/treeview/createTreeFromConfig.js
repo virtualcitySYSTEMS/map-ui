@@ -27,7 +27,9 @@ async function createItemFromConfig(config, parent) {
  */
 
 export default async function createTreeFromConfig(context, itemConfigs, Ctor) {
-  const tree = shallowReactive(new Ctor(context));
+  const treeview = new Ctor(context);
+  const tree = shallowReactive(treeview);
+  Object.setPrototypeOf(tree, Ctor.prototype);
   await Promise.all(itemConfigs.map(c => createItemFromConfig(c, tree)));
 
   return tree;

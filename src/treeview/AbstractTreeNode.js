@@ -38,6 +38,10 @@ class AbstractTreeNode {
     this._context = context;
   }
 
+  get children() {
+    return this.items;
+  }
+
   /**
    * Called once the node is created
    */
@@ -69,8 +73,10 @@ class AbstractTreeNode {
       throw new Error(`Failed to find constructor for ${childOptions.type}`);
     }
 
-    const child = /** @type {AbstractTreeViewItem} */ (new Ctor(childOptions));
-    this.items.push(shallowReactive(child));
+    const child = /** @type {AbstractTreeViewItem} */ (new Ctor(this._context, childOptions));
+    const reactiveChild = shallowReactive(child);
+    Object.setPrototypeOf(reactiveChild, Ctor.prototype);
+    this.items.push(reactiveChild);
     return child;
   }
 
