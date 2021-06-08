@@ -1,10 +1,10 @@
 <template>
   <v-color-picker
     ref="picker"
-    @input="e => sub.next(e)"
+    @input="(e) => sub$.next(e)"
     :value="value"
     class="caption"
-    v-bind="$props"
+    v-bind="props"
   />
 </template>
 
@@ -25,15 +25,22 @@
 </style>
 
 <script>
+  import VueCompositionAPI, {
+    defineComponent,
+    onMounted,
+    onUnmounted,
+  } from '@vue/composition-api';
   import { Subject } from 'rxjs';
   import { debounceTime, takeUntil } from 'rxjs/operators';
   import Vue from 'vue';
+
+  Vue.use(VueCompositionAPI);
 
   /**
    * @description
    * Stylized wrapper around vuetify Color Picker
    */
-  export default Vue.extend({
+  export default defineComponent({
     name: 'VcsColorPicker',
     props: {
       width: {
@@ -53,26 +60,26 @@
         default: '#000000',
       },
     },
-    setup() {
-      return {
-        sub: new Subject(),
-        destroy$: new Subject(),
-      };
-    },
-    mounted() {
-      this.sub.pipe(
-        debounceTime(330),
-        takeUntil(this.destroy$),
-      ).subscribe(
-        (color) => {
+    setup(props, context) {
+      const destroy$ = new Subject();
+      const sub$ = new Subject();
+
+      onMounted(() => {
+        sub$.pipe(debounceTime(330), takeUntil(destroy$)).subscribe((color) => {
           // this.$vuetify.theme.themes.light.primary = color;
-          this.$emit('input', color);
-        },
-      );
-    },
-    destroyed() {
-      this.destroy$.next();
-      this.destroy$.unsubscribe();
+          context.emit('input', color);
+        });
+      });
+
+      onUnmounted(() => {
+        destroy$.next();
+        destroy$.unsubscribe();
+      });
+
+      return {
+        props,
+        sub$,
+      };
     },
   });
 </script>

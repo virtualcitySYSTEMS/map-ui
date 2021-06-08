@@ -4,14 +4,14 @@
       <v-row no-gutters>
         <v-col>
           <v-toolbar-items>
-            <div v-if="mapState" class="d-flex align-center">
+            <div v-if="maps" class="d-flex align-center">
               <Button
-                v-for="map of mapState.maps"
+                v-for="map of maps"
                 :key="map.name"
                 :toggleable="true"
                 :icon="iconMap[map.className]"
                 @click.native="setMap(map.name)"
-                :value="mapState.activeMap === map.name"
+                :value="mapState.activeMap === map.className"
               />
             </div>
           </v-toolbar-items>
@@ -30,6 +30,10 @@
   import Vue from 'vue';
 
   import Button from '@vcsuite/uicomponents/Button.vue';
+  import VueCompositionAPI, { inject, reactive } from '@vue/composition-api';
+
+  Vue.use(VueCompositionAPI);
+
 
   export default Vue.extend({
     name: 'VcsNavbar',
@@ -40,31 +44,32 @@
         required: true,
       },
     },
-    setup() {
-      return {
-        iconMap: {
-          'vcs.vcm.maps.Openlayers': '$vcs2d',
-          'vcs.vcm.maps.Cesium': '$vcs3d',
-          'vcs.vcm.maps.Oblique': '$vcsObliqueView',
-        },
+    setup(props, ctx) {
+      const mapState = inject('mapState');
+
+      const iconMap = {
+        'vcs.vcm.maps.Openlayers': '$vcs2d',
+        'vcs.vcm.maps.Cesium': '$vcs3d',
+        'vcs.vcm.maps.Oblique': '$vcsObliqueView',
       };
-    },
-    inject: ['context'],
-    computed: {
-      mapState() {
-        return this.$store.state[this.mapId];
-      },
-    },
-    methods: {
+      const context = inject('context');
       /**
        * @function
        * @param {string} mapName
        * @description
        * Sets the current map type
        */
-      setMap(mapName) {
-        this.context.maps.setActiveMap(mapName);
-      },
+      // debugger;
+      const setMap = (mapName) => {
+        context.maps.setActiveMap(mapName);
+      };
+
+      return {
+        iconMap,
+        setMap,
+        maps: mapState.maps,
+        mapState,
+      };
     },
   });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="draggable-window"
+    ref="draggableWindowRef"
     class="vsc-draggable-window v-sheet elevation-3 d-inline-block position-absolute"
     @click="bringToTop(viewId)"
     :style="{
@@ -18,7 +18,7 @@
       :class="{
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': yPos > 48 && xPos > 0,
-        'rounded-tr': yPos > 48 && xPos < xMax
+        'rounded-tr': yPos > 48 && xPos < xMax,
       }"
       draggable
     >
@@ -33,17 +33,13 @@
       </slot>
 
       <slot name="close">
-        <v-icon
-          @click="close(viewId)"
-          size="16"
-          v-text="'mdi-close-thick'"
-        />
+        <v-icon @click="close(viewId)" size="16" v-text="'mdi-close-thick'" />
       </slot>
     </v-sheet>
 
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden position-absolute w-full"
-      ref="draggable-window__content"
+      ref="draggableWindowContent"
       :style="{
         width: `${width}px`,
         maxHeight: contentHeight ? `${contentHeight}px` : undefined,
@@ -59,14 +55,22 @@
 </template>
 
 <style lang="scss" scoped>
-  .vcs-draggable-window {
-    &__header {
-      font-size: 18px;
-    }
+.vcs-draggable-window {
+  &__header {
+    font-size: 18px;
   }
+}
 </style>
 
 <script>
+  import Vue from 'vue';
+  import VueCompositionAPI, {
+    computed,
+    defineComponent,
+    onMounted,
+    ref,
+    nextTick,
+  } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
   import {
     debounceTime,
@@ -80,6 +84,8 @@
 
   import { clipX, clipY } from './util/clip';
 
+  Vue.use(VueCompositionAPI);
+
   /**
    * @vue-prop {number} x - Initial x-axis position of the window
    * @vue-prop {number} y - Initial y-axis position of the window
@@ -90,7 +96,7 @@
    * @vue-prop {string} icon - Name of Icon which should be shown in top left corner
    * @vue-prop {string} header - Title of the window
    */
-  export default {
+  export default defineComponent({
     name: 'VcsDraggableWindow',
     computed: {
       xMax() {
@@ -131,125 +137,139 @@
         default: undefined,
       },
     },
-    setup() {
-      return {
-        destroy$: new Subject(),
+    setup(props, context) {
+      const draggableWindowRef = ref();
+      const yPos = ref(props.y);
+      const xPos = ref(props.x);
+      const destroy$ = new Subject();
+      const draggableWindowContent = ref();
+      const distanceFromBottom = computed(
+        () => -(
+          draggableWindowContent.height +
+          draggableWindowContent.y -
+          window.innerHeight
+        ),
+      );
+      const contentHeight = ref(0);
+
+      const bringToTop = (viewId) => {
+        context.emit('draggable-window-dropped', viewId);
       };
-    },
-    mounted() {
-      this.init();
-
-      this.dragSubscription();
-      this.dragoverSubscription();
-      this.resizeSubscription();
-    },
-    data() {
-      return {
-        xPos: 0,
-        yPos: 0,
-        contentHeight: 0,
+      const close = (viewId) => {
+        context.emit('draggable-window-closed', viewId);
       };
-    },
-    methods: {
-      bringToTop(viewId) {
-        this.$emit('draggable-window-dropped', viewId);
-      },
-      close(viewId) {
-        this.$emit('draggable-window-closed', viewId);
-      },
-      init() {
-        this.xPos = this.x;
-        this.yPos = this.y;
-        const contentBox = this.$refs['draggable-window__content'].$el.getBoundingClientRect();
-        const distanceFromBottom = -((contentBox.height + contentBox.y) - window.innerHeight);
-        this.contentHeight = distanceFromBottom < 0 ?
-          (contentBox.height + distanceFromBottom) :
-          0;
-      },
-      dragSubscription() {
-        const draggableWindowRef = this.$refs['draggable-window'];
-        const self = this;
 
-        fromEvent(draggableWindowRef, 'dragstart').pipe(
-          filter(startEvent => !!startEvent.target.classList && !startEvent.target.classList.contains('sortable-drag')),
-          switchMap((startEvent) => {
-            const style = window.getComputedStyle(draggableWindowRef, undefined);
-            const startLeft = parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
-            const startTop = parseInt(style.getPropertyValue('top'), 10) - startEvent.clientY;
-
-
-            // set dataTransfer for Firefox
-            startEvent.dataTransfer.setData('text/html', '');
-            const element = startEvent.target;
-
-            if (element && element.getBoundingClientRect) {
-              const { width, height } = element.getBoundingClientRect();
-
-              return fromEvent(document.body, 'drop').pipe(
-                take(1),
-                map((dropEvent) => {
-                  return {
-                    left: startLeft + dropEvent.clientX,
-                    top: startTop + dropEvent.clientY,
-                    targetWidth: width,
-                    targetHeight: height,
-                  };
-                }),
-                tap(({ targetWidth, targetHeight, top, left }) => {
-                  self.xPos = clipX({ width: targetWidth, offsetX: left });
-                  self.yPos = clipY({ height: targetHeight, offsetY: top });
-
-                  self.bringToTop(self.viewId);
-
-                  self.$nextTick(() => {
-                    const contentBox = self.$refs['draggable-window__content'].$el.getBoundingClientRect();
-                    const distanceFromBottom = -((contentBox.height + contentBox.y) - window.innerHeight);
-                    self.contentHeight = distanceFromBottom < 0 ?
-                      (contentBox.height + distanceFromBottom) :
-                      0;
-                  });
-                }),
-                takeUntil(self.destroy$),
-              );
-            }
-
-            return of();
-          }),
-        ).subscribe();
-      },
-      dragoverSubscription() {
-        const self = this;
-
-        fromEvent(document.body, 'dragover').pipe(
+      fromEvent(document.body, 'dragover')
+        .pipe(
           tap((e) => {
             e.preventDefault();
           }),
-          takeUntil(self.destroy$),
-        ).subscribe();
-      },
-      resizeSubscription() {
-        const draggableWindowRef = this.$refs['draggable-window'];
-        const self = this;
+          takeUntil(destroy$),
+        )
+        .subscribe();
 
-        fromEvent(window, 'resize').pipe(
+      const dragSubscription = () => {
+        fromEvent(draggableWindowRef.value, 'dragstart')
+          .pipe(
+            filter(
+              startEvent => !!startEvent.target.classList &&
+                !startEvent.target.classList.contains('sortable-drag'),
+            ),
+            switchMap((startEvent) => {
+              const style = window.getComputedStyle(
+                draggableWindowRef.value,
+                undefined,
+              );
+              const startLeft =
+                parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
+              const startTop =
+                parseInt(style.getPropertyValue('top'), 10) - startEvent.clientY;
+
+              // set dataTransfer for Firefox
+              startEvent.dataTransfer.setData('text/html', '');
+              const element = startEvent.target;
+
+              if (element && element.getBoundingClientRect) {
+                const { width, height } = element.getBoundingClientRect();
+
+                return fromEvent(document.body, 'drop').pipe(
+                  take(1),
+                  map((dropEvent) => {
+                    return {
+                      left: startLeft + dropEvent.clientX,
+                      top: startTop + dropEvent.clientY,
+                      targetWidth: width,
+                      targetHeight: height,
+                    };
+                  }),
+                  tap(({ targetWidth, targetHeight, top, left }) => {
+                    xPos.value = clipX({ width: targetWidth, offsetX: left });
+                    yPos.value = clipY({ height: targetHeight, offsetY: top });
+
+                    bringToTop(props.viewId);
+
+                    nextTick(() => {
+                      const contentBox = draggableWindowContent.$el.getBoundingClientRect();
+                      distanceFromBottom.value = -(
+                        contentBox.height +
+                        contentBox.y -
+                        window.innerHeight
+                      );
+                      contentHeight.value =
+                        distanceFromBottom < 0 ?
+                          contentBox.height + distanceFromBottom :
+                          0;
+                    });
+                  }),
+                  takeUntil(destroy$),
+                );
+              }
+
+              return of();
+            }),
+          )
+          .subscribe();
+      };
+
+      fromEvent(window, 'resize')
+        .pipe(
           debounceTime(500),
           tap(() => {
-            if (self && draggableWindowRef instanceof HTMLElement) {
+            if (draggableWindowRef.value instanceof HTMLElement) {
+              // debugger;
               const { innerWidth, innerHeight } = window;
-              const { x, y, width, height } = draggableWindowRef.getBoundingClientRect();
+              const {
+                x,
+                y,
+                width,
+                height,
+              } = draggableWindowRef.value.getBoundingClientRect();
               if (width + x > innerWidth || height + y > innerHeight) {
-                self.xPos = clipX({ width, offsetX: self.xPos });
-                self.yPos = clipY({ height, offsetY: self.yPos });
+                xPos.value = clipX({ width, offsetX: xPos.value });
+                yPos.value = clipY({ height, offsetY: yPos.value });
               }
             }
           }),
-          takeUntil(self.destroy$),
-        ).subscribe();
-      },
+          takeUntil(destroy$),
+        )
+        .subscribe();
+
+      onMounted(() => {
+        const { height } = draggableWindowContent.value.$el.getBoundingClientRect();
+        contentHeight.value =
+          distanceFromBottom < 0 ? height + distanceFromBottom : 0;
+        dragSubscription();
+      });
+
+      return {
+        yPos,
+        xPos,
+        contentHeight,
+        draggableWindowRef,
+        draggableWindowContent,
+        close,
+        bringToTop,
+      };
     },
-    destroyed() {
-      this.destroy$.next();
-      this.destroy$.unsubscribe();
-    },
-  };
+  });
 </script>

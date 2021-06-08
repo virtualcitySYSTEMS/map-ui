@@ -1,4 +1,5 @@
 import Treeview from '@vcsuite/uicomponents/Treeview.vue';
+import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf.vue';
 import { v4 as uuid } from 'uuid';
 
 export default {
@@ -36,7 +37,7 @@ export default {
 const Template = (args, { argTypes }) => {
   return {
     props: Object.keys(argTypes),
-    components: { Treeview },
+    components: { Treeview, TreeviewLeaf },
     template: `
         <Treeview 
           :has-searchbar="hasSearchbar" 

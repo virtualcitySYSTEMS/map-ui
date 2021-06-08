@@ -2,7 +2,7 @@
   <div>
     <v-card
       @click="emit(value + 1)"
-      ref="zoom-in"
+      ref="zoomInRef"
       elevation="2"
       class="h-8 w-8 mt-3 d-flex align-center justify-center text-center"
     >
@@ -10,7 +10,7 @@
     </v-card>
     <v-card
       @click="emit(value - 1)"
-      ref="zoom-out"
+      ref="zoomOutRef"
       elevation="2"
       class="h-8 w-8 d-flex align-center justify-center text-center"
     >
@@ -20,11 +20,14 @@
 </template>
 
 <script>
+  import VueCompositionAPI, { defineComponent, onMounted, onUnmounted, ref } from '@vue/composition-api';
   import { fromEvent, interval, Subject } from 'rxjs';
   import { switchMap, takeUntil } from 'rxjs/operators';
   import Vue from 'vue';
 
-  export default Vue.extend({
+  Vue.use(VueCompositionAPI);
+
+  export default defineComponent({
     props: {
       value: {
         type: Number,
@@ -39,43 +42,46 @@
         default: 100,
       },
     },
-    setup() {
-      return {
-        destroy$: new Subject(),
-      };
-    },
-    mounted() {
-      this.zoomInSubscripton();
-      this.zoomOutSubscripton();
-    },
-    methods: {
-      emit(value) {
-        if (value >= this.min && value <= this.max) {
-          this.$emit('input', value);
+    setup(props, context) {
+      const destroy$ = new Subject();
+      const zoomOutRef = ref();
+      const zoomInRef = ref();
+
+      const emit = (value) => {
+        if (value >= props.min && value <= props.max) {
+          context.emit('input', value);
         }
-      },
-      zoomOutSubscripton() {
-        const zoomOutRef = this.$refs['zoom-out'].$el;
-        fromEvent(zoomOutRef, 'mousedown').pipe(
-          takeUntil(this.destroy$),
+      };
+
+      onMounted(() => {
+        fromEvent(zoomOutRef.value.$el, 'mousedown').pipe(
+          takeUntil(destroy$),
           switchMap(() => interval(100).pipe(
             takeUntil(fromEvent(document.body, 'mouseup')),
           )),
         ).subscribe(() => {
-          this.emit(this.value - 1);
+          context.emit('input', props.value - 1);
         });
-      },
-      zoomInSubscripton() {
-        const zoomInRef = this.$refs['zoom-in'].$el;
-        fromEvent(zoomInRef, 'mousedown').pipe(
-          takeUntil(this.destroy$),
+
+        fromEvent(zoomInRef.value.$el, 'mousedown').pipe(
+          takeUntil(destroy$),
           switchMap(() => interval(100).pipe(
             takeUntil(fromEvent(document.body, 'mouseup')),
           )),
         ).subscribe(() => {
-          this.emit(this.value + 1);
+          context.emit('input', props.value + 1);
         });
-      },
+      });
+      onUnmounted(() => {
+        destroy$.next();
+        destroy$.unsubscribe();
+      });
+
+      return {
+        emit,
+        zoomOutRef,
+        zoomInRef,
+      };
     },
   });
 </script>

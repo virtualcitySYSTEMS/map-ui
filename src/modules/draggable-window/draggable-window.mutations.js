@@ -1,4 +1,4 @@
-import { draggableWindowHighestIndex } from './constants';
+import { draggableWindowHighestIndex } from './draggable-window.store';
 
 export const checkIfViewRegistered = (view, viewId) => {
   if (!view) {
@@ -77,6 +77,6 @@ export const addWindow = (state, draggableWindow) => {
     zIndex:
       props.zIndex ||
       draggableWindowHighestIndex -
-        Object.keys(state.draggableWindows).length,
+      Object.keys(state.draggableWindows).length,
   };
 };

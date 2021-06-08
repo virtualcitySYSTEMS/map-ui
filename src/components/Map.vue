@@ -35,11 +35,13 @@
 </style>
 
 <script >
-  import { registerMapCollection } from '@/registerMapCollection';
   import Vue from 'vue';
   import { addConfigToContext } from '@/context';
+  import VueCompositionAPI, { defineComponent, inject, onUnmounted, onBeforeMount } from '@vue/composition-api';
 
-  export default Vue.extend({
+  Vue.use(VueCompositionAPI);
+
+  export default defineComponent({
     props: {
       mapId: {
         type: String,
@@ -50,38 +52,37 @@
         required: true,
       },
     },
-    inject: ['context'],
-    setup() {
-      return {
-        destroy: null,
-      };
-    },
-    async mounted() {
-      await this.init();
-    },
-    methods: {
+    setup(props) {
+      const context = inject('context');
+      const mapState = inject('mapState');
+      let mapActivatedDestroy;
+      let mapAddedDestroy;
+
       /**
-       * @method
+       * @function
        * @description Initializes the map from configuration.
        */
-      async init() {
-        const startingMap = await addConfigToContext(this.config, this.context);
-        this.context.maps.setTarget(this.mapId);
-        // 3. Register store module
-        const { destroy } = registerMapCollection({
-          mapCollection: this.context.maps,
-          moduleName: this.mapId,
-          $store: this.$store,
+      onBeforeMount(async () => {
+        mapActivatedDestroy = context.maps.mapActivated.addEventListener((map) => {
+          mapState.activeMap = map.className;
         });
-        this.destroy = destroy;
+
+        mapAddedDestroy = context.maps.added.addEventListener(({ className, name }) => {
+          mapState.maps.push({ className, name });
+        });
+        const startingMap = await addConfigToContext(props.config, context);
+        context.maps.setTarget(props.mapId);
+
 
         // // 4. Initialize initial view
-        await this.context.maps.setActiveMap(startingMap.name);
-        await startingMap.gotoViewPoint(this.context.startViewPoint);
-      },
-    },
-    beforeDestroy() {
-      if (this.destroy) this.destroy();
+        await context.maps.setActiveMap(startingMap.name);
+        await startingMap.gotoViewPoint(context.startViewPoint);
+      });
+
+      onUnmounted(() => {
+        if (mapActivatedDestroy) { mapActivatedDestroy(); }
+        if (mapAddedDestroy) { mapAddedDestroy(); }
+      });
     },
   });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row mr-4" v-if="item">
+  <div class="d-flex flex-row" :class="{ 'mr-4': selectable && leaf }" v-if="item">
     <span class="mr-2" v-if="item.icon">
       <v-icon
         v-if="iconType === iconTypes.string"

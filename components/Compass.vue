@@ -1,6 +1,6 @@
 <template>
   <v-sheet
-    ref="compass-ref"
+    ref="compassRef"
     :style="{
       transform: `rotate(${value}deg)`,
       cursor: grabbing ? 'grabbing' : 'grab'
@@ -30,28 +30,27 @@
 
 
 <script>
+  import VueCompositionAPI, { defineComponent, onUnmounted, ref } from '@vue/composition-api';
+  import Vue from 'vue';
+
   import { fromEvent, merge, of, Subject } from 'rxjs';
   import { takeUntil, tap } from 'rxjs/operators';
-  import Vue from 'vue';
 
   import MapNavCompassOblique from './icons/MapNavCompassOblique.vue';
   import MapNavCompassRegular from './icons/MapNavCompassRegular.vue';
+
+  Vue.use(VueCompositionAPI);
 
   /**
    * @description Compass component to be shown on the map.
    * @vue-prop {('2d' | '3d' | 'oblique')}  viewMode  - Mode of the map. Defines the behaviour of the compass.
    * @vue-prop {number}                     value     - Number of degrees of the compass rotation.
    */
-  export default Vue.extend({
+  export default defineComponent({
     name: 'VcsCompass',
     components: {
       MapNavCompassRegular,
       MapNavCompassOblique,
-    },
-    data() {
-      return {
-        grabbing: false,
-      };
     },
     props: {
       viewMode: {
@@ -67,14 +66,13 @@
         default: 1,
       },
     },
-    setup() {
-      return {
-        destroy$: new Subject(),
-      };
-    },
-    methods: {
-      mouseAngle({ ref, event }) {
-        const { left, width, top, height } = ref.getBoundingClientRect();
+    setup(props, context) {
+      const destroy$ = new Subject();
+      const grabbing = ref();
+      const compassRef = ref();
+
+      const mouseAngle = ({ referenceEl, event }) => {
+        const { left, width, top, height } = referenceEl.getBoundingClientRect();
         const boxCenter = [left + width / 2, top + height / 2];
         const angle = Math.atan2(
           event.pageX - boxCenter[0], -(event.pageY - boxCenter[1]),
@@ -85,55 +83,63 @@
         }
 
         return angle;
-      },
-      trackMouse(e) {
-        if (this.viewMode !== 'oblique') {
-          const self = this;
-          const compassRef = this.$refs['compass-ref'].$el;
+      };
+
+      const trackMouse = (e) => {
+        if (props.viewMode !== 'oblique') {
           document.body.style.cursor = 'grabbing';
-          this.grabbing = true;
+          grabbing.value = true;
           merge(
             of(e),
             fromEvent(document.body, 'mousemove'),
           ).pipe(
             tap((event) => {
-              const rotation = self.mouseAngle({ event, ref: compassRef });
-              self.$emit('input', rotation);
+              const rotation = mouseAngle({ event, referenceEl: compassRef.value.$el });
+              context.emit('input', rotation);
             }),
             takeUntil(fromEvent(document.body, 'mouseup').pipe(
               tap(() => {
                 document.body.style.cursor = 'unset';
-                self.grabbing = false;
+                grabbing.value = false;
               }),
             )),
-            takeUntil(self.destroy$),
+            takeUntil(destroy$),
           ).subscribe();
         }
 
-        if (this.viewMode === 'oblique') {
-          const self = this;
-          const compassRef = this.$refs['compass-ref'].$el;
-          const rotation = this.mouseAngle({ event: e, ref: compassRef });
+        if (props.viewMode === 'oblique') {
+          const rotation = mouseAngle({ event: e, ref: compassRef.value.$el });
           const isEast = rotation >= 45 && rotation < 135;
           const isSouth = rotation >= 135 && rotation < 225;
           const isWest = rotation >= 225 && rotation < 315;
 
           if (isEast) {
-            self.$emit('input', 90);
+            context.emit('input', 90);
             return;
           }
           if (isSouth) {
-            self.$emit('input', 180);
+            context.emit('input', 180);
             return;
           }
           if (isWest) {
-            self.$emit('input', 270);
+            context.emit('input', 270);
             return;
           }
 
-          self.$emit('input', 0);
+          context.emit('input', 0);
         }
-      },
+      };
+
+      onUnmounted(() => {
+        destroy$.next();
+        destroy$.unsubscribe();
+      });
+
+      return {
+        trackMouse,
+        grabbing,
+        compassRef,
+      };
     },
   });
 </script>

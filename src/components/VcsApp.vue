@@ -13,6 +13,8 @@
   import { createContext } from '@/context';
   import config from '@/../map.config.json';
 
+  import { reactive, ref } from '@vue/composition-api';
+  import { draggableWindowState } from '@/modules/draggable-window/draggable-window.store';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
   import LayerTree from './LayerTree.vue';
@@ -28,8 +30,9 @@
       LayerTree,
     },
     setup() {
+      const id = uuid();
       return {
-        mapId: `mapCollection-${uuid()}`,
+        mapId: `mapCollection-${id}`,
         config,
       };
     },
@@ -37,6 +40,11 @@
       return {
         /** @type {Context} */
         context: createContext(),
+        mapState: {
+          maps: reactive([]),
+          activeMap: ref(undefined),
+        },
+        draggableWindowState: reactive(draggableWindowState),
       };
     },
   });

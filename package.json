@@ -37,9 +37,7 @@
     "vue-loader": "^15.9.6",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.5.3",
-    "vuetify-draggable-treeview": "^0.0.6",
-    "vuex": "^3.4.0",
-    "vuex-map-fields": "^1.4.1"
+    "vuetify-draggable-treeview": "^0.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",

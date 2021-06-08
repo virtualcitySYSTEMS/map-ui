@@ -1,7 +1,7 @@
 <template>
   <DraggableWindow
-    :view-id="draggableWindows[DraggableWindowId.LayerTree].id"
-    :z-index="draggableWindows[DraggableWindowId.LayerTree].zIndex"
+    :view-id="draggableWindow.id"
+    :z-index="draggableWindow.zIndex"
     @draggable-window-dropped="bringViewToTop"
     @draggable-window-closed="toggleViewVisible"
     :x="900"
@@ -10,36 +10,40 @@
     :header="'layer-tree.title' | translate"
   >
     <Treeview
-      v-if="tree"
-      :items="tree.items"
+      v-if="items"
+      :items="items"
       :has-searchbar="true"
       :searchbar-placeholder="'layer-tree.search.placeholder'"
       selectable
       @input="handleInput"
     />
+
+    {{ items }}
   </DraggableWindow>
 </template>
 
 
 <script>
   import Vue from 'vue';
-  import { mapFields } from 'vuex-map-fields';
+  import VueCompositionAPI, { defineComponent, inject, ref, onMounted, provide } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
+  import { bringViewToTop, toggleViewVisible } from '@/modules/draggable-window/draggable-window.mutations';
   import { v4 } from 'uuid';
-  import { ref, inject, onMounted, provide } from '@vue/composition-api';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
+
+  Vue.use(VueCompositionAPI);
   /**
    * @function
    * @param {Object} obj
    * @returns {Object}
    * @description helper to recursively attach uuids
    */
-  const appendId = (obj) => {
+  const appendId = (obj = {}) => {
     obj.id = v4();
 
     if (obj.children) {
@@ -63,10 +67,18 @@
   }
 
   /**
+   * @param {Object} context
+   * @returns {Array<Object>}
+   */
+  // const filterItems = context => context.config.widgets
+  //   .find(w => w.type === 'vcs.vcm.widgets.legend.Legend').children
+  //   .map(appendId);
+
+  /**
    * @description
    * Implements Treeview and shows 'vcs.vcm.widgets.legend.Legend'
    */
-  export default Vue.extend({
+  export default defineComponent({
     name: 'VcsLayerTree',
     components: { Treeview, DraggableWindow },
     setup() {
@@ -78,30 +90,28 @@
         tree.value = await getTree(context);
       });
 
+      const draggableWindowState = inject('draggableWindowState');
+      const selectedIds = ref([]);
+
+      /**
+       * @param {Array<string>} value
+       */
+      const handleInput = (value) => {
+        selectedIds.value = value;
+      };
+
+      const draggableWindow = draggableWindowState.draggableWindows[DraggableWindowId.LayerTree];
+
       return {
+        items: tree.value.items,
+        selectedIds: [],
         DraggableWindowId,
         tree,
-        selectedIds: [],
+        handleInput,
+        draggableWindow,
+        toggleViewVisible: id => toggleViewVisible(draggableWindowState, id),
+        bringViewToTop: id => bringViewToTop(draggableWindowState, id),
       };
-    },
-    inject: ['context'],
-    computed: {
-      ...mapFields('draggableWindowStoreModule', ['draggableWindows']),
-    },
-
-    methods: {
-      bringViewToTop() {
-        this.$store.commit('draggableWindowStoreModule/bringViewToTop', DraggableWindowId.LayerTree);
-      },
-      toggleViewVisible() {
-        this.$store.commit('draggableWindowStoreModule/toggleViewVisible', DraggableWindowId.LayerTree);
-      },
-      /**
-       * @param {Array<string>} selectedIds
-       */
-      handleInput(selectedIds) {
-        this.selectedIds = selectedIds;
-      },
     },
   });
 </script>
