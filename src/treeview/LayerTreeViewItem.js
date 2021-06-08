@@ -25,6 +25,12 @@ function getStateFromLayer(layer) {
  */
 class LayerTreeViewItem extends AbstractTreeViewItem {
   /**
+   * @todo this has to be refactored, just so we can read the config as is
+   * @returns {string}
+   */
+  static get className() { return 'vcs.vcm.widgets.legend.LayerItem'; }
+
+  /**
    * @param {Context} context
    * @param {LayerTreeViewItem.Options} options
    */

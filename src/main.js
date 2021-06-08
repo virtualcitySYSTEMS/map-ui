@@ -1,5 +1,6 @@
 import './styles/main.scss';
 import './filters';
+import './treeview/treeViewItems';
 
 import Vue from 'vue';
 import VueCompositionAPI from '@vue/composition-api';

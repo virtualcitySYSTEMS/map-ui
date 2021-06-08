@@ -2509,7 +2509,7 @@
     },
     {
       "type": "vcs.vcm.widgets.legend.Legend",
-      "children": [
+      "items": [
         {
           "type": "vcs.vcm.widgets.legend.ClusterItem",
           "title": {
@@ -2517,7 +2517,7 @@
             "de": "Grundkarten",
             "pl": "Mapy podkładowe"
           },
-          "children": [
+          "items": [
             {
               "type": "vcs.vcm.widgets.legend.LayerItem",
               "layerName": "Bäume",
@@ -2564,7 +2564,7 @@
             "de": "3D-Gebäude",
             "pl": "Budynki 3D"
           },
-          "children": [
+          "items": [
             {
               "type": "vcs.vcm.widgets.legend.LayerItem",
               "layerName": "buildings",
@@ -2608,7 +2608,7 @@
             "de": "Solarpotenzialanalyse",
             "pl": "Analiza potencjału energii słonecznej"
           },
-          "children": [
+          "items": [
             {
               "type": "vcs.vcm.widgets.legend.GroupItem",
               "clickable": false,
@@ -2618,7 +2618,7 @@
                 "de": "Einstrahlung pro Jahr",
                 "pl": "promieniowanie słoneczne rocznie"
               },
-              "children": [
+              "items": [
                 {
                   "type": "vcs.vcm.widgets.legend.LayerItem",
                   "layerName": "lod_solar_year_shading",
@@ -2659,7 +2659,7 @@
                 "de": "Einstrahlung ausgewählter Monate",
                 "pl": "miesięczne napromieniowanie słoneczne"
               },
-              "children": [
+              "items": [
                 {
                   "type": "vcs.vcm.widgets.legend.LayerItem",
                   "layerName": "lod2_solar_jan",
@@ -2702,7 +2702,7 @@
             "de": "Punktwolke",
             "pl": "Chmury punktów"
           },
-          "children": [
+          "items": [
             {
               "type": "vcs.vcm.widgets.legend.LayerItem",
               "layerName": "pointcloud",
@@ -2736,7 +2736,7 @@
             "en": "Viewpoints",
             "de": "Ansichten"
           },
-          "children": [
+          "items": [
             {
               "type": "vcs.vcm.widgets.legend.ViewpointItem",
               "viewpointName": "berlin",

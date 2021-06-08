@@ -23,7 +23,7 @@
     "@vcsuite/check": "^1.0.2",
     "@vcsuite/logger": "^1.0.0",
     "@vcsuite/parsers": "^1.0.0",
-    "@vue/composition-api": "^1.0.0-rc.8",
+    "@vue/composition-api": "^1.0.0-rc.11",
     "core-js": "^3.6.5",
     "fuse.js": "^6.4.6",
     "ol": "^6.5.0",

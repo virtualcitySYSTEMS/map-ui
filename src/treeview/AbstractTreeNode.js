@@ -6,6 +6,7 @@ import { VcsClassRegistry } from '@vcmap/core';
 /**
  * @typedef {Object} AbstractTreeNode.Options
  * @property {string} type
+ * @property {Array<AbstractTreeNode.Options>|undefined} items
  */
 
 /**
@@ -27,7 +28,7 @@ class AbstractTreeNode {
     /**
      * @type {Array<AbstractTreeViewItem>}
      */
-    this.children = shallowReactive([]);
+    this.items = shallowReactive([]);
 
     /**
      * The context of this tree node
@@ -69,7 +70,7 @@ class AbstractTreeNode {
     }
 
     const child = /** @type {AbstractTreeViewItem} */ (new Ctor(childOptions));
-    this.children.push(shallowReactive(child));
+    this.items.push(shallowReactive(child));
     return child;
   }
 
@@ -77,9 +78,9 @@ class AbstractTreeNode {
    * @param {AbstractTreeViewItem} child
    */
   removeItem(child) { // XXX should this recurse?
-    const index = this.children.indexOf(child);
+    const index = this.items.indexOf(child);
     if (index > -1) {
-      this.children.splice(index, 1);
+      this.items.splice(index, 1);
     }
   }
 
@@ -89,9 +90,9 @@ class AbstractTreeNode {
    */
   _getFlatChildren() {
     const getChildren = (c) => {
-      if (c.children.length > 0) {
+      if (c.items.length > 0) {
         return [c]
-          .concat(c.children.map(getChildren));
+          .concat(c.items.map(getChildren));
       }
       return [c];
     };

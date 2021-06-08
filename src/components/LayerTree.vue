@@ -10,7 +10,8 @@
     :header="'layer-tree.title' | translate"
   >
     <Treeview
-      :items="items"
+      v-if="tree"
+      :items="tree.items"
       :has-searchbar="true"
       :searchbar-placeholder="'layer-tree.search.placeholder'"
       selectable
@@ -28,6 +29,9 @@
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
   import { v4 } from 'uuid';
+  import { ref, inject, onMounted } from '@vue/composition-api';
+  import AbstractTree from '@/treeview/AbstractTree';
+  import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
   /**
    * @function
@@ -45,6 +49,19 @@
     return obj;
   };
 
+  let treeInstance;
+  async function getTree(context) {
+    if (!treeInstance) {
+      console.log(context.config.widgets.find(w => w.type === 'vcs.vcm.widgets.legend.Legend'));
+      treeInstance = await createTreeFromConfig(
+        context,
+        context.config.widgets.find(w => w.type === 'vcs.vcm.widgets.legend.Legend').items,
+        AbstractTree,
+      );
+    }
+    return treeInstance;
+  }
+
   /**
    * @description
    * Implements Treeview and shows 'vcs.vcm.widgets.legend.Legend'
@@ -53,9 +70,16 @@
     name: 'VcsLayerTree',
     components: { Treeview, DraggableWindow },
     setup() {
+      const tree = ref(null);
+      const context = inject('context');
+
+      onMounted(async () => {
+        tree.value = await getTree(context);
+      });
+
       return {
         DraggableWindowId,
-        items: [],
+        tree,
         selectedIds: [],
       };
     },
@@ -63,11 +87,11 @@
     computed: {
       ...mapFields('draggableWindowStoreModule', ['draggableWindows']),
     },
-    mounted() {
-      this.items = this.context.config.widgets.find(w => w.type === 'vcs.vcm.widgets.legend.Legend').children;
-      // Add id to every element, otherwise the treeview will break when toggling checkboxes
-      this.items = this.items.map(appendId);
-    },
+    // mounted() {
+    //   this.items = this.context.config.widgets.find(w => w.type === 'vcs.vcm.widgets.legend.Legend').items;
+    //   // Add id to every element, otherwise the treeview will break when toggling checkboxes
+    //   this.items = this.items.map(appendId);
+    // },
     methods: {
       bringViewToTop() {
         this.$store.commit('draggableWindowStoreModule/bringViewToTop', DraggableWindowId.LayerTree);
