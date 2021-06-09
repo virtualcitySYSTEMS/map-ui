@@ -5,7 +5,7 @@
 class StyleSelectorAction {
   /**
    * @param {string} layerName
-   * @param {string} styleNames
+   * @param {Array<string>} styleNames
    */
   constructor(layerName, styleNames) {
     /**
@@ -15,11 +15,11 @@ class StyleSelectorAction {
     /**
      * @type {string}
      */
-    this.icon = ''; // TODO micha needs to add the icon here
+    this.icon = '$vcsColorSwatch'; // TODO micha needs to add the icon here
     /**
      * @type {string}
      */
-    this.title = ''; // TODO i18n: this has to be translateable. how do we handle this?
+    this.title = 'Style Selector'; // TODO i18n: this has to be translateable. how do we handle this?
     /**
      * @type {string}
      */
@@ -28,8 +28,6 @@ class StyleSelectorAction {
      * @type {Array<string>}
      */
     this.styleNames = styleNames;
-
-    this._overlayerId = null;
   }
 
   /**
@@ -50,3 +48,5 @@ class StyleSelectorAction {
     }
   }
 }
+
+export default StyleSelectorAction;

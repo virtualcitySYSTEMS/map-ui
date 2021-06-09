@@ -1,4 +1,5 @@
 import AbstractTreeNode from '@/treeview/AbstractTreeNode';
+import { shallowReactive } from '@vue/composition-api';
 
 // XXX should visible, clickalge etc be passed in as options?
 /**
@@ -82,7 +83,7 @@ class AbstractTreeViewItem extends AbstractTreeNode {
     /**
      * @type {Array<TreeViewItemAction>}
      */
-    this.actions = [];
+    this.actions = shallowReactive([]);
   }
 
   /**

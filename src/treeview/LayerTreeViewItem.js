@@ -1,9 +1,11 @@
 import AbstractTreeViewItem, { TreeViewItemState } from '@/treeview/AbstractTreeViewItem';
+import StyleSelectorAction from '@/treeview/StyleSelectorAction';
 
 /**
  * @typedef {AbstractTreeViewItem.Options} LayerTreeViewItem.Options
  * @property {string} layerName
  * @property {string|undefined} viewpointName
+ * @property {Array<string>|undefined} availableStyles
  */
 
 /**
@@ -61,6 +63,10 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
      * @private
      */
     this._listeners = [];
+
+    if (Array.isArray(options.availableStyles)) { // XXX should we add an API here? so we can add available styles later on?
+      this.actions.push(new StyleSelectorAction(this._layerName, options.availableStyles.slice()));
+    }
   }
 
   /**
