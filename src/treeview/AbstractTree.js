@@ -1,4 +1,5 @@
 import AbstractTreeNode from '@/treeview/AbstractTreeNode';
+import { shallowReactive } from '@vue/composition-api';
 
 /**
  * @class
@@ -18,6 +19,12 @@ class AbstractTree extends AbstractTreeNode {
      * @api
      */
     this.filterable = false;
+
+    // IDEA could component _be_ a VUE component?
+    /**
+     * @type {Map<TreeViewItemAction, { component: string, props: (Object|undefined) }>}
+     */
+    this.overlays = shallowReactive(new Map());
   }
 
   /**
@@ -28,6 +35,22 @@ class AbstractTree extends AbstractTreeNode {
    */
   // eslint-disable-next-line no-empty-function,no-unused-vars,class-methods-use-this
   async search(query) {}
+
+  /**
+   * @param {TreeViewItemAction} action
+   * @param {string} component
+   * @param {Object=} props
+   */
+  showOverlayForAction(action, component, props) {
+    this.overlays.set(action, { component, props });
+  }
+
+  /**
+   * @param {TreeViewItemAction} action
+   */
+  hideOverlayForAction(action) {
+    this.overlays.delete(action);
+  }
 }
 
-export default AbstractTree
+export default AbstractTree;

@@ -12,7 +12,7 @@ import AbstractTreeNode from '@/treeview/AbstractTreeNode';
  * @property {boolean} active
  * @property {string} icon
  * @property {string|Object<string, string>} title
- * @property {function():Promise<void>} action
+ * @property {function(tree: AbstractTree):Promise<void>} action
  */
 
 /**
