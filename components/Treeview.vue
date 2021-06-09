@@ -15,15 +15,17 @@
       on-icon="$vcsCheckboxChecked"
       off-icon="$vcsCheckbox"
       indeterminate-icon="$vcsCheckboxIndeterminate"
+      :item-children="'items'"
       :search="search"
       @input="handleInput"
     >
-      <template v-slot:label="{item}">
+      <template v-slot:label="{ item, leaf }">
         <component
           v-for="component of availableComponents"
           :key="component"
           :is="component"
           :item="item"
+          :leaf="leaf"
         />
       </template>
     </v-treeview>
@@ -105,7 +107,6 @@
         line-height: 1.2;
         overflow: unset;
         text-overflow: unset;
-        // white-space: normal;
       }
 
       .v-treeview-node__root.v-treeview-node--active::before {
@@ -220,6 +221,10 @@
         default: false,
       },
       nameKey: {
+        type: String,
+        default: undefined,
+      },
+      selectable: {
         type: String,
         default: undefined,
       },

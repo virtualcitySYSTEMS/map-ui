@@ -29,7 +29,7 @@
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
   import { v4 } from 'uuid';
-  import { ref, inject, onMounted } from '@vue/composition-api';
+  import { ref, inject, onMounted, provide } from '@vue/composition-api';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
@@ -70,8 +70,9 @@
     name: 'VcsLayerTree',
     components: { Treeview, DraggableWindow },
     setup() {
-      const tree = ref(null);
+      const tree = ref();
       const context = inject('context');
+      provide('tree', tree);
 
       onMounted(async () => {
         tree.value = await getTree(context);

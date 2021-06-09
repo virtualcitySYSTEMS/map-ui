@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row" :class="{ 'mr-4': selectable && leaf }" v-if="item">
+  <div class="d-flex flex-row mr-4" v-if="item">
     <span class="mr-2" v-if="item.icon">
       <v-icon
         v-if="iconType === iconTypes.string"
@@ -21,13 +21,13 @@
         v-for="action of firstTwo"
         :key="action.title"
         size="16"
-        @click="() => onIconButtonClick(action.id)"
+        @click="() => onIconButtonClick(action)"
         class="mr-2"
         v-text="action.icon"
       />
       <v-menu
         right
-        v-if="remaining"
+        v-if="remaining && remaining.length"
         :close-on-content-click="true"
       >
         <template v-slot:activator="{ on, attrs }">
@@ -98,6 +98,7 @@
       const iconType = ref();
       const imgContainer = ref();
       const language = inject('language');
+      const tree = inject('tree');
 
       onMounted(() => {
         const { icon } = props.item;
@@ -118,14 +119,17 @@
 
       const firstTwo = computed(() => props.item.actions && props.item.actions.slice(0, 2));
       const remaining = computed(() => props.item.actions && props.item.actions.length && props.item.actions.slice(2));
-      const label = (props.item.title && props.item.title[language]) || props.name || props.title;
+      const label = (props.item.title && props.item.title[language]) || props.item.name || props.item.title;
 
       /**
        * @function
-       * @param {string} id
+       * @param {AbstractTreeNode} item
+       * @returns {Promise<any>} promise
        */
-      const onIconButtonClick = (id) => {
-        context.emit('action-clicked', id);
+      const onIconButtonClick = async (item) => {
+        const action = await item.action(tree.value);
+        console.log('Action clicked, ', item);
+        context.emit('action-clicked', action);
       };
       /**
        * @function
