@@ -68,5 +68,8 @@ module.exports = {
         changeOrigin: true,
       },
     },
+    watchOptions: {
+      ignored: /\.(idea|git)/,
+    },
   },
 };
