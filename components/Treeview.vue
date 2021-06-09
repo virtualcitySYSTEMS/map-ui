@@ -46,6 +46,10 @@
   }
 
   ::v-deep {
+    .v-application--is-ltr .v-treeview-node__content {
+      margin-left: 0;
+    }
+
     .v-treeview-node__root {
       position: relative;
     }
@@ -175,14 +179,18 @@
 
 <script>
 
-  import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf.vue';
+  import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf';
   import TreeviewSearchbar from '@vcsuite/uicomponents/TreeviewSearchbar.vue';
   import Vue from 'vue';
+  import VueCompositionApi, { ref } from '@vue/composition-api';
 
   Vue.component('TreeviewLeaf', TreeviewLeaf);
+  Vue.use(VueCompositionApi);
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
+   * Can render dynamic components as leaf items.
+   * In order to display an item needs to be registered and added to `availableComponents`.
    *
    * @vue-prop {Array}   items                - Treeview items
    * @vue-prop {boolean} hasSearchbar         - Whether there is a searchbar for this treeview
@@ -216,30 +224,21 @@
         default: undefined,
       },
     },
-    data() {
-      return { search: '' };
-    },
-    setup() {
-      return {
-        availableComponents: [
-          'TreeviewLeaf',
-        ],
-      };
-    },
-    methods: {
-      onIconButtonClick(action) {
-        this.$emit('action-clicked', action);
-      },
-      onMenuItemClick(menuItem) {
-        this.$emit('menu-item-clicked', menuItem);
-      },
+    setup(props, context) {
+      const search = ref('');
+      const availableComponents = ref(['TreeviewLeaf']);
       /**
        * @function
-       * @param {Array<string>} ids
+       * @param {Array<string | Object>} input
+       * @returns {void}
        */
-      handleInput(ids) {
-        this.$emit('input', ids);
-      },
+      const handleInput = input => context.emit('input', input);
+
+      return {
+        search,
+        availableComponents,
+        handleInput,
+      };
     },
   });
 </script>

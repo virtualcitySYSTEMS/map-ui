@@ -1,36 +1,33 @@
 <template>
-  <div v-if="item">
-    <slot v-if="item.icon" name="prepend">
+  <div class="d-flex flex-row" :class="{ 'mr-4': selectable && leaf }" v-if="item">
+    <span class="mr-2" v-if="item.icon">
       <v-icon
         v-if="iconType === iconTypes.string"
         v-text="item.icon"
         :size="16"
       />
-      <span ref="img-container" />
-    </slot>
+      <span ref="imgContainer" />
+    </span>
 
-    <slot name="label">
-      <!-- TODO: proper translations -->
-      <span @click="clicked">{{ item.name || item.title.de || item.title }}</span>
-      <Badge
-        v-if="item.hasUpdate"
-        class="update-badge position-absolute"
-      />
-    </slot>
+    <span>{{ label }}</span>
+    <Badge
+      v-if="item.hasUpdate"
+      class="update-badge position-absolute"
+    />
 
-    <slot name="append">
+
+    <span class="ml-auto d-flex flex-row justify-center align-center">
       <v-icon
-        v-for="action of item.actions"
+        v-for="action of firstTwo"
         :key="action.title"
         size="16"
-        @click="() => onIconButtonClick(action.title)"
+        @click="() => onIconButtonClick(action.id)"
         class="mr-2"
         v-text="action.icon"
       />
-
       <v-menu
         right
-        v-if="item.menuItems"
+        v-if="remaining"
         :close-on-content-click="true"
       >
         <template v-slot:activator="{ on, attrs }">
@@ -44,7 +41,7 @@
 
         <v-list>
           <v-list-item
-            v-for="(menuItem, index) in item.menuItems"
+            v-for="(menuItem, index) in remaining"
             :key="index"
             @click="() => onMenuItemClick(menuItem)"
           >
@@ -54,16 +51,21 @@
               size="16"
               class="mr-2"
             />
-            <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
+            <v-list-item-title>{{ menuItem.id }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-    </slot>
+    </span>
   </div>
 </template>
 
 <script>
+  import VueCompositionAPI, { defineComponent, inject, onMounted, computed, ref } from '@vue/composition-api';
+  import Vue from 'vue';
+
   import Badge from '@vcsuite/uicomponents/Badge.vue';
+
+  Vue.use(VueCompositionAPI);
 
   const iconTypes = {
     image: 'HTMLImageElement',
@@ -71,35 +73,79 @@
     string: 'StringIcon',
   };
 
-  export default {
+  /**
+   * @description
+   * Injects: ['language']
+   * Templaate for a treeview leaf, see: https://vuetifyjs.com/en/api/v-treeview/
+   */
+  export default defineComponent({
     components: { Badge },
     props: {
       item: {
         type: Object,
         default: undefined,
       },
+      selectable: {
+        type: Boolean,
+        default: false,
+      },
+      leaf: {
+        type: Boolean,
+        default: false,
+      },
     },
-    setup() {
+    setup(props, context) {
+      const iconType = ref();
+      const imgContainer = ref();
+      const language = inject('language');
+
+      onMounted(() => {
+        const { icon } = props.item;
+        if (icon) {
+          if (icon instanceof HTMLImageElement) {
+            imgContainer.value.appendChild(icon);
+            iconType.value = iconTypes.image;
+          }
+          if (icon instanceof HTMLCanvasElement) {
+            imgContainer.value.appendChild(icon);
+            iconType.value = iconTypes.canvas;
+          }
+          if (typeof icon === 'string') {
+            iconType.value = iconTypes.string;
+          }
+        }
+      });
+
+      const firstTwo = computed(() => props.item.actions && props.item.actions.slice(0, 2));
+      const remaining = computed(() => props.item.actions && props.item.actions.length && props.item.actions.slice(2));
+      const label = (props.item.title && props.item.title[language]) || props.name || props.title;
+
+      /**
+       * @function
+       * @param {string} id
+       */
+      const onIconButtonClick = (id) => {
+        context.emit('action-clicked', id);
+      };
+      /**
+       * @function
+       * @param {string} id
+       */
+      const onMenuItemClick = (id) => {
+        context.emit('menu-item-clicked', id);
+      };
+
       return {
         iconTypes,
-        iconType: undefined,
-        clicked() {
-          console.log(this.item);
-          this.item.clicked();
-        },
+        iconType,
+        firstTwo,
+        remaining,
+        label,
+        imgContainer,
+        onIconButtonClick,
+        onMenuItemClick,
       };
     },
-    mounted() {
-      const { icon } = this.item;
-      if (icon) {
-        if (icon instanceof HTMLImageElement || icon instanceof HTMLCanvasElement) {
-          this.$refs['img-container'].appendChild(icon);
-        }
-        if (typeof icon === 'string') {
-          this.iconType = iconTypes.string;
-        }
-      }
-    },
-  };
+  });
 </script>
 

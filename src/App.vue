@@ -21,6 +21,9 @@
     components: {
       VcsApp,
     },
+    provide: {
+      language: window.navigator.language.split('-')[0],
+    },
   });
 </script>
 

@@ -17,7 +17,7 @@
         class="searchbar outlined rounded-xl align-center d-flex justify-center white pa-1 pl-6"
         :placeholder="(placeholder || 'search.title') | translate"
         :value="value"
-        @input="$event => sub.next($event)"
+        @input="$event => handleInput($event)"
         clearable
       />
     </slot>
@@ -104,15 +104,20 @@
 
 
 <script>
+  import VueCompositionAPI, { defineComponent, onMounted, onUnmounted } from '@vue/composition-api';
+
   import { Subject } from 'rxjs';
   import { debounceTime } from 'rxjs/operators';
   import Vue from 'vue';
+
+  Vue.use(VueCompositionAPI);
+
 
   /**
    * @description Stylized wrapper around vuetify divider
    * @vue-prop {number}   height - Height of the component.
    */
-  export default Vue.extend({
+  export default defineComponent({
     name: 'VcsTreeviewSearchbar',
     props: {
       placeholder: {
@@ -132,17 +137,23 @@
         default: false,
       },
     },
-    setup() {
+    setup(props, context) {
+      const sub = new Subject();
+      onMounted(() => {
+        sub.pipe(debounceTime(330)).subscribe(
+          (value) => {
+            context.eemit('input', value);
+          },
+        );
+      });
+      onUnmounted(() => sub.unsubscribe());
+
       return {
-        sub: new Subject(),
-      };
-    },
-    mounted() {
-      this.sub.pipe(debounceTime(330)).subscribe(
-        (value) => {
-          this.$emit('input', value);
+        sub,
+        handleInput: (val) => {
+          sub.next(val);
         },
-      );
+      };
     },
   });
 </script>

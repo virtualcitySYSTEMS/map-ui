@@ -34,6 +34,9 @@ addDecorator(() => ({
       </v-main>
     </v-app>
     `,
+  provide: {
+    language: window.navigator.language.split('-')[0]
+  }
 }));
 
 addParameters({
