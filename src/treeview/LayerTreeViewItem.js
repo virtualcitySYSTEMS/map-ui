@@ -1,5 +1,6 @@
 import AbstractTreeViewItem, { TreeViewItemState } from '@/treeview/AbstractTreeViewItem';
 import StyleSelectorAction from '@/treeview/StyleSelectorAction';
+import { shallowReactive } from '@vue/composition-api';
 
 /**
  * @typedef {AbstractTreeViewItem.Options} LayerTreeViewItem.Options
@@ -54,19 +55,26 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
     this.viewpointName = options.viewpointName;
 
     /**
-     * @type {vcs.vcm.layer.Layer|undefined}
-     */
-    this._layer = this._context.layers.getByKey(options.layerName);
-
-    /**
      * @type {Array<Function>}
      * @private
      */
     this._listeners = [];
 
     if (Array.isArray(options.availableStyles)) { // XXX should we add an API here? so we can add available styles later on?
-      this.actions.push(new StyleSelectorAction(this._layerName, options.availableStyles.slice()));
+      const styleAction = new StyleSelectorAction(this._layerName, options.availableStyles.slice());
+      const reactiveStyleAction = shallowReactive(styleAction);
+      Object.setPrototypeOf(reactiveStyleAction, StyleSelectorAction.prototype);
+      this.actions.push(reactiveStyleAction);
     }
+  }
+
+  /**
+   * TODO this can be removed with Vue3 do to stupid shallow reactive and stuff
+   * @returns {vcs.vcm.layer.Layer|undefined}
+   * @private
+   */
+  get _layer() {
+    return this._context.layers.getByKey(this._layerName);
   }
 
   /**
@@ -115,6 +123,7 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
   async clicked() {
     if (this._layer) {
       if (this.state === TreeViewItemState.INACTIVE) {
+        this.state = TreeViewItemState.LOADING;
         await this._layer.activate();
         if (this.state === TreeViewItemState.ACTIVE && this.viewpointName && this._context.maps.activeMap) {
           const vp = this._context.viewpoints.getByKey(this.viewpointName);
@@ -122,8 +131,10 @@ class LayerTreeViewItem extends AbstractTreeViewItem {
             await this._context.maps.activeMap.gotoViewPoint(vp);
           }
         }
+        this.state = TreeViewItemState.ACTIVE;
       } else {
-        await this._layer.deactivate();
+        this._layer.deactivate();
+        this.state = TreeViewItemState.INACTIVE;
       }
     }
   }

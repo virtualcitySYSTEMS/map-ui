@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { shallowReactive } from '@vue/composition-api';
+import { markRaw, shallowReactive } from '@vue/composition-api';
 import { check } from '@vcsuite/check';
 import { VcsClassRegistry } from '@vcmap/core';
+import { getContextById } from '@/context';
 
 /**
  * @typedef {Object} AbstractTreeNode.Options
@@ -30,16 +31,21 @@ class AbstractTreeNode {
      */
     this.items = shallowReactive([]);
 
-    /**
-     * The context of this tree node
-     * @type {Context}
-     * @protected
-     */
-    this._context = context;
+    this._contextId = context.id;
+
   }
 
   get children() {
     return this.items;
+  }
+
+  /**
+   * TODO this can be removed with Vue3 do to stupid shallow reactive and stuff
+   * @returns {Context|undefined}
+   * @protected
+   */
+  get _context() {
+    return getContextById(this._contextId);
   }
 
   /**
