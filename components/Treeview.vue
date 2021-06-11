@@ -225,8 +225,8 @@
         default: undefined,
       },
       selectable: {
-        type: String,
-        default: undefined,
+        type: Boolean,
+        default: false,
       },
     },
     setup(props, context) {

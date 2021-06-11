@@ -9,11 +9,13 @@
       <span ref="imgContainer" />
     </span>
 
-    <span>{{ label }}</span>
-    <Badge
-      v-if="item.hasUpdate"
-      class="update-badge position-absolute"
-    />
+    <div class="position-relative">
+      <span>{{ label }}</span>
+      <Badge
+        v-if="item.hasUpdate"
+        class="update-badge position-absolute"
+      />
+    </div>
 
 
     <span class="ml-auto d-flex flex-row justify-center align-center">
@@ -59,8 +61,18 @@
   </div>
 </template>
 
+<style lang="scss">
+  .update-badge {
+    right: -16px;
+    bottom: 50%;
+    transform: translateY(50%);
+  }
+</style>
+
 <script>
-  import VueCompositionAPI, { defineComponent, inject, onMounted, computed, ref } from '@vue/composition-api';
+  import VueCompositionAPI, {
+    defineComponent, inject, onMounted, computed, ref, provide,
+  } from '@vue/composition-api';
   import Vue from 'vue';
 
   import Badge from '@vcsuite/uicomponents/Badge.vue';
@@ -95,10 +107,9 @@
       },
     },
     setup(props, context) {
-      const iconType = ref();
-      const imgContainer = ref();
-      const language = inject('language');
-      const tree = inject('tree');
+      provide('tree', {});
+      const [iconType, imgContainer] = [ref(), ref()];
+      const [language, tree] = [inject('language'), inject('tree')];
 
       onMounted(() => {
         const { icon } = props.item;

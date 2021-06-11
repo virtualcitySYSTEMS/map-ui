@@ -88,11 +88,7 @@
     computed: {
       ...mapFields('draggableWindowStoreModule', ['draggableWindows']),
     },
-    // mounted() {
-    //   this.items = this.context.config.widgets.find(w => w.type === 'vcs.vcm.widgets.legend.Legend').items;
-    //   // Add id to every element, otherwise the treeview will break when toggling checkboxes
-    //   this.items = this.items.map(appendId);
-    // },
+
     methods: {
       bringViewToTop() {
         this.$store.commit('draggableWindowStoreModule/bringViewToTop', DraggableWindowId.LayerTree);
