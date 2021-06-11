@@ -32,7 +32,6 @@ class AbstractTreeNode {
     this.items = shallowReactive([]);
 
     this._contextId = context.id;
-
   }
 
   get children() {
@@ -52,19 +51,19 @@ class AbstractTreeNode {
    * Called once the node is created
    */
   // eslint-disable-next-line class-methods-use-this,no-empty-function
-  created() {}
+  created() { }
 
   /**
    * Called once the node is mounted
    */
   // eslint-disable-next-line class-methods-use-this,no-empty-function
-  mounted() {}
+  mounted() { }
 
   /**
    * Called once the node is destroyed
    */
   // eslint-disable-next-line class-methods-use-this,no-empty-function
-  destroyed() {}
+  destroyed() { }
 
   /**
    * @param {AbstractTreeViewItem.Options} childOptions

@@ -26,6 +26,7 @@
           :is="component"
           :item="item"
           :leaf="leaf"
+          @action-clicked="handleActionClicked"
         />
       </template>
     </v-treeview>
@@ -238,11 +239,13 @@
        * @returns {void}
        */
       const handleInput = input => context.emit('input', input);
+      const handleActionClicked = input => context.emit('action-clicked', input);
 
       return {
         search,
         availableComponents,
         handleInput,
+        handleActionClicked,
       };
     },
   });

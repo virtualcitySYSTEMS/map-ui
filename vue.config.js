@@ -22,6 +22,7 @@ module.exports = {
       alias: {
         '@': join(__dirname, '/src'),
         '@vcsuite/uicomponents': join(__dirname, '/components'),
+        vue$: 'vue/dist/vue.esm.js',
       },
     },
     output: {

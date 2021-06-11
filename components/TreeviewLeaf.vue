@@ -23,7 +23,7 @@
         v-for="action of firstTwo"
         :key="action.title"
         size="16"
-        @click="() => onIconButtonClick(action)"
+        @click="(event) => onIconButtonClick(action, event)"
         class="mr-2"
         v-text="action.icon"
       />
@@ -134,12 +134,13 @@
       /**
        * @function
        * @param {AbstractTreeNode} item
+       * @param {Event} event
        * @returns {Promise<any>} promise
        */
-      const onIconButtonClick = async (item) => {
+      const onIconButtonClick = async (item, event) => {
         const action = await item.action(tree.value);
-        console.log('Action clicked, ', item);
-        context.emit('action-clicked', action);
+        console.log('Action clicked, ', action);
+        context.emit('action-clicked', { item, event });
       };
       /**
        * @function
