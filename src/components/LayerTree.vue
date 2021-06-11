@@ -31,27 +31,11 @@
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
   import { bringViewToTop, toggleViewVisible } from '@/modules/draggable-window/draggable-window.mutations';
-  import { v4 } from 'uuid';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
 
   Vue.use(VueCompositionAPI);
-  /**
-   * @function
-   * @param {Object} obj
-   * @returns {Object}
-   * @description helper to recursively attach uuids
-   */
-  const appendId = (obj = {}) => {
-    obj.id = v4();
-
-    if (obj.children) {
-      obj.children = obj.children.map(appendId);
-    }
-
-    return obj;
-  };
 
   let treeInstance;
   async function getTree(context) {
@@ -65,14 +49,6 @@
     }
     return treeInstance;
   }
-
-  /**
-   * @param {Object} context
-   * @returns {Array<Object>}
-   */
-  // const filterItems = context => context.config.widgets
-  //   .find(w => w.type === 'vcs.vcm.widgets.legend.Legend').children
-  //   .map(appendId);
 
   /**
    * @description
