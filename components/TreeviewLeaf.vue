@@ -107,7 +107,6 @@
       },
     },
     setup(props, context) {
-      provide('tree', {});
       const [iconType, imgContainer] = [ref(), ref()];
       const [language, tree] = [inject('language'), inject('tree')];
 
