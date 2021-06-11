@@ -236,7 +236,6 @@
           debounceTime(500),
           tap(() => {
             if (draggableWindowRef.value instanceof HTMLElement) {
-              // debugger;
               const { innerWidth, innerHeight } = window;
               const {
                 x,

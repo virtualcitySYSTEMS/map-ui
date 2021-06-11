@@ -59,7 +59,6 @@
        * @description
        * Sets the current map type
        */
-      // debugger;
       const setMap = (mapName) => {
         context.maps.setActiveMap(mapName);
       };
