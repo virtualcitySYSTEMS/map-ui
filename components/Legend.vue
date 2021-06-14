@@ -13,7 +13,7 @@
       <i>Texturierungstyp wählen</i>
       <v-select
         hide-details
-        class="tiny"
+        class="tiny my-2"
         name=""
         id=""
         :items="['foo']"
@@ -23,8 +23,13 @@
       />
 
       <span>Höhe in Metern</span>
-      <div v-for="height of heights" :key="height.name">
-        <span />
+      <div class="d-flex flex-row align-center my-2" v-for="height of heights" :key="height.name">
+        <span
+          :style="{
+            backgroundColor: height.color
+          }"
+          class="rounded d-inline-block h-6 w-12 mr-4"
+        />
         <span>{{ height.name }}</span>
       </div>
     </div>
@@ -42,6 +47,7 @@
 
 <script>
   import { defineComponent, ref } from '@vue/composition-api';
+  import { getRootCssValue } from './util';
 
   export default defineComponent({
     setup(props, vueContext) {
@@ -51,11 +57,11 @@
       };
       return {
         heights: [
-          { name: '< 5m', value: undefined },
-          { name: '< 15m', value: undefined },
-          { name: '< 30m', value: undefined },
-          { name: '< 65m', value: undefined },
-          { name: '> 65m', value: undefined },
+          { name: '< 5m', color: getRootCssValue('--v-primary-lighten4'), value: undefined },
+          { name: '< 15m', color: getRootCssValue('--v-primary-lighten3'), value: undefined },
+          { name: '< 30m', color: getRootCssValue('--v-primary-lighten2'), value: undefined },
+          { name: '< 65m', color: getRootCssValue('--v-primary-lighten1'), value: undefined },
+          { name: '> 65m', color: getRootCssValue('--v-primary-base'), value: undefined },
         ],
         close,
         value,

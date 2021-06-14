@@ -62,21 +62,21 @@
 </template>
 
 <style lang="scss">
-.update-badge {
-  right: -16px;
-  bottom: 50%;
-  transform: translateY(50%);
-}
+  .update-badge {
+    right: -16px;
+    bottom: 50%;
+    transform: translateY(50%);
+  }
 </style>
 
 <script>
-  import VueCompositionAPI, {
-    defineComponent,
-    inject,
-    onMounted,
-    computed,
-    ref,
-  } from '@vue/composition-api';
+  import
+    VueCompositionAPI, {
+      defineComponent,
+      inject,
+      onMounted,
+      ref,
+    } from '@vue/composition-api';
   import Vue from 'vue';
 
   import Badge from '@vcsuite/uicomponents/Badge.vue';
@@ -91,7 +91,7 @@
 
   /**
    * @description
-   * Injects: ['language']
+   * Injects: ['language', 'tree']
    * Templaate for a treeview leaf, see: https://vuetifyjs.com/en/api/v-treeview/
    */
   export default defineComponent({
@@ -110,22 +110,14 @@
       const [iconType, imgContainer] = [ref(), ref()];
       const [language, tree] = [inject('language'), inject('tree')];
 
-      const leaf = computed(
-        () => props.item.children && !props.item.children.length,
-      );
-      const firstTwo = computed(
-        () => props.item.actions && props.item.actions.slice(0, 2),
-      );
-      const remaining = computed(
-        () => props.item.actions &&
-          props.item.actions.length &&
-          props.item.actions.slice(2),
-      );
-      const label = computed(
-        () => (props.item.title && props.item.title[language]) ||
-          props.item.name ||
-          props.item.title,
-      );
+      const leaf = props.item.children && !props.item.children.length;
+      const firstTwo = props.item.actions && props.item.actions.slice(0, 2);
+      const remaining = props.item.actions &&
+        props.item.actions.length &&
+        props.item.actions.slice(2);
+      const label = (props.item.title && props.item.title[language]) ||
+        props.item.name ||
+        props.item.title;
 
       onMounted(() => {
         const { icon } = props.item;
