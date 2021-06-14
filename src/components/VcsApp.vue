@@ -4,8 +4,8 @@
     <Map :map-id="mapId" :config="config" />
     <LayerTree />
     <Popover
-      v-if="popover"
-      :popover="popover"
+      v-if="popoversState && popoversState.items.length"
+      :popovers-state="popoversState"
     />
   </v-sheet>
 </template>
@@ -19,24 +19,15 @@
 
   import VueCompositionApi, { reactive, ref } from '@vue/composition-api';
   import { draggableWindowState } from '@/modules/draggable-window/draggable-window.store';
+  import { popoversState } from '@/modules/popover/popover.state';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
   import Popover from './Popover.vue';
   import LayerTree from './LayerTree.vue';
 
   Vue.use(VueCompositionApi);
-
-  /**
-   * @description
-   * Encapsulates map and navigation functionality and config.
-   */
-
-  const popover = reactive({
-    component: undefined,
-    coordinates: undefined,
-    callback: undefined,
-    attrs: undefined,
-  });
+  // eslint-disable-next-line no-underscore-dangle
+  const _popoversState = reactive(popoversState);
   export default Vue.extend({
     components: {
       Navbar,
@@ -49,7 +40,7 @@
       return {
         mapId: `mapCollection-${id}`,
         config,
-        popover,
+        popoversState: _popoversState,
       };
     },
     provide() {
@@ -61,7 +52,7 @@
           activeMap: ref(undefined),
         },
         draggableWindowState: reactive(draggableWindowState),
-        popover,
+        popoversState: _popoversState,
       };
     },
   });

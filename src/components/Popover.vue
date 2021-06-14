@@ -1,20 +1,26 @@
 
 <template>
-  <div
-    id="vcs-popover"
-    v-if="popover.component"
-    class="position-absolute z-index-100"
-    :style="{
-      left: `${popover.coordinates.x + 50}px`,
-      top: `${popover.coordinates.y}px`
-    }"
-  >
-    <component
-      v-click-outside="onClickOutside"
-      :is="popover.component"
-      @input="popover.callback"
-      v-bind="{ ...popover }"
-    />
+  <div>
+    <div
+      v-for="(popover, i) in popoversState.items"
+      :key="i"
+    >
+      <div
+        id="vcs-popover"
+        v-if="popover.component"
+        class="position-absolute z-index-100"
+        :style="{
+          left: `${popover.coordinates.x + 24}px`,
+          top: `${popover.coordinates.y}px`
+        }"
+      >
+        <component
+          :is="popover.component"
+          @input="popover.callback"
+          v-bind="{ ...popover }"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,6 +40,7 @@
    * @property {string | VueComponent} component
    * @property {Coordinates} coordinates
    * @property {Function} callback
+   * @property {string | number} id
    */
 
 
@@ -48,16 +55,10 @@
     name: 'VcsPopover',
     directives: { ClickOutside },
     props: {
-      popover: {
+      popoversState: {
         type: Object,
-        default: () => ({}),
+        default: () => ({ items: [] }),
       },
-    },
-    setup(props, vueContext) {
-      const onClickOutside = () => vueContext.emit('close');
-      return {
-        onClickOutside,
-      };
     },
   });
 </script>

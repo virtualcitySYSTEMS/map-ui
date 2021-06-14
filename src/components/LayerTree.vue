@@ -16,7 +16,7 @@
       :searchbar-placeholder="'layer-tree.search.placeholder'"
       selectable
       @input="handleInput"
-      @action-clicked="handleActionClicked"
+      @action-clicked="handlePopover"
     />
   </DraggableWindow>
 </template>
@@ -32,6 +32,8 @@
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
   import { bringViewToTop, toggleViewVisible } from '@/modules/draggable-window/draggable-window.mutations';
+  import { popoverState } from '@/modules/popover/popover.state';
+  import { removePopover } from '@/modules/popover/popover.mutations';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
@@ -63,7 +65,7 @@
       const tree = ref();
       const overlayRef = ref();
       const context = inject('context');
-      const popover = inject('popover');
+      const popoversState = inject('popoversState');
       const draggableWindowState = inject('draggableWindowState');
       provide('tree', tree);
 
@@ -86,49 +88,45 @@
        * Assigns the current x and v value of a popover to the ref.
        */
       const setCoordinates = () => {
-        const { x, y } = overlayRef.value.getBoundingClientRect();
-        Object.assign(popover, { coordinates: { x, y } });
+        if (overlayRef.value) {
+          const { x, y } = overlayRef.value.getBoundingClientRect();
+          for (let i = 0; i < popoversState.items.length; i++) {
+            Object.assign(popoversState.items[i], { coordinates: { x, y } });
+          }
+        }
       };
 
       /**
-       * @param {Object} obj
-       * @param {AbstractTreeNode} obj.item
-       * @param {Event} obj.event
+       * @function
+       * @param {Object} obj Destructured argument
+       * @param {AbstractTreeNode} obj.item The object that has been clicked
+       * @param {Event} obj.event The click event
+       * @description Callback from Treeview which invokes an overlay to be shown.
+       * 1. Import the component
+       * 2. Register the component
        */
-      const handleActionClicked = ({ item, event }) => {
-        // Could also be item.component
-        const cmp = Vue.extend({
-          name: 'Foo',
-          template: '<span @click="callback" class="v-sheet pa-2">x: {{ coordinates.x }}  y: {{coordinates.y}}</span>',
-          props: {
-            coordinates: {
-              type: Object,
-              default: () => ({ x: 0, y: 0 }),
-            },
-            callback: {
-              type: Function,
-              default: () => {
-                // eslint-disable-next-line no-console
-                console.log('Please implement callback function');
-              },
-            },
-          },
-        });
+      const handlePopover = async ({ item, event }) => {
+        if (popoversState.items.find(p => p.id === item.layerName)) {
+          removePopover(popoversState, item.layerName);
+          return;
+        }
 
-        Vue.component('foo', cmp);
+        const componentName = 'Legend';
+        const cmp = await import(`@vcsuite/uicomponents/${componentName}.vue`);
+        Vue.component(componentName, cmp.default);
 
         overlayRef.value = event.target;
 
         const callback = () => {
-          popover.component = undefined;
+          removePopover(popoversState, item.layerName);
         };
         const popoverProps = {
-          component: popover.component = 'foo',
-          coordinates: {},
+          ...popoverState,
+          component: componentName,
           callback,
+          id: item.layerName,
         };
-
-        Object.assign(popover, popoverProps);
+        popoversState.items = [...popoversState.items, popoverProps];
         setCoordinates();
       };
 
@@ -145,7 +143,7 @@
           nextTick(() => setCoordinates());
           return bringViewToTop(draggableWindowState, id);
         },
-        handleActionClicked,
+        handlePopover,
       };
     },
   });
