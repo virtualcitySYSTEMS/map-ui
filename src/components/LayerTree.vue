@@ -10,15 +10,13 @@
     :header="'layer-tree.title' | translate"
   >
     <Treeview
-      v-if="items"
-      :items="items"
+      v-if="tree && tree.items"
+      :items="tree.items"
       :has-searchbar="true"
       :searchbar-placeholder="'layer-tree.search.placeholder'"
       selectable
       @input="handleInput"
     />
-
-    {{ items }}
   </DraggableWindow>
 </template>
 
@@ -79,7 +77,6 @@
       const draggableWindow = draggableWindowState.draggableWindows[DraggableWindowId.LayerTree];
 
       return {
-        items: tree.value.items,
         selectedIds: [],
         DraggableWindowId,
         tree,

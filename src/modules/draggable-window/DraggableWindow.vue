@@ -65,11 +65,9 @@
 <script>
   import Vue from 'vue';
   import VueCompositionAPI, {
-    computed,
     defineComponent,
     onMounted,
     ref,
-    nextTick,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
   import {
@@ -143,13 +141,6 @@
       const xPos = ref(props.x);
       const destroy$ = new Subject();
       const draggableWindowContent = ref();
-      const distanceFromBottom = computed(
-        () => -(
-          draggableWindowContent.height +
-          draggableWindowContent.y -
-          window.innerHeight
-        ),
-      );
       const contentHeight = ref(0);
 
       const bringToTop = (viewId) => {
@@ -207,19 +198,6 @@
                     yPos.value = clipY({ height: targetHeight, offsetY: top });
 
                     bringToTop(props.viewId);
-
-                    nextTick(() => {
-                      const contentBox = draggableWindowContent.$el.getBoundingClientRect();
-                      distanceFromBottom.value = -(
-                        contentBox.height +
-                        contentBox.y -
-                        window.innerHeight
-                      );
-                      contentHeight.value =
-                        distanceFromBottom < 0 ?
-                          contentBox.height + distanceFromBottom :
-                          0;
-                    });
                   }),
                   takeUntil(destroy$),
                 );
@@ -254,9 +232,6 @@
         .subscribe();
 
       onMounted(() => {
-        const { height } = draggableWindowContent.value.$el.getBoundingClientRect();
-        contentHeight.value =
-          distanceFromBottom < 0 ? height + distanceFromBottom : 0;
         dragSubscription();
       });
 
