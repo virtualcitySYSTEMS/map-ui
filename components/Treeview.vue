@@ -18,14 +18,15 @@
       :item-children="'items'"
       :search="search"
       @input="handleInput"
+      @update:open="handleUpdateOpen"
     >
-      <template v-slot:label="{ item, leaf }">
+      <template v-slot:label="{ item }">
         <component
           v-for="component of availableComponents"
           :key="component"
           :is="component"
           :item="item"
-          :leaf="leaf"
+          :selectable="selectable"
           @action-clicked="handleActionClicked"
         />
       </template>
@@ -240,12 +241,13 @@
        */
       const handleInput = input => context.emit('input', input);
       const handleActionClicked = input => context.emit('action-clicked', input);
-
+      const handleUpdateOpen = openItems => context.emit('update:open', openItems);
       return {
         search,
         availableComponents,
         handleInput,
         handleActionClicked,
+        handleUpdateOpen,
       };
     },
   });

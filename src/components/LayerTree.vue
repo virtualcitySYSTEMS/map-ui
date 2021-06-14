@@ -17,6 +17,7 @@
       selectable
       @input="handleInput"
       @action-clicked="handlePopover"
+      @update:open="handleUpdateOpen"
     />
   </DraggableWindow>
 </template>
@@ -25,7 +26,12 @@
 <script>
   import Vue from 'vue';
   import VueCompositionAPI, {
-    defineComponent, inject, ref, onMounted, provide, nextTick,
+    defineComponent,
+    inject,
+    ref,
+    onMounted,
+    provide,
+    nextTick,
   } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
@@ -63,7 +69,7 @@
     components: { Treeview, DraggableWindow },
     setup() {
       const tree = ref();
-      const overlayRef = ref();
+      const overlayRefs = new Map();
       const context = inject('context');
       const popoversState = inject('popoversState');
       const draggableWindowState = inject('draggableWindowState');
@@ -85,13 +91,20 @@
       /**
        * @function
        * @description
+       * @param {Object} popover
        * Assigns the current x and v value of a popover to the ref.
        */
-      const setCoordinates = () => {
-        if (overlayRef.value) {
-          const { x, y } = overlayRef.value.getBoundingClientRect();
-          for (let i = 0; i < popoversState.items.length; i++) {
-            Object.assign(popoversState.items[i], { coordinates: { x, y } });
+      const setCoordinates = (popover) => {
+        if (overlayRefs.has(popover.id)) {
+          const overlayRef = overlayRefs.get(popover.id);
+          if (document.contains(overlayRef)) {
+            const { x, y } = overlayRef.getBoundingClientRect();
+            Object.assign(popover, { coordinates: { x, y } });
+          } else {
+            /**
+             * If the referenced element is no longer in the DOM
+             */
+            overlayRefs.delete(popover.id);
           }
         }
       };
@@ -106,31 +119,63 @@
        * 2. Register the component
        */
       const handlePopover = async ({ item, event }) => {
+        /**
+         * If the user clicks the icon while the popover is active, we hide it
+         */
         if (popoversState.items.find(p => p.id === item.layerName)) {
           removePopover(popoversState, item.layerName);
+          overlayRefs.delete(item.layerName);
           return;
         }
 
+        /**
+         * We defined our component by:
+         * 1. Giving it a name
+         * 2. Importing it dynically
+         * 3. Registering it globally
+         * 4. Storing the action button reference
+         * 5. Defining a callback for when an input has occured
+         * 6. Giving it an id
+         * 7. Pushing it to the array of all popovers
+         * 8. Setting inital coordinates
+         */
         const componentName = 'Legend';
         const cmp = await import(`@vcsuite/uicomponents/${componentName}.vue`);
         Vue.component(componentName, cmp.default);
 
-        overlayRef.value = event.target;
+        overlayRefs.set(item.layerName, event.target);
 
-        const callback = () => {
+        const callback = (val) => {
+          // eslint-disable-next-line no-console
+          console.log(val);
           removePopover(popoversState, item.layerName);
         };
-        const popoverProps = {
+        const popover = {
           ...popoverState,
           component: componentName,
           callback,
           id: item.layerName,
         };
-        popoversState.items = [...popoversState.items, popoverProps];
-        setCoordinates();
+        popoversState.items = [...popoversState.items, popover];
+        setCoordinates(popover);
       };
 
       const draggableWindow = draggableWindowState.draggableWindows[DraggableWindowId.LayerTree];
+
+      /**
+       * @function
+       * @description
+       * Hides the popovers whih are open at the moment.
+       */
+      const handleUpdateOpen = () => {
+        nextTick(() => {
+          Array.from(overlayRefs.keys()).forEach((key) => {
+            if (!document.contains(overlayRefs.get(key))) {
+              removePopover(popoversState, key);
+            }
+          });
+        });
+      };
 
       return {
         tree,
@@ -140,10 +185,11 @@
         draggableWindow,
         toggleViewVisible: id => toggleViewVisible(draggableWindowState, id),
         bringViewToTop: (id) => {
-          nextTick(() => setCoordinates());
+          nextTick(() => popoversState.items.forEach(p => setCoordinates(p)));
           return bringViewToTop(draggableWindowState, id);
         },
         handlePopover,
+        handleUpdateOpen,
       };
     },
   });

@@ -1,5 +1,9 @@
 <template>
-  <div class="d-flex flex-row" :class="{ 'mr-4': selectable && leaf }" v-if="item">
+  <div
+    class="d-flex flex-row"
+    :class="{ 'mr-4': selectable && leaf }"
+    v-if="item"
+  >
     <span class="mr-2" v-if="item.icon">
       <v-icon
         v-if="iconType === iconTypes.string"
@@ -11,12 +15,8 @@
 
     <div class="position-relative">
       <span>{{ label }}</span>
-      <Badge
-        v-if="item.hasUpdate"
-        class="update-badge position-absolute"
-      />
+      <Badge v-if="item.hasUpdate" class="update-badge position-absolute" />
     </div>
-
 
     <span class="ml-auto d-flex flex-row justify-center align-center">
       <v-icon
@@ -62,16 +62,20 @@
 </template>
 
 <style lang="scss">
-  .update-badge {
-    right: -16px;
-    bottom: 50%;
-    transform: translateY(50%);
-  }
+.update-badge {
+  right: -16px;
+  bottom: 50%;
+  transform: translateY(50%);
+}
 </style>
 
 <script>
   import VueCompositionAPI, {
-    defineComponent, inject, onMounted, computed, ref, provide,
+    defineComponent,
+    inject,
+    onMounted,
+    computed,
+    ref,
   } from '@vue/composition-api';
   import Vue from 'vue';
 
@@ -101,14 +105,27 @@
         type: Boolean,
         default: false,
       },
-      leaf: {
-        type: Boolean,
-        default: false,
-      },
     },
     setup(props, context) {
       const [iconType, imgContainer] = [ref(), ref()];
       const [language, tree] = [inject('language'), inject('tree')];
+
+      const leaf = computed(
+        () => props.item.children && !props.item.children.length,
+      );
+      const firstTwo = computed(
+        () => props.item.actions && props.item.actions.slice(0, 2),
+      );
+      const remaining = computed(
+        () => props.item.actions &&
+          props.item.actions.length &&
+          props.item.actions.slice(2),
+      );
+      const label = computed(
+        () => (props.item.title && props.item.title[language]) ||
+          props.item.name ||
+          props.item.title,
+      );
 
       onMounted(() => {
         const { icon } = props.item;
@@ -127,10 +144,6 @@
         }
       });
 
-      const firstTwo = computed(() => props.item.actions && props.item.actions.slice(0, 2));
-      const remaining = computed(() => props.item.actions && props.item.actions.length && props.item.actions.slice(2));
-      const label = (props.item.title && props.item.title[language]) || props.item.name || props.item.title;
-
       /**
        * @function
        * @param {AbstractTreeNode} item
@@ -139,6 +152,7 @@
        */
       const onIconButtonClick = async (item, event) => {
         const action = await item.action(tree.value);
+        // eslint-disable-next-line no-console
         console.log('Action clicked, ', action);
         context.emit('action-clicked', { item, event });
       };
@@ -159,8 +173,8 @@
         imgContainer,
         onIconButtonClick,
         onMenuItemClick,
+        leaf,
       };
     },
   });
 </script>
-
