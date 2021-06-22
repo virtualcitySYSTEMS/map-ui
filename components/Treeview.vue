@@ -10,7 +10,6 @@
       :items="items"
       v-bind="{...$props, ...$attrs}"
       expand-icon="mdi-chevron-down"
-      item-key="id"
       :class="{ 'top-level-checkbox-hidden': !topLevelSelectable }"
       on-icon="$vcsCheckboxChecked"
       off-icon="$vcsCheckbox"
@@ -18,6 +17,7 @@
       :item-children="'items'"
       :search="search"
       @input="handleInput"
+      :filter="handleFilter"
       @update:open="handleUpdateOpen"
     >
       <template v-slot:label="{ item }">
@@ -185,7 +185,7 @@
   import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf';
   import TreeviewSearchbar from '@vcsuite/uicomponents/TreeviewSearchbar.vue';
   import Vue from 'vue';
-  import VueCompositionApi, { ref } from '@vue/composition-api';
+  import VueCompositionApi, { inject, ref } from '@vue/composition-api';
 
   Vue.component('TreeviewLeaf', TreeviewLeaf);
   Vue.use(VueCompositionApi);
@@ -234,6 +234,7 @@
     setup(props, context) {
       const search = ref('');
       const availableComponents = ref(['TreeviewLeaf']);
+      const language = inject('language');
       /**
        * @function
        * @param {Array<string | Object>} input
@@ -242,12 +243,23 @@
       const handleInput = input => context.emit('input', input);
       const handleActionClicked = input => context.emit('action-clicked', input);
       const handleUpdateOpen = openItems => context.emit('update:open', openItems);
+      const handleFilter = (treeNode, q = '') => {
+        if (typeof treeNode.title === 'string') {
+          return treeNode.title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
+        }
+        if (typeof treeNode.title === 'object') {
+          const title = (treeNode.title[language] || treeNode.title.en || treeNode.title.de || 'NO LABEL FOUND');
+          return title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
+        }
+        return false;
+      };
       return {
         search,
         availableComponents,
         handleInput,
         handleActionClicked,
         handleUpdateOpen,
+        handleFilter,
       };
     },
   });

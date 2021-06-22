@@ -56,6 +56,7 @@
           activeMap: ref(undefined),
         },
         draggableWindowState: reactive(draggableWindowState),
+        language: window.navigator.language.split('-')[0],
       };
     },
   });
