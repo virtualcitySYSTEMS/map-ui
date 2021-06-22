@@ -37,7 +37,6 @@
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
-  import { bringViewToTop, toggleViewVisible } from '@/modules/draggable-window/draggable-window.mutations';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
@@ -69,9 +68,9 @@
       const tree = ref();
       const context = inject('context');
       const popoverManager = inject('popoverManager');
-      const draggableWindowState = inject('draggableWindowState');
+      const draggableWindowManager = inject('draggableWindowManager');
       const selectedIds = ref([]);
-      const draggableWindow = draggableWindowState.draggableWindows[DraggableWindowId.LayerTree];
+      const draggableWindow = draggableWindowManager.get(DraggableWindowId.LayerTree);
       provide('tree', tree);
 
       onMounted(async () => {
@@ -129,10 +128,10 @@
         DraggableWindowId,
         draggableWindow,
         handleInput,
-        toggleViewVisible: id => toggleViewVisible(draggableWindowState, id),
+        toggleViewVisible: id => draggableWindowManager.toggleViewVisible(id),
         handleDraggableWindowDropped: (id) => {
           nextTick(() => popoverManager.updateCoordinates());
-          bringViewToTop(draggableWindowState, id);
+          draggableWindowManager.bringViewToTop(id);
         },
         handlePopover,
         handleUpdateOpen,

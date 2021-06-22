@@ -18,7 +18,7 @@
   import config from '@/../map.config.json';
 
   import VueCompositionApi, { provide, reactive, ref } from '@vue/composition-api';
-  import { draggableWindowState } from '@/modules/draggable-window/draggable-window.store';
+  import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
   import { PopoverManager } from '@/modules/popover/popover.manager';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
@@ -41,10 +41,15 @@
       const popoverManager = new PopoverManager(popoverState);
       provide('popoverManager', popoverManager);
 
+      const draggableWindowManager = new DraggableWindowManager();
+      const draggableWindowState = draggableWindowManager.state;
+      provide('draggableWindowManager', draggableWindowManager);
+
       return {
         mapId: `mapCollection-${id}`,
         config,
         popoverState,
+        draggableWindowState,
       };
     },
     provide() {
@@ -55,7 +60,6 @@
           maps: reactive([]),
           activeMap: ref(undefined),
         },
-        draggableWindowState: reactive(draggableWindowState),
         language: window.navigator.language.split('-')[0],
       };
     },

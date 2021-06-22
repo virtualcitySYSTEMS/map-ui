@@ -1,4 +1,5 @@
 
+import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
 
 /**
@@ -18,7 +19,7 @@ import Vue from 'vue';
  * @property {Array<PopoverState>} items
  */
 /** @constant {PopoversState} popoversState */
-export const popoversState = {
+export const initialState = {
   items: [],
 };
 
@@ -42,10 +43,13 @@ export class PopoverManager {
   /**
    * @constructor
    * @param {PopoversState} state
+   * @description state must be reactive
    */
   constructor(state) {
     if (state) {
       this.state = state;
+    } else {
+      this.state = reactive(initialState);
     }
   }
 
@@ -55,7 +59,7 @@ export class PopoverManager {
    * @description returns intial state
    */
   static getState() {
-    return { ...popoversState, items: [...popoversState.items] };
+    return { ...initialState, items: [...initialState.items] };
   }
 
   /**
