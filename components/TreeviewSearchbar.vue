@@ -142,7 +142,7 @@
       onMounted(() => {
         sub.pipe(debounceTime(330)).subscribe(
           (value) => {
-            context.eemit('input', value);
+            context.emit('input', value);
           },
         );
       });

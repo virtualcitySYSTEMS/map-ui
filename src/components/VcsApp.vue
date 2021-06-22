@@ -4,8 +4,8 @@
     <Map :map-id="mapId" :config="config" />
     <LayerTree />
     <Popover
-      v-if="popoversState && popoversState.items.length"
-      :popovers-state="popoversState"
+      v-if="popoverState && popoverState.items.length"
+      :popovers-state="popoverState"
     />
   </v-sheet>
 </template>
@@ -17,9 +17,9 @@
   import { createContext } from '@/context';
   import config from '@/../map.config.json';
 
-  import VueCompositionApi, { reactive, ref } from '@vue/composition-api';
+  import VueCompositionApi, { provide, reactive, ref } from '@vue/composition-api';
   import { draggableWindowState } from '@/modules/draggable-window/draggable-window.store';
-  import { popoversState } from '@/modules/popover/popover.state';
+  import { PopoverManager } from '@/modules/popover/popover.manager';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
   import Popover from './Popover.vue';
@@ -27,7 +27,6 @@
 
   Vue.use(VueCompositionApi);
   // eslint-disable-next-line no-underscore-dangle
-  const _popoversState = reactive(popoversState);
   export default Vue.extend({
     components: {
       Navbar,
@@ -37,10 +36,15 @@
     },
     setup() {
       const id = uuid();
+
+      const popoverState = reactive(PopoverManager.getState());
+      const popoverManager = new PopoverManager(popoverState);
+      provide('popoverManager', popoverManager);
+
       return {
         mapId: `mapCollection-${id}`,
         config,
-        popoversState: _popoversState,
+        popoverState,
       };
     },
     provide() {
@@ -52,7 +56,6 @@
           activeMap: ref(undefined),
         },
         draggableWindowState: reactive(draggableWindowState),
-        popoversState: _popoversState,
       };
     },
   });
