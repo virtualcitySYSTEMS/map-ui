@@ -19,7 +19,7 @@ import Vue from 'vue';
  * @property {Array<PopoverState>} items
  */
 /** @constant {PopoversState} popoversState */
-export const initialState = {
+const initialState = {
   items: [],
 };
 
@@ -31,12 +31,12 @@ export const initialState = {
  */
 export class PopoverManager {
   /**
-   * @property {Map<string, HTMLElement>} overlayRefs
+   * @type {Map<string, HTMLElement>} overlayRefs
    */
   overlayRefs = new Map();
 
   /**
-   * @property {PopoversState} state
+   * @type {PopoversState} state
    */
   state;
 
@@ -49,17 +49,8 @@ export class PopoverManager {
     if (state) {
       this.state = state;
     } else {
-      this.state = reactive(initialState);
+      this.state = reactive({ ...initialState });
     }
-  }
-
-  /**
-   * @method
-   * @returns {PopoversState}
-   * @description returns intial state
-   */
-  static getState() {
-    return { ...initialState, items: [...initialState.items] };
   }
 
   /**

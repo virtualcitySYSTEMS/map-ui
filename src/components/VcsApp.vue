@@ -37,8 +37,7 @@
     setup() {
       const id = uuid();
 
-      const popoverState = reactive(PopoverManager.getState());
-      const popoverManager = new PopoverManager(popoverState);
+      const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
 
       const draggableWindowManager = new DraggableWindowManager();

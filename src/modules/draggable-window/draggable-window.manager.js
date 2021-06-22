@@ -33,11 +33,12 @@ const initialState = {
 
 
 /**
- * @class
+ * @class DraggableWindowManager
+ * @description Manages a set of Draggable Windows.
+ * Should be instanciated with a reactive state and injected at root.
  */
 export class DraggableWindowManager {
   /**
-   * @constant state
    * @type {DraggableWindowState}
    */
   state;
