@@ -65,8 +65,11 @@
 <script>
   import Vue from 'vue';
   import VueCompositionAPI, {
+    computed,
     defineComponent,
+    inject,
     onMounted,
+    onUnmounted,
     ref,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
@@ -90,17 +93,12 @@
    * @vue-prop {number} width - Width of the window in pixels
    * @vue-prop {string} viewId - Unique id for the window. Should be provided by store
    * @vue-prop {number} zIndex - Z-Index for the window. Should be provided by store
-   * @vue-prop {number} zIndexMax - Max z-Index for all windows. Should be provided by store
    * @vue-prop {string} icon - Name of Icon which should be shown in top left corner
    * @vue-prop {string} header - Title of the window
+   * @vue-prop {string | VueComponent } component - Component which will be displayed
    */
   export default defineComponent({
     name: 'VcsDraggableWindow',
-    computed: {
-      xMax() {
-        return window.innerWidth - this.width;
-      },
-    },
     props: {
       x: {
         type: Number,
@@ -122,10 +120,6 @@
         type: Number,
         default: 4,
       },
-      zIndexMax: {
-        type: Number,
-        default: 50,
-      },
       icon: {
         type: String,
         default: '',
@@ -134,14 +128,23 @@
         type: String,
         default: undefined,
       },
+      component: {
+        type: String | Object,
+        default: undefined,
+      },
     },
     setup(props, context) {
+      const draggableWindowManager = inject('draggableWindowManager');
       const draggableWindowRef = ref();
       const yPos = ref(props.y);
       const xPos = ref(props.x);
       const destroy$ = new Subject();
       const draggableWindowContent = ref();
       const contentHeight = ref(0);
+      const zIndexMax = ref(draggableWindowManager.state.draggableWindowHighestIndex);
+      const xMax = computed(
+        window.innerWidth - props.width,
+      );
 
       const bringToTop = (viewId) => {
         context.emit('draggable-window-dropped', viewId);
@@ -150,11 +153,9 @@
         context.emit('draggable-window-closed', viewId);
       };
 
-      fromEvent(document.body, 'dragover')
+      const dragOverSubscription = () => fromEvent(document.body, 'dragover')
         .pipe(
-          tap((e) => {
-            e.preventDefault();
-          }),
+          tap(e => e.preventDefault()),
           takeUntil(destroy$),
         )
         .subscribe();
@@ -209,18 +210,13 @@
           .subscribe();
       };
 
-      fromEvent(window, 'resize')
+      const resizeSubscription = () => fromEvent(window, 'resize')
         .pipe(
           debounceTime(500),
           tap(() => {
             if (draggableWindowRef.value instanceof HTMLElement) {
               const { innerWidth, innerHeight } = window;
-              const {
-                x,
-                y,
-                width,
-                height,
-              } = draggableWindowRef.value.getBoundingClientRect();
+              const { x, y, width, height } = draggableWindowRef.value.getBoundingClientRect();
               if (width + x > innerWidth || height + y > innerHeight) {
                 xPos.value = clipX({ width, offsetX: xPos.value });
                 yPos.value = clipY({ height, offsetY: yPos.value });
@@ -233,16 +229,25 @@
 
       onMounted(() => {
         dragSubscription();
+        dragOverSubscription();
+        resizeSubscription();
+      });
+
+      onUnmounted(() => {
+        destroy$.next();
+        destroy$.unsubscribe();
       });
 
       return {
         yPos,
         xPos,
+        xMax,
         contentHeight,
         draggableWindowRef,
         draggableWindowContent,
         close,
         bringToTop,
+        zIndexMax,
       };
     },
   });

@@ -39,6 +39,7 @@
 
       const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
+      const popoverState = popoverManager.state;
 
       const draggableWindowManager = new DraggableWindowManager();
       const draggableWindowState = draggableWindowManager.state;
