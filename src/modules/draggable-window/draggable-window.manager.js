@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
 import { reactive } from '@vue/composition-api';
+import LayerTree from '@/components/LayerTree.vue';
 import DraggableWindowId from './draggable-window-id';
-
 
 const draggableWindowHighestIndex = 50;
 
@@ -11,21 +11,35 @@ const draggableWindowHighestIndex = 50;
  * @property {boolean} visible
  * @property {number} zIndex
  * @property {string | number} id
+ * @property {string | VueComponent} component
+ * @property {number} width
+ * @property {number} x
+ * @property {number} y
+ * @property {string} header
+ * @property {string} icon
+ * @property {number} xMax
  */
 
 /**
  * @typedef DraggableWindowState
- * @property {Object.<string, DraggableWindow>} draggableWindows
+ * @property {Object.<string, DraggableWindow>} items
  * @property {number} draggableWindowHighestIndex
  */
 
 /** @constant {DraggableWindowState} initialState */
 const initialState = {
-  draggableWindows: {
+  items: {
     [DraggableWindowId.LayerTree]: {
       visible: true,
       zIndex: 50,
       id: DraggableWindowId.LayerTree,
+      component: LayerTree,
+      width: 320,
+      x: 0,
+      y: 56,
+      header: 'layer-tree.title',
+      icon: '$vcsLayers',
+      xMax: window.innerWidth,
     },
   },
   draggableWindowHighestIndex,
@@ -34,7 +48,7 @@ const initialState = {
 
 /**
  * @class DraggableWindowManager
- * @description Manages a set of Draggable Windows.
+ * @description Manages a set of Draggable Windows.0-
  * Should be instanciated with a reactive state and injected at root.
  */
 export class DraggableWindowManager {
@@ -60,7 +74,7 @@ export class DraggableWindowManager {
    * @returns {DraggableWindow}
    */
   get(viewId) {
-    return this.state.draggableWindows[viewId];
+    return this.state.items[viewId];
   }
 
   /**
@@ -72,77 +86,70 @@ export class DraggableWindowManager {
   }
 
   /**
-   * @param {string} viewId
-   * @param {DraggableWindow} view
+   * @param {string | number} viewId
    */
-  add(viewId, view) {
+  remove(viewId) {
+    this.state.items[viewId].visible = !this.state.items[viewId].visible;
+  }
+
+  /**
+   * @returns {Array<DraggableWindow>}
+   */
+  getAll() {
+    return Object.values(this.state.items);
+  }
+
+  /**
+   * @param {string} viewId
+   * @param {DraggableWindow} draggableWindow
+   */
+  add(viewId, draggableWindow) {
     if (!viewId) {
       throw new Error(`A draggable window must have an id, got: ${viewId}.`);
     }
 
-    if (this.state.draggableWindows[viewId]) {
+    if (this.state.items[viewId]) {
       throw new Error(`A draggable window with id ${viewId} has already been registered.`);
     }
 
-    this.state.draggableWindows[viewId] = {
+    this.state.items[viewId] = {
       id: viewId,
-      ...view,
+      ...draggableWindow,
       zIndex:
-        view.zIndex ||
+        draggableWindow.zIndex ||
         draggableWindowHighestIndex -
-        Object.keys(this.state.draggableWindows).length,
+        Object.keys(this.state.items).length,
     };
   }
 
-  /**
-   * @param {string} viewId
-   */
-  remove(viewId) {
-    if (!this.has(viewId)) {
-      throw new Error(`View with ID ${viewId} has not been registered, so it cannot be removed.`);
-    }
-
-    delete this.state.draggableWindows[viewId];
-  }
-
 
   /**
-   * @param {string} viewId
+   * @param {DraggableWindow} draggableWindow
    */
-  bringViewToTop(viewId) {
-    const { draggableWindows } = this.state;
-    const view = this.get(viewId);
-
-    if (view.zIndex === draggableWindowHighestIndex) {
+  bringViewToTop(draggableWindow) {
+    if (draggableWindow.zIndex === this.state.draggableWindowHighestIndex) {
       return;
     }
 
-    this.checkIfViewRegistered(view, viewId);
-
-    draggableWindows[viewId] = {
-      ...view,
-      zIndex: draggableWindowHighestIndex,
-    };
+    draggableWindow.zIndex = this.state.draggableWindowHighestIndex;
 
     // Set other windows to back by one each.
-    Object.keys(draggableWindows)
-      .sort((keyA, keyB) => draggableWindows[keyB].zIndex - draggableWindows[keyA].zIndex)
-      .filter((id) => { return id !== viewId; })
+    Object.keys(this.state.items)
+      .sort((keyA, keyB) => this.state.items[keyB].zIndex -
+        this.state.items[keyA].zIndex)
+      .filter((id) => { return id !== draggableWindow.id; })
       .forEach((id, i) => {
-        const zIndex = draggableWindowHighestIndex - (i + 1);
-        draggableWindows[id] = {
-          ...draggableWindows[id],
-          zIndex,
-        };
+        const zIndex = this.state.draggableWindowHighestIndex - (i + 1);
+        this.state.items[id].zIndex = zIndex;
       });
   }
 
   /**
-   * @param {DraggableWindow} view
+   * @param {DraggableWindow} draggableWindow
    * @param {string} viewId
    */
-  checkIfViewRegistered = (view, viewId) => {
-    if (!view || !this.has(viewId)) {
+  checkIfViewRegistered = (draggableWindow, viewId) => {
+    if (!draggableWindow || !this.has(viewId)) {
       throw new Error(
         `DraggableWindow with id '${viewId}' has not been registered!`,
       );
@@ -160,16 +167,16 @@ export class DraggableWindowManager {
     view.visible = !view.visible;
     // When it is visible, bring it to top, otherwise send it to back.
     if (view.visible) {
-      this.state.draggableWindows[viewId] = {
+      this.state.items[viewId] = {
         ...view,
         zIndex: draggableWindowHighestIndex,
       };
     } else {
-      this.state.draggableWindows[viewId] = {
+      this.state.items[viewId] = {
         ...view,
         zIndex:
           draggableWindowHighestIndex -
-          Object.keys(this.state.draggableWindows).length + 1,
+          Object.keys(this.state.items).length + 1,
       };
     }
   }

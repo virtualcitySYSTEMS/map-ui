@@ -12,15 +12,16 @@ import Vue from 'vue';
  * @property {string | VueComponent} component
  * @property {Coordinates} coordinates
  * @property {Function} callback
+ * @property {boolean} visible
  * @property {string | number} id
  */
 /**
  * @typedef PopoversState
- * @property {Array<PopoverState>} items
+ * @property {Object.<string, PopoverState>} items
  */
 /** @constant {PopoversState} popoversState */
 const initialState = {
-  items: [],
+  items: {},
 };
 
 
@@ -49,7 +50,7 @@ export class PopoverManager {
     if (state) {
       this.state = state;
     } else {
-      this.state = reactive({ ...initialState });
+      this.state = reactive(initialState);
     }
   }
 
@@ -63,21 +64,15 @@ export class PopoverManager {
     coordinates = {},
     callback = () => { },
     id,
+    visible = false,
   }) {
     return {
       component,
       coordinates,
       callback,
       id,
+      visible,
     };
-  }
-
-  /**
-   * @method
-   * @param {PopoversState} state
-   */
-  setState(state) {
-    Object.assign(this, state);
   }
 
   /**
@@ -95,9 +90,8 @@ export class PopoverManager {
    * @returns {Object}
    */
   get(id) {
-    return this.items.find(item => item.id === id);
+    return this.state.items[id];
   }
-
 
   /**
    * @method
@@ -110,7 +104,13 @@ export class PopoverManager {
       const overlayRef = this.overlayRefs.get(popover.id);
       if (document.contains(overlayRef)) {
         const { x, y } = overlayRef.getBoundingClientRect();
-        Object.assign(popover, { coordinates: { x, y } });
+        Vue.set(this.state.items, popover.id, {
+          ...popover,
+          coordinates: {
+            x,
+            y,
+          },
+        });
       } else {
         this.overlayRefs.delete(popover.id);
       }
@@ -135,6 +135,7 @@ export class PopoverManager {
       component: name,
       callback,
       id,
+      visible: true,
     });
 
     this.addPopover(popover);
@@ -145,8 +146,8 @@ export class PopoverManager {
    * @param {PopoverState} popover
    */
   addPopover(popover) {
-    this.state.items = [...this.state.items, popover];
-    this.setCoordinates(popover);
+    Vue.set(this.state.items, popover.id, popover);
+    this.setCoordinates(this.state.items[popover.id]);
   }
 
   /**
@@ -155,8 +156,8 @@ export class PopoverManager {
    * @returns {boolean}
    */
   removePopover(id) {
-    if (this.state.items.find(item => item.id === id)) {
-      this.state.items = this.state.items.filter(p => p.id !== id);
+    if (this.state.items[id]) {
+      this.state.items[id].visible = false;
       this.overlayRefs.delete(id);
       return true;
     }
@@ -164,7 +165,7 @@ export class PopoverManager {
   }
 
   updateCoordinates() {
-    this.state.items.forEach(item => this.setCoordinates(item));
+    Object.values(this.state.items).forEach(item => this.setCoordinates(item));
   }
 
   /**

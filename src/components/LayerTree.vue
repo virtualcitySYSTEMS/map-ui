@@ -1,25 +1,14 @@
 <template>
-  <DraggableWindow
-    :view-id="draggableWindow.id"
-    :z-index="draggableWindow.zIndex"
-    @draggable-window-dropped="handleDraggableWindowDropped"
-    @draggable-window-closed="toggleViewVisible"
-    :x="900"
-    :y="100"
-    :icon="'$vcsLayers'"
-    :header="'layer-tree.title' | translate"
-  >
-    <Treeview
-      v-if="tree && tree.items"
-      :items="tree.items"
-      :has-searchbar="true"
-      :searchbar-placeholder="'layer-tree.search.placeholder'"
-      selectable
-      @input="handleInput"
-      @action-clicked="handlePopover"
-      @update:open="handleUpdateOpen"
-    />
-  </DraggableWindow>
+  <Treeview
+    v-if="tree && tree.items"
+    :items="tree.items"
+    :has-searchbar="true"
+    :searchbar-placeholder="'layer-tree.search.placeholder'"
+    selectable
+    @input="handleInput"
+    @action-clicked="handlePopover"
+    @update:open="handleUpdateOpen"
+  />
 </template>
 
 
@@ -35,8 +24,6 @@
   } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
-  import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
-  import DraggableWindowId from '@/modules/draggable-window/draggable-window-id';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
@@ -63,14 +50,12 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview, DraggableWindow },
+    components: { Treeview },
     setup() {
       const tree = ref();
       const context = inject('context');
       const popoverManager = inject('popoverManager');
-      const draggableWindowManager = inject('draggableWindowManager');
       const selectedIds = ref([]);
-      const draggableWindow = draggableWindowManager.get(DraggableWindowId.LayerTree);
       provide('tree', tree);
 
       onMounted(async () => {
@@ -125,14 +110,7 @@
       return {
         tree,
         selectedIds: [],
-        DraggableWindowId,
-        draggableWindow,
         handleInput,
-        toggleViewVisible: id => draggableWindowManager.toggleViewVisible(id),
-        handleDraggableWindowDropped: (id) => {
-          nextTick(() => popoverManager.updateCoordinates());
-          draggableWindowManager.bringViewToTop(id);
-        },
         handlePopover,
         handleUpdateOpen,
       };
