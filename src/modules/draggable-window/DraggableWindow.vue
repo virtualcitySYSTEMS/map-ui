@@ -224,7 +224,7 @@
         dragSubscription();
         resizeSubscription();
       };
-      const draggableWindows = draggableWindowManager.getAll();
+      const draggableWindows = draggableWindowManager.state.items;
 
       onMounted(() => {
         /**

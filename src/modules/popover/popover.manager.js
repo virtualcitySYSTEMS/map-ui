@@ -1,7 +1,6 @@
 
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
-
 /**
  * @typedef Coordinates
  * @property {number} x
@@ -157,7 +156,7 @@ export class PopoverManager {
    */
   removePopover(id) {
     if (this.state.items[id]) {
-      this.state.items[id].visible = false;
+      Vue.delete(this.state.items, id);
       this.overlayRefs.delete(id);
       return true;
     }

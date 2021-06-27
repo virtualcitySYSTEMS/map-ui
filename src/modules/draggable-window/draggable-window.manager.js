@@ -2,6 +2,7 @@
 
 import { reactive } from '@vue/composition-api';
 import LayerTree from '@/components/LayerTree.vue';
+import Vue from 'vue';
 import DraggableWindowId from './draggable-window-id';
 
 const draggableWindowHighestIndex = 50;
@@ -89,14 +90,7 @@ export class DraggableWindowManager {
    * @param {string | number} viewId
    */
   remove(viewId) {
-    this.state.items[viewId].visible = !this.state.items[viewId].visible;
-  }
-
-  /**
-   * @returns {Array<DraggableWindow>}
-   */
-  getAll() {
-    return Object.values(this.state.items);
+    Vue.delete(this.state.items, viewId);
   }
 
   /**
@@ -112,14 +106,14 @@ export class DraggableWindowManager {
       throw new Error(`A draggable window with id ${viewId} has already been registered.`);
     }
 
-    this.state.items[viewId] = {
+    Vue.set(this.state.items, viewId, {
       id: viewId,
       ...draggableWindow,
       zIndex:
         draggableWindow.zIndex ||
         draggableWindowHighestIndex -
         Object.keys(this.state.items).length,
-    };
+    });
   }
 
 
@@ -135,8 +129,7 @@ export class DraggableWindowManager {
 
     // Set other windows to back by one each.
     Object.keys(this.state.items)
-      .sort((keyA, keyB) => this.state.items[keyB].zIndex -
-        this.state.items[keyA].zIndex)
+      .sort((keyA, keyB) => this.state.items[keyB].zIndex - this.state.items[keyA].zIndex)
       .filter((id) => { return id !== draggableWindow.id; })
       .forEach((id, i) => {
         const zIndex = this.state.draggableWindowHighestIndex - (i + 1);
@@ -167,17 +160,17 @@ export class DraggableWindowManager {
     view.visible = !view.visible;
     // When it is visible, bring it to top, otherwise send it to back.
     if (view.visible) {
-      this.state.items[viewId] = {
+      Vue.set(this.state.items, viewId, {
         ...view,
         zIndex: draggableWindowHighestIndex,
-      };
+      });
     } else {
-      this.state.items[viewId] = {
+      Vue.set(this.state.items, viewId, {
         ...view,
         zIndex:
           draggableWindowHighestIndex -
           Object.keys(this.state.items).length + 1,
-      };
+      });
     }
   }
 }
