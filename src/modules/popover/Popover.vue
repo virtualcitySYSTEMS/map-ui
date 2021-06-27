@@ -2,7 +2,7 @@
 <template>
   <div>
     <div
-      v-for="(popover, i) in popovers"
+      v-for="(popover, i) in popoverManager.state.items"
       :key="i"
     >
       <div
@@ -60,7 +60,7 @@
     name: 'VcsPopover',
     directives: { ClickOutside },
     props: {
-      popovers: {
+      popoverManager: {
         type: Object,
         required: true,
       },

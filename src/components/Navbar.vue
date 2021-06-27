@@ -13,6 +13,17 @@
                 @click.native="setMap(map.name)"
                 :value="mapState.activeMap === map.className"
               />
+              <NavbarDivider />
+              <Button
+                :icon="'$vcsLayers'"
+                @click.native="toggleDraggableWindow('layer-tree')"
+                :value="draggableWindows['layer-tree'] && draggableWindows['layer-tree'].visible"
+              />
+              <Button
+                :icon="'$$vcsComponents'"
+                @click.native="toggleDraggableWindow('components')"
+                :value="draggableWindows['components'] && draggableWindows['components'].visible"
+              />
             </div>
           </v-toolbar-items>
         </v-col>
@@ -30,14 +41,15 @@
   import Vue from 'vue';
 
   import Button from '@vcsuite/uicomponents/Button.vue';
-  import VueCompositionAPI, { inject, reactive } from '@vue/composition-api';
+  import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
+  import VueCompositionAPI, { inject } from '@vue/composition-api';
 
   Vue.use(VueCompositionAPI);
 
 
   export default Vue.extend({
     name: 'VcsNavbar',
-    components: { Button },
+    components: { Button, NavbarDivider },
     props: {
       mapId: {
         type: String,
@@ -46,6 +58,7 @@
     },
     setup(props, ctx) {
       const mapState = inject('mapState');
+      const draggableWindowManager = inject('draggableWindowManager');
 
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
@@ -63,11 +76,17 @@
         context.maps.setActiveMap(mapName);
       };
 
+      const toggleDraggableWindow = (viewId) => {
+        draggableWindowManager.toggleViewVisible(viewId);
+      };
+
       return {
         iconMap,
         setMap,
         maps: mapState.maps,
         mapState,
+        toggleDraggableWindow,
+        draggableWindows: draggableWindowManager.state.items,
       };
     },
   });

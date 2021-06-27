@@ -21,6 +21,11 @@ const draggableWindowHighestIndex = 50;
  * @property {number} xMax
  */
 
+const defaultPosition = {
+  x: 0,
+  y: 48,
+};
+
 /**
  * @typedef DraggableWindowState
  * @property {Object.<string, DraggableWindow>} items
@@ -36,11 +41,21 @@ const initialState = {
       id: DraggableWindowId.LayerTree,
       component: LayerTree,
       width: 320,
-      x: 0,
-      y: 56,
       header: 'layer-tree.title',
       icon: '$vcsLayers',
       xMax: window.innerWidth,
+      ...defaultPosition,
+    },
+    [DraggableWindowId.Components]: {
+      visible: false,
+      zIndex: 49,
+      id: DraggableWindowId.Components,
+      component: LayerTree,
+      width: 320,
+      header: 'components.title',
+      icon: '$vcsLayers',
+      xMax: window.innerWidth,
+      ...defaultPosition,
     },
   },
   draggableWindowHighestIndex,
@@ -88,9 +103,29 @@ export class DraggableWindowManager {
 
   /**
    * @param {string | number} viewId
+   * @description
+   * when this method is called the window needs to be re-registered in order to be shown again.
+   * Use this only to destroy a window, for hiding it call toggleViewVisible
    */
   remove(viewId) {
     Vue.delete(this.state.items, viewId);
+  }
+
+  /**
+   * @param {string} viewId
+   * @param {Object} coordinates
+   */
+  setCoordinates(viewId, coordinates) {
+    this.checkIfViewRegistered(viewId);
+
+    const draggableWindow = this.get(viewId);
+
+    const updatedWindow = {
+      ...draggableWindow,
+      ...coordinates,
+    };
+
+    Vue.set(this.state.items, draggableWindow.id, updatedWindow);
   }
 
   /**
@@ -106,24 +141,26 @@ export class DraggableWindowManager {
       throw new Error(`A draggable window with id ${viewId} has already been registered.`);
     }
 
-    Vue.set(this.state.items, viewId, {
+    const updatedWindow = {
       id: viewId,
       ...draggableWindow,
       zIndex:
         draggableWindow.zIndex ||
         draggableWindowHighestIndex -
         Object.keys(this.state.items).length,
-    });
+    };
+
+    Vue.set(this.state.items, viewId, updatedWindow);
   }
 
 
   /**
-   * @param {DraggableWindow} draggableWindow
+   * @param {string} viewId
    */
-  bringViewToTop(draggableWindow) {
-    if (draggableWindow.zIndex === this.state.draggableWindowHighestIndex) {
-      return;
-    }
+  bringViewToTop(viewId) {
+    const draggableWindow = this.get(viewId);
+
+    this.checkIfViewRegistered(viewId);
 
     draggableWindow.zIndex = this.state.draggableWindowHighestIndex;
 
@@ -138,11 +175,10 @@ export class DraggableWindowManager {
   }
 
   /**
-   * @param {DraggableWindow} draggableWindow
    * @param {string} viewId
    */
-  checkIfViewRegistered = (draggableWindow, viewId) => {
-    if (!draggableWindow || !this.has(viewId)) {
+  checkIfViewRegistered = (viewId) => {
+    if (!this.has(viewId)) {
       throw new Error(
         `DraggableWindow with id '${viewId}' has not been registered!`,
       );
@@ -155,7 +191,7 @@ export class DraggableWindowManager {
   toggleViewVisible(viewId) {
     const view = this.get(viewId);
 
-    this.checkIfViewRegistered(view, viewId);
+    this.checkIfViewRegistered(viewId);
 
     view.visible = !view.visible;
     // When it is visible, bring it to top, otherwise send it to back.
@@ -164,12 +200,24 @@ export class DraggableWindowManager {
         ...view,
         zIndex: draggableWindowHighestIndex,
       });
+
+      Object.values(this.state.items).forEach((v) => {
+        if (v.x === defaultPosition.x && v.y === defaultPosition.y && v.id !== viewId) {
+          Vue.set(this.state.items, v.id, {
+            ...v,
+            visible: false,
+          });
+        }
+      });
+
+      this.bringViewToTop(viewId);
     } else {
       Vue.set(this.state.items, viewId, {
         ...view,
         zIndex:
           draggableWindowHighestIndex -
           Object.keys(this.state.items).length + 1,
+        ...defaultPosition,
       });
     }
   }

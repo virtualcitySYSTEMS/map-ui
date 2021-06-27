@@ -4,7 +4,7 @@
     <Map :map-id="mapId" :config="config" />
 
     <DraggableWindow :draggable-window-manager="draggableWindowManager" :popover-manager="popoverManager" />
-    <Popover :popovers="popovers" />
+    <Popover :popover-manager="popoverManager" />
   </v-sheet>
 </template>
 
@@ -24,6 +24,7 @@
   import Map from './Map.vue';
 
   Vue.use(VueCompositionApi);
+
   export default Vue.extend({
     components: {
       Navbar,
@@ -34,23 +35,22 @@
     setup() {
       const id = uuid();
 
-      const popoverManager = new PopoverManager();
-      provide('popoverManager', popoverManager);
-      const draggableWindowManager = new DraggableWindowManager();
-      provide('draggableWindowManager', draggableWindowManager);
-
       createVcsApp();
 
       const firstApp = Array.from(window.vcs.apps.keys())[0];
       const context = getContextById(firstApp);
       provide('context', context);
 
+      const popoverManager = new PopoverManager();
+      provide('popoverManager', popoverManager);
+      const draggableWindowManager = new DraggableWindowManager();
+      provide('draggableWindowManager', draggableWindowManager);
+
 
       return {
         mapId: `mapCollection-${id}`,
         config,
         draggableWindowManager,
-        popovers: popoverManager.state.items,
         popoverManager,
       };
     },

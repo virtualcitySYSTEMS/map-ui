@@ -6,7 +6,7 @@
       :key="draggableWindow.id"
       :id="draggableWindow.id"
       class="vsc-draggable-window v-sheet elevation-3 position-absolute"
-      @click="bringViewToTop(draggableWindow)"
+      @click="bringViewToTop(draggableWindow.id)"
       :class="[draggableWindow.visible ? 'd-inline-block' : 'd-none']"
       :style="{
         zIndex: draggableWindow.zIndex,
@@ -53,7 +53,6 @@
           'rounded-bl': draggableWindow.x > 0,
         }"
       >
-        <slot />
         <component
           :is="draggableWindow.component"
         />
@@ -122,7 +121,7 @@
       const { draggableWindowManager } = props;
       const { draggableWindowHighestIndex } = draggableWindowManager.state;
       const draggableWindowRefs = ref([]);
-      const bringViewToTop = view => draggableWindowManager.bringViewToTop(view);
+      const bringViewToTop = viewId => draggableWindowManager.bringViewToTop(viewId);
 
       onBeforeUpdate(() => {
         draggableWindowRefs.value = [];
@@ -131,11 +130,10 @@
 
       const draggableWindowContent = ref();
       const contentHeight = ref(0);
-      const zIndexMax = draggableWindowHighestIndex;
       const windowWidth = computed(() => window.innerWidth);
 
       const close = (viewId) => {
-        draggableWindowManager.remove(viewId);
+        draggableWindowManager.toggleViewVisible(viewId);
       };
 
       const destroy$ = new Subject();
@@ -148,8 +146,6 @@
         .subscribe();
 
       const getSubscriptionsForWindow = (draggableWindowRef) => {
-        const draggableWindow = draggableWindowManager.get(draggableWindowRef.id);
-
         const dragSubscription = () => {
           fromEvent(draggableWindowRef, 'dragstart')
             .pipe(
@@ -185,10 +181,14 @@
                       };
                     }),
                     tap(({ targetWidth, targetHeight, top, left }) => {
-                      draggableWindow.x = clipX({ width: targetWidth, offsetX: left });
-                      draggableWindow.y = clipY({ height: targetHeight, offsetY: top });
+                      const coordinates = {
+                        x: clipX({ width: targetWidth, offsetX: left }),
+                        y: clipY({ height: targetHeight, offsetY: top }),
+                      };
 
-                      bringViewToTop(draggableWindow);
+                      draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
+                      draggableWindowManager.bringViewToTop(draggableWindowRef.id);
+
                       nextTick(() => {
                         props.popoverManager.updateCoordinates();
                       });
@@ -211,8 +211,13 @@
                 const { innerWidth, innerHeight } = window;
                 const { x, y, width, height } = draggableWindowRef.getBoundingClientRect();
                 if (width + x > innerWidth || height + y > innerHeight) {
-                  draggableWindow.x = clipX({ width, offsetX: draggableWindow.x });
-                  draggableWindow.y = clipY({ height, offsetY: draggableWindow.y });
+                  const draggableWindow = draggableWindowManager.get(draggableWindowRef.id);
+                  const coordinates = {
+                    x: clipX({ width, offsetX: draggableWindow.x }),
+                    y: clipY({ height, offsetY: draggableWindow.y }),
+                  };
+
+                  draggableWindowManager.setCoordinates(draggableWindow, coordinates);
                 }
               }
             }),
@@ -242,14 +247,13 @@
         destroy$.unsubscribe();
       });
 
-
       return {
         windowWidth,
         contentHeight,
         draggableWindowContent,
         draggableWindows,
         draggableWindowRefs,
-        zIndexMax,
+        zIndexMax: draggableWindowHighestIndex,
         close,
         bringViewToTop,
       };

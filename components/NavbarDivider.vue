@@ -1,7 +1,7 @@
 <template>
   <v-divider
     vertical
-    :style="{ maxHeight: `${height}px`, minHeight: `${height}px` }"
+    :style="{ maxHeight: `${height}px`, minHeight: `${height}px`, alignSelf: 'auto' }"
   />
 </template>
 
