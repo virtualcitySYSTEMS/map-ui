@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { markRaw, shallowReactive } from '@vue/composition-api';
+import { shallowReactive } from '@vue/composition-api';
 import { check } from '@vcsuite/check';
 import { VcsClassRegistry } from '@vcmap/core';
 import { getContextById } from '@/context';
@@ -36,6 +36,10 @@ class AbstractTreeNode {
 
   get children() {
     return this.items;
+  }
+
+  get leaf() {
+    return !this.items.length;
   }
 
   /**

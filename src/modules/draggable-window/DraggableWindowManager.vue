@@ -54,7 +54,7 @@
         }"
         :class="{
           'rounded-br': parseInt(draggableWindow.position.top, 10) > 0
-            && draggableWindow.x < (windowWidth - draggableWindow.width),
+            && parseInt(draggableWindow.position.left, 10) < (windowWidth - draggableWindow.width),
           'rounded-bl': parseInt(draggableWindow.position.left, 10) > 0,
         }"
       >

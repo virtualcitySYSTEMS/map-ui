@@ -19,7 +19,7 @@
       @input="handleInput"
       :filter="handleFilter"
       @update:open="handleUpdateOpen"
-      :open="open"
+      :open="_open"
     >
       <template v-slot:label="{ item }">
         <component
@@ -27,10 +27,11 @@
           :key="component"
           :is="component"
           :item="item"
+          :id="item.id"
           :selectable="selectable"
-          class="cursor-pointer"
+          :class="[((!item.leaf || (item.leaf && selectable)) ? 'cursor-pointer' : '')]"
           @action-clicked="handleActionClicked"
-          @click.native="() => handleNodeClick(item.id)"
+          @click.native="handleNodeClick(item)"
         />
       </template>
     </v-treeview>
@@ -233,6 +234,10 @@
         type: Boolean,
         default: false,
       },
+      value: {
+        type: Array,
+        default: () => ([]),
+      },
       open: {
         type: Array,
         default: () => ([]),
@@ -242,15 +247,27 @@
       const search = ref('');
       const availableComponents = ref(['TreeviewLeaf']);
       const language = inject('language');
-      const { open } = props;
       /**
-       * @function
+       * @typedef props
+       * @property {boolean} selectable
+       * @property {string[]} open
+       * @property {string[]} value
+       */
+      /** @type {props} */
+      const { open, value, selectable } = props;
+      // eslint-disable-next-line no-underscore-dangle
+      const _open = ref(open);
+      /**
        * @param {Array<string | Object>} input
        * @returns {void}
        */
       const handleInput = input => context.emit('input', input);
       const handleActionClicked = input => context.emit('action-clicked', input);
-      const handleUpdateOpen = openItems => context.emit('update:open', openItems);
+      /** @param {string[]} openItems */
+      const handleUpdateOpen = (openItems) => {
+        context.emit('update:open', openItems);
+        _open.value = openItems;
+      };
       const handleFilter = (treeNode, q = '') => {
         if (typeof treeNode.title === 'string') {
           return treeNode.title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
@@ -261,12 +278,33 @@
         }
         return false;
       };
-      const handleNodeClick = (id) => {
-        const index = open.indexOf(id);
-        if (index < 0) {
-          return open.push(id);
+      /**
+       * @param {Object} obj
+       * @param {boolean} obj.leaf
+       * @param {string | number} obj.id
+       */
+      const handleNodeClick = ({ leaf, id }) => {
+        if (!leaf) {
+          const openIndex = value.indexOf(id);
+          const newValue = [...value];
+          if (openIndex < 0) {
+            newValue.push(id);
+          } else {
+            newValue.splice(openIndex, 1);
+          }
+          context.emit('input', newValue);
         }
-        return open.splice(index, 1);
+        if (selectable) {
+          const selectedIndex = _open.value.indexOf(id);
+          const newOpen = [..._open.value];
+          if (selectedIndex < 0) {
+            newOpen.push(id);
+          } else {
+            newOpen.splice(selectedIndex, 1);
+          }
+          _open.value = newOpen;
+          context.emit('open', newOpen);
+        }
       };
       return {
         search,
@@ -276,6 +314,7 @@
         handleUpdateOpen,
         handleFilter,
         handleNodeClick,
+        _open,
       };
     },
   });
