@@ -124,20 +124,18 @@ export class DraggableWindowManager {
   }
 
   /**
-   * @param {string} viewId
    * @param {DraggableWindow} draggableWindow
    */
-  add(viewId, draggableWindow) {
-    if (!viewId) {
-      throw new Error(`A draggable window must have an id, got: ${viewId}.`);
+  add(draggableWindow) {
+    if (!draggableWindow.id) {
+      throw new Error(`A draggable window must have an id, got: ${draggableWindow.id}.`);
     }
 
-    if (this.state.items[viewId]) {
-      throw new Error(`A draggable window with id ${viewId} has already been registered.`);
+    if (this.state.items[draggableWindow.id]) {
+      throw new Error(`A draggable window with id ${draggableWindow.id} has already been registered.`);
     }
 
     const updatedWindow = {
-      id: viewId,
       ...draggableWindow,
       zIndex:
         draggableWindow.zIndex ||
@@ -145,7 +143,7 @@ export class DraggableWindowManager {
         Object.keys(this.state.items).length,
     };
 
-    Vue.set(this.state.items, viewId, updatedWindow);
+    Vue.set(this.state.items, draggableWindow.id, updatedWindow);
   }
 
 
@@ -180,6 +178,21 @@ export class DraggableWindowManager {
     }
   };
 
+  hideWindowsInDefaultPosition(viewId) {
+    Object.values(this.state.items).forEach((v) => {
+      if (
+        parseInt(v.position.left, 10) === parseInt(this.state.items[viewId].defaultPosition.left, 10) &&
+        parseInt(v.position.top, 10) === parseInt(this.state.items[viewId].defaultPosition.top, 10) &&
+        v.id !== this.state.items[viewId].id
+      ) {
+        Vue.set(this.state.items, v.id, {
+          ...v,
+          visible: false,
+        });
+      }
+    });
+  }
+
   /**
    * @param {string} viewId
    */
@@ -196,18 +209,7 @@ export class DraggableWindowManager {
         zIndex: draggableWindowHighestIndex,
       });
 
-      Object.values(this.state.items).forEach((v) => {
-        if (
-          parseInt(v.position.left, 10) === parseInt(this.state.items[viewId].defaultPosition.left, 10) &&
-          parseInt(v.position.top, 10) === parseInt(this.state.items[viewId].defaultPosition.top, 10) &&
-          v.id !== this.state.items[viewId].id
-        ) {
-          Vue.set(this.state.items, v.id, {
-            ...v,
-            visible: false,
-          });
-        }
-      });
+      this.hideWindosInDefaultPosition(viewId);
 
       this.bringViewToTop(viewId);
     } else {

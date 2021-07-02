@@ -85,17 +85,17 @@
     setup() {
       const mapState = inject('mapState');
       const draggableWindowManager = inject('draggableWindowManager');
-      draggableWindowManager.add(layerTree.id, layerTree);
-      draggableWindowManager.add(components.id, components);
+      const context = inject('context');
+
+      draggableWindowManager.add(layerTree);
+      draggableWindowManager.add(components);
 
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
         'vcs.vcm.maps.Cesium': '$vcs3d',
         'vcs.vcm.maps.Oblique': '$vcsObliqueView',
       };
-      const context = inject('context');
       /**
-       * @function
        * @param {string} mapName
        * @description
        * Sets the current map type
@@ -104,6 +104,9 @@
         context.maps.setActiveMap(mapName);
       };
 
+      /**
+       * @param {string} viewId
+       */
       const toggleDraggableWindow = (viewId) => {
         draggableWindowManager.toggleViewVisible(viewId);
       };
