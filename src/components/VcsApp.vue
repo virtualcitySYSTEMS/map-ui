@@ -3,8 +3,8 @@
     <Navbar :map-id="mapId" />
     <Map :map-id="mapId" :config="config" />
 
-    <DraggableWindow :draggable-window-manager="draggableWindowManager" :popover-manager="popoverManager" />
-    <Popover :popover-manager="popoverManager" />
+    <DraggableWindow />
+    <Popover />
   </v-sheet>
 </template>
 
@@ -50,8 +50,6 @@
       return {
         mapId: `mapCollection-${id}`,
         config,
-        draggableWindowManager,
-        popoverManager,
       };
     },
     provide() {

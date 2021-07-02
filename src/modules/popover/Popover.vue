@@ -30,7 +30,7 @@
 <script>
   import Vue from 'vue';
   import ClickOutside from 'vue-click-outside';
-  import VueCompositionAPI from '@vue/composition-api';
+  import VueCompositionAPI, { inject } from '@vue/composition-api';
 
   Vue.use(VueCompositionAPI);
 
@@ -59,11 +59,12 @@
   export default Vue.extend({
     name: 'VcsPopover',
     directives: { ClickOutside },
-    props: {
-      popoverManager: {
-        type: Object,
-        required: true,
-      },
+    setup() {
+      const popoverManager = inject('popoverManager');
+
+      return {
+        popoverManager,
+      };
     },
   });
 </script>

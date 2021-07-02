@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="(draggableWindow) in draggableWindows"
+      v-for="draggableWindow in draggableWindows"
       :ref="'draggableWindows'"
       :key="draggableWindow.id"
       :id="draggableWindow.id"
@@ -15,7 +15,6 @@
       }"
     >
       <v-sheet
-        ref="draggable-window__header"
         class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
         :style="{
           width: `${draggableWindow.width}px`,
@@ -44,7 +43,6 @@
 
       <v-sheet
         class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden position-absolute w-full"
-        ref="draggableWindowContent"
         :style="{
           width: `${draggableWindow.width}px`
         }"
@@ -79,6 +77,7 @@
     onUnmounted,
     ref,
     nextTick,
+    inject,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
   import {
@@ -107,36 +106,30 @@
    */
   export default defineComponent({
     name: 'VcsDraggableWindow',
-    props: {
-      draggableWindowManager: {
-        type: Object,
-        required: true,
-      },
-      popoverManager: {
-        type: Object,
-        required: true,
-      },
-    },
     setup(props, context) {
-      const { draggableWindowManager } = props;
+      const destroy$ = new Subject();
+      const draggableWindowManager = inject('draggableWindowManager');
+      const popoverManager = inject('popoverManager');
       const { draggableWindowHighestIndex } = draggableWindowManager.state;
+      const draggableWindows = draggableWindowManager.state.items;
       const draggableWindowRefs = ref([]);
+      const contentHeight = ref(0);
+      const windowWidth = computed(() => window.innerWidth);
+      /**
+       * @param {string} viewId
+       * @returns {void}
+       */
       const bringViewToTop = viewId => draggableWindowManager.bringViewToTop(viewId);
+      /**
+       * @param {string} viewId
+       * @returns {void}
+       */
+      const close = viewId => draggableWindowManager.toggleViewVisible(viewId);
 
       onBeforeUpdate(() => {
         draggableWindowRefs.value = [];
       });
 
-
-      const draggableWindowContent = ref();
-      const contentHeight = ref(0);
-      const windowWidth = computed(() => window.innerWidth);
-
-      const close = (viewId) => {
-        draggableWindowManager.toggleViewVisible(viewId);
-      };
-
-      const destroy$ = new Subject();
 
       fromEvent(document.body, 'dragover')
         .pipe(
@@ -145,65 +138,64 @@
         )
         .subscribe();
 
-      const getSubscriptionsForWindow = (draggableWindowRef) => {
-        const dragSubscription = () => {
-          fromEvent(draggableWindowRef, 'dragstart')
-            .pipe(
-              filter(
-                startEvent => !!startEvent.target.classList &&
-                  !startEvent.target.classList.contains('sortable-drag'),
-              ),
-              switchMap((startEvent) => {
-                const style = window.getComputedStyle(
-                  draggableWindowRef,
-                  undefined,
+      /**
+       * @param {HTMLElement} draggableWindowRef
+       */
+      const subscribeToWindowChanges = (draggableWindowRef) => {
+        fromEvent(draggableWindowRef, 'dragstart')
+          .pipe(
+            filter(
+              startEvent => !!startEvent.target.classList &&
+                !startEvent.target.classList.contains('sortable-drag'),
+            ),
+            switchMap((startEvent) => {
+              const style = window.getComputedStyle(
+                draggableWindowRef,
+                undefined,
+              );
+              const startLeft =
+                parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
+              const startTop =
+                parseInt(style.getPropertyValue('top'), 10) - startEvent.clientY;
+
+              // set dataTransfer for Firefox
+              startEvent.dataTransfer.setData('text/html', '');
+              const element = startEvent.target;
+
+              if (element && element.getBoundingClientRect) {
+                const { width, height } = element.getBoundingClientRect();
+
+                return fromEvent(document.body, 'drop').pipe(
+                  take(1),
+                  map((dropEvent) => {
+                    return {
+                      left: startLeft + dropEvent.clientX,
+                      top: startTop + dropEvent.clientY,
+                      targetWidth: width,
+                      targetHeight: height,
+                    };
+                  }),
+                  tap(({ targetWidth, targetHeight, top, left }) => {
+                    const coordinates = {
+                      x: clipX({ width: targetWidth, offsetX: left }),
+                      y: clipY({ height: targetHeight, offsetY: top }),
+                    };
+
+                    draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
+                    draggableWindowManager.bringViewToTop(draggableWindowRef.id);
+
+                    nextTick(() => popoverManager.updateCoordinates());
+                  }),
+                  takeUntil(destroy$),
                 );
-                const startLeft =
-                  parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
-                const startTop =
-                  parseInt(style.getPropertyValue('top'), 10) - startEvent.clientY;
+              }
 
-                // set dataTransfer for Firefox
-                startEvent.dataTransfer.setData('text/html', '');
-                const element = startEvent.target;
+              return of();
+            }),
+          )
+          .subscribe();
 
-                if (element && element.getBoundingClientRect) {
-                  const { width, height } = element.getBoundingClientRect();
-
-                  return fromEvent(document.body, 'drop').pipe(
-                    take(1),
-                    map((dropEvent) => {
-                      return {
-                        left: startLeft + dropEvent.clientX,
-                        top: startTop + dropEvent.clientY,
-                        targetWidth: width,
-                        targetHeight: height,
-                      };
-                    }),
-                    tap(({ targetWidth, targetHeight, top, left }) => {
-                      const coordinates = {
-                        x: clipX({ width: targetWidth, offsetX: left }),
-                        y: clipY({ height: targetHeight, offsetY: top }),
-                      };
-
-                      draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
-                      draggableWindowManager.bringViewToTop(draggableWindowRef.id);
-
-                      nextTick(() => {
-                        props.popoverManager.updateCoordinates();
-                      });
-                    }),
-                    takeUntil(destroy$),
-                  );
-                }
-
-                return of();
-              }),
-            )
-            .subscribe();
-        };
-
-        const resizeSubscription = () => fromEvent(window, 'resize')
+        fromEvent(window, 'resize')
           .pipe(
             debounceTime(500),
             tap(() => {
@@ -217,19 +209,14 @@
                     y: clipY({ height, offsetY: draggableWindow.y }),
                   };
 
-                  draggableWindowManager.setCoordinates(draggableWindow, coordinates);
+                  draggableWindowManager.setCoordinates(draggableWindow.id, coordinates);
                 }
               }
             }),
             takeUntil(destroy$),
           )
           .subscribe();
-
-
-        dragSubscription();
-        resizeSubscription();
       };
-      const draggableWindows = draggableWindowManager.state.items;
 
       onMounted(() => {
         /**
@@ -239,7 +226,7 @@
          * This needs to be refactored to use ref setter functions aas soon as migrated to v3.
          */
         context.refs.draggableWindows
-          .forEach(draggableWindowRef => getSubscriptionsForWindow(draggableWindowRef));
+          .forEach(draggableWindowRef => subscribeToWindowChanges(draggableWindowRef));
       });
 
       onUnmounted(() => {
@@ -250,7 +237,6 @@
       return {
         windowWidth,
         contentHeight,
-        draggableWindowContent,
         draggableWindows,
         draggableWindowRefs,
         zIndexMax: draggableWindowHighestIndex,
