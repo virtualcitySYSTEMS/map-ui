@@ -18,7 +18,7 @@
       <Badge v-if="item.hasUpdate" class="update-badge position-absolute" />
     </div>
 
-    <span class="ml-auto d-flex flex-row justify-center align-center">
+    <span v-if="firstTwo && firstTwo.length" class="ml-auto d-flex flex-row justify-center align-center">
       <v-icon
         v-for="action of firstTwo"
         :key="action.title"

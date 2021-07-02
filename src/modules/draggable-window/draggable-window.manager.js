@@ -17,7 +17,6 @@ const draggableWindowHighestIndex = 50;
 /**
  * @typedef DraggableWindow
  * @property {boolean} visible
- * @property {number} zIndex
  * @property {string | number} id
  * @property {string | VueComponent} component
  * @property {number} width
@@ -47,12 +46,14 @@ export const DRAGGABLE_WINDOW_POSITIONS = {
 /**
  * @typedef DraggableWindowState
  * @property {Object.<string, DraggableWindow>} items
+ * @property {Object.<string, number>} zIndexMap
  * @property {number} draggableWindowHighestIndex
  */
 
 /** @constant {DraggableWindowState} initialState */
 const initialState = {
   items: {},
+  zIndexMap: {},
   draggableWindowHighestIndex,
 };
 
@@ -135,15 +136,12 @@ export class DraggableWindowManager {
       throw new Error(`A draggable window with id ${draggableWindow.id} has already been registered.`);
     }
 
-    const updatedWindow = {
-      ...draggableWindow,
-      zIndex:
-        draggableWindow.zIndex ||
-        draggableWindowHighestIndex -
-        Object.keys(this.state.items).length,
-    };
+    const updatedZIndex = this.state.zIndexMap[draggableWindow.id] ||
+      draggableWindowHighestIndex -
+      Object.keys(this.state.items).length;
 
-    Vue.set(this.state.items, draggableWindow.id, updatedWindow);
+    Vue.set(this.state.items, draggableWindow.id, draggableWindow);
+    Vue.set(this.state.zIndexMap, draggableWindow.id, updatedZIndex);
   }
 
 
@@ -151,19 +149,17 @@ export class DraggableWindowManager {
    * @param {string} viewId
    */
   bringViewToTop(viewId) {
-    const draggableWindow = this.get(viewId);
-
     this.checkIfViewRegistered(viewId);
 
-    draggableWindow.zIndex = this.state.draggableWindowHighestIndex;
+    Vue.set(this.state.zIndexMap, viewId, this.state.draggableWindowHighestIndex);
 
     // Set other windows to back by one each.
     Object.keys(this.state.items)
-      .sort((keyA, keyB) => this.state.items[keyB].zIndex - this.state.items[keyA].zIndex)
-      .filter((id) => { return id !== draggableWindow.id; })
+      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+      .filter(id => id !== viewId)
       .forEach((id, i) => {
         const zIndex = this.state.draggableWindowHighestIndex - (i + 1);
-        this.state.items[id].zIndex = zIndex;
+        Vue.set(this.state.zIndexMap, id, zIndex);
       });
   }
 
@@ -204,21 +200,17 @@ export class DraggableWindowManager {
     view.visible = !view.visible;
     // When it is visible, bring it to top, otherwise send it to back.
     if (view.visible) {
-      Vue.set(this.state.items, viewId, {
-        ...view,
-        zIndex: draggableWindowHighestIndex,
-      });
+      Vue.set(this.state.items, viewId, { ...view });
+      Vue.set(this.state.zIndexMap, viewId, draggableWindowHighestIndex);
 
-      this.hideWindosInDefaultPosition(viewId);
-
+      this.hideWindowsInDefaultPosition(viewId);
       this.bringViewToTop(viewId);
     } else {
+      const updatedZIndex = draggableWindowHighestIndex - Object.keys(this.state.items).length + 1;
+      Vue.set(this.state.zIndexMap, viewId, updatedZIndex);
       Vue.set(this.state.items, viewId, {
         ...view,
         position: view.defaultPosition,
-        zIndex:
-          draggableWindowHighestIndex -
-          Object.keys(this.state.items).length + 1,
       });
     }
   }

@@ -9,7 +9,7 @@
       @click="bringViewToTop(draggableWindow.id)"
       :class="[draggableWindow.visible ? 'd-inline-block' : 'd-none']"
       :style="{
-        zIndex: draggableWindow.zIndex,
+        zIndex: zIndexMap[draggableWindow.id],
         left: draggableWindow.position.left,
         top: draggableWindow.position.top,
         right: draggableWindow.position.right,
@@ -22,7 +22,7 @@
           width: `${draggableWindow.width}px`,
         }"
         :class="{
-          'grey--text': draggableWindow.zIndex < zIndexMax,
+          'grey--text': zIndexMap[draggableWindow.id] < zIndexMax,
           'rounded-tl': parseInt(draggableWindow.position.top, 10) > 48
             && parseInt(draggableWindow.position.left, 10) > 0,
           'rounded-tr': parseInt(draggableWindow.position.top, 10) > 48
@@ -99,23 +99,13 @@
 
   Vue.use(VueCompositionAPI);
 
-  /**
-   * @vue-prop {number} x - Initial x-axis position of the window
-   * @vue-prop {number} y - Initial y-axis position of the window
-   * @vue-prop {number} width - Width of the window in pixels
-   * @vue-prop {string} viewId - Unique id for the window. Should be provided by store
-   * @vue-prop {number} zIndex - Z-Index for the window. Should be provided by store
-   * @vue-prop {string} icon - Name of Icon which should be shown in top left corner
-   * @vue-prop {string} header - Title of the window
-   * @vue-prop {string | VueComponent } component - Component which will be displayed
-   */
   export default defineComponent({
     name: 'VcsDraggableWindowManager',
     setup(props, context) {
       const destroy$ = new Subject();
       const draggableWindowManager = inject('draggableWindowManager');
       const popoverManager = inject('popoverManager');
-      const { draggableWindowHighestIndex } = draggableWindowManager.state;
+      const { draggableWindowHighestIndex, zIndexMap } = draggableWindowManager.state;
       const draggableWindows = draggableWindowManager.state.items;
       const draggableWindowRefs = ref([]);
       const contentHeight = ref(0);
@@ -245,6 +235,7 @@
         draggableWindows,
         draggableWindowRefs,
         zIndexMax: draggableWindowHighestIndex,
+        zIndexMap,
         close,
         bringViewToTop,
       };
