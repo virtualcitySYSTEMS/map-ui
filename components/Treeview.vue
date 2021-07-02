@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-contents">
     <TreeviewSearchbar
       v-if="hasSearchbar"
       :placeholder="searchbarPlaceholder"
@@ -29,7 +29,7 @@
           :item="item"
           :id="item.id"
           :selectable="selectable"
-          :class="[((!item.leaf || (item.leaf && selectable)) ? 'cursor-pointer' : '')]"
+          :class="[(!item.leaf || (item.leaf && selectable)) ? 'cursor-pointer' : '']"
           @action-clicked="handleActionClicked"
           @click.native="handleNodeClick(item)"
         />
@@ -205,6 +205,9 @@
    * @vue-prop {boolean} topLevelSelectable   - Whether it should be possible to select branch roots
    * @vue-event {string} action-clicked       - When an action icon is clicked
    * @vue-event {string} menu-item-clicked    - When a menu item is clicked
+   * @vue-prop {boolean} selectable           - Whether it should be possible to select items
+   * @vue-event {string[]} value              - List of ids of selected items
+   * @vue-event {string[]} open               - List of ids of open items
    */
   export default Vue.extend({
     name: 'VcsTreeview',
@@ -225,10 +228,6 @@
       topLevelSelectable: {
         type: Boolean,
         default: false,
-      },
-      nameKey: {
-        type: String,
-        default: undefined,
       },
       selectable: {
         type: Boolean,
