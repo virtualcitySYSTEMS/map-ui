@@ -17,6 +17,7 @@
       }"
     >
       <v-sheet
+        v-if="draggableWindow.visible"
         class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
         :style="{
           width: `${draggableWindow.width}px`,
@@ -47,6 +48,7 @@
 
       <v-sheet
         class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
+        v-if="draggableWindow.visible"
         :style="{
           width: `${draggableWindow.width}px`
         }"
