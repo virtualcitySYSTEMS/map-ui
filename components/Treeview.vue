@@ -19,6 +19,7 @@
       @input="handleInput"
       :filter="handleFilter"
       @update:open="handleUpdateOpen"
+      :open="open"
     >
       <template v-slot:label="{ item }">
         <component
@@ -27,7 +28,9 @@
           :is="component"
           :item="item"
           :selectable="selectable"
+          class="cursor-pointer"
           @action-clicked="handleActionClicked"
+          @click.native="() => handleNodeClick(item.id)"
         />
       </template>
     </v-treeview>
@@ -230,11 +233,16 @@
         type: Boolean,
         default: false,
       },
+      open: {
+        type: Array,
+        default: () => ([]),
+      },
     },
     setup(props, context) {
       const search = ref('');
       const availableComponents = ref(['TreeviewLeaf']);
       const language = inject('language');
+      const { open } = props;
       /**
        * @function
        * @param {Array<string | Object>} input
@@ -253,6 +261,13 @@
         }
         return false;
       };
+      const handleNodeClick = (id) => {
+        const index = open.indexOf(id);
+        if (index < 0) {
+          return open.push(id);
+        }
+        return open.splice(index, 1);
+      };
       return {
         search,
         availableComponents,
@@ -260,6 +275,7 @@
         handleActionClicked,
         handleUpdateOpen,
         handleFilter,
+        handleNodeClick,
       };
     },
   });

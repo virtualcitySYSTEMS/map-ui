@@ -50,7 +50,6 @@
 
   const layerTree = {
     visible: true,
-    zIndex: 50,
     id: 'layer-tree',
     component: LayerTree,
     width: 320,
@@ -62,7 +61,6 @@
 
   const components = {
     visible: false,
-    zIndex: 49,
     id: 'components',
     component: LayerTree,
     width: 320,
