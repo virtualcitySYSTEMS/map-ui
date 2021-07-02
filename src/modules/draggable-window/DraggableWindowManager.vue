@@ -10,8 +10,10 @@
       :class="[draggableWindow.visible ? 'd-inline-block' : 'd-none']"
       :style="{
         zIndex: draggableWindow.zIndex,
-        left: `${draggableWindow.x}px`,
-        top: `${draggableWindow.y}px`,
+        left: draggableWindow.position.left,
+        top: draggableWindow.position.top,
+        right: draggableWindow.position.right,
+        bottom: draggableWindow.position.bottom,
       }"
     >
       <v-sheet
@@ -21,8 +23,10 @@
         }"
         :class="{
           'grey--text': draggableWindow.zIndex < zIndexMax,
-          'rounded-tl': draggableWindow.y > 48 && draggableWindow.x > 0,
-          'rounded-tr': draggableWindow.y > 48 && draggableWindow.x < (windowWidth - draggableWindow.width),
+          'rounded-tl': parseInt(draggableWindow.position.top, 10) > 48
+            && parseInt(draggableWindow.position.left, 10) > 0,
+          'rounded-tr': parseInt(draggableWindow.position.top, 10) > 48
+            && parseInt(draggableWindow.position.left, 10) < (windowWidth - draggableWindow.width),
         }"
         draggable
       >
@@ -42,13 +46,14 @@
       </v-sheet>
 
       <v-sheet
-        class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden position-absolute w-full"
+        class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
         :style="{
           width: `${draggableWindow.width}px`
         }"
         :class="{
-          'rounded-br': draggableWindow.y > 0 && draggableWindow.x < (windowWidth - draggableWindow.width),
-          'rounded-bl': draggableWindow.x > 0,
+          'rounded-br': parseInt(draggableWindow.position.top, 10) > 0
+            && draggableWindow.x < (windowWidth - draggableWindow.width),
+          'rounded-bl': parseInt(draggableWindow.position.left, 10) > 0,
         }"
       >
         <component
@@ -105,7 +110,7 @@
    * @vue-prop {string | VueComponent } component - Component which will be displayed
    */
   export default defineComponent({
-    name: 'VcsDraggableWindow',
+    name: 'VcsDraggableWindowManager',
     setup(props, context) {
       const destroy$ = new Subject();
       const draggableWindowManager = inject('draggableWindowManager');
@@ -177,8 +182,8 @@
                   }),
                   tap(({ targetWidth, targetHeight, top, left }) => {
                     const coordinates = {
-                      x: clipX({ width: targetWidth, offsetX: left }),
-                      y: clipY({ height: targetHeight, offsetY: top }),
+                      left: `${clipX({ width: targetWidth, offsetX: left })}px`,
+                      top: `${clipY({ height: targetHeight, offsetY: top })}px`,
                     };
 
                     draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
@@ -205,8 +210,8 @@
                 if (width + x > innerWidth || height + y > innerHeight) {
                   const draggableWindow = draggableWindowManager.get(draggableWindowRef.id);
                   const coordinates = {
-                    x: clipX({ width, offsetX: draggableWindow.x }),
-                    y: clipY({ height, offsetY: draggableWindow.y }),
+                    left: `${clipX({ width, offsetX: parseInt(draggableWindow.position.left, 10) })}px`,
+                    top: `${clipY({ height, offsetY: parseInt(draggableWindow.position.top, 10) })}px`,
                   };
 
                   draggableWindowManager.setCoordinates(draggableWindow.id, coordinates);

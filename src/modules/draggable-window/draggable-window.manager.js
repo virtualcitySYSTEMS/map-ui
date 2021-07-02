@@ -1,11 +1,18 @@
 /* eslint-disable import/prefer-default-export */
 
 import { reactive } from '@vue/composition-api';
-import LayerTree from '@/components/LayerTree.vue';
 import Vue from 'vue';
-import DraggableWindowId from './draggable-window-id';
 
 const draggableWindowHighestIndex = 50;
+
+
+/**
+ * @typedef Position
+ * @property {string | 0} left
+ * @property {string | 0} top
+ * @property {string | 0} right
+ * @property {string | 0} bottom
+ */
 
 /**
  * @typedef DraggableWindow
@@ -14,16 +21,27 @@ const draggableWindowHighestIndex = 50;
  * @property {string | number} id
  * @property {string | VueComponent} component
  * @property {number} width
- * @property {number} x
- * @property {number} y
+ * @property {Position} position
+ * @property {Position} defaultPosition
  * @property {string} header
  * @property {string} icon
- * @property {number} xMax
  */
 
-const defaultPosition = {
-  x: 0,
-  y: 48,
+
+/** @type {Object<string, Position>} */
+export const DRAGGABLE_WINDOW_POSITIONS = {
+  topLeft: {
+    left: 0,
+    top: '48px',
+  },
+  topRight: {
+    right: 0,
+    top: '48px',
+  },
+  bottomRight: {
+    right: 0,
+    bottom: 0,
+  },
 };
 
 /**
@@ -34,30 +52,7 @@ const defaultPosition = {
 
 /** @constant {DraggableWindowState} initialState */
 const initialState = {
-  items: {
-    [DraggableWindowId.LayerTree]: {
-      visible: true,
-      zIndex: 50,
-      id: DraggableWindowId.LayerTree,
-      component: LayerTree,
-      width: 320,
-      header: 'layer-tree.title',
-      icon: '$vcsLayers',
-      xMax: window.innerWidth,
-      ...defaultPosition,
-    },
-    [DraggableWindowId.Components]: {
-      visible: false,
-      zIndex: 49,
-      id: DraggableWindowId.Components,
-      component: LayerTree,
-      width: 320,
-      header: 'components.title',
-      icon: '$vcsLayers',
-      xMax: window.innerWidth,
-      ...defaultPosition,
-    },
-  },
+  items: {},
   draggableWindowHighestIndex,
 };
 
@@ -113,16 +108,16 @@ export class DraggableWindowManager {
 
   /**
    * @param {string} viewId
-   * @param {Object} coordinates
+   * @param {Position} position
    */
-  setCoordinates(viewId, coordinates) {
+  setCoordinates(viewId, position) {
     this.checkIfViewRegistered(viewId);
 
     const draggableWindow = this.get(viewId);
 
     const updatedWindow = {
       ...draggableWindow,
-      ...coordinates,
+      position: { ...position },
     };
 
     Vue.set(this.state.items, draggableWindow.id, updatedWindow);
@@ -202,7 +197,11 @@ export class DraggableWindowManager {
       });
 
       Object.values(this.state.items).forEach((v) => {
-        if (v.x === defaultPosition.x && v.y === defaultPosition.y && v.id !== viewId) {
+        if (
+          parseInt(v.position.left, 10) === parseInt(this.state.items[viewId].defaultPosition.left, 10) &&
+          parseInt(v.position.top, 10) === parseInt(this.state.items[viewId].defaultPosition.top, 10) &&
+          v.id !== this.state.items[viewId].id
+        ) {
           Vue.set(this.state.items, v.id, {
             ...v,
             visible: false,
@@ -214,10 +213,10 @@ export class DraggableWindowManager {
     } else {
       Vue.set(this.state.items, viewId, {
         ...view,
+        position: view.defaultPosition,
         zIndex:
           draggableWindowHighestIndex -
           Object.keys(this.state.items).length + 1,
-        ...defaultPosition,
       });
     }
   }

@@ -17,7 +17,7 @@
 
   import VueCompositionApi, { provide, reactive, ref } from '@vue/composition-api';
   import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
-  import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
+  import DraggableWindow from '@/modules/draggable-window/DraggableWindowManager.vue';
   import { PopoverManager } from '@/modules/popover/popover.manager';
   import Popover from '@/modules/popover/Popover.vue';
   import Navbar from './Navbar.vue';

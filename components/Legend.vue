@@ -1,7 +1,7 @@
 <template>
   <v-sheet elevation="2" class="vcs-legend rounded">
     <div class="d-flex flex-row justify-space-between align-center pa-2">
-      <h1 class="text--primary">
+      <h1 class="text--primary user-select-none">
         Texturierung
       </h1>
 

@@ -40,11 +40,37 @@
 
   import Vue from 'vue';
 
+  import LayerTree from '@/components/LayerTree.vue';
   import Button from '@vcsuite/uicomponents/Button.vue';
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import VueCompositionAPI, { inject } from '@vue/composition-api';
+  import { DRAGGABLE_WINDOW_POSITIONS } from '@/modules/draggable-window/draggable-window.manager';
 
   Vue.use(VueCompositionAPI);
+
+  const layerTree = {
+    visible: true,
+    zIndex: 50,
+    id: 'layer-tree',
+    component: LayerTree,
+    width: 320,
+    header: 'layer-tree.title',
+    icon: '$vcsLayers',
+    position: DRAGGABLE_WINDOW_POSITIONS.topLeft,
+    defaultPosition: DRAGGABLE_WINDOW_POSITIONS.topLeft,
+  };
+
+  const components = {
+    visible: false,
+    zIndex: 49,
+    id: 'components',
+    component: LayerTree,
+    width: 320,
+    header: 'components.title',
+    icon: '$vcsLayers',
+    position: DRAGGABLE_WINDOW_POSITIONS.bottomRight,
+    defaultPosition: DRAGGABLE_WINDOW_POSITIONS.bottomRight,
+  };
 
 
   export default Vue.extend({
@@ -56,9 +82,11 @@
         required: true,
       },
     },
-    setup(props, ctx) {
+    setup() {
       const mapState = inject('mapState');
       const draggableWindowManager = inject('draggableWindowManager');
+      draggableWindowManager.add(layerTree.id, layerTree);
+      draggableWindowManager.add(components.id, components);
 
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
@@ -82,9 +110,9 @@
 
       return {
         iconMap,
-        setMap,
         maps: mapState.maps,
         mapState,
+        setMap,
         toggleDraggableWindow,
         draggableWindows: draggableWindowManager.state.items,
       };
