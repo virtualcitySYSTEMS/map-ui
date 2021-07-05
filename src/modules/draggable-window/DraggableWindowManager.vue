@@ -173,7 +173,7 @@
          * Important: Access to context.refs is deprecated but it is the only way to
          * get dynamic refs as v2 composition API does not support ref functions.
          * https://github.com/vuejs/composition-api#limitations
-         * This needs to be refactored to use ref setter functions aas soon as migrated to v3.
+         * This needs to be refactored to use ref setter functions as soon as migrated to Vue 3.
          */
         context.refs.draggableWindows
           .forEach(draggableWindowRef => subscribeToWindowChanges(draggableWindowRef));
