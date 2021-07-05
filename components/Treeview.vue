@@ -267,6 +267,11 @@
         context.emit('update:open', openItems);
         _open.value = openItems;
       };
+      /**
+       * @param {AbstractTreeViewItem} treeNode
+       * @param {string} q
+       * @returns {boolean}
+       */
       const handleFilter = (treeNode, q = '') => {
         if (typeof treeNode.title === 'string') {
           return treeNode.title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
@@ -302,7 +307,7 @@
             newOpen.splice(selectedIndex, 1);
           }
           _open.value = newOpen;
-          context.emit('open', newOpen);
+          context.emit('update:open', newOpen);
         }
       };
       return {

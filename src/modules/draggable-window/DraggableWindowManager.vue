@@ -16,52 +16,13 @@
         bottom: draggableWindow.position.bottom,
       }"
     >
-      <v-sheet
+      <DraggableWindow
+        @close="close"
+        :draggable-window="draggableWindow"
+        :z-index="zIndexMap[draggableWindow.id]"
+        :z-index-max="zIndexMax"
         v-if="draggableWindow.visible"
-        class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
-        :style="{
-          width: `${draggableWindow.width}px`,
-        }"
-        :class="{
-          'grey--text': zIndexMap[draggableWindow.id] < zIndexMax,
-          'rounded-tl': parseInt(draggableWindow.position.top, 10) > 48
-            && parseInt(draggableWindow.position.left, 10) > 0,
-          'rounded-tr': parseInt(draggableWindow.position.top, 10) > 48
-            && parseInt(draggableWindow.position.left, 10) < (windowWidth - draggableWindow.width),
-        }"
-        draggable
-      >
-        <slot name="header">
-          <span>
-            <slot name="icon">
-              <v-icon v-if="draggableWindow.icon" class="mr-2 primary--text" v-text="draggableWindow.icon" />
-            </slot>
-
-            <h3 class="font-size-14 d-inline-block">{{ draggableWindow.header | translate }}</h3>
-          </span>
-        </slot>
-
-        <slot name="close">
-          <v-icon @click="close(draggableWindow.id)" size="16" v-text="'mdi-close-thick'" />
-        </slot>
-      </v-sheet>
-
-      <v-sheet
-        class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
-        v-if="draggableWindow.visible"
-        :style="{
-          width: `${draggableWindow.width}px`
-        }"
-        :class="{
-          'rounded-br': parseInt(draggableWindow.position.top, 10) > 0
-            && parseInt(draggableWindow.position.left, 10) < (windowWidth - draggableWindow.width),
-          'rounded-bl': parseInt(draggableWindow.position.left, 10) > 0,
-        }"
-      >
-        <component
-          :is="draggableWindow.component"
-        />
-      </v-sheet>
+      />
     </div>
   </div>
 </template>
@@ -77,12 +38,9 @@
 <script>
   import Vue from 'vue';
   import VueCompositionAPI, {
-    computed,
     defineComponent,
-    onBeforeUpdate,
     onMounted,
     onUnmounted,
-    ref,
     nextTick,
     inject,
   } from '@vue/composition-api';
@@ -98,35 +56,30 @@
   } from 'rxjs/operators';
 
   import { clipX, clipY } from './util/clip';
+  import DraggableWindow from './DraggableWindow.vue';
 
   Vue.use(VueCompositionAPI);
 
   export default defineComponent({
     name: 'VcsDraggableWindowManager',
+    components: { DraggableWindow },
     setup(props, context) {
       const destroy$ = new Subject();
       const draggableWindowManager = inject('draggableWindowManager');
       const popoverManager = inject('popoverManager');
-      const { draggableWindowHighestIndex, zIndexMap } = draggableWindowManager.state;
-      const draggableWindows = draggableWindowManager.state.items;
-      const draggableWindowRefs = ref([]);
-      const contentHeight = ref(0);
-      const windowWidth = computed(() => window.innerWidth);
+      const { draggableWindowHighestIndex, zIndexMap, items: draggableWindows } = draggableWindowManager.state;
       /**
        * @param {string} viewId
-       * @returns {void}
        */
-      const bringViewToTop = viewId => draggableWindowManager.bringViewToTop(viewId);
+      const bringViewToTop = (viewId) => {
+        draggableWindowManager.bringViewToTop(viewId);
+      };
       /**
        * @param {string} viewId
-       * @returns {void}
        */
-      const close = viewId => draggableWindowManager.toggleViewVisible(viewId);
-
-      onBeforeUpdate(() => {
-        draggableWindowRefs.value = [];
-      });
-
+      const close = (viewId) => {
+        draggableWindowManager.toggleViewVisible(viewId);
+      };
 
       fromEvent(document.body, 'dragover')
         .pipe(
@@ -232,10 +185,7 @@
       });
 
       return {
-        windowWidth,
-        contentHeight,
         draggableWindows,
-        draggableWindowRefs,
         zIndexMax: draggableWindowHighestIndex,
         zIndexMap,
         close,

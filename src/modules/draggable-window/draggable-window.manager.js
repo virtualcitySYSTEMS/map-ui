@@ -1,18 +1,20 @@
 /* eslint-disable import/prefer-default-export */
 
+// eslint-disable-next-line max-classes-per-file
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
+import PositionParser from './util/position-parser';
 
 const draggableWindowHighestIndex = 50;
 
-
 /**
  * @typedef Position
- * @property {string | 0} left
- * @property {string | 0} top
- * @property {string | 0} right
- * @property {string | 0} bottom
+ * @property {string | 0} left Must be pixel-value string (e.g. '320px')
+ * @property {string | 0} top Must be pixel-value string (e.g. '320px')
+ * @property {string | 0} right Must be pixel-value string (e.g. '320px')
+ * @property {string | 0} bottom Must be pixel-value string (e.g. '320px')
  */
+
 
 /**
  * @typedef DraggableWindow
@@ -20,27 +22,27 @@ const draggableWindowHighestIndex = 50;
  * @property {string | number} id
  * @property {string | VueComponent} component
  * @property {number} width
- * @property {Position} position
+ * @property {PositionParser} position
  * @property {Position} defaultPosition
  * @property {string} header
  * @property {string} icon
  */
 
 
-/** @type {Object<string, Position>} */
+/** @type {Object<string, PositionParser>} */
 export const DRAGGABLE_WINDOW_POSITIONS = {
-  topLeft: {
+  topLeft: new PositionParser({
     left: 0,
     top: '48px',
-  },
-  topRight: {
+  }),
+  topRight: new PositionParser({
     right: 0,
     top: '48px',
-  },
-  bottomRight: {
+  }),
+  bottomRight: new PositionParser({
     right: 0,
     bottom: 0,
-  },
+  }),
 };
 
 /**
@@ -118,7 +120,7 @@ export class DraggableWindowManager {
 
     const updatedWindow = {
       ...draggableWindow,
-      position: { ...position },
+      position: new PositionParser(position),
     };
 
     Vue.set(this.state.items, draggableWindow.id, updatedWindow);
@@ -174,6 +176,9 @@ export class DraggableWindowManager {
     }
   };
 
+  /**
+   * @param {string} viewId
+   */
   hideWindowsInDefaultPosition(viewId) {
     Object.values(this.state.items).forEach((v) => {
       if (
@@ -210,7 +215,7 @@ export class DraggableWindowManager {
       Vue.set(this.state.zIndexMap, viewId, updatedZIndex);
       Vue.set(this.state.items, viewId, {
         ...view,
-        position: view.defaultPosition,
+        position: new PositionParser(view.defaultPosition),
       });
     }
   }
