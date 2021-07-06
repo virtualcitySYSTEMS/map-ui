@@ -2930,6 +2930,10 @@
       ],
       "entry": "plugins/exportStep/exportStep.js",
       "name": "exportStep"
+    },
+    {
+      "name": "test",
+      "entry": "./test.js"
     }
   ]
 }

@@ -1,5 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { join } = require('path');
+const fs = require('fs');
+
+const entry = {
+  app: './src/main.js',
+  test: './plugins/test/index.js',
+};
 
 module.exports = {
   lintOnSave: false,
@@ -14,9 +20,7 @@ module.exports = {
     experiments: {
       outputModule: true,
     },
-    entry: {
-      app: './src/main.js',
-    },
+    entry,
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {
