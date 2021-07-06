@@ -3,7 +3,7 @@ import {
   DeclarativeStyleItem, Layer,
   MapCollection,
   Projection,
-  referenceableStyleSymbol,
+  referenceableStyleSymbol, setDefaultProjectionOptions,
   StyleType,
   VcsClassRegistry,
   VcsEvent,
@@ -19,6 +19,24 @@ import { getTerrainProviderForUrl } from '@vcmap/core/src/vcs/vcm/layer/terrainH
 import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
 import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
 
+/**
+ * @typedef {Object} PluginConfig
+ * @property {string} name
+ * @property {string|undefined} entry
+ * @property {string|undefined} version
+ */
+
+/**
+ * @interface VcsPlugin
+ * @property {string} version
+ * @property {string} name
+ * @property {function(PluginConfig):Promise<void>} preInitialize
+ * @property {function(PluginConfig):Promise<void>} postInitialize
+ * @property {function(PluginConfig):Promise<vcs.ui.PluginOptions>} registerUiPlugin
+ * @property {function(PluginConfig):Promise<void>} postUiInitialize
+ * @property {function():Promise<void>} destroy
+ * @api
+ */
 // XXX missing config-pipeline security
 /**
  * @typedef {Object} VcsApp
@@ -27,6 +45,7 @@ import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>} viewpoints
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>} styles
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>} obliqueCollections
+ * @property {import("@vcmap/core").Collection<VcsPlugin>} plugins
  * @property {import("@vcmap/core").ViewPoint} startViewpoint
  * @property {Object<string, *>} config
  * @property {import("@vcmap/core").VcsEvent<void>} destroyed
@@ -69,6 +88,7 @@ export function createVcsApp() {
     obliqueCollections: new Collection(),
     startViewpoint: new ViewPoint({}),
     config: {},
+    plugins: new Collection(),
     destroyed: new VcsEvent(),
     destroy() {
       delete vcsApps.delete(id);
@@ -115,7 +135,7 @@ export async function getObjectFromOptions(options) {
 
 /**
  * @param {import("@vcmap/core").VectorStyleItem.Options|import("@vcmap/core").DeclarativeStyleItem.Options} styleConfig
- * @param {Context} context
+ * @param {VcsApp} context
  */
 export function addStyleItem(styleConfig, context) {
   if (!styleConfig.name && !styleConfig.id) {
@@ -149,7 +169,7 @@ export function addStyleItem(styleConfig, context) {
 /**
  * creates an LayerObject of the given type and calls the init method of the object.
  * @param {import("@vcmap/core").Layer.Options} layerConfig the layerConfig
- * @param {Context} context
+ * @param {VcsApp} context
  * @returns {Promise<void>}
  */
 async function addLayer(layerConfig, context) {
@@ -167,7 +187,7 @@ async function addLayer(layerConfig, context) {
 
 /**
  * @param {import(@vcmap/core).ObliqueCollectionConfig} options
- * @param {Context} context
+ * @param {VcsApp} context
  */
 export function addObliqueCollection(options, context) {
   if (!Array.isArray(options.dataSets)) {
@@ -197,7 +217,7 @@ export function addObliqueCollection(options, context) {
  * creates an MapWidgetObject of the given type</br>
  * and calls addMap() to add it to the framework.</br>
  * @param {Object} mapConfig the class name of the MapWidget
- * @param {Context} context the class name of the MapWidget
+ * @param {VcsApp} context the class name of the MapWidget
  * @returns {Promise<import("@vcmap/core").VcsMap|null>}
  */
 async function addMap(mapConfig, context) {
@@ -216,17 +236,65 @@ async function addMap(mapConfig, context) {
   return null;
 }
 
+/**
+ * @param {VcsApp} context
+ * @param {string} name
+ * @param {PluginConfig} config
+ * @param {string} [registry='https://plugins.virtualcitymap.de/']
+ * @returns {Promise<void>}
+ */
+export function loadPlugin(context, name, config, registry = 'https://plugins.virtualcitymap.de/') {
+  let module = config.entry;
+
+  if (!module) {
+    module = `${registry.replace(/\/?$/, '')}/${name}/${config.version || '*'}/index.js`;
+  } else if (!/^(https?:\/\/|\/)/.test(module)) {
+    module = `${window.location.origin}${window.location.pathname.replace(/\/?$/, '/')}${module}`;
+  } else if (module === '_dev') {
+    module = `/${name}.js`;
+  }
+
+  // if (!context.security.isTrustedUrl(module)) { XXX missing pipeline security
+  //   getLogger().warning(`suppressed loading of insecure plugin ${module}`);
+  //   return Promise.resolve();
+  // }
+
+  return import(/* webpackIgnore: true */ module)
+    .then((plugin) => {
+      if (!context.plugins.hasKey(name)) {
+        const actualPlugin = plugin.default || plugin;
+        actualPlugin.name = actualPlugin.name || name;
+        context.plugins.add(actualPlugin);
+      } else {
+        getLogger().warning(`cannot load plugin ${name} twice`);
+      }
+    })
+    .catch((err) => {
+      getLogger().error(`failed to load plugin ${name}`);
+      getLogger().error(err);
+    });
+}
+
 // XXX should be config typed
 /**
  * @param {Object} config
- * @param {Context} context TODO this is the VcsApp for now, this should become a context
+ * @param {VcsApp} context TODO this is the VcsApp for now, this should become a context
  * @returns {Promise<import("@vcmap/core").VcsMap|null>}
  */
 export async function addConfigToContext(config, context) {
   // IDEA this could be an array
   context.config = config;
-  // TODO load plugins here. plugins require config pipeline security to be loaded
-  // TODO this
+
+  if (Array.isArray(config.plugins)) {
+    await Promise.all(config.plugins.map(pluginConfig => loadPlugin(context, pluginConfig.name, pluginConfig)));
+  }
+
+  await Promise.all([...context.plugins].map(async (plugin) => {
+    if (plugin.preInitialize) {
+      await plugin.preInitialize(config.plugins.find(p => p.name === plugin.name));
+    }
+  }));
+  setDefaultProjectionOptions(config.projection);
 
   if (Array.isArray(config.styles)) {
     config.styles.forEach((styleConfig) => {
@@ -276,6 +344,12 @@ export async function addConfigToContext(config, context) {
       }
     }));
   }
+
+  await Promise.all([...context.plugins].map(async (plugin) => {
+    if (plugin.postInitialize) {
+      await plugin.postInitialize(config.plugins.find(p => p.name === plugin.name));
+    }
+  }));
   return startingMap;
   // TODO activate map here before loading widgets? or should widgets be like layersin future (makes more sense) so we can
   // move activating the map out of the config parsing?
