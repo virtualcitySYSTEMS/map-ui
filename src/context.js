@@ -96,7 +96,7 @@ export function createVcsApp() {
     obliqueCollections: new Collection(),
     startViewpoint: new ViewPoint({}),
     config: {},
-    plugins: new Collection(),
+    plugins: new Map(),
     destroyed: new VcsEvent(),
     destroy() {
       delete vcsApps.delete(id);
@@ -269,10 +269,9 @@ export function loadPlugin(context, name, config, registry = 'https://plugins.vi
 
   return import(/* webpackIgnore: true */ module)
     .then((plugin) => {
-      if (!context.plugins.hasKey(name)) {
+      if (!context.plugins.has(name)) {
         const actualPlugin = plugin.default || plugin;
-        actualPlugin.name = actualPlugin.name || name;
-        context.plugins.add(actualPlugin);
+        context.plugins.set(name, actualPlugin);
       } else {
         getLogger().warning(`cannot load plugin ${name} twice`);
       }
@@ -297,7 +296,7 @@ export async function addConfigToContext(config, context) {
     await Promise.all(config.plugins.map(pluginConfig => loadPlugin(context, pluginConfig.name, pluginConfig)));
   }
 
-  await Promise.all([...context.plugins].map(async (plugin) => {
+  await Promise.all([...context.plugins.values()].map(async (plugin) => {
     if (plugin.preInitialize) {
       await plugin.preInitialize(config.plugins.find(p => p.name === plugin.name));
     }
@@ -353,7 +352,7 @@ export async function addConfigToContext(config, context) {
     }));
   }
 
-  await Promise.all([...context.plugins].map(async (plugin) => {
+  await Promise.all([...context.plugins.values()].map(async (plugin) => {
     if (plugin.postInitialize) {
       await plugin.postInitialize(config.plugins.find(p => p.name === plugin.name));
     }
@@ -398,7 +397,6 @@ function createComponent(pluginName, type, component) {
   }
   componentNames.get(type).add(actualComponent.name);
 
-  // actualComponent.parent = parent; XXX we used to set the parent for the $router to be injected correctly
   Vue.component(actualComponent.name, actualComponent);
   return actualComponent.name;
 }
@@ -410,11 +408,10 @@ const componentTypes = {
 /**
  * @param {VcsApp} context
  * @param {PluginComponents} pluginComponents
- * @param {Vue} parentComponent
  * @returns {Promise<void>}
  */
-export async function setPluginUiComponents(context, pluginComponents, parentComponent) {
-  await Promise.all([...context.plugins].map(async (plugin) => {
+export async function setPluginUiComponents(context, pluginComponents) {
+  await Promise.all([...context.plugins.values()].map(async (plugin) => {
     if (plugin.registerUiPlugin) {
       const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === plugin.name));
       Object.entries(componentTypes)
@@ -422,7 +419,7 @@ export async function setPluginUiComponents(context, pluginComponents, parentCom
           if (config[configType]) {
             const componentsArray = Array.isArray(config[configType]) ? config[configType] : [config[configType]];
             const components = componentsArray
-              .map(component => createComponent(plugin.name, configType, component, parentComponent));
+              .map(component => createComponent(plugin.name, configType, component));
             pluginComponents[componentType].push(...components);
           }
         });

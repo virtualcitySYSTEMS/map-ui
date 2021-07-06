@@ -4,7 +4,6 @@ const fs = require('fs');
 
 const entry = {
   app: './src/main.js',
-  test: './plugins/test/index.js',
 };
 
 module.exports = {

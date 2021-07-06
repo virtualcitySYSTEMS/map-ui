@@ -73,13 +73,12 @@
 
       const configLoaded = ref(false);
       const startingMapName = ref('');
-      console.log(getCurrentInstance());
 
       onBeforeMount(async () => {
         const startingMap = await addConfigToContext(config, context);
         startingMapName.value = startingMap.name;
         configLoaded.value = true;
-        await setPluginUiComponents(context, pluginComponents, getCurrentInstance());
+        await setPluginUiComponents(context, pluginComponents);
       });
 
       onUnmounted(() => {
