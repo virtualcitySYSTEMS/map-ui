@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="h-full">
     <Navbar :map-id="mapId" />
-    <Map :map-id="mapId" :config="config" />
+    <Map :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
 
     <DraggableWindowManagerComponent />
     <Popover />
@@ -12,10 +12,10 @@
 <script>
   import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
-  import { createVcsApp, getContextById } from '@/context';
+  import { addConfigToContext, createVcsApp } from '@/context';
   import config from '@/../map.config.json';
 
-  import VueCompositionApi, { provide, reactive, ref } from '@vue/composition-api';
+  import VueCompositionApi, { onBeforeMount, onUnmounted, provide, reactive, ref } from '@vue/composition-api';
   import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
   import DraggableWindowManagerComponent from '@/modules/draggable-window/DraggableWindowManager.vue';
   import { PopoverManager } from '@/modules/popover/popover.manager';
@@ -34,30 +34,51 @@
     },
     setup() {
       const id = uuid();
+      const mapState = {
+        maps: reactive([]),
+        activeMap: ref(undefined),
+      };
+      const context = createVcsApp();
 
-      createVcsApp();
+      const mapActivatedDestroy = context.maps.mapActivated.addEventListener((map) => {
+        mapState.activeMap = map.className;
+      });
 
-      const firstApp = Array.from(window.vcs.apps.keys())[0];
-      const context = getContextById(firstApp);
+      const mapAddedDestroy = context.maps.added.addEventListener(({ className, name }) => {
+        mapState.maps.push({ className, name });
+      });
+
       provide('context', context);
+      provide('mapState', mapState);
 
       const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
       const draggableWindowManager = new DraggableWindowManager();
       provide('draggableWindowManager', draggableWindowManager);
 
+      const configLoaded = ref(false);
+      const startingMapName = ref('');
+
+      onBeforeMount(async () => {
+        const startingMap = await addConfigToContext(config, context);
+        startingMapName.value = startingMap.name;
+        configLoaded.value = true;
+      });
+
+      onUnmounted(() => {
+        if (mapActivatedDestroy) { mapActivatedDestroy(); }
+        if (mapAddedDestroy) { mapAddedDestroy(); }
+      });
+
 
       return {
         mapId: `mapCollection-${id}`,
-        config,
+        startingMapName,
+        configLoaded,
       };
     },
     provide() {
       return {
-        mapState: {
-          maps: reactive([]),
-          activeMap: ref(undefined),
-        },
         language: window.navigator.language.split('-')[0],
       };
     },

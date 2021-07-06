@@ -36,8 +36,7 @@
 
 <script >
   import Vue from 'vue';
-  import { addConfigToContext } from '@/context';
-  import VueCompositionAPI, { defineComponent, inject, onUnmounted, onBeforeMount } from '@vue/composition-api';
+  import VueCompositionAPI, { defineComponent, inject, onMounted } from '@vue/composition-api';
 
   Vue.use(VueCompositionAPI);
 
@@ -47,41 +46,23 @@
         type: String,
         required: true,
       },
-      config: {
-        type: Object,
-        required: true,
+      startingMapName: {
+        type: String,
+        default: '',
       },
     },
     setup(props) {
       const context = inject('context');
-      const mapState = inject('mapState');
-      let mapActivatedDestroy;
-      let mapAddedDestroy;
 
       /**
        * @function
        * @description Initializes the map from configuration.
        */
-      onBeforeMount(async () => {
-        mapActivatedDestroy = context.maps.mapActivated.addEventListener((map) => {
-          mapState.activeMap = map.className;
-        });
-
-        mapAddedDestroy = context.maps.added.addEventListener(({ className, name }) => {
-          mapState.maps.push({ className, name });
-        });
-        const startingMap = await addConfigToContext(props.config, context);
+      onMounted(async () => {
         context.maps.setTarget(props.mapId);
 
-
-        // // 4. Initialize initial view
-        await context.maps.setActiveMap(startingMap.name);
-        await startingMap.gotoViewPoint(context.startViewPoint);
-      });
-
-      onUnmounted(() => {
-        if (mapActivatedDestroy) { mapActivatedDestroy(); }
-        if (mapAddedDestroy) { mapAddedDestroy(); }
+        await context.maps.setActiveMap(props.startingMapName || [...context.maps][0].name);
+        await context.maps.activeMap.gotoViewPoint(context.startViewPoint);
       });
     },
   });
