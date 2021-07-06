@@ -12,12 +12,20 @@ import {
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
+import Vue from 'vue';
 
 import './layers';
 import './maps';
 import { getTerrainProviderForUrl } from '@vcmap/core/src/vcs/vcm/layer/terrainHelpers';
 import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
 import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
+
+/**
+ * @typedef {Object} PluginComponents
+ * @property {Array<Vue>} mapButtons
+ * @property {Array<Vue>} treeButtons
+ * @property {Array<Vue>} headerButtons
+ */
 
 /**
  * @typedef {Object} PluginConfig
@@ -353,6 +361,73 @@ export async function addConfigToContext(config, context) {
   return startingMap;
   // TODO activate map here before loading widgets? or should widgets be like layersin future (makes more sense) so we can
   // move activating the map out of the config parsing?
+}
+
+/**
+ * @type {Map<string, Map<string, Set<string>>>} a map of plugin name keys. value is a Map of types. The set represents the names used. default is to use the size as the next name
+ */
+const pluginComponentNames = new Map();
+
+/**
+ * @param {string} pluginName
+ * @param {string} type
+ * @param {Vue|string} component
+ * @returns {string}
+ */
+function createComponent(pluginName, type, component) {
+  if (!pluginComponentNames.has(pluginName)) {
+    pluginComponentNames.set(pluginName, new Map());
+  }
+
+  const componentNames = pluginComponentNames.get(pluginName);
+  if (!componentNames.has(type)) {
+    componentNames.set(type, new Set());
+  }
+
+  const actualComponent = typeof component === 'string' ?
+    { template: component } :
+    component;
+
+  if (!actualComponent.name) {
+    actualComponent.name = `${type}-${componentNames.get(type).size}`;
+  }
+  actualComponent.name = `${pluginName}-${actualComponent.name}`;
+
+  if (componentNames.get(type).has(actualComponent.name)) {
+    return actualComponent.name;
+  }
+  componentNames.get(type).add(actualComponent.name);
+
+  // actualComponent.parent = parent; XXX we used to set the parent for the $router to be injected correctly
+  Vue.component(actualComponent.name, actualComponent);
+  return actualComponent.name;
+}
+
+const componentTypes = {
+  mapButton: 'mapButtons',
+};
+
+/**
+ * @param {VcsApp} context
+ * @param {PluginComponents} pluginComponents
+ * @param {Vue} parentComponent
+ * @returns {Promise<void>}
+ */
+export async function setPluginUiComponents(context, pluginComponents, parentComponent) {
+  await Promise.all([...context.plugins].map(async (plugin) => {
+    if (plugin.registerUiPlugin) {
+      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === plugin.name));
+      Object.entries(componentTypes)
+        .forEach(([configType, componentType]) => {
+          if (config[configType]) {
+            const componentsArray = Array.isArray(config[configType]) ? config[configType] : [config[configType]];
+            const components = componentsArray
+              .map(component => createComponent(plugin.name, configType, component, parentComponent));
+            pluginComponents[componentType].push(...components);
+          }
+        });
+    }
+  }));
 }
 
 window.vcs = window.vcs || {};

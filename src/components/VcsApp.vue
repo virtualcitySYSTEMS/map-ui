@@ -12,10 +12,17 @@
 <script>
   import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
-  import { addConfigToContext, createVcsApp } from '@/context';
+  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context';
   import config from '@/../map.config.json';
 
-  import VueCompositionApi, { onBeforeMount, onUnmounted, provide, reactive, ref } from '@vue/composition-api';
+  import VueCompositionApi, {
+    onBeforeMount,
+    onUnmounted,
+    provide,
+    reactive,
+    ref,
+    getCurrentInstance,
+  } from '@vue/composition-api';
   import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
   import DraggableWindowManagerComponent from '@/modules/draggable-window/DraggableWindowManager.vue';
   import { PopoverManager } from '@/modules/popover/popover.manager';
@@ -38,6 +45,13 @@
         maps: reactive([]),
         activeMap: ref(undefined),
       };
+
+      const pluginComponents = {
+        mapButtons: reactive([]),
+        treeButtons: reactive([]),
+        headerButtons: reactive([]),
+      };
+
       const context = createVcsApp();
 
       const mapActivatedDestroy = context.maps.mapActivated.addEventListener((map) => {
@@ -50,6 +64,7 @@
 
       provide('context', context);
       provide('mapState', mapState);
+      provide('pluginComponents', pluginComponents);
 
       const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
@@ -58,18 +73,19 @@
 
       const configLoaded = ref(false);
       const startingMapName = ref('');
+      console.log(getCurrentInstance());
 
       onBeforeMount(async () => {
         const startingMap = await addConfigToContext(config, context);
         startingMapName.value = startingMap.name;
         configLoaded.value = true;
+        await setPluginUiComponents(context, pluginComponents, getCurrentInstance());
       });
 
       onUnmounted(() => {
         if (mapActivatedDestroy) { mapActivatedDestroy(); }
         if (mapAddedDestroy) { mapAddedDestroy(); }
       });
-
 
       return {
         mapId: `mapCollection-${id}`,

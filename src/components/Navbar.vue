@@ -13,6 +13,11 @@
                 @click.native="setMap(map.name)"
                 :value="mapState.activeMap === map.className"
               />
+              <component
+                v-for="(button, index) in mapButtons"
+                :is="button"
+                :key="`map-button-${index}`"
+              />
               <NavbarDivider />
               <Button
                 :icon="'$vcsLayers'"
@@ -81,6 +86,7 @@
     },
     setup() {
       const mapState = inject('mapState');
+      const pluginComponents = inject('pluginComponents');
       const draggableWindowManager = inject('draggableWindowManager');
       const context = inject('context');
 
@@ -104,6 +110,7 @@
       };
 
       return {
+        mapButtons: pluginComponents.mapButtons,
         iconMap,
         maps: mapState.maps,
         mapState,
