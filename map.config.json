@@ -691,7 +691,7 @@
     },
     {
       "name": "PointCloud Changedetection",
-      "url": "./datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
       "type": "vcs.vcm.layer.PointCloud",
       "datasourceId": "6MxMnXhaBJsz2utBD",
       "activeOnStartup": false,
@@ -707,7 +707,7 @@
     },
     {
       "name": "buildings",
-      "url": "./datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "utxPghp6jfG6oZakL",
       "activeOnStartup": true,
@@ -726,7 +726,7 @@
     },
     {
       "name": "buildings_untextured",
-      "url": "./datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "9eRDxjbxHQzE9XiES",
       "activeOnStartup": false,
@@ -816,7 +816,7 @@
     },
     {
       "name": "terrain_v3.4",
-      "url": "./datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
       "type": "vcs.vcm.layer.Terrain",
       "datasourceId": "CQHSNBZDTkjLLh8Qr",
       "activeOnStartup": true,
@@ -827,7 +827,7 @@
       "name": "pointcloud",
       "activeOnStartup": false,
       "datasourceId": "g9rXAY6pu2tfNmWf3",
-      "url": "./datasource-data/Open-Data-Berlin/tiergarten/tileset.json",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/tiergarten/tileset.json",
       "copyright": {
         "provider": "Senatsverwaltung für Wirtschaft, Technologie und Forschung. Geodaten Herstellung gefördert durch den Europäischen Fonds für Regionale Entwicklung (EFRE)",
         "url": "http://www.berlin.de/wirtschaftssenat"
@@ -841,7 +841,7 @@
     },
     {
       "name": "Bäume",
-      "url": "./datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "YXcidK4ijYFB2DhPm",
       "activeOnStartup": false,
@@ -859,7 +859,7 @@
     },
     {
       "name": "lod2_solar_jul",
-      "url": "./datasource-data/ae32d27d-e75b-4339-b471-c2e4c1891bea",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/ae32d27d-e75b-4339-b471-c2e4c1891bea",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "MxKRpGbBemdmvKbep",
       "activeOnStartup": false,
@@ -878,7 +878,7 @@
     },
     {
       "name": "lod2_solar_apr",
-      "url": "./datasource-data/3ece8030-9ca3-487f-8811-7d65c58b9d46",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/3ece8030-9ca3-487f-8811-7d65c58b9d46",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "6F7MtLWF9Fe44W6XY",
       "activeOnStartup": false,
@@ -897,7 +897,7 @@
     },
     {
       "name": "lod2_solar_jan",
-      "url": "./datasource-data/6336aafe-96eb-4db2-b1ed-5bcc70b4ac54",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/6336aafe-96eb-4db2-b1ed-5bcc70b4ac54",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "B7ooqvwDgEKnzN6MX",
       "activeOnStartup": false,
@@ -916,7 +916,7 @@
     },
     {
       "name": "lod2_solar_year",
-      "url": "./datasource-data/0866fca1-2b8c-4ac9-b478-cdeffc8d7f38",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/0866fca1-2b8c-4ac9-b478-cdeffc8d7f38",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "amZp7Mb68MiyesBQN",
       "activeOnStartup": false,
@@ -935,7 +935,7 @@
     },
     {
       "name": "lod_solar_year_shading",
-      "url": "./datasource-data/f931caec-8003-44b1-8e9c-5b5f646f1c11",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/f931caec-8003-44b1-8e9c-5b5f646f1c11",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "BZGcFpindygyuDwGq",
       "activeOnStartup": false,
@@ -954,7 +954,7 @@
     },
     {
       "name": "citygml_trees_solar",
-      "url": "./datasource-data/ac0d0ab1-1ae3-43b4-93c6-020cb37f7b2b",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/ac0d0ab1-1ae3-43b4-93c6-020cb37f7b2b",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "2a8i9Jra6Lm6gGQJ5",
       "activeOnStartup": false,
@@ -2318,7 +2318,7 @@
           "type": "geojson",
           "title": "3D-Mesh",
           "baseUrl": "https://download-berlin3d.virtualcitymap.de/download/",
-          "geojsonUrl": "./datasource-data/json/MeshTileOverview_WGS84_withURL_stripped.json"
+          "geojsonUrl": "https://berlin.virtualcitymap.de/datasource-data/json/MeshTileOverview_WGS84_withURL_stripped.json"
         }
       ],
       "warehouseVersion": "4.1"
@@ -2818,7 +2818,7 @@
       "dataSets": [
         {
           "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques/image.json",
-          "terrainUrl": "./datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
+          "terrainUrl": "https://berlin.virtualcitymap.de/datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
           "projection": {
             "epsg": "25833",
             "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs "
@@ -2933,7 +2933,7 @@
     },
     {
       "name": "test",
-      "entry": "./test.js"
+      "entry": "plugins/test/index.js"
     }
   ]
 }

@@ -186,7 +186,7 @@
 
 <script>
 
-  import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf';
+  import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf.vue';
   import TreeviewSearchbar from '@vcsuite/uicomponents/TreeviewSearchbar.vue';
   import Vue from 'vue';
   import VueCompositionApi, { inject, ref } from '@vue/composition-api';

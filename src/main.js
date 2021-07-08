@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueCompositionAPI);
 
-window.CESIUM_BASE_URL = process.env.VUE_APP_CESIUM_BASE_URL;
+window.CESIUM_BASE_URL = '/node_modules/@vcmap/cesium/Source/';
 
 new Vue({
   vuetify,
