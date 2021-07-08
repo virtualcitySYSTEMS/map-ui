@@ -34,6 +34,7 @@
   import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
+  import Legend from '@vcsuite/uicomponents/Legend.vue';
 
 
   Vue.use(VueCompositionAPI);
@@ -99,13 +100,10 @@
         }
 
         const componentName = 'Legend';
-        // To resolve this path we must import here instead of popoverManager.
-        const cmp = await import(`@vcsuite/uicomponents/${componentName}.vue`);
-
         const callback = () => popoverManager.removePopover(id);
         const popover = popoverManager.registerPopover({
           name: componentName,
-          cmp,
+          cmp: Legend,
           id,
           parent: event.target,
           callback,

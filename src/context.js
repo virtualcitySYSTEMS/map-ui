@@ -267,7 +267,7 @@ export function loadPlugin(context, name, config, registry = 'https://plugins.vi
   //   return Promise.resolve();
   // }
 
-  return import(/* webpackIgnore: true */ module)
+  return import(/* @vite-ignore */ module)
     .then((plugin) => {
       if (!context.plugins.has(name)) {
         const actualPlugin = plugin.default || plugin;
