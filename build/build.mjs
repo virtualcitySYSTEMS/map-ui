@@ -5,12 +5,16 @@ import { build } from 'vite';
 
 const libraries = {
   'vue': {
-    hash: `vue.${uuid().substring(0,6)}`,
     lib: 'vue',
+    entry: path.join('lib', 'vue.js')
   },
   '@vue/composition-api': {
-    hash: `vue-composition-api.${uuid().substring(0,6)}`,
-    lib: 'vue-composition-api'
+    lib: 'vue-composition-api',
+    entry: path.join('lib', 'vue-composition-api.js')
+  },
+  '@vcmap/cesium': {
+    lib: 'cesium',
+    entry: path.join('lib', 'cesium.js')
   }
 };
 
@@ -19,7 +23,8 @@ const plugins = ['test'];
 const libraryPaths = {};
 const pluginLibraryPaths = {};
 Object.entries(libraries).forEach(([key, value]) => {
-  libraryPaths[key] = `./${value.hash}.es.js`;
+  value.hash = `${uuid().substring(0,6)}`;
+  libraryPaths[key] = `./${value.lib}.${value.hash}.es.js`;
   pluginLibraryPaths[key] = `../../assets/${value.lib}.es.js`;
 });
 
@@ -51,9 +56,9 @@ Object.entries(libraries).forEach(async ([key, value]) => {
       minify: true,
       emptyOutDir: false,
       lib: {
-        entry: path.resolve(process.cwd(), path.join('lib', `${value.lib}.js`)),
+        entry: path.resolve(process.cwd(), value.entry),
         formats: ['es'],
-        fileName: `assets/${value.hash}`
+        fileName: `assets/${value.lib}.${value.hash}`
       },
       rollupOptions: {
         external: Object.keys(libraries).filter((library) => { return key !== library}),
@@ -68,7 +73,7 @@ Object.entries(libraries).forEach(async ([key, value]) => {
       minify: true,
       emptyOutDir: false,
       lib: {
-        entry: path.resolve(process.cwd(), path.join('lib', `${value.lib}.js`)),
+        entry: path.resolve(process.cwd(), value.entry),
         formats: ['es'],
         fileName: `assets/${value.lib}`
       },

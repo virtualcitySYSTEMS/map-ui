@@ -12,6 +12,7 @@
   import Vue from 'vue';
 
   import VcsApp from './components/VcsApp.vue';
+  import { Cartographic } from '@vcmap/cesium';
 
   /**
    * @description
@@ -20,6 +21,11 @@
   export default Vue.extend({
     components: {
       VcsApp,
+    },
+    setup() {
+      const carto = new Cartographic(1,2,3);
+      console.log(carto);
+      return {};
     },
     provide: {
       language: window.navigator.language.split('-')[0],
