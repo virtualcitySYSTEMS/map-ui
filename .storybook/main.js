@@ -8,28 +8,19 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-docs",
   ],
   "core": {
-    "builder": "webpack5"
+    "builder": "storybook-builder-vite"
   },
-  webpackFinal: async (config, { configType }) => {
-    config.module.rules.push({
-      test: /\.s(a|c)ss$/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-      include: path.resolve(__dirname, '../'),
-    });
-
-    config.module.rules.push({
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '../src'),
-          '@vcsuite/uicomponents': path.resolve(__dirname, '../components'),
-          'vue$': 'vue/dist/vue.esm.js'
-        },
-      },
-    });
-
+  viteFinal: async (config, { configType }) => {
+    console.log(config);
+    console.log(__dirname);
+    config.resolve.alias = { ...config.resolve.alias, ...{
+        "@": `${path.resolve(__dirname, "../src")}`,
+        '@vcsuite/uicomponents': `${path.resolve(__dirname, "../components")}`
+      }
+    };
+    console.log(config);
     return config;
   },
 }

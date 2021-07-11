@@ -5,7 +5,9 @@
   "scripts": {
     "start": "vite",
     "preview": "vite preview",
-    "build": "node build/build.mjs"
+    "build": "node build/build.mjs",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
@@ -28,12 +30,19 @@
     "vuetify-draggable-treeview": "^0.0.6"
   },
   "devDependencies": {
+    "@storybook/vue": "^6.3.4",
     "sass": "1.32.13",
     "typescript": "^4.2.4",
     "vite": "^2.4.1",
     "vite-plugin-components": "^0.12.1",
     "vite-plugin-vue2": "^1.7.2",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "@storybook/addon-actions": "^6.3.4",
+    "@storybook/addon-essentials": "^6.3.4",
+    "vue-loader": "^15.9.7",
+    "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
+    "@vcsuite/eslint-config": "^1.0.0",
+    "eslint": "^7.26.0"
   },
   "stylelint": {
     "extends": "stylelint-config-standard",

@@ -1,4 +1,4 @@
-import { units } from '@vcsuite/uicomponents/FormattedNumber';
+import { units } from '@vcsuite/uicomponents/FormattedNumber.vue';
 import { IconNames } from '@vcsuite/uicomponents/icons/+all';
 
 export const iconControl = {
