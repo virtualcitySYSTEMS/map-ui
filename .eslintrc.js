@@ -7,19 +7,15 @@ module.exports = {
   plugins: ['jsdoc'],
   settings: {
     'import/resolver': {
-      webpack: {
-        config: require.resolve('@vue/cli-service/webpack.config.js'),
+      alias: {
+        map: [
+          ['@', './src'],
+          ['@vcsuite/uicomponents', './components'],
+        ],
       },
     },
   },
   rules: {
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-      },
-    ],
     'jsdoc/check-tag-names': 'off',
   },
   overrides: [
