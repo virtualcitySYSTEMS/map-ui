@@ -111,7 +111,7 @@
           callback,
         });
         const parent = props.getRef(props.draggableWindow.id);
-        popoverManager.addPopover(popover, parent);
+        popoverManager.add(popover, parent);
       };
 
 

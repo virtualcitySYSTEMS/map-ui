@@ -2,15 +2,16 @@
 <template>
   <div>
     <div
-      v-for="(popover, i) in popoverManager.state.items"
-      :key="i"
+      v-for="(popover) in popoverManager.state.items"
+      :key="popover.id"
     >
       <div
-        id="vcs-popover"
+        :id="popover.id"
         v-if="popover.component"
-        class="position-absolute z-index-100"
+        ref="popoverRef"
+        class="vcs-popover position-absolute z-index-100"
         :style="{
-          left: `${popover.coordinates.x + 24}px`,
+          left: `${getLeft(popover)}px`,
           top: `${popover.coordinates.y}px`,
           display: popover.visible ? 'block' : 'none'
         }"
@@ -30,7 +31,7 @@
 <script>
   import Vue from 'vue';
   import ClickOutside from 'vue-click-outside';
-  import VueCompositionAPI, { inject } from '@vue/composition-api';
+  import VueCompositionAPI, { inject, ref } from '@vue/composition-api';
 
   Vue.use(VueCompositionAPI);
 
@@ -60,10 +61,23 @@
     name: 'VcsPopover',
     directives: { ClickOutside },
     setup() {
+      const popoverRef = ref([]);
       const popoverManager = inject('popoverManager');
+
+      const getLeft = (popover) => {
+        const thisRef = popoverRef.value.find(p => p.id === popover.id);
+        if (!thisRef) {
+          return popover.coordinates.x + 24;
+        }
+        const { width, left } = thisRef.getBoundingClientRect();
+        return (width + left) > window.innerWidth ? left - width - 24 :
+          popover.coordinates.x + 24;
+      };
 
       return {
         popoverManager,
+        popoverRef,
+        getLeft,
       };
     },
   });

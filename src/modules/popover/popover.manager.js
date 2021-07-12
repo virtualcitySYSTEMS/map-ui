@@ -1,5 +1,6 @@
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
+import { Subject } from 'rxjs';
 /**
  * @typedef Coordinates
  * @property {number} x
@@ -37,6 +38,8 @@ export class PopoverManager {
    * @type {PopoversState} state
    */
   state;
+
+  onAdded = new Subject();
 
   /**
    * @constructor
@@ -146,7 +149,7 @@ export class PopoverManager {
    * @param {PopoverState} popover
    * @param {Element} parent
    */
-  addPopover(popover, parent) {
+  add(popover, parent) {
     Object.values(this.state.items).forEach((item) => {
       if (parent.contains(item.parent)) {
         this.removePopover(item.id);
@@ -154,6 +157,7 @@ export class PopoverManager {
     });
     Vue.set(this.state.items, popover.id, popover);
     this.setCoordinates(this.state.items[popover.id]);
+    this.onAdded.next(popover);
   }
 
   /**
@@ -174,7 +178,7 @@ export class PopoverManager {
    * @method
    */
   updateCoordinates() {
-    Object.values(this.state.items).forEach(this.setCoordinates);
+    Object.values(this.state.items).forEach(r => this.setCoordinates(r));
   }
 
   /**
