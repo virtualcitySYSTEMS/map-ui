@@ -1,11 +1,18 @@
 default:
-  image: vcs-gitlab-runner:node12
+  image: gitlab.intern.virtualcitysystems.de:5050/administration/gitlabrunner/node:14
+
+variables:
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_COMMIT_REF_SLUG
 
 stages:
   - build
-  - audit
-  - lint
   - test
+
+.template: &job_definition
+  only:
+    - /^(feature-.*|hotfix-.*|master|release-.*)$/
+  tags:
+    - linux-2.0
 
 build:
   <<: *job_definition
@@ -21,28 +28,12 @@ build:
 
 lint:
   <<: *after_build_definition
-  stage: lint
-  only:
-    - /^(feature-.*|master|release-.*)$/
+  stage: test
   script:
     - npm run lint
 
 audit:
   <<: *after_build_definition
-  stage: audit
-  only:
-    - /^(feature-.*|master|release-.*)$/
-  script:
-    - npm audit --audit-level=moderate
-
-tests:
-  <<: *after_build_definition
   stage: test
-  only:
-    - /^(feature-.*|master|release-.*)$/
   script:
-    - npm run coverage:gitlab
-  coverage: '/^Statements\s*:\s*([^%]+)/'
-  artifacts:
-    reports:
-      junit: test-results.xml
+    - npm audit --production --audit-level=low

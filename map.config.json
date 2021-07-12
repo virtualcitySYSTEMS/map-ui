@@ -643,7 +643,7 @@
       "name": "cesium",
       "debugging": false,
       "fxaa": false,
-      "startingmap": true,
+      "startingmap": false,
       "enableLightning": true,
       "allowSoftwareRendering": false,
       "maximumScreenSpaceError": 2,
@@ -657,7 +657,7 @@
     {
       "type": "vcs.vcm.maps.Openlayers",
       "name": "ol3",
-      "startingmap": false
+      "startingmap": true
     },
     {
       "name": "Oblique Map",
@@ -710,7 +710,7 @@
       "url": "https://berlin.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "utxPghp6jfG6oZakL",
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "allowPicking": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -729,7 +729,7 @@
       "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "9eRDxjbxHQzE9XiES",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "allowPicking": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
