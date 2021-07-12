@@ -142,8 +142,6 @@
 
                     draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
                     draggableWindowManager.bringViewToTop(draggableWindowRef.id);
-
-                    nextTick(() => popoverManager.updateCoordinates());
                   }),
                   takeUntil(destroy$),
                 );

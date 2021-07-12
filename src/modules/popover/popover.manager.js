@@ -99,24 +99,14 @@ export class PopoverManager {
    * @method
    * @description
    * @param {PopoverState} popover
+   * @param {Coordinates} coordinates
    * Assigns the current x and v value of a popover to the ref.
    */
-  setCoordinates(popover) {
-    if (this.overlayRefs.has(popover.id)) {
-      const overlayRef = this.overlayRefs.get(popover.id);
-      if (document.contains(overlayRef)) {
-        const { x, y } = overlayRef.getBoundingClientRect();
-        Vue.set(this.state.items, popover.id, {
-          ...popover,
-          coordinates: {
-            x,
-            y,
-          },
-        });
-      } else {
-        this.overlayRefs.delete(popover.id);
-      }
-    }
+  setCoordinates(popover, coordinates) {
+    Vue.set(this.state.items, popover.id, {
+      ...popover,
+      coordinates: { ...coordinates },
+    });
   }
 
   /**
@@ -124,21 +114,21 @@ export class PopoverManager {
    * @param {Object} obj
    * @param {string} obj.name
    * @param {string | number} obj.id
-   * @param {HTMLElement} obj.element
+   * @param {HTMLElement} obj.parent
    * @param {Vue.Component} obj.cmp
    * @param {Function} obj.callback
    * @returns {Object}
    */
-  registerPopover({ name, id, element, cmp, callback }) {
+  registerPopover({ name, id, parent, cmp, callback }) {
     Vue.component(name, cmp.default || cmp);
-    this.overlayRefs.set(id, element);
+    this.overlayRefs.set(id, parent);
 
     const popover = PopoverManager.createPopoverObject({
       component: name,
       callback,
       id,
       visible: true,
-      parent: element,
+      parent,
     });
 
     return popover;
@@ -156,7 +146,6 @@ export class PopoverManager {
       }
     });
     Vue.set(this.state.items, popover.id, popover);
-    this.setCoordinates(this.state.items[popover.id]);
     this.onAdded.next(popover);
   }
 
@@ -174,12 +163,6 @@ export class PopoverManager {
     return false;
   }
 
-  /**
-   * @method
-   */
-  updateCoordinates() {
-    Object.values(this.state.items).forEach(r => this.setCoordinates(r));
-  }
 
   /**
    * @method

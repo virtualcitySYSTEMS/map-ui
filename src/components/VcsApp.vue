@@ -19,7 +19,7 @@
   import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
   import DraggableWindowManagerComponent from '@/modules/draggable-window/DraggableWindowManager.vue';
   import { PopoverManager } from '@/modules/popover/popover.manager';
-  import Popover from '@/modules/popover/Popover.vue';
+  import Popover from '@/modules/popover/PopoverManager.vue';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
 

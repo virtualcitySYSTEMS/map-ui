@@ -11,7 +11,7 @@
         ref="popoverRef"
         class="vcs-popover position-absolute z-index-100"
         :style="{
-          left: `${getLeft(popover)}px`,
+          left: `${popover.coordinates.x}px`,
           top: `${popover.coordinates.y}px`,
           display: popover.visible ? 'block' : 'none'
         }"
@@ -31,8 +31,9 @@
 <script>
   import Vue from 'vue';
   import ClickOutside from 'vue-click-outside';
-  import VueCompositionAPI, { inject, ref } from '@vue/composition-api';
+  import VueCompositionAPI, { inject, nextTick, ref } from '@vue/composition-api';
 
+  const OFFSET = 16;
   Vue.use(VueCompositionAPI);
 
   /**
@@ -58,26 +59,32 @@
    * @vue-prop {PopoverConfig} popover
    */
   export default Vue.extend({
-    name: 'VcsPopover',
+    name: 'VcsPopoverManager',
     directives: { ClickOutside },
     setup() {
       const popoverRef = ref([]);
       const popoverManager = inject('popoverManager');
 
-      const getLeft = (popover) => {
-        const thisRef = popoverRef.value.find(p => p.id === popover.id);
-        if (!thisRef) {
-          return popover.coordinates.x + 24;
-        }
-        const { width, left } = thisRef.getBoundingClientRect();
-        return (width + left) > window.innerWidth ? left - width - 24 :
-          popover.coordinates.x + 24;
-      };
+
+      popoverManager.onAdded.subscribe((popover) => {
+        nextTick(() => {
+          const p = popoverRef.value.find(r => r.id === popover.id);
+          const overlayRef = popoverManager.overlayRefs.get(popover.id);
+          const { x, y } = overlayRef.getBoundingClientRect();
+          popoverManager.setCoordinates(popover, { x, y });
+          nextTick(() => {
+            const pRect = p.getBoundingClientRect();
+            const computedX = (pRect.width + pRect.left + OFFSET) > window.innerWidth ?
+              x - pRect.width :
+              x + OFFSET;
+            popoverManager.setCoordinates(popover, { x: computedX, y });
+          });
+        });
+      });
 
       return {
         popoverManager,
         popoverRef,
-        getLeft,
       };
     },
   });

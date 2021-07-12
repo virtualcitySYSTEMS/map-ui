@@ -107,7 +107,7 @@
           name: componentName,
           cmp,
           id,
-          element: event.target,
+          parent: event.target,
           callback,
         });
         const parent = props.getRef(props.draggableWindow.id);
