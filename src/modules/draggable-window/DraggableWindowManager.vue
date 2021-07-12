@@ -7,7 +7,6 @@
       :id="draggableWindow.id"
       class="vsc-draggable-window v-sheet elevation-3 position-absolute"
       @click="bringViewToTop(draggableWindow.id)"
-      :class="[draggableWindow.visible ? 'd-inline-block' : 'd-none']"
       :style="{
         zIndex: zIndexMap[draggableWindow.id],
         left: draggableWindow.position.left,
@@ -16,12 +15,8 @@
         bottom: draggableWindow.position.bottom,
       }"
     >
-      <DraggableWindow
-        @close="close"
-        :draggable-window="draggableWindow"
-        :z-index="zIndexMap[draggableWindow.id]"
-        :z-index-max="zIndexMax"
-        v-if="draggableWindow.visible"
+      <component
+        :is="draggableWindow.component"
       />
     </div>
   </div>
@@ -43,6 +38,7 @@
     onUnmounted,
     nextTick,
     inject,
+    watch,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
   import {
@@ -67,7 +63,7 @@
       const destroy$ = new Subject();
       const draggableWindowManager = inject('draggableWindowManager');
       const popoverManager = inject('popoverManager');
-      const { draggableWindowHighestIndex, zIndexMap, items: draggableWindows } = draggableWindowManager.state;
+      const { state: { zIndexMax, zIndexMap, items: draggableWindows }, onAdded } = draggableWindowManager;
       /**
        * @param {string} viewId
        */
@@ -78,8 +74,9 @@
        * @param {string} viewId
        */
       const close = (viewId) => {
-        draggableWindowManager.toggleViewVisible(viewId);
+        draggableWindowManager.remove(viewId);
       };
+
 
       fromEvent(document.body, 'dragover')
         .pipe(
@@ -168,6 +165,9 @@
           .subscribe();
       };
 
+      onAdded.subscribe(d => nextTick(console.log(context.refs, draggableWindows)));
+
+
       onMounted(() => {
         /**
          * Important: Access to context.refs is deprecated but it is the only way to
@@ -175,8 +175,8 @@
          * https://github.com/vuejs/composition-api#limitations
          * This needs to be refactored to use ref setter functions as soon as migrated to Vue 3.
          */
-        context.refs.draggableWindows
-          .forEach(draggableWindowRef => subscribeToWindowChanges(draggableWindowRef));
+        // context.refs.draggableWindows
+        //   .forEach(draggableWindowRef => subscribeToWindowChanges(draggableWindowRef));
       });
 
       onUnmounted(() => {
@@ -186,7 +186,7 @@
 
       return {
         draggableWindows,
-        zIndexMax: draggableWindowHighestIndex,
+        zIndexMax,
         zIndexMap,
         close,
         bringViewToTop,

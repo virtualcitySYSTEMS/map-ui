@@ -40,9 +40,7 @@
         'rounded-bl': draggableWindow.position.asNumber.left > 0,
       }"
     >
-      <component
-        :is="draggableWindow.component"
-      />
+      <slot />
     </v-sheet>
   </div>
 </template>

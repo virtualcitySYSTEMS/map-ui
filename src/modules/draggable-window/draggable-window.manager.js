@@ -2,10 +2,11 @@
 
 // eslint-disable-next-line max-classes-per-file
 import { reactive } from '@vue/composition-api';
+import { Subject } from 'rxjs';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
 
-const draggableWindowHighestIndex = 50;
+const zIndexMax = 50;
 
 /**
  * @typedef Position
@@ -49,14 +50,14 @@ export const DRAGGABLE_WINDOW_POSITIONS = {
  * @typedef DraggableWindowState
  * @property {Object.<string, DraggableWindow>} items
  * @property {Object.<string, number>} zIndexMap
- * @property {number} draggableWindowHighestIndex
+ * @property {number} zIndexMax
  */
 
 /** @constant {DraggableWindowState} initialState */
 const initialState = {
   items: {},
   zIndexMap: {},
-  draggableWindowHighestIndex,
+  zIndexMax,
 };
 
 
@@ -66,10 +67,10 @@ const initialState = {
  * Should be instanciated with a reactive state and injected at root.
  */
 export class DraggableWindowManager {
-  /**
-   * @type {DraggableWindowState}
-   */
+  /** @type {DraggableWindowState} */
   state;
+
+  onAdded = new Subject();
 
   /**
    * @constructor
@@ -109,6 +110,14 @@ export class DraggableWindowManager {
     Vue.delete(this.state.items, viewId);
   }
 
+  toggle(view) {
+    if (this.has(view.id)) {
+      this.remove(view.id);
+    } else {
+      this.add(view);
+    }
+  }
+
   /**
    * @param {string} viewId
    * @param {Position} position
@@ -134,16 +143,17 @@ export class DraggableWindowManager {
       throw new Error(`A draggable window must have an id, got: ${draggableWindow.id}.`);
     }
 
-    if (this.state.items[draggableWindow.id]) {
+    if (this.get(draggableWindow.id)) {
       throw new Error(`A draggable window with id ${draggableWindow.id} has already been registered.`);
     }
 
     const updatedZIndex = this.state.zIndexMap[draggableWindow.id] ||
-      draggableWindowHighestIndex -
+      zIndexMax -
       Object.keys(this.state.items).length;
 
     Vue.set(this.state.items, draggableWindow.id, draggableWindow);
     Vue.set(this.state.zIndexMap, draggableWindow.id, updatedZIndex);
+    this.onAdded.next(draggableWindow);
   }
 
 
@@ -153,14 +163,14 @@ export class DraggableWindowManager {
   bringViewToTop(viewId) {
     this.checkIfViewRegistered(viewId);
 
-    Vue.set(this.state.zIndexMap, viewId, this.state.draggableWindowHighestIndex);
+    Vue.set(this.state.zIndexMap, viewId, this.state.zIndexMax);
 
     // Set other windows to back by one each.
     Object.keys(this.state.items)
       .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
       .filter(id => id !== viewId)
       .forEach((id, i) => {
-        const zIndex = this.state.draggableWindowHighestIndex - (i + 1);
+        const zIndex = this.state.zIndexMax - (i + 1);
         Vue.set(this.state.zIndexMap, id, zIndex);
       });
   }
@@ -181,10 +191,11 @@ export class DraggableWindowManager {
    */
   hideWindowsInDefaultPosition(viewId) {
     Object.values(this.state.items).forEach((v) => {
+      const { defaultPosition } = this.get(viewId);
       if (
-        parseInt(v.position.left, 10) === parseInt(this.state.items[viewId].defaultPosition.left, 10) &&
-        parseInt(v.position.top, 10) === parseInt(this.state.items[viewId].defaultPosition.top, 10) &&
-        v.id !== this.state.items[viewId].id
+        parseInt(v.position.left, 10) === parseInt(defaultPosition.left, 10) &&
+        parseInt(v.position.top, 10) === parseInt(defaultPosition.top, 10) &&
+        v.id !== viewId
       ) {
         Vue.set(this.state.items, v.id, {
           ...v,
@@ -197,26 +208,25 @@ export class DraggableWindowManager {
   /**
    * @param {string} viewId
    */
-  toggleViewVisible(viewId) {
-    const view = this.get(viewId);
+  // toggleViewVisible(viewId) {
+  //   const view = this.get(viewId);
 
-    this.checkIfViewRegistered(viewId);
+  //   this.checkIfViewRegistered(viewId);
 
-    view.visible = !view.visible;
-    // When it is visible, bring it to top, otherwise send it to back.
-    if (view.visible) {
-      Vue.set(this.state.items, viewId, { ...view });
-      Vue.set(this.state.zIndexMap, viewId, draggableWindowHighestIndex);
+  //   // When it is visible, bring it to top, otherwise send it to back.
+  //   if (view.visible) {
+  //     Vue.set(this.state.items, viewId, { ...view });
+  //     Vue.set(this.state.zIndexMap, viewId, zIndexMax);
 
-      this.hideWindowsInDefaultPosition(viewId);
-      this.bringViewToTop(viewId);
-    } else {
-      const updatedZIndex = draggableWindowHighestIndex - Object.keys(this.state.items).length + 1;
-      Vue.set(this.state.zIndexMap, viewId, updatedZIndex);
-      Vue.set(this.state.items, viewId, {
-        ...view,
-        position: new PositionParser(view.defaultPosition),
-      });
-    }
-  }
+  //     this.hideWindowsInDefaultPosition(viewId);
+  //     this.bringViewToTop(viewId);
+  //   } else {
+  //     const updatedZIndex = zIndexMax - Object.keys(this.state.items).length + 1;
+  //     Vue.set(this.state.zIndexMap, viewId, updatedZIndex);
+  //     Vue.set(this.state.items, viewId, {
+  //       ...view,
+  //       position: new PositionParser(view.defaultPosition),
+  //     });
+  //   }
+  // }
 }

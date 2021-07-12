@@ -1,14 +1,21 @@
 <template>
-  <Treeview
-    v-if="tree && tree.items"
-    :items="tree.items"
-    :has-searchbar="true"
-    :searchbar-placeholder="'layer-tree.search.placeholder'"
-    selectable
-    @input="handleInput"
-    @action-clicked="handlePopover"
-    @update:open="handleUpdateOpen"
-  />
+  <DraggableWindow
+    @close="close"
+    :draggable-window="draggableWindow"
+    :z-index="zIndex"
+    :z-index-max="zIndexMax"
+  >
+    <Treeview
+      v-if="tree && tree.items"
+      :items="tree.items"
+      :has-searchbar="true"
+      :searchbar-placeholder="'layer-tree.search.placeholder'"
+      selectable
+      @input="handleInput"
+      @action-clicked="handlePopover"
+      @update:open="handleUpdateOpen"
+    />
+  </DraggableWindow>
 </template>
 
 
@@ -24,6 +31,7 @@
   } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
+  import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
 
@@ -50,12 +58,16 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview },
+    components: { Treeview, DraggableWindow },
     setup() {
       const tree = ref();
       const context = inject('context');
       const popoverManager = inject('popoverManager');
+      const draggableWindowManager = inject('draggableWindowManager');
       const selectedIds = ref([]);
+      const { zIndexMax, zIndexMap } = draggableWindowManager.state;
+      const draggableWindow = draggableWindowManager.get('layer-tree');
+      const zIndex = zIndexMap['layer-tree'];
       provide('tree', tree);
 
       onMounted(async () => {
@@ -107,12 +119,23 @@
         nextTick(() => popoverManager.removeOrphaned());
       };
 
+      /**
+       * @param {string} viewId
+       */
+      const close = (viewId) => {
+        draggableWindowManager.remove(viewId);
+      };
+
       return {
         tree,
         selectedIds: [],
         handleInput,
         handlePopover,
         handleUpdateOpen,
+        close,
+        zIndexMax,
+        draggableWindow,
+        zIndex,
       };
     },
   });

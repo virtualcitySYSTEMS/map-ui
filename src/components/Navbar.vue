@@ -16,13 +16,13 @@
               <NavbarDivider />
               <Button
                 :icon="'$vcsLayers'"
-                @click.native="toggleDraggableWindow('layer-tree')"
-                :value="draggableWindows['layer-tree'] && draggableWindows['layer-tree'].visible"
+                @click.native="toggleLayerTree()"
+                :value="!!draggableWindows['layer-tree']"
               />
               <Button
                 :icon="'$$vcsComponents'"
-                @click.native="toggleDraggableWindow('components')"
-                :value="draggableWindows['components'] && draggableWindows['components'].visible"
+                @click.native="toggleComponents()"
+                :value="!!draggableWindows['components']"
               />
             </div>
           </v-toolbar-items>
@@ -47,11 +47,11 @@
   import { DRAGGABLE_WINDOW_POSITIONS } from '@/modules/draggable-window/draggable-window.manager';
 
   Vue.use(VueCompositionAPI);
+  Vue.component('LayerTree', LayerTree);
 
   const layerTree = {
-    visible: true,
     id: 'layer-tree',
-    component: LayerTree,
+    component: 'LayerTree',
     width: 320,
     header: 'layer-tree.title',
     icon: '$vcsLayers',
@@ -60,9 +60,8 @@
   };
 
   const components = {
-    visible: false,
     id: 'components',
-    component: LayerTree,
+    component: 'LayerTree',
     width: 320,
     header: 'components.title',
     icon: '$vcsLayers',
@@ -85,9 +84,6 @@
       const draggableWindowManager = inject('draggableWindowManager');
       const context = inject('context');
 
-      draggableWindowManager.add(layerTree);
-      draggableWindowManager.add(components);
-
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
         'vcs.vcm.maps.Cesium': '$vcs3d',
@@ -95,18 +91,16 @@
       };
       /**
        * @param {string} mapName
-       * @description
-       * Sets the current map type
        */
       const setMap = (mapName) => {
         context.maps.setActiveMap(mapName);
       };
 
-      /**
-       * @param {string} viewId
-       */
-      const toggleDraggableWindow = (viewId) => {
-        draggableWindowManager.toggleViewVisible(viewId);
+      const toggleLayerTree = () => {
+        draggableWindowManager.toggle(layerTree);
+      };
+      const toggleComponents = () => {
+        draggableWindowManager.toggle(components);
       };
 
       return {
@@ -114,7 +108,8 @@
         maps: mapState.maps,
         mapState,
         setMap,
-        toggleDraggableWindow,
+        toggleLayerTree,
+        toggleComponents,
         draggableWindows: draggableWindowManager.state.items,
       };
     },
