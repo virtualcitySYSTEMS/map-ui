@@ -161,8 +161,6 @@ export class DraggableWindowManager {
    * @param {string} viewId
    */
   bringViewToTop(viewId) {
-    this.checkIfViewRegistered(viewId);
-
     Vue.set(this.state.zIndexMap, viewId, this.state.zIndexMax);
 
     // Set other windows to back by one each.

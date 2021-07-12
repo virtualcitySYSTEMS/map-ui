@@ -13,10 +13,15 @@
         top: draggableWindow.position.top,
         right: draggableWindow.position.right,
         bottom: draggableWindow.position.bottom,
+        width: `${draggableWindow.width}px`,
       }"
     >
       <component
         :is="draggableWindow.component"
+        :draggable-window="draggableWindow"
+        :z-index="zIndexMap[draggableWindow.id]"
+        :z-index-max="zIndexMax"
+        :get-ref="getRef"
       />
     </div>
   </div>
@@ -38,7 +43,6 @@
     onUnmounted,
     nextTick,
     inject,
-    watch,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
   import {
@@ -77,6 +81,13 @@
         draggableWindowManager.remove(viewId);
       };
 
+      /**
+       * @param {string} refId
+       * @returns {Object}
+       */
+      const getRef = (refId) => {
+        return context.refs.draggableWindows.find(({ id }) => id === refId);
+      };
 
       fromEvent(document.body, 'dragover')
         .pipe(
@@ -123,6 +134,7 @@
                     };
                   }),
                   tap(({ targetWidth, targetHeight, top, left }) => {
+                    popoverManager.removeAllFrom(draggableWindowRef);
                     const coordinates = {
                       left: `${clipX({ width: targetWidth, offsetX: left })}px`,
                       top: `${clipY({ height: targetHeight, offsetY: top })}px`,
@@ -165,8 +177,6 @@
           .subscribe();
       };
 
-      onAdded.subscribe(d => nextTick(console.log(context.refs, draggableWindows)));
-
 
       onMounted(() => {
         /**
@@ -175,8 +185,11 @@
          * https://github.com/vuejs/composition-api#limitations
          * This needs to be refactored to use ref setter functions as soon as migrated to Vue 3.
          */
-        // context.refs.draggableWindows
-        //   .forEach(draggableWindowRef => subscribeToWindowChanges(draggableWindowRef));
+        onAdded.subscribe(
+          () => nextTick(
+            () => context.refs.draggableWindows.forEach(r => subscribeToWindowChanges(r)),
+          ),
+        );
       });
 
       onUnmounted(() => {
@@ -190,6 +203,7 @@
         zIndexMap,
         close,
         bringViewToTop,
+        getRef,
       };
     },
   });

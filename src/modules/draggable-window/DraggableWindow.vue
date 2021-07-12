@@ -2,9 +2,6 @@
   <div class="d-contents">
     <v-sheet
       class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
-      :style="{
-        width: `${draggableWindow.width}px`,
-      }"
       :class="{
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': draggableWindow.position.asNumber.top > 48
@@ -25,15 +22,16 @@
       </slot>
 
       <slot name="close">
-        <v-icon @click="$emit('close', draggableWindow.id)" size="16" v-text="'mdi-close-thick'" />
+        <v-icon
+          @click="$emit('close', draggableWindow.id)"
+          size="16"
+          v-text="'mdi-close-thick'"
+        />
       </slot>
     </v-sheet>
 
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
-      :style="{
-        width: `${draggableWindow.width}px`
-      }"
       :class="{
         'rounded-br': draggableWindow.position.asNumber.top > 0
           && draggableWindow.position.asNumber.left < (windowWidth - draggableWindow.width),
@@ -53,22 +51,12 @@
 
   export default defineComponent({
     props: {
-      draggableWindow: {
-        type: Object,
-        required: true,
-      },
-      zIndex: {
-        type: Number,
-        required: true,
-      },
-      zIndexMax: {
-        type: Number,
-        required: true,
-      },
+      draggableWindow: Object,
+      zIndex: Number,
+      zIndexMax: Number,
     },
     setup() {
       const windowWidth = computed(() => window.innerWidth);
-
       return {
         windowWidth,
       };

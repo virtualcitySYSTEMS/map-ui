@@ -1,4 +1,3 @@
-
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
 /**
@@ -22,7 +21,6 @@ import Vue from 'vue';
 const initialState = {
   items: {},
 };
-
 
 /* eslint-disable import/prefer-default-export */
 /**
@@ -60,9 +58,10 @@ export class PopoverManager {
    * */
   static createPopoverObject({
     component,
-    coordinates = {},
-    callback = () => { },
+    parent,
     id,
+    coordinates = {},
+    callback = () => {},
     visible = false,
   }) {
     return {
@@ -71,6 +70,7 @@ export class PopoverManager {
       callback,
       id,
       visible,
+      parent,
     };
   }
 
@@ -124,27 +124,34 @@ export class PopoverManager {
    * @param {HTMLElement} obj.element
    * @param {Vue.Component} obj.cmp
    * @param {Function} obj.callback
+   * @returns {Object}
    */
   registerPopover({ name, id, element, cmp, callback }) {
     Vue.component(name, cmp.default || cmp);
     this.overlayRefs.set(id, element);
-
 
     const popover = PopoverManager.createPopoverObject({
       component: name,
       callback,
       id,
       visible: true,
+      parent: element,
     });
 
-    this.addPopover(popover);
+    return popover;
   }
 
   /**
    * @method
    * @param {PopoverState} popover
+   * @param {Element} parent
    */
-  addPopover(popover) {
+  addPopover(popover, parent) {
+    Object.values(this.state.items).forEach((item) => {
+      if (parent.contains(item.parent)) {
+        this.removePopover(item.id);
+      }
+    });
     Vue.set(this.state.items, popover.id, popover);
     this.setCoordinates(this.state.items[popover.id]);
   }
@@ -163,17 +170,33 @@ export class PopoverManager {
     return false;
   }
 
+  /**
+   * @method
+   */
   updateCoordinates() {
-    Object.values(this.state.items).forEach(item => this.setCoordinates(item));
+    Object.values(this.state.items).forEach(this.setCoordinates);
   }
 
   /**
+   * @method
    * @description
    * Removes all popovers whose parent elements have been removed from the DOM
    */
   removeOrphaned() {
     Array.from(this.overlayRefs.keys()).forEach((key) => {
       if (!document.contains(this.overlayRefs.get(key))) {
+        this.removePopover(key);
+      }
+    });
+  }
+
+  /**
+   * @method
+   * @param {Node} ref parent node of the nodes which shall be removed
+   */
+  removeAllFrom(ref) {
+    Array.from(this.overlayRefs).forEach(([key, popover]) => {
+      if (ref.contains(popover)) {
         this.removePopover(key);
       }
     });

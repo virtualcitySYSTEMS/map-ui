@@ -59,15 +59,18 @@
   export default defineComponent({
     name: 'VcsLayerTree',
     components: { Treeview, DraggableWindow },
-    setup() {
+    props: {
+      draggableWindow: Object,
+      zIndex: Number,
+      zIndexMax: Number,
+      getRef: Function,
+    },
+    setup(props) {
       const tree = ref();
       const context = inject('context');
       const popoverManager = inject('popoverManager');
       const draggableWindowManager = inject('draggableWindowManager');
       const selectedIds = ref([]);
-      const { zIndexMax, zIndexMap } = draggableWindowManager.state;
-      const draggableWindow = draggableWindowManager.get('layer-tree');
-      const zIndex = zIndexMap['layer-tree'];
       provide('tree', tree);
 
       onMounted(async () => {
@@ -100,18 +103,19 @@
         const cmp = await import(`@vcsuite/uicomponents/${componentName}.vue`);
 
         const callback = () => popoverManager.removePopover(id);
-        popoverManager.registerPopover({
+        const popover = popoverManager.registerPopover({
           name: componentName,
           cmp,
           id,
           element: event.target,
           callback,
         });
+        const parent = props.getRef(props.draggableWindow.id);
+        popoverManager.addPopover(popover, parent);
       };
 
 
       /**
-       * @function
        * @description
        * Hides the popovers which are open at the moment.
        */
@@ -133,9 +137,6 @@
         handlePopover,
         handleUpdateOpen,
         close,
-        zIndexMax,
-        draggableWindow,
-        zIndex,
       };
     },
   });
