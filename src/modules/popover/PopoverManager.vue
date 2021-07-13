@@ -13,11 +13,9 @@
         :style="{
           left: `${popover.coordinates.x}px`,
           top: `${popover.coordinates.y}px`,
-          display: popover.visible ? 'block' : 'none'
         }"
       >
         <component
-          :v-if="popover.visible"
           :is="popover.component"
           @input="popover.callback"
           v-bind="{ ...popover }"

@@ -16,7 +16,6 @@ import { Subject } from 'rxjs';
  * @property {string | VueComponent} component
  * @property {Coordinates} coordinates
  * @property {Function} callback
- * @property {boolean} visible
  * @property {string | number} id
  */
 /**
@@ -26,7 +25,7 @@ import { Subject } from 'rxjs';
 
 /* eslint-disable import/prefer-default-export */
 /**
- * @class PopoverManager
+ * @class
  * @description Manages a set of popovers. Should be instanciated with a reactive state and injected at root.
  */
 export class PopoverManager {
@@ -79,7 +78,6 @@ export class PopoverManager {
    * @param {string} obj.name
    * @param {string | number} obj.id
    * @param {HTMLElement} obj.parent
-   * @param {boolean} obj.visible
    * @param {Vue.Component} obj.cmp
    * @param {Function} obj.callback
    * @param {Object} obj.coordinates
@@ -90,7 +88,6 @@ export class PopoverManager {
     id,
     cmp,
     parent,
-    visible = true,
     callback = () => {},
     coordinates = {},
   }) {
@@ -100,7 +97,6 @@ export class PopoverManager {
     const popover = {
       component: name,
       coordinates,
-      visible,
       callback,
       id,
       parent,
