@@ -21,7 +21,6 @@
     provide,
     reactive,
     ref,
-    getCurrentInstance,
   } from '@vue/composition-api';
   import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
   import DraggableWindowManagerComponent from '@/modules/draggable-window/DraggableWindowManager.vue';
