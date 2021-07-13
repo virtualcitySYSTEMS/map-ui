@@ -1,7 +1,7 @@
 <template>
-  <DraggableWindow
+  <Window
     @close="close"
-    :draggable-window="draggableWindow"
+    :window="window"
     :z-index="zIndex"
     :z-index-max="zIndexMax"
   >
@@ -15,7 +15,7 @@
       @action-clicked="handlePopover"
       @update:open="handleUpdateOpen"
     />
-  </DraggableWindow>
+  </Window>
 </template>
 
 
@@ -30,7 +30,7 @@
   } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
-  import DraggableWindow from '@/modules/draggable-window/DraggableWindow.vue';
+  import Window from '@/modules/window-manager/Window.vue';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
   import Legend from '@vcsuite/uicomponents/Legend.vue';
@@ -55,9 +55,9 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview, DraggableWindow },
+    components: { Treeview, Window },
     props: {
-      draggableWindow: Object,
+      window: Object,
       zIndex: Number,
       zIndexMax: Number,
       getRef: Function,
@@ -66,7 +66,7 @@
       const tree = ref();
       const context = inject('context');
       const popoverManager = inject('popoverManager');
-      const draggableWindowManager = inject('draggableWindowManager');
+      const windowManager = inject('windowManager');
       const selectedIds = ref([]);
       provide('tree', tree);
 
@@ -104,7 +104,7 @@
           parent: event.target,
           callback,
         });
-        const parent = props.getRef(props.draggableWindow.id);
+        const parent = props.getRef(props.window.id);
         popoverManager.add(popover, parent);
       };
 
@@ -121,7 +121,7 @@
        * @param {string} viewId
        */
       const close = (viewId) => {
-        draggableWindowManager.remove(viewId);
+        windowManager.remove(viewId);
       };
 
       return {

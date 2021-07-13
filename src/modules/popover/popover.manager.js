@@ -1,5 +1,9 @@
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
+
+/**
+ * Replace with VcsEvent
+ */
 import { Subject } from 'rxjs';
 
 /**

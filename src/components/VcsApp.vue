@@ -3,7 +3,7 @@
     <Navbar :map-id="mapId" />
     <Map :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
 
-    <DraggableWindowManagerComponent />
+    <WindowManagerComponent />
     <Popover />
   </v-sheet>
 </template>
@@ -22,8 +22,8 @@
     reactive,
     ref,
   } from '@vue/composition-api';
-  import { DraggableWindowManager } from '@/modules/draggable-window/draggable-window.manager';
-  import DraggableWindowManagerComponent from '@/modules/draggable-window/DraggableWindowManager.vue';
+  import { WindowManager } from '@/modules/window-manager/window.manager';
+  import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover/popover.manager';
   import Popover from '@/modules/popover/PopoverManager.vue';
   import Navbar from './Navbar.vue';
@@ -34,7 +34,7 @@
     components: {
       Navbar,
       Map,
-      DraggableWindowManagerComponent,
+      WindowManagerComponent,
       Popover,
     },
     setup() {
@@ -66,8 +66,8 @@
 
       const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
-      const draggableWindowManager = new DraggableWindowManager();
-      provide('draggableWindowManager', draggableWindowManager);
+      const windowManager = new WindowManager();
+      provide('windowManager', windowManager);
 
       const configLoaded = ref(false);
       const startingMapName = ref('');

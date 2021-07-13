@@ -1,25 +1,25 @@
 <template>
   <div>
     <div
-      v-for="draggableWindow in draggableWindows"
-      :ref="'draggableWindows'"
-      :key="draggableWindow.id"
-      :id="draggableWindow.id"
-      class="vsc-draggable-window v-sheet elevation-3 position-absolute"
-      @click="bringViewToTop(draggableWindow.id)"
+      v-for="window in windows"
+      :ref="'windows'"
+      :key="window.id"
+      :id="window.id"
+      class="vsc-window v-sheet elevation-3 position-absolute"
+      @click="bringViewToTop(window.id)"
       :style="{
-        zIndex: zIndexMap[draggableWindow.id],
-        left: draggableWindow.position.left,
-        top: draggableWindow.position.top,
-        right: draggableWindow.position.right,
-        bottom: draggableWindow.position.bottom,
-        width: `${draggableWindow.width}px`,
+        zIndex: zIndexMap[window.id],
+        left: window.position.left,
+        top: window.position.top,
+        right: window.position.right,
+        bottom: window.position.bottom,
+        width: `${window.width}px`,
       }"
     >
       <component
-        :is="draggableWindow.component"
-        :draggable-window="draggableWindow"
-        :z-index="zIndexMap[draggableWindow.id]"
+        :is="window.component"
+        :window="window"
+        :z-index="zIndexMap[window.id]"
         :z-index-max="zIndexMax"
         :get-ref="getRef"
       />
@@ -28,7 +28,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .vcs-draggable-window {
+  .vcs-window {
     &__header {
       font-size: 18px;
     }
@@ -55,28 +55,24 @@
   } from 'rxjs/operators';
 
   import { clipX, clipY } from './util/clip';
-  import DraggableWindow from './DraggableWindow.vue';
+  import Window from './Window.vue';
 
 
   export default defineComponent({
-    name: 'VcsDraggableWindowManager',
-    components: { DraggableWindow },
+    name: 'VcsWindowManager',
+    components: { Window },
     setup(props, context) {
       const destroy$ = new Subject();
-      const draggableWindowManager = inject('draggableWindowManager');
+      const windowManager = inject('windowManager');
       const popoverManager = inject('popoverManager');
-      const { state: { zIndexMax, zIndexMap, items: draggableWindows }, onAdded } = draggableWindowManager;
-      /**
-       * @param {string} viewId
-       */
+      const { state: { zIndexMax, zIndexMap, items: windows }, onAdded } = windowManager;
+      /** @param {string} viewId */
       const bringViewToTop = (viewId) => {
-        draggableWindowManager.bringViewToTop(viewId);
+        windowManager.bringViewToTop(viewId);
       };
-      /**
-       * @param {string} viewId
-       */
+      /** @param {string} viewId */
       const close = (viewId) => {
-        draggableWindowManager.remove(viewId);
+        windowManager.remove(viewId);
       };
 
       /**
@@ -84,7 +80,7 @@
        * @returns {Object}
        */
       const getRef = (refId) => {
-        return context.refs.draggableWindows.find(({ id }) => id === refId);
+        return context.refs.windows.find(({ id }) => id === refId);
       };
 
       fromEvent(document.body, 'dragover')
@@ -94,11 +90,9 @@
         )
         .subscribe();
 
-      /**
-       * @param {HTMLElement} draggableWindowRef
-       */
-      const subscribeToWindowChanges = (draggableWindowRef) => {
-        fromEvent(draggableWindowRef, 'dragstart')
+      /** @param {HTMLElement} windowRef */
+      const subscribeToWindowChanges = (windowRef) => {
+        fromEvent(windowRef, 'dragstart')
           .pipe(
             filter(
               startEvent => !!startEvent.target.classList &&
@@ -106,7 +100,7 @@
             ),
             switchMap((startEvent) => {
               const style = window.getComputedStyle(
-                draggableWindowRef,
+                windowRef,
                 undefined,
               );
               const startLeft =
@@ -132,14 +126,14 @@
                     };
                   }),
                   tap(({ targetWidth, targetHeight, top, left }) => {
-                    popoverManager.removeAllFrom(draggableWindowRef);
+                    popoverManager.removeAllFrom(windowRef);
                     const coordinates = {
                       left: `${clipX({ width: targetWidth, offsetX: left })}px`,
                       top: `${clipY({ height: targetHeight, offsetY: top })}px`,
                     };
 
-                    draggableWindowManager.setCoordinates(draggableWindowRef.id, coordinates);
-                    draggableWindowManager.bringViewToTop(draggableWindowRef.id);
+                    windowManager.setCoordinates(windowRef.id, coordinates);
+                    windowManager.bringViewToTop(windowRef.id);
                   }),
                   takeUntil(destroy$),
                 );
@@ -154,17 +148,17 @@
           .pipe(
             debounceTime(500),
             tap(() => {
-              if (draggableWindowRef instanceof HTMLElement) {
+              if (windowRef instanceof HTMLElement) {
                 const { innerWidth, innerHeight } = window;
-                const { x, y, width, height } = draggableWindowRef.getBoundingClientRect();
+                const { x, y, width, height } = windowRef.getBoundingClientRect();
                 if (width + x > innerWidth || height + y > innerHeight) {
-                  const draggableWindow = draggableWindowManager.get(draggableWindowRef.id);
+                  const window = windowManager.get(windowRef.id);
                   const coordinates = {
-                    left: `${clipX({ width, offsetX: parseInt(draggableWindow.position.left, 10) })}px`,
-                    top: `${clipY({ height, offsetY: parseInt(draggableWindow.position.top, 10) })}px`,
+                    left: `${clipX({ width, offsetX: parseInt(window.position.left, 10) })}px`,
+                    top: `${clipY({ height, offsetY: parseInt(window.position.top, 10) })}px`,
                   };
 
-                  draggableWindowManager.setCoordinates(draggableWindow.id, coordinates);
+                  windowManager.setCoordinates(window.id, coordinates);
                 }
               }
             }),
@@ -183,7 +177,7 @@
          */
         onAdded.subscribe(
           () => nextTick(
-            () => context.refs.draggableWindows.forEach(r => subscribeToWindowChanges(r)),
+            () => context.refs.windows.forEach(r => subscribeToWindowChanges(r)),
           ),
         );
       });
@@ -194,7 +188,7 @@
       });
 
       return {
-        draggableWindows,
+        windows,
         zIndexMax,
         zIndexMap,
         close,

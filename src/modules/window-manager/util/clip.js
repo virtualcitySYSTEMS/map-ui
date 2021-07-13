@@ -1,14 +1,14 @@
 
 /**
  * @function
- * @memberof module:DraggableWindow
+ * @memberof module:Window
  *
  * @param {Object} obj
  * @param {number} obj.width - width of the window
  * @param {number} obj.offsetX - x-axis offset of the window
  *
  * @returns {number} final x-axis value
- * @description Clips the x-axis value for a draggable window so it does not run off-screen
+ * @description Clips the x-axis value for a window so it does not run off-screen
  */
 function clipX({
   width,
@@ -27,14 +27,14 @@ function clipX({
 
 /**
  * @function
- * @memberof module:DraggableWindow
+ * @memberof module:Window
  *
  * @param {Object} obj
  * @param {number} obj.height - height of the window
  * @param {number} obj.offsetY - y-axis offset of the window
  *
  * @returns {number} final y-axis value
- * @description Clips the y-axis value for a draggable window so it does not run off-screen
+ * @description Clips the y-axis value for a window so it does not run off-screen
  */
 function clipY({
   height,

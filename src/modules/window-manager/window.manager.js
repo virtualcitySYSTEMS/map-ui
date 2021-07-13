@@ -13,14 +13,14 @@ import PositionParser from './util/position-parser';
  */
 
 /**
- * @typedef DraggableWindowState
- * @property {Object.<string, DraggableWindow>} items
+ * @typedef WindowState
+ * @property {Object.<string, Window>} items
  * @property {Object.<string, number>} zIndexMap
  * @property {number} zIndexMax
  */
 
 /**
- * @typedef DraggableWindow
+ * @typedef Window
  * @property {boolean} visible
  * @property {string | number} id
  * @property {string | VueComponent} component
@@ -34,7 +34,7 @@ import PositionParser from './util/position-parser';
 const zIndexMax = 50;
 
 /** @type {Object<string, PositionParser>} */
-export const DRAGGABLE_WINDOW_POSITIONS = {
+export const WINDOW_POSITIONS = {
   topLeft: new PositionParser({
     left: 0,
     top: '48px',
@@ -51,15 +51,15 @@ export const DRAGGABLE_WINDOW_POSITIONS = {
 
 
 /**
- * @class DraggableWindowManager
+ * @class WindowManager
  * @description Manages a set of Draggable Windows.0-
  * Should be instanciated with a reactive state and injected at root.
  */
-export class DraggableWindowManager {
+export class WindowManager {
   onAdded = new Subject();
 
   constructor() {
-    /** @type {DraggableWindowState} */
+    /** @type {WindowState} */
     this.state = reactive({
       items: {},
       zIndexMap: {},
@@ -69,7 +69,7 @@ export class DraggableWindowManager {
 
   /**
    * @param {string} viewId
-   * @returns {DraggableWindow}
+   * @returns {Window}
    */
   get(viewId) {
     return this.state.items[viewId];
@@ -108,35 +108,35 @@ export class DraggableWindowManager {
   setCoordinates(viewId, position) {
     this.checkIfViewRegistered(viewId);
 
-    const draggableWindow = this.get(viewId);
+    const window = this.get(viewId);
 
     const updatedWindow = {
-      ...draggableWindow,
+      ...window,
       position: new PositionParser(position),
     };
 
-    Vue.set(this.state.items, draggableWindow.id, updatedWindow);
+    Vue.set(this.state.items, window.id, updatedWindow);
   }
 
   /**
-   * @param {DraggableWindow} draggableWindow
+   * @param {Window} window
    */
-  add(draggableWindow) {
-    if (!draggableWindow.id) {
-      throw new Error(`A draggable window must have an id, got: ${draggableWindow.id}.`);
+  add(window) {
+    if (!window.id) {
+      throw new Error(`A window must have an id, got: ${window.id}.`);
     }
 
-    if (this.get(draggableWindow.id)) {
-      throw new Error(`A draggable window with id ${draggableWindow.id} has already been registered.`);
+    if (this.get(window.id)) {
+      throw new Error(`A window with id ${window.id} has already been registered.`);
     }
 
-    const updatedZIndex = this.state.zIndexMap[draggableWindow.id] ||
+    const updatedZIndex = this.state.zIndexMap[window.id] ||
       zIndexMax -
       Object.keys(this.state.items).length;
 
-    Vue.set(this.state.items, draggableWindow.id, draggableWindow);
-    Vue.set(this.state.zIndexMap, draggableWindow.id, updatedZIndex);
-    this.onAdded.next(draggableWindow);
+    Vue.set(this.state.items, window.id, window);
+    Vue.set(this.state.zIndexMap, window.id, updatedZIndex);
+    this.onAdded.next(window);
   }
 
 
@@ -162,7 +162,7 @@ export class DraggableWindowManager {
   checkIfViewRegistered = (viewId) => {
     if (!this.has(viewId)) {
       throw new Error(
-        `DraggableWindow with id '${viewId}' has not been registered!`,
+        `Window with id '${viewId}' has not been registered!`,
       );
     }
   };

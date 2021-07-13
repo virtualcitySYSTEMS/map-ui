@@ -22,12 +22,12 @@
               <Button
                 :icon="'$vcsLayers'"
                 @click.native="toggleLayerTree()"
-                :value="!!draggableWindows['layer-tree']"
+                :value="!!windows['layer-tree']"
               />
               <Button
                 :icon="'$$vcsComponents'"
                 @click.native="toggleComponents()"
-                :value="!!draggableWindows['components']"
+                :value="!!windows['components']"
               />
             </div>
           </v-toolbar-items>
@@ -49,7 +49,7 @@
   import Button from '@vcsuite/uicomponents/Button.vue';
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
-  import { DRAGGABLE_WINDOW_POSITIONS } from '@/modules/draggable-window/draggable-window.manager';
+  import { WINDOW_POSITIONS } from '@/modules/window-manager/window.manager';
 
   Vue.component('LayerTree', LayerTree);
 
@@ -59,8 +59,8 @@
     width: 320,
     header: 'layer-tree.title',
     icon: '$vcsLayers',
-    position: DRAGGABLE_WINDOW_POSITIONS.topLeft,
-    defaultPosition: DRAGGABLE_WINDOW_POSITIONS.topLeft,
+    position: WINDOW_POSITIONS.topLeft,
+    defaultPosition: WINDOW_POSITIONS.topLeft,
   };
 
   const components = {
@@ -69,8 +69,8 @@
     width: 320,
     header: 'components.title',
     icon: '$vcsLayers',
-    position: DRAGGABLE_WINDOW_POSITIONS.bottomRight,
-    defaultPosition: DRAGGABLE_WINDOW_POSITIONS.bottomRight,
+    position: WINDOW_POSITIONS.bottomRight,
+    defaultPosition: WINDOW_POSITIONS.bottomRight,
   };
 
 
@@ -86,7 +86,7 @@
     setup() {
       const mapState = inject('mapState');
       const pluginComponents = inject('pluginComponents');
-      const draggableWindowManager = inject('draggableWindowManager');
+      const windowManager = inject('windowManager');
       const context = inject('context');
 
       const iconMap = {
@@ -102,10 +102,10 @@
       };
 
       const toggleLayerTree = () => {
-        draggableWindowManager.toggle(layerTree);
+        windowManager.toggle(layerTree);
       };
       const toggleComponents = () => {
-        draggableWindowManager.toggle(components);
+        windowManager.toggle(components);
       };
 
       return {
@@ -116,7 +116,7 @@
         setMap,
         toggleLayerTree,
         toggleComponents,
-        draggableWindows: draggableWindowManager.state.items,
+        windows: windowManager.state.items,
       };
     },
   });
