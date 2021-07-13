@@ -35,10 +35,8 @@
 </style>
 
 <script >
-  import Vue from 'vue';
-  import VueCompositionAPI, { defineComponent, inject, onMounted } from '@vue/composition-api';
+  import { defineComponent, inject, onMounted } from '@vue/composition-api';
 
-  Vue.use(VueCompositionAPI);
 
   export default defineComponent({
     props: {

@@ -104,13 +104,10 @@
 
 
 <script>
-  import VueCompositionAPI, { defineComponent, onMounted, onUnmounted } from '@vue/composition-api';
+  import { defineComponent, onMounted, onUnmounted } from '@vue/composition-api';
 
   import { Subject } from 'rxjs';
   import { debounceTime } from 'rxjs/operators';
-  import Vue from 'vue';
-
-  Vue.use(VueCompositionAPI);
 
 
   /**

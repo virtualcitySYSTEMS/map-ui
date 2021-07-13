@@ -48,10 +48,9 @@
   import LayerTree from '@/components/LayerTree.vue';
   import Button from '@vcsuite/uicomponents/Button.vue';
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
-  import VueCompositionAPI, { inject } from '@vue/composition-api';
+  import { inject } from '@vue/composition-api';
   import { DRAGGABLE_WINDOW_POSITIONS } from '@/modules/draggable-window/draggable-window.manager';
 
-  Vue.use(VueCompositionAPI);
   Vue.component('LayerTree', LayerTree);
 
   const layerTree = {

@@ -71,17 +71,15 @@
 
 <script>
   import
-    VueCompositionAPI, {
-      defineComponent,
-      inject,
-      onMounted,
-      ref,
-    } from '@vue/composition-api';
-  import Vue from 'vue';
+  {
+    defineComponent,
+    inject,
+    onMounted,
+    ref,
+  } from '@vue/composition-api';
 
   import Badge from '@vcsuite/uicomponents/Badge.vue';
 
-  Vue.use(VueCompositionAPI);
 
   const iconTypes = {
     image: 'HTMLImageElement',

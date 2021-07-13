@@ -15,7 +15,7 @@
   import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context';
   import config from '@/../map.config.json';
 
-  import VueCompositionApi, {
+  import {
     onBeforeMount,
     onUnmounted,
     provide,
@@ -29,7 +29,6 @@
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
 
-  Vue.use(VueCompositionApi);
 
   export default Vue.extend({
     components: {

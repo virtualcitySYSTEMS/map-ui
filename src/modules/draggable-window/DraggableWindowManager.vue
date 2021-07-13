@@ -36,8 +36,7 @@
 </style>
 
 <script>
-  import Vue from 'vue';
-  import VueCompositionAPI, {
+  import {
     defineComponent,
     onMounted,
     onUnmounted,
@@ -58,7 +57,6 @@
   import { clipX, clipY } from './util/clip';
   import DraggableWindow from './DraggableWindow.vue';
 
-  Vue.use(VueCompositionAPI);
 
   export default defineComponent({
     name: 'VcsDraggableWindowManager',

@@ -1,12 +1,8 @@
-/* eslint-disable import/prefer-default-export */
 
-// eslint-disable-next-line max-classes-per-file
 import { reactive } from '@vue/composition-api';
 import { Subject } from 'rxjs';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
-
-const zIndexMax = 50;
 
 /**
  * @typedef Position
@@ -16,6 +12,12 @@ const zIndexMax = 50;
  * @property {string | 0} bottom Must be pixel-value string (e.g. '320px')
  */
 
+/**
+ * @typedef DraggableWindowState
+ * @property {Object.<string, DraggableWindow>} items
+ * @property {Object.<string, number>} zIndexMap
+ * @property {number} zIndexMax
+ */
 
 /**
  * @typedef DraggableWindow
@@ -29,6 +31,7 @@ const zIndexMax = 50;
  * @property {string} icon
  */
 
+const zIndexMax = 50;
 
 /** @type {Object<string, PositionParser>} */
 export const DRAGGABLE_WINDOW_POSITIONS = {
@@ -46,20 +49,6 @@ export const DRAGGABLE_WINDOW_POSITIONS = {
   }),
 };
 
-/**
- * @typedef DraggableWindowState
- * @property {Object.<string, DraggableWindow>} items
- * @property {Object.<string, number>} zIndexMap
- * @property {number} zIndexMax
- */
-
-/** @constant {DraggableWindowState} initialState */
-const initialState = {
-  items: {},
-  zIndexMap: {},
-  zIndexMax,
-};
-
 
 /**
  * @class DraggableWindowManager
@@ -67,21 +56,15 @@ const initialState = {
  * Should be instanciated with a reactive state and injected at root.
  */
 export class DraggableWindowManager {
-  /** @type {DraggableWindowState} */
-  state;
-
   onAdded = new Subject();
 
-  /**
-   * @constructor
-   * @param {DraggableWindowState} state
-   */
-  constructor(state) {
-    if (state) {
-      this.state = state;
-    } else {
-      this.state = reactive(initialState);
-    }
+  constructor() {
+    /** @type {DraggableWindowState} */
+    this.state = reactive({
+      items: {},
+      zIndexMap: {},
+      zIndexMax,
+    });
   }
 
   /**
@@ -188,43 +171,18 @@ export class DraggableWindowManager {
    * @param {string} viewId
    */
   hideWindowsInDefaultPosition(viewId) {
-    Object.values(this.state.items).forEach((v) => {
+    Object.values(this.state.items).forEach((view) => {
       const { defaultPosition } = this.get(viewId);
       if (
-        parseInt(v.position.left, 10) === parseInt(defaultPosition.left, 10) &&
-        parseInt(v.position.top, 10) === parseInt(defaultPosition.top, 10) &&
-        v.id !== viewId
+        parseInt(view.position.left, 10) === parseInt(defaultPosition.left, 10) &&
+        parseInt(view.position.top, 10) === parseInt(defaultPosition.top, 10) &&
+        view.id !== viewId
       ) {
-        Vue.set(this.state.items, v.id, {
-          ...v,
+        Vue.set(this.state.items, view.id, {
+          ...view,
           visible: false,
         });
       }
     });
   }
-
-  /**
-   * @param {string} viewId
-   */
-  // toggleViewVisible(viewId) {
-  //   const view = this.get(viewId);
-
-  //   this.checkIfViewRegistered(viewId);
-
-  //   // When it is visible, bring it to top, otherwise send it to back.
-  //   if (view.visible) {
-  //     Vue.set(this.state.items, viewId, { ...view });
-  //     Vue.set(this.state.zIndexMap, viewId, zIndexMax);
-
-  //     this.hideWindowsInDefaultPosition(viewId);
-  //     this.bringViewToTop(viewId);
-  //   } else {
-  //     const updatedZIndex = zIndexMax - Object.keys(this.state.items).length + 1;
-  //     Vue.set(this.state.zIndexMap, viewId, updatedZIndex);
-  //     Vue.set(this.state.items, viewId, {
-  //       ...view,
-  //       position: new PositionParser(view.defaultPosition),
-  //     });
-  //   }
-  // }
 }

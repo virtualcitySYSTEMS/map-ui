@@ -44,10 +44,7 @@
 </template>
 
 <script>
-  import VueCompositionAPI, { computed, defineComponent } from '@vue/composition-api';
-  import Vue from 'vue';
-
-  Vue.use(VueCompositionAPI);
+  import { computed, defineComponent } from '@vue/composition-api';
 
   export default defineComponent({
     props: {

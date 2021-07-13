@@ -3,6 +3,7 @@ export const parameters = {
 };
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import VueCompositionAPI from '@vue/composition-api';
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css';
 import { DocsContainer, DocsPage } from '@storybook/addon-docs/blocks';
@@ -17,6 +18,7 @@ import '../src/styles/main.scss';
 import './styles.css';
 
 Vue.use(Vuetify);
+Vue.use(VueCompositionAPI);
 
 /**
  * Root element for all stories.

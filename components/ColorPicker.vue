@@ -25,16 +25,13 @@
 </style>
 
 <script>
-  import VueCompositionAPI, {
+  import {
     defineComponent,
     onMounted,
     onUnmounted,
   } from '@vue/composition-api';
   import { Subject } from 'rxjs';
   import { debounceTime, takeUntil } from 'rxjs/operators';
-  import Vue from 'vue';
-
-  Vue.use(VueCompositionAPI);
 
   /**
    * @description

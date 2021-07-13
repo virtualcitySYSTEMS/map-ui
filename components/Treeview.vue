@@ -189,10 +189,9 @@
   import TreeviewLeaf from '@vcsuite/uicomponents/TreeviewLeaf.vue';
   import TreeviewSearchbar from '@vcsuite/uicomponents/TreeviewSearchbar.vue';
   import Vue from 'vue';
-  import VueCompositionApi, { inject, ref } from '@vue/composition-api';
+  import { inject, ref } from '@vue/composition-api';
 
   Vue.component('TreeviewLeaf', TreeviewLeaf);
-  Vue.use(VueCompositionApi);
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/

@@ -20,8 +20,7 @@
 
 
 <script>
-  import Vue from 'vue';
-  import VueCompositionAPI, {
+  import {
     defineComponent,
     inject,
     ref,
@@ -35,9 +34,6 @@
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
   import Legend from '@vcsuite/uicomponents/Legend.vue';
-
-
-  Vue.use(VueCompositionAPI);
 
   let treeInstance;
   async function getTree(context) {

@@ -20,12 +20,9 @@
 </template>
 
 <script>
-  import VueCompositionAPI, { defineComponent, onMounted, onUnmounted, ref } from '@vue/composition-api';
+  import { defineComponent, onMounted, onUnmounted, ref } from '@vue/composition-api';
   import { fromEvent, interval, Subject } from 'rxjs';
   import { switchMap, takeUntil } from 'rxjs/operators';
-  import Vue from 'vue';
-
-  Vue.use(VueCompositionAPI);
 
   export default defineComponent({
     props: {

@@ -1,6 +1,7 @@
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
 import { Subject } from 'rxjs';
+
 /**
  * @typedef Coordinates
  * @property {number} x
@@ -18,10 +19,6 @@ import { Subject } from 'rxjs';
  * @typedef PopoversState
  * @property {Object.<string, PopoverState>} items
  */
-/** @constant {PopoversState} popoversState */
-const initialState = {
-  items: {},
-};
 
 /* eslint-disable import/prefer-default-export */
 /**
@@ -29,52 +26,15 @@ const initialState = {
  * @description Manages a set of popovers. Should be instanciated with a reactive state and injected at root.
  */
 export class PopoverManager {
-  /**
-   * @type {Map<string, HTMLElement>} overlayRefs
-   */
-  overlayRefs = new Map();
-
-  /**
-   * @type {PopoversState} state
-   */
-  state;
-
   onAdded = new Subject();
 
-  /**
-   * @constructor
-   * @param {PopoversState} state
-   * @description state must be reactive
-   */
-  constructor(state) {
-    if (state) {
-      this.state = state;
-    } else {
-      this.state = reactive(initialState);
-    }
-  }
-
-  /**
-   * @method
-   * @param {PopoverState} obj
-   * @returns {PopoverState}
-   * */
-  static createPopoverObject({
-    component,
-    parent,
-    id,
-    coordinates = {},
-    callback = () => {},
-    visible = false,
-  }) {
-    return {
-      component,
-      coordinates,
-      callback,
-      id,
-      visible,
-      parent,
-    };
+  constructor() {
+    /** @type {PopoversState} */
+    this.state = reactive({
+      items: {},
+    });
+    /** @type {Map<string, HTMLElement>} overlayRefs */
+    this.overlayRefs = new Map();
   }
 
   /**
@@ -115,21 +75,32 @@ export class PopoverManager {
    * @param {string} obj.name
    * @param {string | number} obj.id
    * @param {HTMLElement} obj.parent
+   * @param {boolean} obj.visible
    * @param {Vue.Component} obj.cmp
    * @param {Function} obj.callback
+   * @param {Object} obj.coordinates
    * @returns {Object}
    */
-  registerPopover({ name, id, parent, cmp, callback }) {
+  registerPopover({
+    name,
+    id,
+    cmp,
+    parent,
+    visible = true,
+    callback = () => {},
+    coordinates = {},
+  }) {
     Vue.component(name, cmp.default || cmp);
     this.overlayRefs.set(id, parent);
 
-    const popover = PopoverManager.createPopoverObject({
+    const popover = {
       component: name,
+      coordinates,
+      visible,
       callback,
       id,
-      visible: true,
       parent,
-    });
+    };
 
     return popover;
   }

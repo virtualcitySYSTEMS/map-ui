@@ -30,8 +30,7 @@
 
 
 <script>
-  import VueCompositionAPI, { defineComponent, onUnmounted, ref } from '@vue/composition-api';
-  import Vue from 'vue';
+  import { defineComponent, onUnmounted, ref } from '@vue/composition-api';
 
   import { fromEvent, merge, of, Subject } from 'rxjs';
   import { takeUntil, tap } from 'rxjs/operators';
@@ -39,7 +38,6 @@
   import MapNavCompassOblique from './icons/MapNavCompassOblique.vue';
   import MapNavCompassRegular from './icons/MapNavCompassRegular.vue';
 
-  Vue.use(VueCompositionAPI);
 
   /**
    * @description Compass component to be shown on the map.
