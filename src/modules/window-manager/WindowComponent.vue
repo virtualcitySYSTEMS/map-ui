@@ -4,26 +4,30 @@
       class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
         'grey--text': zIndex < zIndexMax,
-        'rounded-tl': window.position.asNumber.top > 48
-          && window.position.asNumber.left > 0,
-        'rounded-tr': window.position.asNumber.top > 48
-          && window.position.asNumber.left < (windowWidth - window.width),
+        'rounded-tl': windowConfig.position.asNumber.top > 48
+          && windowConfig.position.asNumber.left > 0,
+        'rounded-tr': windowConfig.position.asNumber.top > 48
+          && windowConfig.position.asNumber.left < (windowWidth - windowConfig.width),
       }"
       draggable
     >
       <slot name="header">
         <span>
           <slot name="icon">
-            <v-icon v-if="window.icon" class="mr-2 primary--text" v-text="window.icon" />
+            <v-icon
+              v-if="windowConfig.icon"
+              class="mr-2 primary--text"
+              v-text="windowConfig.icon"
+            />
           </slot>
 
-          <h3 class="font-size-14 d-inline-block">{{ window.header | translate }}</h3>
+          <h3 class="font-size-14 d-inline-block">{{ windowConfig.header | translate }}</h3>
         </span>
       </slot>
 
       <slot name="close">
         <v-icon
-          @click="$emit('close', window.id)"
+          @click="$emit('close', windowConfig.id)"
           size="16"
           v-text="'mdi-close-thick'"
         />
@@ -33,9 +37,9 @@
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
       :class="{
-        'rounded-br': window.position.asNumber.top > 0
-          && window.position.asNumber.left < (windowWidth - window.width),
-        'rounded-bl': window.position.asNumber.left > 0,
+        'rounded-br': windowConfig.position.asNumber.top > 0
+          && windowConfig.position.asNumber.left < (windowWidth - windowConfig.width),
+        'rounded-bl': windowConfig.position.asNumber.left > 0,
       }"
     >
       <slot />
@@ -48,7 +52,7 @@
 
   export default defineComponent({
     props: {
-      window: Object,
+      windowConfig: Object,
       zIndex: Number,
       zIndexMax: Number,
     },

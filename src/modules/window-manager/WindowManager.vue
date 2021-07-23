@@ -55,7 +55,7 @@
   } from 'rxjs/operators';
 
   import { clipX, clipY } from './util/clip';
-  import Window from './Window.vue';
+  import Window from './WindowComponent.vue';
 
 
   export default defineComponent({
@@ -91,6 +91,7 @@
        */
       const getRef = refId => context.refs.windows.find(({ id }) => id === refId);
 
+      /** Needed for dragging to workd */
       fromEvent(document.body, 'dragover')
         .pipe(
           tap(e => e.preventDefault()),
@@ -135,6 +136,7 @@
                   }),
                   tap(({ targetWidth, targetHeight, top, left }) => {
                     popoverManager.removeAllFrom(windowRef);
+                    /** Make sure window does not go out of bounds */
                     const coordinates = {
                       left: `${clipX({ width: targetWidth, offsetX: left })}px`,
                       top: `${clipY({ height: targetHeight, offsetY: top })}px`,
@@ -161,6 +163,7 @@
                 const { x, y, width, height } = windowRef.getBoundingClientRect();
                 if (width + x > innerWidth || height + y > innerHeight) {
                   const windowCmp = windowManager.get(windowRef.id);
+                  /** Make sure window does not go out of bounds */
                   const coordinates = {
                     left: `${clipX({ width, offsetX: parseInt(windowCmp.position.left, 10) })}px`,
                     top: `${clipY({ height, offsetY: parseInt(windowCmp.position.top, 10) })}px`,

@@ -67,118 +67,118 @@ export class WindowManager {
   }
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    * @returns {Window}
    */
-  get(viewId) {
-    return this.state.items[viewId];
+  get(id) {
+    return this.state.items[id];
   }
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    * @returns {boolean}
    */
-  has(viewId) {
-    return !!this.get(viewId);
+  has(id) {
+    return !!this.get(id);
   }
 
   /**
-   * @param {string | number} viewId
+   * @param {string | number} id
    * @description
    * when this method is called the window needs to be re-registered in order to be shown again.
    * Use this only to destroy a window, for hiding it call toggleViewVisible
    */
-  remove(viewId) {
-    Vue.delete(this.state.items, viewId);
+  remove(id) {
+    Vue.delete(this.state.items, id);
   }
 
-  toggle(view) {
-    if (this.has(view.id)) {
-      this.remove(view.id);
+  toggle(windowComponent) {
+    if (this.has(windowComponent.id)) {
+      this.remove(windowComponent.id);
     } else {
-      this.add(view);
+      this.add(windowComponent);
     }
   }
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    * @param {Position} position
    */
-  setCoordinates(viewId, position) {
-    this.checkIfViewRegistered(viewId);
+  setCoordinates(id, position) {
+    this.checkIfViewRegistered(id);
 
-    const window = this.get(viewId);
+    const windowComponent = this.get(id);
 
     const updatedWindow = {
-      ...window,
+      ...windowComponent,
       position: new PositionParser(position),
     };
 
-    Vue.set(this.state.items, window.id, updatedWindow);
+    Vue.set(this.state.items, windowComponent.id, updatedWindow);
   }
 
   /**
-   * @param {Window} window
+   * @param {Window} windowComponent
    */
-  add(window) {
-    if (!window.id) {
-      throw new Error(`A window must have an id, got: ${window.id}.`);
+  add(windowComponent) {
+    if (!windowComponent.id) {
+      throw new Error(`A window must have an id, got: ${windowComponent.id}.`);
     }
 
-    if (this.get(window.id)) {
-      throw new Error(`A window with id ${window.id} has already been registered.`);
+    if (this.get(windowComponent.id)) {
+      throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
 
-    const updatedZIndex = this.state.zIndexMap[window.id] ||
+    const updatedZIndex = this.state.zIndexMap[windowComponent.id] ||
       zIndexMax -
       Object.keys(this.state.items).length;
 
-    Vue.set(this.state.items, window.id, window);
-    Vue.set(this.state.zIndexMap, window.id, updatedZIndex);
-    this.onAdded.raiseEvent(window);
+    Vue.set(this.state.items, windowComponent.id, windowComponent);
+    Vue.set(this.state.zIndexMap, windowComponent.id, updatedZIndex);
+    this.onAdded.raiseEvent(windowComponent);
   }
 
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    */
-  bringViewToTop(viewId) {
-    Vue.set(this.state.zIndexMap, viewId, this.state.zIndexMax);
+  bringViewToTop(id) {
+    Vue.set(this.state.zIndexMap, id, this.state.zIndexMax);
 
     // Set other windows to back by one each.
     Object.keys(this.state.items)
       .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
-      .filter(id => id !== viewId)
-      .forEach((id, i) => {
+      .filter(windowId => windowId !== id)
+      .forEach((windowId, i) => {
         const zIndex = this.state.zIndexMax - (i + 1);
-        Vue.set(this.state.zIndexMap, id, zIndex);
+        Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
   }
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    */
-  checkIfViewRegistered = (viewId) => {
-    if (!this.has(viewId)) {
+  checkIfViewRegistered = (id) => {
+    if (!this.has(id)) {
       throw new Error(
-        `Window with id '${viewId}' has not been registered!`,
+        `Window with id '${id}' has not been registered!`,
       );
     }
   };
 
   /**
-   * @param {string} viewId
+   * @param {string} id
    */
-  hideWindowsInDefaultPosition(viewId) {
-    Object.values(this.state.items).forEach((view) => {
-      const { defaultPosition } = this.get(viewId);
+  hideWindowsInDefaultPosition(id) {
+    Object.values(this.state.items).forEach((windowComponent) => {
+      const { defaultPosition } = this.get(id);
       if (
-        parseInt(view.position.left, 10) === parseInt(defaultPosition.left, 10) &&
-        parseInt(view.position.top, 10) === parseInt(defaultPosition.top, 10) &&
-        view.id !== viewId
+        parseInt(windowComponent.position.left, 10) === parseInt(defaultPosition.left, 10) &&
+        parseInt(windowComponent.position.top, 10) === parseInt(defaultPosition.top, 10) &&
+        windowComponent.id !== id
       ) {
-        Vue.set(this.state.items, view.id, {
-          ...view,
+        Vue.set(this.state.items, windowComponent.id, {
+          ...windowComponent,
           visible: false,
         });
       }

@@ -1,7 +1,7 @@
 <template>
-  <Window
+  <WindowComponent
     @close="close"
-    :window="window"
+    :window-config="windowConfig"
     :z-index="zIndex"
     :z-index-max="zIndexMax"
   >
@@ -15,7 +15,7 @@
       @action-clicked="handlePopover"
       @update:open="handleUpdateOpen"
     />
-  </Window>
+  </WindowComponent>
 </template>
 
 
@@ -30,7 +30,7 @@
   } from '@vue/composition-api';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
-  import Window from '@/modules/window-manager/Window.vue';
+  import WindowComponent from '@/modules/window-manager/WindowComponent.vue';
   import AbstractTree from '@/treeview/AbstractTree';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig';
   import Legend from '@vcsuite/uicomponents/Legend.vue';
@@ -55,9 +55,9 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview, Window },
+    components: { Treeview, WindowComponent },
     props: {
-      window: Object,
+      windowConfig: Object,
       zIndex: Number,
       zIndexMax: Number,
       getRef: Function,
@@ -104,7 +104,7 @@
           parent: event.target,
           callback,
         });
-        const parent = props.getRef(props.window.id);
+        const parent = props.getRef(props.windowConfig.id);
         popoverManager.add(popover, parent);
       };
 

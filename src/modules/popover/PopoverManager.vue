@@ -70,6 +70,7 @@
           const { x, y } = overlayRef.getBoundingClientRect();
           popoverManager.setCoordinates(popover, { x, y });
           nextTick(() => {
+            /** Make sure window does not open out of bounds */
             const pRect = p.getBoundingClientRect();
             const computedX = (pRect.width + pRect.left + OFFSET) > window.innerWidth ?
               x - pRect.width :
