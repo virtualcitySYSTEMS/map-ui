@@ -1,25 +1,25 @@
 <template>
   <div>
     <div
-      v-for="window in windows"
-      :ref="'windows'"
-      :key="window.id"
-      :id="window.id"
+      v-for="windowCmp in windowComponents"
+      :ref="'windowComponents'"
+      :key="windowCmp.id"
+      :id="windowCmp.id"
       class="vsc-window v-sheet elevation-3 position-absolute"
-      @click="bringViewToTop(window.id)"
+      @click="bringViewToTop(windowCmp.id)"
       :style="{
-        zIndex: zIndexMap[window.id],
-        left: window.position.left,
-        top: window.position.top,
-        right: window.position.right,
-        bottom: window.position.bottom,
-        width: `${window.width}px`,
+        zIndex: zIndexMap[windowCmp.id],
+        left: windowCmp.position.left,
+        top: windowCmp.position.top,
+        right: windowCmp.position.right,
+        bottom: windowCmp.position.bottom,
+        width: `${windowCmp.width}px`,
       }"
     >
       <component
-        :is="window.component"
-        :window="window"
-        :z-index="zIndexMap[window.id]"
+        :is="windowCmp.component"
+        :window="windowCmp"
+        :z-index="zIndexMap[windowCmp.id]"
         :z-index-max="zIndexMax"
         :get-ref="getRef"
       />
@@ -65,7 +65,17 @@
       const destroy$ = new Subject();
       const windowManager = inject('windowManager');
       const popoverManager = inject('popoverManager');
-      const { state: { zIndexMax, zIndexMap, items: windows }, onAdded } = windowManager;
+      let onAddedDestroy;
+
+      const {
+        state: {
+          zIndexMax,
+          zIndexMap,
+          items: windowComponents,
+        },
+        onAdded,
+      } = windowManager;
+
       /** @param {string} viewId */
       const bringViewToTop = (viewId) => {
         windowManager.bringViewToTop(viewId);
@@ -79,9 +89,7 @@
        * @param {string} refId
        * @returns {Object}
        */
-      const getRef = (refId) => {
-        return context.refs.windows.find(({ id }) => id === refId);
-      };
+      const getRef = refId => context.refs.windows.find(({ id }) => id === refId);
 
       fromEvent(document.body, 'dragover')
         .pipe(
@@ -152,13 +160,13 @@
                 const { innerWidth, innerHeight } = window;
                 const { x, y, width, height } = windowRef.getBoundingClientRect();
                 if (width + x > innerWidth || height + y > innerHeight) {
-                  const window = windowManager.get(windowRef.id);
+                  const windowCmp = windowManager.get(windowRef.id);
                   const coordinates = {
-                    left: `${clipX({ width, offsetX: parseInt(window.position.left, 10) })}px`,
-                    top: `${clipY({ height, offsetY: parseInt(window.position.top, 10) })}px`,
+                    left: `${clipX({ width, offsetX: parseInt(windowCmp.position.left, 10) })}px`,
+                    top: `${clipY({ height, offsetY: parseInt(windowCmp.position.top, 10) })}px`,
                   };
 
-                  windowManager.setCoordinates(window.id, coordinates);
+                  windowManager.setCoordinates(windowCmp.id, coordinates);
                 }
               }
             }),
@@ -175,9 +183,9 @@
          * https://github.com/vuejs/composition-api#limitations
          * This needs to be refactored to use ref setter functions as soon as migrated to Vue 3.
          */
-        onAdded.subscribe(
+        onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
-            () => context.refs.windows.forEach(r => subscribeToWindowChanges(r)),
+            () => context.refs.windowComponents.forEach(r => subscribeToWindowChanges(r)),
           ),
         );
       });
@@ -185,10 +193,13 @@
       onUnmounted(() => {
         destroy$.next();
         destroy$.unsubscribe();
+        if (onAddedDestroy) {
+          onAddedDestroy();
+        }
       });
 
       return {
-        windows,
+        windowComponents,
         zIndexMax,
         zIndexMap,
         close,

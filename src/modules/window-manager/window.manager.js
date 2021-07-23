@@ -1,6 +1,6 @@
 
 import { reactive } from '@vue/composition-api';
-import { Subject } from 'rxjs';
+import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
 
@@ -56,9 +56,8 @@ export const WINDOW_POSITIONS = {
  * Should be instanciated with a reactive state and injected at root.
  */
 export class WindowManager {
-  onAdded = new Subject();
-
   constructor() {
+    this.onAdded = new VcsEvent();
     /** @type {WindowState} */
     this.state = reactive({
       items: {},
@@ -136,7 +135,7 @@ export class WindowManager {
 
     Vue.set(this.state.items, window.id, window);
     Vue.set(this.state.zIndexMap, window.id, updatedZIndex);
-    this.onAdded.next(window);
+    this.onAdded.raiseEvent(window);
   }
 
 

@@ -29,7 +29,7 @@
 <script>
   import Vue from 'vue';
   import ClickOutside from 'vue-click-outside';
-  import { inject, nextTick, ref } from '@vue/composition-api';
+  import { inject, nextTick, onUnmount, ref } from '@vue/composition-api';
 
   const OFFSET = 16;
 
@@ -63,7 +63,7 @@
       const popoverManager = inject('popoverManager');
 
 
-      popoverManager.onAdded.subscribe((popover) => {
+      const destroy = popoverManager.onAdded.addEventListener((popover) => {
         nextTick(() => {
           const p = popoverRef.value.find(r => r.id === popover.id);
           const overlayRef = popoverManager.overlayRefs.get(popover.id);
@@ -74,9 +74,18 @@
             const computedX = (pRect.width + pRect.left + OFFSET) > window.innerWidth ?
               x - pRect.width :
               x + OFFSET;
-            popoverManager.setCoordinates(popover, { x: computedX, y });
+
+            const computedY = (pRect.height + pRect.bottom) > window.innerHeight ?
+              y - pRect.height :
+              y;
+
+            popoverManager.setCoordinates(popover, { x: computedX, y: computedY });
           });
         });
+      });
+
+      onUnmount(() => {
+        destroy();
       });
 
       return {

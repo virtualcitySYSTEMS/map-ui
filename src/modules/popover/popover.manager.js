@@ -1,10 +1,6 @@
+import { VcsEvent } from '@vcmap/core';
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
-
-/**
- * Replace with VcsEvent
- */
-import { Subject } from 'rxjs';
 
 /**
  * @typedef Coordinates
@@ -29,9 +25,8 @@ import { Subject } from 'rxjs';
  * @description Manages a set of popovers. Should be instanciated with a reactive state and injected at root.
  */
 export class PopoverManager {
-  onAdded = new Subject();
-
   constructor() {
+    this.onAdded = new VcsEvent();
     /** @type {PopoversState} */
     this.state = reactive({
       items: {},
@@ -117,7 +112,7 @@ export class PopoverManager {
       }
     });
     Vue.set(this.state.items, popover.id, popover);
-    this.onAdded.next(popover);
+    this.onAdded.raiseEvent(popover);
   }
 
   /**

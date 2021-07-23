@@ -19,15 +19,12 @@
                 :key="`map-button-${index}`"
               />
               <NavbarDivider />
-              <Button
-                :icon="'$vcsLayers'"
-                @click.native="toggleLayerTree()"
-                :value="!!windows['layer-tree']"
-              />
-              <Button
-                :icon="'$$vcsComponents'"
-                @click.native="toggleComponents()"
-                :value="!!windows['components']"
+              <ComponentToggleButton
+                v-for="windowConfig in windowConfigs"
+                :key="windowConfig.id"
+                :component-name="windowConfig.id"
+                :window-config="windowConfig"
+                :icon="windowConfig.icon"
               />
             </div>
           </v-toolbar-items>
@@ -50,6 +47,7 @@
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
   import { WINDOW_POSITIONS } from '@/modules/window-manager/window.manager';
+  import ComponentToggleButton from './ComponentToggleButton.vue';
 
   Vue.component('LayerTree', LayerTree);
 
@@ -68,15 +66,19 @@
     component: 'LayerTree',
     width: 320,
     header: 'components.title',
-    icon: '$vcsLayers',
+    icon: '$vcsComponents',
     position: WINDOW_POSITIONS.bottomRight,
     defaultPosition: WINDOW_POSITIONS.bottomRight,
+  };
+  const windowConfigs = {
+    layerTree,
+    components,
   };
 
 
   export default Vue.extend({
     name: 'VcsNavbar',
-    components: { Button, NavbarDivider },
+    components: { Button, NavbarDivider, ComponentToggleButton },
     props: {
       mapId: {
         type: String,
@@ -86,7 +88,6 @@
     setup() {
       const mapState = inject('mapState');
       const pluginComponents = inject('pluginComponents');
-      const windowManager = inject('windowManager');
       const context = inject('context');
 
       const iconMap = {
@@ -100,23 +101,13 @@
       const setMap = (mapName) => {
         context.maps.setActiveMap(mapName);
       };
-
-      const toggleLayerTree = () => {
-        windowManager.toggle(layerTree);
-      };
-      const toggleComponents = () => {
-        windowManager.toggle(components);
-      };
-
       return {
         mapButtons: pluginComponents.mapButtons,
         iconMap,
         maps: mapState.maps,
         mapState,
         setMap,
-        toggleLayerTree,
-        toggleComponents,
-        windows: windowManager.state.items,
+        windowConfigs,
       };
     },
   });
