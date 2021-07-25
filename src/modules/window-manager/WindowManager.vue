@@ -21,7 +21,6 @@
         :window-config="windowConfig"
         :z-index="zIndexMap[windowConfig.id]"
         :z-index-max="zIndexMax"
-        :get-ref="getRef"
       />
     </div>
   </div>
@@ -85,12 +84,6 @@
       const close = (viewId) => {
         windowManager.remove(viewId);
       };
-
-      /**
-       * @param {string} refId
-       * @returns {Object}
-       */
-      const getRef = refId => context.refs.windows.find(({ id }) => id === refId);
 
       /** Needed for dragging to workd */
       fromEvent(document.body, 'dragover')
@@ -208,7 +201,6 @@
         zIndexMap,
         close,
         bringViewToTop,
-        getRef,
       };
     },
   });

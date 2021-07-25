@@ -56,12 +56,13 @@ export class PopoverManager {
   /**
    * @method
    * @description
-   * @param {PopoverState} popover
+   * @param {string} id
    * @param {Coordinates} coordinates
    * Assigns the current x and v value of a popover to the ref.
    */
-  setCoordinates(popover, coordinates) {
-    Vue.set(this.state.items, popover.id, {
+  setCoordinates(id, coordinates) {
+    const popover = this.get(id);
+    Vue.set(this.state.items, id, {
       ...popover,
       coordinates: { ...coordinates },
     });
@@ -103,11 +104,11 @@ export class PopoverManager {
   /**
    * @method
    * @param {PopoverState} popover
-   * @param {Element} parent
+   * @param {Element} windowComponent
    */
-  add(popover, parent) {
+  add(popover, windowComponent) {
     Object.values(this.state.items).forEach((item) => {
-      if (parent.contains(item.parent)) {
+      if (windowComponent.contains(item.parent)) {
         this.removePopover(item.id);
       }
     });

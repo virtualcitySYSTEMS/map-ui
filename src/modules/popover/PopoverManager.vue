@@ -28,7 +28,6 @@
 
 <script>
   import Vue from 'vue';
-  import ClickOutside from 'vue-click-outside';
   import { inject, nextTick, onUnmounted, ref } from '@vue/composition-api';
 
   const OFFSET = 16;
@@ -57,7 +56,6 @@
    */
   export default Vue.extend({
     name: 'VcsPopoverManager',
-    directives: { ClickOutside },
     setup() {
       const popoverRef = ref([]);
       const popoverManager = inject('popoverManager');
@@ -68,7 +66,7 @@
           const p = popoverRef.value.find(r => r.id === popover.id);
           const overlayRef = popoverManager.overlayRefs.get(popover.id);
           const { x, y } = overlayRef.getBoundingClientRect();
-          popoverManager.setCoordinates(popover, { x, y });
+          popoverManager.setCoordinates(popover.id, { x, y });
           nextTick(() => {
             /** Make sure window does not open out of bounds */
             const pRect = p.getBoundingClientRect();
@@ -76,11 +74,11 @@
               x - pRect.width :
               x + OFFSET;
 
-            const computedY = (pRect.height + pRect.bottom) > window.innerHeight ?
+            const computedY = (pRect.height + pRect.top) > window.innerHeight ?
               y - pRect.height :
               y;
 
-            popoverManager.setCoordinates(popover, { x: computedX, y: computedY });
+            popoverManager.setCoordinates(popover.id, { x: computedX, y: computedY });
           });
         });
       });

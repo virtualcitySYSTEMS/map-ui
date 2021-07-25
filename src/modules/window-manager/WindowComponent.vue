@@ -1,5 +1,5 @@
 <template>
-  <div class="d-contents">
+  <div :id="`window-component--${windowConfig.id}`" class="d-contents">
     <v-sheet
       class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{

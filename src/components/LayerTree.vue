@@ -28,6 +28,7 @@
     provide,
     nextTick,
   } from '@vue/composition-api';
+  import { v4 as uuid } from 'uuid';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
   import WindowComponent from '@/modules/window-manager/WindowComponent.vue';
@@ -60,7 +61,6 @@
       windowConfig: Object,
       zIndex: Number,
       zIndexMax: Number,
-      getRef: Function,
     },
     setup(props) {
       const tree = ref();
@@ -90,13 +90,12 @@
        * @description Callback from Treeview which invokes an overlay to be shown.
        */
       const handlePopover = async ({ item, event }) => {
-        const id = item.layerName;
-        if (popoverManager.removePopover(id)) {
-          return;
-        }
+        const id = item.layerName + uuid();
 
         const componentName = 'Legend';
-        const callback = () => popoverManager.removePopover(id);
+        const callback = () => {
+          popoverManager.removePopover(id);
+        };
         const popover = popoverManager.registerPopover({
           name: componentName,
           cmp: Legend,
@@ -104,8 +103,8 @@
           parent: event.target,
           callback,
         });
-        const parent = props.getRef(props.windowConfig.id);
-        popoverManager.add(popover, parent);
+        const windowComponent = document.getElementById(`window-component--${props.windowConfig.id}`);
+        popoverManager.add(popover, windowComponent);
       };
 
 
