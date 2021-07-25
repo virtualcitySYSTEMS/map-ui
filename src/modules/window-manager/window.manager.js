@@ -165,23 +165,4 @@ export class WindowManager {
       );
     }
   };
-
-  /**
-   * @param {string} id
-   */
-  hideWindowsInDefaultPosition(id) {
-    Object.values(this.state.items).forEach((windowComponent) => {
-      const { defaultPosition } = this.get(id);
-      if (
-        parseInt(windowComponent.position.left, 10) === parseInt(defaultPosition.left, 10) &&
-        parseInt(windowComponent.position.top, 10) === parseInt(defaultPosition.top, 10) &&
-        windowComponent.id !== id
-      ) {
-        Vue.set(this.state.items, windowComponent.id, {
-          ...windowComponent,
-          visible: false,
-        });
-      }
-    });
-  }
 }
