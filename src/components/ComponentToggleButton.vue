@@ -1,6 +1,6 @@
 <template>
   <Button
-    @click.native="() => toggle(windowConfig)"
+    @click.native="() => toggle(windowState)"
     toggleable
     :icon="icon"
     :v-bind="{...$props, ...$attrs} "
@@ -25,7 +25,7 @@
     components: { Button },
     props: {
       componentName: String,
-      windowConfig: Object,
+      windowState: Object,
       icon: String,
     },
   });

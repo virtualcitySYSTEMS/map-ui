@@ -1,13 +1,13 @@
 <template>
-  <div :id="`window-component--${windowConfig.id}`" class="d-contents">
+  <div :id="`window-component--${windowState.id}`" class="d-contents">
     <v-sheet
       class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
         'grey--text': zIndex < zIndexMax,
-        'rounded-tl': windowConfig.position.asNumber.top > 48
-          && windowConfig.position.asNumber.left > 0,
-        'rounded-tr': windowConfig.position.asNumber.top > 48
-          && windowConfig.position.asNumber.left < (windowWidth - windowConfig.width),
+        'rounded-tl': windowState.position.asNumber.top > 48
+          && windowState.position.asNumber.left > 0,
+        'rounded-tr': windowState.position.asNumber.top > 48
+          && windowState.position.asNumber.left < (windowWidth - windowState.width),
       }"
       draggable
     >
@@ -15,19 +15,19 @@
         <span>
           <slot name="icon">
             <v-icon
-              v-if="windowConfig.icon"
+              v-if="windowState.icon"
               class="mr-2 primary--text"
-              v-text="windowConfig.icon"
+              v-text="windowState.icon"
             />
           </slot>
 
-          <h3 class="font-size-14 d-inline-block">{{ windowConfig.header | translate }}</h3>
+          <h3 class="font-size-14 d-inline-block">{{ windowState.header | translate }}</h3>
         </span>
       </slot>
 
       <slot name="close">
         <v-icon
-          @click="$emit('close', windowConfig.id)"
+          @click="$emit('close', windowState.id)"
           size="16"
           v-text="'mdi-close-thick'"
         />
@@ -37,9 +37,9 @@
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
       :class="{
-        'rounded-br': windowConfig.position.asNumber.top > 0
-          && windowConfig.position.asNumber.left < (windowWidth - windowConfig.width),
-        'rounded-bl': windowConfig.position.asNumber.left > 0,
+        'rounded-br': windowState.position.asNumber.top > 0
+          && windowState.position.asNumber.left < (windowWidth - windowState.width),
+        'rounded-bl': windowState.position.asNumber.left > 0,
       }"
     >
       <slot />
@@ -52,7 +52,7 @@
 
   export default defineComponent({
     props: {
-      windowConfig: Object,
+      windowState: Object,
       zIndex: Number,
       zIndexMax: Number,
     },

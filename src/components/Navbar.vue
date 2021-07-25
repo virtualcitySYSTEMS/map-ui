@@ -20,11 +20,11 @@
               />
               <NavbarDivider />
               <ComponentToggleButton
-                v-for="windowConfig in windowConfigs"
-                :key="windowConfig.id"
-                :component-name="windowConfig.id"
-                :window-config="windowConfig"
-                :icon="windowConfig.icon"
+                v-for="windowState in windowStates"
+                :key="windowState.id"
+                :component-name="windowState.id"
+                :window-state="windowState"
+                :icon="windowState.icon"
               />
             </div>
           </v-toolbar-items>
@@ -70,7 +70,7 @@
     position: WINDOW_POSITIONS.bottomRight,
     defaultPosition: WINDOW_POSITIONS.bottomRight,
   };
-  const windowConfigs = {
+  const windowStates = {
     layerTree,
     components,
   };
@@ -107,7 +107,7 @@
         maps: mapState.maps,
         mapState,
         setMap,
-        windowConfigs,
+        windowStates,
       };
     },
   });

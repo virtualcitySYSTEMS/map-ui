@@ -1,7 +1,7 @@
 <template>
   <WindowComponent
     @close="close"
-    :window-config="windowConfig"
+    :window-state="windowState"
     :z-index="zIndex"
     :z-index-max="zIndexMax"
   >
@@ -58,7 +58,7 @@
     name: 'VcsLayerTree',
     components: { Treeview, WindowComponent },
     props: {
-      windowConfig: Object,
+      windowState: Object,
       zIndex: Number,
       zIndexMax: Number,
     },
@@ -103,7 +103,7 @@
           parent: event.target,
           callback,
         });
-        const windowComponent = document.getElementById(`window-component--${props.windowConfig.id}`);
+        const windowComponent = document.getElementById(`window-component--${props.windowState.id}`);
         popoverManager.add(popover, windowComponent);
       };
 
