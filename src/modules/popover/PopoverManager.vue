@@ -29,7 +29,7 @@
 <script>
   import Vue from 'vue';
   import ClickOutside from 'vue-click-outside';
-  import { inject, nextTick, onUnmount, ref } from '@vue/composition-api';
+  import { inject, nextTick, onUnmounted, ref } from '@vue/composition-api';
 
   const OFFSET = 16;
 
@@ -85,7 +85,7 @@
         });
       });
 
-      onUnmount(() => {
+      onUnmounted(() => {
         destroy();
       });
 

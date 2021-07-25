@@ -1,25 +1,25 @@
 <template>
   <div>
     <div
-      v-for="windowCmp in windowComponents"
-      :ref="'windowComponents'"
-      :key="windowCmp.id"
-      :id="windowCmp.id"
+      v-for="windowConfig in windowConfigs"
+      :ref="'windowConfigs'"
+      :key="windowConfig.id"
+      :id="windowConfig.id"
       class="vsc-window v-sheet elevation-3 position-absolute"
-      @click="bringViewToTop(windowCmp.id)"
+      @click="bringViewToTop(windowConfig.id)"
       :style="{
-        zIndex: zIndexMap[windowCmp.id],
-        left: windowCmp.position.left,
-        top: windowCmp.position.top,
-        right: windowCmp.position.right,
-        bottom: windowCmp.position.bottom,
-        width: `${windowCmp.width}px`,
+        zIndex: zIndexMap[windowConfig.id],
+        left: windowConfig.position.left,
+        top: windowConfig.position.top,
+        right: windowConfig.position.right,
+        bottom: windowConfig.position.bottom,
+        width: `${windowConfig.width}px`,
       }"
     >
       <component
-        :is="windowCmp.component"
-        :window="windowCmp"
-        :z-index="zIndexMap[windowCmp.id]"
+        :is="windowConfig.component"
+        :window-config="windowConfig"
+        :z-index="zIndexMap[windowConfig.id]"
         :z-index-max="zIndexMax"
         :get-ref="getRef"
       />
@@ -61,6 +61,7 @@
   export default defineComponent({
     name: 'VcsWindowManager',
     components: { Window },
+    props: { windowConfig: Object },
     setup(props, context) {
       const destroy$ = new Subject();
       const windowManager = inject('windowManager');
@@ -71,7 +72,7 @@
         state: {
           zIndexMax,
           zIndexMap,
-          items: windowComponents,
+          items: windowConfigs,
         },
         onAdded,
       } = windowManager;
@@ -162,14 +163,14 @@
                 const { innerWidth, innerHeight } = window;
                 const { x, y, width, height } = windowRef.getBoundingClientRect();
                 if (width + x > innerWidth || height + y > innerHeight) {
-                  const windowCmp = windowManager.get(windowRef.id);
+                  const windowConfig = windowManager.get(windowRef.id);
                   /** Make sure window does not go out of bounds */
                   const coordinates = {
-                    left: `${clipX({ width, offsetX: parseInt(windowCmp.position.left, 10) })}px`,
-                    top: `${clipY({ height, offsetY: parseInt(windowCmp.position.top, 10) })}px`,
+                    left: `${clipX({ width, offsetX: parseInt(windowConfig.position.left, 10) })}px`,
+                    top: `${clipY({ height, offsetY: parseInt(windowConfig.position.top, 10) })}px`,
                   };
 
-                  windowManager.setCoordinates(windowCmp.id, coordinates);
+                  windowManager.setCoordinates(windowConfig.id, coordinates);
                 }
               }
             }),
@@ -188,7 +189,7 @@
          */
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
-            () => context.refs.windowComponents.forEach(r => subscribeToWindowChanges(r)),
+            () => context.refs.windowConfigs.forEach(r => subscribeToWindowChanges(r)),
           ),
         );
       });
@@ -202,7 +203,7 @@
       });
 
       return {
-        windowComponents,
+        windowConfigs,
         zIndexMax,
         zIndexMap,
         close,
