@@ -36,7 +36,7 @@
         x2="9"
         transform="translate(724 907.978)"
         fill="none"
-        stroke="#4e4e4e"
+        stroke="currentColor"
         stroke-linecap="round"
         stroke-width="3"
       />
@@ -46,7 +46,7 @@
         x2="9"
         transform="translate(724 916.016)"
         fill="none"
-        stroke="#4e4e4e"
+        stroke="currentColor"
         stroke-linecap="round"
         stroke-width="3"
       />
@@ -56,7 +56,7 @@
         x2="9"
         transform="translate(724 924.053)"
         fill="none"
-        stroke="#4e4e4e"
+        stroke="currentColor"
         stroke-linecap="round"
         stroke-width="3"
       />

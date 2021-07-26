@@ -24,6 +24,7 @@
     "sortablejs": "^1.13.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",
+    "vue-click-outside": "^1.1.0",
     "vue-i18n": "^8.24.1",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.5.3",

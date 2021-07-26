@@ -59,6 +59,7 @@
     icon: '$vcsLayers',
     position: WINDOW_POSITIONS.topLeft,
     defaultPosition: WINDOW_POSITIONS.topLeft,
+    isDocked: true,
   };
 
   const components = {
@@ -67,12 +68,29 @@
     width: 320,
     header: 'components.title',
     icon: '$vcsComponents',
-    position: WINDOW_POSITIONS.bottomRight,
-    defaultPosition: WINDOW_POSITIONS.bottomRight,
+    position: WINDOW_POSITIONS.topLeft,
+    defaultPosition: WINDOW_POSITIONS.topLeft,
+    isDocked: true,
   };
+
+  const dummy1 = {
+    ...components,
+    id: 'dummy1',
+    icon: '$vcsTools',
+    isDocked: false,
+  };
+  const dummy2 = {
+    ...components,
+    id: 'dummy2',
+    icon: '$vcsLegend',
+    isDocked: false,
+  };
+
   const windowStates = {
     layerTree,
     components,
+    dummy1,
+    dummy2,
   };
 
 

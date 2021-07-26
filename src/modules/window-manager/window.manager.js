@@ -117,6 +117,50 @@ export class WindowManager {
     Vue.set(this.state.items, windowComponent.id, updatedWindow);
   }
 
+  pushDockedWindowInFrom(windowComponent) {
+    Object.values(this.state.items).forEach((item) => {
+      if (
+        parseInt(item.position.top, 10) === parseInt(windowComponent.position.top, 10) &&
+        parseInt(item.position.left, 10) === parseInt(windowComponent.position.left, 10)
+      ) {
+        const newLeft = item.position.left + item.width;
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, left: `${newLeft}px` }),
+        });
+        return;
+      }
+      if (
+        parseInt(item.position.top, 10) === parseInt(windowComponent.position.top, 10) &&
+        parseInt(item.position.right, 10) === parseInt(windowComponent.position.right, 10)
+      ) {
+        const newRight = item.position.right + item.width;
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, right: `${newRight}px` }),
+        });
+      }
+    });
+  }
+
+  removeWindowAtSamePositionAs(windowComponent) {
+    Object.values(this.state.items).forEach((item) => {
+      if (
+        item.position.top === windowComponent.position.top &&
+        item.position.left === windowComponent.position.left
+      ) {
+        return this.remove(item.id);
+      }
+      if (
+        item.position.top === windowComponent.position.top &&
+        item.position.right === windowComponent.position.right
+      ) {
+        return this.remove(item.id);
+      }
+      return undefined;
+    });
+  }
+
   /**
    * @param {Window} windowComponent
    */
@@ -128,6 +172,15 @@ export class WindowManager {
     if (this.get(windowComponent.id)) {
       throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
+
+    if (!windowComponent.isDocked) {
+      this.removeWindowAtSamePositionAs(windowComponent);
+    }
+
+    if (windowComponent.isDocked) {
+      this.pushDockedWindowInFrom(windowComponent);
+    }
+
 
     const updatedZIndex = this.state.zIndexMap[windowComponent.id] ||
       zIndexMax -
