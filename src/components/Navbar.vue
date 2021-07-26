@@ -77,10 +77,12 @@
     ...components,
     id: 'dummy1',
     icon: '$vcsTools',
+    position: WINDOW_POSITIONS.bottomRight,
+    defaultPosition: WINDOW_POSITIONS.bottomRight,
     isDocked: false,
   };
   const dummy2 = {
-    ...components,
+    ...dummy1,
     id: 'dummy2',
     icon: '$vcsLegend',
     isDocked: false,

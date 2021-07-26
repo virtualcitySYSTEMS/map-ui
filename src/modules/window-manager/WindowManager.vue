@@ -56,16 +56,23 @@
   import { clipX, clipY } from './util/clip';
   import Window from './WindowComponent.vue';
 
+  /**
+   * TODO: unsubscribe when window is deleted
+   */
+
 
   export default defineComponent({
     name: 'VcsWindowManager',
     components: { Window },
     props: { windowState: Object },
     setup(props, context) {
-      const destroy$ = new Subject();
+      /** @type {Map<string, import('rxjs').Subject>} */
+      const destroy$ = new Map();
       const windowManager = inject('windowManager');
       const popoverManager = inject('popoverManager');
       let onAddedDestroy;
+      let onRemovedDestroy;
+      // const isSubscribed = new Set();
 
       const {
         state: {
@@ -74,6 +81,7 @@
           items: windowStates,
         },
         onAdded,
+        onRemoved,
       } = windowManager;
 
       /** @param {string} viewId */
@@ -85,16 +93,18 @@
         windowManager.remove(viewId);
       };
 
-      /** Needed for dragging to workd */
-      fromEvent(document.body, 'dragover')
-        .pipe(
-          tap(e => e.preventDefault()),
-          takeUntil(destroy$),
-        )
-        .subscribe();
 
       /** @param {HTMLElement} windowRef */
       const subscribeToWindowChanges = (windowRef) => {
+        destroy$.set(windowRef.id, new Subject());
+        /** Needed for dragging to workd */
+        fromEvent(document.body, 'dragover')
+          .pipe(
+            tap(e => e.preventDefault()),
+            takeUntil(destroy$.get(windowRef.id)),
+          )
+          .subscribe();
+
         fromEvent(windowRef, 'dragstart')
           .pipe(
             filter(
@@ -139,7 +149,7 @@
                     windowManager.setCoordinates(windowRef.id, coordinates);
                     windowManager.bringViewToTop(windowRef.id);
                   }),
-                  takeUntil(destroy$),
+                  takeUntil(destroy$.get(windowRef.id)),
                 );
               }
 
@@ -167,7 +177,7 @@
                 }
               }
             }),
-            takeUntil(destroy$),
+            takeUntil(destroy$.get(windowRef.id)),
           )
           .subscribe();
       };
@@ -182,16 +192,30 @@
          */
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
-            () => context.refs.windowStates.forEach(r => subscribeToWindowChanges(r)),
+            () => context.refs.windowStates.forEach((r) => {
+              if (!windowStates[r.id].isDocked) {
+                subscribeToWindowChanges(r);
+              }
+            }),
           ),
+        );
+
+        onRemovedDestroy = onRemoved.addEventListener(
+          (windowState) => {
+            if (!windowStates[windowState.id].isDocked) {
+              destroy$.get(windowState.id).next();
+              destroy$.get(windowState.id).unsubscribe();
+            }
+          },
         );
       });
 
       onUnmounted(() => {
-        destroy$.next();
-        destroy$.unsubscribe();
         if (onAddedDestroy) {
           onAddedDestroy();
+        }
+        if (onRemovedDestroy) {
+          onRemovedDestroy();
         }
       });
 

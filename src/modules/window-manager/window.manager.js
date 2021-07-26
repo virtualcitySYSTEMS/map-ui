@@ -58,6 +58,7 @@ export const WINDOW_POSITIONS = {
 export class WindowManager {
   constructor() {
     this.onAdded = new VcsEvent();
+    this.onRemoved = new VcsEvent();
     /** @type {WindowState} */
     this.state = reactive({
       items: {},
@@ -87,9 +88,14 @@ export class WindowManager {
    * @description
    * when this method is called the window needs to be re-registered in order to be shown again.
    * Use this only to destroy a window, for hiding it call toggleViewVisible
+   * @returns {Error | void}
    */
   remove(id) {
-    Vue.delete(this.state.items, id);
+    if (!this.state.items[id]) {
+      return new Error(`Cannot remove window with id '${id}' as it is not present.`);
+    }
+    this.onRemoved.raiseEvent(this.state.items[id]);
+    return Vue.delete(this.state.items, id);
   }
 
   toggle(windowComponent) {

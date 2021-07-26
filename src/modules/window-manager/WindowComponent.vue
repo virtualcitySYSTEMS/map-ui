@@ -1,15 +1,16 @@
 <template>
   <div :id="`window-component--${windowState.id}`" class="d-contents">
     <v-sheet
-      class="cursor-grab v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
+      class="v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
+        'cursor-grab': !windowState.isDocked,
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left > 0,
         'rounded-tr': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left < (windowWidth - windowState.width),
       }"
-      draggable
+      :draggable="!windowState.isDocked"
     >
       <slot name="header">
         <span>
