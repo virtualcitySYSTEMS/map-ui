@@ -1,7 +1,7 @@
 <template>
-  <div :id="`window-component--${windowState.id}`" class="d-contents">
+  <div v-if="windowState" :id="`window-component--${windowState.id}`" class="d-contents">
     <v-sheet
-      class="v-sheet d-flex justify-space-between pa-2 transition-color-100-ease"
+      class="v-sheet elevation-3 d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
         'cursor-grab': !windowState.isDocked,
         'grey--text': zIndex < zIndexMax,
@@ -20,6 +20,7 @@
               class="mr-2 primary--text"
               v-text="windowState.icon"
             />
+
           </slot>
 
           <h3 class="font-size-14 d-inline-block">{{ windowState.header | translate }}</h3>
@@ -28,7 +29,7 @@
 
       <slot name="close">
         <v-icon
-          @click="$emit('close', windowState.id)"
+          @click="close(windowState.id)"
           size="16"
           v-text="'mdi-close-thick'"
         />
@@ -49,18 +50,22 @@
 </template>
 
 <script>
-  import { computed, defineComponent } from '@vue/composition-api';
+  import { computed, defineComponent, inject } from '@vue/composition-api';
+
 
   export default defineComponent({
     props: {
-      windowState: Object,
-      zIndex: Number,
-      zIndexMax: Number,
+      windowId: String,
     },
-    setup() {
+    setup(props) {
       const windowWidth = computed(() => window.innerWidth);
+      const windowManager = inject('windowManager');
+      const windowState = windowManager.get(props.windowId);
       return {
         windowWidth,
+        windowState,
+        zIndexMax: windowManager.state.zIndexMax,
+        zIndex: windowManager.state.zIndexMap[props.windowId],
       };
     },
   });

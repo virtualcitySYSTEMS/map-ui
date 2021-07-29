@@ -97,11 +97,19 @@ export class WindowManager {
     }
     this.onRemoved.raiseEvent(windowComponent);
     Vue.delete(this.state.items, id);
+    Object.keys(this.state.items)
+      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+      .filter(windowId => windowId !== windowComponent.id)
+      .forEach((windowId, i) => {
+        const zIndex = this.state.zIndexMax - i;
+        Vue.set(this.state.zIndexMap, windowId, zIndex);
+      });
     if (!windowComponent.isDocked) {
       return this.pullWindowsIn();
     }
     return undefined;
   }
+
 
   toggle(windowComponent) {
     if (this.has(windowComponent.id)) {
@@ -134,14 +142,19 @@ export class WindowManager {
         (item.position.asNumber.top === 48 && (item.position.asNumber.right === item.width)) ||
         (item.position.asNumber.bottom === 0 && (item.position.asNumber.right === item.width))
       ) {
-        item.position = new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` });
-        return;
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` }),
+        });
       }
       if (
         (item.position.asNumber.top === 48 && (item.position.asNumber.left === item.width)) ||
         (item.position.asNumber.bottom === 0 && (item.position.asNumber.left === item.width))
       ) {
-        item.position = new PositionParser({ ...item.position, left: `${item.position.asNumber.left - item.width}px` });
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, left: `${item.position.asNumber.left - item.width}px` }),
+        });
       }
     });
   }
@@ -233,12 +246,16 @@ export class WindowManager {
     }
 
 
-    const updatedZIndex = this.state.zIndexMap[windowComponent.id] ||
-      zIndexMax -
-      Object.keys(this.state.items).length;
-
     Vue.set(this.state.items, windowComponent.id, windowComponent);
-    Vue.set(this.state.zIndexMap, windowComponent.id, updatedZIndex);
+    Vue.set(this.state.zIndexMap, windowComponent.id, this.state.zIndexMax);
+
+    Object.keys(this.state.items)
+      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+      .filter(windowId => windowId !== windowComponent.id)
+      .forEach((windowId, i) => {
+        const zIndex = this.state.zIndexMax - (i + 1);
+        Vue.set(this.state.zIndexMap, windowId, zIndex);
+      });
     this.onAdded.raiseEvent(windowComponent);
   }
 

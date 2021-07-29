@@ -5,7 +5,7 @@
       :ref="'windowStates'"
       :key="windowState.id"
       :id="windowState.id"
-      class="vsc-window v-sheet elevation-3 position-absolute"
+      class="vsc-window v-sheet elevation-0 position-absolute"
       @click="bringViewToTop(windowState.id)"
       :style="{
         zIndex: zIndexMap[windowState.id],
@@ -18,9 +18,7 @@
     >
       <component
         :is="windowState.component"
-        :window-state="windowState"
-        :z-index="zIndexMap[windowState.id]"
-        :z-index-max="zIndexMax"
+        :window-id="windowState.id"
       />
     </div>
   </div>
@@ -56,11 +54,6 @@
   import { clipX, clipY } from './util/clip';
   import Window from './WindowComponent.vue';
 
-  /**
-   * TODO: unsubscribe when window is deleted
-   */
-
-
   export default defineComponent({
     name: 'VcsWindowManager',
     components: { Window },
@@ -72,7 +65,6 @@
       const popoverManager = inject('popoverManager');
       let onAddedDestroy;
       let onRemovedDestroy;
-      // const isSubscribed = new Set();
 
       const {
         state: {

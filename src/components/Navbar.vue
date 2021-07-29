@@ -47,13 +47,30 @@
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
   import { WINDOW_POSITIONS } from '@/modules/window-manager/window.manager';
+  import PositionParser from '@/modules/window-manager/util/position-parser';
   import ComponentToggleButton from './ComponentToggleButton.vue';
+  import EmptyCmp from './empty-cmp.vue';
 
-  Vue.component('LayerTree', LayerTree);
+  const staticPosition = new PositionParser({
+    left: window.innerWidth * 0.1,
+    right: window.innerWidth * 0.1,
+    top: (window.innerHeight * 0.1),
+    bottom: (window.innerHeight * 0.1),
+  });
+
+  const staticWindow = {
+    id: 'static-win',
+    width: window.innerWidth * 0.8,
+    isDocked: true,
+    component: EmptyCmp,
+    icon: '$vcsLayers',
+    position: staticPosition,
+    defaultPosition: staticPosition,
+  };
 
   const layerTree = {
     id: 'layer-tree',
-    component: 'LayerTree',
+    component: LayerTree,
     width: 320,
     header: 'layer-tree.title',
     icon: '$vcsLayers',
@@ -64,7 +81,7 @@
 
   const components = {
     id: 'components',
-    component: 'LayerTree',
+    component: LayerTree,
     width: 320,
     header: 'components.title',
     icon: '$vcsComponents',
@@ -93,6 +110,7 @@
     components,
     dummy1,
     dummy2,
+    staticWindow,
   };
 
 

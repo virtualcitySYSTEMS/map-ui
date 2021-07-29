@@ -24,12 +24,6 @@ export default class PositionParser {
     Object.assign(this, position);
   }
 
-  /** @param {Position} position partial position */
-  update(position) {
-    parsePosition(position);
-    Object.assign(this, position);
-  }
-
   left = 'unset';
 
   top = 'unset';
