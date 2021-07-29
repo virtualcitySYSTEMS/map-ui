@@ -1,3 +1,8 @@
+const parsePosition = position => Object.keys(position).forEach((key) => {
+  if (typeof position[key] === 'number') {
+    position[key] = `${position[key]}px`;
+  }
+});
 /**
  * @typedef Position
  * @property {string | 0} left Must be pixel-value string (e.g. '320px')
@@ -15,6 +20,13 @@
 export default class PositionParser {
   /** @param {Position} position */
   constructor(position) {
+    parsePosition(position);
+    Object.assign(this, position);
+  }
+
+  /** @param {Position} position partial position */
+  update(position) {
+    parsePosition(position);
     Object.assign(this, position);
   }
 

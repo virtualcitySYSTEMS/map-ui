@@ -91,11 +91,16 @@ export class WindowManager {
    * @returns {Error | void}
    */
   remove(id) {
-    if (!this.state.items[id]) {
+    const windowComponent = this.state.items[id];
+    if (!windowComponent) {
       return new Error(`Cannot remove window with id '${id}' as it is not present.`);
     }
-    this.onRemoved.raiseEvent(this.state.items[id]);
-    return Vue.delete(this.state.items, id);
+    this.onRemoved.raiseEvent(windowComponent);
+    Vue.delete(this.state.items, id);
+    if (!windowComponent.isDocked) {
+      return this.pullWindowsIn();
+    }
+    return undefined;
   }
 
   toggle(windowComponent) {
@@ -123,13 +128,42 @@ export class WindowManager {
     Vue.set(this.state.items, windowComponent.id, updatedWindow);
   }
 
-  pushDockedWindowInFrom(windowComponent) {
+  pullWindowsIn() {
+    Object.values(this.state.items).forEach((item) => {
+      if (
+        (item.position.asNumber.top === 48 && (item.position.asNumber.right === item.width)) ||
+        (item.position.asNumber.bottom === 0 && (item.position.asNumber.right === item.width))
+      ) {
+        item.position = new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` });
+        return;
+      }
+      if (
+        (item.position.asNumber.top === 48 && (item.position.asNumber.left === item.width)) ||
+        (item.position.asNumber.bottom === 0 && (item.position.asNumber.left === item.width))
+      ) {
+        item.position = new PositionParser({ ...item.position, left: `${item.position.asNumber.left - item.width}px` });
+      }
+    });
+  }
+
+  pushWindowFrom(windowComponent) {
     Object.values(this.state.items).forEach((item) => {
       if (
         parseInt(item.position.top, 10) === parseInt(windowComponent.position.top, 10) &&
         parseInt(item.position.left, 10) === parseInt(windowComponent.position.left, 10)
       ) {
-        const newLeft = item.position.left + item.width;
+        const newLeft = item.position.asNumber.left + item.width;
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, left: `${newLeft}px` }),
+        });
+        return;
+      }
+      if (
+        parseInt(item.position.bottom, 10) === parseInt(windowComponent.position.bottom, 10) &&
+        parseInt(item.position.left, 10) === parseInt(windowComponent.position.left, 10)
+      ) {
+        const newLeft = item.position.asNumber.left + item.width;
         Vue.set(this.state.items, item.id, {
           ...item,
           position: new PositionParser({ ...item.position, left: `${newLeft}px` }),
@@ -140,7 +174,18 @@ export class WindowManager {
         parseInt(item.position.top, 10) === parseInt(windowComponent.position.top, 10) &&
         parseInt(item.position.right, 10) === parseInt(windowComponent.position.right, 10)
       ) {
-        const newRight = item.position.right + item.width;
+        const newRight = item.position.asNumber.right + item.width;
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, right: `${newRight}px` }),
+        });
+        return;
+      }
+      if (
+        parseInt(item.position.bottom, 10) === parseInt(windowComponent.position.bottom, 10) &&
+        parseInt(item.position.right, 10) === parseInt(windowComponent.position.right, 10)
+      ) {
+        const newRight = item.position.asNumber.right + item.width;
         Vue.set(this.state.items, item.id, {
           ...item,
           position: new PositionParser({ ...item.position, right: `${newRight}px` }),
@@ -179,12 +224,12 @@ export class WindowManager {
       throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
 
-    if (!windowComponent.isDocked) {
+    if (windowComponent.isDocked) {
       this.removeWindowAtSamePositionAs(windowComponent);
     }
 
-    if (windowComponent.isDocked) {
-      this.pushDockedWindowInFrom(windowComponent);
+    if (!windowComponent.isDocked) {
+      this.pushWindowFrom(windowComponent);
     }
 
 
