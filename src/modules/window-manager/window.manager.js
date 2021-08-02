@@ -39,6 +39,7 @@ const OPPOSING_DIR = {
  * @property {Position} defaultPosition
  * @property {string} header
  * @property {string} icon
+ * @property {Object.<string, string>} styles
  */
 
 const zIndexMax = 50;
@@ -152,12 +153,9 @@ export class WindowManager {
   // Only pulls right to left right now
   pullWindowsIn() {
     const items = Object.values(this.state.items);
-    debugger;
     items.forEach((item) => {
       const newRight = item.position.asNumber.right - item.width;
       if (parseInt(item.position.right, 10) === 0) {
-        debugger;
-
         return;
       }
       const newPosition = new PositionParser({ ...item.position, right: `${newRight}px` });

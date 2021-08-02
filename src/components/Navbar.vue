@@ -52,10 +52,10 @@
   import EmptyCmp from './empty-cmp.vue';
 
   const staticPosition = new PositionParser({
-    left: window.innerWidth * 0.1,
-    right: window.innerWidth * 0.1,
-    top: (window.innerHeight * 0.1),
-    bottom: (window.innerHeight * 0.1),
+    left: '10%',
+    right: '10%',
+    top: '10%',
+    bottom: '10%',
   });
 
   const staticWindow = {
@@ -66,6 +66,9 @@
     icon: '$vcsLayers',
     position: staticPosition,
     defaultPosition: staticPosition,
+    styles: {
+      'max-width': '80%',
+    },
   };
 
   const layerTree = {

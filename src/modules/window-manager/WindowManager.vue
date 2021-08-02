@@ -14,6 +14,7 @@
         right: windowState.position.right,
         bottom: windowState.position.bottom,
         width: `${windowState.width}px`,
+        ...(windowState.styles || {})
       }"
     >
       <component
