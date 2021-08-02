@@ -41,6 +41,7 @@
     inject,
   } from '@vue/composition-api';
   import { fromEvent, of, Subject } from 'rxjs';
+  import Vue from 'vue';
   import {
     debounceTime,
     filter,
@@ -108,7 +109,6 @@
                 windowRef,
                 undefined,
               );
-              const windowState = windowManager.get(windowRef.id);
               const startLeft =
                 parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
               const startTop =
@@ -132,6 +132,7 @@
                     };
                   }),
                   tap(({ targetWidth, targetHeight, top, left }) => {
+                    const windowState = windowManager.get(windowRef.id);
                     popoverManager.removeAllFrom(windowRef);
                     /** Make sure window does not go out of bounds */
                     const coordinates = {
@@ -143,6 +144,10 @@
                     windowManager.bringViewToTop(windowRef.id);
                     nextTick(() => {
                       windowManager.rearrangeDockingFor(windowState);
+                      Vue.set(windowManager.state.items, windowState.id, {
+                        ...windowManager.get(windowRef.id),
+                        isDetachedFromDock: true,
+                      });
                     });
                   }),
                   takeUntil(destroy$.get(windowRef.id)),

@@ -77,6 +77,7 @@
     position: WINDOW_POSITIONS.topLeft,
     defaultPosition: WINDOW_POSITIONS.topLeft,
     isDocked: true,
+    isDetachedFromDock: false,
   };
 
   const components = {
@@ -88,6 +89,7 @@
     position: WINDOW_POSITIONS.bottomRight,
     defaultPosition: WINDOW_POSITIONS.bottomRight,
     isDocked: false,
+    isDetachedFromDock: false,
   };
 
   const dummy1 = {
@@ -97,12 +99,15 @@
     position: WINDOW_POSITIONS.bottomRight,
     defaultPosition: WINDOW_POSITIONS.bottomRight,
     isDocked: false,
+    isDetachedFromDock: false,
   };
+
   const dummy2 = {
     ...dummy1,
     id: 'dummy2',
     icon: '$vcsLegend',
     isDocked: false,
+    isDetachedFromDock: false,
   };
 
   const windowStates = {

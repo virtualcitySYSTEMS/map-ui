@@ -115,7 +115,7 @@ export class WindowManager {
 
     if (!windowComponent.isDocked) {
       nextTick(() => {
-        this.pullWindowsIn();
+        Object.keys(this.state.items).forEach(() => this.pullWindowsIn());
       });
     }
   }
@@ -151,14 +151,22 @@ export class WindowManager {
 
   // Only pulls right to left right now
   pullWindowsIn() {
-    Object.values(this.state.items).forEach((item) => {
+    const items = Object.values(this.state.items);
+    debugger;
+    items.forEach((item) => {
       const newRight = item.position.asNumber.right - item.width;
-      if (item.position.asNumber.right === 0) {
+      if (parseInt(item.position.right, 10) === 0) {
+        debugger;
+
+        return;
+      }
+      const newPosition = new PositionParser({ ...item.position, right: `${newRight}px` });
+      if (items.some(i => i.position.isEqualTo(newPosition) && (i.id !== item.id))) {
         return;
       }
       Vue.set(this.state.items, item.id, {
         ...item,
-        position: new PositionParser({ ...item.position, right: `${newRight}px` }),
+        position: newPosition,
       });
     });
   }
