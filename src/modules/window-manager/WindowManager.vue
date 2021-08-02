@@ -108,6 +108,7 @@
                 windowRef,
                 undefined,
               );
+              const windowState = windowManager.get(windowRef.id);
               const startLeft =
                 parseInt(style.getPropertyValue('left'), 10) - startEvent.clientX;
               const startTop =
@@ -140,6 +141,9 @@
 
                     windowManager.setCoordinates(windowRef.id, coordinates);
                     windowManager.bringViewToTop(windowRef.id);
+                    nextTick(() => {
+                      windowManager.rearrangeDockingFor(windowState);
+                    });
                   }),
                   takeUntil(destroy$.get(windowRef.id)),
                 );
@@ -185,7 +189,7 @@
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
             () => context.refs.windowStates.forEach((r) => {
-              if (!windowStates[r.id].isStatic) {
+              if (!windowStates[r.id].isDocked) {
                 subscribeToWindowChanges(r);
               }
             }),
@@ -194,7 +198,7 @@
 
         onRemovedDestroy = onRemoved.addEventListener(
           (windowState) => {
-            if (!windowStates[windowState.id].isStatic) {
+            if (!windowStates[windowState.id].isDocked) {
               destroy$.get(windowState.id).next();
               destroy$.get(windowState.id).unsubscribe();
             }

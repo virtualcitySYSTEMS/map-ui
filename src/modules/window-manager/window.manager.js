@@ -4,9 +4,14 @@ import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
 
+const DIR = {
+  left: 'left',
+  right: 'right',
+};
+
 const OPPOSING_DIR = {
-  left: 'right',
-  right: 'left',
+  [DIR.left]: DIR.right,
+  [DIR.right]: DIR.left,
 };
 
 /**
@@ -108,7 +113,7 @@ export class WindowManager {
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
 
-    if (!windowComponent.isStatic) {
+    if (!windowComponent.isDocked) {
       nextTick(() => {
         this.pullWindowsIn();
       });
@@ -148,7 +153,7 @@ export class WindowManager {
   pullWindowsIn() {
     Object.values(this.state.items).forEach((item) => {
       const newRight = item.position.asNumber.right - item.width;
-      if (newRight < 0) {
+      if (item.position.asNumber.right === 0) {
         return;
       }
       Vue.set(this.state.items, item.id, {
@@ -207,7 +212,7 @@ export class WindowManager {
 
   /**
    * @param {Window} windowComponent
-   * @param {string} dir
+   * @param {('left' | 'right')} dir
    * @returns {Array<Window>}
    */
   getWindowsWhichCover(windowComponent, dir) {
@@ -215,11 +220,11 @@ export class WindowManager {
     return Object.values(this.state.items).map((item) => {
       if (
         (parseInt(windowComponent.position.top, 10) === parseInt(item.position.top, 10) ||
-        (windowComponent.position.top === 'unset' && item.position.top === 'unset')
+          (windowComponent.position.top === 'unset' && item.position.top === 'unset')
         ) && (
           parseInt(windowComponent.position[opposingDir], 10) === parseInt(item.position[opposingDir], 10) ||
-        (parseInt(windowComponent.position[opposingDir], 10) +
-          windowComponent.width) === parseInt(item.position[opposingDir], 10)
+          (parseInt(windowComponent.position[opposingDir], 10) +
+            windowComponent.width) === parseInt(item.position[opposingDir], 10)
         )
       ) {
         return item;
@@ -232,7 +237,7 @@ export class WindowManager {
    * @param {Window} windowComponent
    */
   pushWindowFrom(windowComponent) {
-    ['left', 'right'].forEach((dir) => {
+    Object.values(DIR).forEach((dir) => {
       const needPull = this.getWindowsWhichCover(windowComponent, dir);
       needPull.forEach((item) => {
         const opposingDir = OPPOSING_DIR[dir];
@@ -267,6 +272,20 @@ export class WindowManager {
     });
   }
 
+  // Currently only pulls in case there only two windows present before draggin
+  setDockingRefs(windowComponent) {
+    const withoutRef = Object
+      .values(this.state.items)
+      .find(item => !item.dockingRef);
+
+    if (withoutRef) {
+      Vue.set(this.state.items, withoutRef.id, {
+        ...withoutRef,
+        dockingRef: windowComponent,
+      });
+    }
+  }
+
   /**
    * @param {Window} windowComponent
    */
@@ -279,14 +298,15 @@ export class WindowManager {
       throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
 
-    if (windowComponent.isStatic) {
+    if (windowComponent.isDocked) {
       this.removeWindowAtSamePositionAs(windowComponent);
     }
 
-    if (!windowComponent.isStatic) {
+    if (!windowComponent.isDocked) {
       this.pushWindowFrom(windowComponent);
     }
 
+    this.setDockingRefs(windowComponent);
 
     Vue.set(this.state.items, windowComponent.id, windowComponent);
     Vue.set(this.state.zIndexMap, windowComponent.id, this.state.zIndexMax);
@@ -299,6 +319,14 @@ export class WindowManager {
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
     this.onAdded.raiseEvent(windowComponent);
+  }
+
+  rearrangeDockingFor(windowComponent) {
+    const f = Object.values(this.state.items)
+      .find(item => !!item.dockingRef && item.dockingRef.element === windowComponent);
+    if (f) {
+      f.position = new PositionParser({ ...f.position, right: windowComponent.position.right });
+    }
   }
 
 

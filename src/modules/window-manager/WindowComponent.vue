@@ -3,14 +3,14 @@
     <v-sheet
       class="v-sheet elevation-3 d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
-        'cursor-grab': !windowState.isStatic,
+        'cursor-grab': !windowState.isDocked,
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left > 0,
         'rounded-tr': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left < (windowWidth - windowState.width),
       }"
-      :draggable="!windowState.isStatic"
+      :draggable="!windowState.isDocked"
     >
       <slot name="header">
         <span>

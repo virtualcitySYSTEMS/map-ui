@@ -40,5 +40,14 @@ export default class PositionParser {
       bottom: Number.isNaN(parseInt(this.bottom, 10)) ? 'unset' : parseInt(this.bottom, 10),
     };
   }
+
+  isEqualTo(position) {
+    return (
+      (this.left === position.left || (this.left === 'unset' && position.left === 'unset')) &&
+     (this.right === position.right || (this.right === 'unset' && position.right === 'unset')) &&
+      (this.bottom === position.bottom || (this.bottom === 'unset' && position.bottom === 'unset')) &&
+     (this.top === position.top || (this.top === 'unset' && position.top === 'unset'))
+    );
+  }
 }
 
