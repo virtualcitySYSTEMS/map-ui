@@ -110,7 +110,7 @@ export class WindowManager {
 
     if (!windowComponent.isDocked) {
       nextTick(() => {
-        this.pullWindowsInFrom(windowComponent);
+        this.pullWindowsIn();
       });
     }
   }
@@ -141,26 +141,13 @@ export class WindowManager {
     Vue.set(this.state.items, windowComponent.id, updatedWindow);
   }
 
-  pullWindowsInFrom() {
+  // Only pulls right to left right now
+  pullWindowsIn() {
     Object.values(this.state.items).forEach((item) => {
-      if (
-        (item.position.asNumber.top === 48 && (item.position.asNumber.right === item.width)) ||
-        (item.position.asNumber.bottom === 0 && (item.position.asNumber.right === item.width))
-      ) {
-        Vue.set(this.state.items, item.id, {
-          ...item,
-          position: new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` }),
-        });
-      }
-      if (
-        (item.position.asNumber.top === 48 && (item.position.asNumber.left === item.width)) ||
-        (item.position.asNumber.bottom === 0 && (item.position.asNumber.left === item.width))
-      ) {
-        Vue.set(this.state.items, item.id, {
-          ...item,
-          position: new PositionParser({ ...item.position, left: `${item.position.asNumber.left - item.width}px` }),
-        });
-      }
+      Vue.set(this.state.items, item.id, {
+        ...item,
+        position: new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` }),
+      });
     });
   }
 
@@ -194,48 +181,48 @@ export class WindowManager {
   getWindowsWhichCover(windowComponent, dir) {
     const opposingDir = OPPOSING_DIR[dir];
     return Object.values(this.state.items).map((item) => {
-      if (parseInt(windowComponent.position.top, 10) === parseInt(item.position.top, 10) ||
+      if (
+        (parseInt(windowComponent.position.top, 10) === parseInt(item.position.top, 10) ||
         (windowComponent.position.top === 'unset' && item.position.top === 'unset')
+        ) && (
+          parseInt(windowComponent.position[opposingDir], 10) === parseInt(item.position[opposingDir], 10) ||
+        (parseInt(windowComponent.position[opposingDir], 10) +
+          windowComponent.width) === parseInt(item.position[opposingDir], 10)
+        )
       ) {
-        if (
-          parseInt(windowComponent.position[opposingDir], 10) === parseInt(item.position[opposingDir], 10)
-        ) {
-          return item;
-        }
+        return item;
       }
       return undefined;
     }).filter(f => !!f);
   }
 
   pushWindowFrom(windowComponent) {
-    this.getWindowsWhichCover(windowComponent, 'left').forEach((item) => {
-      const newRight = item.position.asNumber.right + item.width;
-      Vue.set(this.state.items, item.id, {
-        ...item,
-        position: new PositionParser({ ...item.position, right: `${newRight}px` }),
-      });
-    });
-
-    this.getWindowsWhichCover(windowComponent, 'right').forEach((item) => {
-      const newLeft = item.position.asNumber.right + item.width;
-      Vue.set(this.state.items, item.id, {
-        ...item,
-        position: new PositionParser({ ...item.position, left: `${newLeft}px` }),
+    ['left', 'right'].forEach((dir) => {
+      const needPull = this.getWindowsWhichCover(windowComponent, dir);
+      needPull.forEach((item) => {
+        const opposingDir = OPPOSING_DIR[dir];
+        const newRight = item.position.asNumber[opposingDir] + item.width;
+        const dockingRef = {
+          element: windowComponent,
+          from: opposingDir,
+        };
+        Vue.set(this.state.items, item.id, {
+          ...item,
+          position: new PositionParser({ ...item.position, [opposingDir]: `${newRight}px` }),
+          dockingRef,
+        });
       });
     });
   }
 
   removeWindowAtSamePositionAs(windowComponent) {
     Object.values(this.state.items).forEach((item) => {
-      if (
-        item.position.top === windowComponent.position.top &&
-        item.position.left === windowComponent.position.left
-      ) {
-        this.remove(item.id);
+      if (item.position.top !== windowComponent.position.top) {
+        return;
       }
       if (
-        item.position.top === windowComponent.position.top &&
-        item.position.right === windowComponent.position.right
+        item.position.right === windowComponent.position.right ||
+        item.position.left === windowComponent.position.left
       ) {
         this.remove(item.id);
       }
