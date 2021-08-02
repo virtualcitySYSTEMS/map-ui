@@ -116,6 +116,9 @@ export class WindowManager {
   }
 
 
+  /**
+   * @param {Window} windowComponent
+   */
   toggle(windowComponent) {
     if (this.has(windowComponent.id)) {
       this.remove(windowComponent.id);
@@ -151,12 +154,22 @@ export class WindowManager {
     });
   }
 
+  /**
+   * @param {Window} windowA
+   * @param {Window} windowB
+   * @returns {boolean}
+   */
   static areBothCoveringTopLeft(windowA, windowB) {
     return (
       parseInt(windowA.position.top, 10) === parseInt(windowB.position.top, 10) &&
       parseInt(windowA.position.left, 10) === parseInt(windowB.position.left, 10));
   }
 
+  /**
+   * @param {Window} windowA
+   * @param {Window} windowB
+   * @returns {boolean}
+   */
   static areBothCoveringTopRight(windowA, windowB) {
     return (
       parseInt(windowA.position.top, 10) === parseInt(windowB.position.top, 10) &&
@@ -164,6 +177,11 @@ export class WindowManager {
     );
   }
 
+  /**
+   * @param {Window} windowA
+   * @param {Window} windowB
+   * @returns {boolean}
+   */
   static areBothCoveringBottomLeft(windowA, windowB) {
     return (
       parseInt(windowA.position.bottom, 10) === parseInt(windowB.position.bottom, 10) &&
@@ -171,6 +189,11 @@ export class WindowManager {
     );
   }
 
+  /**
+   * @param {Window} windowA
+   * @param {Window} windowB
+   * @returns {boolean}
+   */
   static areBothCoveringBottomRight(windowA, windowB) {
     return (
       parseInt(windowA.position.bottom, 10) === parseInt(windowB.position.bottom, 10) &&
@@ -178,6 +201,11 @@ export class WindowManager {
     );
   }
 
+  /**
+   * @param {Window} windowComponent
+   * @param {string} dir
+   * @returns {Array<Window>}
+   */
   getWindowsWhichCover(windowComponent, dir) {
     const opposingDir = OPPOSING_DIR[dir];
     return Object.values(this.state.items).map((item) => {
@@ -196,6 +224,9 @@ export class WindowManager {
     }).filter(f => !!f);
   }
 
+  /**
+   * @param {Window} windowComponent
+   */
   pushWindowFrom(windowComponent) {
     ['left', 'right'].forEach((dir) => {
       const needPull = this.getWindowsWhichCover(windowComponent, dir);
@@ -215,6 +246,9 @@ export class WindowManager {
     });
   }
 
+  /**
+   * @param {Window} windowComponent
+   */
   removeWindowAtSamePositionAs(windowComponent) {
     Object.values(this.state.items).forEach((item) => {
       if (item.position.top !== windowComponent.position.top) {
