@@ -61,7 +61,7 @@
   const staticWindow = {
     id: 'static-win',
     width: window.innerWidth * 0.8,
-    isDocked: true,
+    isStatic: true,
     component: EmptyCmp,
     icon: '$vcsLayers',
     position: staticPosition,
@@ -76,7 +76,7 @@
     icon: '$vcsLayers',
     position: WINDOW_POSITIONS.topLeft,
     defaultPosition: WINDOW_POSITIONS.topLeft,
-    isDocked: true,
+    isStatic: true,
   };
 
   const components = {
@@ -85,9 +85,9 @@
     width: 320,
     header: 'components.title',
     icon: '$vcsComponents',
-    position: WINDOW_POSITIONS.topLeft,
-    defaultPosition: WINDOW_POSITIONS.topLeft,
-    isDocked: true,
+    position: WINDOW_POSITIONS.bottomRight,
+    defaultPosition: WINDOW_POSITIONS.bottomRight,
+    isStatic: false,
   };
 
   const dummy1 = {
@@ -96,13 +96,13 @@
     icon: '$vcsTools',
     position: WINDOW_POSITIONS.bottomRight,
     defaultPosition: WINDOW_POSITIONS.bottomRight,
-    isDocked: false,
+    isStatic: false,
   };
   const dummy2 = {
     ...dummy1,
     id: 'dummy2',
     icon: '$vcsLegend',
-    isDocked: false,
+    isStatic: false,
   };
 
   const windowStates = {

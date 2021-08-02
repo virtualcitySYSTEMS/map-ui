@@ -3,14 +3,14 @@
     <v-sheet
       class="v-sheet elevation-3 d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
-        'cursor-grab': !windowState.isDocked,
+        'cursor-grab': !windowState.isStatic,
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left > 0,
         'rounded-tr': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left < (windowWidth - windowState.width),
       }"
-      :draggable="!windowState.isDocked"
+      :draggable="!windowState.isStatic"
     >
       <slot name="header">
         <span>
@@ -66,6 +66,7 @@
         windowState,
         zIndexMax: windowManager.state.zIndexMax,
         zIndex: windowManager.state.zIndexMap[props.windowId],
+        close: id => windowManager.remove(id),
       };
     },
   });

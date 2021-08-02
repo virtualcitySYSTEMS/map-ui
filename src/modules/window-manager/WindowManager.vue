@@ -185,7 +185,7 @@
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
             () => context.refs.windowStates.forEach((r) => {
-              if (!windowStates[r.id].isDocked) {
+              if (!windowStates[r.id].isStatic) {
                 subscribeToWindowChanges(r);
               }
             }),
@@ -194,7 +194,7 @@
 
         onRemovedDestroy = onRemoved.addEventListener(
           (windowState) => {
-            if (!windowStates[windowState.id].isDocked) {
+            if (!windowStates[windowState.id].isStatic) {
               destroy$.get(windowState.id).next();
               destroy$.get(windowState.id).unsubscribe();
             }

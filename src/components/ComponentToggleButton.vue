@@ -5,6 +5,7 @@
     :icon="icon"
     :v-bind="{...$props, ...$attrs} "
     :value="!!windowComponents[componentName]"
+    :title="componentName"
   >
     <slot />
   </Button>
