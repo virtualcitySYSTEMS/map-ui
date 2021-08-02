@@ -108,7 +108,7 @@ export class WindowManager {
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
 
-    if (!windowComponent.isDocked) {
+    if (!windowComponent.isStatic) {
       nextTick(() => {
         this.pullWindowsIn();
       });
@@ -147,9 +147,13 @@ export class WindowManager {
   // Only pulls right to left right now
   pullWindowsIn() {
     Object.values(this.state.items).forEach((item) => {
+      const newRight = item.position.asNumber.right - item.width;
+      if (newRight < 0) {
+        return;
+      }
       Vue.set(this.state.items, item.id, {
         ...item,
-        position: new PositionParser({ ...item.position, right: `${item.position.asNumber.right - item.width}px` }),
+        position: new PositionParser({ ...item.position, right: `${newRight}px` }),
       });
     });
   }
@@ -275,11 +279,11 @@ export class WindowManager {
       throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
 
-    if (windowComponent.isDocked) {
+    if (windowComponent.isStatic) {
       this.removeWindowAtSamePositionAs(windowComponent);
     }
 
-    if (!windowComponent.isDocked) {
+    if (!windowComponent.isStatic) {
       this.pushWindowFrom(windowComponent);
     }
 
