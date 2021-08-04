@@ -147,7 +147,7 @@
                       windowManager.rearrangeDockingFor(windowState);
                       Vue.set(windowManager.state.items, windowState.id, {
                         ...windowManager.get(windowRef.id),
-                        isDetachedFromDock: true,
+                        isDetached: true,
                       });
                     });
                   }),

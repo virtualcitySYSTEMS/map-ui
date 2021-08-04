@@ -50,6 +50,10 @@ export const WINDOW_POSITIONS = {
     left: 0,
     top: '48px',
   }),
+  topLeft2: new PositionParser({
+    left: '320px',
+    top: '48px',
+  }),
   topRight: new PositionParser({
     right: 0,
     top: '48px',
@@ -58,6 +62,13 @@ export const WINDOW_POSITIONS = {
     right: 0,
     bottom: 0,
   }),
+};
+
+
+export const WINDOW_SLOTS = {
+  static: 'static',
+  dymanicLeft: 'dymanicLeft',
+  dynamicRight: 'dynamicRight',
 };
 
 
@@ -92,6 +103,10 @@ export class WindowManager {
    */
   has(id) {
     return !!this.get(id);
+  }
+
+  getAll() {
+    return Object.values(this.state.items);
   }
 
   /**
@@ -223,7 +238,7 @@ export class WindowManager {
    */
   getWindowsWhichCover(windowComponent, dir) {
     const opposingDir = OPPOSING_DIR[dir];
-    return Object.values(this.state.items).map((item) => {
+    return this.getAll().map((item) => {
       if (
         (parseInt(windowComponent.position.top, 10) === parseInt(item.position.top, 10) ||
           (windowComponent.position.top === 'unset' && item.position.top === 'unset')
@@ -265,7 +280,7 @@ export class WindowManager {
    * @param {Window} windowComponent
    */
   removeWindowAtSamePositionAs(windowComponent) {
-    Object.values(this.state.items).forEach((item) => {
+    this.getAll().forEach((item) => {
       if (item.position.top !== windowComponent.position.top) {
         return;
       }
@@ -278,19 +293,64 @@ export class WindowManager {
     });
   }
 
-  // Currently only pulls in case there only two windows present before draggin
-  setDockingRefs(windowComponent) {
-    const withoutRef = Object
-      .values(this.state.items)
-      .find(item => !item.dockingRef);
+  moveWindows(windowComponent) {
+    switch (windowComponent.windowSlot) {
+      case WINDOW_SLOTS.static: {
+        this.getAll().forEach((item) => {
+          if (item.windowSlot === WINDOW_SLOTS.static || item.position.isEqualTo(WINDOW_POSITIONS.topLeft)) {
+            this.remove(item.id);
+          }
+        });
 
-    if (withoutRef) {
-      Vue.set(this.state.items, withoutRef.id, {
-        ...withoutRef,
-        dockingRef: windowComponent,
-      });
+        windowComponent.position = WINDOW_POSITIONS.topLeft;
+        const windowAtSamePosition = this.getAll().find(item => item.position.isEqualTo(WINDOW_POSITIONS.topLeft));
+
+        if (windowAtSamePosition) {
+          this.remove(windowAtSamePosition.id);
+        }
+        break;
+      }
+      case WINDOW_SLOTS.dymanicLeft: {
+        const staticWindow = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.static);
+        const dynamicWindow1 = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dymanic1);
+        if (dynamicWindow1) {
+          this.remove(dynamicWindow1.id);
+        }
+
+        if (staticWindow) {
+          windowComponent.position = WINDOW_POSITIONS.topLeft2;
+          return;
+        }
+
+        windowComponent.position = WINDOW_POSITIONS.topLeft;
+        break;
+      }
+      case WINDOW_SLOTS.dynamicRight: {
+        const existing = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dynamicRight);
+
+        if (existing) {
+          this.remove(existing.id);
+        }
+        windowComponent.position = WINDOW_POSITIONS.topRight;
+        break;
+      }
+      // case WINDOW_SLOTS.dymanic1: {
+      //   const hasStatic = this.getAll().some(item => item.windowSlot === WINDOW_SLOTS.static);
+      //   const dynamicWindow1 = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dymanic1);
+      //   if (hasStatic) {
+      //     windowComponent.position = WINDOW_POSITIONS.topLeft2;
+      //   } else if (dynamicWindow1) {
+      //     this.remove(dynamicWindow1.id);
+      //   } else {
+      //     windowComponent.position = WINDOW_POSITIONS.topLeft;
+      //   }
+      //   break;
+      // }
+      default:
+        break;
     }
   }
+
 
   /**
    * @param {Window} windowComponent
@@ -304,15 +364,7 @@ export class WindowManager {
       throw new Error(`A window with id ${windowComponent.id} has already been registered.`);
     }
 
-    if (windowComponent.isDocked) {
-      this.removeWindowAtSamePositionAs(windowComponent);
-    }
-
-    if (!windowComponent.isDocked) {
-      this.pushWindowFrom(windowComponent);
-    }
-
-    this.setDockingRefs(windowComponent);
+    this.moveWindows(windowComponent);
 
     Vue.set(this.state.items, windowComponent.id, windowComponent);
     Vue.set(this.state.zIndexMap, windowComponent.id, this.state.zIndexMax);

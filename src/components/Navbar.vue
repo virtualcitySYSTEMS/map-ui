@@ -46,7 +46,7 @@
   import Button from '@vcsuite/uicomponents/Button.vue';
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
-  import { WINDOW_POSITIONS } from '@/modules/window-manager/window.manager';
+  import { WINDOW_SLOTS } from '@/modules/window-manager/window.manager';
   import PositionParser from '@/modules/window-manager/util/position-parser';
   import ComponentToggleButton from './ComponentToggleButton.vue';
   import EmptyCmp from './empty-cmp.vue';
@@ -75,42 +75,44 @@
     id: 'layer-tree',
     component: LayerTree,
     width: 320,
-    header: 'layer-tree.title',
+    header: 'Static Window',
     icon: '$vcsLayers',
-    position: WINDOW_POSITIONS.topLeft,
-    defaultPosition: WINDOW_POSITIONS.topLeft,
+    position: {},
+    windowSlot: WINDOW_SLOTS.static,
     isDocked: true,
-    isDetachedFromDock: false,
+    isDetached: false,
   };
 
   const components = {
     id: 'components',
     component: LayerTree,
     width: 320,
-    header: 'components.title',
+    header: 'Dynamic Window Left 1',
     icon: '$vcsComponents',
-    position: WINDOW_POSITIONS.bottomRight,
-    defaultPosition: WINDOW_POSITIONS.bottomRight,
+    position: {},
+    windowSlot: WINDOW_SLOTS.dymanicLeft,
     isDocked: false,
-    isDetachedFromDock: false,
+    isDetached: false,
   };
 
   const dummy1 = {
     ...components,
     id: 'dummy1',
     icon: '$vcsTools',
-    position: WINDOW_POSITIONS.bottomRight,
-    defaultPosition: WINDOW_POSITIONS.bottomRight,
+    windowSlot: WINDOW_SLOTS.dymanicLeft,
+    header: 'Dynamic Window Left (2)',
     isDocked: false,
-    isDetachedFromDock: false,
+    isDetached: false,
   };
 
   const dummy2 = {
     ...dummy1,
+    header: 'Dynamic Window Right',
     id: 'dummy2',
     icon: '$vcsLegend',
     isDocked: false,
-    isDetachedFromDock: false,
+    isDetached: false,
+    windowSlot: WINDOW_SLOTS.dynamicRight,
   };
 
   const windowStates = {
