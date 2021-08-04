@@ -334,18 +334,6 @@ export class WindowManager {
         windowComponent.position = WINDOW_POSITIONS.topRight;
         break;
       }
-      // case WINDOW_SLOTS.dymanic1: {
-      //   const hasStatic = this.getAll().some(item => item.windowSlot === WINDOW_SLOTS.static);
-      //   const dynamicWindow1 = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dymanic1);
-      //   if (hasStatic) {
-      //     windowComponent.position = WINDOW_POSITIONS.topLeft2;
-      //   } else if (dynamicWindow1) {
-      //     this.remove(dynamicWindow1.id);
-      //   } else {
-      //     windowComponent.position = WINDOW_POSITIONS.topLeft;
-      //   }
-      //   break;
-      // }
       default:
         break;
     }
