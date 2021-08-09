@@ -3,6 +3,7 @@ const parsePosition = position => Object.keys(position).forEach((key) => {
     position[key] = `${position[key]}px`;
   }
 });
+
 /**
  * @typedef Position
  * @property {string | 0} left Must be pixel-value string (e.g. '320px')
@@ -32,6 +33,9 @@ export default class PositionParser {
 
   bottom = 'unset';
 
+  /**
+   * @returns {Position}
+   */
   get asNumber() {
     return {
       left: Number.isNaN(parseInt(this.left, 10)) ? 'unset' : parseInt(this.left, 10),
@@ -41,6 +45,10 @@ export default class PositionParser {
     };
   }
 
+  /**
+   * @param {Position} position
+   * @returns {boolean}
+   */
   isEqualTo(position) {
     return (
       (this.left === position.left || (this.left === 'unset' && position.left === 'unset')) &&

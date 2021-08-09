@@ -4,16 +4,6 @@ import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
 
-const DIR = {
-  left: 'left',
-  right: 'right',
-};
-
-const OPPOSING_DIR = {
-  [DIR.left]: DIR.right,
-  [DIR.right]: DIR.left,
-};
-
 /**
  * @typedef Position
  * @property {string | 0} left Must be pixel-value string (e.g. '320px')
@@ -122,8 +112,7 @@ export class WindowManager {
     }
     this.onRemoved.raiseEvent(windowComponent);
     Vue.delete(this.state.items, id);
-    Object.keys(this.state.items)
-      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+    this.getOrderedZIndex()
       .forEach((windowId, i) => {
         const zIndex = this.state.zIndexMax - i;
         Vue.set(this.state.zIndexMap, windowId, zIndex);
@@ -185,114 +174,8 @@ export class WindowManager {
   }
 
   /**
-   * @param {Window} windowA
-   * @param {Window} windowB
-   * @returns {boolean}
-   */
-  static areBothCoveringTopLeft(windowA, windowB) {
-    return (
-      parseInt(windowA.position.top, 10) === parseInt(windowB.position.top, 10) &&
-      parseInt(windowA.position.left, 10) === parseInt(windowB.position.left, 10));
-  }
-
-  /**
-   * @param {Window} windowA
-   * @param {Window} windowB
-   * @returns {boolean}
-   */
-  static areBothCoveringTopRight(windowA, windowB) {
-    return (
-      parseInt(windowA.position.top, 10) === parseInt(windowB.position.top, 10) &&
-      parseInt(windowA.position.right, 10) === parseInt(windowB.position.right, 10)
-    );
-  }
-
-  /**
-   * @param {Window} windowA
-   * @param {Window} windowB
-   * @returns {boolean}
-   */
-  static areBothCoveringBottomLeft(windowA, windowB) {
-    return (
-      parseInt(windowA.position.bottom, 10) === parseInt(windowB.position.bottom, 10) &&
-      parseInt(windowA.position.left, 10) === parseInt(windowB.position.left, 10)
-    );
-  }
-
-  /**
-   * @param {Window} windowA
-   * @param {Window} windowB
-   * @returns {boolean}
-   */
-  static areBothCoveringBottomRight(windowA, windowB) {
-    return (
-      parseInt(windowA.position.bottom, 10) === parseInt(windowB.position.bottom, 10) &&
-      parseInt(windowA.position.right, 10) === parseInt(windowB.position.right, 10)
-    );
-  }
-
-  /**
-   * @param {Window} windowComponent
-   * @param {('left' | 'right')} dir
-   * @returns {Array<Window>}
-   */
-  getWindowsWhichCover(windowComponent, dir) {
-    const opposingDir = OPPOSING_DIR[dir];
-    return this.getAll().map((item) => {
-      if (
-        (parseInt(windowComponent.position.top, 10) === parseInt(item.position.top, 10) ||
-          (windowComponent.position.top === 'unset' && item.position.top === 'unset')
-        ) && (
-          parseInt(windowComponent.position[opposingDir], 10) === parseInt(item.position[opposingDir], 10) ||
-          (parseInt(windowComponent.position[opposingDir], 10) +
-            windowComponent.width) === parseInt(item.position[opposingDir], 10)
-        )
-      ) {
-        return item;
-      }
-      return undefined;
-    }).filter(f => !!f);
-  }
-
-  /**
    * @param {Window} windowComponent
    */
-  pushWindowFrom(windowComponent) {
-    Object.values(DIR).forEach((dir) => {
-      const needPull = this.getWindowsWhichCover(windowComponent, dir);
-      needPull.forEach((item) => {
-        const opposingDir = OPPOSING_DIR[dir];
-        const newRight = item.position.asNumber[opposingDir] + item.width;
-        const dockingRef = {
-          element: windowComponent,
-          from: opposingDir,
-        };
-        Vue.set(this.state.items, item.id, {
-          ...item,
-          position: new PositionParser({ ...item.position, [opposingDir]: `${newRight}px` }),
-          dockingRef,
-        });
-      });
-    });
-  }
-
-  /**
-   * @param {Window} windowComponent
-   */
-  removeWindowAtSamePositionAs(windowComponent) {
-    this.getAll().forEach((item) => {
-      if (item.position.top !== windowComponent.position.top) {
-        return;
-      }
-      if (
-        item.position.right === windowComponent.position.right ||
-        item.position.left === windowComponent.position.left
-      ) {
-        this.remove(item.id);
-      }
-    });
-  }
-
   moveWindows(windowComponent) {
     switch (windowComponent.windowSlot) {
       case WINDOW_SLOTS.static: {
@@ -357,22 +240,13 @@ export class WindowManager {
     Vue.set(this.state.items, windowComponent.id, windowComponent);
     Vue.set(this.state.zIndexMap, windowComponent.id, this.state.zIndexMax);
 
-    Object.keys(this.state.items)
-      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+    this.getOrderedZIndex()
       .filter(windowId => windowId !== windowComponent.id)
       .forEach((windowId, i) => {
         const zIndex = this.state.zIndexMax - (i + 1);
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
     this.onAdded.raiseEvent(windowComponent);
-  }
-
-  rearrangeDockingFor(windowComponent) {
-    const f = Object.values(this.state.items)
-      .find(item => !!item.dockingRef && item.dockingRef.element === windowComponent);
-    if (f) {
-      f.position = new PositionParser({ ...f.position, right: windowComponent.position.right });
-    }
   }
 
 
@@ -383,13 +257,17 @@ export class WindowManager {
     Vue.set(this.state.zIndexMap, id, this.state.zIndexMax);
 
     // Set other windows to back by one each.
-    Object.keys(this.state.items)
-      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA])
+    this.getOrderedZIndex()
       .filter(windowId => windowId !== id)
       .forEach((windowId, i) => {
         const zIndex = this.state.zIndexMax - (i + 1);
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
+  }
+
+  getOrderedZIndex() {
+    return Object.keys(this.state.items)
+      .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA]);
   }
 
   /**

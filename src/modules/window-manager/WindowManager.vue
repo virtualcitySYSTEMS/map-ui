@@ -144,7 +144,7 @@
                     windowManager.setCoordinates(windowRef.id, coordinates);
                     windowManager.bringViewToTop(windowRef.id);
                     nextTick(() => {
-                      windowManager.rearrangeDockingFor(windowState);
+                      // windowManager.rearrangeDockingFor(windowState);
                       Vue.set(windowManager.state.items, windowState.id, {
                         ...windowManager.get(windowRef.id),
                         isDetached: true,
