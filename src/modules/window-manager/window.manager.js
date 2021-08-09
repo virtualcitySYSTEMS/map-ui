@@ -195,7 +195,7 @@ export class WindowManager {
       }
       case WINDOW_SLOTS.dymanicLeft: {
         const staticWindow = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.static);
-        const dynamicWindow1 = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dymanic1);
+        const dynamicWindow1 = this.getAll().find(item => item.windowSlot === WINDOW_SLOTS.dymanicLeft);
         if (dynamicWindow1) {
           this.remove(dynamicWindow1.id);
         }
