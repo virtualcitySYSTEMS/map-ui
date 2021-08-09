@@ -90,7 +90,7 @@
     header: 'Dynamic Window Left 1',
     icon: '$vcsComponents',
     position: {},
-    windowSlot: WINDOW_SLOTS.dymanicLeft,
+    windowSlot: WINDOW_SLOTS.dynamicLeft,
     isDocked: false,
     isDetached: false,
   };
@@ -99,7 +99,7 @@
     ...components,
     id: 'dummy1',
     icon: '$vcsTools',
-    windowSlot: WINDOW_SLOTS.dymanicLeft,
+    windowSlot: WINDOW_SLOTS.dynamicLeft,
     header: 'Dynamic Window Left (2)',
     isDocked: false,
     isDetached: false,

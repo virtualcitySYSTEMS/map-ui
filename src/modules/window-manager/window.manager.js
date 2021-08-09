@@ -57,7 +57,7 @@ export const WINDOW_POSITIONS = {
 
 export const WINDOW_SLOTS = {
   static: 'static',
-  dymanicLeft: 'dymanicLeft',
+  dynamicLeft: 'dynamicLeft',
   dynamicRight: 'dynamicRight',
 };
 
@@ -163,7 +163,7 @@ export class WindowManager {
    * @param {WindowState} removedWindow
    */
   pullWindowsIn(removedWindow) {
-    const dynamicWindowLeft = this.findWindowBySlot(WINDOW_SLOTS.dymanicLeft);
+    const dynamicWindowLeft = this.findWindowBySlot(WINDOW_SLOTS.dynamicLeft);
     if (removedWindow.windowSlot === WINDOW_SLOTS.static && dynamicWindowLeft) {
       Vue.set(this.state.items, dynamicWindowLeft.id, {
         ...dynamicWindowLeft,
@@ -194,11 +194,7 @@ export class WindowManager {
   moveWindows(windowComponent) {
     switch (windowComponent.windowSlot) {
       case WINDOW_SLOTS.static: {
-        this.getAll().forEach((item) => {
-          if (item.windowSlot === WINDOW_SLOTS.static || item.position.isEqualTo(WINDOW_POSITIONS.topLeft)) {
-            this.remove(item.id);
-          }
-        });
+        // Remove windows at same position (replaces dynamic window 1)
 
         windowComponent.position = WINDOW_POSITIONS.topLeft;
         const windowAtSamePosition = this.findWindowByPosition(WINDOW_POSITIONS.topLeft);
@@ -208,13 +204,15 @@ export class WindowManager {
         }
         break;
       }
-      case WINDOW_SLOTS.dymanicLeft: {
+      case WINDOW_SLOTS.dynamicLeft: {
         const staticWindow = this.findWindowBySlot(WINDOW_SLOTS.static);
-        const existing = this.findWindowBySlot(WINDOW_SLOTS.dymanicLeft);
+        // Remove dynamic window at same position.
+        const existing = this.findWindowBySlot(WINDOW_SLOTS.dynamicLeft);
         if (existing) {
           this.remove(existing.id);
         }
 
+        // In case static window is present, add an offset
         if (staticWindow) {
           windowComponent.position = WINDOW_POSITIONS.topLeft2;
           return;
@@ -224,7 +222,7 @@ export class WindowManager {
         break;
       }
       case WINDOW_SLOTS.dynamicRight: {
-        const existing = this.findWindowBySlot(WINDOW_SLOTS.dymanicRight);
+        const existing = this.findWindowBySlot(WINDOW_SLOTS.dynamicRight);
 
         if (existing) {
           this.remove(existing.id);
