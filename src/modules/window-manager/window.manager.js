@@ -6,10 +6,10 @@ import PositionParser from './util/position-parser';
 
 /**
  * @typedef Position
- * @property {string | 0} left Must be pixel-value string (e.g. '320px')
- * @property {string | 0} top Must be pixel-value string (e.g. '320px')
- * @property {string | 0} right Must be pixel-value string (e.g. '320px')
- * @property {string | 0} bottom Must be pixel-value string (e.g. '320px')
+ * @property {string | 0} left Must be css-value string (e.g. '320px')
+ * @property {string | 0} top Must be css-value string (e.g. '320px')
+ * @property {string | 0} right Must be css-value string (e.g. '320px')
+ * @property {string | 0} bottom Must be css-value string (e.g. '320px')
  */
 
 /**
@@ -34,7 +34,6 @@ import PositionParser from './util/position-parser';
 
 const zIndexMax = 50;
 
-/** @type {Object<string, PositionParser>} */
 export const WINDOW_POSITIONS = {
   topLeft: new PositionParser({
     left: 0,
@@ -95,10 +94,7 @@ export class WindowManager {
     return !!this.get(id);
   }
 
-  /**
-   *
-   * @returns {Object.<string, WindowState>}
-   */
+  /** @returns {Object.<string, WindowState>} */
   getAll() {
     return Object.values(this.state.items);
   }
@@ -125,17 +121,13 @@ export class WindowManager {
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
 
-    if (!windowComponent.isDocked) {
-      nextTick(() => {
-        this.pullWindowsIn();
-      });
-    }
+    nextTick(() => {
+      this.pullWindowsIn(windowComponent);
+    });
   }
 
 
-  /**
-   * @param {WindowState} windowComponent
-   */
+  /** @param {WindowState} windowComponent */
   toggle(windowComponent) {
     if (this.has(windowComponent.id)) {
       this.remove(windowComponent.id);
@@ -159,12 +151,10 @@ export class WindowManager {
     });
   }
 
-  /**
-   * @param {WindowState} removedWindow
-   */
+  /** @param {WindowState} removedWindow */
   pullWindowsIn(removedWindow) {
     const dynamicWindowLeft = this.findWindowBySlot(WINDOW_SLOTS.dynamicLeft);
-    if (removedWindow.windowSlot === WINDOW_SLOTS.static && dynamicWindowLeft) {
+    if (removedWindow.windowSlot === WINDOW_SLOTS.static && dynamicWindowLeft && !dynamicWindowLeft.isDetached) {
       Vue.set(this.state.items, dynamicWindowLeft.id, {
         ...dynamicWindowLeft,
         position: WINDOW_POSITIONS.topLeft,
@@ -190,7 +180,8 @@ export class WindowManager {
 
   /**
    * @param {WindowState} windowComponent
-   */
+   * @description contains the state logic for slots
+   * */
   moveWindows(windowComponent) {
     switch (windowComponent.windowSlot) {
       case WINDOW_SLOTS.static: {
@@ -200,15 +191,16 @@ export class WindowManager {
         const windowAtSamePosition = this.findWindowByPosition(WINDOW_POSITIONS.topLeft);
 
         if (windowAtSamePosition) {
-          this.remove(windowAtSamePosition.id);
+          windowAtSamePosition.position = WINDOW_POSITIONS.topLeft2;
         }
         break;
       }
       case WINDOW_SLOTS.dynamicLeft: {
         const staticWindow = this.findWindowBySlot(WINDOW_SLOTS.static);
+        windowComponent.position = staticWindow ? WINDOW_POSITIONS.topLeft2 : WINDOW_POSITIONS.topLeft;
         // Remove dynamic window at same position.
         const existing = this.findWindowBySlot(WINDOW_SLOTS.dynamicLeft);
-        if (existing) {
+        if (existing && existing.position.isEqualTo(windowComponent.position)) {
           this.remove(existing.id);
         }
 
@@ -236,9 +228,7 @@ export class WindowManager {
   }
 
 
-  /**
-   * @param {WindowState} windowComponent
-   */
+  /** @param {WindowState} windowComponent */
   add(windowComponent) {
     if (!windowComponent.id) {
       throw new Error(`A window must have an id, got: ${windowComponent.id}.`);
@@ -263,9 +253,7 @@ export class WindowManager {
   }
 
 
-  /**
-   * @param {string} id
-   */
+  /**  @param {string} id */
   bringViewToTop(id) {
     Vue.set(this.state.zIndexMap, id, this.state.zIndexMax);
 
@@ -278,17 +266,13 @@ export class WindowManager {
       });
   }
 
-  /**
-   * @returns {Object.<string, number>}
-   */
+  /** @returns {Object.<string, number>} */
   getOrderedZIndex() {
     return Object.keys(this.state.items)
       .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA]);
   }
 
-  /**
-   * @param {string} id
-   */
+  /** @param {string} id */
   checkIfViewRegistered = (id) => {
     if (!this.has(id)) {
       throw new Error(

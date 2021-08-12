@@ -144,7 +144,6 @@
                     windowManager.setCoordinates(windowRef.id, coordinates);
                     windowManager.bringViewToTop(windowRef.id);
                     nextTick(() => {
-                      // windowManager.rearrangeDockingFor(windowState);
                       Vue.set(windowManager.state.items, windowState.id, {
                         ...windowManager.get(windowRef.id),
                         isDetached: true,
@@ -195,7 +194,7 @@
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
             () => context.refs.windowStates.forEach((r) => {
-              if (!windowStates[r.id].isDocked) {
+              if (!windowStates[r.id].windowSlot !== 'static') {
                 subscribeToWindowChanges(r);
               }
             }),
@@ -204,7 +203,7 @@
 
         onRemovedDestroy = onRemoved.addEventListener(
           (windowState) => {
-            if (!windowStates[windowState.id].isDocked) {
+            if (!windowStates[windowState.id].windowSlot !== 'static') {
               destroy$.get(windowState.id).next();
               destroy$.get(windowState.id).unsubscribe();
             }

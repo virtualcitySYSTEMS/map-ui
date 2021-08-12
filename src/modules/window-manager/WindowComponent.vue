@@ -3,7 +3,7 @@
     <v-sheet
       class="v-sheet elevation-3 d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
-        'cursor-grab': !windowState.isDocked,
+        'cursor-grab': windowState.windowSlot !== 'static',
         'grey--text': zIndex < zIndexMax,
         'rounded-tl': windowState.position.asNumber.top > 48
           && windowState.position.asNumber.left > 0,
@@ -12,6 +12,8 @@
       }"
       :draggable="!windowState.isDocked"
     >
+      {{ zIndex }}
+      {{ zIndexMax }}
       <slot name="header">
         <span>
           <slot name="icon">

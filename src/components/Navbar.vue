@@ -79,6 +79,7 @@
     icon: '$vcsLayers',
     position: {},
     windowSlot: WINDOW_SLOTS.static,
+    // TODO: only one of these is needed, cut the other
     isDocked: true,
     isDetached: false,
   };
