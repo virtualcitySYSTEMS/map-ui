@@ -21,13 +21,15 @@
 
           </slot>
 
-          <h3 class="font-size-14 d-inline-block user-select-none">{{ windowState.header | translate }}</h3>
+          <h3 class="font-size-14 d-inline-block user-select-none">
+            {{ windowState.header | translate }}
+          </h3>
         </span>
       </slot>
 
       <slot name="close">
         <v-icon
-          @click="close(windowState.id)"
+          @click="e => close(e, windowState.id)"
           size="16"
           v-text="'mdi-close-thick'"
         />
@@ -49,7 +51,6 @@
 <script>
   import { computed, defineComponent, inject } from '@vue/composition-api';
 
-
   export default defineComponent({
     props: {
       windowId: String,
@@ -58,6 +59,10 @@
       const windowWidth = computed(() => window.innerWidth);
       const windowManager = inject('windowManager');
       const windowState = windowManager.get(props.windowId);
+      const close = (e, id) => {
+        e.stopPropagation();
+        windowManager.remove(id);
+      };
       const isDynamic = () => windowState.windowSlot !== 'static';
       const isOnTop = () => windowManager.state.zIndexMap[windowState.id] === windowManager.state.zIndexMax;
       const isDocked = () => (
@@ -73,7 +78,7 @@
         windowState,
         zIndexMap: windowManager.state.zIndexMap,
         zIndexMax: windowManager.state.zIndexMax,
-        close: id => windowManager.remove(id),
+        close,
         isDynamic,
         isOnTop,
         isDocked,

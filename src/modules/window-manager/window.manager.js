@@ -1,4 +1,3 @@
-
 import { reactive, nextTick } from '@vue/composition-api';
 import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
@@ -123,15 +122,14 @@ export class WindowManager {
 
     this.onRemoved.raiseEvent(windowComponent);
     Vue.delete(this.state.items, id);
-    this.pullWindowsIn(windowComponent);
+    Vue.delete(this.state.zIndexMap, id);
 
+    this.pullWindowsIn(windowComponent);
     this.getOrderedZIndex()
       .forEach((windowId, i) => {
         const zIndex = this.state.zIndexMax - i;
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
-
-    Vue.delete(this.state.zIndexMap, windowComponent.id);
 
     nextTick(() => {
       this.pullWindowsIn(windowComponent);
