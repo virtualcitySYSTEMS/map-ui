@@ -57,7 +57,6 @@ export const WINDOW_POSITIONS = {
 
 /**
  * @typedef WindowState
- * @property {boolean} visible
  * @property {string | number} id
  * @property {string | VueComponent} component
  * @property {number} width

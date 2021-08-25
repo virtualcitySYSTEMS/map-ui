@@ -122,7 +122,7 @@ export class PopoverManager {
    * @returns {boolean}
    */
   remove(id) {
-    if (this.state.items[id]) {
+    if (this.get(id)) {
       Vue.delete(this.state.items, id);
       this.overlayRefs.delete(id);
       return true;
