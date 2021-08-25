@@ -114,7 +114,7 @@ export class WindowManager {
    * @param {string | number} id
    * @description
    * when this method is called the window needs to be re-registered in order to be shown again.
-   * Use this only to destroy a window, for hiding it call toggleViewVisible
+   * Use this only to destroy a window.
    */
   remove(id) {
     const windowComponent = this.get(id);
@@ -152,7 +152,7 @@ export class WindowManager {
    * @param {Position} position
    */
   setCoordinates(id, position) {
-    this.checkIfViewRegistered(id);
+    this.checkIfWindowRegistered(id);
 
     const windowComponent = this.get(id);
 
@@ -283,7 +283,7 @@ export class WindowManager {
   }
 
   /** @param {string} id */
-  checkIfViewRegistered = (id) => {
+  checkIfWindowRegistered = (id) => {
     if (!this.has(id)) {
       throw new Error(
         `WindowState with id '${id}' has not been registered!`,
