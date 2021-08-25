@@ -24,8 +24,8 @@
   } from '@vue/composition-api';
   import { WindowManager } from '@/modules/window-manager/window.manager';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
-  import { PopoverManager } from '@/modules/popover/popover.manager';
-  import Popover from '@/modules/popover/PopoverManager.vue';
+  import { PopoverManager } from '@/modules/popover-manager/popover.manager';
+  import Popover from '@/modules/popover-manager/PopoverManager.vue';
   import Navbar from './Navbar.vue';
   import Map from './Map.vue';
 
