@@ -4,6 +4,42 @@ import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
 import PositionParser from './util/position-parser';
 
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const WINDOW_SLOTS = {
+  static: 'static',
+  dynamicLeft: 'dynamicLeft',
+  dynamicRight: 'dynamicRight',
+};
+
+
+/**
+ * @readonly
+ * @enum {PositionParser}
+ */
+export const WINDOW_POSITIONS = {
+  topLeft: new PositionParser({
+    left: 0,
+    top: '48px',
+  }),
+  topLeft2: new PositionParser({
+    left: '320px',
+    top: '48px',
+  }),
+  topRight: new PositionParser({
+    right: 0,
+    top: '48px',
+  }),
+  bottomRight: new PositionParser({
+    right: 0,
+    bottom: 0,
+  }),
+};
+
+
 /**
  * @typedef Position
  * @property {string | 0} left Must be css-value string (e.g. '320px')
@@ -26,39 +62,14 @@ import PositionParser from './util/position-parser';
  * @property {string | VueComponent} component
  * @property {number} width
  * @property {PositionParser} position
- * @property {Position} defaultPosition
  * @property {string} header
  * @property {string} icon
  * @property {Object.<string, string>} styles
+ * @property {string} windowSlot
+ * @property {boolean} isDetached is flipped to true for dynamic windows which have been dragged from their original position.
  */
 
 const zIndexMax = 50;
-
-export const WINDOW_POSITIONS = {
-  topLeft: new PositionParser({
-    left: 0,
-    top: '48px',
-  }),
-  topLeft2: new PositionParser({
-    left: '320px',
-    top: '48px',
-  }),
-  topRight: new PositionParser({
-    right: 0,
-    top: '48px',
-  }),
-  bottomRight: new PositionParser({
-    right: 0,
-    bottom: 0,
-  }),
-};
-
-
-export const WINDOW_SLOTS = {
-  static: 'static',
-  dynamicLeft: 'dynamicLeft',
-  dynamicRight: 'dynamicRight',
-};
 
 
 /**
@@ -94,7 +105,7 @@ export class WindowManager {
     return !!this.get(id);
   }
 
-  /** @returns {Object.<string, WindowState>} */
+  /** @returns {Array<WindowState>} */
   getAll() {
     return Object.values(this.state.items);
   }
@@ -185,26 +196,26 @@ export class WindowManager {
   moveWindows(windowComponent) {
     switch (windowComponent.windowSlot) {
       case WINDOW_SLOTS.static: {
-        // Remove windows at same position (replaces dynamic window 1)
-
         windowComponent.position = WINDOW_POSITIONS.topLeft;
         const windowAtSamePosition = this.findWindowByPosition(WINDOW_POSITIONS.topLeft);
 
         if (windowAtSamePosition) {
-          windowAtSamePosition.position = WINDOW_POSITIONS.topLeft2;
+          if (windowAtSamePosition.windowSlot === WINDOW_SLOTS.dynamicLeft) {
+            windowAtSamePosition.position = WINDOW_POSITIONS.topLeft2;
+          } else {
+            this.remove(windowAtSamePosition.id);
+          }
         }
         break;
       }
       case WINDOW_SLOTS.dynamicLeft: {
         const staticWindow = this.findWindowBySlot(WINDOW_SLOTS.static);
         windowComponent.position = staticWindow ? WINDOW_POSITIONS.topLeft2 : WINDOW_POSITIONS.topLeft;
-        // Remove dynamic window at same position.
         const existing = this.findWindowBySlot(WINDOW_SLOTS.dynamicLeft);
         if (existing && existing.position.isEqualTo(windowComponent.position)) {
           this.remove(existing.id);
         }
 
-        // In case static window is present, add an offset
         if (staticWindow) {
           windowComponent.position = WINDOW_POSITIONS.topLeft2;
           return;
@@ -226,7 +237,6 @@ export class WindowManager {
         break;
     }
   }
-
 
   /** @param {WindowState} windowComponent */
   add(windowComponent) {
@@ -254,7 +264,7 @@ export class WindowManager {
 
 
   /**  @param {string} id */
-  bringViewToTop(id) {
+  bringWindowToTop(id) {
     Vue.set(this.state.zIndexMap, id, this.state.zIndexMax);
 
     // Set other windows to back by one each.

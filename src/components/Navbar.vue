@@ -65,7 +65,6 @@
     component: EmptyCmp,
     icon: '$vcsLayers',
     position: staticPosition,
-    defaultPosition: staticPosition,
     styles: {
       'max-width': '80%',
     },

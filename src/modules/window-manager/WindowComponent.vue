@@ -5,10 +5,10 @@
       :class="{
         'cursor-grab': windowState.windowSlot !== 'static',
         'grey--text': zIndex < zIndexMax,
-        'rounded-tl': windowState.position.asNumber.top > 48
-          && windowState.position.asNumber.left > 0,
-        'rounded-tr': windowState.position.asNumber.top > 48
-          && windowState.position.asNumber.left < (windowWidth - windowState.width),
+        'rounded-tl': windowState.position.toNumbers().top > 48
+          && windowState.position.toNumbers().left > 0,
+        'rounded-tr': windowState.position.toNumbers().top > 48
+          && windowState.position.toNumbers().left < (windowWidth - windowState.width),
       }"
       :draggable="!windowState.isDocked"
     >
@@ -41,9 +41,9 @@
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
       :class="{
-        'rounded-br': windowState.position.asNumber.top > 0
-          && windowState.position.asNumber.left < (windowWidth - windowState.width),
-        'rounded-bl': windowState.position.asNumber.left > 0,
+        'rounded-br': windowState.position.toNumbers().top > 0
+          && windowState.position.toNumbers().left < (windowWidth - windowState.width),
+        'rounded-bl': windowState.position.toNumbers().left > 0,
       }"
     >
       <slot />

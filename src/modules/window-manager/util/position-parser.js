@@ -33,10 +33,8 @@ export default class PositionParser {
 
   bottom = 'unset';
 
-  /**
-   * @returns {Position}
-   */
-  get asNumber() {
+  /** @returns {Position} */
+  toNumbers() {
     return {
       left: Number.isNaN(parseInt(this.left, 10)) ? 'unset' : parseInt(this.left, 10),
       top: Number.isNaN(parseInt(this.top, 10)) ? 'unset' : parseInt(this.top, 10),

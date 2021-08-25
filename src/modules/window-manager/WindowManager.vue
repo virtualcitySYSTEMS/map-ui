@@ -6,7 +6,7 @@
       :key="windowState.id"
       :id="windowState.id"
       class="vsc-window v-sheet elevation-0 position-absolute"
-      @click="bringViewToTop(windowState.id)"
+      @click="bringWindowToTop(windowState.id)"
       :style="{
         zIndex: zIndexMap[windowState.id],
         left: windowState.position.left,
@@ -79,8 +79,8 @@
       } = windowManager;
 
       /** @param {string} viewId */
-      const bringViewToTop = (viewId) => {
-        windowManager.bringViewToTop(viewId);
+      const bringWindowToTop = (viewId) => {
+        windowManager.bringWindowToTop(viewId);
       };
       /** @param {string} viewId */
       const close = (viewId) => {
@@ -142,7 +142,7 @@
                     };
 
                     windowManager.setCoordinates(windowRef.id, coordinates);
-                    windowManager.bringViewToTop(windowRef.id);
+                    windowManager.bringWindowToTop(windowRef.id);
                     nextTick(() => {
                       Vue.set(windowManager.state.items, windowState.id, {
                         ...windowManager.get(windowRef.id),
@@ -190,6 +190,7 @@
          * get dynamic refs as v2 composition API does not support ref functions.
          * https://github.com/vuejs/composition-api#limitations
          * This needs to be refactored to use ref setter functions as soon as migrated to Vue 3.
+         * Tutorial: https://markus.oberlehner.net/blog/refs-and-the-vue-3-composition-api/
          */
         onAddedDestroy = onAdded.addEventListener(
           () => nextTick(
@@ -225,7 +226,7 @@
         zIndexMax,
         zIndexMap,
         close,
-        bringViewToTop,
+        bringWindowToTop,
       };
     },
   });
