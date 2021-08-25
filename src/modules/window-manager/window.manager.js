@@ -81,11 +81,11 @@ export class WindowManager {
     this.onAdded = new VcsEvent();
     this.onRemoved = new VcsEvent();
     /** @type {WindowManagerState} */
-    this.state = reactive({
-      items: {},
-      zIndexMap: {},
+    this.state = {
+      items: reactive({}),
+      zIndexMap: reactive({}),
       zIndexMax,
-    });
+    };
   }
 
   /**
@@ -130,6 +130,8 @@ export class WindowManager {
         const zIndex = this.state.zIndexMax - i;
         Vue.set(this.state.zIndexMap, windowId, zIndex);
       });
+
+    Vue.delete(this.state.zIndexMap, windowComponent.id);
 
     nextTick(() => {
       this.pullWindowsIn(windowComponent);

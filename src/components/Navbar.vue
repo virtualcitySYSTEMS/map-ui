@@ -61,7 +61,6 @@
   const staticWindow = {
     id: 'static-win',
     width: window.innerWidth * 0.8,
-    isDocked: true,
     component: EmptyCmp,
     icon: '$vcsLayers',
     position: staticPosition,
@@ -78,8 +77,6 @@
     icon: '$vcsLayers',
     position: {},
     windowSlot: WINDOW_SLOTS.static,
-    // TODO: only one of these is needed, cut the other
-    isDocked: true,
     isDetached: false,
   };
 
@@ -91,7 +88,6 @@
     icon: '$vcsComponents',
     position: {},
     windowSlot: WINDOW_SLOTS.dynamicLeft,
-    isDocked: false,
     isDetached: false,
   };
 
@@ -101,7 +97,6 @@
     icon: '$vcsTools',
     windowSlot: WINDOW_SLOTS.dynamicLeft,
     header: 'Dynamic Window Left (2)',
-    isDocked: false,
     isDetached: false,
   };
 
@@ -110,7 +105,6 @@
     header: 'Dynamic Window Right',
     id: 'dummy2',
     icon: '$vcsLegend',
-    isDocked: false,
     isDetached: false,
     windowSlot: WINDOW_SLOTS.dynamicRight,
   };

@@ -3,17 +3,13 @@
     <v-sheet
       class="v-sheet elevation-3 d-flex justify-space-between pa-2 transition-color-100-ease"
       :class="{
-        'cursor-grab': windowState.windowSlot !== 'static',
-        'grey--text': zIndex < zIndexMax,
-        'rounded-tl': windowState.position.toNumbers().top > 48
-          && windowState.position.toNumbers().left > 0,
-        'rounded-tr': windowState.position.toNumbers().top > 48
-          && windowState.position.toNumbers().left < (windowWidth - windowState.width),
+        'cursor-grab': isDynamic(),
+        'grey--text': !isOnTop(),
+        'rounded-tl': !isDocked(),
+        'rounded-tr': !isDocked(),
       }"
-      :draggable="!windowState.isDocked"
+      :draggable="isDynamic()"
     >
-      {{ zIndex }}
-      {{ zIndexMax }}
       <slot name="header">
         <span>
           <slot name="icon">
@@ -25,7 +21,7 @@
 
           </slot>
 
-          <h3 class="font-size-14 d-inline-block">{{ windowState.header | translate }}</h3>
+          <h3 class="font-size-14 d-inline-block user-select-none">{{ windowState.header | translate }}</h3>
         </span>
       </slot>
 
@@ -41,9 +37,8 @@
     <v-sheet
       class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full"
       :class="{
-        'rounded-br': windowState.position.toNumbers().top > 0
-          && windowState.position.toNumbers().left < (windowWidth - windowState.width),
-        'rounded-bl': windowState.position.toNumbers().left > 0,
+        'rounded-br': !isDocked(),
+        'rounded-bl': !isDocked(),
       }"
     >
       <slot />
@@ -63,12 +58,25 @@
       const windowWidth = computed(() => window.innerWidth);
       const windowManager = inject('windowManager');
       const windowState = windowManager.get(props.windowId);
+      const isDynamic = () => windowState.windowSlot !== 'static';
+      const isOnTop = () => windowManager.state.zIndexMap[windowState.id] === windowManager.state.zIndexMax;
+      const isDocked = () => (
+        windowState.position.toNumbers().top === 48
+      ) &&
+        (
+          windowState.position.toNumbers().left === 0 ||
+          windowState.position.toNumbers().right === 0 ||
+          windowState.position.toNumbers().left + windowState.width === windowWidth
+        );
       return {
         windowWidth,
         windowState,
+        zIndexMap: windowManager.state.zIndexMap,
         zIndexMax: windowManager.state.zIndexMax,
-        zIndex: windowManager.state.zIndexMap[props.windowId],
         close: id => windowManager.remove(id),
+        isDynamic,
+        isOnTop,
+        isDocked,
       };
     },
   });
