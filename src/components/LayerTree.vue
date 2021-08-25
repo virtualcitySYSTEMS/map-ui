@@ -89,7 +89,7 @@
 
         const componentName = 'Legend';
         const callback = () => {
-          popoverManager.removePopover(id);
+          popoverManager.remove(id);
         };
         const popover = popoverManager.registerPopover({
           name: componentName,

@@ -109,7 +109,7 @@ export class PopoverManager {
   add(popover, windowComponent) {
     Object.values(this.state.items).forEach((item) => {
       if (windowComponent.contains(item.parent)) {
-        this.removePopover(item.id);
+        this.remove(item.id);
       }
     });
     Vue.set(this.state.items, popover.id, popover);
@@ -121,7 +121,7 @@ export class PopoverManager {
    * @param {string | number} id ID of popover to be removed
    * @returns {boolean}
    */
-  removePopover(id) {
+  remove(id) {
     if (this.state.items[id]) {
       Vue.delete(this.state.items, id);
       this.overlayRefs.delete(id);
@@ -139,7 +139,7 @@ export class PopoverManager {
   removeOrphaned() {
     Array.from(this.overlayRefs.keys()).forEach((key) => {
       if (!document.contains(this.overlayRefs.get(key))) {
-        this.removePopover(key);
+        this.remove(key);
       }
     });
   }
@@ -151,7 +151,7 @@ export class PopoverManager {
   removeAllFrom(ref) {
     Array.from(this.overlayRefs).forEach(([key, popover]) => {
       if (ref.contains(popover)) {
-        this.removePopover(key);
+        this.remove(key);
       }
     });
   }
