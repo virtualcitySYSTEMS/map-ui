@@ -2,6 +2,9 @@
   <v-sheet class="h-full">
     <Navbar :map-id="mapId" />
     <VcsMap :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
+    <transition name="slide-from-top-200-ease">
+      <ToolboxManagerComponent v-if="toolboxManagerVisible" />
+    </transition>
 
     <WindowManagerComponent />
     <Popover />
@@ -26,6 +29,8 @@
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
   import Popover from '@/modules/popover-manager/PopoverManager.vue';
+  import { ToolboxManager } from '@/modules/toolbox-manager/toolbox-manager';
+  import ToolboxManagerComponent from '@/modules/toolbox-manager/ToolboxManager.vue';
   import Navbar from './Navbar.vue';
   import VcsMap from './VcsMap.vue';
 
@@ -35,6 +40,7 @@
       Navbar,
       VcsMap,
       WindowManagerComponent,
+      ToolboxManagerComponent,
       Popover,
     },
     setup() {
@@ -64,6 +70,8 @@
       provide('mapState', mapState);
       provide('pluginComponents', pluginComponents);
 
+      const toolboxManager = new ToolboxManager();
+      provide('toolboxManager', toolboxManager);
       const popoverManager = new PopoverManager();
       provide('popoverManager', popoverManager);
       const windowManager = new WindowManager();
@@ -88,6 +96,7 @@
         mapId: `mapCollection-${id}`,
         startingMapName,
         configLoaded,
+        toolboxManagerVisible: toolboxManager.state.visible,
       };
     },
     provide() {

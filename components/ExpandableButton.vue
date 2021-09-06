@@ -9,16 +9,15 @@
         'mb-0': active,
         'h-full': active,
         'rounded-b-0': active,
-        'pr-1': nonSelectedOptions.length > 0
       }"
       elevation="0"
     >
+      <!-- 'pr-1': nonSelectedOptions.length > 0 -->
       <slot name="selected-icon">
-        <v-icon
-          v-text="selectedOption && selectedOption.icon"
-          :class="[...selectedOption.iconClasses]"
-        />
+        <!-- TODO: Select icon -->
+        <v-icon />
       </slot>
+      <slot />
       <v-icon
         :class="{ 'rotate-180--right': active }"
         v-if="options.length > 1"
@@ -34,7 +33,7 @@
     >
       <slot name="menu-items">
 
-        <v-btn
+        <!-- <v-btn
           class="py-1 rounded-t-0 rounded-br-0 h-10.5 -mt-2"
           elevation="0"
           v-for="option of nonSelectedOptions"
@@ -42,7 +41,7 @@
           @click="() => selectOption(option.icon)"
         >
           <v-icon class="mt-1.5" v-text="option.icon" />
-        </v-btn>
+        </v-btn> -->
       </slot>
     </div>
   </span>
@@ -62,47 +61,11 @@
 
 <script>
   import Vue from 'vue';
-
-
   /**
    * TODO: define behaviour with designer.
    */
   export default Vue.extend({
     name: 'VcsExpandableButton',
-    methods: {
-      onClick(name) {
-        this.active = !this.active;
-        this.open = !this.open;
-        this.$emit('input', name);
-      },
-      selectOption(name) {
-        const newOpts = this.options.map((option) => {
-          if (option.icon !== name) {
-            return {
-              ...option,
-              selected: false,
-            };
-          }
-
-          this.$emit('input', option.icon);
-          return {
-            ...option,
-            selected: true,
-          };
-        });
-        this.$emit('option-selected', newOpts);
-        this.open = false;
-        this.active = true;
-      },
-    },
-    computed: {
-      selectedOption() {
-        return this.options.find(o => o.selected);
-      },
-      nonSelectedOptions() {
-        return this.options.filter(o => !o.selected);
-      },
-    },
     props: {
       value: {
         type: Boolean,
@@ -117,20 +80,16 @@
         default: () => ([]),
       },
     },
-    data() {
-      return {
-        active: false,
-        open: false,
+    setup({ value }) {
+      const selectOption = (id) => {
+        // eslint-disable-next-line no-console
+        console.log(`selected ${id}`);
       };
-    },
-    mounted() {
-      this.active = this.value;
-    },
-    watch: {
-      value(newVal) {
-        this.active = newVal;
-        this.open = newVal;
-      },
+      return {
+        active: value,
+        open: false,
+        selectOption,
+      };
     },
   });
 </script>
