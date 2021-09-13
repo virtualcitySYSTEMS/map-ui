@@ -14,6 +14,7 @@ import Vue from 'vue';
  * @property {string | number} id
  * @property {string} icon
  * @property {boolean} active
+ * @property {boolean} selected
  * @property {boolean} disabled
  * @property {number} slot
  */
@@ -26,9 +27,9 @@ export class ToolboxManager {
     this.state = reactive({
       visible: true,
       items: {
-        // Categories?
         1: [
-          { id: 'foo' },
+          { id: 'foo', icon: '$vcsPointSelect' },
+          { id: 'bar', icon: '$vcsObjectSelect' },
         ],
         2: [],
         3: [],
@@ -44,6 +45,18 @@ export class ToolboxManager {
   /** @method */
   toggle() {
     Vue.set(this.state, 'visible', !this.state.visible);
+  }
+
+  bringToTop(id) {
+    const [key, slot] = Object.entries(this.state.items)
+      .find(entry => entry[1].find(v => v.id === id));
+
+    const updated = [
+      slot.find(i => i.id === id),
+      ...slot.filter(i => i.id !== id),
+    ];
+
+    Vue.set(this.state.items, key, updated);
   }
 
   /**

@@ -4,18 +4,18 @@
       class="expand-button mb-0 w-16 h-10"
       :color="active ? 'white' : null"
       :text="!active ? true : null"
-      @click="() => onClick(selectedOption.icon)"
+      @click="() => open = !open"
       :class="{
         'mb-0': active,
         'h-full': active,
         'rounded-b-0': active,
+        'border-2--primary': options[0].selected
       }"
+      :disabled="options[0].disabled"
       elevation="0"
     >
-      <!-- 'pr-1': nonSelectedOptions.length > 0 -->
       <slot name="selected-icon">
-        <!-- TODO: Select icon -->
-        <v-icon />
+        <v-icon v-text="options[0].icon" />
       </slot>
       <slot />
       <v-icon
@@ -33,15 +33,15 @@
     >
       <slot name="menu-items">
 
-        <!-- <v-btn
+        <v-btn
           class="py-1 rounded-t-0 rounded-br-0 h-10.5 -mt-2"
           elevation="0"
-          v-for="option of nonSelectedOptions"
-          :key="option.icon"
-          @click="() => selectOption(option.icon)"
+          v-for="option of options.slice(1)"
+          :key="option.id"
+          @click="() => selectOption(option.id)"
         >
           <v-icon class="mt-1.5" v-text="option.icon" />
-        </v-btn> -->
+        </v-btn>
       </slot>
     </div>
   </span>
@@ -61,6 +61,8 @@
 
 <script>
   import Vue from 'vue';
+  import { ref } from '@vue/composition-api';
+
   /**
    * TODO: define behaviour with designer.
    */
@@ -80,14 +82,15 @@
         default: () => ([]),
       },
     },
-    setup({ value }) {
+    setup({ value }, { emit }) {
+      const open = ref(false);
       const selectOption = (id) => {
-        // eslint-disable-next-line no-console
-        console.log(`selected ${id}`);
+        emit('selected', id);
+        open.value = !open;
       };
       return {
         active: value,
-        open: false,
+        open,
         selectOption,
       };
     },

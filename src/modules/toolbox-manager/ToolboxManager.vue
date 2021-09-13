@@ -13,6 +13,7 @@
           <ExpandableButton
             v-if="value && value.length"
             :options="value"
+            @selected="id => bringToTop(id)"
           />
         </span>
       </div>
@@ -57,9 +58,11 @@
       const toolboxManager = inject('toolboxManager');
       const { state: { items } } = toolboxManager;
       const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
+
       return {
         items,
         getWidth,
+        bringToTop: id => toolboxManager.bringToTop(id),
       };
     },
     components: {
