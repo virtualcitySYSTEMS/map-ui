@@ -217,7 +217,7 @@ export class WindowManager {
 
         if (staticWindow) {
           windowComponent.position = WINDOW_POSITIONS.topLeft2;
-          return;
+          break;
         }
 
         windowComponent.position = WINDOW_POSITIONS.topLeft;
@@ -275,18 +275,18 @@ export class WindowManager {
       });
   }
 
-  /** @returns {Object.<string, number>} */
+  /** @returns {Array<string>} */
   getOrderedZIndex() {
     return Object.keys(this.state.items)
       .sort((keyA, keyB) => this.state.zIndexMap[keyB] - this.state.zIndexMap[keyA]);
   }
 
   /** @param {string} id */
-  checkIfWindowRegistered = (id) => {
+  checkIfWindowRegistered(id) {
     if (!this.has(id)) {
       throw new Error(
         `WindowState with id '${id}' has not been registered!`,
       );
     }
-  };
+  }
 }
