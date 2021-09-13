@@ -9,18 +9,18 @@
         'mb-0': active,
         'h-full': active,
         'rounded-b-0': active,
-        'border-2--primary': options[0].selected
+        'border-2--primary': group.options[0].selected
       }"
-      :disabled="options[0].disabled"
+      :disabled="group.options[0].disabled"
       elevation="0"
     >
       <slot name="selected-icon">
-        <v-icon v-text="options[0].icon" />
+        <v-icon v-text="group.options[0].icon" />
       </slot>
       <slot />
       <v-icon
         :class="{ 'rotate-180--right': active }"
-        v-if="options.length > 1"
+        v-if="group.options.length > 1"
         v-text="'mdi-chevron-down'"
       />
 
@@ -36,7 +36,7 @@
         <v-btn
           class="py-1 rounded-t-0 rounded-br-0 h-10.5 -mt-2"
           elevation="0"
-          v-for="option of options.slice(1)"
+          v-for="option of group.options.slice(1)"
           :key="option.id"
           @click="() => selectOption(option.id)"
         >
@@ -63,19 +63,16 @@
   import Vue from 'vue';
   import { ref } from '@vue/composition-api';
 
-  /**
-   * TODO: define behaviour with designer.
-   */
   export default Vue.extend({
-    name: 'VcsExpandableButton',
+    name: 'VcsToolboxButton',
     props: {
       value: {
         type: Boolean,
         default: undefined,
       },
-      options: {
-        type: Array,
-        default: () => ([]),
+      group: {
+        type: Object,
+        default: () => ({}),
       },
       customClasses: {
         type: Array,

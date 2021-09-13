@@ -1,18 +1,18 @@
 <template>
   <v-toolbar
     dense
-    class="vcs-toolbox toolbar__secondary rounded-b mx-auto"
+    class="vcs-toolbox toolbar__secondary rounded-b mx-auto v-sheet"
     :style="{ maxWidth: `${getWidth()}px` }"
   >
     <v-toolbar-items class="w-full">
       <div class="d-flex align-center justify-space-between w-full">
         <span
-          v-for="(value, key) of items"
+          v-for="(value, key) of groups"
           :key="key"
         >
-          <ExpandableButton
-            v-if="value && value.length"
-            :options="value"
+          <ToolboxButton
+            v-if="value && value.options && value.options.length"
+            :group="value"
             @selected="id => bringToTop(id)"
           />
         </span>
@@ -43,8 +43,8 @@
 <script>
   import Vue from 'vue';
 
-  import ExpandableButton from '@vcsuite/uicomponents/ExpandableButton.vue';
   import { inject } from '@vue/composition-api';
+  import ToolboxButton from './ToolboxButton.vue';
 
   export default Vue.extend({
     name: 'VcsToolbox',
@@ -56,17 +56,17 @@
     },
     setup() {
       const toolboxManager = inject('toolboxManager');
-      const { state: { items } } = toolboxManager;
+      const { state: { groups } } = toolboxManager;
       const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
 
       return {
-        items,
+        groups,
         getWidth,
         bringToTop: id => toolboxManager.bringToTop(id),
       };
     },
     components: {
-      ExpandableButton,
+      ToolboxButton,
     },
   });
 </script>

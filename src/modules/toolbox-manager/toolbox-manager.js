@@ -3,10 +3,16 @@ import { VcsEvent } from '@vcmap/core';
 import { reactive } from '@vue/composition-api';
 import Vue from 'vue';
 
+
+/**
+ * @typedef ToolboxGroup
+ * @property {string} icon
+ * @property {ToolboxItem[]} options
+ */
 /**
  * @typedef ToolboxManagerState
  * @property {boolean} visible
- * @property {Object.<string, ToolboxItem[]>} items
+ * @property {Object.<string, ToolboxGroup>} groups
  */
 
 /**
@@ -26,12 +32,16 @@ export class ToolboxManager {
     /** @type {ToolboxManagerState} */
     this.state = reactive({
       visible: true,
-      items: {
+      groups: {
         1: [
-          { id: 'foo', icon: '$vcsPointSelect' },
-          { id: 'bar', icon: '$vcsObjectSelect' },
         ],
-        2: [],
+        2: {
+          icon: '$vcsPen',
+          options: [
+            { id: 'foo', icon: '$vcsPointSelect' },
+            { id: 'bar', icon: '$vcsObjectSelect' },
+          ],
+        },
         3: [],
         4: [],
         5: [],
@@ -45,18 +55,6 @@ export class ToolboxManager {
   /** @method */
   toggle() {
     Vue.set(this.state, 'visible', !this.state.visible);
-  }
-
-  bringToTop(id) {
-    const [key, slot] = Object.entries(this.state.items)
-      .find(entry => entry[1].find(v => v.id === id));
-
-    const updated = [
-      slot.find(i => i.id === id),
-      ...slot.filter(i => i.id !== id),
-    ];
-
-    Vue.set(this.state.items, key, updated);
   }
 
   /**
@@ -75,7 +73,7 @@ export class ToolboxManager {
    */
   get(id) {
     return Object
-      .values(this.state.items)
+      .values(this.state.groups)
       .flat()
       .find(item => item.id === id);
   }
@@ -87,7 +85,7 @@ export class ToolboxManager {
    */
   getSlotIndexFor(id) {
     return Object
-      .keys(this.state.items)
+      .keys(this.state.groups)
       .map((i) => {
         if (this.get(id)) {
           return +i;
@@ -99,12 +97,28 @@ export class ToolboxManager {
 
   /** @returns {number} */
   getNumberOfUsedSlots() {
-    return Object.values(this.state.items).reduce((acc, curr) => {
-      if (curr.length) {
+    return Object.values(this.state.groups).reduce((acc, curr) => {
+      if (curr.options && curr.options.length) {
         return acc + 1;
       }
       return acc;
     }, 0);
+  }
+
+
+  bringToTop(id) {
+    const [key, slot] = Object.entries(this.state.groups)
+      .find(entry => entry[1] && entry[1].options && entry[1].options.find(v => v.id === id));
+
+    const updated = [
+      slot.options.find(i => i.id === id),
+      ...slot.options.filter(i => i.id !== id),
+    ];
+
+    Vue.set(this.state.groups, key, {
+      ...slot,
+      options: updated,
+    });
   }
 
   /**
@@ -115,7 +129,7 @@ export class ToolboxManager {
     if (this.has(toolboxItem.id)) {
       throw new Error(`Toolbox-Item with id ${toolboxItem.id} has already been registered`);
     }
-    Vue.set(this.state.items, toolboxItem.slot, [...this.state.items[toolboxItem.slot], toolboxItem]);
+    Vue.set(this.state.groups, toolboxItem.slot, [...this.state.groups[toolboxItem.slot], toolboxItem]);
     this.onAdded.raiseEvent(toolboxItem.id);
   }
 
@@ -131,7 +145,7 @@ export class ToolboxManager {
       throw new Error(`Cannot find slot index for toolbar item with id ${id}`);
     }
 
-    Vue.set(this.state.items, item.slot, [...this.state.items[item.slot].filter(s => s.id !== id)]);
+    Vue.set(this.state.groups, item.slot, [...this.state.groups[item.slot].filter(s => s.id !== id)]);
     this.onRemoved.raiseEvent(id);
   }
 }
