@@ -63,7 +63,7 @@ export const WINDOW_POSITIONS = {
  * @property {string} header
  * @property {string} icon
  * @property {Object.<string, string>} styles
- * @property {string} windowSlot
+ * @property {string} windowSlot - enum value WINDOW_SLOTS
  * @property {boolean} isDetached is flipped to true for dynamic windows which have been dragged from their original position.
  */
 
