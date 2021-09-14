@@ -4,18 +4,17 @@
       class="expand-button mb-0 w-16 h-10"
       :color="active ? 'white' : null"
       :text="!active ? true : null"
-      @click="() => open = !open"
+      @click="() => (open = !open)"
       :class="{
         'mb-0': active,
         'h-full': active,
-        'rounded-b-0': active,
-        'border-2--primary': group.options[0].selected
+        'rounded-b-0': active
       }"
       :disabled="group.options[0].disabled"
       elevation="0"
     >
       <slot name="selected-icon">
-        <v-icon v-text="group.options[0].icon" />
+        <v-icon v-text="group.icon" />
       </slot>
       <slot />
       <v-icon
@@ -23,40 +22,40 @@
         v-if="group.options.length > 1"
         v-text="'mdi-chevron-down'"
       />
-
     </v-btn>
 
-
-    <div
-      v-if="open"
-      class="d-flex flex-row white rounded-b position-absolute z-index-1 pos-t-11"
-    >
-      <slot name="menu-items">
-
-        <v-btn
-          class="py-1 rounded-t-0 rounded-br-0 h-10.5 -mt-2"
-          elevation="0"
-          v-for="option of group.options.slice(1)"
-          :key="option.id"
-          @click="() => selectOption(option.id)"
-        >
-          <v-icon class="mt-1.5" v-text="option.icon" />
-        </v-btn>
-      </slot>
-    </div>
+    <v-card v-if="open" tile style="position: absolute; min-width: 150px">
+      <v-list dense>
+        <v-list-item-group>
+          <v-list-item
+            v-for="option of group.options"
+            :key="option.id"
+            @click="() => selectOption(option.id)"
+            dense
+          >
+            <v-list-item-action>
+              <input type="checkbox" :checked="option.selected" :class="option.selected ? 'y' : 'n'">
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ option.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-card>
   </span>
 </template>
 
 <style lang="scss" scoped>
-  .expand-button {
-    ::v-deep {
-      max-width: 68px;
+.expand-button {
+  ::v-deep {
+    max-width: 68px;
 
-      .v-btn__content {
-        max-width: 48px;
-      }
+    .v-btn__content {
+      max-width: 48px;
     }
   }
+}
 </style>
 
 <script>
@@ -64,7 +63,7 @@
   import { ref } from '@vue/composition-api';
 
   export default Vue.extend({
-    name: 'VcsToolboxButton',
+    name: 'VcsToolboxSingleSelectButton',
     props: {
       value: {
         type: Boolean,
@@ -76,14 +75,14 @@
       },
       customClasses: {
         type: Array,
-        default: () => ([]),
+        default: () => [],
       },
     },
     setup({ value }, { emit }) {
       const open = ref(false);
       const selectOption = (id) => {
         emit('selected', id);
-        open.value = !open;
+        // open.value = !open;
       };
       return {
         active: value,

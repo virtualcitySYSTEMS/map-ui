@@ -33,13 +33,19 @@ export class ToolboxManager {
     this.state = reactive({
       visible: true,
       groups: {
-        1: [
-        ],
-        2: {
+        1: {
           icon: '$vcsPen',
+          type: 'multiSelectButton',
           options: [
-            { id: 'foo', icon: '$vcsPointSelect' },
-            { id: 'bar', icon: '$vcsObjectSelect' },
+            { id: 'foo', icon: '$vcsPointSelect', text: 'Item 1', selected: true },
+            { id: 'bar', icon: '$vcsObjectSelect', text: 'Item 2' },
+          ],
+        },
+        2: {
+          type: 'singleSelectButton',
+          options: [
+            { id: 'delta', icon: '$vcsPointSelect' },
+            { id: 'zulu', icon: '$vcsObjectSelect' },
           ],
         },
         3: [],
@@ -79,6 +85,43 @@ export class ToolboxManager {
   }
 
   /**
+   * @param {string} id
+   * @param {boolean} disabled
+   */
+  setDisabled(id, disabled) {
+    const [key, slot] = this.getSlotIndexAndEntry(id);
+    const entry = slot.options.find(s => s.id === id);
+    entry.disabled = disabled;
+
+    Vue.set(this.state.groups, key, slot);
+  }
+
+  /**
+   * TODO: return item as well
+   * @param {string} id
+   * @returns {[string, ToolboxGroup]}
+   */
+  getSlotIndexAndEntry(id) {
+    return Object
+      .entries(this.state.groups)
+      .find(entry => entry[1] &&
+           entry[1].options &&
+           entry[1].options.find(v => v.id === id));
+  }
+
+
+  /** @param {string} id */
+  selectOption(id) {
+    const [key, slot] = this.getSlotIndexAndEntry(id);
+    const option = slot.options.find(opt => opt.id === id);
+    if (option) {
+      option.selected = !option.selected;
+    }
+
+    Vue.set(this.state.groups, key, { ...slot });
+  }
+
+  /**
    * @method
    * @param {string} id
    * @returns {number}
@@ -86,29 +129,21 @@ export class ToolboxManager {
   getSlotIndexFor(id) {
     return Object
       .keys(this.state.groups)
-      .map((i) => {
-        if (this.get(id)) {
-          return +i;
-        }
-        return null;
-      })
+      .map(i => (this.get(id) ? +i : null))
       .filter(i => i !== null)[0];
   }
 
   /** @returns {number} */
   getNumberOfUsedSlots() {
-    return Object.values(this.state.groups).reduce((acc, curr) => {
-      if (curr.options && curr.options.length) {
-        return acc + 1;
-      }
-      return acc;
-    }, 0);
+    return Object
+      .values(this.state.groups)
+      .reduce((acc, curr) => (curr.options && curr.options.length ? acc + 1 : acc), 0);
   }
 
 
+  /**  @param {string} id  */
   bringToTop(id) {
-    const [key, slot] = Object.entries(this.state.groups)
-      .find(entry => entry[1] && entry[1].options && entry[1].options.find(v => v.id === id));
+    const [key, slot] = this.getSlotIndexAndEntry(id);
 
     const updated = [
       slot.options.find(i => i.id === id),
@@ -121,10 +156,7 @@ export class ToolboxManager {
     });
   }
 
-  /**
-   * @method
-   * @param {ToolboxItem} toolboxItem
-   */
+  /** @param {ToolboxItem} toolboxItem */
   add(toolboxItem) {
     if (this.has(toolboxItem.id)) {
       throw new Error(`Toolbox-Item with id ${toolboxItem.id} has already been registered`);

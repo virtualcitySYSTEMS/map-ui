@@ -10,10 +10,15 @@
           v-for="(value, key) of groups"
           :key="key"
         >
-          <ToolboxButton
-            v-if="value && value.options && value.options.length"
+          <ToolboxSingleSelectButton
+            v-if="singleSelectButtonVisible(value) && value.type === 'singleSelectButton'"
             :group="value"
             @selected="id => bringToTop(id)"
+          />
+          <ToolboxMultiSelectButton
+            v-if="value.type === 'multiSelectButton'"
+            :group="value"
+            @selected="id => selectOption(id)"
           />
         </span>
       </div>
@@ -44,7 +49,8 @@
   import Vue from 'vue';
 
   import { inject } from '@vue/composition-api';
-  import ToolboxButton from './ToolboxButton.vue';
+  import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
+  import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
 
   export default Vue.extend({
     name: 'VcsToolbox',
@@ -58,15 +64,21 @@
       const toolboxManager = inject('toolboxManager');
       const { state: { groups } } = toolboxManager;
       const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
+      const singleSelectButtonVisible = value => value &&
+        value.options &&
+        value.options.length;
 
       return {
         groups,
         getWidth,
         bringToTop: id => toolboxManager.bringToTop(id),
+        selectOption: id => toolboxManager.selectOption(id),
+        singleSelectButtonVisible,
       };
     },
     components: {
-      ToolboxButton,
+      ToolboxSingleSelectButton,
+      ToolboxMultiSelectButton,
     },
   });
 </script>
