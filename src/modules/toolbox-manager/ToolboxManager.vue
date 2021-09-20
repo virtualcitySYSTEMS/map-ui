@@ -13,12 +13,14 @@
           <ToolboxSingleSelectButton
             v-if="singleSelectButtonVisible(value) && value.type === 'singleSelectButton'"
             :group="value"
-            @selected="id => bringToTop(id)"
+            @selected="id => selectSingleSelectOption(id)"
+            @set-open="({ id, open }) => setGroupOpen({ id, open })"
           />
           <ToolboxMultiSelectButton
             v-if="value.type === 'multiSelectButton'"
             :group="value"
-            @selected="id => selectOption(id)"
+            @selected="id => selectMultiSlectOption(id)"
+            @set-open="({ id, open }) => setGroupOpen({ id, open })"
           />
         </span>
       </div>
@@ -54,12 +56,7 @@
 
   export default Vue.extend({
     name: 'VcsToolbox',
-    props: {
-      width: {
-        type: Number,
-        default: 600,
-      },
-    },
+    props: { width: 600 },
     setup() {
       const toolboxManager = inject('toolboxManager');
       const { state: { groups } } = toolboxManager;
@@ -67,12 +64,22 @@
       const singleSelectButtonVisible = value => value &&
         value.options &&
         value.options.length;
+      const selectSingleSelectOption = id => {
+        toolboxManager.bringToTop(id);
+      };
+      const selectMultiSlectOption = id => {
+        toolboxManager.selectOption(id);
+      };
+      const setGroupOpen = ({ id, open }) => {
+        toolboxManager.setGroupOpen(id, open);
+      };
 
       return {
         groups,
         getWidth,
-        bringToTop: id => toolboxManager.bringToTop(id),
-        selectOption: id => toolboxManager.selectOption(id),
+        selectSingleSelectOption,
+        selectMultiSlectOption,
+        setGroupOpen,
         singleSelectButtonVisible,
       };
     },

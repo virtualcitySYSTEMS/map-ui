@@ -1,10 +1,10 @@
 <template>
-  <span class="ma-1 position-relative" :class="[...customClasses]">
+  <span v-if="group.options && group.options[0]" class="ma-1 position-relative" :class="[...customClasses]">
     <v-btn
       class="expand-button mb-0 w-16 h-10"
       :color="active ? 'white' : null"
       :text="!active ? true : null"
-      @click="() => (open = !open)"
+      @click="() => setOpen(group.id, !group.open)"
       :class="{
         'mb-0': active,
         'h-full': active,
@@ -24,7 +24,7 @@
       />
     </v-btn>
 
-    <v-card v-if="open" tile style="position: absolute; min-width: 150px">
+    <v-card v-if="group.open" tile style="position: absolute; min-width: 150px">
       <v-list dense>
         <v-list-item-group>
           <v-list-item
@@ -82,12 +82,15 @@
       const open = ref(false);
       const selectOption = (id) => {
         emit('selected', id);
-        // open.value = !open;
       };
+      const setOpen = (id, open) => {
+        emit('set-open', { id, open });
+      }
       return {
         active: value,
         open,
         selectOption,
+        setOpen
       };
     },
   });

@@ -4,7 +4,7 @@
       class="expand-button mb-0 w-16 h-10"
       :color="active ? 'white' : null"
       :text="!active ? true : null"
-      @click="() => open = !open"
+      @click="() => setOpen(group.id, !group.open)"
       :class="{
         'mb-0': active,
         'h-full': active,
@@ -28,7 +28,7 @@
 
 
     <div
-      v-if="open"
+      v-if="group.open"
       class="d-flex flex-row white rounded-b position-absolute z-index-1 pos-t-11"
     >
       <slot name="menu-items">
@@ -66,29 +66,24 @@
   export default Vue.extend({
     name: 'VcsToolboxSingleSelectButton',
     props: {
-      value: {
-        type: Boolean,
-        default: undefined,
-      },
-      group: {
-        type: Object,
-        default: () => ({}),
-      },
-      customClasses: {
-        type: Array,
-        default: () => ([]),
-      },
+      value: false,
+      group: {},
+      customClasses: [],
     },
     setup({ value }, { emit }) {
       const open = ref(false);
       const selectOption = (id) => {
         emit('selected', id);
-        open.value = !open;
+        emit('set-open', { id, open: !open });
+      };
+      const setOpen = (id, open) => {
+        emit('set-open', { id, open });
       };
       return {
         active: value,
         open,
         selectOption,
+        setOpen,
       };
     },
   });

@@ -24,7 +24,6 @@
   } from '@vue/composition-api';
   import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context.js';
   import config from '@/../map.config.json';
-
   import { WindowManager } from '@/modules/window-manager/window.manager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
@@ -34,6 +33,20 @@
   import Navbar from './Navbar.vue';
   import VcsMap from './VcsMap.vue';
 
+export default Vue.extend({
+  components: {
+    Navbar,
+    Map,
+    WindowManagerComponent,
+    ToolboxManagerComponent,
+    Popover,
+  },
+  setup() {
+    const id = uuid();
+    const mapState = {
+      maps: reactive([]),
+      activeMap: ref(undefined),
+    };
 
   export default Vue.extend({
     components: {
@@ -50,59 +63,101 @@
         activeMap: ref(undefined),
       };
 
-      const pluginComponents = {
-        mapButtons: reactive([]),
-        treeButtons: reactive([]),
-        headerButtons: reactive([]),
-      };
+    const context = createVcsApp();
 
-      const context = createVcsApp();
-
-      const mapActivatedDestroy = context.maps.mapActivated.addEventListener((map) => {
+    const mapActivatedDestroy = context.maps.mapActivated.addEventListener(
+      (map) => {
         mapState.activeMap = map.className;
-      });
+      }
+    );
 
-      const mapAddedDestroy = context.maps.added.addEventListener(({ className, name }) => {
+    const mapAddedDestroy = context.maps.added.addEventListener(
+      ({ className, name }) => {
         mapState.maps.push({ className, name });
-      });
+      }
+    );
 
-      provide('context', context);
-      provide('mapState', mapState);
-      provide('pluginComponents', pluginComponents);
+    provide("context", context);
+    provide("mapState", mapState);
+    provide("pluginComponents", pluginComponents);
 
-      const toolboxManager = new ToolboxManager();
-      provide('toolboxManager', toolboxManager);
-      const popoverManager = new PopoverManager();
-      provide('popoverManager', popoverManager);
-      const windowManager = new WindowManager();
-      provide('windowManager', windowManager);
+    /** Toolbox */
+    const toolboxManager = new ToolboxManager();
+    provide("toolboxManager", toolboxManager);
+    toolboxManager.addToolboxGroup(
+      {
+        icon: "$vcsPen",
+        type: "multiSelectButton",
+        id: 1,
+        open: false,
+        options: [],
+      },
+      1
+    );
+    toolboxManager.addToolboxItem(
+      { id: "foo", icon: "$vcsPointSelect", text: "Item 1", selected: true },
+      1
+    );
+    toolboxManager.addToolboxItem(
+      { id: "bar", icon: "$vcsObjectSelect", text: "Item 2" },
+      1
+    );
+    toolboxManager.addToolboxGroup(
+      {
+        type: "singleSelectButton",
+        id: 2,
+        open: false,
+        options: [
+          { id: "delta", icon: "$vcsPointSelect" },
+          { id: "zulu", icon: "$vcsObjectSelect" },
+        ],
+      },
+      2
+    );
 
-      const configLoaded = ref(false);
-      const startingMapName = ref('');
+    toolboxManager.removeToolboxItem('delta')
+    toolboxManager.removeToolboxItem('zulu')
+    toolboxManager.removeToolboxItem('foo')
+    toolboxManager.removeToolboxItem('bar')
 
-      onBeforeMount(async () => {
-        const startingMap = await addConfigToContext(config, context);
-        startingMapName.value = startingMap.name;
-        configLoaded.value = true;
-        await setPluginUiComponents(context, pluginComponents);
-      });
+    /** Popover */
+    const popoverManager = new PopoverManager();
+    provide("popoverManager", popoverManager);
 
-      onUnmounted(() => {
-        if (mapActivatedDestroy) { mapActivatedDestroy(); }
-        if (mapAddedDestroy) { mapAddedDestroy(); }
-      });
+    /** Window */
+    const windowManager = new WindowManager();
+    provide("windowManager", windowManager);
 
-      return {
-        mapId: `mapCollection-${id}`,
-        startingMapName,
-        configLoaded,
-        toolboxManagerVisible: toolboxManager.state.visible,
-      };
-    },
-    provide() {
-      return {
-        language: window.navigator.language.split('-')[0],
-      };
-    },
-  });
+    const configLoaded = ref(false);
+    const startingMapName = ref("");
+
+    onBeforeMount(async () => {
+      const startingMap = await addConfigToContext(config, context);
+      startingMapName.value = startingMap.name;
+      configLoaded.value = true;
+      await setPluginUiComponents(context, pluginComponents);
+    });
+
+    onUnmounted(() => {
+      if (mapActivatedDestroy) {
+        mapActivatedDestroy();
+      }
+      if (mapAddedDestroy) {
+        mapAddedDestroy();
+      }
+    });
+
+    return {
+      mapId: `mapCollection-${id}`,
+      startingMapName,
+      configLoaded,
+      toolboxManagerVisible: toolboxManager.state.visible,
+    };
+  },
+  provide() {
+    return {
+      language: window.navigator.language.split("-")[0],
+    };
+  },
+});
 </script>
