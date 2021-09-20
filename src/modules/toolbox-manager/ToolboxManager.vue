@@ -7,18 +7,18 @@
     <v-toolbar-items class="w-full">
       <div class="d-flex align-center justify-space-between w-full">
         <span
-          v-for="(value, key) of groups"
-          :key="key"
+          v-for="group of groups"
+          :key="group.id"
         >
           <ToolboxSingleSelectButton
-            v-if="singleSelectButtonVisible(value) && value.type === 'singleSelectButton'"
-            :group="value"
+            v-if="toolboxGroupVisible(group) && group.type === 'singleSelectButton'"
+            :group="group"
             @selected="id => selectSingleSelectOption(id)"
             @set-open="({ id, open }) => setGroupOpen({ id, open })"
           />
           <ToolboxMultiSelectButton
-            v-if="value.type === 'multiSelectButton'"
-            :group="value"
+            v-if="toolboxGroupVisible(group) && group.type === 'multiSelectButton'"
+            :group="group"
             @selected="id => selectMultiSlectOption(id)"
             @set-open="({ id, open }) => setGroupOpen({ id, open })"
           />
@@ -61,7 +61,7 @@
       const toolboxManager = inject('toolboxManager');
       const { state: { groups } } = toolboxManager;
       const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
-      const singleSelectButtonVisible = value => value &&
+      const toolboxGroupVisible = value => value &&
         value.options &&
         value.options.length;
       const selectSingleSelectOption = id => {
@@ -80,7 +80,7 @@
         selectSingleSelectOption,
         selectMultiSlectOption,
         setGroupOpen,
-        singleSelectButtonVisible,
+        toolboxGroupVisible,
       };
     },
     components: {
