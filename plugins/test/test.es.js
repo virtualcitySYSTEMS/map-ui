@@ -1,5 +1,5 @@
 import { getCurrentInstance, inject } from '@vue/composition-api';
-import {Cartesian2} from '@vcmap/cesium';
+import { Cartesian2 } from '@vcmap/cesium';
 import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
 
@@ -18,10 +18,15 @@ export default {
     mapButton: {
       template: '<Button @click="alert(\'check\')">VC Systems</Button>',
       setup() {
-        console.log(getCurrentInstance());
         const context = inject('context');
-        const cartesian3 = new Cartesian2(1,2);
-        console.log(cartesian3);
+        const cartesian3 = new Cartesian2(1, 2);
+
+        const toolboxManager = inject('toolboxManager');
+        toolboxManager.addToolboxItem(
+          { id: "test", icon: "$vcsWall", text: "Item 1", selected: true },
+          2,
+        );
+
         return {
           context,
           cartesian3,
