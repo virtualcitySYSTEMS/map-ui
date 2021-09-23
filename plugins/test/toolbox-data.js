@@ -36,5 +36,14 @@ export const toolboxData = [
         active: true,
       },
       3
+    ],
+    [
+      {
+        type: "customComponent",
+        component: 'Button',
+        id: 5,
+        active: true,
+      },
+      5
     ]
   ]

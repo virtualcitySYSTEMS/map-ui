@@ -10,6 +10,14 @@
           v-for="group of groups"
           :key="group.id"
         >
+          <component
+            v-if="group.type === 'customComponent'"
+            :is="group.component"
+            :icon="'$vcsObjectAttribute'"
+            :value="group.active"
+            @click.native="group.active = !group.active"
+            :group="group"
+          />
           <Button
             v-if="group.type === 'toggleButton'"
             :group="group"

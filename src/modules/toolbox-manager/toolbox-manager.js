@@ -132,7 +132,9 @@ export class ToolboxManager {
   getNumberOfUsedSlots() {
     return Object.values(this.state.groups).reduce(
       (acc, curr) =>
-        curr.type === "toggleButton" || (curr.options && curr.options.length)
+        curr.type === "toggleButton" || 
+        curr.type === "customComponent" || 
+        (curr.options && curr.options.length)
           ? acc + 1
           : acc,
       0
