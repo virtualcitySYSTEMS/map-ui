@@ -10,6 +10,13 @@
           v-for="group of groups"
           :key="group.id"
         >
+          <Button
+            v-if="group.type === 'toggleButton'"
+            :group="group"
+            :icon="'$vcsObjectAttribute'"
+            :value="group.active"
+            @click.native="group.active = !group.active"
+          />
           <ToolboxSingleSelectButton
             v-if="toolboxGroupVisible(group) && group.type === 'singleSelectButton'"
             :group="group"
@@ -51,6 +58,8 @@
   import Vue from 'vue';
 
   import { inject } from '@vue/composition-api';
+  import Button from '@vcsuite/uicomponents/Button.vue';
+
   import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
   import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
 
@@ -86,6 +95,7 @@
     components: {
       ToolboxSingleSelectButton,
       ToolboxMultiSelectButton,
+      Button
     },
   });
 </script>

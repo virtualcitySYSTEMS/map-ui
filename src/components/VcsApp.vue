@@ -84,41 +84,7 @@ export default Vue.extend({
     /** Toolbox */
     const toolboxManager = new ToolboxManager();
     provide("toolboxManager", toolboxManager);
-    toolboxManager.addToolboxGroup(
-      {
-        icon: "$vcsPen",
-        type: "multiSelectButton",
-        id: 1,
-        open: false,
-        options: [],
-      },
-      1
-    );
-    toolboxManager.addToolboxItem(
-      { id: "foo", icon: "$vcsPointSelect", text: "Item 1", selected: true },
-      1
-    );
-    toolboxManager.addToolboxItem(
-      { id: "bar", icon: "$vcsObjectSelect", text: "Item 2" },
-      1
-    );
-    toolboxManager.addToolboxGroup(
-      {
-        type: "singleSelectButton",
-        id: 2,
-        open: false,
-        options: [
-          { id: "delta", icon: "$vcsPointSelect" },
-          { id: "zulu", icon: "$vcsObjectSelect" },
-        ],
-      },
-      2
-    );
-
-    toolboxManager.removeToolboxItem('delta')
-    toolboxManager.removeToolboxItem('zulu')
-    toolboxManager.removeToolboxItem('foo')
-    toolboxManager.removeToolboxItem('bar')
+    
 
     /** Popover */
     const popoverManager = new PopoverManager();

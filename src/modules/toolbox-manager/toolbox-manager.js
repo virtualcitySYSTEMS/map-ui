@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { VcsEvent } from '@vcmap/core';
-import { reactive } from '@vue/composition-api';
-import Vue from 'vue';
-
+import { VcsEvent } from "@vcmap/core";
+import { reactive } from "@vue/composition-api";
+import Vue from "vue";
 
 /**
  * @typedef ToolboxGroup
@@ -10,6 +9,7 @@ import Vue from 'vue';
  * @property {string | number} id
  * @property {boolean} open
  * @property {ToolboxItem[]} options
+ * @property {boolean} active
  */
 /**
  * @typedef ToolboxManagerState
@@ -39,24 +39,24 @@ export class ToolboxManager {
   }
 
   setGroupOpen(id, open) {
-    Object.values(this.state.groups).forEach(group => {
-      if (group.id ===  id) {
+    Object.values(this.state.groups).forEach((group) => {
+      if (group.id === id) {
         Vue.set(this.state.groups, group.id, {
           ...group,
-          open
-        })
+          open,
+        });
       } else {
         Vue.set(this.state.groups, group.id, {
           ...group,
-          open: false
-        })
+          open: false,
+        });
       }
-    })
+    });
   }
 
   /** @method */
   toggle() {
-    Vue.set(this.state, 'visible', !this.state.visible);
+    Vue.set(this.state, "visible", !this.state.visible);
   }
 
   /**
@@ -74,11 +74,10 @@ export class ToolboxManager {
    * @returns {Object}
    */
   get(id) {
-    return Object
-      .values(this.state.groups)
-      .map(group => group.options)
+    return Object.values(this.state.groups)
+      .map((group) => group.options)
       .flat()
-      .find(item => item.id === id);
+      .find((item) => item && item.id === id);
   }
 
   /**
@@ -87,7 +86,7 @@ export class ToolboxManager {
    */
   setDisabled(id, disabled) {
     const [key, slot] = this.getSlotIndexAndEntry(id);
-    const entry = slot.options.find(s => s.id === id);
+    const entry = slot.options.find((s) => s.id === id);
     entry.disabled = disabled;
 
     Vue.set(this.state.groups, key, slot);
@@ -99,18 +98,18 @@ export class ToolboxManager {
    * @returns {[string, ToolboxGroup]}
    */
   getSlotIndexAndEntry(id) {
-    return Object
-      .entries(this.state.groups)
-      .find(entry => entry[1] &&
+    return Object.entries(this.state.groups).find(
+      (entry) =>
+        entry[1] &&
         entry[1].options &&
-        entry[1].options.find(v => v.id === id));
+        entry[1].options.find((v) => v.id === id)
+    );
   }
-
 
   /** @param {string} id */
   selectOption(id) {
     const [key, slot] = this.getSlotIndexAndEntry(id);
-    const option = slot.options.find(opt => opt.id === id);
+    const option = slot.options.find((opt) => opt.id === id);
     if (option) {
       option.selected = !option.selected;
     }
@@ -123,27 +122,30 @@ export class ToolboxManager {
    * @returns {number}
    */
   getSlotIndexFor(id) {
-    const [index] =  Object
-      .entries(this.state.groups)
-      .find(([key, group]) => group.options.find(o => o.id === id));
+    const [index] = Object.entries(this.state.groups).find(([key, group]) =>
+      group.options.find((o) => o.id === id)
+    );
     return index;
   }
 
   /** @returns {number} */
   getNumberOfUsedSlots() {
-    return Object
-      .values(this.state.groups)
-      .reduce((acc, curr) => (curr.options && curr.options.length ? acc + 1 : acc), 0);
+    return Object.values(this.state.groups).reduce(
+      (acc, curr) =>
+        curr.type === "toggleButton" || (curr.options && curr.options.length)
+          ? acc + 1
+          : acc,
+      0
+    );
   }
-
 
   /**  @param {string} id  */
   bringToTop(id) {
     const [key, slot] = this.getSlotIndexAndEntry(id);
 
     const updated = [
-      slot.options.find(i => i.id === id),
-      ...slot.options.filter(i => i.id !== id),
+      slot.options.find((i) => i.id === id),
+      ...slot.options.filter((i) => i.id !== id),
     ];
 
     Vue.set(this.state.groups, key, {
@@ -155,26 +157,29 @@ export class ToolboxManager {
   /** @param {ToolboxItem} toolboxItem */
   addToolboxItem(toolboxItem, slot) {
     if (this.has(toolboxItem.id)) {
-      throw new Error(`Toolbox-Item with id ${toolboxItem.id} has already been registered`);
+      throw new Error(
+        `Toolbox-Item with id ${toolboxItem.id} has already been registered`
+      );
     }
     Vue.set(this.state.groups, slot, {
       ...this.state.groups[slot],
-      options: [...this.state.groups[slot].options, toolboxItem]
+      options: [...this.state.groups[slot].options, toolboxItem],
     });
     this.onAdded.raiseEvent(toolboxItem.id);
   }
 
   /**
-   * @param {ToolboxGroup} group 
-   * @param {string | number} slot 
+   * @param {ToolboxGroup} group
+   * @param {string | number} slot
    */
   addToolboxGroup(group, slot) {
     if (this.state.groups[slot]) {
-      throw new Error(`Toolbox-Group with slot-id ${slot} has already been registered`);
+      throw new Error(
+        `Toolbox-Group with slot-id ${slot} has already been registered`
+      );
     }
     Vue.set(this.state.groups, slot, group);
   }
-
 
   /**
    * @method
@@ -188,7 +193,9 @@ export class ToolboxManager {
 
     Vue.set(this.state.groups, slotIndex, {
       ...this.state.groups[slotIndex],
-      options: [...this.state.groups[slotIndex].options.filter(s => s.id !== id)]
+      options: [
+        ...this.state.groups[slotIndex].options.filter((s) => s.id !== id),
+      ],
     });
     this.onRemoved.raiseEvent(id);
   }
