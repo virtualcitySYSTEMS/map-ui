@@ -17,6 +17,7 @@ stages:
 build:
   <<: *job_definition
   script:
+    - rm -rf node_modules/
     - npm set registry 'http://npmregistry:4873'
     - npm i
   stage: build

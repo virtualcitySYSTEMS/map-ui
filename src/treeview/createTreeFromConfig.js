@@ -1,4 +1,5 @@
 import { shallowReactive } from '@vue/composition-api';
+import { getLogger } from '@vcsuite/logger';
 
 /**
  * @param {AbstractTreeViewItem.Options} config
@@ -9,7 +10,7 @@ async function createItemFromConfig(config, parent) {
   try {
     child = await parent.createChildItem(config);
   } catch (e) {
-    console.log(`faild to create for type ${config.type}`);
+    getLogger('vcs.ui.treeview').warning(`failed to create for type ${config.type}`);
     return;
   }
 
