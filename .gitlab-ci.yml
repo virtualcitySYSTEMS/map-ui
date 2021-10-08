@@ -33,8 +33,8 @@ lint:
   script:
     - npm run lint
 
-# audit:
-#   <<: *after_build_definition
-#   stage: test
-#   script:
-#     - npm audit --production --audit-level=low
+audit:
+  <<: *after_build_definition
+  stage: test
+  script:
+    - npm audit --production --audit-level=low
