@@ -19,7 +19,9 @@ build:
   script:
     - rm -rf node_modules/
     - npm set registry 'http://npmregistry:4873'
-    - npm i
+    - npm ci
+    - cd node_modules/@vcmap/core
+    - npm run prepare
   stage: build
 
 .after_build_template: &after_build_definition
