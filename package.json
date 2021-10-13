@@ -37,6 +37,7 @@
     "@vcsuite/eslint-config": "^1.0.0",
     "eslint": "^7.26.0",
     "eslint-import-resolver-alias": "^1.1.2",
+    "jsdoc": "^3.6.7",
     "sass": "1.32.13",
     "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
     "typescript": "^4.2.4",
