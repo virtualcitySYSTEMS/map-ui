@@ -1,0 +1,21 @@
+{
+    "opts": {
+        "recurse": true,
+        "template": "build/info"
+    },
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "includePattern": "\\.js$"
+    },
+    "plugins": [
+        "jsdoc-plugin-typescript",
+        "build/info/api-plugin",
+        "build/info/define-plugin",
+        "build/info/virtual-plugin"
+    ],
+    "typescript": {
+      "moduleRoot": "node_modules/ol/src"
+    }
+}

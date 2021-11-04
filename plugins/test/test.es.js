@@ -1,5 +1,17 @@
 import { getCurrentInstance, inject } from '@vue/composition-api';
 import {Cartesian2} from '@vcmap/cesium';
+import VectorSource from 'ol/source/Vector';
+import { Feature } from 'ol';
+
+let source;
+
+function getSource() {
+  if (!source) {
+    source = new VectorSource();
+  }
+  return source;
+}
+
 
 export default {
   registerUiPlugin: async () => ({
@@ -12,12 +24,15 @@ export default {
         console.log(cartesian3);
         return {
           context,
-          cartesian3
+          cartesian3,
         };
       },
       methods: {
         alert(msg) {
-          window.alert(this.context.maps.activeMap.name);
+          getSource().addFeature(new Feature({}));
+          window.alert(`
+there are ${getSource().getFeatures().length} features
+          ${this.context.maps.activeMap.name}`);
         },
       },
     },
