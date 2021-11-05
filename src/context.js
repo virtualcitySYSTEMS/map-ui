@@ -54,7 +54,7 @@ import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>} styles
  * @property {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>} obliqueCollections
  * @property {import("@vcmap/core").Collection<VcsPlugin>} plugins
- * @property {import("@vcmap/core").ViewPoint} startViewpoint
+ * @property {import("@vcmap/core").ViewPoint} startViewPoint
  * @property {Object<string, *>} config
  * @property {import("@vcmap/core").VcsEvent<void>} destroyed
  * @property {function():void} destroy
@@ -94,7 +94,7 @@ export function createVcsApp() {
     viewpoints: new Collection(),
     styles: new Collection(),
     obliqueCollections: new Collection(),
-    startViewpoint: new ViewPoint({}),
+    startViewPoint: new ViewPoint({}),
     config: {},
     plugins: new Map(),
     destroyed: new VcsEvent(),
