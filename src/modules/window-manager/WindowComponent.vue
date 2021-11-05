@@ -53,7 +53,10 @@
 
   export default defineComponent({
     props: {
-      windowId: String,
+      windowId: {
+        type: String,
+        default: '',
+      },
     },
     setup(props) {
       const windowWidth = computed(() => window.innerWidth);

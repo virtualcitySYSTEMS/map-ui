@@ -42,12 +42,12 @@
 
   import Vue from 'vue';
 
-  import LayerTree from '@/components/LayerTree.vue';
   import Button from '@vcsuite/uicomponents/Button.vue';
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
-  import { WINDOW_SLOTS } from '@/modules/window-manager/window.manager';
-  import PositionParser from '@/modules/window-manager/util/position-parser';
+  import LayerTree from '@/components/LayerTree.vue';
+  import { WINDOW_SLOTS } from '@/modules/window-manager/window.manager.js';
+  import PositionParser from '@/modules/window-manager/util/position-parser.js';
   import ComponentToggleButton from './ComponentToggleButton.vue';
   import EmptyCmp from './empty-cmp.vue';
 

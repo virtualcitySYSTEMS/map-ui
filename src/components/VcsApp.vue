@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="h-full">
     <Navbar :map-id="mapId" />
-    <Map :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
+    <VcsMap :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
 
     <WindowManagerComponent />
     <Popover />
@@ -12,9 +12,6 @@
 <script>
   import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
-  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context';
-  import config from '@/../map.config.json';
-
   import {
     onBeforeMount,
     onUnmounted,
@@ -22,18 +19,21 @@
     reactive,
     ref,
   } from '@vue/composition-api';
-  import { WindowManager } from '@/modules/window-manager/window.manager';
+  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context.js';
+  import config from '@/../map.config.json';
+
+  import { WindowManager } from '@/modules/window-manager/window.manager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
-  import { PopoverManager } from '@/modules/popover-manager/popover.manager';
+  import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
   import Popover from '@/modules/popover-manager/PopoverManager.vue';
   import Navbar from './Navbar.vue';
-  import Map from './Map.vue';
+  import VcsMap from './VcsMap.vue';
 
 
   export default Vue.extend({
     components: {
       Navbar,
-      Map,
+      VcsMap,
       WindowManagerComponent,
       Popover,
     },

@@ -2,7 +2,7 @@
   <v-menu
     v-bind="{...$props, ...$attrs}"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <slot :on="on" name="activator">
         <v-btn
           v-bind="attrs"
@@ -21,7 +21,7 @@
     <v-list dense>
       <v-list-item v-for="item of items" :key="item.title">
         <v-menu :close-on-content-click="true">
-          <template v-slot:activator="{on, attrs}">
+          <template #activator="{on, attrs}">
             <v-list-item-icon v-if="item.iconPrepend" class="cursor-pointer d-flex align-center">
               <v-icon
                 v-text="item.iconPrepend.name"
@@ -112,13 +112,11 @@
    * @property {string} iconPrepend
    * @property {MenuItem[]} children
    * @memberof module:Menu
-   *
    */
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-menu/
    * To use custom activator slot:
-   *
    * @example
    *  // Use custom activator slot
    *  <template v-slot:activator="{ on }">
@@ -126,7 +124,6 @@
    *       Menu
    *     </button>
    *  </template>
-   *
    * @vue-prop {MenuItem[]} items - Menuitems to be shown
    * @vue-prop {string} icon      - Icon to used to activate menu.
    */

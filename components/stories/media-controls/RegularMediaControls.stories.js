@@ -2,7 +2,7 @@ import InputColumnCoordinates from '@vcsuite/uicomponents/InputColumnCoordinates
 import InputColumnDimensions from '@vcsuite/uicomponents/InputColumnDimensions.vue';
 import MediaControls from '@vcsuite/uicomponents/MediaControls.vue';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 export default {
   title: 'Media Controls/Regular',

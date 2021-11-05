@@ -53,13 +53,18 @@
     tap,
   } from 'rxjs/operators';
 
-  import { clipX, clipY } from './util/clip';
+  import { clipX, clipY } from './util/clip.js';
   import Window from './WindowComponent.vue';
 
   export default defineComponent({
     name: 'VcsWindowManager',
     components: { Window },
-    props: { windowState: Object },
+    props: {
+      windowState: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
     setup(props, context) {
       /** @type {Map<string, import('rxjs').Subject>} */
       const destroy$ = new Map();

@@ -1,1 +1,1 @@
-export * from './vuetify';
+export * from './vuetify.js';

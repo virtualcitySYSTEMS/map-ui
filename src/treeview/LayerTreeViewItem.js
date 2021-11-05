@@ -1,6 +1,6 @@
-import AbstractTreeViewItem, { TreeViewItemState } from '@/treeview/AbstractTreeViewItem';
-import StyleSelectorAction from '@/treeview/StyleSelectorAction';
 import { shallowReactive } from '@vue/composition-api';
+import AbstractTreeViewItem, { TreeViewItemState } from '@/treeview/AbstractTreeViewItem.js';
+import StyleSelectorAction from '@/treeview/StyleSelectorAction.js';
 
 /**
  * @typedef {AbstractTreeViewItem.Options} LayerTreeViewItem.Options

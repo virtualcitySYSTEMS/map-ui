@@ -32,7 +32,7 @@
         v-if="remaining && remaining.length"
         :close-on-content-click="true"
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <v-icon
             v-text="'mdi-dots-vertical'"
             v-bind="attrs"

@@ -1,8 +1,8 @@
 import Badge from '@vcsuite/uicomponents/Badge.vue';
 import Button from '@vcsuite/uicomponents/Button.vue';
 
-import { elevationControl, iconControl } from '../util/controls';
-import getProps from '../util/get-props';
+import { elevationControl, iconControl } from '../util/controls.js';
+import getProps from '../util/get-props.js';
 
 export default {
   title: 'Button/With Tooltip',
@@ -28,22 +28,22 @@ const Template = (args, { argTypes }) => {
     props: getProps(argTypes, { excludeKeys: ['input', 'default'] }),
     components: { Button, Badge },
     template: `
-      <div 
-        :style="{ 
+      <div
+        :style="{
           marginLeft: tooltipPosition === 'left' ? '5rem' : '',
           marginTop: tooltipPosition === 'top' ? '2rem' : ''
         }"
       >
-        <Button 
-          v-bind="$props" 
-          v-model="value" 
+        <Button
+          v-bind="$props"
+          v-model="value"
           @input="value = $event"
           :has-update="hasUpdate"
         >
           {{ text }}
         </Button>
       </div>
-      
+
       `,
   };
 };

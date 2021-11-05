@@ -1,8 +1,8 @@
 import EndlessList from '@vcsuite/uicomponents/EndlessList.vue';
 
-import { vuetify } from '@/plugins/vuetify';
+import { vuetify } from '@/plugins/vuetify.js';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 export default {
   title: 'EndlessList/Regular',

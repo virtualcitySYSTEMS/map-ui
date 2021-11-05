@@ -7,7 +7,7 @@
       :item-height="itemHeight"
       :bench="10"
     >
-      <template v-slot:default="{item}">
+      <template #default="{item}">
         <v-list-item class="px-2" :key="item.name">
           <v-icon v-text="'$vcsSimpleCircleFilled'" size="8" class="mr-2 gray-200--text" />
           <v-list-item-content>

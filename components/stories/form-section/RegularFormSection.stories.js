@@ -2,7 +2,7 @@ import FormSection from '@vcsuite/uicomponents/FormSection.vue';
 import InputColumnCoordinates from '@vcsuite/uicomponents/InputColumnCoordinates.vue';
 import InputColumnDimensions from '@vcsuite/uicomponents/InputColumnDimensions.vue';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 export default {
   title: 'Form Section/Regular',

@@ -1,1 +1,1 @@
-export * from './locale-string.filter';
+export * from './locale-string.filter.js';

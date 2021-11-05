@@ -5,7 +5,7 @@
     expand-icon="mdi-chevron-down"
     v-bind="{...$props, ...$attrs}"
   >
-    <template v-slot:label="{ item }">
+    <template #label="{ item }">
       <span>{{ item.name }}</span>
     </template>
   </VuetifyDraggableTreeview>

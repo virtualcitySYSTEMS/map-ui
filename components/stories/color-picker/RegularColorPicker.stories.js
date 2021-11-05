@@ -1,6 +1,6 @@
 import ColorPicker from '../../ColorPicker.vue';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 export default {
   title: 'Color Picker/Regular',
@@ -37,7 +37,7 @@ const Template = (args, { argTypes }) => {
     components: { ColorPicker },
     props: getProps(argTypes),
     template: `
-      <ColorPicker 
+      <ColorPicker
         v-bind="$props"
       />
     `,

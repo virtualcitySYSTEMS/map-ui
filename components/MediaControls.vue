@@ -87,7 +87,6 @@
   import Vue from 'vue';
   /**
    * @description Music-player-like component which controls a timeline.
-   *
    * @vue-prop {number}  value - Current position on timeline.
    * @vue-prop {number}  max - Max value of timeline.
    * @vue-prop {number}  min - Min value of timeline.

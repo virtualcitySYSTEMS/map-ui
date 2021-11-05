@@ -47,7 +47,7 @@
 
 <script>
   import { defineComponent, ref } from '@vue/composition-api';
-  import { getRootCssValue } from './util';
+  import { getRootCssValue } from './util/index.js';
 
   export default defineComponent({
     setup(props, vueContext) {

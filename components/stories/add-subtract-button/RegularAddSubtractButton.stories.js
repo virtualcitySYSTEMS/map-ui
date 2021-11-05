@@ -1,6 +1,6 @@
 import AddSubtractButtons from '@vcsuite/uicomponents/AddSubtractButtons.vue';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 
 export default {
@@ -18,9 +18,9 @@ const Template = (args, { argTypes }) => {
     template: `
       <div>
 
-        <AddSubtractButtons 
-          v-bind="$props" 
-          v-model="value" 
+        <AddSubtractButtons
+          v-bind="$props"
+          v-model="value"
           @input="value = $event"
         >
         </AddSubtractButtons>

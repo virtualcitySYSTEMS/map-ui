@@ -11,7 +11,7 @@
       :left="tooltipPosition === 'left'"
       :right="tooltipPosition === 'right'"
     >
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <v-btn
           :color="!!value ? 'primary' : null"
           :text="!value ? true : null"

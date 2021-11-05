@@ -25,9 +25,18 @@
     },
     components: { Button },
     props: {
-      componentName: String,
-      windowState: Object,
-      icon: String,
+      componentName: {
+        type: String,
+        default: '',
+      },
+      windowState: {
+        type: Object,
+        default: () => ({}),
+      },
+      icon: {
+        type: String,
+        default: '',
+      },
     },
   });
 </script>

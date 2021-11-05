@@ -1,6 +1,6 @@
 import TextField from '@vcsuite/uicomponents/TextField.vue';
 
-import getProps from '../util/get-props';
+import getProps from '../util/get-props.js';
 
 
 export default {
@@ -17,9 +17,9 @@ const Template = (args, { argTypes }) => {
     components: { TextField },
     template: `
       <div style="max-width: 220px">
-        <TextField 
-          v-bind="$props" 
-          v-model="value" 
+        <TextField
+          v-bind="$props"
+          v-model="value"
           hide-details
         >
         </TextField>

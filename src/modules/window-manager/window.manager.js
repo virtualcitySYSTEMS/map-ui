@@ -1,7 +1,7 @@
 import { reactive, nextTick } from '@vue/composition-api';
 import { VcsEvent } from '@vcmap/core';
 import Vue from 'vue';
-import PositionParser from './util/position-parser';
+import PositionParser from './util/position-parser.js';
 
 
 /**
@@ -191,7 +191,7 @@ export class WindowManager {
   /**
    * @param {WindowState} windowComponent
    * @description contains the state logic for slots
-   * */
+   */
   moveWindows(windowComponent) {
     switch (windowComponent.windowSlot) {
       case WINDOW_SLOTS.static: {

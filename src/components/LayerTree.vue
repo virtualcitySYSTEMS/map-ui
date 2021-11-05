@@ -28,10 +28,10 @@
   import { v4 as uuid } from 'uuid';
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
+  import VcsLegend from '@vcsuite/uicomponents/VcsLegend.vue';
   import WindowComponent from '@/modules/window-manager/WindowComponent.vue';
-  import AbstractTree from '@/treeview/AbstractTree';
-  import createTreeFromConfig from '@/treeview/createTreeFromConfig';
-  import Legend from '@vcsuite/uicomponents/Legend.vue';
+  import AbstractTree from '@/treeview/AbstractTree.js';
+  import createTreeFromConfig from '@/treeview/createTreeFromConfig.js';
 
   let treeInstance;
   async function getTree(context) {
@@ -55,7 +55,10 @@
     name: 'VcsLayerTree',
     components: { Treeview, WindowComponent },
     props: {
-      windowId: String,
+      windowId: {
+        type: String,
+        default: '',
+      },
     },
     setup(props) {
       const tree = ref();
@@ -93,7 +96,7 @@
         };
         const popover = popoverManager.registerPopover({
           name: componentName,
-          cmp: Legend,
+          cmp: VcsLegend,
           id,
           parent: event.target,
           callback,

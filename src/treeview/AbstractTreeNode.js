@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { shallowReactive } from '@vue/composition-api';
 import { check } from '@vcsuite/check';
 import { VcsClassRegistry } from '@vcmap/core';
-import { getContextById } from '@/context';
+import { getContextById } from '@/context.js';
 
 /**
  * @typedef {Object} AbstractTreeNode.Options

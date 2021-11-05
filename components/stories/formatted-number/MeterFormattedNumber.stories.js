@@ -1,7 +1,7 @@
 import FormattedNumber from '@vcsuite/uicomponents/FormattedNumber.vue';
 
-import { formattedNumberUnitControl } from '../util/controls';
-import getProps from '../util/get-props';
+import { formattedNumberUnitControl } from '../util/controls.js';
+import getProps from '../util/get-props.js';
 
 
 export default {
@@ -20,9 +20,9 @@ const Template = (args, { argTypes }) => {
     props: getProps(argTypes, { excludeKeys: [] }),
     components: { FormattedNumber },
     template: `
-      <FormattedNumber 
-        v-bind="$props" 
-        v-model="value" 
+      <FormattedNumber
+        v-bind="$props"
+        v-model="value"
       >
       </FormattedNumber>
       `,

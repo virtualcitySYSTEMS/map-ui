@@ -1,6 +1,6 @@
 import ConfirmationDialog from '@vcsuite/uicomponents/ConfirmationDialog.vue';
 
-import { vuetify } from '@/plugins/vuetify';
+import { vuetify } from '@/plugins/vuetify.js';
 
 export default {
   title: 'Dialog/Confirmation',
@@ -19,8 +19,8 @@ const Template = (args, { argTypes }) => {
         <button @click="open = true">
           open
         </button>
-        <ConfirmationDialog 
-          v-bind="$props"   
+        <ConfirmationDialog
+          v-bind="$props"
           on-dialog-close="open = false"
         >
         </ConfirmationDialog>

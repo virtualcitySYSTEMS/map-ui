@@ -21,7 +21,7 @@
       @update:open="handleUpdateOpen"
       :open="_open"
     >
-      <template v-slot:label="{ item }">
+      <template #label="{ item }">
         <component
           v-for="component of availableComponents"
           :key="component"
@@ -197,7 +197,6 @@
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
    * Can render dynamic components as leaf items.
    * In order to display an item needs to be registered and added to `availableComponents`.
-   *
    * @vue-prop {Array}   items                - Treeview items
    * @vue-prop {boolean} hasSearchbar         - Whether there is a searchbar for this treeview
    * @vue-prop {string}  searchbarPlaceholder - Placeholder text for the searchbar

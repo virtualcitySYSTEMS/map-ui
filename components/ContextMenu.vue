@@ -114,13 +114,11 @@
    * Customizable context menu.
    * Most code was taken from https://github.com/johndatserakis/vue-simple-context-menu
    * and adapted in order to show more complex templates.
-   *
    * @vue-prop {Array} options          - List of options to be shown in the menu.
    * @vue-prop {boolean} dense          - Whether the component should be shrunk in size.
    * @vue-prop {Array} customClasses    - List of CSS classes which will be added to the root element.
    * @vue-prop {MouseEvent} clickEvent  - The click mouse event which triggers the context menu. Needs to be passed for displaying this component.
    * @vue-prop {number} width           - Optional width attribute for this component.
-   *
    * @example
    *   <ContextMenu
    *     v-if="clickEvent"

@@ -14,8 +14,8 @@ import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import Vue from 'vue';
 
-import './layers';
-import './maps';
+import './layers.js';
+import './maps.js';
 import { getTerrainProviderForUrl } from '@vcmap/core/src/vcs/vcm/layer/terrainHelpers';
 import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
 import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';

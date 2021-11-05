@@ -51,7 +51,6 @@
    * @description
    * Popover wrapper component. In order to show a popover it must be registered here first.
    * Import and add it to the list of components. Then set store values on click.
-   *
    * @vue-prop {PopoverConfig} popover
    */
   export default Vue.extend({
