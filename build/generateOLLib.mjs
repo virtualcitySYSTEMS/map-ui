@@ -227,7 +227,7 @@ function generateExports(symbols) {
       formatSymbolExport(symbol, namespaces, imports);
     }
   });
-  const source = Object.keys(imports).join('\n');
+  const source = Object.keys(imports).map(line => line.replace('from \'ol/', 'from \'ol/src/')).join('\n');
   return `${source}\nexport * from 'ol';\n`;
 }
 
