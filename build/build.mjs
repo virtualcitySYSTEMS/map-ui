@@ -4,6 +4,7 @@ import { build } from 'vite';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
 import generateOLLib from './generateOLLib.mjs';
 import buildCesium from './buildCesium.mjs';
+import fs from 'fs';
 const libraries = {
   'vue': {
     lib: 'vue',
@@ -144,4 +145,4 @@ plugins.forEach(async (plugin) => {
 });
 
 await buildCesium();
-await fs.promise.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(),'dist', 'map.config.json'));
+await fs.promises.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(),'dist', 'map.config.json'));
