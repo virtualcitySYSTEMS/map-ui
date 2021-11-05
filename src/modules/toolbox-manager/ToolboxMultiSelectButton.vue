@@ -85,12 +85,12 @@
       };
       const setOpen = (id, open) => {
         emit('set-open', { id, open });
-      }
+      };
       return {
         active: value,
         open,
         selectOption,
-        setOpen
+        setOpen,
       };
     },
   });

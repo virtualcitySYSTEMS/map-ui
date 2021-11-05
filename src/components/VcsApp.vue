@@ -33,21 +33,6 @@
   import Navbar from './Navbar.vue';
   import VcsMap from './VcsMap.vue';
 
-export default Vue.extend({
-  components: {
-    Navbar,
-    Map,
-    WindowManagerComponent,
-    ToolboxManagerComponent,
-    Popover,
-  },
-  setup() {
-    const id = uuid();
-    const mapState = {
-      maps: reactive([]),
-      activeMap: ref(undefined),
-    };
-
   export default Vue.extend({
     components: {
       Navbar,
@@ -63,67 +48,70 @@ export default Vue.extend({
         activeMap: ref(undefined),
       };
 
-    const context = createVcsApp();
+      const context = createVcsApp();
 
-    const mapActivatedDestroy = context.maps.mapActivated.addEventListener(
-      (map) => {
-        mapState.activeMap = map.className;
-      }
-    );
+      const mapActivatedDestroy = context.maps.mapActivated.addEventListener(
+        (map) => {
+          mapState.activeMap = map.className;
+        },
+      );
 
-    const mapAddedDestroy = context.maps.added.addEventListener(
-      ({ className, name }) => {
-        mapState.maps.push({ className, name });
-      }
-    );
+      const mapAddedDestroy = context.maps.added.addEventListener(
+        ({ className, name }) => {
+          mapState.maps.push({
+            className,
+            name,
+          });
+        },
+      );
 
-    provide("context", context);
-    provide("mapState", mapState);
-    provide("pluginComponents", pluginComponents);
+      provide('context', context);
+      provide('mapState', mapState);
+      provide('pluginComponents', pluginComponents);
 
-    /** Toolbox */
-    const toolboxManager = new ToolboxManager();
-    provide("toolboxManager", toolboxManager);
-    
+      /** Toolbox */
+      const toolboxManager = new ToolboxManager();
+      provide('toolboxManager', toolboxManager);
 
-    /** Popover */
-    const popoverManager = new PopoverManager();
-    provide("popoverManager", popoverManager);
 
-    /** Window */
-    const windowManager = new WindowManager();
-    provide("windowManager", windowManager);
+      /** Popover */
+      const popoverManager = new PopoverManager();
+      provide('popoverManager', popoverManager);
 
-    const configLoaded = ref(false);
-    const startingMapName = ref("");
+      /** Window */
+      const windowManager = new WindowManager();
+      provide('windowManager', windowManager);
 
-    onBeforeMount(async () => {
-      const startingMap = await addConfigToContext(config, context);
-      startingMapName.value = startingMap.name;
-      configLoaded.value = true;
-      await setPluginUiComponents(context, pluginComponents);
-    });
+      const configLoaded = ref(false);
+      const startingMapName = ref('');
 
-    onUnmounted(() => {
-      if (mapActivatedDestroy) {
-        mapActivatedDestroy();
-      }
-      if (mapAddedDestroy) {
-        mapAddedDestroy();
-      }
-    });
+      onBeforeMount(async () => {
+        const startingMap = await addConfigToContext(config, context);
+        startingMapName.value = startingMap.name;
+        configLoaded.value = true;
+        await setPluginUiComponents(context, pluginComponents);
+      });
 
-    return {
-      mapId: `mapCollection-${id}`,
-      startingMapName,
-      configLoaded,
-      toolboxManagerVisible: toolboxManager.state.visible,
-    };
-  },
-  provide() {
-    return {
-      language: window.navigator.language.split("-")[0],
-    };
-  },
-});
+      onUnmounted(() => {
+        if (mapActivatedDestroy) {
+          mapActivatedDestroy();
+        }
+        if (mapAddedDestroy) {
+          mapAddedDestroy();
+        }
+      });
+
+      return {
+        mapId: `mapCollection-${id}`,
+        startingMapName,
+        configLoaded,
+        toolboxManagerVisible: toolboxManager.state.visible,
+      };
+    },
+    provide() {
+      return {
+        language: window.navigator.language.split('-')[0],
+      };
+    },
+  });
 </script>

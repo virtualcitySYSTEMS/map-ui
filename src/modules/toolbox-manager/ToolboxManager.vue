@@ -81,10 +81,10 @@
       const toolboxGroupVisible = value => value &&
         value.options &&
         value.options.length;
-      const selectSingleSelectOption = id => {
+      const selectSingleSelectOption = (id) => {
         toolboxManager.bringToTop(id);
       };
-      const selectMultiSlectOption = id => {
+      const selectMultiSlectOption = (id) => {
         toolboxManager.selectOption(id);
       };
       const setGroupOpen = ({ id, open }) => {
@@ -103,7 +103,7 @@
     components: {
       ToolboxSingleSelectButton,
       ToolboxMultiSelectButton,
-      Button
+      Button,
     },
   });
 </script>
