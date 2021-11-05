@@ -1542,6 +1542,10 @@
     {
       "name": "test",
       "entry": "plugins/test/test.es.js"
+    },
+    {
+      "name": "example",
+      "entry": "plugins/example/example.es.js"
     }
   ]
 }
