@@ -25,10 +25,12 @@ exports.publish = function (data, opts) {
     [
       {define: {isObject: true}},
       function () {
-        if (this?.meta?.code?.name === 'module.exports') {
-          this.exports = this.meta.code.node?.parent?.type === 'ExportDefaultDeclaration' ?
-            'default' :
-            'named';
+        if (this?.meta?.code?.name) {
+          if (this.meta.code.name === 'module.exports') {
+            this.exports = 'default';
+          } else if (this.meta.code.name.startsWith('exports.')) {
+            this.exports = this.meta.code.name.replace(/exports./, '');
+          }
         }
         if (this.kind == 'class') {
           if (!('extends' in this) || typeof this.api == 'boolean' || this.exports) {

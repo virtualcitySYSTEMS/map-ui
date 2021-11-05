@@ -161,24 +161,35 @@ async function getSymbols() {
   );
 }
 
+const exported = new Set();
+
 /**
  * Generate an import statement.
  * @param {Object} symbol Symbol.
  * @param {string} member Member.
- * @return {string} An import statement.
+ * @return {string|null} An import statement.
  */
 function getImport(symbol, member) {
   const defaultExport = symbol.name.split('~');
   const namedExport = symbol.name.split('.');
+  let importName;
+  let exportName;
+  let from;
+
   if (defaultExport.length > 1 || symbol.exports === 'default') {
-    const from = defaultExport[0].replace(/^module\:/, '');
-    const importName = from.replace(/[.\/]+/g, '$');
-    return `export {default as ${importName}} from '${from}';`;
-  } else if (namedExport.length > 1 && member) {
-    const from = namedExport[0].replace(/^module\:/, '');
-    const importName = from.replace(/[.\/]+/g, '$');
-    return `export {${member} as ${importName}$${member}} from '${from}';`;
+    from = defaultExport[0].replace(/^module\:/, '');
+    importName = 'default';
+    exportName = from.replace(/[.\/]+/g, '$');
+  } else if (namedExport.length > 1 && (member || (symbol.exports && symbol.exports !== 'default'))) {
+    from = namedExport[0].replace(/^module\:/, '');
+    importName = member || symbol.exports;
+    exportName = `${from.replace(/[.\/]+/g, '$')}${importName}`;
   }
+  if (!exported.has(exportName)) {
+    exported.add(exportName);
+    return `export {${importName} as ${exportName}} from '${from}';`;
+  }
+  return null;
 }
 
 /**
@@ -192,7 +203,10 @@ function formatSymbolExport(symbol, namespaces, imports) {
   const name = symbol.name;
   const parts = name.split('~');
   const nsParts = parts[0].replace(/^module\:/, '').split(/[\/\.]/);
-  imports[getImport(symbol, nsParts.pop())] = true;
+  const imp = getImport(symbol, nsParts.pop());
+  if (imp) {
+    imports[imp] = true;
+  }
 }
 
 /**
@@ -208,7 +222,7 @@ function generateExports(symbols) {
     if (name.indexOf('#') === -1) {
       const imp = getImport(symbol);
       if (imp) {
-        imports[getImport(symbol)] = true;
+        imports[imp] = true;
       }
       formatSymbolExport(symbol, namespaces, imports);
     }
