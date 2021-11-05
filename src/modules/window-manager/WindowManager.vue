@@ -210,8 +210,8 @@
         onRemovedDestroy = onRemoved.addEventListener(
           (windowState) => {
             if (!windowStates[windowState.id].windowSlot !== 'static') {
-              destroy$.get(windowState.id).next();
-              destroy$.get(windowState.id).unsubscribe();
+              destroy$.get(windowState.id.toString()).next();
+              destroy$.get(windowState.id.toString()).unsubscribe();
             }
           },
         );
