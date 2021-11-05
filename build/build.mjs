@@ -30,7 +30,7 @@ const libraries = {
   },
 };
 
-const plugins = ['test'];
+const plugins = ['test', 'example'];
 
 const libraryPaths = {};
 const pluginLibraryPaths = {};
@@ -144,3 +144,4 @@ plugins.forEach(async (plugin) => {
 });
 
 await buildCesium();
+await fs.promise.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(),'dist', 'map.config.json'));
