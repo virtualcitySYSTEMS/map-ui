@@ -183,9 +183,9 @@ function getImport(symbol, member) {
   } else if (namedExport.length > 1 && (member || (symbol.exports && symbol.exports !== 'default'))) {
     from = namedExport[0].replace(/^module\:/, '');
     importName = member || symbol.exports;
-    exportName = `${from.replace(/[.\/]+/g, '$')}${importName}`;
+    exportName = `${from.replace(/[.\/]+/g, '$')}$${importName}`;
   }
-  if (!exported.has(exportName)) {
+  if (exportName && !exported.has(exportName)) {
     exported.add(exportName);
     return `export {${importName} as ${exportName}} from '${from}';`;
   }
