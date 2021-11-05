@@ -1,7 +1,7 @@
 <template>
   <VuetifyDraggableTreeview
     class="vcs-treeview vcs-treeview-draggable"
-    v-model="items"
+    v-model="localItems"
     expand-icon="mdi-chevron-down"
     v-bind="{...$props, ...$attrs}"
   >
@@ -151,6 +151,11 @@
         type: Array,
         default: () => ([]),
       },
+    },
+    setup(props) {
+      return {
+        localItems: [...props.items],
+      };
     },
   });
 </script>

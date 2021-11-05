@@ -4,7 +4,7 @@
     class="save-tooltip rounded pa-2"
     :style="{ width: width ? `${width}px` : undefined }"
   >
-    <v-text-field v-model="value" class="mt-0 mb-1" hide-details dense>
+    <v-text-field v-model="localValue" class="mt-0 mb-1" hide-details dense>
       <template slot="append-outer">
         <v-icon
           @click="$emit('input', value)"
@@ -38,6 +38,11 @@
         type: Number,
         default: 208,
       },
+    },
+    setup(props) {
+      return {
+        localValue: props.value,
+      };
     },
   });
 </script>

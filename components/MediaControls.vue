@@ -3,7 +3,7 @@
     <v-slider
       :max="max"
       :min="min"
-      v-model="value"
+      v-model="localValue"
       class="media-slider py-2"
       hide-details
       color="gray"
@@ -117,6 +117,11 @@
           .querySelector('.media-slider .v-slider__thumb')
           .setAttribute('value', v);
       },
+    },
+    setup(props) {
+      return {
+        localValue: props.value,
+      };
     },
   });
 </script>

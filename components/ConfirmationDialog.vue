@@ -1,7 +1,8 @@
+
 <template>
   <div class="text-center">
     <v-dialog
-      v-model="open"
+      v-model="localOpen"
       :width="width"
       :content-class="contentClass"
       :class="[...customClasses]"
@@ -99,6 +100,11 @@
         type: String,
         default: '',
       },
+    },
+    setup(props) {
+      return {
+        localOpen: props.open,
+      };
     },
     methods: {
       close() {
