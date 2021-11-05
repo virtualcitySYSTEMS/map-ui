@@ -23,7 +23,6 @@
     ref,
   } from '@vue/composition-api';
   import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context.js';
-  import config from '@/../map.config.json';
   import { WindowManager } from '@/modules/window-manager/window.manager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
@@ -41,7 +40,13 @@
       ToolboxManagerComponent,
       Popover,
     },
-    setup() {
+    props: {
+      config: {
+        type: String,
+        default: '../map.config.json',
+      },
+    },
+    setup(props) {
       const id = uuid();
       const mapState = {
         maps: reactive([]),
@@ -92,6 +97,8 @@
       const startingMapName = ref('');
 
       onBeforeMount(async () => {
+        const config = await fetch(props.config)
+          .then(response => response.json());
         const startingMap = await addConfigToContext(config, context);
         startingMapName.value = startingMap.name;
         configLoaded.value = true;
