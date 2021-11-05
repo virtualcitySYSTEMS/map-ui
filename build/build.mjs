@@ -42,14 +42,14 @@ await build({
     alias: {
       "@": `${path.resolve(process.cwd(), "src")}`,
       '@vcsuite/uicomponents': `${path.resolve(process.cwd(), "components")}`,
-      'vue': `${path.resolve(process.cwd(), path.join("node_modules", "vue", "dist", "vue.runtime.esm.js"))}`
+      'vue': `${path.resolve(process.cwd(), path.join("node_modules", "vue", "dist", "vue.runtime.esm.js"))}`,
     },
   },
   build: {
     minify: true,
     emptyOutDir: true,
-    plugins: [vcsOl()],
     rollupOptions: {
+      plugins: [vcsOl()],
       external: Object.keys(libraries),
       output: {
         paths: libraryPaths

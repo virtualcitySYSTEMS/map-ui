@@ -34,7 +34,7 @@
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-essentials": "^6.3.4",
     "@storybook/vue": "^6.3.4",
-    "@vcmap/rollup-plugin-vcs-ol": "^1.0.0",
+    "@vcmap/rollup-plugin-vcs-ol": "^1.0.1",
     "@vcsuite/eslint-config": "^2.0.3",
     "eslint": "^8.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
