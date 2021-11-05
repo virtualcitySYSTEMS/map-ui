@@ -66,9 +66,18 @@
   export default Vue.extend({
     name: 'VcsToolboxSingleSelectButton',
     props: {
-      value: false,
-      group: {},
-      customClasses: [],
+      value: {
+        type: Boolean,
+        default: false,
+      },
+      group: {
+        type: Object,
+        default: () => ({}),
+      },
+      customClasses: {
+        type: Array,
+        default: () => [],
+      },
     },
     setup({ value }, { emit }) {
       const open = ref(false);
@@ -76,8 +85,8 @@
         emit('selected', id);
         emit('set-open', { id, open: !open });
       };
-      const setOpen = (id, open) => {
-        emit('set-open', { id, open });
+      const setOpen = (id, o) => {
+        emit('set-open', { id, open: o });
       };
       return {
         active: value,

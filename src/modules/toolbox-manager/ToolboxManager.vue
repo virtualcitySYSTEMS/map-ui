@@ -73,7 +73,12 @@
 
   export default Vue.extend({
     name: 'VcsToolbox',
-    props: { width: 600 },
+    props: {
+      width: {
+        type: Number,
+        default: 600,
+      },
+    },
     setup() {
       const toolboxManager = inject('toolboxManager');
       const { state: { groups } } = toolboxManager;

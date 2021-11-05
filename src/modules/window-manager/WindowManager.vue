@@ -1,25 +1,25 @@
 <template>
   <div>
     <div
-      v-for="windowState in windowStates"
+      v-for="wState in windowStates"
       :ref="'windowStates'"
-      :key="windowState.id"
-      :id="windowState.id"
+      :key="wState.id"
+      :id="wState.id"
       class="vsc-window v-sheet elevation-0 position-absolute"
-      @click="bringWindowToTop(windowState.id)"
+      @click="bringWindowToTop(wState.id)"
       :style="{
-        zIndex: zIndexMap[windowState.id],
-        left: windowState.position.left,
-        top: windowState.position.top,
-        right: windowState.position.right,
-        bottom: windowState.position.bottom,
-        width: `${windowState.width}px`,
-        ...(windowState.styles || {})
+        zIndex: zIndexMap[wState.id],
+        left: wState.position.left,
+        top: wState.position.top,
+        right: wState.position.right,
+        bottom: wState.position.bottom,
+        width: `${wState.width}px`,
+        ...(wState.styles || {})
       }"
     >
       <component
-        :is="windowState.component"
-        :window-id="windowState.id"
+        :is="wState.component"
+        :window-id="wState.id"
       />
     </div>
   </div>

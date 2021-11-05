@@ -83,8 +83,8 @@
       const selectOption = (id) => {
         emit('selected', id);
       };
-      const setOpen = (id, open) => {
-        emit('set-open', { id, open });
+      const setOpen = (id, o) => {
+        emit('set-open', { id, open: o });
       };
       return {
         active: value,

@@ -28,7 +28,7 @@
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
   import Popover from '@/modules/popover-manager/PopoverManager.vue';
-  import { ToolboxManager } from '@/modules/toolbox-manager/toolbox-manager';
+  import { ToolboxManager } from '@/modules/toolbox-manager/toolbox-manager.js';
   import ToolboxManagerComponent from '@/modules/toolbox-manager/ToolboxManager.vue';
   import Navbar from './Navbar.vue';
   import VcsMap from './VcsMap.vue';
@@ -46,6 +46,12 @@
       const mapState = {
         maps: reactive([]),
         activeMap: ref(undefined),
+      };
+
+      const pluginComponents = {
+        mapButtons: reactive([]),
+        treeButtons: reactive([]),
+        headerButtons: reactive([]),
       };
 
       const context = createVcsApp();
