@@ -156,7 +156,9 @@ async function generateInfo() {
  */
 async function getSymbols() {
   const info = await generateInfo();
-  return info.symbols.filter((symbol) => symbol.kind !== 'member');
+  return info.symbols.filter(
+    (symbol) => symbol.kind !== 'member' || symbol.exports
+  );
 }
 
 /**
@@ -168,7 +170,7 @@ async function getSymbols() {
 function getImport(symbol, member) {
   const defaultExport = symbol.name.split('~');
   const namedExport = symbol.name.split('.');
-  if (defaultExport.length > 1) {
+  if (defaultExport.length > 1 || symbol.exports === 'default') {
     const from = defaultExport[0].replace(/^module\:/, '');
     const importName = from.replace(/[.\/]+/g, '$');
     return `export {default as ${importName}} from '${from}';`;
@@ -223,6 +225,7 @@ export default async function main() {
   const symbols = await getSymbols();
   const code = generateExports(symbols);
   const filepath = path.join('lib', 'olLib.js');
-  await fs.promises.writeFile(filepath, code);
+  await fs.promises.writeFile(filepath, `/* eslint-disable */\n${code}`);
 }
 
+await main();

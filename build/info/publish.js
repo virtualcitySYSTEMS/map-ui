@@ -25,14 +25,20 @@ exports.publish = function (data, opts) {
     [
       {define: {isObject: true}},
       function () {
+        if (this?.meta?.code?.name === 'module.exports') {
+          this.exports = this.meta.code.node?.parent?.type === 'ExportDefaultDeclaration' ?
+            'default' :
+            'named';
+        }
         if (this.kind == 'class') {
-          if (!('extends' in this) || typeof this.api == 'boolean') {
+          if (!('extends' in this) || typeof this.api == 'boolean' || this.exports) {
             classes[this.longname] = this;
             return true;
           }
         }
         return (
           typeof this.api == 'boolean' ||
+          this.exports ||
           (this.meta && /[\\\/]externs$/.test(this.meta.path))
         );
       },
@@ -76,13 +82,14 @@ exports.publish = function (data, opts) {
           path: path.join(doc.meta.path, doc.meta.filename),
           default: doc.define.default,
         });
-      } else if (doc.kind == 'typedef' || doc.isEnum === true) {
+      } else if (doc.kind == 'typedef' || (doc.isEnum === true && !doc.exports)) {
         typedefs.push({
           name: doc.longname,
           types: getTypes(doc.type.names),
         });
       } else {
         const symbol = {
+          exports: doc.exports,
           name: doc.longname,
           kind: doc.kind,
           description: doc.classdesc || doc.description,
@@ -135,7 +142,7 @@ exports.publish = function (data, opts) {
           });
         }
 
-        const target = isExterns ? externs : doc.api ? symbols : base;
+        const target = isExterns ? externs : (doc.api || doc.exports) ? symbols : base;
         const existingSymbol = symbolsByName[symbol.name];
         if (existingSymbol) {
           const idx = target.indexOf(existingSymbol);
@@ -149,7 +156,7 @@ exports.publish = function (data, opts) {
             symbol.extends in classes &&
             !classes[symbol.extends].api &&
             classes[symbol.extends].augments
-          ) {
+            ) {
             symbol.extends = classes[symbol.extends].augments[0];
           }
           if (symbol.extends) {
