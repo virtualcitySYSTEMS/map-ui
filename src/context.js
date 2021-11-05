@@ -296,9 +296,9 @@ export async function addConfigToContext(config, context) {
     await Promise.all(config.plugins.map(pluginConfig => loadPlugin(context, pluginConfig.name, pluginConfig)));
   }
 
-  await Promise.all([...context.plugins.values()].map(async (plugin) => {
+  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.preInitialize) {
-      await plugin.preInitialize(config.plugins.find(p => p.name === plugin.name));
+      await plugin.preInitialize(config.plugins.find(p => p.name === name));
     }
   }));
   setDefaultProjectionOptions(config.projection);
@@ -352,9 +352,9 @@ export async function addConfigToContext(config, context) {
     }));
   }
 
-  await Promise.all([...context.plugins.values()].map(async (plugin) => {
+  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.postInitialize) {
-      await plugin.postInitialize(config.plugins.find(p => p.name === plugin.name));
+      await plugin.postInitialize(config.plugins.find(p => p.name === name));
     }
   }));
   return startingMap;
@@ -411,15 +411,15 @@ const componentTypes = {
  * @returns {Promise<void>}
  */
 export async function setPluginUiComponents(context, pluginComponents) {
-  await Promise.all([...context.plugins.values()].map(async (plugin) => {
+  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.registerUiPlugin) {
-      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === plugin.name));
+      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === name));
       Object.entries(componentTypes)
         .forEach(([configType, componentType]) => {
           if (config[configType]) {
             const componentsArray = Array.isArray(config[configType]) ? config[configType] : [config[configType]];
             const components = componentsArray
-              .map(component => createComponent(plugin.name, configType, component));
+              .map(component => createComponent(name, configType, component));
             pluginComponents[componentType].push(...components);
           }
         });
