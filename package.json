@@ -43,9 +43,9 @@
     "sass": "1.32.13",
     "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
     "typescript": "^4.2.4",
-    "vite": "^2.4.1",
+    "vite": "^2.6.13",
     "vite-plugin-components": "^0.12.2",
-    "vite-plugin-vue2": "^1.7.3",
+    "vite-plugin-vue2": "^1.9.0",
     "vue-loader": "^15.9.7",
     "vue-template-compiler": "^2.6.14",
     "walk": "^2.3.15"
