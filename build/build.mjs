@@ -3,7 +3,7 @@ import path from 'path';
 import { build } from 'vite';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
 import generateOLLib from './generateOLLib.mjs';
-
+import buildCesium from './buildCesium.mjs';
 const libraries = {
   'vue': {
     lib: 'vue',
@@ -57,7 +57,13 @@ await build({
     minify: true,
     emptyOutDir: true,
     rollupOptions: {
-      plugins: [vcsOl()],
+      plugins: [vcsOl(), {
+        transform(source, sid) {
+          if (/src(\/|\\)main.js/.test(sid)) {
+            return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
+          }
+        }
+      }],
       external: Object.keys(libraries),
       output: {
         paths: libraryPaths
@@ -137,3 +143,4 @@ plugins.forEach(async (plugin) => {
   });
 });
 
+await buildCesium();
