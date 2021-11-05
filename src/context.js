@@ -298,7 +298,7 @@ export async function addConfigToContext(config, context) {
 
   await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.preInitialize) {
-      await plugin.preInitialize(config.plugins.find(p => p.name === name));
+      await plugin.preInitialize(config.plugins.find(p => p.name === name), context);
     }
   }));
   setDefaultProjectionOptions(config.projection);
@@ -354,7 +354,7 @@ export async function addConfigToContext(config, context) {
 
   await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.postInitialize) {
-      await plugin.postInitialize(config.plugins.find(p => p.name === name));
+      await plugin.postInitialize(config.plugins.find(p => p.name === name), context);
     }
   }));
   return startingMap;
@@ -413,7 +413,7 @@ const componentTypes = {
 export async function setPluginUiComponents(context, pluginComponents) {
   await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
     if (plugin.registerUiPlugin) {
-      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === name));
+      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === name), context);
       Object.entries(componentTypes)
         .forEach(([configType, componentType]) => {
           if (config[configType]) {

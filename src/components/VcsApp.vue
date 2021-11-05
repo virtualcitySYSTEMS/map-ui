@@ -81,17 +81,17 @@
       provide('pluginComponents', pluginComponents);
 
       /** Toolbox */
-      const toolboxManager = new ToolboxManager();
-      provide('toolboxManager', toolboxManager);
+      context.toolboxManager = new ToolboxManager();
+      provide('toolboxManager', context.toolboxManager);
 
 
       /** Popover */
-      const popoverManager = new PopoverManager();
-      provide('popoverManager', popoverManager);
+      context.popoverManager = new PopoverManager();
+      provide('popoverManager', context.popoverManager);
 
       /** Window */
-      const windowManager = new WindowManager();
-      provide('windowManager', windowManager);
+      context.windowManager = new WindowManager();
+      provide('windowManager', context.windowManager);
 
       const configLoaded = ref(false);
       const startingMapName = ref('');
@@ -103,6 +103,13 @@
         startingMapName.value = startingMap.name;
         configLoaded.value = true;
         await setPluginUiComponents(context, pluginComponents);
+
+        // todo wait for Vue 3 and move into onMounted Hook
+        await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
+          if (plugin.postUiInitialize) {
+            await plugin.postUiInitialize(context.config.plugins.find(p => p.name === name), context);
+          }
+        }));
       });
 
       onUnmounted(() => {
@@ -118,7 +125,7 @@
         mapId: `mapCollection-${id}`,
         startingMapName,
         configLoaded,
-        toolboxManagerVisible: toolboxManager.state.visible,
+        toolboxManagerVisible: context.toolboxManager.state.visible,
       };
     },
     provide() {
