@@ -227,8 +227,11 @@ function generateExports(symbols) {
       formatSymbolExport(symbol, namespaces, imports);
     }
   });
-  const source = Object.keys(imports).map(line => line.replace('from \'ol/', 'from \'ol/src/')).join('\n');
-  return `${source}\nexport * from 'ol';\n`;
+  const source = Object.keys(imports)
+    .map(line => line.replace('from \'ol/', 'from \'ol/src/'))
+    .map(line => line.replace('from \'ol\'', 'from \'ol/src/index.js\''))
+    .join('\n');
+  return `${source}\nexport * from 'ol/src/index.js';\n`;
 }
 
 /**
@@ -241,5 +244,3 @@ export default async function main() {
   const filepath = path.join('lib', 'olLib.js');
   await fs.promises.writeFile(filepath, `/* eslint-disable */\n${code}`);
 }
-
-await main();
