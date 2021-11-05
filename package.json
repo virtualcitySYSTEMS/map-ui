@@ -13,7 +13,7 @@
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "@vcmap/cesium": "^1.87.2",
-    "@vcmap/core": "git://github.com/virtualcitySYSTEMS/map-core.git#master",
+    "@vcmap/core": "github:virtualcitySYSTEMS/map-core#master",
     "@vcsuite/check": "^1.0.3",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",
