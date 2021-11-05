@@ -20,7 +20,14 @@ const libraries = {
   'ol': {
     lib: 'ol',
     entry: path.join('lib', 'ol.js'),
-  }
+  },
+  '@vcmap/core': {
+    lib: 'core',
+    entry: path.join('lib', 'core.js'),
+    rollupOptions: {
+      plugins: [vcsOl()],
+    }
+  },
 };
 
 const plugins = ['test'];
@@ -31,6 +38,7 @@ Object.entries(libraries).forEach(([key, value]) => {
   value.hash = `${uuid().substring(0,6)}`;
   libraryPaths[key] = `./${value.lib}.${value.hash}.es.js`;
   pluginLibraryPaths[key] = `../../assets/${value.lib}.es.js`;
+  value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
 });
 
 console.log('Building ol dump file');
@@ -74,6 +82,7 @@ Object.entries(libraries).forEach(async ([key, value]) => {
         fileName: `assets/${value.lib}.${value.hash}`
       },
       rollupOptions: {
+        ...value.rollupOptions,
         external: [...Object.keys(libraries).filter((library) => { return key !== library })],
         output: {
           paths: libraryPaths
@@ -96,6 +105,7 @@ Object.entries(libraries).forEach(async ([key, value]) => {
         fileName: `assets/${value.lib}`
       },
       rollupOptions: {
+        ...value.rollupOptions,
         external: [...Object.keys(libraries), `./assets/ol.${value.hash}.es.js`],
         output: {
           paths: libraryPaths
