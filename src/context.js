@@ -1,7 +1,7 @@
 import {
   Collection,
-  DeclarativeStyleItem, Layer,
-  MapCollection,
+  DeclarativeStyleItem, getTerrainProviderForUrl, Layer,
+  MapCollection, ObliqueCollection, ObliqueDataSet,
   Projection,
   referenceableStyleSymbol, setDefaultProjectionOptions,
   StyleType,
@@ -16,9 +16,6 @@ import Vue from 'vue';
 
 import './layers.js';
 import './maps.js';
-import { getTerrainProviderForUrl } from '@vcmap/core/src/vcs/vcm/layer/terrainHelpers';
-import ObliqueDataSet from '@vcmap/core/src/vcs/vcm/oblique/ObliqueDataSet';
-import ObliqueCollection from '@vcmap/core/src/vcs/vcm/oblique/ObliqueCollection';
 
 /**
  * @typedef {Object} PluginComponents
