@@ -14,9 +14,6 @@ import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import Vue from 'vue';
 
-import './layers.js';
-import './maps.js';
-
 /**
  * @typedef {Object} PluginComponents
  * @property {Array<Vue>} mapButtons
