@@ -130,7 +130,7 @@
     setup() {
       const mapState = inject('mapState');
       const pluginComponents = inject('pluginComponents');
-      const context = inject('context');
+      const app = inject('vcsApp');
 
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
@@ -141,7 +141,7 @@
        * @param {string} mapName
        */
       const setMap = (mapName) => {
-        context.maps.setActiveMap(mapName);
+        app.maps.setActiveMap(mapName);
       };
       return {
         mapButtons: pluginComponents.mapButtons,

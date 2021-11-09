@@ -19,7 +19,7 @@ export default {
     mapButton: {
       template: "<Button @click=\"alert('check')\">VC Systems</Button>",
       setup() {
-        const context = inject("context");
+        const app = inject('vcsApp');
         const cartesian3 = new Cartesian2(1, 2);
 
         const toolboxManager = inject("toolboxManager");
@@ -27,7 +27,7 @@ export default {
         toolboxData.forEach(([group, id]) => toolboxManager.addToolboxGroup(group, id));
 
         return {
-          context,
+          app,
           cartesian3,
         };
       },
@@ -36,7 +36,7 @@ export default {
           getSource().addFeature(new Feature({}));
           window.alert(`
 there are ${getSource().getFeatures().length} features
-          ${this.context.maps.activeMap.name}`);
+          ${this.app.maps.activeMap.name}`);
         },
       },
     },

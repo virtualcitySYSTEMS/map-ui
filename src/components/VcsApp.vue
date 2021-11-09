@@ -22,7 +22,7 @@
     reactive,
     ref,
   } from '@vue/composition-api';
-  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/context.js';
+  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/vcsApp.js';
   import { WindowManager } from '@/modules/window-manager/window.manager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
@@ -59,15 +59,15 @@
         headerButtons: reactive([]),
       };
 
-      const context = createVcsApp();
+      const app = createVcsApp();
 
-      const mapActivatedDestroy = context.maps.mapActivated.addEventListener(
+      const mapActivatedDestroy = app.maps.mapActivated.addEventListener(
         (map) => {
           mapState.activeMap = map.className;
         },
       );
 
-      const mapAddedDestroy = context.maps.added.addEventListener(
+      const mapAddedDestroy = app.maps.added.addEventListener(
         ({ className, name }) => {
           mapState.maps.push({
             className,
@@ -76,22 +76,22 @@
         },
       );
 
-      provide('context', context);
+      provide('vcsApp', app);
       provide('mapState', mapState);
       provide('pluginComponents', pluginComponents);
 
       /** Toolbox */
-      context.toolboxManager = new ToolboxManager();
-      provide('toolboxManager', context.toolboxManager);
+      app.toolboxManager = new ToolboxManager();
+      provide('toolboxManager', app.toolboxManager);
 
 
       /** Popover */
-      context.popoverManager = new PopoverManager();
-      provide('popoverManager', context.popoverManager);
+      app.popoverManager = new PopoverManager();
+      provide('popoverManager', app.popoverManager);
 
       /** Window */
-      context.windowManager = new WindowManager();
-      provide('windowManager', context.windowManager);
+      app.windowManager = new WindowManager();
+      provide('windowManager', app.windowManager);
 
       const configLoaded = ref(false);
       const startingMapName = ref('');
@@ -99,15 +99,15 @@
       onBeforeMount(async () => {
         const config = await fetch(props.config)
           .then(response => response.json());
-        const startingMap = await addConfigToContext(config, context);
+        const startingMap = await addConfigToContext(config, app);
         startingMapName.value = startingMap.name;
         configLoaded.value = true;
-        await setPluginUiComponents(context, pluginComponents);
+        await setPluginUiComponents(app, pluginComponents);
 
         // todo wait for Vue 3 and move into onMounted Hook
-        await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
+        await Promise.all([...app.plugins.entries()].map(async ([name, plugin]) => {
           if (plugin.postUiInitialize) {
-            await plugin.postUiInitialize(context.config.plugins.find(p => p.name === name), context);
+            await plugin.postUiInitialize(app.config.plugins.find(p => p.name === name), app);
           }
         }));
       });
@@ -125,7 +125,7 @@
         mapId: `mapCollection-${id}`,
         startingMapName,
         configLoaded,
-        toolboxManagerVisible: context.toolboxManager.state.visible,
+        toolboxManagerVisible: app.toolboxManager.state.visible,
       };
     },
     provide() {

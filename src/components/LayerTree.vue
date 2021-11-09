@@ -62,14 +62,14 @@
     },
     setup(props) {
       const tree = ref();
-      const context = inject('context');
+      const app = inject('vcsApp');
       const popoverManager = inject('popoverManager');
       const windowManager = inject('windowManager');
       const selectedIds = ref([]);
       provide('tree', tree);
 
       onMounted(async () => {
-        tree.value = await getTree(context);
+        tree.value = await getTree(app);
       });
 
 

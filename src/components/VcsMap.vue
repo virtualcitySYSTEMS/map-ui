@@ -50,17 +50,17 @@
       },
     },
     setup(props) {
-      const context = inject('context');
+      const app = inject('vcsApp');
 
       /**
        * @function
        * @description Initializes the map from configuration.
        */
       onMounted(async () => {
-        context.maps.setTarget(props.mapId);
+        app.maps.setTarget(props.mapId);
 
-        await context.maps.setActiveMap(props.startingMapName || [...context.maps][0].name);
-        await context.maps.activeMap.gotoViewPoint(context.startViewPoint);
+        await app.maps.setActiveMap(props.startingMapName || [...app.maps][0].name);
+        await app.maps.activeMap.gotoViewPoint(app.startViewPoint);
       });
     },
   });
