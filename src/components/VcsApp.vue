@@ -104,7 +104,7 @@
         configLoaded.value = true;
         await setPluginUiComponents(app, pluginComponents);
 
-        // todo wait for Vue 3 and move into onMounted Hook
+        // todo wait for Vue 3 and move into onMounted Hook, vue2 hooks are not async :(
         await Promise.all([...app.plugins.entries()].map(async ([name, plugin]) => {
           if (plugin.postUiInitialize) {
             await plugin.postUiInitialize(app.config.plugins.find(p => p.name === name), app);
