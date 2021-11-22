@@ -5,6 +5,7 @@ import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
 import generateOLLib from './generateOLLib.mjs';
 import buildCesium from './buildCesium.mjs';
 import fs from 'fs';
+
 const libraries = {
   'vue': {
     lib: 'vue',
