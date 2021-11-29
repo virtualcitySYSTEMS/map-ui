@@ -7,6 +7,17 @@ import ViteComponents, {
 } from 'vite-plugin-components';
 
 const configMain = defineConfig({
+  optimizeDeps: {
+    exclude: [
+      '@vcmap/core',
+    ],
+    include: [
+      '@vcmap/core > fast-deep-equal',
+      '@vcmap/core > axios',
+      '@vcmap/core > rbush-knn',
+      '@vcmap/core > pbf',
+    ],
+  },
   resolve: {
     alias: {
       '@': `${path.resolve(__dirname, 'src')}`,
