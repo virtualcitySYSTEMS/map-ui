@@ -13,46 +13,42 @@ export default {
         template: '<Button @click="switchWindow()">Example</Button>',
         setup() {
           const app = inject('vcsApp');
-          return {
-            app,
-          };
-        },
-        methods: {
-          switchWindow() {
-            this.app.windowManager.onRemoved.addEventListener((test) => {
+          const switchWindow = () => {
+            app.windowManager.onRemoved.addEventListener((test) => {
               console.log(test);
             });
-            if (this.app.windowManager.has('test')) {
-              this.app.windowManager.remove('test');
+            if (app.windowManager.has('test')) {
+              app.windowManager.remove('test');
             } else {
-              this.app.windowManager.add({
+              app.windowManager.add({
                 id: 'test',
                 component: mySuperComponent,
                 windowSlot: WINDOW_SLOTS.dynamicRight,
               });
             }
-          },
+          };
+          return {
+            switchWindow,
+          };
         },
       }, {
         template: '<Button @click="switchWindow()">ADD</Button>',
         setup() {
           const app = inject('vcsApp');
-          return {
-            app,
-          };
-        },
-        methods: {
-          switchWindow() {
-            if (this.app.windowManager.has(228)) {
-              this.app.windowManager.remove('test');
+          const switchWindow = () => {
+            if (app.windowManager.has(228)) {
+              app.windowManager.remove('test');
             } else {
-              this.app.windowManager.add({
+              app.windowManager.add({
                 id: 'test',
                 component: mySuperComponent,
                 windowSlot: WINDOW_SLOTS.dynamicRight,
               });
             }
-          },
+          };
+          return {
+            switchWindow,
+          };
         },
       }],
     };

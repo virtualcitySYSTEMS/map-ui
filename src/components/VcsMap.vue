@@ -35,7 +35,15 @@
 </style>
 
 <script >
-  import { defineComponent, inject, onMounted } from '@vue/composition-api';
+  import { defineComponent, inject, onMounted, isReactive } from '@vue/composition-api';
+  import { getLogger as getLoggerByName } from '@vcsuite/logger';
+
+  /**
+   * @returns {Logger}
+   */
+  function getLogger() {
+    return getLoggerByName('VcsMap');
+  }
 
 
   export default defineComponent({
@@ -61,6 +69,10 @@
 
         await app.maps.setActiveMap(props.startingMapName || [...app.maps][0].name);
         await app.maps.activeMap.gotoViewPoint(app.startViewPoint);
+        if (isReactive(app.maps.activeMap)) {
+          // eslint-disable-next-line no-console
+          getLogger().error('Map is reactive, PLEASE FIX');
+        }
       });
     },
   });
