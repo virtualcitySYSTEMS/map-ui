@@ -1,18 +1,28 @@
 import {
   Collection,
-  DeclarativeStyleItem, getTerrainProviderForUrl, Layer,
-  MapCollection, ObliqueCollection, ObliqueDataSet,
-  Projection,
-  referenceableStyleSymbol, setDefaultProjectionOptions,
-  StyleType,
-  VcsClassRegistry,
+  IndexedCollection,
+  Layer,
+  MapCollection,
+  setDefaultProjectionOptions,
+  StyleItem,
   VcsEvent,
-  VectorStyleItem,
+  VcsMap,
   ViewPoint,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import Vue from 'vue';
+import { check } from '@vcsuite/check';
+
+import Context from './context.js';
+import {
+  addObjectToCollection,
+  contextIdSymbol,
+  loadPlugin,
+  removeContextFromShadowMaps,
+  removeContextFromVcsObjectCollection,
+  addConfigArrayToCollection,
+} from './vcsAppContextHelpers.js';
 
 /**
  * @typedef {Object} PluginComponents
@@ -39,19 +49,15 @@ import Vue from 'vue';
  * @property {function():Promise<void>} destroy
  * @api
  */
-// XXX missing config-pipeline security
+
 /**
- * @typedef {Object} VcsApp
- * @property {import("@vcmap/core").MapCollection} maps
- * @property {import("@vcmap/core").LayerCollection} layers
- * @property {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>} viewpoints
- * @property {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>} styles
- * @property {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>} obliqueCollections
- * @property {import("@vcmap/core").Collection<VcsPlugin>} plugins
- * @property {import("@vcmap/core").ViewPoint} startViewPoint
- * @property {Object<string, *>} config
- * @property {import("@vcmap/core").VcsEvent<void>} destroyed
- * @property {function():void} destroy
+ * @typedef {Object} ShadowMaps
+ * @property {Map<string, Array<import("@vcmap/core").VcsMapOptions>>} maps
+ * @property {Map<string, Array<import("@vcmap/core").LayerOptions>>} layers
+ * @property {Map<string, Array<import("@vcmap/core").ViewPointOptions>>} viewPoints
+ * @property {Map<string, Array<import("@vcmap/core").StyleItemOptions>>} styles
+ * @property {Map<string, Array<import("@vcmap/core").ObliqueCollectionOptions>>} obliqueCollections
+ * @property {Map<string, Array<Object>>} plugins
  */
 
 /**
@@ -67,293 +73,386 @@ function getLogger() {
 const vcsApps = new Map();
 
 /**
- * @param {string} id
- * @returns {VcsApp}
+ * @param {import("@vcmap/core").Collection<*>} collection
  */
-export function getContextById(id) {
-  return vcsApps.get(id);
-}
-
-/**
- * @returns {VcsApp}
- */
-export function createVcsApp() {
-  const maps = new MapCollection();
-  const id = uuidv4();
-
-  const vcsApp = {
-    id,
-    maps,
-    layers: maps.layerCollection,
-    viewpoints: new Collection(),
-    styles: new Collection(),
-    obliqueCollections: new Collection(),
-    startViewPoint: new ViewPoint({}),
-    config: {},
-    plugins: new Map(),
-    destroyed: new VcsEvent(),
-    destroy() {
-      delete vcsApps.delete(id);
-      this.destroyed.raiseEvent();
-      // TODO other destroy functions
-    },
-  };
-
-  vcsApps.set(id, vcsApp);
-  return vcsApp;
-}
-
-/**
- * returns a constructor of a type.
- * @api stable
- * @export
- * @param {Object} options
- * @returns {Promise<Object|null>}
- */
-export async function getObjectFromOptions(options) {
-  if (!options.type) {
-    getLogger().warning(`ObjectCreation failed: could not find type in options ${options}`);
-    return null;
-  }
-  const ObjectConstructor = await VcsClassRegistry.getClass(options.type);
-  if (!ObjectConstructor) {
-    getLogger().warning(`ObjectCreation failed: could not find javascript class of type ${options.type}`);
-    return null;
-  }
-  let object = null;
-  try {
-    object = new ObjectConstructor(options);
-  } catch (ex) {
-    getLogger().warning(`Error: ${ex}`);
-    object = null;
-  }
-
-  if (!object) {
-    getLogger().warning('ObjectCreation failed: could not create new Object');
-    return null;
-  }
-  return object;
-}
-
-/**
- * @param {import("@vcmap/core").VectorStyleItem.Options|import("@vcmap/core").DeclarativeStyleItem.Options} styleConfig
- * @param {VcsApp} context
- */
-export function addStyleItem(styleConfig, context) {
-  if (!styleConfig.name && !styleConfig.id) {
-    getLogger().warning('styles need a name. please reconfigure the styles section.');
-    return;
-  }
-  let styleItem;
-  if (styleConfig.type === StyleType.DECLARATIVE || styleConfig.declarativeStyle) {
-    styleItem = new DeclarativeStyleItem(
-      /** @type {import("@vcmap/core").DeclarativeStyleItem.Options} */ (styleConfig),
-    );
-    if (!styleItem.cesiumStyle.ready) {
-      getLogger().warning(`declarative style: ${styleConfig.name} has errors in the declarative style section and cannot be used`);
-      return;
-    }
-  } else {
-    styleItem = new VectorStyleItem(/** @type {import("@vcmap/core").VectorStyleItem.Options} */ (styleConfig));
-  }
-  if (!styleItem) {
-    getLogger().warning(`could not create style item: ${styleConfig.name}`);
-    return;
-  }
-  styleItem[referenceableStyleSymbol] = true;
-  // FIXME configContentSymbol
-  // styleItem[configContentSymbol] = true;
-  if (context.styles.add(styleItem) != null) {
-    getLogger().info(`added ${styleItem.className} with name ${styleItem.name}`);
-  }
-}
-
-/**
- * creates an LayerObject of the given type and calls the init method of the object.
- * @param {import("@vcmap/core").Layer.Options} layerConfig the layerConfig
- * @param {VcsApp} context
- * @returns {Promise<void>}
- */
-async function addLayer(layerConfig, context) {
-  const layer = await getObjectFromOptions(layerConfig);
-  if (!layer || !(layer instanceof Layer)) {
-    getLogger().warning('Could not load Layer');
-    return;
-  }
-  // FIXME configContentSymbol
-  // layer[configContentSymbol] = true;
-  if (context.layers.add(/** @type {import("@vcmap/core").Layer} */ layer) != null) {
-    getLogger().info(`Loaded layer of type :${layerConfig.type} with name: ${layerConfig.name}`);
-  }
-}
-
-/**
- * @param {import(@vcmap/core).ObliqueCollectionConfig} options
- * @param {VcsApp} context
- */
-export function addObliqueCollection(options, context) {
-  if (!Array.isArray(options.dataSets)) {
-    getLogger().warning(`oblique collection ${options.name} is missing a datasets array`);
-    return;
-  }
-  const collectionOptions = {
-    ...options,
-    dataSets: options.dataSets.map(({ url, projection, terrainUrl }) => {
-      let usedProjection;
-      if (projection) {
-        const proj = new Projection(projection);
-        usedProjection = proj.proj;
-      }
-
-      const terrainProvider = terrainUrl ? getTerrainProviderForUrl({ url: terrainUrl }) : undefined;
-      return new ObliqueDataSet(url, usedProjection, terrainProvider);
-    }),
-  };
-
-  if (context.obliqueCollections.add(new ObliqueCollection(collectionOptions)) != null) {
-    getLogger().info(`Loaded oblique collection with name: ${options.name}`);
-  }
-}
-
-/**
- * creates an MapWidgetObject of the given type</br>
- * and calls addMap() to add it to the framework.</br>
- * @param {Object} mapConfig the class name of the MapWidget
- * @param {VcsApp} context the class name of the MapWidget
- * @returns {Promise<import("@vcmap/core").VcsMap|null>}
- */
-async function addMap(mapConfig, context) {
-  const mapOptions = { ...mapConfig };
-  mapOptions.layerCollection = context.layers;
-  const map = await getObjectFromOptions(mapOptions);
-  if (!map) { // XXX missing instance of basemap check
-    getLogger().warning('Could not load map');
-    return null;
-  }
-  map.mapElement.classList.add('vcm-map-top');
-  if (context.maps.add(/** @type {import("@vcmap/core").VcsMap} */ map) != null) {
-    getLogger().info(`Loaded map of type :${mapConfig.type} with name: ${mapConfig.name}`);
-    return map;
-  }
-  return null;
-}
-
-/**
- * @param {VcsApp} context
- * @param {string} name
- * @param {PluginConfig} config
- * @param {string} [registry='https://plugins.virtualcitymap.de/']
- * @returns {Promise<void>}
- */
-export function loadPlugin(context, name, config, registry = 'https://plugins.virtualcitymap.de/') {
-  let module = config.entry;
-
-  if (!module) {
-    module = `${registry.replace(/\/?$/, '')}/${name}/${config.version || '*'}/index.js`;
-  } else if (!/^(https?:\/\/|\/)/.test(module)) {
-    module = `${window.location.origin}${window.location.pathname.replace(/\/?$/, '/')}${module}`;
-  } else if (module === '_dev') {
-    module = `/${name}.js`;
-  }
-
-  // if (!context.security.isTrustedUrl(module)) { XXX missing pipeline security
-  //   getLogger().warning(`suppressed loading of insecure plugin ${module}`);
-  //   return Promise.resolve();
-  // }
-
-  return import(/* @vite-ignore */ module)
-    .then((plugin) => {
-      if (!context.plugins.has(name)) {
-        const actualPlugin = plugin.default || plugin;
-        context.plugins.set(name, actualPlugin);
-      } else {
-        getLogger().warning(`cannot load plugin ${name} twice`);
-      }
-    })
-    .catch((err) => {
-      getLogger().error(`failed to load plugin ${name}`);
-      getLogger().error(err);
-    });
-}
-
-// XXX should be config typed
-/**
- * @param {Object} config
- * @param {VcsApp} context TODO this is the VcsApp for now, this should become a context
- * @returns {Promise<import("@vcmap/core").VcsMap|null>}
- */
-export async function addConfigToContext(config, context) {
-  // IDEA this could be an array
-  context.config = config;
-
-  if (Array.isArray(config.plugins)) {
-    await Promise.all(config.plugins.map(pluginConfig => loadPlugin(context, pluginConfig.name, pluginConfig)));
-  }
-
-  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
-    if (plugin.preInitialize) {
-      await plugin.preInitialize(config.plugins.find(p => p.name === name), context);
-    }
-  }));
-  setDefaultProjectionOptions(config.projection);
-
-  if (Array.isArray(config.styles)) {
-    config.styles.forEach((styleConfig) => {
-      addStyleItem(styleConfig, context);
-    });
-  }
-
-  // TODO add flights & ade here
-  if (Array.isArray(config.layers)) {
-    await Promise.all(config.layers.map(layerConfig => addLayer(layerConfig, context)));
-  }
-
-  [...context.layers].forEach((l) => {
-    if (l.activeOnStartup) {
-      l.activate()
-        .catch((err) => {
-          getLogger().error(`Failed to activate active on startup layer ${l.name}`);
-          getLogger().error(err);
-          context.layers.remove(l);
-          l.destroy();
-        });
+function destroyCollection(collection) {
+  [...collection].forEach((i) => {
+    if (i.destroy) {
+      i.destroy();
     }
   });
-
-  if (Array.isArray(config.obliqueCollections)) {
-    config.obliqueCollections.forEach((options) => {
-      addObliqueCollection(options, context);
-    });
+  collection.destroy();
+}
+/**
+ * @class
+ */
+class VcsApp {
+  constructor() {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._id = uuidv4();
+    /**
+     * @type {Context}
+     * @private
+     */
+    this._defaultDynamicContext = new Context({ id: '_defaultDynamicContext' });
+    /**
+     * @type {Context}
+     * @private
+     */
+    this._dynamicContext = this._defaultDynamicContext;
+    /**
+     * @type {Array<function():void>}
+     * @private
+     */
+    this._collectionListeners = [];
+    /**
+     * @type {import("@vcmap/core").MapCollection}
+     * @private
+     */
+    this._maps = new MapCollection();
+    this._addCollectionListener(this._maps);
+    /**
+     * @type {import("@vcmap/core").LayerCollection}
+     * @private
+     */
+    this._layers = this._maps.layerCollection;
+    this._addCollectionListener(this._layers);
+    /**
+     * @type {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>}
+     * @private
+     */
+    this._obliqueCollections = new Collection(); // XXX there is a global for this collection in core.
+    this._addCollectionListener(this._obliqueCollections);
+    /**
+     * @type {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>}
+     * @private
+     */
+    this._viewPoints = new Collection();
+    this._addCollectionListener(this._viewPoints);
+    /**
+     * @type {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>}
+     * @private
+     */
+    this._styles = new Collection(); // XXX there is a global for this collection in core.
+    this._addCollectionListener(this._styles);
+    /**
+     * @type {import("@vcmap/core").Collection<VcsPlugin>}
+     * @private
+     */
+    this._plugins = new Collection();
+    this._addCollectionListener(this._plugins);
+    /**
+     * @type {import("@vcmap/core").IndexedCollection<Context>}
+     * @private
+     */
+    this._contexts = new IndexedCollection('id');
+    this._contexts.add(this._dynamicContext);
+    /**
+     * @type {ShadowMaps}
+     * @private
+     */
+    this._shadowMaps = {
+      layers: new Map(),
+      maps: new Map(),
+      obliqueCollections: new Map(),
+      viewPoints: new Map(),
+      styles: new Map(),
+      plugins: new Map(),
+    };
+    /**
+     * @type {import("@vcmap/core").VcsEvent<void>}
+     * @private
+     */
+    this._destroyed = new VcsEvent();
+    /**
+     * @type {Promise<void>}
+     * @private
+     */
+    this._contextMutationPromise = Promise.resolve();
+    vcsApps.set(this._id, this);
   }
 
-  if (Array.isArray(config.viewpoints)) {
-    config.viewpoints.forEach((viewpointConfig) => {
-      context.viewpoints.add(new ViewPoint(viewpointConfig));
-    });
+  /**
+   * @type {string}
+   * @readonly
+   */
+  get id() { return this._id; }
+
+  /**
+   * @type {import("@vcmap/core").MapCollection}
+   * @readonly
+   */
+  get maps() { return this._maps; }
+
+  /**
+   * @type {import("@vcmap/core").LayerCollection}
+   * @readonly
+   */
+  get layers() { return this._layers; }
+
+  /**
+   * @type {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>}
+   * @readonly
+   */
+  get obliqueCollections() { return this._obliqueCollections; }
+
+  /**
+   * @type {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>}
+   * @readonly
+   */
+  get viewPoints() { return this._viewPoints; }
+
+  /**
+   * @type {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>}
+   * @readonly
+   */
+  get styles() { return this._styles; }
+
+  /**
+   * @type {import("@vcmap/core").Collection<VcsPlugin>}
+   * @readonly
+   */
+  get plugins() { return this._plugins; }
+
+  /**
+   * @type {import("@vcmap/core").VcsEvent<void>}
+   * @readonly
+   */
+  get destroyed() { return this._destroyed; }
+
+  /**
+   * @returns {VcsEvent<Context>}
+   * @readonly
+   */
+  get contextAdded() { return this._contexts.added; }
+
+  /**
+   * @returns {VcsEvent<Context>}
+   * @readonly
+   */
+  get contextRemoved() { return this._contexts.removed; }
+
+  /**
+   * @param {string} id
+   * @returns {Context}
+   */
+  getContextById(id) {
+    return this._contexts.getByKey(id);
   }
 
-  if (config.startViewPoint) {
-    context.startViewPoint = context.viewpoints.getByKey(config.startViewPoint);
-  }
-
-  let startingMap = null;
-  if (Array.isArray(config.maps)) {
-    await Promise.all(config.maps.map(async (mapConfig) => {
-      const map = await addMap(mapConfig, context);
-      if (map && (mapConfig.startingmap || !startingMap)) {
-        startingMap = map;
+  /**
+   * @param {import("@vcmap/core").Collection} collection
+   * @private
+   */
+  _addCollectionListener(collection) {
+    this._collectionListeners.push(collection.added.addEventListener((item) => {
+      if (!item[contextIdSymbol]) {
+        item[contextIdSymbol] = this._dynamicContext.id;
       }
     }));
   }
 
-  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
-    if (plugin.postInitialize) {
-      await plugin.postInitialize(config.plugins.find(p => p.name === name), context);
+  /**
+   * @param {Context} context
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _addContext(context) {
+    check(context, Context);
+
+    if (this._contexts.has(context.id)) {
+      getLogger().info(`context with id ${context.id} already loaded`);
+      return;
     }
-  }));
-  return startingMap;
-  // TODO activate map here before loading widgets? or should widgets be like layersin future (makes more sense) so we can
-  // move activating the map out of the config parsing?
+
+    const { config } = context;
+    let plugins = [];
+    if (Array.isArray(config.plugins)) {
+      plugins = await Promise.all(config.plugins.map(async (pluginConfig) => {
+        const plugin = await loadPlugin(this, pluginConfig.name, pluginConfig);
+        if (!plugin) {
+          return null;
+        }
+        plugin[contextIdSymbol] = context.id;
+        return plugin;
+      }));
+
+      plugins = plugins
+        .filter(p => p)
+        .map(p => addObjectToCollection(p, this._plugins, this._shadowMaps.plugins))
+        .filter(p => p);
+    }
+
+    if (config.projection) { // XXX this needs fixing. this should be _projections_ and there should be a `defaultProjection`
+      setDefaultProjectionOptions(config.projection);
+    }
+
+    await addConfigArrayToCollection(
+      config.styles,
+      this._styles,
+      this._shadowMaps.styles,
+      context.id,
+      StyleItem,
+    );
+
+    // TODO add flights & ade here
+    await addConfigArrayToCollection(
+      config.layers,
+      this._layers,
+      this._shadowMaps.layers,
+      context.id,
+      Layer,
+    );
+
+    [...this._layers]
+      .filter(l => l[contextIdSymbol] === context.id)
+      .forEach((l) => {
+        if (l.activeOnStartup) {
+          l.activate()
+            .catch((err) => {
+              getLogger().error(`Failed to activate active on startup layer ${l.name}`);
+              getLogger().error(err);
+              this._layers.remove(l);
+              l.destroy();
+            });
+        }
+      });
+    // TODO oblique collections
+    // if (Array.isArray(config.obliqueCollections)) {
+    //   config.obliqueCollections.forEach((options) => {
+    //     const collection = createObliqueCollection(options);
+    //     if (collection) {
+    //       collection[contextIdSymbol] = context.id;
+    //       this._obliqueCollections.add(collection);
+    //     }
+    //   });
+    // }
+
+    if (Array.isArray(config.viewpoints)) {
+      config.viewpoints.forEach((viewpointConfig) => { // TODO make this also _typed_?
+        const viewpoint = new ViewPoint(viewpointConfig);
+        if (!viewpoint.isValid()) {
+          getLogger().warning(`Viewpoint ${viewpoint.name} is not valid`);
+        } else {
+          viewpoint[contextIdSymbol] = context.id;
+          addObjectToCollection(viewpoint, this._viewPoints, this._shadowMaps.viewPoints);
+        }
+      });
+    }
+
+    await addConfigArrayToCollection(
+      config.maps,
+      this._maps,
+      this._shadowMaps.maps,
+      context.id,
+      VcsMap,
+    );
+    [...this._maps]
+      .filter(m => m[contextIdSymbol] === context.id)
+      .forEach((m) => { m.layerCollection = this._layers; });
+
+    if (config.startingMapName) {
+      await this._maps.setActiveMap(config.startingMapName);
+    } else if (!this._maps.activeMap && this._maps.size > 0) {
+      await this._maps.setActiveMap([...this._maps][0].name);
+    }
+
+    if (config.startingViewPointName && this._maps.activeMap) {
+      const startViewPoint = this._viewPoints.getByKey(config.startingViewPointName);
+      if (startViewPoint) {
+        await this._maps.activeMap.gotoViewPoint(startViewPoint);
+      }
+    }
+
+    await Promise.all(plugins.map(async (plugin) => {
+      if (plugin.postInitialize) {
+        await plugin.postInitialize();
+      }
+    }));
+
+    this._contexts.add(context);
+  }
+
+  /**
+   * @param {Context} context
+   * @returns {Promise<void>}
+   */
+  addContext(context) {
+    this._contextMutationPromise = this._contextMutationPromise
+      .then(() => {
+        return this._addContext(context);
+      });
+    return this._contextMutationPromise;
+  }
+
+  /**
+   * @param {string} contextId
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _removeContext(contextId) {
+    const context = this._contexts.getByKey(contextId);
+    if (!context) {
+      throw new Error(`Could not find context with id ${contextId}`);
+    }
+
+    removeContextFromShadowMaps(contextId, this._shadowMaps);
+    await Promise.all([
+      removeContextFromVcsObjectCollection(contextId, this._maps, this._shadowMaps.maps, this),
+      removeContextFromVcsObjectCollection(contextId, this._layers, this._shadowMaps.layers, this),
+      removeContextFromVcsObjectCollection(contextId, this._viewPoints, this._shadowMaps.viewPoints, this),
+      // TODO styles & oblique collections. wait for styles to implement VcsObject
+      removeContextFromVcsObjectCollection(contextId, this._plugins, this._shadowMaps.plugins, this),
+    ]);
+
+    this._contexts.remove(context);
+  }
+
+  /**
+   * @param {string} contextId
+   * @returns {Promise<void>}
+   */
+  removeContext(contextId) {
+    this._contextMutationPromise = this._contextMutationPromise
+      .then(() => {
+        return this._removeContext(contextId);
+      });
+    return this._contextMutationPromise;
+  }
+
+  destroy() {
+    delete vcsApps.delete(this._id);
+    this._collectionListeners.forEach((listener) => { listener(); });
+    this._collectionListeners.splice(0);
+    destroyCollection(this._maps);
+    destroyCollection(this._layers);
+    destroyCollection(this._obliqueCollections);
+    destroyCollection(this._viewPoints);
+    destroyCollection(this._styles);
+    destroyCollection(this._plugins);
+    destroyCollection(this._contexts);
+    this._shadowMaps = {
+      layers: new Map(),
+      maps: new Map(),
+      obliqueCollections: new Map(),
+      viewPoints: new Map(),
+      styles: new Map(),
+      plugins: new Map(),
+    };
+    this.destroyed.raiseEvent();
+    this.destroyed.destroy();
+  }
+}
+
+/**
+ * @param {string} id
+ * @returns {VcsApp}
+ */
+export function getVcsAppById(id) {
+  return vcsApps.get(id);
 }
 
 /**
@@ -400,20 +499,20 @@ const componentTypes = {
 };
 
 /**
- * @param {VcsApp} context
+ * @param {VcsApp} app
  * @param {PluginComponents} pluginComponents
  * @returns {Promise<void>}
  */
-export async function setPluginUiComponents(context, pluginComponents) {
-  await Promise.all([...context.plugins.entries()].map(async ([name, plugin]) => {
+export async function setPluginUiComponents(app, pluginComponents) {
+  await Promise.all([...app.plugins].map(async (plugin) => {
     if (plugin.registerUiPlugin) {
-      const config = await plugin.registerUiPlugin(context.config.plugins.find(p => p.name === name), context);
+      const config = await plugin.registerUiPlugin();
       Object.entries(componentTypes)
         .forEach(([configType, componentType]) => {
           if (config[configType]) {
             const componentsArray = Array.isArray(config[configType]) ? config[configType] : [config[configType]];
             const components = componentsArray
-              .map(component => createComponent(name, configType, component));
+              .map(component => createComponent(plugin.name, configType, component));
             pluginComponents[componentType].push(...components);
           }
         });
@@ -423,3 +522,5 @@ export async function setPluginUiComponents(context, pluginComponents) {
 
 window.vcs = window.vcs || {};
 window.vcs.apps = vcsApps;
+
+export default VcsApp;

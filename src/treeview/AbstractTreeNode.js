@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { shallowReactive } from '@vue/composition-api';
 import { check } from '@vcsuite/check';
 import { VcsClassRegistry } from '@vcmap/core';
-import { getContextById } from '@/vcsApp.js';
+import { getVcsAppById } from '@/vcsApp.js';
 
 /**
  * @typedef {Object} AbstractTreeNode.Options
@@ -48,7 +48,7 @@ class AbstractTreeNode {
    * @protected
    */
   get _context() {
-    return getContextById(this._contextId);
+    return getVcsAppById(this._contextId);
   }
 
   /**

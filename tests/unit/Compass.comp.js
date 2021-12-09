@@ -1,15 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-import { expect } from 'chai';
-import sinon from 'sinon';
 import Compass from '../../components/Compass.vue';
 
-const chai = require('chai');
-const spies = require('chai-spies');
-
-chai.use(spies);
-
 const localVue = createLocalVue();
-
 
 describe('Compass', () => {
   describe('trackMouse', () => {

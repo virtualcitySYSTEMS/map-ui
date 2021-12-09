@@ -1,6 +1,7 @@
 {
   "mapcontainer": "vcs_map_container",
-  "startViewPoint": "Berlin",
+  "startingViewPointName": "Berlin",
+  "startingMapName": "ol3",
   "projection": {
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
@@ -8,6 +9,7 @@
   "styles": [
     {
       "name": "lineColor",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -26,6 +28,7 @@
     },
     {
       "name": "MeasuredHeightGreen",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (green)",
         "de": "Measured Height (green)"
@@ -90,6 +93,7 @@
     },
     {
       "name": "MeasuredHeightBrown",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (brown)",
         "de": "Measured Height (brown)"
@@ -150,6 +154,7 @@
     },
     {
       "name": "MeasuredHeightBlue",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (blue)",
         "de": "Measured Height (blue)"
@@ -209,6 +214,7 @@
       ]
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "title": {
         "en": "Classified by Roof Type",
         "de": "Einfärbung nach Hauptdach"
@@ -398,6 +404,7 @@
       "name": "ClassifiedbyRoofType"
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "title": {
         "de": "Einfärbung nach Gebäudefunktion",
         "en": "Building Function"
@@ -458,6 +465,7 @@
       "name": "BuildingFunction"
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "name": "Transparentbuildings",
       "title": {
         "en": "Transparent buildings",
@@ -482,6 +490,7 @@
       ]
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "name": "CIR",
       "title": {
         "en": "CIR",
@@ -495,6 +504,7 @@
       "legend": []
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "name": "Tree-ID",
       "title": {
         "en": "Tree-ID",
@@ -519,6 +529,7 @@
       "legend": []
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "name": "Distance",
       "title": {
         "en": "Distance",
@@ -543,6 +554,7 @@
       "legend": []
     },
     {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
       "name": "Classification",
       "title": {
         "en": "Classification",
@@ -601,7 +613,6 @@
       "name": "cesium",
       "debugging": false,
       "fxaa": false,
-      "startingmap": false,
       "enableLightning": true,
       "allowSoftwareRendering": false,
       "maximumScreenSpaceError": 2,
@@ -614,14 +625,12 @@
     },
     {
       "type": "vcs.vcm.maps.Openlayers",
-      "name": "ol3",
-      "startingmap": true
+      "name": "ol3"
     },
     {
       "name": "Oblique Map",
       "showObliqueImageName": true,
       "obliqueImageNameTemplate": "Oblique Image Name : {0}",
-      "startingmap": false,
       "type": "vcs.vcm.maps.Oblique",
       "defaultCollectionName": "Schrägluftbilder WAB"
     }
@@ -928,6 +937,18 @@
       "exclusiveGroups": [
         "tree"
       ]
+    },
+    {
+      "name": "testGeojson",
+      "type": "vcs.vcm.layer.GeoJSON",
+      "url": "exampleData/perFeature.json",
+      "projection": {
+        "epsg": 4326
+      },
+      "activeOnStartup": false,
+      "vectorProperties": {
+        "altitudeMode": "clampToGround"
+      }
     }
   ],
   "viewpoints": [

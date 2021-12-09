@@ -2,9 +2,12 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
-import ViteComponents, {
-  VuetifyResolver,
-} from 'vite-plugin-components';
+import vitePluginComponents from 'vite-plugin-components';
+import { fileURLToPath } from 'url';
+
+const { default: ViteComponents, VuetifyResolver } = vitePluginComponents;
+
+const dirName = path.dirname(fileURLToPath(import.meta.url));
 
 const configMain = defineConfig({
   optimizeDeps: {
@@ -20,9 +23,9 @@ const configMain = defineConfig({
   },
   resolve: {
     alias: {
-      '@': `${path.resolve(__dirname, 'src')}`,
-      '@vcsuite/uicomponents': `${path.resolve(__dirname, 'components')}`,
-      vue: `${path.resolve(__dirname, path.join('node_modules', 'vue', 'dist', 'vue.esm.js'))}`,
+      '@': `${path.resolve(dirName, 'src')}`,
+      '@vcsuite/uicomponents': `${path.resolve(dirName, 'components')}`,
+      vue: `${path.resolve(dirName, path.join('node_modules', 'vue', 'dist', 'vue.esm.js'))}`,
     },
   },
   plugins: [

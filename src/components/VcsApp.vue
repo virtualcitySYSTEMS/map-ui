@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="h-full">
     <Navbar :map-id="mapId" />
-    <VcsMap :map-id="mapId" :starting-map-name="startingMapName" v-if="configLoaded" />
+    <VcsMap :map-id="mapId" />
     <transition name="slide-from-top-200-ease">
       <ToolboxManagerComponent v-if="toolboxManagerVisible" />
     </transition>
@@ -22,7 +22,7 @@
     reactive,
     ref,
   } from '@vue/composition-api';
-  import { addConfigToContext, createVcsApp, setPluginUiComponents } from '@/vcsApp.js';
+  import VcsApp, { setPluginUiComponents } from '@/vcsApp.js';
   import { WindowManager } from '@/modules/window-manager/window.manager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
@@ -31,6 +31,7 @@
   import ToolboxManagerComponent from '@/modules/toolbox-manager/ToolboxManager.vue';
   import Navbar from './Navbar.vue';
   import VcsMap from './VcsMap.vue';
+  import Context from '@/context.js';
 
   export default Vue.extend({
     components: {
@@ -59,7 +60,7 @@
         headerButtons: reactive([]),
       };
 
-      const app = createVcsApp();
+      const app = new VcsApp();
 
       const mapActivatedDestroy = app.maps.mapActivated.addEventListener(
         (map) => {
@@ -93,21 +94,18 @@
       app.windowManager = new WindowManager();
       provide('windowManager', app.windowManager);
 
-      const configLoaded = ref(false);
-      const startingMapName = ref('');
-
       onBeforeMount(async () => {
         const config = await fetch(props.config)
           .then(response => response.json());
-        const startingMap = await addConfigToContext(config, app);
-        startingMapName.value = startingMap.name;
-        configLoaded.value = true;
+        const context = new Context(config);
+        await app.addContext(context);
+        // XXX FIXME this flow is ugly and this does not work properly. fix with plugin manager
         await setPluginUiComponents(app, pluginComponents);
 
         // todo wait for Vue 3 and move into onMounted Hook, vue2 hooks are not async :(
-        await Promise.all([...app.plugins.entries()].map(async ([name, plugin]) => {
+        await Promise.all([...app.plugins].map(async (plugin) => {
           if (plugin.postUiInitialize) {
-            await plugin.postUiInitialize(app.config.plugins.find(p => p.name === name), app);
+            await plugin.postUiInitialize();
           }
         }));
       });
@@ -123,8 +121,6 @@
 
       return {
         mapId: `mapCollection-${id}`,
-        startingMapName,
-        configLoaded,
         toolboxManagerVisible: app.toolboxManager.state.visible,
       };
     },

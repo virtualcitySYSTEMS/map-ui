@@ -4,16 +4,17 @@
   "private": true,
   "scripts": {
     "start": "vite",
+    "test": "node --experimental-json-modules node_modules/mocha/bin/_mocha --exit --require tests/setupJsdom.js --require tests/setup.js --recursive \"tests/**/*spec.js\"",
     "preview": "vite preview",
     "build": "node build/build.mjs",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint \"{src,components}/**/*.{js,vue}\""
+    "lint": "eslint \"{src,components,tests}/**/*.{js,vue}\""
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "@vcmap/cesium": "^1.87.2",
-    "@vcmap/core": "^5.0.0-rc.0",
+    "@vcmap/core": "^5.0.0-rc.2",
     "@vcsuite/check": "^1.0.3",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",
@@ -36,11 +37,20 @@
     "@storybook/vue": "^6.3.4",
     "@vcmap/rollup-plugin-vcs-ol": "^1.0.1",
     "@vcsuite/eslint-config": "^2.0.3",
+    "@vue/test-utils": "^1.3.0",
+    "c8": "^7.10.0",
+    "canvas": "^2.8.0",
+    "chai": "^4.3.4",
     "eslint": "^8.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "jsdoc": "^3.6.7",
     "jsdoc-plugin-typescript": "^2.0.6",
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^9.1.3",
     "sass": "1.32.13",
+    "sinon": "^12.0.1",
+    "sinon-chai": "^3.7.0",
     "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
     "typescript": "^4.2.4",
     "vite": "^2.6.13",
@@ -63,6 +73,27 @@
       ]
     }
   },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": ["@vcsuite/eslint-config/vue"],
+    "plugins": ["jsdoc"],
+    "settings": {
+      "import/resolver": {
+        "alias": {
+          "map": [
+            ["@", "./src"],
+            ["@vcsuite/uicomponents", "./components"]
+          ]
+        }
+      }
+    },
+    "rules": {
+      "jsdoc/check-tag-names": "off"
+    }
+  },
   "browserslist": [
     "last 2 Chrome versions",
     "not Chrome < 86",
@@ -74,5 +105,6 @@
     "not Firefox < 78",
     "last 2 Edge versions",
     "not Edge < 86"
-  ]
+  ],
+  "type": "module"
 }
