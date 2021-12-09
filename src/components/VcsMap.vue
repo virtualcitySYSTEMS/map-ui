@@ -52,25 +52,13 @@
         type: String,
         required: true,
       },
-      startingMapName: {
-        type: String,
-        default: '',
-      },
     },
     setup(props) {
       const app = inject('vcsApp');
 
-      /**
-       * @function
-       * @description Initializes the map from configuration.
-       */
       onMounted(async () => {
         app.maps.setTarget(props.mapId);
-
-        await app.maps.setActiveMap(props.startingMapName || [...app.maps][0].name);
-        await app.maps.activeMap.gotoViewPoint(app.startViewPoint);
         if (isReactive(app.maps.activeMap)) {
-          // eslint-disable-next-line no-console
           getLogger().error('Map is reactive, PLEASE FIX');
         }
       });

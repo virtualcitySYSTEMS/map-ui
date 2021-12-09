@@ -3,6 +3,8 @@ import { Cartesian2 } from '@vcmap/cesium';
 import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
 import { toolboxData } from './toolbox-data';
+import editor from './editor.vue';
+import { WINDOW_SLOTS } from '../../src/modules/window-manager/window.manager';
 
 let source;
 
@@ -14,29 +16,54 @@ function getSource() {
 }
 
 
-export default {
-  registerUiPlugin: async () => ({
-    mapButton: {
-      template: "<Button @click=\"alertMSG('check')\">VC Systems</Button>",
-      setup() {
-        const app = inject('vcsApp');
-        const cartesian3 = new Cartesian2(1, 2);
+export default async function (app) {
+  return {
+    name: 'test',
+    registerUiPlugin: async () => ({
+      mapButton: [
+        {
+          template: "<Button @click=\"alert('check')\">VC Systems</Button>",
+          setup() {
+            const cartesian3 = new Cartesian2(1, 2);
+            const toolboxManager = inject('toolboxManager');
 
-        const toolboxManager = inject('toolboxManager');
+            toolboxData.forEach(([group, id]) => toolboxManager.addToolboxGroup(group, id));
 
-        toolboxData.forEach(([group, id]) => toolboxManager.addToolboxGroup(group, id));
-
-        const alertMSG = () => {
-          getSource().addFeature(new Feature({}));
-          window.alert(`
+            return {
+              cartesian3,
+              alert() {
+                getSource().addFeature(new Feature({}));
+                window.alert(`
 there are ${getSource().getFeatures().length} features
           ${app.maps.activeMap.name}`);
-        };
-        return {
-          alertMSG,
-          cartesian3,
-        };
-      },
-    },
-  }),
-};
+              },
+            };
+          },
+        },
+        {
+          template: "<Button @click='toggle'>Editor</Button>",
+          setup() {
+            const windowManager = inject('windowManager');
+
+            return {
+              toggle() {
+                const id = 'config-editor';
+                /** @type {WindowManager} */
+                if (windowManager.has(id)) {
+                  windowManager.remove(id);
+                } else {
+                  windowManager.add({
+                    id,
+                    component: editor,
+                    windowSlot: WINDOW_SLOTS.dynamicLeft,
+                    width: 500,
+                  });
+                }
+              },
+            };
+          },
+        },
+      ],
+    }),
+  };
+}

@@ -32,6 +32,13 @@ lint:
   script:
     - npm run lint
 
+test:
+  <<: *after_build_definition
+  stage: test
+  script:
+    - npm run test
+
+
 audit:
   <<: *after_build_definition
   stage: test
