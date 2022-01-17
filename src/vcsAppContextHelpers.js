@@ -1,15 +1,4 @@
-import {
-  DeclarativeStyleItem,
-  getTerrainProviderForUrl,
-  ObliqueCollection,
-  ObliqueDataSet,
-  Projection,
-  referenceableStyleSymbol,
-  StyleType,
-  VcsClassRegistry,
-  VcsMap,
-  VectorStyleItem,
-} from '@vcmap/core';
+import { VcsClassRegistry } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
 /**
@@ -62,61 +51,6 @@ export async function getObjectFromOptions(options) {
 }
 
 /**
- * @param {import("@vcmap/core").VectorStyleItemOptions|import("@vcmap/core").DeclarativeStyleItemOptions} styleConfig
- * @returns {import("@vcmap/core").StyleItem|null}
- */
-export function createStyleItem(styleConfig) { // TODO make same factory as layer and maps?
-  if (!styleConfig.name && !styleConfig.id) {
-    getLogger().warning('styles need a name. please reconfigure the styles section.');
-    return null;
-  }
-  let styleItem;
-  if (styleConfig.type === StyleType.DECLARATIVE || styleConfig.declarativeStyle) {
-    styleItem = new DeclarativeStyleItem(
-      /** @type {import("@vcmap/core").DeclarativeStyleItem.Options} */ (styleConfig),
-    );
-    if (!styleItem.cesiumStyle.ready) {
-      getLogger().warning(`declarative style: ${styleConfig.name} has errors in the declarative style section and cannot be used`);
-      return null;
-    }
-  } else {
-    styleItem = new VectorStyleItem(/** @type {import("@vcmap/core").VectorStyleItem.Options} */ (styleConfig));
-  }
-  if (!styleItem) {
-    getLogger().warning(`could not create style item: ${styleConfig.name}`);
-    return null;
-  }
-  styleItem[referenceableStyleSymbol] = true;
-  return styleItem;
-}
-
-/**
- * @param {import(@vcmap/core).ObliqueCollectionConfig} options
- * @returns {import("@vcmap/core").ObliqueCollection|null}
- */
-export function createObliqueCollection(options) {
-  if (!Array.isArray(options.dataSets)) {
-    getLogger().warning(`oblique collection ${options.name} is missing a datasets array`);
-    return null;
-  }
-  const collectionOptions = {
-    ...options,
-    dataSets: options.dataSets.map(({ url, projection, terrainUrl }) => {
-      let usedProjection;
-      if (projection) {
-        const proj = new Projection(projection);
-        usedProjection = proj.proj;
-      }
-
-      const terrainProvider = terrainUrl ? getTerrainProviderForUrl({ url: terrainUrl }) : undefined;
-      return new ObliqueDataSet(url, usedProjection, terrainProvider);
-    }),
-  };
-
-  return new ObliqueCollection(collectionOptions);
-}
-
-/**
  * @param {VcsApp} app
  * @param {string} name
  * @param {PluginConfig} config
@@ -164,117 +98,86 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
 }
 
 /**
- * Adds an object to a collection and creates a shadow from any existing object with the same identifier
- * property (e.g. name).
- * @template {import("@vcmap/core").VcsObject|VcsPlugin} T
- * @param {T} item
- * @param {import("@vcmap/core").Collection<T>} collection
- * @param {Map<string, Array<Object>>} shadowMap
- * @returns {T|null}
+ * @param {VcsApp} vcsApp
+ * @param {import("@vcmap/core").VcsMapOptions} mapConfig
+ * @returns {Promise<import("@vcmap/core").VcsMap|null>}
  */
-export function addObjectToCollection(item, collection, shadowMap) {
-  if (collection.hasKey(item.name)) {
-    const shadow = collection.getByKey(item.name);
-    collection.remove(shadow);
-    if (!shadowMap.has(item.name)) {
-      shadowMap.set(item.name, []);
-    }
-    const shadowsArray = shadowMap.get(item.name);
-    const serializedShadow = shadow.toJSON ? shadow.toJSON() : {};
-    if (shadow.destroy) {
-      shadow.destroy();
-    }
-    if (shadow[pluginFactorySymbol]) {
-      serializedShadow[pluginFactorySymbol] = shadow[pluginFactorySymbol];
-    }
-    serializedShadow[contextIdSymbol] = shadow[contextIdSymbol];
-    shadowsArray.push(serializedShadow);
+export async function deserializeMap(vcsApp, mapConfig) {
+  const map = await getObjectFromOptions(mapConfig);
+  if (map) {
+    map.layerCollection = vcsApp.layers;
   }
-  if (collection.add(item) >= 0) {
-    return item;
+  return map;
+}
+
+/**
+ * @param {VcsPlugin} plugin
+ * @returns {Object}
+ */
+export function serializePlugin(plugin) {
+  const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
+  if (plugin[pluginFactorySymbol]) {
+    serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
   }
+  return serializedPlugin;
+}
+
+/**
+ * @param {VcsApp} app
+ * @param {Object} serializedPlugin
+ * @returns {Promise<VcsPlugin>}
+ */
+export async function deserializePlugin(app, serializedPlugin) {
+  const reincarnation = await serializedPlugin[pluginFactorySymbol](app, serializedPlugin);
+  reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
+  return reincarnation;
+}
+
+/**
+ * @param {import("@vcmap/core").ViewPointOptions} viewPointObject
+ * @returns {Promise<null|ViewPoint>}
+ */
+export async function deserializeViewPoint(viewPointObject) {
+  const viewpoint = /** @type {import("@vcmap/core").ViewPoint} */ (await getObjectFromOptions(viewPointObject));
+  if (viewpoint && viewpoint.isValid()) {
+    return viewpoint;
+  }
+  getLogger().warning(`Viewpoint ${viewPointObject.name} is not valid`);
   return null;
 }
 
 /**
- * @template {import("@vcmap/core").VcsObject} T
- * @param {Array<Object>} [configArray]
- * @param {import("@vcmap/core").Collection<T>} collection
- * @param {Map<string, Array<Object>>} shadowMap
- * @param {string} contextId
- * @param {function(new: T)=} ctor
- * @returns {Promise<void>}
+ * @param {VcsApp} vcsApp
+ * @param {import("@vcmap/core").Layer} layer
+ * @returns {Promise<import("@vcmap/core").LayerOptions|null>}
  */
-export async function addConfigArrayToCollection(configArray, collection, shadowMap, contextId, ctor) {
-  if (Array.isArray(configArray)) {
-    const instanceArray = await Promise.all(configArray.map(async (config) => {
-      const item = await getObjectFromOptions(config);
-      if (!item || (ctor && !(item instanceof ctor))) {
-        getLogger().warning(`Could not load item ${config.name} of type ${config.type}`);
-        return null;
-      }
-      item[contextIdSymbol] = contextId;
-      return item;
-    }));
-    instanceArray
-      .filter(i => i)
-      .forEach((i) => { addObjectToCollection(i, collection, shadowMap); });
+export async function serializeLayer(vcsApp, layer) {
+  const serializedLayer = layer.toJSON();
+  serializedLayer.zIndex = layer[vcsApp.layers.zIndexSymbol];
+  return serializedLayer;
+}
+
+/**
+ * @param {import("@vcmap/core").Layer} current
+ * @param {import("@vcmap/core").Layer} previous
+ * @param {number} currentIndex
+ * @returns {number|null}
+ */
+export function getLayerIndex(current, previous, currentIndex) {
+  if (current.zIndex !== previous.zIndex) {
+    return null;
   }
+  return currentIndex;
 }
 
 /**
- * @param {string} contextId
- * @param {ShadowMaps} shadowMaps
- */
-export function removeContextFromShadowMaps(contextId, shadowMaps) {
-  Object.values(shadowMaps)
-    .forEach(/** @param {Map<string, Array<Object>>} shadowMap */ (shadowMap) => {
-      shadowMap.forEach((shadowsArray, name) => {
-        const newShadowsArray = shadowsArray.filter(c => c[contextIdSymbol] !== contextId);
-        if (newShadowsArray.length === 0) {
-          shadowMap.delete(name);
-        } else if (newShadowsArray.length !== shadowsArray.length) {
-          shadowMap.set(name, newShadowsArray);
-        }
-      });
-    });
-}
-
-/**
- * @param {string} contextId
  * @param {import("@vcmap/core").Collection<*>} collection
- * @param {Map<string, Array<Object>>} shadowMap
- * @param {VcsApp} app
  */
-export async function removeContextFromVcsObjectCollection(contextId, collection, shadowMap, app) {
-  await Promise.all([...collection]
-    .filter(item => item[contextIdSymbol] === contextId)
-    .map(async (item) => {
-      collection.remove(item);
-      if (shadowMap.has(item.name)) {
-        const serializedShadow = shadowMap.get(item.name).pop();
-        if (serializedShadow) {
-          let reincarnation;
-          if (item instanceof VcsMap) {
-            reincarnation = await getObjectFromOptions(serializedShadow);
-            reincarnation.layerCollection = app.layers;
-          } else if (serializedShadow[pluginFactorySymbol]) {
-            reincarnation = await serializedShadow[pluginFactorySymbol](app, serializedShadow);
-            reincarnation[pluginFactorySymbol] = serializedShadow[pluginFactorySymbol];
-          } else {
-            reincarnation = await getObjectFromOptions(serializedShadow);
-          }
-          reincarnation[contextIdSymbol] = serializedShadow[contextIdSymbol];
-          collection.add(reincarnation);
-        }
-
-        if (shadowMap.get(item.name).length === 0) {
-          shadowMap.delete(item.name);
-        }
-      }
-
-      if (item.destroy) {
-        item.destroy();
-      }
-    }));
+export function destroyCollection(collection) {
+  [...collection].forEach((i) => {
+    if (i.destroy && !i.isDestroyed) {
+      i.destroy();
+    }
+  });
+  collection.destroy();
 }

@@ -953,6 +953,7 @@
   ],
   "viewpoints": [
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "Berlin",
       "cameraPosition": [
         13.370550000000003,
@@ -1017,7 +1018,8 @@
       "heading": 360,
       "pitch": -90,
       "roll": 0,
-      "animate": true
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
     },
     {
       "name": "alexanderplatz",
@@ -1035,7 +1037,8 @@
       "heading": 360,
       "pitch": -90,
       "roll": 0,
-      "animate": true
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
     },
     {
       "name": "brandenburger_tor",
@@ -1053,7 +1056,8 @@
       "heading": 360,
       "pitch": -90,
       "roll": 0,
-      "animate": true
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
     },
     {
       "name": "potsdamer_platz",
@@ -1071,9 +1075,11 @@
       "heading": 360,
       "pitch": -90,
       "roll": 0,
-      "animate": true
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "kaiser_wilhelm_gedächtniskirche",
       "distance": 1403.6527954713483,
       "cameraPosition": [
@@ -1092,6 +1098,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "oberbaumbrücke",
       "distance": 1733.4812812488267,
       "cameraPosition": [
@@ -1110,6 +1117,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "flughafen_ber",
       "distance": 6450.326141140612,
       "cameraPosition": [
@@ -1128,6 +1136,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "euref_campus",
       "distance": 463.7064949271509,
       "cameraPosition": [
@@ -1146,6 +1155,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "europacity",
       "distance": 784.4892150356735,
       "cameraPosition": [
@@ -1164,6 +1174,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "upper_west",
       "distance": 378.9684151048121,
       "cameraPosition": [
@@ -1182,6 +1193,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "tegel",
       "distance": 955.4595809846163,
       "cameraPosition": [
@@ -1200,6 +1212,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "citywest",
       "distance": 1536,
       "cameraPosition": [
@@ -1213,6 +1226,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "spreeraum",
       "distance": 1810,
       "cameraPosition": [
@@ -1226,6 +1240,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "plannings2010",
       "distance": 1873,
       "cameraPosition": [
@@ -1239,6 +1254,7 @@
       "animate": true
     },
     {
+      "type": "vcs.vcm.util.ViewPoint",
       "name": "pp_solar",
       "cameraPosition": [
         13.372478299069217,
