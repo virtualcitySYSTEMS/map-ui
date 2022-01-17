@@ -2,7 +2,7 @@ import {
   Collection,
   IndexedCollection,
   Layer,
-  MapCollection,
+  MapCollection, ObliqueCollection,
   setDefaultProjectionOptions,
   StyleItem,
   VcsEvent,
@@ -16,13 +16,18 @@ import { check } from '@vcsuite/check';
 
 import Context from './context.js';
 import {
-  addObjectToCollection,
   contextIdSymbol,
   loadPlugin,
-  removeContextFromShadowMaps,
-  removeContextFromVcsObjectCollection,
-  addConfigArrayToCollection,
+  destroyCollection,
+  getObjectFromOptions,
+  serializePlugin,
+  deserializePlugin,
+  deserializeViewPoint,
+  deserializeMap,
+  getLayerIndex,
+  serializeLayer,
 } from './vcsAppContextHelpers.js';
+import makeOverrideCollection from './overrideCollection.js';
 
 /**
  * @typedef {Object} PluginComponents
@@ -73,17 +78,6 @@ function getLogger() {
 const vcsApps = new Map();
 
 /**
- * @param {import("@vcmap/core").Collection<*>} collection
- */
-function destroyCollection(collection) {
-  [...collection].forEach((i) => {
-    if (i.destroy) {
-      i.destroy();
-    }
-  });
-  collection.destroy();
-}
-/**
  * @class
  */
 class VcsApp {
@@ -103,65 +97,81 @@ class VcsApp {
      * @private
      */
     this._dynamicContext = this._defaultDynamicContext;
+
+    const getDynamicContextId = () => this._dynamicContext.id;
     /**
-     * @type {Array<function():void>}
+     * @type {OverrideMapCollection}
      * @private
      */
-    this._collectionListeners = [];
+    this._maps = makeOverrideCollection(
+      new MapCollection(),
+      getDynamicContextId,
+      null,
+      deserializeMap.bind(null, this),
+      VcsMap,
+    );
     /**
-     * @type {import("@vcmap/core").MapCollection}
+     * @type {OverrideLayerCollection}
      * @private
      */
-    this._maps = new MapCollection();
-    this._addCollectionListener(this._maps);
+    this._layers = makeOverrideCollection(
+      this._maps.layerCollection,
+      getDynamicContextId,
+      serializeLayer.bind(null, this),
+      getObjectFromOptions,
+      Layer,
+      getLayerIndex,
+    );
     /**
-     * @type {import("@vcmap/core").LayerCollection}
+     * @type {OverrideCollection<import("@vcmap/core").ObliqueCollection>}
      * @private
      */
-    this._layers = this._maps.layerCollection;
-    this._addCollectionListener(this._layers);
+    this._obliqueCollections = makeOverrideCollection(
+      new Collection(),
+      getDynamicContextId,
+      null,
+      getObjectFromOptions,
+      ObliqueCollection,
+    ); // XXX there is a global for this collection in core.
     /**
-     * @type {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>}
+     * @type {OverrideCollection<import("@vcmap/core").ViewPoint>}
      * @private
      */
-    this._obliqueCollections = new Collection(); // XXX there is a global for this collection in core.
-    this._addCollectionListener(this._obliqueCollections);
+    this._viewPoints = makeOverrideCollection(
+      new Collection(),
+      getDynamicContextId,
+      null,
+      deserializeViewPoint,
+      ViewPoint,
+    );
     /**
-     * @type {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>}
+     * @type {OverrideCollection<import("@vcmap/core").StyleItem>}
      * @private
      */
-    this._viewPoints = new Collection();
-    this._addCollectionListener(this._viewPoints);
+    this._styles = makeOverrideCollection(
+      new Collection(),
+      getDynamicContextId,
+      null,
+      getObjectFromOptions,
+      StyleItem,
+    ); // XXX there is a global for this collection in core.
     /**
-     * @type {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>}
+     * @type {OverrideCollection<VcsPlugin>}
      * @private
      */
-    this._styles = new Collection(); // XXX there is a global for this collection in core.
-    this._addCollectionListener(this._styles);
-    /**
-     * @type {import("@vcmap/core").Collection<VcsPlugin>}
-     * @private
-     */
-    this._plugins = new Collection();
-    this._addCollectionListener(this._plugins);
+    this._plugins = makeOverrideCollection(
+      new Collection(),
+      getDynamicContextId,
+      serializePlugin,
+      deserializePlugin.bind(null, this),
+    );
     /**
      * @type {import("@vcmap/core").IndexedCollection<Context>}
      * @private
      */
     this._contexts = new IndexedCollection('id');
     this._contexts.add(this._dynamicContext);
-    /**
-     * @type {ShadowMaps}
-     * @private
-     */
-    this._shadowMaps = {
-      layers: new Map(),
-      maps: new Map(),
-      obliqueCollections: new Map(),
-      viewPoints: new Map(),
-      styles: new Map(),
-      plugins: new Map(),
-    };
+
     /**
      * @type {import("@vcmap/core").VcsEvent<void>}
      * @private
@@ -182,37 +192,37 @@ class VcsApp {
   get id() { return this._id; }
 
   /**
-   * @type {import("@vcmap/core").MapCollection}
+   * @type {OverrideMapCollection}
    * @readonly
    */
   get maps() { return this._maps; }
 
   /**
-   * @type {import("@vcmap/core").LayerCollection}
+   * @type {OverrideLayerCollection}
    * @readonly
    */
   get layers() { return this._layers; }
 
   /**
-   * @type {import("@vcmap/core").Collection<import("@vcmap/core").ObliqueCollection>}
+   * @type {OverrideCollection<import("@vcmap/core").ObliqueCollection>}
    * @readonly
    */
   get obliqueCollections() { return this._obliqueCollections; }
 
   /**
-   * @type {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>}
+   * @type {OverrideCollection<import("@vcmap/core").ViewPoint>}
    * @readonly
    */
   get viewPoints() { return this._viewPoints; }
 
   /**
-   * @type {import("@vcmap/core").Collection<import("@vcmap/core").StyleItem>}
+   * @type {OverrideCollection<import("@vcmap/core").StyleItem>}
    * @readonly
    */
   get styles() { return this._styles; }
 
   /**
-   * @type {import("@vcmap/core").Collection<VcsPlugin>}
+   * @type {OverrideCollection<VcsPlugin>}
    * @readonly
    */
   get plugins() { return this._plugins; }
@@ -244,18 +254,6 @@ class VcsApp {
   }
 
   /**
-   * @param {import("@vcmap/core").Collection} collection
-   * @private
-   */
-  _addCollectionListener(collection) {
-    this._collectionListeners.push(collection.added.addEventListener((item) => {
-      if (!item[contextIdSymbol]) {
-        item[contextIdSymbol] = this._dynamicContext.id;
-      }
-    }));
-  }
-
-  /**
    * @param {Context} context
    * @returns {Promise<void>}
    * @private
@@ -282,7 +280,7 @@ class VcsApp {
 
       plugins = plugins
         .filter(p => p)
-        .map(p => addObjectToCollection(p, this._plugins, this._shadowMaps.plugins))
+        .map(p => this._plugins.override(p))
         .filter(p => p);
     }
 
@@ -290,22 +288,9 @@ class VcsApp {
       setDefaultProjectionOptions(config.projection);
     }
 
-    await addConfigArrayToCollection(
-      config.styles,
-      this._styles,
-      this._shadowMaps.styles,
-      context.id,
-      StyleItem,
-    );
-
+    await this._styles.parseItems(config.styles, context.id);
+    await this._layers.parseItems(config.layers, context.id);
     // TODO add flights & ade here
-    await addConfigArrayToCollection(
-      config.layers,
-      this._layers,
-      this._shadowMaps.layers,
-      context.id,
-      Layer,
-    );
 
     [...this._layers]
       .filter(l => l[contextIdSymbol] === context.id)
@@ -320,39 +305,10 @@ class VcsApp {
             });
         }
       });
-    // TODO oblique collections
-    // if (Array.isArray(config.obliqueCollections)) {
-    //   config.obliqueCollections.forEach((options) => {
-    //     const collection = createObliqueCollection(options);
-    //     if (collection) {
-    //       collection[contextIdSymbol] = context.id;
-    //       this._obliqueCollections.add(collection);
-    //     }
-    //   });
-    // }
 
-    if (Array.isArray(config.viewpoints)) {
-      config.viewpoints.forEach((viewpointConfig) => { // TODO make this also _typed_?
-        const viewpoint = new ViewPoint(viewpointConfig);
-        if (!viewpoint.isValid()) {
-          getLogger().warning(`Viewpoint ${viewpoint.name} is not valid`);
-        } else {
-          viewpoint[contextIdSymbol] = context.id;
-          addObjectToCollection(viewpoint, this._viewPoints, this._shadowMaps.viewPoints);
-        }
-      });
-    }
-
-    await addConfigArrayToCollection(
-      config.maps,
-      this._maps,
-      this._shadowMaps.maps,
-      context.id,
-      VcsMap,
-    );
-    [...this._maps]
-      .filter(m => m[contextIdSymbol] === context.id)
-      .forEach((m) => { m.layerCollection = this._layers; });
+    await this._obliqueCollections.parseItems(config.obliqueCollections, context.id);
+    await this._viewPoints.parseItems(config.viewpoints, context.id);
+    await this._maps.parseItems(config.maps, context.id);
 
     if (config.startingMapName) {
       await this._maps.setActiveMap(config.startingMapName);
@@ -367,11 +323,15 @@ class VcsApp {
       }
     }
 
-    await Promise.all(plugins.map(async (plugin) => {
-      if (plugin.postInitialize) {
-        await plugin.postInitialize();
-      }
-    }));
+    const postInitPromises = plugins
+      .filter(p => p[contextIdSymbol] === context.id)
+      .map(async (plugin) => {
+        if (plugin.postInitialize) {
+          await plugin.postInitialize();
+        }
+      });
+
+    await Promise.all(postInitPromises);
 
     this._contexts.add(context);
   }
@@ -399,13 +359,14 @@ class VcsApp {
       throw new Error(`Could not find context with id ${contextId}`);
     }
 
-    removeContextFromShadowMaps(contextId, this._shadowMaps);
+
     await Promise.all([
-      removeContextFromVcsObjectCollection(contextId, this._maps, this._shadowMaps.maps, this),
-      removeContextFromVcsObjectCollection(contextId, this._layers, this._shadowMaps.layers, this),
-      removeContextFromVcsObjectCollection(contextId, this._viewPoints, this._shadowMaps.viewPoints, this),
-      // TODO styles & oblique collections. wait for styles to implement VcsObject
-      removeContextFromVcsObjectCollection(contextId, this._plugins, this._shadowMaps.plugins, this),
+      this._maps.removeContext(contextId),
+      this._layers.removeContext(contextId),
+      this._viewPoints.removeContext(contextId),
+      this._styles.removeContext(contextId),
+      this._obliqueCollections.removeContext(contextId),
+      this._plugins.removeContext(contextId),
     ]);
 
     this._contexts.remove(context);
@@ -424,9 +385,8 @@ class VcsApp {
   }
 
   destroy() {
+    this._contextMutationPromise = Promise.reject(new Error('VcsApp was destroyed'));
     delete vcsApps.delete(this._id);
-    this._collectionListeners.forEach((listener) => { listener(); });
-    this._collectionListeners.splice(0);
     destroyCollection(this._maps);
     destroyCollection(this._layers);
     destroyCollection(this._obliqueCollections);
@@ -434,14 +394,6 @@ class VcsApp {
     destroyCollection(this._styles);
     destroyCollection(this._plugins);
     destroyCollection(this._contexts);
-    this._shadowMaps = {
-      layers: new Map(),
-      maps: new Map(),
-      obliqueCollections: new Map(),
-      viewPoints: new Map(),
-      styles: new Map(),
-      plugins: new Map(),
-    };
     this.destroyed.raiseEvent();
     this.destroyed.destroy();
   }
