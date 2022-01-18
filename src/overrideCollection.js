@@ -11,14 +11,19 @@ function getLogger() {
 }
 
 /**
+ * The override collection adds the ability to override a unique item and re-creating it, should the override
+ * be removed. This does change some flow of called events. 1) if you override an item, removed is not called for the
+ * removed current item. 2) added can be called more the once for the same unique id. 3) replaced is called for items
+ * which where replaced. replaced is called after added has been called for the item.
  * @name OverrideCollectionInterface
  * @interface
  * @template {*} T
- * @property {import("@vcmap/core").VcsEvent<T>} replaced
+ * @property {import("@vcmap/core").VcsEvent<T>} replaced - replaced is called after added
  * @property {function(item: T): number} override
  * @property {Map<string, Array<Object>>} shadowMap
  * @property {function(items: Array<Object>, contextId: string):Promise<void>} parseItems
  * @property {function(contextId: string):Promise<void>} removeContext
+ * @property {function(contextId: string):Array<Object>} serializeContext
  */
 
 // This is only used for intelisense
@@ -46,7 +51,11 @@ class OverrideLayerCollection extends LayerCollection {}
 // eslint-disable-next-line no-unused-vars
 class OverrideMapCollection extends MapCollection {}
 
-const isOverrideCollection = Symbol('OverrideCollection');
+/**
+ * A symbol added to override collections.
+ * @type {symbol}
+ */
+export const isOverrideCollection = Symbol('OverrideCollection');
 
 /**
  * @param {import("@vcmap/core").Collection<T>} collection
@@ -193,6 +202,25 @@ export default function makeOverrideCollection(
    * @type {VcsEvent<T>}
    */
   collection.replaced = new VcsEvent();
+
+  /**
+   * @param {string} contextId
+   * @returns {Array<Object>}
+   */
+  collection.serializeContext = function serializeContext(contextId) {
+    return [...collection]
+      .map((item) => {
+        if (item[contextIdSymbol] === contextId) {
+          return serialize(item);
+        }
+        if (collection.shadowMap.has(item[collection.uniqueKey])) {
+          return collection.shadowMap.get(item[collection.uniqueKey])
+            .find(i => i[contextIdSymbol] === contextId);
+        }
+        return null;
+      })
+      .filter(i => i);
+  };
 
   const originalDestroy = collection.destroy.bind(collection);
 

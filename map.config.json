@@ -1583,6 +1583,10 @@
     {
       "name": "example",
       "entry": "plugins/example/example.es.js"
+    },
+    {
+      "name": "categoryTest",
+      "entry": "plugins/categoryTest/categoryTest.js"
     }
   ]
 }
