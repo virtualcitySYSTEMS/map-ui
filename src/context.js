@@ -11,6 +11,7 @@ import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
  * @property {string} [startingMapName]
  * @property {import("@vcmap/core").ProjectionOptions} [projection]
  * @property {Array<Object>} [plugins]
+ * @property {Array<{ name: string, items: Array<Object> }>} [categories]
  */
 
 /**

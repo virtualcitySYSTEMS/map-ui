@@ -28,6 +28,7 @@ import {
   serializeLayer,
 } from './vcsAppContextHelpers.js';
 import makeOverrideCollection from './overrideCollection.js';
+import CategoryCollection from './CategoryCollection.js';
 
 /**
  * @typedef {Object} PluginComponents
@@ -53,16 +54,6 @@ import makeOverrideCollection from './overrideCollection.js';
  * @property {function(PluginConfig):Promise<void>} postUiInitialize
  * @property {function():Promise<void>} destroy
  * @api
- */
-
-/**
- * @typedef {Object} ShadowMaps
- * @property {Map<string, Array<import("@vcmap/core").VcsMapOptions>>} maps
- * @property {Map<string, Array<import("@vcmap/core").LayerOptions>>} layers
- * @property {Map<string, Array<import("@vcmap/core").ViewPointOptions>>} viewPoints
- * @property {Map<string, Array<import("@vcmap/core").StyleItemOptions>>} styles
- * @property {Map<string, Array<import("@vcmap/core").ObliqueCollectionOptions>>} obliqueCollections
- * @property {Map<string, Array<Object>>} plugins
  */
 
 /**
@@ -171,7 +162,11 @@ class VcsApp {
      */
     this._contexts = new IndexedCollection('id');
     this._contexts.add(this._dynamicContext);
-
+    /**
+     * @type {CategoryCollection}
+     * @private
+     */
+    this._categories = new CategoryCollection(this);
     /**
      * @type {import("@vcmap/core").VcsEvent<void>}
      * @private
@@ -228,6 +223,12 @@ class VcsApp {
   get plugins() { return this._plugins; }
 
   /**
+   * @type {CategoryCollection}
+   * @readonly
+   */
+  get categories() { return this._categories; }
+
+  /**
    * @type {import("@vcmap/core").VcsEvent<void>}
    * @readonly
    */
@@ -244,6 +245,8 @@ class VcsApp {
    * @readonly
    */
   get contextRemoved() { return this._contexts.removed; }
+
+  get dynamicContextId() { return this._dynamicContext.id; }
 
   /**
    * @param {string} id
@@ -323,6 +326,12 @@ class VcsApp {
       }
     }
 
+    if (Array.isArray(config.categories)) {
+      await Promise.all((config.categories).map(async ({ name, items }) => {
+        await this._categories.parseCategoryItems(name, items, context.id);
+      }));
+    }
+
     const postInitPromises = plugins
       .filter(p => p[contextIdSymbol] === context.id)
       .map(async (plugin) => {
@@ -394,6 +403,7 @@ class VcsApp {
     destroyCollection(this._styles);
     destroyCollection(this._plugins);
     destroyCollection(this._contexts);
+    destroyCollection(this._categories);
     this.destroyed.raiseEvent();
     this.destroyed.destroy();
   }

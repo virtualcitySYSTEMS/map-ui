@@ -241,6 +241,49 @@ describe('override collections', () => {
         expect(replacedItemName).to.equal('foo');
       });
     });
+
+    describe('if an object of said uniqueKey exists, and the collections unique key is not the default', () => {
+      let item;
+      let returnedItem;
+      let collection;
+      let uniqueSymbol;
+
+      before(() => {
+        uniqueSymbol = Symbol('unique');
+        collection = makeOverrideCollection(new Collection(uniqueSymbol), getContextId);
+
+        const existingItem = new VcsObject({ name: 'foo' });
+        existingItem[uniqueSymbol] = 'foo';
+        existingItem[contextIdSymbol] = 'foo';
+        collection.add(existingItem);
+
+        item = new VcsObject({ name: 'foo' });
+        item[uniqueSymbol] = 'foo';
+        item[contextIdSymbol] = 'bar';
+        returnedItem = collection.override(item);
+      });
+
+      after(() => {
+        destroyCollection(collection);
+      });
+
+      it('should add the object to the collection', () => {
+        expect(collection.has(item)).to.be.true;
+      });
+
+      it('should return the object', () => {
+        expect(returnedItem).to.equal(item);
+      });
+
+      it('should add a shadow of the object', () => {
+        expect(collection.shadowMap.has('foo')).to.be.true;
+        const fooShadowMap = collection.shadowMap.get('foo');
+        expect(fooShadowMap).to.be.an('array')
+          .and.to.have.lengthOf(1);
+        expect(fooShadowMap[0]).to.have.property('name', 'foo');
+        expect(fooShadowMap[0]).to.have.property(contextIdSymbol, 'foo');
+      });
+    });
   });
 
   describe('removing an object from an override collection', () => {
@@ -797,6 +840,74 @@ describe('override collections', () => {
 
       it('should ensure all shadows are gone', () => {
         expect(collection.shadowMap).to.be.empty;
+      });
+    });
+  });
+
+  describe('serializing a context', () => {
+    describe('which has no shadows', () => {
+      let items;
+      let collection;
+      let serializedContext;
+
+      before(() => {
+        collection = makeOverrideCollection(new IndexedCollection(), getContextId);
+
+        items = ['foo', 'bar', 'baz']
+          .map((name) => {
+            const item = new VcsObject({ name });
+            item[contextIdSymbol] = 'foo';
+            collection.override(item);
+            return item;
+          });
+
+        collection.override(new VcsObject({ name: 'grape' }));
+        serializedContext = collection.serializeContext('foo');
+      });
+
+      after(() => {
+        destroyCollection(collection);
+      });
+
+      it('should serialize all items of said context', () => {
+        expect(serializedContext).to.have.lengthOf(items.length);
+      });
+
+      it('should return the serialized representation', () => {
+        expect(serializedContext).to.have.deep.ordered.members(items.map(i => i.toJSON()));
+      });
+    });
+
+    describe('which has shadows', () => {
+      let items;
+      let collection;
+      let serializedContext;
+
+      before(() => {
+        collection = makeOverrideCollection(new IndexedCollection(), getContextId);
+
+        items = ['foo', 'bar', 'baz']
+          .map((name) => {
+            const item = new VcsObject({ name });
+            item[contextIdSymbol] = 'foo';
+            collection.override(item);
+            return item;
+          });
+
+        collection.override(new VcsObject({ name: 'bar' }));
+        serializedContext = collection.serializeContext('foo');
+      });
+
+      after(() => {
+        destroyCollection(collection);
+      });
+
+      it('should serialize all items of said context', () => {
+        expect(serializedContext).to.have.lengthOf(items.length);
+      });
+
+      it('should return the serialized representation, maintaining the index', () => {
+        expect(serializedContext).to.have.deep.ordered.members(items.map(i => i.toJSON()));
       });
     });
   });
