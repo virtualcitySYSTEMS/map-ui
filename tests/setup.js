@@ -1,13 +1,12 @@
 import chai from 'chai';
-// const spies = require('chai-spies');
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import canvas from 'canvas';
+import Vue from 'vue';
+import VueCompositionAPI from '@vue/composition-api';
 import canvasBindings from 'canvas/lib/bindings.js';
 
 chai.use(sinonChai);
-// chai.use(spies);
-
 global.expect = chai.expect;
 global.sinon = sinon;
 global.requestAnimationFrame = window.requestAnimationFrame;
@@ -25,3 +24,6 @@ Object.assign(canvas, {
   global[obj] = canvas[obj];
 });
 global.createCanvas = canvas.createCanvas;
+
+
+Vue.use(VueCompositionAPI);

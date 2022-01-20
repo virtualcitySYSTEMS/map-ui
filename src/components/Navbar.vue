@@ -20,11 +20,12 @@
               />
               <NavbarDivider />
               <ComponentToggleButton
-                v-for="windowState in windowStates"
-                :key="windowState.id"
-                :component-name="windowState.id"
-                :window-state="windowState"
-                :icon="windowState.icon"
+                v-for="windowComponentOption in windowComponentOptions"
+                :key="windowComponentOption.id"
+                :component-name="windowComponentOption.id"
+                :window-state="getWindowComponentState(windowComponentOption.id)"
+                :icon="windowComponentOption.state.headerIcon"
+                @toggle="toggle(windowComponentOption.id)"
               />
             </div>
           </v-toolbar-items>
@@ -46,76 +47,84 @@
   import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
   import { inject } from '@vue/composition-api';
   import LayerTree from '@/components/LayerTree.vue';
-  import { WINDOW_SLOTS } from '@/modules/window-manager/window.manager.js';
-  import PositionParser from '@/modules/window-manager/util/position-parser.js';
+  import { windowSlot } from '@/modules/window-manager/windowManager.js';
   import ComponentToggleButton from './ComponentToggleButton.vue';
   import EmptyCmp from './empty-cmp.vue';
 
-  const staticPosition = new PositionParser({
-    left: '10%',
-    right: '10%',
-    top: '10%',
-    bottom: '10%',
-  });
-
   const staticWindow = {
     id: 'static-win',
-    width: window.innerWidth * 0.8,
-    component: EmptyCmp,
-    icon: '$vcsLayers',
-    position: staticPosition,
-    styles: {
-      'max-width': '80%',
+    state: {
+      headerIcon: '$vcsLayers',
+      styles: {
+        'max-width': '80%',
+      },
     },
+    position: {
+      width: window.innerWidth * 0.8,
+      left: '10%',
+      right: '10%',
+      top: '10%',
+      bottom: '10%',
+    },
+    component: EmptyCmp,
   };
 
   const layerTree = {
     id: 'layer-tree',
     component: LayerTree,
-    width: 320,
-    header: 'Static Window',
-    icon: '$vcsLayers',
-    position: {},
-    windowSlot: WINDOW_SLOTS.static,
-    isDetached: false,
+    state: {
+      headerTitle: 'Static Window',
+      headerIcon: '$vcsLayers',
+    },
+    position: {
+      width: 320,
+    },
+    windowSlot: windowSlot.STATIC,
   };
 
   const components = {
     id: 'components',
     component: LayerTree,
-    width: 320,
-    header: 'Dynamic Window Left 1',
-    icon: '$vcsComponents',
-    position: {},
-    windowSlot: WINDOW_SLOTS.dynamicLeft,
-    isDetached: false,
+    state: {
+      headerTitle: 'Dynamic Window Left 1',
+      headerIcon: '$vcsComponents',
+    },
+    position: {
+      width: 320,
+    },
+    windowSlot: windowSlot.DYNAMIC_LEFT,
   };
 
   const dummy1 = {
     ...components,
     id: 'dummy1',
-    icon: '$vcsTools',
-    windowSlot: WINDOW_SLOTS.dynamicLeft,
-    header: 'Dynamic Window Left (2)',
-    isDetached: false,
+    state: {
+      ...components.state,
+      headerTitle: 'Dynamic Window Left (2)',
+      headerIcon: '$vcsTools',
+    },
+    windowSlot: windowSlot.DYNAMIC_LEFT,
   };
 
   const dummy2 = {
     ...dummy1,
-    header: 'Dynamic Window Right',
     id: 'dummy2',
-    icon: '$vcsLegend',
-    isDetached: false,
-    windowSlot: WINDOW_SLOTS.dynamicRight,
+    state: {
+      ...dummy1.state,
+      headerTitle: 'Dynamic Window Right',
+
+      headerIcon: '$vcsLegend',
+    },
+    windowSlot: windowSlot.DYNAMIC_RIGHT,
   };
 
-  const windowStates = {
+  const windowComponentOptions = [
     layerTree,
     components,
     dummy1,
     dummy2,
     staticWindow,
-  };
+  ];
 
 
   export default Vue.extend({
@@ -130,7 +139,24 @@
     setup() {
       const mapState = inject('mapState');
       const pluginComponents = inject('pluginComponents');
+      const windowManager = inject('windowManager');
       const app = inject('vcsApp');
+
+      const getWindowComponentState = (id) => {
+        return windowManager.has(id);
+      };
+
+      const toggle = (id) => {
+        if (windowManager.has(id)) {
+          windowManager.remove(id);
+        } else {
+          const windowComponentOption = windowComponentOptions.find(item => item.id === id);
+          if (windowComponentOption) {
+            windowManager.add(windowComponentOption);
+          }
+        }
+      };
+
 
       const iconMap = {
         'vcs.vcm.maps.Openlayers': '$vcs2d',
@@ -148,8 +174,10 @@
         iconMap,
         maps: mapState.maps,
         mapState,
+        getWindowComponentState,
+        toggle,
         setMap,
-        windowStates,
+        windowComponentOptions,
       };
     },
   });

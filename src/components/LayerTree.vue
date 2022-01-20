@@ -1,18 +1,14 @@
 <template>
-  <WindowComponent
-    :window-id="windowId"
-  >
-    <Treeview
-      v-if="tree && tree.items"
-      :items="tree.items"
-      :has-searchbar="true"
-      :searchbar-placeholder="'layer-tree.search.placeholder'"
-      selectable
-      @input="handleInput"
-      @action-clicked="handlePopover"
-      @update:open="handleUpdateOpen"
-    />
-  </WindowComponent>
+  <Treeview
+    v-if="tree && tree.items"
+    :items="tree.items"
+    :has-searchbar="true"
+    :searchbar-placeholder="'layer-tree.search.placeholder'"
+    selectable
+    @input="handleInput"
+    @action-clicked="handlePopover"
+    @update:open="handleUpdateOpen"
+  />
 </template>
 
 
@@ -29,7 +25,6 @@
 
   import Treeview from '@vcsuite/uicomponents/Treeview.vue';
   import VcsLegend from '@vcsuite/uicomponents/VcsLegend.vue';
-  import WindowComponent from '@/modules/window-manager/WindowComponent.vue';
   import AbstractTree from '@/treeview/AbstractTree.js';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig.js';
 
@@ -53,7 +48,7 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview, WindowComponent },
+    components: { Treeview },
     props: {
       windowId: {
         type: String,

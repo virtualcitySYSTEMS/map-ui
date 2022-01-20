@@ -23,7 +23,7 @@
     ref,
   } from '@vue/composition-api';
   import VcsApp, { setPluginUiComponents } from '@/vcsApp.js';
-  import { WindowManager } from '@/modules/window-manager/window.manager.js';
+  import { WindowManager } from '@/modules/window-manager/windowManager.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import { PopoverManager } from '@/modules/popover-manager/popover.manager.js';
   import Popover from '@/modules/popover-manager/PopoverManager.vue';

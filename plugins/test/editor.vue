@@ -1,6 +1,5 @@
 <template>
-  <WindowComponent window-id="config-editor">
-    <template v-slot:header>Config Editor</template>
+  <div>
     <v-textarea
       v-model="configString"
       v-if="!loading"
@@ -9,21 +8,23 @@
       v-else
     />
 
-    <Button @click="replaceContext">Apply</Button>
-    <Button @click="removeContext">Remove</Button>
-  </WindowComponent>
+    <Button @click="replaceContext">
+      Apply
+    </Button>
+    <Button @click="removeContext">
+      Remove
+    </Button>
+  </div>
 </template>
 
 <script>
   import { ref, inject } from '@vue/composition-api';
   import Context from '../../src/context.js';
-  import WindowComponent from '../../src/modules/window-manager/WindowComponent.vue';
 
   const contextId = 'foo';
 
   export default {
-    name: 'editor',
-    components: { WindowComponent },
+    name: 'Editor',
     setup() {
       /** @type {VcsApp} */
       const app = inject('vcsApp');
