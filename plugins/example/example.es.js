@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-import { inject } from '@vue/composition-api';
-import { WINDOW_POSITIONS, WINDOW_SLOTS } from '../../src/modules/window-manager/window.manager.js';
+import { WINDOW_POSITIONS, windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import mySuperComponent from './mySuperComponent.vue';
 
 export default async function (app, config) {
@@ -25,7 +24,7 @@ export default async function (app, config) {
                   app.windowManager.add({
                     id: 'test',
                     component: mySuperComponent,
-                    windowSlot: WINDOW_SLOTS.dynamicRight,
+                    slot: windowSlot.DYNAMIC_RIGHT,
                   });
                 }
               };
@@ -38,13 +37,13 @@ export default async function (app, config) {
             template: '<Button @click="switchWindow()">ADD</Button>',
             setup() {
               const switchWindow = () => {
-                if (app.windowManager.has(228)) {
+                if (app.windowManager.has('228')) {
                   app.windowManager.remove('test');
                 } else {
                   app.windowManager.add({
                     id: 'test',
                     component: mySuperComponent,
-                    windowSlot: WINDOW_SLOTS.dynamicRight,
+                    slot: windowSlot.DYNAMIC_RIGHT,
                   });
                 }
               };
@@ -64,11 +63,10 @@ export default async function (app, config) {
     },
     postUiInitialize: async () => {
       app.windowManager.add({
-        id: 228,
+        id: '228',
         component: mySuperComponent,
-        width: 250,
-        position: WINDOW_POSITIONS.topRight,
-        windowSlot: WINDOW_SLOTS.dynamicRight,
+        position: WINDOW_POSITIONS.TOP_RIGHT,
+        slot: windowSlot.DYNAMIC_RIGHT,
       });
 
       app.toolboxManager.addToolboxGroup(

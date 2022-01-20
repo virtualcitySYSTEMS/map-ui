@@ -4,7 +4,8 @@ import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
 import { toolboxData } from './toolbox-data';
 import editor from './editor.vue';
-import { WINDOW_SLOTS } from '../../src/modules/window-manager/window.manager';
+import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
+import windowManagerExample from './windowManagerExample.vue';
 
 let source;
 
@@ -54,9 +55,40 @@ there are ${getSource().getFeatures().length} features
                 } else {
                   windowManager.add({
                     id,
+                    state: {
+                      headerTitle: 'Context Editor',
+                    },
                     component: editor,
-                    windowSlot: WINDOW_SLOTS.dynamicLeft,
-                    width: 500,
+                    slot: windowSlot.STATIC,
+                  });
+                }
+              },
+            };
+          },
+        },
+        {
+          template: "<Button @click='toggle'>Windows</Button>",
+          setup() {
+            /** @type {WindowManager} */
+            const windowManager = inject('windowManager');
+
+            return {
+              toggle() {
+                const id = 'windowManagerExample';
+                if (windowManager.has(id)) {
+                  windowManager.remove(id);
+                } else {
+                  windowManager.add({
+                    id,
+                    state: {
+                      headerTitle: 'windowManager Example',
+                    },
+                    component: windowManagerExample,
+                    position: {
+                      left: '60%',
+                      right: '10%',
+                      top: '10%',
+                    },
                   });
                 }
               },
