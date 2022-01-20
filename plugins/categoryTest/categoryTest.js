@@ -1,6 +1,6 @@
 import { inject } from '@vue/composition-api';
 import VcsButton from '@vcsuite/uicomponents/Button.vue';
-import { WINDOW_SLOTS } from '../../src/modules/window-manager/window.manager.js';
+import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import Categories from './Categories.vue';
 
 export default async function categoryTest() {
@@ -27,8 +27,10 @@ export default async function categoryTest() {
                     windowManager.add({
                       id,
                       component: Categories,
-                      windowSlot: WINDOW_SLOTS.dynamicLeft,
-                      width: 500,
+                      slot: windowSlot.DETACHED,
+                      position: {
+                        width: 500,
+                      },
                     });
                   }
                 },
