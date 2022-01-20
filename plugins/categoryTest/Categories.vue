@@ -1,8 +1,5 @@
 <template>
-  <WindowComponent
-    window-id="category-editor"
-    class="fill-height max-height"
-  >
+  <div>
     <div
       class="overflow-auto"
     >
@@ -14,8 +11,8 @@
     </div>
     <hr>
     <span>
-      <VcsButton icon="$vcsPlus" @input="newDialog = true"/>
-      <VcsButton icon="$vcsExport" @input="uploadDialog = true"/>
+      <VcsButton icon="$vcsPlus" @input="newDialog = true" />
+      <VcsButton icon="$vcsExport" @input="uploadDialog = true" />
     </span>
 
     <v-dialog
@@ -35,7 +32,9 @@
             placeholder="Collection Name"
           />
           <v-text-field v-model="newCategory.name" v-else />
-          <v-btn type="submit">Add</v-btn>
+          <v-btn type="submit">
+            Add
+          </v-btn>
         </v-form>
       </v-card>
     </v-dialog>
@@ -47,24 +46,24 @@
           @submit.prevent="upload"
         >
           <v-textarea v-model="uploadString" />
-          <v-btn type="submit">Upload</v-btn>
+          <v-btn type="submit">
+            Upload
+          </v-btn>
         </v-form>
       </v-card>
     </v-dialog>
-  </WindowComponent>
+  </div>
 </template>
 
 <script>
   import { inject, ref, onUnmounted } from '@vue/composition-api';
   import VcsButton from '@vcsuite/uicomponents/Button.vue';
-  import WindowComponent from '../../src/modules/window-manager/WindowComponent.vue';
   import Category from './Category.vue';
 
   export default {
     name: 'CategoriesComponent',
     components: {
       Category,
-      WindowComponent,
       VcsButton,
     },
     setup() {
