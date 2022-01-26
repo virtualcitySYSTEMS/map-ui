@@ -9,7 +9,7 @@
     "build": "node build/build.mjs",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint \"{src,components,tests}/**/*.{js,vue}\""
+    "lint": "eslint \"{src,tests}/**/*.{js,vue}\""
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
@@ -18,18 +18,15 @@
     "@vcsuite/check": "^1.0.3",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",
+    "@vcsuite/ui-components": "^0.1.4",
     "@vue/composition-api": "^1.4.3",
     "fuse.js": "^6.4.6",
     "ol": "^6.9.0",
     "rxjs": "^6.6.6",
-    "sortablejs": "^1.13.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.11",
-    "vue-click-outside": "^1.1.0",
     "vue-i18n": "^8.24.1",
-    "vuedraggable": "^2.24.3",
-    "vuetify": "^2.5.3",
-    "vuetify-draggable-treeview": "^0.0.6"
+    "vuetify": "^2.5.3"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.3.4",
@@ -91,10 +88,6 @@
             [
               "@",
               "./src"
-            ],
-            [
-              "@vcsuite/uicomponents",
-              "./components"
             ]
           ]
         }

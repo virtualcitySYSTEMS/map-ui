@@ -1,5 +1,5 @@
 <template>
-  <Button
+  <VcsButton
     @click.native="toggle"
     toggleable
     :icon="icon"
@@ -8,12 +8,12 @@
     :title="title"
   >
     <slot />
-  </Button>
+  </VcsButton>
 </template>
 
 <script>
   import { defineComponent } from '@vue/composition-api';
-  import Button from '@vcsuite/uicomponents/Button.vue';
+  import { VcsButton } from '@vcsuite/ui-components';
 
   export default defineComponent({
     setup(props, { emit }) {
@@ -22,7 +22,7 @@
       };
       return { toggle };
     },
-    components: { Button },
+    components: { VcsButton },
     props: {
       state: {
         type: Boolean,

@@ -5,7 +5,7 @@
         <v-col>
           <v-toolbar-items>
             <div v-if="maps" class="d-flex align-center">
-              <Button
+              <VcsButton
                 v-for="map of maps"
                 :key="map.name"
                 :toggleable="true"
@@ -18,7 +18,7 @@
                 :is="button"
                 :key="`map-button-${index}`"
               />
-              <NavbarDivider />
+              <VcsNavbarDivider />
               <ComponentToggleButton
                 v-for="windowComponentOption in windowComponentOptions"
                 :key="windowComponentOption.id"
@@ -43,8 +43,7 @@
 
   import Vue from 'vue';
 
-  import Button from '@vcsuite/uicomponents/Button.vue';
-  import NavbarDivider from '@vcsuite/uicomponents/NavbarDivider.vue';
+  import { VcsButton, VcsNavbarDivider } from '@vcsuite/ui-components';
   import { inject } from '@vue/composition-api';
   import LayerTree from '@/components/LayerTree.vue';
   import { windowSlot } from '@/modules/window-manager/windowManager.js';
@@ -129,7 +128,7 @@
 
   export default Vue.extend({
     name: 'VcsNavbar',
-    components: { Button, NavbarDivider, ComponentToggleButton },
+    components: { VcsButton, VcsNavbarDivider, ComponentToggleButton },
     props: {
       mapId: {
         type: String,
