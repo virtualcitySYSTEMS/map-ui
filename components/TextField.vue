@@ -1,36 +1,36 @@
 <template>
-  <div
-    class="d-flex flex-row align-end justify-space-between"
+  <v-row
+    class="d-flex flex-row align-baseline justify-space-between w-full"
     :class="[...customClasses]"
   >
-    <slot name="label">
-      <label
-        v-if="!useNativeLabel"
-        class="mr-3"
-        :class="{ caption: $attrs.dense !== undefined }"
-      >
-        {{ label }}
-      </label>
-    </slot>
-
-
-    <slot name="input">
-      <div class="d-flex justify-center align-center w-full">
-        <v-text-field
-          :class="{
-            caption: $attrs.dense !== undefined,
-            'text-right': alignInputContent === 'right',
-            'text-left': alignInputContent === 'left',
-            'text-center': alignInputContent === 'center',
-            'input--seconds': unit === 'sec',
-            'input--meters': unit === 'm',
-            'input--degrees': unit === 'deg',
-          }"
-          v-bind="{...$props, ...$attrs, label: useNativeLabel ? $props.label : undefined}"
-        />
-      </div>
-    </slot>
-  </div>
+    <v-col cols="5">
+      <slot name="label">
+        <label
+          v-if="!useNativeLabel"
+          :class="{ caption: $attrs.dense !== undefined }">
+          {{ label }}
+        </label>
+      </slot>
+    </v-col>
+    <v-col cols="7">
+      <slot name="input">
+        <div class="d-flex justify-center align-center w-full">
+          <v-text-field
+            :class="{
+              caption: $attrs.dense !== undefined,
+              'text-right': alignInputContent === 'right',
+              'text-left': alignInputContent === 'left',
+              'text-center': alignInputContent === 'center',
+              'input--seconds': unit === 'sec',
+              'input--meters': unit === 'm',
+              'input--degrees': unit === 'deg',
+            }"
+            v-bind="{...$props, ...$attrs, label: useNativeLabel ? $props.label : undefined}"
+          />
+        </div>
+      </slot>
+    </v-col>
+  </v-row>
 </template>
 
 <style lang="scss" scoped>
@@ -49,7 +49,7 @@
   }
 
   label {
-    white-space: nowrap;
+    word-break: break-word !important;
   }
 
   .input--seconds,

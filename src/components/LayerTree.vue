@@ -1,5 +1,5 @@
 <template>
-  <Treeview
+  <VcsTreeview
     v-if="tree && tree.items"
     :items="tree.items"
     :has-searchbar="true"
@@ -23,8 +23,7 @@
   } from '@vue/composition-api';
   import { v4 as uuid } from 'uuid';
 
-  import Treeview from '@vcsuite/uicomponents/Treeview.vue';
-  import VcsLegend from '@vcsuite/uicomponents/VcsLegend.vue';
+  import { VcsTreeview, VcsLegend } from '@vcsuite/ui-components';
   import AbstractTree from '@/treeview/AbstractTree.js';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig.js';
 
@@ -48,7 +47,7 @@
    */
   export default defineComponent({
     name: 'VcsLayerTree',
-    components: { Treeview },
+    components: { VcsTreeview },
     props: {
       windowId: {
         type: String,

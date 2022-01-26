@@ -66,7 +66,7 @@
   import Vue from 'vue';
 
   import { inject } from '@vue/composition-api';
-  import Button from '@vcsuite/uicomponents/Button.vue';
+  import { VcsButton } from '@vcsuite/ui-components';
 
   import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
   import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
@@ -108,7 +108,7 @@
     components: {
       ToolboxSingleSelectButton,
       ToolboxMultiSelectButton,
-      Button,
+      VcsButton,
     },
   });
 </script>

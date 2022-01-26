@@ -1587,6 +1587,12 @@
     {
       "name": "categoryTest",
       "entry": "plugins/categoryTest/categoryTest.js"
+    },
+    {
+      "name": "@vcmap/pluginExample",
+      "entry": "plugins/@vcmap/pluginExample/index.js",
+      "selectOptions": ["Option A", "Option B", "Option C", "Option D"],
+      "initialTextInput": 123
     }
   ]
 }
