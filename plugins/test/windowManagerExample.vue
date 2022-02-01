@@ -1,10 +1,10 @@
 <template>
   <div>
-    <VcsButton v-for="(example, index) in examples" :key="`b-${index}`" @click.native="(e) => toggle(e, example)">
+    <VcsButton v-for="(example, index) in examples" :key="`b-${index}`" @click="(e) => toggle(e, example)">
       toggle {{ example }}
     </VcsButton>
 
-    <VcsButton @click.native="toggleClass()">
+    <VcsButton @click="toggleClass()">
       Change Static2 TestClass
     </VcsButton>
   </div>
@@ -16,7 +16,7 @@
 <script>
   import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
   import { getLogger } from '@vcsuite/logger';
-  import VcsButton from '../../components/Button.vue';
+  import {VcsButton} from '@vcsuite/ui-components';
   import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
   import EmptyCmpt from '../../src/components/empty-cmp.vue';
   import VcsContent from './vcsContent.vue';
