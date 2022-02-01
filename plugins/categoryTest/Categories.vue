@@ -11,8 +11,8 @@
     </div>
     <hr>
     <span>
-      <VcsButton icon="$vcsPlus" @input="newDialog = true" />
-      <VcsButton icon="$vcsExport" @input="uploadDialog = true" />
+      <VcsButton icon="$vcsPlus" @click="newDialog = true" />
+      <VcsButton icon="$vcsExport" @click="uploadDialog = true" />
     </span>
 
     <v-dialog
@@ -57,7 +57,7 @@
 
 <script>
   import { inject, ref, onUnmounted } from '@vue/composition-api';
-  import VcsButton from '@vcsuite/uicomponents/Button.vue';
+  import { VcsButton } from '@vcsuite/ui-components';
   import Category from './Category.vue';
 
   export default {

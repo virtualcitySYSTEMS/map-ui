@@ -1,11 +1,10 @@
 <template>
   <VcsButton
-    @click.native="toggle"
-    toggleable
+    @click="toggle"
     :icon="icon"
     :v-bind="{...$props, ...$attrs} "
-    :value="state"
     :title="title"
+    :isActive="state"
   >
     <slot />
   </VcsButton>

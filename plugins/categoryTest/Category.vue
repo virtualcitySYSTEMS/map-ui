@@ -5,8 +5,8 @@
         {{ categoryName }}
       </span>
       <span class="float-right">
-        <vcs-button @input="dialog = true" icon="$vcsPlus" />
-        <vcs-button icon="mdi-download" @input="download" />
+        <vcs-button icon="$vcsPlus" @click="dialog = true" />
+        <vcs-button icon="mdi-download" @click="download" />
         <a :href="downloadLink" target="_blank" ref="link" download="category.json"/>
       </span>
     </span>
@@ -49,7 +49,7 @@
 
 <script>
   import { inject, nextTick, ref } from '@vue/composition-api';
-  import VcsButton from '../../components/Button.vue';
+  import { VcsButton } from '@vcsuite/ui-components';
   import { getObjectFromOptions } from '../../src/vcsAppContextHelpers.js';
 
   export default {

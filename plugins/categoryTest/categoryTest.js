@@ -1,5 +1,5 @@
 import { inject } from '@vue/composition-api';
-import VcsButton from '@vcsuite/uicomponents/Button.vue';
+import { VcsButton } from '@vcsuite/ui-components';
 import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import Categories from './Categories.vue';
 
@@ -10,7 +10,7 @@ export default async function categoryTest() {
       return {
         mapButton: [
           {
-            template: '<VcsButton @input="toggle" icon="$vcsPen" />',
+            template: '<VcsButton @click="toggle" icon="$vcsPen" />',
             components: {
               VcsButton,
             },

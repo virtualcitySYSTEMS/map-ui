@@ -8,10 +8,9 @@
               <VcsButton
                 v-for="map of maps"
                 :key="map.name"
-                :toggleable="true"
                 :icon="iconMap[map.className]"
-                @click.native="setMap(map.name)"
-                :value="mapState.activeMap === map.className"
+                @click="setMap(map.name)"
+                :isActive="mapState.activeMap === map.className"
               />
               <component
                 v-for="(button, index) in mapButtons"

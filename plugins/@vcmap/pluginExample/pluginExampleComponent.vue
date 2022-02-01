@@ -74,26 +74,38 @@
         :rules="[() => state.checkboxInput || 'Please accept our terms of use']"
         v-model="state.checkboxInput"
       />
+      <VcsButton
+        :is-active="state.checkboxInput"
+        @click="state.checkboxInput = !state.checkboxInput"
+        elevation="2"
+        tooltip="toggle button"
+        color="warning"
+        tooltip-position="right"
+      >
+        <span v-if="state.checkboxInput">Active-true</span>
+        <span v-else>Active-false</span>
+      </VcsButton>
     </div>
     <VcsButton
-      @input="logState(state)"
+      @click="logState(state)"
       :disabled="!isValid"
       :tooltip="'Log current state in console'"
+      :has-update="isValid && newUpdate"
     >
       Log State
     </VcsButton>
     <VcsButton
       type="reset"
+      icon="$vcsReturn"
     >
       Reset
     </VcsButton>
   </v-form>
 </template>
 <script>
-  import { inject } from '@vue/composition-api';
-  import { VcsSelect, VcsCheckbox } from '@vcsuite/ui-components';
+  import { inject, ref, watch } from '@vue/composition-api';
+  import { VcsSelect, VcsCheckbox, VcsButton } from '@vcsuite/ui-components';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
-  import VcsButton from '../../../components/Button.vue';
   import VcsTextField from '../../../components/TextField.vue';
 
   export default {
@@ -108,6 +120,8 @@
     setup() {
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey('@vcmap/pluginExample');
+      const newUpdate = ref(true);
+      watch(plugin.state, () => { newUpdate.value = true; });
 
       return {
         // no object-destruction of reactive objects! or use toRef()
@@ -119,7 +133,12 @@
         isValidText,
         conditionalTest,
         isValidEmail,
-        logState: () => console.log(plugin.getSerializedState()),
+        newUpdate,
+        logState: () => {
+          // eslint-disable-next-line no-console
+          console.log(plugin.getSerializedState());
+          newUpdate.value = false;
+        },
       };
     },
   };
