@@ -1,14 +1,14 @@
 import '@mdi/font/css/materialdesignicons.css';
 
 import Vue from 'vue';
-import Vuetify from 'vuetify';
+import Vuetify from 'vuetify/lib';
 
 import { Icons } from '@vcsuite/ui-components';
 
 Vue.use(Vuetify);
 
 const vuetify = new Vuetify({
-  treeShake: true,
+  treeShake: false,
   defaultAssets: {
     font: {
       family: 'titillium-web',

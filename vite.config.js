@@ -1,44 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import path from 'path';
 import { defineConfig } from 'vite';
-import { createVuePlugin } from 'vite-plugin-vue2';
-import vitePluginComponents from 'vite-plugin-components';
-import { fileURLToPath } from 'url';
-
-const { default: ViteComponents, VuetifyResolver } = vitePluginComponents;
-
-const dirName = path.dirname(fileURLToPath(import.meta.url));
+import commonViteConfig from './build/commonViteConfig.js';
 
 const configMain = defineConfig({
+  ...commonViteConfig,
   optimizeDeps: {
     exclude: [
       '@vcmap/core',
+      'ol',
+      '@vcsuite/ui-components',
     ],
     include: [
       '@vcmap/core > fast-deep-equal',
       '@vcmap/core > axios',
       '@vcmap/core > rbush-knn',
       '@vcmap/core > pbf',
+      'ol > pbf',
     ],
   },
-  resolve: {
-    alias: {
-      '@': `${path.resolve(dirName, 'src')}`,
-      '@vcsuite/uicomponents': `${path.resolve(dirName, 'components')}`,
-      vue: `${path.resolve(dirName, path.join('node_modules', 'vue', 'dist', 'vue.esm.js'))}`,
-    },
-  },
-  plugins: [
-    createVuePlugin(),
-    ViteComponents({
-      customComponentResolvers: [
-        VuetifyResolver({
-          componentPrefix: '',
-        }),
-      ],
-    }),
-  ],
-
   server: {
     https: false,
     port: 8080,

@@ -1586,7 +1586,7 @@
     },
     {
       "name": "categoryTest",
-      "entry": "plugins/categoryTest/categoryTest.js"
+      "entry": "plugins/categoryTest/categoryTest.es.js"
     },
     {
       "name": "@vcmap/pluginExample",

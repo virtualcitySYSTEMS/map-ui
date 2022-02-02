@@ -2,9 +2,9 @@
  * Handle the api annotation.
  * @param {Object} dictionary The tag dictionary.
  */
-exports.defineTags = function (dictionary) {
+exports.defineTags = function defineTags(dictionary) {
   dictionary.defineTag('api', {
-    onTagged: function (doclet, tag) {
+    onTagged(doclet) {
       doclet.api = true;
     },
   });

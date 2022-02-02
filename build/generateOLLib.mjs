@@ -3,13 +3,13 @@ import path from 'path';
 import { spawn } from 'child_process';
 import { walk } from 'walk';
 
-const isWindows = process.platform.indexOf('win') === 0;
 
+const isWindows = process.platform.indexOf('win') === 0;
 const sourceDir = path.join('node_modules', 'ol', 'src');
 
 /**
  * Generate a list of all .js paths in the source directory.
- * @return {Promise<Array>} Resolves to an array of source paths.
+ * @returns {Promise<Array>} Resolves to an array of source paths.
  */
 function getPaths() {
   return new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ function getPaths() {
 /**
  * Parse the JSDoc output.
  * @param {string} output JSDoc output
- * @return {Object} Symbol and define info.
+ * @returns {Object} Symbol and define info.
  */
 function parseOutput(output) {
   if (!output) {
@@ -57,13 +57,13 @@ function parseOutput(output) {
   try {
     info = JSON.parse(String(output));
   } catch (err) {
-    throw new Error('Failed to parse output as JSON: ' + output);
+    throw new Error(`Failed to parse output as JSON: ${ output}`);
   }
   if (!Array.isArray(info.symbols)) {
-    throw new Error('Expected symbols array: ' + output);
+    throw new Error(`Expected symbols array: ${ output}`);
   }
   if (!Array.isArray(info.defines)) {
-    throw new Error('Expected defines array: ' + output);
+    throw new Error(`Expected defines array: ${ output}`);
   }
 
   return info;
@@ -72,17 +72,15 @@ function parseOutput(output) {
 /**
  * Get checked path of a binary.
  * @param {string} binaryName Binary name of the binary path to find.
- * @return {string} Path.
+ * @returns {string} Path.
  */
 function getBinaryPath(binaryName) {
-  if (isWindows) {
-    binaryName += '.cmd';
-  }
+  const binary = isWindows ? `${binaryName}.cmd` : binaryName;
 
   const expectedPaths = [
-    path.join('node_modules', '.bin', binaryName),
+    path.join('node_modules', '.bin', binary),
     path.resolve(
-      path.join('node_modules', 'jsdoc', '.bin', binaryName)
+      path.join('node_modules', 'jsdoc', '.bin', binary),
     ),
   ];
 
@@ -94,21 +92,21 @@ function getBinaryPath(binaryName) {
   }
 
   throw Error(
-    'JsDoc binary was not found in any of the expected paths: ' + expectedPaths
+    `JsDoc binary was not found in any of the expected paths: ${ expectedPaths}`,
   );
 }
 
 /**
  * Spawn JSDoc.
  * @param {Array<string>} paths Paths to source files.
- * @return {Promise<string>} Resolves with the JSDoc output (new metadata).
+ * @returns {Promise<string>} Resolves with the JSDoc output (new metadata).
  *     If provided with an empty list of paths, resolves with null.
  */
 function spawnJSDoc(paths) {
   const jsdocConfig = path.join(
     'build',
     'info',
-    'conf.json'
+    'conf.json',
   );
 
   return new Promise((resolve, reject) => {
@@ -144,7 +142,7 @@ function spawnJSDoc(paths) {
 
 /**
  * Generate info from the sources.
- * @return {Promise<Error>} Resolves with the info object.
+ * @returns {Promise<Error>} Resolves with the info object.
  */
 async function generateInfo() {
   const paths = await getPaths();
@@ -152,12 +150,12 @@ async function generateInfo() {
 }
 /**
  * Read the symbols from info file.
- * @return {Promise<Array>} Resolves with an array of symbol objects.
+ * @returns {Promise<Array>} Resolves with an array of symbol objects.
  */
 async function getSymbols() {
   const info = await generateInfo();
   return info.symbols.filter(
-    (symbol) => symbol.kind !== 'member' || symbol.exports
+    symbol => symbol.kind !== 'member' || symbol.exports,
   );
 }
 
@@ -167,7 +165,7 @@ const exported = new Set();
  * Generate an import statement.
  * @param {Object} symbol Symbol.
  * @param {string} member Member.
- * @return {string|null} An import statement.
+ * @returns {string|null} An import statement.
  */
 function getImport(symbol, member) {
   const defaultExport = symbol.name.split('~');
@@ -177,13 +175,13 @@ function getImport(symbol, member) {
   let from;
 
   if (defaultExport.length > 1 || symbol.exports === 'default') {
-    from = defaultExport[0].replace(/^module\:/, '');
+    from = defaultExport[0].replace(/^module:/, '');
     importName = 'default';
-    exportName = from.replace(/[.\/]+/g, '$');
+    exportName = from.replace(/[./]+/g, '$');
   } else if (namedExport.length > 1 && (member || (symbol.exports && symbol.exports !== 'default'))) {
-    from = namedExport[0].replace(/^module\:/, '');
+    from = namedExport[0].replace(/^module:/, '');
     importName = member || symbol.exports;
-    exportName = `${from.replace(/[.\/]+/g, '$')}$${importName}`;
+    exportName = `${from.replace(/[./]+/g, '$')}$${importName}`;
   }
   if (exportName && !exported.has(exportName)) {
     exported.add(exportName);
@@ -197,12 +195,11 @@ function getImport(symbol, member) {
  * @param {Object} symbol Symbol.
  * @param {Object<string, string>} namespaces Already defined namespaces.
  * @param {Object} imports Imports.
- * @return {string} Export code.
  */
 function formatSymbolExport(symbol, namespaces, imports) {
-  const name = symbol.name;
+  const { name } = symbol;
   const parts = name.split('~');
-  const nsParts = parts[0].replace(/^module\:/, '').split(/[\/\.]/);
+  const nsParts = parts[0].replace(/^module:/, '').split(/[/.]/);
   const imp = getImport(symbol, nsParts.pop());
   if (imp) {
     imports[imp] = true;
@@ -212,13 +209,13 @@ function formatSymbolExport(symbol, namespaces, imports) {
 /**
  * Generate export code given a list symbol names.
  * @param {Array<Object>} symbols List of symbols.
- * @return {string} Export code.
+ * @returns {string} Export code.
  */
 function generateExports(symbols) {
   const namespaces = {};
   const imports = [];
-  symbols.forEach(function (symbol) {
-    const name = symbol.name;
+  symbols.forEach((symbol) => {
+    const { name } = symbol;
     if (name.indexOf('#') === -1) {
       const imp = getImport(symbol);
       if (imp) {
@@ -236,7 +233,7 @@ function generateExports(symbols) {
 
 /**
  * Generate the exports code.
- * @return {Promise<string>} Resolves with the exports code.
+ * @returns {Promise<string>} Resolves with the exports code.
  */
 export default async function main() {
   const symbols = await getSymbols();

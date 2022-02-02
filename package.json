@@ -7,9 +7,7 @@
     "test": "node --experimental-json-modules node_modules/mocha/bin/_mocha --exit --require tests/setupJsdom.js --require tests/setup.js --recursive \"tests/**/*spec.js\"",
     "preview": "vite preview",
     "build": "node build/build.mjs",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "lint": "eslint \"{src,tests}/**/*.{js,vue}\""
+    "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\""
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
@@ -19,7 +17,7 @@
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",
     "@vcsuite/ui-components": "^0.1.4",
-    "@vue/composition-api": "^1.4.3",
+    "@vue/composition-api": "^1.4.5",
     "fuse.js": "^6.4.6",
     "ol": "^6.9.0",
     "rxjs": "^6.6.6",
@@ -29,9 +27,6 @@
     "vuetify": "^2.5.3"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.3.4",
-    "@storybook/addon-essentials": "^6.3.4",
-    "@storybook/vue": "^6.3.4",
     "@vcmap/rollup-plugin-vcs-ol": "^1.0.1",
     "@vcsuite/eslint-config": "^2.0.3",
     "@vue/test-utils": "^1.3.0",
@@ -48,12 +43,11 @@
     "sass": "1.32.13",
     "sinon": "^12.0.1",
     "sinon-chai": "^3.7.0",
-    "storybook-builder-vite": "./storybook-builder-vite-0.0.13.tgz",
     "typescript": "^4.2.4",
-    "vite": "^2.6.13",
-    "vite-plugin-components": "^0.12.2",
-    "vite-plugin-vue2": "^1.9.0",
-    "vue-loader": "^15.9.7",
+    "vite": "^2.7.13",
+    "unplugin-vue-components": "^0.17.15",
+    "vite-plugin-vue2": "^1.9.3",
+    "vue-loader": "^16.6.0",
     "vue-template-compiler": "^2.6.14",
     "walk": "^2.3.15"
   },
@@ -99,15 +93,15 @@
   },
   "browserslist": [
     "last 2 Chrome versions",
-    "not Chrome < 86",
+    "not Chrome < 97",
     "last 2 Safari versions",
-    "not Safari < 14",
+    "not Safari < 15",
     "last 2 iOS versions",
-    "not iOS < 12.5",
+    "not iOS < 15",
     "last 2 Firefox versions",
-    "not Firefox < 78",
+    "not Firefox < 91",
     "last 2 Edge versions",
-    "not Edge < 86"
+    "not Edge < 97"
   ],
   "type": "module"
 }
