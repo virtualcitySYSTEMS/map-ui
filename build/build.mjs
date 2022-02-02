@@ -1,13 +1,51 @@
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 import path from 'path';
 import { build } from 'vite';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
+import fs from 'fs';
 import generateOLLib from './generateOLLib.mjs';
 import buildCesium from './buildCesium.mjs';
-import fs from 'fs';
+
+/**
+ * builds the given configuration and writes the library to the provided outputFolder. If the build contains css a .css
+ * file will also be written and injected into the .js file.
+ * @param {Object} libraryConfig Vitejs InlineConfig
+ * @param {string} outputFolder
+ * @param {string} library
+ * @param {string} hash
+ * @returns {Promise<void>}
+ */
+async function buildLibrary(libraryConfig, outputFolder, library, hash) {
+  const cssInjectorCode = `
+function loadCss(href) {
+  return new Promise((resolve, reject) => {
+    const elem = document.createElement('link');
+    elem.rel = 'stylesheet';
+    elem.href = href;
+    elem.defer = false;
+    elem.async = false;
+    elem.onload = resolve;
+    elem.onerror = reject;
+    document.head.appendChild(elem);
+  });
+}`;
+  const libraryBuilds = await build(libraryConfig);
+  const addedHash = hash ? `.${hash}` : '';
+  let css = false;
+  if (libraryBuilds[0].output[1] && libraryBuilds[0].output[1].type === 'asset') {
+    css = true;
+    await fs.promises.writeFile(path.join(process.cwd(), 'dist', `${outputFolder}/${library}${addedHash}.css`), libraryBuilds[0].output[1].source);
+  }
+  if (libraryBuilds[0].output[0] && libraryBuilds[0].output[0].type === 'chunk') {
+    let code = css ? `${cssInjectorCode}loadCss('./${outputFolder}/${library}${addedHash}.css');` : '';
+    code += libraryBuilds[0].output[0].code;
+    await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.es.js`), code);
+  }
+}
+
 
 const libraries = {
-  'vue': {
+  vue: {
     lib: 'vue',
     entry: path.join('lib', 'vue.js'),
   },
@@ -19,25 +57,39 @@ const libraries = {
     lib: 'cesium',
     entry: path.join('lib', 'cesium.js'),
   },
-  'ol': {
+  ol: {
     lib: 'ol',
-    entry: path.join('lib', 'ol.js'),
+    entry: path.join('lib', 'olLib.js'),
+    libraryEntry: path.join('lib', 'ol.js'), // openlayers special case, the entry to compile is the olLib, but the public entry must be ol.js
+    rollupOptions: {
+      output: {
+        manualChunks: () => 'ol.js', // this is needed, otherwise vitejs will create multiple chunks for openlayers.
+      },
+    },
   },
   '@vcmap/core': {
     lib: 'core',
     entry: path.join('lib', 'core.js'),
     rollupOptions: {
       plugins: [vcsOl()],
-    }
+    },
+  },
+  'vuetify/lib': {
+    lib: 'vuetify',
+    entry: path.join('lib', 'vuetify.js'),
+  },
+  '@vcsuite/ui-components': {
+    lib: 'uicomponents',
+    entry: path.join('lib', 'uicomponents.js'),
   },
 };
 
-const plugins = ['test', 'example'];
+const plugins = ['test', 'example', 'categoryTest'];
 
 const libraryPaths = {};
 const pluginLibraryPaths = {};
 Object.entries(libraries).forEach(([key, value]) => {
-  value.hash = `${uuid().substring(0,6)}`;
+  value.hash = `${uuid().substring(0, 6)}`;
   libraryPaths[key] = `./${value.lib}.${value.hash}.es.js`;
   pluginLibraryPaths[key] = `../../assets/${value.lib}.es.js`;
   value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
@@ -48,13 +100,7 @@ await generateOLLib();
 
 console.log('Building app');
 await build({
-  resolve: {
-    alias: {
-      "@": `${path.resolve(process.cwd(), "src")}`,
-      '@vcsuite/uicomponents': `${path.resolve(process.cwd(), "components")}`,
-      'vue': `${path.resolve(process.cwd(), path.join("node_modules", "vue", "dist", "vue.runtime.esm.js"))}`,
-    },
-  },
+  configFile: './build/commonViteConfig.js',
   build: {
     minify: true,
     emptyOutDir: true,
@@ -64,86 +110,98 @@ await build({
           if (/src(\/|\\)main.js/.test(sid)) {
             return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
           }
-        }
+          return source;
+        },
       }],
       external: Object.keys(libraries),
       output: {
-        paths: libraryPaths
+        paths: libraryPaths,
       },
     },
   },
 });
 
-Object.entries(libraries).forEach(async ([key, value]) => {
-  await build({
-    resolve:{
-      alias: {
-        'olLib': `${path.resolve(process.cwd(), 'lib', 'olLib.js')}`,
-      },
+console.log('Building Libraries');
+await Promise.all(Object.entries(libraries).map(async ([key, value]) => {
+  console.log('Building Library: ', key);
+  const external = Object.keys(libraries).filter((library) => { return key !== library; });
+  const output = {
+    ...value.rollupOptions?.output,
+    paths: libraryPaths,
+  };
+  const libraryConfig = {
+    configFile: './build/commonViteConfig.js',
+    esbuild: {
+      minify: true,
     },
     build: {
-      minify: true,
+      write: false,
       emptyOutDir: false,
       lib: {
         entry: path.resolve(process.cwd(), value.entry),
         formats: ['es'],
-        fileName: `assets/${value.lib}.${value.hash}`
+        fileName: `assets/${value.lib}.${value.hash}`,
       },
       rollupOptions: {
         ...value.rollupOptions,
-        external: [...Object.keys(libraries).filter((library) => { return key !== library })],
-        output: {
-          paths: libraryPaths
-        },
+        output,
+        external,
       },
     },
-  });
-  await build({
-    resolve:{
-      alias: {
-        'olLib': `./assets/ol.${value.hash}.es.js`
-      },
-    },
-    build: {
-      minify: true,
-      emptyOutDir: false,
-      lib: {
-        entry: path.resolve(process.cwd(), value.entry),
-        formats: ['es'],
-        fileName: `assets/${value.lib}`
-      },
-      rollupOptions: {
-        ...value.rollupOptions,
-        external: [...Object.keys(libraries), `./assets/ol.${value.hash}.es.js`],
-        output: {
-          paths: libraryPaths
-        },
-      },
-    },
-  });
-});
+  };
+  await buildLibrary(libraryConfig, 'assets', value.lib, value.hash);
+  console.log('Building Library Entry: ', key);
 
-plugins.forEach(async (plugin) => {
-  await build({
+  const libraryEntryConfig = {
+    configFile: false,
     build: {
+      emptyOutDir: false,
+      lib: {
+        entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
+        formats: ['es'],
+        fileName: `assets/${value.lib}`,
+      },
+      rollupOptions: {
+        ...value.rollupOptions,
+        external: [key],
+        output: {
+          paths: libraryPaths,
+        },
+      },
+    },
+  };
+  await build(libraryEntryConfig);
+}));
+console.log('Building Plugins');
+await Promise.all(plugins.map(async (plugin) => {
+  console.log('Building Plugin: ', plugin);
+  const pluginConfig = {
+    configFile: './build/commonViteConfig.js',
+    esbuild: {
       minify: true,
+    },
+    build: {
+      write: false,
       emptyOutDir: false,
       outDir: `dist/plugins/${plugin}/`,
       lib: {
         entry: path.resolve(process.cwd(), path.join('plugins', plugin, `${plugin}.es.js`)),
         formats: ['es'],
-        fileName: `${plugin}`
+        fileName: `${plugin}`,
       },
       rollupOptions: {
         plugins: [vcsOl()],
         external: Object.keys(libraries),
         output: {
-          paths: pluginLibraryPaths
+          paths: pluginLibraryPaths,
         },
       },
     },
-  });
-});
+  };
+  await fs.promises.mkdir(path.join(process.cwd(), 'dist', 'plugins', plugin), { recursive: true });
+  await buildLibrary(pluginConfig, `plugins/${plugin}`, plugin);
+}));
 
 await buildCesium();
-await fs.promises.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(),'dist', 'map.config.json'));
+await fs.promises.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(), 'dist', 'map.config.json'));
+console.log('Finished Building vcMap');

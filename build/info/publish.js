@@ -1,19 +1,18 @@
 /**
- * @fileoverview Generates JSON output based on exportable symbols.
+ * @file Generates JSON output based on exportable symbols.
  */
 const assert = require('assert');
 const path = require('path');
 
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
- * @param {function} data The root of the Taffy DB containing doclet records.
- * @param {Object} opts Options.
- * @return {Promise} A promise that resolves when writing is complete.
+ * @param {Function} data The root of the Taffy DB containing doclet records.
+ * @returns {Promise} A promise that resolves when writing is complete.
  */
-exports.publish = function (data, opts) {
-  function getTypes(data) {
+exports.publish = function publish(data) {
+  function getTypes(typeData) {
     const types = [];
-    data.forEach(function (name) {
+    typeData.forEach((name) => {
       types.push(name.replace(/^function$/, 'Function'));
     });
     return types;
@@ -23,8 +22,8 @@ exports.publish = function (data, opts) {
   const classes = {};
   const docs = data(
     [
-      {define: {isObject: true}},
-      function () {
+      { define: { isObject: true } },
+      function someKindOfExportsTransformer() {
         if (this?.meta?.code?.name) {
           if (this.meta.code.name === 'module.exports') {
             this.exports = 'default';
@@ -32,21 +31,21 @@ exports.publish = function (data, opts) {
             this.exports = this.meta.code.name.replace(/exports./, '');
           }
         }
-        if (this.kind == 'class') {
-          if (!('extends' in this) || typeof this.api == 'boolean' || this.exports) {
+        if (this.kind === 'class') {
+          if (!('extends' in this) || typeof this.api === 'boolean' || this.exports) {
             classes[this.longname] = this;
             return true;
           }
         }
         return (
-          typeof this.api == 'boolean' ||
+          typeof this.api === 'boolean' ||
           this.exports ||
-          (this.meta && /[\\\/]externs$/.test(this.meta.path))
+          (this.meta && /[\\/]externs$/.test(this.meta.path))
         );
       },
     ],
-    {kind: {'!is': 'file'}},
-    {kind: {'!is': 'event'}}
+    { kind: { '!is': 'file' } },
+    { kind: { '!is': 'event' } },
   ).get();
 
   // get symbols data, filter out those that are members of private classes
@@ -58,7 +57,7 @@ exports.publish = function (data, opts) {
   const augments = {};
   const symbolsByName = {};
   docs
-    .filter(function (doc) {
+    .filter((doc) => {
       let include = true;
       const constructor = doc.memberof;
       if (
@@ -69,14 +68,14 @@ exports.publish = function (data, opts) {
         assert.strictEqual(
           doc.inherited,
           true,
-          'Unexpected export on private class: ' + doc.longname
+          `Unexpected export on private class: ${ doc.longname}`,
         );
         include = false;
       }
       return include;
     })
-    .forEach(function (doc) {
-      const isExterns = /[\\\/]externs$/.test(doc.meta.path);
+    .forEach((doc) => {
+      const isExterns = /[\\/]externs$/.test(doc.meta.path);
       if (doc.define) {
         defines.push({
           name: doc.longname,
@@ -84,7 +83,7 @@ exports.publish = function (data, opts) {
           path: path.join(doc.meta.path, doc.meta.filename),
           default: doc.define.default,
         });
-      } else if (doc.kind == 'typedef' || (doc.isEnum === true && !doc.exports)) {
+      } else if (doc.kind === 'typedef' || (doc.isEnum === true && !doc.exports)) {
         typedefs.push({
           name: doc.longname,
           types: getTypes(doc.type.names),
@@ -108,19 +107,19 @@ exports.publish = function (data, opts) {
         }
         if (doc.params) {
           const params = [];
-          doc.params.forEach(function (param) {
+          doc.params.forEach((param) => {
             const paramInfo = {
               name: param.name,
             };
             params.push(paramInfo);
             paramInfo.types = getTypes(param.type.names);
-            if (typeof param.variable == 'boolean') {
+            if (typeof param.variable === 'boolean') {
               paramInfo.variable = param.variable;
             }
-            if (typeof param.optional == 'boolean') {
+            if (typeof param.optional === 'boolean') {
               paramInfo.optional = param.optional;
             }
-            if (typeof param.nullable == 'boolean') {
+            if (typeof param.nullable === 'boolean') {
               paramInfo.nullable = param.nullable;
             }
           });
@@ -130,13 +129,13 @@ exports.publish = function (data, opts) {
           symbol.returns = {
             types: getTypes(doc.returns[0].type.names),
           };
-          if (typeof doc.returns[0].nullable == 'boolean') {
+          if (typeof doc.returns[0].nullable === 'boolean') {
             symbol.returns.nullable = doc.returns[0].nullable;
           }
         }
         if (doc.tags) {
-          doc.tags.every(function (tag) {
-            if (tag.title == 'template') {
+          doc.tags.every((tag) => {
+            if (tag.title === 'template') {
               symbol.template = tag.value;
               return false;
             }
@@ -144,6 +143,7 @@ exports.publish = function (data, opts) {
           });
         }
 
+        // eslint-disable-next-line no-nested-ternary
         const target = isExterns ? externs : (doc.api || doc.exports) ? symbols : base;
         const existingSymbol = symbolsByName[symbol.name];
         if (existingSymbol) {
@@ -158,7 +158,7 @@ exports.publish = function (data, opts) {
             symbol.extends in classes &&
             !classes[symbol.extends].api &&
             classes[symbol.extends].augments
-            ) {
+          ) {
             symbol.extends = classes[symbol.extends].augments[0];
           }
           if (symbol.extends) {
@@ -168,23 +168,23 @@ exports.publish = function (data, opts) {
       }
     });
 
-  base = base.filter(function (symbol) {
+  base = base.filter((symbol) => {
     return symbol.name in augments || symbol.virtual;
   });
 
-  return new Promise(function (resolve, reject) {
+  return new Promise(() => {
     process.stdout.write(
       JSON.stringify(
         {
-          symbols: symbols,
-          defines: defines,
-          typedefs: typedefs,
-          externs: externs,
-          base: base,
+          symbols,
+          defines,
+          typedefs,
+          externs,
+          base,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
   });
 };
