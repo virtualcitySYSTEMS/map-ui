@@ -5,11 +5,10 @@
     "baseUrl": "./",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["src/*"],
-      "@vcsuite/uicomponents/*": ["components/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*", "./components/**/*"],
+  "include": ["./src/**/*"],
   "typeAcquisition": {
     "exclude": ["dotenv", "js2xmlparser"]
   }
