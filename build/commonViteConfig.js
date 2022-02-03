@@ -9,7 +9,6 @@ const configMain = defineConfig({
   resolve: {
     alias: {
       '@': `${path.resolve(process.cwd(), 'src')}`,
-      '@vcsuite/uicomponents': `${path.resolve(process.cwd(), 'components')}`,
       vue: 'vue/dist/vue.esm.js',
     },
   },
