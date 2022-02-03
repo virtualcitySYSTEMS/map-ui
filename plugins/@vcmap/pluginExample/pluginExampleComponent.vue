@@ -84,6 +84,21 @@
         class="d-flex flex-row align-baseline justify-space-between"
       >
         <v-col cols="5">
+          <label>VcsFormattedNumber</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsFormattedNumber
+            label="FormattedNumber"
+            :value="state.numberInput"
+            unit="cm"
+            :fraction-digits="1"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="5">
           <label>Email</label>
         </v-col>
         <v-col cols="7" class="d-flex justify-center align-baseline w-full">
@@ -140,12 +155,12 @@
 </template>
 <script>
   import { inject, ref, watch } from '@vue/composition-api';
-  import { VcsSelect, VcsCheckbox, VcsButton, VcsTextField } from '@vcsuite/ui-components';
+  import { VcsSelect, VcsCheckbox, VcsButton, VcsTextField, VcsFormattedNumber } from '@vcsuite/ui-components';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
 
   export default {
     name: 'PluginExampleComponent',
-    components: { VcsButton, VcsSelect, VcsTextField, VcsCheckbox },
+    components: { VcsButton, VcsSelect, VcsTextField, VcsCheckbox, VcsFormattedNumber },
     props: {
       windowId: {
         type: String,

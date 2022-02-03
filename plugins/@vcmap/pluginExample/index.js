@@ -75,7 +75,7 @@ export default function (app, config) {
     selected: pluginConfig.selectOptions.value[0],
     conditionalInput: '',
     initialTextInput: pluginConfig.initialTextInput.value,
-    numberInput: 100,
+    numberInput: 100.156,
     checkboxInput: false,
     email: '',
   });

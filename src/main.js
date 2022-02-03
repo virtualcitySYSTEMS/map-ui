@@ -1,5 +1,4 @@
 import './styles/main.scss';
-import './filters/index.js';
 import './treeview/treeViewItems.js';
 
 import Vue from 'vue';
