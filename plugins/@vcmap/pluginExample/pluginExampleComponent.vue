@@ -1,112 +1,147 @@
 <template>
   <v-form v-model="isValid">
-    <!-- TODO add dumb component select with label like TextField.vue -->
-    <v-row
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <v-col cols="5">
-        <label>Select</label>
-      </v-col>
-      <v-col cols="7" class="d-flex justify-center align-baseline w-full">
-        <VcsSelect
-          :items="selectOptions"
-          v-model="state.selected"
-        />
-      </v-col>
-    </v-row>
-    <div
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <VcsTextField
-        label="ConditionalInput"
-        hint="please provide a string"
-        :rules="[conditionalTest(state.conditionalInput, state.selected)]"
-        v-model="state.conditionalInput"
-      />
-    </div>
-    <div
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <VcsTextField
-        label="InitialTextInputDisabled"
-        :disabled="true"
-        v-model="initialTextInput"
-      />
-    </div>
-    <div
-      class="d-flex flex-row align-end justify-space-between"
-    >
-      <VcsTextField
-        label="InitialTextInput"
-        hint="please provide a string"
-        :rules="[isValidText]"
-        v-model="state.initialTextInput"
-      />
-    </div>
-    <div
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <VcsTextField
-        label="NumberInput"
-        hint="please provide a number"
-        type="number"
-        step="10"
-        v-model="state.numberInput"
-      />
-    </div>
-    <div
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <VcsTextField
-        label="Email"
-        hint="please provide your email"
-        type="email"
-        :rules="[isValidEmail]"
-        v-model="state.email"
-      />
-    </div>
-    <div
-      class="d-flex flex-row align-baseline justify-space-between"
-    >
-      <VcsCheckbox
-        label="CheckboxInput"
-        hint="select or deselect"
-        :rules="[() => state.checkboxInput || 'Please accept our terms of use']"
-        v-model="state.checkboxInput"
-      />
-      <VcsButton
-        :is-active="state.checkboxInput"
-        @click="state.checkboxInput = !state.checkboxInput"
-        elevation="2"
-        tooltip="toggle button"
-        color="warning"
-        tooltip-position="right"
+    <v-container>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
       >
-        <span v-if="state.checkboxInput">Active-true</span>
-        <span v-else>Active-false</span>
+        <v-col cols="5">
+          <label>Select</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsSelect
+            :items="selectOptions"
+            v-model="state.selected"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="5">
+          <label>ConditionalInput</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsTextField
+            hint="please provide a string"
+            dense
+            clearable
+            clear-icon="$vcsTrashCan"
+            :rules="[conditionalTest(state.conditionalInput, state.selected)]"
+            v-model="state.conditionalInput"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="12">
+          <VcsTextField
+            label="InitialTextInputDisabled"
+            disabled
+            outlined
+            hide-details
+            v-model="initialTextInput"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="5">
+          <label>InitialTextInput</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsTextField
+            dense
+            persistent-hint
+            hint="Input stays in state loading as long as default input is not changed!"
+            :rules="[isValidText]"
+            :loading="state.initialTextInput === 'myInitialText'"
+            v-model="state.initialTextInput"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="5">
+          <label>NumberInput</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsTextField
+            dense
+            hint="please provide a number"
+            :solo-inverted="true"
+            type="number"
+            step="10"
+            prefix="a ="
+            suffix="cm"
+            v-model.number="state.numberInput"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="5">
+          <label>Email</label>
+        </v-col>
+        <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+          <VcsTextField
+            dense
+            hint="please provide your email"
+            type="email"
+            :rules="[isValidEmail]"
+            v-model="state.email"
+          />
+        </v-col>
+      </v-row>
+      <v-row
+        class="d-flex flex-row align-baseline justify-space-between"
+      >
+        <v-col cols="6">
+          <VcsCheckbox
+            label="CheckboxInput"
+            hint="select or deselect"
+            :rules="[() => state.checkboxInput || 'Please accept our terms of use']"
+            v-model="state.checkboxInput"
+          />
+        </v-col>
+        <v-col cols="6">
+          <VcsButton
+            :is-active="state.checkboxInput"
+            @click="state.checkboxInput = !state.checkboxInput"
+            elevation="2"
+            tooltip="toggle button"
+            color="warning"
+            tooltip-position="right"
+          >
+            <span v-if="state.checkboxInput">Active-true</span>
+            <span v-else>Active-false</span>
+          </VcsButton>
+        </v-col>
+      </v-row>
+      <VcsButton
+        @click="logState(state)"
+        :disabled="!isValid"
+        :tooltip="'Log current state in console'"
+        :has-update="isValid && newUpdate"
+      >
+        Log State
       </VcsButton>
-    </div>
-    <VcsButton
-      @click="logState(state)"
-      :disabled="!isValid"
-      :tooltip="'Log current state in console'"
-      :has-update="isValid && newUpdate"
-    >
-      Log State
-    </VcsButton>
-    <VcsButton
-      type="reset"
-      icon="$vcsReturn"
-    >
-      Reset
-    </VcsButton>
+      <VcsButton
+        type="reset"
+        icon="$vcsReturn"
+      >
+        Reset
+      </VcsButton>
+    </v-container>
   </v-form>
 </template>
 <script>
   import { inject, ref, watch } from '@vue/composition-api';
-  import { VcsSelect, VcsCheckbox, VcsButton } from '@vcsuite/ui-components';
+  import { VcsSelect, VcsCheckbox, VcsButton, VcsTextField } from '@vcsuite/ui-components';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
-  import VcsTextField from '../../../components/TextField.vue';
 
   export default {
     name: 'PluginExampleComponent',
@@ -145,14 +180,14 @@
 </script>
 
 <style lang="scss" scoped>
-  .v-form{
-    padding: 0 5px
-  }
-  .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) {
-    ::v-deep{
-      > .v-input__control > .v-input__slot{
-        padding: 0;
-      }
+.v-form{
+  padding: 0 5px
+}
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) {
+  ::v-deep{
+    > .v-input__control > .v-input__slot{
+      padding: 0;
     }
   }
+}
 </style>
