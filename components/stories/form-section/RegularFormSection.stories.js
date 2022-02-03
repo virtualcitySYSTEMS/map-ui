@@ -1,4 +1,4 @@
-import FormSection from '@vcsuite/uicomponents/FormSection.vue';
+import { VcsFormSection } from '@vcsuite/ui-components';
 import InputColumnCoordinates from '@vcsuite/uicomponents/InputColumnCoordinates.vue';
 import InputColumnDimensions from '@vcsuite/uicomponents/InputColumnDimensions.vue';
 
@@ -6,7 +6,7 @@ import getProps from '../util/get-props.js';
 
 export default {
   title: 'Form Section/Regular',
-  component: FormSection,
+  component: VcsFormSection,
   argTypes: {
     title: {
       control: {
@@ -21,20 +21,20 @@ const Template = (args, { argTypes }) => {
   return {
     props: getProps(argTypes, { excludeKeys: ['default'] }),
     components: {
-      FormSection,
+      VcsFormSection,
       InputColumnDimensions,
       InputColumnCoordinates,
     },
     template: `
     <div style="max-width: 320px">
-      <FormSection
+      <VcsFormSection
         v-bind="$props"
       >
         <div class="d-flex flex-row px-2 pb-3">
           <InputColumnDimensions class="mr-10" />
           <InputColumnCoordinates />
         </div>
-      </FormSection>
+      </VcsFormSection>
     </div>
       `,
   };
