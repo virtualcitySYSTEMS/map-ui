@@ -11,7 +11,6 @@ import { addDecorator, addParameters } from '@storybook/vue';
 
 import { vuetify } from '../src/plugins/vuetify';
 import { i18n } from '../src/plugins/i18n';
-import '../src/filters';
 
 import '../src/styles/main.scss';
 
