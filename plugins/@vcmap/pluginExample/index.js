@@ -1,6 +1,6 @@
 import { ref, reactive, watch } from '@vue/composition-api';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
-import { WINDOW_POSITIONS, windowSlot } from '../../../src/modules/window-manager/windowManager.js';
+import { windowSlot } from '../../../src/modules/window-manager/windowManager.js';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
