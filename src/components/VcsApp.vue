@@ -44,7 +44,7 @@
     props: {
       config: {
         type: String,
-        default: '../map.config.json',
+        default: './map.config.json',
       },
     },
     setup(props) {

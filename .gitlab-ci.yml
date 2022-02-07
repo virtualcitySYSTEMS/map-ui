@@ -7,6 +7,9 @@ variables:
 stages:
   - build
   - test
+  - bundle
+  - deploy
+  - deployCluster
 
 .template: &job_definition
   only:
@@ -44,3 +47,60 @@ audit:
   stage: test
   script:
     - npm audit --production --audit-level=low
+
+bundle:
+  <<: *after_build_definition
+  stage: bundle
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/**/*
+    expire_in: 1 days
+
+deployStaging:
+  <<: *after_build_definition
+  stage: deploy
+  environment:
+    name: staging/$CI_COMMIT_REF_SLUG
+    url: http://stagingcluster/vcmap-$CI_COMMIT_REF_SLUG/
+    on_stop: stopEnvironment
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - cp build/staging/*  .
+    - /kaniko/executor --context . --dockerfile Dockerfile --destination $CI_REGISTRY_IMAGE/staging:$CI_COMMIT_REF_SLUG
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+
+deployStagingCluster:
+  stage: deployCluster
+  inherit:
+    variables: false
+  variables:
+    STAGE_BRANCH: $CI_COMMIT_REF_SLUG
+    STAGE_PROJECT_NAME: $CI_PROJECT_NAME
+    STAGE_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+    STAGE_NAMESPACE: vcmap-$CI_COMMIT_REF_SLUG
+  trigger:
+    project: vcsuite/devops/manifests
+    branch: main
+
+stopEnvironment:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  tags:
+    - linux-2.0
+  script:
+    - echo "Stop environment staging/$CI_COMMIT_REF_NAME"
+    - echo "Delete namespace on k9s vcmap-$CI_COMMIT_REF_SLUG"
+    - kubectl config use-context vcsuite/cluster-management:agent
+    - kubectl delete namespace vcmap-$CI_COMMIT_REF_SLUG
+  when: manual
+  environment:
+    name: staging/$CI_COMMIT_REF_SLUG
+    action: stop

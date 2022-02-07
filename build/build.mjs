@@ -101,6 +101,7 @@ await generateOLLib();
 console.log('Building app');
 await build({
   configFile: './build/commonViteConfig.js',
+  base: './',
   build: {
     minify: true,
     emptyOutDir: true,
