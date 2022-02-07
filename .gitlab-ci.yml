@@ -90,6 +90,8 @@ deployStagingCluster:
 
 stopEnvironment:
   stage: deploy
+  variables:
+    GIT_STRATEGY: none
   image:
     name: bitnami/kubectl:latest
     entrypoint: [""]
