@@ -3,10 +3,22 @@
     <VcsFormSection
       title="VcsFormSection"
       :title-actions="[
-        { name: 'alert', icon: 'mdi-message-text' },
-        { name: 'toggleSection', icon: showSection ? '$vcsMinus' : '$vcsPlus', size: 32 },
+        { name: 'alert', icon: 'mdi-message-text', callback: alertAction },
+        { name: 'noIcon', title: 'another action without icon', callback: () => {} },
+        {
+          name: 'toggleSection',
+          title: 'toggle section',
+          icon: showSection ? '$vcsMinus' : '$vcsPlus',
+          callback: () => this.showSection = !this.showSection
+        },
+        {
+          name: 'toggleIcon',
+          title: 'toggle switch example',
+          icon: showSection ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off',
+          active: showSection,
+          callback: () => this.showSection = !this.showSection
+        }
       ]"
-      @click="action"
     >
       <template #default v-if="showSection">
         <v-container class="pa-2">
@@ -200,18 +212,13 @@
         conditionalTest,
         isValidEmail,
         newUpdate,
-        action(type) {
-          // TODO standardize Action Items https://gitlab.virtualcitysystems.de/vcsuite/virtualcitymap_ui/-/issues/64
-          if (type.name === 'toggleSection') {
-            this.showSection = !this.showSection;
-          } else {
-            alert(type.name);
-          }
-        },
-        logState: () => {
+        logState() {
           // eslint-disable-next-line no-console
           console.log(plugin.getSerializedState());
           newUpdate.value = false;
+        },
+        alertAction() {
+          alert('alert');
         },
       };
     },
