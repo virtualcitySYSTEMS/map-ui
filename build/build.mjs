@@ -39,7 +39,7 @@ function loadCss(href) {
   if (libraryBuilds[0].output[0] && libraryBuilds[0].output[0].type === 'chunk') {
     let code = css ? `${cssInjectorCode}loadCss('./${outputFolder}/${library}${addedHash}.css');` : '';
     code += libraryBuilds[0].output[0].code;
-    await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.es.js`), code);
+    await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.js`), code);
   }
 }
 
@@ -84,14 +84,14 @@ const libraries = {
   },
 };
 
-const plugins = ['test', 'example', 'categoryTest'];
+const plugins = ['test', 'example', 'categoryTest', '@vcmap/pluginExample'];
 
 const libraryPaths = {};
 const pluginLibraryPaths = {};
 Object.entries(libraries).forEach(([key, value]) => {
   value.hash = `${uuid().substring(0, 6)}`;
-  libraryPaths[key] = `./${value.lib}.${value.hash}.es.js`;
-  pluginLibraryPaths[key] = `../../assets/${value.lib}.es.js`;
+  libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
+  pluginLibraryPaths[key] = `../../assets/${value.lib}.js`;
   value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
 });
 
@@ -160,7 +160,7 @@ await Promise.all(Object.entries(libraries).map(async ([key, value]) => {
       lib: {
         entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
         formats: ['es'],
-        fileName: `assets/${value.lib}`,
+        fileName: () => { return `assets/${value.lib}.js`; },
       },
       rollupOptions: {
         ...value.rollupOptions,
@@ -173,9 +173,20 @@ await Promise.all(Object.entries(libraries).map(async ([key, value]) => {
   };
   await build(libraryEntryConfig);
 }));
+
 console.log('Building Plugins');
 await Promise.all(plugins.map(async (plugin) => {
   console.log('Building Plugin: ', plugin);
+  // the relative path between plugins and libraries, is not known beforehand, so we calculate the distance.
+  // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
+  const relativePluginPaths = {};
+  Object.entries(libraries).forEach(([key, value]) => {
+    const libraryPath = path.join('dist', 'assets', `${value.lib}.js`);
+    const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
+    const relativePath = path.relative(pluginPath, libraryPath);
+    const posixRelativePath = relativePath.split(path.sep).join(path.posix.sep);
+    relativePluginPaths[key] = posixRelativePath;
+  });
   const pluginConfig = {
     configFile: './build/commonViteConfig.js',
     esbuild: {
@@ -186,21 +197,21 @@ await Promise.all(plugins.map(async (plugin) => {
       emptyOutDir: false,
       outDir: `dist/plugins/${plugin}/`,
       lib: {
-        entry: path.resolve(process.cwd(), path.join('plugins', plugin, `${plugin}.es.js`)),
+        entry: path.resolve(process.cwd(), path.join('plugins', plugin, 'index.js')),
         formats: ['es'],
-        fileName: `${plugin}`,
+        fileName: 'index',
       },
       rollupOptions: {
         plugins: [vcsOl()],
         external: Object.keys(libraries),
         output: {
-          paths: pluginLibraryPaths,
+          paths: relativePluginPaths,
         },
       },
     },
   };
   await fs.promises.mkdir(path.join(process.cwd(), 'dist', 'plugins', plugin), { recursive: true });
-  await buildLibrary(pluginConfig, `plugins/${plugin}`, plugin);
+  await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index');
 }));
 
 await buildCesium();
