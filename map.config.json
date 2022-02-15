@@ -1578,15 +1578,15 @@
   "plugins": [
     {
       "name": "test",
-      "entry": "plugins/test/test.es.js"
+      "entry": "plugins/test/index.js"
     },
     {
       "name": "example",
-      "entry": "plugins/example/example.es.js"
+      "entry": "plugins/example/index.js"
     },
     {
       "name": "categoryTest",
-      "entry": "plugins/categoryTest/categoryTest.es.js"
+      "entry": "plugins/categoryTest/index.js"
     },
     {
       "name": "@vcmap/pluginExample",
