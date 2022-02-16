@@ -17,7 +17,10 @@
                 :is="button"
                 :key="`map-button-${index}`"
               />
-              <VcsNavbarDivider />
+              <v-divider
+                vertical
+                inset
+              />
               <ComponentToggleButton
                 v-for="windowComponentOption in windowComponentOptions"
                 :key="windowComponentOption.id"
@@ -42,7 +45,7 @@
 
   import Vue from 'vue';
 
-  import { VcsButton, VcsNavbarDivider } from '@vcsuite/ui-components';
+  import { VcsButton } from '@vcsuite/ui-components';
   import { inject } from '@vue/composition-api';
   import LayerTree from '@/components/LayerTree.vue';
   import { windowSlot } from '@/modules/window-manager/windowManager.js';
@@ -127,7 +130,7 @@
 
   export default Vue.extend({
     name: 'VcsNavbar',
-    components: { VcsButton, VcsNavbarDivider, ComponentToggleButton },
+    components: { VcsButton, ComponentToggleButton },
     props: {
       mapId: {
         type: String,
