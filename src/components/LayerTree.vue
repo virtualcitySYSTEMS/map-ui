@@ -23,7 +23,7 @@
   } from '@vue/composition-api';
   import { v4 as uuid } from 'uuid';
 
-  import { VcsTreeview, VcsLegend } from '@vcsuite/ui-components';
+  import { VcsTreeview } from '@vcsuite/ui-components';
   import AbstractTree from '@/treeview/AbstractTree.js';
   import createTreeFromConfig from '@/treeview/createTreeFromConfig.js';
 
@@ -90,7 +90,6 @@
         };
         const popover = popoverManager.registerPopover({
           name: componentName,
-          cmp: VcsLegend,
           id,
           parent: event.target,
           callback,
