@@ -16,7 +16,7 @@
 <script>
   import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
   import { getLogger } from '@vcsuite/logger';
-  import {VcsButton} from '@vcsuite/ui-components';
+  import { VcsButton } from '@vcsuite/ui-components';
   import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
   import EmptyCmpt from '../../src/components/empty-cmp.vue';
   import VcsContent from './vcsContent.vue';
@@ -121,20 +121,19 @@
        */
       const windowComponents = new Map();
 
-      /** @type {WindowManager} */
-      const windowManager = inject('windowManager');
+      const app = inject('vcsApp');
       return {
         toggleClass() {
           showTestClass.value = !showTestClass.value;
         },
         toggle(e, windowId) {
-          if (windowManager.has(windowId)) {
-            windowManager.remove(windowId);
+          if (app.windowManager.has(windowId)) {
+            app.windowManager.remove(windowId);
           } else {
             e.stopPropagation();
             const windowComponentOptions =
               windowComponents.get(windowId) || exampleWindows.find(item => item.id === windowId);
-            const windowComponent = windowManager.add(windowComponentOptions);
+            const windowComponent = app.windowManager.add(windowComponentOptions, 'WindowManagerExample');
             windowComponents.set(windowId, windowComponent);
           }
         },

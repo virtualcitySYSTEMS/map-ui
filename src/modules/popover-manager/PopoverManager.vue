@@ -56,8 +56,9 @@
   export default Vue.extend({
     name: 'VcsPopoverManager',
     setup() {
+      const app = inject('vcsApp');
       const popoverRef = ref([]);
-      const popoverManager = inject('popoverManager');
+      const { popoverManager } = app;
 
 
       const destroy = popoverManager.onAdded.addEventListener((popover) => {

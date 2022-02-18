@@ -4,38 +4,39 @@
       <v-row no-gutters>
         <v-col>
           <v-toolbar-items>
-            <div v-if="maps" class="d-flex align-center">
-              <VcsButton
-                v-for="map of maps"
-                :key="map.name"
-                :icon="iconMap[map.className]"
-                @click="setMap(map.name)"
-                :isActive="mapState.activeMap === map.className"
-              />
-              <component
-                v-for="(button, index) in mapButtons"
-                :is="button"
-                :key="`map-button-${index}`"
-              />
+            <div class="d-flex align-center">
+              <VcsActionButtonList :actions="mapActions" :overflow-count="3" />
               <v-divider
+                v-if="mapActions.length > 0 && (contentActions.length > 0 || toolActions.length > 0)"
                 vertical
                 inset
               />
-              <ComponentToggleButton
-                v-for="windowComponentOption in windowComponentOptions"
-                :key="windowComponentOption.id"
-                :component-name="windowComponentOption.id"
-                :window-state="getWindowComponentState(windowComponentOption.id)"
-                :icon="windowComponentOption.state.headerIcon"
-                @toggle="toggle(windowComponentOption.id)"
+              <VcsActionButtonList :actions="contentActions" />
+              <v-divider
+                v-if="contentActions.length > 0 && toolActions.length > 0"
+                vertical
+                inset
               />
+              <VcsActionButtonList :actions="toolActions" />
             </div>
           </v-toolbar-items>
         </v-col>
         <v-col class="align-center d-flex justify-center">
           <div class="company-logo" />
         </v-col>
-        <v-col />
+        <v-col class="align-content-end d-flex justify-end">
+          <v-toolbar-items>
+            <div class="d-flex align-center">
+              <VcsActionButtonList :actions="projectActions" />
+              <v-divider
+                v-if="projectActions.length > 0 && menuActions.length > 0"
+                vertical
+                inset
+              />
+              <VcsActionButtonList :actions="menuActions" :overflow-count="3" />
+            </div>
+          </v-toolbar-items>
+        </v-col>
       </v-row>
     </v-container>
   </v-app-bar>
@@ -45,12 +46,14 @@
 
   import Vue from 'vue';
 
-  import { VcsButton } from '@vcsuite/ui-components';
-  import { inject } from '@vue/composition-api';
+  import { VcsActionButtonList } from '@vcsuite/ui-components';
+  import { inject, ref, computed } from '@vue/composition-api';
   import LayerTree from '@/components/LayerTree.vue';
   import { windowSlot } from '@/modules/window-manager/windowManager.js';
-  import ComponentToggleButton from './ComponentToggleButton.vue';
+  import { createToggleAction } from '../actionHelper.js';
+  import { ButtonLocation, getActionsByLocation } from '@/modules/component-manager/buttonManager.js';
   import EmptyCmp from './empty-cmp.vue';
+  import { vcsAppSymbol } from '../vcsAppContextHelpers.js';
 
   const staticWindow = {
     id: 'static-win',
@@ -130,7 +133,7 @@
 
   export default Vue.extend({
     name: 'VcsNavbar',
-    components: { VcsButton, ComponentToggleButton },
+    components: { VcsActionButtonList },
     props: {
       mapId: {
         type: String,
@@ -138,47 +141,37 @@
       },
     },
     setup() {
-      const mapState = inject('mapState');
-      const pluginComponents = inject('pluginComponents');
-      const windowManager = inject('windowManager');
       const app = inject('vcsApp');
 
-      const getWindowComponentState = (id) => {
-        return windowManager.has(id);
-      };
+      windowComponentOptions.forEach((c) => {
+        const { action } = createToggleAction(
+          {
+            name: c.id,
+            icon: c.state.headerIcon,
+          },
+          c,
+          app.windowManager,
+          vcsAppSymbol,
+        );
+        app.navbarManager.add({
+          id: c.id,
+          location: ButtonLocation.CONTENT,
+          action,
+        }, vcsAppSymbol);
+      });
 
-      const toggle = (id) => {
-        if (windowManager.has(id)) {
-          windowManager.remove(id);
-        } else {
-          const windowComponentOption = windowComponentOptions.find(item => item.id === id);
-          if (windowComponentOption) {
-            windowManager.add(windowComponentOption);
-          }
-        }
-      };
+      const navbarButtonIds = ref(app.navbarManager.buttonIds);
+      const buttonComponents = computed(() => navbarButtonIds.value.map(id => app.navbarManager.get(id)));
+      const getActions = location => computed(
+        () => getActionsByLocation(buttonComponents.value, location, [...app.plugins].map(p => p.name)),
+      );
 
-
-      const iconMap = {
-        'vcs.vcm.maps.Openlayers': '$vcs2d',
-        'vcs.vcm.maps.Cesium': '$vcs3d',
-        'vcs.vcm.maps.Oblique': '$vcsObliqueView',
-      };
-      /**
-       * @param {string} mapName
-       */
-      const setMap = (mapName) => {
-        app.maps.setActiveMap(mapName);
-      };
       return {
-        mapButtons: pluginComponents.mapButtons,
-        iconMap,
-        maps: mapState.maps,
-        mapState,
-        getWindowComponentState,
-        toggle,
-        setMap,
-        windowComponentOptions,
+        mapActions: getActions(ButtonLocation.MAP),
+        contentActions: getActions(ButtonLocation.CONTENT),
+        toolActions: getActions(ButtonLocation.TOOL),
+        projectActions: getActions(ButtonLocation.PROJECT),
+        menuActions: getActions(ButtonLocation.MENU),
       };
     },
   });

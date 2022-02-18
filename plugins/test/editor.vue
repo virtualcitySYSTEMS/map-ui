@@ -8,23 +8,27 @@
       v-else
     />
 
-    <Button @click="replaceContext">
+    <VcsButton @click="replaceContext">
       Apply
-    </Button>
-    <Button @click="removeContext">
+    </VcsButton>
+    <VcsButton @click="removeContext">
       Remove
-    </Button>
+    </VcsButton>
   </div>
 </template>
 
 <script>
   import { ref, inject } from '@vue/composition-api';
+  import { VcsButton } from '@vcsuite/ui-components';
   import Context from '../../src/context.js';
 
   const contextId = 'foo';
 
   export default {
     name: 'Editor',
+    components: {
+      VcsButton,
+    },
     setup() {
       /** @type {VcsApp} */
       const app = inject('vcsApp');

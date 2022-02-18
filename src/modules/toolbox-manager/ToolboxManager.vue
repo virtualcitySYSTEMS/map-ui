@@ -80,7 +80,8 @@
       },
     },
     setup() {
-      const toolboxManager = inject('toolboxManager');
+      const app = inject('vcsApp');
+      const { toolboxManager } = app;
       const { state: { groups } } = toolboxManager;
       const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
       const toolboxGroupVisible = value => value &&

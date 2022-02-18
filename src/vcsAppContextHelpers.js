@@ -11,6 +11,11 @@ function getLogger() {
 /**
  * @type {symbol}
  */
+export const vcsAppSymbol = Symbol('vcsApp');
+
+/**
+ * @type {symbol}
+ */
 export const contextIdSymbol = Symbol('contextId');
 
 /**
@@ -79,7 +84,7 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
       getLogger().error(`plugin ${name} does not provide a default exported function`);
       return null;
     }
-    const pluginInstance = await plugin.default(app, config);
+    const pluginInstance = await plugin.default(config);
 
     if (!pluginInstance.name) {
       getLogger().error(`plugin ${name} does not expose a name`);
@@ -123,12 +128,11 @@ export function serializePlugin(plugin) {
 }
 
 /**
- * @param {VcsApp} app
  * @param {Object} serializedPlugin
  * @returns {Promise<VcsPlugin>}
  */
-export async function deserializePlugin(app, serializedPlugin) {
-  const reincarnation = await serializedPlugin[pluginFactorySymbol](app, serializedPlugin);
+export async function deserializePlugin(serializedPlugin) {
+  const reincarnation = await serializedPlugin[pluginFactorySymbol](serializedPlugin);
   reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
   return reincarnation;
 }

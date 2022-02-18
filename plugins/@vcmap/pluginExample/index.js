@@ -5,6 +5,8 @@ import packageJSON from './package.json';
 import defaultConfig from './config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
 import pluginExampleComponent from './pluginExampleComponent.vue';
+import { createToggleAction } from '../../../src/actionHelper.js';
+import { ButtonLocation } from '../../../src/modules/component-manager/buttonManager.js';
 
 /**
  * @returns {Logger}
@@ -39,11 +41,10 @@ export function getDefaultConfig() {
 
 /**
  *
- * @param {VcsApp} app
  * @param {PluginExampleConfig} config
- * @returns {PluginInterface}
+ * @returns {VcsPlugin}
  */
-export default function (app, config) {
+export default function (config) {
   /**
    * @type {PluginExampleConfig}
    */
@@ -144,32 +145,31 @@ export default function (app, config) {
     state: pluginState,
     getSerializedState,
     setSerializedState,
-    registerUiPlugin: async () => {
-      return {
-        mapButton: {
-          template: '<Button @click="open()">Plugin Example</Button>',
-          setup() {
-            const open = () => {
-              if (app.windowManager.has('pluginExample')) {
-                app.windowManager.remove('pluginExample');
-              } else {
-                app.windowManager.add({
-                  id: 'pluginExample',
-                  component: pluginExampleComponent,
-                  slot: windowSlot.STATIC,
-                  state: {
-                    headerTitle: 'Plugin Example',
-                    headerIcon: '$vcsCircle',
-                  },
-                });
-              }
-            };
-            return {
-              open,
-            };
+    onVcsAppMounted(app) {
+      const { action, destroy } = createToggleAction(
+        {
+          name: 'Plugin Example',
+          icon: '$vcsHealthCareIndustries',
+          title: 'Example Plugin Map Button Tooltip',
+        },
+        {
+          id: 'pluginExample',
+          component: pluginExampleComponent,
+          slot: windowSlot.STATIC,
+          state: {
+            headerTitle: 'Plugin Example',
+            headerIcon: '$vcsCircle',
           },
         },
-      };
+        app.windowManager,
+        packageJSON.name,
+      );
+      app.navbarManager.add({
+        id: 'pluginExample',
+        location: ButtonLocation.TOOL,
+        action,
+      }, packageJSON.name);
+      this._destroyAction = destroy;
     },
     toJSON: async () => {
       const configJson = {};
@@ -179,6 +179,13 @@ export default function (app, config) {
       }
       return configJson;
     },
-    destroy: () => stopWatching(), // destroy watcher
+    destroy() {
+      // destroy watcher
+      stopWatching();
+      if (this._destroyAction) {
+        this._destroyAction();
+        this._destroyAction = null;
+      }
+    },
   };
 }

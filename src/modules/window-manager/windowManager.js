@@ -2,6 +2,8 @@ import { reactive, ref } from '@vue/composition-api';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { parseEnumValue } from '@vcsuite/parsers';
+import { check } from '@vcsuite/check';
+import { vcsAppSymbol } from '../../vcsAppContextHelpers.js';
 
 
 /**
@@ -81,6 +83,7 @@ export const WINDOW_POSITIONS = {
 /**
  * @typedef WindowState
  * @property {string} id
+ * @property {string|vcsAppSymbol} owner Owner of the window, set by windowManager on add
  * @property {boolean} [hideHeader] be used to not show the header.
  * @property {string} [headerTitle]
  * @property {string} [headerIcon]
@@ -149,6 +152,7 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
 /**
  * @class WindowManager
  * @description Manages a set of Draggable Windows
+ * @implements VcsComponentManager<WindowComponent>
  */
 export class WindowManager {
   constructor() {
@@ -296,10 +300,13 @@ export class WindowManager {
    * The reactive WindowState Object can be used to watch Changes on position/windowSlot.
    * The WindowState Object can also be used to change hideHeader, headerTitle, headerIcon, styles and classes
    * @param {WindowComponentOptions|WindowComponent} windowComponentOptions
+   * @param {string|symbol} owner pluginName or vcsAppSymbol
    * @throws {Error} if a windowComponent with the same ID has already been added
    * @returns {WindowComponent}
    */
-  add(windowComponentOptions) {
+  add(windowComponentOptions, owner) {
+    check(owner, [String, vcsAppSymbol]);
+
     if (windowComponentOptions.id && this.has(windowComponentOptions.id)) {
       throw new Error(`A window with id ${windowComponentOptions.id} has already been registered.`);
     }
@@ -320,6 +327,7 @@ export class WindowManager {
 
     const state = reactive({
       id,
+      owner,
       hideHeader: !!windowComponentOptions?.state?.hideHeader,
       headerTitle: windowComponentOptions?.state?.headerTitle,
       headerIcon: windowComponentOptions?.state?.headerIcon,
@@ -371,6 +379,20 @@ export class WindowManager {
         this.windowIds.splice(index, 1);
       }
     }
+  }
+
+  /**
+   * removes all windowComponents of a specific owner (plugin) and fires removed Events
+   * @param {string|vcsAppSymbol} owner
+   */
+  removeOwner(owner) {
+    const windowIds = [...this.windowIds];
+    windowIds.forEach((id) => {
+      const { state } = this.get(id);
+      if (owner === state.owner) {
+        this.remove(id);
+      }
+    });
   }
 
   /**
