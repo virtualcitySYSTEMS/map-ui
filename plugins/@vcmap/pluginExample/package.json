@@ -1,5 +1,5 @@
 {
-  "name": "@vcmap/pluginExample",
+  "name": "@vcmap/plugin-example",
   "version": "1.0.0",
   "vcMapVersion": "~5.0.0",
   "dependencies": {

@@ -11,9 +11,7 @@ import {
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
-import Vue from 'vue';
 import { check } from '@vcsuite/check';
-
 import Context from './context.js';
 import {
   contextIdSymbol,
@@ -29,13 +27,11 @@ import {
 } from './vcsAppContextHelpers.js';
 import makeOverrideCollection from './overrideCollection.js';
 import CategoryCollection from './CategoryCollection.js';
-
-/**
- * @typedef {Object} PluginComponents
- * @property {Array<Vue>} mapButtons
- * @property {Array<Vue>} treeButtons
- * @property {Array<Vue>} headerButtons
- */
+import { isValidPackageName } from './pluginHelper.js';
+import { ToolboxManager } from './modules/toolbox-manager/toolbox-manager.js';
+import { PopoverManager } from './modules/popover-manager/popover.manager.js';
+import { WindowManager } from './modules/window-manager/windowManager.js';
+import ButtonManager from './modules/component-manager/buttonManager.js';
 
 /**
  * @typedef {Object} PluginConfig
@@ -45,14 +41,38 @@ import CategoryCollection from './CategoryCollection.js';
  */
 
 /**
+ * @callback createPlugin
+ * @template {Object} P
+ * @param {P} config
+ * @returns {VcsPlugin<P>}
+ */
+
+/**
  * @interface VcsPlugin
+ * @template {Object} P
  * @property {string} version
  * @property {string} name
- * @property {function(PluginConfig):Promise<void>} preInitialize
- * @property {function(PluginConfig):Promise<void>} postInitialize
- * @property {function(PluginConfig):Promise<vcs.ui.PluginOptions>} registerUiPlugin
- * @property {function(PluginConfig):Promise<void>} postUiInitialize
+ * @property {function(VcsApp)} initialize - called on plugin added
+ * @property {function(VcsApp)} onVcsAppMounted - called on mounted of VcsApp.vue
+ * @property {function():P} [toJSON] - serialization
  * @property {function():Promise<void>} destroy
+ * @api
+ */
+
+/**
+ * @interface VcsComponentManager
+ * @template {Object} T - the component type
+ * @template {Object} O - component options
+ * @property {VcsEvent<T>} added
+ * @property {VcsEvent<T>} removed
+ * @property {string[]} componentIds - all registered component ids as reactive array
+ * @property {function(string):T} get - get component by id
+ * @property {function(string):boolean} has - has component with id
+ * @property {function(string)} remove - remove component by id
+ * @property {function(O, string|vcsAppSymbol):T} add - add component of owner
+ * @property {function(string|vcsAppSymbol)} removeOwner - remove all components of owner
+ * @property {function()} clear - remove all registered components
+ * @property {function()} destroy
  * @api
  */
 
@@ -154,8 +174,13 @@ class VcsApp {
       new Collection(),
       getDynamicContextId,
       serializePlugin,
-      deserializePlugin.bind(null, this),
+      deserializePlugin,
     );
+    this._pluginAddedListener = this._plugins.added.addEventListener((plugin) => {
+      if (plugin.initialize) {
+        plugin.initialize(this);
+      }
+    });
     /**
      * @type {import("@vcmap/core").IndexedCollection<Context>}
      * @private
@@ -178,6 +203,27 @@ class VcsApp {
      */
     this._contextMutationPromise = Promise.resolve();
     vcsApps.set(this._id, this);
+
+    /**
+     * @type {ToolboxManager}
+     * @private
+     */
+    this._toolboxManager = new ToolboxManager();
+    /**
+     * @type {PopoverManager}
+     * @private
+     */
+    this._popoverManager = new PopoverManager();
+    /**
+     * @type {WindowManager}
+     * @private
+     */
+    this._windowManager = new WindowManager();
+    /**
+     * @type {ButtonManager}
+     * @private
+     */
+    this._navbarManager = new ButtonManager();
   }
 
   /**
@@ -235,6 +281,30 @@ class VcsApp {
   get destroyed() { return this._destroyed; }
 
   /**
+   * @returns {ToolboxManager}
+   * @readonly
+   */
+  get toolboxManager() { return this._toolboxManager; }
+
+  /**
+   * @returns {PopoverManager}
+   * @readonly
+   */
+  get popoverManager() { return this._popoverManager; }
+
+  /**
+   * @returns {WindowManager}
+   * @readonly
+   */
+  get windowManager() { return this._windowManager; }
+
+  /**
+   * @returns {ButtonManager}
+   * @readonly
+   */
+  get navbarManager() { return this._navbarManager; }
+
+  /**
    * @returns {VcsEvent<Context>}
    * @readonly
    */
@@ -276,6 +346,9 @@ class VcsApp {
         const plugin = await loadPlugin(this, pluginConfig.name, pluginConfig);
         if (!plugin) {
           return null;
+        }
+        if (!isValidPackageName(plugin.name)) {
+          getLogger().warning(`plugin ${plugin.name} has no valid package name!`);
         }
         plugin[contextIdSymbol] = context.id;
         return plugin;
@@ -395,6 +468,10 @@ class VcsApp {
 
   destroy() {
     this._contextMutationPromise = Promise.reject(new Error('VcsApp was destroyed'));
+    this.windowManager.destroy();
+    this.navbarManager.destroy();
+    // TODO destroy other manager
+    this._pluginAddedListener();
     delete vcsApps.delete(this._id);
     destroyCollection(this._maps);
     destroyCollection(this._layers);
@@ -415,71 +492,6 @@ class VcsApp {
  */
 export function getVcsAppById(id) {
   return vcsApps.get(id);
-}
-
-/**
- * @type {Map<string, Map<string, Set<string>>>} a map of plugin name keys. value is a Map of types. The set represents the names used. default is to use the size as the next name
- */
-const pluginComponentNames = new Map();
-
-/**
- * @param {string} pluginName
- * @param {string} type
- * @param {Vue|string} component
- * @returns {string}
- */
-function createComponent(pluginName, type, component) {
-  if (!pluginComponentNames.has(pluginName)) {
-    pluginComponentNames.set(pluginName, new Map());
-  }
-
-  const componentNames = pluginComponentNames.get(pluginName);
-  if (!componentNames.has(type)) {
-    componentNames.set(type, new Set());
-  }
-
-  const actualComponent = typeof component === 'string' ?
-    { template: component } :
-    component;
-
-  if (!actualComponent.name) {
-    actualComponent.name = `${type}-${componentNames.get(type).size}`;
-  }
-  actualComponent.name = `${pluginName}-${actualComponent.name}`;
-
-  if (componentNames.get(type).has(actualComponent.name)) {
-    return actualComponent.name;
-  }
-  componentNames.get(type).add(actualComponent.name);
-
-  Vue.component(actualComponent.name, actualComponent);
-  return actualComponent.name;
-}
-
-const componentTypes = {
-  mapButton: 'mapButtons',
-};
-
-/**
- * @param {VcsApp} app
- * @param {PluginComponents} pluginComponents
- * @returns {Promise<void>}
- */
-export async function setPluginUiComponents(app, pluginComponents) {
-  await Promise.all([...app.plugins].map(async (plugin) => {
-    if (plugin.registerUiPlugin) {
-      const config = await plugin.registerUiPlugin();
-      Object.entries(componentTypes)
-        .forEach(([configType, componentType]) => {
-          if (config[configType]) {
-            const componentsArray = Array.isArray(config[configType]) ? config[configType] : [config[configType]];
-            const components = componentsArray
-              .map(component => createComponent(plugin.name, configType, component));
-            pluginComponents[componentType].push(...components);
-          }
-        });
-    }
-  }));
 }
 
 window.vcs = window.vcs || {};

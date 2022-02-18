@@ -184,7 +184,7 @@
     },
     setup() {
       const app = inject('vcsApp');
-      const plugin = app.plugins.getByKey('@vcmap/pluginExample');
+      const plugin = app.plugins.getByKey('@vcmap/plugin-example');
       const newUpdate = ref(true);
       watch(plugin.state, () => { newUpdate.value = true; });
 

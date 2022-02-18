@@ -1,11 +1,11 @@
-import { inject } from '@vue/composition-api';
-import { Cartesian2 } from '@vcmap/cesium';
 import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
 import { toolboxData } from './toolbox-data';
 import editor from './editor.vue';
 import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import windowManagerExample from './windowManagerExample.vue';
+import { createToggleAction } from '../../src/actionHelper.js';
+import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
 
 let source;
 
@@ -16,86 +16,80 @@ function getSource() {
   return source;
 }
 
-
-export default async function (app) {
+/**
+ * @returns {VcsPlugin}
+ */
+export default async function () {
   return {
-    name: 'test',
-    registerUiPlugin: async () => ({
-      mapButton: [
+    name: '@vcmap/test',
+    onVcsAppMounted(app) {
+      const { action: configEditorAction, destroy: destroyConfigEditorAction } = createToggleAction(
         {
-          template: "<Button @click=\"alert('check')\">VC Systems</Button>",
-          setup() {
-            const cartesian3 = new Cartesian2(1, 2);
-            const toolboxManager = inject('toolboxManager');
-
-            toolboxData.forEach(([group, id]) => toolboxManager.addToolboxGroup(group, id));
-
-            return {
-              cartesian3,
-              alert() {
-                getSource().addFeature(new Feature({}));
-                window.alert(`
-there are ${getSource().getFeatures().length} features
-          ${app.maps.activeMap.name}`);
-              },
-            };
-          },
+          name: 'Config Editor',
         },
         {
-          template: "<Button @click='toggle'>Editor</Button>",
-          setup() {
-            const windowManager = inject('windowManager');
-
-            return {
-              toggle() {
-                const id = 'config-editor';
-                /** @type {WindowManager} */
-                if (windowManager.has(id)) {
-                  windowManager.remove(id);
-                } else {
-                  windowManager.add({
-                    id,
-                    state: {
-                      headerTitle: 'Context Editor',
-                    },
-                    component: editor,
-                    slot: windowSlot.STATIC,
-                  });
-                }
-              },
-            };
+          id: 'config-editor',
+          state: {
+            headerTitle: 'Context Editor',
           },
+          component: editor,
+          slot: windowSlot.STATIC,
+          position: {
+            width: 500,
+          },
+        },
+        app.windowManager,
+        '@vcmap/test',
+      );
+      const { action: windowAction, destroy: destroyWindowAction } = createToggleAction(
+        {
+          name: 'Windows',
         },
         {
-          template: "<Button @click='toggle'>Windows</Button>",
-          setup() {
-            /** @type {WindowManager} */
-            const windowManager = inject('windowManager');
-
-            return {
-              toggle() {
-                const id = 'windowManagerExample';
-                if (windowManager.has(id)) {
-                  windowManager.remove(id);
-                } else {
-                  windowManager.add({
-                    id,
-                    state: {
-                      headerTitle: 'windowManager Example',
-                    },
-                    component: windowManagerExample,
-                    position: {
-                      left: '60%',
-                      right: '10%',
-                      top: '10%',
-                    },
-                  });
-                }
-              },
-            };
+          id: 'windowManagerExample',
+          state: {
+            headerTitle: 'windowManager Example',
+          },
+          component: windowManagerExample,
+          position: {
+            left: '60%',
+            right: '10%',
+            top: '10%',
           },
         },
-      ],
-    }),
+        app.windowManager,
+        '@vcmap/test',
+      );
+      this._destroyActions = [destroyConfigEditorAction, destroyWindowAction];
+      const alertAction = {
+        name: 'VC Systems',
+        callback() {
+          getSource().addFeature(new Feature({}));
+          window.alert(`there are ${getSource().getFeatures().length} features ${app.maps.activeMap.name}`);
+        },
+      };
+      app.navbarManager.add({
+        id: 'config-editor',
+        location: ButtonLocation.TOOL,
+        action: configEditorAction,
+      }, '@vcmap/test');
+      app.navbarManager.add({
+        id: 'windowManagerExample',
+        location: ButtonLocation.TOOL,
+        action: windowAction,
+      }, '@vcmap/test');
+      app.navbarManager.add({
+        id: 'alert',
+        location: ButtonLocation.TOOL,
+        action: alertAction,
+      }, '@vcmap/test');
+      toolboxData.forEach(([group, id]) => app.toolboxManager.addToolboxGroup(group, id));
+    },
+    destroy() {
+      if (this._destroyActions) {
+        this._destroyActions.forEach(cb => cb());
+        this._destroyActions = null;
+      }
+    },
   };
 }

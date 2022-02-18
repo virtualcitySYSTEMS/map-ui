@@ -1,74 +1,49 @@
 /* eslint-disable no-console */
 import { WINDOW_POSITIONS, windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import mySuperComponent from './mySuperComponent.vue';
+import { createToggleAction } from '../../src/actionHelper.js';
+import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
 
-export default async function (app, config) {
+/**
+ *
+ * @param {PluginExampleConfig} config
+ * @returns {VcsPlugin}
+ */
+export default async function (config) {
   return {
-    name: 'example',
-    registerUiPlugin: async () => {
-      console.log('registerUIPlugin', config);
-      return {
-        supportedMaps: ['vcs.vcm.maps.Openlayers', 'vcs.vcm.maps.Cesium'],
-        name: 'example',
-        mapButton: [
-          {
-            template: '<Button @click="switchWindow()">Example</Button>',
-            setup() {
-              const switchWindow = () => {
-                app.windowManager.onRemoved.addEventListener((test) => {
-                  console.log(test);
-                });
-                if (app.windowManager.has('test')) {
-                  app.windowManager.remove('test');
-                } else {
-                  app.windowManager.add({
-                    id: 'test',
-                    component: mySuperComponent,
-                    slot: windowSlot.DYNAMIC_RIGHT,
-                  });
-                }
-              };
-              return {
-                switchWindow,
-              };
-            },
+    name: '@vcmap/example',
+    initialize(app) {
+      console.log('initialize', app, config);
+    },
+    onVcsAppMounted(app) {
+      console.log('onVcsAppMounted', app, config);
+      // XXX supportedMaps: ['vcs.vcm.maps.Openlayers', 'vcs.vcm.maps.Cesium'],
+      const { action, destroy } = createToggleAction(
+        {
+          name: 'Example',
+        },
+        {
+          id: '228',
+          component: mySuperComponent,
+          slot: windowSlot.DYNAMIC_RIGHT,
+          position: {
+            width: 500,
           },
-          {
-            template: '<Button @click="switchWindow()">ADD</Button>',
-            setup() {
-              const switchWindow = () => {
-                if (app.windowManager.has('228')) {
-                  app.windowManager.remove('test');
-                } else {
-                  app.windowManager.add({
-                    id: 'test',
-                    component: mySuperComponent,
-                    slot: windowSlot.DYNAMIC_RIGHT,
-                  });
-                }
-              };
-              return {
-                switchWindow,
-              };
-            },
-          },
-        ],
-      };
-    },
-    postInitialize: async () => {
-      console.log('postInitialize', config);
-    },
-    preInitialize: async () => {
-      console.log('preInitialize', config);
-    },
-    postUiInitialize: async () => {
+        },
+        app.windowManager,
+        '@vcmap/example',
+      );
+      this._destroyAction = destroy;
+      app.navbarManager.add({
+        location: ButtonLocation.TOOL,
+        action,
+      }, '@vcmap/example');
       app.windowManager.add({
         id: '228',
         component: mySuperComponent,
         position: WINDOW_POSITIONS.TOP_RIGHT,
         slot: windowSlot.DYNAMIC_RIGHT,
-      });
-
+      }, '@vcmap/example');
       app.toolboxManager.addToolboxGroup(
         {
           type: 'toggleButton',
@@ -78,10 +53,12 @@ export default async function (app, config) {
         },
         15,
       );
-      const button = app.toolboxManager.get(15);
-
-      console.log(button);
-      console.log('postUiInitialize', config);
+    },
+    destroy() {
+      if (this._destroyAction) {
+        this._destroyAction();
+        this._destroyAction = null;
+      }
     },
   };
 }

@@ -34,14 +34,15 @@
   } from '@vue/composition-api';
 
   import WindowComponent from './WindowComponent.vue';
-  import WindowComponentHeader from '@/modules/window-manager/WindowComponentHeader.vue';
+  import WindowComponentHeader from './WindowComponentHeader.vue';
 
   export default defineComponent({
     name: 'VcsWindowManager',
     components: { WindowComponent },
     setup() {
+      const app = inject('vcsApp');
       /** @type {WindowManager} */
-      const windowManager = inject('windowManager');
+      const { windowManager } = app;
 
       const { windowIds } = windowManager;
 
