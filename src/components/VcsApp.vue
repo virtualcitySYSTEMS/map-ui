@@ -24,12 +24,12 @@
     onUnmounted,
     provide,
   } from '@vue/composition-api';
-  import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
-  import Popover from '@/modules/popover-manager/PopoverManager.vue';
-  import ToolboxManagerComponent from '@/modules/toolbox-manager/ToolboxManager.vue';
-  import { getVcsAppById } from '@/vcsApp.js';
-  import { ButtonLocation } from '@/modules/component-manager/buttonManager.js';
-  import { vcsAppSymbol } from '@/vcsAppContextHelpers.js';
+  import WindowManagerComponent from '../modules/window-manager/WindowManager.vue';
+  import Popover from '../modules/popover-manager/PopoverManager.vue';
+  import ToolboxManagerComponent from '../modules/toolbox-manager/ToolboxManager.vue';
+  import { getVcsAppById } from '../vcsApp.js';
+  import { ButtonLocation } from '../modules/component-manager/buttonManager.js';
+  import { vcsAppSymbol } from '../vcsAppContextHelpers.js';
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
   import { createMapButtonAction } from '../actionHelper.js';

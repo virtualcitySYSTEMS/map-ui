@@ -1,7 +1,7 @@
 import { VcsClassRegistry } from '@vcmap/core';
-import LayerTreeViewItem from '@/treeview/LayerTreeViewItem.js';
-import NodeTreeViewItem from '@/treeview/NodeTreeViewItem.js';
-import GroupTreeViewItem from '@/treeview/GroupTreeViewItem.js';
+import LayerTreeViewItem from './LayerTreeViewItem.js';
+import NodeTreeViewItem from './NodeTreeViewItem.js';
+import GroupTreeViewItem from './GroupTreeViewItem.js';
 
 VcsClassRegistry.registerClass(LayerTreeViewItem.className, LayerTreeViewItem);
 VcsClassRegistry.registerClass(NodeTreeViewItem.className, NodeTreeViewItem);

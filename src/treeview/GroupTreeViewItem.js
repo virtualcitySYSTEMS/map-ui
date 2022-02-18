@@ -1,4 +1,4 @@
-import AbstractTreeViewItem from '@/treeview/AbstractTreeViewItem.js';
+import AbstractTreeViewItem from './AbstractTreeViewItem.js';
 
 class GroupTreeViewItem extends AbstractTreeViewItem {
   /**

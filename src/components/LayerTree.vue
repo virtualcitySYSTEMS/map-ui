@@ -24,8 +24,8 @@
   import { v4 as uuid } from 'uuid';
 
   import { VcsTreeview } from '@vcsuite/ui-components';
-  import AbstractTree from '@/treeview/AbstractTree.js';
-  import createTreeFromConfig from '@/treeview/createTreeFromConfig.js';
+  import AbstractTree from '../treeview/AbstractTree.js';
+  import createTreeFromConfig from '../treeview/createTreeFromConfig.js';
 
   let treeInstance;
   async function getTree(context) {
