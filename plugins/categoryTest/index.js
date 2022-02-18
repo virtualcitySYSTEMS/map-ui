@@ -1,7 +1,5 @@
-import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
+import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
 import Categories from './Categories.vue';
-import { createToggleAction } from '../../src/actionHelper.js';
-import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
 
 /**
  * @returns {VcsPlugin}

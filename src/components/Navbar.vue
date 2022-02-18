@@ -134,12 +134,6 @@
   export default Vue.extend({
     name: 'VcsNavbar',
     components: { VcsActionButtonList },
-    props: {
-      mapId: {
-        type: String,
-        required: true,
-      },
-    },
     setup() {
       const app = inject('vcsApp');
 

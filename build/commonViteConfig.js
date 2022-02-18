@@ -9,6 +9,7 @@ const configMain = defineConfig({
   resolve: {
     alias: {
       '@': `${path.resolve(process.cwd(), 'src')}`,
+      '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
       vue: 'vue/dist/vue.esm.js',
     },
   },

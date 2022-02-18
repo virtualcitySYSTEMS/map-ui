@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-import { WINDOW_POSITIONS, windowSlot } from '../../src/modules/window-manager/windowManager.js';
+import { ButtonLocation, createToggleAction, WINDOW_POSITIONS, windowSlot } from '@vcmap/ui';
 import mySuperComponent from './mySuperComponent.vue';
-import { createToggleAction } from '../../src/actionHelper.js';
-import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
 
 /**
  *

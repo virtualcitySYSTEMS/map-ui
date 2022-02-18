@@ -16,6 +16,8 @@ const configMain = defineConfig({
       '@vcmap/core > rbush-knn',
       '@vcmap/core > pbf',
       'ol > pbf',
+      '@vcmap/cesium',
+      'fuse.js',
     ],
   },
   server: {

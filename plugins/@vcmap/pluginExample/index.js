@@ -1,12 +1,12 @@
 import { ref, reactive, watch } from '@vue/composition-api';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
-import { windowSlot } from '../../../src/modules/window-manager/windowManager.js';
+
+
+import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
 import pluginExampleComponent from './pluginExampleComponent.vue';
-import { createToggleAction } from '../../../src/actionHelper.js';
-import { ButtonLocation } from '../../../src/modules/component-manager/buttonManager.js';
 
 /**
  * @returns {Logger}

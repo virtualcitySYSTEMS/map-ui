@@ -1,14 +1,18 @@
 <template>
-  <v-sheet class="h-full">
-    <Navbar :map-id="mapId" />
-    <VcsMap :map-id="mapId" />
-    <transition name="slide-from-top-200-ease">
-      <ToolboxManagerComponent v-if="toolboxManagerVisible" />
-    </transition>
+  <v-app class="bg-dev">
+    <v-main>
+      <v-sheet class="h-full">
+        <Navbar />
+        <VcsMap :map-id="mapId" />
+        <transition name="slide-from-top-200-ease">
+          <ToolboxManagerComponent v-if="toolboxManagerVisible" />
+        </transition>
 
-    <WindowManagerComponent />
-    <Popover />
-  </v-sheet>
+        <WindowManagerComponent />
+        <Popover />
+      </v-sheet>
+    </v-main>
+  </v-app>
 </template>
 
 
@@ -16,16 +20,14 @@
   import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
   import {
-    onBeforeMount,
     onMounted,
     onUnmounted,
     provide,
   } from '@vue/composition-api';
-  import VcsApp from '@/vcsApp.js';
   import WindowManagerComponent from '@/modules/window-manager/WindowManager.vue';
   import Popover from '@/modules/popover-manager/PopoverManager.vue';
   import ToolboxManagerComponent from '@/modules/toolbox-manager/ToolboxManager.vue';
-  import Context from '@/context.js';
+  import { getVcsAppById } from '@/vcsApp.js';
   import { ButtonLocation } from '@/modules/component-manager/buttonManager.js';
   import { vcsAppSymbol } from '@/vcsAppContextHelpers.js';
   import VcsMap from './VcsMap.vue';
@@ -42,14 +44,14 @@
       Popover,
     },
     props: {
-      config: {
+      appId: {
         type: String,
-        default: './map.config.json',
+        required: true,
       },
     },
     setup(props) {
       const id = uuid();
-      const app = new VcsApp();
+      const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
 
       const iconMap = {
@@ -82,13 +84,6 @@
       const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
         app.windowManager.removeOwner(plugin.name);
         app.navbarManager.removeOwner(plugin.name);
-      });
-
-      onBeforeMount(async () => {
-        const config = await fetch(props.config)
-          .then(response => response.json());
-        const context = new Context(config);
-        await app.addContext(context);
       });
 
       onMounted(() => {

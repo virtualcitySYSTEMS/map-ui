@@ -1,5 +1,5 @@
 default:
-  image: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/node:16
+  image: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/node:16-bullseye
 
 variables:
   GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_COMMIT_REF_SLUG
@@ -8,8 +8,10 @@ stages:
   - build
   - test
   - bundle
+  - version
   - deploy
   - deployCluster
+  - publish
 
 .template: &job_definition
   only:
@@ -54,6 +56,32 @@ bundle:
   script:
     - npm run build
 
+
+version:
+  <<: *after_build_definition
+  stage: version
+  only:
+    variables:
+      - $PUBLISH
+    refs:
+      - /^(master|release-v.*)$/
+  script:
+    - LEVEL=$([ $CI_COMMIT_REF_NAME == "master" ] && echo "prerelease" || echo "patch")
+    - npm version $LEVEL -m "%s [skip-ci]"
+    - TAG=`git describe --abbrev=0`
+    - git push git@gitlab:vcsuite/virtualcitymap_ui.git $TAG
+    - git push git@gitlab:vcsuite/virtualcitymap_ui.git HEAD:$CI_COMMIT_REF_NAME
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_RUNNER_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan gitlab >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config user.name "Gitlab Runner"
+    - git config user.email "gitlab-runner@vc.systems"
+
+
 deployStaging:
   <<: *after_build_definition
   stage: deploy
@@ -69,19 +97,6 @@ deployStaging:
   before_script:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-
-deployStagingCluster:
-  stage: deployCluster
-  inherit:
-    variables: false
-  variables:
-    STAGE_BRANCH: $CI_COMMIT_REF_SLUG
-    STAGE_PROJECT_NAME: $CI_PROJECT_PATH_SLUG
-    STAGE_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
-    STAGE_NAMESPACE: $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG
-  trigger:
-    project: vcsuite/devops/manifests
-    branch: main
 
 stopEnvironment:
   stage: deploy
@@ -101,3 +116,28 @@ stopEnvironment:
   environment:
     name: staging/$CI_COMMIT_REF_SLUG
     action: stop
+
+deployStagingCluster:
+  stage: deployCluster
+  inherit:
+    variables: false
+  variables:
+    STAGE_BRANCH: $CI_COMMIT_REF_SLUG
+    STAGE_PROJECT_NAME: $CI_PROJECT_PATH_SLUG
+    STAGE_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+    STAGE_NAMESPACE: $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG
+  trigger:
+    project: vcsuite/devops/manifests
+    branch: main
+
+publish:
+  <<: *after_build_definition
+  stage: publish
+  only:
+    refs:
+      - /^(master|release-v.*)$/
+    variables:
+      - $PUBLISH
+  script:
+    - npm config set '//npmregistry:4873/:_authToken' "${VERDACCIO_TOKEN}"
+    - npm publish --registry http://npmregistry:4873

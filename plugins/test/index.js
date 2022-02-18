@@ -1,11 +1,9 @@
 import VectorSource from 'ol/source/Vector';
 import { Feature } from 'ol';
+import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
 import { toolboxData } from './toolbox-data';
 import editor from './editor.vue';
-import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
 import windowManagerExample from './windowManagerExample.vue';
-import { createToggleAction } from '../../src/actionHelper.js';
-import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
 
 let source;
 
