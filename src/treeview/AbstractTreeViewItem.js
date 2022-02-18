@@ -1,5 +1,5 @@
 import { shallowReactive } from '@vue/composition-api';
-import AbstractTreeNode from '@/treeview/AbstractTreeNode.js';
+import AbstractTreeNode from './AbstractTreeNode.js';
 
 // XXX should visible, clickalge etc be passed in as options?
 /**

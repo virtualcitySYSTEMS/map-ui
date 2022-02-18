@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
 import VcsAppComponent from './components/VcsApp.vue';
-import { vuetify } from '@/plugins/index.js';
-import { i18n } from '@/plugins/i18n.js';
-import Context from '@/context.js';
-import VcsApp from '@/vcsApp.js';
+import { vuetify } from './plugins/index.js';
+import { i18n } from './plugins/i18n.js';
+import Context from './context.js';
+import VcsApp from './vcsApp.js';
 
 /**
  * creates and mounts a vcsApp

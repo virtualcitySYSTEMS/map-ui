@@ -87,10 +87,6 @@
         "alias": {
           "map": [
             [
-              "@",
-              "./src"
-            ],
-            [
               "@vcmap/ui",
               "./index.js"
             ]
