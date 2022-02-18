@@ -37,7 +37,7 @@ function loadCss(href) {
     await fs.promises.writeFile(path.join(process.cwd(), 'dist', `${outputFolder}/${library}${addedHash}.css`), libraryBuilds[0].output[1].source);
   }
   if (libraryBuilds[0].output[0] && libraryBuilds[0].output[0].type === 'chunk') {
-    let code = css ? `${cssInjectorCode}loadCss('./${outputFolder}/${library}${addedHash}.css');` : '';
+    let code = css ? `${cssInjectorCode} await loadCss('./${outputFolder}/${library}${addedHash}.css');` : '';
     code += libraryBuilds[0].output[0].code;
     await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.js`), code);
   }
@@ -74,6 +74,23 @@ const libraries = {
       plugins: [vcsOl()],
     },
   },
+  '@vcmap/ui': {
+    lib: 'ui',
+    rollupOptions: {
+      plugins: [
+        vcsOl(),
+        {
+          transform(source, sid) {
+            if (/src(\/|\\)setup.js/.test(sid)) {
+              return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
+            }
+            return source;
+          },
+        },
+      ],
+    },
+    entry: path.join('lib', 'ui.js'),
+  },
   'vuetify/lib': {
     lib: 'vuetify',
     entry: path.join('lib', 'vuetify.js'),
@@ -106,14 +123,6 @@ await build({
     minify: true,
     emptyOutDir: true,
     rollupOptions: {
-      plugins: [vcsOl(), {
-        transform(source, sid) {
-          if (/src(\/|\\)main.js/.test(sid)) {
-            return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
-          }
-          return source;
-        },
-      }],
       external: Object.keys(libraries),
       output: {
         paths: libraryPaths,
