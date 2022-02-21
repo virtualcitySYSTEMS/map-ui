@@ -1,7 +1,6 @@
 {
   "name": "@vcmap/ui",
   "version": "5.0.0-rc.1",
-  "private": true,
   "scripts": {
     "start": "vite",
     "test": "node --experimental-json-modules node_modules/mocha/bin/_mocha --exit --require tests/setupJsdom.js --require tests/setup.js --recursive \"tests/**/*spec.js\"",
