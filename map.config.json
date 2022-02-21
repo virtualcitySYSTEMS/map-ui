@@ -1593,6 +1593,10 @@
       "entry": "plugins/@vcmap/pluginExample/index.js",
       "selectOptions": ["Option A", "Option B", "Option C", "Option D"],
       "initialTextInput": 123
+    },
+    {
+      "name": "@vcmap/theme-changer",
+      "entry": "plugins/@vcmap/theme-changer/index.js"
     }
   ]
 }
