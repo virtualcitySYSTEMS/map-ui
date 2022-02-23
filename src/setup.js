@@ -1,4 +1,3 @@
-import './styles/main.scss';
 import './treeview/treeViewItems.js';
 import Vue from 'vue';
 import VueCompositionAPI from '@vue/composition-api';

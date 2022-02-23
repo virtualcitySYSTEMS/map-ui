@@ -467,7 +467,11 @@ class VcsApp {
   }
 
   destroy() {
-    this._contextMutationPromise = Promise.reject(new Error('VcsApp was destroyed'));
+    Object.defineProperty(this, '_contextMutationPromise', {
+      get() {
+        throw new Error('VcsApp was destroyed');
+      },
+    });
     this.windowManager.destroy();
     this.navbarManager.destroy();
     // TODO destroy other manager

@@ -29,7 +29,7 @@ const configMain = defineConfig({
         changeOrigin: true,
       },
     },
-  },
+  }
 });
 
 export default configMain;

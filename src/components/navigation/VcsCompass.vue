@@ -72,9 +72,7 @@
       const mouseAngle = ({ referenceEl, event }) => {
         const { left, width, top, height } = referenceEl.getBoundingClientRect();
         const boxCenter = [left + width / 2, top + height / 2];
-        const angle = Math.atan2(
-          event.pageX - boxCenter[0], -(event.pageY - boxCenter[1]),
-        ) * (180 / Math.PI);
+        const angle = Math.atan2(event.pageX - boxCenter[0], -(event.pageY - boxCenter[1])) * (180 / Math.PI);
 
         if (angle < 0) {
           return 360 + angle;
@@ -106,7 +104,7 @@
         }
 
         if (props.viewMode === 'oblique') {
-          const rotation = mouseAngle({ event: e, ref: compassRef.value.$el });
+          const rotation = mouseAngle({ event: e, ref: compassRef.value.$el }); // TODO use oblique helper
           const isEast = rotation >= 45 && rotation < 135;
           const isSouth = rotation >= 135 && rotation < 225;
           const isWest = rotation >= 225 && rotation < 315;

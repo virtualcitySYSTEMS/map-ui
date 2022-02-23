@@ -41,8 +41,11 @@ test:
   <<: *after_build_definition
   stage: test
   script:
-    - npm run test
-
+    - npm run coverage:gitlab
+  coverage: '/^Statements\s*:\s*([^%]+)/'
+  artifacts:
+    reports:
+      junit: test-report.xml
 
 audit:
   <<: *after_build_definition

@@ -2,6 +2,7 @@
 node_modules
 /dist
 lib/olLib.js
+test-report.xml
 
 
 # local env files

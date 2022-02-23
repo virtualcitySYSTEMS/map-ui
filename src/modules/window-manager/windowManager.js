@@ -322,7 +322,7 @@ export class WindowManager {
     } = windowComponentOptions;
     const styles = { ...windowComponentOptions?.state?.styles };
     const classes = Array.isArray(windowComponentOptions?.state?.classes) ?
-      [...windowComponentOptions?.state?.classes] :
+      [...(windowComponentOptions?.state?.classes ?? [])] :
       { ...windowComponentOptions?.state?.classes };
 
     const state = reactive({
