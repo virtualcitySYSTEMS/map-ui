@@ -1,29 +1,18 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import sinon from 'sinon';
-import canvas from 'canvas';
+/* eslint-disable import/no-extraneous-dependencies, import/first */
 import Vue from 'vue';
-import VueCompositionAPI from '@vue/composition-api';
-import canvasBindings from 'canvas/lib/bindings.js';
+import Vuetify from 'vuetify';
+import { vi } from 'vitest';
+import CanvasRenderingContext2D from 'jest-canvas-mock/lib/classes/CanvasRenderingContext2D.js';
+import Path2D from 'jest-canvas-mock/lib/classes/Path2D.js';
 
-chai.use(sinonChai);
-global.expect = chai.expect;
-global.sinon = sinon;
-global.requestAnimationFrame = window.requestAnimationFrame;
-global.cancelAnimationFrame = window.cancelAnimationFrame;
-global.canvaslibrary = canvas;
-global.CESIUM_BASE_URL = 'cesium/Source/';
-global.FileReader = window.FileReader;
-global.DOMParser = window.DOMParser;
+global.jest = vi;
+global.CanvasRenderingContext2D = CanvasRenderingContext2D;
+global.Path2D = Path2D;
 
-Object.assign(canvas, {
-  CanvasGradient: canvasBindings.CanvasGradient,
-  CanvasPattern: canvasBindings.CanvasPattern,
-});
-['CanvasRenderingContext2D', 'CanvasPattern', 'CanvasGradient'].forEach((obj) => {
-  global[obj] = canvas[obj];
-});
-global.createCanvas = canvas.createCanvas;
+import 'jest-canvas-mock';
+import '../src/setup.js';
 
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
 
-Vue.use(VueCompositionAPI);
+Vue.use(Vuetify);

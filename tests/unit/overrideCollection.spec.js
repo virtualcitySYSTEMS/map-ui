@@ -1,3 +1,12 @@
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  afterEach,
+  expect,
+  it,
+} from 'vitest';
 import { Collection, IndexedCollection, Layer, VcsObject } from '@vcmap/core';
 import { contextIdSymbol, destroyCollection, getObjectFromOptions } from '../../src/vcsAppContextHelpers.js';
 import makeOverrideCollection from '../../src/overrideCollection.js';
@@ -5,7 +14,7 @@ import makeOverrideCollection from '../../src/overrideCollection.js';
 describe('override collections', () => {
   let getContextId;
 
-  before(() => {
+  beforeAll(() => {
     getContextId = () => 'dynamicContextId';
   });
 
@@ -32,7 +41,7 @@ describe('override collections', () => {
       let collection;
       let replaced = false;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId);
         collection.replaced.addEventListener(() => {
           replaced = true;
@@ -43,7 +52,7 @@ describe('override collections', () => {
         returnedItem = collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -65,13 +74,13 @@ describe('override collections', () => {
       let returnedItem;
       let collection;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId);
         item = new VcsObject({ name: 'foo' });
         returnedItem = collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -94,7 +103,7 @@ describe('override collections', () => {
       let replacedItemName = null;
       let returnedItem;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
         collection.replaced.addEventListener((i) => {
           replacedItemName = i.name;
@@ -109,7 +118,7 @@ describe('override collections', () => {
         returnedItem = collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -139,7 +148,7 @@ describe('override collections', () => {
       let item;
       let collection;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
         const existingItem1 = new VcsObject({ name: 'foo' });
         existingItem1[contextIdSymbol] = 'foo';
@@ -154,7 +163,7 @@ describe('override collections', () => {
         collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -182,7 +191,7 @@ describe('override collections', () => {
       let returnedItem;
       let currentIndex;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(
           new IndexedCollection(),
           getContextId,
@@ -212,7 +221,7 @@ describe('override collections', () => {
         returnedItem = collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -248,7 +257,7 @@ describe('override collections', () => {
       let collection;
       let uniqueSymbol;
 
-      before(() => {
+      beforeAll(() => {
         uniqueSymbol = Symbol('unique');
         collection = makeOverrideCollection(new Collection(uniqueSymbol), getContextId);
 
@@ -263,7 +272,7 @@ describe('override collections', () => {
         returnedItem = collection.override(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -291,7 +300,7 @@ describe('override collections', () => {
       let item;
       let collection;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId);
         item = new VcsObject({ name: 'foo' });
         item[contextIdSymbol] = 'foo';
@@ -299,7 +308,7 @@ describe('override collections', () => {
         collection.remove(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -312,7 +321,7 @@ describe('override collections', () => {
       let item;
       let collection;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
 
         const existingItem = new VcsObject({ name: 'foo' });
@@ -325,7 +334,7 @@ describe('override collections', () => {
         collection.remove(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -346,7 +355,7 @@ describe('override collections', () => {
       let item;
       let collection;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
         const existingItem1 = new VcsObject({ name: 'foo' });
         existingItem1[contextIdSymbol] = 'foo';
@@ -362,7 +371,7 @@ describe('override collections', () => {
         collection.remove(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -391,7 +400,7 @@ describe('override collections', () => {
       let collection;
       let currentIndex;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(
           new IndexedCollection(),
           getContextId,
@@ -420,7 +429,7 @@ describe('override collections', () => {
         collection.remove(item);
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -524,7 +533,7 @@ describe('override collections', () => {
       let collection;
       let item;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
         item = new VcsObject({ name: 'foo' });
         item[contextIdSymbol] = 'foo';
@@ -532,7 +541,7 @@ describe('override collections', () => {
         await collection.removeContext('foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -549,7 +558,7 @@ describe('override collections', () => {
       let collection;
       let item;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
 
         const item1 = new VcsObject({ name: 'foo' });
@@ -563,7 +572,7 @@ describe('override collections', () => {
         await collection.removeContext('bar');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -590,7 +599,7 @@ describe('override collections', () => {
       let collection;
       let item;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, option => new VcsObject(option));
         const item1 = new Layer({ name: 'foo' });
         item1[contextIdSymbol] = 'foo';
@@ -607,7 +616,7 @@ describe('override collections', () => {
         await collection.removeContext('baz');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -641,7 +650,7 @@ describe('override collections', () => {
       let collection;
       let items;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(
           new Collection(),
           getContextId,
@@ -663,7 +672,7 @@ describe('override collections', () => {
         items = [...collection].filter(i => i[contextIdSymbol] === 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -682,7 +691,7 @@ describe('override collections', () => {
       let collection;
       let items;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, getObjectFromOptions, Layer);
         const config = [
           {
@@ -702,7 +711,7 @@ describe('override collections', () => {
         items = [...collection].filter(i => i[contextIdSymbol] === 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -721,7 +730,7 @@ describe('override collections', () => {
       let collection;
       let items;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, getObjectFromOptions, Layer);
         const config = [
           {
@@ -741,7 +750,7 @@ describe('override collections', () => {
         items = [...collection].filter(i => i[contextIdSymbol] === 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -760,7 +769,7 @@ describe('override collections', () => {
       let collection;
       let items;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, getObjectFromOptions, Layer);
         const config = [
           {
@@ -783,7 +792,7 @@ describe('override collections', () => {
         items = [...collection].filter(i => i[contextIdSymbol] === 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -807,7 +816,7 @@ describe('override collections', () => {
     describe('and removing the entire context, if the array contains duplicate entries', () => {
       let collection;
 
-      before(async () => {
+      beforeAll(async () => {
         collection = makeOverrideCollection(new Collection(), getContextId, null, getObjectFromOptions, Layer);
         const config = [
           {
@@ -830,7 +839,7 @@ describe('override collections', () => {
         await collection.removeContext('foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -850,7 +859,7 @@ describe('override collections', () => {
       let collection;
       let serializedContext;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new IndexedCollection(), getContextId);
 
         items = ['foo', 'bar', 'baz']
@@ -865,7 +874,7 @@ describe('override collections', () => {
         serializedContext = collection.serializeContext('foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 
@@ -883,7 +892,7 @@ describe('override collections', () => {
       let collection;
       let serializedContext;
 
-      before(() => {
+      beforeAll(() => {
         collection = makeOverrideCollection(new IndexedCollection(), getContextId);
 
         items = ['foo', 'bar', 'baz']
@@ -898,7 +907,7 @@ describe('override collections', () => {
         serializedContext = collection.serializeContext('foo');
       });
 
-      after(() => {
+      afterAll(() => {
         destroyCollection(collection);
       });
 

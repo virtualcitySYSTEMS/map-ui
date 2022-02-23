@@ -1,3 +1,13 @@
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  afterEach,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { isReactive } from '@vue/composition-api/dist/vue-composition-api.js';
 import ButtonManager, {
   ButtonLocation,
@@ -7,22 +17,12 @@ import VcsApp from '../../src/vcsApp.js';
 import { vcsAppSymbol } from '../../src/vcsAppContextHelpers.js';
 
 describe('ButtonManager', () => {
-  let sandbox;
-
-  before(() => {
-    sandbox = sinon.createSandbox();
-  });
-
-  after(() => {
-    sandbox.restore();
-  });
-
   describe('adding buttonComponents', () => {
     /** @type {ButtonManager} */
     let buttonManager;
     let buttonComponentOptions;
 
-    before(() => {
+    beforeAll(() => {
       buttonComponentOptions = {
         id: 'id',
         location: ButtonLocation.TOOL,
@@ -39,14 +39,14 @@ describe('ButtonManager', () => {
       let buttonComponent;
       let addedSpy;
 
-      before(() => {
-        addedSpy = sandbox.spy();
+      beforeAll(() => {
+        addedSpy = vi.fn();
         buttonManager = new ButtonManager();
         buttonManager.added.addEventListener(addedSpy);
         buttonComponent = buttonManager.add(buttonComponentOptions, 'plugin');
       });
 
-      after(() => {
+      afterAll(() => {
         buttonManager.destroy();
       });
 
@@ -57,8 +57,8 @@ describe('ButtonManager', () => {
         expect(buttonManager.buttonIds).to.have.members([buttonComponentOptions.id]);
       });
       it('should fire the added Event', () => {
-        expect(addedSpy).to.have.been.calledOnce;
-        expect(addedSpy.calledWith(buttonComponent)).to.be.true;
+        expect(addedSpy).toHaveBeenCalledTimes(1);
+        expect(addedSpy).toHaveBeenLastCalledWith(buttonComponent);
       });
       it('should throw if now owner is supplied', () => {
         expect(buttonManager.add.bind(buttonManager, { id: 'test' })).to.throw;
@@ -100,7 +100,7 @@ describe('ButtonManager', () => {
     let buttonManager;
     let buttonComponentOptions;
 
-    before(() => {
+    beforeAll(() => {
       buttonManager = new ButtonManager();
       app = new VcsApp();
       app.plugins.add({ name: 'plugin1' });
@@ -120,7 +120,7 @@ describe('ButtonManager', () => {
       buttonManager.clear();
     });
 
-    after(() => {
+    afterAll(() => {
       buttonManager.destroy();
     });
 
@@ -154,7 +154,7 @@ describe('ButtonManager', () => {
     let button1;
     let button2;
 
-    before(() => {
+    beforeAll(() => {
       buttonManager = new ButtonManager();
       buttonComponentOptions = {
         location: ButtonLocation.CONTENT,
@@ -174,7 +174,7 @@ describe('ButtonManager', () => {
       buttonManager.clear();
     });
 
-    after(() => {
+    afterAll(() => {
       buttonManager.destroy();
     });
 
@@ -190,11 +190,11 @@ describe('ButtonManager', () => {
       expect(buttonManager.buttonIds).to.not.include(button1.id);
     });
     it('should fire the removed event', () => {
-      const removedSpy = sandbox.spy();
+      const removedSpy = vi.fn();
       buttonManager.removed.addEventListener(removedSpy);
       buttonManager.remove(button1.id);
-      expect(removedSpy).to.have.been.calledOnce;
-      expect(removedSpy.calledWith(button1)).to.be.true;
+      expect(removedSpy).toHaveBeenCalledTimes(1);
+      expect(removedSpy).toHaveBeenLastCalledWith(button1);
     });
   });
 
@@ -205,7 +205,7 @@ describe('ButtonManager', () => {
     let button1;
     let button2;
 
-    before(() => {
+    beforeAll(() => {
       buttonManager = new ButtonManager();
       buttonComponentOptions = {
         location: ButtonLocation.CONTENT,
@@ -225,7 +225,7 @@ describe('ButtonManager', () => {
       buttonManager.clear();
     });
 
-    after(() => {
+    afterAll(() => {
       buttonManager.destroy();
     });
 

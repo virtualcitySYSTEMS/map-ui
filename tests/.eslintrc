@@ -1,11 +1,19 @@
 {
   "extends": [
-    "@vcsuite/eslint-config/mocha"
+    "@vcsuite/eslint-config/node"
+  ],
+  "plugins": [
+    "mocha"
   ],
   "rules": {
-    "import/extensions": [
-      "error",
-      "always"
-    ]
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": 0,
+    "mocha/no-exclusive-tests": 2,
+    "mocha/no-setup-in-describe": 2,
+    "mocha/no-sibling-hooks": 2,
+    "mocha/no-skipped-tests": 2
+  },
+  "env": {
+    "mocha": false
   }
 }

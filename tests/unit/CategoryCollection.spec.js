@@ -1,3 +1,10 @@
+import {
+  describe,
+  beforeAll,
+  afterAll,
+  expect,
+  it,
+} from 'vitest';
 import { ViewPoint } from '@vcmap/core';
 import VcsApp from '../../src/vcsApp.js';
 import Category from '../../src/Category.js';
@@ -8,7 +15,7 @@ describe('CategoryCollection', () => {
     describe('of an untyped category', () => {
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         const items = [
           {
@@ -22,7 +29,7 @@ describe('CategoryCollection', () => {
         await app.categories.parseCategoryItems('foo', items, 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 
@@ -42,7 +49,7 @@ describe('CategoryCollection', () => {
     describe('of a typed category', () => {
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         const items = [
           {
@@ -58,7 +65,7 @@ describe('CategoryCollection', () => {
         await app.categories.parseCategoryItems('foo', items, 'foo');
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 
@@ -85,7 +92,7 @@ describe('CategoryCollection', () => {
     describe('of a later requested category', () => {
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         const items = [
           {
@@ -101,7 +108,7 @@ describe('CategoryCollection', () => {
         await app.categories.requestCategory({ name: 'foo', type: Category.className, typed: true });
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 
@@ -124,7 +131,7 @@ describe('CategoryCollection', () => {
     describe('of an unrequested category, if the context of said items gets removed later on', () => {
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         const items = [
           {
@@ -141,7 +148,7 @@ describe('CategoryCollection', () => {
         await app.categories.requestCategory({ name: 'foo', type: Category.className, typed: true });
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 
@@ -162,12 +169,12 @@ describe('CategoryCollection', () => {
       let category;
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         category = await app.categories.requestCategory({ name: 'foo', type: Category.className });
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 
@@ -191,13 +198,13 @@ describe('CategoryCollection', () => {
       let categoryAgain;
       let app;
 
-      before(async () => {
+      beforeAll(async () => {
         app = new VcsApp();
         category = await app.categories.requestCategory({ name: 'foo', type: Category.className, title: 'foo' });
         categoryAgain = await app.categories.requestCategory({ name: 'foo', type: Category.className, title: 'bar' });
       });
 
-      after(() => {
+      afterAll(() => {
         app.destroy();
       });
 

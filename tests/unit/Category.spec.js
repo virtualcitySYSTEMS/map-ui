@@ -1,3 +1,11 @@
+import {
+  describe,
+  beforeAll,
+  afterAll,
+  expect,
+  vi,
+  it,
+} from 'vitest';
 import { IndexedCollection, VcsObject, VectorStyleItem } from '@vcmap/core';
 import OlFeature from 'ol/Feature.js';
 import { Point } from 'ol/geom.js';
@@ -8,11 +16,11 @@ import { contextIdSymbol } from '../../src/vcsAppContextHelpers.js';
 describe('Category', () => {
   let app;
 
-  before(() => {
+  beforeAll(() => {
     app = new VcsApp();
   });
 
-  after(() => {
+  afterAll(() => {
     app.destroy();
   });
 
@@ -26,28 +34,28 @@ describe('Category', () => {
       let itemMovedSpy;
       let destroyedSpy;
 
-      before(() => {
+      beforeAll(() => {
         category = new Category({});
         category.setApp(app);
         oldCollection = category.collection;
-        destroyedSpy = sinon.spy(oldCollection, 'destroy');
+        destroyedSpy = vi.spyOn(oldCollection, 'destroy');
         collection = new IndexedCollection();
-        itemAddedSpy = sinon.spy(category, '_itemAdded');
-        itemRemovedSpy = sinon.spy(category, '_itemRemoved');
-        itemMovedSpy = sinon.spy(category, '_itemMoved');
+        itemAddedSpy = vi.spyOn(category, '_itemAdded');
+        itemRemovedSpy = vi.spyOn(category, '_itemRemoved');
+        itemMovedSpy = vi.spyOn(category, '_itemMoved');
         category.setCollection(collection);
       });
 
-      after(() => {
-        itemAddedSpy.restore();
-        itemRemovedSpy.restore();
-        itemMovedSpy.restore();
-        destroyedSpy.restore();
+      afterAll(() => {
+        itemAddedSpy.mockReset();
+        itemRemovedSpy.mockReset();
+        itemMovedSpy.mockReset();
+        destroyedSpy.mockReset();
         category.destroy();
       });
 
       it('should destroy the old collection', () => {
-        expect(destroyedSpy).to.have.been.called;
+        expect(destroyedSpy).toHaveBeenCalled();
       });
 
       it('should set the new collection', () => {
@@ -58,15 +66,12 @@ describe('Category', () => {
         it('should add add listeners to the new collection', () => {
           const item = { name: 'foo' };
           collection.add(item);
-          expect(itemAddedSpy).to.have.been.calledWithExactly(item);
+          expect(itemAddedSpy).toHaveBeenLastCalledWith(item);
           collection.add({ name: 'bar' });
-          itemAddedSpy.resetHistory();
           collection.raise(item, 1);
-          expect(itemMovedSpy).to.have.been.calledWithExactly(item);
-          itemMovedSpy.resetHistory();
+          expect(itemMovedSpy).toHaveBeenLastCalledWith(item);
           collection.remove(item);
-          expect(itemRemovedSpy).to.have.been.calledWithExactly(item);
-          itemRemovedSpy.resetHistory();
+          expect(itemRemovedSpy).toHaveBeenLastCalledWith(item);
         });
 
         it('should no longer listen to the old collections events', () => {
@@ -76,9 +81,9 @@ describe('Category', () => {
           oldCollection.raise(item, 1);
           oldCollection.remove(item);
 
-          expect(itemAddedSpy).to.not.have.been.called;
-          expect(itemMovedSpy).to.not.have.been.called;
-          expect(itemRemovedSpy).to.not.have.been.called;
+          expect(itemAddedSpy).toHaveBeenCalled;
+          expect(itemMovedSpy).toHaveBeenCalled;
+          expect(itemRemovedSpy).toHaveBeenCalled;
         });
       });
     });
@@ -111,9 +116,9 @@ describe('Category', () => {
         const item = { name: 'foo' };
         const category = new Category({});
         category.setApp(app);
-        const itemAddedSpy = sinon.spy(category, '_itemAdded');
+        const itemAddedSpy = vi.spyOn(category, '_itemAdded');
         category.setCollection(IndexedCollection.from([item]));
-        expect(itemAddedSpy).to.have.been.calledWithExactly(item);
+        expect(itemAddedSpy).toHaveBeenCalledWith(item);
         category.destroy();
       });
     });
@@ -130,17 +135,18 @@ describe('Category', () => {
       let category;
       let app1;
 
-      before(async () => {
+      beforeAll(async () => {
         app1 = new VcsApp();
         category = await app1.categories.requestCategory({ name: 'foo' });
       });
 
-      after(() => {
+      afterAll(() => {
         app1.destroy();
       });
 
       it('should add the dynamic context Id of the app to the feature, if it does not have a context ID set', () => {
         const item = { name: 'foo' };
+        console.log('adding');
         category.collection.add(item);
         expect(item).to.have.property(contextIdSymbol, app1.dynamicContextId);
       });
@@ -158,12 +164,12 @@ describe('Category', () => {
       let category;
       let app1;
 
-      before(async () => {
+      beforeAll(async () => {
         app1 = new VcsApp();
         category = await app1.categories.requestCategory({ name: 'foo', featureProperty: 'feature' });
       });
 
-      after(() => {
+      afterAll(() => {
         app1.destroy();
       });
 
@@ -242,7 +248,7 @@ describe('Category', () => {
       let serialized;
       let fooItem;
 
-      before(() => {
+      beforeAll(() => {
         const category = new Category({
           name: 'bar',
         });
@@ -276,7 +282,7 @@ describe('Category', () => {
       let serialized;
       let fooItem;
 
-      before((done) => {
+      beforeAll(async () => {
         const category = new Category({
           name: 'bar',
           featureProperty: 'feat',
@@ -289,11 +295,13 @@ describe('Category', () => {
         bazItem[contextIdSymbol] = 'foo';
         category.collection.add(bazItem);
 
-        setTimeout(() => {
-          serialized = category.serializeForContext('foo');
-          category.destroy();
-          done();
-        }, 20);
+        await new Promise((done) => {
+          setTimeout(() => {
+            serialized = category.serializeForContext('foo');
+            category.destroy();
+            done();
+          }, 20);
+        });
       });
 
       it('should serialize the items of said context', () => {
@@ -314,7 +322,7 @@ describe('Category', () => {
         let category;
         let options;
 
-        before(() => {
+        beforeAll(() => {
           options = {
             title: 'foo',
             layerOptions: {
@@ -325,7 +333,7 @@ describe('Category', () => {
           category.mergeOptions(options);
         });
 
-        after(() => {
+        afterAll(() => {
           category.destroy();
         });
 
@@ -342,7 +350,7 @@ describe('Category', () => {
         let category;
         let options;
 
-        before(() => {
+        beforeAll(() => {
           options = {
             title: 'foo',
             typed: true,
@@ -365,7 +373,7 @@ describe('Category', () => {
           category.mergeOptions(options);
         });
 
-        after(() => {
+        afterAll(() => {
           category.destroy();
         });
 
@@ -396,11 +404,11 @@ describe('Category', () => {
       describe('of a default category', () => {
         let category;
 
-        before(() => {
+        beforeAll(() => {
           category = new Category({});
         });
 
-        after(() => {
+        afterAll(() => {
           category.destroy();
         });
 
@@ -421,7 +429,7 @@ describe('Category', () => {
         let category;
         let options;
 
-        before(() => {
+        beforeAll(() => {
           options = {
             typed: true,
             featureProperty: 'feature',
@@ -430,7 +438,7 @@ describe('Category', () => {
           category = new Category(options);
         });
 
-        after(() => {
+        afterAll(() => {
           category.destroy();
         });
 
