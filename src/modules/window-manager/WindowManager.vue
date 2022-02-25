@@ -79,7 +79,7 @@
       const dropped = (id, pos) => {
         const { innerWidth, innerHeight } = window;
         // clip position
-        const top = Math.min(Math.max(48, pos.top - pos.dy), innerHeight - pos.height);
+        const top = Math.min(Math.max(0, pos.top - pos.dy), innerHeight - pos.height);
         const left = Math.min(Math.max(0, pos.left - pos.dx), innerWidth - pos.width);
         windowManager.setWindowPositionOptions(id, {
           top,

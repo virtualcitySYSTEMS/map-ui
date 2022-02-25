@@ -79,7 +79,12 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
   // }
 
   try {
-    const plugin = await import(/* @vite-ignore */ module);
+    let plugin;
+    if (window.VcsPluginLoaderFunction) { // TODO PluginLoaderfunction needs to be documented.
+      plugin = await window.VcsPluginLoaderFunction(name, module);
+    } else {
+      plugin = await import(/* @vite-ignore */ module);
+    }
     if (plugin.default == null || typeof plugin.default !== 'function') {
       getLogger().error(`plugin ${name} does not provide a default exported function`);
       return null;
