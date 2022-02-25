@@ -54,15 +54,15 @@ export const windowSlot = {
 export const WINDOW_POSITIONS = {
   TOP_LEFT: {
     left: '0px',
-    top: '48px',
+    top: '0px',
   },
   TOP_LEFT2: {
     left: '320px',
-    top: '48px',
+    top: '0px',
   },
   TOP_RIGHT: {
     right: '0px',
-    top: '48px',
+    top: '0px',
   },
   DETACHED: {
     left: '200px',

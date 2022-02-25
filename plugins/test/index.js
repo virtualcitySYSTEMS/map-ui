@@ -1,7 +1,7 @@
-import VectorSource from 'ol/source/Vector';
+import VectorSource from 'ol/source/Vector.js';
 import { Feature } from 'ol';
 import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
-import { toolboxData } from './toolbox-data';
+import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
 

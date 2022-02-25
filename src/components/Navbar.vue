@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar dense class="z-index-100">
+  <v-app-bar app absolute dense>
     <v-container fluid class="pa-0">
       <v-row no-gutters>
         <v-col>
@@ -147,11 +147,13 @@
           app.windowManager,
           vcsAppSymbol,
         );
-        app.navbarManager.add({
-          id: c.id,
-          location: ButtonLocation.CONTENT,
-          action,
-        }, vcsAppSymbol);
+        if (!app.navbarManager.has(c.id)) {
+          app.navbarManager.add({
+            id: c.id,
+            location: ButtonLocation.CONTENT,
+            action,
+          }, vcsAppSymbol);
+        }
       });
 
       const navbarButtonIds = ref(app.navbarManager.buttonIds);

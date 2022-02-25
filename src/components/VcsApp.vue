@@ -1,20 +1,23 @@
 <template>
-  <v-app class="bg-dev">
-    <v-main>
-      <v-sheet class="h-full">
-        <Navbar />
-        <VcsMap :map-id="mapId" />
-        <transition name="slide-from-top-200-ease">
-          <ToolboxManagerComponent v-if="toolboxManagerVisible" />
-        </transition>
-
-        <WindowManagerComponent />
-        <Popover />
-      </v-sheet>
+  <v-app class="h-full" absolute>
+    <Navbar />
+    <v-main fill-height absolute>
+      <VcsMap :map-id="mapId" />
+      <ToolboxManagerComponent v-if="toolboxManagerVisible" />
+      <WindowManagerComponent />
     </v-main>
+    <v-footer app absolute>
+      footer
+    </v-footer>
   </v-app>
 </template>
 
+
+<style scoped lang="scss">
+::v-deep .v-application--wrap {
+  min-height: fit-content;
+}
+</style>
 
 <script>
   import Vue from 'vue';
@@ -25,7 +28,6 @@
     provide,
   } from '@vue/composition-api';
   import WindowManagerComponent from '../modules/window-manager/WindowManager.vue';
-  import Popover from '../modules/popover-manager/PopoverManager.vue';
   import ToolboxManagerComponent from '../modules/toolbox-manager/ToolboxManager.vue';
   import { getVcsAppById } from '../vcsApp.js';
   import { ButtonLocation } from '../modules/component-manager/buttonManager.js';
@@ -41,7 +43,6 @@
       VcsMap,
       WindowManagerComponent,
       ToolboxManagerComponent,
-      Popover,
     },
     props: {
       appId: {

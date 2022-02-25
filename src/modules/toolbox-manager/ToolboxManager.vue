@@ -46,7 +46,7 @@
 <style lang="scss" scoped>
   .toolbar__secondary {
     position: absolute;
-    top: 48px;
+    top: 0;
     left: 0;
     right: 0;
 
