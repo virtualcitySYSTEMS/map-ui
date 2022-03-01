@@ -101,7 +101,7 @@ const libraries = {
   },
 };
 
-const plugins = ['test', 'example', 'categoryTest', '@vcmap/pluginExample', '@vcmap/theme-changer'];
+const plugins = ['test', 'example', 'categoryTest', 'buttonExamples', '@vcmap/pluginExample', '@vcmap/theme-changer'];
 
 const libraryPaths = {};
 const pluginLibraryPaths = {};
