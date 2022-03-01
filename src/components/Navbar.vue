@@ -5,19 +5,29 @@
         <v-col>
           <v-toolbar-items>
             <div class="d-flex align-center">
-              <VcsActionButtonList :actions="mapActions" :overflow-count="3" />
+              <VcsActionButtonList
+                :actions="mapActions"
+                :overflow-count="3"
+                large
+              />
               <v-divider
                 v-if="mapActions.length > 0 && (contentActions.length > 0 || toolActions.length > 0)"
                 vertical
                 inset
               />
-              <VcsActionButtonList :actions="contentActions" />
+              <VcsActionButtonList
+                :actions="contentActions"
+                large
+              />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
                 vertical
                 inset
               />
-              <VcsActionButtonList :actions="toolActions" />
+              <VcsActionButtonList
+                :actions="toolActions"
+                large
+              />
             </div>
           </v-toolbar-items>
         </v-col>
@@ -27,13 +37,20 @@
         <v-col class="align-content-end d-flex justify-end">
           <v-toolbar-items>
             <div class="d-flex align-center">
-              <VcsActionButtonList :actions="projectActions" />
+              <VcsActionButtonList
+                :actions="projectActions"
+                large
+              />
               <v-divider
                 v-if="projectActions.length > 0 && menuActions.length > 0"
                 vertical
                 inset
               />
-              <VcsActionButtonList :actions="menuActions" :overflow-count="3" />
+              <VcsActionButtonList
+                :actions="menuActions"
+                :overflow-count="3"
+                large
+              />
             </div>
           </v-toolbar-items>
         </v-col>

@@ -24,6 +24,15 @@ build:
   script:
     - npm set registry 'http://npmregistry:4873'
     - npm ci
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_RUNNER_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan gitlab.virtualcitysystems.de >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config user.name "Gitlab Runner"
+    - git config user.email "gitlab-runner@vc.systems"
   stage: build
 
 .after_build_template: &after_build_definition
