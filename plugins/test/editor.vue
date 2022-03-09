@@ -20,7 +20,7 @@
 <script>
   import { ref, inject } from '@vue/composition-api';
   import { VcsButton } from '@vcsuite/ui-components';
-  import Context from '../../src/context.js';
+  import { Context } from '@vcmap/core';
 
   const contextId = 'foo';
 
@@ -30,7 +30,7 @@
       VcsButton,
     },
     setup() {
-      /** @type {VcsApp} */
+      /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       const context = app.getContextById(contextId);
       const configString = ref(JSON.stringify(context ? context.config : {}, null, 2));

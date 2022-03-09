@@ -1,6 +1,6 @@
 import { check } from '@vcsuite/check';
 import { MapCollection } from '@vcmap/core';
-import { vcsAppSymbol } from './vcsAppContextHelpers.js';
+import { vcsAppSymbol } from './pluginHelper.js';
 
 /**
  * @typedef {Object} ActionOptions

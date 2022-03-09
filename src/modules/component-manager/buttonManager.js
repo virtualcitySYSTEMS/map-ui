@@ -2,7 +2,7 @@ import { reactive } from '@vue/composition-api';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, checkMaybe } from '@vcsuite/check';
-import { vcsAppSymbol } from '../../vcsAppContextHelpers.js';
+import { vcsAppSymbol } from '../../pluginHelper.js';
 
 /**
  * sorts by owner and optionally plugin order

@@ -13,8 +13,8 @@ import ButtonManager, {
   ButtonLocation,
   getActionsByLocation,
 } from '../../src/modules/component-manager/buttonManager.js';
-import VcsApp from '../../src/vcsApp.js';
-import { vcsAppSymbol } from '../../src/vcsAppContextHelpers.js';
+import VcsUiApp from '../../src/vcsUiApp.js';
+import { vcsAppSymbol } from '../../src/pluginHelper.js';
 
 describe('ButtonManager', () => {
   describe('adding buttonComponents', () => {
@@ -102,7 +102,7 @@ describe('ButtonManager', () => {
 
     beforeAll(() => {
       buttonManager = new ButtonManager();
-      app = new VcsApp();
+      app = new VcsUiApp();
       app.plugins.add({ name: 'plugin1' });
       app.plugins.add({ name: 'plugin2' });
       app.plugins.add({ name: 'plugin3' });

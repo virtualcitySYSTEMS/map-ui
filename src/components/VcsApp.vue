@@ -27,11 +27,11 @@
     onUnmounted,
     provide,
   } from '@vue/composition-api';
+  import { getVcsAppById } from '@vcmap/core';
   import WindowManagerComponent from '../modules/window-manager/WindowManager.vue';
   import ToolboxManagerComponent from '../modules/toolbox-manager/ToolboxManager.vue';
-  import { getVcsAppById } from '../vcsApp.js';
   import { ButtonLocation } from '../modules/component-manager/buttonManager.js';
-  import { vcsAppSymbol } from '../vcsAppContextHelpers.js';
+  import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
   import { createMapButtonAction } from '../actionHelper.js';

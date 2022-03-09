@@ -70,7 +70,7 @@
   import { createToggleAction } from '../actionHelper.js';
   import { ButtonLocation, getActionsByLocation } from '../modules/component-manager/buttonManager.js';
   import EmptyCmp from './empty-cmp.vue';
-  import { vcsAppSymbol } from '../vcsAppContextHelpers.js';
+  import { vcsAppSymbol } from '../pluginHelper.js';
 
   const staticWindow = {
     id: 'static-win',

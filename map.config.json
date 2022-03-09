@@ -765,8 +765,9 @@
           180,
           85
         ],
-        "epsg": "EPSG:4326",
-        "proj4": ""
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
       },
       "opacity": "1",
       "hiddenObjectIds": [],
