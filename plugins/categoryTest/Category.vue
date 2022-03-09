@@ -50,7 +50,7 @@
 <script>
   import { inject, nextTick, ref } from '@vue/composition-api';
   import { VcsButton } from '@vcsuite/ui-components';
-  import { getObjectFromOptions } from '../../src/vcsAppContextHelpers.js';
+  import { getObjectFromOptions } from '@vcmap/core';
 
   export default {
     name: 'CategoryComponent',

@@ -3,8 +3,7 @@ import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { parseEnumValue } from '@vcsuite/parsers';
 import { check } from '@vcsuite/check';
-import { vcsAppSymbol } from '../../vcsAppContextHelpers.js';
-
+import { vcsAppSymbol } from '../../pluginHelper.js';
 
 /**
  * @readonly

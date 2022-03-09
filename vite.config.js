@@ -12,12 +12,10 @@ const configMain = defineConfig({
     ],
     include: [
       '@vcmap/core > fast-deep-equal',
-      '@vcmap/core > axios',
       '@vcmap/core > rbush-knn',
       '@vcmap/core > pbf',
       'ol > pbf',
       '@vcmap/cesium',
-      'fuse.js',
     ],
   },
   server: {

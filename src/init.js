@@ -1,21 +1,21 @@
 import Vue from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
+import { Context } from '@vcmap/core';
 import VcsAppComponent from './components/VcsApp.vue';
 import { vuetify } from './plugins/index.js';
 import { i18n } from './plugins/i18n.js';
-import Context from './context.js';
-import VcsApp from './vcsApp.js';
+import VcsUiApp from './vcsUiApp.js';
 
 /**
  * creates and mounts a vcsApp
  * @param {string} mountTarget
  * @param {string=} configUrl optional config
- * @returns {Promise<VcsApp>}
+ * @returns {Promise<VcsUiApp>}
  */
 export default async function initApp(mountTarget, configUrl) {
   check(mountTarget, String);
   checkMaybe(configUrl, String);
-  const app = new VcsApp();
+  const app = new VcsUiApp();
   new Vue({
     vuetify,
     i18n,
