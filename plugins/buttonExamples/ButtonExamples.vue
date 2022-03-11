@@ -104,8 +104,8 @@
               <v-card-actions>
                 <VcsActionButtonList
                   :actions="[
-                    { name: 'Tool 1', title: 'Tool 1 Tooltip', callback: toggle, active },
-                    { name: 'Tool 2', title: 'Tool 2 Tooltip', callback: toggle, active },
+                    { name: 'Tool 1', title: 'Overflow Button with active state', callback: toggle, active },
+                    { name: 'Tool 2', title: 'Overflow Button without state', callback: toggle },
                   ]"
                   :overflow-count="0"
                   button-class="large"
@@ -144,8 +144,8 @@
               <v-card-actions>
                 <VcsActionButtonList
                   :actions="[
-                    { name: 'Action 1', title: 'Action 1 Tooltip', callback: toggle, active },
-                    { name: 'Action 2', title: 'Action 2 Tooltip', callback: toggle, active },
+                    { name: 'Action 1', title: 'Overflow Button with active state', callback: toggle, active },
+                    { name: 'Action 2', title: 'Overflow Button without state', callback: toggle },
                   ]"
                   :overflow-count="0"
                   small
