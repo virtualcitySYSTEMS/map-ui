@@ -3,6 +3,7 @@
     <Navbar />
     <v-main fill-height absolute>
       <VcsMap :map-id="mapId" />
+      <MapNavigation />
       <ToolboxManagerComponent v-if="toolboxManagerVisible" />
       <WindowManagerComponent />
     </v-main>
@@ -35,10 +36,11 @@
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
   import { createMapButtonAction } from '../actionHelper.js';
-
+  import MapNavigation from './navigation/mapNavigation.vue';
 
   export default Vue.extend({
     components: {
+      MapNavigation,
       Navbar,
       VcsMap,
       WindowManagerComponent,

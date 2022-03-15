@@ -13,6 +13,7 @@ const configMain = defineConfig({
     include: [
       '@vcmap/core > fast-deep-equal',
       '@vcmap/core > rbush-knn',
+      '@vcmap/core > rbush-knn > tinyqueue',
       '@vcmap/core > pbf',
       'ol > pbf',
       '@vcmap/cesium',
