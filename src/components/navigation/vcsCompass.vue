@@ -2,8 +2,8 @@
   <v-sheet
     ref="compassRef"
     :style="{
-      transform: `rotate(${value}deg)`,
-      cursor: grabbing ? 'grabbing' : 'grab'
+      transform: `rotate(${compassRotation}deg)`,
+      cursor,
     }"
     @mousedown="trackMouse"
     class="
@@ -14,54 +14,46 @@
         user-select-none
         transition-transform-200-ease
       "
-    :elevation="elevation"
+    elevation="1"
   >
     <span>N</span>
-    <MapNavCompassRegular
-      v-if="viewMode === '3d' || viewMode === '2d'"
+    <MapNavCompass
       class="position-absolute pos-a-0 primary--text"
-    />
-    <MapNavCompassOblique
-      v-if="viewMode === 'oblique'"
-      class="position-absolute pos-a-0 primary--text"
+      @direction-click="$emit('input', $event)"
+      :can-emit="viewMode === '3d' || viewMode === 'oblique'"
+      :hide-ticks="viewMode === 'oblique'"
     />
   </v-sheet>
 </template>
 
 
 <script>
-  import { defineComponent, onUnmounted, ref } from '@vue/composition-api';
+  import { computed, onUnmounted, ref } from '@vue/composition-api';
 
   import { fromEvent, merge, of, Subject } from 'rxjs';
   import { takeUntil, tap } from 'rxjs/operators';
 
-  import MapNavCompassOblique from './MapNavCompassOblique.vue';
-  import MapNavCompassRegular from './MapNavCompassRegular.vue';
-
+  import MapNavCompass from './mapNavCompass.vue';
 
   /**
    * @description Compass component to be shown on the map.
-   * @vue-prop {('2d' | '3d' | 'oblique')}  viewMode  - Mode of the map. Defines the behaviour of the compass.
+   * @vue-prop {OrientationToolsViewMode}  viewMode  - Mode of the map. Defines the behaviour of the compass.
    * @vue-prop {number}                     value     - Number of degrees of the compass rotation.
+   * @vue-event {number} input
    */
-  export default defineComponent({
+  export default {
     name: 'VcsCompass',
     components: {
-      MapNavCompassRegular,
-      MapNavCompassOblique,
+      MapNavCompass,
     },
     props: {
       viewMode: {
         type: String,
-        default: undefined,
+        required: true,
       },
       value: {
         type: Number,
         default: 0,
-      },
-      elevation: {
-        type: Number,
-        default: 1,
       },
     },
     setup(props, context) {
@@ -82,49 +74,47 @@
       };
 
       const trackMouse = (e) => {
-        if (props.viewMode !== 'oblique') {
+        if (props.viewMode === '3d') {
           document.body.style.cursor = 'grabbing';
-          grabbing.value = true;
+          const timeout = setTimeout(() => {
+            grabbing.value = true;
+          }, 200);
+
+          const finish = () => {
+            clearTimeout(timeout);
+            document.body.style.cursor = 'unset';
+            grabbing.value = false;
+          };
+
           merge(
             of(e),
             fromEvent(document.body, 'mousemove'),
           ).pipe(
             tap((event) => {
-              const rotation = mouseAngle({ event, referenceEl: compassRef.value.$el });
-              context.emit('input', rotation);
+              if (grabbing.value) {
+                const rotation = mouseAngle({ event, referenceEl: compassRef.value.$el });
+                context.emit('input', -1 * rotation);
+              }
             }),
             takeUntil(fromEvent(document.body, 'mouseup').pipe(
-              tap(() => {
-                document.body.style.cursor = 'unset';
-                grabbing.value = false;
-              }),
+              tap(() => finish()),
+            )),
+            takeUntil(fromEvent(document.body, 'mouseleave').pipe(
+              tap(() => finish()),
             )),
             takeUntil(destroy$),
           ).subscribe();
         }
-
-        if (props.viewMode === 'oblique') {
-          const rotation = mouseAngle({ event: e, ref: compassRef.value.$el }); // TODO use oblique helper
-          const isEast = rotation >= 45 && rotation < 135;
-          const isSouth = rotation >= 135 && rotation < 225;
-          const isWest = rotation >= 225 && rotation < 315;
-
-          if (isEast) {
-            context.emit('input', 90);
-            return;
-          }
-          if (isSouth) {
-            context.emit('input', 180);
-            return;
-          }
-          if (isWest) {
-            context.emit('input', 270);
-            return;
-          }
-
-          context.emit('input', 0);
-        }
       };
+
+      const cursor = computed(() => {
+        if (props.viewMode === '3d') {
+          return grabbing.value ? 'grabbing' : 'grab';
+        }
+        return 'auto';
+      });
+
+      const rotationValue = ref(props.value);
 
       onUnmounted(() => {
         destroy$.next();
@@ -133,9 +123,22 @@
 
       return {
         trackMouse,
-        grabbing,
         compassRef,
+        cursor,
+        rotationValue,
+        compassRotation: computed(() => -1 * rotationValue.value),
       };
     },
-  });
+    watch: {
+      value(newValue, oldValue) {
+        let diff = newValue - oldValue;
+        if (diff > 180) {
+          diff -= 360;
+        } else if (diff < -180) {
+          diff += 360;
+        }
+        this.rotationValue += diff;
+      },
+    },
+  };
 </script>
