@@ -17,8 +17,8 @@
   import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
   import { getLogger } from '@vcsuite/logger';
   import { VcsButton } from '@vcsuite/ui-components';
-  import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
-  import EmptyCmpt from '../../src/components/empty-cmp.vue';
+
+  import { EmptyCmpt, windowSlot } from '@vcmap/ui';
   import VcsContent from './vcsContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
 

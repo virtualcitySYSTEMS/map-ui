@@ -6,10 +6,9 @@ import {
   serializePlugin,
   deserializePlugin,
 } from './pluginHelper.js';
-import { ToolboxManager } from './modules/toolbox-manager/toolbox-manager.js';
-import { PopoverManager } from './modules/popover-manager/popover.manager.js';
-import { WindowManager } from './modules/window-manager/windowManager.js';
-import ButtonManager from './modules/component-manager/buttonManager.js';
+import { ToolboxManager } from './manager/toolbox/toolbox-manager.js';
+import { WindowManager } from './manager/window/windowManager.js';
+import ButtonManager from './manager/buttonManager.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -94,11 +93,7 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._toolboxManager = new ToolboxManager();
-    /**
-     * @type {PopoverManager}
-     * @private
-     */
-    this._popoverManager = new PopoverManager();
+
     /**
      * @type {WindowManager}
      * @private
@@ -122,12 +117,6 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get toolboxManager() { return this._toolboxManager; }
-
-  /**
-   * @returns {PopoverManager}
-   * @readonly
-   */
-  get popoverManager() { return this._popoverManager; }
 
   /**
    * @returns {WindowManager}
