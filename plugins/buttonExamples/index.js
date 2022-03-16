@@ -1,6 +1,4 @@
-import { createToggleAction } from '../../src/actionHelper.js';
-import { windowSlot } from '../../src/modules/window-manager/windowManager.js';
-import { ButtonLocation } from '../../src/modules/component-manager/buttonManager.js';
+import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
 import ButtonExamples from './ButtonExamples.vue';
 
 /**

@@ -12,7 +12,7 @@ import { isReactive } from '@vue/composition-api/dist/vue-composition-api.js';
 import ButtonManager, {
   ButtonLocation,
   getActionsByLocation,
-} from '../../src/modules/component-manager/buttonManager.js';
+} from '../../src/manager/buttonManager.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import { vcsAppSymbol } from '../../src/pluginHelper.js';
 

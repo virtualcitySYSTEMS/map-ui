@@ -14,7 +14,7 @@ import {
   WindowManager,
   windowPositionFromOptions,
   windowSlot,
-} from '../../src/modules/window-manager/windowManager.js';
+} from '../../src/manager/window/windowManager.js';
 
 
 describe('windowManager', () => {

@@ -66,9 +66,9 @@
   import { VcsActionButtonList } from '@vcsuite/ui-components';
   import { inject, ref, computed } from '@vue/composition-api';
   import LayerTree from './LayerTree.vue';
-  import { windowSlot } from '../modules/window-manager/windowManager.js';
-  import { createToggleAction } from '../actionHelper.js';
-  import { ButtonLocation, getActionsByLocation } from '../modules/component-manager/buttonManager.js';
+  import { windowSlot } from '../manager/window/windowManager.js';
+  import { createToggleAction } from '../actions/actionHelper.js';
+  import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
   import EmptyCmp from './empty-cmp.vue';
   import { vcsAppSymbol } from '../pluginHelper.js';
 

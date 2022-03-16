@@ -29,14 +29,14 @@
     provide,
   } from '@vue/composition-api';
   import { getVcsAppById } from '@vcmap/core';
-  import WindowManagerComponent from '../modules/window-manager/WindowManager.vue';
-  import ToolboxManagerComponent from '../modules/toolbox-manager/ToolboxManager.vue';
-  import { ButtonLocation } from '../modules/component-manager/buttonManager.js';
+  import WindowManagerComponent from '../manager/window/WindowManager.vue';
+  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
+  import { ButtonLocation } from '../manager/buttonManager.js';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
-  import { createMapButtonAction } from '../actionHelper.js';
-  import MapNavigation from './navigation/mapNavigation.vue';
+  import { createMapButtonAction } from '../actions/actionHelper.js';
+  import MapNavigation from '../navigation/mapNavigation.vue';
 
   export default Vue.extend({
     components: {

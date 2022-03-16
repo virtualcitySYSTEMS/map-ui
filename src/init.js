@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
 import { Context } from '@vcmap/core';
-import VcsAppComponent from './components/VcsApp.vue';
-import { vuetify } from './plugins/index.js';
-import { i18n } from './plugins/i18n.js';
+import VcsAppComponent from './application/VcsApp.vue';
+import { vuetify } from './vuePlugins/vuetify.js';
+import { i18n } from './vuePlugins/i18n.js';
 import VcsUiApp from './vcsUiApp.js';
 
 /**
