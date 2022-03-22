@@ -1,0 +1,808 @@
+{
+  "mapcontainer": "vcs_map_container",
+  "startingViewPointName": "berlin",
+  "startingMapName": "ol3",
+  "projection": {
+    "epsg": "25833",
+    "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+  },
+  "styles": [
+    {
+      "name": "lineColor",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${olcs_geometryType} === 2",
+              "color('#49eb34')"
+            ],
+            [
+              "true",
+              "color('#707070')"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "MeasuredHeightGreen",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "title": {
+        "en": "Measured Height (green)",
+        "de": "Measured Height (green)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#006d2c')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bae4b3')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74c476')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#31a354')"
+            ],
+            [
+              "true",
+              "color('#006d2c')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#edf8e9",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#bae4b3",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#74c476",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#31a354",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#006d2c",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "name": "MeasuredHeightBrown",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "title": {
+        "en": "Measured Height (brown)",
+        "de": "Measured Height (brown)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#993404')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#ffffd4')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#fed98e')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#fe9929')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#d95f0e')"
+            ],
+            [
+              "true",
+              "color('#993404')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#ffffd4",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#fed98e",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#fe9929",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#d95f0e",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#993404",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "name": "MeasuredHeightBlue",
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "title": {
+        "en": "Measured Height (blue)",
+        "de": "Measured Height (blue)"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#045a8d')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#f1eef6')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bdc9e1')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74a9cf')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#2b8cbe')"
+            ],
+            [
+              "true",
+              "color('#045a8d')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#f1eef6",
+          "title": "< 5 m"
+        },
+        {
+          "color": "#bdc9e1",
+          "title": "< 15 m"
+        },
+        {
+          "color": "#74a9cf",
+          "title": "< 30 m"
+        },
+        {
+          "color": "#2b8cbe",
+          "title": "< 65 m"
+        },
+        {
+          "color": "#045a8d",
+          "title": "> 65 m"
+        }
+      ]
+    },
+    {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "title": {
+        "en": "Classified by Roof Type",
+        "de": "Einfärbung nach Hauptdach"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.roofType} === undefined",
+              "color('#cccccc')"
+            ],
+            [
+              "${attributes.roofType} === '1000' ",
+              "color('#91cf60')"
+            ],
+            [
+              "${attributes.roofType} === '2100' ",
+              "color('#fee08b')"
+            ],
+            [
+              "${attributes.roofType} === '2200' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3100' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3200' ",
+              "color('#fc8d59')"
+            ],
+            [
+              "${attributes.roofType} === '3300' ",
+              "color('#ffffb3')"
+            ],
+            [
+              "${attributes.roofType} === '3400' ",
+              "color('#bebada')"
+            ],
+            [
+              "${attributes.roofType} === '3500' ",
+              "color('#ffffbf')"
+            ],
+            [
+              "${attributes.roofType} === '3600' ",
+              "color('#fdb462')"
+            ],
+            [
+              "${attributes.roofType} === '3700' ",
+              "color('#b3de69')"
+            ],
+            [
+              "${attributes.roofType} === '3800' ",
+              "color('#ecc34e')"
+            ],
+            [
+              "${attributes.roofType} === '3900' ",
+              "color('#fccde5')"
+            ],
+            [
+              "${attributes.roofType} === '4000' ",
+              "color('#d590b3')"
+            ],
+            [
+              "${attributes.roofType} === '5000' ",
+              "color('#888888')"
+            ],
+            [
+              "${attributes.roofType} === '9999' ",
+              "color('#cccccc')"
+            ],
+            [
+              "true",
+              "color('#cccccc')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#91cf60",
+          "title": {
+            "de": "Flachdach",
+            "en": "Flat"
+          }
+        },
+        {
+          "color": "#fee08b",
+          "title": {
+            "de": "Pultdach",
+            "en": "Shed"
+          }
+        },
+        {
+          "color": "#8dd3c7",
+          "title": {
+            "de": "Versetztes Pultdach",
+            "en": "Shifted Shed"
+          }
+        },
+        {
+          "color": "#8dd3c7",
+          "title": {
+            "de": "Satteldach",
+            "en": "Gabled"
+          }
+        },
+        {
+          "color": "#fc8d59",
+          "title": {
+            "de": "Walmdach",
+            "en": "Hipped"
+          }
+        },
+        {
+          "color": "#ffffb3",
+          "title": {
+            "de": "Krüppelwalmdach",
+            "en": "Hipped"
+          }
+        },
+        {
+          "color": "#bebada",
+          "title": {
+            "de": "Mansardendach",
+            "en": "Mansard"
+          }
+        },
+        {
+          "color": "#ffffbf",
+          "title": {
+            "de": "Zeltdach",
+            "en": "Tent"
+          }
+        },
+        {
+          "color": "#fdb462",
+          "title": {
+            "de": "Kegeldach",
+            "en": "Conical"
+          }
+        },
+        {
+          "color": "#b3de69",
+          "title": {
+            "de": "Kuppeldach",
+            "en": "Copular"
+          }
+        },
+        {
+          "color": "#ecc34e",
+          "title": {
+            "de": "Sheddach",
+            "en": "Shed roof"
+          }
+        },
+        {
+          "color": "#fccde5",
+          "title": {
+            "de": "Bogendach",
+            "en": "Arched"
+          }
+        },
+        {
+          "color": "#d590b3",
+          "title": {
+            "de": "Turmdach",
+            "en": "Tower roof"
+          }
+        },
+        {
+          "color": "#888888",
+          "title": {
+            "de": "Mischform",
+            "en": "Mixed roof"
+          }
+        },
+        {
+          "color": "#cccccc",
+          "title": {
+            "de": "Sonstiges",
+            "en": "undefined"
+          }
+        }
+      ],
+      "name": "ClassifiedbyRoofType"
+    },
+    {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "title": {
+        "de": "Einfärbung nach Gebäudefunktion",
+        "en": "Building Function"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.function} === undefined",
+              "color('#d9d9d9')"
+            ],
+            [
+              "${attributes.function} === '1121' ",
+              "color('#7fc97f')"
+            ],
+            [
+              "${attributes.function} === '1004' ",
+              "color('#beaed4')"
+            ],
+            [
+              "${attributes.function} === '1799' ",
+              "color('#fdc086')"
+            ],
+            [
+              "${attributes.function} === '1231' ",
+              "color('#ffff99')"
+            ],
+            [
+              "true",
+              "color('#d9d9d9')"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#7fc97f",
+          "title": "1121"
+        },
+        {
+          "color": "#fdb462",
+          "title": "1004"
+        },
+        {
+          "color": "#fdc086",
+          "title": "1799"
+        },
+        {
+          "color": "#ffff99",
+          "title": "1231"
+        },
+        {
+          "color": "#cccccc",
+          "title": "other function"
+        }
+      ],
+      "name": "BuildingFunction"
+    },
+    {
+      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "name": "Transparentbuildings",
+      "title": {
+        "en": "Transparent buildings",
+        "de": "Transparent buildings"
+      },
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "true",
+              "color('#cccccc', 0.7)"
+            ]
+          ]
+        }
+      },
+      "legend": [
+        {
+          "color": "#cccccc",
+          "title": "Transparent buildings"
+        }
+      ]
+    }
+  ],
+  "maps": [
+    {
+      "type": "vcs.vcm.maps.Cesium",
+      "name": "cesium",
+      "debugging": false,
+      "fxaa": false,
+      "enableLightning": true,
+      "allowSoftwareRendering": false,
+      "maximumScreenSpaceError": 2,
+      "fogEnabled": true,
+      "fogEnabledMobile": true,
+      "fogDensity": 0.0002,
+      "fogDensityMobile": 0.0004,
+      "fogScreenSpaceError": 2,
+      "fogScreenSpaceErrorMobile": 4
+    },
+    {
+      "type": "vcs.vcm.maps.Openlayers",
+      "name": "ol3"
+    },
+    {
+      "name": "Oblique Map",
+      "showObliqueImageName": true,
+      "obliqueImageNameTemplate": "Oblique Image Name : {0}",
+      "type": "vcs.vcm.maps.Oblique",
+      "defaultCollectionName": "Schrägluftbilder WAB"
+    }
+  ],
+  "layers": [
+    {
+      "type": "vcs.vcm.layer.Buildings",
+      "name": "mesh_surface",
+      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh/",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true
+      },
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie",
+        "url": "https://www.berlin-partner.de",
+        "year": "2019"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "buildings",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "utxPghp6jfG6oZakL",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
+        "url": "http://www.businesslocationcenter.de/downloadportal",
+        "year": "2019"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "buildings_untextured",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "9eRDxjbxHQzE9XiES",
+      "activeOnStartup": true,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
+        "url": "http://www.businesslocationcenter.de/downloadportal",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ]
+    },
+    {
+      "name": "fisbroker-dop-2015",
+      "url": "https://karten.blc.shc.eu/cache/tms/1.0.0/osm-berlin-dop2015-combined/",
+      "type": "vcs.vcm.layer.TMS",
+      "datasourceId": "5dnXzoL27oPYQbEWQ",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          248000,
+          5648000,
+          517000,
+          5968000
+        ],
+        "projection": {
+          "epsg": "25833",
+          "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+        }
+      },
+      "format": "jpg",
+      "minLevel": "0",
+      "maxLevel": "20",
+      "tilingSchema": "mercator",
+      "opacity": "1",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Geoportal Berlin / Luftbild 2015, OpenStreetMap contributors",
+        "url": "http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "base"
+      ],
+      "tileSize": [
+        "256",
+        "256"
+      ]
+    },
+    {
+      "name": "Openstreetmap OSM Cache",
+      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "type": "vcs.vcm.layer.WMTS",
+      "datasourceId": "2jEtgBemjJaSNx3AH",
+      "activeOnStartup": true,
+      "layer": "osm",
+      "style": "default",
+      "format": "image/png",
+      "tileMatrixSetID": "osm_grid",
+      "tileMatrixPrefix": "",
+      "maxLevel": 19,
+      "tilingSchema": "mercator",
+      "extent": {
+        "coordinates": [
+          -180,
+          -85,
+          180,
+          85
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "opacity": "1",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "OpenStreetMap contributors",
+        "url": "http://www.openstreetmap.org/",
+        "year": "2019"
+      },
+      "numberOfLevelZeroTilesX": 1,
+      "numberOfLevelZeroTilesY": 1,
+      "exclusiveGroups": [
+        "base"
+      ]
+    },
+    {
+      "name": "terrain_v3.4",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
+      "type": "vcs.vcm.layer.Terrain",
+      "datasourceId": "CQHSNBZDTkjLLh8Qr",
+      "activeOnStartup": true,
+      "requestVertexNormals": true
+    },
+    {
+      "type": "vcs.vcm.layer.PointCloud",
+      "name": "pointcloud",
+      "activeOnStartup": false,
+      "datasourceId": "g9rXAY6pu2tfNmWf3",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/tiergarten/tileset.json",
+      "copyright": {
+        "provider": "Senatsverwaltung für Wirtschaft, Technologie und Forschung. Geodaten Herstellung gefördert durch den Europäischen Fonds für Regionale Entwicklung (EFRE)",
+        "url": "http://www.berlin.de/wirtschaftssenat"
+      },
+      "screenSpaceError": 20,
+      "screenSpaceErrorMobile": 32,
+      "pointSize": 1.6,
+      "exclusiveGroups": [
+        "pointcloud"
+      ]
+    },
+    {
+      "name": "Bäume",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "YXcidK4ijYFB2DhPm",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "tree"
+      ]
+    }
+  ],
+  "viewpoints": [
+    {
+      "name": "berlin",
+      "distance": 77320.16701493935,
+      "cameraPosition": [
+        13.412246704101557,
+        52.50911685569954,
+        77355.76917050044
+      ],
+      "groundPosition": [
+        13.412246704101555,
+        52.50908981460491,
+        35.60221485835801
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
+    },
+    {
+      "name": "alexanderplatz",
+      "distance": 1027.743747894252,
+      "cameraPosition": [
+        13.410279816026053,
+        52.52102244255272,
+        1064.4366076344213
+      ],
+      "groundPosition": [
+        13.410279818110775,
+        52.52102207564875,
+        36.69286055319397
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
+    },
+    {
+      "name": "brandenburger_tor",
+      "distance": 663.6051001967426,
+      "cameraPosition": [
+        13.37790869834864,
+        52.51627705004426,
+        698.3750083957117
+      ],
+      "groundPosition": [
+        13.37790869845283,
+        52.516277047668844,
+        34.76990820023149
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
+    },
+    {
+      "name": "potsdamer_platz",
+      "distance": 730.0034266375318,
+      "cameraPosition": [
+        13.375567390072897,
+        52.50932719713967,
+        765.2515153338176
+      ],
+      "groundPosition": [
+        13.375567390058034,
+        52.50932719590491,
+        35.24808869690339
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "vcs.vcm.util.ViewPoint"
+    }
+  ],
+  "obliqueCollections": [
+    {
+      "name": "obliques",
+      "activeOnStartup": true,
+      "dataSets": [
+        {
+          "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques_2020/image_tiled.json",
+          "terrainProvider": {
+            "url": "https://b.3d.blc.shc.eu/WAB/base_layer/cesium_terrain/"
+          },
+          "projection": {
+            "epsg": "25833",
+            "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+          },
+          "copyright": {
+            "provider": "Berlin Partner / Senat von Berlin",
+            "url": "https://www.berlin-partner.de",
+            "year": "2020"
+          }
+        }
+      ],
+      "maxZoom": 7,
+      "minZoom": 3,
+      "hideLevels": null
+    }
+  ],
+  "plugins": [
+    {
+      "name": "@vcmap/theme-changer",
+      "entry": "plugins/@vcmap/theme-changer/index.js"
+    }
+  ]
+}

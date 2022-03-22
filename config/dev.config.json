@@ -1,0 +1,40 @@
+{
+  "layers": [
+    {
+      "name": "testGeojson",
+      "type": "vcs.vcm.layer.GeoJSON",
+      "url": "exampleData/perFeature.json",
+      "projection": {
+        "epsg": 4326
+      },
+      "activeOnStartup": false,
+      "vectorProperties": {
+        "altitudeMode": "clampToGround"
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "name": "example",
+      "entry": "plugins/example/index.js"
+    },
+    {
+      "name": "categoryTest",
+      "entry": "plugins/categoryTest/index.js"
+    },
+    {
+      "name": "@vcmap/pluginExample",
+      "entry": "plugins/@vcmap/pluginExample/index.js",
+      "selectOptions": ["Option A", "Option B", "Option C", "Option D"],
+      "initialTextInput": 123
+    },
+    {
+      "name": "@vcmap/buttonExamples",
+      "entry": "plugins/buttonExamples/index.js"
+    },
+    {
+      "name": "test",
+      "entry": "plugins/test/index.js"
+    }
+  ]
+}

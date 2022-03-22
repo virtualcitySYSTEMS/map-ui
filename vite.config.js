@@ -24,11 +24,11 @@ const configMain = defineConfig({
     port: 8080,
     proxy: {
       'datasource-data': {
-        target: 'https://berlin.virtualcitymap.de',
+        target: 'http://publisher',
         changeOrigin: true,
       },
     },
-  }
+  },
 });
 
 export default configMain;

@@ -81,7 +81,7 @@ export default async function () {
         location: ButtonLocation.TOOL,
         action: alertAction,
       }, '@vcmap/test');
-      toolboxData.forEach(([group, id]) => app.toolboxManager.addToolboxGroup(group, id));
+      // toolboxData.forEach(([group, id]) => app.toolboxManager.addToolboxGroup(group, id));
     },
     destroy() {
       if (this._destroyActions) {
