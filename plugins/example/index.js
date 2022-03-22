@@ -42,15 +42,15 @@ export default async function (config) {
         position: WINDOW_POSITIONS.TOP_RIGHT,
         slot: windowSlot.DYNAMIC_RIGHT,
       }, '@vcmap/example');
-      app.toolboxManager.addToolboxGroup(
-        {
-          type: 'toggleButton',
-          icon: '$vcsPointSelect',
-          id: 15,
-          active: true,
-        },
-        15,
-      );
+      // app.toolboxManager.addToolboxGroup(
+      //   {
+      //     type: 'toggleButton',
+      //     icon: '$vcsPointSelect',
+      //     id: 15,
+      //     active: true,
+      //   },
+      //   15,
+      // );
     },
     destroy() {
       if (this._destroyAction) {

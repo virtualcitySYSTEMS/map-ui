@@ -1,0 +1,81 @@
+<template>
+  <v-container>
+    <h1>Projects</h1>
+    <v-list
+      v-for="(project, index) in state.projects.value"
+      :key="index"
+    >
+      <v-card
+        class="my-0"
+        :color="project.active ? 'accent' : undefined"
+        @click="selectProject(project)"
+        hover
+        outlined
+        :loading="loading === project.name"
+      >
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-bold">
+              {{ project.name }}
+            </v-list-item-title>
+            <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
+            <ContextsListComponent
+              :contexts="project.contexts"
+              @toggle-context="toggleContext"
+              :toggleable="false"
+            />
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-avatar
+              color="success"
+              size="30"
+              v-if="project.active"
+            >
+              <v-icon>mdi-check</v-icon>
+            </v-avatar>
+          </v-list-item-action>
+        </v-list-item>
+      </v-card>
+    </v-list>
+    <v-divider />
+    <h1>Contexts</h1>
+    <ContextsListComponent
+      :contexts="state.contexts.value"
+      @toggle-context="toggleContext"
+    />
+  </v-container>
+</template>
+<script>
+  import { inject } from '@vue/composition-api';
+  import ContextsListComponent from './ContextsListComponent.vue';
+
+  export default {
+    name: 'ProjectSelector',
+    components: { ContextsListComponent },
+    setup() {
+      const app = inject('vcsApp');
+      const plugin = app.plugins.getByKey('@vcmap/project-selector');
+      async function selectProject(project) {
+        this.loading = project.name;
+        await plugin.selectProject(app, project);
+        this.loading = undefined;
+      }
+
+      async function toggleContext(context) {
+        if (context.active) {
+          await plugin.unloadContext(app, context);
+        } else {
+          await plugin.loadContext(app, context);
+        }
+      }
+
+      return {
+        loading: undefined,
+        state: plugin.state,
+        config: plugin.config,
+        selectProject,
+        toggleContext,
+      };
+    },
+  };
+</script>

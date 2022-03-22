@@ -1,0 +1,287 @@
+{
+  "mapcontainer": "vcs_map_container",
+  "locale": "de",
+  "availableLocales": [
+    "de",
+    "en"
+  ],
+  "startingViewPointName": "Start",
+  "startingMapName": "Cesium Map",
+  "projection": {
+    "epsg": "25832",
+    "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
+  },
+  "maps": [
+    {
+      "name": "Cesium Map",
+      "type": "vcs.vcm.maps.Cesium",
+      "webGLaa": false,
+      "globeColor": "#000000"
+    },
+    {
+      "name": "Openlayers Map",
+      "type": "vcs.vcm.maps.Openlayers"
+    },
+    {
+      "name": "Schrägluftbild",
+      "showObliqueImageName": true,
+      "obliqueImageNameTemplate": "Oblique Image Name : {0}",
+      "type": "vcs.vcm.maps.Oblique",
+      "defaultCollectionName": "Schrägluftbilder 2020"
+    }
+  ],
+  "layers": [
+    {
+      "name": "Textured Buildings 2021",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/8a9b3f01-e988-4931-bc73-21648ca3b117/tileset.json",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "oCmn2eL2ugs9kZHvi",
+      "activeOnStartup": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": [
+        "3D"
+      ],
+      "copyright": {
+        "provider": "Fachbereich Geodaten und Verkehrsanlagen Osnabrück"
+      }
+    },
+    {
+      "name": "Geländemodell 2020",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/e3e2af43-efa6-439d-a819-b6060af2b7cb",
+      "type": "vcs.vcm.layer.Terrain",
+      "datasourceId": "ZvZCi7MvDoYmoL9Zr",
+      "activeOnStartup": true,
+      "requestVertexNormals": true
+    },
+    {
+      "name": "3D-Mesh 2020",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Mesh3D_Cesium_2020",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "g78GQpi92C58hCpLv",
+      "activeOnStartup": true,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "3D"
+      ]
+    },
+    {
+      "name": "Openstreetmap Ebene",
+      "type": "vcs.vcm.layer.OpenStreetMap",
+      "datasourceId": "",
+      "activeOnStartup": false,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "opacity": "",
+      "exclusiveGroups": [
+        "Basemaps"
+      ]
+    },
+    {
+      "name": "Orthophoto 2019",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/TMS",
+      "type": "vcs.vcm.layer.TMS",
+      "datasourceId": "L9iqEkcipH5yYidLJ",
+      "activeOnStartup": true,
+      "extent": {
+        "coordinates": [
+          7.92113060202822,
+          52.21502758354121,
+          8.18761427766629,
+          52.34298961990562
+        ],
+        "projection": {
+          "epsg": "4326"
+        }
+      },
+      "format": "jpg",
+      "minLevel": "10",
+      "maxLevel": "20",
+      "tilingSchema": "mercator",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "opacity": "",
+      "exclusiveGroups": [
+        "Basemaps"
+      ],
+      "tileSize": [
+        "256",
+        "256"
+      ]
+    },
+    {
+      "name": "TopPlus",
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_web_open",
+      "type": "vcs.vcm.layer.WMS",
+      "datasourceId": "yvtTf2bLrDNk93Eth",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          426560.8185735654,
+          5784184.146308786,
+          444530.61425307946,
+          5798050.352349459
+        ],
+        "projection": {
+          "epsg": "25832",
+          "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
+        }
+      },
+      "version": "1.3.0",
+      "layers": "web",
+      "parameters": "format=image/png",
+      "maxLevel": 21,
+      "featureInfo": null,
+      "tilingSchema": "geographic",
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Bundesamt für Kartographie und Geodäsie",
+        "url": "http://www.bkg.bund.de",
+        "year": "2017"
+      },
+      "exclusiveGroups": [
+        "Basemaps"
+      ]
+    },
+    {
+      "name": "3D-Mesh 2019",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Mesh",
+      "type": "vcs.vcm.layer.Buildings",
+      "datasourceId": "DmbnQLuDFtiu9dQJv",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "3D"
+      ]
+    },
+    {
+      "name": "Terrain_Breaklines_New",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Terrain_New",
+      "type": "vcs.vcm.layer.Terrain",
+      "datasourceId": "Y4YktjqX2FPFZNubn",
+      "activeOnStartup": true,
+      "requestVertexNormals": true,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "",
+        "url": "",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "Terrain"
+      ]
+    },
+    {
+      "name": "True Orthophoto 2020",
+      "url": "https://aerowest.virtualcitymap.de/datasource-data/de840115-0050-474e-8d8f-69dc2e8abc6d",
+      "type": "vcs.vcm.layer.TMS",
+      "datasourceId": "nP6X6M9wqhud3pzXc",
+      "activeOnStartup": true,
+      "extent": {
+        "coordinates": [
+          7.92113060202822,
+          52.21502758354121,
+          8.18761427766629,
+          52.34298961990562
+        ],
+        "projection": {
+          "epsg": "4326"
+        }
+      },
+      "format": "png",
+      "minLevel": 10,
+      "maxLevel": 21,
+      "tilingSchema": "mercator",
+      "opacity": "1",
+      "tileSize": [
+        256,
+        256
+      ]
+    }
+  ],
+  "viewpoints": [
+    {
+      "type": "vcs.vcm.util.ViewPoint",
+      "name": "Start",
+      "cameraPosition": [
+        8.046797238330019,
+        52.27362585615231,
+        242.4832526493178
+      ],
+      "groundPosition": [
+        8.043161301432999,
+        52.27676705393965,
+        64.31275844568864
+      ],
+      "distance": 464.23586534868116,
+      "heading": 324.6256963730798,
+      "pitch": -22.570749965916153,
+      "roll": 359.88300238716755,
+      "animate": false
+    }
+  ],
+  "obliqueCollections": [
+    {
+      "name": "Schrägluftbilder 2020",
+      "activeOnStartup": true,
+      "dataSets": [
+        {
+          "url": "https://aerowest.virtualcitymap.de/datasource-data/79f8fd00-c386-44bb-97ae-b976f111463a/image.json",
+          "terrainProvider": {
+            "url": "https://aerowest.virtualcitymap.de/datasource-data/e3e2af43-efa6-439d-a819-b6060af2b7cb"
+          },
+          "projection": {
+            "epsg": "25832",
+            "proj4": "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs "
+          }
+        }
+      ],
+      "maxZoom": 7,
+      "minZoom": 2,
+      "hideLevels": null
+    },
+    {
+      "name": "Schrägluftbilder 2019",
+      "dataSets": [
+        {
+          "url": "https://aerowest.virtualcitymap.de/datasource-data/aa95d55e-28d7-4881-b753-1582b750a3e3/image.json",
+          "terrainProvider": {
+            "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Terrain_New"
+          },
+          "projection": {
+            "epsg": "25832",
+            "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
+          }
+        }
+      ],
+      "maxZoom": 7,
+      "minZoom": 2,
+      "hideLevels": null
+    }
+  ],
+  "plugins": []
+}

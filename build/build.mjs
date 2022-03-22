@@ -101,7 +101,15 @@ const libraries = {
   },
 };
 
-const plugins = ['test', 'example', 'categoryTest', 'buttonExamples', '@vcmap/pluginExample', '@vcmap/theme-changer'];
+const plugins = [
+  'test',
+  'example',
+  'categoryTest',
+  'buttonExamples',
+  '@vcmap/pluginExample',
+  '@vcmap/project-selector',
+  '@vcmap/theme-changer',
+];
 
 const libraryPaths = {};
 const pluginLibraryPaths = {};
@@ -225,4 +233,7 @@ await Promise.all(plugins.map(async (plugin) => {
 
 await buildCesium();
 await fs.promises.cp(path.join(process.cwd(), 'map.config.json'), path.join(process.cwd(), 'dist', 'map.config.json'));
+await fs.promises.cp(path.join(process.cwd(), 'config'), path.join(process.cwd(), 'dist', 'config'), {
+  recursive: true,
+});
 console.log('Finished Building vcMap');
