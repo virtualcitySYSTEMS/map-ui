@@ -63,9 +63,12 @@
         'vcs.vcm.maps.Oblique': '$vcsObliqueView',
       };
 
-      const mapButtonActionDestroy = [];
+      const mapButtonActionDestroy = {};
       const mapAddedDestroy = app.maps.added.addEventListener(
         ({ className, name }) => {
+          if (mapButtonActionDestroy[name]) {
+            mapButtonActionDestroy[name]();
+          }
           const { action, destroy } = createMapButtonAction(
             {
               name,
@@ -76,12 +79,23 @@
             app.maps,
           );
           app.navbarManager.add({
+            id: `mapButton-${name}`,
             location: ButtonLocation.MAP,
             action,
           }, vcsAppSymbol);
-          mapButtonActionDestroy.push(destroy);
+          mapButtonActionDestroy[name] = () => {
+            app.navbarManager.remove(`mapButton-${name}`);
+            destroy();
+          };
         },
       );
+
+      const mapRemovedDestroy = app.maps.removed.addEventListener(({ name }) => {
+        if (mapButtonActionDestroy[name]) {
+          mapButtonActionDestroy[name]();
+          delete mapButtonActionDestroy[name];
+        }
+      });
 
       let pluginAdded;
       const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
@@ -108,13 +122,16 @@
         if (mapAddedDestroy) {
           mapAddedDestroy();
         }
+        if (mapRemovedDestroy) {
+          mapRemovedDestroy();
+        }
         if (pluginAdded) {
           pluginAdded();
         }
         if (pluginRemoved) {
           pluginRemoved();
         }
-        mapButtonActionDestroy.forEach(cb => cb());
+        Object.values(mapButtonActionDestroy).forEach(cb => cb());
       });
 
       return {
