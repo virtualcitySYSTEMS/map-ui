@@ -33,10 +33,10 @@ export const windowSlot = {
 
 /**
  * @typedef WindowPosition
- * @property {string} left
- * @property {string} top
- * @property {string} right
- * @property {string} bottom
+ * @property {string} left - absolute to map container
+ * @property {string} top - absolute to map container
+ * @property {string} right - absolute to map container
+ * @property {string} bottom - absolute to map container
  * @property {string} width
  * @property {string} height
  */
@@ -77,6 +77,7 @@ export const WINDOW_POSITIONS = {
  * @property {WindowPositionOptions} [position] Will be ignored if windowSlot !== DETACHED, can be given otherwise or default will be used
  * @property {WindowState} [state]
  * @property {windowSlot} [slot] If windowSlot is not detached the position will be ignored
+ * @property {Object} [props]
  */
 
 /**
@@ -98,6 +99,7 @@ export const WINDOW_POSITIONS = {
  * @property {WindowPosition} position
  * @property {WindowState} state
  * @property {Ref<UnwrapRef<windowSlot>>} slot
+ * @property {Object} props
  */
 
 /**
@@ -146,6 +148,22 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
     height,
   };
   return Object.assign(windowPosition, result);
+}
+
+/**
+ * WindowPositionOptions from client position relative to a HTMLElement
+ * @param {number} x
+ * @param {number} y
+ * @param {string|HTMLElement} [element='mapElement']
+ * @returns {WindowPositionOptions}
+ */
+export function getWindowPositionOptions(x, y, element = 'mapElement') {
+  let mapElement = element;
+  if (typeof mapElement === 'string') {
+    mapElement = document.getElementsByClassName(element).item(0);
+  }
+  const { left, top } = mapElement.getBoundingClientRect();
+  return { left: x - left, top: y - top };
 }
 
 /**
@@ -334,6 +352,8 @@ export class WindowManager {
       styles,
     });
 
+    const props = windowComponentOptions.props || {};
+
     const position = reactive(windowPosition);
     /**
      * @type {WindowComponent}
@@ -356,6 +376,9 @@ export class WindowManager {
       },
       get position() {
         return position;
+      },
+      get props() {
+        return props;
       },
     };
     this._removeWindowAtSlot(slot);

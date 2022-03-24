@@ -1,7 +1,7 @@
 {
   "mapcontainer": "vcs_map_container",
   "startingViewPointName": "berlin",
-  "startingMapName": "ol3",
+  "startingMapName": "cesium",
   "projection": {
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
@@ -556,7 +556,14 @@
       },
       "exclusiveGroups": [
         "bldg"
-      ]
+      ],
+      "properties": {
+        "title": {
+          "en": "textured Buildings",
+          "de": "Texturierte Gebäude",
+          "pl": "budynki z teksturą"
+        }
+      }
     },
     {
       "name": "buildings_untextured",
@@ -575,7 +582,22 @@
       },
       "exclusiveGroups": [
         "bldg"
-      ]
+      ],
+      "properties": {
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "ClassifiedbyRoofType",
+          "BuildingFunction",
+          "Transparentbuildings"
+        ],
+        "title": {
+          "en": "untextured Buildings",
+          "de": "Untexturierte Gebäude",
+          "pl": "budynki bez tekstury"
+        }
+      }
     },
     {
       "name": "fisbroker-dop-2015",
@@ -612,7 +634,14 @@
       "tileSize": [
         "256",
         "256"
-      ]
+      ],
+      "properties": {
+        "title": {
+          "en": "Aerial Image (2015)",
+          "de": "Luftbild (2015)",
+          "pl": "Ortofotomapa (2015)"
+        }
+      }
     },
     {
       "name": "Openstreetmap OSM Cache",
@@ -649,7 +678,14 @@
       "numberOfLevelZeroTilesY": 1,
       "exclusiveGroups": [
         "base"
-      ]
+      ],
+      "properties": {
+        "title": {
+          "en": "OpenStreetMap",
+          "de": "OpenStreetMap",
+          "pl": "OpenStreetMap"
+        }
+      }
     },
     {
       "name": "terrain_v3.4",
@@ -657,7 +693,14 @@
       "type": "vcs.vcm.layer.Terrain",
       "datasourceId": "CQHSNBZDTkjLLh8Qr",
       "activeOnStartup": true,
-      "requestVertexNormals": true
+      "requestVertexNormals": true,
+      "properties": {
+        "title": {
+          "en": "Terrain",
+          "de": "Gelände",
+          "pl": "Teren"
+        }
+      }
     },
     {
       "type": "vcs.vcm.layer.PointCloud",
@@ -674,7 +717,15 @@
       "pointSize": 1.6,
       "exclusiveGroups": [
         "pointcloud"
-      ]
+      ],
+      "properties": {
+        "defaultViewpoint": "pointcloud",
+        "title": {
+          "en": "Tiergarten",
+          "de": "Tiergarten",
+          "pl": "Obszar TierGarten"
+        }
+      }
     },
     {
       "name": "Bäume",
@@ -692,7 +743,14 @@
       },
       "exclusiveGroups": [
         "tree"
-      ]
+      ],
+      "properties": {
+        "title": {
+          "en": "Trees",
+          "de": "Bäume",
+          "pl": "Drzew"
+        }
+      }
     }
   ],
   "viewpoints": [
@@ -713,7 +771,13 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint"
+      "type": "vcs.vcm.util.ViewPoint",
+      "properties": {
+        "title": {
+          "en": "Berlin",
+          "de": "Berlin"
+        }
+      }
     },
     {
       "name": "alexanderplatz",
@@ -732,7 +796,13 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint"
+      "type": "vcs.vcm.util.ViewPoint",
+      "properties": {
+        "title": {
+          "en": "Alexanderplatz",
+          "de": "Alexanderplatz"
+        }
+      }
     },
     {
       "name": "brandenburger_tor",
@@ -770,7 +840,202 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint"
+      "type": "vcs.vcm.util.ViewPoint",
+      "properties": {
+        "title": {
+          "en": "Potsdamer Platz",
+          "de": "Potsdamer Platz"
+        }
+      }
+    }
+  ],
+  "contentTree":  [
+    {
+      "name": "baseMap",
+      "type": "contentTree.SubContentTreeItem",
+      "icon": "$vcsPoi",
+      "title": "Base Maps"
+    },
+    {
+      "name": "baseMap.trees",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Bäume"
+
+    },
+    {
+      "name": "baseMap.terrain",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "terrain_v3.4"
+    },
+    {
+      "name": "baseMap.openStreetMap",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Openstreetmap OSM Cache"
+    },
+    {
+      "name": "baseMap.aerialImage2015",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "fisbroker-dop-2015"
+    },
+    {
+      "name": "baseMap.places",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": "Places",
+      "weight": 2
+    },
+    {
+      "name": "baseMap.places.alexanderplatz",
+      "viewpointName": "alexanderplatz",
+      "type": "contentTree.ViewPointContentTreeItem"
+    },
+    {
+      "name": "baseMap.places.potsdamerPlatz",
+      "viewpointName": "potsdamer_platz",
+      "type": "contentTree.ViewPointContentTreeItem"
+    },
+    {
+      "name": "building",
+      "initOpen": true,
+      "type": "contentTree.NodeContentTreeItem",
+      "infoUrl": "https://vc.systems",
+      "title": {
+        "en": "3d Building model",
+        "de": "3D-Gebäude",
+        "pl": "Budynki 3D"
+      }
+    },
+    {
+      "name": "building.texturedBuildings",
+      "layerName": "buildings",
+      "type": "contentTree.LayerContentTreeItem"
+    },
+    {
+      "name": "building.untexturedBuildings",
+      "infoUrl": "https://vc.systems",
+      "layerName": "buildings_untextured",
+      "type": "contentTree.LayerContentTreeItem"
+    },
+    {
+      "name": "building.meshSurface",
+      "layerName": "mesh_surface",
+      "type": "contentTree.LayerContentTreeItem",
+      "title": "3D-Mesh"
+    },
+    {
+      "name": "pointcloud",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": {
+        "en": "Point Cloud",
+        "de": "Punktwolke",
+        "pl": "Chmury punktów"
+      }
+    },
+    {
+      "name": "pointcloud.tiergarten",
+      "layerName": "pointcloud",
+      "type": "contentTree.LayerContentTreeItem"
+    },
+    {
+      "name": "pointcloud.berlinBuch",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "PointCloud Changedetection"
+    },
+    {
+      "name": "viewpoints",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": {
+        "en": "Viewpoints",
+        "de": "Ansichten"
+      }
+    },
+    {
+      "name": "viewpoints.berlin",
+      "viewpointName": "berlin",
+      "type": "contentTree.ViewPointContentTreeItem",
+      "title": {
+        "en": "Berlin",
+        "de": "Berlin"
+      }
+    },
+    {
+      "name": "viewpoints.brandenburgerTor",
+      "viewpointName": "brandenburger_tor",
+      "type": "contentTree.ViewPointContentTreeItem",
+      "title": {
+        "en": "Brandenburg Gate",
+        "de": "Brandenburger Tor"
+      }
+    },
+    {
+      "name": "viewpoints.places",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": "Places",
+      "weight": 1
+    },
+    {
+      "name": "viewpoints.places.alexanderplatz",
+      "viewpointName": "alexanderplatz",
+      "type": "contentTree.ViewPointContentTreeItem"
+    },
+    {
+      "name": "viewpoints.places.potsdamerPlatz",
+      "viewpointName": "potsdamer_platz",
+      "type": "contentTree.ViewPointContentTreeItem"
+    },
+    {
+      "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
+      "viewpointName": "kaiser_wilhelm_gedächtniskirche",
+      "type": "contentTree.ViewPointContentTreeItem",
+      "title": {
+        "en": "Kaiser Wilhelm Memorial Church",
+        "de": "Kaiser-Wilhelm-Gedächtniskirche"
+      }
+    },
+    {
+      "name": "viewpoints.oberbaumbruecke",
+      "viewpointName": "oberbaumbrücke",
+      "type": "contentTree.ViewPointContentTreeItem",
+      "title": {
+        "en": "Oberbaum Bridge",
+        "de": "Oberbaumbrücke"
+      }
+    },
+    {
+      "name": "reasonableGroup",
+      "type": "contentTree.GroupContentTreeItem",
+      "title": "Textured Berlin"
+    },
+    {
+      "name": "reasonableGroup.trees",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Bäume"
+    },
+    {
+      "name": "reasonableGroup.texturedBuildings",
+      "layerName": "buildings",
+      "type": "contentTree.LayerContentTreeItem"
+    },
+    {
+      "name": "reasonableGroup.berlin",
+      "viewpointName": "berlin",
+      "type": "contentTree.ViewPointContentTreeItem"
+    },
+    {
+      "name": "reasonableLayerGroup",
+      "type": "contentTree.LayerGroupContentTreeItem",
+      "layerNames": [
+        "buildings",
+        "Bäume",
+        "terrain_v3.4"
+      ],
+      "title": "Buildings - Trees - Terrain",
+      "icon": "msi-group"
+    },
+    {
+      "name": "berlin_obliques",
+      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "collectionName": "obliques",
+      "title": "Berlin Obliques"
     }
   ],
   "obliqueCollections": [

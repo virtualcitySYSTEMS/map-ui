@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import path from 'path';
 import { build } from 'vite';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
+import rollupPluginStripPragma from 'rollup-plugin-strip-pragma';
 import fs from 'fs';
 import generateOLLib from './generateOLLib.mjs';
 import buildCesium from './buildCesium.mjs';
@@ -56,6 +57,11 @@ const libraries = {
   '@vcmap/cesium': {
     lib: 'cesium',
     entry: path.join('lib', 'cesium.js'),
+    rollupOptions: {
+      plugins: [rollupPluginStripPragma({
+        pragmas: ['debug'],
+      })],
+    },
   },
   ol: {
     lib: 'ol',

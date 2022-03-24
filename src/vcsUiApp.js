@@ -9,11 +9,12 @@ import {
 import { ToolboxManager } from './manager/toolbox/toolbox-manager.js';
 import { WindowManager } from './manager/window/windowManager.js';
 import ButtonManager from './manager/buttonManager.js';
+import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
  * @property {Array<Object>} [plugins]
- * @property {Array<AbstractTreeViewItem.Options>} [contentTree]
+ * @property {Array<ContentTreeItemOptions>} [contentTree]
  */
 
 /**
@@ -89,6 +90,12 @@ class VcsUiApp extends VcsApp {
     });
 
     /**
+     * @type {OverrideContentTreeCollection}
+     * @private
+     */
+    this._contentTree = createContentTreeCollection(this);
+
+    /**
      * @type {ToolboxManager}
      * @private
      */
@@ -111,6 +118,11 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get plugins() { return this._plugins; }
+
+  /**
+   * @returns {OverrideCollection<AbstractTreeViewItem>}
+   */
+  get contentTree() { return this._contentTree; }
 
   /**
    * @returns {ToolboxManager}
@@ -156,6 +168,7 @@ class VcsUiApp extends VcsApp {
         .filter(p => p);
     }
     await super._parseContext(context);
+    await this._contentTree.parseItems(config.contentTree, context.id);
   }
 
   /**
@@ -167,6 +180,7 @@ class VcsUiApp extends VcsApp {
     await Promise.all([
       super._removeContext(contextId),
       this._plugins.removeContext(contextId),
+      this._contentTree.removeContext(contextId),
     ]);
   }
 
@@ -179,6 +193,7 @@ class VcsUiApp extends VcsApp {
     // TODO destroy other manager
     this._pluginAddedListener();
     destroyCollection(this._plugins);
+    destroyCollection(this._contentTree);
     super.destroy();
   }
 }
