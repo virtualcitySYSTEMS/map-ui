@@ -1,6 +1,6 @@
 import VectorSource from 'ol/source/Vector.js';
 import { Feature } from 'ol';
-import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
@@ -31,7 +31,7 @@ export default async function () {
             headerTitle: 'Context Editor',
           },
           component: editor,
-          slot: windowSlot.STATIC,
+          slot: WindowSlot.STATIC,
           position: {
             width: 500,
           },

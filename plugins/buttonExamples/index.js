@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import ButtonExamples from './ButtonExamples.vue';
 
 /**
@@ -16,7 +16,7 @@ export default async function buttonExamples() {
         {
           id: 'button-examples',
           component: ButtonExamples,
-          slot: windowSlot.DETACHED,
+          slot: WindowSlot.DETACHED,
           position: {
             width: 500,
           },

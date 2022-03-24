@@ -29,15 +29,12 @@
 </template>
 
 <script>
-  import {
-    defineComponent,
-    inject,
-  } from '@vue/composition-api';
+  import { inject } from '@vue/composition-api';
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
 
-  export default defineComponent({
+  export default {
     name: 'VcsWindowManager',
     components: { WindowComponent },
     setup() {
@@ -108,5 +105,5 @@
         clicked,
       };
     },
-  });
+  };
 </script>

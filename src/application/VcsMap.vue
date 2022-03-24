@@ -25,7 +25,7 @@
 </style>
 
 <script >
-  import { defineComponent, inject, onMounted, isReactive } from '@vue/composition-api';
+  import { inject, onMounted, isReactive } from '@vue/composition-api';
   import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
   /**
@@ -36,7 +36,7 @@
   }
 
 
-  export default defineComponent({
+  export default {
     props: {
       mapId: {
         type: String,
@@ -53,5 +53,5 @@
         }
       });
     },
-  });
+  };
 </script>

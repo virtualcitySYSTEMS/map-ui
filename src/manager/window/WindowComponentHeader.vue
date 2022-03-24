@@ -21,9 +21,7 @@
 
 <script>
 
-  import { defineComponent } from '@vue/composition-api';
-
-  export default defineComponent({
+  export default {
     props: {
       windowState: {
         type: Object,
@@ -43,6 +41,6 @@
         clicked,
       };
     },
-  });
+  };
 </script>
 

@@ -63,7 +63,6 @@
 </style>
 
 <script>
-  import Vue from 'vue';
 
   import { inject } from '@vue/composition-api';
   import { VcsButton } from '@vcsuite/ui-components';
@@ -71,7 +70,7 @@
   import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
   import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
 
-  export default Vue.extend({
+  export default {
     name: 'VcsToolbox',
     props: {
       width: {
@@ -111,5 +110,5 @@
       ToolboxMultiSelectButton,
       VcsButton,
     },
-  });
+  };
 </script>

@@ -6,12 +6,10 @@
 </template>
 <script>
 
-  import Vue from 'vue';
-
-  export default Vue.extend({
-    name: 'mySuperComponent',
+  export default {
+    name: 'MySuperComponent',
     setup() {
       return { };
     },
-  });
+  };
 </script>
