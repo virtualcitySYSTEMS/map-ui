@@ -1,4 +1,3 @@
-import './treeview/treeViewItems.js';
 import Vue from 'vue';
 import VueCompositionAPI from '@vue/composition-api';
 // eslint-disable-next-line no-unused-vars

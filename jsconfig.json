@@ -5,7 +5,6 @@
     "baseUrl": "./",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["src/*"],
       "@vcmap/ui": ["index.js"]
     }
   },

@@ -60,118 +60,17 @@
 </template>
 
 <script>
-
   import Vue from 'vue';
 
   import { VcsActionButtonList } from '@vcsuite/ui-components';
   import { inject, ref, computed } from '@vue/composition-api';
-  import LayerTree from './LayerTree.vue';
-  import { windowSlot } from '../manager/window/windowManager.js';
-  import { createToggleAction } from '../actions/actionHelper.js';
   import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
-  import EmptyCmp from './empty-cmp.vue';
-  import { vcsAppSymbol } from '../pluginHelper.js';
-
-  const staticWindow = {
-    id: 'static-win',
-    state: {
-      headerIcon: '$vcsLayers',
-      styles: {
-        'max-width': '80%',
-      },
-    },
-    position: {
-      width: window.innerWidth * 0.8,
-      left: '10%',
-      right: '10%',
-      top: '10%',
-      bottom: '10%',
-    },
-    component: EmptyCmp,
-  };
-
-  const layerTree = {
-    id: 'layer-tree',
-    component: LayerTree,
-    state: {
-      headerTitle: 'Static Window',
-      headerIcon: '$vcsLayers',
-    },
-    position: {
-      width: 320,
-    },
-    windowSlot: windowSlot.STATIC,
-  };
-
-  const components = {
-    id: 'components',
-    component: LayerTree,
-    state: {
-      headerTitle: 'Dynamic Window Left 1',
-      headerIcon: '$vcsComponents',
-    },
-    position: {
-      width: 320,
-    },
-    windowSlot: windowSlot.DYNAMIC_LEFT,
-  };
-
-  const dummy1 = {
-    ...components,
-    id: 'dummy1',
-    state: {
-      ...components.state,
-      headerTitle: 'Dynamic Window Left (2)',
-      headerIcon: '$vcsTools',
-    },
-    windowSlot: windowSlot.DYNAMIC_LEFT,
-  };
-
-  const dummy2 = {
-    ...dummy1,
-    id: 'dummy2',
-    state: {
-      ...dummy1.state,
-      headerTitle: 'Dynamic Window Right',
-
-      headerIcon: '$vcsLegend',
-    },
-    windowSlot: windowSlot.DYNAMIC_RIGHT,
-  };
-
-  const windowComponentOptions = [
-    layerTree,
-    components,
-    dummy1,
-    dummy2,
-    staticWindow,
-  ];
-
 
   export default Vue.extend({
     name: 'VcsNavbar',
     components: { VcsActionButtonList },
     setup() {
       const app = inject('vcsApp');
-
-      windowComponentOptions.forEach((c) => {
-        const { action } = createToggleAction(
-          {
-            name: c.id,
-            icon: c.state.headerIcon,
-          },
-          c,
-          app.windowManager,
-          vcsAppSymbol,
-        );
-        if (!app.navbarManager.has(c.id)) {
-          app.navbarManager.add({
-            id: c.id,
-            location: ButtonLocation.CONTENT,
-            action,
-          }, vcsAppSymbol);
-        }
-      });
 
       const navbarButtonIds = ref(app.navbarManager.buttonIds);
       const buttonComponents = computed(() => navbarButtonIds.value.map(id => app.navbarManager.get(id)));

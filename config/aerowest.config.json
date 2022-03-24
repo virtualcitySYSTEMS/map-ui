@@ -44,6 +44,9 @@
       ],
       "copyright": {
         "provider": "Fachbereich Geodaten und Verkehrsanlagen Osnabrück"
+      },
+      "properties": {
+        "title": "Gebäude"
       }
     },
     {
@@ -59,7 +62,6 @@
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Mesh3D_Cesium_2020",
       "type": "vcs.vcm.layer.Buildings",
       "datasourceId": "g78GQpi92C58hCpLv",
-      "activeOnStartup": true,
       "allowPicking": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -71,7 +73,10 @@
       },
       "exclusiveGroups": [
         "3D"
-      ]
+      ],
+      "properties": {
+        "title": "3D-Mesh 2020"
+      }
     },
     {
       "name": "Openstreetmap Ebene",
@@ -87,14 +92,16 @@
       "opacity": "",
       "exclusiveGroups": [
         "Basemaps"
-      ]
+      ],
+      "properties": {
+        "title": "Openstreetmap"
+      }
     },
     {
       "name": "Orthophoto 2019",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/TMS",
       "type": "vcs.vcm.layer.TMS",
       "datasourceId": "L9iqEkcipH5yYidLJ",
-      "activeOnStartup": true,
       "extent": {
         "coordinates": [
           7.92113060202822,
@@ -123,7 +130,10 @@
       "tileSize": [
         "256",
         "256"
-      ]
+      ],
+      "properties": {
+        "title": "Orthophoto 2019"
+      }
     },
     {
       "name": "TopPlus",
@@ -157,7 +167,11 @@
       },
       "exclusiveGroups": [
         "Basemaps"
-      ]
+      ],
+      "properties": {
+        "title": "TopPlus",
+        "infoUrl": "https://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf"
+      }
     },
     {
       "name": "3D-Mesh 2019",
@@ -176,7 +190,10 @@
       },
       "exclusiveGroups": [
         "3D"
-      ]
+      ],
+      "properties": {
+        "title": "3D-Mesh 2019"
+      }
     },
     {
       "name": "Terrain_Breaklines_New",
@@ -193,7 +210,10 @@
       },
       "exclusiveGroups": [
         "Terrain"
-      ]
+      ],
+      "properties": {
+        "title": "Gelände"
+      }
     },
     {
       "name": "True Orthophoto 2020",
@@ -220,7 +240,10 @@
       "tileSize": [
         256,
         256
-      ]
+      ],
+      "properties": {
+        "title": "True Orthophoto 2020"
+      }
     }
   ],
   "viewpoints": [
@@ -262,7 +285,10 @@
       ],
       "maxZoom": 7,
       "minZoom": 2,
-      "hideLevels": null
+      "hideLevels": null,
+      "properties": {
+        "title": "Schrägluftbilder 2020"
+      }
     },
     {
       "name": "Schrägluftbilder 2019",
@@ -280,7 +306,72 @@
       ],
       "maxZoom": 7,
       "minZoom": 2,
-      "hideLevels": null
+      "hideLevels": null,
+      "properties": {
+        "title": "Schrägluftbilder 2019"
+      }
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "base",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": "Grundkarten"
+    },
+    {
+      "name": "base.osm",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Openstreetmap Ebene"
+    },
+    {
+      "name": "base.topPlus",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "TopPlus"
+    },
+    {
+      "name": "base.ortho2020",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "True Orthophoto 2020"
+    },
+    {
+      "name": "base.ortho2019",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Orthophoto 2019"
+    },
+    {
+      "name": "data",
+      "type": "contentTree.NodeContentTreeItem",
+      "title": "Basis Daten"
+    },
+    {
+      "name": "data.texturedBuildings",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Textured Buildings 2021"
+    },
+    {
+      "name": "data.mesh2020",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "3D-Mesh 2020"
+    },
+    {
+      "name": "data.mesh2019",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "3D-Mesh 2019"
+    },
+    {
+      "name": "data.terrain",
+      "type": "contentTree.LayerContentTreeItem",
+      "layerName": "Terrain_Breaklines_New"
+    },
+    {
+      "name": "oblique2020",
+      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "collectionName": "Schrägluftbilder 2020"
+    },
+    {
+      "name": "oblique2019",
+      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "collectionName": "Schrägluftbilder 2019"
     }
   ],
   "plugins": []

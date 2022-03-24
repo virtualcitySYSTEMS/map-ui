@@ -15,6 +15,7 @@
       <component
         :is="getComponent(id)"
         :window-state="getState(id)"
+        v-bind="getProps(id)"
       />
       <template v-if="!getState(id).hideHeader" #headerComponent>
         <component
@@ -48,6 +49,10 @@
 
       const getState = (id) => {
         return windowManager.get(id)?.state;
+      };
+
+      const getProps = (id) => {
+        return windowManager.get(id)?.props ?? {};
       };
 
       const isOnTop = (zIndex) => {
@@ -95,6 +100,7 @@
         getHeaderComponent: id => windowManager.get(id).headerComponent || WindowComponentHeader,
         getStyles,
         getState,
+        getProps,
         isOnTop,
         getSlot: id => windowManager.get(id).slot,
         close: (id) => { windowManager.remove(id); },

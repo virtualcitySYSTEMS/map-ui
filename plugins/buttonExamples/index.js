@@ -25,7 +25,7 @@ export default async function buttonExamples() {
         'buttonExamples',
       );
       app.navbarManager.add({
-        location: ButtonLocation.CONTENT,
+        location: ButtonLocation.TOOL,
         action,
       }, 'buttonExamples');
       this._destroyAction = destroy;

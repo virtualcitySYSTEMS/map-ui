@@ -142,6 +142,19 @@
         "provider": "",
         "url": "",
         "year": ""
+      },
+      "properties": {
+        "availableStyles": [
+          "CIR",
+          "Tree-ID",
+          "Distance",
+          "Classification"
+        ],
+        "defaultViewpoint": "changedetection",
+        "title": {
+          "en": "Berlin Buch",
+          "de": "Berlin Buch"
+        }
       }
     },
     {
@@ -159,7 +172,15 @@
       "pointSize": 1.6,
       "exclusiveGroups": [
         "pointcloud"
-      ]
+      ],
+      "properties": {
+        "defaultViewpoint": "pointcloud",
+        "title": {
+          "en": "Tiergarten",
+          "de": "Tiergarten",
+          "pl": "Obszar TierGarten"
+        }
+      }
     },
     {
       "name": "lod2_solar_jul",
