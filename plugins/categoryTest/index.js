@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import Categories from './Categories.vue';
 
 /**
@@ -16,7 +16,7 @@ export default async function categoryTest() {
         {
           id: 'category-editor',
           component: Categories,
-          slot: windowSlot.DETACHED,
+          slot: WindowSlot.DETACHED,
           position: {
             width: 500,
           },

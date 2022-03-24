@@ -11,17 +11,14 @@
 
 
 <script>
-  import {
-    defineComponent,
-    inject,
-  } from '@vue/composition-api';
+  import { inject } from '@vue/composition-api';
   import { VcsTreeview } from '@vcsuite/ui-components';
 
   /**
    * @description
    * Implements Treeview and shows 'vcs.vcm.widgets.legend.Legend'
    */
-  export default defineComponent({
+  export default {
     name: 'VcsLayerTree',
     components: { VcsTreeview },
     props: {
@@ -39,5 +36,5 @@
         open,
       };
     },
-  });
+  };
 </script>

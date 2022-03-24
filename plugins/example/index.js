@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ButtonLocation, createToggleAction, WINDOW_POSITIONS, windowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowPositions, WindowSlot } from '@vcmap/ui';
 import mySuperComponent from './mySuperComponent.vue';
 
 /**
@@ -23,7 +23,7 @@ export default async function (config) {
         {
           id: '228',
           component: mySuperComponent,
-          slot: windowSlot.DYNAMIC_RIGHT,
+          slot: WindowSlot.DYNAMIC_RIGHT,
           position: {
             width: 500,
           },
@@ -39,8 +39,8 @@ export default async function (config) {
       app.windowManager.add({
         id: '228',
         component: mySuperComponent,
-        position: WINDOW_POSITIONS.TOP_RIGHT,
-        slot: windowSlot.DYNAMIC_RIGHT,
+        position: WindowPositions.TOP_RIGHT,
+        slot: WindowSlot.DYNAMIC_RIGHT,
       }, '@vcmap/example');
       // app.toolboxManager.addToolboxGroup(
       //   {

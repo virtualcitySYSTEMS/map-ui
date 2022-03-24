@@ -2,7 +2,7 @@ import { ref, reactive, watch } from '@vue/composition-api';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
 
-import { ButtonLocation, createToggleAction, windowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
@@ -93,7 +93,8 @@ export default function (config) {
    *   in this case you may need a separate watcher, since watching multiple sources seems only to work for refs
    * @returns {WatchStopHandle}
    */
-  const stopWatching = watch([pluginConfig.selectOptions, pluginConfig.initialTextInput],
+  const stopWatching = watch(
+    [pluginConfig.selectOptions, pluginConfig.initialTextInput],
     ([selectOptions, initialTextInput]) => {
       if (!selectOptions.includes(pluginState.selected)) {
         getLogger().error('invalid state', pluginState.selected);
@@ -101,7 +102,8 @@ export default function (config) {
       }
       // XXX should initial states be overwritten on config change?
       pluginState.initialTextInput = initialTextInput;
-    });
+    },
+  );
 
   /**
    * returns serializable state object
@@ -155,7 +157,7 @@ export default function (config) {
         {
           id: 'pluginExample',
           component: pluginExampleComponent,
-          slot: windowSlot.STATIC,
+          slot: WindowSlot.STATIC,
           state: {
             headerTitle: 'Plugin Example',
             headerIcon: '$vcsCircle',

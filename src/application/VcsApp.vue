@@ -21,7 +21,6 @@
 </style>
 
 <script>
-  import Vue from 'vue';
   import { v4 as uuid } from 'uuid';
   import {
     onMounted,
@@ -38,7 +37,7 @@
   import { createMapButtonAction } from '../actions/actionHelper.js';
   import MapNavigation from '../navigation/mapNavigation.vue';
 
-  export default Vue.extend({
+  export default {
     components: {
       MapNavigation,
       Navbar,
@@ -144,5 +143,5 @@
         language: window.navigator.language.split('-')[0],
       };
     },
-  });
+  };
 </script>

@@ -13,7 +13,7 @@ import { vcsAppSymbol } from '../../pluginHelper.js';
  * @property {string} DYNAMIC_RIGHT
  * @property {string} DETACHED
  */
-export const windowSlot = {
+export const WindowSlot = {
   STATIC: 'static',
   DYNAMIC_LEFT: 'dynamicLeft',
   DYNAMIC_RIGHT: 'dynamicRight',
@@ -50,7 +50,7 @@ export const windowSlot = {
  * @property {Position} DETACHED default position of DETACHED Windows if no position is given
  * @private
  */
-export const WINDOW_POSITIONS = {
+export const WindowPositions = {
   TOP_LEFT: {
     left: '0px',
     top: '0px',
@@ -74,9 +74,9 @@ export const WINDOW_POSITIONS = {
  * @property {string} [id] Optional ID, If not provided a uuid will be generated.
  * @property {VueComponent} component Main Component which is shown below the header.
  * @property {VueComponent} [headerComponent] Replaces the Header Component.
- * @property {WindowPositionOptions} [position] Will be ignored if windowSlot !== DETACHED, can be given otherwise or default will be used
+ * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
  * @property {WindowState} [state]
- * @property {windowSlot} [slot] If windowSlot is not detached the position will be ignored
+ * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
  * @property {Object} [props]
  */
 
@@ -98,7 +98,7 @@ export const WINDOW_POSITIONS = {
  * @property {VueComponent} [headerComponent]
  * @property {WindowPosition} position
  * @property {WindowState} state
- * @property {Ref<UnwrapRef<windowSlot>>} slot
+ * @property {Ref<UnwrapRef<WindowSlot>>} slot
  * @property {Object} props
  */
 
@@ -236,12 +236,12 @@ export class WindowManager {
   setWindowPositionOptions(id, windowPositionOptions) {
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
-      const isSlotPosition = windowPositionOptions === WINDOW_POSITIONS.TOP_LEFT ||
-        windowPositionOptions === WINDOW_POSITIONS.TOP_LEFT2 ||
-        windowPositionOptions === WINDOW_POSITIONS.TOP_RIGHT;
+      const isSlotPosition = windowPositionOptions === WindowPositions.TOP_LEFT ||
+        windowPositionOptions === WindowPositions.TOP_LEFT2 ||
+        windowPositionOptions === WindowPositions.TOP_RIGHT;
       // not one of the default Positions, so we also have to DETACH the windowState.
       if (!isSlotPosition) {
-        windowComponent.slot.value = windowSlot.DETACHED;
+        windowComponent.slot.value = WindowSlot.DETACHED;
       }
       windowPositionFromOptions(windowPositionOptions, windowComponent.position);
     }
@@ -250,23 +250,23 @@ export class WindowManager {
   /**
    * handles changes in the Slots. Makes sure that a STATIC Window is positioned on the right to the DYNAMIC_LEFT Slot.
    * If a STATIC Window is removed again, the DYNAMIC_LEFT will be moved back.
-   * @param {windowSlot} changedSlot
+   * @param {WindowSlot} changedSlot
    * @private
    */
   _handleSlotsChanged(changedSlot) {
-    if (changedSlot === windowSlot.STATIC) {
-      const staticWindow = this._findWindowBySlot(windowSlot.STATIC);
-      const dynamicWindowLeft = this._findWindowBySlot(windowSlot.DYNAMIC_LEFT);
+    if (changedSlot === WindowSlot.STATIC) {
+      const staticWindow = this._findWindowBySlot(WindowSlot.STATIC);
+      const dynamicWindowLeft = this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT);
       if (staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(dynamicWindowLeft.id, WINDOW_POSITIONS.TOP_LEFT2);
+        this.setWindowPositionOptions(dynamicWindowLeft.id, WindowPositions.TOP_LEFT2);
       } else if (!staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(dynamicWindowLeft.id, WINDOW_POSITIONS.TOP_LEFT);
+        this.setWindowPositionOptions(dynamicWindowLeft.id, WindowPositions.TOP_LEFT);
       }
     }
   }
 
   /**
-   * @param {windowSlot} slot
+   * @param {WindowSlot} slot
    * @returns {WindowComponent}
    * @private
    */
@@ -275,36 +275,36 @@ export class WindowManager {
   }
 
   /**
-   * @param {windowSlot} slot
+   * @param {WindowSlot} slot
    * @param {WindowPositionOptions=} position
    * @returns {WindowPositionOptions}
    * @private
    */
   _getPositionOptionsForSlot(slot, position) {
-    if (slot === windowSlot.STATIC) {
-      return WINDOW_POSITIONS.TOP_LEFT;
+    if (slot === WindowSlot.STATIC) {
+      return WindowPositions.TOP_LEFT;
     }
-    if (slot === windowSlot.DYNAMIC_LEFT) {
-      const windowAtStatic = this._findWindowBySlot(windowSlot.STATIC);
+    if (slot === WindowSlot.DYNAMIC_LEFT) {
+      const windowAtStatic = this._findWindowBySlot(WindowSlot.STATIC);
       if (windowAtStatic) {
-        return WINDOW_POSITIONS.TOP_LEFT2;
+        return WindowPositions.TOP_LEFT2;
       } else {
-        return WINDOW_POSITIONS.TOP_LEFT;
+        return WindowPositions.TOP_LEFT;
       }
     }
-    if (slot === windowSlot.DYNAMIC_RIGHT) {
-      return WINDOW_POSITIONS.TOP_RIGHT;
+    if (slot === WindowSlot.DYNAMIC_RIGHT) {
+      return WindowPositions.TOP_RIGHT;
     }
-    return position || WINDOW_POSITIONS.DETACHED;
+    return position || WindowPositions.DETACHED;
   }
 
   /**
    * removes the window at the given slot if it exists (not for DETACHED)
-   * @param {windowSlot} slot
+   * @param {WindowSlot} slot
    * @private
    */
   _removeWindowAtSlot(slot) {
-    if (slot !== windowSlot.DETACHED) {
+    if (slot !== WindowSlot.DETACHED) {
       const toRemove = this._findWindowBySlot(slot);
       if (toRemove) {
         this.remove(toRemove.id);
@@ -314,7 +314,7 @@ export class WindowManager {
 
   /**
    * adds a windowComponent to the WindowManager and renders the Window at the provided position/slot.
-   * The reactive WindowState Object can be used to watch Changes on position/windowSlot.
+   * The reactive WindowState Object can be used to watch Changes on position/WindowSlot.
    * The WindowState Object can also be used to change hideHeader, headerTitle, headerIcon, styles and classes
    * @param {WindowComponentOptions|WindowComponent} windowComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
@@ -329,7 +329,7 @@ export class WindowManager {
     }
     const id = windowComponentOptions.id || uuidv4();
     const slotOption = windowComponentOptions.slot?.value || windowComponentOptions.slot;
-    const slot = parseEnumValue(slotOption, windowSlot, windowSlot.DETACHED);
+    const slot = parseEnumValue(slotOption, WindowSlot, WindowSlot.DETACHED);
     const windowPositionOptions = this._getPositionOptionsForSlot(slot, windowComponentOptions.position);
     const windowPosition = windowPositionFromOptions(windowPositionOptions);
 

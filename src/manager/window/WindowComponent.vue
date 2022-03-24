@@ -33,13 +33,13 @@
 
 <script>
   import {
-    onMounted, onUnmounted, computed, defineComponent, ref, nextTick,
+    onMounted, onUnmounted, computed, ref, nextTick,
   } from '@vue/composition-api';
   import { fromEvent } from 'rxjs';
   import { switchMap, take, map, tap } from 'rxjs/operators';
-  import { windowSlot } from './windowManager.js';
+  import { WindowSlot } from './windowManager.js';
 
-  export default defineComponent({
+  export default {
     props: {
       windowState: {
         type: Object,
@@ -58,8 +58,8 @@
     setup({ windowState, slotWindow }, { emit }) {
       const draggableHeaderRef = ref(null);
       const windowComponentRef = ref(null);
-      const isDynamic = computed(() => slotWindow !== windowSlot.STATIC);
-      const isDocked = computed(() => slotWindow !== windowSlot.DETACHED);
+      const isDynamic = computed(() => slotWindow !== WindowSlot.STATIC);
+      const isDocked = computed(() => slotWindow !== WindowSlot.DETACHED);
       const clicked = (e) => {
         emit('click', e);
       };
@@ -67,7 +67,7 @@
       let dragOverSub;
       let dropSub;
       onMounted(() => {
-        if (!windowState.hideHeader && slotWindow.value !== windowSlot.STATIC) {
+        if (!windowState.hideHeader && slotWindow.value !== WindowSlot.STATIC) {
           nextTick(() => {
             // To get to the Root Element of a Custom Component .$el is used here.
             const dragStart = fromEvent(draggableHeaderRef.value.$el, 'dragstart');
@@ -128,6 +128,6 @@
         clicked,
       };
     },
-  });
+  };
 </script>
 

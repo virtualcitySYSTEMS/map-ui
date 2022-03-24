@@ -60,13 +60,12 @@
 </template>
 
 <script>
-  import Vue from 'vue';
 
   import { VcsActionButtonList } from '@vcsuite/ui-components';
   import { inject, ref, computed } from '@vue/composition-api';
   import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
 
-  export default Vue.extend({
+  export default {
     name: 'VcsNavbar',
     components: { VcsActionButtonList },
     setup() {
@@ -86,5 +85,5 @@
         menuActions: getActions(ButtonLocation.MENU),
       };
     },
-  });
+  };
 </script>

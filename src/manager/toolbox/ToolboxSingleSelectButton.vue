@@ -60,10 +60,9 @@
 </style>
 
 <script>
-  import Vue from 'vue';
   import { ref } from '@vue/composition-api';
 
-  export default Vue.extend({
+  export default {
     name: 'VcsToolboxSingleSelectButton',
     props: {
       value: {
@@ -95,5 +94,5 @@
         setOpen,
       };
     },
-  });
+  };
 </script>

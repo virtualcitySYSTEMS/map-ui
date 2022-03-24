@@ -18,7 +18,7 @@
   import { getLogger } from '@vcsuite/logger';
   import { VcsButton } from '@vcsuite/ui-components';
 
-  import { EmptyCmpt, windowSlot } from '@vcmap/ui';
+  import { EmptyCmpt, WindowSlot } from '@vcmap/ui';
   import VcsContent from './vcsContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
 
@@ -33,7 +33,7 @@
           id: 'dynamicLeft',
           headerTitle: 'Example dynamicLeft',
           component: EmptyCmpt,
-          slot: windowSlot.DYNAMIC_LEFT,
+          slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
           id: 'dynamicLeft2',
@@ -41,7 +41,7 @@
             headerTitle: 'Example dynamicLeft2',
           },
           component: EmptyCmpt,
-          slot: windowSlot.DYNAMIC_LEFT,
+          slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
           id: 'dynamicRight',
@@ -50,7 +50,7 @@
           },
           component: EmptyCmpt,
           headerComponent: MyCustomHeader,
-          slot: windowSlot.DYNAMIC_RIGHT,
+          slot: WindowSlot.DYNAMIC_RIGHT,
         },
         {
           id: 'dynamicRight2',
@@ -58,7 +58,7 @@
             headerTitle: 'Example dynamicRight2',
           },
           component: EmptyCmpt,
-          slot: windowSlot.DYNAMIC_RIGHT,
+          slot: WindowSlot.DYNAMIC_RIGHT,
         },
         {
           id: 'static',
@@ -67,7 +67,7 @@
             styles: { 'background-color': 'red' },
           },
           component: VcsContent,
-          slot: windowSlot.STATIC,
+          slot: WindowSlot.STATIC,
         },
         {
           id: 'static2',
@@ -80,7 +80,7 @@
             },
           },
           component: VcsContent,
-          slot: windowSlot.STATIC,
+          slot: WindowSlot.STATIC,
         },
         {
           id: 'position1',

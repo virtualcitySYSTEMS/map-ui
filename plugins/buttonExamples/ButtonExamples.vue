@@ -160,10 +160,9 @@
 </template>
 <script>
 
-  import Vue from 'vue';
   import { VcsButton, VcsActionButtonList } from '@vcsuite/ui-components';
 
-  export default Vue.extend({
+  export default {
     name: 'ButtonExamples',
     components: { VcsButton, VcsActionButtonList },
     setup() {
@@ -176,5 +175,5 @@
         },
       };
     },
-  });
+  };
 </script>

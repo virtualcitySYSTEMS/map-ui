@@ -6,7 +6,7 @@ import ContentTreeItem from './contentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import SubContentTreeItem, { subTreeSymbol } from './subContentTreeItem.js';
 import LayerTree from './LayerTree.vue';
-import { windowSlot } from '../manager/window/windowManager.js';
+import { WindowSlot } from '../manager/window/windowManager.js';
 import { createToggleAction } from '../actions/actionHelper.js';
 import { ButtonLocation } from '../manager/buttonManager.js';
 
@@ -100,11 +100,11 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {TreeViewItem} subTreeViewItem
-   * @param {windowSlot} [slot]
+   * @param {WindowSlot} [slot]
    * @returns {function():void}
    * @private
    */
-  _createSubtreeActionButton(subTreeViewItem, slot = windowSlot.STATIC) { // TODO make configurable?
+  _createSubtreeActionButton(subTreeViewItem, slot = WindowSlot.STATIC) { // TODO make configurable?
     const id = uuid();
     const app = this._app;
     const { action, destroy } = createToggleAction(
