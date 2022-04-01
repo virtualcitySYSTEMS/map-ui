@@ -35,6 +35,10 @@
     {
       "name": "test",
       "entry": "plugins/test/index.js"
+    },
+    {
+      "name": "@vcmap/hello-world",
+      "entry": "plugins/@vcmap/hello-world/index.js"
     }
   ]
 }

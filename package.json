@@ -6,18 +6,23 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "coverage:gitlab": "vitest run --coverage --reporter junit --outputFile test-report.xml",
+    "build-preview": "node build/buildPreview.js",
     "preview": "vite preview",
-    "build": "node build/build.mjs",
+    "build": "node build/build.js",
     "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\"",
-    "prepack": "node build/build.mjs"
+    "prepack": "node build/build.js",
+    "install-plugins": "cd plugins && npm i --omit peer --no-package-lock"
   },
   "files": [
     "index.js",
     "start.js",
-    "dist",
-    "src",
-    "plugins",
-    "lib"
+    "map.config.json",
+    "dist/",
+    "src/",
+    "plugins/",
+    "lib/",
+    "build/",
+    "config/"
   ],
   "dependencies": {
     "@mdi/font": "^5.9.55",
