@@ -66,8 +66,10 @@ bundle:
   <<: *after_build_definition
   stage: bundle
   script:
+    - npm set registry 'http://npmregistry:4873'
+    - npm run install-plugins
     - npm run build
-
+    - npm run build-preview
 
 version:
   <<: *after_build_definition
@@ -92,7 +94,6 @@ version:
     - chmod 644 ~/.ssh/known_hosts
     - git config user.name "Gitlab Runner"
     - git config user.email "gitlab-runner@vc.systems"
-
 
 deployStaging:
   <<: *after_build_definition
