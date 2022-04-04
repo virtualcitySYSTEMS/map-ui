@@ -62,7 +62,7 @@ export const ButtonLocation = {
 /**
  * @class ButtonManager
  * @description Manages a set of Map Buttons
- * @implements VcsComponentManager<ButtonComponent>
+ * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
  */
 export default class ButtonManager {
   constructor() {
@@ -78,7 +78,7 @@ export default class ButtonManager {
      * reactive ordered array of ids,
      * @type {Array<string>}
      */
-    this.buttonIds = reactive([]);
+    this.componentIds = reactive([]);
 
     /**
      * @type {Map<string, ButtonComponent>}
@@ -115,8 +115,8 @@ export default class ButtonManager {
   remove(id) {
     const buttonComponent = this._buttonComponents.get(id);
     if (buttonComponent) {
-      const index = this.buttonIds.indexOf(id);
-      this.buttonIds.splice(index, 1);
+      const index = this.componentIds.indexOf(id);
+      this.componentIds.splice(index, 1);
       this._buttonComponents.delete(id);
       this.removed.raiseEvent(buttonComponent);
     }
@@ -165,7 +165,7 @@ export default class ButtonManager {
     };
 
     this._buttonComponents.set(id, buttonComponent);
-    this.buttonIds.push(id);
+    this.componentIds.push(id);
     this.added.raiseEvent(buttonComponent);
     return buttonComponent;
   }
@@ -175,8 +175,8 @@ export default class ButtonManager {
    * @param {string|vcsAppSymbol} owner
    */
   removeOwner(owner) {
-    const buttonIds = [...this.buttonIds];
-    buttonIds.forEach((id) => {
+    const componentIds = [...this.componentIds];
+    componentIds.forEach((id) => {
       if (owner === this.get(id).owner) {
         this.remove(id);
       }
@@ -187,8 +187,8 @@ export default class ButtonManager {
    * removes all buttonComponents and fires removed Events
    */
   clear() {
-    const buttonIds = [...this.buttonIds];
-    buttonIds.forEach((id) => { this.remove(id); });
+    const componentIds = [...this.componentIds];
+    componentIds.forEach((id) => { this.remove(id); });
   }
 
   /**
@@ -197,7 +197,7 @@ export default class ButtonManager {
   destroy() {
     this.added.destroy();
     this.removed.destroy();
-    this.buttonIds.splice(0);
+    this.componentIds.splice(0);
     this._buttonComponents.clear();
   }
 }

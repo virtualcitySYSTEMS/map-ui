@@ -133,8 +133,8 @@ describe('windowManager', () => {
         expect(windowManager.has(windowComponentOptions.id));
       });
 
-      it('should add the windowComponentId to the windowIds array', () => {
-        expect(windowManager.windowIds).to.have.members([windowComponentOptions.id]);
+      it('should add the windowComponentId to the componentIds array', () => {
+        expect(windowManager.componentIds).to.have.members([windowComponentOptions.id]);
       });
 
       it('should fire the added Event', () => {
@@ -205,7 +205,7 @@ describe('windowManager', () => {
         const window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
-        expect(windowManager.windowIds).to.have.lengthOf(1);
+        expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at DYNAMIC_RIGHT slot on adding a new DYNAMIC_RIGHT windowComponent', () => {
@@ -213,7 +213,7 @@ describe('windowManager', () => {
         const window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_RIGHT }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
-        expect(windowManager.windowIds).to.have.lengthOf(1);
+        expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at STATIC slot on adding a new STATIC windowComponent', () => {
@@ -221,7 +221,7 @@ describe('windowManager', () => {
         const window2 = windowManager.add({ slot: WindowSlot.STATIC }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
-        expect(windowManager.windowIds).to.have.lengthOf(1);
+        expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should allow several windowComponents at the DETACHED slot', () => {
@@ -229,7 +229,7 @@ describe('windowManager', () => {
         const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
-        expect(windowManager.windowIds).to.have.lengthOf(2);
+        expect(windowManager.componentIds).to.have.lengthOf(2);
       });
 
       it('should move dynamicLeft Slot to TOP_LEFT2 if a STATIC Slot is added', () => {
@@ -239,7 +239,7 @@ describe('windowManager', () => {
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
-        expect(windowManager.windowIds).to.have.lengthOf(2);
+        expect(windowManager.componentIds).to.have.lengthOf(2);
       });
     });
 
@@ -259,16 +259,16 @@ describe('windowManager', () => {
       it('should add new Components at the end of the array', () => {
         const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
         const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        expect(windowManager.windowIds.length).to.be.equal(2);
-        expect(windowManager.windowIds).to.have.ordered.members([window1.id, window2.id]);
+        expect(windowManager.componentIds.length).to.be.equal(2);
+        expect(windowManager.componentIds).to.have.ordered.members([window1.id, window2.id]);
       });
 
       it('should reorder array, if a window is put on top with bringWindowToTop', () => {
         const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
         const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        expect(windowManager.windowIds).to.have.ordered.members([window1.id, window2.id]);
+        expect(windowManager.componentIds).to.have.ordered.members([window1.id, window2.id]);
         windowManager.bringWindowToTop(window1.id);
-        expect(windowManager.windowIds).to.have.ordered.members([window2.id, window1.id]);
+        expect(windowManager.componentIds).to.have.ordered.members([window2.id, window1.id]);
       });
     });
   });
@@ -304,9 +304,9 @@ describe('windowManager', () => {
     });
 
     it('should remove the removed id from the windowId List', () => {
-      expect(windowManager.windowIds).to.include(window1.id);
+      expect(windowManager.componentIds).to.include(window1.id);
       windowManager.remove(window1.id);
-      expect(windowManager.windowIds).to.not.include(window1.id);
+      expect(windowManager.componentIds).to.not.include(window1.id);
     });
 
     it('should fire the removed event', () => {

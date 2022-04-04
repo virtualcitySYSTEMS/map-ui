@@ -141,7 +141,7 @@ export function createModalAction(actionOptions, modalComponent, windowManager, 
         const position = getWindowPositionOptions(left + width, top);
         const state = { ...modalComponent?.state, hideHeader: true };
         windowManager.add({ position, ...modalComponent, id, state }, owner);
-        addModal(windowManager.windowIds.length - 2);
+        addModal(windowManager.componentIds.length - 2);
       } else {
         this.active = false;
         windowManager.remove(id);
