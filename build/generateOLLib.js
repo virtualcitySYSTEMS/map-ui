@@ -1,47 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import { walk } from 'walk';
-
 
 const isWindows = process.platform.indexOf('win') === 0;
 const sourceDir = path.join('node_modules', 'ol', 'src');
-
-/**
- * Generate a list of all .js paths in the source directory.
- * @returns {Promise<Array>} Resolves to an array of source paths.
- */
-function getPaths() {
-  return new Promise((resolve, reject) => {
-    let paths = [];
-
-    const walker = walk(sourceDir);
-    walker.on('file', (root, stats, next) => {
-      const sourcePath = path.join(root, stats.name);
-      if (/\.js$/.test(sourcePath)) {
-        paths.push(sourcePath);
-      }
-      next();
-    });
-    walker.on('errors', () => {
-      reject(new Error(`Trouble walking ${sourceDir}`));
-    });
-
-    walker.on('end', () => {
-      /**
-       * Windows has restrictions on length of command line, so passing all the
-       * changed paths to a task will fail if this limit is exceeded.
-       * To get round this, if this is Windows and there are newer files, just
-       * pass the sourceDir to the task so it can do the walking.
-       */
-      if (isWindows) {
-        paths = [sourceDir];
-      }
-
-      resolve(paths);
-    });
-  });
-}
 
 /**
  * Parse the JSDoc output.
@@ -98,11 +60,10 @@ function getBinaryPath(binaryName) {
 
 /**
  * Spawn JSDoc.
- * @param {Array<string>} paths Paths to source files.
- * @returns {Promise<string>} Resolves with the JSDoc output (new metadata).
+ * @returns {Promise<Object>} Resolves with the JSDoc output (new metadata).
  *     If provided with an empty list of paths, resolves with null.
  */
-function spawnJSDoc(paths) {
+function spawnJSDoc() {
   const jsdocConfig = path.join(
     'build',
     'info',
@@ -112,7 +73,7 @@ function spawnJSDoc(paths) {
   return new Promise((resolve, reject) => {
     let output = '';
     let errors = '';
-    const child = spawn(getBinaryPath('jsdoc'), ['-c', jsdocConfig].concat(paths));
+    const child = spawn(getBinaryPath('jsdoc'), ['-c', jsdocConfig, sourceDir]);
 
     child.stdout.on('data', (data) => {
       output += String(data);
@@ -141,19 +102,11 @@ function spawnJSDoc(paths) {
 }
 
 /**
- * Generate info from the sources.
- * @returns {Promise<Error>} Resolves with the info object.
- */
-async function generateInfo() {
-  const paths = await getPaths();
-  return spawnJSDoc(paths);
-}
-/**
  * Read the symbols from info file.
  * @returns {Promise<Array>} Resolves with an array of symbol objects.
  */
 async function getSymbols() {
-  const info = await generateInfo();
+  const info = await spawnJSDoc();
   return info.symbols.filter(
     symbol => symbol.kind !== 'member' || symbol.exports,
   );

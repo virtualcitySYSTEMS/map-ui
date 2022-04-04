@@ -118,7 +118,6 @@ function loadCss(href) {
   };
 
   const libraryBuilds = await build(libraryConfig);
-  console.log(libraryBuilds);
   if (Array.isArray(libraryBuilds)) {
     await write(libraryBuilds[0].output);
   } else if (libraryBuilds.output) {

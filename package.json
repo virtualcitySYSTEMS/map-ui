@@ -61,8 +61,7 @@
     "vite-plugin-vue2": "^1.9.3",
     "vitest": "^0.6.1",
     "vue-loader": "^16.6.0",
-    "vue-template-compiler": "^2.6.14",
-    "walk": "^2.3.15"
+    "vue-template-compiler": "^2.6.14"
   },
   "stylelint": {
     "extends": "stylelint-config-standard",
