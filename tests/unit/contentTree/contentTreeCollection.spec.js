@@ -78,7 +78,7 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should add a navbar action', () => {
-      expect(app.navbarManager.buttonIds).to.have.ordered.members(collection.subTreeIds);
+      expect(app.navbarManager.componentIds).to.have.ordered.members(collection.subTreeIds);
     });
   });
 
@@ -152,7 +152,7 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should add a navbar action', () => {
-      expect(app.navbarManager.buttonIds).to.have.ordered.members(collection.subTreeIds);
+      expect(app.navbarManager.componentIds).to.have.ordered.members(collection.subTreeIds);
     });
   });
 

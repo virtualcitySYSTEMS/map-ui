@@ -53,8 +53,8 @@ describe('ButtonManager', () => {
       it('should add the buttonComponent to the manager', () => {
         expect(buttonManager.has(buttonComponentOptions.id));
       });
-      it('should add the buttonComponentId to the buttonIds array', () => {
-        expect(buttonManager.buttonIds).to.have.members([buttonComponentOptions.id]);
+      it('should add the buttonComponentId to the componentIds array', () => {
+        expect(buttonManager.componentIds).to.have.members([buttonComponentOptions.id]);
       });
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
@@ -72,8 +72,8 @@ describe('ButtonManager', () => {
 
       it('should add new Components at the end of the array', () => {
         const buttonComponent2 = buttonManager.add({ ...buttonComponentOptions, id: 'id2' }, 'plugin2');
-        expect(buttonManager.buttonIds.length).to.be.equal(2);
-        expect(buttonManager.buttonIds).to.have.ordered.members([buttonComponent.id, buttonComponent2.id]);
+        expect(buttonManager.componentIds.length).to.be.equal(2);
+        expect(buttonManager.componentIds).to.have.ordered.members([buttonComponent.id, buttonComponent2.id]);
       });
 
       describe('returns a buttonComponent', () => {
@@ -130,7 +130,7 @@ describe('ButtonManager', () => {
       buttonManager.add({ ...buttonComponentOptions, location: ButtonLocation.MENU }, 'plugin1');
       buttonManager.add(buttonComponentOptions, 'plugin2');
       buttonManager.add(buttonComponentOptions, vcsAppSymbol);
-      const buttonComponents = buttonManager.buttonIds.map(id => buttonManager.get(id));
+      const buttonComponents = buttonManager.componentIds.map(id => buttonManager.get(id));
       const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
       expect(actions.length).to.be.equal(2);
     });
@@ -140,7 +140,7 @@ describe('ButtonManager', () => {
       buttonManager.add(buttonComponentOptions, 'plugin1');
       buttonManager.add(buttonComponentOptions, 'plugin2');
       buttonManager.add({ ...buttonComponentOptions, action: { name: 'testApp', callback() {} } }, vcsAppSymbol);
-      const buttonComponents = buttonManager.buttonIds.map(id => buttonManager.get(id));
+      const buttonComponents = buttonManager.componentIds.map(id => buttonManager.get(id));
       const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
       expect(actions.length).to.be.equal(4);
       expect(actions[0]).to.have.property('name', 'testApp');
@@ -185,9 +185,9 @@ describe('ButtonManager', () => {
       expect(buttonManager.has(button2.id)).to.be.true;
     });
     it('should remove the removed id from the buttonId List', () => {
-      expect(buttonManager.buttonIds).to.include(button1.id);
+      expect(buttonManager.componentIds).to.include(button1.id);
       buttonManager.remove(button1.id);
-      expect(buttonManager.buttonIds).to.not.include(button1.id);
+      expect(buttonManager.componentIds).to.not.include(button1.id);
     });
     it('should fire the removed event', () => {
       const removedSpy = vi.fn();

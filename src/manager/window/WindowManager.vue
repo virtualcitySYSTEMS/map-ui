@@ -1,7 +1,7 @@
 <template>
   <div>
     <WindowComponent
-      v-for="(id, zIndex) in windowIds"
+      v-for="(id, zIndex) in componentIds"
       :key="id"
       :window-state="getState(id)"
       :slot-window="getSlot(id)"
@@ -42,7 +42,7 @@
       /** @type {WindowManager} */
       const { windowManager } = app;
 
-      const { windowIds } = windowManager;
+      const { componentIds } = windowManager;
 
       const getState = (id) => {
         return windowManager.get(id)?.state;
@@ -53,7 +53,7 @@
       };
 
       const isOnTop = (zIndex) => {
-        return zIndex === windowIds.length - 1;
+        return zIndex === componentIds.length - 1;
       };
 
       const getStyles = (id, zIndex) => {
@@ -92,7 +92,7 @@
       };
 
       return {
-        windowIds,
+        componentIds,
         getComponent: id => windowManager.get(id).component,
         getHeaderComponent: id => windowManager.get(id).headerComponent || WindowComponentHeader,
         getStyles,

@@ -71,7 +71,7 @@
     setup() {
       const app = inject('vcsApp');
 
-      const navbarButtonIds = ref(app.navbarManager.buttonIds);
+      const navbarButtonIds = ref(app.navbarManager.componentIds);
       const buttonComponents = computed(() => navbarButtonIds.value.map(id => app.navbarManager.get(id)));
       const getActions = location => computed(
         () => getActionsByLocation(buttonComponents.value, location, [...app.plugins].map(p => p.name)),

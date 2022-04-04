@@ -169,7 +169,7 @@ export function getWindowPositionOptions(x, y, element = 'mapElement') {
 /**
  * @class WindowManager
  * @description Manages a set of Draggable Windows
- * @implements VcsComponentManager<WindowComponent>
+ * @implements VcsComponentManager<WindowComponent,WindowComponentOptions>
  */
 export class WindowManager {
   constructor() {
@@ -185,7 +185,7 @@ export class WindowManager {
      * reactive ordered array of ids,
      * @type {Array<string>}
      */
-    this.windowIds = reactive([]);
+    this.componentIds = reactive([]);
 
     /**
      * @type {Map<string, WindowComponent>}
@@ -221,8 +221,8 @@ export class WindowManager {
   remove(id) {
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
-      const index = this.windowIds.indexOf(id);
-      this.windowIds.splice(index, 1);
+      const index = this.componentIds.indexOf(id);
+      this.componentIds.splice(index, 1);
       this._windowComponents.delete(id);
       this._handleSlotsChanged(windowComponent.slot.value);
       this.removed.raiseEvent(windowComponent);
@@ -383,7 +383,7 @@ export class WindowManager {
     };
     this._removeWindowAtSlot(slot);
     this._windowComponents.set(id, windowComponent);
-    this.windowIds.push(id);
+    this.componentIds.push(id);
     this._handleSlotsChanged(slot);
     this.added.raiseEvent(windowComponent);
     return windowComponent;
@@ -395,10 +395,10 @@ export class WindowManager {
    */
   bringWindowToTop(id) {
     if (this.has(id)) {
-      const index = this.windowIds.indexOf(id);
-      if (index >= 0 && index !== this.windowIds.length - 1) {
-        this.windowIds.push(id);
-        this.windowIds.splice(index, 1);
+      const index = this.componentIds.indexOf(id);
+      if (index >= 0 && index !== this.componentIds.length - 1) {
+        this.componentIds.push(id);
+        this.componentIds.splice(index, 1);
       }
     }
   }
@@ -408,8 +408,8 @@ export class WindowManager {
    * @param {string|vcsAppSymbol} owner
    */
   removeOwner(owner) {
-    const windowIds = [...this.windowIds];
-    windowIds.forEach((id) => {
+    const componentIds = [...this.componentIds];
+    componentIds.forEach((id) => {
       const { state } = this.get(id);
       if (owner === state.owner) {
         this.remove(id);
@@ -421,8 +421,8 @@ export class WindowManager {
    * removes all windowComponents and fires removed Events
    */
   clear() {
-    const windowIds = [...this.windowIds];
-    windowIds.forEach((id) => { this.remove(id); });
+    const componentIds = [...this.componentIds];
+    componentIds.forEach((id) => { this.remove(id); });
   }
 
   /**
@@ -431,7 +431,7 @@ export class WindowManager {
   destroy() {
     this.added.destroy();
     this.removed.destroy();
-    this.windowIds.splice(0);
+    this.componentIds.splice(0);
     this._windowComponents.clear();
   }
 }
