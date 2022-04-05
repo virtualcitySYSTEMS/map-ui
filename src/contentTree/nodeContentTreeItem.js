@@ -11,7 +11,7 @@ class NodeContentTreeItem extends ContentTreeItem {
   /**
    * @returns {string}
    */
-  static get className() { return 'contentTree.NodeContentTreeItem'; }
+  static get className() { return 'NodeContentTreeItem'; }
 
   /**
    * @param {ContentTreeItemOptions} options

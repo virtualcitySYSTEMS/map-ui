@@ -44,7 +44,7 @@ class ContentTreeItem {
   /**
    * @type {string}
    */
-  static get className() { return 'contentTree.ContentTreeItem'; }
+  static get className() { return 'ContentTreeItem'; }
 
   /**
    * @param {ContentTreeItemOptions} options

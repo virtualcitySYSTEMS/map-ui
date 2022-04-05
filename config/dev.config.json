@@ -2,7 +2,7 @@
   "layers": [
     {
       "name": "testGeojson",
-      "type": "vcs.vcm.layer.GeoJSON",
+      "type": "GeoJSONLayer",
       "url": "exampleData/perFeature.json",
       "projection": {
         "epsg": 4326

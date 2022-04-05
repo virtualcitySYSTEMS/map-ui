@@ -14,7 +14,7 @@ export const subTreeSymbol = Symbol('SubTree');
  * @extends {ContentTreeItem}
  */
 class SubContentTreeItem extends ContentTreeItem {
-  static get className() { return 'contentTree.SubContentTreeItem'; }
+  static get className() { return 'SubContentTreeItem'; }
 
   /**
    * @param {ContentTreeItemOptions} options

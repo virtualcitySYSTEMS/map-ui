@@ -9,7 +9,7 @@
   "styles": [
     {
       "name": "lineColor",
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -28,7 +28,7 @@
     },
     {
       "name": "MeasuredHeightGreen",
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (green)",
         "de": "Measured Height (green)"
@@ -93,7 +93,7 @@
     },
     {
       "name": "MeasuredHeightBrown",
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (brown)",
         "de": "Measured Height (brown)"
@@ -154,7 +154,7 @@
     },
     {
       "name": "MeasuredHeightBlue",
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "title": {
         "en": "Measured Height (blue)",
         "de": "Measured Height (blue)"
@@ -214,7 +214,7 @@
       ]
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "title": {
         "en": "Classified by Roof Type",
         "de": "Einfärbung nach Hauptdach"
@@ -404,7 +404,7 @@
       "name": "ClassifiedbyRoofType"
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "title": {
         "de": "Einfärbung nach Gebäudefunktion",
         "en": "Building Function"
@@ -465,7 +465,7 @@
       "name": "BuildingFunction"
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "name": "Transparentbuildings",
       "title": {
         "en": "Transparent buildings",
@@ -492,7 +492,7 @@
   ],
   "maps": [
     {
-      "type": "vcs.vcm.maps.Cesium",
+      "type": "CesiumMap",
       "name": "cesium",
       "debugging": false,
       "fxaa": false,
@@ -507,20 +507,20 @@
       "fogScreenSpaceErrorMobile": 4
     },
     {
-      "type": "vcs.vcm.maps.Openlayers",
+      "type": "OpenlayersMap",
       "name": "ol3"
     },
     {
       "name": "Oblique Map",
       "showObliqueImageName": true,
       "obliqueImageNameTemplate": "Oblique Image Name : {0}",
-      "type": "vcs.vcm.maps.Oblique",
+      "type": "ObliqueMap",
       "defaultCollectionName": "Schrägluftbilder WAB"
     }
   ],
   "layers": [
     {
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
       "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh/",
       "activeOnStartup": false,
@@ -542,7 +542,7 @@
     {
       "name": "buildings",
       "url": "https://berlin.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "utxPghp6jfG6oZakL",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -568,7 +568,7 @@
     {
       "name": "buildings_untextured",
       "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "9eRDxjbxHQzE9XiES",
       "activeOnStartup": true,
       "allowPicking": true,
@@ -602,7 +602,7 @@
     {
       "name": "fisbroker-dop-2015",
       "url": "https://karten.blc.shc.eu/cache/tms/1.0.0/osm-berlin-dop2015-combined/",
-      "type": "vcs.vcm.layer.TMS",
+      "type": "TMSLayer",
       "datasourceId": "5dnXzoL27oPYQbEWQ",
       "activeOnStartup": false,
       "extent": {
@@ -646,7 +646,7 @@
     {
       "name": "Openstreetmap OSM Cache",
       "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
-      "type": "vcs.vcm.layer.WMTS",
+      "type": "WMTSLayer",
       "datasourceId": "2jEtgBemjJaSNx3AH",
       "activeOnStartup": true,
       "layer": "osm",
@@ -690,7 +690,7 @@
     {
       "name": "terrain_v3.4",
       "url": "https://berlin.virtualcitymap.de/datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
-      "type": "vcs.vcm.layer.Terrain",
+      "type": "TerrainLayer",
       "datasourceId": "CQHSNBZDTkjLLh8Qr",
       "activeOnStartup": true,
       "requestVertexNormals": true,
@@ -703,7 +703,7 @@
       }
     },
     {
-      "type": "vcs.vcm.layer.PointCloud",
+      "type": "PointCloudLayer",
       "name": "pointcloud",
       "activeOnStartup": false,
       "datasourceId": "g9rXAY6pu2tfNmWf3",
@@ -730,7 +730,7 @@
     {
       "name": "Bäume",
       "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "YXcidK4ijYFB2DhPm",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -771,7 +771,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "properties": {
         "title": {
           "en": "Berlin",
@@ -796,7 +796,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "properties": {
         "title": {
           "en": "Alexanderplatz",
@@ -821,7 +821,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint"
+      "type": "ViewPoint"
     },
     {
       "name": "potsdamer_platz",
@@ -840,7 +840,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "properties": {
         "title": {
           "en": "Potsdamer Platz",
@@ -852,51 +852,51 @@
   "contentTree":  [
     {
       "name": "baseMap",
-      "type": "contentTree.SubContentTreeItem",
+      "type": "SubContentTreeItem",
       "icon": "$vcsPoi",
       "title": "Base Maps"
     },
     {
       "name": "baseMap.trees",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Bäume"
 
     },
     {
       "name": "baseMap.terrain",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "terrain_v3.4"
     },
     {
       "name": "baseMap.openStreetMap",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Openstreetmap OSM Cache"
     },
     {
       "name": "baseMap.aerialImage2015",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "fisbroker-dop-2015"
     },
     {
       "name": "baseMap.places",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": "Places",
       "weight": 2
     },
     {
       "name": "baseMap.places.alexanderplatz",
       "viewpointName": "alexanderplatz",
-      "type": "contentTree.ViewPointContentTreeItem"
+      "type": "ViewPointContentTreeItem"
     },
     {
       "name": "baseMap.places.potsdamerPlatz",
       "viewpointName": "potsdamer_platz",
-      "type": "contentTree.ViewPointContentTreeItem"
+      "type": "ViewPointContentTreeItem"
     },
     {
       "name": "building",
       "initOpen": true,
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "infoUrl": "https://vc.systems",
       "title": {
         "en": "3d Building model",
@@ -907,23 +907,23 @@
     {
       "name": "building.texturedBuildings",
       "layerName": "buildings",
-      "type": "contentTree.LayerContentTreeItem"
+      "type": "LayerContentTreeItem"
     },
     {
       "name": "building.untexturedBuildings",
       "infoUrl": "https://vc.systems",
       "layerName": "buildings_untextured",
-      "type": "contentTree.LayerContentTreeItem"
+      "type": "LayerContentTreeItem"
     },
     {
       "name": "building.meshSurface",
       "layerName": "mesh_surface",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "title": "3D-Mesh"
     },
     {
       "name": "pointcloud",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": {
         "en": "Point Cloud",
         "de": "Punktwolke",
@@ -933,16 +933,16 @@
     {
       "name": "pointcloud.tiergarten",
       "layerName": "pointcloud",
-      "type": "contentTree.LayerContentTreeItem"
+      "type": "LayerContentTreeItem"
     },
     {
       "name": "pointcloud.berlinBuch",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "PointCloud Changedetection"
     },
     {
       "name": "viewpoints",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": {
         "en": "Viewpoints",
         "de": "Ansichten"
@@ -951,7 +951,7 @@
     {
       "name": "viewpoints.berlin",
       "viewpointName": "berlin",
-      "type": "contentTree.ViewPointContentTreeItem",
+      "type": "ViewPointContentTreeItem",
       "title": {
         "en": "Berlin",
         "de": "Berlin"
@@ -960,7 +960,7 @@
     {
       "name": "viewpoints.brandenburgerTor",
       "viewpointName": "brandenburger_tor",
-      "type": "contentTree.ViewPointContentTreeItem",
+      "type": "ViewPointContentTreeItem",
       "title": {
         "en": "Brandenburg Gate",
         "de": "Brandenburger Tor"
@@ -968,24 +968,24 @@
     },
     {
       "name": "viewpoints.places",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": "Places",
       "weight": 1
     },
     {
       "name": "viewpoints.places.alexanderplatz",
       "viewpointName": "alexanderplatz",
-      "type": "contentTree.ViewPointContentTreeItem"
+      "type": "ViewPointContentTreeItem"
     },
     {
       "name": "viewpoints.places.potsdamerPlatz",
       "viewpointName": "potsdamer_platz",
-      "type": "contentTree.ViewPointContentTreeItem"
+      "type": "ViewPointContentTreeItem"
     },
     {
       "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
       "viewpointName": "kaiser_wilhelm_gedächtniskirche",
-      "type": "contentTree.ViewPointContentTreeItem",
+      "type": "ViewPointContentTreeItem",
       "title": {
         "en": "Kaiser Wilhelm Memorial Church",
         "de": "Kaiser-Wilhelm-Gedächtniskirche"
@@ -994,7 +994,7 @@
     {
       "name": "viewpoints.oberbaumbruecke",
       "viewpointName": "oberbaumbrücke",
-      "type": "contentTree.ViewPointContentTreeItem",
+      "type": "ViewPointContentTreeItem",
       "title": {
         "en": "Oberbaum Bridge",
         "de": "Oberbaumbrücke"
@@ -1002,27 +1002,27 @@
     },
     {
       "name": "reasonableGroup",
-      "type": "contentTree.GroupContentTreeItem",
+      "type": "GroupContentTreeItem",
       "title": "Textured Berlin"
     },
     {
       "name": "reasonableGroup.trees",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Bäume"
     },
     {
       "name": "reasonableGroup.texturedBuildings",
       "layerName": "buildings",
-      "type": "contentTree.LayerContentTreeItem"
+      "type": "LayerContentTreeItem"
     },
     {
       "name": "reasonableGroup.berlin",
       "viewpointName": "berlin",
-      "type": "contentTree.ViewPointContentTreeItem"
+      "type": "ViewPointContentTreeItem"
     },
     {
       "name": "reasonableLayerGroup",
-      "type": "contentTree.LayerGroupContentTreeItem",
+      "type": "LayerGroupContentTreeItem",
       "layerNames": [
         "buildings",
         "Bäume",
@@ -1033,7 +1033,7 @@
     },
     {
       "name": "berlin_obliques",
-      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "type": "ObliqueCollectionContentTreeItem",
       "collectionName": "obliques",
       "title": "Berlin Obliques"
     }

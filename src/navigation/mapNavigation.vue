@@ -27,7 +27,7 @@
 
 <script>
   import { computed, inject, ref } from '@vue/composition-api';
-  import { Oblique, CesiumMap, Openlayers } from '@vcmap/core';
+  import { ObliqueMap, CesiumMap, OpenlayersMap } from '@vcmap/core';
   import { unByKey } from 'ol/Observable.js';
   import VcsCompass from './vcsCompass.vue';
   import VcsZoomButton from './vcsZoomButton.vue';
@@ -44,7 +44,7 @@
   };
 
   function getViewModeForMap(map) {
-    if (map instanceof Oblique) {
+    if (map instanceof ObliqueMap) {
       return OrientationToolsViewMode.OBLIQUE;
     } else if (map instanceof CesiumMap) {
       return OrientationToolsViewMode.THREE_D;
@@ -69,7 +69,7 @@
 
     if (map instanceof CesiumMap) {
       return map.getScene().postRender.addEventListener(handler);
-    } else if (map instanceof Oblique || map instanceof Openlayers) {
+    } else if (map instanceof ObliqueMap || map instanceof OpenlayersMap) {
       const key = map.olMap.on('postrender', handler);
       return () => {
         unByKey(key);

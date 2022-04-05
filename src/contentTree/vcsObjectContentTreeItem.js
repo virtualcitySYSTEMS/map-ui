@@ -22,7 +22,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
    * @type {string}
    * @readonly
    */
-  static get className() { return 'contentTree.VcsObjectContentTreeItem'; }
+  static get className() { return 'VcsObjectContentTreeItem'; }
 
   /**
    * @param {ContentTreeItemOptions} options

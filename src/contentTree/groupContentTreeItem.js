@@ -12,7 +12,7 @@ class GroupContentTreeItem extends ContentTreeItem {
   /**
    * @returns {string}
    */
-  static get className() { return 'contentTree.GroupContentTreeItem'; }
+  static get className() { return 'GroupContentTreeItem'; }
 
   /**
    * @param {ContentTreeItemOptions} options

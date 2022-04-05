@@ -12,7 +12,7 @@ import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
  * @class
  */
 class ViewPointContentTreeItem extends VcsObjectContentTreeItem {
-  static get className() { return 'contentTree.ViewPointContentTreeItem'; }
+  static get className() { return 'ViewPointContentTreeItem'; }
 
   /**
    * @param {ViewPointContentTreeItemOptions} options
