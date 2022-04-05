@@ -1,4 +1,4 @@
-import { Oblique, Openlayers, Vector } from '@vcmap/core';
+import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
@@ -13,10 +13,10 @@ describe('LayerContentTreeItem', () => {
 
     beforeAll(async () => {
       app = new VcsUiApp();
-      app.maps.add(new Openlayers({ name: 'ol' }));
-      app.maps.add(new Oblique({ name: 'obl' }));
+      app.maps.add(new OpenlayersMap({ name: 'ol' }));
+      app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
-      layer = new Vector({ mapNames: ['ol'] });
+      layer = new VectorLayer({ mapNames: ['ol'] });
       app.layers.add(layer);
       item = new LayerContentTreeItem({ name: 'foo', layerName: layer.name }, app);
     });
@@ -85,10 +85,10 @@ describe('LayerContentTreeItem', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.maps.add(new Openlayers({ name: 'ol' }));
-        app.maps.add(new Oblique({ name: 'obl' }));
+        app.maps.add(new OpenlayersMap({ name: 'ol' }));
+        app.maps.add(new ObliqueMap({ name: 'obl' }));
         await app.maps.setActiveMap('ol');
-        const layer = new Vector({
+        const layer = new VectorLayer({
           mapNames: ['ol'],
           extent: {
             coordinate: [0, 0, 1, 1],
@@ -131,10 +131,10 @@ describe('LayerContentTreeItem', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.maps.add(new Openlayers({ name: 'ol' }));
-        app.maps.add(new Oblique({ name: 'obl' }));
+        app.maps.add(new OpenlayersMap({ name: 'ol' }));
+        app.maps.add(new ObliqueMap({ name: 'obl' }));
         await app.maps.setActiveMap('ol');
-        const layer = new Vector({
+        const layer = new VectorLayer({
           mapNames: ['ol'],
           extent: {
             coordinate: [0, 0, 1, 1],
@@ -149,7 +149,7 @@ describe('LayerContentTreeItem', () => {
         });
         app.layers.add(layer);
         item = new LayerContentTreeItem({ name: 'foo', layerName: layer.name }, app);
-        app.layers.override(new Vector({ name: layer.name }));
+        app.layers.override(new VectorLayer({ name: layer.name }));
       });
 
       afterAll(() => {

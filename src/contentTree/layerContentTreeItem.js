@@ -63,7 +63,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
    * @todo this has to be refactored, just so we can read the config as is
    * @returns {string}
    */
-  static get className() { return 'contentTree.LayerContentTreeItem'; }
+  static get className() { return 'LayerContentTreeItem'; }
 
   /**
    * @param {LayerContentTreeItemOptions} options

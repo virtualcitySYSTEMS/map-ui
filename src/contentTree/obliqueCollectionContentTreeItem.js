@@ -1,4 +1,4 @@
-import { Oblique, VcsClassRegistry, DefaultObliqueCollection } from '@vcmap/core';
+import { ObliqueMap, VcsClassRegistry, DefaultObliqueCollection } from '@vcmap/core';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { setViewpointAction } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
@@ -26,7 +26,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   /**
    * @type {string}
    */
-  static get className() { return 'contentTree.ObliqueCollectionContentTreeItem'; }
+  static get className() { return 'ObliqueCollectionContentTreeItem'; }
 
   /**
    * @param {ObliqueCollectionContentTreeItemOptions} options
@@ -97,7 +97,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
       this._listeners.push(this._app.obliqueCollections.added.addEventListener(resetCallback));
     } else {
       const map = this._app.maps.activeMap;
-      if (map instanceof Oblique) {
+      if (map instanceof ObliqueMap) {
         this.visible = true;
         this.state = map.collection === this._collection ?
           StateActionState.ACTIVE :
@@ -122,7 +122,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   async clicked() {
-    if (this.visible && this._collection && this._app.maps.activeMap instanceof Oblique) {
+    if (this.visible && this._collection && this._app.maps.activeMap instanceof ObliqueMap) {
       const map = /** @type {import("@vcmap/core").Oblique} */ (this._app.maps.activeMap);
       const vp = await map.getViewPoint();
       if (this.state === StateActionState.INACTIVE) {

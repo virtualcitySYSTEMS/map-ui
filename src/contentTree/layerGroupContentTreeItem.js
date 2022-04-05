@@ -39,7 +39,7 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
    * @readonly
    * @type {string}
    */
-  static get className() { return 'contentTree.LayerGroupContentTreeItem'; }
+  static get className() { return 'LayerGroupContentTreeItem'; }
 
   /**
    * @param {LayerGroupContentTreeItemOptions} options

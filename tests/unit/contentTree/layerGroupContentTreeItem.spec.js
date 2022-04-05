@@ -7,7 +7,7 @@ import {
   beforeEach,
   afterEach,
 } from 'vitest';
-import { Oblique, Openlayers, Vector } from '@vcmap/core';
+import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerGroupContentTreeItem from '../../../src/contentTree/layerGroupContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
@@ -30,15 +30,15 @@ describe('LayerGroupContentTreeItem', () => {
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      app.maps.add(new Openlayers({ name: 'ol' }));
-      app.maps.add(new Oblique({ name: 'obl' }));
+      app.maps.add(new OpenlayersMap({ name: 'ol' }));
+      app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
       layers = [
         { mapNames: ['ol'] },
         { mapNames: ['ol'] },
         { mapNames: ['bar'] },
       ]
-        .map(config => new Vector(config));
+        .map(config => new VectorLayer(config));
 
       layers.forEach((l) => {
         app.layers.add(l);

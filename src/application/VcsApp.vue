@@ -57,9 +57,9 @@
       provide('vcsApp', app);
 
       const iconMap = {
-        'vcs.vcm.maps.Openlayers': '$vcs2d',
-        'vcs.vcm.maps.Cesium': '$vcs3d',
-        'vcs.vcm.maps.Oblique': '$vcsObliqueView',
+        OpenlayersMap: '$vcs2d',
+        CesiumMap: '$vcs3d',
+        ObliqueMap: '$vcsObliqueView',
       };
 
       const mapButtonActionDestroy = {};

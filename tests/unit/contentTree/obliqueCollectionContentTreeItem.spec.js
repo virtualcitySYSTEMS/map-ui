@@ -1,4 +1,4 @@
-import { DefaultObliqueCollection, Oblique, Openlayers } from '@vcmap/core';
+import { DefaultObliqueCollection, ObliqueMap, OpenlayersMap } from '@vcmap/core';
 import {
   describe,
   it,
@@ -21,8 +21,8 @@ describe('ObliqueCollectionContentTreeItem', () => {
 
     beforeAll(async () => {
       app = new VcsUiApp();
-      app.maps.add(new Openlayers({ name: 'ol' }));
-      map = new Oblique({ name: 'obl' });
+      app.maps.add(new OpenlayersMap({ name: 'ol' }));
+      map = new ObliqueMap({ name: 'obl' });
       app.maps.add(map);
       await app.maps.setActiveMap('obl');
       collection = new DefaultObliqueCollection({});
@@ -97,7 +97,7 @@ describe('ObliqueCollectionContentTreeItem', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.maps.add(new Oblique({ name: 'obl' }));
+        app.maps.add(new ObliqueMap({ name: 'obl' }));
         await app.maps.setActiveMap('obl');
         const collection = new DefaultObliqueCollection({});
         collection.properties.defaultViewpoint = 'foo';
@@ -123,7 +123,7 @@ describe('ObliqueCollectionContentTreeItem', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.maps.add(new Oblique({ name: 'obl' }));
+        app.maps.add(new ObliqueMap({ name: 'obl' }));
         await app.maps.setActiveMap('obl');
         const collection = new DefaultObliqueCollection({});
         collection.properties.defaultViewpoint = 'foo';

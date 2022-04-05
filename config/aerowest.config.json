@@ -14,19 +14,19 @@
   "maps": [
     {
       "name": "Cesium Map",
-      "type": "vcs.vcm.maps.Cesium",
+      "type": "CesiumMap",
       "webGLaa": false,
       "globeColor": "#000000"
     },
     {
       "name": "Openlayers Map",
-      "type": "vcs.vcm.maps.Openlayers"
+      "type": "OpenlayersMap"
     },
     {
       "name": "Schrägluftbild",
       "showObliqueImageName": true,
       "obliqueImageNameTemplate": "Oblique Image Name : {0}",
-      "type": "vcs.vcm.maps.Oblique",
+      "type": "ObliqueMap",
       "defaultCollectionName": "Schrägluftbilder 2020"
     }
   ],
@@ -34,7 +34,7 @@
     {
       "name": "Textured Buildings 2021",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/8a9b3f01-e988-4931-bc73-21648ca3b117/tileset.json",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "oCmn2eL2ugs9kZHvi",
       "activeOnStartup": true,
       "screenSpaceError": 16,
@@ -52,7 +52,7 @@
     {
       "name": "Geländemodell 2020",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/e3e2af43-efa6-439d-a819-b6060af2b7cb",
-      "type": "vcs.vcm.layer.Terrain",
+      "type": "TerrainLayer",
       "datasourceId": "ZvZCi7MvDoYmoL9Zr",
       "activeOnStartup": true,
       "requestVertexNormals": true
@@ -60,7 +60,7 @@
     {
       "name": "3D-Mesh 2020",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Mesh3D_Cesium_2020",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "g78GQpi92C58hCpLv",
       "allowPicking": true,
       "screenSpaceError": 16,
@@ -80,7 +80,7 @@
     },
     {
       "name": "Openstreetmap Ebene",
-      "type": "vcs.vcm.layer.OpenStreetMap",
+      "type": "OpenStreetMapLayer",
       "datasourceId": "",
       "activeOnStartup": false,
       "hiddenObjectIds": [],
@@ -100,7 +100,7 @@
     {
       "name": "Orthophoto 2019",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/TMS",
-      "type": "vcs.vcm.layer.TMS",
+      "type": "TMSLayer",
       "datasourceId": "L9iqEkcipH5yYidLJ",
       "extent": {
         "coordinates": [
@@ -138,7 +138,7 @@
     {
       "name": "TopPlus",
       "url": "https://sgx.geodatenzentrum.de/wms_topplus_web_open",
-      "type": "vcs.vcm.layer.WMS",
+      "type": "WMSLayer",
       "datasourceId": "yvtTf2bLrDNk93Eth",
       "activeOnStartup": false,
       "extent": {
@@ -176,7 +176,7 @@
     {
       "name": "3D-Mesh 2019",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Mesh",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "DmbnQLuDFtiu9dQJv",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -198,7 +198,7 @@
     {
       "name": "Terrain_Breaklines_New",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/DEMO-Aerowest-Osnabrueck/Terrain_New",
-      "type": "vcs.vcm.layer.Terrain",
+      "type": "TerrainLayer",
       "datasourceId": "Y4YktjqX2FPFZNubn",
       "activeOnStartup": true,
       "requestVertexNormals": true,
@@ -218,7 +218,7 @@
     {
       "name": "True Orthophoto 2020",
       "url": "https://aerowest.virtualcitymap.de/datasource-data/de840115-0050-474e-8d8f-69dc2e8abc6d",
-      "type": "vcs.vcm.layer.TMS",
+      "type": "TMSLayer",
       "datasourceId": "nP6X6M9wqhud3pzXc",
       "activeOnStartup": true,
       "extent": {
@@ -248,7 +248,7 @@
   ],
   "viewpoints": [
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "Start",
       "cameraPosition": [
         8.046797238330019,
@@ -315,62 +315,62 @@
   "contentTree": [
     {
       "name": "base",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": "Grundkarten"
     },
     {
       "name": "base.osm",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Openstreetmap Ebene"
     },
     {
       "name": "base.topPlus",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "TopPlus"
     },
     {
       "name": "base.ortho2020",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "True Orthophoto 2020"
     },
     {
       "name": "base.ortho2019",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Orthophoto 2019"
     },
     {
       "name": "data",
-      "type": "contentTree.NodeContentTreeItem",
+      "type": "NodeContentTreeItem",
       "title": "Basis Daten"
     },
     {
       "name": "data.texturedBuildings",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Textured Buildings 2021"
     },
     {
       "name": "data.mesh2020",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "3D-Mesh 2020"
     },
     {
       "name": "data.mesh2019",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "3D-Mesh 2019"
     },
     {
       "name": "data.terrain",
-      "type": "contentTree.LayerContentTreeItem",
+      "type": "LayerContentTreeItem",
       "layerName": "Terrain_Breaklines_New"
     },
     {
       "name": "oblique2020",
-      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "type": "ObliqueCollectionContentTreeItem",
       "collectionName": "Schrägluftbilder 2020"
     },
     {
       "name": "oblique2019",
-      "type": "contentTree.ObliqueCollectionContentTreeItem",
+      "type": "ObliqueCollectionContentTreeItem",
       "collectionName": "Schrägluftbilder 2019"
     }
   ],

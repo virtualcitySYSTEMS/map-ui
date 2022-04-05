@@ -8,7 +8,7 @@
   },
   "styles": [
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "name": "CIR",
       "title": {
         "en": "CIR",
@@ -22,7 +22,7 @@
       "legend": []
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "name": "Tree-ID",
       "title": {
         "en": "Tree-ID",
@@ -47,7 +47,7 @@
       "legend": []
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "name": "Distance",
       "title": {
         "en": "Distance",
@@ -72,7 +72,7 @@
       "legend": []
     },
     {
-      "type": "vcs.vcm.util.style.DeclarativeStyleItem",
+      "type": "DeclarativeStyleItem",
       "name": "Classification",
       "title": {
         "en": "Classification",
@@ -131,7 +131,7 @@
     {
       "name": "PointCloud Changedetection",
       "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
-      "type": "vcs.vcm.layer.PointCloud",
+      "type": "PointCloudLayer",
       "datasourceId": "6MxMnXhaBJsz2utBD",
       "activeOnStartup": false,
       "screenSpaceError": 16,
@@ -158,7 +158,7 @@
       }
     },
     {
-      "type": "vcs.vcm.layer.PointCloud",
+      "type": "PointCloudLayer",
       "name": "pointcloud",
       "activeOnStartup": false,
       "datasourceId": "g9rXAY6pu2tfNmWf3",
@@ -185,7 +185,7 @@
     {
       "name": "lod2_solar_jul",
       "url": "https://berlin.virtualcitymap.de/datasource-data/ae32d27d-e75b-4339-b471-c2e4c1891bea",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "MxKRpGbBemdmvKbep",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -204,7 +204,7 @@
     {
       "name": "lod2_solar_apr",
       "url": "https://berlin.virtualcitymap.de/datasource-data/3ece8030-9ca3-487f-8811-7d65c58b9d46",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "6F7MtLWF9Fe44W6XY",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -223,7 +223,7 @@
     {
       "name": "lod2_solar_jan",
       "url": "https://berlin.virtualcitymap.de/datasource-data/6336aafe-96eb-4db2-b1ed-5bcc70b4ac54",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "B7ooqvwDgEKnzN6MX",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -242,7 +242,7 @@
     {
       "name": "lod2_solar_year",
       "url": "https://berlin.virtualcitymap.de/datasource-data/0866fca1-2b8c-4ac9-b478-cdeffc8d7f38",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "amZp7Mb68MiyesBQN",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -261,7 +261,7 @@
     {
       "name": "lod_solar_year_shading",
       "url": "https://berlin.virtualcitymap.de/datasource-data/f931caec-8003-44b1-8e9c-5b5f646f1c11",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "BZGcFpindygyuDwGq",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -280,7 +280,7 @@
     {
       "name": "citygml_trees_solar",
       "url": "https://berlin.virtualcitymap.de/datasource-data/ac0d0ab1-1ae3-43b4-93c6-020cb37f7b2b",
-      "type": "vcs.vcm.layer.Buildings",
+      "type": "CesiumTilesetLayer",
       "datasourceId": "2a8i9Jra6Lm6gGQJ5",
       "activeOnStartup": false,
       "allowPicking": true,
@@ -299,7 +299,7 @@
   ],
   "viewpoints": [
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "berlin",
       "cameraPosition": [
         13.370550000000003,
@@ -324,7 +324,7 @@
         33.35758
       ],
       "pitch": -46.14,
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "heading": 359.84,
       "distance": 3267.86,
       "name": "pointcloud",
@@ -342,14 +342,14 @@
         781.65344
       ],
       "pitch": -38.14,
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "heading": 357.64,
       "distance": 1159.67,
       "name": "changedetection",
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "kaiser_wilhelm_gedächtniskirche",
       "distance": 1403.6527954713483,
       "cameraPosition": [
@@ -368,7 +368,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "oberbaumbrücke",
       "distance": 1733.4812812488267,
       "cameraPosition": [
@@ -387,7 +387,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "flughafen_ber",
       "distance": 6450.326141140612,
       "cameraPosition": [
@@ -406,7 +406,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "euref_campus",
       "distance": 463.7064949271509,
       "cameraPosition": [
@@ -425,7 +425,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "europacity",
       "distance": 784.4892150356735,
       "cameraPosition": [
@@ -444,7 +444,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "upper_west",
       "distance": 378.9684151048121,
       "cameraPosition": [
@@ -463,7 +463,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "tegel",
       "distance": 955.4595809846163,
       "cameraPosition": [
@@ -482,7 +482,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "citywest",
       "distance": 1536,
       "cameraPosition": [
@@ -496,7 +496,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "spreeraum",
       "distance": 1810,
       "cameraPosition": [
@@ -510,7 +510,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "plannings2010",
       "distance": 1873,
       "cameraPosition": [
@@ -524,7 +524,7 @@
       "animate": true
     },
     {
-      "type": "vcs.vcm.util.ViewPoint",
+      "type": "ViewPoint",
       "name": "pp_solar",
       "cameraPosition": [
         13.372478299069217,
