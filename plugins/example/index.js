@@ -23,9 +23,9 @@ export default async function (config) {
         {
           id: '228',
           component: mySuperComponent,
-          slot: WindowSlot.DYNAMIC_RIGHT,
+          slot: WindowSlot.DETACHED,
           position: {
-            width: 500,
+            width: 1200,
           },
         },
         app.windowManager,
@@ -35,12 +35,6 @@ export default async function (config) {
       app.navbarManager.add({
         location: ButtonLocation.TOOL,
         action,
-      }, '@vcmap/example');
-      app.windowManager.add({
-        id: '228',
-        component: mySuperComponent,
-        position: WindowPositions.TOP_RIGHT,
-        slot: WindowSlot.DYNAMIC_RIGHT,
       }, '@vcmap/example');
       // app.toolboxManager.addToolboxGroup(
       //   {

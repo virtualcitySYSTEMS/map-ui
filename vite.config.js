@@ -38,6 +38,9 @@ const configMain = defineConfig(async ({ mode }) => {
       port,
       proxy,
     },
+    watch: {
+      ignored: ['!**/node_modules/@vcsuite/ui-components/**'],
+    },
   };
 });
 

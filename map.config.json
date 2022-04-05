@@ -3,7 +3,7 @@
     {
       "name": "@vcmap/project-selector",
       "entry": "plugins/@vcmap/project-selector/index.js",
-      "selected": "VC Map HOSTING",
+      "selected": "VC Map Base",
       "selectedContexts": [],
       "open": true,
       "projects": [
