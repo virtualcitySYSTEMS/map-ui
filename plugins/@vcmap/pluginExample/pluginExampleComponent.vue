@@ -3,8 +3,19 @@
     <VcsFormSection
       title="VcsFormSection"
       :title-actions="[
-        { name: 'alert', icon: 'mdi-message-text', callback: alertAction },
+        {
+          name: 'denseSelection',
+          title: 'change row height',
+          icon: dense ? 'mdi-arrow-split-horizontal' : 'mdi-arrow-collapse-vertical',
+          callback: () => this.dense = !this.dense
+        },
         { name: 'noIcon', title: 'another action without icon', callback: () => {} },
+        {
+          name: 'help',
+          title: helpExample,
+          icon: 'mdi-help-circle',
+          callback: () => {},
+        },
         {
           name: 'toggleSection',
           title: 'toggle section',
@@ -17,18 +28,21 @@
           icon: showSection ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off',
           active: showSection,
           callback: () => this.showSection = !this.showSection
-        }
+        },
+        { name: 'alert', icon: 'mdi-message-text', callback: alertAction },
       ]"
     >
       <template #default v-if="showSection">
         <v-container class="pa-2">
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>Select</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col>
               <VcsSelect
                 :items="selectOptions"
                 v-model="state.selected"
@@ -36,96 +50,103 @@
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>ConditionalInput</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col>
               <VcsTextField
-                hint="please provide a string"
-                dense
                 clearable
-                clear-icon="$vcsTrashCan"
+                :dense="dense"
                 :rules="[conditionalTest(state.conditionalInput, state.selected)]"
                 v-model="state.conditionalInput"
               />
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="12">
+            <v-col>
               <VcsTextField
-                label="InitialTextInputDisabled"
-                disabled
-                outlined
-                hide-details
+                :dense="dense"
                 v-model="initialTextInput"
+                tooltip="Input has impact on »InitialTextInput« field"
               />
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>InitialTextInput</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col>
               <VcsTextField
-                dense
-                persistent-hint
-                hint="Input stays in state loading as long as default input is not changed!"
+                :dense="dense"
+                tooltip="Input stays in state loading as long as default input is not changed!"
                 :rules="[isValidText]"
                 :loading="state.initialTextInput === 'myInitialText'"
                 v-model="state.initialTextInput"
+                :error-messages="!state.checkboxInput ? ['manual error message depending on checkbox'] : undefined"
               />
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>NumberInput</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col>
               <VcsTextField
-                dense
-                hint="please provide a number"
-                :solo-inverted="true"
+                :dense="dense"
+                tooltip="please provide a number"
                 type="number"
                 step="10"
-                prefix="a ="
                 suffix="cm"
                 v-model.number="state.numberInput"
               />
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>VcsFormattedNumber</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col class="d-flex justify-end">
               <VcsFormattedNumber
                 label="FormattedNumber"
                 :value="state.numberInput"
                 unit="cm"
                 :fraction-digits="1"
+                class="pr-2 font-size-12"
               />
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="5">
+            <v-col>
               <label>Email</label>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-baseline w-full">
+            <v-col>
               <VcsTextField
-                dense
-                hint="please provide your email"
+                :dense="dense"
+                tooltip="please provide your email"
                 type="email"
                 :rules="[isValidEmail]"
                 v-model="state.email"
@@ -133,9 +154,11 @@
             </v-col>
           </v-row>
           <v-row
-            class="d-flex flex-row align-baseline justify-space-between"
+            :dense="dense"
+            no-gutters
+            align="center"
           >
-            <v-col cols="6">
+            <v-col>
               <VcsCheckbox
                 label="CheckboxInput"
                 hint="select or deselect"
@@ -143,11 +166,10 @@
                 v-model="state.checkboxInput"
               />
             </v-col>
-            <v-col cols="6">
+            <v-col>
               <VcsButton
                 :is-active="state.checkboxInput"
                 @click="state.checkboxInput = !state.checkboxInput"
-                elevation="2"
                 tooltip="toggle button"
                 color="warning"
                 tooltip-position="right"
@@ -200,8 +222,17 @@
       const newUpdate = ref(true);
       watch(plugin.state, () => { newUpdate.value = true; });
 
+      const helpExample = [
+        'Please select an option.',
+        'If Option A is chosen, input of ConditionalInput must be \'test\'.',
+        'InitialTextInput stays in loading state as long as the initial text is not changed.',
+        'VcsFormattedNumber rounds the NumberInput to one decimal digit.',
+      ].join('\n');
+
       return {
-        showSection: false,
+        showSection: true,
+        dense: true,
+        helpExample,
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,
         // do not put the whole config here, since it would become reactive
@@ -224,16 +255,8 @@
     },
   };
 </script>
-
 <style lang="scss" scoped>
-.v-form{
-  padding: 0 5px
-}
-.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) {
-  ::v-deep{
-    > .v-input__control > .v-input__slot{
-      padding: 0;
-    }
-  }
+label{
+  font-size: 12px;
 }
 </style>
