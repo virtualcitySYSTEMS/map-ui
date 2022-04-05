@@ -16,7 +16,7 @@ const stateIconMap = {
   [StateActionState.INACTIVE]: '$vcsCheckbox',
   [StateActionState.ACTIVE]: '$vcsCheckboxChecked',
   [StateActionState.INDETERMINATE]: '$vcsCheckboxIndeterminate',
-  [StateActionState.LOADING]: 'progress',
+  [StateActionState.LOADING]: '$vcsProgress',
 };
 
 /**

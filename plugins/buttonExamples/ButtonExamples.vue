@@ -32,6 +32,16 @@
         <v-switch v-model="active" />
       </v-list-item-action>
     </v-list-item>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="font-weight-bold">
+          LOADING
+        </v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action>
+        <v-switch v-model="loading" />
+      </v-list-item-action>
+    </v-list-item>
     <v-divider />
     <v-list-item>
       <v-list-item-content>
@@ -49,6 +59,7 @@
                   color="primary"
                   :disabled="disabled"
                   :has-update="update"
+                  :icon="loading ? '$vcsProgress' : ''"
                   tooltip="PRIMARY BUTTON"
                 >
                   PRIMARY
@@ -91,7 +102,7 @@
                   :active="active"
                   :disabled="disabled"
                   :has-update="update"
-                  icon="$vcs3d"
+                  :icon="loading ? '$vcsProgress' : '$vcs3d'"
                   tooltip="ButtonClass large"
                   large
                 />
@@ -131,7 +142,7 @@
                   @click="toggle"
                   :active="active"
                   :disabled="disabled"
-                  icon="$vcsColorSwatch"
+                  :icon="loading ? '$vcsProgress' : '$vcsColorSwatch'"
                   tooltip="ACTION BUTTON"
                   small
                 />
@@ -159,7 +170,6 @@
   </v-card>
 </template>
 <script>
-
   import { VcsButton, VcsActionButtonList } from '@vcsuite/ui-components';
 
   export default {
@@ -170,6 +180,7 @@
         active: false,
         disabled: false,
         update: false,
+        loading: false,
         toggle() {
           this.active = !this.active;
         },
