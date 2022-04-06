@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
 import Components from 'unplugin-vue-components/vite';
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
+import { libraries } from './buildHelpers.js';
 
 const configMain = defineConfig({
   resolve: {
@@ -12,6 +13,8 @@ const configMain = defineConfig({
       vue: 'vue/dist/vue.esm.js',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
+    dedupe: Object.keys(libraries),
+    preserveSymlinks: true,
   },
   plugins: [
     createVuePlugin(),
