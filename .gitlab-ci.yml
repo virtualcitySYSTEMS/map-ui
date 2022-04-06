@@ -83,8 +83,8 @@ version:
     - LEVEL=$([ $CI_COMMIT_REF_NAME == "main" ] && echo "prerelease" || echo "patch")
     - npm version $LEVEL -m "%s [skip-ci]"
     - TAG=`git describe --abbrev=0`
-    - git push git@gitlab:vcsuite/virtualcitymap_ui.git $TAG
-    - git push git@gitlab:vcsuite/virtualcitymap_ui.git HEAD:$CI_COMMIT_REF_NAME
+    - git push git@gitlab:vcsuite/npm/vcmap/ui.git $TAG
+    - git push git@gitlab:vcsuite/npm/vcmap/ui.git HEAD:$CI_COMMIT_REF_NAME
   before_script:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
