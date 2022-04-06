@@ -1,6 +1,8 @@
 {
   "name": "@vcmap/ui",
   "version": "5.0.0-rc.5",
+  "author": "Virtual City Systems",
+  "license": "MIT",
   "scripts": {
     "start": "vite",
     "test": "vitest",
@@ -12,6 +14,10 @@
     "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\"",
     "prepack": "node build/build.js",
     "install-plugins": "cd plugins && npm i --omit peer --no-package-lock"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/virtualcitySYSTEMS/map-ui.git"
   },
   "files": [
     "index.js",

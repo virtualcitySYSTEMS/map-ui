@@ -15,7 +15,7 @@ stages:
 
 .template: &job_definition
   only:
-    - /^(feature-.*|hotfix-.*|master|release-.*)$/
+    - /^(feature-.*|hotfix-.*|main|release-.*)$/
   tags:
     - linux-2.0
 
@@ -78,9 +78,9 @@ version:
     variables:
       - $PUBLISH
     refs:
-      - /^(master|release-v.*)$/
+      - /^(main|release-v.*)$/
   script:
-    - LEVEL=$([ $CI_COMMIT_REF_NAME == "master" ] && echo "prerelease" || echo "patch")
+    - LEVEL=$([ $CI_COMMIT_REF_NAME == "main" ] && echo "prerelease" || echo "patch")
     - npm version $LEVEL -m "%s [skip-ci]"
     - TAG=`git describe --abbrev=0`
     - git push git@gitlab:vcsuite/virtualcitymap_ui.git $TAG
@@ -148,7 +148,7 @@ publish:
   stage: publish
   only:
     refs:
-      - /^(master|release-v.*)$/
+      - /^(main|release-v.*)$/
     variables:
       - $PUBLISH
   script:
