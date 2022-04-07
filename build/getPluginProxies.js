@@ -1,3 +1,4 @@
+/* eslint import/no-extraneous-dependencies: ["error", { "devDependencies": false }] */
 import path from 'path';
 import { getPluginDirectory, getPluginNames } from './buildHelpers.js';
 

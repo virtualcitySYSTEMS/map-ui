@@ -14,7 +14,7 @@ const configMain = defineConfig({
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
     dedupe: Object.keys(libraries),
-    preserveSymlinks: true,
+    preserveSymlinks: false,
   },
   plugins: [
     createVuePlugin(),

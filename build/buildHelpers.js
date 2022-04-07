@@ -1,9 +1,8 @@
-import { build } from 'vite';
+/* eslint import/no-extraneous-dependencies: ["error", { "devDependencies": false }] */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { build } from 'vite'; // vite is also a plugin-cli dep
 import fs from 'fs';
 import path from 'path';
-import rollupPluginStripPragma from 'rollup-plugin-strip-pragma';
-import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
-import { v4 as uuid } from 'uuid';
 import { fileURLToPath } from 'url';
 
 /**
@@ -133,74 +132,20 @@ function loadCss(href) {
   }
 }
 
+/**
+ * A map, mapping external module name to output library name.
+ * @enum {string}
+ */
 export const libraries = {
-  vue: {
-    lib: 'vue',
-    entry: path.join('lib', 'vue.js'),
-  },
-  '@vue/composition-api': {
-    lib: 'vue-composition-api',
-    entry: path.join('lib', 'vue-composition-api.js'),
-  },
-  '@vcmap/cesium': {
-    lib: 'cesium',
-    entry: path.join('lib', 'cesium.js'),
-    rollupOptions: {
-      plugins: [rollupPluginStripPragma({
-        pragmas: ['debug'],
-      })],
-    },
-  },
-  ol: {
-    lib: 'ol',
-    entry: path.join('lib', 'olLib.js'),
-    libraryEntry: path.join('lib', 'ol.js'), // openlayers special case, the entry to compile is the olLib, but the public entry must be ol.js
-    rollupOptions: {
-      output: {
-        manualChunks: () => 'ol.js', // this is needed, otherwise vitejs will create multiple chunks for openlayers.
-      },
-    },
-  },
-  '@vcmap/core': {
-    lib: 'core',
-    entry: path.join('lib', 'core.js'),
-    rollupOptions: {
-      plugins: [vcsOl()],
-    },
-  },
-  '@vcmap/ui': {
-    lib: 'ui',
-    rollupOptions: {
-      plugins: [
-        vcsOl(),
-        {
-          transform(source, sid) {
-            if (/src(\/|\\)setup.js/.test(sid)) {
-              return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
-            }
-            return source;
-          },
-        },
-      ],
-    },
-    entry: path.join('lib', 'ui.js'),
-  },
-  'vuetify/lib': {
-    lib: 'vuetify',
-    entry: path.join('lib', 'vuetify.js'),
-  },
-  '@vcsuite/ui-components': {
-    lib: 'uicomponents',
-    entry: path.join('lib', 'uicomponents.js'),
-  },
+  vue: 'vue',
+  '@vue/composition-api': 'vue-composition-api',
+  '@vcmap/cesium': 'cesium',
+  ol: 'ol',
+  '@vcmap/core': 'core',
+  '@vcmap/ui': 'ui',
+  'vuetify/lib': 'vuetify',
+  '@vcsuite/ui-components': 'uicomponents',
 };
-export const libraryPaths = {};
-
-Object.entries(libraries).forEach(([key, value]) => {
-  value.hash = `${uuid().substring(0, 6)}`;
-  libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
-  value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
-});
 
 /**
  * Will build a preview of all the current plugins & inline plugins
@@ -218,7 +163,7 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
     // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
     const relativePluginPaths = {};
     Object.entries(libraries).forEach(([key, value]) => {
-      const libraryPath = path.join('dist', 'assets', `${value.lib}.js`);
+      const libraryPath = path.join('dist', 'assets', `${value}.js`);
       const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
       const relativePath = path.relative(pluginPath, libraryPath);
       relativePluginPaths[key] = relativePath.split(path.sep).join(path.posix.sep);
@@ -239,7 +184,6 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
           fileName: 'index',
         },
         rollupOptions: {
-          plugins: [vcsOl()],
           external: Object.keys(libraries),
           output: {
             paths: relativePluginPaths,
