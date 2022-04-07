@@ -1,6 +1,5 @@
-import { VcsClassRegistry } from '@vcmap/core';
 import { watch } from '@vue/composition-api';
-import ContentTreeItem from './contentTreeItem.js';
+import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 
 /**
@@ -65,4 +64,4 @@ class GroupContentTreeItem extends ContentTreeItem {
 }
 
 export default GroupContentTreeItem;
-VcsClassRegistry.registerClass(GroupContentTreeItem.className, GroupContentTreeItem);
+contentTreeClassRegistry.registerClass(GroupContentTreeItem.className, GroupContentTreeItem);

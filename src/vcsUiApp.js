@@ -1,4 +1,11 @@
-import { VcsApp, contextIdSymbol, Collection, makeOverrideCollection, destroyCollection } from '@vcmap/core';
+import {
+  VcsApp,
+  contextIdSymbol,
+  Collection,
+  makeOverrideCollection,
+  destroyCollection,
+  OverrideClassRegistry,
+} from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
   isValidPackageName,
@@ -10,6 +17,7 @@ import { ToolboxManager } from './manager/toolbox/toolbox-manager.js';
 import { WindowManager } from './manager/window/windowManager.js';
 import ButtonManager from './manager/buttonManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
+import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -90,6 +98,12 @@ class VcsUiApp extends VcsApp {
     });
 
     /**
+     * @type {OverrideClassRegistry<ContentTreeItem>}
+     * @private
+     */
+    this._contentTreeClassRegistry = new OverrideClassRegistry(contentTreeClassRegistry);
+
+    /**
      * @type {OverrideContentTreeCollection}
      * @private
      */
@@ -120,9 +134,16 @@ class VcsUiApp extends VcsApp {
   get plugins() { return this._plugins; }
 
   /**
-   * @returns {OverrideCollection<AbstractTreeViewItem>}
+   * @type {OverrideCollection<ContentTreeItem>}
+   * @readonly
    */
   get contentTree() { return this._contentTree; }
+
+  /**
+   * @type {OverrideClassRegistry<ContentTreeItem>}
+   * @readonly
+   */
+  get contentTreeClassRegistry() { return this._contentTreeClassRegistry; }
 
   /**
    * @returns {ToolboxManager}
@@ -194,6 +215,7 @@ class VcsUiApp extends VcsApp {
     this._pluginAddedListener();
     destroyCollection(this._plugins);
     destroyCollection(this._contentTree);
+    this._contentTreeClassRegistry.destroy();
     super.destroy();
   }
 }

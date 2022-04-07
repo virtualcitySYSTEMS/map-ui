@@ -1,5 +1,4 @@
-import { VcsClassRegistry } from '@vcmap/core';
-import ContentTreeItem from './contentTreeItem.js';
+import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @type {symbol}
@@ -40,4 +39,4 @@ class SubContentTreeItem extends ContentTreeItem {
 }
 
 export default SubContentTreeItem;
-VcsClassRegistry.registerClass(SubContentTreeItem.className, SubContentTreeItem);
+contentTreeClassRegistry.registerClass(SubContentTreeItem.className, SubContentTreeItem);

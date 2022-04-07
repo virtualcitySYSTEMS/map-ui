@@ -24,7 +24,7 @@
         <v-form
           @submit.prevent="add"
         >
-          <v-select v-model="newCategory.type" :items="['category.Category', 'category.AppBackedCategory']" />
+          <v-select v-model="newCategory.type" :items="['Category', 'AppBackedCategory']" />
           <v-select
             v-model="newCategory.collectionName"
             v-if="newCategory.type === 'category.AppBackedCategory'"
@@ -74,7 +74,7 @@
       const uploadString = ref('');
       const newCategory = ref({
         name: 'new',
-        type: 'category.Category',
+        type: 'Category',
         collectionName: null,
       });
       const listeners = [
@@ -105,7 +105,7 @@
         ],
         async add() {
           const { value: newCategoryValue } = newCategory;
-          if (newCategoryValue.type === 'category.AppBackedCategory') {
+          if (newCategoryValue.type === 'AppBackedCategory') {
             newCategoryValue.name = newCategoryValue.collectionName;
           }
           await app.categories.requestCategory(newCategoryValue);
@@ -119,7 +119,14 @@
         async upload() {
           try {
             const jsonUpload = JSON.parse(uploadString.value);
-            await app.categories.parseCategory(jsonUpload, app.dynamicContextId);
+            if (!jsonUpload.name) {
+              console.error('must provide name');
+              return;
+            }
+            await app.categories.requestCategory({ name: jsonUpload.name, type: 'Category' });
+            if (jsonUpload?.items?.length > 0) {
+              await app.categories.parseCategoryItems(jsonUpload.name, jsonUpload.items, app.dynamicContextId);
+            }
             uploadString.value = '';
             uploadDialog.value = false;
           } catch (e) {

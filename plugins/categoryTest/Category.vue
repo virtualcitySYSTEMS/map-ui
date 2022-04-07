@@ -50,7 +50,7 @@
 <script>
   import { inject, nextTick, ref } from '@vue/composition-api';
   import { VcsButton } from '@vcsuite/ui-components';
-  import { getObjectFromOptions } from '@vcmap/core';
+  import { getObjectFromClassRegistry } from '@vcmap/core';
 
   export default {
     name: 'CategoryComponent',
@@ -82,9 +82,8 @@
         async addItem() {
           try {
             const config = JSON.parse(jsonString.value);
-            // eslint-disable-next-line no-underscore-dangle
-            if (categoryObject._typed) {
-              categoryObject.collection.add(await getObjectFromOptions(config));
+            if (categoryObject.classRegistryName) {
+              categoryObject.collection.add(getObjectFromClassRegistry(app[categoryObject.classRegistryName], config));
             } else {
               categoryObject.collection.add(config);
             }

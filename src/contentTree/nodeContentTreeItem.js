@@ -1,6 +1,5 @@
-import { VcsClassRegistry } from '@vcmap/core';
 import { watch } from '@vue/composition-api';
-import ContentTreeItem from './contentTreeItem.js';
+import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * A group item which has _no click handler_
@@ -35,4 +34,4 @@ class NodeContentTreeItem extends ContentTreeItem {
 }
 
 export default NodeContentTreeItem;
-VcsClassRegistry.registerClass(NodeContentTreeItem.className, NodeContentTreeItem);
+contentTreeClassRegistry.registerClass(NodeContentTreeItem.className, NodeContentTreeItem);

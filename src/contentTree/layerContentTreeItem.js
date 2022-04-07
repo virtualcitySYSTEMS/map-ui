@@ -1,10 +1,11 @@
-import { VcsClassRegistry, ViewPoint } from '@vcmap/core';
+import { ViewPoint } from '@vcmap/core';
 import { reactive } from '@vue/composition-api';
 import { StateActionState } from '../actions/stateRefAction.js';
 import { createGoToViewpointAction, createModalAction } from '../actions/actionHelper.js';
 import component from '../actions/styleSelector.vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
+import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
@@ -229,4 +230,4 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default LayerContentTreeItem;
-VcsClassRegistry.registerClass(LayerContentTreeItem.className, LayerContentTreeItem);
+contentTreeClassRegistry.registerClass(LayerContentTreeItem.className, LayerContentTreeItem);

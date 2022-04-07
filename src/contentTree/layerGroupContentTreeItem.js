@@ -1,5 +1,4 @@
-import { VcsClassRegistry } from '@vcmap/core';
-import ContentTreeItem from './contentTreeItem.js';
+import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 import { getStateFromLayer, setViewpointAction } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 
@@ -152,4 +151,4 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
 }
 
 export default LayerGroupContentTreeItem;
-VcsClassRegistry.registerClass(LayerGroupContentTreeItem.className, LayerGroupContentTreeItem);
+contentTreeClassRegistry.registerClass(LayerGroupContentTreeItem.className, LayerGroupContentTreeItem);

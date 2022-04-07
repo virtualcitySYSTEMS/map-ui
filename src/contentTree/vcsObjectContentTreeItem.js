@@ -1,5 +1,4 @@
-import { VcsClassRegistry } from '@vcmap/core';
-import ContentTreeItem from './contentTreeItem.js';
+import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @typedef {Object} VcsObjectContentTreeItemProperties
@@ -95,5 +94,5 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
   }
 }
 
-VcsClassRegistry.registerClass(VcsObjectContentTreeItem.className, VcsObjectContentTreeItem);
+contentTreeClassRegistry.registerClass(VcsObjectContentTreeItem.className, VcsObjectContentTreeItem);
 export default VcsObjectContentTreeItem;

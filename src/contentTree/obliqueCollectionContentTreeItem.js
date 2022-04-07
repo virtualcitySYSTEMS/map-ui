@@ -1,7 +1,8 @@
-import { ObliqueMap, VcsClassRegistry, DefaultObliqueCollection } from '@vcmap/core';
+import { ObliqueMap, DefaultObliqueCollection } from '@vcmap/core';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { setViewpointAction } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
+import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @typedef {ContentTreeItemOptions} ObliqueCollectionContentTreeItemOptions
@@ -151,4 +152,4 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default ObliqueCollectionContentTreeItem;
-VcsClassRegistry.registerClass(ObliqueCollectionContentTreeItem.className, ObliqueCollectionContentTreeItem);
+contentTreeClassRegistry.registerClass(ObliqueCollectionContentTreeItem.className, ObliqueCollectionContentTreeItem);

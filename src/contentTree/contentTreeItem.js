@@ -1,7 +1,7 @@
 import { ref, reactive, computed } from '@vue/composition-api';
 import { check, checkMaybe } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
-import { VcsClassRegistry, VcsEvent } from '@vcmap/core';
+import { ClassRegistry, VcsEvent } from '@vcmap/core';
 import { createLinkAction } from '../actions/actionHelper.js';
 import { createStateRefAction, StateActionState } from '../actions/stateRefAction.js';
 
@@ -35,6 +35,11 @@ import { createStateRefAction, StateActionState } from '../actions/stateRefActio
  * @type {symbol}
  */
 const actionWeightSymbol = Symbol('ActionWeight');
+
+/**
+ * @type {ClassRegistry<ContentTreeItem>}
+ */
+export const contentTreeClassRegistry = new ClassRegistry();
 
 /**
  * @class
@@ -448,5 +453,5 @@ class ContentTreeItem {
   }
 }
 
-VcsClassRegistry.registerClass(ContentTreeItem.className, ContentTreeItem);
+contentTreeClassRegistry.registerClass(ContentTreeItem.className, ContentTreeItem);
 export default ContentTreeItem;

@@ -1,5 +1,5 @@
-import { VcsClassRegistry } from '@vcmap/core';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
+import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @typedef {VcsObjectContentTreeItem.Options} ViewPointContentTreeItemOptions
@@ -104,4 +104,4 @@ class ViewPointContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default ViewPointContentTreeItem;
-VcsClassRegistry.registerClass(ViewPointContentTreeItem.className, ViewPointContentTreeItem);
+contentTreeClassRegistry.registerClass(ViewPointContentTreeItem.className, ViewPointContentTreeItem);

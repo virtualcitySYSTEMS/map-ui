@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { IndexedCollection, makeOverrideCollection, getObjectFromOptions } from '@vcmap/core';
+import { IndexedCollection, makeOverrideCollection, getObjectFromClassRegistry } from '@vcmap/core';
 import { v4 as uuid } from 'uuid';
 import { computed, ref } from '@vue/composition-api';
 import ContentTreeItem from './contentTreeItem.js';
@@ -295,7 +295,7 @@ export function createContentTreeCollection(app) {
     collection,
     () => app.dynamicContextId,
     null,
-    config => getObjectFromOptions(config, app),
+    config => getObjectFromClassRegistry(app.contentTreeClassRegistry, config, app),
     ContentTreeItem,
   );
 
