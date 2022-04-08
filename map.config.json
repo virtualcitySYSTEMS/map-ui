@@ -4,7 +4,7 @@
       "name": "@vcmap/project-selector",
       "entry": "plugins/@vcmap/project-selector/index.js",
       "selected": "VC Map Base",
-      "selectedContexts": [],
+      "selectedContexts": ["development"],
       "open": true,
       "projects": [
         {

@@ -40,11 +40,16 @@
             align="center"
           >
             <v-col>
-              <label>Select</label>
+              <VcsLabel html-for="selectInput" :dense="dense">
+                Select
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsSelect
+                id="selectInput"
                 :items="selectOptions"
+                :dense="dense"
+                :rules="[conditionalTest(state.conditionalInput, state.selected)]"
                 v-model="state.selected"
               />
             </v-col>
@@ -55,10 +60,13 @@
             align="center"
           >
             <v-col>
-              <label>ConditionalInput</label>
+              <VcsLabel html-for="conditionalInput" :dense="dense">
+                ConditionalInput
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                id="conditionalInput"
                 clearable
                 :dense="dense"
                 :rules="[conditionalTest(state.conditionalInput, state.selected)]"
@@ -75,7 +83,6 @@
               <VcsTextField
                 :dense="dense"
                 v-model="initialTextInput"
-                tooltip="Input has impact on »InitialTextInput« field"
               />
             </v-col>
           </v-row>
@@ -85,12 +92,14 @@
             align="center"
           >
             <v-col>
-              <label>InitialTextInput</label>
+              <VcsLabel html-for="initialTextInput" :dense="dense">
+                InitialTextInput
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                id="initialTextInput"
                 :dense="dense"
-                tooltip="Input stays in state loading as long as default input is not changed!"
                 :rules="[isValidText]"
                 :loading="state.initialTextInput === 'myInitialText'"
                 v-model="state.initialTextInput"
@@ -104,12 +113,14 @@
             align="center"
           >
             <v-col>
-              <label>NumberInput</label>
+              <VcsLabel html-for="numberInput" :dense="dense">
+                NumberInput
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                id="numberInput"
                 :dense="dense"
-                tooltip="please provide a number"
                 type="number"
                 step="10"
                 suffix="cm"
@@ -123,15 +134,100 @@
             align="center"
           >
             <v-col>
-              <label>VcsFormattedNumber</label>
+              <VcsLabel html-for="formattedNumber" :dense="dense">
+                VcsFormattedNumber
+              </VcsLabel>
             </v-col>
             <v-col class="d-flex justify-end">
               <VcsFormattedNumber
-                label="FormattedNumber"
+                id="formattedNumber"
                 :value="state.numberInput"
                 unit="cm"
                 :fraction-digits="1"
-                class="pr-2 font-size-12"
+                :dense="dense"
+              />
+            </v-col>
+          </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col cols="1" class="px-1">
+              <VcsLabel html-for="coordinateX" :dense="dense">
+                X
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="coordinateX"
+                :dense="dense"
+                type="number"
+                step="10"
+                suffix="m"
+                v-model.number="state.numberInput"
+              />
+            </v-col>
+            <v-col cols="1" class="px-1">
+              <VcsLabel html-for="coordinateY" :dense="dense">
+                Y
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="coordinateY"
+                :dense="dense"
+                type="number"
+                step="10"
+                suffix="m"
+                v-model.number="state.numberInput"
+              />
+            </v-col>
+            <v-col cols="1" class="px-1">
+              <VcsLabel html-for="coordinateZ" :dense="dense">
+                Z
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="coordinateZ"
+                :dense="dense"
+                type="number"
+                step="10"
+                suffix="m"
+                v-model.number="state.numberInput"
+              />
+            </v-col>
+          </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col cols="1" class="px-1">
+              <VcsLabel html-for="textInput" :dense="dense" class="text-caption">
+                1
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsSelect
+                :items="['A', 'B', 'C']"
+                :dense="dense"
+              />
+            </v-col>
+            <v-col>
+              <VcsSelect
+                :items="['A', 'B', 'C']"
+                :dense="dense"
+                multiple
+              />
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="textInput"
+                clearable
+                :dense="dense"
+                v-model="state.conditionalInput"
               />
             </v-col>
           </v-row>
@@ -141,12 +237,14 @@
             align="center"
           >
             <v-col>
-              <label>Email</label>
+              <VcsLabel html-for="emailInput" :dense="dense">
+                Email
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                id="emailInput"
                 :dense="dense"
-                tooltip="please provide your email"
                 type="email"
                 :rules="[isValidEmail]"
                 v-model="state.email"
@@ -160,8 +258,9 @@
           >
             <v-col>
               <VcsCheckbox
+                id="checkboxInput"
                 label="CheckboxInput"
-                hint="select or deselect"
+                :dense="dense"
                 :rules="[() => state.checkboxInput || 'Please accept our terms of use']"
                 v-model="state.checkboxInput"
               />
@@ -173,6 +272,7 @@
                 tooltip="toggle button"
                 color="warning"
                 tooltip-position="right"
+                small
               >
                 <span v-if="state.checkboxInput">Active-true</span>
                 <span v-else>Active-false</span>
@@ -201,14 +301,26 @@
 <script>
   import { inject, ref, watch } from '@vue/composition-api';
   import {
-    VcsSelect, VcsCheckbox, VcsButton, VcsTextField, VcsFormattedNumber, VcsFormSection,
+    VcsSelect,
+    VcsCheckbox,
+    VcsButton,
+    VcsTextField,
+    VcsFormattedNumber,
+    VcsFormSection,
+    VcsLabel,
   } from '@vcsuite/ui-components';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
 
   export default {
     name: 'PluginExampleComponent',
     components: {
-      VcsButton, VcsSelect, VcsTextField, VcsCheckbox, VcsFormattedNumber, VcsFormSection,
+      VcsButton,
+      VcsSelect,
+      VcsTextField,
+      VcsCheckbox,
+      VcsFormattedNumber,
+      VcsFormSection,
+      VcsLabel,
     },
     props: {
       windowId: {

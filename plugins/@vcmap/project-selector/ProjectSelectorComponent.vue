@@ -6,7 +6,7 @@
       :key="index"
     >
       <v-card
-        class="my-0"
+        class="ma-1"
         :color="project.active ? 'accent' : undefined"
         @click="selectProject(project)"
         hover
