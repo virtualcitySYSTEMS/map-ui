@@ -152,5 +152,5 @@ publish:
     variables:
       - $PUBLISH
   script:
-    - npm config set '//npmregistry:4873/:_authToken' "${VERDACCIO_TOKEN}"
-    - npm publish --registry http://npmregistry:4873
+    - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+    - npm publish --registry https://registry.npmjs.org --access public
