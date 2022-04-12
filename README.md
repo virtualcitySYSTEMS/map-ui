@@ -63,6 +63,9 @@ Example Template to show how to integrate the @vcmap/ui in a webpack5 project.
 ### [@vcmap/core demo](https://github.com/virtualcitySYSTEMS/map-core-demo)
 Example demo Application based on the @vcmap/core, shows how to implement a different UI on top of the @vcmap/core
 
+## Component Diagram
+![A schema on component interactions](./documentation/componentsSchema.png)
+
 # Project and Component Status
 The Project is currently in Alpha status. Different components have different states. For development check here 
 how safe it is to start developing with these components.
