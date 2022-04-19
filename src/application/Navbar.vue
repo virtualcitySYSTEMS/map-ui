@@ -12,6 +12,7 @@
               />
               <v-divider
                 v-if="mapActions.length > 0 && (contentActions.length > 0 || toolActions.length > 0)"
+                class="mx-4"
                 vertical
                 inset
               />
@@ -21,6 +22,7 @@
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
+                class="mx-4"
                 vertical
                 inset
               />
