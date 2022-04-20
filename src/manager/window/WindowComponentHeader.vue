@@ -1,5 +1,5 @@
 <template>
-  <span class="d-flex justify-space-between">
+  <span class="d-flex justify-space-between align-center window-component-header">
     <span>
       <v-icon
         v-if="windowState.headerIcon"
@@ -10,18 +10,25 @@
         {{ windowState.headerTitle | translate }}
       </h3>
     </span>
-    <v-icon
-      class=".float-right"
+    <VcsButton
       @click.stop="close"
-      size="16"
-      v-text="'mdi-close-thick'"
+      small
+      icon="mdi-close-thick"
     />
   </span>
 </template>
 
+<style>
+.window-component-header{
+  max-height: 16px;
+}
+</style>
+
 <script>
+  import { VcsButton } from '@vcsuite/ui-components';
 
   export default {
+    components: { VcsButton },
     props: {
       windowState: {
         type: Object,
