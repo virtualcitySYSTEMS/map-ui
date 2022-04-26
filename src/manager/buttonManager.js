@@ -41,7 +41,8 @@ export const ButtonLocation = {
   CONTENT: 1,
   TOOL: 2,
   PROJECT: 3,
-  MENU: 4,
+  SHARE: 4,
+  MENU: 5,
 };
 
 /**

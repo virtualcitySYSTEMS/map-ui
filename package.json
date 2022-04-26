@@ -43,7 +43,7 @@
   "peerDependencies": {
     "@vcmap/cesium": "~1.92.1",
     "@vcmap/core": "^5.0.0-rc.10",
-    "@vcsuite/ui-components": "~0.1.13",
+    "@vcsuite/ui-components": "~0.1.14",
     "@vue/composition-api": "~1.4.5",
     "ol": "~6.13.0",
     "vue": "~2.6.14",

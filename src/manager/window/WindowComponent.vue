@@ -58,8 +58,8 @@
     setup({ windowState, slotWindow }, { emit }) {
       const draggableHeaderRef = ref(null);
       const windowComponentRef = ref(null);
-      const isDynamic = computed(() => slotWindow !== WindowSlot.STATIC);
-      const isDocked = computed(() => slotWindow !== WindowSlot.DETACHED);
+      const isDynamic = computed(() => slotWindow.value !== WindowSlot.STATIC);
+      const isDocked = computed(() => slotWindow.value !== WindowSlot.DETACHED);
       const clicked = (e) => {
         emit('click', e);
       };

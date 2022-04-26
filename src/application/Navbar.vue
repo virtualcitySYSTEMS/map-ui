@@ -48,6 +48,25 @@
                 vertical
                 inset
               />
+              <v-menu
+                offset-y
+                v-if="shareActions.length > 0"
+              >
+                <template #activator="{ on, attrs }">
+                  <VcsButton
+                    v-bind="attrs"
+                    v-on="on"
+                    large
+                    tooltip="Share current view of the map."
+                    icon="$vcsShare"
+                  />
+                </template>
+                <VcsActionList
+                  :actions="shareActions"
+                  tooltip-position="left"
+                  :show-icon="true"
+                />
+              </v-menu>
               <VcsActionButtonList
                 :actions="menuActions"
                 :overflow-count="3"
@@ -63,13 +82,13 @@
 
 <script>
 
-  import { VcsActionButtonList } from '@vcsuite/ui-components';
+  import { VcsActionButtonList, VcsActionList, VcsButton } from '@vcsuite/ui-components';
   import { inject, ref, computed } from '@vue/composition-api';
   import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
 
   export default {
     name: 'VcsNavbar',
-    components: { VcsActionButtonList },
+    components: { VcsActionButtonList, VcsActionList, VcsButton },
     setup() {
       const app = inject('vcsApp');
 
@@ -84,6 +103,7 @@
         contentActions: getActions(ButtonLocation.CONTENT),
         toolActions: getActions(ButtonLocation.TOOL),
         projectActions: getActions(ButtonLocation.PROJECT),
+        shareActions: getActions(ButtonLocation.SHARE),
         menuActions: getActions(ButtonLocation.MENU),
       };
     },
