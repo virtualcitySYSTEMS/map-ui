@@ -100,7 +100,7 @@ deployStaging:
   stage: deploy
   environment:
     name: staging/$CI_COMMIT_REF_SLUG
-    url: http://stagingcluster/$CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG/
+    url: http://$CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG.stagingcluster.intern.virtualcitysystems.de
     on_stop: stopEnvironment
   image:
     name: gcr.io/kaniko-project/executor:debug
