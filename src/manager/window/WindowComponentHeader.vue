@@ -6,7 +6,7 @@
         class="mr-2 primary--text"
         v-text="windowState.headerIcon"
       />
-      <h3 class="font-size-14 d-inline-block user-select-none">
+      <h3 class="font-size-14 d-inline-block user-select-none font-weight-bold">
         {{ windowState.headerTitle | translate }}
       </h3>
     </span>

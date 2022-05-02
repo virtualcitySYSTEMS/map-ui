@@ -1,34 +1,32 @@
 <template>
-  <div
+  <v-sheet
     :id="`window-component--${windowState.id}`"
-    class="vsc-window v-sheet elevation-0 position-absolute"
+    class="elevation-3 position-absolute d-flex flex-column"
     ref="windowComponentRef"
     @click="clicked"
+    :class="{
+      'rounded': !isDocked,
+    }"
   >
-    <v-sheet
+    <div
       v-if="!windowState.hideHeader"
       ref="draggableHeaderRef"
-      class="v-sheet elevation-3 pa-2 transition-color-100-ease"
+      class="pa-2"
       :class="{
         'cursor-grab': isDynamic,
         'grey--text': !isOnTop,
-        'rounded-tl': !isDocked,
-        'rounded-tr': !isDocked,
       }"
       :draggable="isDynamic"
     >
       <slot name="headerComponent" />
-    </v-sheet>
-    <v-sheet
-      class="v-sheet elevation-3 overflow-y-auto overflow-x-hidden w-full h-full"
-      :class="{
-        'rounded-br': !isDocked,
-        'rounded-bl': !isDocked,
-      }"
+    </div>
+    <v-divider />
+    <div
+      class="overflow-x-hidden"
     >
       <slot />
-    </v-sheet>
-  </div>
+    </div>
+  </v-sheet>
 </template>
 
 <script>
@@ -69,8 +67,7 @@
       onMounted(() => {
         if (!windowState.hideHeader && slotWindow.value !== WindowSlot.STATIC) {
           nextTick(() => {
-            // To get to the Root Element of a Custom Component .$el is used here.
-            const dragStart = fromEvent(draggableHeaderRef.value.$el, 'dragstart');
+            const dragStart = fromEvent(draggableHeaderRef.value, 'dragstart');
             const dragOver = fromEvent(document.body, 'dragover');
             const drop = fromEvent(document.body, 'drop');
             const dragThenDrop = dragStart.pipe(
@@ -82,7 +79,8 @@
                 });
               }),
               switchMap((startEvent) => {
-                const style = window.getComputedStyle(windowComponentRef.value, null);
+                // To get to the Root Element of a Custom Component .$el is used here.
+                const style = window.getComputedStyle(windowComponentRef.value.$el, null);
                 const windowPosition = {
                   top: parseInt(style.getPropertyValue('top'), 10),
                   left: parseInt(style.getPropertyValue('left'), 10),
