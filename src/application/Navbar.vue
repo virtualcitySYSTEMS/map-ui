@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app absolute dense>
+  <v-app-bar app absolute dense elevation="0">
     <v-container fluid class="pa-0">
       <v-row no-gutters>
         <v-col>

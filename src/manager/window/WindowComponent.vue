@@ -6,6 +6,7 @@
     @click="clicked"
     :class="{
       'rounded': !isDocked,
+      'marginToTop': isDocked
     }"
   >
     <div
@@ -28,6 +29,14 @@
     </div>
   </v-sheet>
 </template>
+
+<style scoped>
+
+ .marginToTop {
+   margin-top: 2px;
+ }
+
+</style>
 
 <script>
   import {
