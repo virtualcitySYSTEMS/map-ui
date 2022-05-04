@@ -492,6 +492,10 @@
   ],
   "maps": [
     {
+      "type": "OpenlayersMap",
+      "name": "ol3"
+    },
+    {
       "type": "CesiumMap",
       "name": "cesium",
       "debugging": false,
@@ -505,10 +509,6 @@
       "fogDensityMobile": 0.0004,
       "fogScreenSpaceError": 2,
       "fogScreenSpaceErrorMobile": 4
-    },
-    {
-      "type": "OpenlayersMap",
-      "name": "ol3"
     },
     {
       "name": "Oblique Map",

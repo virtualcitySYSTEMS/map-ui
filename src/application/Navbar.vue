@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app absolute dense elevation="0">
+  <v-app-bar app absolute dense elevation="0" color="var(--v-basic-base)">
     <v-container fluid class="pa-0">
       <v-row no-gutters>
         <v-col>
@@ -12,7 +12,7 @@
               />
               <v-divider
                 v-if="mapActions.length > 0 && (contentActions.length > 0 || toolActions.length > 0)"
-                class="mx-4"
+                class="mx-2"
                 vertical
                 inset
               />
@@ -22,7 +22,7 @@
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
-                class="mx-4"
+                class="mx-2"
                 vertical
                 inset
               />
@@ -47,6 +47,7 @@
                 v-if="projectActions.length > 0 && menuActions.length > 0"
                 vertical
                 inset
+                class="mx-2"
               />
               <v-menu
                 offset-y
@@ -79,6 +80,12 @@
     </v-container>
   </v-app-bar>
 </template>
+
+<style lang="scss" scoped>
+  .v-toolbar__items > div{
+    gap: 8px;
+}
+</style>
 
 <script>
 
