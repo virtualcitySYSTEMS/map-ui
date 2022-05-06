@@ -170,7 +170,8 @@
       ],
       "properties": {
         "title": "TopPlus",
-        "infoUrl": "https://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf"
+        "infoUrl": "https://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf",
+        "showInOverviewMap": true
       }
     },
     {

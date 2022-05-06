@@ -53,6 +53,7 @@
     },
     setup(props) {
       const id = uuid();
+      const mapId = `mapCollection-${id}`;
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
 
@@ -115,6 +116,7 @@
             plugin.onVcsAppMounted(app);
           }
         });
+        app.maps.setTarget(mapId);
       });
 
       onUnmounted(() => {
@@ -134,7 +136,7 @@
       });
 
       return {
-        mapId: `mapCollection-${id}`,
+        mapId,
         toolboxManagerVisible: app.toolboxManager.state.visible,
       };
     },

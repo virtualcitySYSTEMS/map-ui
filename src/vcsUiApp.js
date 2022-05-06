@@ -18,6 +18,7 @@ import { WindowManager } from './manager/window/windowManager.js';
 import ButtonManager from './manager/buttonManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
+import OverviewMap from './navigation/overviewMap.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -125,6 +126,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._navbarManager = new ButtonManager();
+
+    /**
+     * @type {OverviewMap}
+     * @private
+     */
+    this._overviewMap = new OverviewMap(this);
   }
 
   /**
@@ -162,6 +169,12 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get navbarManager() { return this._navbarManager; }
+
+  /**
+   * @type {OverviewMap}
+   * @readonly
+   */
+  get overviewMap() { return this._overviewMap; }
 
   /**
    * @param {import("@vcmap/core").Context} context
@@ -211,6 +224,7 @@ class VcsUiApp extends VcsApp {
   destroy() {
     this.windowManager.destroy();
     this.navbarManager.destroy();
+    this._overviewMap.destroy();
     // TODO destroy other manager
     this._pluginAddedListener();
     destroyCollection(this._plugins);

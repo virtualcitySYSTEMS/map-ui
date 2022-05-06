@@ -22,17 +22,28 @@
     <v-row v-if="is3D" justify="center">
       <TiltSlider v-model="tilt" />
     </v-row>
+    <v-row justify="center">
+      <OrientationToolsButton
+        :icon="overviewAction.icon"
+        :tooltip="overviewAction.title"
+        :color="overviewAction.active ? 'primary' : undefined"
+        @click.stop="overviewAction.callback($event)"
+      />
+    </v-row>
   </v-container>
 </template>
 
 <script>
-  import { computed, inject, ref } from '@vue/composition-api';
+  import { computed, inject, ref, onUnmounted } from '@vue/composition-api';
   import { ObliqueMap, CesiumMap, OpenlayersMap } from '@vcmap/core';
   import { unByKey } from 'ol/Observable.js';
+  import { createOverviewMapAction } from '../actions/actionHelper.js';
+  import { getWindowComponentOptions } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
   import VcsZoomButton from './vcsZoomButton.vue';
   import TiltSlider from './tiltSlider.vue';
   import ObliqueRotation from './obliqueRotation.vue';
+  import OrientationToolsButton from './orientationToolsButton.vue';
 
   /**
    * @enum {string}
@@ -99,6 +110,7 @@
 
   export default {
     components: {
+      OrientationToolsButton,
       ObliqueRotation,
       TiltSlider,
       VcsZoomButton,
@@ -145,6 +157,18 @@
         },
       });
 
+      const { action, destroy } = createOverviewMapAction(
+        app.overviewMap,
+        getWindowComponentOptions(),
+        app.windowManager,
+      );
+
+      onUnmounted(() => {
+        if (destroy) {
+          destroy();
+        }
+      });
+
       return {
         viewMode,
         heading,
@@ -155,6 +179,7 @@
         zoomOut() { zoom(app.maps.activeMap, true); },
         left: () => {},
         right: () => {},
+        overviewAction: ref(action),
       };
     },
   };

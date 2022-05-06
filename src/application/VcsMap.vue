@@ -25,33 +25,14 @@
 </style>
 
 <script >
-  import { inject, onMounted, isReactive } from '@vue/composition-api';
-  import { getLogger as getLoggerByName } from '@vcsuite/logger';
-
-  /**
-   * @returns {Logger}
-   */
-  function getLogger() {
-    return getLoggerByName('VcsMap');
-  }
-
 
   export default {
+    name: 'VcsMap',
     props: {
       mapId: {
         type: String,
         required: true,
       },
-    },
-    setup(props) {
-      const app = inject('vcsApp');
-
-      onMounted(async () => {
-        app.maps.setTarget(props.mapId);
-        if (isReactive(app.maps.activeMap)) {
-          getLogger().error('Map is reactive, PLEASE FIX');
-        }
-      });
     },
   };
 </script>

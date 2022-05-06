@@ -88,6 +88,45 @@ export function createToggleAction(actionOptions, windowComponent, windowManager
 }
 
 /**
+ * Creates an action which will toggle the overview map (opening & closing the window and activating/ deactivating the overview map).
+ * @param {OverviewMap} overviewMap
+ * @param {WindowComponentOptions} windowComponent
+ * @param {WindowManager}  windowManager
+ * @returns {(function(): void)|*}
+ */
+export function createOverviewMapAction(overviewMap, windowComponent, windowManager) {
+  const { action, destroy } = createToggleAction(
+    {
+      name: 'overviewMapToggle',
+      icon: '$vcsMap',
+      title: 'Overview Map',
+    },
+    windowComponent,
+    windowManager,
+    vcsAppSymbol,
+  );
+
+  const listeners = [
+    windowManager.added.addEventListener(async ({ id }) => {
+      if (id === windowComponent.id) {
+        await overviewMap.activate();
+      }
+    }),
+    windowManager.removed.addEventListener(({ id }) => {
+      if (id === windowComponent.id) {
+        overviewMap.deactivate();
+      }
+    }),
+  ];
+
+  const destroyAction = () => {
+    destroy();
+    listeners.forEach((cb) => { cb(); });
+  };
+  return { action, destroy: destroyAction };
+}
+
+/**
  * Creates a header less window which will close if anything outside of the window is clicked. The window will open
  * at the clicked position (the actions position) by default, unless the window component already has a position set.
  * @param {ActionOptions} actionOptions
