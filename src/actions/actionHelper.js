@@ -26,9 +26,10 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
   check(mapName, String);
   check(maps, MapCollection);
 
+  const active = maps.activeMap?.name === mapName;
   const action = {
     ...actionOptions,
-    active: false,
+    active,
     callback() {
       maps.setActiveMap(mapName);
     },

@@ -64,31 +64,33 @@
       };
 
       const mapButtonActionDestroy = {};
-      const mapAddedDestroy = app.maps.added.addEventListener(
-        ({ className, name }) => {
-          if (mapButtonActionDestroy[name]) {
-            mapButtonActionDestroy[name]();
-          }
-          const { action, destroy } = createMapButtonAction(
-            {
-              name,
-              icon: iconMap[className],
-              title: `Activate ${ name}`,
-            },
+
+      const setupMap = ({ className, name }) => {
+        if (mapButtonActionDestroy[name]) {
+          mapButtonActionDestroy[name]();
+        }
+        const { action, destroy } = createMapButtonAction(
+          {
             name,
-            app.maps,
-          );
-          app.navbarManager.add({
-            id: `mapButton-${name}`,
-            location: ButtonLocation.MAP,
-            action,
-          }, vcsAppSymbol);
-          mapButtonActionDestroy[name] = () => {
-            app.navbarManager.remove(`mapButton-${name}`);
-            destroy();
-          };
-        },
-      );
+            icon: iconMap[className],
+            title: `Activate ${ name}`,
+          },
+          name,
+          app.maps,
+        );
+        app.navbarManager.add({
+          id: `mapButton-${name}`,
+          location: ButtonLocation.MAP,
+          action,
+        }, vcsAppSymbol);
+        mapButtonActionDestroy[name] = () => {
+          app.navbarManager.remove(`mapButton-${name}`);
+          destroy();
+        };
+      };
+
+      [...app.maps].forEach(setupMap);
+      const mapAddedDestroy = app.maps.added.addEventListener(setupMap);
 
       const mapRemovedDestroy = app.maps.removed.addEventListener(({ name }) => {
         if (mapButtonActionDestroy[name]) {
