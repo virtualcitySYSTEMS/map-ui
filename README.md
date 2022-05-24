@@ -116,6 +116,56 @@ how safe it is to start developing with these components.
 - PluginConcept RC
 - SEARCH API TODO
 
+# Roadmap / Future Development
+- Phase 1 Currently worked on
+- Phase 2 Beta Version stable feature complete Plugin API
+- Phase 3 Integration in VC Publisher for next major release
+- Phase 4 Feature Complete with v4.x with all Plugins...
+
+### Core
+- Editor (WIP) Prio 1
+- Clustering Prio 4
+- Style Refactoring Prio 4
+
+### Ui
+- Responsive View / mobile view (WIP) Prio 1
+- Toolbar (WIP) Prio 1
+- Search API + UI Prio 2
+- Overlay API Support  Prio 3
+- i18n (WIP) Prio 1 
+- FeatureInfo Concept/API (Balloon) Prio 1
+  - Context API ? Prio 2
+  - Hierachy B3dm
+- Legend Concept/API  Prio 2 
+- Copyright/Attributions Concept / API  Prio 2
+- Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  Prio 2
+- Help Concept / Beispielhaft implementieren  Prio 2
+- Components Concept/Categories / API  Prio 1
+
+### Plugins
+- Drawing  Prio 1
+- Measurement  Prio 1
+- PDF Export (WIP) Prio 1
+- Positiondisplay  Prio 2
+- Search Nominatim Prio 2
+- SwipeTool Prio 2
+- Publisher Integration Plugin 3
+- Shadow Prio 4
+- Export Prio 4
+- HeightProfile Prio 4
+- Planning Prio 4
+- Query Prio 4
+- TransparentTerrain Prio 4
+- ViewShed Prio 4
+- AttributeEditor Prio 4
+- ClippingTool Prio 4
+- Flight Prio 4
+- MultiView Prio 4
+- Locator ? Prio 4
+- DisplayQuality Prio 4
+- Walkmode Prio 4
+- Search esri Prio 4
+- Search WFS Prio 4
 
 # Getting started
 For a first start, clone the repo and call `npm i` `npm run start` This will start a development server. The 
