@@ -16,9 +16,8 @@
 <script>
   import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
   import { getLogger } from '@vcsuite/logger';
-  import { VcsButton } from '@vcsuite/ui-components';
 
-  import { EmptyCmpt, WindowSlot } from '@vcmap/ui';
+  import { EmptyCmpt, WindowSlot, VcsButton } from '@vcmap/ui';
   import VcsContent from './vcsContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
 

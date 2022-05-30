@@ -19,8 +19,8 @@
 </template>
 
 <script>
-  import { VcsSelect } from '@vcsuite/ui-components';
   import { computed, inject, onUnmounted, ref } from '@vue/composition-api';
+  import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 
   export default {
     name: 'StyleSelector',

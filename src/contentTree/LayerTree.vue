@@ -12,7 +12,7 @@
 
 <script>
   import { inject } from '@vue/composition-api';
-  import { VcsTreeview } from '@vcsuite/ui-components';
+  import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
   /**
    * @description

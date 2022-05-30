@@ -2,6 +2,9 @@
 
 @import './theming';
 @import './typography';
+@import './variables';
+@import './vcsFont';
+@import './vcsGrid';
 
 html.vcs-ui {
   overflow-x: hidden !important;

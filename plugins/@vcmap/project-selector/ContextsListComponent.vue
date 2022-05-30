@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import { VcsTooltip } from '@vcsuite/ui-components';
+  import { VcsTooltip } from '@vcmap/ui';
 
   export default {
     name: 'ContextsListComponent',

@@ -89,9 +89,11 @@
 
 <script>
 
-  import { VcsActionButtonList, VcsActionList, VcsButton } from '@vcsuite/ui-components';
   import { inject, ref, computed } from '@vue/composition-api';
   import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
+  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
+  import VcsActionList from '../components/lists/VcsActionList.vue';
+  import VcsButton from '../components/buttons/VcsButton.vue';
 
   export default {
     name: 'VcsNavbar',

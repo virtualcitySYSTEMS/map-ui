@@ -1,0 +1,70 @@
+/** Global **/
+$font-size: 14px;
+$font-size-root: 14px;
+
+// input font and icon
+$input-font-size: $font-size;
+$input-icon-height: 16px; // 24px !default;
+$input-icon-width: 16px; // 24px !default;
+$input-icon-min-width: 16px; // 24px !default;
+
+
+/** VcsTextfield **/
+
+// height, size and padding
+$text-field-padding: 2px 0 1px; //8px 0 8px !default;
+$text-field-filled-full-width-outlined-slot-min-height: 32px; // 56px !default;
+$text-field-filled-full-width-outlined-single-line-slot-min-height: 24px; //40px !default;
+$text-field-solo-control-min-height: 30px; //48px !default;
+$text-field-solo-dense-control-min-height: 22px; //38px !default;
+$text-field-outlined-fieldset-border: 1px solid currentColor; // 2px solid currentColor !default;
+
+// dense non outlined
+$text-field-dense-padding: 2px 0px 1px; //4px 0 2px !default;
+
+// clear icon non dense
+$text-field-enclosed-prepend-append-margin-top: 9px;
+
+// tooltip icon in append slot
+$text-field-outlined-append-prepend-outer-margin-top: 4px; // 18px !default;
+$text-field-append-prepend-margin: 0px; // 4px !default;
+$text-field-outlined-prepend-append-margin-top: 4px; // 8px !default;
+
+// label position for outlined Label dense and non-dense
+$text-field-outlined-label-position-x: 6px;
+$text-field-outlined-label-position-y: -14px;
+$text-field-outlined-dense-label-position-x: 2px;
+$text-field-outlined-dense-label-position-y: -10px;
+$text-field-label-top: 2px; // 6px !default;
+$text-field-label-active-transform: translateY(-14px) scale(.75); //translateY(-18px) scale(.75) !default;
+
+/** VcsTextarea **/
+$textarea-box-enclosed-single-outlined-margin-top: 0px; // 10px !default;
+$textarea-dense-box-enclosed-single-outlined-margin-top: 0px; // 6px !default;
+
+/** VcsCheckbox **/
+$icon-size: 20px; // 24px !default;
+$icon-size-dense: 16px; // 20px !default;
+
+/** VcsSelect **/
+
+$select-dense-selections-margin: 4px 4px 3px 0; // 5px 4px 3px 0 !default;
+
+// list box
+$list-padding: 0 0; // 8px 0 !default;
+$list-item-title-font-size: $font-size; // map-deep-get($headings, 'subtitle-1', 'size') !default;
+$list-item-dense-title-font-size: $font-size; // 0.8125rem !default;
+$list-item-dense-title-line-height: 24px; // 1rem !default;
+$list-item-min-height: 32px; // 48px !default;
+$list-dense-min-height: 24px; // 40px !default;
+$list-item-content-padding: 4px 0; // 12px 0 !default;
+$list-dense-content-padding: 0 0; // 8px 0 !default;
+$list-item-action-icon-margin: 0 0; //32px !default;
+$list-item-action-margin: 0 0; // 12px 0 !default;
+$list-item-icon-margin: auto 0; // 16px 0 !default;
+
+
+/** Treeview **/
+$treeview-node-level-width: 16px;
+$treeview-node-margin: 4px;
+$treeview-node-height: 32px; // 48px !default;

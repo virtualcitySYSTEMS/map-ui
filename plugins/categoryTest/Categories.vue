@@ -57,7 +57,7 @@
 
 <script>
   import { inject, ref, onUnmounted } from '@vue/composition-api';
-  import { VcsButton } from '@vcsuite/ui-components';
+  import { VcsButton } from '@vcmap/ui';
   import Category from './Category.vue';
 
   export default {

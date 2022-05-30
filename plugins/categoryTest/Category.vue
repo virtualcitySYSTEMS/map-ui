@@ -49,7 +49,7 @@
 
 <script>
   import { inject, nextTick, ref } from '@vue/composition-api';
-  import { VcsButton } from '@vcsuite/ui-components';
+  import { VcsButton } from '@vcmap/ui';
   import { getObjectFromClassRegistry } from '@vcmap/core';
 
   export default {

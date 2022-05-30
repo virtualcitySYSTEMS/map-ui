@@ -44,9 +44,6 @@ Provides an abstraction layer around 2D, 3D and oblique Maps. Provides the follo
 - styles
 - application and context/config handling
 
-### [@vcsuite/ui-components](https://github.com/virtualcitySYSTEMS/suite-ui-components)
-Collection of reusable dumb ui components. For example textfield, checkbox, lists, icons. The components are build on top of [vuetify](https://github.com/vuetifyjs/vuetify)
-
 ### [@vcmap/ui](https://github.com/virtualcitySYSTEMS/map-ui)
 This Project, provides
 - a configurable and extendable ui
@@ -77,25 +74,6 @@ how safe it is to start developing with these components.
 - RC: Styles and API are most likely stable for the release / Featurecomplete.
 - STABLE: conforms to SemVer concept. 
 
-### @vcsuite/ui-components
-- VcsTextField BETA
-- VcsCheckbox BETA
-- VcsSelect BETA
-- VcsButton ALPHA
-- VcsFormattedNumber BETA
-- VcsLabel BETA
-- VcsTooltip ALPHA 
-- VcsActionButtonList ALPHA 
-- VcsActionList ALPHA 
-- VcsFormSection ALPHA 
-- VcsTreeView ALPHA 
-- VcsTreeViewItem ALPHA 
-- VcsList TODO 
-- VcsListItem TODO
-- VcsBadge ALPHA 
-- VcsColorPicker TODO 
-- VcsDatePicker TODO
-
 ### @vcmap/core
 - Context Concept RC
 - Categories Concept BETA
@@ -115,6 +93,25 @@ how safe it is to start developing with these components.
 - ActionConcept BETA
 - PluginConcept RC
 - SEARCH API TODO
+
+##### components
+- VcsTextField BETA
+- VcsCheckbox BETA
+- VcsSelect BETA
+- VcsButton ALPHA
+- VcsFormattedNumber BETA
+- VcsLabel BETA
+- VcsTooltip ALPHA
+- VcsActionButtonList ALPHA
+- VcsActionList ALPHA
+- VcsFormSection ALPHA
+- VcsTreeView ALPHA
+- VcsTreeViewItem ALPHA
+- VcsList TODO
+- VcsListItem TODO
+- VcsBadge ALPHA
+- VcsColorPicker TODO
+- VcsDatePicker TODO
 
 # Roadmap / Future Development
 - Phase 1 Currently worked on

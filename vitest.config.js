@@ -24,7 +24,7 @@ const configTest = defineConfig({
   ],
   test: {
     deps: {
-      inline: [/@vcsuite\/ui-components/, 'vuetify'],
+      inline: ['vuetify'],
     },
     environment: 'jsdom',
     setupFiles: ['tests/setup.js'],

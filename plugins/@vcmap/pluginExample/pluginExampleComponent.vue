@@ -308,7 +308,7 @@
     VcsFormattedNumber,
     VcsFormSection,
     VcsLabel,
-  } from '@vcsuite/ui-components';
+  } from '@vcmap/ui';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
 
   export default {

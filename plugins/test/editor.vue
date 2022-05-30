@@ -19,7 +19,7 @@
 
 <script>
   import { ref, inject } from '@vue/composition-api';
-  import { VcsButton } from '@vcsuite/ui-components';
+  import { VcsButton } from '@vcmap/ui';
   import { Context } from '@vcmap/core';
 
   const contextId = 'foo';

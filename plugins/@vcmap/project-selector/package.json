@@ -7,8 +7,7 @@
     "@vcsuite/logger": "^1.0.1"
   },
   "peerDependencies": {
-    "@vcmap/ui": "5.0.0-rc.2",
-    "@vcsuite/ui-components": "~0.1.8",
+    "@vcmap/ui": "^5.0.0-rc.11",
     "@vcmap/core": "^5.0.0-rc.5",
     "@vue/composition-api": "^1.4.5"
   }

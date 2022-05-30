@@ -69,9 +69,6 @@ function hashLibraries() {
     'vuetify/lib': {
       entry: path.join('lib', 'vuetify.js'),
     },
-    '@vcsuite/ui-components': {
-      entry: path.join('lib', 'uicomponents.js'),
-    },
   };
 
   const libraryPaths = {};

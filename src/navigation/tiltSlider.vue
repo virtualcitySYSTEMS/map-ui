@@ -47,7 +47,7 @@
 </style>
 <script>
   import { clamp } from 'ol/math.js';
-  import { VcsTooltip } from '@vcsuite/ui-components';
+  import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
    * A vertical slider from 0 to -90. pass value with v-model

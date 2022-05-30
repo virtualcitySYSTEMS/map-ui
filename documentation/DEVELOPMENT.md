@@ -14,7 +14,7 @@ Run the following scripts using `npm run` to setup your development environment.
 - `install-plugins` to integrate externally managed and developed plugins, use the `plugins/package.json` and this script to 
 install them. 
 
-To develop @vcmap/core and @vcsuite/ui-components at the same time, they can be integrated using `npm link`
+To develop @vcmap/core at the same time, you can integrate it using `npm link`.
 
 ### Setting up Webstorm
 Make sure ESlint is activated

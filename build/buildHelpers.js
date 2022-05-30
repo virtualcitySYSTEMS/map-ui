@@ -144,7 +144,6 @@ export const libraries = {
   '@vcmap/core': 'core',
   '@vcmap/ui': 'ui',
   'vuetify/lib': 'vuetify',
-  '@vcsuite/ui-components': 'uicomponents',
 };
 
 /**

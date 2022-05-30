@@ -65,10 +65,9 @@
 <script>
 
   import { inject } from '@vue/composition-api';
-  import { VcsButton } from '@vcsuite/ui-components';
-
   import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
   import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
+  import VcsButton from '../../components/buttons/VcsButton.vue';
 
   export default {
     name: 'VcsToolbox',
@@ -77,6 +76,11 @@
         type: Number,
         default: 600,
       },
+    },
+    components: {
+      ToolboxSingleSelectButton,
+      ToolboxMultiSelectButton,
+      VcsButton,
     },
     setup() {
       const app = inject('vcsApp');
@@ -104,11 +108,6 @@
         setGroupOpen,
         toolboxGroupVisible,
       };
-    },
-    components: {
-      ToolboxSingleSelectButton,
-      ToolboxMultiSelectButton,
-      VcsButton,
     },
   };
 </script>

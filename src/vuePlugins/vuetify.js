@@ -3,7 +3,7 @@ import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
-import { Icons } from '@vcsuite/ui-components';
+import Icons from '../icons/+all.js';
 
 Vue.use(Vuetify);
 

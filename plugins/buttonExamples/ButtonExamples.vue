@@ -170,7 +170,7 @@
   </v-card>
 </template>
 <script>
-  import { VcsButton, VcsActionButtonList } from '@vcsuite/ui-components';
+  import { VcsButton, VcsActionButtonList } from '@vcmap/ui';
 
   export default {
     name: 'ButtonExamples',

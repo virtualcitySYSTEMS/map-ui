@@ -25,7 +25,7 @@
 </style>
 
 <script>
-  import { VcsButton } from '@vcsuite/ui-components';
+  import VcsButton from '../../components/buttons/VcsButton.vue';
 
   export default {
     components: { VcsButton },

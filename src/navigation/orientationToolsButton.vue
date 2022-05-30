@@ -23,7 +23,7 @@
 }
 </style>
 <script>
-  import { VcsTooltip } from '@vcsuite/ui-components';
+  import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
    * A v-card with h & w 8. Requires an icon and binds all attributes & listeners to the v-card

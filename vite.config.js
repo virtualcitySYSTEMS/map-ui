@@ -21,7 +21,6 @@ const configMain = defineConfig(async ({ mode }) => {
       exclude: [
         '@vcmap/core',
         'ol',
-        '@vcsuite/ui-components',
       ],
       include: [
         '@vcmap/core > fast-deep-equal',
@@ -37,9 +36,6 @@ const configMain = defineConfig(async ({ mode }) => {
       strictPort: true,
       port,
       proxy,
-      watch: {
-        ignored: ['!**/node_modules/@vcsuite/ui-components/**'],
-      },
     },
   };
 });

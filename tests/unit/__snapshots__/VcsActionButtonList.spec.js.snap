@@ -1,0 +1,18 @@
+// Vitest Snapshot v1
+
+exports[`VcsActionButtonList > should mount 1`] = `
+"<div class=\\"d-flex align-center justify-end action-btn-wrap\\">
+  <div data-v-4027582a=\\"\\" class=\\"vcs-button-wrap d-flex\\"><button data-v-4027582a=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--text theme--light elevation-0 v-size--default vcs-button--standard padding font-weight-bold text-capitalize\\" aria-haspopup=\\"true\\" aria-expanded=\\"false\\"><span class=\\"v-btn__content\\"><i data-v-4027582a=\\"\\" aria-hidden=\\"true\\" class=\\"v-icon notranslate material-icons theme--light\\">$vcsIcon</i></span></button><span data-v-c65d31be=\\"\\" data-v-4027582a=\\"\\" class=\\"v-tooltip v-tooltip--bottom\\" tooltipposition=\\"bottom\\"><!----></span>
+    <!---->
+  </div>
+  <div data-v-4027582a=\\"\\" class=\\"vcs-button-wrap d-flex\\"><button data-v-4027582a=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--text theme--light elevation-0 v-size--default vcs-button--standard padding font-weight-bold text-capitalize\\" aria-haspopup=\\"true\\" aria-expanded=\\"false\\"><span class=\\"v-btn__content\\"><i data-v-4027582a=\\"\\" aria-hidden=\\"true\\" class=\\"v-icon notranslate material-icons theme--light\\">$vcsIcon2</i></span></button><span data-v-c65d31be=\\"\\" data-v-4027582a=\\"\\" class=\\"v-tooltip v-tooltip--bottom\\" tooltipposition=\\"bottom\\"><!----></span>
+    <!---->
+  </div>
+  <div class=\\"v-menu\\">
+    <!---->
+  </div>
+  <div data-v-4027582a=\\"\\" class=\\"vcs-button-wrap d-flex\\"><button data-v-4027582a=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--text theme--light elevation-0 v-size--default vcs-button--standard padding font-weight-bold text-capitalize\\" role=\\"button\\" aria-haspopup=\\"true\\" aria-expanded=\\"false\\"><span class=\\"v-btn__content\\"><!----><i aria-hidden=\\"true\\" class=\\"v-icon notranslate material-icons theme--light\\">$vcsKebab</i></span></button><span data-v-c65d31be=\\"\\" data-v-4027582a=\\"\\" class=\\"v-tooltip v-tooltip--bottom\\" tooltipposition=\\"bottom\\"><!----></span>
+    <!---->
+  </div>
+</div>"
+`;
