@@ -27,6 +27,13 @@ const configMain = defineConfig({
       exclude: [],
     }),
   ],
+  css: {
+    preprocessorOptions: {
+      sass: {
+        additionalData: "\n@import './src/styles/variables.scss'\n",
+      },
+    },
+  },
 });
 
 export default configMain;
