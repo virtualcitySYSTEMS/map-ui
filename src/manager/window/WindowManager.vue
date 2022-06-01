@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$vuetify.breakpoint.xs ? 'win-container-mobile' : 'unset'">
     <WindowComponent
       v-for="(id, zIndex) in componentIds"
       :key="id"
@@ -27,6 +27,23 @@
     </WindowComponent>
   </div>
 </template>
+
+<style scoped lang="scss">
+  .win-container-mobile {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+  .win-container-mobile > {
+    div{
+      width: 100% !important;
+      inset: unset !important;
+      border-radius: 0 !important;
+    }
+  }
+
+</style>
 
 <script>
   import { inject } from '@vue/composition-api';

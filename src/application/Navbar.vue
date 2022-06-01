@@ -1,5 +1,13 @@
 <template>
-  <v-app-bar app absolute dense elevation="0" color="var(--v-basic-base)">
+  <v-app-bar
+    app
+    absolute
+    dense
+    elevation="0"
+    :height="$vuetify.breakpoint.xs ? '56px' : '48px'"
+    :color="'var(--v-basic-base)'"
+    :bottom="$vuetify.breakpoint.xs ? 'bottom' : undefined"
+  >
     <v-container fluid class="pa-0">
       <v-row no-gutters>
         <v-col>
@@ -18,6 +26,7 @@
               />
               <VcsActionButtonList
                 :actions="contentActions"
+                :overflow-count="$vuetify.breakpoint.xs ? 2 : 3"
                 large
               />
               <v-divider
@@ -28,16 +37,17 @@
               />
               <VcsActionButtonList
                 :actions="toolActions"
+                v-if="$vuetify.breakpoint.mdAndUp"
                 large
               />
             </div>
           </v-toolbar-items>
         </v-col>
         <v-col class="align-center d-flex justify-center">
-          <div class="company-logo" />
+          <div v-if="$vuetify.breakpoint.mdAndUp" class="company-logo" />
         </v-col>
         <v-col class="align-content-end d-flex justify-end">
-          <v-toolbar-items>
+          <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
             <div class="d-flex align-center">
               <VcsActionButtonList
                 :actions="projectActions"
@@ -84,7 +94,7 @@
 <style lang="scss" scoped>
   .v-toolbar__items > div{
     gap: 8px;
-}
+  }
 </style>
 
 <script>

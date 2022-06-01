@@ -1,5 +1,5 @@
 <template>
-  <v-container class="nav-container">
+  <v-container :class="$vuetify.breakpoint.xs ? 'nav-container mobile' : 'nav-container'">
     <v-row>
       <VcsCompass
         :view-mode="viewMode"
@@ -13,16 +13,16 @@
         v-model="heading"
       />
     </v-row>
-    <v-row justify="center">
+    <v-row justify="center" v-if="$vuetify.breakpoint.mdAndUp">
       <VcsZoomButton
         @zoom-out="zoomOut()"
         @zoom-in="zoomIn()"
       />
     </v-row>
-    <v-row v-if="is3D" justify="center">
+    <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
       <TiltSlider v-model="tilt" />
     </v-row>
-    <v-row justify="center">
+    <v-row justify="center" v-if="$vuetify.breakpoint.mdAndUp">
       <OrientationToolsButton
         :icon="overviewAction.icon"
         :tooltip="overviewAction.title"
@@ -191,8 +191,12 @@
     right: 2rem;
     bottom: 2rem;
     width: unset;
+    &.mobile{
+      top: 1rem;
+      right: 1rem;
+      bottom: auto;
+    }
   }
-
   .nav-container > {
     .row {
       margin-bottom: 15px;

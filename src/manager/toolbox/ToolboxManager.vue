@@ -1,7 +1,7 @@
 <script src="../../vcsUiApp.js"></script>
 <template>
   <v-toolbar
-    v-if="actionGroups.length > 0"
+    v-if="actionGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
     dense
     class="vcs-toolbox toolbar__secondary rounded-b mx-auto v-sheet marginToTop"
     :width="width"

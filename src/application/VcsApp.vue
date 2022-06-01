@@ -1,18 +1,18 @@
 <template>
   <v-app class="h-full" absolute>
     <Navbar />
-    <v-main fill-height absolute>
+    <v-main class="fill-height absolute">
+      <div v-if="$vuetify.breakpoint.smAndDown" class="company-logo-mobile" />
       <VcsMap :map-id="mapId" />
       <MapNavigation />
       <ToolboxManagerComponent v-if="toolboxOpen" />
       <WindowManagerComponent />
     </v-main>
-    <v-footer app absolute>
+    <v-footer app absolute v-if="$vuetify.breakpoint.mdAndUp">
       footer
     </v-footer>
   </v-app>
 </template>
-
 
 <style scoped lang="scss">
 ::v-deep .v-application--wrap {
