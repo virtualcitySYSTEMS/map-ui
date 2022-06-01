@@ -9,11 +9,7 @@ import {
   vi,
 } from 'vitest';
 import { isReactive } from '@vue/composition-api/dist/vue-composition-api.js';
-import ButtonManager, {
-  ButtonLocation,
-  getActionsByLocation,
-} from '../../src/manager/buttonManager.js';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import { ButtonManager } from '../../src/manager/buttonManager.js';
 import { vcsAppSymbol } from '../../src/pluginHelper.js';
 
 describe('ButtonManager', () => {
@@ -25,7 +21,6 @@ describe('ButtonManager', () => {
     beforeAll(() => {
       buttonComponentOptions = {
         id: 'id',
-        location: ButtonLocation.TOOL,
         action: {
           name: 'test',
           callback() {
@@ -63,9 +58,6 @@ describe('ButtonManager', () => {
       it('should throw if now owner is supplied', () => {
         expect(buttonManager.add.bind(buttonManager, { id: 'test' })).to.throw;
       });
-      it('should throw if now button location is supplied', () => {
-        expect(buttonManager.add.bind(buttonManager, { id: 'test' })).to.throw;
-      });
       it('should throw if same buttonId is already managed', () => {
         expect(buttonManager.add.bind(buttonManager, [{ id: 'test' }, 'plugin'])).to.throw;
       });
@@ -94,59 +86,6 @@ describe('ButtonManager', () => {
     });
   });
 
-  describe('getting actions from the Manager', () => {
-    let app;
-    /** @type {ButtonManager} */
-    let buttonManager;
-    let buttonComponentOptions;
-
-    beforeAll(() => {
-      buttonManager = new ButtonManager();
-      app = new VcsUiApp();
-      app.plugins.add({ name: 'plugin1' });
-      app.plugins.add({ name: 'plugin2' });
-      app.plugins.add({ name: 'plugin3' });
-      buttonComponentOptions = {
-        location: ButtonLocation.CONTENT,
-        action: {
-          name: 'test',
-          callback() {
-          },
-        },
-      };
-    });
-
-    afterEach(() => {
-      buttonManager.clear();
-    });
-
-    afterAll(() => {
-      buttonManager.destroy();
-    });
-
-
-    it('should get only actions of specified button location', () => {
-      buttonManager.add({ ...buttonComponentOptions, location: ButtonLocation.TOOL }, 'plugin3');
-      buttonManager.add({ ...buttonComponentOptions, location: ButtonLocation.MENU }, 'plugin1');
-      buttonManager.add(buttonComponentOptions, 'plugin2');
-      buttonManager.add(buttonComponentOptions, vcsAppSymbol);
-      const buttonComponents = buttonManager.componentIds.map(id => buttonManager.get(id));
-      const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
-      expect(actions.length).to.be.equal(2);
-    });
-
-    it('should get actions sorted by owner', () => {
-      buttonManager.add(buttonComponentOptions, 'plugin3');
-      buttonManager.add(buttonComponentOptions, 'plugin1');
-      buttonManager.add(buttonComponentOptions, 'plugin2');
-      buttonManager.add({ ...buttonComponentOptions, action: { name: 'testApp', callback() {} } }, vcsAppSymbol);
-      const buttonComponents = buttonManager.componentIds.map(id => buttonManager.get(id));
-      const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
-      expect(actions.length).to.be.equal(4);
-      expect(actions[0]).to.have.property('name', 'testApp');
-    });
-  });
-
   describe('removing buttonComponents', () => {
     /** @type {ButtonManager} */
     let buttonManager;
@@ -157,7 +96,6 @@ describe('ButtonManager', () => {
     beforeAll(() => {
       buttonManager = new ButtonManager();
       buttonComponentOptions = {
-        location: ButtonLocation.CONTENT,
         action: {
           name: 'test',
           callback: () => {},
@@ -208,7 +146,6 @@ describe('ButtonManager', () => {
     beforeAll(() => {
       buttonManager = new ButtonManager();
       buttonComponentOptions = {
-        location: ButtonLocation.CONTENT,
         action: {
           name: 'test',
           callback: () => {},

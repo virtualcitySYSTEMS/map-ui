@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { reactive } from '@vue/composition-api';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
@@ -5,50 +6,8 @@ import { check, checkMaybe } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
 /**
- * sorts by owner and optionally plugin order
- * @param {ButtonComponent} a
- * @param {ButtonComponent} b
- * @param {string[]} [order] order of owners to sort by
- * @returns {number}
- */
-function sortByOwner(a, b, order = []) {
-  const sorted = [vcsAppSymbol, ...order];
-  return sorted.indexOf(b.owner) -
-    sorted.indexOf(a.owner);
-}
-
-/**
- * filters actions by button location and returns actions (optionally sorted)
- * @param {Array<ButtonComponent>} buttonComponents
- * @param {ButtonLocation} location Button render position
- * @param {string[]} [order] optional order to sort by (plugin names)
- * @param {function(a: ButtonComponent, b: ButtonComponent, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
- * @returns {Array<VcsAction>}
- */
-export function getActionsByLocation(buttonComponents, location, order = [], compareFn = sortByOwner) {
-  return buttonComponents
-    .filter(b => b.location === location)
-    .sort((a, b) => compareFn(a, b, order))
-    .map(b => b.action);
-}
-
-/**
- * Possible render positions of buttons in navbar from left to right
- * @enum
- */
-export const ButtonLocation = {
-  MAP: 0,
-  CONTENT: 1,
-  TOOL: 2,
-  PROJECT: 3,
-  SHARE: 4,
-  MENU: 5,
-};
-
-/**
  * @typedef ButtonComponentOptions
- * @property {string} [id] Optional ID, If not provided a uuid will be generated.
- * @property {ButtonLocation} location Button render position
+ * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {VcsAction} action Action performed by button.
  */
 
@@ -56,7 +15,6 @@ export const ButtonLocation = {
  * @typedef ButtonComponent
  * @property {string} id
  * @property {string|vcsAppSymbol} owner
- * @property {ButtonLocation} location
  * @property {VcsAction} action
  */
 
@@ -65,7 +23,7 @@ export const ButtonLocation = {
  * @description Manages a set of Map Buttons
  * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
  */
-export default class ButtonManager {
+export class ButtonManager {
   constructor() {
     /**
      * @type {import("@vcmap/core").VcsEvent<ButtonComponent>}
@@ -94,10 +52,7 @@ export default class ButtonManager {
    * @returns {ButtonComponent}
    */
   get(id) {
-    if (this.has(id)) {
-      return this._buttonComponents.get(id);
-    }
-    return undefined;
+    return this._buttonComponents.get(id);
   }
 
   /**
@@ -114,6 +69,7 @@ export default class ButtonManager {
    * @param {string} id
    */
   remove(id) {
+    check(id, String);
     const buttonComponent = this._buttonComponents.get(id);
     if (buttonComponent) {
       const index = this.componentIds.indexOf(id);
@@ -132,7 +88,6 @@ export default class ButtonManager {
    */
   add(buttonComponentOptions, owner) {
     checkMaybe(buttonComponentOptions.id, String);
-    check(buttonComponentOptions.location, Object.values(ButtonLocation));
     check(buttonComponentOptions.action, {
       name: String,
       title: [undefined, String],
@@ -156,9 +111,6 @@ export default class ButtonManager {
       },
       get owner() {
         return owner;
-      },
-      get location() {
-        return buttonComponentOptions.location;
       },
       get action() {
         return reactive(buttonComponentOptions.action);

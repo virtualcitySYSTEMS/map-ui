@@ -1,43 +1,24 @@
+<script src="../../vcsUiApp.js"></script>
 <template>
   <v-toolbar
+    v-if="actionGroups.length > 0"
     dense
-    class="vcs-toolbox toolbar__secondary rounded-b mx-auto v-sheet"
-    :style="{ maxWidth: `${getWidth()}px` }"
+    class="vcs-toolbox toolbar__secondary rounded-b mx-auto v-sheet marginToTop"
+    :width="width"
   >
     <v-toolbar-items class="w-full">
       <div class="d-flex align-center justify-space-between w-full">
-        <span
-          v-for="group of groups"
+        <ToolboxGroupComponent
+          v-for="(group, idx) in actionGroups"
           :key="group.id"
-        >
-          <component
-            v-if="group.type === 'customComponent'"
-            :is="group.component"
-            :icon="'$vcsObjectAttribute'"
-            :value="group.active"
-            @click.native="group.active = !group.active"
-            :group="group"
-          />
-          <Button
-            v-if="group.type === 'toggleButton'"
-            :group="group"
-            :icon="'$vcsObjectAttribute'"
-            :value="group.active"
-            @click.native="group.active = !group.active"
-          />
-          <ToolboxSingleSelectButton
-            v-if="toolboxGroupVisible(group) && group.type === 'singleSelectButton'"
-            :group="group"
-            @selected="id => selectSingleSelectOption(id)"
-            @set-open="({ id, open }) => setGroupOpen({ id, open })"
-          />
-          <ToolboxMultiSelectButton
-            v-if="toolboxGroupVisible(group) && group.type === 'multiSelectButton'"
-            :group="group"
-            @selected="id => selectMultiSlectOption(id)"
-            @set-open="({ id, open }) => setGroupOpen({ id, open })"
-          />
-        </span>
+          :group-icon="group.icon"
+          :group-title="group.title"
+          :actions="group.actions"
+          class="px-2"
+          :active="groupId === group.id"
+          :position="getPosition(idx)"
+          @click="toggleGroup(group.id)"
+        />
       </div>
     </v-toolbar-items>
   </v-toolbar>
@@ -60,53 +41,78 @@
       background-color: #ffffffda;
     }
   }
+
+  .marginToTop {
+    margin-top: 2px;
+  }
 </style>
 
 <script>
 
-  import { inject } from '@vue/composition-api';
-  import ToolboxSingleSelectButton from './ToolboxSingleSelectButton.vue';
-  import ToolboxMultiSelectButton from './ToolboxMultiSelectButton.vue';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
+  import { inject, ref, computed } from '@vue/composition-api';
+  import ToolboxGroupComponent from './ToolboxGroupComponent.vue';
 
+  /**
+   * @typedef {Object} ActionGroup
+   * @property {string} id
+   * @property {string} icon
+   * @property {string} title
+   * @property {Array<VcsAction>} actions
+   */
+
+  /**
+   * @description ToolboxManager component rendering toolbox using {@link ToolboxGroupComponent}.
+   * @vue-computed {Array<ActionGroup>} actionGroups - Array of group components
+   * @vue-computed {number} width - width of toolbox depending on number of groups
+   */
   export default {
-    name: 'VcsToolbox',
-    props: {
-      width: {
-        type: Number,
-        default: 600,
-      },
-    },
+    name: 'VcsToolboxManager',
     components: {
-      ToolboxSingleSelectButton,
-      ToolboxMultiSelectButton,
-      VcsButton,
+      ToolboxGroupComponent,
     },
     setup() {
       const app = inject('vcsApp');
-      const { toolboxManager } = app;
-      const { state: { groups } } = toolboxManager;
-      const getWidth = () => toolboxManager.getNumberOfUsedSlots() * 75;
-      const toolboxGroupVisible = value => value &&
-        value.options &&
-        value.options.length;
-      const selectSingleSelectOption = (id) => {
-        toolboxManager.bringToTop(id);
-      };
-      const selectMultiSlectOption = (id) => {
-        toolboxManager.selectOption(id);
-      };
-      const setGroupOpen = ({ id, open }) => {
-        toolboxManager.setGroupOpen(id, open);
-      };
+
+      const toolboxComponentIds = ref(app.toolboxManager.componentIds);
+      const actionGroups = computed(() => {
+        const groups = toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
+        return groups
+          .map((g) => {
+            const buttonIds = ref(g.buttonManager.componentIds);
+            return {
+              id: g.id,
+              icon: g.icon,
+              title: g.title,
+              actions: buttonIds.value.map(id => g.buttonManager.get(id).action),
+            };
+          })
+          .filter(g => g.actions.length > 0);
+      });
+
+      const buttonSize = 54;
+      const buttonPadding = 8;
+      const size = buttonSize + (2 * buttonPadding);
+      const width = computed(() => actionGroups.value.length * size);
+
+      /**
+       * calculates relative x-position of a button from the left edge of toolbar
+       * @param {number} idx
+       * @returns {number}
+       */
+      const getPosition = (idx) => (size * (idx + 1)) - (size / 2);
 
       return {
-        groups,
-        getWidth,
-        selectSingleSelectOption,
-        selectMultiSlectOption,
-        setGroupOpen,
-        toolboxGroupVisible,
+        actionGroups,
+        width,
+        getPosition,
+        groupId: null,
+        toggleGroup(groupId) {
+          if (this.groupId === groupId) {
+            this.groupId = null;
+          } else {
+            this.groupId = groupId;
+          }
+        },
       };
     },
   };

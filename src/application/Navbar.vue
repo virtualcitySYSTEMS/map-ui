@@ -90,7 +90,7 @@
 <script>
 
   import { inject, ref, computed } from '@vue/composition-api';
-  import { ButtonLocation, getActionsByLocation } from '../manager/buttonManager.js';
+  import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsButton from '../components/buttons/VcsButton.vue';

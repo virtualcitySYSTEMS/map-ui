@@ -24,10 +24,11 @@ export default async function buttonExamples() {
         app.windowManager,
         'buttonExamples',
       );
-      app.navbarManager.add({
-        location: ButtonLocation.TOOL,
-        action,
-      }, 'buttonExamples');
+      app.navbarManager.add(
+        { action },
+        'buttonExamples',
+        ButtonLocation.TOOL,
+      );
       this._destroyAction = destroy;
     },
     destroy() {

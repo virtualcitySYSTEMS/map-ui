@@ -224,11 +224,11 @@ export default async function projectSelector(config) {
         app.windowManager,
         packageJSON.name,
       );
-      app.navbarManager.add({
-        id: 'project-selector',
-        location: ButtonLocation.PROJECT,
-        action,
-      }, packageJSON.name);
+      app.navbarManager.add(
+        { id: 'project-selector', action },
+        packageJSON.name,
+        ButtonLocation.PROJECT,
+      );
       this._destroyAction = destroy;
 
       pluginConfig.contexts.value.forEach(c => addContextFromOptions(c));

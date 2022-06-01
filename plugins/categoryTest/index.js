@@ -24,11 +24,11 @@ export default async function categoryTest() {
         app.windowManager,
         '@vcmap/categoryTest',
       );
-      app.navbarManager.add({
-        id: 'category-editor',
-        location: ButtonLocation.TOOL,
-        action,
-      }, '@vcmap/categoryTest');
+      app.navbarManager.add(
+        { id: 'category-editor', action },
+        '@vcmap/categoryTest',
+        ButtonLocation.TOOL,
+      );
       this._destroyAction = destroy;
     },
     destroy() {

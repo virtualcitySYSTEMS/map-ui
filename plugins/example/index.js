@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ButtonLocation, createToggleAction, WindowPositions, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import mySuperComponent from './mySuperComponent.vue';
 
 /**
@@ -19,6 +19,7 @@ export default async function (config) {
       const { action, destroy } = createToggleAction(
         {
           name: 'Example',
+          icon: '$vcsPointSelect',
         },
         {
           id: '228',
@@ -32,19 +33,37 @@ export default async function (config) {
         '@vcmap/example',
       );
       this._destroyAction = destroy;
-      app.navbarManager.add({
-        location: ButtonLocation.TOOL,
-        action,
-      }, '@vcmap/example');
-      // app.toolboxManager.addToolboxGroup(
-      //   {
-      //     type: 'toggleButton',
-      //     icon: '$vcsPointSelect',
-      //     id: 15,
-      //     active: true,
-      //   },
-      //   15,
-      // );
+      app.navbarManager.add(
+        {
+          action,
+        },
+        '@vcmap/example',
+        ButtonLocation.TOOL,
+      );
+      const buttonComponents = [
+        {
+          id: 'distance3D',
+          action: {
+            name: 'distance3D',
+            title: '3D distance',
+            icon: '$vcs3dDistance',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+        {
+          id: 'area3D',
+          action: {
+            name: 'area3D',
+            title: '3D area',
+            icon: '$vcs3dArea',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+      ];
+      const measurementGroup = app.toolboxManager.requestGroup('measurement');
+      buttonComponents.forEach(c => measurementGroup.buttonManager.add(c, '@vcmap/example'));
     },
     destroy() {
       if (this._destroyAction) {

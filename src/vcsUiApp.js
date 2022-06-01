@@ -13,9 +13,9 @@ import {
   serializePlugin,
   deserializePlugin,
 } from './pluginHelper.js';
-import { ToolboxManager } from './manager/toolbox/toolbox-manager.js';
+import { setupDefaultGroups, ToolboxManager } from './manager/toolbox/toolboxManager.js';
 import { WindowManager } from './manager/window/windowManager.js';
-import ButtonManager from './manager/buttonManager.js';
+import { NavbarManager } from './manager/navbarManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
@@ -115,6 +115,7 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._toolboxManager = new ToolboxManager();
+    setupDefaultGroups(this._toolboxManager);
 
     /**
      * @type {WindowManager}
@@ -125,7 +126,7 @@ class VcsUiApp extends VcsApp {
      * @type {ButtonManager}
      * @private
      */
-    this._navbarManager = new ButtonManager();
+    this._navbarManager = new NavbarManager();
 
     /**
      * @type {OverviewMap}

@@ -71,7 +71,7 @@ export const WindowPositions = {
 
 /**
  * @typedef WindowComponentOptions
- * @property {string} [id] Optional ID, If not provided a uuid will be generated.
+ * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {VueComponent} component Main Component which is shown below the header.
  * @property {VueComponent} [headerComponent] Replaces the Header Component.
  * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
@@ -199,10 +199,7 @@ export class WindowManager {
    * @returns {WindowComponent}
    */
   get(id) {
-    if (this.has(id)) {
-      return this._windowComponents.get(id);
-    }
-    return undefined;
+    return this._windowComponents.get(id);
   }
 
   /**
@@ -219,6 +216,7 @@ export class WindowManager {
    * @param {string} id
    */
   remove(id) {
+    check(id, String);
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
       const index = this.componentIds.indexOf(id);

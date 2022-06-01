@@ -8,7 +8,7 @@ import SubContentTreeItem, { subTreeSymbol } from './subContentTreeItem.js';
 import LayerTree from './LayerTree.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { createToggleAction } from '../actions/actionHelper.js';
-import { ButtonLocation } from '../manager/buttonManager.js';
+import { ButtonLocation } from '../manager/navbarManager.js';
 
 /**
  * @type {symbol}
@@ -127,7 +127,11 @@ class ContentTreeCollection extends IndexedCollection {
       vcsAppSymbol,
     );
 
-    this._app.navbarManager.add({ id, action, location: ButtonLocation.CONTENT }, vcsAppSymbol);
+    this._app.navbarManager.add(
+      { id, action },
+      vcsAppSymbol,
+      ButtonLocation.CONTENT,
+    );
     this._subTreeViewItems.value.set(id, subTreeViewItem);
     return () => {
       app.windowManager.remove(id);

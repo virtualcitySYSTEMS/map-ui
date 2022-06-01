@@ -166,11 +166,11 @@ export default function (config) {
         app.windowManager,
         packageJSON.name,
       );
-      app.navbarManager.add({
-        id: 'pluginExample',
-        location: ButtonLocation.TOOL,
-        action,
-      }, packageJSON.name);
+      app.navbarManager.add(
+        { id: 'pluginExample', action },
+        packageJSON.name,
+        ButtonLocation.TOOL,
+      );
       this._destroyAction = destroy;
     },
     toJSON: async () => {

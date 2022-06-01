@@ -4,7 +4,7 @@
     <v-main fill-height absolute>
       <VcsMap :map-id="mapId" />
       <MapNavigation />
-      <ToolboxManagerComponent v-if="toolboxManagerVisible" />
+      <ToolboxManagerComponent v-if="toolboxOpen" />
       <WindowManagerComponent />
     </v-main>
     <v-footer app absolute>
@@ -26,11 +26,12 @@
     onMounted,
     onUnmounted,
     provide,
+    ref,
   } from '@vue/composition-api';
   import { getVcsAppById } from '@vcmap/core';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
-  import { ButtonLocation } from '../manager/buttonManager.js';
+  import { ButtonLocation } from '../manager/navbarManager.js';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
@@ -78,11 +79,14 @@
           name,
           app.maps,
         );
-        app.navbarManager.add({
-          id: `mapButton-${name}`,
-          location: ButtonLocation.MAP,
-          action,
-        }, vcsAppSymbol);
+        app.navbarManager.add(
+          {
+            id: `mapButton-${name}`,
+            action,
+          },
+          vcsAppSymbol,
+          ButtonLocation.MAP,
+        );
         mapButtonActionDestroy[name] = () => {
           app.navbarManager.remove(`mapButton-${name}`);
           destroy();
@@ -99,16 +103,41 @@
         }
       });
 
+      const toolboxOpen = ref(true);
+      const toolboxToggleAction = {
+        name: 'toolboxToggleAction',
+        icon: '$vcsTools',
+        title: 'Toolbox',
+        active: true,
+        callback() {
+          this.active = !this.active;
+          toolboxOpen.value = this.active;
+        },
+      };
+
+      app.navbarManager.add(
+        {
+          id: 'toolbox',
+          action: toolboxToggleAction,
+        },
+        vcsAppSymbol,
+        ButtonLocation.TOOL,
+      );
+
+      const toolboxRemove = () => { app.navbarManager.remove('toolbox'); };
+
       let pluginAdded;
       const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
         app.windowManager.removeOwner(plugin.name);
         app.navbarManager.removeOwner(plugin.name);
+        app.toolboxManager.removeOwner(plugin.name);
       });
 
       onMounted(() => {
         pluginAdded = app.plugins.added.addEventListener((plugin) => {
           app.windowManager.removeOwner(plugin.name);
           app.navbarManager.removeOwner(plugin.name);
+          app.toolboxManager.removeOwner(plugin.name);
           if (plugin.onVcsAppMounted) {
             plugin.onVcsAppMounted(app);
           }
@@ -134,12 +163,13 @@
         if (pluginRemoved) {
           pluginRemoved();
         }
+        toolboxRemove();
         Object.values(mapButtonActionDestroy).forEach(cb => cb());
       });
 
       return {
         mapId,
-        toolboxManagerVisible: app.toolboxManager.state.visible,
+        toolboxOpen,
       };
     },
     provide() {

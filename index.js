@@ -43,7 +43,8 @@ export { default as WindowComponentHeader } from './src/manager/window/WindowCom
 export { default as VcsWindowManager } from './src/manager/window/WindowManager.vue';
 export { WindowManager, WindowSlot, WindowPositions } from './src/manager/window/windowManager.js';
 
-export { default as ButtonManager, ButtonLocation, getActionsByLocation } from './src/manager/buttonManager.js';
+export { ButtonManager } from './src/manager/buttonManager.js';
+export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
 
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';

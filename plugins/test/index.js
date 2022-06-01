@@ -66,22 +66,25 @@ export default async function () {
           window.alert(`there are ${getSource().getFeatures().length} features ${app.maps.activeMap.name}`);
         },
       };
-      app.navbarManager.add({
-        id: 'config-editor',
-        location: ButtonLocation.TOOL,
-        action: configEditorAction,
-      }, '@vcmap/test');
-      app.navbarManager.add({
-        id: 'windowManagerExample',
-        location: ButtonLocation.TOOL,
-        action: windowAction,
-      }, '@vcmap/test');
-      app.navbarManager.add({
-        id: 'alert',
-        location: ButtonLocation.TOOL,
-        action: alertAction,
-      }, '@vcmap/test');
-      // toolboxData.forEach(([group, id]) => app.toolboxManager.addToolboxGroup(group, id));
+      app.navbarManager.add(
+        { id: 'config-editor', action: configEditorAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      app.navbarManager.add(
+        { id: 'windowManagerExample', action: windowAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      app.navbarManager.add(
+        { id: 'alert', action: alertAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      toolboxData.forEach(([{ id, icon, title, buttonComponents }, owner]) => {
+        const group = app.toolboxManager.requestGroup(id, icon, title);
+        buttonComponents.forEach(c => group.buttonManager.add(c, owner));
+      });
     },
     destroy() {
       if (this._destroyActions) {

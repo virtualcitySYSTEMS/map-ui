@@ -15,6 +15,10 @@
   ],
   "plugins": [
     {
+      "name": "test",
+      "entry": "plugins/test/index.js"
+    },
+    {
       "name": "example",
       "entry": "plugins/example/index.js"
     },
@@ -31,10 +35,6 @@
     {
       "name": "@vcmap/buttonExamples",
       "entry": "plugins/buttonExamples/index.js"
-    },
-    {
-      "name": "test",
-      "entry": "plugins/test/index.js"
     },
     {
       "name": "@vcmap/hello-world",

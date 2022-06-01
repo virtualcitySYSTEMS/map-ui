@@ -1,49 +1,129 @@
+// eslint-disable-next-line import/prefer-default-export
 export const toolboxData = [
   [
     {
-      icon: '$vcsPen',
-      type: 'multiSelectButton',
-      id: 1,
-      open: false,
-      options: [
+      id: 'select',
+      buttonComponents: [
         {
-          id: 'foo',
-          icon: '$vcsPointSelect',
-          text: 'Item 1',
-          selected: true,
+          id: 'select',
+          action: {
+            name: 'select',
+            title: 'select',
+            icon: '$vcsPointSelect',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
         },
-        { id: 'bar', icon: '$vcsObjectSelect', text: 'Item 2' },
       ],
     },
-    1,
+    '@vcmap/test',
   ],
   [
     {
-      type: 'singleSelectButton',
-      id: 2,
-      open: false,
-      options: [
-        { id: 'delta', icon: '$vcsPointSelect' },
-        { id: 'zulu', icon: '$vcsObjectSelect' },
+      id: 'multiSelect',
+      icon: '$vcsPen',
+      title: 'multi select',
+      buttonComponents: [
+        {
+          id: 'pen',
+          action: {
+            name: 'pen',
+            title: 'Item 1',
+            icon: '$vcsPen',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+        {
+          id: 'object',
+          action: {
+            name: 'object',
+            title: 'Item 2',
+            icon: '$vcsObjectSelect',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
       ],
     },
-    2,
+    '@vcmap/test',
   ],
   [
     {
-      type: 'toggleButton',
-      id: 3,
-      active: true,
+      id: 'measurement',
+      icon: '$vcsDimensionsHouse',
+      title: 'measurement',
+      buttonComponents: [
+        {
+          id: 'distance',
+          action: {
+            name: 'distance',
+            title: '2D distance',
+            icon: '$vcs2dDistance',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+        {
+          id: 'area',
+          action: {
+            name: 'area',
+            title: '2D area',
+            icon: '$vcs2dArea',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+      ],
     },
-    3,
+    '@vcmap/test',
   ],
   [
     {
-      type: 'customComponent',
-      component: 'Button',
-      id: 5,
-      active: true,
+      id: 'toggle',
+      buttonComponents: [
+        {
+          id: 'split',
+          action: {
+            name: 'split',
+            title: 'split view',
+            icon: '$vcsSplitView',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+      ],
     },
-    5,
+    '@vcmap/test',
+  ],
+  [
+    {
+      id: 'flight',
+      icon: '$vcsVideoRecorder',
+      title: 'flight',
+      buttonComponents: [
+        {
+          id: 'flight',
+          action: {
+            name: 'flight',
+            title: 'add flight',
+            icon: 'mdi-camera-plus',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+        {
+          id: 'export',
+          action: {
+            name: 'export',
+            title: 'export flight',
+            icon: '$vcsExportFlight',
+            active: false,
+            callback() { this.active = !this.active; },
+          },
+        },
+      ],
+    },
+    '@vcmap/test',
   ],
 ];

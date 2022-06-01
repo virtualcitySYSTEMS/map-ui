@@ -1,6 +1,6 @@
 import { ref } from '@vue/composition-api';
 import { check } from '@vcsuite/check';
-import { createToggleAction, ButtonLocation, vuetify } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, vuetify } from '@vcmap/ui';
 import ThemeChangerComponent from './ThemeChangerComponent.vue';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
@@ -85,11 +85,11 @@ export default async function themeChanger(config) {
         app.windowManager,
         packageJSON.name,
       );
-      app.navbarManager.add({
-        id: 'theme-changer',
-        location: ButtonLocation.MENU,
-        action,
-      }, packageJSON.name);
+      app.navbarManager.add(
+        { id: 'theme-changer', action },
+        packageJSON.name,
+        ButtonLocation.MENU,
+      );
       this._destroyAction = destroy;
     },
     destroy() {
