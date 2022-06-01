@@ -1,7 +1,0 @@
-// Vitest Snapshot v1
-
-exports[`VcsButton > should mount 1`] = `
-"<div data-v-4027582a=\\"\\" class=\\"vcs-button-wrap\\"><span data-v-c65d31be=\\"\\" data-v-4027582a=\\"\\" class=\\"v-tooltip v-tooltip--bottom\\" tooltipposition=\\"bottom\\"><!----><button data-v-4027582a=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--text theme--light elevation-0 v-size--default vcs-button--standard padding font-weight-bold text-capitalize\\" aria-haspopup=\\"true\\" aria-expanded=\\"false\\"><span class=\\"v-btn__content\\"></span></button></span>
-  <!---->
-</div>"
-`;

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="actions.length > 0" class="d-flex align-center justify-end action-btn-wrap">
+  <div v-if="actions.length > 0" :class="classes">
     <VcsButton
       class="d-flex"
       v-for="(button, index) in buttons"
@@ -86,6 +86,13 @@
       overflowButtons() {
         const buttonsNames = this.buttons.map(i => i.name);
         return this.actions.filter(i => !buttonsNames.includes(i.name));
+      },
+      classes() {
+        const classes = ['d-flex', 'align-center', 'action-btn-wrap'];
+        if (this.right) {
+          classes.push('justify-end');
+        }
+        return classes;
       },
     },
   };

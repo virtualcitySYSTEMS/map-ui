@@ -29,10 +29,6 @@ describe('VcsActionButtonList', () => {
 
   afterEach(() => cmp.destroy());
 
-  it('should mount', () => {
-    expect(cmp.html()).toMatchSnapshot();
-  });
-
   describe('compute buttons and overflow buttons', () => {
     it('should filter actions with no icon', () => {
       expect(cmp.vm.actions).toMatchObject(actions);
