@@ -4,6 +4,7 @@ import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
+import AllIconsComponent from './allIconsComponent.vue';
 
 let source;
 
@@ -58,7 +59,21 @@ export default async function () {
         app.windowManager,
         '@vcmap/test',
       );
-      this._destroyActions = [destroyConfigEditorAction, destroyWindowAction];
+      const { action: iconAction, destroy: destroyIconAction } = createToggleAction(
+        {
+          name: 'Icons',
+        },
+        {
+          id: 'allIcons',
+          state: {
+            headerTitle: 'All Icons',
+          },
+          component: AllIconsComponent,
+        },
+        app.windowManager,
+        '@vcmap/test',
+      );
+      this._destroyActions = [destroyConfigEditorAction, destroyWindowAction, destroyIconAction];
       const alertAction = {
         name: 'VC Systems',
         callback() {
@@ -73,6 +88,11 @@ export default async function () {
       );
       app.navbarManager.add(
         { id: 'windowManagerExample', action: windowAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      app.navbarManager.add(
+        { id: 'allIcons', action: iconAction },
         '@vcmap/test',
         ButtonLocation.TOOL,
       );
