@@ -5,7 +5,7 @@
       <div v-if="$vuetify.breakpoint.smAndDown" class="company-logo-mobile" />
       <VcsMap :map-id="mapId" />
       <MapNavigation />
-      <ToolboxManagerComponent v-if="toolboxOpen" />
+      <ToolboxManagerComponent />
       <WindowManagerComponent />
     </v-main>
     <v-footer app absolute v-if="$vuetify.breakpoint.mdAndUp">
@@ -26,7 +26,6 @@
     onMounted,
     onUnmounted,
     provide,
-    ref,
   } from '@vue/composition-api';
   import { getVcsAppById } from '@vcmap/core';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
@@ -103,29 +102,6 @@
         }
       });
 
-      const toolboxOpen = ref(true);
-      const toolboxToggleAction = {
-        name: 'toolboxToggleAction',
-        icon: '$vcsTools',
-        title: 'Toolbox',
-        active: true,
-        callback() {
-          this.active = !this.active;
-          toolboxOpen.value = this.active;
-        },
-      };
-
-      app.navbarManager.add(
-        {
-          id: 'toolbox',
-          action: toolboxToggleAction,
-        },
-        vcsAppSymbol,
-        ButtonLocation.TOOL,
-      );
-
-      const toolboxRemove = () => { app.navbarManager.remove('toolbox'); };
-
       let pluginAdded;
       const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
         app.windowManager.removeOwner(plugin.name);
@@ -163,13 +139,11 @@
         if (pluginRemoved) {
           pluginRemoved();
         }
-        toolboxRemove();
         Object.values(mapButtonActionDestroy).forEach(cb => cb());
       });
 
       return {
         mapId,
-        toolboxOpen,
       };
     },
     provide() {

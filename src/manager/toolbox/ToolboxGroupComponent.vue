@@ -117,6 +117,7 @@
         return this.actions;
       },
       width() {
+        // XXX can this be solved by CSS to get rid of hardcoded size and padding?
         return this.groupButtons.length * (this.buttonSize + 2 * this.buttonPadding);
       },
       nudgeLeft() {
