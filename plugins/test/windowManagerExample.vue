@@ -17,9 +17,10 @@
   import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
   import { getLogger } from '@vcsuite/logger';
 
-  import { EmptyCmpt, WindowSlot, VcsButton } from '@vcmap/ui';
+  import { WindowSlot, VcsButton } from '@vcmap/ui';
   import VcsContent from './vcsContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
+  import EmptyComponent from './emptyComponent.vue';
 
   const showTestClass = ref(false);
 
@@ -31,7 +32,7 @@
         {
           id: 'dynamicLeft',
           headerTitle: 'Example dynamicLeft',
-          component: EmptyCmpt,
+          component: EmptyComponent,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
@@ -39,7 +40,7 @@
           state: {
             headerTitle: 'Example dynamicLeft2',
           },
-          component: EmptyCmpt,
+          component: EmptyComponent,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
@@ -47,7 +48,7 @@
           state: {
             headerTitle: 'Example dynamicRight',
           },
-          component: EmptyCmpt,
+          component: EmptyComponent,
           headerComponent: MyCustomHeader,
           slot: WindowSlot.DYNAMIC_RIGHT,
         },
@@ -56,7 +57,7 @@
           state: {
             headerTitle: 'Example dynamicRight2',
           },
-          component: EmptyCmpt,
+          component: EmptyComponent,
           slot: WindowSlot.DYNAMIC_RIGHT,
         },
         {
@@ -100,7 +101,7 @@
             hideHeader: true,
             headerTitle: 'Example position2',
           },
-          component: EmptyCmpt,
+          component: EmptyComponent,
           position: {
             left: '35%',
             right: '35%',

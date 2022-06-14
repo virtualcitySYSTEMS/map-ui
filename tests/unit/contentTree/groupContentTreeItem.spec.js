@@ -12,6 +12,7 @@ import GroupContentTreeItem from '../../../src/contentTree/groupContentTreeItem.
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import { sleep } from '../../helpers.js';
 
 describe('GroupContentTreeItem', () => {
   let app;
@@ -51,20 +52,16 @@ describe('GroupContentTreeItem', () => {
       children.forEach((c) => { c.destroy(); });
     });
 
-    it('should be visible, if a single child is visible', (done) => {
+    it('should be visible, if a single child is visible', async () => {
       children[0].visible = true;
-      setTimeout(() => {
-        expect(item.visible).to.be.true;
-        done();
-      }, 0);
+      await sleep();
+      expect(item.visible).to.be.true;
     });
 
-    it('should be invisible, if all children are not visible', (done) => {
+    it('should be invisible, if all children are not visible', async () => {
       children.forEach((c) => { c.visible = false; });
-      setTimeout(() => {
-        expect(item.visible).to.be.false;
-        done();
-      }, 0);
+      await sleep();
+      expect(item.visible).to.be.false;
     });
   });
 
@@ -82,39 +79,31 @@ describe('GroupContentTreeItem', () => {
       children.forEach((c) => { c.destroy(); });
     });
 
-    it('should have a state of NONE, if all items have a state of NONE', (done) => {
+    it('should have a state of NONE, if all items have a state of NONE', async () => {
       children.forEach((c) => { c.state = StateActionState.NONE; });
-      setTimeout(() => {
-        expect(item.state).to.equal(StateActionState.NONE);
-        done();
-      });
+      await sleep();
+      expect(item.state).to.equal(StateActionState.NONE);
     });
 
-    it('should have a state of ACTIVE, if all items without a state of NONE are ACTIVE', (done) => {
+    it('should have a state of ACTIVE, if all items without a state of NONE are ACTIVE', async () => {
       children[0].state = StateActionState.ACTIVE;
       children[1].state = StateActionState.ACTIVE;
-      setTimeout(() => {
-        expect(item.state).to.equal(StateActionState.ACTIVE);
-        done();
-      }, 0);
+      await sleep();
+      expect(item.state).to.equal(StateActionState.ACTIVE);
     });
 
-    it('should have a state of INACTIVE, if all items without a state of NONE are INACTIVE', (done) => {
+    it('should have a state of INACTIVE, if all items without a state of NONE are INACTIVE', async () => {
       children[0].state = StateActionState.INACTIVE;
       children[1].state = StateActionState.INACTIVE;
-      setTimeout(() => {
-        expect(item.state).to.equal(StateActionState.INACTIVE);
-        done();
-      }, 0);
+      await sleep();
+      expect(item.state).to.equal(StateActionState.INACTIVE);
     });
 
-    it('should have a state of INDETERMINATE, if all items without a state of NONE have differing states', (done) => {
+    it('should have a state of INDETERMINATE, if all items without a state of NONE have differing states', async () => {
       children[0].state = StateActionState.INACTIVE;
       children[1].state = StateActionState.LOADING;
-      setTimeout(() => {
-        expect(item.state).to.equal(StateActionState.INDETERMINATE);
-        done();
-      }, 0);
+      await sleep();
+      expect(item.state).to.equal(StateActionState.INDETERMINATE);
     });
   });
 
@@ -134,46 +123,40 @@ describe('GroupContentTreeItem', () => {
       children.forEach((c) => { c.destroy(); });
     });
 
-    it('should click all visible children with a state not NONE, if the group is ACTIVE', (done) => {
+    it('should click all visible children with a state not NONE, if the group is ACTIVE', async () => {
       children[0].state = StateActionState.ACTIVE;
       children[1].state = StateActionState.ACTIVE;
       children[2].state = StateActionState.ACTIVE;
       children[2].visible = false;
-      setTimeout(async () => {
-        await item.clicked();
-        expect(spies[0]).toHaveBeenCalled();
-        expect(spies[1]).toHaveBeenCalled();
-        expect(spies[2]).not.toHaveBeenCalled();
-        done();
-      });
+      await sleep();
+      await item.clicked();
+      expect(spies[0]).toHaveBeenCalled();
+      expect(spies[1]).toHaveBeenCalled();
+      expect(spies[2]).not.toHaveBeenCalled();
     });
 
-    it('should click all visible children with a state not NONE and not ACTIVE, if the group is not active', (done) => {
+    it('should click all visible children with a state not NONE and not ACTIVE, if the group is not active', async () => {
       children[0].state = StateActionState.INACTIVE;
       children[1].state = StateActionState.ACTIVE;
       children[2].state = StateActionState.INACTIVE;
       children[2].visible = false;
-      setTimeout(async () => {
-        await item.clicked();
-        expect(spies[0]).toHaveBeenCalled();
-        expect(spies[1]).not.toHaveBeenCalled();
-        expect(spies[2]).not.toHaveBeenCalled();
-        done();
-      });
+      await sleep();
+      await item.clicked();
+      expect(spies[0]).toHaveBeenCalled();
+      expect(spies[1]).not.toHaveBeenCalled();
+      expect(spies[2]).not.toHaveBeenCalled();
     });
 
-    it('should not click any children, if the group has a state of NONE', (done) => {
+    it('should not click any children, if the group has a state of NONE', async () => {
       children[0].state = StateActionState.NONE;
       children[1].state = StateActionState.NONE;
       children[2].state = StateActionState.NONE;
       children[2].visible = false;
-      setTimeout(async () => {
-        await item.clicked();
-        expect(spies[0]).not.toHaveBeenCalled();
-        expect(spies[1]).not.toHaveBeenCalled();
-        expect(spies[2]).not.toHaveBeenCalled();
-        done();
-      });
+      await sleep();
+      await item.clicked();
+      expect(spies[0]).not.toHaveBeenCalled();
+      expect(spies[1]).not.toHaveBeenCalled();
+      expect(spies[2]).not.toHaveBeenCalled();
     });
   });
 });

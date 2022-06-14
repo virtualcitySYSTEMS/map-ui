@@ -1,27 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite';
-import Components from 'unplugin-vue-components/vite';
-import { createVuePlugin } from 'vite-plugin-vue2';
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
-import path from 'path';
+import commonViteConfig from './build/commonViteConfig.js';
 
 const configTest = defineConfig({
-  resolve: {
-    alias: {
-      '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
-    },
-  },
-  plugins: [
-    createVuePlugin(),
-    Components({
-      resolvers: [
-        VuetifyResolver(),
-      ],
-      dirs: ['src'],
-      include: ['node_modules/vuetify'],
-      exclude: [],
-    }),
-  ],
+  ...commonViteConfig,
   test: {
     deps: {
       inline: ['vuetify'],
@@ -30,5 +12,8 @@ const configTest = defineConfig({
     setupFiles: ['tests/setup.js'],
   },
 });
+// removing openlayers Alias to source, does not work in VITest.
+// TODO, we should check this again with a vitest version update
+delete configTest.resolve.alias.ol;
 
 export default configTest;

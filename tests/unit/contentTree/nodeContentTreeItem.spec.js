@@ -8,6 +8,7 @@ import {
 import NodeContentTreeItem from '../../../src/contentTree/nodeContentTreeItem.js';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import VcsUiApp from '../../../src/vcsUiApp.js';
+import { sleep } from '../../helpers.js';
 
 describe('GroupContentTreeItem', () => {
   let app;
@@ -47,20 +48,16 @@ describe('GroupContentTreeItem', () => {
       children.forEach((c) => { c.destroy(); });
     });
 
-    it('should be visible, if a single child is visible', (done) => {
+    it('should be visible, if a single child is visible', async () => {
       children[0].visible = true;
-      setTimeout(() => {
-        expect(item.visible).to.be.true;
-        done();
-      }, 0);
+      await sleep();
+      expect(item.visible).to.be.true;
     });
 
-    it('should be invisible, if all children are not visible', (done) => {
+    it('should be invisible, if all children are not visible', async () => {
       children.forEach((c) => { c.visible = false; });
-      setTimeout(() => {
-        expect(item.visible).to.be.false;
-        done();
-      }, 0);
+      await sleep();
+      expect(item.visible).to.be.false;
     });
   });
 });

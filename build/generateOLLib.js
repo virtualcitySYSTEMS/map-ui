@@ -178,10 +178,10 @@ function generateExports(symbols) {
     }
   });
   const source = Object.keys(imports)
-    .map(line => line.replace('from \'ol/', 'from \'ol/src/'))
-    .map(line => line.replace('from \'ol\'', 'from \'ol/src/index.js\''))
+    .map(line => line.replace('from \'ol/', 'from \'ol/'))
+    .map(line => line.replace('from \'ol\'', 'from \'ol/index.js\''))
     .join('\n');
-  return `${source}\nexport * from 'ol/src/index.js';\n`;
+  return `${source}\nexport * from 'ol/index.js';\n`;
 }
 
 /**

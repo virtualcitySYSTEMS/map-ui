@@ -14,7 +14,6 @@ export {
   createStateRefAction,
 } from './src/actions/stateRefAction.js';
 
-export { default as EmptyCmpt } from './src/application/empty-cmp.vue';
 export { default as Navbar } from './src/application/Navbar.vue';
 export { default as VcsApp } from './src/application/VcsApp.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';

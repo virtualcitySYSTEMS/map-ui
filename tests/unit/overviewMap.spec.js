@@ -19,10 +19,12 @@ import {
   VectorStyleItem,
 } from '@vcmap/core';
 import { getObliqueCollection } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
-import { Feature } from 'ol';
 import { getCenter } from 'ol/extent.js';
+import Feature from 'ol/Feature.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import OverviewMap from '../../src/navigation/overviewMap.js';
+import { sleep } from '../helpers.js';
+
 
 describe('OverviewMap', () => {
   let app;
@@ -73,7 +75,7 @@ describe('OverviewMap', () => {
       expect(overviewMap.map.active).to.be.true;
     });
 
-    it('should add a mapClicked event', (done) => {
+    it('should add a mapClicked event', async () => {
       expect(overviewMap.mapClicked).to.be.an.instanceof(VcsEvent);
       const mapClickedSpy = vi.fn();
       overviewMap.mapClicked.addEventListener(mapClickedSpy);
@@ -96,23 +98,13 @@ describe('OverviewMap', () => {
         preventDefault() {},
       });
 
-      setTimeout(() => {
-        expect(mapClickedSpy).toHaveBeenCalledTimes(1);
-        done();
-      }, 0);
+      await sleep();
+      expect(mapClickedSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should add the camera feature with the initial VP', () => {
       const features = overviewMap._cameraIconLayer.getFeatures();
       expect(features).to.have.lengthOf(1);
-    });
-
-    it('should have the same coordinates as the viewpoint', () => {
-      const cameraFeature = overviewMap._cameraIconLayer.getFeatures()[0];
-      const coords = Projection.mercatorToWgs84(cameraFeature.getGeometry().getCoordinates());
-      const vp = map.getViewPointSync();
-      expect(coords[0]).to.be.closeTo(vp.groundPosition[0], 0.00001);
-      expect(coords[1]).to.be.closeTo(vp.groundPosition[1], 0.00001);
     });
 
     it('should have the cameraIconStyle', () => {
@@ -133,7 +125,7 @@ describe('OverviewMap', () => {
       overviewMap.destroy();
     });
 
-    it('should go to the openlayers maps viewpoint, if clicked', (done) => {
+    it('should go to the openlayers maps viewpoint, if clicked', async () => {
       const coordinate = Projection.wgs84ToMercator([13, 52]);
       overviewMap.map.olMap.dispatchEvent({
         type: 'pointerdown',
@@ -154,12 +146,10 @@ describe('OverviewMap', () => {
         preventDefault() {},
       });
 
-      setTimeout(() => {
-        const vp = map.getViewPointSync();
-        expect(vp.groundPosition[0]).to.be.closeTo(13, 0.00000001);
-        expect(vp.groundPosition[1]).to.be.closeTo(52, 0.00000001);
-        done();
-      }, 0);
+      await sleep();
+      const vp = map.getViewPointSync();
+      expect(vp.groundPosition[0]).to.be.closeTo(13, 0.00000001);
+      expect(vp.groundPosition[1]).to.be.closeTo(52, 0.00000001);
     });
 
     it('should synchronize the overview map to the openlayers map', async () => {
@@ -173,7 +163,7 @@ describe('OverviewMap', () => {
       expect(vp.groundPosition[1]).to.be.closeTo(52, 0.00000001);
     });
 
-    it('should update the camera feature when synchronizing', (done) => {
+    it('should update the camera feature when synchronizing', async () => {
       const coordinate = Projection.wgs84ToMercator([13, 52]);
       overviewMap.map.olMap.dispatchEvent({
         type: 'pointerdown',
@@ -193,14 +183,11 @@ describe('OverviewMap', () => {
         pixel: [1, 1],
         preventDefault() {},
       });
-
-      setTimeout(() => {
-        const cameraFeature = overviewMap._cameraIconLayer.getFeatures()[0];
-        const coords = Projection.mercatorToWgs84(cameraFeature.getGeometry().getCoordinates());
-        expect(coords[0]).to.be.closeTo(13, 0.00001);
-        expect(coords[1]).to.be.closeTo(52, 0.00001);
-        done();
-      }, 0);
+      await sleep();
+      const cameraFeature = overviewMap._cameraIconLayer.getFeatures()[0];
+      const coords = Projection.mercatorToWgs84(cameraFeature.getGeometry().getCoordinates());
+      expect(coords[0]).to.be.closeTo(13, 0.00001);
+      expect(coords[1]).to.be.closeTo(52, 0.00001);
     });
 
     it('should not synchronize to the same viewpoint twice', async () => {

@@ -13,8 +13,8 @@ import {
   ViewPoint,
   deserializeLayer,
 } from '@vcmap/core';
-import Point from 'ol/geom/Point';
-import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point.js';
+import Feature from 'ol/Feature.js';
 import { Math as CesiumMath, Color } from '@vcmap/cesium';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
@@ -561,7 +561,6 @@ class OverviewMap {
     viewpoint.cameraPosition = position;
     viewpoint.groundPosition = null;
     viewpoint.distance = distance * 4;
-
     this._map.gotoViewPoint(viewpoint);
   }
 

@@ -17,20 +17,6 @@ const configMain = defineConfig(async ({ mode }) => {
 
   return {
     ...commonViteConfig,
-    optimizeDeps: {
-      exclude: [
-        '@vcmap/core',
-        'ol',
-      ],
-      include: [
-        '@vcmap/core > fast-deep-equal',
-        '@vcmap/core > rbush-knn',
-        '@vcmap/core > rbush-knn > tinyqueue',
-        '@vcmap/core > pbf',
-        'ol > pbf',
-        '@vcmap/cesium',
-      ],
-    },
     server: {
       https,
       strictPort: true,

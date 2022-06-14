@@ -14,7 +14,37 @@ Run the following scripts using `npm run` to setup your development environment.
 - `install-plugins` to integrate externally managed and developed plugins, use the `plugins/package.json` and this script to 
 install them. 
 
+### NPM Link
+
+Before linking a package, delete the vitejs dependency Cache in `node_modules/.vite/`. Otherwise vitejs will still use 
+the optimized dependency
+
 To develop @vcmap/core at the same time, you can integrate it using `npm link`.
+- call `npm link` in the @vcmap/core folder
+- call `npm link @vcmap/core` in the @vcmap/ui folder
+
+To develop @vcmap/core and @vcmap/cesium at the same time use.
+- prepare @vcmap/cesium 
+  - install dependencies `npm i`
+  - build cesium `npm run release`
+  - call `npm link` in the @vcmap/cesium folder
+- prepare @vcmap/core
+  - install dependencies `npm i`
+  - call `npm link`
+- call `npm link @vcmap/core @vcmap/cesium` in the @vcmap/ui folder
+
+For Source direct debuggable openlayers Source Code change the `vite.config.js` file and replace the optimizeDeps with the 
+following snippet
+```
+    optimizeDeps: {
+      exclude: [
+        'ol',
+      ],
+      include: [
+        'ol > pbf',
+      ],
+    },
+```
 
 ### Setting up Webstorm
 Make sure ESlint is activated
