@@ -1,6 +1,6 @@
 <template>
   <VcsTooltip
-    :tooltip="`Camera pitch: ${Math.round(value)}°`"
+    :tooltip="$t('navigation.pitchTooltip', [Math.round(value)])"
     tooltip-position="left"
   >
     <template #activator="{ on, attrs }">

@@ -10,10 +10,7 @@
     {
       "type": "DeclarativeStyleItem",
       "name": "CIR",
-      "title": {
-        "en": "CIR",
-        "de": "CIR"
-      },
+      "title": "CIR",
       "declarativeStyle": {
         "show": "true",
         "color": "rgb(${CIR}[0], ${CIR}[1], ${CIR}[2])",
@@ -24,10 +21,7 @@
     {
       "type": "DeclarativeStyleItem",
       "name": "Tree-ID",
-      "title": {
-        "en": "Tree-ID",
-        "de": "Tree-ID"
-      },
+      "title": "Tree-ID",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -49,10 +43,7 @@
     {
       "type": "DeclarativeStyleItem",
       "name": "Distance",
-      "title": {
-        "en": "Distance",
-        "de": "Distance"
-      },
+      "title": "Distance",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -74,10 +65,7 @@
     {
       "type": "DeclarativeStyleItem",
       "name": "Classification",
-      "title": {
-        "en": "Classification",
-        "de": "Classification"
-      },
+      "title": "Classification",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -151,10 +139,7 @@
           "Classification"
         ],
         "defaultViewpoint": "changedetection",
-        "title": {
-          "en": "Berlin Buch",
-          "de": "Berlin Buch"
-        }
+        "title": "Berlin Buch"
       }
     },
     {
@@ -175,11 +160,7 @@
       ],
       "properties": {
         "defaultViewpoint": "pointcloud",
-        "title": {
-          "en": "Tiergarten",
-          "de": "Tiergarten",
-          "pl": "Obszar TierGarten"
-        }
+        "title": "Tiergarten"
       }
     },
     {

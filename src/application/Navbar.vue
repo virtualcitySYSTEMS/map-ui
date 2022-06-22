@@ -78,11 +78,25 @@
                   :show-icon="true"
                 />
               </v-menu>
-              <VcsActionButtonList
-                :actions="menuActions"
-                :overflow-count="3"
-                large
-              />
+              <v-menu
+                offset-y
+                v-if="menuActions.length > 0"
+              >
+                <template #activator="{ on, attrs }">
+                  <VcsButton
+                    v-bind="attrs"
+                    v-on="on"
+                    large
+                    tooltip="navbar.menu.tooltip"
+                    icon="$vcsMenu"
+                  />
+                </template>
+                <VcsActionList
+                  :actions="menuActions"
+                  tooltip-position="left"
+                  :show-icon="true"
+                />
+              </v-menu>
             </div>
           </v-toolbar-items>
         </v-col>

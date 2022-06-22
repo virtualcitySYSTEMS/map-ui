@@ -6,6 +6,34 @@
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
   },
+  "i18n": [
+    {
+      "de": {
+        "layers": {
+          "pointcloud": {
+            "title": "Tiergarten"
+          }
+        },
+        "contentTree": {
+          "building": {
+            "title": "3D Gebäude"
+          }
+        }
+      },
+      "en": {
+        "layers": {
+          "pointcloud": {
+            "title": "Zoological garden"
+          }
+        },
+        "contentTree": {
+          "building": {
+            "title": "3D buildings"
+          }
+        }
+      }
+    }
+  ],
   "styles": [
     {
       "name": "lineColor",
@@ -29,10 +57,7 @@
     {
       "name": "MeasuredHeightGreen",
       "type": "DeclarativeStyleItem",
-      "title": {
-        "en": "Measured Height (green)",
-        "de": "Measured Height (green)"
-      },
+      "title": "Measured Height (green)",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -94,10 +119,7 @@
     {
       "name": "MeasuredHeightBrown",
       "type": "DeclarativeStyleItem",
-      "title": {
-        "en": "Measured Height (brown)",
-        "de": "Measured Height (brown)"
-      },
+      "title": "Measured Height (brown)",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -155,10 +177,7 @@
     {
       "name": "MeasuredHeightBlue",
       "type": "DeclarativeStyleItem",
-      "title": {
-        "en": "Measured Height (blue)",
-        "de": "Measured Height (blue)"
-      },
+      "title": "Measured Height (blue)",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -215,10 +234,7 @@
     },
     {
       "type": "DeclarativeStyleItem",
-      "title": {
-        "en": "Classified by Roof Type",
-        "de": "Einfärbung nach Hauptdach"
-      },
+      "title": "Classified by Roof Type",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -297,118 +313,70 @@
       "legend": [
         {
           "color": "#91cf60",
-          "title": {
-            "de": "Flachdach",
-            "en": "Flat"
-          }
+          "title": "Flachdach"
         },
         {
           "color": "#fee08b",
-          "title": {
-            "de": "Pultdach",
-            "en": "Shed"
-          }
+          "title": "Pultdach"
         },
         {
           "color": "#8dd3c7",
-          "title": {
-            "de": "Versetztes Pultdach",
-            "en": "Shifted Shed"
-          }
+          "title": "Versetztes Pultdach"
         },
         {
           "color": "#8dd3c7",
-          "title": {
-            "de": "Satteldach",
-            "en": "Gabled"
-          }
+          "title": "Satteldach"
         },
         {
           "color": "#fc8d59",
-          "title": {
-            "de": "Walmdach",
-            "en": "Hipped"
-          }
+          "title": "Walmdach"
         },
         {
           "color": "#ffffb3",
-          "title": {
-            "de": "Krüppelwalmdach",
-            "en": "Hipped"
-          }
+          "title": "Krüppelwalmdach"
         },
         {
           "color": "#bebada",
-          "title": {
-            "de": "Mansardendach",
-            "en": "Mansard"
-          }
+          "title": "Mansardendach"
         },
         {
           "color": "#ffffbf",
-          "title": {
-            "de": "Zeltdach",
-            "en": "Tent"
-          }
+          "title": "Zeltdach"
         },
         {
           "color": "#fdb462",
-          "title": {
-            "de": "Kegeldach",
-            "en": "Conical"
-          }
+          "title": "Kegeldach"
         },
         {
           "color": "#b3de69",
-          "title": {
-            "de": "Kuppeldach",
-            "en": "Copular"
-          }
+          "title": "Kuppeldach"
         },
         {
           "color": "#ecc34e",
-          "title": {
-            "de": "Sheddach",
-            "en": "Shed roof"
-          }
+          "title": "Sheddach"
         },
         {
           "color": "#fccde5",
-          "title": {
-            "de": "Bogendach",
-            "en": "Arched"
-          }
+          "title": "Bogendach"
         },
         {
           "color": "#d590b3",
-          "title": {
-            "de": "Turmdach",
-            "en": "Tower roof"
-          }
+          "title": "Turmdach"
         },
         {
           "color": "#888888",
-          "title": {
-            "de": "Mischform",
-            "en": "Mixed roof"
-          }
+          "title": "Mischform"
         },
         {
           "color": "#cccccc",
-          "title": {
-            "de": "Sonstiges",
-            "en": "undefined"
-          }
+          "title": "Sonstiges"
         }
       ],
       "name": "ClassifiedbyRoofType"
     },
     {
       "type": "DeclarativeStyleItem",
-      "title": {
-        "de": "Einfärbung nach Gebäudefunktion",
-        "en": "Building Function"
-      },
+      "title": "Einfärbung nach Gebäudefunktion",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -467,10 +435,7 @@
     {
       "type": "DeclarativeStyleItem",
       "name": "Transparentbuildings",
-      "title": {
-        "en": "Transparent buildings",
-        "de": "Transparent buildings"
-      },
+      "title": "Transparent buildings",
       "declarativeStyle": {
         "show": "true",
         "color": {
@@ -558,11 +523,7 @@
         "bldg"
       ],
       "properties": {
-        "title": {
-          "en": "textured Buildings",
-          "de": "Texturierte Gebäude",
-          "pl": "budynki z teksturą"
-        }
+        "title": "textured Buildings"
       }
     },
     {
@@ -592,11 +553,7 @@
           "BuildingFunction",
           "Transparentbuildings"
         ],
-        "title": {
-          "en": "untextured Buildings",
-          "de": "Untexturierte Gebäude",
-          "pl": "budynki bez tekstury"
-        }
+        "title": "untextured Buildings"
       }
     },
     {
@@ -636,11 +593,7 @@
         "256"
       ],
       "properties": {
-        "title": {
-          "en": "Aerial Image (2015)",
-          "de": "Luftbild (2015)",
-          "pl": "Ortofotomapa (2015)"
-        }
+        "title": "Aerial Image (2015)"
       }
     },
     {
@@ -680,11 +633,7 @@
         "base"
       ],
       "properties": {
-        "title": {
-          "en": "OpenStreetMap",
-          "de": "OpenStreetMap",
-          "pl": "OpenStreetMap"
-        },
+        "title": "OpenStreetMap",
         "showInOverviewMap": true
       }
     },
@@ -696,11 +645,7 @@
       "activeOnStartup": true,
       "requestVertexNormals": true,
       "properties": {
-        "title": {
-          "en": "Terrain",
-          "de": "Gelände",
-          "pl": "Teren"
-        }
+        "title": "Terrain"
       }
     },
     {
@@ -721,11 +666,7 @@
       ],
       "properties": {
         "defaultViewpoint": "pointcloud",
-        "title": {
-          "en": "Tiergarten",
-          "de": "Tiergarten",
-          "pl": "Obszar TierGarten"
-        }
+        "title": "layers.pointcloud.title"
       }
     },
     {
@@ -746,11 +687,7 @@
         "tree"
       ],
       "properties": {
-        "title": {
-          "en": "Trees",
-          "de": "Bäume",
-          "pl": "Drzew"
-        }
+        "title": "Trees"
       }
     }
   ],
@@ -774,10 +711,7 @@
       "animate": false,
       "type": "ViewPoint",
       "properties": {
-        "title": {
-          "en": "Berlin",
-          "de": "Berlin"
-        }
+        "title": "Berlin"
       }
     },
     {
@@ -799,10 +733,7 @@
       "animate": true,
       "type": "ViewPoint",
       "properties": {
-        "title": {
-          "en": "Alexanderplatz",
-          "de": "Alexanderplatz"
-        }
+        "title": "Alexanderplatz"
       }
     },
     {
@@ -843,11 +774,21 @@
       "animate": true,
       "type": "ViewPoint",
       "properties": {
-        "title": {
-          "en": "Potsdamer Platz",
-          "de": "Potsdamer Platz"
-        }
+        "title": "Potsdamer Platz"
       }
+    },
+    {
+      "groundPosition": [
+        13.35948,
+        52.51442,
+        33.35758
+      ],
+      "pitch": -46.14,
+      "type": "ViewPoint",
+      "heading": 359.84,
+      "distance": 3267.86,
+      "name": "pointcloud",
+      "animate": true
     }
   ],
   "contentTree":  [
@@ -899,11 +840,7 @@
       "initOpen": true,
       "type": "NodeContentTreeItem",
       "infoUrl": "https://vc.systems",
-      "title": {
-        "en": "3d Building model",
-        "de": "3D-Gebäude",
-        "pl": "Budynki 3D"
-      }
+      "title": "contentTree.building.title"
     },
     {
       "name": "building.texturedBuildings",
@@ -925,11 +862,7 @@
     {
       "name": "pointcloud",
       "type": "NodeContentTreeItem",
-      "title": {
-        "en": "Point Cloud",
-        "de": "Punktwolke",
-        "pl": "Chmury punktów"
-      }
+      "title": "Point Cloud"
     },
     {
       "name": "pointcloud.tiergarten",
@@ -944,28 +877,19 @@
     {
       "name": "viewpoints",
       "type": "NodeContentTreeItem",
-      "title": {
-        "en": "Viewpoints",
-        "de": "Ansichten"
-      }
+      "title": "Viewpoints"
     },
     {
       "name": "viewpoints.berlin",
       "viewpointName": "berlin",
       "type": "ViewPointContentTreeItem",
-      "title": {
-        "en": "Berlin",
-        "de": "Berlin"
-      }
+      "title": "Berlin"
     },
     {
       "name": "viewpoints.brandenburgerTor",
       "viewpointName": "brandenburger_tor",
       "type": "ViewPointContentTreeItem",
-      "title": {
-        "en": "Brandenburg Gate",
-        "de": "Brandenburger Tor"
-      }
+      "title": "Brandenburg Gate"
     },
     {
       "name": "viewpoints.places",
@@ -987,19 +911,13 @@
       "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
       "viewpointName": "kaiser_wilhelm_gedächtniskirche",
       "type": "ViewPointContentTreeItem",
-      "title": {
-        "en": "Kaiser Wilhelm Memorial Church",
-        "de": "Kaiser-Wilhelm-Gedächtniskirche"
-      }
+      "title": "Kaiser Wilhelm Memorial Church"
     },
     {
       "name": "viewpoints.oberbaumbruecke",
       "viewpointName": "oberbaumbrücke",
       "type": "ViewPointContentTreeItem",
-      "title": {
-        "en": "Oberbaum Bridge",
-        "de": "Oberbaumbrücke"
-      }
+      "title": "Oberbaum Bridge"
     },
     {
       "name": "reasonableGroup",

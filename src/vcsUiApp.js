@@ -19,6 +19,7 @@ import { NavbarManager } from './manager/navbarManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
+import I18nCollection from './i18n/i18nCollection.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -133,6 +134,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._overviewMap = new OverviewMap(this);
+
+    /**
+     * @type {I18nCollection<Object>}
+     * @private
+     */
+    this._i18n = new I18nCollection(() => this.dynamicContextId);
   }
 
   /**
@@ -178,6 +185,12 @@ class VcsUiApp extends VcsApp {
   get overviewMap() { return this._overviewMap; }
 
   /**
+   * @type {I18nCollection}
+   * @readonly
+   */
+  get i18n() { return this._i18n; }
+
+  /**
    * @param {import("@vcmap/core").Context} context
    * @returns {Promise<void>}
    * @protected
@@ -200,7 +213,13 @@ class VcsUiApp extends VcsApp {
       plugins
         .filter(p => p)
         .map(p => this._plugins.override(p))
-        .filter(p => p);
+        .filter(p => p.i18n)
+        .forEach((p) => {
+          this.i18n.addPluginMessages(p.name, context.id, p.i18n);
+        });
+    }
+    if (Array.isArray(config.i18n)) {
+      await this.i18n.parseItems(config.i18n, context.id);
     }
     await super._parseContext(context);
     await this._contentTree.parseItems(config.contentTree, context.id);
@@ -215,6 +234,7 @@ class VcsUiApp extends VcsApp {
     await Promise.all([
       super._removeContext(contextId),
       this._plugins.removeContext(contextId),
+      this._i18n.removeContext(contextId),
       this._contentTree.removeContext(contextId),
     ]);
   }
@@ -230,6 +250,7 @@ class VcsUiApp extends VcsApp {
     this._pluginAddedListener();
     destroyCollection(this._plugins);
     destroyCollection(this._contentTree);
+    destroyCollection(this._i18n);
     this._contentTreeClassRegistry.destroy();
     super.destroy();
   }

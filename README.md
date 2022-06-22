@@ -93,6 +93,7 @@ how safe it is to start developing with these components.
 - ActionConcept BETA
 - PluginConcept RC
 - SEARCH API TODO
+- I18n API RC [I18n](documentation/INTERNATIONALIZATION.md).
 
 ##### components
 - VcsTextField BETA
@@ -125,22 +126,22 @@ how safe it is to start developing with these components.
 - Style Refactoring Prio 4
 
 ### Ui
-- Responsive View / mobile view (WIP) Prio 1
-- Toolbar (WIP) Prio 1
+- Responsive View / mobile view DONE
+- Toolbar DONE
 - Search API + UI Prio 2
 - Overlay API Support  Prio 3
-- i18n (WIP) Prio 1 
-- FeatureInfo Concept/API (Balloon) Prio 1
+- i18n DONE.
+- FeatureInfo Concept/API (Balloon) (WIP) Prio 1
   - Context API ? Prio 2
   - Hierachy B3dm
 - Legend Concept/API  Prio 2 
 - Copyright/Attributions Concept / API  Prio 2
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  Prio 2
 - Help Concept / Beispielhaft implementieren  Prio 2
-- Components Concept/Categories / API  Prio 1
+- Components Concept/Categories / API (WIP) Prio 1
 
 ### Plugins
-- Drawing  Prio 1
+- Drawing (WIP) Prio 1
 - Measurement  Prio 1
 - PDF Export (WIP) Prio 1
 - Positiondisplay  Prio 2
@@ -173,7 +174,6 @@ Further Information see [Development](documentation/DEVELOPMENT.md) and [Plugin-
 ## Included Dataset
 The included datasets for Berlin and Osnabrück in the app configurations in the project can only be used for Development.
 For further usage of the datasets please contact [Virtual City Systems](https://vc.systems).
-
 
 
 

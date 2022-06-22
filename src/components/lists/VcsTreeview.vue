@@ -55,7 +55,7 @@
 </style>
 
 <script>
-  import { inject, ref } from '@vue/composition-api';
+  import { getCurrentInstance, ref } from '@vue/composition-api';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
 
@@ -64,7 +64,7 @@
    * Can render dynamic components as leaf items.
    * In order to display an item needs to be registered and added to `availableComponents`.
    * @vue-prop {boolean} [hasSearchbar=false] - Whether there is a searchbar for this treeview
-   * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar
+   * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated
    */
   export default {
     name: 'VcsTreeview',
@@ -81,22 +81,17 @@
     },
     setup() {
       const search = ref('');
-      const language = inject('language');
       // TODO properly type the tree view item interface & export in index.d.ts
+
+      const vm = getCurrentInstance().proxy;
       /**
        * @param {{ title: string }} treeNode
        * @param {string} q
        * @returns {boolean}
        */
       const handleFilter = (treeNode, q = '') => {
-        if (typeof treeNode.title === 'string') {
-          return treeNode.title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
-        }
-        if (typeof treeNode.title === 'object') {
-          const title = (treeNode.title[language] || treeNode.title.en || treeNode.title.de || 'NO LABEL FOUND');
-          return title.toLocaleLowerCase().includes(q.toLocaleLowerCase());
-        }
-        return false;
+        const translatedTitle = vm.$t(treeNode.title);
+        return translatedTitle.toLocaleLowerCase().includes(q.toLocaleLowerCase());
       };
 
       return {

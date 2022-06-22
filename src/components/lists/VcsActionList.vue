@@ -23,7 +23,7 @@
           <v-list-item-content
             class="vcs-action-list"
           >
-            <v-list-item-title v-text="action.name" />
+            <v-list-item-title v-text="$t(action.name)" />
           </v-list-item-content>
         </v-list-item>
       </template>

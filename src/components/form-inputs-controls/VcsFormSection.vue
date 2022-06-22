@@ -3,7 +3,7 @@
     <slot name="title">
       <article class="pa-2 accent">
         <div class="form-section-header d-flex justify-space-between align-center">
-          <strong class="caption">{{ title }}</strong>
+          <strong class="caption">{{ $t(title) }}</strong>
           <VcsActionButtonList
             :actions="titleActions"
             small
@@ -26,7 +26,7 @@
    * Stylized form section with action buttons
    * @vue-data {slot} [#title] - slot to override form section header
    * @vue-data {slot} [#default] - slot with the section content
-   * @vue-prop {string}   title - Title to be displayed
+   * @vue-prop {string} title - Title to be displayed, will be translated.
    * @vue-prop {Array<VcsAction>}    titleActions - Icons to be displayed on the right side
    */
   export default {

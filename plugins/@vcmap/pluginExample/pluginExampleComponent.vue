@@ -41,7 +41,7 @@
           >
             <v-col>
               <VcsLabel html-for="selectInput" :dense="dense">
-                Select
+                {{ $t('pluginExample.select') }}
               </VcsLabel>
             </v-col>
             <v-col>

@@ -9,7 +9,7 @@
       <WindowManagerComponent />
     </v-container>
     <v-footer absolute v-if="!$vuetify.breakpoint.xs">
-      footer
+      {{ $t('footer.title') }}
     </v-footer>
   </v-container>
 </template>
@@ -47,8 +47,10 @@
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
   import Navbar from './Navbar.vue';
-  import { createMapButtonAction } from '../actions/actionHelper.js';
+  import { createMapButtonAction, createToggleAction } from '../actions/actionHelper.js';
   import MapNavigation from '../navigation/mapNavigation.vue';
+  import VcsSettings from './VcsSettings.vue';
+  import { WindowSlot } from '../manager/window/windowManager';
 
   export default {
     components: {
@@ -90,7 +92,7 @@
           {
             name,
             icon: iconMap[className],
-            title: `Activate ${ name}`,
+            title: `navbar.maps.${className}`,
           },
           name,
           app.maps,
@@ -118,6 +120,30 @@
           delete mapButtonActionDestroy[name];
         }
       });
+
+      const { action: settingsAction, destroy: settingsDestroy } = createToggleAction(
+        {
+          name: 'settings.title',
+          icon: 'mdi-cog',
+          title: 'settings.tooltip',
+        },
+        {
+          id: 'settingsId',
+          component: VcsSettings,
+          state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
+          slot: WindowSlot.DYNAMIC_RIGHT,
+        },
+        app.windowManager,
+        vcsAppSymbol,
+      );
+      app.navbarManager.add(
+        {
+          id: 'settingsToggle',
+          action: settingsAction,
+        },
+        vcsAppSymbol,
+        ButtonLocation.MENU,
+      );
 
       let pluginAdded;
       const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
@@ -157,6 +183,10 @@
           pluginRemoved();
         }
         Object.values(mapButtonActionDestroy).forEach(cb => cb());
+
+        if (settingsDestroy) {
+          settingsDestroy();
+        }
       });
 
       return {

@@ -4,11 +4,10 @@
     :items="tree"
     :open.sync="open"
     :has-searchbar="true"
-    :searchbar-placeholder="'layer-tree.search.placeholder'"
+    :searchbar-placeholder="'content.search.placeholder'"
     item-children="visibleChildren"
   />
 </template>
-
 
 <script>
   import { inject } from '@vue/composition-api';

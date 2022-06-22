@@ -152,14 +152,14 @@ export default function (config) {
         {
           name: 'Plugin Example',
           icon: '$vcsHealthCareIndustries',
-          title: 'Example Plugin Map Button Tooltip',
+          title: 'pluginExample.tooltip',
         },
         {
           id: 'pluginExample',
           component: pluginExampleComponent,
           slot: WindowSlot.STATIC,
           state: {
-            headerTitle: 'Plugin Example',
+            headerTitle: 'pluginExample.select',
             headerIcon: '$vcsCircle',
           },
         },
@@ -180,6 +180,22 @@ export default function (config) {
         configJson.initialTextInput = defaultConfig.initialTextInput;
       }
       return configJson;
+    },
+    i18n: {
+      de: {
+        pluginExample: {
+          title: 'Plugin Beispiel',
+          select: 'Select Feld',
+          tooltip: 'Beispiel Plugin Map Button Tooltip',
+        },
+      },
+      en: {
+        pluginExample: {
+          title: 'Plugin Example',
+          select: 'Select field',
+          tooltip: 'Example Plugin Map Button Tooltip',
+        },
+      },
     },
     destroy() {
       // destroy watcher

@@ -1,16 +1,25 @@
 {
   "mapcontainer": "vcs_map_container",
-  "locale": "de",
-  "availableLocales": [
-    "de",
-    "en"
-  ],
   "startingViewPointName": "Start",
   "startingMapName": "Cesium Map",
   "projection": {
     "epsg": "25832",
     "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
   },
+  "i18n": [
+    {
+      "de": {
+        "footer": {
+          "title": "test"
+        }
+      },
+      "en": {
+        "footer": {
+          "title": "entest"
+        }
+      }
+    }
+  ],
   "maps": [
     {
       "name": "Cesium Map",

@@ -12,7 +12,7 @@
     <template #activator="{ on, attrs }">
       <slot name="activator" :on="on" :attrs="attrs" />
     </template>
-    <span>{{ tooltip }}</span>
+    <span>{{ $t(tooltip) }}</span>
   </v-tooltip>
 </template>
 <style lang="scss" scoped>
@@ -128,7 +128,7 @@
 
   /**
    * @description tooltip extending {@link https://vuetifyjs.com/en/api/v-tooltip/|vuetify v-tooltip}.
-   * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
+   * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay. This should be an i18n key.
    * @vue-prop {string}                                 [tooltipPosition='bottom'] - Position of the tooltip (allowed values: 'bottom'|'left'|'top'|'right').
    * @vue-computed {string}                             arrowClass - direction of tooltip arrow
    */

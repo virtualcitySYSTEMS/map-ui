@@ -5,7 +5,8 @@ import { getLogger } from '@vcsuite/logger';
 import ProjectsComponent from './ProjectSelectorComponent.vue';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
-
+import de from './de.json';
+import en from './en.json';
 /**
  * @typedef {Object} VCMapContextOptions
  * @property {string} [name]
@@ -243,6 +244,10 @@ export default async function projectSelector(config) {
       if (pluginConfig.open) {
         app.windowManager.add(windowComponent, packageJSON.name);
       }
+    },
+    i18n: {
+      de,
+      en,
     },
     destroy() {
       if (this._destroyAction) {

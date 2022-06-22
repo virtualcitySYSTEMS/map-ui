@@ -3,12 +3,12 @@
     <OrientationToolsButton
       @click="$emit('zoom-in')"
       icon="$vcsPlus"
-      tooltip="Zoom in"
+      tooltip="navigation.zoomInTooltip"
     />
     <OrientationToolsButton
       @click="$emit('zoom-out')"
       icon="$vcsMinus"
-      tooltip="Zoom out"
+      tooltip="navigation.zoomOutTooltip"
     />
   </div>
 </template>

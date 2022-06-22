@@ -71,7 +71,7 @@ class ContentTreeCollection extends IndexedCollection {
      * @type {SubContentTreeItem}
      * @private
      */
-    this._defaultSubtreeItem = new SubContentTreeItem({ name: 'Content', icon: '$vcsLayers' }, app);
+    this._defaultSubtreeItem = new SubContentTreeItem({ name: 'Content', icon: '$vcsLayers', title: 'content.title' }, app);
     /**
      * @type {import("@vue/composition-api").Ref<Map<string, TreeViewItem>>}
      * @private

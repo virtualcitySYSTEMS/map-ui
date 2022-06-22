@@ -19,7 +19,7 @@
         >
           <template #label>
             <VcsLabel :html-for="$attrs.id" :dense="!!$attrs.dense">
-              {{ $attrs.label }}
+              {{ $t($attrs.label) }}
             </VcsLabel>
           </template>
         </v-checkbox>
@@ -45,6 +45,7 @@
    * - if dense is set false, height is 32 px
    * Provides VcsTooltip to show error messages
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * @vue-prop {string} label Label to be displayed, will be translated.
    */
   export default {
     name: 'VcsCheckbox',

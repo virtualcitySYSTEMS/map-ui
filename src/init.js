@@ -3,7 +3,7 @@ import { check, checkMaybe } from '@vcsuite/check';
 import { Context } from '@vcmap/core';
 import VcsAppComponentWrapper from './application/vcsAppWrapper.vue';
 import { vuetify } from './vuePlugins/vuetify.js';
-import { i18n } from './vuePlugins/i18n.js';
+import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import VcsUiApp from './vcsUiApp.js';
 
 /**
@@ -16,6 +16,7 @@ export default async function initApp(mountTarget, configUrl) {
   check(mountTarget, String);
   checkMaybe(configUrl, String);
   const app = new VcsUiApp();
+  const i18n = createVueI18n();
   new Vue({
     vuetify,
     i18n,
@@ -26,6 +27,7 @@ export default async function initApp(mountTarget, configUrl) {
     }),
   }).$mount(mountTarget);
 
+  setupI18n(app, i18n);
   if (configUrl) {
     const config = await fetch(configUrl)
       .then(response => response.json());

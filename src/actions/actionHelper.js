@@ -100,7 +100,7 @@ export function createOverviewMapAction(overviewMap, windowComponent, windowMana
     {
       name: 'overviewMapToggle',
       icon: '$vcsMap',
-      title: 'Overview Map',
+      title: 'navigation.overviewMapTooltip',
     },
     windowComponent,
     windowManager,
@@ -247,6 +247,7 @@ export function createGoToViewpointAction(actionOptions, viewpoint, viewpointCol
   check(mapCollection, MapCollection);
 
   return {
+    title: 'content.viewpointAction.title',
     ...actionOptions,
     async callback() {
       let viewpointItem = viewpoint;

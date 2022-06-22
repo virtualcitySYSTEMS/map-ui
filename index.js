@@ -56,8 +56,8 @@ export { default as TiltSlider } from './src/navigation/tiltSlider.vue';
 export { default as VcsCompass } from './src/navigation/vcsCompass.vue';
 export { default as VcsZoomButton } from './src/navigation/vcsZoomButton.vue';
 
-export { i18n } from './src/vuePlugins/i18n.js';
-export { vuetify } from './src/vuePlugins/vuetify.js';
+export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
+export { createVuetify, vuetify } from './src/vuePlugins/vuetify.js';
 export { default as initApp } from './src/init.js';
 export {
   vcsAppSymbol,

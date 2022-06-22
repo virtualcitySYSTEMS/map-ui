@@ -19,6 +19,14 @@ const stateIconMap = {
   [StateActionState.LOADING]: '$vcsProgress',
 };
 
+const stateI18nMap = {
+  [StateActionState.INACTIVE]: 'content.stateAction.titleInactive',
+  [StateActionState.ACTIVE]: 'content.stateAction.titleActive',
+  [StateActionState.INDETERMINATE]: 'content.stateAction.titleIndeterminate',
+  [StateActionState.LOADING]: 'content.stateAction.titleLoading',
+};
+
+
 /**
  * Creates an action
  * @param {string} name
@@ -34,13 +42,14 @@ export function createStateRefAction(name, stateRef, callback) {
   const currentState = stateRef.value;
   const action = {
     name,
-    title: 'Activate', // XXX make reactive i18n key based on state
+    title: stateI18nMap[currentState],
     icon: stateIconMap[currentState],
     callback,
   };
 
   const destroy = watch(stateRef, () => {
     action.icon = stateIconMap[stateRef.value];
+    action.title = stateI18nMap[stateRef.value];
   });
 
   return {

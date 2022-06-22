@@ -109,6 +109,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         {
           name,
           icon: '$vcsColorSwatch',
+          title: 'content.styleAction.title',
         },
         {
           component,
@@ -138,6 +139,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         const action = createGoToViewpointAction(
           {
             name: 'LayerExtentAction',
+            title: 'content.layerExtentAction.title',
           },
           viewpoint,
           this._app.viewPoints,

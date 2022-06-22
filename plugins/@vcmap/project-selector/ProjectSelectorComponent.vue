@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Projects</h1>
+    <h1>{{ $t('project-selector.project.title') }}</h1>
     <v-list
       v-for="(project, index) in state.projects.value"
       :key="index"

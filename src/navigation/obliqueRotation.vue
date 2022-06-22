@@ -3,12 +3,12 @@
     <OrientationToolsButton
       @click="input(-90)"
       icon="mdi-undo"
-      tooltip="Rotate view left"
+      tooltip="navigation.obliqueLeftTooltip"
     />
     <OrientationToolsButton
       @click="input(90)"
       icon="mdi-redo"
-      tooltip="Rotate view right"
+      tooltip="navigation.obliqueRightTooltip"
     />
   </div>
 </template>

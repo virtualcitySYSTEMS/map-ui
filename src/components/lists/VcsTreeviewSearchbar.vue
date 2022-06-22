@@ -15,7 +15,7 @@
         dense
         hide-details
         class="searchbar outlined rounded-xl align-center d-flex justify-center white pa-1 pl-6"
-        :placeholder="(placeholder || 'search.title') | translate"
+        :placeholder="$t(placeholder)"
         :value="value"
         @input="$event => handleInput($event)"
         clearable
@@ -112,14 +112,15 @@
 
   /**
    * @description Stylized wrapper around vuetify divider
-   * @vue-prop {number}   height - Height of the component.
+   * @vue-prop {number} height - Height of the component.
+   * @vue-prop {string} [placeholder='search.title'] - Placeholder will be displayed in the search field, and will be translated.
    */
   export default {
     name: 'VcsTreeviewSearchbar',
     props: {
       placeholder: {
         type: String,
-        default: '',
+        default: 'search.title',
       },
       customClasses: {
         type: Array,

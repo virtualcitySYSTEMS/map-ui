@@ -254,7 +254,7 @@ class ContentTreeItem {
       if (this._infoUrl) {
         const action = createLinkAction({
           name,
-          title: 'Info',
+          title: 'content.infoAction.title',
           icon: '$vcsInfo',
         }, this._infoUrl);
         this.addAction(action, 6);

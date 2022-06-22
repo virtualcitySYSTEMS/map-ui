@@ -7,7 +7,7 @@
         v-text="windowState.headerIcon"
       />
       <h3 class="font-size-14 d-inline-block user-select-none font-weight-bold">
-        {{ windowState.headerTitle | translate }}
+        {{ $t(windowState.headerTitle) }}
       </h3>
     </span>
     <VcsButton
