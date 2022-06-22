@@ -1,12 +1,12 @@
 <template>
-  <v-app-bar
-    app
+  <v-toolbar
     absolute
     dense
     elevation="0"
     :height="$vuetify.breakpoint.xs ? '56px' : '48px'"
     :color="'var(--v-basic-base)'"
     :bottom="$vuetify.breakpoint.xs ? 'bottom' : undefined"
+    width="100%"
   >
     <v-container fluid class="pa-0">
       <v-row no-gutters>
@@ -88,7 +88,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app-bar>
+  </v-toolbar>
 </template>
 
 <style lang="scss" scoped>
@@ -98,7 +98,6 @@
 </style>
 
 <script>
-
   import { inject, ref, computed } from '@vue/composition-api';
   import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';

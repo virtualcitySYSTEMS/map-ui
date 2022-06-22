@@ -1,23 +1,36 @@
 <template>
-  <v-app class="h-full" absolute>
+  <v-container class="fill-height pa-0" absolute fluid>
     <Navbar />
-    <v-main class="fill-height absolute">
+    <v-container class="vcs-main pa-0" :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }" fluid absolute>
       <div v-if="$vuetify.breakpoint.smAndDown" class="company-logo-mobile" />
       <VcsMap :map-id="mapId" />
       <MapNavigation />
       <ToolboxManagerComponent />
       <WindowManagerComponent />
-    </v-main>
-    <v-footer app absolute v-if="$vuetify.breakpoint.mdAndUp">
+    </v-container>
+    <v-footer absolute v-if="!$vuetify.breakpoint.xs">
       footer
     </v-footer>
-  </v-app>
+  </v-container>
 </template>
 
 <style scoped lang="scss">
 ::v-deep .v-application--wrap {
   min-height: fit-content;
 }
+.vcs-main {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 33px;
+}
+
+.vcs-main-xs {
+  top: 0;
+  bottom: 56px;
+}
+
 </style>
 
 <script>
@@ -49,6 +62,10 @@
       appId: {
         type: String,
         required: true,
+      },
+      app: {
+        type: Boolean,
+        default: true,
       },
     },
     setup(props) {

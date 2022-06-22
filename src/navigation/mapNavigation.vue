@@ -13,23 +13,25 @@
         v-model="heading"
       />
     </v-row>
-    <v-row justify="center" v-if="$vuetify.breakpoint.mdAndUp">
-      <VcsZoomButton
-        @zoom-out="zoomOut()"
-        @zoom-in="zoomIn()"
-      />
-    </v-row>
-    <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
-      <TiltSlider v-model="tilt" />
-    </v-row>
-    <v-row justify="center" v-if="$vuetify.breakpoint.mdAndUp">
-      <OrientationToolsButton
-        :icon="overviewAction.icon"
-        :tooltip="overviewAction.title"
-        :color="overviewAction.active ? 'primary' : undefined"
-        @click.stop="overviewAction.callback($event)"
-      />
-    </v-row>
+    <template v-if="$vuetify.breakpoint.mdAndUp">
+      <v-row justify="center">
+        <VcsZoomButton
+          @zoom-out="zoomOut()"
+          @zoom-in="zoomIn()"
+        />
+      </v-row>
+      <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
+        <TiltSlider v-model="tilt" />
+      </v-row>
+      <v-row justify="center">
+        <OrientationToolsButton
+          :icon="overviewAction.icon"
+          :tooltip="overviewAction.title"
+          :color="overviewAction.active ? 'primary' : undefined"
+          @click.stop="overviewAction.callback($event)"
+        />
+      </v-row>
+    </template>
   </v-container>
 </template>
 
