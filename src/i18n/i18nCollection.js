@@ -109,13 +109,30 @@ class I18nCollection extends IndexedCollection {
   }
 
   /**
+   * This method adds plugin messages to the collection. It is no necessary to call this function
+   * from within a plugin. Use the i18n property on your plugin.
    * @param {string} plugin Name of the plugin
    * @param {string} contextId
    * @param {Object} messages
    */
   addPluginMessages(plugin, contextId, messages) {
     messages[i18nPluginSymbol] = plugin;
+    messages[contextIdSymbol] = contextId;
     this.add(messages);
+  }
+
+  /**
+   * This method removes plugin messages from the collection. It is no necessary to call this function
+   * from within a plugin. Once your plugin is removed, the VcsUiApp will call this for you.
+   * @param {string} pluginName
+   * @param {string} contextId
+   */
+  removePluginMessages(pluginName, contextId) {
+    [...this]
+      .filter(item => item[i18nPluginSymbol] === pluginName && item[contextIdSymbol] === contextId)
+      .forEach((item) => {
+        this.remove(item);
+      });
   }
 
   /**

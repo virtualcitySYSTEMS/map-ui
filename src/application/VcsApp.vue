@@ -50,8 +50,92 @@
   import { createMapButtonAction, createToggleAction } from '../actions/actionHelper.js';
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
-  import { WindowSlot } from '../manager/window/windowManager';
+  import { WindowSlot } from '../manager/window/windowManager.js';
 
+  /**
+   * You should call this function in the component providing the vcsUiApp to your
+   * application in the components mounted hook. This will call VcsAppMounted on all plugins in the app
+   * and add a listener to call. Returns a destroy hook to stop listening to the added event. If you use the VcsApp
+   * component, do not call this function, since the component will do this for you.
+   * @param {VcsUiApp} app
+   * @returns {function():void}
+   */
+  export function setupPluginMountedListeners(app) {
+    [...app.plugins].forEach((plugin) => {
+      if (plugin.onVcsAppMounted) {
+        plugin.onVcsAppMounted(app);
+      }
+    });
+
+    return app.plugins.added.addEventListener((plugin) => {
+      if (plugin.onVcsAppMounted) {
+        plugin.onVcsAppMounted(app);
+      }
+    });
+  }
+
+  /**
+   * This helper function will add a map action button based on the default icons
+   * to the apps NavbarManager. Furthermore, all maps on the app are synced for adding and removing.
+   * @param {VcsUiApp} app
+   * @returns {function():void}
+   */
+  export function setupMapNavbar(app) {
+    const iconMap = {
+      OpenlayersMap: '$vcs2d',
+      CesiumMap: '$vcs3d',
+      ObliqueMap: '$vcsObliqueView',
+    };
+
+    const mapButtonActionDestroy = {};
+    const setupMap = ({ className, name }) => {
+      if (mapButtonActionDestroy[name]) {
+        mapButtonActionDestroy[name]();
+      }
+      const { action, destroy } = createMapButtonAction(
+        {
+          name,
+          icon: iconMap[className],
+          title: `navbar.maps.${className}`,
+        },
+        name,
+        app.maps,
+      );
+      app.navbarManager.add(
+        {
+          id: `mapButton-${name}`,
+          action,
+        },
+        vcsAppSymbol,
+        ButtonLocation.MAP,
+      );
+      mapButtonActionDestroy[name] = () => {
+        app.navbarManager.remove(`mapButton-${name}`);
+        destroy();
+      };
+    };
+    [...app.maps].forEach(setupMap);
+    const mapAddedListener = app.maps.added.addEventListener(setupMap);
+
+    const mapRemovedListener = app.maps.removed.addEventListener(({ name }) => {
+      if (mapButtonActionDestroy[name]) {
+        mapButtonActionDestroy[name]();
+        delete mapButtonActionDestroy[name];
+      }
+    });
+
+    return () => {
+      mapAddedListener();
+      mapRemovedListener();
+      Object.values(mapButtonActionDestroy).forEach(cb => cb());
+    };
+  }
+
+  /**
+   * The base component to setup the entire application. To embed the VcsApp, use this component.
+   * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
+   * @vue-provide
+   */
   export default {
     components: {
       MapNavigation,
@@ -65,62 +149,15 @@
         type: String,
         required: true,
       },
-      app: {
-        type: Boolean,
-        default: true,
-      },
     },
     setup(props) {
       const id = uuid();
       const mapId = `mapCollection-${id}`;
+      /** @type {VcsUiApp} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
 
-      const iconMap = {
-        OpenlayersMap: '$vcs2d',
-        CesiumMap: '$vcs3d',
-        ObliqueMap: '$vcsObliqueView',
-      };
-
-      const mapButtonActionDestroy = {};
-
-      const setupMap = ({ className, name }) => {
-        if (mapButtonActionDestroy[name]) {
-          mapButtonActionDestroy[name]();
-        }
-        const { action, destroy } = createMapButtonAction(
-          {
-            name,
-            icon: iconMap[className],
-            title: `navbar.maps.${className}`,
-          },
-          name,
-          app.maps,
-        );
-        app.navbarManager.add(
-          {
-            id: `mapButton-${name}`,
-            action,
-          },
-          vcsAppSymbol,
-          ButtonLocation.MAP,
-        );
-        mapButtonActionDestroy[name] = () => {
-          app.navbarManager.remove(`mapButton-${name}`);
-          destroy();
-        };
-      };
-
-      [...app.maps].forEach(setupMap);
-      const mapAddedDestroy = app.maps.added.addEventListener(setupMap);
-
-      const mapRemovedDestroy = app.maps.removed.addEventListener(({ name }) => {
-        if (mapButtonActionDestroy[name]) {
-          mapButtonActionDestroy[name]();
-          delete mapButtonActionDestroy[name];
-        }
-      });
-
+      const mapNavbarListener = setupMapNavbar(app);
       const { action: settingsAction, destroy: settingsDestroy } = createToggleAction(
         {
           name: 'settings.title',
@@ -145,57 +182,22 @@
         ButtonLocation.MENU,
       );
 
-      let pluginAdded;
-      const pluginRemoved = app.plugins.removed.addEventListener(async (plugin) => {
-        app.windowManager.removeOwner(plugin.name);
-        app.navbarManager.removeOwner(plugin.name);
-        app.toolboxManager.removeOwner(plugin.name);
-      });
-
+      let pluginMountedListener;
       onMounted(() => {
-        pluginAdded = app.plugins.added.addEventListener((plugin) => {
-          app.windowManager.removeOwner(plugin.name);
-          app.navbarManager.removeOwner(plugin.name);
-          app.toolboxManager.removeOwner(plugin.name);
-          if (plugin.onVcsAppMounted) {
-            plugin.onVcsAppMounted(app);
-          }
-        });
-        [...app.plugins].forEach((plugin) => {
-          if (plugin.onVcsAppMounted) {
-            plugin.onVcsAppMounted(app);
-          }
-        });
+        pluginMountedListener = setupPluginMountedListeners(app);
         app.maps.setTarget(mapId);
       });
 
       onUnmounted(() => {
-        if (mapAddedDestroy) {
-          mapAddedDestroy();
+        if (pluginMountedListener) {
+          pluginMountedListener();
         }
-        if (mapRemovedDestroy) {
-          mapRemovedDestroy();
-        }
-        if (pluginAdded) {
-          pluginAdded();
-        }
-        if (pluginRemoved) {
-          pluginRemoved();
-        }
-        Object.values(mapButtonActionDestroy).forEach(cb => cb());
-
-        if (settingsDestroy) {
-          settingsDestroy();
-        }
+        mapNavbarListener();
+        settingsDestroy();
       });
 
       return {
         mapId,
-      };
-    },
-    provide() {
-      return {
-        language: window.navigator.language.split('-')[0],
       };
     },
   };

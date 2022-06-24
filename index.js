@@ -15,7 +15,7 @@ export {
 } from './src/actions/stateRefAction.js';
 
 export { default as Navbar } from './src/application/Navbar.vue';
-export { default as VcsApp } from './src/application/VcsApp.vue';
+export { default as VcsApp, setupMapNavbar, setupPluginMountedListeners } from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/vcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
 

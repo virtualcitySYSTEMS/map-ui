@@ -46,6 +46,7 @@ import I18nCollection from './i18n/i18nCollection.js';
  * @template {Object} P
  * @property {string} version
  * @property {string} name
+ * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
  * @property {function(VcsUiApp)} initialize - called on plugin added
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
  * @property {function():P} [toJSON] - serialization
@@ -93,11 +94,29 @@ class VcsUiApp extends VcsApp {
       serializePlugin,
       deserializePlugin,
     );
-    this._pluginAddedListener = this._plugins.added.addEventListener((plugin) => {
-      if (plugin.initialize) {
-        plugin.initialize(this);
-      }
-    });
+    /**
+     * @type {Array<function():void>}
+     * @private
+     */
+    this._pluginListeners = [
+      this._plugins.added.addEventListener((plugin) => {
+        this._windowManager.removeOwner(plugin.name);
+        this._navbarManager.removeOwner(plugin.name);
+        this._toolboxManager.removeOwner(plugin.name);
+        if (plugin.i18n) {
+          this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
+        }
+        if (plugin.initialize) {
+          plugin.initialize(this);
+        }
+      }),
+      this._plugins.removed.addEventListener(async (plugin) => {
+        this._windowManager.removeOwner(plugin.name);
+        this._navbarManager.removeOwner(plugin.name);
+        this._toolboxManager.removeOwner(plugin.name);
+        this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol]);
+      }),
+    ];
 
     /**
      * @type {OverrideClassRegistry<ContentTreeItem>}
@@ -173,7 +192,7 @@ class VcsUiApp extends VcsApp {
   get windowManager() { return this._windowManager; }
 
   /**
-   * @returns {ButtonManager}
+   * @returns {NavbarManager}
    * @readonly
    */
   get navbarManager() { return this._navbarManager; }
@@ -212,11 +231,7 @@ class VcsUiApp extends VcsApp {
 
       plugins
         .filter(p => p)
-        .map(p => this._plugins.override(p))
-        .filter(p => p.i18n)
-        .forEach((p) => {
-          this.i18n.addPluginMessages(p.name, context.id, p.i18n);
-        });
+        .map(p => this._plugins.override(p));
     }
     if (Array.isArray(config.i18n)) {
       await this.i18n.parseItems(config.i18n, context.id);
@@ -245,9 +260,10 @@ class VcsUiApp extends VcsApp {
   destroy() {
     this.windowManager.destroy();
     this.navbarManager.destroy();
+    this.toolboxManager.destroy();
     this._overviewMap.destroy();
-    // TODO destroy other manager
-    this._pluginAddedListener();
+    this._pluginListeners.forEach((cb) => { cb(); });
+    this._pluginListeners = [];
     destroyCollection(this._plugins);
     destroyCollection(this._contentTree);
     destroyCollection(this._i18n);

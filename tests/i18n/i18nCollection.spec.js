@@ -111,10 +111,18 @@ describe('i18nCollection', () => {
       expect(i18n.size).to.be.equal(0);
     });
 
-    it('should add the i18nPluginSymbol to items added by a plugin', () => {
-      i18n.addPluginMessages('myPlugin', 'newContextId', { key: 'message' });
-      expect(i18n.size).to.be.equal(3);
-      expect(i18n.get(2)[i18nPluginSymbol]).to.be.equal('myPlugin');
+    describe('plugin handling', () => {
+      it('should add the i18nPluginSymbol to items added by a plugin', () => {
+        i18n.addPluginMessages('myPlugin', 'newContextId', { key: 'message' });
+        expect(i18n.size).to.be.equal(3);
+        expect(i18n.get(2)[i18nPluginSymbol]).to.be.equal('myPlugin');
+      });
+
+      it('should remove plugin items which where previously added', () => {
+        i18n.addPluginMessages('myPlugin', 'newContextId', { key: 'message' });
+        i18n.removePluginMessages('myPlugin', 'newContextId');
+        expect(i18n.size).to.be.equal(2);
+      });
     });
   });
 
