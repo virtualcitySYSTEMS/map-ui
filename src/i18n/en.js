@@ -41,6 +41,10 @@ const messages = {
     pitchTooltip: 'Camera pitch: {0}°',
     overviewMapTooltip: 'Overview Map',
   },
+  components: {
+    title: 'Components',
+    tooltip: 'Components',
+  },
   settings: {
     title: 'Settings',
     tooltip: 'Settings',

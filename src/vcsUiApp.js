@@ -20,6 +20,7 @@ import { createContentTreeCollection } from './contentTree/contentTreeCollection
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
+import CategoryManager from './manager/categoryManager/categoryManager.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -103,6 +104,7 @@ class VcsUiApp extends VcsApp {
         this._windowManager.removeOwner(plugin.name);
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
+        this._categoryManager.removeOwner(plugin.name);
         if (plugin.i18n) {
           this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
         }
@@ -114,7 +116,8 @@ class VcsUiApp extends VcsApp {
         this._windowManager.removeOwner(plugin.name);
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
-        this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol]);
+        this._categoryManager.removeOwner(plugin.name);
+        this.i18n.removePluginMessages(plugin.name, plugin[contextIdSymbol]);
       }),
     ];
 
@@ -159,6 +162,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._i18n = new I18nCollection(() => this.dynamicContextId);
+
+    /**
+     * @type {CategoryManager}
+     * @private
+     */
+    this._categoryManager = new CategoryManager(this);
   }
 
   /**
@@ -208,6 +217,12 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get i18n() { return this._i18n; }
+
+  /**
+   * @returns {CategoryManager}
+   * @readonly
+   */
+  get categoryManager() { return this._categoryManager; }
 
   /**
    * @param {import("@vcmap/core").Context} context
@@ -261,6 +276,7 @@ class VcsUiApp extends VcsApp {
     this.windowManager.destroy();
     this.navbarManager.destroy();
     this.toolboxManager.destroy();
+    this.categoryManager.destroy();
     this._overviewMap.destroy();
     this._pluginListeners.forEach((cb) => { cb(); });
     this._pluginListeners = [];

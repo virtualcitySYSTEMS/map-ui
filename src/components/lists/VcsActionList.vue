@@ -52,18 +52,27 @@
    */
 
   /**
-   * @param {Array<VcsAction>} actions
+   * @param {VcsAction} action
    * @returns {boolean}
    */
-  export function validateActions(actions) {
-    return actions.every(item => is(item, {
+  export function validateAction(action) {
+    return is(action, {
       name: String,
       title: [undefined, String],
       icon: [undefined, String],
       callback: Function,
       active: [undefined, Boolean],
-    }));
+    });
   }
+
+  /**
+   * @param {Array<VcsAction>} actions
+   * @returns {boolean}
+   */
+  export function validateActions(actions) {
+    return actions.every(validateAction);
+  }
+
 
   /**
    * @description

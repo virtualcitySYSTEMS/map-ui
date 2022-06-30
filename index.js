@@ -15,7 +15,12 @@ export {
 } from './src/actions/stateRefAction.js';
 
 export { default as Navbar } from './src/application/Navbar.vue';
-export { default as VcsApp, setupMapNavbar, setupPluginMountedListeners } from './src/application/VcsApp.vue';
+export {
+  default as VcsApp,
+  setupMapNavbar,
+  setupPluginMountedListeners,
+  setupComponentsWindow,
+} from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/vcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
 
@@ -45,6 +50,8 @@ export { WindowManager, WindowSlot, WindowPositions } from './src/manager/window
 
 export { ButtonManager } from './src/manager/buttonManager.js';
 export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
+export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
+export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';
 
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';
@@ -89,7 +96,7 @@ export { default as VcsTextArea } from './src/components/form-inputs-controls/Vc
 
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
 
-export { default as VcsActionList, validateActions } from './src/components/lists/VcsActionList.vue';
+export { default as VcsActionList, validateAction, validateActions } from './src/components/lists/VcsActionList.vue';
 // export { default as VcsEndlessList } from './src/components/lists/VcsEndlessList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';

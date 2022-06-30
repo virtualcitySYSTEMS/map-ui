@@ -39,6 +39,7 @@
     onMounted,
     onUnmounted,
     provide,
+    watch,
   } from '@vue/composition-api';
   import { getVcsAppById } from '@vcmap/core';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
@@ -51,6 +52,7 @@
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
+  import ComponentsManager from '../manager/categoryManager/ComponentsManager.vue';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -132,6 +134,59 @@
   }
 
   /**
+   * This helper function will add a Components manager button to the navbar. The Components Manager
+   * will only be shown if there is at least one category under management in the categoryManager.
+   * @param {VcsUiApp} app
+   * @returns {function():void}
+   */
+  export function setupComponentsWindow(app) {
+    const { action: componentsManagerAction, destroy: destroyComponentsManagerAction } = createToggleAction(
+      {
+        name: 'components-manager',
+        icon: '$vcsComponents',
+        title: 'components.tooltip',
+      },
+      {
+        id: 'component-manager',
+        state: {
+          headerTitle: 'components.title',
+          headerIcon: '$vcsComponents',
+        },
+        component: ComponentsManager,
+        slot: WindowSlot.STATIC,
+      },
+      app.windowManager,
+      vcsAppSymbol,
+    );
+
+    // only show Components Window if we have at least one managed Category
+    if (app.categoryManager.items.value.length > 0) {
+      app.navbarManager.add(
+        { id: 'component-manager', action: componentsManagerAction },
+        vcsAppSymbol,
+        ButtonLocation.CONTENT,
+      );
+    }
+    watch(app.categoryManager.items, () => {
+      if (app.categoryManager.items.value.length > 0) {
+        if (!app.navbarManager.has('component-manager')) {
+          app.navbarManager.add(
+            { id: 'component-manager', action: componentsManagerAction },
+            vcsAppSymbol,
+            ButtonLocation.CONTENT,
+          );
+        }
+      } else {
+        app.windowManager.remove('component-manager');
+        app.navbarManager.remove('component-manager');
+      }
+    });
+
+    return () => {
+      destroyComponentsManagerAction();
+    };
+  }
+  /**
    * The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
    * @vue-provide
@@ -182,6 +237,8 @@
         ButtonLocation.MENU,
       );
 
+      const destroyComponentsWindow = setupComponentsWindow(app);
+
       let pluginMountedListener;
       onMounted(() => {
         pluginMountedListener = setupPluginMountedListeners(app);
@@ -194,6 +251,7 @@
         }
         mapNavbarListener();
         settingsDestroy();
+        destroyComponentsWindow();
       });
 
       return {

@@ -13,6 +13,7 @@
     <span>
       <VcsButton icon="$vcsPlus" @click="newDialog = true" />
       <VcsButton icon="$vcsExport" @click="uploadDialog = true" />
+      <VcsButton @click="addManagedCategories"> Add Categories To Manager </VcsButton>
     </span>
 
     <v-dialog
@@ -58,6 +59,7 @@
 <script>
   import { inject, ref, onUnmounted } from '@vue/composition-api';
   import { VcsButton } from '@vcmap/ui';
+  import { AppBackedCategory, GeoJSONLayer } from '@vcmap/core';
   import Category from './Category.vue';
 
   export default {
@@ -131,6 +133,92 @@
             uploadDialog.value = false;
           } catch (e) {
             console.error('not a valid JSON');
+          }
+        },
+        async addManagedCategories() {
+          if (!app.categories.hasKey('layers')) {
+            const layersCat = await app.categories.requestCategory({
+              name: 'layers',
+              type: 'AppBackedCategory',
+              collectionName: 'layers',
+              title: 'categories.layers',
+            });
+            const actions = [{
+              name: 'mySuperAction',
+              icon: 'mdi-plus',
+              callback: () => {
+                layersCat.collection.add(new GeoJSONLayer({
+                  features: [
+                    {
+                      type: 'Feature',
+                      properties: {},
+                      geometry: {
+                        type: 'Polygon',
+                        coordinates: [
+                          [
+                            [
+                              13.376044753386196,
+                              52.51700747314845,
+                              34.434221826595746,
+                            ],
+                            [
+                              13.375890137534464,
+                              52.51683412207231,
+                              34.43535288837092,
+                            ],
+                            [
+                              13.376141126603242,
+                              52.51641627693124,
+                              34.66410424636929,
+                            ],
+                            [
+                              13.376773170085109,
+                              52.516279904694215,
+                              34.73478984011562,
+                            ],
+                            [
+                              13.376887028670879,
+                              52.51695485856382,
+                              34.72412287410914,
+                            ],
+                            [
+                              13.376044753386196,
+                              52.51700747314845,
+                              34.434221826595746,
+                            ],
+                          ],
+                        ],
+                      },
+                    }],
+                }));
+              },
+            }];
+            app.categoryManager.addCategory(layersCat.name, '@vcmap/categoryTest', actions);
+            app.categoryManager.addMappingFunction((item, category) => {
+              return category.name === 'layers';
+            }, (item, category, treeViewItem) => {
+              // eslint-disable-next-line no-console
+              const action = {
+                name: 'mySuperAction',
+                icon: '$vcsSimpleCircleFilled',
+                callback: () => {
+                  console.log(item, category, treeViewItem);
+                },
+              };
+              treeViewItem.actions.push(action);
+              treeViewItem.clickable = true;
+              treeViewItem.clicked = () => {
+                if (!item.active) item.activate(); else item.deactivate();
+              };
+              const action2 = {
+                name: 'mySuperAction3',
+                icon: 'mdi-minus',
+                callback: () => {
+                  category.collection.remove(item);
+                },
+              };
+              treeViewItem.actions.push(action2);
+            }, ['layers'], '@vcmap/categoryTest');
           }
         },
       };

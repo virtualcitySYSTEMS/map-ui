@@ -94,6 +94,7 @@ how safe it is to start developing with these components.
 - PluginConcept RC
 - SEARCH API TODO
 - I18n API RC [I18n](documentation/INTERNATIONALIZATION.md).
+- Components API RC [Components](documentation/COMPONENTS.md).
 
 ##### components
 - VcsTextField BETA
@@ -138,7 +139,7 @@ how safe it is to start developing with these components.
 - Copyright/Attributions Concept / API  Prio 2
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  Prio 2
 - Help Concept / Beispielhaft implementieren  Prio 2
-- Components Concept/Categories / API (WIP) Prio 1
+- Components Concept/Categories / API DONE.
 
 ### Plugins
 - Drawing (WIP) Prio 1

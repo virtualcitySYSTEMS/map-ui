@@ -6,15 +6,15 @@ export const locationSymbol = Symbol('location');
 
 /**
  * sorts by owner and optionally plugin order
- * @param {ButtonComponent} a
- * @param {ButtonComponent} b
+ * @param {string | symbol} ownerA
+ * @param {string | symbol} ownerB
  * @param {string[]} [order] order of owners to sort by
  * @returns {number}
  */
-function sortByOwner(a, b, order = []) {
+export function sortByOwner(ownerA, ownerB, order = []) {
   const sorted = [vcsAppSymbol, ...order];
-  const indexA = sorted.indexOf(a.owner);
-  const indexB = sorted.indexOf(b.owner);
+  const indexA = sorted.indexOf(ownerA);
+  const indexB = sorted.indexOf(ownerB);
 
   if (indexA === indexB) {
     return 0;
@@ -35,13 +35,13 @@ function sortByOwner(a, b, order = []) {
  * @param {Array<ButtonComponent>} buttonComponents
  * @param {ButtonLocation} location Button render position
  * @param {string[]} [order] optional order to sort by (plugin names)
- * @param {function(a: ButtonComponent, b: ButtonComponent, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
+ * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
  * @returns {Array<VcsAction>}
  */
 export function getActionsByLocation(buttonComponents, location, order = [], compareFn = sortByOwner) {
   return [...buttonComponents]
     .filter(b => b[locationSymbol] === location)
-    .sort((a, b) => compareFn(a, b, order))
+    .sort((a, b) => compareFn(a.owner, b.owner, order))
     .map(b => b.action);
 }
 
