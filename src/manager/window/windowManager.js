@@ -151,19 +151,73 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
 }
 
 /**
+ * @enum {number}
+ * @property {number} TOP_LEFT
+ * @property {number} TOP_RIGHT
+ * @property {number} BOTTOM_LEFT
+ * @property {number} BOTTOM_RIGHT
+ */
+export const WindowAlignment = {
+  TOP_LEFT: 1,
+  TOP_RIGHT: 2,
+  BOTTOM_LEFT: 3,
+  BOTTOM_RIGHT: 4,
+};
+
+/**
  * WindowPositionOptions from client position relative to a HTMLElement
- * @param {number} x
- * @param {number} y
- * @param {string|HTMLElement} [element='mapElement']
+ * @param {number} x - client pixel position
+ * @param {number} y - client pixel position
+ * @param {string|HTMLElement} [element='mapElement'] - the element or a class name. the _first_ item of said class name will be taken.
+ * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
  * @returns {WindowPositionOptions}
  */
-export function getWindowPositionOptions(x, y, element = 'mapElement') {
+export function getWindowPositionOptions(x, y, element = 'mapElement', alignment = WindowAlignment.TOP_LEFT) {
   let mapElement = element;
   if (typeof mapElement === 'string') {
     mapElement = document.getElementsByClassName(element).item(0);
   }
-  const { left, top } = mapElement.getBoundingClientRect();
-  return { left: x - left, top: y - top };
+  const { left, top, width, height } = mapElement.getBoundingClientRect();
+  if (alignment === WindowAlignment.TOP_LEFT) {
+    return { left: x - left, top: y - top };
+  } else if (alignment === WindowAlignment.TOP_RIGHT) {
+    return { right: width - x, top: y - top };
+  } else if (alignment === WindowAlignment.BOTTOM_LEFT) {
+    return { left: x - left, bottom: height - y };
+  }
+  return { right: width - x, bottom: height - y };
+}
+
+/**
+ * Fits a window aligned top left so it fits into the parent. this will change the alignment to be bottom or right depending
+ * on if the window would not fit into the parent.
+ * @param {number} x - client pixel position
+ * @param {number} y - client pixel position
+ * @param {number} width - window width to fit
+ * @param {number} height - window height to fit
+ * @param {string|HTMLElement} [element='mapElement'] - the element or a class name. the _first_ item of said class name will be taken.
+ * @returns {WindowPositionOptions}
+ */
+export function getFittedWindowPositionOptions(x, y, width, height, element = 'mapElement') {
+  let mapElement = element;
+  if (typeof mapElement === 'string') {
+    mapElement = document.getElementsByClassName(element).item(0);
+  }
+
+  const { width: parentWidth, height: parentHeight } = mapElement.getBoundingClientRect();
+  const bottom = y + height > parentHeight;
+  const right = x + width > parentWidth;
+  let alignment = WindowAlignment.TOP_LEFT;
+  if (bottom) {
+    if (right) {
+      alignment = WindowAlignment.BOTTOM_RIGHT;
+    } else {
+      alignment = WindowAlignment.BOTTOM_LEFT;
+    }
+  } else if (right) {
+    alignment = WindowAlignment.TOP_RIGHT;
+  }
+  return getWindowPositionOptions(x, y, mapElement, alignment);
 }
 
 /**

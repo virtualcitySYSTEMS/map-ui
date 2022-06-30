@@ -46,7 +46,13 @@ export { default as ViewPointContentTreeItem } from './src/contentTree/viewPoint
 export { default as WindowComponent } from './src/manager/window/WindowComponent.vue';
 export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.vue';
 export { default as VcsWindowManager } from './src/manager/window/WindowManager.vue';
-export { WindowManager, WindowSlot, WindowPositions } from './src/manager/window/windowManager.js';
+export {
+  WindowManager,
+  WindowSlot,
+  WindowPositions,
+  getFittedWindowPositionOptions,
+  getWindowPositionOptions,
+} from './src/manager/window/windowManager.js';
 
 export { ButtonManager } from './src/manager/buttonManager.js';
 export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
