@@ -1,5 +1,7 @@
 <template>
-  <div :class="$vuetify.breakpoint.xs ? 'win-container-mobile' : 'unset'">
+  <div
+    :class="$vuetify.breakpoint.xs ? 'win-container-mobile' : 'unset'"
+  >
     <WindowComponent
       v-for="(id, zIndex) in componentIds"
       :key="id"

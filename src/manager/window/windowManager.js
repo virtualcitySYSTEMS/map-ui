@@ -165,28 +165,60 @@ export const WindowAlignment = {
 };
 
 /**
+ * @returns {HTMLElement|null}
+ */
+function getActiveMapElement() {
+  const mapElements = document.getElementsByClassName('mapElement');
+  for (let i = 0; i < mapElements.length; i++) {
+    const element = mapElements.item(i);
+    if (element.style.display !== 'none') {
+      return element;
+    }
+  }
+  return null;
+}
+
+/**
  * WindowPositionOptions from client position relative to a HTMLElement
  * @param {number} x - client pixel position
  * @param {number} y - client pixel position
- * @param {string|HTMLElement} [element='mapElement'] - the element or a class name. the _first_ item of said class name will be taken.
+ * @param {HTMLElement} [element='mapElement'] - the element. if none is provided, the currently active mapElement will be taken
  * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
  * @returns {WindowPositionOptions}
  */
-export function getWindowPositionOptions(x, y, element = 'mapElement', alignment = WindowAlignment.TOP_LEFT) {
-  let mapElement = element;
-  if (typeof mapElement === 'string') {
-    mapElement = document.getElementsByClassName(element).item(0);
+export function getWindowPositionOptions(x, y, element, alignment = WindowAlignment.TOP_LEFT) {
+  const mapElement = element ?? getActiveMapElement();
+  if (!mapElement) {
+    return { left: x, top: y };
   }
+
   const { left, top, width, height } = mapElement.getBoundingClientRect();
   if (alignment === WindowAlignment.TOP_LEFT) {
     return { left: x - left, top: y - top };
   } else if (alignment === WindowAlignment.TOP_RIGHT) {
-    return { right: width - x, top: y - top };
+    return { right: (left + width) - x, top: y - top };
   } else if (alignment === WindowAlignment.BOTTOM_LEFT) {
-    return { left: x - left, bottom: height - y };
+    return { left: x - left, bottom: (height + top) - y };
   }
-  return { right: width - x, bottom: height - y };
+  return { right: (left + width) - x, bottom: (height + top) - y };
 }
+
+/**
+ * Get window position options based on a pixel in the map
+ * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
+ * @param {WindowAlignment} [alignment]
+ * @returns {WindowPositionOptions}
+ */
+export function getWindowPositionOptionsFromMapEvent(windowPosition, alignment) {
+  const mapElement = getActiveMapElement();
+  if (!mapElement) {
+    return { left: windowPosition.x, top: windowPosition.y };
+  }
+
+  const { left, top } = mapElement.getBoundingClientRect();
+  return getWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, mapElement, alignment);
+}
+
 
 /**
  * Fits a window aligned top left so it fits into the parent. this will change the alignment to be bottom or right depending
@@ -195,13 +227,13 @@ export function getWindowPositionOptions(x, y, element = 'mapElement', alignment
  * @param {number} y - client pixel position
  * @param {number} width - window width to fit
  * @param {number} height - window height to fit
- * @param {string|HTMLElement} [element='mapElement'] - the element or a class name. the _first_ item of said class name will be taken.
+ * @param {HTMLElement} [element='mapElement'] - the element. if none is provided, the currently active mapElement will be taken
  * @returns {WindowPositionOptions}
  */
-export function getFittedWindowPositionOptions(x, y, width, height, element = 'mapElement') {
-  let mapElement = element;
-  if (typeof mapElement === 'string') {
-    mapElement = document.getElementsByClassName(element).item(0);
+export function getFittedWindowPositionOptions(x, y, width, height, element) {
+  const mapElement = element ?? getActiveMapElement();
+  if (!mapElement) {
+    return { left: x, top: y };
   }
 
   const { width: parentWidth, height: parentHeight } = mapElement.getBoundingClientRect();
@@ -218,6 +250,24 @@ export function getFittedWindowPositionOptions(x, y, width, height, element = 'm
     alignment = WindowAlignment.TOP_RIGHT;
   }
   return getWindowPositionOptions(x, y, mapElement, alignment);
+}
+
+/**
+ * Fits a window aligned top left so it fits into currently active map. this will change the alignment to be bottom or right depending
+ * on if the window would not fit into active map element.
+ * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
+ * @param {number} width
+ * @param {number} height
+ * @returns {WindowPositionOptions}
+ */
+export function getFittedWindowPositionOptionsFromMapEvent(windowPosition, width, height) {
+  const mapElement = getActiveMapElement();
+  if (!mapElement) {
+    return { left: windowPosition.x, top: windowPosition.y };
+  }
+
+  const { left, top } = mapElement.getBoundingClientRect();
+  return getFittedWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, width, height, mapElement);
 }
 
 /**

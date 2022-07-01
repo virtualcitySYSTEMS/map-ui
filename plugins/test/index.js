@@ -105,6 +105,29 @@ export default async function () {
         const group = app.toolboxManager.requestGroup(id, icon, title);
         buttonComponents.forEach(c => group.buttonManager.add(c, owner));
       });
+
+      app.contextMenuManager.addEventHandler(async (event) => {
+        const actions = [{
+          id: 'foo2',
+          name: 'Log Position',
+          icon: '$vcsInfo',
+          callback() {
+            console.log(event.positionOrPixel);
+          },
+        }];
+        if (event.feature) {
+          actions.push({
+            id: 'foo',
+            name: 'Log Feature',
+            icon: '$vcsInfo',
+            callback() {
+              console.log('feature right clicked');
+              console.log(event.feature);
+            },
+          });
+        }
+        return actions;
+      }, '@vcmap/test');
     },
     destroy() {
       if (this._destroyActions) {

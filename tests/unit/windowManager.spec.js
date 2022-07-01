@@ -122,35 +122,35 @@ describe('windowManager', () => {
     it('should calculate the position for BOTTOM_LEFT', () => {
       const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.BOTTOM_LEFT);
       expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('bottom', 340);
+      expect(position).to.have.property('bottom', 360);
     });
 
     it('should calculate the position for TOP_RIGHT', () => {
       const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.TOP_RIGHT);
-      expect(position).to.have.property('right', 170);
+      expect(position).to.have.property('right', 180);
       expect(position).to.have.property('top', 20);
     });
 
     it('should calculate the position for BOTTOM_RIGHT', () => {
       const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.BOTTOM_RIGHT);
-      expect(position).to.have.property('right', 170);
-      expect(position).to.have.property('bottom', 340);
+      expect(position).to.have.property('right', 180);
+      expect(position).to.have.property('bottom', 360);
     });
 
     it('should fit a window to the right', () => {
-      const position = getFittedWindowPositionOptions(180, 40, 20, 40, dummyElement);
+      const position = getFittedWindowPositionOptions(190, 40, 20, 40, dummyElement);
       expect(position).to.have.property('right', 10);
       expect(position).to.have.property('top', 20);
     });
 
     it('should fit a window to the bottom', () => {
-      const position = getFittedWindowPositionOptions(20, 370, 20, 40, dummyElement);
+      const position = getFittedWindowPositionOptions(20, 390, 20, 40, dummyElement);
       expect(position).to.have.property('left', 10);
       expect(position).to.have.property('bottom', 10);
     });
 
     it('should fit a window to right & bottom', () => {
-      const position = getFittedWindowPositionOptions(180, 370, 20, 40, dummyElement);
+      const position = getFittedWindowPositionOptions(190, 390, 20, 40, dummyElement);
       expect(position).to.have.property('right', 10);
       expect(position).to.have.property('bottom', 10);
     });

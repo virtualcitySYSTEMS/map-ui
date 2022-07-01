@@ -21,6 +21,7 @@ import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/categoryManager/categoryManager.js';
+import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -105,6 +106,7 @@ class VcsUiApp extends VcsApp {
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
+        this._contextMenuManager.removeOwner(plugin.name);
         if (plugin.i18n) {
           this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
         }
@@ -117,6 +119,7 @@ class VcsUiApp extends VcsApp {
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
+        this._contextMenuManager.removeOwner(plugin.name);
         this.i18n.removePluginMessages(plugin.name, plugin[contextIdSymbol]);
       }),
     ];
@@ -146,7 +149,7 @@ class VcsUiApp extends VcsApp {
      */
     this._windowManager = new WindowManager();
     /**
-     * @type {ButtonManager}
+     * @type {NavbarManager}
      * @private
      */
     this._navbarManager = new NavbarManager();
@@ -168,6 +171,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._categoryManager = new CategoryManager(this);
+
+    /**
+     * @type {ContextMenuManager}
+     * @private
+     */
+    this._contextMenuManager = new ContextMenuManager(this);
   }
 
   /**
@@ -225,6 +234,12 @@ class VcsUiApp extends VcsApp {
   get categoryManager() { return this._categoryManager; }
 
   /**
+   * @type {ContextMenuManager}
+   * @readonly
+   */
+  get contextMenuManager() { return this._contextMenuManager; }
+
+  /**
    * @param {import("@vcmap/core").Context} context
    * @returns {Promise<void>}
    * @protected
@@ -277,6 +292,7 @@ class VcsUiApp extends VcsApp {
     this.navbarManager.destroy();
     this.toolboxManager.destroy();
     this.categoryManager.destroy();
+    this.contextMenuManager.destroy();
     this._overviewMap.destroy();
     this._pluginListeners.forEach((cb) => { cb(); });
     this._pluginListeners = [];

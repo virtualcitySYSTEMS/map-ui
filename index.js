@@ -51,13 +51,18 @@ export {
   WindowSlot,
   WindowPositions,
   getFittedWindowPositionOptions,
+  getFittedWindowPositionOptionsFromMapEvent,
   getWindowPositionOptions,
+  getWindowPositionOptionsFromMapEvent,
 } from './src/manager/window/windowManager.js';
 
 export { ButtonManager } from './src/manager/buttonManager.js';
 export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
 export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';
+export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
+export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
+export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
 
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';

@@ -1,5 +1,5 @@
 <template>
-  <div :id="mapId" />
+  <div :id="mapId" @click.right.stop="(e) => { e.preventDefault(); }" />
 </template>
 
 <style lang="scss" scoped>
