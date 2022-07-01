@@ -34,8 +34,8 @@ To develop @vcmap/core and @vcmap/cesium at the same time use.
 - call `npm link @vcmap/core @vcmap/cesium` in the @vcmap/ui folder
 
 For Source direct debuggable openlayers Source Code change the `vite.config.js` file and replace the optimizeDeps with the 
-following snippet
-```
+following snippet:
+```json
     optimizeDeps: {
       exclude: [
         'ol',
@@ -44,6 +44,11 @@ following snippet
         'ol > pbf',
       ],
     },
+```
+Or you can set the convenienct env variable `NO_OPTIMIZED_CORE environment variable to not
+optimize `@vcmap/core`.
+```bash
+NO_OPTIMIZED_CORE=true npm start
 ```
 
 ### Setting up Webstorm

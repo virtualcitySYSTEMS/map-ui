@@ -14,8 +14,7 @@ const configMain = defineConfig(async ({ mode }) => {
     proxy = await getPluginProxies(host, production);
   }
 
-
-  return {
+  const config = {
     ...commonViteConfig,
     server: {
       https,
@@ -24,6 +23,22 @@ const configMain = defineConfig(async ({ mode }) => {
       proxy,
     },
   };
+
+  if (process.env.NO_OPTIMIZED_CORE) {
+    config.optimizeDeps = {
+      exclude: [
+        '@vcmap/core',
+      ],
+      include: [
+        '@vcmap/core > fast-deep-equal',
+        '@vcmap/core > rbush-knn',
+        '@vcmap/core > rbush-knn > tinyqueue',
+        '@vcmap/core > pbf',
+        '@vcmap/cesium',
+      ],
+    };
+  }
+  return config;
 });
 
 export default configMain;
