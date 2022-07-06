@@ -1,0 +1,11 @@
+{
+  "name": "@vcmap/simple-graph",
+  "version": "1.0.0",
+  "vcMapVersion": "~5.0.0",
+  "dependencies": {
+    "@vcsuite/parsers": "^1.0.1"
+  },
+  "peerDependencies": {
+    "@vcmap/ui": "5.0.0-rc.2"
+  }
+}

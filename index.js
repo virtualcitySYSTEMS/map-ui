@@ -64,6 +64,14 @@ export { default as ContextMenuManager } from './src/manager/contextMenu/context
 export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
 
+export { applyKeyMapping, applyValueMapping, default as AbstractFeatureInfoView } from './src/featureInfo/abstractFeatureInfoView.js';
+export { extractNestedKey, default as BalloonFeatureInfoView } from './src/featureInfo/balloonFeatureInfoView.js';
+export { getBalloonPosition, setBalloonPosition, setupBalloonPositionListener } from './src/featureInfo/balloonHelper.js';
+export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
+export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';
+export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.js';
+export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.js';
+
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';
 export { default as ObliqueRotation } from './src/navigation/obliqueRotation.vue';
@@ -91,6 +99,8 @@ export { default as Icons } from './src/icons/+all.js';
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
 export { default as VcsTooltip } from './src/components/notification/VcsTooltip.vue';
+
+export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 
 // export { default as VcsConfirmationDialog } from './src/components/dialogs/VcsConfirmationDialog.vue';
 

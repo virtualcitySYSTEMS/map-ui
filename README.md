@@ -96,6 +96,7 @@ how safe it is to start developing with these components.
 - I18n API RC [I18n](documentation/INTERNATIONALIZATION.md).
 - Components API RC [Components](documentation/COMPONENTS.md).
 - [Context Menu](documentation/CONTEXT_MENU.md) API RC
+- [FeatureInfo](documentation/FeatureInfo.md) RC
 
 ##### components
 - VcsTextField BETA
@@ -133,7 +134,7 @@ how safe it is to start developing with these components.
 - Search API + UI Prio 2
 - Overlay API Support  Prio 3
 - i18n DONE.
-- FeatureInfo Concept/API (Balloon) (WIP) Prio 1
+- FeatureInfo Concept/API (Balloon) DONE
   - Context API DONE
   - Hierachy B3dm
 - Legend Concept/API  Prio 2 

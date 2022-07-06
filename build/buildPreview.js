@@ -20,4 +20,11 @@ await Promise.all([
       recursive: true,
     },
   ),
+  fs.promises.cp(
+    getProjectPath('exampleData'),
+    path.join(process.cwd(), 'dist', 'exampleData'),
+    {
+      recursive: true,
+    },
+  ),
 ]);

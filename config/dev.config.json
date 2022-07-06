@@ -1,4 +1,37 @@
 {
+  "i18n": [
+    {
+      "de": {
+        "layers": {
+          "wmsLayerLaerm": {
+            "title": "WMS Lärm Bayern"
+          }
+        }
+      },
+      "en": {
+        "layers": {
+          "wmsLayerLaerm": {
+            "title": "WMS Noise Bavaria"
+          }
+        }
+      }
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "genericBalloon",
+      "title": "This is a Balloon Title",
+      "subtitle": "olcs_altitudeMode"
+    },
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "genericBalloonLaerm",
+      "title": "Lärmkarte Bayern",
+      "subtitle": "WMS Feature Info",
+      "attributeKeys": ["Pixel Value"]
+    }
+  ],
   "layers": [
     {
       "name": "testGeojson",
@@ -10,7 +43,129 @@
       "activeOnStartup": false,
       "vectorProperties": {
         "altitudeMode": "clampToGround"
+      },
+      "zIndex": 11,
+      "properties": {
+        "title": "Test GeoJSON",
+        "featureInfo": "genericBalloon"
       }
+    },
+    {
+      "type": "CzmlLayer",
+      "name": "czmlPoint",
+      "activeOnStartup": false,
+      "url": "exampleData/point.czml",
+      "properties": {
+        "title": "czmlPoint",
+        "featureInfo": "tableAll"
+      }
+    },
+    {
+      "type": "CzmlLayer",
+      "name": "czmlDynamicPoint",
+      "activeOnStartup": false,
+      "url": "exampleData/dynamicPoint.czml",
+      "properties": {
+        "title": "czmlDynamicPoint",
+        "featureInfo": "genericBalloon"
+      }
+    },
+    {
+      "name": "wmsLayerLaerm",
+      "type": "WMSLayer",
+      "url": "http://www.lfu.bayern.de/gdi/wms/laerm/hauptverkehrsstrassen",
+      "datasourceId": "P7xfmLJ5zkFmT7hNQ",
+      "activeOnStartup": false,
+      "version": "1.3.0",
+      "layers": "mroadbylden,mroadbyln,isophonelden67,isophoneln57,lsemroadby",
+      "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "extent": {
+        "coordinates": [
+          8.799200,
+          47.156072,
+          14.055682,
+          50.670961
+        ],
+        "projection": {
+          "epsg": "4326"
+        }
+      },
+      "featureInfo": {
+        "showFeature": true,
+        "responseType": "application/geojson",
+        "vectorProperties": {
+          "extrudedHeight": 20
+        },
+        "style": {
+          "type": "VectorStyleItem",
+          "stroke": {
+            "color": "#FF00FF",
+            "width": 2
+          }
+        }
+      },
+      "tilingSchema": "geographic",
+      "zIndex": 12,
+      "properties": {
+        "title": "layers.wmsLayerLaerm.title",
+        "featureInfo": "genericBalloonLaerm"
+      }
+    },
+    {
+      "name": "wmsLayerPOI",
+      "type": "WMSLayer",
+      "url": "https://sgx.geodatenzentrum.de/wms_poi_open",
+      "activeOnStartup": false,
+      "version": "1.3.0",
+      "layers": "flughaefen,grenzuebergaenge,heliports,kilometrierungen_bab,seehaefen",
+      "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "featureInfo": {
+        "showFeature": true,
+        "responseType": "application/json",
+        "vectorProperties": {
+          "extrudedHeight": 20
+        },
+        "style": {
+          "type": "VectorStyleItem",
+          "stroke": {
+            "color": "#FF00FF",
+            "width": 2
+          }
+        }
+      },
+      "tilingSchema": "geographic",
+      "zIndex": 13,
+      "properties": {
+        "title": "WMS POI Open",
+        "featureInfo": "tableAll"
+      }
+    }
+  ],
+  "contentTree":  [
+    {
+      "name": "geojson",
+      "layerName": "testGeojson",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "czmlPoint",
+      "layerName": "czmlPoint",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "czmlDynamicPoint",
+      "layerName": "czmlDynamicPoint",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "wmsLayerPOI",
+      "layerName": "wmsLayerPOI",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "wmsLayerLaerm",
+      "layerName": "wmsLayerLaerm",
+      "type": "LayerContentTreeItem"
     }
   ],
   "plugins": [

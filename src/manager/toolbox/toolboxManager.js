@@ -25,6 +25,11 @@ import { ButtonManager } from '../buttonManager.js';
  */
 const defaultGroups = [
   {
+    id: 'featureInfo',
+    icon: '$vcsInfo',
+    title: 'Feature Info',
+  },
+  {
     id: 'select',
     icon: '$vcsPen',
     title: 'select',

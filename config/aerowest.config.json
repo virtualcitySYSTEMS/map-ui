@@ -55,7 +55,8 @@
         "provider": "Fachbereich Geodaten und Verkehrsanlagen Osnabrück"
       },
       "properties": {
-        "title": "Gebäude"
+        "title": "Gebäude",
+        "featureInfo": "vcsContent"
       }
     },
     {
@@ -166,7 +167,6 @@
       "layers": "web",
       "parameters": "format=image/png",
       "maxLevel": 21,
-      "featureInfo": null,
       "tilingSchema": "geographic",
       "hiddenObjectIds": [],
       "copyright": {

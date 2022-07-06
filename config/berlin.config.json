@@ -6,6 +6,42 @@
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
   },
+  "i18n": [
+    {
+      "de": {
+        "layers": {
+          "lod2_solar_jul": {
+            "title": "Solare Einstrahlung Juli"
+          },
+          "lod2_solar_year": {
+            "title": "Solare Einstrahlung pro Jahr ohne Verschattung"
+          },
+          "lod_solar_year_shading": {
+            "title": "Solare Einstrahlung pro Jahr mit Verschattung"
+          },
+          "citygml_trees_solar": {
+            "title": "Bäume (Verschattungsobjekte)"
+          }
+        }
+      },
+      "en": {
+        "layers": {
+          "lod2_solar_jul": {
+            "title": "Solar radiation July"
+          },
+          "lod2_solar_year": {
+            "title": "Solar radiation per year without shading"
+          },
+          "lod_solar_year_shading": {
+            "title": "Solar radiation per year with shading"
+          },
+          "citygml_trees_solar": {
+            "title": "Vegetation (shading objects)"
+          }
+        }
+      }
+    }
+  ],
   "styles": [
     {
       "type": "DeclarativeStyleItem",
@@ -113,9 +149,49 @@
       ]
     }
   ],
-  "maps": [
+  "featureInfo": [
+    {
+      "type": "IframeFeatureInfoView",
+      "name": "iframe",
+      "src": "/iframe/?layerName=${layerName}&featureId=${featureId}&creationDate=${attributes.gml:name}"
+    },
+    {
+      "type": "AddressBalloonFeatureInfoView",
+      "name": "balloon"
+    }
   ],
   "layers": [
+    {
+      "name": "buildings_untextured",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
+      "type": "CesiumTilesetLayer",
+      "datasourceId": "9eRDxjbxHQzE9XiES",
+      "activeOnStartup": true,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
+        "url": "http://www.businesslocationcenter.de/downloadportal",
+        "year": ""
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ],
+      "properties": {
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "ClassifiedbyRoofType",
+          "BuildingFunction",
+          "Transparentbuildings"
+        ],
+        "title": "untextured Buildings",
+        "featureInfo": "balloon"
+      }
+    },
     {
       "name": "PointCloud Changedetection",
       "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
@@ -180,7 +256,11 @@
       },
       "exclusiveGroups": [
         "bldg"
-      ]
+      ],
+      "properties": {
+        "title": "layers.lod2_solar_jul.title",
+        "featureInfo": "genericBalloon"
+      }
     },
     {
       "name": "lod2_solar_apr",
@@ -237,7 +317,11 @@
       },
       "exclusiveGroups": [
         "bldg"
-      ]
+      ],
+      "properties": {
+        "title": "layers.lod2_solar_year.title",
+        "featureInfo": "graphBar"
+      }
     },
     {
       "name": "lod_solar_year_shading",
@@ -256,7 +340,11 @@
       },
       "exclusiveGroups": [
         "bldg"
-      ]
+      ],
+      "properties": {
+        "title": "layers.lod_solar_year_shading.title",
+        "featureInfo": "graphTrend"
+      }
     },
     {
       "name": "citygml_trees_solar",
@@ -275,7 +363,11 @@
       },
       "exclusiveGroups": [
         "tree"
-      ]
+      ],
+      "properties": {
+        "title": "layers.citygml_trees_solar.title",
+        "featureInfo": "iframe"
+      }
     }
   ],
   "viewpoints": [
@@ -503,6 +595,28 @@
       "pitch": -51.33904105613322,
       "roll": 0.17115067480664065,
       "animate": true
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "building.solarYear",
+      "layerName": "lod2_solar_year",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.solarYearShading",
+      "layerName": "lod_solar_year_shading",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.solarTrees",
+      "layerName": "citygml_trees_solar",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.solarJul",
+      "layerName": "lod2_solar_jul",
+      "type": "LayerContentTreeItem"
     }
   ],
   "plugins": [

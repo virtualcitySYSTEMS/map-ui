@@ -1,0 +1,100 @@
+{
+  "featureInfo": [
+    {
+      "type": "SimpleGraphView",
+      "name": "graphBar",
+      "attributeKeys": [
+        "globalRadRoofsMonth_01", "globalRadRoofsMonth_02", "globalRadRoofsMonth_03",
+        "globalRadRoofsMonth_04", "globalRadRoofsMonth_05", "globalRadRoofsMonth_06",
+        "globalRadRoofsMonth_07", "globalRadRoofsMonth_08", "globalRadRoofsMonth_09",
+        "globalRadRoofsMonth_10", "globalRadRoofsMonth_11", "globalRadRoofsMonth_12"
+      ],
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "color": "secondary",
+      "graph": "bar",
+      "gradient": ["red", "orange", "yellow"],
+      "window": {
+        "slot": "detached",
+        "position": {
+          "left": "20%",
+          "right": "20%",
+          "bottom": "0%"
+        }
+      }
+    },
+    {
+      "type": "SimpleGraphView",
+      "name": "graphTrend",
+      "attributeKeys": [
+        "globalRadRoofsMonth_01", "globalRadRoofsMonth_02", "globalRadRoofsMonth_03",
+        "globalRadRoofsMonth_04", "globalRadRoofsMonth_05", "globalRadRoofsMonth_06",
+        "globalRadRoofsMonth_07", "globalRadRoofsMonth_08", "globalRadRoofsMonth_09",
+        "globalRadRoofsMonth_10", "globalRadRoofsMonth_11", "globalRadRoofsMonth_12"
+      ],
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "color": "secondary",
+      "window": {
+        "slot": "detached",
+        "position": {
+          "left": "20%",
+          "right": "20%",
+          "bottom": "0%"
+        }
+      }
+    }
+  ],
+  "layers": [
+    {
+      "name": "lod2_solar_year",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/0866fca1-2b8c-4ac9-b478-cdeffc8d7f38",
+      "type": "CesiumTilesetLayer",
+      "datasourceId": "amZp7Mb68MiyesBQN",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ],
+      "properties": {
+        "title": "layers.lod2_solar_year.title",
+        "featureInfo": "graphBar"
+      }
+    },
+    {
+      "name": "lod_solar_year_shading",
+      "url": "https://berlin.virtualcitymap.de/datasource-data/f931caec-8003-44b1-8e9c-5b5f646f1c11",
+      "type": "CesiumTilesetLayer",
+      "datasourceId": "BZGcFpindygyuDwGq",
+      "activeOnStartup": false,
+      "allowPicking": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "hiddenObjectIds": [],
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": [
+        "bldg"
+      ],
+      "properties": {
+        "title": "layers.lod_solar_year_shading.title",
+        "featureInfo": "graphTrend"
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "name": "simple-graph",
+      "entry": "plugins/simple-graph/index.js"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="d-contents">
     <VcsTreeviewSearchbar
-      v-if="hasSearchbar"
+      v-if="showSearchbar"
       :placeholder="searchbarPlaceholder"
       v-model="search"
     />
@@ -63,14 +63,14 @@
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
    * Can render dynamic components as leaf items.
    * In order to display an item needs to be registered and added to `availableComponents`.
-   * @vue-prop {boolean} [hasSearchbar=false] - Whether there is a searchbar for this treeview
+   * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated
    */
   export default {
     name: 'VcsTreeview',
     components: { VcsTreeviewSearchbar, VcsTreeviewLeaf },
     props: {
-      hasSearchbar: {
+      showSearchbar: {
         type: Boolean,
         default: false,
       },

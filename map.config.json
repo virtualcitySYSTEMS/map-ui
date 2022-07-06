@@ -4,7 +4,7 @@
       "name": "@vcmap/project-selector",
       "entry": "plugins/@vcmap/project-selector/index.js",
       "selected": "VC Map Base",
-      "selectedContexts": ["development"],
+      "selectedContexts": ["development", "codeLists"],
       "open": true,
       "projects": [
         {
@@ -28,6 +28,16 @@
           "name": "development",
           "description": "context containing examples, showcases and other stuff",
           "configUrl": "config/dev.config.json"
+        },
+        {
+          "name": "codeLists",
+          "description": "context containing code lists for key and attribute mapping",
+          "configUrl": "config/codes.config.json"
+        },
+        {
+          "name": "graphFeatureInfo",
+          "description": "context adding a graph Feature Info view",
+          "configUrl": "config/graphFeatureInfo.config.json"
         }
       ]
     }

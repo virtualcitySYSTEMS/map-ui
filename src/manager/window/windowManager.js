@@ -72,8 +72,8 @@ export const WindowPositions = {
 /**
  * @typedef WindowComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
- * @property {VueComponent} component Main Component which is shown below the header.
- * @property {VueComponent} [headerComponent] Replaces the Header Component.
+ * @property {import("vue").Component} component Main Component which is shown below the header.
+ * @property {import("vue").Component} [headerComponent] Replaces the Header Component.
  * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
  * @property {WindowState} [state]
  * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
@@ -94,8 +94,8 @@ export const WindowPositions = {
 /**
  * @typedef WindowComponent
  * @property {string} id
- * @property {VueComponent} component
- * @property {VueComponent} [headerComponent]
+ * @property {import("vue").Component} component
+ * @property {import("vue").Component} [headerComponent]
  * @property {WindowPosition} position
  * @property {WindowState} state
  * @property {Ref<UnwrapRef<WindowSlot>>} slot

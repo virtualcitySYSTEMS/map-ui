@@ -12,6 +12,9 @@
         "layers": {
           "pointcloud": {
             "title": "Tiergarten"
+          },
+          "osmBuildingFootprints": {
+            "title": "OSM Gebäude Grundflächen"
           }
         },
         "contentTree": {
@@ -24,6 +27,9 @@
         "layers": {
           "pointcloud": {
             "title": "Zoological garden"
+          },
+          "osmBuildingFootprints": {
+            "title": "OSM Building Footprints"
           }
         },
         "contentTree": {
@@ -455,6 +461,34 @@
       ]
     }
   ],
+  "featureInfo": [
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableAll",
+      "keyMapping": {
+        "roofType": "codeLists.keys.roofType",
+        "function": "codeLists.keys.function"
+      },
+      "valueMapping": {
+        "roofType": "codeLists.values.roofType.${value}",
+        "function": {
+          "1000": "codeLists.values.function.1000",
+          "1111": "myOwnMapping1111"
+        }
+      }
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "filteredTable",
+      "attributeKeys": ["gml:name", "function"],
+      "keyMapping": {
+        "function": "codeLists.keys.function"
+      },
+      "valueMapping": {
+        "function": "codeLists.values.function.${value}"
+      }
+    }
+  ],
   "maps": [
     {
       "type": "OpenlayersMap",
@@ -523,7 +557,8 @@
         "bldg"
       ],
       "properties": {
-        "title": "textured Buildings"
+        "title": "textured Buildings",
+        "featureInfo": "filteredTable"
       }
     },
     {
@@ -553,7 +588,29 @@
           "BuildingFunction",
           "Transparentbuildings"
         ],
-        "title": "untextured Buildings"
+        "title": "untextured Buildings",
+        "featureInfo": "tableAll"
+      }
+    },
+    {
+      "name": "osmBuildingFootprints",
+      "type": "VectorTileLayer",
+      "minLevel": 8,
+      "maxLevel": 21,
+      "zIndex": 11,
+      "tileProvider": {
+        "baseLevels": [
+          14
+        ],
+        "idProperty": "osm_id",
+        "useSpatialIndex": false,
+        "type": "MVTTileProvider",
+        "url": "https://berlin.virtualcitymap.de/localData/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
+      },
+      "activeOnStartup": false,
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "layers.osmBuildingFootprints.title"
       }
     },
     {
@@ -851,6 +908,11 @@
       "name": "building.untexturedBuildings",
       "infoUrl": "https://vc.systems",
       "layerName": "buildings_untextured",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.osmBuildingFootprints",
+      "layerName": "osmBuildingFootprints",
       "type": "LayerContentTreeItem"
     },
     {

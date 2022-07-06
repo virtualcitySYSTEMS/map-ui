@@ -22,6 +22,7 @@ import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/categoryManager/categoryManager.js';
 import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
+import FeatureInfo from './featureInfo/featureInfo.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -155,6 +156,12 @@ class VcsUiApp extends VcsApp {
     this._navbarManager = new NavbarManager();
 
     /**
+     * @type {FeatureInfo}
+     * @private
+     */
+    this._featureInfo = new FeatureInfo(this);
+
+    /**
      * @type {OverviewMap}
      * @private
      */
@@ -216,6 +223,12 @@ class VcsUiApp extends VcsApp {
   get navbarManager() { return this._navbarManager; }
 
   /**
+   * @returns {FeatureInfo}
+   * @readonly
+   */
+  get featureInfo() { return this._featureInfo; }
+
+  /**
    * @type {OverviewMap}
    * @readonly
    */
@@ -268,6 +281,7 @@ class VcsUiApp extends VcsApp {
     }
     await super._parseContext(context);
     await this._contentTree.parseItems(config.contentTree, context.id);
+    await this._featureInfo.parseContext(config.featureInfo, context.id);
   }
 
   /**
@@ -281,6 +295,7 @@ class VcsUiApp extends VcsApp {
       this._plugins.removeContext(contextId),
       this._i18n.removeContext(contextId),
       this._contentTree.removeContext(contextId),
+      this._featureInfo.removeContext(contextId),
     ]);
   }
 
@@ -300,6 +315,7 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._contentTree);
     destroyCollection(this._i18n);
     this._contentTreeClassRegistry.destroy();
+    this._featureInfo.destroy();
     super.destroy();
   }
 }

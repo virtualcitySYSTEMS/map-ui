@@ -1,0 +1,39 @@
+[
+  {
+    "id" : "document",
+    "name" : "CZML Point",
+    "version" : "1.0"
+  },
+  {
+    "id" : "point1",
+    "name": "point",
+    "position" : {
+      "cartographicDegrees" : [13.376830316617214, 52.50965404422655, 100]
+    },
+    "point": {
+      "color": {
+        "rgba": [255, 255, 255, 255]
+      },
+      "outlineColor": {
+        "rgba": [255, 0, 0, 255]
+      },
+      "outlineWidth" : 4,
+      "pixelSize": 20
+    }
+  },
+  {
+    "id": "walkingMan",
+    "name": "walkingMan",
+    "position": {
+      "cartographicDegrees": [
+        13.413115882728551,
+        52.4989390069701,
+        34
+      ]
+    },
+    "model": {
+      "gltf": "CesiumMan.gltf",
+      "scale": 35
+    }
+  }
+]

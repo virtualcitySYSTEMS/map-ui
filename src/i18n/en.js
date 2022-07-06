@@ -51,6 +51,16 @@ const messages = {
     languageTitle: 'Language settings',
     languageSelector: 'Language',
   },
+  featureInfo: {
+    key: 'Name',
+    value: 'Value',
+    searchbarPlaceholder: 'Name, Value, ...',
+    itemsPerPage: 'per page',
+    nextPage: 'Next page',
+    formerPage: 'Former page',
+    group: 'group',
+    ungroup: 'ungroup',
+  },
   footer: {
     title: 'Footer',
   },
