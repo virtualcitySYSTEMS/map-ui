@@ -8,7 +8,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import { isReactive, isRef } from '@vue/composition-api';
+import { isReactive, isRef } from 'vue';
 import {
   WindowPositions,
   WindowManager,

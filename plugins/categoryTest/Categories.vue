@@ -57,9 +57,9 @@
 </template>
 
 <script>
-  import { inject, ref, onUnmounted } from '@vue/composition-api';
+  import { inject, ref, onUnmounted } from 'vue';
   import { VcsButton } from '@vcmap/ui';
-  import { AppBackedCategory, GeoJSONLayer } from '@vcmap/core';
+  import { GeoJSONLayer } from '@vcmap/core';
   import Category from './Category.vue';
 
   export default {

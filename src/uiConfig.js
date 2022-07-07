@@ -1,5 +1,5 @@
 import { Collection, makeOverrideCollection } from '@vcmap/core';
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 
 /**
  * @typedef {Object} UiConfigurationItem
@@ -35,7 +35,7 @@ class UiConfig extends Collection {
      */
     const configObject = {};
     /**
-     * @type {import("@vue/composition-api").Ref<Object<string, *>>}
+     * @type {import("vue").Ref<Object<string, *>>}
      * @private
      */
     this._config = ref({});
@@ -60,7 +60,7 @@ class UiConfig extends Collection {
   }
 
   /**
-   * @returns {import("@vue/composition-api").Ref<Object<string, *>|UiConfigObject>}
+   * @returns {import("vue").Ref<Object<string, *>|UiConfigObject>}
    */
   get config() {
     return this._config;

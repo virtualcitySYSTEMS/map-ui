@@ -33,7 +33,7 @@
 <script>
   import {
     ref, inject, onUnmounted, getCurrentInstance, computed,
-  } from '@vue/composition-api';
+  } from 'vue';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 

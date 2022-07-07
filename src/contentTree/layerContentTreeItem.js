@@ -1,5 +1,5 @@
 import { ViewPoint } from '@vcmap/core';
-import { reactive } from '@vue/composition-api';
+import { reactive } from 'vue';
 import { StateActionState } from '../actions/stateRefAction.js';
 import { createGoToViewpointAction, createModalAction } from '../actions/actionHelper.js';
 import component from '../actions/styleSelector.vue';

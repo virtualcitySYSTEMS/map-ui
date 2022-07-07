@@ -299,7 +299,7 @@
   </v-form>
 </template>
 <script>
-  import { inject, ref, watch } from '@vue/composition-api';
+  import { inject, ref, watch } from 'vue';
   import {
     VcsSelect,
     VcsCheckbox,

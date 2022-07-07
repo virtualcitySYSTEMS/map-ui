@@ -1,4 +1,4 @@
-import { reactive, ref } from '@vue/composition-api';
+import { reactive, ref } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { parseEnumValue } from '@vcsuite/parsers';
@@ -289,7 +289,7 @@ export class WindowManager {
      * reactive ordered array of ids,
      * @type {Array<string>}
      */
-    this.componentIds = reactive([]);
+    this.componentIds = [];
 
     /**
      * @type {Map<string, WindowComponent>}

@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 import { check } from '@vcsuite/check';
 import { ButtonLocation, createToggleAction, vuetify } from '@vcmap/ui';
 import ThemeChangerComponent from './ThemeChangerComponent.vue';

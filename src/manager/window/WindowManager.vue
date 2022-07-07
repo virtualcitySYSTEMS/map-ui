@@ -48,7 +48,7 @@
 </style>
 
 <script>
-  import { inject } from '@vue/composition-api';
+  import { inject, ref } from 'vue';
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
@@ -111,7 +111,7 @@
       };
 
       return {
-        componentIds,
+        componentIds: ref(componentIds),
         getComponent: id => windowManager.get(id).component,
         getHeaderComponent: id => windowManager.get(id).headerComponent || WindowComponentHeader,
         getStyles,

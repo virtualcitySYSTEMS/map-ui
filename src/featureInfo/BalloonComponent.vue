@@ -48,7 +48,7 @@
 </template>
 <script>
 
-  import { inject, onMounted, onUnmounted, watch } from '@vue/composition-api';
+  import { inject, onMounted, onUnmounted, watch } from 'vue';
   import { setupBalloonPositionListener } from './balloonHelper.js';
 
   /**

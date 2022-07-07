@@ -27,7 +27,7 @@
 }
 </style>
 <script>
-  import { computed } from '@vue/composition-api';
+  import { computed } from 'vue';
 
   /**
    * Converts a number (e.g. 12345678,9) to a locale-aware and

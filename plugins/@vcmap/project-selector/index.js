@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import { Context } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';

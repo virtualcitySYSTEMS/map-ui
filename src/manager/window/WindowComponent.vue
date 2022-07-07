@@ -41,7 +41,7 @@
 <script>
   import {
     onMounted, onUnmounted, computed, ref, nextTick,
-  } from '@vue/composition-api';
+  } from 'vue';
   import { fromEvent } from 'rxjs';
   import { switchMap, take, map, tap } from 'rxjs/operators';
   import { WindowSlot } from './windowManager.js';

@@ -1,4 +1,4 @@
-import { watch } from '@vue/composition-api';
+import { watch } from 'vue';
 import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**

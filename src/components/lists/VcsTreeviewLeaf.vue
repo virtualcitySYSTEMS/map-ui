@@ -34,7 +34,7 @@
     computed,
     onMounted,
     ref,
-  } from '@vue/composition-api';
+  } from 'vue';
 
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
 

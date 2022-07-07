@@ -54,7 +54,7 @@
     onUnmounted,
     provide,
     watch,
-  } from '@vue/composition-api';
+  } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';

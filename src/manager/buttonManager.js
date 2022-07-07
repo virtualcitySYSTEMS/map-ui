@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import { reactive } from '@vue/composition-api';
+import { reactive } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, checkMaybe } from '@vcsuite/check';
@@ -23,7 +22,7 @@ import { vcsAppSymbol } from '../pluginHelper.js';
  * @description Manages a set of Map Buttons
  * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
  */
-export class ButtonManager {
+class ButtonManager {
   constructor() {
     /**
      * @type {import("@vcmap/core").VcsEvent<ButtonComponent>}
@@ -37,8 +36,7 @@ export class ButtonManager {
      * reactive ordered array of ids,
      * @type {Array<string>}
      */
-    this.componentIds = reactive([]);
-
+    this.componentIds = [];
     /**
      * @type {Map<string, ButtonComponent>}
      * @private
@@ -154,3 +152,5 @@ export class ButtonManager {
     this._buttonComponents.clear();
   }
 }
+
+export default ButtonManager;

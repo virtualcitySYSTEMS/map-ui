@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { IndexedCollection, makeOverrideCollection, getObjectFromClassRegistry } from '@vcmap/core';
 import { v4 as uuid } from 'uuid';
-import { computed, ref } from '@vue/composition-api';
+import { computed, ref } from 'vue';
 import ContentTreeItem from './contentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import SubContentTreeItem, { subTreeSymbol } from './subContentTreeItem.js';
@@ -73,7 +73,7 @@ class ContentTreeCollection extends IndexedCollection {
      */
     this._defaultSubtreeItem = new SubContentTreeItem({ name: 'Content', icon: '$vcsLayers', title: 'content.title' }, app);
     /**
-     * @type {import("@vue/composition-api").Ref<Map<string, TreeViewItem>>}
+     * @type {import("vue").Ref<Map<string, TreeViewItem>>}
      * @private
      */
     this._subTreeViewItems = ref(new Map());
@@ -211,7 +211,7 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {string} id
-   * @returns {import("@vue/composition-api").ComputedRef<Array<TreeViewItem>>}
+   * @returns {import("vue").ComputedRef<Array<TreeViewItem>>}
    */
   getComputedVisibleTree(id) {
     return computed(() => {
@@ -253,7 +253,7 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {string} id
-   * @returns {import("@vue/composition-api").Ref<Array<string>>}
+   * @returns {import("vue").Ref<Array<string>>}
    */
   getTreeOpenStateRef(id) {
     const subTree = this._getSubTree(id);

@@ -14,7 +14,7 @@
 
 </style>
 <script>
-  import { inject, onUnmounted, ref, computed } from '@vue/composition-api';
+  import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
 
   import { WindowSlot, VcsButton } from '@vcmap/ui';

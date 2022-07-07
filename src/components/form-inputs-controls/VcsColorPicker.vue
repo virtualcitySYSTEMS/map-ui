@@ -28,7 +28,7 @@
   import {
     onMounted,
     onUnmounted,
-  } from '@vue/composition-api';
+  } from 'vue';
   import { Subject } from 'rxjs';
   import { debounceTime, takeUntil } from 'rxjs/operators';
 

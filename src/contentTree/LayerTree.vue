@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import { inject } from '@vue/composition-api';
+  import { inject } from 'vue';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
   /**

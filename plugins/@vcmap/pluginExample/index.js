@@ -1,4 +1,4 @@
-import { ref, reactive, watch } from '@vue/composition-api';
+import { ref, reactive, watch } from 'vue';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
 

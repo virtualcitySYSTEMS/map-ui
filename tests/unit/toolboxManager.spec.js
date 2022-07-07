@@ -9,7 +9,7 @@ import {
   vi,
 } from 'vitest';
 import { ToolboxManager } from '../../src/manager/toolbox/toolboxManager.js';
-import { ButtonManager } from '../../src/manager/buttonManager.js';
+import ButtonManager from '../../src/manager/buttonManager.js';
 import { vcsAppSymbol } from '../../src/pluginHelper.js';
 
 describe('toolboxManager', () => {

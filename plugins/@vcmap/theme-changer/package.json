@@ -6,7 +6,6 @@
     "@vcsuite/check": "^1.1.2"
   },
   "peerDependencies": {
-    "@vcmap/ui": "5.0.0-rc.2",
-    "@vue/composition-api": "^1.4.5"
+    "@vcmap/ui": "^5.0.0-rc.2"
   }
 }

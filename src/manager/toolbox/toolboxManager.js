@@ -1,9 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { VcsEvent } from '@vcmap/core';
-import { reactive } from '@vue/composition-api';
 import { check, checkMaybe } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
-import { ButtonManager } from '../buttonManager.js';
+import ButtonManager from '../buttonManager.js';
 
 /**
  * @typedef ToolboxGroupComponentOptions
@@ -75,7 +74,7 @@ export class ToolboxManager {
      * reactive ordered array of ids,
      * @type {Array<string>}
      */
-    this.componentIds = reactive([]);
+    this.componentIds = [];
 
     /**
      * @type {Map<string, ToolboxGroupComponent>}

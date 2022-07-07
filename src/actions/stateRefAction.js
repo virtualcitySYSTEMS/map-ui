@@ -1,4 +1,4 @@
-import { watch } from '@vue/composition-api';
+import { watch } from 'vue';
 import { check } from '@vcsuite/check';
 
 /**
@@ -30,7 +30,7 @@ const stateI18nMap = {
 /**
  * Creates an action
  * @param {string} name
- * @param {import("@vue/composition-api").Ref<StateActionState>} stateRef
+ * @param {import("vue").Ref<StateActionState>} stateRef
  * @param {function():void} callback
  * @returns {{ action: VcsAction, destroy: function():void }}
  */

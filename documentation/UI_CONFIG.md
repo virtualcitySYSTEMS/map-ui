@@ -29,7 +29,7 @@ your own custom property.
 </template>
 <script>
   import { VcsButton } from '@vcmap/ui';
-  import { inject } from '@vue/composition-api';
+  import { inject } from 'vue';
 
   export default {
     components: {

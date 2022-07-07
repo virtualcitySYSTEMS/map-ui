@@ -1,5 +1,5 @@
 import { check } from '@vcsuite/check';
-import { ButtonManager } from './buttonManager.js';
+import ButtonManager from './buttonManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
 export const locationSymbol = Symbol('location');

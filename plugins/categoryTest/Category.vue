@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import { inject, nextTick, ref } from '@vue/composition-api';
+  import { inject, nextTick, ref } from 'vue';
   import { VcsButton } from '@vcmap/ui';
   import { getObjectFromClassRegistry } from '@vcmap/core';
 

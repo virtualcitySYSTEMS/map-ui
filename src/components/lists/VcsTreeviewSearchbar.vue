@@ -104,7 +104,7 @@
 
 
 <script>
-  import { onMounted, onUnmounted } from '@vue/composition-api';
+  import { onMounted, onUnmounted } from 'vue';
 
   import { Subject } from 'rxjs';
   import { debounceTime } from 'rxjs/operators';
@@ -147,7 +147,6 @@
       onUnmounted(() => sub.unsubscribe());
 
       return {
-        sub,
         handleInput: (val) => {
           sub.next(val);
         },

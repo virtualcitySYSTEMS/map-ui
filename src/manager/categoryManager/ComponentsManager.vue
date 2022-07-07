@@ -8,9 +8,8 @@
   </div>
 </template>
 
-
 <script>
-  import { inject } from '@vue/composition-api';
+  import { inject } from 'vue';
   import VcsTreeview from '../../components/lists/VcsTreeview.vue';
 
   /**
@@ -24,7 +23,7 @@
     setup() {
       const app = inject('vcsApp');
       return {
-        tree: app.categoryManager.items.value,
+        tree: app.categoryManager.items,
       };
     },
   };

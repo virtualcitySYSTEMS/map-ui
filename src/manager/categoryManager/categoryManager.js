@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 import { contextIdSymbol, IndexedCollection } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import { sortByOwner } from '../navbarManager.js';
@@ -141,12 +141,11 @@ export default class CategoryManager {
     this._itemMappings = [];
 
     /**
-     * @type {import("@vue/composition-api").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
+     * @type {import("vue").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
      * @private
      */
     this._items = ref([]);
   }
-
 
   /**
    * synchronizes the category items with the internal items list.
@@ -479,7 +478,7 @@ export default class CategoryManager {
 
   /**
    * Array to render in TreeView
-   * @returns {import("@vue/composition-api").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
+   * @returns {import("vue").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
    */
   get items() {
     return this._items;

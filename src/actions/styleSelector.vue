@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import { computed, inject, onUnmounted, ref } from '@vue/composition-api';
+  import { computed, inject, onUnmounted, ref } from 'vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 
   export default {

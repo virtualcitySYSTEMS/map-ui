@@ -138,7 +138,6 @@ function loadCss(href) {
  */
 export const libraries = {
   vue: 'vue',
-  '@vue/composition-api': 'vue-composition-api',
   '@vcmap/cesium': 'cesium',
   ol: 'ol',
   '@vcmap/core': 'core',

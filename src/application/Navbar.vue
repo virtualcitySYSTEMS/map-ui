@@ -122,7 +122,7 @@
 </style>
 
 <script>
-  import { inject, ref, computed } from '@vue/composition-api';
+  import { inject, ref, computed } from 'vue';
   import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';

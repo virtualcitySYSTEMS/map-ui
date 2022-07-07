@@ -46,7 +46,7 @@
   </v-container>
 </template>
 <script>
-  import { inject } from '@vue/composition-api';
+  import { inject } from 'vue';
   import ContextsListComponent from './ContextsListComponent.vue';
 
   export default {

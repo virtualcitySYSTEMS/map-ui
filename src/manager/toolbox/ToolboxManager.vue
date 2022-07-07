@@ -49,7 +49,7 @@
 
 <script>
 
-import { inject, ref, computed, watch, onUnmounted } from '@vue/composition-api';
+import { inject, ref, computed, watch, onUnmounted } from 'vue';
 import ToolboxGroupComponent from './ToolboxGroupComponent.vue';
 import {ButtonLocation, vcsAppSymbol} from '@vcmap/ui';
 
@@ -143,7 +143,7 @@ export default {
       actionGroups,
       width,
       getPosition,
-      groupId: null,
+      groupId: ref(null),
       toggleGroup(groupId) {
         if (this.groupId === groupId) {
           this.groupId = null;

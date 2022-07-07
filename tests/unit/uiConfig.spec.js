@@ -7,7 +7,7 @@ import {
   expect,
   vi,
 } from 'vitest';
-import { watch } from '@vue/composition-api';
+import { watch } from 'vue';
 import UiConfig from '../../src/uiConfig.js';
 import { sleep } from '../helpers.js';
 

@@ -56,7 +56,7 @@ export {
   getWindowPositionOptionsFromMapEvent,
 } from './src/manager/window/windowManager.js';
 
-export { ButtonManager } from './src/manager/buttonManager.js';
+export { default as ButtonManager } from './src/manager/buttonManager.js';
 export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
 export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';

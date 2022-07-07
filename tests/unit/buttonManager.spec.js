@@ -8,8 +8,8 @@ import {
   it,
   vi,
 } from 'vitest';
-import { isReactive } from '@vue/composition-api/dist/vue-composition-api.js';
-import { ButtonManager } from '../../src/manager/buttonManager.js';
+import { isReactive } from 'vue';
+import ButtonManager from '../../src/manager/buttonManager.js';
 import { vcsAppSymbol } from '../../src/pluginHelper.js';
 
 describe('ButtonManager', () => {

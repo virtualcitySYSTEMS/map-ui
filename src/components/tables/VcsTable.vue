@@ -85,10 +85,15 @@
   </v-card>
 </template>
 <script>
-
-  import { getCurrentInstance, ref, computed } from '@vue/composition-api';
+  import { getCurrentInstance, ref, computed } from 'vue';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
+
+  /**
+   * @typedef {Object} TableItem
+   * @property {string} key
+   * @property {string} value
+   */
 
   /**
    * @param {Object} attributes
@@ -201,7 +206,7 @@
       };
 
       return {
-        search: '',
+        search: ref(''),
         page,
         items,
         itemsPerPageRef,
@@ -209,13 +214,17 @@
         itemsTo,
         numberOfPages,
         nextPage() {
-          if (this.page + 1 <= this.numberOfPages) this.page += 1;
+          if (page.value + 1 <= numberOfPages.value) {
+            page.value += 1;
+          }
         },
         formerPage() {
-          if (this.page - 1 >= 1) this.page -= 1;
+          if (page.value - 1 >= 1) {
+            page.value -= 1;
+          }
         },
         updateItemsPerPage(number) {
-          this.itemsPerPageRef = number;
+          itemsPerPageRef.value = number;
         },
         handleFilter,
         translatedHeaders,

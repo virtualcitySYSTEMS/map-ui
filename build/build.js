@@ -24,9 +24,6 @@ function hashLibraries() {
     vue: {
       entry: path.join('lib', 'vue.js'),
     },
-    '@vue/composition-api': {
-      entry: path.join('lib', 'vue-composition-api.js'),
-    },
     '@vcmap/cesium': {
       entry: path.join('lib', 'cesium.js'),
       rollupOptions: {

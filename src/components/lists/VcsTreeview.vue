@@ -55,7 +55,7 @@
 </style>
 
 <script>
-  import { getCurrentInstance, ref } from '@vue/composition-api';
+  import { getCurrentInstance, ref } from 'vue';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
 

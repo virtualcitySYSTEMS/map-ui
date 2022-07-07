@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from '@vue/composition-api';
+import { ref, reactive, computed } from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
@@ -63,7 +63,7 @@ class ContentTreeItem {
     this._app = app;
 
     /**
-     * @type {import("@vue/composition-api").Ref<Array<VcsAction>>}
+     * @type {import("vue").Ref<Array<VcsAction>>}
      * @private
      */
     this._actions = ref([]);
@@ -76,28 +76,28 @@ class ContentTreeItem {
 
     /**
      * Whether to display this item or not.
-     * @type {import("@vue/composition-api").Ref<boolean>}
+     * @type {import("vue").Ref<boolean>}
      * @private
      */
     this._visible = ref(true);
 
     /**
      * Whether this item reacts to click events, e.g. with visual feedback
-     * @type {import("@vue/composition-api").Ref<boolean>}
+     * @type {import("vue").Ref<boolean>}
      * @private
      */
     this._clickable = ref(true);
 
     /**
      * Whether this item should be displayed as disabled.
-     * @type {import("@vue/composition-api").Ref<boolean>}
+     * @type {import("vue").Ref<boolean>}
      * @private
      */
     this._disabled = ref(false);
 
     /**
      * The state of this item. NONE if this item cannot have a state.
-     * @type {import("@vue/composition-api").Ref<StateActionState>}
+     * @type {import("vue").Ref<StateActionState>}
      * @private
      */
     this._state = ref(StateActionState.NONE);
@@ -116,20 +116,20 @@ class ContentTreeItem {
     this.infoUrl = options.infoUrl;
 
     /**
-     * @type {import("@vue/composition-api").Ref<Object<string, string>|string|undefined>}
+     * @type {import("vue").Ref<Object<string, string>|string|undefined>}
      * @private
      */
     this._title = ref(options.title);
 
     /**
      * An optional icon to display with this item. Can be an URL or HTMLElement.
-     * @type {import("@vue/composition-api").Ref<string|HTMLCanvasElement|HTMLImageElement|undefined>}
+     * @type {import("vue").Ref<string|HTMLCanvasElement|HTMLImageElement|undefined>}
      * @private
      */
     this._icon = ref(options.icon);
 
     /**
-     * @type {import("@vue/composition-api").Ref<Array<TreeViewItem>>}
+     * @type {import("vue").Ref<Array<TreeViewItem>>}
      * @protected
      */
     this._children = ref([]);

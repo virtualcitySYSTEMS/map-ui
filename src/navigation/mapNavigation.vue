@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import { computed, inject, ref, onUnmounted } from '@vue/composition-api';
+  import { computed, inject, ref, reactive, onUnmounted } from 'vue';
   import { ObliqueMap, CesiumMap, OpenlayersMap } from '@vcmap/core';
   import { unByKey } from 'ol/Observable.js';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
@@ -119,7 +119,7 @@
       VcsCompass,
     },
     setup() {
-      /** @type {VcsApp} */
+      /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       const viewMode = ref(OrientationToolsViewMode.TWO_D);
       const headingRef = ref(0);
@@ -179,9 +179,7 @@
         isOblique: computed(() => viewMode.value === OrientationToolsViewMode.OBLIQUE),
         zoomIn() { zoom(app.maps.activeMap); }, // debounce?
         zoomOut() { zoom(app.maps.activeMap, true); },
-        left: () => {},
-        right: () => {},
-        overviewAction: ref(action),
+        overviewAction: reactive(action),
       };
     },
   };

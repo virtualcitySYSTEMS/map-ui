@@ -28,7 +28,7 @@
 
 
 <script>
-  import { computed, onUnmounted, ref } from '@vue/composition-api';
+  import { computed, onUnmounted, ref } from 'vue';
 
   import { fromEvent, merge, of, Subject } from 'rxjs';
   import { takeUntil, tap } from 'rxjs/operators';
