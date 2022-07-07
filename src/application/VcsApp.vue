@@ -2,7 +2,10 @@
   <v-container class="fill-height pa-0" absolute fluid>
     <Navbar />
     <v-container class="vcs-main pa-0" :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }" fluid absolute>
-      <div v-if="$vuetify.breakpoint.smAndDown" class="company-logo-mobile" />
+      <template v-if="$vuetify.breakpoint.smAndDown">
+        <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" class="mobile-logo">
+        <div v-else class="company-logo-mobile mobile-logo" />
+      </template>
       <VcsMap :map-id="mapId" />
       <MapNavigation />
       <ToolboxManagerComponent />
@@ -31,11 +34,22 @@
   bottom: 56px;
 }
 
+.mobile-logo {
+  max-height: 40px;
+  max-width: 70px;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+}
+
 </style>
 
 <script>
   import { v4 as uuid } from 'uuid';
   import {
+    computed,
+    getCurrentInstance,
     onMounted,
     onUnmounted,
     provide,
@@ -53,6 +67,7 @@
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import ComponentsManager from '../manager/categoryManager/ComponentsManager.vue';
+  import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -186,6 +201,37 @@
       destroyComponentsManagerAction();
     };
   }
+
+  /**
+   * This helper sets up a listener to sync the theming relevant keys from the {@see UiConfigObject}
+   * with a given vuetify instance. Use this helper, if you do not use the VcsApp component and wish to evaluate
+   * the theming keys. Returns a function to stop syncing.
+   * @param {VcsUiApp} app
+   * @param {import("vuetify").Framework} vuetify
+   * @returns {function():void} - call to stop syncing
+   */
+  export function setupUiConfigTheming(app, vuetify) {
+    const listeners = [
+      app.uiConfig.added.addEventListener((item) => {
+        if (item.name === 'primaryColor') {
+          vuetify.theme.themes.dark.primary = item.value;
+          vuetify.theme.themes.light.primary = item.value;
+        }
+      }),
+      app.uiConfig.removed.addEventListener((item) => {
+        if (item.name === 'primaryColor') {
+          vuetify.theme.themes.dark.primary = defaultPrimaryColor;
+          vuetify.theme.themes.light.primary = defaultPrimaryColor;
+        }
+      }),
+    ];
+
+    return () => {
+      listeners.forEach((cb) => { cb(); });
+      listeners.splice(0);
+    };
+  }
+
   /**
    * The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
@@ -238,6 +284,7 @@
       );
 
       const destroyComponentsWindow = setupComponentsWindow(app);
+      const destroyThemingListener = setupUiConfigTheming(app, getCurrentInstance().proxy.$vuetify);
 
       let pluginMountedListener;
       onMounted(() => {
@@ -252,10 +299,12 @@
         mapNavbarListener();
         settingsDestroy();
         destroyComponentsWindow();
+        destroyThemingListener();
       });
 
       return {
         mapId,
+        mobileLogo: computed(() => app.uiConfig.config.value.mobileLogo ?? app.uiConfig.config.value.logo),
       };
     },
   };

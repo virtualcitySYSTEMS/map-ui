@@ -24,7 +24,6 @@ import { Feature } from 'ol';
 import { getCenter } from 'ol/extent';
 import { Fill, Stroke } from 'ol/style.js';
 import { check } from '@vcsuite/check';
-import { vuetify } from '../vuePlugins/vuetify.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -33,6 +32,7 @@ import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import { getBalloonPosition } from './balloonHelper.js';
+import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
 
 /**
  * @returns {Logger}
@@ -58,15 +58,15 @@ function cartesian3ToCoordinate(cartesian) {
 /**
  * @param {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
  * @param {import("@vcmap/core").Layer} layer
+ * @param {string} defaultFillColor
  * @returns {import("ol/style/Style").default|import("@vcmap/core").VectorStyleItem}
  */
-function getHighlightStyle(feature, layer) {
+function getHighlightStyle(feature, layer, defaultFillColor) {
   if (layer && layer.highlightStyle) {
     return layer.highlightStyle;
   }
-  // XXX clean up, vuetify may be scoped
-  const { primary } = vuetify.userPreset.theme.themes.light;
-  const fillColor = Color.fromCssColorString(primary).withAlpha(0.8);
+
+  const fillColor = Color.fromCssColorString(defaultFillColor).withAlpha(0.8);
   if (feature instanceof Feature) {
     let style = feature.getStyle() ?? layer?.style?.style;
     if (typeof style === 'function') {
@@ -158,7 +158,7 @@ class FeatureInfo {
     this._app = app;
 
     /**
-     * @type {OverrideCollection<AbstractFeatureInfoView>}
+     * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
      * @private
      */
     this._collection = makeOverrideCollection(
@@ -412,7 +412,11 @@ class FeatureInfo {
       );
       if (layer.featureVisibility) {
         layer.featureVisibility.highlight({
-          [featureId]: getHighlightStyle(feature, layer),
+          [featureId]: getHighlightStyle(
+            feature,
+            layer,
+            this._app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor,
+          ),
         });
         this._clearHighlightingCb = () => layer.featureVisibility.unHighlight([featureId]);
       }

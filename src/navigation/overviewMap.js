@@ -20,7 +20,7 @@ import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
-import { vuetify } from '../vuePlugins/vuetify.js';
+import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import VcsMap from '../application/VcsMap.vue';
 
@@ -99,8 +99,8 @@ class OverviewMap {
      */
     this._obliqueSelectedImageLayer = null;
 
-    const { primary, accent } = vuetify.userPreset.theme.themes.light;
-    const fillColor = Color.fromCssColorString(accent);
+    const primary = app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor;
+    const fillColor = Color.fromCssColorString('#EDEDED');
 
     /**
      * @type {VectorStyleItem}
@@ -199,7 +199,7 @@ class OverviewMap {
      * @type {Array<function():void>}
      * @private
      */
-    this._layerCollectionListener = [
+    this._collectionListeners = [
       this._app.maps.layerCollection.added.addEventListener((layer) => {
         if (layer.properties.showInOverviewMap) {
           const clone = deserializeLayer(this._app, layer.toJSON());
@@ -217,6 +217,16 @@ class OverviewMap {
         if (this._map.layerCollection.hasKey(layer.name)) {
           const clone = this._map.layerCollection.getByKey(layer.name);
           this._map.layerCollection.remove(clone);
+        }
+      }),
+      this._app.uiConfig.added.addEventListener((item) => {
+        if (item?.name === 'primaryColor') {
+          this._setObliqueColor(item.value);
+        }
+      }),
+      this._app.uiConfig.removed.addEventListener((item) => {
+        if (item?.name === 'primaryColor') {
+          this._setObliqueColor(defaultPrimaryColor);
         }
       }),
     ];
@@ -252,6 +262,18 @@ class OverviewMap {
    */
   get mapClicked() {
     return this._mapClicked;
+  }
+
+  /**
+   * @param {string} color
+   * @private
+   */
+  _setObliqueColor(color) {
+    this.obliqueUnselectedStyle?.stroke?.setColor(color);
+    this.obliqueSelectedStyle?.stroke?.setColor(color);
+    this._obliqueTileLayer?.forceRedraw?.();
+    this._obliqueImageLayer?.forceRedraw?.();
+    this._obliqueSelectedImageLayer?.forceRedraw?.();
   }
 
   /**
@@ -574,7 +596,8 @@ class OverviewMap {
 
   destroy() {
     this._clearListeners();
-    this._layerCollectionListener.forEach(cb => cb());
+    this._collectionListeners.forEach(cb => cb());
+    this._collectionListeners = [];
     if (this._mapPointerListener) {
       this._mapPointerListener();
       this._mapPointerListener = null;

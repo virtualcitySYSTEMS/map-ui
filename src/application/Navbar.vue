@@ -44,7 +44,13 @@
           </v-toolbar-items>
         </v-col>
         <v-col class="align-center d-flex justify-center">
-          <div v-if="$vuetify.breakpoint.mdAndUp" class="company-logo" />
+          <div v-if="$vuetify.breakpoint.mdAndUp" class="d-flex">
+            <img v-if="config.logo" class="logo" :src="config.logo" alt="Logo">
+            <div v-else class="company-logo logo" />
+            <div v-if="config.appTitle" class="ml-4">
+              {{ $t(config.appTitle) }}
+            </div>
+          </div>
         </v-col>
         <v-col class="align-content-end d-flex justify-end">
           <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
@@ -109,6 +115,10 @@
   .v-toolbar__items > div{
     gap: 8px;
   }
+  .logo {
+    max-height: 36px;
+    margin: 0 auto;
+  }
 </style>
 
 <script>
@@ -137,6 +147,7 @@
         projectActions: getActions(ButtonLocation.PROJECT),
         shareActions: getActions(ButtonLocation.SHARE),
         menuActions: getActions(ButtonLocation.MENU),
+        config: app.uiConfig.config,
       };
     },
   };

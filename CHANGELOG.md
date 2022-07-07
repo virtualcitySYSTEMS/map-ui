@@ -4,3 +4,4 @@
 - Redesigned VcsApp.vue setup to export `setupPluginMountedListeners` & `setupMapNavbar`
 - Consistent plugin handling: removal from managers & i18n is managed by the VcsUiApp and not the VcsApp.vue
 - Added `ContextMenuManager` to the vcs app, see [Context Menu](documentation/CONTEXT_MENU.md).
+- Added `UiConfig` for core ui configuration, see [Ui Config](documentation/UI_CONFIG.md)

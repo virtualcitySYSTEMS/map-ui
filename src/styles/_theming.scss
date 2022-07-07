@@ -7,16 +7,11 @@
   background-image: var(--vcs-primary-logo);
   height: 36px;
   width: 151px;
-  margin: 0 auto;
 }
 .company-logo-mobile {
   background-image: var(--vcs-mobile-logo);
   height: 40px;
   width: 70px;
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1;
 }
 
 // Dev-Only!

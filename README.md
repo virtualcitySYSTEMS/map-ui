@@ -139,7 +139,7 @@ how safe it is to start developing with these components.
   - Hierachy B3dm
 - Legend Concept/API  Prio 2 
 - Copyright/Attributions Concept / API  Prio 2
-- Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  Prio 2
+- Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  DONE
 - Help Concept / Beispielhaft implementieren  Prio 2
 - Components Concept/Categories / API DONE.
 

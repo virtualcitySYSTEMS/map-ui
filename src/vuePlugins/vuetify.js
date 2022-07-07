@@ -5,8 +5,16 @@ import Icons from '../icons/+all.js';
 
 Vue.use(Vuetify);
 
+/**
+ * @type {string}
+ */
+export const defaultPrimaryColor = '#409D76';
+
+/**
+ * @returns {import("vuetify").default}
+ */
 export function createVuetify() {
-  const vuetify = new Vuetify({
+  return new Vuetify({
     treeShake: false,
     defaultAssets: {
       font: {
@@ -20,7 +28,7 @@ export function createVuetify() {
       themes: {
         light: {
           basic: '#FFFFFF',
-          primary: '#409D76',
+          primary: defaultPrimaryColor,
           accent: '#EDEDED',
           warning: '#FFCE00',
           'gray-200': '#DEDEDE',
@@ -33,7 +41,7 @@ export function createVuetify() {
         },
         dark: {
           basic: '#000000',
-          primary: '#409D76',
+          primary: defaultPrimaryColor,
           secondary: '#FFFFFF',
           accent: '#757575',
           warning: '#FFCE00',
@@ -48,7 +56,9 @@ export function createVuetify() {
       },
     },
   });
-  return vuetify;
 }
 
+/**
+ * @type {import("vuetify").default}
+ */
 export const vuetify = createVuetify();

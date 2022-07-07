@@ -23,6 +23,7 @@ import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/categoryManager/categoryManager.js';
 import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 import FeatureInfo from './featureInfo/featureInfo.js';
+import UiConfig from './uiConfig.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -61,8 +62,8 @@ import FeatureInfo from './featureInfo/featureInfo.js';
  * @interface VcsComponentManager
  * @template {Object} T - the component type
  * @template {Object} O - component options
- * @property {VcsEvent<T>} added
- * @property {VcsEvent<T>} removed
+ * @property {import("@vcmap/core").VcsEvent<T>} added
+ * @property {import("@vcmap/core").VcsEvent<T>} removed
  * @property {string[]} componentIds - all registered component ids as reactive array
  * @property {function(string):T} get - get component by id
  * @property {function(string):boolean} has - has component with id
@@ -88,7 +89,7 @@ class VcsUiApp extends VcsApp {
   constructor() {
     super();
     /**
-     * @type {OverrideCollection<VcsPlugin>}
+     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
      * @private
      */
     this._plugins = makeOverrideCollection(
@@ -154,7 +155,11 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._navbarManager = new NavbarManager();
-
+    /**
+     * @type {UiConfig}
+     * @private
+     */
+    this._uiConfig = new UiConfig(() => this.dynamicContextId);
     /**
      * @type {FeatureInfo}
      * @private
@@ -187,13 +192,13 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {OverrideCollection<VcsPlugin>}
+   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
    * @readonly
    */
   get plugins() { return this._plugins; }
 
   /**
-   * @type {OverrideCollection<ContentTreeItem>}
+   * @type {OverrideContentTreeCollection}
    * @readonly
    */
   get contentTree() { return this._contentTree; }
@@ -253,6 +258,12 @@ class VcsUiApp extends VcsApp {
   get contextMenuManager() { return this._contextMenuManager; }
 
   /**
+   * @type {UiConfig}
+   * @readonly
+   */
+  get uiConfig() { return this._uiConfig; }
+
+  /**
    * @param {import("@vcmap/core").Context} context
    * @returns {Promise<void>}
    * @protected
@@ -281,6 +292,7 @@ class VcsUiApp extends VcsApp {
     }
     await super._parseContext(context);
     await this._contentTree.parseItems(config.contentTree, context.id);
+    await this._uiConfig.parseItems(config.uiConfig, context.id);
     await this._featureInfo.parseContext(config.featureInfo, context.id);
   }
 
@@ -296,6 +308,7 @@ class VcsUiApp extends VcsApp {
       this._i18n.removeContext(contextId),
       this._contentTree.removeContext(contextId),
       this._featureInfo.removeContext(contextId),
+      this._uiConfig.removeContext(contextId),
     ]);
   }
 
@@ -316,6 +329,7 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._i18n);
     this._contentTreeClassRegistry.destroy();
     this._featureInfo.destroy();
+    this._uiConfig.destroy();
     super.destroy();
   }
 }
