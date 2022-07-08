@@ -7,6 +7,7 @@ import { StateActionState } from '../../../src/actions/stateRefAction.js';
 describe('LayerContentTreeItem', () => {
   describe('if there is a layer', () => {
     let layer;
+    let layerToDeactivate;
     let item;
     /** @type {VcsUiApp} */
     let app;
@@ -17,8 +18,12 @@ describe('LayerContentTreeItem', () => {
       app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
       layer = new VectorLayer({ mapNames: ['ol'] });
+      layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
       app.layers.add(layer);
-      item = new LayerContentTreeItem({ name: 'foo', layerName: layer.name }, app);
+      app.layers.add(layerToDeactivate);
+      item = new LayerContentTreeItem({
+        name: 'foo', layerName: layer.name, layerNamesToDeactivate: [layerToDeactivate.name],
+      }, app);
     });
 
     afterAll(() => {
@@ -39,6 +44,21 @@ describe('LayerContentTreeItem', () => {
       it('should be visible if the active map is supported', async () => {
         await app.maps.setActiveMap('ol');
         expect(item.visible).to.be.true;
+      });
+
+      it('should activate the layer on click', async () => {
+        await app.maps.setActiveMap('ol');
+        layer.deactivate();
+        await item.clicked();
+        expect(layer.active).to.be.true;
+      });
+
+      it('should deactivate the layerNamesToDeactive on click', async () => {
+        await app.maps.setActiveMap('ol');
+        await layerToDeactivate.activate();
+        layer.deactivate();
+        await item.clicked();
+        expect(layerToDeactivate.active).to.be.false;
       });
     });
 
@@ -182,11 +202,11 @@ describe('LayerContentTreeItem', () => {
   });
 
   describe('serialize', () => {
-    it('should serialize name, type and layerName', () => {
+    it('should serialize name, type and layerName, layerNamesToDeactivate', () => {
       const app = new VcsUiApp();
-      const item = new LayerContentTreeItem({ name: 'foo', layerName: 'foo' }, app);
+      const item = new LayerContentTreeItem({ name: 'foo', layerName: 'foo', layerNamesToDeactivate: ['foo2'] }, app);
       const config = item.toJSON();
-      expect(config).to.have.all.keys(['name', 'type', 'layerName']);
+      expect(config).to.have.all.keys(['name', 'type', 'layerName', 'layerNamesToDeactivate']);
       item.destroy();
       app.destroy();
     });

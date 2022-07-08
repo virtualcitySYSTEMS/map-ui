@@ -10,6 +10,7 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 /**
  * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
  * @property {string} layerName
+ * @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated if the click activates the layer
  */
 
 /**
@@ -79,6 +80,14 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
      * @private
      */
     this._layerName = options.layerName;
+
+    /**
+     * @type {Array<string>}
+     * @private
+     */
+    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate) ?
+      options.layerNamesToDeactivate.slice() :
+      [];
 
     /**
      * @type {Array<Function>}
@@ -210,6 +219,10 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
     if (this._layer) {
       if (this.state === StateActionState.INACTIVE) {
         await this._layer.activate();
+        this._layerNamesToDeactivate
+          .map(n => this._app.layers.getByKey(n))
+          .filter(l => l)
+          .forEach(l => l.deactivate());
       } else {
         this._layer.deactivate();
       }
@@ -222,6 +235,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.layerName = this._layerName;
+    config.layerNamesToDeactivate = this._layerNamesToDeactivate.slice();
     return config;
   }
 

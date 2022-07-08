@@ -3,7 +3,7 @@
     {
       "name": "@vcmap/project-selector",
       "entry": "plugins/@vcmap/project-selector/index.js",
-      "selected": "VC Map Base",
+      "selected": "",
       "selectedContexts": ["development", "codeLists"],
       "open": true,
       "projects": [
@@ -15,11 +15,10 @@
           ]
         },
         {
-          "name": "VC Map Berlin",
-          "description": "Berlin DEMO (Standard Hosting Layout)",
+          "name": "VC Map Demo",
+          "description": "VC Map Demo www.virtualcitymap.de",
           "contexts": [
-            { "configUrl": "config/base.config.json" },
-            { "configUrl": "config/berlin.config.json" }
+            { "configUrl": "config/www.config.json" }
           ]
         }
       ],

@@ -521,7 +521,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
-      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh/",
+      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh_2020/",
       "activeOnStartup": false,
       "allowPicking": false,
       "screenSpaceError": 16,
@@ -532,50 +532,37 @@
       "copyright": {
         "provider": "Berlin Partner für Wirtschaft und Technologie",
         "url": "https://www.berlin-partner.de",
-        "year": "2019"
-      },
-      "exclusiveGroups": [
-        "bldg"
-      ]
-    },
-    {
-      "name": "buildings",
-      "url": "https://berlin.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
-      "type": "CesiumTilesetLayer",
-      "datasourceId": "utxPghp6jfG6oZakL",
-      "activeOnStartup": false,
-      "allowPicking": true,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "hiddenObjectIds": [],
-      "copyright": {
-        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
-        "url": "http://www.businesslocationcenter.de/downloadportal",
-        "year": "2019"
+        "year": "2020"
       },
       "exclusiveGroups": [
         "bldg"
       ],
       "properties": {
-        "title": "textured Buildings",
+        "title": "3D-Mesh 2020"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "buildings",
+      "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": [
+        "bldg"
+      ],
+      "properties": {
+        "title": "Gebäude texturiert 2013",
         "featureInfo": "filteredTable"
       }
     },
     {
-      "name": "buildings_untextured",
-      "url": "https://berlin.virtualcitymap.de/datasource-data/3c2a32d3-633c-462d-b79c-7215dcfbc44f",
       "type": "CesiumTilesetLayer",
-      "datasourceId": "9eRDxjbxHQzE9XiES",
+      "name": "buildings_untextured",
+      "url": "https://www.virtualcitymap.de/datasource-data/72fa3c14-03bc-4c26-a4ac-8c6dec37e65a/tileset.json",
       "activeOnStartup": true,
-      "allowPicking": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "hiddenObjectIds": [],
-      "copyright": {
-        "provider": "Berlin Partner für Wirtschaft und Technologie GmbH ",
-        "url": "http://www.businesslocationcenter.de/downloadportal",
-        "year": ""
-      },
       "exclusiveGroups": [
         "bldg"
       ],
@@ -588,14 +575,14 @@
           "BuildingFunction",
           "Transparentbuildings"
         ],
-        "title": "untextured Buildings",
+        "title": "Berlin - LOD2",
         "featureInfo": "tableAll"
       }
     },
     {
       "name": "osmBuildingFootprints",
       "type": "VectorTileLayer",
-      "minLevel": 8,
+      "minLevel": 15,
       "maxLevel": 21,
       "zIndex": 11,
       "tileProvider": {
@@ -605,7 +592,7 @@
         "idProperty": "osm_id",
         "useSpatialIndex": false,
         "type": "MVTTileProvider",
-        "url": "https://berlin.virtualcitymap.de/localData/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
+        "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
       },
       "activeOnStartup": false,
       "properties": {
@@ -695,56 +682,28 @@
       }
     },
     {
-      "name": "terrain_v3.4",
-      "url": "https://berlin.virtualcitymap.de/datasource-data/5d2c8614-d474-442d-8975-c2b4a4c0ae94",
       "type": "TerrainLayer",
-      "datasourceId": "CQHSNBZDTkjLLh8Qr",
+      "name": "GermanyBaseTerrain",
+      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
       "activeOnStartup": true,
       "requestVertexNormals": true,
-      "properties": {
-        "title": "Terrain"
-      }
-    },
-    {
-      "type": "PointCloudLayer",
-      "name": "pointcloud",
-      "activeOnStartup": false,
-      "datasourceId": "g9rXAY6pu2tfNmWf3",
-      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/tiergarten/tileset.json",
-      "copyright": {
-        "provider": "Senatsverwaltung für Wirtschaft, Technologie und Forschung. Geodaten Herstellung gefördert durch den Europäischen Fonds für Regionale Entwicklung (EFRE)",
-        "url": "http://www.berlin.de/wirtschaftssenat"
-      },
-      "screenSpaceError": 20,
-      "screenSpaceErrorMobile": 32,
-      "pointSize": 1.6,
       "exclusiveGroups": [
-        "pointcloud"
+        "terrain"
       ],
       "properties": {
-        "defaultViewpoint": "pointcloud",
-        "title": "layers.pointcloud.title"
+        "title": "Deutschland Gelände"
       }
     },
     {
-      "name": "Bäume",
-      "url": "https://berlin.virtualcitymap.de/datasource-data/Open-Data-Berlin/trees_i3dm/tileset.json",
       "type": "CesiumTilesetLayer",
-      "datasourceId": "YXcidK4ijYFB2DhPm",
+      "name": "Bäume",
+      "url": "https://www.virtualcitymap.de/datasource-data/f764ffb4-723d-429f-b797-5ca4c1061201/tileset.json",
       "activeOnStartup": false,
-      "allowPicking": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "copyright": {
-        "provider": "",
-        "url": "",
-        "year": ""
-      },
-      "exclusiveGroups": [
-        "tree"
-      ],
       "properties": {
-        "title": "Trees"
+        "title": "Sommerbäume",
+        "featureInfo": "tableTrees"
       }
     }
   ],
@@ -864,7 +823,7 @@
     {
       "name": "baseMap.terrain",
       "type": "LayerContentTreeItem",
-      "layerName": "terrain_v3.4"
+      "layerName": "GermanyBaseTerrain.4"
     },
     {
       "name": "baseMap.openStreetMap",
@@ -1007,7 +966,7 @@
       "layerNames": [
         "buildings",
         "Bäume",
-        "terrain_v3.4"
+        "GermanyBaseTerrain.4"
       ],
       "title": "Buildings - Trees - Terrain"
     },

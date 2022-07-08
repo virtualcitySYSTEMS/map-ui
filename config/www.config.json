@@ -1,0 +1,1232 @@
+{
+  "startingViewPointName": "startview",
+  "startingMapName": "cesium",
+  "projection": {
+    "epsg": "25832",
+    "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
+  },
+  "i18n": [
+    {
+      "de": {
+        "codeLists": {
+          "values": {
+            "roofType": {
+              "1000": "Flachdach",
+              "2100": "Pultdach",
+              "2200": "Versetztes Pultdach",
+              "3100": "Satteldach",
+              "3200": "Walmdach",
+              "3300": "Krüppelwalmdach",
+              "3400": "Mansardendach",
+              "3500": "Zeltdach",
+              "3600": "Kegeldach",
+              "3700": "Kuppeldach",
+              "3800": "Sheddach",
+              "3900": "Bogendach",
+              "4000": "Turmdach",
+              "5000": "Mischform",
+              "9999": "Sonstiges"
+            },
+            "function": {
+              "31001_1000": "Wohngebäude",
+              "31001_1010": "Wohnhaus",
+              "31001_1020": "Wohnheim",
+              "31001_1021": "Kinderheim",
+              "31001_1022": "Seniorenheim",
+              "31001_1023": "Schwesternwohnheim",
+              "31001_1024": "Studenten-, Schülerwohnheim",
+              "31001_1025": "Schullandheim",
+              "31001_1100": "Gemischt genutztes Gebäude mit Wohnen",
+              "31001_1110": "Wohngebäude mit Gemeinbedarf",
+              "31001_1120": "Wohngebäude mit Handel und Dienstleistungen",
+              "31001_1121": "Wohn- und Verwaltungsgebäude",
+              "31001_1122": "Wohn- und Bürogebäude",
+              "31001_1123": "Wohn- und Geschäftsgebäude",
+              "31001_1130": "Wohngebäude mit Gewerbe und Industrie",
+              "31001_1131": "Wohn- und Betriebsgebäude",
+              "31001_1210": "Land- und forstwirtschaftliches Wohngebäude",
+              "31001_1220": "Land- und forstwirtschaftliches Wohn- und Betriebsgebäude",
+              "31001_1221": "Bauernhaus",
+              "31001_1222": "Wohn- und Wirtschaftsgebäude",
+              "31001_1223": "Forsthaus",
+              "31001_1310": "Gebäude zur Freizeitgestaltung",
+              "31001_1311": "Ferienhaus",
+              "31001_1312": "Wochenendhaus",
+              "31001_1313": "Gartenhaus",
+              "31001_2000": "Gebäude für Wirtschaft oder Gewerbe",
+              "31001_2010": "Gebäude für Handel und Dienstleistungen",
+              "31001_2020": "Bürogebäude",
+              "31001_2030": "Kreditinstitut",
+              "31001_2040": "Versicherung",
+              "31001_2050": "Geschäftsgebäude",
+              "31001_2051": "Kaufhaus",
+              "31001_2052": "Einkaufszentrum",
+              "31001_2053": "Markthalle",
+              "31001_2054": "Laden",
+              "31001_2055": "Kiosk",
+              "31001_2056": "Apotheke",
+              "31001_2060": "Messehalle",
+              "31001_2070": "Gebäude für Beherbergung",
+              "31001_2071": "Hotel, Motel, Pension",
+              "31001_2072": "Jugendherberge",
+              "31001_2073": "Hütte (mit Ãœbernachtungsmöglichkeit)",
+              "31001_2074": "Campingplatzgebäude",
+              "31001_2080": "Gebäude für Bewirtung",
+              "31001_2081": "Gaststätte, Restaurant",
+              "31001_2082": "Hütte (ohne Ãœbernachtungsmöglichkeit)",
+              "31001_2083": "Kantine",
+              "31001_2090": "Freizeit- und Vergnügungsstätte",
+              "31001_2091": "Festsaal",
+              "31001_2092": "Kino",
+              "31001_2093": "Kegel-, Bowlinghalle",
+              "31001_2094": "Spielkasino",
+              "31001_2100": "Gebäude für Gewerbe und Industrie",
+              "31001_2110": "Produktionsgebäude",
+              "31001_2111": "Fabrik",
+              "31001_2112": "Betriebsgebäude",
+              "31001_2113": "Brauerei",
+              "31001_2114": "Brennerei",
+              "31001_2120": "Werkstatt",
+              "31001_2121": "Sägewerk",
+              "31001_2130": "Tankstelle",
+              "31001_2131": "Waschstraße, Waschanlage, Waschhalle",
+              "31001_2140": "Gebäude für Vorratshaltung",
+              "31001_2141": "Kühlhaus",
+              "31001_2142": "Speichergebäude",
+              "31001_2143": "Lagerhalle, Lagerschuppen, Lagerhaus",
+              "31001_2150": "Speditionsgebäude",
+              "31001_2160": "Gebäude für Forschungszwecke",
+              "31001_2170": "Gebäude für Grundstoffgewinnung",
+              "31001_2171": "Bergwerk",
+              "31001_2172": "Saline",
+              "31001_2180": "Gebäude für betriebliche Sozialeinrichtung",
+              "31001_2200": "Sonstiges Gebäude für Gewerbe und Industrie",
+              "31001_2210": "Mühle",
+              "31001_2211": "Windmühle",
+              "31001_2212": "Wassermühle",
+              "31001_2213": "Schöpfwerk",
+              "31001_2220": "Wetterstation",
+              "31001_2310": "Gebäude für Handel und Dienstleistung mit Wohnen",
+              "31001_2320": "Gebäude für Gewerbe und Industrie mit Wohnen",
+              "31001_2400": "Betriebsgebäude zu Verkehrsanlagen (allgemein)",
+              "31001_2410": "Betriebsgebäude für Straßenverkehr",
+              "31001_2411": "Straßenmeisterei",
+              "31001_2412": "Wartehalle",
+              "31001_2420": "Betriebsgebäude für Schienenverkehr",
+              "31001_2421": "Bahnwärterhaus",
+              "31001_2422": "Lokschuppen, Wagenhalle",
+              "31001_2423": "Stellwerk, Blockstelle",
+              "31001_2424": "Betriebsgebäude des Güterbahnhofs",
+              "31001_2430": "Betriebsgebäude für Flugverkehr",
+              "31001_2431": "Flugzeughalle",
+              "31001_2440": "Betriebsgebäude für Schiffsverkehr",
+              "31001_2441": "Werft (Halle)",
+              "31001_2442": "Dock (Halle)",
+              "31001_2443": "Betriebsgebäude zur Schleuse",
+              "31001_2444": "Bootshaus",
+              "31001_2450": "Betriebsgebäude zur Seilbahn",
+              "31001_2451": "Spannwerk zur Drahtseilbahn",
+              "31001_2460": "Gebäude zum Parken",
+              "31001_2461": "Parkhaus",
+              "31001_2462": "Parkdeck",
+              "31001_2463": "Garage",
+              "31001_2464": "Fahrzeughalle",
+              "31001_2500": "Gebäude zur Versorgung",
+              "31001_2501": "Gebäude zur Energieversorgung",
+              "31001_2510": "Gebäude zur Wasserversorgung",
+              "31001_2511": "Wasserwerk",
+              "31001_2512": "Pumpstation",
+              "31001_2513": "Wasserbehälter",
+              "31001_2520": "Gebäude zur Elektrizitätsversorgung",
+              "31001_2521": "Elektrizitätswerk",
+              "31001_2522": "Umspannwerk",
+              "31001_2523": "Umformer",
+              "31001_2527": "Reaktorgebäude",
+              "31001_2528": "Turbinenhaus",
+              "31001_2529": "Kesselhaus",
+              "31001_2540": "Gebäude für Fernmeldewesen",
+              "31001_2560": "Gebäude an unterirdischen Leitungen",
+              "31001_2570": "Gebäude zur Gasversorgung",
+              "31001_2571": "Gaswerk",
+              "31001_2580": "Heizwerk",
+              "31001_2590": "Gebäude zur Versorgungsanlage",
+              "31001_2591": "Pumpwerk (nicht für Wasserversorgung)",
+              "31001_2600": "Gebäude zur Entsorgung",
+              "31001_2610": "Gebäude zur Abwasserbeseitigung",
+              "31001_2611": "Gebäude der Kläranlage",
+              "31001_2612": "Toilette",
+              "31001_2620": "Gebäude zur Abfallbehandlung",
+              "31001_2621": "Müllbunker",
+              "31001_2622": "Gebäude zur Müllverbrennung",
+              "31001_2623": "Gebäude der Abfalldeponie",
+              "31001_2700": "Gebäude für Land- und Forstwirtschaft",
+              "31001_2720": "Land- und forstwirtschaftliches Betriebsgebäude",
+              "31001_2721": "Scheune",
+              "31001_2723": "Schuppen",
+              "31001_2724": "Stall",
+              "31001_2726": "Scheune und Stall",
+              "31001_2727": "Stall für Tiergroßhaltung",
+              "31001_2728": "Reithalle",
+              "31001_2729": "Wirtschaftsgebäude",
+              "31001_2732": "Almhütte",
+              "31001_2735": "Jagdhaus, Jagdhütte",
+              "31001_2740": "Treibhaus, Gewächshaus",
+              "31001_2741": "Treibhaus",
+              "31001_2742": "Gewächshaus, verschiebbar",
+              "31001_3000": "Gebäude für öffentliche Zwecke",
+              "31001_3010": "Verwaltungsgebäude",
+              "31001_3011": "Parlament",
+              "31001_3012": "Rathaus",
+              "31001_3013": "Post",
+              "31001_3014": "Zollamt",
+              "31001_3015": "Gericht",
+              "31001_3016": "Botschaft, Konsulat",
+              "31001_3017": "Kreisverwaltung",
+              "31001_3018": "Bezirksregierung",
+              "31001_3019": "Finanzamt",
+              "31001_3020": "Gebäude für Bildung und Forschung",
+              "31001_3021": "Allgemein bildende Schule",
+              "31001_3022": "Berufsbildende Schule",
+              "31001_3023": "Hochschulgebäude (Fachhochschule, Universität)",
+              "31001_3024": "Forschungsinstitut",
+              "31001_3030": "Gebäude für kulturelle Zwecke",
+              "31001_3031": "Schloss",
+              "31001_3032": "Theater, Oper",
+              "31001_3033": "Konzertgebäude",
+              "31001_3034": "Museum",
+              "31001_3035": "Rundfunk, Fernsehen",
+              "31001_3036": "Veranstaltungsgebäude",
+              "31001_3037": "Bibliothek, Bücherei",
+              "31001_3038": "Burg, Festung",
+              "31001_3040": "Gebäude für religiöse Zwecke",
+              "31001_3041": "Kirche",
+              "31001_3042": "Synagoge",
+              "31001_3043": "Kapelle",
+              "31001_3044": "Gemeindehaus",
+              "31001_3045": "Gotteshaus",
+              "31001_3046": "Moschee",
+              "31001_3047": "Tempel",
+              "31001_3048": "Kloster",
+              "31001_3050": "Gebäude für Gesundheitswesen",
+              "31001_3051": "Krankenhaus",
+              "31001_3052": "Heilanstalt, Pflegeanstalt, Pflegestation",
+              "31001_3053": "Ärztehaus, Poliklinik",
+              "31001_3060": "Gebäude für soziale Zwecke",
+              "31001_3061": "Jugendfreizeitheim",
+              "31001_3062": "Freizeit-, Vereinsheim, Dorfgemeinschafts-, Bürgerhaus",
+              "31001_3063": "Seniorenfreizeitstätte",
+              "31001_3064": "Obdachlosenheim",
+              "31001_3065": "Kinderkrippe, Kindergarten, Kindertagesstätte",
+              "31001_3066": "Asylbewerberheim",
+              "31001_3070": "Gebäude für Sicherheit und Ordnung",
+              "31001_3071": "Polizei",
+              "31001_3072": "Feuerwehr",
+              "31001_3073": "Kaserne",
+              "31001_3074": "Schutzbunker",
+              "31001_3075": "Justizvollzugsanstalt",
+              "31001_3080": "Friedhofsgebäude",
+              "31001_3081": "Trauerhalle",
+              "31001_3082": "Krematorium",
+              "31001_3090": "Empfangsgebäude",
+              "31001_3091": "Bahnhofsgebäude",
+              "31001_3092": "Flughafengebäude",
+              "31001_3094": "Gebäude zum U-Bahnhof",
+              "31001_3095": "Gebäude zum S-Bahnhof",
+              "31001_3097": "Gebäude zum Busbahnhof",
+              "31001_3098": "Empfangsgebäude Schifffahrt",
+              "31001_3100": "Gebäude für öffentliche Zwecke mit Wohnen",
+              "31001_3200": "Gebäude für Erholungszwecke",
+              "31001_3210": "Gebäude für Sportzwecke",
+              "31001_3211": "Sport-, Turnhalle",
+              "31001_3212": "Gebäude zum Sportplatz",
+              "31001_3220": "Badegebäude",
+              "31001_3221": "Hallenbad",
+              "31001_3222": "Gebäude im Freibad",
+              "31001_3230": "Gebäude im Stadion",
+              "31001_3240": "Gebäude für Kurbetrieb",
+              "31001_3241": "Badegebäude für medizinische Zwecke",
+              "31001_3242": "Sanatorium",
+              "31001_3260": "Gebäude im Zoo",
+              "31001_3261": "Empfangsgebäude des Zoos",
+              "31001_3262": "Aquarium, Terrarium, Voliere",
+              "31001_3263": "Tierschauhaus",
+              "31001_3264": "Stall im Zoo",
+              "31001_3270": "Gebäude im botanischen Garten",
+              "31001_3271": "Empfangsgebäude des botanischen Gartens",
+              "31001_3272": "Gewächshaus (Botanik)",
+              "31001_3273": "Pflanzenschauhaus",
+              "31001_3280": "Gebäude für andere Erholungseinrichtung",
+              "31001_3281": "Schutzhütte",
+              "31001_3290": "Touristisches Informationszentrum",
+              "31001_9998": "Nach Quellenlage nicht zu spezifizieren",
+              "51001_1001": "Wasserturm",
+              "51001_1002": "Kirchturm",
+              "51001_1003": "Aussichtsturm",
+              "51001_1004": "Kontrollturm",
+              "51001_1005": "Kühlturm",
+              "51001_1006": "Leuchtturm",
+              "51001_1007": "Feuerwachturm",
+              "51001_1008": "Sende-,Funkturm",
+              "51001_1009": "Stadt-,Torturm",
+              "51001_1010": "Förderturm",
+              "51001_1011": "Bohrturm",
+              "51001_1012": "Schloss-, Burgturm",
+              "51001_9998": "Nach Quellenlage nicht zu spezifizieren",
+              "51001_9999": "Sonstiges",
+              "51002_1215": "Biogasanlage",
+              "51002_1220": "Windrad",
+              "51002_1230": "Solarzellen",
+              "51002_1250": "Mast",
+              "51002_1251": "Freileitungsmast",
+              "51002_1260": "Funkmast",
+              "51002_1280": "Radioteleskop",
+              "51002_1290": "Schornstein",
+              "51002_1330": "Kran",
+              "51002_1331": "Drehkran",
+              "51002_1332": "Portalkran",
+              "51002_1333": "Laufkran",
+              "51002_1340": "Trockendock",
+              "51002_1350": "Hochofen",
+              "51002_1400": "Umformer",
+              "51002_9999": "Sonstiges",
+              "51003_1201": "Silo",
+              "51003_1205": "Tank",
+              "51003_1206": "Gasometer",
+              "51003_9999": "Sonstiges",
+              "51006_1430": "Zuschauertribüne",
+              "51006_1431": "Zuschauertribüne, überdacht",
+              "51006_1432": "Zuschauertribüne, nicht überdacht",
+              "51006_1440": "Stadion",
+              "51006_1470": "Sprungschanze",
+              "51006_1490": "Gradierwerk",
+              "51006_9999": "Sonstiges",
+              "51007_1100": "Historische Wasserleitung",
+              "51007_1110": "Aquaedukt",
+              "51007_1210": "Wachturm",
+              "51007_1400": "Befestigung (Burgruine)",
+              "51007_1410": "Burg",
+              "51007_1500": "Historische Mauer",
+              "51007_1510": "Stadtmauer",
+              "51007_1520": "Sonstige historische Mauer",
+              "51007_9999": "Sonstiges",
+              "51009_1610": "Überdachung",
+              "51009_1611": "Carport",
+              "51009_1700": "Mauer",
+              "51009_1750": "Denkmal",
+              "51009_9999": "Sonstiges",
+              "52003_1010": "Schiffshebewerk",
+              "52003_1020": "Kammerschleuse",
+              "53001_1800": "Brücke",
+              "53001_1806": "Drehbrücke",
+              "53001_1807": "Hebebrücke",
+              "53001_1808": "Zugbrücke",
+              "53001_1830": "Hochbahn, Hochstraße",
+              "53001_1880": "Schutzgalerie, Einhausung",
+              "53001_1890": "Schleusenkammer",
+              "53009_2030": "Staumauer",
+              "53009_2050": "Wehr",
+              "53009_2060": "Sicherheitstor",
+              "53009_2070": "Siel",
+              "53009_2080": "Sperrwerk",
+              "53009_2090": "Schöpfwerk"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "maps": [
+    {
+      "type": "OpenlayersMap",
+      "name": "ol3"
+    },
+    {
+      "type": "CesiumMap",
+      "name": "cesium",
+      "debugging": false,
+      "fxaa": false,
+      "enableLightning": true,
+      "allowSoftwareRendering": false,
+      "maximumScreenSpaceError": 2,
+      "fogEnabled": true,
+      "fogEnabledMobile": true,
+      "fogDensity": 0.0002,
+      "fogDensityMobile": 0.0004,
+      "fogScreenSpaceError": 2,
+      "fogScreenSpaceErrorMobile": 4
+    },
+    {
+      "type": "ObliqueMap",
+      "name": "Oblique Map",
+      "defaultCollectionName": "Schrägluftbilder 2020"
+    }
+  ],
+  "layers": [
+    {
+      "type": "TerrainLayer",
+      "name": "BerlinWaterTerrain (level15)",
+      "url": "https://www.virtualcitymap.de/datasource-data/000834f6-8670-49d9-a430-df5b92474985/?baseTerrain=82JNcy7Xi7FNB3WXR",
+      "activeOnStartup": false,
+      "requestVertexNormals": true,
+      "exclusiveGroups": [
+        "terrain"
+      ],
+      "properties": {
+        "title": "Gelände Berlin Wasser"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Summer Trees",
+      "url": "https://www.virtualcitymap.de/datasource-data/f764ffb4-723d-429f-b797-5ca4c1061201/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Sommerbäume",
+        "featureInfo": "tableTrees"
+      }
+    },
+    {
+      "type": "TerrainLayer",
+      "name": "GermanyBaseTerrain",
+      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
+      "activeOnStartup": false,
+      "requestVertexNormals": true,
+      "exclusiveGroups": [
+        "terrain"
+      ],
+      "properties": {
+        "title": "Deutschland Gelände"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Berlin - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/72fa3c14-03bc-4c26-a4ac-8c6dec37e65a/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": [
+        "3D",
+        "classified"
+      ],
+      "properties": {
+        "title": "Berlin - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Niedersachsen - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/1c0a26a8-51ce-40f7-b2c4-ded6a3516c2b/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Niedersachsen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Sachsen - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/de2ce0aa-886e-4240-8201-2f7efe30d5ba/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Sachsen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Thuringen - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/fe4bc221-5f08-4a80-bec4-18d3e3156f42/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Thüringen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Berlin LOD2 - Textured",
+      "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": [
+        "3D",
+        "classified"
+      ],
+      "properties": {
+        "title": "Gebäude texturiert 2013",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Planwerk innere Stadt",
+      "url": "https://c.3d.blc.shc.eu/WAB/buildings/plannings/cesium_planwerk_innere_stadt/3444ad7c-b6a5-4623-9421-e80e37d5378c/",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "style": {
+        "type": "DeclarativeStyleItem",
+        "declarativeStyle": {
+          "show": "true",
+          "color": "color('#e40521', 1)"
+        }
+      },
+      "tilesetOptions": {
+        "skipLevelOfDetail": false
+      },
+      "properties": {
+        "title": "Planwerk Innere Stadt",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Hessen - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/0b539146-1ef3-4501-9fa9-e96f8c0d7ea4/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Hessen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Hamburg - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/e52957af-1aab-4c5f-b3ad-95879c71c607/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Hamburg - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Brandenburg - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/d290b81e-7483-4118-bc0f-38f1be00f418/tileset.json",
+      "datasourceId": "fHWWCMfb46is5zhy9",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Brandenburg - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Sachsen-Anhalt - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/d5591edb-ba4b-4725-9b68-9c3a69d6965c/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Sachsen-Anhalt - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "NRW - LOD2",
+      "url": "https://www.virtualcitymap.de/datasource-data/7826ecb7-7110-4b6a-9915-7e96719290ac/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "NRW - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Mesh Classification Layer",
+      "url": "https://www.virtualcitymap.de/datasource-data/DEMO-Lindau/berlin_2D/tileset.json",
+      "activeOnStartup": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "style": "dummyClassificationStyle",
+      "tilesetOptions": {
+        "classificationType": 2
+      },
+      "exclusiveGroups": [
+        "classified"
+      ],
+      "properties": {
+        "title": "3D-Mesh 2020",
+        "featureInfo": "balloonGebInfo"
+      }
+    },
+    {
+      "type": "PointCloudLayer",
+      "comment": "Dieser Layer geht gerade nicht, da scheint mit Cesium irgendwas kaputt zu sein",
+      "name": "Punktwolke Berlin Buch",
+      "url": "https://www.virtualcitymap.de/datasource-data/Open-Data-Berlin/Cesium_ChangeDetection2013_uncompressed/data/",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "pointSize": 2,
+      "properties": {
+        "title": "Punktwolke Berlin Buch",
+        "defaultViewpoint": "buch",
+        "availableStyles": [
+          "CIR",
+          "Tree-ID",
+          "Distance"
+        ]
+      }
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "Openstreetmap layer",
+      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "activeOnStartup": true,
+      "exclusive": "base",
+      "layer": "osm",
+      "style": "default",
+      "format": "image/png",
+      "tileMatrixSetID": "osm_grid",
+      "maxLevel": 19,
+      "extent": {
+        "coordinates": [
+          -180,
+          -85,
+          180,
+          85
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "tilingSchema": "mercator",
+      "hiddenObjectIds": [],
+      "tileMatrixPrefix": "",
+      "numberOfLevelZeroTilesX": 1,
+      "numberOfLevelZeroTilesY": 1,
+      "properties": {
+        "title": "Openstreetmap",
+        "showInOverviewMap": true
+      }
+    },
+    {
+      "type": "TMSLayer",
+      "name": "Summer DOP 2020",
+      "url": "https://www.virtualcitymap.de/datasource-data/1a52cd78-33aa-45d6-a3d2-832be7000d16",
+      "activeOnStartup": true,
+      "extent": {
+        "coordinates": [
+          13.04758181842805,
+          52.31643877872646,
+          13.76741895135349,
+          52.68540597146242
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "format": "png",
+      "minLevel": 8,
+      "maxLevel": 18,
+      "tileSize": [
+        256,
+        256
+      ],
+      "tilingSchema": "mercator",
+      "opacity": 0.9,
+      "properties": {
+        "title": "True Orthophoto 2020"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "mesh_surface",
+      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh_2020/",
+      "activeOnStartup": true,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true
+      },
+      "exclusiveGroups": [
+        "3D",
+        "terrain"
+      ],
+      "properties": {
+        "title": "3D-Mesh 2020"
+      }
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Historische Luftbilder 1928",
+      "url": "https://fbinter.stadt-berlin.de/fb/wms/senstadt/k_luftbild1928",
+      "datasourceId": "bJqnEtPvjZ33SH2H7",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          13.213981608814816,
+          52.41457895062166,
+          13.581125179911801,
+          52.590806074020236
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "version": "1.1.1",
+      "layers": "0",
+      "parameters": "format=image/png&transparent=true",
+      "minLevel": 12,
+      "maxLevel": 20,
+      "tilingSchema": "geographic",
+      "properties": {
+        "title": "Historische Luftbilder 1928"
+      }
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Fließgeschwindigkeit selten - NRW WMS",
+      "url": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          5.591229155264556,
+          50.335667211619835,
+          9.001144728260876,
+          52.5802231834015
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "version": "1.3.0",
+      "layers": "fliessgeschwindigkeiten_selten",
+      "parameters": "format=image/png&transparent=true",
+      "maxLevel": 21,
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "tilingSchema": "geographic",
+      "responseType": "application/geojson",
+      "opacity": 0.7,
+      "properties": {
+        "title": "Fließgeschwindigkeit, seltenes Ereignis (HQ100)",
+        "defaultViewpoint": "soest",
+        "featureInfo": "waterspeed"
+      }
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Wasserhöhen selten - NRW WMS",
+      "url": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          5.591229155264556,
+          50.335667211619835,
+          9.001144728260876,
+          52.5802231834015
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "version": "1.3.0",
+      "layers": "wasserhoehen_selten",
+      "parameters": "format=image/png&transparent=true",
+      "maxLevel": 21,
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "tilingSchema": "geographic",
+      "responseType": "application/geojson",
+      "opacity": 0.7,
+      "properties": {
+        "title": "Wasserhöhen, seltenes Ereignis (HQ100)",
+        "defaultViewpoint": "soest",
+        "featureInfo": "waterheight"
+      }
+    },
+    {
+      "type": "WMSLayer",
+      "name": "vorläufig gesicherte Überschwemmungsgebiete",
+      "url": "https://www.wms.nrw.de/umwelt/uesg",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          5.591229155264556,
+          50.335667211619835,
+          9.001144728260876,
+          52.5802231834015
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "version": "1.3.0",
+      "layers": "4",
+      "parameters": "format=image/png&transparent=true",
+      "maxLevel": 21,
+      "tilingSchema": "geographic",
+      "properties": {
+        "title": "vorläufig gesicherte Überschwemmungsgebiete",
+        "defaultViewpoint": "soest"
+      }
+    },
+    {
+      "type": "WMSLayer",
+      "name": "festgesetzte Überschwemmungsgebiete",
+      "url": "https://www.wms.nrw.de/umwelt/uesg",
+      "activeOnStartup": false,
+      "extent": {
+        "coordinates": [
+          5.591229155264556,
+          50.335667211619835,
+          9.001144728260876,
+          52.5802231834015
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "version": "1.3.0",
+      "layers": "6",
+      "parameters": "format=image/png&transparent=true",
+      "maxLevel": 21,
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "tilingSchema": "geographic",
+      "responseType": "application/geojson",
+      "properties": {
+        "title": "festgesetzte Überschwemmungsgebiete",
+        "defaultViewpoint": "soest"
+      }
+    },
+    {
+      "type": "VectorTileLayer",
+      "name": "osmBuildingFootprints",
+      "minLevel": 15,
+      "maxLevel": 21,
+      "tileProvider": {
+        "baseLevels": [
+          14
+        ],
+        "idProperty": "osm_id",
+        "useSpatialIndex": false,
+        "type": "MVTTileProvider",
+        "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
+      },
+      "activeOnStartup": false,
+      "properties": {
+        "title": "OSM Gebäudegrundrisse",
+        "featureInfo": "tableAll"
+      }
+    }
+  ],
+  "obliqueCollections": [
+    {
+      "name": "Schrägluftbilder 2020",
+      "activeOnStartup": true,
+      "dataSets": [
+        {
+          "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques_2020/image_tiled.json",
+          "terrainProvider": {
+            "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9"
+          },
+          "projection": {
+            "epsg": "25833",
+            "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+          }
+        }
+      ],
+      "maxZoom": 7,
+      "minZoom": 0
+    }
+  ],
+  "styles": [
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "CIR",
+      "declarativeStyle": {
+        "show": "true",
+        "color": "rgb(${CIR}[0], ${CIR}[1], ${CIR}[2])",
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "Tree-ID",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${TREE_ID} > 0",
+              "mix(color('#00FF00') * (${TREE_ID} % 21) / 20, ${COLOR}, 0.5)"
+            ],
+            [
+              "true",
+              "${COLOR}"
+            ]
+          ]
+        },
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "Distance",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${DISTANCE} > 4",
+              "mix(color('#ffff00'), color('#bd0000'), clamp(0, 1, (${DISTANCE}-4)/5))"
+            ],
+            [
+              "true",
+              "${COLOR}"
+            ]
+          ]
+        },
+        "pointSize": 2
+      },
+      "legend": []
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "dummyClassificationStyle",
+      "declarativeStyle": {
+        "show": "true",
+        "color": "color('#ffffff', 0.05)"
+      }
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "balloonGebInfo",
+      "title": "Gebäudeinformation",
+      "attributeKeys": ["namlag", "bezgfk"],
+      "keyMapping": { "namlag": "Adresse", "bezgfk": "Funktion" }
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableBuildings",
+      "attributeKeys": [
+        "Address.PostalCode",
+        "Address.City",
+        "Address.Street",
+        "Address.HouseNumber",
+        "measuredHeight",
+        "roofType",
+        "function",
+        "storeyAboveGround",
+        "Stand_3D-Stadtmodell",
+        "gmlId"
+      ],
+      "keyMapping": {
+        "Address.PostalCode": "Postleitzahl",
+        "Address.City": "Ort",
+        "Address.Street": "Straße",
+        "Address.HouseNumber": "Hausnummer",
+        "measuredHeight": "Gebäudehöhe",
+        "roofType": "Dachtyp",
+        "function": "Funktion",
+        "storeyAboveGround": "Stockwerke über Gelände",
+        "Stand_3D-Stadtmodell": "Stand 3D-Stadtmodell",
+        "gmlId": "gmlId"
+      },
+      "valueMapping": {
+        "roofType": "codeLists.values.roofType.${value}",
+        "function": "codeLists.values.function.${value}"
+      }
+    },
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "waterheight",
+      "title": "Wasserhöhe [m]",
+      "attributeKeys": ["Wasserhöhe"]
+    },
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "waterspeed",
+      "title": "Geschwindigkeit [m/s]",
+      "attributeKeys": ["Geschwindigkeit"]
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableTrees",
+      "attributeKeys": [
+        "stammumfg",
+        "pflanzjahr",
+        "kronedurch",
+        "standalter",
+        "baumhoehe",
+        "Kategorie",
+        "art_dtsch",
+        "gattung_de"
+      ],
+      "keyMapping": {
+        "stammumfg": "Umfang",
+        "pflanzjahr": "Pflanzjahr",
+        "kronedurch": "Kronendurchmesser",
+        "standalter": "Standalter",
+        "baumhoehe": "Baumhöhe",
+        "Kategorie": "Kategorie",
+        "art_dtsch": "Art",
+        "gattung_de": "Gattung"
+      }
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableAll"
+    }
+  ],
+  "viewpoints": [
+    {
+      "type": "ViewPoint",
+      "name": "Lüdenscheid",
+      "cameraPosition": [
+        7.628326765047903,
+        51.19524414598677,
+        567.4244392829526
+      ],
+      "groundPosition": [
+        7.628881118887374,
+        51.19874066185536,
+        327.79466475129635
+      ],
+      "distance": 458.54351897275285,
+      "heading": 5.688482507076805,
+      "pitch": -31.5078138733279,
+      "roll": 0.02191005047832281,
+      "animate": true
+    },
+    {
+      "type": "ViewPoint",
+      "name": "buch",
+      "cameraPosition": [
+        13.510024049521348,
+        52.61701500801688,
+        963.616637428691
+      ],
+      "groundPosition": [
+        13.509501235009397,
+        52.63010587662207,
+        64.52947347468726
+      ],
+      "distance": 1712.3223745287837,
+      "heading": 358.6079576057926,
+      "pitch": -31.679398314637186,
+      "roll": 359.9946845951051,
+      "animate": false
+    },
+    {
+      "type": "ViewPoint",
+      "name": "soest",
+      "cameraPosition": [
+        8.109298382955318,
+        51.559597246671196,
+        961.5073981367838
+      ],
+      "groundPosition": [
+        8.106925457830526,
+        51.570398058304164,
+        100.65761284152735
+      ],
+      "distance": 1487.426133239795,
+      "heading": 352.20412276200915,
+      "pitch": -35.36818482526568,
+      "roll": 359.9689876007259,
+      "animate": true
+    },
+    {
+      "type": "ViewPoint",
+      "name": "water",
+      "cameraPosition": [
+        13.339344385024594,
+        52.5088954811299,
+        130.03569559547765
+      ],
+      "groundPosition": [
+        13.33729902776962,
+        52.511465636098464,
+        9.99406298444336
+      ],
+      "distance": 339.8414978184529,
+      "heading": 334.10164666457615,
+      "pitch": -20.686324098743707,
+      "roll": 359.91305877022717,
+      "animate": false
+    },
+    {
+      "type": "ViewPoint",
+      "name": "Lindau",
+      "cameraPosition": [
+        9.686669428645894,
+        47.54783307574758,
+        470.61319069904147
+      ],
+      "groundPosition": [
+        9.680928124911006,
+        47.5415384162223,
+        389.84056816057506
+      ],
+      "distance": 826.5617352083572,
+      "heading": 211.7001766176285,
+      "pitch": -5.611671364998787,
+      "roll": 359.8987991072801,
+      "animate": true
+    },
+    {
+      "type": "ViewPoint",
+      "name": "startview",
+      "cameraPosition": [
+        13.37411102000604,
+        52.5126411114975,
+        1039.4376606886788
+      ],
+      "groundPosition": [
+        13.371271496304264,
+        52.52529109057904,
+        31.074206921777545
+      ],
+      "distance": 1742.3485377937602,
+      "heading": 352.20412240931404,
+      "pitch": -35.36818845447508,
+      "roll": 359.96898821005135,
+      "animate": false
+    }
+  ],
+  "contentTree": [
+    {
+      "type": "NodeContentTreeItem",
+      "name": "germany",
+      "title": "Deutschlandweit",
+      "initOpen": true
+    },
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "germany.lod2",
+      "layerNames": [
+        "Berlin - LOD2",
+        "Brandenburg - LOD2",
+        "Hamburg - LOD2",
+        "Hessen - LOD2",
+        "NRW - LOD2",
+        "Sachsen - LOD2",
+        "Sachsen-Anhalt - LOD2",
+        "Thuringen - LOD2",
+        "Niedersachsen - LOD2",
+        "GermanyBaseTerrain"
+      ],
+      "layerNamesToDeactivate": [
+        "mesh_surface",
+        "Mesh Classification Layer"
+      ],
+      "title": "LOD2 Gebäude - Open Data 2022"
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "berlin",
+      "title": "Berlinweit",
+      "initOpen": true
+    },
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "berlin.mesh",
+      "layerNames": [
+        "Mesh Classification Layer",
+        "mesh_surface"
+      ],
+      "layerNamesToDeactivate": [
+        "Berlin - LOD2",
+        "Brandenburg - LOD2",
+        "Hamburg - LOD2",
+        "Hessen - LOD2",
+        "NRW - LOD2",
+        "Sachsen - LOD2",
+        "Sachsen-Anhalt - LOD2",
+        "Thuringen - LOD2",
+        "Niedersachsen - LOD2",
+        "GermanyBaseTerrain"
+      ],
+      "title": "3D-Mesh 2020"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.texturedBuildings",
+      "layerName": "Berlin LOD2 - Textured"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.historic",
+      "layerName": "Historische Luftbilder 1928"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.osmfootprints",
+      "layerName": "osmBuildingFootprints"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.planwerk",
+      "layerName": "Planwerk innere Stadt"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.summertrees",
+      "layerName": "Summer Trees"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.summerdop2020",
+      "layerName": "Summer DOP 2020",
+      "infoUrl": "https://vc.systems/",
+      "infoUrlTarget": "_blank"
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "thematic",
+      "title": "Themenbezogene Daten",
+      "initOpen": true
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "thematic.waterheight",
+      "layerName": "Wasserhöhen selten - NRW WMS"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "thematic.waterflow",
+      "layerName": "Fließgeschwindigkeit selten - NRW WMS"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "thematic.waterareas",
+      "layerName": "vorläufig gesicherte Überschwemmungsgebiete"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "thematic.waterareas2",
+      "layerName": "festgesetzte Überschwemmungsgebiete"
+    }
+  ]
+}

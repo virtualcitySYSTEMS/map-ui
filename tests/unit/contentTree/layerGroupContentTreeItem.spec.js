@@ -27,6 +27,7 @@ describe('LayerGroupContentTreeItem', () => {
     let app;
     let item;
     let layers;
+    let layerToDeactivate;
 
     beforeEach(async () => {
       app = new VcsUiApp();
@@ -37,13 +38,16 @@ describe('LayerGroupContentTreeItem', () => {
         { mapNames: ['ol'] },
         { mapNames: ['ol'] },
         { mapNames: ['bar'] },
-      ]
-        .map(config => new VectorLayer(config));
+      ].map(config => new VectorLayer(config));
 
       layers.forEach((l) => {
         app.layers.add(l);
       });
-      item = new LayerGroupContentTreeItem({ name: 'foo', layerNames: layers.map(l => l.name) }, app);
+      layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
+      app.layers.add(layerToDeactivate);
+      item = new LayerGroupContentTreeItem({
+        name: 'foo', layerNames: layers.map(l => l.name), layerNamesToDeactivate: [layerToDeactivate.name],
+      }, app);
     });
 
     afterEach(() => {
@@ -106,6 +110,12 @@ describe('LayerGroupContentTreeItem', () => {
         expect(layers.filter(l => l.active)).to.have.members(layers);
       });
 
+      it('should deactivate all layers given by layersToDeactivate', async () => {
+        await layerToDeactivate.activate();
+        await item.clicked();
+        expect(layerToDeactivate.active).to.be.false;
+      });
+
       it('should activate all inactive layers, if some layers are active', async () => {
         const [layer1] = layers;
         await layer1.activate();
@@ -147,6 +157,7 @@ describe('LayerGroupContentTreeItem', () => {
         inputConfig = {
           name: 'foo',
           layerNames: ['foo'],
+          layerNamesToDeactivate: ['foo2'],
         };
 
         const item = new LayerGroupContentTreeItem(inputConfig, app);
@@ -154,8 +165,12 @@ describe('LayerGroupContentTreeItem', () => {
         item.destroy();
       });
 
-      it('should only configure type, name & layerNames', () => {
-        expect(outputConfig).to.have.all.keys(['name', 'type', 'layerNames']);
+      it('should only configure type, name, layerNames and layerNamesToDeactivate', () => {
+        expect(outputConfig).to.have.all.keys(['name', 'type', 'layerNames', 'layerNamesToDeactivate']);
+      });
+
+      it('should configure layerNamesToDeactivate', () => {
+        expect(outputConfig).to.have.property('layerNamesToDeactivate', outputConfig.layerNamesToDeactivate);
       });
 
       it('should configure layerNames', () => {
@@ -172,6 +187,7 @@ describe('LayerGroupContentTreeItem', () => {
         inputConfig = {
           name: 'foo',
           layerNames: ['foo'],
+          layerNamesToDeactivate: ['foo2'],
           defaultViewpoint: 'foo',
         };
 
