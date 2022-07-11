@@ -1007,6 +1007,10 @@
     {
       "name": "@vcmap/theme-changer",
       "entry": "plugins/@vcmap/theme-changer/index.js"
+    },
+    {
+      "name": "@vcmap/create-link",
+      "entry": "plugins/@vcmap/create-link/index.js"
     }
   ]
 }

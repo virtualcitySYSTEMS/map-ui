@@ -5,6 +5,7 @@ import {
   makeOverrideCollection,
   destroyCollection,
   OverrideClassRegistry,
+  defaultDynamicContextId, ObliqueMap, ViewPoint,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -24,6 +25,7 @@ import CategoryManager from './manager/categoryManager/categoryManager.js';
 import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 import FeatureInfo from './featureInfo/featureInfo.js';
 import UiConfig from './uiConfig.js';
+import { createEmptyState, getStateFromURL } from './state.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -48,15 +50,18 @@ import UiConfig from './uiConfig.js';
 /**
  * @interface VcsPlugin
  * @template {Object} P
+ * @template {Object} S
  * @property {string} version
  * @property {string} name
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
- * @property {function(VcsUiApp)} initialize - called on plugin added
+ * @property {function(VcsUiApp, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
  * @property {function():P} [toJSON] - serialization
  * @property {function():Promise<void>} destroy
+ * @property {function(boolean=):S} [getState] - should return the plugins state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
  * @api
  */
+
 
 /**
  * @interface VcsComponentManager
@@ -113,7 +118,11 @@ class VcsUiApp extends VcsApp {
           this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
         }
         if (plugin.initialize) {
-          plugin.initialize(this);
+          let state;
+          if (this._cachedAppState.contextIds.includes(plugin[contextIdSymbol])) {
+            state = this._cachedAppState.plugins.find(s => s.name === plugin.name);
+          }
+          plugin.initialize(this, state?.state);
         }
       }),
       this._plugins.removed.addEventListener(async (plugin) => {
@@ -189,6 +198,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._contextMenuManager = new ContextMenuManager(this);
+
+    /**
+     * @type {AppState}
+     * @private
+     */
+    this._cachedAppState = getStateFromURL(new URL(window.location.href));
   }
 
   /**
@@ -264,6 +279,55 @@ class VcsUiApp extends VcsApp {
   get uiConfig() { return this._uiConfig; }
 
   /**
+   * Get the state of the application. When passed the forUrl flag, only a minimal set of states shall be provided for a sharable link to the current state (to ensure
+   * the maximum URL length is not exceeded). This includes: layer active state & styling, active map, active viewpoint,
+   * currently selected feature info & any state deemed required for a sharable URL by the currently loaded plugins.
+   * @param {boolean=} forUrl
+   * @returns {Promise<AppState>}
+   */
+  async getState(forUrl) {
+    const state = createEmptyState();
+    state.contextIds = this.contexts
+      .filter(({ id }) => id !== defaultDynamicContextId)
+      .map(({ id }) => id);
+
+    state.activeMap = this.maps.activeMap.name;
+    const viewPoint = await this.maps.activeMap.getViewPoint();
+    state.activeViewpoint = viewPoint?.isValid?.() ? viewPoint.toJSON() : undefined;
+    state.layers = [...this.layers]
+      .filter(l => l.isSupported(this.maps.activeMap) &&
+        l[contextIdSymbol] !== defaultDynamicContextId &&
+        (
+          ((l.active || l.loading) && !l.activeOnStartup) ||
+          (!l.active && l.activeOnStartup) ||
+          ((l.active || l.loading) && l.style !== l.defaultStyle && this.styles.has(l.style))
+        ))
+      .map((l) => {
+        const layerState = {
+          name: l.name,
+          active: l.active || l.loading,
+        };
+        if (
+          l.style.name !== l.defaultStyle.name &&
+          this.styles.has(l.style) &&
+          l.style[contextIdSymbol] !== defaultDynamicContextId
+        ) {
+          layerState.styleName = l.style.name;
+        }
+        return layerState;
+      });
+
+    state.plugins = [...this.plugins]
+      .filter(p => p[contextIdSymbol] !== defaultDynamicContextId && typeof p.getState === 'function')
+      .map(p => ({ name: p.name, state: p.getState(forUrl) }));
+
+    if (this.maps.activeMap instanceof ObliqueMap) {
+      state.activeObliqueCollection = this.maps.activeMap.collection.name;
+    }
+    return state;
+  }
+
+  /**
    * @param {import("@vcmap/core").Context} context
    * @returns {Promise<void>}
    * @protected
@@ -294,6 +358,47 @@ class VcsUiApp extends VcsApp {
     await this._contentTree.parseItems(config.contentTree, context.id);
     await this._uiConfig.parseItems(config.uiConfig, context.id);
     await this._featureInfo.parseContext(config.featureInfo, context.id);
+  }
+
+  /**
+   * @param {import("@vcmap/core").Context} context
+   * @returns {Promise<void>}
+   * @protected
+   */
+  async _setContextState(context) {
+    await super._setContextState(context);
+    if (this._cachedAppState.contextIds.includes(context.id)) {
+      this._cachedAppState.layers.forEach((layerState) => {
+        const layer = this.layers.getByKey(layerState.name);
+        if (layer) {
+          if (layerState.active) {
+            layer.activate();
+          } else {
+            layer.deactivate();
+          }
+
+          if (layerState.styleName && this.styles.hasKey(layerState.styleName) && layer.setStyle) {
+            layer.setStyle(this.styles.getByKey(layerState.styleName));
+          }
+        }
+      });
+      if (this._cachedAppState.activeMap && this.maps.hasKey(this._cachedAppState.activeMap)) {
+        await this.maps.setActiveMap(this._cachedAppState.activeMap);
+      }
+      if (
+        this._cachedAppState.activeObliqueCollection &&
+        this.maps.activeMap instanceof ObliqueMap &&
+        this.obliqueCollections.hasKey(this._cachedAppState.activeObliqueCollection)
+      ) {
+        await this.maps.activeMap.setCollection(
+          this.obliqueCollections.getByKey(this._cachedAppState.activeObliqueCollection),
+          this._cachedAppState.activeViewpoint,
+        );
+      } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
+        await this.maps.activeMap.gotoViewPoint(new ViewPoint(this._cachedAppState.activeViewpoint));
+      }
+      this._cachedAppState.contextIds.splice(this._cachedAppState.contextIds.indexOf(context.id), 1);
+    }
   }
 
   /**

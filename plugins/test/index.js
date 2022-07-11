@@ -1,6 +1,6 @@
 import VectorSource from 'ol/source/Vector.js';
 import { Feature } from 'ol';
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createModalAction, createToggleAction, setStateToUrl, WindowSlot } from '@vcmap/ui';
 import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
@@ -73,7 +73,37 @@ export default async function () {
         app.windowManager,
         '@vcmap/test',
       );
-      this._destroyActions = [destroyConfigEditorAction, destroyWindowAction, destroyIconAction];
+      const { action: clipboardDialogAction, destroy: destroryClipboardDialogAction } = createModalAction(
+        {
+          name: 'Create Link',
+        },
+        {
+          component: {
+            template: '<div>{{url}}</div>',
+            data() {
+              return {
+                url: '',
+              };
+            },
+            async created() {
+              this.url = setStateToUrl(await app.getState(true)).toString();
+            },
+          },
+          position: {
+            top: '50px',
+            left: '8%',
+            right: '8%',
+          },
+        },
+        app.windowManager,
+        '@vcmap/test',
+      );
+      this._destroyActions = [
+        destroyConfigEditorAction,
+        destroyWindowAction,
+        destroyIconAction,
+        destroryClipboardDialogAction,
+      ];
       const alertAction = {
         name: 'VC Systems',
         callback() {
@@ -98,6 +128,14 @@ export default async function () {
       );
       app.navbarManager.add(
         { id: 'alert', action: alertAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      app.navbarManager.add(
+        {
+          id: 'createLink',
+          action: clipboardDialogAction,
+        },
         '@vcmap/test',
         ButtonLocation.TOOL,
       );

@@ -50,6 +50,7 @@ export {
   WindowManager,
   WindowSlot,
   WindowPositions,
+  WindowAlignment,
   getFittedWindowPositionOptions,
   getFittedWindowPositionOptionsFromMapEvent,
   getWindowPositionOptions,
@@ -93,6 +94,7 @@ export {
   serializePlugin,
   deserializePlugin,
 } from './src/pluginHelper.js';
+export { getStateFromURL, createEmptyState, setStateToUrl } from './src/state.js';
 export { default as VcsUiApp } from './src/vcsUiApp.js';
 export { default as Icons } from './src/icons/+all.js';
 

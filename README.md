@@ -97,6 +97,7 @@ how safe it is to start developing with these components.
 - Components API RC [Components](documentation/COMPONENTS.md).
 - [Context Menu](documentation/CONTEXT_MENU.md) API RC
 - [FeatureInfo](documentation/FeatureInfo.md) RC
+- [State & Application Link](documentation/STATE.md) RC
 
 ##### components
 - VcsTextField BETA
@@ -142,6 +143,7 @@ how safe it is to start developing with these components.
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  DONE
 - Help Concept / Beispielhaft implementieren  Prio 2
 - Components Concept/Categories / API DONE.
+- Notification Concept Prio 2
 
 ### Plugins
 - Drawing (WIP) Prio 1
@@ -167,6 +169,7 @@ how safe it is to start developing with these components.
 - Walkmode Prio 4
 - Search esri Prio 4
 - Search WFS Prio 4
+- Create Link DONE
 
 # Getting started
 For a first start, clone the repo and call `npm i` `npm run start` This will start a development server. The 
