@@ -257,6 +257,20 @@
             align="center"
           >
             <v-col>
+              <VcsRadio
+                :dense="dense"
+                :items="[...selectOptions, { label: 'Radio Option E colored', color: 'primary', value: 'E' }]"
+                v-model="state.selected"
+                row
+              />
+            </v-col>
+          </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col>
               <VcsCheckbox
                 id="checkboxInput"
                 label="CheckboxInput"
@@ -287,6 +301,7 @@
       :disabled="!isValid"
       :tooltip="'Log current state in console'"
       :has-update="isValid && newUpdate"
+      class="mx-2 mb-2"
     >
       Log State
     </VcsButton>
@@ -303,6 +318,7 @@
   import {
     VcsSelect,
     VcsCheckbox,
+    VcsRadio,
     VcsButton,
     VcsTextField,
     VcsFormattedNumber,
@@ -318,6 +334,7 @@
       VcsSelect,
       VcsTextField,
       VcsCheckbox,
+      VcsRadio,
       VcsFormattedNumber,
       VcsFormSection,
       VcsLabel,
@@ -342,8 +359,8 @@
       ].join('\n');
 
       return {
-        showSection: true,
-        dense: true,
+        showSection: ref(true),
+        dense: ref(true),
         helpExample,
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,

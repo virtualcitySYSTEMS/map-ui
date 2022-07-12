@@ -9,6 +9,7 @@
         <v-checkbox
           on-icon="$vcsCheckboxChecked"
           off-icon="$vcsCheckbox"
+          class="vcs-checkbox"
           hide-details
           indeterminate-icon="$vcsCheckboxIndeterminate"
           :dense="$attrs.dense!==false"
@@ -28,6 +29,18 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
+.vcs-checkbox {
+  ::v-deep {
+    label.v-label,
+    .v-icon.v-icon{
+      color: inherit;
+    }
+    .v-input--selection-controls__input {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
 .v-input--selection-controls {
   margin: 0;
   padding: 0;

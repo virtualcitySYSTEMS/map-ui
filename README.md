@@ -106,6 +106,7 @@ how safe it is to start developing with these components.
 - VcsButton ALPHA
 - VcsFormattedNumber BETA
 - VcsLabel BETA
+- VcsRadio BETA
 - VcsTooltip ALPHA
 - VcsActionButtonList ALPHA
 - VcsActionList ALPHA

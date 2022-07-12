@@ -108,6 +108,7 @@ export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
+export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
 // export { default as VcsColorPicker } from './src/components/form-inputs-controls/VcsColorPicker.vue';
 export { default as VcsFormSection } from './src/components/form-inputs-controls/VcsFormSection.vue';
 // export { default as VcsInputColumnCoordinates } from './src/components/form-inputs-controls/VcsInputColumnCoordinates.vue';
