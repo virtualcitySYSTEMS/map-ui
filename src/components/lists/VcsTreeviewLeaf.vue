@@ -13,7 +13,7 @@
       <span ref="imgContainer" />
     </span>
 
-    <div class="position-relative col-8 pa-0 d-flex align-center">
+    <div class="position-relative col-8 pa-0 d-flex align-center treeview-label" :title="$t(item.title)">
       <span>{{ $t(item.title) }}</span>
     </div>
     <VcsActionButtonList
@@ -27,6 +27,13 @@
     />
   </div>
 </template>
+<style lang="css" scoped>
+.treeview-label span{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
 
 <script>
   import

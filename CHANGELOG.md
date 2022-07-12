@@ -7,3 +7,4 @@
 - Adds a `FeatureInfo` concept, see [Feature Info](documentation/FeatureInfo.md)
 - Added `UiConfig` for core ui configuration, see [Ui Config](documentation/UI_CONFIG.md).
 - Adds a `State` API, can be used to create an URL to share, see [State](documentation/STATE.md).
+- Fixed Bug where the title of a VcsTreeViewLeaf did overflow. Text Overflow is not set to ellipsis. The full title is shown in the html title
