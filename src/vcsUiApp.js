@@ -5,7 +5,10 @@ import {
   makeOverrideCollection,
   destroyCollection,
   OverrideClassRegistry,
-  defaultDynamicContextId, ObliqueMap, ViewPoint,
+  defaultDynamicContextId,
+  ObliqueMap,
+  ViewPoint,
+  volatileContextId,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -297,6 +300,7 @@ class VcsUiApp extends VcsApp {
     state.layers = [...this.layers]
       .filter(l => l.isSupported(this.maps.activeMap) &&
         l[contextIdSymbol] !== defaultDynamicContextId &&
+        l[contextIdSymbol] !== volatileContextId &&
         (
           ((l.active || l.loading) && !l.activeOnStartup) ||
           (!l.active && l.activeOnStartup) ||
@@ -310,7 +314,8 @@ class VcsUiApp extends VcsApp {
         if (
           l.style.name !== l.defaultStyle.name &&
           this.styles.has(l.style) &&
-          l.style[contextIdSymbol] !== defaultDynamicContextId
+          l.style[contextIdSymbol] !== defaultDynamicContextId &&
+          l.style[contextIdSymbol] !== volatileContextId
         ) {
           layerState.styleName = l.style.name;
         }
@@ -318,7 +323,9 @@ class VcsUiApp extends VcsApp {
       });
 
     state.plugins = await Promise.all([...this.plugins]
-      .filter(p => p[contextIdSymbol] !== defaultDynamicContextId && typeof p.getState === 'function')
+      .filter(p => p[contextIdSymbol] !== defaultDynamicContextId &&
+        p[contextIdSymbol] !== volatileContextId &&
+        typeof p.getState === 'function')
       .map(async p => ({ name: p.name, state: await p.getState(forUrl) })));
 
     if (this.maps.activeMap instanceof ObliqueMap) {

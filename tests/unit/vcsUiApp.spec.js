@@ -10,7 +10,7 @@ import {
 } from 'vitest';
 import {
   Context,
-  contextIdSymbol,
+  contextIdSymbol, markVolatile,
   OpenlayersMap,
   VectorLayer,
   VectorStyleItem,
@@ -34,6 +34,14 @@ async function setupApp(app) {
   });
   await activeLayer.activate();
   app.layers.add(activeLayer);
+
+  const volatileActiveLayer = new VectorLayer({
+    name: 'volatileActiveLayer',
+    activeOnStartup: false,
+  });
+  await volatileActiveLayer.activate();
+  markVolatile(volatileActiveLayer);
+  app.layers.add(volatileActiveLayer);
 
   const activeActiveOnStartupLayer = new VectorLayer({
     name: 'activeActiveOnStartupLayer',
@@ -74,6 +82,12 @@ async function setupApp(app) {
   app.plugins.add(pluginInDefaultContext);
   await app.setDynamicContext(context);
 
+  const volatileStyle = new VectorStyleItem({
+    name: 'volatileStyle',
+  });
+  markVolatile(volatileStyle);
+  app.styles.add(volatileStyle);
+
   const style = new VectorStyleItem({
     name: 'style',
   });
@@ -99,11 +113,25 @@ async function setupApp(app) {
   layerStyledByDefaultDynamicContext.setStyle(dynamicContextStyle);
   app.layers.add(layerStyledByDefaultDynamicContext);
 
+  const layerStyledByVolatileStyle = new VectorLayer({
+    name: 'layerStyledByVolatileStyle',
+  });
+  await layerStyledByVolatileStyle.activate();
+  layerStyledByDefaultDynamicContext.setStyle(volatileStyle);
+  app.layers.add(layerStyledByVolatileStyle);
+
   const pluginWithGetState = {
     name: 'pluginWithGetState',
     getState() { return 'foo'; },
   };
   app.plugins.add(pluginWithGetState);
+
+  const volatilePlugin = {
+    name: 'volatilePlugin',
+    getState() { return 'foo'; },
+  };
+  markVolatile(volatilePlugin);
+  app.plugins.add(volatilePlugin);
 
   const pluginWithAsyncGetState = {
     name: 'pluginWithAsyncGetState',
@@ -172,6 +200,10 @@ describe('VcsUiApp', () => {
           expect(state.layers.find(s => s.name === 'dynamicContextLayer')).to.be.undefined;
         });
 
+        it('should not add layers which are volatile', () => {
+          expect(state.layers.find(s => s.name === 'volatileActiveLayer')).to.be.undefined;
+        });
+
         it('should not add styled inactive layers', () => {
           expect(state.layers.find(s => s.name === 'styledInactiveLayer')).to.be.undefined;
         });
@@ -179,6 +211,11 @@ describe('VcsUiApp', () => {
         it('should not add the style name to layers, if the style is part of the dynamic context', () => {
           expect(state.layers).to.deep
             .include({ name: 'layerStyledByDefaultDynamicContext', active: true });
+        });
+
+        it('should not add the style name to layers, if the style is volatile', () => {
+          expect(state.layers).to.deep
+            .include({ name: 'layerStyledByVolatileStyle', active: true });
         });
       });
 
@@ -197,6 +234,10 @@ describe('VcsUiApp', () => {
 
         it('should not add plugins in the default dynamic context', () => {
           expect(state.plugins.find(s => s.name === 'pluginInDefaultContext')).to.be.undefined;
+        });
+
+        it('should not add plugins which are volatile', () => {
+          expect(state.plugins.find(s => s.name === 'volatilePlugin')).to.be.undefined;
         });
       });
 
