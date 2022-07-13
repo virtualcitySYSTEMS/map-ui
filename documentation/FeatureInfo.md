@@ -1,16 +1,16 @@
-### FeatureInfo
+# FeatureInfo
 
 Map features have context specific information, which are made accessible on click by the FeatureInfo tool.
 The VcsApp provides some view classes per default and an API to register custom ones.
 On context level views can be configured and assigned to a layer.
 Configuration is context-sensitive, which allows configuring different views on one layer in different contexts.
 
-#### FeatureInfo Tool
+## FeatureInfo Tool
 
 The FeatureInfo tool can be activated via a button within the toolbox or using its API.
 Whenever the tool is active, FeatureInfo listens to clicks on features, highlights a selected feature and opens a FeatureInfo window, if configured.
 
-#### View classes & class registry
+## View classes & class registry
 
 FeatureInfo provides a class registry, where view classes can be registered.
 A view class is registered by type and defines
@@ -117,7 +117,7 @@ A couple of default views are already registered on the VcsApp:
 
 Other views for images, movies, links, etc. can be implemented and registered on the VcsApp's FeatureInfo through a map plugin.
 
-#### View collection (configuration)
+## View collection (configuration)
 
 The class registry provides a list of view types.
 The FeatureInfo collection contains instances of those types, configured within the FeatureInfo section of a context according to the View class options.
@@ -160,12 +160,13 @@ On a layer properties bag, this FeatureInfo definition can be assigned referenci
 
 If a feature of this layer is clicked by a user or selected via FeatureInfo's API, the property is evaluated and the corresponding FeatureInfo view window is opened.
 
-#### Attribute Key Value Mapping
+## Attribute Key Value Mapping & Filtering
 
 [AbstractFeatureInfoView](../src/featureInfo/abstractFeatureInfoView.js) provides mapping options for attribute keys and values.
 Mappings have to be defined as key-value pairs:
 - key mapping: a pair of old and new attribute key (`Object<string, string>`)
 - value mapping: a nested object with key, old value and new value (`Object<string,Object<string, string>>`) or an object with template strings (`Object<string, string>`).
+- filters: a list of keys to filter attributes for. 
 
 > Mapping values can be [i18n](./INTERNATIONALIZATION.md), template or other strings.
 > All attribute keys and values are translated, if a corresponding i18n entry is available.
@@ -186,7 +187,8 @@ Example:
       "1000": "codeLists.values.function.1000",
       "1111": "myValueMapping1111"
     }
-  }
+  },
+  "attributeKeys": ["function", "roofType"]
 }
 ```
 
@@ -216,3 +218,31 @@ Example for corresponding code list:
   ]
 }
 ```
+
+### Nested Keys
+Nested keys can pose a problem for mappings & filtering. The following rules should 
+be taken into account:
+
+**Filtering**:
+- To filter for nested keys, use `.` as a separator
+- Parents of child filters, will be present (although filtered). Thus, filtering for `foo.bar`,
+  will recreate `foo` with just the `bar` property (if present) _or an empty foo_ if not
+  present.
+- Children of parent filters will be passed as reference.
+- To filter for _top level_ keys which contain a `.`, use the key name as a string literal, e.g.
+  `foo.bar` will filter for the `foo.bar` property or the nested property `bar` on the `foo` object
+- Filtering for nested properties with a `.` in their key _is not possible_.
+
+**Key Mapping**:
+- To map nested keys, use `.` as a separator.
+- All key mapping _are applied to the top level_. Mapping `foo.bar` to `foo.baz` will
+  not replace the `bar` key on the `foo` object, but create the `foo.baz` top level key.
+- To map for _top level_ keys which contain a `.`, use the key name as a string literal, e.g.
+  `foo.bar` will map the `foo.bar` key or the nested `bar` key on the `foo` object
+- Mapping for nested keys with a `.` _is not possible_.
+
+**Value Mapping**
+- To map nested values, use `.` as a separator.
+- To map for _top level_ values which contain a `.` in their key, use the key name as a string literal, e.g.
+  `foo.bar` will map the `foo.bar` key or the nested `bar` key on the `foo` object
+- Mapping for nested values with a `.` in their key _is not possible_.

@@ -647,7 +647,7 @@
       "datasourceId": "2jEtgBemjJaSNx3AH",
       "activeOnStartup": true,
       "layer": "osm",
-      "style": "default",
+      "wmtsStyle": "default",
       "format": "image/png",
       "tileMatrixSetID": "osm_grid",
       "tileMatrixPrefix": "",

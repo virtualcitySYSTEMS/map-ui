@@ -2,6 +2,7 @@
   <v-card
     class="mx-auto"
     max-width="400"
+    v-if="position"
   >
     <slot name="balloon-header" :attrs="{...$props, ...$attrs}">
       <v-list-item two-line>
@@ -83,7 +84,7 @@
       },
       position: {
         type: Array,
-        required: true,
+        default: null,
       },
     },
     setup(props, { attrs }) {

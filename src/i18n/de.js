@@ -44,6 +44,14 @@ const messages = {
   components: {
     title: 'Komponenten',
     tooltip: 'Komponenten',
+    vcsTable: {
+      key: 'Name',
+      value: 'Wert',
+      searchbarPlaceholder: 'Name, Wert, ...',
+      itemsPerPage: 'pro Seite',
+      nextPage: 'Nächste Seite',
+      formerPage: 'Vorherige Seite',
+    },
   },
   settings: {
     title: 'Einstellungen',
@@ -52,14 +60,8 @@ const messages = {
     languageSelector: 'Sprache',
   },
   featureInfo: {
-    key: 'Name',
-    value: 'Wert',
-    searchbarPlaceholder: 'Name, Wert, ...',
-    itemsPerPage: 'pro Seite',
-    nextPage: 'Nächste Seite',
-    formerPage: 'Vorherige Seite',
-    group: 'Gruppieren',
-    ungroup: 'Gruppierung aufheben',
+    activateToolTitle: 'Informationstool aktivieren',
+    deactivateToolTitle: 'Informationstool deaktivieren',
   },
   footer: {
     title: 'Fußzeile',

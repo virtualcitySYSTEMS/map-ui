@@ -357,7 +357,7 @@ class VcsUiApp extends VcsApp {
     await super._parseContext(context);
     await this._contentTree.parseItems(config.contentTree, context.id);
     await this._uiConfig.parseItems(config.uiConfig, context.id);
-    await this._featureInfo.parseContext(config.featureInfo, context.id);
+    await this._featureInfo.collection.parseItems(config.featureInfo, context.id);
   }
 
   /**
@@ -412,7 +412,7 @@ class VcsUiApp extends VcsApp {
       this._plugins.removeContext(contextId),
       this._i18n.removeContext(contextId),
       this._contentTree.removeContext(contextId),
-      this._featureInfo.removeContext(contextId),
+      this._featureInfo.collection.removeContext(contextId),
       this._uiConfig.removeContext(contextId),
     ]);
   }

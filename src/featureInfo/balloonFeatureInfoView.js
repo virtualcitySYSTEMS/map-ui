@@ -1,3 +1,7 @@
+import { Feature } from 'ol';
+import { getCenter } from 'ol/extent.js';
+import { Cartographic, Entity, Math as CesiumMath } from '@vcmap/cesium';
+import { Projection } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import { getWindowPositionOptions, WindowAlignment, WindowSlot } from '../manager/window/windowManager.js';
@@ -30,7 +34,37 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
  * @typedef {FeatureInfoProps} BalloonFeatureInfoViewProps
  * @property {string} title
  * @property {string} subtitle
+ * @property {import("ol/coordinate").Coordinate} position
  */
+
+/**
+ * @param {import("@vcmap/core").Cartesian3} cartesian
+ * @returns {import("ol/coordinate").Coordinate}
+ */
+function cartesian3ToCoordinate(cartesian) {
+  const cartographic = Cartographic.fromCartesian(cartesian);
+  const wgs84position = [
+    CesiumMath.toDegrees(cartographic.longitude),
+    CesiumMath.toDegrees(cartographic.latitude),
+    cartographic.height,
+  ];
+  return Projection.wgs84ToMercator(wgs84position);
+}
+
+/**
+ * @param {FeatureType} feature
+ * @returns {import("ol/coordinate").Coordinate|null}
+ */
+function getPositionFromFeature(feature) {
+  if (feature instanceof Feature && feature.getGeometry()) {
+    return getCenter(feature.getGeometry().getExtent());
+  } else if (feature instanceof Entity) {
+    return cartesian3ToCoordinate(feature.position);
+  } else if (feature?.primitive?.boundingSphere?.center) {
+    return cartesian3ToCoordinate(feature.primitive.boundingSphere.center);
+  }
+  return null;
+}
 
 /**
  * @class
@@ -70,6 +104,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
+      position: featureInfo.position ?? getPositionFromFeature(featureInfo.feature),
       title: this.title ?
         extractNestedKey(this.title, properties.attributes, this.title) :
         properties.layerProperties.title,
@@ -86,13 +121,12 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
    */
   getWindowComponentOptions(featureInfo, layer) {
     const options = super.getWindowComponentOptions(featureInfo, layer);
-    const { windowPosition } = featureInfo;
     options.state.hideHeader = true;
     options.state.classes = ['balloon'];
     options.slot = WindowSlot.DETACHED;
     options.position = getWindowPositionOptions(
-      windowPosition.x - balloonOffset.x,
-      windowPosition.y - balloonOffset.y,
+      (featureInfo.windowPosition?.[0] ?? 0) - balloonOffset.x, // if we do not have a windowPosition, let the next render handle it
+      (featureInfo.windowPosition?.[1] ?? 0) - balloonOffset.y,
       null,
       WindowAlignment.BOTTOM_LEFT,
     );

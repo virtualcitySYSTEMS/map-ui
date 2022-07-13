@@ -1,142 +1,878 @@
 import {
   describe,
   beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
   expect,
   it,
   vi,
 } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
-import { OpenlayersMap, vcsLayerName, VectorLayer } from '@vcmap/core';
+import {
+  CesiumTilesetLayer,
+  Context,
+  getDefaultVectorStyleItemOptions,
+  isProvidedFeature,
+  mercatorProjection,
+  OpenlayersMap,
+  vcsLayerName,
+  VectorLayer, VectorStyleItem,
+  WMSLayer, WMTSLayer,
+} from '@vcmap/core';
+import { createDummyCesium3DTileFeature } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
+import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
+import { Color } from '@vcmap/cesium';
+
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
-import { getDummyCenterWGS84, getDummyCesium3DTileFeature } from './getDummyCesium3DTileFeature.js';
-import { sleep } from '../../helpers.js';
+import { defaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
+import { AbstractFeatureInfoView } from '../../../index.js';
+import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
 describe('FeatureInfo', () => {
-  let app;
-  let map;
-  let featureInfo;
-  let featureChangedSpy;
-
-  beforeAll(async () => {
-    app = new VcsUiApp();
-    map = new OpenlayersMap({ name: 'ol' });
-    app.maps.add(map);
-    await app.maps.setActiveMap(map.name);
-    // eslint-disable-next-line prefer-destructuring
-    featureInfo = app.featureInfo;
-  });
-
-  describe('selecting a feature', () => {
-    it('should derive position from ol.Feature, if no position provided', async () => {
-      featureChangedSpy = vi.fn();
-      featureInfo.featureChanged.addEventListener(featureChangedSpy);
-      const feature = new Feature();
-      feature.setGeometry(new Point([1, 1]));
-      await featureInfo.selectFeature(feature, null, [0, 0]);
-      await sleep();
-      expect(featureChangedSpy).toHaveBeenCalledTimes(1);
-      expect(featureChangedSpy).toHaveBeenLastCalledWith({ feature, position: [1, 1], windowPosition: [0, 0] });
-    });
-
-    it('should derive position from Cesium 3D Tile feature, if no position provided', async () => {
-      featureChangedSpy = vi.fn();
-      featureInfo.featureChanged.addEventListener(featureChangedSpy);
-      // create a dummy Cesium3DTileFeature with boundingSphere
-      const feature = getDummyCesium3DTileFeature();
-      await featureInfo.selectFeature(feature, null, [0, 0]);
-      await sleep();
-      expect(featureChangedSpy).toHaveBeenCalledTimes(1);
-      expect(featureChangedSpy).toHaveBeenLastCalledWith(
-        { feature, position: getDummyCenterWGS84(), windowPosition: [0, 0] },
-      );
-    });
-
-    it('should derive windowPosition, if not provided', async () => {
-      vi.spyOn(map.olMap, 'getPixelFromCoordinate').mockImplementationOnce(() => [0, 0]);
-      featureChangedSpy = vi.fn();
-      featureInfo.featureChanged.addEventListener(featureChangedSpy);
-      const feature = new Feature();
-      feature.setGeometry(new Point([1, 1]));
-      await featureInfo.selectFeature(feature, null, null);
-      await sleep();
-      expect(featureChangedSpy).toHaveBeenCalledTimes(1);
-      expect(featureChangedSpy).toHaveBeenLastCalledWith({ feature, position: [1, 1], windowPosition: [0, 0] });
-    });
-  });
-
-  describe('register View class', () => {
-    it('add view class to feature info class registry', () => {
-      featureInfo.classRegistry.registerClass('test', 'TestTable', TableFeatureInfoView);
-      expect(featureInfo.classRegistry.hasClass('TestTable')).to.be.true;
-    });
-  });
-
-  describe('activate featureInfo', () => {
-    beforeAll(() => {
-      featureInfo.activate();
-    });
-
-    it('should create a new session', () => {
-      expect(featureInfo._session).to.be.not.null; // XXX other way except private property testing?
-    });
-    it('should set up listeners', () => {
-      expect(featureInfo._listeners).to.have.length(7); // XXX other way except private property testing?
-    });
-    it('should set featureInfo button to active', () => {
-      expect(app.toolboxManager.requestGroup('featureInfo').buttonManager
-        .get('featureInfoTool').action.active).to.be.true;
-    });
-  });
-
-  describe('deactivate featureInfo', () => {
-    beforeAll(() => {
-      featureInfo.deactivate();
-    });
-
-    it('should stop current session', () => {
-      expect(featureInfo._session).to.be.null; // XXX other way except private property testing?
-    });
-    it('should remove listeners', () => {
-      expect(featureInfo._listeners).to.have.length(0);
-    });
-    it('should close featureInfo window', () => {
-      expect(app.windowManager.has('featureInfo')).to.be.false;
-    });
-    it('should clear highligthing', () => {
-      expect(featureInfo._clearHighlightingCb).to.be.null;
-    });
-  });
-
-  describe('handle feature clicked', () => {
-    let feature;
+  describe('setting up listeners', () => {
+    let app;
     let layer;
 
-    beforeAll(() => {
-      featureInfo.collection.add(new TableFeatureInfoView({ name: 'testTable' }));
-      feature = new Feature();
-      feature.setId('testFeature');
-      feature[vcsLayerName] = 'test';
-      feature.setGeometry(new Point([1, 1]));
-      layer = new VectorLayer({ name: 'test', properties: { featureInfo: 'testTable' } });
-      layer.addFeatures([feature]);
+    beforeEach(async () => {
+      app = new VcsUiApp();
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'foo';
       app.layers.add(layer);
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      await app.addContext(new Context({ id: 'remove' }));
+      await app.featureInfo.selectFeature(feature);
+    });
 
-      featureInfo.activate();
-      featureInfo.selectFeature(feature, [1, 1], [0, 0]);
+    afterEach(() => {
+      app.destroy();
+    });
+
+    it('should clear the feature info, if the layer is not supported on the currently active map', async () => {
+      layer.mapNames = ['foo'];
+      const map = new OpenlayersMap({});
+      app.maps.add(map);
+      await app.maps.setActiveMap(map.name);
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should clear the feature info, if the layers state changes', async () => {
+      await layer.activate();
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should clear the feature info, if the window is closed', () => {
+      app.windowManager.remove(app.featureInfo.windowId);
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should clear, when adding a new context', async () => {
+      await app.addContext(new Context({ id: 'add' }));
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should clear, when removing a context', async () => {
+      await app.removeContext('remove');
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+  });
+
+  describe('selecting of a feature', () => {
+    let app;
+    let layer;
+    let feature;
+    let selectedCallback;
+
+    beforeEach(async () => {
+      app = new VcsUiApp();
+      layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'foo';
+      app.layers.add(layer);
+      feature = new Feature({ geometry: new Point([1, 1, 1]) });
+      layer.addFeatures([feature]);
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      selectedCallback = vi.fn();
+      app.featureInfo.featureChanged.addEventListener(selectedCallback);
+      await app.featureInfo.selectFeature(feature);
+    });
+
+    afterEach(() => {
+      app.destroy();
     });
 
     it('should add window of registered view class', () => {
-      expect(app.windowManager.has(`featureInfo-${feature.getId()}`)).to.be.true;
+      expect(app.windowManager.has(app.featureInfo.windowId)).to.be.true;
     });
+
     it('should highlight selected feature', () => {
       expect(layer.featureVisibility.highlightedObjects).to.have.property(feature.getId());
     });
-    it('should clear highlighting and close featureInfo window, if no feature is provided', () => {
-      featureInfo.selectFeature(null);
-      expect(app.windowManager.has(`featureInfo-${feature.getId()}`)).to.be.false;
-      expect(layer.featureVisibility.highlightedObjects).not.to.have.property(feature.getId());
+
+    it('should set the current feature', () => {
+      expect(app.featureInfo.selectedFeature).to.equal(feature);
+    });
+
+    it('should raise the feature selected event', () => {
+      expect(selectedCallback).toHaveBeenCalledWith(feature);
+    });
+  });
+
+  describe('determining of highlight style', () => {
+    let app;
+    let fillColor;
+
+    beforeAll(() => {
+      app = new VcsUiApp();
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      fillColor = Color.fromCssColorString(app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor)
+        .withAlpha(0.8);
+    });
+
+    afterAll(() => {
+      app.destroy();
+    });
+
+    describe('of a normal vector feature', () => {
+      describe('if layer does not have a highlight style', () => {
+        let layer;
+
+        beforeAll(() => {
+          layer = new VectorLayer({
+            projection: mercatorProjection.toJSON(),
+          });
+          layer.properties.featureInfo = 'foo';
+          app.layers.add(layer);
+        });
+
+        describe('if the feature has no style', () => {
+          let style;
+          let highlightStyle;
+
+          beforeAll(async () => {
+            const feature = new Feature({});
+            layer.addFeatures([feature]);
+            await app.featureInfo.selectFeature(feature);
+            highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+            ({ style } = layer);
+          });
+
+          it('should set the fill color to the primary colors', () => {
+            const color = fillColor.toBytes();
+            color[3] /= 255;
+            expect(highlightStyle.getFill().getColor()).to.have.members(color);
+          });
+
+          it('should set the storkes color to the primary color', () => {
+            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should set the strokes width to twice as much', () => {
+            expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+          });
+
+          it('should set the style image scale to twice as much', () => {
+            expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+          });
+
+          it('should change the text color to the primary color', () => {
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should change the texts scale to twice as much', () => {
+            expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+          });
+        });
+
+        describe('if the feature has a style', () => {
+          let setupFeature;
+
+          beforeAll(() => {
+            setupFeature = async (style) => {
+              const feature = new Feature();
+              feature.setStyle(style);
+              layer.addFeatures([feature]);
+              await app.featureInfo.selectFeature(feature);
+              return layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+            };
+          });
+
+          it('should set the scale on the styles images to twice as much', async () => {
+            const style = new Style({ image: new Circle({ radius: 5 }) });
+            const highlightStyle = await setupFeature(style);
+            expect(highlightStyle.getImage().getScale()).to.equal(style.getImage().getScale() * 2);
+          });
+
+          it('should set the width & color on a styles stroke', async () => {
+            const style = new Style({ stroke: new Stroke({ color: '#FF00FF', width: 1 }) });
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getStroke().getWidth()).to.equal(2);
+            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should set the color on a styles fill', async () => {
+            const style = new Style({ fill: new Fill({ color: '#FFFFFF' }) });
+            const highlightStyle = await setupFeature(style);
+
+            const color = fillColor.toBytes();
+            color[3] /= 255;
+            expect(highlightStyle.getFill().getColor()).to.have.members(color);
+          });
+
+          it('should set scale on text', async () => {
+            const style = new Style({
+              text: new Text({ stroke: new Stroke({ width: 1, color: '#FF00FF' }), text: 'foo' }),
+            });
+            style.getText().setScale(2);
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getText().getScale()).to.equal(4);
+          });
+
+          it('should set color on text', async () => {
+            const style = new Style({
+              text: new Text({
+                stroke: new Stroke({ width: 1, color: '#FF00FF' }),
+                text: 'foo',
+                fill: new Fill({ color: '#00FF00' }),
+              }),
+            });
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+          });
+        });
+      });
+
+      describe('if layer has a highlight style', () => {
+        let layer;
+
+        beforeAll(() => {
+          layer = new VectorLayer({
+            projection: mercatorProjection.toJSON(),
+          });
+          layer.properties.featureInfo = 'foo';
+          layer.highlightStyle = new VectorStyleItem({});
+          app.layers.add(layer);
+        });
+
+        it('should use the highlight style, if the feature has no style', async () => {
+          const feature = new Feature({});
+          layer.addFeatures([feature]);
+          await app.featureInfo.selectFeature(feature);
+          expect(layer.featureVisibility.highlightedObjects[feature.getId()].style).to.equal(layer.highlightStyle);
+        });
+
+        it('should use the highlight style, if the feature has a style', async () => {
+          const feature = new Feature({});
+          feature.style = new Style();
+          layer.addFeatures([feature]);
+          await app.featureInfo.selectFeature(feature);
+          expect(layer.featureVisibility.highlightedObjects[feature.getId()].style).to.equal(layer.highlightStyle);
+        });
+      });
+    });
+
+    describe('of a cesium3DTile feature', () => {
+      describe('if the layer has no highlight style', () => {
+        let layer;
+        let highlightStyle;
+
+        beforeAll(async () => {
+          layer = new CesiumTilesetLayer({});
+          layer.properties.featureInfo = 'foo';
+          app.layers.add(layer);
+          const feature = createDummyCesium3DTileFeature({ id: 'foo' });
+          feature[vcsLayerName] = layer.name;
+          await app.featureInfo.selectFeature(feature);
+          highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+        });
+
+        it('should set the fill color to the primary colors', () => {
+          const color = fillColor.toBytes();
+          color[3] /= 255;
+          expect(highlightStyle.getFill().getColor()).to.have.members(color);
+        });
+      });
+
+      describe('if the layer has a highlight style', () => {
+        let layer;
+        let highlightStyle;
+
+        beforeAll(async () => {
+          layer = new CesiumTilesetLayer({});
+          layer.properties.featureInfo = 'foo';
+          layer.highlightStyle = new VectorStyleItem({});
+          app.layers.add(layer);
+          const feature = createDummyCesium3DTileFeature({ id: 'foo' });
+          feature[vcsLayerName] = layer.name;
+          await app.featureInfo.selectFeature(feature);
+          highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style;
+        });
+
+        it('should use the highlight style', () => {
+          expect(highlightStyle).to.equal(layer.highlightStyle);
+        });
+      });
+    });
+
+    describe('of provided features', () => {
+      describe('if the layer has no highlight style', () => {
+        let layer;
+
+        beforeAll(() => {
+          layer = new WMTSLayer({});
+          layer.properties.featureInfo = 'foo';
+          app.layers.add(layer);
+        });
+
+        describe('if the feature has no style', () => {
+          let style;
+          let highlightStyle;
+
+          beforeAll(async () => {
+            const feature = new Feature({});
+            feature[isProvidedFeature] = true;
+            feature[vcsLayerName] = layer.name;
+            await app.featureInfo.selectFeature(feature);
+            highlightStyle = app.featureInfo._scratchLayer.featureVisibility
+              .highlightedObjects[feature.getId()].style.style;
+            style = new VectorStyleItem(getDefaultVectorStyleItemOptions());
+          });
+
+          it('should set the fill color to the primary colors on the default vector styleItem', () => {
+            const color = fillColor.toBytes();
+            color[3] /= 255;
+            expect(highlightStyle.getFill().getColor()).to.have.members(color);
+          });
+
+          it('should set the stroke color to the primary color', () => {
+            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should set the strokes width to twice as much', () => {
+            expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+          });
+
+          it('should set the style image scale to twice as much', () => {
+            expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+          });
+
+          it('should change the text color to the primary color', () => {
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should change the texts scale to twice as much', () => {
+            expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+          });
+        });
+
+        describe('if the feature has a style', () => {
+          let setupFeature;
+
+          beforeAll(() => {
+            setupFeature = async (style) => {
+              const feature = new Feature();
+              feature[isProvidedFeature] = true;
+              feature[vcsLayerName] = layer.name;
+              feature.setStyle(style);
+              await app.featureInfo.selectFeature(feature);
+              return app.featureInfo._scratchLayer.featureVisibility
+                .highlightedObjects[feature.getId()].style.style;
+            };
+          });
+
+          it('should set the scale on the styles images to twice as much', async () => {
+            const style = new Style({ image: new Circle({ radius: 5 }) });
+            const highlightStyle = await setupFeature(style);
+            expect(highlightStyle.getImage().getScale()).to.equal(style.getImage().getScale() * 2);
+          });
+
+          it('should set the width & color on a styles stroke', async () => {
+            const style = new Style({ stroke: new Stroke({ color: '#FF00FF', width: 1 }) });
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getStroke().getWidth()).to.equal(2);
+            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+          });
+
+          it('should set the color on a styles fill', async () => {
+            const style = new Style({ fill: new Fill({ color: '#FFFFFF' }) });
+            const highlightStyle = await setupFeature(style);
+
+            const color = fillColor.toBytes();
+            color[3] /= 255;
+            expect(highlightStyle.getFill().getColor()).to.have.members(color);
+          });
+
+          it('should set scale on text', async () => {
+            const style = new Style({
+              text: new Text({ stroke: new Stroke({ width: 1, color: '#FF00FF' }), text: 'foo' }),
+            });
+            style.getText().setScale(2);
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getText().getScale()).to.equal(4);
+          });
+
+          it('should set color on text', async () => {
+            const style = new Style({
+              text: new Text({
+                stroke: new Stroke({ width: 1, color: '#FF00FF' }),
+                text: 'foo',
+                fill: new Fill({ color: '#00FF00' }),
+              }),
+            });
+            const highlightStyle = await setupFeature(style);
+
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+          });
+        });
+      });
+
+      describe('if the layer has a highlight style', () => {
+        let layer;
+
+        beforeAll(async () => {
+          layer = new WMTSLayer({});
+          layer.properties.featureInfo = 'foo';
+          layer.highlightStyle = new VectorStyleItem({});
+          app.layers.add(layer);
+        });
+
+        it('should set the layers highlight style, if the feature has no style', async () => {
+          const feature = new Feature({});
+          feature[isProvidedFeature] = true;
+          feature[vcsLayerName] = layer.name;
+          await app.featureInfo.selectFeature(feature);
+          const highlightStyle = app.featureInfo._scratchLayer.featureVisibility
+            .highlightedObjects[feature.getId()].style;
+          expect(highlightStyle).to.equal(layer.highlightStyle);
+        });
+
+        it('should set the layers highlight style, if the feature has a style', async () => {
+          const feature = new Feature({});
+          feature[isProvidedFeature] = true;
+          feature[vcsLayerName] = layer.name;
+          feature.setStyle(new Style({}));
+          await app.featureInfo.selectFeature(feature);
+          const highlightStyle = app.featureInfo._scratchLayer.featureVisibility
+            .highlightedObjects[feature.getId()].style;
+          expect(highlightStyle).to.equal(layer.highlightStyle);
+        });
+      });
+    });
+
+    describe('if the style is a function', () => {
+      let style;
+      let highlightStyle;
+
+      beforeAll(async () => {
+        const layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
+        const feature = new Feature({});
+        feature.setStyle(() => layer.style.style);
+        layer.addFeatures([feature]);
+        await app.featureInfo.selectFeature(feature);
+        highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+        ({ style } = layer);
+      });
+
+      it('should set the fill color to the primary colors', () => {
+        const color = fillColor.toBytes();
+        color[3] /= 255;
+        expect(highlightStyle.getFill().getColor()).to.have.members(color);
+      });
+
+      it('should set the storkes color to the primary color', () => {
+        expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+      });
+
+      it('should set the strokes width to twice as much', () => {
+        expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+      });
+
+      it('should set the style image scale to twice as much', () => {
+        expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+      });
+
+      it('should change the text color to the primary color', () => {
+        expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+      });
+
+      it('should change the texts scale to twice as much', () => {
+        expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+      });
+    });
+  });
+
+  describe('handling of provided features', () => {
+    describe('selecting of a feature', () => {
+      let app;
+      let feature;
+      let selectedCallback;
+
+      beforeEach(async () => {
+        app = new VcsUiApp();
+        const layer = new WMSLayer({});
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
+        feature = new Feature({ geometry: new Point([1, 1, 1]) });
+        feature[isProvidedFeature] = true;
+        feature[vcsLayerName] = layer.name;
+        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        selectedCallback = vi.fn();
+        app.featureInfo.featureChanged.addEventListener(selectedCallback);
+        await app.featureInfo.selectFeature(feature);
+      });
+
+      afterEach(() => {
+        app.destroy();
+      });
+
+      it('should add window of registered view class', () => {
+        expect(app.windowManager.has(app.featureInfo.windowId)).to.be.true;
+      });
+
+      it('should create a scratch layer and add it', () => {
+        expect(app.featureInfo._scratchLayer).to.be.an.instanceOf(VectorLayer);
+        expect(app.layers.has(app.featureInfo._scratchLayer)).to.be.true;
+      });
+
+      it('should highlight selected feature on the scratch layer', () => {
+        expect(app.featureInfo._scratchLayer.featureVisibility.highlightedObjects).to.have.property(feature.getId());
+      });
+
+      it('should set the current feature', () => {
+        expect(app.featureInfo.selectedFeature).to.equal(feature);
+      });
+
+      it('should raise the feature selected event', () => {
+        expect(selectedCallback).toHaveBeenCalledWith(feature);
+      });
+    });
+
+    describe('unselecting a feature', () => {
+      let app;
+      let feature;
+      let selectedCallback;
+      let windowId;
+
+      beforeEach(async () => {
+        app = new VcsUiApp();
+        const layer = new WMSLayer({});
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
+        feature = new Feature({ geometry: new Point([1, 1, 1]) });
+        feature[isProvidedFeature] = true;
+        feature[vcsLayerName] = layer.name;
+        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        await app.featureInfo.selectFeature(feature);
+        ({ windowId } = app.featureInfo);
+        selectedCallback = vi.fn();
+        app.featureInfo.featureChanged.addEventListener(selectedCallback);
+        await app.featureInfo.clear();
+      });
+
+      afterEach(() => {
+        app.destroy();
+      });
+
+      it('should remove window of previous selected feature', () => {
+        expect(app.windowManager.has(windowId)).to.be.false;
+        expect(app.featureInfo.windowId).to.be.null;
+      });
+
+      it('should clear highlight selected feature', () => {
+        expect(app.featureInfo._scratchLayer.featureVisibility.highlightedObjects)
+          .to.not.have.property(feature.getId());
+      });
+
+      it('should remove all features from the scratchLayer', () => {
+        expect(app.featureInfo._scratchLayer.getFeatures()).to.be.empty;
+      });
+
+      it('should set the current feature to null', () => {
+        expect(app.featureInfo.selectedFeature).to.be.null;
+      });
+
+      it('should raise the feature selected event with null', () => {
+        expect(selectedCallback).toHaveBeenCalledWith(null);
+      });
+    });
+  });
+
+  describe('overriding feature info view', () => {
+    let app;
+
+    beforeAll(() => {
+      app = new VcsUiApp();
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+    });
+
+    afterAll(() => {
+      app.destroy();
+    });
+
+    it('should override the feature info view of a layer', async () => {
+      const layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'foo';
+      app.layers.add(layer);
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
+      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
+      expect(app.windowManager.get(app.featureInfo.windowId))
+        .to.have.property('component', overrideFeatureInfo.component);
+    });
+
+    it('should allow for a layer to not have a feature info view defined', async () => {
+      const layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      app.layers.add(layer);
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
+      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
+      expect(app.windowManager.get(app.featureInfo.windowId))
+        .to.have.property('component', overrideFeatureInfo.component);
+    });
+  });
+
+  describe('unselectable features', () => {
+    let app;
+
+    beforeAll(() => {
+      app = new VcsUiApp();
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+    });
+
+    afterAll(() => {
+      app.destroy();
+    });
+
+    it('should not select a feature without a layer', async () => {
+      await app.featureInfo.selectFeature(new Feature({}));
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should not select a feature, which has an unregistered layer', async () => {
+      const layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'foo';
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      await app.featureInfo.selectFeature(feature);
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should not select a feature, which has a layer without a feature info property', async () => {
+      const layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      app.layers.add(layer);
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      await app.featureInfo.selectFeature(feature);
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should not select a feature, which has a layer, which references an inexistent feature info', async () => {
+      const layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'bar';
+      app.layers.add(layer);
+      const feature = new Feature({});
+      layer.addFeatures([feature]);
+      await app.featureInfo.selectFeature(feature);
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+  });
+
+  describe('unselecting a feature', () => {
+    let app;
+    let layer;
+    let feature;
+    let selectedCallback;
+    let windowId;
+
+    beforeEach(async () => {
+      app = new VcsUiApp();
+      const map = new OpenlayersMap({ name: 'ol' });
+      app.maps.add(map);
+      await app.maps.setActiveMap(map.name);
+      layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = 'foo';
+      app.layers.add(layer);
+      feature = new Feature({ geometry: new Point([1, 1, 1]) });
+      layer.addFeatures([feature]);
+      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      await app.featureInfo.selectFeature(feature);
+      ({ windowId } = app.featureInfo);
+      selectedCallback = vi.fn();
+      app.featureInfo.featureChanged.addEventListener(selectedCallback);
+      await app.featureInfo.clear();
+    });
+
+    afterEach(() => {
+      app.destroy();
+    });
+
+    it('should remove window of previous selected feature', () => {
+      expect(app.windowManager.has(windowId)).to.be.false;
+      expect(app.featureInfo.windowId).to.be.null;
+    });
+
+    it('should clear highlight selected feature', () => {
+      expect(layer.featureVisibility.highlightedObjects).to.not.have.property(feature.getId());
+    });
+
+    it('should set the current feature to null', () => {
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should raise the feature selected event with null', () => {
+      expect(selectedCallback).toHaveBeenCalledWith(null);
+    });
+  });
+
+  describe('feature info tool button', () => {
+    describe('setting up the toolbox', () => {
+      let app;
+
+      beforeAll(() => {
+        app = new VcsUiApp();
+      });
+
+      afterAll(() => {
+        app.destroy();
+      });
+
+      it('should request the feature info group', () => {
+        expect(app.toolboxManager.has('featureInfo')).to.be.true;
+      });
+
+      it('should add the featureInfoTool button', () => {
+        expect(app.toolboxManager.get('featureInfo').buttonManager.has('featureInfoTool')).to.be.true;
+      });
+    });
+
+    describe('starting a session', () => {
+      let app;
+      let action;
+
+      beforeAll(() => {
+        app = new VcsUiApp();
+        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        action.callback();
+      });
+
+      afterAll(() => {
+        app.destroy();
+      });
+
+      it('should set the action active', () => {
+        expect(action).to.have.property('active', true);
+      });
+
+      it('should add an interaction to the event handerl', () => {
+        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.exist;
+      });
+    });
+
+    describe('stopping the session', () => {
+      let app;
+      let action;
+
+      beforeAll(async () => {
+        app = new VcsUiApp();
+        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+
+        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        action.callback();
+        const layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
+        const feature = new Feature({});
+        layer.addFeatures([feature]);
+        await app.featureInfo.selectFeature(feature);
+        action.callback();
+      });
+
+      afterAll(() => {
+        app.destroy();
+      });
+
+      it('should set the action as inactive', () => {
+        expect(action).to.have.property('active', false);
+      });
+
+      it('should remove any interactions', () => {
+        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.be.undefined;
+      });
+
+      it('should clear the feature info', () => {
+        expect(app.featureInfo.selectedFeature).to.be.null;
+      });
+    });
+
+    describe('if the exclusive interaction is removed', () => {
+      let app;
+      let action;
+
+      beforeAll(async () => {
+        app = new VcsUiApp();
+        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+
+        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        action.callback();
+        const layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
+        const feature = new Feature({});
+        layer.addFeatures([feature]);
+        await app.featureInfo.selectFeature(feature);
+        app.maps.eventHandler.removeExclusive();
+      });
+
+      afterAll(() => {
+        app.destroy();
+      });
+
+      it('should set the action as inactive', () => {
+        expect(action).to.have.property('active', false);
+      });
+
+      it('should remove any interactions', () => {
+        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.be.undefined;
+      });
+
+      it('should clear the feature info', () => {
+        expect(app.featureInfo.selectedFeature).to.be.null;
+      });
     });
   });
 });
+

@@ -60,13 +60,13 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-            <span class="grey--text mx-2">{{ $t('featureInfo.itemsPerPage') }}</span>
+            <span class="grey--text mx-2">{{ $t('components.vcsTable.itemsPerPage') }}</span>
             <span class="grey--text mx-2">{{ itemsFrom }} - {{ itemsTo }} of {{ items.length }}</span>
             <VcsButton
               small
               icon="mdi-chevron-left"
               @click="formerPage"
-              tooltip="featureInfo.formerPage"
+              tooltip="components.vcsTable.formerPage"
               :disabled="page < 2"
               class="mx-2"
             />
@@ -74,7 +74,7 @@
               small
               icon="mdi-chevron-right"
               @click="nextPage"
-              tooltip="featureInfo.nextPage"
+              tooltip="components.vcsTable.nextPage"
               :disabled="page > numberOfPages - 1"
               class="mx-1"
             />
@@ -139,8 +139,8 @@
       headers: {
         type: Array,
         default: () => [
-          { text: 'featureInfo.key', value: 'key', width: '160px' },
-          { text: 'featureInfo.value', value: 'value', width: '160px' },
+          { text: 'components.vcsTable.key', value: 'key', width: '160px' },
+          { text: 'components.vcsTable.value', value: 'value', width: '160px' },
         ],
       },
       itemsPerPage: {
@@ -157,7 +157,7 @@
       },
       searchbarPlaceholder: {
         type: String,
-        default: 'featureInfo.searchbarPlaceholder',
+        default: 'components.vcsTable.searchbarPlaceholder',
       },
     },
     setup(props) {

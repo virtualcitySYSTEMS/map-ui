@@ -5,63 +5,79 @@ import {
   expect,
   it,
   vi,
+  beforeEach,
+  afterEach,
 } from 'vitest';
+import { Cartesian2 } from '@vcmap/cesium';
+import { EventType, mercatorProjection, ModificationKeyType, PointerKeyType, VectorLayer } from '@vcmap/core';
+
 import { Feature } from 'ol';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
+import { VcsUiApp } from '../../../index.js';
+import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 
 describe('FeatureInfoInteraction', () => {
-  let featureInfoInteraction;
+  let interaction;
+  let event;
+  let app;
   let feature;
-  let position;
-  let windowPosition;
-  let featureChangedSpy;
 
   beforeAll(() => {
-    featureInfoInteraction = new FeatureInfoInteraction();
-    feature = new Feature();
-    position = [1, 1];
-    windowPosition = [0, 0];
+    app = new VcsUiApp();
+    app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+
+    const layer = new VectorLayer({
+      projection: mercatorProjection.toJSON(),
+    });
+    layer.properties.featureInfo = 'foo';
+    app.layers.add(layer);
+    feature = new Feature({});
+    feature.setStyle(() => layer.style.style);
+    layer.addFeatures([feature]);
+    interaction = new FeatureInfoInteraction(app.featureInfo);
+  });
+
+  beforeEach(() => {
+    event = {
+      feature,
+      type: EventType.CLICK,
+      pointerEvent: PointerKeyType.LEFT,
+      key: ModificationKeyType.NONE,
+      windowPosition: new Cartesian2(1, 1),
+      position: [0, 0],
+    };
+  });
+
+  afterEach(() => {
+    app.featureInfo.clear();
   });
 
   afterAll(() => {
-    featureInfoInteraction.destroy();
+    app.destroy();
+    interaction.destroy();
   });
 
-  describe('selecting a feature', () => {
-    beforeAll(() => {
-      featureChangedSpy = vi.fn();
-      featureInfoInteraction.featureChanged.addEventListener(featureChangedSpy);
-      featureInfoInteraction.selectFeature(feature, position, windowPosition);
-    });
-
-    it('should set selected feature', () => {
-      expect(featureInfoInteraction.selectedFeature).to.equal(feature);
-    });
-    it('should set clicked position', () => {
-      expect(featureInfoInteraction.clickedPosition).to.equal(position);
-    });
-    it('should raise featureChanged', () => {
-      expect(featureChangedSpy).toHaveBeenCalledTimes(1);
-      expect(featureChangedSpy).toHaveBeenLastCalledWith({ feature, position, windowPosition });
-    });
+  it('the interaction should select any feature in the event', async () => {
+    await interaction.pipe(event);
+    expect(app.featureInfo.selectedFeature).to.equal(feature);
   });
 
-  describe('clear', () => {
-    beforeAll(() => {
-      featureChangedSpy = vi.fn();
-      featureInfoInteraction.featureChanged.addEventListener(featureChangedSpy);
-      featureInfoInteraction.clear();
-    });
+  it('should stop propagation on the event', async () => {
+    await interaction.pipe(event);
+    expect(event).to.have.property('stopPropagation', true);
+  });
 
-    it('should unset selected feature', () => {
-      expect(featureInfoInteraction.selectedFeature).to.be.null;
-    });
-    it('should unset clicked position', () => {
-      expect(featureInfoInteraction.clickedPosition).to.be.null;
-    });
-    it('should raise featureChanged', () => {
-      expect(featureChangedSpy).toHaveBeenCalledTimes(1);
-      expect(featureChangedSpy).toHaveBeenLastCalledWith(null);
-    });
+  it('should not select a feature twice', async () => {
+    await interaction.pipe(event);
+    const spy = vi.spyOn(app.featureInfo, 'selectFeature');
+    await interaction.pipe(event);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should clear the feature, if the event has no feature', async () => {
+    await interaction.pipe(event);
+    delete event.feature;
+    await interaction.pipe(event);
+    expect(app.featureInfo.selectedFeature).to.be.null;
   });
 });

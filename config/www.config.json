@@ -595,7 +595,7 @@
       "activeOnStartup": true,
       "exclusive": "base",
       "layer": "osm",
-      "style": "default",
+      "wmtsStyle": "default",
       "format": "image/png",
       "tileMatrixSetID": "osm_grid",
       "maxLevel": 19,

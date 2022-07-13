@@ -7,23 +7,26 @@ import {
   vcsLayerName,
   OverrideClassRegistry,
   ClassRegistry,
-  Projection,
   fromCesiumColor,
+  VectorLayer,
+  isProvidedFeature,
+  mercatorProjection,
+  getDefaultVectorStyleItemOptions,
+  VectorStyleItem,
+  markVolatile,
+  maxZIndex,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
-  Cartesian2,
-  Cartographic,
   Cesium3DTileFeature,
   Cesium3DTilePointFeature,
   Color,
   Entity,
-  Math as CesiumMath,
 } from '@vcmap/cesium';
 import { Feature } from 'ol';
-import { getCenter } from 'ol/extent';
-import { Fill, Stroke } from 'ol/style.js';
-import { check } from '@vcsuite/check';
+import { check, checkMaybe } from '@vcsuite/check';
+import { v4 as uuidv4 } from 'uuid';
+
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -31,8 +34,16 @@ import TableFeatureInfoView from './tableFeatureInfoView.js';
 import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
-import { getBalloonPosition } from './balloonHelper.js';
 import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+
+/** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature|import("@vcmap/cesium").Entity} FeatureType */
+
+/**
+ * @typedef {Object} FeatureInfoEvent
+ * @property {FeatureType} feature
+ * @property {import("ol/coordinate").Coordinate} [position] - potential position to place the balloon at
+ * @property {import("ol/coordinate").Coordinate} [windowPosition] - potential window position to initially place the balloon at
+ */
 
 /**
  * @returns {Logger}
@@ -42,21 +53,7 @@ function getLogger() {
 }
 
 /**
- * @param {import("@vcmap/core").Cartesian3} cartesian
- * @returns {import("ol/coordinate").Coordinate}
- */
-function cartesian3ToCoordinate(cartesian) {
-  const cartographic = Cartographic.fromCartesian(cartesian);
-  const wgs84position = [
-    CesiumMath.toDegrees(cartographic.longitude),
-    CesiumMath.toDegrees(cartographic.latitude),
-    cartographic.height, // XXX height on terrain?
-  ];
-  return Projection.wgs84ToMercator(wgs84position);
-}
-
-/**
- * @param {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
+ * @param {FeatureType} feature
  * @param {import("@vcmap/core").Layer} layer
  * @param {string} defaultFillColor
  * @returns {import("ol/style/Style").default|import("@vcmap/core").VectorStyleItem}
@@ -72,18 +69,24 @@ function getHighlightStyle(feature, layer, defaultFillColor) {
     if (typeof style === 'function') {
       style = style(feature, 1);
     }
-    style = style.clone();
-    if (style.getText() || style.getImage() || style.getStroke()) {
-      style.getText().setFill(new Fill({ color: fillColor.toCssColorString() }));
-      style.getText().setScale(style.getText().getScale() * 2);
-      style.getImage().setOpacity(0.8);
+    style = style?.clone?.() ?? new VectorStyleItem(getDefaultVectorStyleItemOptions()).style;
+    if (style.getText()) {
+      if (style.getText().getFill()) {
+        style.getText().getFill().setColor(fillColor.toCssColorString());
+      }
+      style.getText().setScale((style.getText().getScale() ?? 1) * 2);
+    }
+    if (style.getImage()) {
       style.getImage().setScale(style.getImage().getScale() * 2);
-      style.setStroke(new Stroke({
-        width: style.getStroke().getWidth() * 2,
-        color: fillColor.toCssColorString(),
-      }));
-    } else if (style.getFill()) {
-      style.setFill(new Fill({ color: fillColor.toBytes() }));
+    }
+    if (style.getStroke()) {
+      style.getStroke().setColor(fillColor.toCssColorString());
+      style.getStroke().setWidth(style.getStroke().getWidth() * 2);
+    }
+    if (style.getFill()) {
+      const color = fillColor.toBytes();
+      color[3] /= 255;
+      style.getFill().setColor(color);
     }
     return style;
   }
@@ -92,49 +95,77 @@ function getHighlightStyle(feature, layer, defaultFillColor) {
 
 /**
  * @param {VcsUiApp} app
- * @param {FeatureInfoInteraction} interaction
  * @returns {FeatureInfoSession}
  */
-export function createFeatureInfoSession(app, interaction) {
-  const removed = new VcsEvent();
+export function createFeatureInfoSession(app) {
   const { eventHandler } = app.maps;
+  /** @type {function():void} */
+  let stop;
+  const interaction = new FeatureInfoInteraction(app.featureInfo);
   const listener = eventHandler.addExclusiveInteraction(
     interaction,
-    () => { removed.raiseEvent(); },
+    () => { stop?.(); },
   );
   const currentFeatureInteractionEvent = eventHandler.featureInteraction.active;
   eventHandler.featureInteraction.setActive(EventType.CLICK);
 
   const stopped = new VcsEvent();
-  const stop = () => {
+  stop = () => {
     listener();
-    removed.destroy();
     interaction.destroy();
     eventHandler.featureInteraction.setActive(currentFeatureInteractionEvent);
     stopped.raiseEvent();
     stopped.destroy();
   };
-  removed.addEventListener(stop);
 
   return {
-    interaction,
     stopped,
     stop,
   };
 }
 
 /**
- * @typedef {Object} FeatureInfoEvent
- * @property {null|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
- * @property {import("ol/coordinate").Coordinate} position
- * @property {import("ol/coordinate").Coordinate} windowPosition
+ * @param {VcsUiApp} app
  */
+function setupFeatureInfoTool(app) {
+  /** @type {FeatureInfoSession|null} */
+  let session = null;
+
+  const action = {
+    name: 'featureInfoToggle',
+    title: 'featureInfo.activateToolTitle',
+    icon: '$vcsInfo',
+    active: false,
+    callback() {
+      if (session) {
+        session.stop();
+        this.title = 'featureInfo.activateToolTitle';
+      } else {
+        session = createFeatureInfoSession(app);
+        session.stopped.addEventListener(() => {
+          this.active = false;
+          session = null;
+          app.featureInfo.clear();
+        });
+        this.active = true;
+        this.title = 'featureInfo.deactivateToolTitle';
+      }
+    },
+  };
+
+  app.toolboxManager.requestGroup('featureInfo').buttonManager.add(
+    {
+      id: 'featureInfoTool',
+      action,
+    },
+    vcsAppSymbol,
+  );
+}
 
 /**
  * @typedef {Object} FeatureInfoSession
  * @property {VcsEvent<void>} stopped
  * @property {function():void} stop
- * @property {FeatureInfoInteraction} interaction
  */
 
 /**
@@ -156,7 +187,6 @@ class FeatureInfo {
      * @private
      */
     this._app = app;
-
     /**
      * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
      * @private
@@ -168,156 +198,36 @@ class FeatureInfo {
       config => getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
       AbstractFeatureInfoView,
     );
-
     /**
      * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
      * @private
      */
     this._featureInfoClassRegistry = new OverrideClassRegistry(featureInfoClassRegistry);
-
     /**
-     * @type {FeatureInfoInteraction}
-     * @private
-     */
-    this._featureInfoInteraction = new FeatureInfoInteraction();
-
-    /**
-     * @type {FeatureInfoSession|null}
-     * @private
-     */
-    this._session = null;
-
-    /**
-     * @type {Function|null}
+     * @type {function():void|null}
      * @private
      */
     this._clearHighlightingCb = null;
-
-    const action = {
-      name: 'featureInfoToggle',
-      title: 'Feature Info',
-      icon: '$vcsInfo',
-      active: false,
-      callback: () => {
-        if (this._session) {
-          this.deactivate();
-          action.active = false;
-        } else {
-          this.activate();
-          action.active = true;
-        }
-      },
-    };
-
-    this._app.toolboxManager.requestGroup('featureInfo').buttonManager.add(
-      {
-        id: 'featureInfoTool',
-        action,
-      },
-      vcsAppSymbol,
-    );
-
     /**
      * @type {string|null}
      * @private
      */
     this._windowId = null;
-
     /**
-     * @type {Array<Function>}
+     * @type {VcsEvent<FeatureType>}
      * @private
      */
-    this._listeners = [];
-  }
-
-  /**
-   * @type {OverrideCollection<AbstractFeatureInfoView>}
-   * @readonly
-   */
-  get collection() { return this._collection; }
-
-  /**
-   * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
-   * @readonly
-   */
-  get classRegistry() { return this._featureInfoClassRegistry; }
-
-  /**
-   * @type {VcsEvent<undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature>}
-   * @readonly
-   */
-  get featureChanged() { return this._featureInfoInteraction.featureChanged; }
-
-  /**
-   * @type {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature}
-   */
-  get selectedFeature() { return this._featureInfoInteraction.selectedFeature; }
-
-  /**
-   * Selecting a feature highlights said feature and opens a FeatureInfoView, if configured on the layer.
-   * @param {null|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
-   * @param {import("ol/coordinate").Coordinate} [position] - optional clicked position. If not given feature's center point is used
-   * @param {import("ol/coordinate").Coordinate} [windowPosition] - optional clicked window position. If not given derived from position
-   * @returns {Promise<void>}
-   */
-  async selectFeature(feature, position = undefined, windowPosition = undefined) {
-    check(feature, [null, Feature, Entity, Cesium3DTileFeature, Cesium3DTilePointFeature]);
-    let pos = position;
-
-    if (feature) {
-      try {
-        if (!pos) {
-          if (feature instanceof Feature) {
-            pos = getCenter(feature.getGeometry().getExtent());
-          } else if (feature instanceof Entity) {
-            pos = cartesian3ToCoordinate(feature.position);
-          } else {
-            pos = cartesian3ToCoordinate(feature.primitive.boundingSphere.center);
-          }
-        }
-        if (!windowPosition) {
-          const balloonPosition = await getBalloonPosition(this._app, pos);
-          if (balloonPosition instanceof Cartesian2) {
-            // eslint-disable-next-line no-param-reassign
-            windowPosition = [balloonPosition.x, balloonPosition.y];
-          }
-        }
-      } catch (err) {
-        getLogger().error('Select feature without position or windowPosition', err);
-      }
-    }
-    await this._featureInfoInteraction.selectFeature(feature, pos, windowPosition);
-  }
-
-  /**
-   * Deselecting feature clears highlighting and closes FeatureInfoView
-   * @returns {Promise<void>}
-   */
-  async clear() {
-    await this.selectFeature(null);
-  }
-
-  /**
-   * @private
-   */
-  _clearHighlighting() {
-    if (this._clearHighlightingCb) {
-      this._clearHighlightingCb();
-      this._clearHighlightingCb = null;
-    }
-  }
-
-  /**
-   * activates the tool by creating a new session and adding a feature clicked event listener
-   */
-  activate() {
-    if (this._session) {
-      return;
-    }
-    this._session = createFeatureInfoSession(this._app, this._featureInfoInteraction);
+    this._featureChanged = new VcsEvent();
+    /**
+     * @type {FeatureType|null}
+     * @private
+     */
+    this._selectedFeature = null;
+    /**
+     * @type {Array<function():void>}
+     * @private
+     */
     this._listeners = [
-      this._session.interaction.featureChanged.addEventListener(this._handleFeatureClicked.bind(this)),
-      this._session.stopped.addEventListener(() => this.deactivate()),
       this._app.maps.mapActivated.addEventListener((map) => {
         if (
           this._windowId &&
@@ -344,73 +254,124 @@ class FeatureInfo {
           this.clear();
         }
       }),
-      this._app.contextAdded.addEventListener(() => this.deactivate()),
-      this._app.contextRemoved.addEventListener(() => this.deactivate()),
+      this._app.contextAdded.addEventListener(() => this.clear()),
+      this._app.contextRemoved.addEventListener(() => this.clear()),
     ];
-    if (this._app.toolboxManager.requestGroup('featureInfo').buttonManager.has('featureInfoTool')) {
-      this._app.toolboxManager.requestGroup('featureInfo').buttonManager
-        .get('featureInfoTool').action.active = true;
-    }
+    /**
+     * A vector layer to render provided features on
+     * @type {VectorLayer|null}
+     * @private
+     */
+    this._scratchLayer = null;
+
+    setupFeatureInfoTool(this._app);
   }
 
   /**
-   * deactivates the tool by stopping the session and removing all listeners
-   * closes open windows
+   * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
+   * @readonly
    */
-  deactivate() {
-    this._listeners.forEach(cb => cb());
-    this._listeners.splice(0);
-    if (this._session) {
-      this._session.stop();
-      this._session = null;
-    }
-    if (this._windowId) {
-      this._app.windowManager.remove(this._windowId);
-      this._windowId = null;
-    }
-    if (this._app.toolboxManager.requestGroup('featureInfo').buttonManager.has('featureInfoTool')) {
-      this._app.toolboxManager.requestGroup('featureInfo').buttonManager
-        .get('featureInfoTool').action.active = false;
-    }
-    this._clearHighlighting();
+  get collection() { return this._collection; }
+
+  /**
+   * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
+   * @readonly
+   */
+  get classRegistry() { return this._featureInfoClassRegistry; }
+
+  /**
+   * @type {VcsEvent<null|FeatureType>}
+   * @readonly
+   */
+  get featureChanged() { return this._featureChanged; }
+
+  /**
+   * @type {null|FeatureType}
+   * @readonly
+   */
+  get selectedFeature() { return this._selectedFeature; }
+
+  /**
+   * The window id of the current features FeatureInfoView window
+   * @type {string|null}
+   * @readonly
+   */
+  get windowId() {
+    return this._windowId;
   }
 
   /**
-   * @param {FeatureInfoEvent|null} event - a clicked feature
    * @private
    */
-  _handleFeatureClicked(event) {
-    this._clearHighlighting();
-    if (this._windowId && (!event || !event.feature)) {
-      this._app.windowManager.remove(this._windowId);
-      return;
+  _ensureScratchLayer() {
+    if (!this._scratchLayer) {
+      this._scratchLayer = new VectorLayer({
+        zIndex: maxZIndex,
+        projection: mercatorProjection.toJSON(),
+      });
+      markVolatile(this._scratchLayer);
+      this._app.layers.add(this._scratchLayer);
+      this._scratchLayer.activate();
     }
-    const { feature } = event;
-    const featureId = feature.getId();
+  }
+
+  /**
+   * @param {FeatureType} feature
+   * @returns {null|AbstractFeatureInfoView}
+   * @private
+   */
+  _getFeatureInfoViewForFeature(feature) {
     const layer = this._app.layers.getByKey(feature[vcsLayerName]);
     const name = layer?.properties?.featureInfo;
     if (!name) {
-      getLogger().debug(`No view has been configured for layer '${layer.name}'.`);
-      return;
+      getLogger().debug(`No view has been configured for layer '${layer?.name}'.`);
+      return null;
     }
     if (!this._collection.hasKey(name)) {
       getLogger().warning(`No view with name '${name}' has been registered.`);
-      return;
+      return null;
     }
-    const featureInfoView = /** @type {AbstractFeatureInfoView} */ this._collection.getByKey(name);
-    if (featureInfoView) {
-      if (this._windowId && this._app.windowManager.has(this._windowId)) {
-        this._app.windowManager.remove(this._windowId);
-      }
-      this._windowId = `featureInfo-${featureId}`;
-      this._app.windowManager.add(
-        {
-          id: this._windowId,
-          ...featureInfoView.getWindowComponentOptions(event, layer),
-        },
-        vcsAppSymbol,
-      );
-      if (layer.featureVisibility) {
+    return /** @type {AbstractFeatureInfoView} */ this._collection.getByKey(name);
+  }
+
+  /**
+   * Selecting a feature highlights said feature and opens a FeatureInfoView, if configured on the layer. For a successful selection,
+   * the feature must meet the following criteria: a) the feature must be part of a layer, b) said layer must be managed in
+   * the same VcsApp as provided to the FeatureInfo on construction. if not providing a feature info view, then c) said layer must have a featureInfo property set on
+   * its properties bag and d) said featureInfo property must provide the name of a FeatureInfoView present on this FeatureInfos
+   * collection.
+   * If passing a feature create by a FeatureProvider, the feature will be highlighted on an internal scratch layer.
+   * @param {FeatureType} feature
+   * @param {import("ol/coordinate").Coordinate=} [position] - optional clicked position. If not given feature's center point is used to place balloons
+   * @param {import("ol/coordinate").Coordinate=} [windowPosition] - optional clicked window position. If not given derived from position for balloons
+   * @param {AbstractFeatureInfoView=} featureInfoView
+   * @returns {Promise<void>}
+   */
+  async selectFeature(feature, position, windowPosition, featureInfoView) {
+    check(feature, [Feature, Entity, Cesium3DTileFeature, Cesium3DTilePointFeature]);
+    checkMaybe(position, [Number]);
+    checkMaybe(windowPosition, [Number]);
+    checkMaybe(featureInfoView, AbstractFeatureInfoView);
+
+    const usedFeatureInfoView = featureInfoView ?? this._getFeatureInfoViewForFeature(feature);
+    const layer = this._app.layers.getByKey(feature[vcsLayerName]);
+
+    if (usedFeatureInfoView && layer) {
+      this._clearInternal();
+      if (feature[isProvidedFeature]) {
+        this._ensureScratchLayer();
+        this._scratchLayer.addFeatures([feature]);
+        const featureId = feature.getId(); // make sure to grab ID after adding it to the layer
+        this._scratchLayer.featureVisibility.highlight({
+          [featureId]: getHighlightStyle(
+            feature,
+            layer,
+            this._app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor,
+          ),
+        });
+        this._clearHighlightingCb = () => this._scratchLayer.featureVisibility.unHighlight([featureId]);
+      } else if (layer.featureVisibility) {
+        const featureId = feature.getId();
         layer.featureVisibility.highlight({
           [featureId]: getHighlightStyle(
             feature,
@@ -420,31 +381,68 @@ class FeatureInfo {
         });
         this._clearHighlightingCb = () => layer.featureVisibility.unHighlight([featureId]);
       }
+      this._windowId = uuidv4(); // we need to create a uuid, otherwise the window manager gets confused if we recreate a window in the same thread with the same id
+      this._app.windowManager.add(
+        {
+          id: this._windowId,
+          ...usedFeatureInfoView.getWindowComponentOptions(
+            { feature, position, windowPosition },
+            layer,
+          ),
+        },
+        vcsAppSymbol,
+      );
+
+      this._selectedFeature = feature;
+      this._featureChanged.raiseEvent(this._selectedFeature);
+    } else {
+      this.clear();
     }
   }
 
   /**
-   * @param {Array<FeatureInfoViewOptions>} items
-   * @param {string} contextId
-   * @returns {Promise<void>}
+   * Clears the current feature. remove window, highlighting and provided feature.
+   * @private
    */
-  async parseContext(items, contextId) {
-    await this._collection.parseItems(items, contextId);
+  _clearInternal() {
+    if (this._clearHighlightingCb) {
+      this._clearHighlightingCb();
+      this._clearHighlightingCb = null;
+    }
+    if (this._windowId) {
+      this._app.windowManager.remove(this._windowId);
+      this._windowId = null;
+    }
+
+    if (this._scratchLayer) {
+      this._scratchLayer.removeAllFeatures();
+    }
   }
 
   /**
-   * @param {string} contextId
-   * @returns {Promise<void>}
+   * Deselecting feature clears highlighting and closes FeatureInfoView. fires feature changed with null
    */
-  async removeContext(contextId) {
-    this.deactivate();
-    await this._collection.removeContext(contextId);
+  clear() {
+    this._clearInternal();
+    if (this._selectedFeature) {
+      this._selectedFeature = null;
+      this._featureChanged.raiseEvent(this._selectedFeature);
+    }
   }
 
+  /**
+   * Destroys the feature info and all its events & listeners
+   */
   destroy() {
-    this.deactivate();
+    this._clearInternal();
+    this._featureChanged.destroy();
     this._app.toolboxManager.requestGroup('featureInfo').buttonManager.remove('featureInfoTool');
-    this._featureInfoInteraction.destroy();
+    if (this._scratchLayer) {
+      this._app.layers.remove(this._scratchLayer);
+      this._scratchLayer.destroy();
+    }
+    this._listeners.forEach(cb => cb());
+    this._listeners.splice(0);
     this._collection.destroy();
     this._featureInfoClassRegistry.destroy();
   }

@@ -28,6 +28,7 @@ const configMain = defineConfig(async ({ mode }) => {
     config.optimizeDeps = {
       exclude: [
         '@vcmap/core',
+        'ol',
       ],
       include: [
         '@vcmap/core > fast-deep-equal',

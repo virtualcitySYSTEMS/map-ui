@@ -1,43 +1,21 @@
-import { AbstractInteraction, EventType, ModificationKeyType, VcsEvent } from '@vcmap/core';
+import { AbstractInteraction, EventType, ModificationKeyType } from '@vcmap/core';
 
 /**
  * @class
  * @extends {import("@vcmap/core").AbstractInteraction}
  */
 class FeatureInfoInteraction extends AbstractInteraction {
-  constructor() {
+  /**
+   * @param {FeatureInfo} featureInfo
+   */
+  constructor(featureInfo) {
     super(EventType.CLICK, ModificationKeyType.NONE);
     /**
-     * @type {null|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature}
-     */
-    this._selectedFeature = null;
-
-    /**
-     * @type {null|import("ol/coordinate").Coordinate}
+     * @type {FeatureInfo}
      * @private
      */
-    this._clickedPosition = null;
-    /**
-     * @type {VcsEvent<FeatureInfoEvent|null>}
-     */
-    this.featureChanged = new VcsEvent();
+    this._featureInfo = featureInfo;
     this.setActive();
-  }
-
-  /**
-   * @type {null|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature}
-   * @readonly
-   */
-  get selectedFeature() {
-    return this._selectedFeature;
-  }
-
-  /**
-   * @type {null|import("ol/coordinate").Coordinate}
-   * @readonly
-   */
-  get clickedPosition() {
-    return this._clickedPosition;
   }
 
   /**
@@ -46,40 +24,18 @@ class FeatureInfoInteraction extends AbstractInteraction {
    */
   async pipe(event) {
     if (event.feature) {
-      if (!(this._selectedFeature && event.feature?.getId() === this._selectedFeature?.getId())) {
+      if (!this._featureInfo.selectedFeature || event.feature.getId() !== this._featureInfo.selectedFeature.getId()) {
         event.stopPropagation = true;
-        await this.selectFeature(event.feature, event.position, event.windowPosition);
+        await this._featureInfo.selectFeature(
+          event.feature,
+          event.position,
+          [event.windowPosition.x, event.windowPosition.y],
+        );
       }
     } else {
-      this.clear();
+      await this._featureInfo.clear();
     }
     return event;
-  }
-
-  /**
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
-   * @param {import("ol/coordinate").Coordinate} position
-   * @param {import("ol/coordinate").Coordinate} windowPosition
-   * @returns {Promise<void>}
-   */
-  async selectFeature(feature, position, windowPosition) {
-    this._selectedFeature = feature;
-    this._clickedPosition = position;
-    this.featureChanged.raiseEvent({ feature, position, windowPosition });
-  }
-
-  clear() {
-    if (this._selectedFeature) {
-      this._selectedFeature = null;
-      this._clickedPosition = null;
-      this.featureChanged.raiseEvent(null);
-    }
-  }
-
-  destroy() {
-    this.clear();
-    this.featureChanged.destroy();
-    super.destroy();
   }
 }
 

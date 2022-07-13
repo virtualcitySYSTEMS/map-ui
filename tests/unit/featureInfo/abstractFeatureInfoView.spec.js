@@ -7,6 +7,7 @@ import {
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import AbstractFeatureInfoView, {
+  applyAttributeFilter,
   applyKeyMapping,
   applyValueMapping,
 } from '../../../src/featureInfo/abstractFeatureInfoView.js';
@@ -57,6 +58,24 @@ describe('AbstractFeatureInfoView', () => {
       applyValueMapping(attributes, { function: 'codeLists.values.function.${value}' });
       expect(attributes).to.have.property('function', `codeLists.values.function.${feature.getProperty('function')}`);
     });
+
+    it('should apply value mapping for nested values', () => {
+      const attributes = { foo: { bar: null } };
+      applyValueMapping(attributes, { 'foo.bar': 'bar' });
+      expect(attributes).to.have.property('foo').and.to.have.property('bar', 'bar');
+    });
+
+    it('should apply value mapping to deeply nested keys', () => {
+      const attributes = { foo: { bar: { baz: null } } };
+      applyValueMapping(attributes, { 'foo.bar.baz': 'bar' });
+      expect(attributes).to.have.property('foo').and.to.have.property('bar').and.to.have.property('baz', 'bar');
+    });
+
+    it('should apply value mapping for keys with a period', () => {
+      const attributes = { 'foo.bar': null };
+      applyValueMapping(attributes, { 'foo.bar': 'bar' });
+      expect(attributes).to.have.property('foo.bar', 'bar');
+    });
   });
 
   describe('applyKeyMapping', () => {
@@ -77,12 +96,85 @@ describe('AbstractFeatureInfoView', () => {
       applyKeyMapping(attributes, { usage: 'mappedKeyUsage' });
       expect(attributes).to.have.property('function', filteredAttributes.function);
     });
+
+    it('should apply key mapping for nested keys', () => {
+      const attributes = { foo: { bar: null } };
+      applyKeyMapping(attributes, { 'foo.bar': 'bar' });
+      expect(attributes).to.have.property('bar', null);
+      expect(attributes).to.have.property('foo').and.to.be.empty;
+    });
+
+    it('should apply key mapping to deeply nested keys', () => {
+      const attributes = { foo: { bar: { baz: null } } };
+      applyKeyMapping(attributes, { 'foo.bar.baz': 'bar' });
+      expect(attributes).to.have.property('bar', null);
+      expect(attributes).to.have.property('foo').and.to.have.property('bar').and.to.be.empty;
+    });
+
+    it('should apply key mapping for keys with a period', () => {
+      const attributes = { 'foo.bar': null };
+      applyKeyMapping(attributes, { 'foo.bar': 'bar' });
+      expect(attributes).to.have.property('bar', null);
+      expect(attributes).to.not.have.property('foo.bar');
+    });
+
+    it('should apply key mapping to child keys before adding key mapping to parent keys', () => {
+      const attributes = { foo: { bar: true, baz: true } };
+      applyKeyMapping(attributes, { foo: 'baz', 'foo.bar': 'bar' });
+      expect(attributes).to.have.property('bar', true);
+      expect(attributes).to.have.property('baz').and.to.have.property('baz', true);
+      expect(attributes).to.not.have.property('foo');
+    });
+  });
+
+  describe('filter attributes', () => {
+    let attributes;
+
+    beforeAll(() => {
+      attributes = {
+        foo: { bar: true, baz: false },
+        bar: true,
+        baz: true,
+        'foo.bar': { foo: true, bar: true },
+        fooBar: { foo: { bar: null } },
+      };
+    });
+
+    it('should filter for top level keys', () => {
+      const filtered = applyAttributeFilter(attributes, ['bar']);
+      expect(filtered).to.have.property('bar', true);
+      expect(filtered).to.have.all.keys(['bar']);
+    });
+
+    it('should filter for nested keys', () => {
+      const filtered = applyAttributeFilter(attributes, ['foo.baz']);
+      expect(filtered).to.have.nested.property('foo.baz', false);
+
+      expect(filtered).to.have.all.keys(['foo']);
+      expect(filtered.foo).to.have.all.keys(['baz']);
+    });
+
+    it('should filter for deeply nested keys', () => {
+      const filtered = applyAttributeFilter(attributes, ['fooBar.foo.bar']);
+      expect(filtered).to.have.nested.property('fooBar.foo.bar', null);
+      expect(filtered).to.have.all.keys(['fooBar']);
+      expect(filtered.fooBar).to.have.all.keys(['foo']);
+      expect(filtered.fooBar.foo).to.have.all.keys(['bar']);
+    });
+
+    it('should filter for top level keys with a period', () => {
+      const filtered = applyAttributeFilter(attributes, ['foo.bar']);
+      expect(filtered).to.have.property('foo.bar')
+        .and.to.eql({ foo: true, bar: true });
+      expect(filtered).to.have.all.keys(['foo.bar']);
+    });
   });
 
   describe('getAttributes', () => {
     it('should filter attributes by given attributeKeys', () => {
       expect(abstractFeatureInfoView.getAttributes(feature)).to.be.deep.equal(filteredAttributes);
     });
+
     it('should apply value mapping', () => {
       abstractFeatureInfoView.valueMapping = {
         // eslint-disable-next-line no-template-curly-in-string
@@ -94,6 +186,7 @@ describe('AbstractFeatureInfoView', () => {
         function: `codeLists.values.function.${filteredAttributes.function}`,
       });
     });
+
     it('should apply key mapping and delete replaced keys', () => {
       abstractFeatureInfoView.keyMapping = {
         function: 'codeLists.keys.function',
