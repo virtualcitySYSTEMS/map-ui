@@ -58,7 +58,7 @@ import { createEmptyState, getStateFromURL } from './state.js';
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
  * @property {function():P} [toJSON] - serialization
  * @property {function():Promise<void>} destroy
- * @property {function(boolean=):S} [getState] - should return the plugins state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
+ * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugins state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
  * @api
  */
 
@@ -317,9 +317,9 @@ class VcsUiApp extends VcsApp {
         return layerState;
       });
 
-    state.plugins = [...this.plugins]
+    state.plugins = await Promise.all([...this.plugins]
       .filter(p => p[contextIdSymbol] !== defaultDynamicContextId && typeof p.getState === 'function')
-      .map(p => ({ name: p.name, state: p.getState(forUrl) }));
+      .map(async p => ({ name: p.name, state: await p.getState(forUrl) })));
 
     if (this.maps.activeMap instanceof ObliqueMap) {
       state.activeObliqueCollection = this.maps.activeMap.collection.name;

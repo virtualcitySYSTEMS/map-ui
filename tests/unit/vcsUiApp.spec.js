@@ -11,7 +11,6 @@ import {
 import {
   Context,
   contextIdSymbol,
-  defaultDynamicContextId,
   OpenlayersMap,
   VectorLayer,
   VectorStyleItem,
@@ -67,6 +66,12 @@ async function setupApp(app) {
     name: 'dynamicContextStyle',
   });
   app.styles.add(dynamicContextStyle);
+
+  const pluginInDefaultContext = {
+    name: 'pluginInDefaultContext',
+    getState() { return 'foo'; },
+  };
+  app.plugins.add(pluginInDefaultContext);
   await app.setDynamicContext(context);
 
   const style = new VectorStyleItem({
@@ -100,17 +105,16 @@ async function setupApp(app) {
   };
   app.plugins.add(pluginWithGetState);
 
+  const pluginWithAsyncGetState = {
+    name: 'pluginWithAsyncGetState',
+    getState() { return Promise.resolve('bar'); },
+  };
+  app.plugins.add(pluginWithAsyncGetState);
+
   const pluginWithoutGetState = {
     name: 'pluginWithoutGetState',
   };
   app.plugins.add(pluginWithoutGetState);
-
-  const pluginInDefaultContext = {
-    name: 'pluginInDefaultContext',
-    getState() { return 'foo'; },
-  };
-  pluginInDefaultContext[contextIdSymbol] = defaultDynamicContextId;
-  app.plugins.add(pluginInDefaultContext);
 
   const activeMap = new OpenlayersMap({ name: 'activeMap' });
   app.maps.add(activeMap);
@@ -181,6 +185,10 @@ describe('VcsUiApp', () => {
       describe('plugin handling', () => {
         it('should add plugins with a getState function', () => {
           expect(state.plugins).to.deep.include({ name: 'pluginWithGetState', state: 'foo' });
+        });
+
+        it('should add a pugin with an async getState function', () => {
+          expect(state.plugins).to.deep.include({ name: 'pluginWithAsyncGetState', state: 'bar' });
         });
 
         it('should not add plugins without a getState function', () => {
