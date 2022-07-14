@@ -1,4 +1,6 @@
-# 5.0.0-rc.next
+# 5.0.0-rc.12
+
+# 5.0.0-rc.11
 - Added new Components Concept with the new `categoryManager` see [Components](documentation/COMPONENTS.md).
 - Added new I18n concept, see [I18n](documentation/INTERNATIONALIZATION.md).
 - Redesigned VcsApp.vue setup to export `setupPluginMountedListeners` & `setupMapNavbar`
