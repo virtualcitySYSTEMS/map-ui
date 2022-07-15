@@ -1,0 +1,7 @@
+<!-- eslint-disable max-len -->
+
+<template>
+  <svg id="icon-colorpicker" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path id="colorize" d="M6.8-36.318l6.246-6.271-1.489-1.495L5.312-37.812ZM17.478-46.708a.685.685,0,0,1,0,1.094l-2.433,2.443,1.489,1.495-1.089,1.094-1.089-1.094L7.418-34.75H3.75v-3.682l6.9-6.964L9.561-46.49l1.089-1.094,1.489,1.495,2.433-2.443a.738.738,0,0,1,.545-.219.738.738,0,0,1,.545.219Z" transform="translate(-2.75 49.75)" fill="currentColor" />
+  </svg>
+</template>

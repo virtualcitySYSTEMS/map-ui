@@ -11,12 +11,17 @@ import CheckboxCheckedIcon from './CheckboxCheckedIcon.vue';
 import CheckboxIcon from './CheckboxIcon.vue';
 import CheckboxIndeterminateIcon from './CheckboxIndeterminateIcon.vue';
 import CircleIcon from './CircleIcon.vue';
+import ClippingIcon from './ClippingIcon.vue';
+import ClippingHorizontalIcon from './ClippingHorizontalIcon.vue';
+import ClippingVerticalIcon from './ClippingVerticalIcon.vue';
+import ColorPickerIcon from './ColorPickerIcon.vue';
 import ColorSwatchIcon from './ColorSwatchIcon.vue';
 import CommentIcon from './CommentIcon.vue';
 import CompassIcon from './CompassIcon.vue';
 import ComponentsIcon from './ComponentsIcon.vue';
 import ConeIcon from './ConeIcon.vue';
 import DimensionsHouseIcon from './DimensionsHouseIcon.vue';
+import EditIcon from './EditIcon.vue';
 import ElevationProfileIcon from './ElevationProfileIcon.vue';
 import ExportAreaIcon from './ExportAreaIcon.vue';
 import ExportFlightIcon from './ExportFlightIcon.vue';
@@ -25,9 +30,12 @@ import ExternalLinkIcon from './ExternalLinkIcon.vue';
 import EyeIcon from './EyeIcon.vue';
 import FastForwardIcon from './FastForwardIcon.vue';
 import FilterIcon from './FilterIcon.vue';
+import GlobalTerrainIcon from './GlobalTerrainIcon.vue';
 import GlobeNatureIcon from './GlobeNatureIcon.vue';
+import GroundIcon from './GroundIcon.vue';
 import HealthCareIndustriesIcon from './HealthCareIndustriesIcon.vue';
 import HelpIcon from './HelpIcon.vue';
+import HideIcon from './HideIcon.vue';
 import HomePointIcon from './HomePointIcon.vue';
 import HospitalsIcon from './HospitalsIcon.vue';
 import HouseIcon from './HouseIcon.vue';
@@ -39,6 +47,7 @@ import LayersIcon from './LayersIcon.vue';
 import LegendIcon from './LegendIcon.vue';
 import LineIcon from './LineIcon.vue';
 import LinkIcon from './LinkIcon.vue';
+import LogoutIcon from './LogoutIcon.vue';
 import ProgressIcon from './ProgressIcon.vue';
 import MapIcon from './MapIcon.vue';
 import MenuIcon from './MenuIcon.vue';
@@ -53,10 +62,13 @@ import PlayCircleIcon from './PlayCircleIcon.vue';
 import PlusIcon from './PlusIcon.vue';
 import PoiIcon from './PoiIcon.vue';
 import PointSelectIcon from './PointSelectIcon.vue';
+import PolygonIcon from './PolygonIcon.vue';
+import QueryIcon from './QueryIcon.vue';
 import PresentationModeIcon from './PresentationModeIcon.vue';
 import RectangleIcon from './RectangleIcon.vue';
 import ReturnIcon from './ReturnIcon.vue';
 import RewindIcon from './RewindIcon.vue';
+import ScreenshotIcon from './ScreenshotIcon.vue';
 import SearchIcon from './SearchIcon.vue';
 import ShadowIcon from './ShadowIcon.vue';
 import ShapesIcon from './ShapesIcon.vue';
@@ -67,6 +79,7 @@ import SimpleCircleOutlinedIcon from './SimpleCircleOutlinedIcon.vue';
 import SkipNextIcon from './SkipNextIcon.vue';
 import SkipPreviousIcon from './SkipPreviousIcon.vue';
 import SplitViewIcon from './SplitViewIcon.vue';
+import TerrainBoxIcon from './TerrainBoxIcon.vue';
 import TextStyleIcon from './TextStyleIcon.vue';
 import ThreeDimensionsIcon from './ThreeDimensionsIcon.vue';
 import ToolsIcon from './ToolsIcon.vue';
@@ -75,7 +88,14 @@ import TrashCanIcon from './TrashCanIcon.vue';
 import TriangleIcon from './TriangleIcon.vue';
 import TwoDimensionsIcon from './TwoDimensionsIcon.vue';
 import UploadIcon from './UploadIcon.vue';
+import UserProfileIcon from './UserProfileIcon.vue';
+import UserShareIcon from './UserShareIcon.vue';
 import VideoRecorderIcon from './VideoRecorderIcon.vue';
+import ViewpointIcon from './ViewpointIcon.vue';
+import ViewpointFlightIcon from './ViewpointFlightIcon.vue';
+import ViewshedIcon from './ViewshedIcon.vue';
+import Viewshed360Icon from './Viewshed360Icon.vue';
+import ViewshedConeIcon from './ViewshedConeIcon.vue';
 import WalkingIcon from './WalkingIcon.vue';
 import WallIcon from './WallIcon.vue';
 
@@ -148,6 +168,18 @@ const IconMap = {
   circle: {
     component: CircleIcon,
   },
+  clipping: {
+    component: ClippingIcon,
+  },
+  clippingHorizontal: {
+    component: ClippingHorizontalIcon,
+  },
+  clippingVertical: {
+    component: ClippingVerticalIcon,
+  },
+  colorPicker: {
+    component: ColorPickerIcon,
+  },
   colorSwatch: {
     component: ColorSwatchIcon,
   },
@@ -165,6 +197,9 @@ const IconMap = {
   },
   dimensionsHouse: {
     component: DimensionsHouseIcon,
+  },
+  edit: {
+    component: EditIcon,
   },
   elevationProfile: {
     component: ElevationProfileIcon,
@@ -190,14 +225,23 @@ const IconMap = {
   filter: {
     component: FilterIcon,
   },
+  GlobalTerrain: {
+    component: GlobalTerrainIcon,
+  },
   globeNature: {
     component: GlobeNatureIcon,
+  },
+  ground: {
+    component: GroundIcon,
   },
   healthCareIndustries: {
     component: HealthCareIndustriesIcon,
   },
   help: {
     component: HelpIcon,
+  },
+  hide: {
+    component: HideIcon,
   },
   homePoint: {
     component: HomePointIcon,
@@ -231,6 +275,9 @@ const IconMap = {
   },
   link: {
     component: LinkIcon,
+  },
+  logout: {
+    component: LogoutIcon,
   },
   progress: {
     component: ProgressIcon,
@@ -274,6 +321,12 @@ const IconMap = {
   pointSelect: {
     component: PointSelectIcon,
   },
+  polygon: {
+    component: PolygonIcon,
+  },
+  query: {
+    component: QueryIcon,
+  },
   presentationMode: {
     component: PresentationModeIcon,
   },
@@ -285,6 +338,9 @@ const IconMap = {
   },
   rewind: {
     component: RewindIcon,
+  },
+  screenshot: {
+    component: ScreenshotIcon,
   },
   search: {
     component: SearchIcon,
@@ -316,6 +372,9 @@ const IconMap = {
   splitView: {
     component: SplitViewIcon,
   },
+  terrainBox: {
+    component: TerrainBoxIcon,
+  },
   textStyle: {
     component: TextStyleIcon,
   },
@@ -334,8 +393,29 @@ const IconMap = {
   upload: {
     component: UploadIcon,
   },
+  userProfile: {
+    component: UserProfileIcon,
+  },
+  userShare: {
+    component: UserShareIcon,
+  },
   videoRecorder: {
     component: VideoRecorderIcon,
+  },
+  viewpoint: {
+    component: ViewpointIcon,
+  },
+  viewpointFlight: {
+    component: ViewpointFlightIcon,
+  },
+  viewshed: {
+    component: ViewshedIcon,
+  },
+  viewshed360: {
+    component: Viewshed360Icon,
+  },
+  viewshedCone: {
+    component: ViewshedConeIcon,
   },
   wall: {
     component: WallIcon,
