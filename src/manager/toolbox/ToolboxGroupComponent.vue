@@ -8,6 +8,7 @@
       :active="singleActionButton.active"
       @click.stop="singleActionButton.callback($event)"
       v-bind="{...$attrs}"
+      large
     />
     <VcsButton
       v-else-if="groupButtons.length > 0"
@@ -17,6 +18,7 @@
       :tooltip="groupTitle"
       :active="active"
       @click="$emit('click')"
+      large
     >
       <v-icon v-text="active ? 'mdi-chevron-up' : 'mdi-chevron-down'" color="accent" class="text--darken-3" />
     </VcsButton>
@@ -24,8 +26,7 @@
       v-if="active"
       dense
       absolute
-      :width="width"
-      class="toolbar__secondary rounded-b mx-auto v-sheet mt-12 px-4"
+      class="toolbar__secondary rounded-b mx-auto v-sheet mt-12 px-4 second-toolbar"
       :style="{left: `${nudgeLeft}px` }"
     >
       <v-toolbar-items class="w-full">
@@ -37,9 +38,9 @@
             :icon="button.icon"
             :active="button.active"
             @click.stop="button.callback($event)"
-            small
             :width="buttonSize"
             v-bind="{...$attrs}"
+            large
           />
         </div>
       </v-toolbar-items>
@@ -52,6 +53,9 @@
 }
 .v-toolbar.v-sheet {
   background-color: #ffffffda;
+}
+.second-toolbar{
+  display: table;
 }
 </style>
 <script>

@@ -1,5 +1,7 @@
 # 5.0.0-rc.12
 - Adds further vcs-icons from layout catalog: VCS Wireframe 8.8.xd, also updated some icon layouts as shown in the same catalog
+- Fixed bug for toolbox submenu where the icons did overflow if the menu above was shorter than the submenu
+- Changed the toolbox topmenu for layout discussion - if the submenu ist open and longer than the menu above the bottom corners shouldn't be rounded
 
 # 5.0.0-rc.11
 - Added new Components Concept with the new `categoryManager` see [Components](documentation/COMPONENTS.md).

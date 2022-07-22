@@ -3,7 +3,8 @@
   <v-toolbar
     v-if="toolboxOpen && actionGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
     dense
-    class="vcs-toolbox toolbar__secondary rounded-b mx-auto v-sheet marginToTop"
+    class="vcs-toolbox toolbar__secondary mx-auto v-sheet marginToTop"
+    :class="{ 'rounded-b': groupId === null }"
     :width="width"
   >
     <v-toolbar-items class="w-full">
