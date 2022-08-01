@@ -157,7 +157,7 @@ export default function (config) {
         {
           id: 'pluginExample',
           component: pluginExampleComponent,
-          slot: WindowSlot.STATIC,
+          slot: WindowSlot.DYNAMIC_LEFT,
           state: {
             headerTitle: 'pluginExample.select',
             headerIcon: '$vcsCircle',

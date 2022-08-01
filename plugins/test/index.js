@@ -32,10 +32,7 @@ export default async function () {
             headerTitle: 'Context Editor',
           },
           component: editor,
-          slot: WindowSlot.STATIC,
-          position: {
-            width: 500,
-          },
+          slot: WindowSlot.DYNAMIC_LEFT,
         },
         app.windowManager,
         '@vcmap/test',
