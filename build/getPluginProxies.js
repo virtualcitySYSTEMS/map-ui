@@ -20,6 +20,10 @@ export default async function getPluginProxies(target = 'http://localhost:8080',
       rewrite: (route) => {
         const rest = route.replace(new RegExp(`^/plugins/${plugin}/`), '');
         const file = rest || 'index.js';
+        const pluginDir = path.posix.join(path.relative(root, pluginsDir), 'node_modules', plugin);
+        if (/plugin-assets\//.test(file)) {
+          return path.posix.join(pluginDir, file);
+        }
         return path.posix.join(path.relative(root, pluginsDir), 'node_modules', plugin, production ? 'dist' : 'src', file);
       },
     };

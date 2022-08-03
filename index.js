@@ -89,6 +89,8 @@ export { default as initApp } from './src/init.js';
 export {
   vcsAppSymbol,
   pluginFactorySymbol,
+  pluginBaseUrlSymbol,
+  getPluginAssetUrl,
   isValidPackageName,
   loadPlugin,
   serializePlugin,

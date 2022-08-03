@@ -47,6 +47,7 @@ import { createEmptyState, getStateFromURL } from './state.js';
  * @callback createPlugin
  * @template {Object} P
  * @param {P} config
+ * @param {string} pluginBaseUrl
  * @returns {VcsPlugin<P>}
  */
 
@@ -343,7 +344,7 @@ class VcsUiApp extends VcsApp {
     const { config } = context;
     if (Array.isArray(config.plugins)) {
       const plugins = await Promise.all(config.plugins.map(async (pluginConfig) => {
-        const plugin = await loadPlugin(this, pluginConfig.name, pluginConfig);
+        const plugin = await loadPlugin(pluginConfig.name, pluginConfig);
         if (!plugin) {
           return null;
         }

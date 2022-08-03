@@ -193,18 +193,27 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
     await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
   });
 
-  promises.push(...dependentPlugins.map((pluginName) => {
+  promises.push(...dependentPlugins.flatMap((pluginName) => {
     let scope = '';
     let name = pluginName;
     if (pluginName.startsWith('@')) {
       [scope, name] = pluginName.split('/');
     }
 
-    return fs.promises.cp(
+    const copyPromises = [fs.promises.cp(
       path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
       path.join(process.cwd(), 'dist', 'plugins', scope, name),
       { recursive: true },
-    );
+    )];
+
+    if (fs.existsSync(path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'))) {
+      copyPromises.push(fs.promises.cp(
+        path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'),
+        path.join(process.cwd(), 'dist', 'plugins', scope, name, 'plugin-assets'),
+        { recursive: true },
+      ));
+    }
+    return copyPromises;
   }));
 
   await Promise.all(promises);

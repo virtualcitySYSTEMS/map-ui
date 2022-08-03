@@ -20,6 +20,39 @@ export const vcsAppSymbol = Symbol('vcsApp');
 export const pluginFactorySymbol = Symbol('pluginFactory');
 
 /**
+ * A symbol added to each plugin which describes the base URL from which the plugin was loaded (without the filename)
+ * @type {symbol}
+ */
+export const pluginBaseUrlSymbol = Symbol('pluginBaseUrl');
+
+/**
+ * A helper function to create an absolute URL from a relative plugin asset URL. For example, when
+ * shipping your plugin with a "plugin-asset/icon.png", you can always retrieve said icon with getPluginAssetUrl(app, name, 'pluing-assets/icon.png')
+ * Returns null, if the plugin does not exist.
+ * @param {VcsUiApp} app
+ * @param {string} pluginName
+ * @param {string} asset
+ * @returns {string|null}
+ */
+export function getPluginAssetUrl(app, pluginName, asset) {
+  check(pluginName, String);
+  check(asset, String);
+
+  const plugin = app.plugins.getByKey(pluginName);
+  if (plugin && plugin[pluginBaseUrlSymbol]) {
+    const baseUrl = new URL(plugin[pluginBaseUrlSymbol]);
+    const assetUrl = new URL(asset.replace(/^\//, '/'), baseUrl);
+    baseUrl.searchParams.forEach((value, key) => {
+      if (!assetUrl.searchParams.has(key)) {
+        assetUrl.searchParams.set(key, value);
+      }
+    });
+    return assetUrl.toString();
+  }
+  return null;
+}
+
+/**
  * validates the name according to package name pattern
  * @param {string} name
  * @returns {boolean}
@@ -32,18 +65,14 @@ export function isValidPackageName(name) {
 }
 
 /**
- * @param {VcsUiApp} app
  * @param {string} name
  * @param {PluginConfig} config
- * @param {string} [registry='https://plugins.virtualcitymap.de/']
  * @returns {Promise<VcsPlugin|null>}
  */
-export async function loadPlugin(app, name, config, registry = 'https://plugins.virtualcitymap.de/') {
+export async function loadPlugin(name, config) {
   let module = config.entry;
 
-  if (!module) {
-    module = `${registry.replace(/\/?$/, '')}/${name}/${config.version || '*'}/index.js`;
-  } else if (!/^(https?:\/\/|\/)/.test(module)) {
+  if (!/^(https?:\/\/|\/)/.test(module)) {
     module = `${window.location.origin}${window.location.pathname.replace(/\/?$/, '/')}${module}`;
   } else if (module === '_dev') {
     module = `/${name}.js`;
@@ -65,7 +94,9 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
       getLogger().error(`plugin ${name} does not provide a default exported function`);
       return null;
     }
-    const pluginInstance = await plugin.default(config);
+    const baseUrl = new URL(module);
+    baseUrl.pathname = baseUrl.pathname.replace(/\/[^/]+$/, '/');
+    const pluginInstance = await plugin.default(config, baseUrl.toString());
 
     if (!pluginInstance.name) {
       getLogger().error(`plugin ${name} does not expose a name`);
@@ -75,6 +106,7 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
       return null;
     }
     pluginInstance[pluginFactorySymbol] = plugin.default;
+    pluginInstance[pluginBaseUrlSymbol] = baseUrl.toString();
     return pluginInstance;
   } catch (err) {
     getLogger().error(`failed to load plugin ${name}`);
@@ -89,9 +121,8 @@ export async function loadPlugin(app, name, config, registry = 'https://plugins.
  */
 export function serializePlugin(plugin) {
   const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
-  if (plugin[pluginFactorySymbol]) {
-    serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
-  }
+  serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
+  serializedPlugin[pluginBaseUrlSymbol] = plugin[pluginBaseUrlSymbol];
   return serializedPlugin;
 }
 
@@ -102,5 +133,6 @@ export function serializePlugin(plugin) {
 export async function deserializePlugin(serializedPlugin) {
   const reincarnation = await serializedPlugin[pluginFactorySymbol](serializedPlugin);
   reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
+  reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
   return reincarnation;
 }
