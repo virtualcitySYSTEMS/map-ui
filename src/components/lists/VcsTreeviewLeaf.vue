@@ -68,7 +68,7 @@
       const iconType = ref();
       const imgContainer = ref();
 
-      const leaf = computed(() => props.item.children.length === 0);
+      const leaf = computed(() => props.item?.children?.length === 0);
 
       onMounted(() => { // TODO make icon reactive
         const { icon } = props.item;

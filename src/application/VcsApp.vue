@@ -68,6 +68,8 @@
   import { WindowSlot } from '../manager/window/windowManager.js';
   import ComponentsManager from '../manager/categoryManager/ComponentsManager.vue';
   import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+  import VcsLegend from '../legend/vcsLegend.vue';
+  import { getLegendEntries } from '../legend/legendHelper.js';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -145,6 +147,101 @@
       mapAddedListener();
       mapRemovedListener();
       Object.values(mapButtonActionDestroy).forEach(cb => cb());
+    };
+  }
+
+  /**
+   * This helper function will add a legend action button to the apps NavbarManager TOOL location, if legend entries are available.
+   * Watches number of legend entries.
+   * @param {VcsUiApp} app
+   * @returns {function():void}
+   */
+  export function setupLegendWindow(app) {
+    const { entries, destroy } = getLegendEntries(app);
+
+    const { action: legendAction, destroy: legendDestroy } = createToggleAction(
+      {
+        name: 'legendToggle',
+        icon: '$vcsLegend',
+        title: 'legend.tooltip',
+      },
+      {
+        id: 'legend',
+        component: VcsLegend,
+        state: { headerTitle: 'legend.title' },
+        slot: WindowSlot.DYNAMIC_RIGHT,
+        props: { entries },
+      },
+      app.windowManager,
+      vcsAppSymbol,
+    );
+
+    /**
+     * adds or removes the legend button, depending on the number of entries
+     * @param {import("vue").Reactive<{string,LegendEntry}>} newEntries
+     */
+    const handleLegendButton = (newEntries) => {
+      if (Object.keys(newEntries).length > 0) {
+        if (!app.navbarManager.has('legend')) {
+          app.navbarManager.add(
+            {
+              id: 'legend',
+              action: legendAction,
+            },
+            vcsAppSymbol,
+            ButtonLocation.TOOL,
+          );
+        }
+      } else {
+        app.navbarManager.remove('legend');
+        app.windowManager.remove('legend');
+      }
+    };
+    handleLegendButton(entries);
+
+    const stopWatching = watch(
+      entries,
+      handleLegendButton,
+    );
+
+    return () => {
+      destroy();
+      legendDestroy();
+      stopWatching();
+    };
+  }
+
+  /**
+   * This helper function will add a settings action button to the apps NavbarManager MENU location.
+   * @param {VcsUiApp} app
+   * @returns {function():void}
+   */
+  export function setupSettingsWindow(app) {
+    const { action: settingsAction, destroy: settingsDestroy } = createToggleAction(
+      {
+        name: 'settings.title',
+        icon: 'mdi-cog',
+        title: 'settings.tooltip',
+      },
+      {
+        id: 'settingsId',
+        component: VcsSettings,
+        state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
+        slot: WindowSlot.DYNAMIC_RIGHT,
+      },
+      app.windowManager,
+      vcsAppSymbol,
+    );
+    app.navbarManager.add(
+      {
+        id: 'settingsToggle',
+        action: settingsAction,
+      },
+      vcsAppSymbol,
+      ButtonLocation.MENU,
+    );
+    return () => {
+      settingsDestroy();
     };
   }
 
@@ -259,30 +356,8 @@
       provide('vcsApp', app);
 
       const mapNavbarListener = setupMapNavbar(app);
-      const { action: settingsAction, destroy: settingsDestroy } = createToggleAction(
-        {
-          name: 'settings.title',
-          icon: 'mdi-cog',
-          title: 'settings.tooltip',
-        },
-        {
-          id: 'settingsId',
-          component: VcsSettings,
-          state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
-          slot: WindowSlot.DYNAMIC_RIGHT,
-        },
-        app.windowManager,
-        vcsAppSymbol,
-      );
-      app.navbarManager.add(
-        {
-          id: 'settingsToggle',
-          action: settingsAction,
-        },
-        vcsAppSymbol,
-        ButtonLocation.MENU,
-      );
-
+      const legendDestroy = setupLegendWindow(app);
+      const settingsDestroy = setupSettingsWindow(app);
       const destroyComponentsWindow = setupComponentsWindow(app);
       const destroyThemingListener = setupUiConfigTheming(app, getCurrentInstance().proxy.$vuetify);
 
@@ -297,6 +372,7 @@
           pluginMountedListener();
         }
         mapNavbarListener();
+        legendDestroy();
         settingsDestroy();
         destroyComponentsWindow();
         destroyThemingListener();

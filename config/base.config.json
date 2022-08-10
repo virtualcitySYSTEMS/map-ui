@@ -99,28 +99,51 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#edf8e9",
-          "title": "< 5 m"
-        },
-        {
-          "color": "#bae4b3",
-          "title": "< 15 m"
-        },
-        {
-          "color": "#74c476",
-          "title": "< 30 m"
-        },
-        {
-          "color": "#31a354",
-          "title": "< 65 m"
-        },
-        {
-          "color": "#006d2c",
-          "title": "> 65 m"
-        }
-      ]
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#edf8e9"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bae4b3"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74c476"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#31a354"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#006d2c"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "MeasuredHeightBrown",
@@ -157,28 +180,51 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#ffffd4",
-          "title": "< 5 m"
-        },
-        {
-          "color": "#fed98e",
-          "title": "< 15 m"
-        },
-        {
-          "color": "#fe9929",
-          "title": "< 30 m"
-        },
-        {
-          "color": "#d95f0e",
-          "title": "< 65 m"
-        },
-        {
-          "color": "#993404",
-          "title": "> 65 m"
-        }
-      ]
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffd4"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fed98e"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fe9929"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d95f0e"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#993404"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "MeasuredHeightBlue",
@@ -215,28 +261,51 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#f1eef6",
-          "title": "< 5 m"
-        },
-        {
-          "color": "#bdc9e1",
-          "title": "< 15 m"
-        },
-        {
-          "color": "#74a9cf",
-          "title": "< 30 m"
-        },
-        {
-          "color": "#2b8cbe",
-          "title": "< 65 m"
-        },
-        {
-          "color": "#045a8d",
-          "title": "> 65 m"
-        }
-      ]
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#f1eef6"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bdc9e1"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74a9cf"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#2b8cbe"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#045a8d"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "type": "DeclarativeStyleItem",
@@ -316,68 +385,120 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#91cf60",
-          "title": "Flachdach"
-        },
-        {
-          "color": "#fee08b",
-          "title": "Pultdach"
-        },
-        {
-          "color": "#8dd3c7",
-          "title": "Versetztes Pultdach"
-        },
-        {
-          "color": "#8dd3c7",
-          "title": "Satteldach"
-        },
-        {
-          "color": "#fc8d59",
-          "title": "Walmdach"
-        },
-        {
-          "color": "#ffffb3",
-          "title": "Krüppelwalmdach"
-        },
-        {
-          "color": "#bebada",
-          "title": "Mansardendach"
-        },
-        {
-          "color": "#ffffbf",
-          "title": "Zeltdach"
-        },
-        {
-          "color": "#fdb462",
-          "title": "Kegeldach"
-        },
-        {
-          "color": "#b3de69",
-          "title": "Kuppeldach"
-        },
-        {
-          "color": "#ecc34e",
-          "title": "Sheddach"
-        },
-        {
-          "color": "#fccde5",
-          "title": "Bogendach"
-        },
-        {
-          "color": "#d590b3",
-          "title": "Turmdach"
-        },
-        {
-          "color": "#888888",
-          "title": "Mischform"
-        },
-        {
-          "color": "#cccccc",
-          "title": "Sonstiges"
-        }
-      ],
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#91cf60"
+                },
+                "title": "Flachdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fee08b"
+                },
+                "title": "Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Versetztes Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Satteldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fc8d59"
+                },
+                "title": "Walmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffb3"
+                },
+                "title": "Krüppelwalmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bebada"
+                },
+                "title": "Mansardendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffbf"
+                },
+                "title": "Zeltdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "Kegeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#b3de69"
+                },
+                "title": "Kuppeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ecc34e"
+                },
+                "title": "Sheddach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fccde5"
+                },
+                "title": "Bogendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d590b3"
+                },
+                "title": "Turmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#888888"
+                },
+                "title": "Mischform"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Sonstiges"
+              }
+            ]
+          }
+        ]
+      },
       "name": "ClassifiedbyRoofType"
     },
     {
@@ -414,28 +535,51 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#7fc97f",
-          "title": "1121"
-        },
-        {
-          "color": "#fdb462",
-          "title": "1004"
-        },
-        {
-          "color": "#fdc086",
-          "title": "1799"
-        },
-        {
-          "color": "#ffff99",
-          "title": "1231"
-        },
-        {
-          "color": "#cccccc",
-          "title": "other function"
-        }
-      ],
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#7fc97f"
+                },
+                "title": "1121"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "1004"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdc086"
+                },
+                "title": "1799"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffff99"
+                },
+                "title": "1231"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "other function"
+              }
+
+            ]
+          }
+        ]
+      },
       "name": "BuildingFunction"
     },
     {
@@ -453,12 +597,22 @@
           ]
         }
       },
-      "legend": [
-        {
-          "color": "#cccccc",
-          "title": "Transparent buildings"
-        }
-      ]
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Transparent buildings"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "featureInfo": [

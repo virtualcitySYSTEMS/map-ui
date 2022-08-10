@@ -55,6 +55,7 @@ $list-padding: 0 0; // 8px 0 !default;
 $list-item-title-font-size: $font-size; // map-deep-get($headings, 'subtitle-1', 'size') !default;
 $list-item-dense-title-font-size: $font-size; // 0.8125rem !default;
 $list-item-dense-title-line-height: 24px; // 1rem !default;
+$list-dense-subheader-height: 32px; // 40px !default;
 $list-item-min-height: 32px; // 48px !default;
 $list-dense-min-height: 24px; // 40px !default;
 $list-item-content-padding: 4px 0; // 12px 0 !default;
@@ -68,3 +69,9 @@ $list-item-icon-margin: auto 0; // 16px 0 !default;
 $treeview-node-level-width: 16px;
 $treeview-node-margin: 4px;
 $treeview-node-height: 32px; // 48px !default;
+
+/** Expansion Panel */
+$expansion-panel-header-min-height: 32px; // 48px !default;
+$expansion-panel-active-header-min-height: 32px; // 64px !default;
+$expansion-panel-header-padding: 6px 0; // 16px 24px !default;
+$expansion-panel-content-padding: 0 0 4px; // 0 24px 16px !default;

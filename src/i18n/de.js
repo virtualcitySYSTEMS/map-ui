@@ -63,6 +63,12 @@ const messages = {
     activateToolTitle: 'Informationstool aktivieren',
     deactivateToolTitle: 'Informationstool deaktivieren',
   },
+  legend: {
+    title: 'Legende',
+    tooltip: 'Legende',
+    openInNew: 'In neuem Browser Tab öffnen',
+    defaultLabelText: 'Text',
+  },
   footer: {
     title: 'Fußzeile',
   },

@@ -63,6 +63,12 @@ const messages = {
     activateToolTitle: 'Activate Infotool',
     deactivateToolTitle: 'Deactivate Infotool',
   },
+  legend: {
+    title: 'Legend',
+    tooltip: 'Legend',
+    openInNew: 'Open in new tab',
+    defaultLabelText: 'Text',
+  },
   footer: {
     title: 'Footer',
   },
