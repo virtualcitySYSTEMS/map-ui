@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import { build } from 'vite';
 import { v4 as uuid } from 'uuid';
 import rollupPluginStripPragma from 'rollup-plugin-strip-pragma';
@@ -153,6 +154,11 @@ await Promise.all(Object.entries(libraryBuildOptions).map(async ([key, value]) =
     },
   };
   await build(libraryEntryConfig);
+  await fs.promises.cp(
+    path.join('src', 'assets', 'font'),
+    path.join('dist', 'assets', 'font'),
+    { recursive: true },
+  );
 }));
 
 await buildCesium();
