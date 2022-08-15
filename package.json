@@ -121,5 +121,15 @@
     "node": "^16.14.0",
     "npm": "^8.3.1"
   },
-  "type": "module"
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./config/*.json": "./config/*.json",
+    "./src/assets/logo.svg": "./src/assets/logo.svg",
+    "./src/assets/logo-mobile.svg": "./src/assets/logo-mobile.svg",
+    "./build/buildHelpers.js": "./build/buildHelpers.js",
+    "./build/getPluginProxies.js": "./build/getPluginProxies.js",
+    "./build/determineHost.js": "./build/determineHost.js",
+    "./src/styles/variables.scss": "./src/styles/variables.scss"
+  }
 }
