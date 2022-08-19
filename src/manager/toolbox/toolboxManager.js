@@ -1,73 +1,176 @@
-/* eslint-disable import/prefer-default-export */
 import { VcsEvent } from '@vcmap/core';
 import { check, checkMaybe } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
+import { reactive } from 'vue';
+import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
+import { ActionPattern } from '../../components/lists/VcsActionList.vue';
 
 /**
- * @typedef ToolboxGroupComponentOptions
- * @property {string} [id] Optional ID, If not provided an uuid will be generated.
- * @property {string} [icon] Optional group icon, for dropdowns
- * @property {string} [title] Optional group title, for dropdowns
+ * Possible group types. Define behaviour of group:
+ * @property {number} SINGLE - SingleToolboxComponent with single toggle action rendered as VcsButton
+ * @property {number} SELECT - SelectToolboxComponent with one selected item of a list of items
+ * @property {number} GROUP - GroupToolboxComponent with multiple non-exclusive items rendered as VcsButton
+ * @enum {number}
+ */
+export const ToolboxType = {
+  SINGLE: 0,
+  SELECT: 1,
+  GROUP: 2,
+};
+
+/**
+ * @typedef {Object} ToolboxComponentOptions
+ * @property {string} [id] - Optional ID, If not provided an uuid will be generated.
+ * @property {ToolboxType} type - Group type, defining the behaviour of the group
  */
 
 /**
- * @typedef ToolboxGroupComponent
+ * @typedef {ToolboxComponentOptions} SingleToolboxComponentOptions
+ * @property {VcsAction} action - An action of a single tool
+ */
+
+/**
+ * @typedef {ToolboxComponentOptions} SelectToolboxComponentOptions
+ * @property {ToolboxSelectAction} action - An action determining the behaviour of the select group
+ */
+
+/**
+ * @typedef {ToolboxComponentOptions} GroupToolboxComponentOptions
+ * @property {string} icon - Group icon
+ * @property {string} [title] - Optional group title, for dropdown
+ */
+
+/**
+ * @typedef {Object} ToolboxComponent
  * @property {string} id
- * @property {string} title
+ * @property {ToolboxType} type - Group type, defining the behaviour of the group
+ * @property {string|vcsAppSymbol} owner
+ */
+
+/**
+ * @typedef {ToolboxComponent} SingleToolboxComponent
+ * @property {VcsAction} action
+ */
+
+/**
+ * @typedef {ToolboxComponent} GroupToolboxComponent
+ * @property {string|undefined} icon
+ * @property {string|undefined} title
  * @property {ButtonManager} buttonManager
  */
 
 /**
+ * @typedef {ToolboxComponent} SelectToolboxComponent
+ * @property {ToolboxSelectAction} action
+ */
+
+/**
+ * @typedef {VcsAction} ToolboxSelectAction
+ * @property {function(index:number):void} selected - A callback determining the select behavior of the group. Should set the currentIndex.
+ * @property {Array<ToolboxSelectItem>} tools - A list of exclusive tools belonging to the group
+ * @property {number} currentIndex - Index of the current item
+ */
+
+/**
+ * @typedef {Object} ToolboxSelectItem
+ * @property {string} name
+ * @property {string} [title]
+ * @property {string} icon
+ */
+
+/**
  * Default groups predefining icon and title of the group
- * @type {Array<ToolboxGroupComponentOptions>}
+ * @type {Array<ToolboxComponentOptions>}
  */
 const defaultGroups = [
   {
-    id: 'featureInfo',
-    icon: '$vcsInfo',
-    title: 'Feature Info',
-  },
-  {
-    id: 'select',
-    icon: '$vcsPen',
-    title: 'select',
-  },
-  {
-    id: 'measurement',
-    icon: '$vcsDimensionsHouse',
-    title: 'measurement',
-  },
-  {
     id: 'flight',
+    type: ToolboxType.GROUP,
     icon: '$vcsVideoRecorder',
-    title: 'flight',
+    title: 'toolbox.flight',
+  },
+  {
+    id: 'miscellaneous',
+    type: ToolboxType.GROUP,
+    icon: 'mdi-dots-grid',
+    title: 'toolbox.miscellaneous',
   },
 ];
 
 /**
- * Requests default groups for a toolboxManager.
+ * Default order of toolboxComponents shown in the toolbox
+ * @type {string[]}
+ */
+const defaultOrder = ['featureInfo', 'flight'];
+
+/**
+ * sorts by owner and optionally plugin order
+ * If both components are owned by vcsApp, defaultOrder is used to compare
+ * @param {ToolboxComponent|ButtonComponent} compA
+ * @param {ToolboxComponent|ButtonComponent} compB
+ * @param {string[]} [order] order of owners to sort by
+ * @returns {number}
+ */
+export function sortByOwner(compA, compB, order = []) {
+  const sorted = [vcsAppSymbol, ...order];
+  let indexA = sorted.indexOf(compA.owner);
+  let indexB = sorted.indexOf(compB.owner);
+
+  if (compA.owner === vcsAppSymbol && compB.owner === vcsAppSymbol) {
+    indexA = defaultOrder.indexOf(compA.id);
+    indexB = defaultOrder.indexOf(compB.id);
+  }
+
+  if (indexA === indexB) {
+    return 0;
+  }
+
+  if (indexA === -1) {
+    return 1;
+  }
+
+  if (indexB === -1) {
+    return -1;
+  }
+  return indexA - indexB;
+}
+
+/**
+ * returns ToolboxComponents sorted by owner (or other sort function)
+ * @param {Array<ToolboxComponent|ButtonComponent>} components
+ * @param {string[]} [order] optional order to sort by (plugin names)
+ * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
+ * @returns {Array<ToolboxComponent|ButtonComponent>}
+ */
+export function getComponentsByOrder(components, order = [], compareFn = sortByOwner) {
+  return [...components]
+    .sort((a, b) => compareFn(a, b, order));
+}
+
+/**
+ * Adds default groups for a toolboxManager.
  * Once requested, group id, icon and title are defined and cannot be changed or overwritten.
  * @param {ToolboxManager} toolboxManager
- * @param {Array<ToolboxGroupComponentOptions>} groups
+ * @param {Array<ToolboxComponentOptions>} groups
  */
 export function setupDefaultGroups(toolboxManager, groups = defaultGroups) {
-  groups.forEach(({ id, icon, title }) => toolboxManager.requestGroup(id, icon, title));
+  groups.forEach(toolboxComponentOptions => toolboxManager.add(toolboxComponentOptions, vcsAppSymbol));
 }
 
 /**
  * @class ToolboxManager
- * @description Manages a set of Toolbox Groups
- * @implements VcsComponentManager<ToolboxGroupComponent,ToolboxGroupComponentOptions>
+ * @description Manages a set of Toolbox Components
+ * @implements VcsComponentManager<ToolboxComponent,ToolboxComponentOptions>
  */
-export class ToolboxManager {
+class ToolboxManager {
   constructor() {
     /**
-     * @type {import("@vcmap/core").VcsEvent<ToolboxGroupComponent>}
+     * @type {import("@vcmap/core").VcsEvent<ToolboxComponent>}
      */
     this.added = new VcsEvent();
     /**
-     * @type {import("@vcmap/core").VcsEvent<ToolboxGroupComponent>}
+     * @type {import("@vcmap/core").VcsEvent<ToolboxComponent>}
      */
     this.removed = new VcsEvent();
     /**
@@ -77,7 +180,7 @@ export class ToolboxManager {
     this.componentIds = [];
 
     /**
-     * @type {Map<string, ToolboxGroupComponent>}
+     * @type {Map<string, ToolboxComponent>}
      * @private
      */
     this._toolboxGroups = new Map();
@@ -85,7 +188,7 @@ export class ToolboxManager {
 
   /**
    * @param {string} id
-   * @returns {ToolboxGroupComponent}
+   * @returns {ToolboxComponent}
    */
   get(id) {
     return this._toolboxGroups.get(id);
@@ -100,95 +203,135 @@ export class ToolboxManager {
   }
 
   /**
-   * Toolbox groups should be static. Removing them can lead to undefined behavior.
+   * removes a ToolboxComponent, Component will not be rendered anymore and will be destroyed.
+   * Add ToolboxComponent again to show the component again
    * @param {string} id
    */
   remove(id) {
     check(id, String);
-    const toolboxGroupComponent = this._toolboxGroups.get(id);
-    if (toolboxGroupComponent) {
+    const toolboxComponent = this._toolboxGroups.get(id);
+    if (toolboxComponent) {
       const index = this.componentIds.indexOf(id);
       this.componentIds.splice(index, 1);
       this._toolboxGroups.delete(id);
-      this.removed.raiseEvent(toolboxGroupComponent);
-      toolboxGroupComponent.buttonManager.destroy();
+      this.removed.raiseEvent(toolboxComponent);
+      if (toolboxComponent.buttonManager) {
+        toolboxComponent.buttonManager.destroy();
+      }
     }
   }
 
   /**
-   * Do not call add directly. Use requestGroup for adding toolbox groups.
-   * @param {ToolboxGroupComponentOptions} toolboxGroupComponentOptions
-   * @throws {Error} if a buttonComponent with the same ID has already been added
-   * @returns {ToolboxGroupComponent}
+   * adds a ToolboxComponent
+   * @param {SingleToolboxComponentOptions|SelectToolboxComponentOptions|GroupToolboxComponentOptions} toolboxComponentOptions
+   * @param {string|symbol} owner pluginName or vcsAppSymbol
+   * @throws {Error} if a toolboxComponent with the same ID has already been added
+   * @returns {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent}
    */
-  add(toolboxGroupComponentOptions) {
-    checkMaybe(toolboxGroupComponentOptions.id, String);
-    checkMaybe(toolboxGroupComponentOptions.icon, String);
-    checkMaybe(toolboxGroupComponentOptions.title, String);
+  add(toolboxComponentOptions, owner) {
+    checkMaybe(toolboxComponentOptions.id, String);
+    check(toolboxComponentOptions.type, Object.values(ToolboxType));
+    check(owner, [String, vcsAppSymbol]);
 
-    if (toolboxGroupComponentOptions.id && this.has(toolboxGroupComponentOptions.id)) {
-      throw new Error(`A toolGroup with id ${toolboxGroupComponentOptions.id} has already been registered.`);
+    if (toolboxComponentOptions.id && this.has(toolboxComponentOptions.id)) {
+      throw new Error(`A toolGroup with id ${toolboxComponentOptions.id} has already been registered.`);
     }
-    const id = toolboxGroupComponentOptions.id || uuidv4();
-    const icon = toolboxGroupComponentOptions.icon || undefined;
-    const title = toolboxGroupComponentOptions.title || undefined;
-    const buttonManager = new ButtonManager();
+    const id = toolboxComponentOptions.id || uuidv4();
+    const { type } = toolboxComponentOptions;
 
     /**
-     * @type {ToolboxGroupComponent}
+     * @type {ToolboxComponent}
      */
-    const toolboxGroupComponent = {
+    let toolboxComponent = {
       get id() {
         return id;
       },
-      get icon() {
-        return icon;
+      get type() {
+        return type;
       },
-      get title() {
-        return title;
-      },
-      get buttonManager() {
-        return buttonManager;
+      get owner() {
+        return owner;
       },
     };
 
-    this._toolboxGroups.set(id, toolboxGroupComponent);
-    this.componentIds.push(id);
-    this.added.raiseEvent(toolboxGroupComponent);
-    return toolboxGroupComponent;
-  }
-
-  /**
-   * Returns an existing group or creates a new group. Add toolbox groups with this API.
-   * @param {string} id
-   * @param {string} [icon='mdi-select-group']
-   * @param {string} [title='defaultGroup']
-   * @returns {ToolboxGroupComponent}
-   */
-  requestGroup(id, icon = 'mdi-select-group', title = 'defaultGroup') {
-    check(id, String);
-    checkMaybe(icon, String);
-    checkMaybe(title, String);
-
-    if (this.has(id)) {
-      return this.get(id);
+    if (type === ToolboxType.SINGLE) {
+      check(toolboxComponentOptions.action, ActionPattern);
+      /**
+       * @type {SingleToolboxComponent}
+       */
+      toolboxComponent = {
+        ...toolboxComponent,
+        get action() {
+          return reactive(toolboxComponentOptions.action);
+        },
+      };
+    } else if (type === ToolboxType.SELECT) {
+      check(toolboxComponentOptions.action, {
+        ...ActionPattern,
+        selected: Function,
+        currentIndex: Number,
+        tools: [{
+          name: String,
+          title: [undefined, String],
+          icon: String,
+        }],
+      });
+      /**
+       * @type {SelectToolboxComponent}
+       */
+      toolboxComponent = {
+        ...toolboxComponent,
+        get action() {
+          return reactive(toolboxComponentOptions.action);
+        },
+      };
     } else {
-      return this.add({ id, icon, title });
+      check(toolboxComponentOptions.icon, String);
+      checkMaybe(toolboxComponentOptions.title, String);
+      const { icon, title = undefined } = toolboxComponentOptions;
+      const buttonManager = new ButtonManager();
+      /**
+       * @type {GroupToolboxComponent}
+       */
+      toolboxComponent = {
+        ...toolboxComponent,
+        get icon() {
+          return icon;
+        },
+        get title() {
+          return title;
+        },
+        get buttonManager() {
+          return buttonManager;
+        },
+      };
     }
+
+    this._toolboxGroups.set(toolboxComponent.id, toolboxComponent);
+    this.componentIds.push(toolboxComponent.id);
+    this.added.raiseEvent(toolboxComponent);
+    return toolboxComponent;
   }
 
   /**
-   * removes all {@link ButtonComponent}s of a specific owner and fires removed Events
+   * removes all {@link ToolboxComponent}s of a specific owner and fires removed Events
    * @param {string|vcsAppSymbol} owner
    */
   removeOwner(owner) {
-    this.componentIds.forEach((id) => {
-      this.get(id).buttonManager.removeOwner(owner);
+    const componentIds = [...this.componentIds];
+    componentIds.forEach((id) => {
+      const toolboxComponent = this.get(id);
+      if (toolboxComponent.buttonManager) {
+        toolboxComponent.buttonManager.removeOwner(owner);
+      }
+      if (owner === toolboxComponent.owner) {
+        this.remove(id);
+      }
     });
   }
 
   /**
-   * removes all buttonComponents and fires removed Events
+   * removes all toolboxComponents and fires removed Events
    */
   clear() {
     const componentIds = [...this.componentIds];
@@ -196,7 +339,7 @@ export class ToolboxManager {
   }
 
   /**
-   * destroys the ButtonManager;
+   * destroys the ToolboxManager;
    */
   destroy() {
     this.added.destroy();
@@ -206,3 +349,5 @@ export class ToolboxManager {
     this._toolboxGroups.clear();
   }
 }
+
+export default ToolboxManager;

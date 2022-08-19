@@ -12,9 +12,9 @@ import {
   ButtonLocation,
   locationSymbol,
   getActionsByLocation,
-} from '../../src/manager/navbarManager.js';
-import VcsUiApp from '../../src/vcsUiApp.js';
-import { vcsAppSymbol } from '../../src/pluginHelper.js';
+} from '../../../src/manager/navbarManager.js';
+import VcsUiApp from '../../../src/vcsUiApp.js';
+import { vcsAppSymbol } from '../../../src/pluginHelper.js';
 
 describe('NavbarManager', () => {
   describe('adding buttonComponents', () => {

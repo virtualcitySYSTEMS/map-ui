@@ -40,30 +40,17 @@ export default async function (config) {
         '@vcmap/example',
         ButtonLocation.TOOL,
       );
-      const buttonComponents = [
-        {
-          id: 'distance3D',
-          action: {
-            name: 'distance3D',
-            title: '3D distance',
-            icon: '$vcs3dDistance',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
+      const miscGroup = app.toolboxManager.get('miscellaneous');
+      miscGroup.buttonManager.add({
+        id: 'example',
+        action: {
+          name: 'example',
+          title: 'example',
+          icon: 'mdi-circle-small',
+          active: false,
+          callback() { this.active = !this.active; },
         },
-        {
-          id: 'area3D',
-          action: {
-            name: 'area3D',
-            title: '3D area',
-            icon: '$vcs3dArea',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
-        },
-      ];
-      const measurementGroup = app.toolboxManager.requestGroup('measurement');
-      buttonComponents.forEach(c => measurementGroup.buttonManager.add(c, '@vcmap/example'));
+      }, '@vcmap/example');
     },
     destroy() {
       if (this._destroyAction) {

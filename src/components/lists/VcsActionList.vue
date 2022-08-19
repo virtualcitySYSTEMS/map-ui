@@ -52,17 +52,23 @@
    */
 
   /**
+   * pattern to check actions
+   * @type {Object}
+   */
+  export const ActionPattern = {
+    name: String,
+    title: [undefined, String],
+    icon: [undefined, String],
+    callback: Function,
+    active: [undefined, Boolean],
+  };
+
+  /**
    * @param {VcsAction} action
    * @returns {boolean}
    */
   export function validateAction(action) {
-    return is(action, {
-      name: String,
-      title: [undefined, String],
-      icon: [undefined, String],
-      callback: Function,
-      active: [undefined, Boolean],
-    });
+    return is(action, ActionPattern);
   }
 
   /**

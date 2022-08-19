@@ -766,12 +766,8 @@ describe('FeatureInfo', () => {
         app.destroy();
       });
 
-      it('should request the feature info group', () => {
+      it('should add the featureInfo tool button', () => {
         expect(app.toolboxManager.has('featureInfo')).to.be.true;
-      });
-
-      it('should add the featureInfoTool button', () => {
-        expect(app.toolboxManager.get('featureInfo').buttonManager.has('featureInfoTool')).to.be.true;
       });
     });
 
@@ -781,7 +777,7 @@ describe('FeatureInfo', () => {
 
       beforeAll(() => {
         app = new VcsUiApp();
-        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        ({ action } = app.toolboxManager.get('featureInfo'));
         action.callback();
       });
 
@@ -793,7 +789,7 @@ describe('FeatureInfo', () => {
         expect(action).to.have.property('active', true);
       });
 
-      it('should add an interaction to the event handerl', () => {
+      it('should add an interaction to the event handler', () => {
         expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.exist;
       });
     });
@@ -806,7 +802,7 @@ describe('FeatureInfo', () => {
         app = new VcsUiApp();
         app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
 
-        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        ({ action } = app.toolboxManager.get('featureInfo'));
         action.callback();
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),
@@ -844,7 +840,7 @@ describe('FeatureInfo', () => {
         app = new VcsUiApp();
         app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
 
-        ({ action } = app.toolboxManager.get('featureInfo').buttonManager.get('featureInfoTool'));
+        ({ action } = app.toolboxManager.get('featureInfo'));
         action.callback();
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),

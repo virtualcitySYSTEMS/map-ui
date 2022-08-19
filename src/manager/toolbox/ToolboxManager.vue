@@ -1,24 +1,37 @@
 <script src="../../vcsUiApp.js"></script>
 <template>
   <v-toolbar
-    v-if="toolboxOpen && actionGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
-    dense
+    v-if="toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
     class="vcs-toolbox toolbar__secondary mx-auto v-sheet marginToTop"
-    :class="{ 'rounded-b': groupId === null }"
-    :width="width"
+    :class="{ 'rounded-b': !open }"
+    :height="40"
+    width="fit-content"
+    dense
   >
     <v-toolbar-items class="w-full">
-      <div class="d-flex align-center justify-space-between w-full">
-        <ToolboxGroupComponent
-          v-for="(group, idx) in actionGroups"
-          :key="group.id"
-          :group-icon="group.icon"
-          :group-title="group.title"
-          :actions="group.actions"
-          class="px-2"
-          :active="groupId === group.id"
-          :position="getPosition(idx)"
-          @click="toggleGroup(group.id)"
+      <div
+        class="d-flex align-center justify-space-between w-full mx-1"
+        v-for="group in orderedGroups"
+        :key="group.id"
+      >
+        <ToolboxActionGroup
+          v-if="group.type === ToolboxType.GROUP"
+          :group="group"
+          @toggle="(groupOpen) => open = groupOpen"
+        />
+        <ToolboxActionSelect
+          v-else-if="group.type === ToolboxType.SELECT"
+          :group="group"
+          @toggle="(selectOpen) => open = selectOpen"
+        />
+        <VcsButton
+          v-else
+          :tooltip="group.action.title"
+          :icon="group.action.icon"
+          :active="group.action.active"
+          @click.stop="group.action.callback($event)"
+          v-bind="{...$attrs}"
+          large
         />
       </div>
     </v-toolbar-items>
@@ -41,55 +54,77 @@
     &.theme--light.v-toolbar.v-sheet {
       background-color: #ffffffda;
     }
+    &.theme--dark.v-toolbar.v-sheet {
+      background-color: #000000da;
+    }
   }
 
   .marginToTop {
     margin-top: 2px;
+  }
+
+  .v-toolbar__items > div{
+    gap: 8px;
+    width: fit-content;
+    display: inline-block;
   }
 </style>
 
 <script>
 
 import { inject, ref, computed, watch, onUnmounted } from 'vue';
-import ToolboxGroupComponent from './ToolboxGroupComponent.vue';
-import {ButtonLocation, vcsAppSymbol} from '@vcmap/ui';
+import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
+import { getComponentsByOrder, ToolboxType} from './toolboxManager.js';
+import ToolboxActionSelect from './SelectToolboxComponent.vue';
+import ToolboxActionGroup from './GroupToolboxComponent.vue';
 
 /**
- * @typedef {Object} ActionGroup
+ * @typedef {Object} ToolboxButtonGroup
  * @property {string} id
+ * @property {string} type
  * @property {string} icon
  * @property {string} title
- * @property {Array<VcsAction>} actions
+ * @property {Array<ButtonComponent>} buttons
+ * @property {string} [selected]
+ * @property {function(index:number):void} [selectCb]
  */
 
 /**
- * @description ToolboxManager component rendering toolbox using {@link ToolboxGroupComponent}.
- * @vue-computed {Array<ActionGroup>} actionGroups - Array of group components
- * @vue-computed {number} width - width of toolbox depending on number of groups
+ * @description ToolboxManager component rendering toolbox different kind of Toolbox buttons:
+ * - Single toggle button
+ * - Select drop down button to select an item, selected button is rendered besides
+ * - Group drop down button showing a group of toggle buttons
+ * Watches for changes in toolbox components.
+ * Adds Toolbox button in Navbar, if components are available or removes it otherwise.
+ * @vue-computed {Array<ToolboxButtonGroup>} groups - Array of group components
+ * @vue-computed {Array<ToolboxButtonGroup>} orderedGroups - Array of group components sorted by owner
  */
 export default {
   name: 'VcsToolboxManager',
   components: {
-    ToolboxGroupComponent,
+    ToolboxActionSelect,
+    ToolboxActionGroup,
   },
   setup() {
     const app = inject('vcsApp');
 
     const toolboxComponentIds = ref(app.toolboxManager.componentIds);
-    const actionGroups = computed(() => {
-      const groups = toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
-      return groups
-        .map((g) => {
-          const buttonIds = ref(g.buttonManager.componentIds);
-          return {
-            id: g.id,
-            icon: g.icon,
-            title: g.title,
-            actions: buttonIds.value.map(id => g.buttonManager.get(id).action),
-          };
-        })
-        .filter(g => g.actions.length > 0);
+    const groups = computed(() => {
+      return toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
     });
+
+    /**
+     * To be rendered in Toolbox components must meet certain conditions:
+     * - SingleToolboxComponent: no further conditions
+     * - SelectToolboxComponent: must have at least two tools
+     * - GroupToolboxComponent: must have at least one member (button)
+     * @param {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent} c
+     * @returns {boolean}
+     */
+    function filterFunc(c) {
+      return c.type === ToolboxType.SINGLE || c?.action?.tools?.length > 1 || c.buttonManager?.componentIds?.length > 0;
+    }
+    const orderedGroups = computed(() => getComponentsByOrder(groups.value).filter(filterFunc));
 
     const toolboxOpen = ref(true);
     const toolboxToggleAction = {
@@ -103,55 +138,35 @@ export default {
       },
     };
 
-    const stopWatching = watch([actionGroups],
-      ([actionGroups]) => {
-        if (actionGroups.length > 0) {
-          if (!app.navbarManager.has('toolbox')) {
-            app.navbarManager.add(
-              {
-                id: 'toolbox',
-                action: toolboxToggleAction,
-              },
-              vcsAppSymbol,
-              ButtonLocation.TOOL,
-            );
-          }
-        } else {
-          app.navbarManager.remove('toolbox');
+    function handleToolboxButton(groups) {
+      if (groups.length > 0) {
+        if (!app.navbarManager.has('toolbox')) {
+          app.navbarManager.add(
+            {
+              id: 'toolbox',
+              action: toolboxToggleAction,
+            },
+            vcsAppSymbol,
+            ButtonLocation.TOOL,
+          );
         }
+      } else {
+        app.navbarManager.remove('toolbox');
       }
-    );
+    }
+    handleToolboxButton(groups.value);
+
+    const stopWatching = watch([groups],([groups]) => handleToolboxButton(groups));
 
     onUnmounted(() => {
       stopWatching();
     });
 
-    // XXX can this solved by CSS to get rid of the hardcoded size and padding?
-    const buttonSize = 54;
-    const buttonPadding = 8;
-    const size = buttonSize + (2 * buttonPadding);
-    const width = computed(() => actionGroups.value.length * size);
-
-    /**
-     * calculates relative x-position of a button from the left edge of toolbar
-     * @param {number} idx
-     * @returns {number}
-     */
-    const getPosition = (idx) => (size * (idx + 1)) - (size / 2);
-
     return {
       toolboxOpen,
-      actionGroups,
-      width,
-      getPosition,
-      groupId: ref(null),
-      toggleGroup(groupId) {
-        if (this.groupId === groupId) {
-          this.groupId = null;
-        } else {
-          this.groupId = groupId;
-        }
-      },
+      orderedGroups,
+      ToolboxType,
+      open: ref(false),
     };
   },
 };

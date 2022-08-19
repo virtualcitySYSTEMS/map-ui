@@ -9,8 +9,8 @@ import {
   vi,
 } from 'vitest';
 import { isReactive } from 'vue';
-import ButtonManager from '../../src/manager/buttonManager.js';
-import { vcsAppSymbol } from '../../src/pluginHelper.js';
+import ButtonManager from '../../../src/manager/buttonManager.js';
+import { vcsAppSymbol } from '../../../src/pluginHelper.js';
 
 describe('ButtonManager', () => {
   describe('adding buttonComponents', () => {

@@ -59,6 +59,7 @@ export {
 
 export { default as ButtonManager } from './src/manager/buttonManager.js';
 export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
+export { default as ToolboxManager, ToolboxType } from './src/manager/toolbox/toolboxManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
 export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';

@@ -1,104 +1,129 @@
+import { ToolboxType } from '@vcmap/ui';
+
+const dummySelectAction = {
+  active: false,
+  currentIndex: 0,
+  _stop() {
+    console.log('stopping session', this._session);
+    this._session = null;
+    this.active = false;
+  },
+  _start() {
+    const startSession = tool => ({ type: tool });
+    this._session = startSession(this.tools[this.currentIndex].name);
+    this.active = true;
+    console.log('starting session', this._session);
+  },
+  callback() {
+    if (this.active) {
+      this._stop();
+    } else {
+      this._start();
+    }
+  },
+  selected(index) {
+    this.currentIndex = index;
+    if (this.active) {
+      this._session.type = this.tools[this.currentIndex].name;
+      console.log('updating active session', this._session);
+    } else {
+      this._start();
+    }
+  },
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export const toolboxData = [
   [
     {
-      id: 'select',
-      buttonComponents: [
-        {
-          id: 'select',
-          action: {
-            name: 'select',
-            title: 'select',
-            icon: '$vcsPointSelect',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
-        },
-      ],
+      id: 'singleSelect',
+      type: ToolboxType.SINGLE,
+      action: {
+        name: 'select',
+        title: 'single select',
+        icon: '$vcsPointSelect',
+        active: false,
+        callback() { this.active = !this.active; },
+      },
     },
     '@vcmap/test',
   ],
   [
     {
       id: 'multiSelect',
-      icon: '$vcsPen',
-      title: 'multi select',
-      buttonComponents: [
-        {
-          id: 'pen',
-          action: {
+      type: ToolboxType.SELECT,
+      action: {
+        name: 'multiSelect',
+        title: 'multi select',
+        ...dummySelectAction,
+        tools: [
+          {
             name: 'pen',
             title: 'Item 1',
             icon: '$vcsPen',
-            active: false,
-            callback() { this.active = !this.active; },
           },
-        },
-        {
-          id: 'object',
-          action: {
+          {
             name: 'object',
             title: 'Item 2',
             icon: '$vcsObjectSelect',
-            active: false,
-            callback() { this.active = !this.active; },
           },
-        },
-      ],
+        ],
+      },
     },
     '@vcmap/test',
   ],
   [
     {
       id: 'measurement',
-      icon: '$vcsDimensionsHouse',
-      title: 'measurement',
-      buttonComponents: [
-        {
-          id: 'distance',
-          action: {
+      type: ToolboxType.SELECT,
+      action: {
+        name: 'measurement',
+        title: 'measurement',
+        ...dummySelectAction,
+        tools: [
+          {
             name: 'distance',
             title: '2D distance',
             icon: '$vcs2dDistance',
-            active: false,
-            callback() { this.active = !this.active; },
           },
-        },
-        {
-          id: 'area',
-          action: {
+          {
             name: 'area',
             title: '2D area',
             icon: '$vcs2dArea',
-            active: false,
-            callback() { this.active = !this.active; },
           },
-        },
-      ],
+          {
+            name: 'distance3D',
+            title: '3D distance',
+            icon: '$vcs3dDistance',
+          },
+          {
+            name: 'area3D',
+            title: '3D area',
+            icon: '$vcs3dArea',
+          },
+        ],
+      },
     },
     '@vcmap/test',
   ],
   [
     {
       id: 'toggle',
-      buttonComponents: [
-        {
-          id: 'split',
-          action: {
-            name: 'split',
-            title: 'split view',
-            icon: '$vcsSplitView',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
-        },
-      ],
+      type: ToolboxType.SINGLE,
+      action: {
+        name: 'split',
+        title: 'split view',
+        icon: '$vcsSplitView',
+        active: false,
+        callback() { this.active = !this.active; },
+      },
     },
     '@vcmap/test',
   ],
   [
     {
       id: 'flight',
+      type: ToolboxType.GROUP,
       icon: '$vcsVideoRecorder',
       title: 'flight',
       buttonComponents: [

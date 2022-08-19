@@ -1,6 +1,8 @@
 import VectorSource from 'ol/source/Vector.js';
 import { Feature } from 'ol';
-import { ButtonLocation, createModalAction, createToggleAction, setStateToUrl, WindowSlot } from '@vcmap/ui';
+import {
+  ButtonLocation, createModalAction, createToggleAction, setStateToUrl, ToolboxType, WindowSlot,
+} from '@vcmap/ui';
 import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
@@ -136,9 +138,16 @@ export default async function () {
         '@vcmap/test',
         ButtonLocation.TOOL,
       );
-      toolboxData.forEach(([{ id, icon, title, buttonComponents }, owner]) => {
-        const group = app.toolboxManager.requestGroup(id, icon, title);
-        buttonComponents.forEach(c => group.buttonManager.add(c, owner));
+      toolboxData.forEach(([{ buttonComponents, ...toolboxComponentOptions }, owner]) => {
+        let group;
+        if (app.toolboxManager.has(toolboxComponentOptions.id)) {
+          group = app.toolboxManager.get(toolboxComponentOptions.id);
+        } else {
+          group = app.toolboxManager.add(toolboxComponentOptions, owner);
+        }
+        if (group.type === ToolboxType.GROUP && buttonComponents) {
+          buttonComponents.forEach(c => group.buttonManager.add(c, owner));
+        }
       });
 
       app.contextMenuManager.addEventHandler(async (event) => {

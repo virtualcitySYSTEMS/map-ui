@@ -27,6 +27,7 @@ import { Feature } from 'ol';
 import { check, checkMaybe } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ToolboxType } from '@vcmap/ui';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -153,9 +154,10 @@ function setupFeatureInfoTool(app) {
     },
   };
 
-  app.toolboxManager.requestGroup('featureInfo').buttonManager.add(
+  app.toolboxManager.add(
     {
-      id: 'featureInfoTool',
+      id: 'featureInfo',
+      type: ToolboxType.SINGLE,
       action,
     },
     vcsAppSymbol,
@@ -436,7 +438,7 @@ class FeatureInfo {
   destroy() {
     this._clearInternal();
     this._featureChanged.destroy();
-    this._app.toolboxManager.requestGroup('featureInfo').buttonManager.remove('featureInfoTool');
+    this._app.toolboxManager.remove('featureInfo');
     if (this._scratchLayer) {
       this._app.layers.remove(this._scratchLayer);
       this._scratchLayer.destroy();

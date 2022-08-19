@@ -3,6 +3,7 @@ import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, checkMaybe } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
+import { ActionPattern } from '../components/lists/VcsActionList.vue';
 
 /**
  * @typedef ButtonComponentOptions
@@ -86,13 +87,7 @@ class ButtonManager {
    */
   add(buttonComponentOptions, owner) {
     checkMaybe(buttonComponentOptions.id, String);
-    check(buttonComponentOptions.action, {
-      name: String,
-      title: [undefined, String],
-      icon: [undefined, String],
-      callback: Function,
-      active: [undefined, Boolean],
-    });
+    check(buttonComponentOptions.action, ActionPattern);
     check(owner, [String, vcsAppSymbol]);
 
     if (buttonComponentOptions.id && this.has(buttonComponentOptions.id)) {

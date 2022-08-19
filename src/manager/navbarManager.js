@@ -47,7 +47,7 @@ export function getActionsByLocation(buttonComponents, location, order = [], com
 
 /**
  * Possible render positions of buttons in navbar from left to right
- * @enum
+ * @enum {number}
  */
 export const ButtonLocation = {
   MAP: 0,

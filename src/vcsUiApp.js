@@ -17,7 +17,7 @@ import {
   serializePlugin,
   deserializePlugin,
 } from './pluginHelper.js';
-import { setupDefaultGroups, ToolboxManager } from './manager/toolbox/toolboxManager.js';
+import ToolboxManager, { setupDefaultGroups } from './manager/toolbox/toolboxManager.js';
 import { WindowManager } from './manager/window/windowManager.js';
 import { NavbarManager } from './manager/navbarManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';

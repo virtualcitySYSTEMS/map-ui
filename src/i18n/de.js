@@ -69,6 +69,10 @@ const messages = {
     openInNew: 'In neuem Browser Tab öffnen',
     defaultLabelText: 'Text',
   },
+  toolbox: {
+    flight: 'Flug',
+    miscellaneous: 'Verschiedenes',
+  },
   footer: {
     title: 'Fußzeile',
   },
