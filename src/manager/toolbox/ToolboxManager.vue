@@ -1,4 +1,3 @@
-<script src="../../vcsUiApp.js"></script>
 <template>
   <v-toolbar
     v-if="toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
@@ -71,103 +70,106 @@
 </style>
 
 <script>
+  import { inject, ref, computed, watch, onUnmounted } from 'vue';
+  import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
+  import { getComponentsByOrder, ToolboxType } from './toolboxManager.js';
+  import ToolboxActionSelect from './SelectToolboxComponent.vue';
+  import ToolboxActionGroup from './GroupToolboxComponent.vue';
+  import VcsButton from '../../components/buttons/VcsButton.vue';
 
-import { inject, ref, computed, watch, onUnmounted } from 'vue';
-import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
-import { getComponentsByOrder, ToolboxType} from './toolboxManager.js';
-import ToolboxActionSelect from './SelectToolboxComponent.vue';
-import ToolboxActionGroup from './GroupToolboxComponent.vue';
+  /**
+   * @typedef {Object} ToolboxButtonGroup
+   * @property {string} id
+   * @property {string} type
+   * @property {string} icon
+   * @property {string} title
+   * @property {Array<ButtonComponent>} buttons
+   * @property {string} [selected]
+   * @property {function(index:number):void} [selectCb]
+   */
 
-/**
- * @typedef {Object} ToolboxButtonGroup
- * @property {string} id
- * @property {string} type
- * @property {string} icon
- * @property {string} title
- * @property {Array<ButtonComponent>} buttons
- * @property {string} [selected]
- * @property {function(index:number):void} [selectCb]
- */
+  /**
+   * @description ToolboxManager component rendering toolbox different kind of Toolbox buttons:
+   * - Single toggle button
+   * - Select drop down button to select an item, selected button is rendered besides
+   * - Group drop down button showing a group of toggle buttons
+   * Watches for changes in toolbox components.
+   * Adds Toolbox button in Navbar, if components are available or removes it otherwise.
+   * @vue-computed {Array<ToolboxButtonGroup>} groups - Array of group components
+   * @vue-computed {Array<ToolboxButtonGroup>} orderedGroups - Array of group components sorted by owner
+   */
+  export default {
+    name: 'VcsToolboxManager',
+    components: {
+      ToolboxActionSelect,
+      ToolboxActionGroup,
+      VcsButton,
+    },
+    setup() {
+      const app = inject('vcsApp');
 
-/**
- * @description ToolboxManager component rendering toolbox different kind of Toolbox buttons:
- * - Single toggle button
- * - Select drop down button to select an item, selected button is rendered besides
- * - Group drop down button showing a group of toggle buttons
- * Watches for changes in toolbox components.
- * Adds Toolbox button in Navbar, if components are available or removes it otherwise.
- * @vue-computed {Array<ToolboxButtonGroup>} groups - Array of group components
- * @vue-computed {Array<ToolboxButtonGroup>} orderedGroups - Array of group components sorted by owner
- */
-export default {
-  name: 'VcsToolboxManager',
-  components: {
-    ToolboxActionSelect,
-    ToolboxActionGroup,
-  },
-  setup() {
-    const app = inject('vcsApp');
+      const toolboxComponentIds = ref(app.toolboxManager.componentIds);
+      const groups = computed(() => {
+        return toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
+      });
 
-    const toolboxComponentIds = ref(app.toolboxManager.componentIds);
-    const groups = computed(() => {
-      return toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
-    });
-
-    /**
-     * To be rendered in Toolbox components must meet certain conditions:
-     * - SingleToolboxComponent: no further conditions
-     * - SelectToolboxComponent: must have at least two tools
-     * - GroupToolboxComponent: must have at least one member (button)
-     * @param {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent} c
-     * @returns {boolean}
-     */
-    function filterFunc(c) {
-      return c.type === ToolboxType.SINGLE || c?.action?.tools?.length > 1 || c.buttonManager?.componentIds?.length > 0;
-    }
-    const orderedGroups = computed(() => getComponentsByOrder(groups.value).filter(filterFunc));
-
-    const toolboxOpen = ref(true);
-    const toolboxToggleAction = {
-      name: 'toolboxToggleAction',
-      icon: '$vcsTools',
-      title: 'Toolbox',
-      active: true,
-      callback() {
-        this.active = !this.active;
-        toolboxOpen.value = this.active;
-      },
-    };
-
-    function handleToolboxButton(groups) {
-      if (groups.length > 0) {
-        if (!app.navbarManager.has('toolbox')) {
-          app.navbarManager.add(
-            {
-              id: 'toolbox',
-              action: toolboxToggleAction,
-            },
-            vcsAppSymbol,
-            ButtonLocation.TOOL,
-          );
-        }
-      } else {
-        app.navbarManager.remove('toolbox');
+      /**
+       * To be rendered in Toolbox components must meet certain conditions:
+       * - SingleToolboxComponent: no further conditions
+       * - SelectToolboxComponent: must have at least two tools
+       * - GroupToolboxComponent: must have at least one member (button)
+       * @param {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent} c
+       * @returns {boolean}
+       */
+      function filterFunc(c) {
+        return c.type === ToolboxType.SINGLE ||
+          c?.action?.tools?.length > 1 ||
+          c.buttonManager?.componentIds?.length > 0;
       }
-    }
-    handleToolboxButton(groups.value);
+      const orderedGroups = computed(() => getComponentsByOrder(groups.value).filter(filterFunc));
 
-    const stopWatching = watch([groups],([groups]) => handleToolboxButton(groups));
+      const toolboxOpen = ref(true);
+      const toolboxToggleAction = {
+        name: 'toolboxToggleAction',
+        icon: '$vcsTools',
+        title: 'Toolbox',
+        active: true,
+        callback() {
+          this.active = !this.active;
+          toolboxOpen.value = this.active;
+        },
+      };
 
-    onUnmounted(() => {
-      stopWatching();
-    });
+      function handleToolboxButton() {
+        if (groups.value.length > 0) {
+          if (!app.navbarManager.has('toolbox')) {
+            app.navbarManager.add(
+              {
+                id: 'toolbox',
+                action: toolboxToggleAction,
+              },
+              vcsAppSymbol,
+              ButtonLocation.TOOL,
+            );
+          }
+        } else {
+          app.navbarManager.remove('toolbox');
+        }
+      }
+      handleToolboxButton();
 
-    return {
-      toolboxOpen,
-      orderedGroups,
-      ToolboxType,
-      open: ref(false),
-    };
-  },
-};
+      const stopWatching = watch(groups, () => handleToolboxButton());
+
+      onUnmounted(() => {
+        stopWatching();
+      });
+
+      return {
+        toolboxOpen,
+        orderedGroups,
+        ToolboxType,
+        open: ref(false),
+      };
+    },
+  };
 </script>
