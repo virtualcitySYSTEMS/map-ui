@@ -51,6 +51,7 @@
 
   import { inject, onMounted, onUnmounted, watch } from 'vue';
   import { setupBalloonPositionListener } from './balloonHelper.js';
+  import VcsButton from '../components/buttons/VcsButton.vue';
 
   /**
    * @description A balloon viewing feature attributes. Size dynamic dependent on number of attributes.
@@ -65,6 +66,7 @@
    */
   export default {
     name: 'BalloonComponent',
+    components: { VcsButton },
     props: {
       featureId: {
         type: String,
