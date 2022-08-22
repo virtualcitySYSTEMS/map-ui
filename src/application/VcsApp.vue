@@ -279,7 +279,7 @@
         ButtonLocation.CONTENT,
       );
     }
-    watch(app.categoryManager.items, () => {
+    watch(app.categoryManager.items.value, () => {
       if (app.categoryManager.items.value.length > 0) {
         if (!app.navbarManager.has('component-manager')) {
           app.navbarManager.add(
