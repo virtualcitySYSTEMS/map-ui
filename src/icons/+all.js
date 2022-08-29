@@ -68,6 +68,8 @@ import PresentationModeIcon from './PresentationModeIcon.vue';
 import RectangleIcon from './RectangleIcon.vue';
 import ReturnIcon from './ReturnIcon.vue';
 import RewindIcon from './RewindIcon.vue';
+import RotateLeftIcon from './RotateLeftIcon.vue';
+import RotateRightIcon from './RotateRightIcon.vue';
 import ScreenshotIcon from './ScreenshotIcon.vue';
 import SearchIcon from './SearchIcon.vue';
 import ShadowIcon from './ShadowIcon.vue';
@@ -338,6 +340,12 @@ const IconMap = {
   },
   rewind: {
     component: RewindIcon,
+  },
+  rotateLeft: {
+    component: RotateLeftIcon,
+  },
+  rotateRight: {
+    component: RotateRightIcon,
   },
   screenshot: {
     component: ScreenshotIcon,

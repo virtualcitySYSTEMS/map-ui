@@ -1,3 +1,6 @@
+# 5.0.0-rc.13
+- Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue
+
 # 5.0.0-rc.12
 - Adds further vcs-icons from layout catalog: VCS Wireframe 8.8.xd, also updated some icon layouts as shown in the same catalog
 - Fixed bug for toolbox submenu where the icons did overflow if the menu above was shorter than the submenu

@@ -2,12 +2,12 @@
   <div class="d-inline-flex">
     <OrientationToolsButton
       @click="input(-90)"
-      icon="mdi-undo"
+      icon="$vcsRotateLeft"
       tooltip="navigation.obliqueLeftTooltip"
     />
     <OrientationToolsButton
       @click="input(90)"
-      icon="mdi-redo"
+      icon="$vcsRotateRight"
       tooltip="navigation.obliqueRightTooltip"
     />
   </div>
