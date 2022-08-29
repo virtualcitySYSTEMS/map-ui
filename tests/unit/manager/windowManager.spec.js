@@ -9,9 +9,8 @@ import {
   vi,
 } from 'vitest';
 import { isReactive, isRef } from 'vue';
-import {
+import WindowManager, {
   WindowPositions,
-  WindowManager,
   windowPositionFromOptions,
   WindowSlot,
   getWindowPositionOptions,

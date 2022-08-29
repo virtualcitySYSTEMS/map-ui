@@ -751,7 +751,8 @@
       "activeOnStartup": false,
       "properties": {
         "featureInfo": "tableAll",
-        "title": "layers.osmBuildingFootprints.title"
+        "title": "layers.osmBuildingFootprints.title",
+        "tooltip": "OpenStreetMap Building Polygons"
       }
     },
     {
@@ -1032,7 +1033,8 @@
       "name": "building.meshSurface",
       "layerName": "mesh_surface",
       "type": "LayerContentTreeItem",
-      "title": "3D-Mesh"
+      "title": "3D-Mesh",
+      "tooltip": "3D-Mesh Surface"
     },
     {
       "name": "pointcloud",

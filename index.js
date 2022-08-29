@@ -47,7 +47,7 @@ export { default as WindowComponent } from './src/manager/window/WindowComponent
 export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.vue';
 export { default as VcsWindowManager } from './src/manager/window/WindowManager.vue';
 export {
-  WindowManager,
+  default as WindowManager,
   WindowSlot,
   WindowPositions,
   WindowAlignment,
@@ -58,7 +58,7 @@ export {
 } from './src/manager/window/windowManager.js';
 
 export { default as ButtonManager } from './src/manager/buttonManager.js';
-export { NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
+export { default as NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
 export { default as ToolboxManager, ToolboxType } from './src/manager/toolbox/toolboxManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
 export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';

@@ -55,6 +55,7 @@ $list-padding: 0 0; // 8px 0 !default;
 $list-item-title-font-size: $font-size; // map-deep-get($headings, 'subtitle-1', 'size') !default;
 $list-item-dense-title-font-size: $font-size; // 0.8125rem !default;
 $list-item-dense-title-line-height: 24px; // 1rem !default;
+$list-item-title-subtitle-line-height: 24px; // 1.2 !default;
 $list-dense-subheader-height: 32px; // 40px !default;
 $list-item-min-height: 32px; // 48px !default;
 $list-dense-min-height: 24px; // 40px !default;

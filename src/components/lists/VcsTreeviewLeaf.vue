@@ -13,7 +13,10 @@
       <span ref="imgContainer" />
     </span>
 
-    <div class="position-relative col-8 pa-0 d-flex align-center treeview-label" :title="$t(item.title)">
+    <div
+      class="position-relative col-8 pa-0 d-flex align-center treeview-label"
+      :title="$t(item.tooltip || item.title)"
+    >
       <span>{{ $t(item.title) }}</span>
     </div>
     <VcsActionButtonList
@@ -55,6 +58,8 @@
   /**
    * @description
    * Template for a treeview leaf, see: https://vuetifyjs.com/en/api/v-treeview/
+   * @vue-prop {TreeViewItem} item - A ContentTreeItem
+   * @vue-computed {boolean} leaf - Whether the item is a leaf item or not
    */
   export default {
     components: { VcsActionButtonList },

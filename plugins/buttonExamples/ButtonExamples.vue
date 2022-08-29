@@ -171,18 +171,24 @@
 </template>
 <script>
   import { VcsButton, VcsActionButtonList } from '@vcmap/ui';
+  import { ref } from 'vue';
 
   export default {
     name: 'ButtonExamples',
     components: { VcsButton, VcsActionButtonList },
     setup() {
+      const active = ref(false);
+      const disabled = ref(false);
+      const update = ref(false);
+      const loading = ref(false);
+
       return {
-        active: false,
-        disabled: false,
-        update: false,
-        loading: false,
+        active,
+        disabled,
+        update,
+        loading,
         toggle() {
-          this.active = !this.active;
+          active.value = !active.value;
         },
       };
     },

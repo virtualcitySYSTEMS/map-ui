@@ -2,8 +2,8 @@
   <v-container class="fill-height pa-0" absolute fluid>
     <Navbar />
     <v-container class="vcs-main pa-0" :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }" fluid absolute>
-      <template v-if="$vuetify.breakpoint.smAndDown">
-        <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" class="mobile-logo">
+      <template v-if="$vuetify.breakpoint.xs">
+        <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" draggable="false" class="mobile-logo">
         <div v-else class="company-logo-mobile mobile-logo" />
       </template>
       <VcsMap :map-id="mapId" />

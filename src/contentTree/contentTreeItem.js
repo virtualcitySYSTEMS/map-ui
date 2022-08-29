@@ -8,7 +8,8 @@ import { createStateRefAction, StateActionState } from '../actions/stateRefActio
 /**
  * @typedef {Object} ContentTreeItemOptions
  * @property {string} name
- * @property {Object<string, string>|string} [title] - may be unset, if set from object properties later on. required otherwise
+ * @property {string} [title] - may be unset, if set from object properties later on. required otherwise
+ * @property {string} [tooltip] - may be unset or set from object properties later on.
  * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - an icon URL or element to display
  * @property {number} [weight]
  * @property {string} [infoUrl]
@@ -23,7 +24,8 @@ import { createStateRefAction, StateActionState } from '../actions/stateRefActio
  * @property {boolean} clickable
  * @property {boolean} disabled
  * @property {StateActionState} state
- * @property {Object<string, string>|string} title
+ * @property {string} title
+ * @property {string} [tooltip]
  * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon
  * @property {Array<VcsAction>} actions
  * @property {Array<TreeViewItem>} children
@@ -116,10 +118,16 @@ class ContentTreeItem {
     this.infoUrl = options.infoUrl;
 
     /**
-     * @type {import("vue").Ref<Object<string, string>|string|undefined>}
+     * @type {import("vue").Ref<string|undefined>}
      * @private
      */
     this._title = ref(options.title);
+
+    /**
+     * @type {import("vue").Ref<string|undefined>}
+     * @private
+     */
+    this._tooltip = ref(options.tooltip);
 
     /**
      * An optional icon to display with this item. Can be an URL or HTMLElement.
@@ -265,19 +273,35 @@ class ContentTreeItem {
   }
 
   /**
-   * @type {string|Object<string>|undefined}
+   * @type {string|undefined}
    */
   get title() {
     return this._title.value;
   }
 
   /**
-   * @param {string|Object<string>|undefined} title
+   * @param {string|undefined} title
    */
   set title(title) {
-    checkMaybe(title, [String, Object]);
+    checkMaybe(title, String);
 
     this._title.value = title;
+  }
+
+  /**
+   * @type {string|undefined}
+   */
+  get tooltip() {
+    return this._tooltip.value;
+  }
+
+  /**
+   * @param {string|undefined} tooltip
+   */
+  set tooltip(tooltip) {
+    checkMaybe(tooltip, String);
+
+    this._tooltip.value = tooltip;
   }
 
   /**
@@ -401,6 +425,7 @@ class ContentTreeItem {
       disabled: this._disabled,
       state: this._state,
       title: this._title,
+      tooltip: this._tooltip,
       icon: this._icon,
       actions: this._actions,
       children: this._children,

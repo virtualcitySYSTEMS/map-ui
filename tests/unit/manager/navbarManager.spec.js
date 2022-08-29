@@ -7,8 +7,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import {
-  NavbarManager,
+import NavbarManager, {
   ButtonLocation,
   locationSymbol,
   getActionsByLocation,

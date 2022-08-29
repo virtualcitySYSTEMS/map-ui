@@ -1,5 +1,10 @@
-# 5.0.0-rc.13
+# 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue
+- Updated buttonExample plugin to vue 2.7 by making plugin state reactive
+- Added support of tooltips for ContentTreeItems. Tooltips can be defined in config, if none is defined title is used instead.
+- Harmonized export of classes. Now all classes are exported as default export at the end of the file.
+- Fixed bug, which prevented navigation on mobile devices.
+- Fixed text rendering of VcsActionButtonList on Firefox
 
 # 5.0.0-rc.12
 - Adds further vcs-icons from layout catalog: VCS Wireframe 8.8.xd, also updated some icon layouts as shown in the same catalog

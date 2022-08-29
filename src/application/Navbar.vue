@@ -44,10 +44,12 @@
           </v-toolbar-items>
         </v-col>
         <v-col class="align-center d-flex justify-center">
-          <div v-if="$vuetify.breakpoint.mdAndUp" class="d-flex">
-            <img v-if="config.logo" class="logo" :src="config.logo" alt="Logo">
-            <div v-else class="company-logo logo" />
-            <div v-if="config.appTitle" class="ml-4">
+          <div class="d-flex">
+            <template v-if="!$vuetify.breakpoint.xs">
+              <img v-if="config.logo" class="logo" :src="config.logo" draggable="false" alt="Logo">
+              <div v-else class="company-logo logo" />
+            </template>
+            <div v-if="!$vuetify.breakpoint.sm && config.appTitle" class="ml-4">
               {{ $t(config.appTitle) }}
             </div>
           </div>

@@ -63,7 +63,7 @@ export const ButtonLocation = {
  * @description Manages a set of Map Buttons in the Navbar
  * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
  */
-export class NavbarManager extends ButtonManager {
+class NavbarManager extends ButtonManager {
   /**
    * adds a buttonComponent
    * @param {ButtonComponentOptions} buttonComponentOptions
@@ -79,3 +79,5 @@ export class NavbarManager extends ButtonManager {
     return buttonComponent;
   }
 }
+
+export default NavbarManager;

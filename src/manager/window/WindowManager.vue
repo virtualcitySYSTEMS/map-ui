@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="$vuetify.breakpoint.xs ? 'win-container-mobile' : 'unset'"
+    :class="{ 'win-container-mobile' : $vuetify.breakpoint.xs }"
   >
     <WindowComponent
       v-for="(id, zIndex) in componentIds"
@@ -35,7 +35,6 @@
     position: absolute;
     z-index: 2;
     width: 100%;
-    height: 100%;
   }
   .win-container-mobile > {
     div{

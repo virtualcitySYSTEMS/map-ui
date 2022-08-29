@@ -88,7 +88,7 @@ function insertItem(item, collection, children) {
  * a categoryManager manages categories, and synchronizes a tree of VcsTreeView Items.
  * provides an API to add/remove Categories.
  */
-export default class CategoryManager {
+class CategoryManager {
   /**
    * @param {import("@vcmap/ui").VcsUiApp} app
    */
@@ -498,3 +498,5 @@ export default class CategoryManager {
     this._managedCategoriesListeners.clear();
   }
 }
+
+export default CategoryManager;

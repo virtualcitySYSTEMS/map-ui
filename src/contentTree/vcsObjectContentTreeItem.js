@@ -37,6 +37,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
      */
     this._ownProperties = {
       title: this.title,
+      tooltip: this.tooltip,
       icon: this.icon,
       infoUrl: this.infoUrl,
     };
@@ -58,6 +59,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
    */
   _setProperties(properties) {
     this.title = properties.title;
+    this.tooltip = properties.tooltip;
     this.icon = properties.icon;
     this.infoUrl = properties.infoUrl;
   }

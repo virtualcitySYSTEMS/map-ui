@@ -275,7 +275,7 @@ export function getFittedWindowPositionOptionsFromMapEvent(windowPosition, width
  * @description Manages a set of Draggable Windows
  * @implements VcsComponentManager<WindowComponent,WindowComponentOptions>
  */
-export class WindowManager {
+class WindowManager {
   constructor() {
     /**
      * @type {import("@vcmap/core").VcsEvent<WindowComponent>}
@@ -537,3 +537,5 @@ export class WindowManager {
     this._windowComponents.clear();
   }
 }
+
+export default WindowManager;

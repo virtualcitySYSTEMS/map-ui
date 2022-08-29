@@ -18,8 +18,8 @@ import {
   deserializePlugin,
 } from './pluginHelper.js';
 import ToolboxManager, { setupDefaultGroups } from './manager/toolbox/toolboxManager.js';
-import { WindowManager } from './manager/window/windowManager.js';
-import { NavbarManager } from './manager/navbarManager.js';
+import WindowManager from './manager/window/windowManager.js';
+import NavbarManager from './manager/navbarManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
