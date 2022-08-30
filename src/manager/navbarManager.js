@@ -48,6 +48,12 @@ export function getActionsByLocation(buttonComponents, location, order = [], com
 /**
  * Possible render positions of buttons in navbar from left to right
  * @enum {number}
+ * @property {number} MAP - map buttons (2D, 3D, oblique)
+ * @property {number} CONTENT - content buttons (tree, category component view)
+ * @property {number} TOOL - tool buttons (toolbox, legend)
+ * @property {number} PROJECT - project buttons (project selector)
+ * @property {number} SHARE - share buttons rendered in dropdown menu (create link, print)
+ * @property {number} MENU - menu buttons rendered in dropdown menu (settings)
  */
 export const ButtonLocation = {
   MAP: 0,

@@ -1,9 +1,10 @@
+# Getting Started
 
-### Requirements
+## Requirements
 - Node 16
 - Npm 8
 
-### Setup
+## Setup
 Run the following scripts using `npm run` to setup your development environment.
 - `start` serves a development server at http://localhost:8080.
 - `lint` runs _eslint_ for linting.
@@ -14,7 +15,7 @@ Run the following scripts using `npm run` to setup your development environment.
 - `install-plugins` to integrate externally managed and developed plugins, use the `plugins/package.json` and this script to 
 install them. 
 
-### NPM Link
+## NPM Link
 
 Before linking a package, delete the vitejs dependency Cache in `node_modules/.vite/`. Otherwise vitejs will still use 
 the optimized dependency
@@ -51,7 +52,7 @@ optimize `@vcmap/core`.
 NO_OPTIMIZED_CORE=true npm start
 ```
 
-### Setting up Webstorm
+## Setting up Webstorm
 Make sure ESlint is activated
 ```
 Settings: Languages & Frameworks/JavaScript/CodeQuality Tools/ESLint
@@ -60,10 +61,10 @@ Settings: Languages & Frameworks/JavaScript/CodeQuality Tools/ESLint
 In Webstorm: select the `node_modules/@vcmap/core` package, right click and check `Include JavaScript Files` to jump
 to code instead of index.d.ts.
 
-### Testing
+## Testing
 To run the whole test Suite call `npm run test`; see [vitest](https://vitest.dev/) for API and testing documentation.
 
-### Use of JSDoc
+## Use of JSDoc
 We use [jsdoc](https://jsdoc.app/) for a) documentation of our public API and b) for typechecking our
 JS code using the [typescript compiler](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html).
 To enforce these rules we use the [eslint jsdoc plugin](https://github.com/gajus/eslint-plugin-jsdoc#readme).
@@ -84,3 +85,26 @@ To enforce these rules we use the [eslint jsdoc plugin](https://github.com/gajus
 - You should type inherited methods for typescript _and add `@inheritDoc`_ to use the
   parents description in the docs (if they are the same). This makes it easier to maintain descriptions
   and keeps them consistent.
+
+## Overview UI Elements
+![UI Elements Overview](UI_OVERVIEW.svg)
+
+> RED: ButtonLocation;
+> GREEN: WindowSlot;
+> ORANGE: Toolbox;
+> BLACK: other elements (not complete)
+
+## Documentation
+
+1. [Actions](ACTIONS.md)
+2. [Buttons](BUTTONS.md)
+3. [Categories](CATEGORIES.md)
+4. [Content Tree](CONTENT_TREE.md)
+5. [Context Menu](CONTEXT_MENU.md)
+6. [Feature Info](FEATURE_INFO.md)
+7. [Internationalization](INTERNATIONALIZATION.md)
+8. [Legend](LEGEND.md)
+9. [State](STATE.md)
+10. [Toolbox](TOOLBOX.md)
+11. [UI Components & Styles](UI_COMPONENTS_STYLES.md)
+12. [UI Configuration](UI_CONFIG.md)

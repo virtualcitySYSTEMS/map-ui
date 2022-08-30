@@ -61,7 +61,7 @@ Example Template to show how to integrate the @vcmap/ui in a webpack5 project.
 Example demo Application based on the @vcmap/core, shows how to implement a different UI on top of the @vcmap/core
 
 ## Component Diagram
-![A schema on component interactions](./documentation/componentsSchema.png)
+![A schema on component interactions](./documentation/VC_Map_Diagram.png)
 
 # Project and Component Status
 The Project is currently in Alpha status. Different components have different states. For development check here 
@@ -86,17 +86,17 @@ how safe it is to start developing with these components.
 - Editor TODO
 
 ### @vcmap/ui
-- contentTree API BETA
-- windowManager API BETA
-- Navbar/ButtonManager/ToolboxManager ALPHA
+- contentTree API BETA [CONTENT_TREE](documentation/CONTENT_TREE.md) // TODO doc
+- windowManager API BETA [WINDOWS](documentation/WINDOWS.md) // TODO doc
+- Navbar/ButtonManager/ToolboxManager ALPHA [BUTTONS](documentation/BUTTONS.md)/[TOOLBOX](documentation/TOOLBOX.md)
 - OrientationTools BETA
-- ActionConcept BETA
-- PluginConcept RC
+- ActionConcept BETA [ACTIONS](documentation/ACTIONS.md)
+- PluginConcept RC [Plugin API](https://github.com/virtualcitySYSTEMS/map-plugin-cli)
 - SEARCH API TODO
-- I18n API RC [I18n](documentation/INTERNATIONALIZATION.md).
-- Components API RC [Components](documentation/COMPONENTS.md).
-- [Context Menu](documentation/CONTEXT_MENU.md) API RC
-- [FeatureInfo](documentation/FeatureInfo.md) RC
+- I18n API RC [INTERNATIONALIZATION](documentation/INTERNATIONALIZATION.md).
+- Components API RC [CATEGORIES](documentation/CATEGORIES.md).
+- Context Menu API RC [CONTEXT_MENU](documentation/CONTEXT_MENU.md) 
+- FeatureInfo RC [FEATURE_INFO](documentation/FEATURE_INFO.md)
 - [State & Application Link](documentation/STATE.md) RC
 
 ##### components
@@ -176,7 +176,7 @@ how safe it is to start developing with these components.
 For a first start, clone the repo and call `npm i` `npm run start` This will start a development server. The 
 app can be opened with http://localhost:8080.
 
-Further Information see [Development](documentation/DEVELOPMENT.md) and [Plugin-cli](https://github.com/virtualcitySYSTEMS/map-plugin-cli).
+Further Information see [GET_STARTED](documentation/_GET_STARTED.md) and [Plugin-cli](https://github.com/virtualcitySYSTEMS/map-plugin-cli).
 
 ## Included Dataset
 The included datasets for Berlin and Osnabrück in the app configurations in the project can only be used for Development.
