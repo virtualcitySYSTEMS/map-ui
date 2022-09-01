@@ -1,3 +1,6 @@
+# 5.0.0-rc.next
+- Update Openlayers to version 7.0.0
+
 # 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue
 - Updated buttonExample plugin to vue 2.7 by making plugin state reactive

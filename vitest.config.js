@@ -12,8 +12,4 @@ const configTest = defineConfig({
     setupFiles: ['tests/setup.js'],
   },
 });
-// removing openlayers Alias to source, does not work in VITest.
-// TODO, we should check this again with a vitest version update
-delete configTest.resolve.alias.ol;
-
 export default configTest;

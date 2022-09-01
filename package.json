@@ -42,8 +42,8 @@
   },
   "peerDependencies": {
     "@vcmap/cesium": "~1.93.1",
-    "@vcmap/core": "^5.0.0-rc.20",
-    "ol": "~6.13.0",
+    "@vcmap/core": "~5.0.0-rc.21",
+    "ol": "~7.1.0",
     "vue": "~2.7.3",
     "vuetify": "~2.6.7"
   },
@@ -56,6 +56,7 @@
     "jest-canvas-mock": "^2.3.1",
     "jsdoc": "^3.6.7",
     "jsdoc-plugin-typescript": "^2.0.6",
+    "jsdoc-plugin-intersection": "^1.0.4",
     "jsdom": "^19.0.0",
     "rollup-plugin-strip-pragma": "^1.0.0",
     "sass": "1.32.13",

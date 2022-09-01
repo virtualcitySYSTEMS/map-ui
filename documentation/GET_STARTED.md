@@ -46,7 +46,7 @@ following snippet:
       ],
     },
 ```
-Or you can set the convenienct env variable `NO_OPTIMIZED_CORE environment variable to not
+Or you can set the convenient env variable `NO_OPTIMIZED_CORE environment variable to not
 optimize `@vcmap/core`.
 ```bash
 NO_OPTIMIZED_CORE=true npm start

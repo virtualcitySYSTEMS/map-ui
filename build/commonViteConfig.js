@@ -11,7 +11,6 @@ const configMain = defineConfig({
     alias: {
       '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
       vue: 'vue/dist/vue.esm.js',
-      ol: 'ol/src',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
     dedupe: Object.keys(libraries),

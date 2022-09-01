@@ -27,7 +27,7 @@ exports.publish = function publish(data) {
         if (this?.meta?.code?.name) {
           if (this.meta.code.name === 'module.exports') {
             this.exports = 'default';
-          } else if (this.meta.code.name.startsWith('exports.')) {
+          } else if (String(this.meta.code.name).startsWith('exports.')) {
             this.exports = this.meta.code.name.replace(/exports./, '');
           }
         }

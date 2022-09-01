@@ -3,7 +3,7 @@ import path from 'path';
 import { spawn } from 'child_process';
 
 const isWindows = process.platform.indexOf('win') === 0;
-const sourceDir = path.join('node_modules', 'ol', 'src');
+const sourceDir = path.join('node_modules', 'ol');
 
 /**
  * Parse the JSDoc output.
