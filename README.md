@@ -147,30 +147,33 @@ how safe it is to start developing with these components.
 - Notification Concept Prio 2
 
 ### Plugins
-- Drawing (WIP) Prio 1
-- Measurement  Prio 1
-- PDF Export (WIP) Prio 1
-- Positiondisplay  Prio 2
-- Search Nominatim Prio 2
-- SwipeTool Prio 2
-- Publisher Integration Plugin 3
-- Shadow Prio 4
-- Export Prio 4
-- HeightProfile Prio 4
-- Planning Prio 4
-- Query Prio 4
-- TransparentTerrain Prio 4
-- ViewShed Prio 4
-- AttributeEditor Prio 4
-- ClippingTool Prio 4
-- Flight Prio 4
-- MultiView Prio 4
-- Locator ? Prio 4
-- DisplayQuality Prio 4
-- Walkmode Prio 4
-- Search esri Prio 4
-- Search WFS Prio 4
-- Create Link DONE
+| Plugin      | Dev Prio | Proj Prio
+| :----: | :----:| :----: |
+|Drawing (WIP)| 1 | 1|
+|Measurement| 1| 1|
+|PDF Export (WIP)|  1| 1|
+|Search Nominatim| 2| 1|
+|SwipeTool| 2| 1|
+|Shadow |  4| 1|
+|Planning|  4| 1|
+|MultiView |  4| 1|
+|Create Link DONE| 1|1|
+|HeightProfile |  4| 2|
+|Flight |  4| 2|
+|Export |  4| 2|
+|ViewShed |  4| 2|
+|TransparentTerrain |  4| 3|
+|Walkmode|  4| 3|
+|Publisher Integration Plugin|  3| 3|
+|ClippingTool |  4| 3|
+|AttributeEditor |  4| 3|
+|Query |  4| 3|
+|Positiondisplay|  2| 4|
+|Locator ? |  4| 4|
+|DisplayQuality |  4| 4|
+|Search esri |  4| 4|
+|Search WFS |  4| 4|
+
 
 # Getting started
 For a first start, clone the repo and call `npm i` `npm run start` This will start a development server. The 
