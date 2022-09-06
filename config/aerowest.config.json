@@ -1,6 +1,6 @@
 {
   "mapcontainer": "vcs_map_container",
-  "startingViewPointName": "Start",
+  "startingViewpointName": "Start",
   "startingMapName": "Cesium Map",
   "projection": {
     "epsg": "25832",
@@ -258,7 +258,7 @@
   ],
   "viewpoints": [
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "Start",
       "cameraPosition": [
         8.046797238330019,

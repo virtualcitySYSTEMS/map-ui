@@ -7,7 +7,7 @@ import {
   OverrideClassRegistry,
   defaultDynamicContextId,
   ObliqueMap,
-  ViewPoint,
+  Viewpoint,
   volatileContextId,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
@@ -296,8 +296,8 @@ class VcsUiApp extends VcsApp {
       .map(({ id }) => id);
 
     state.activeMap = this.maps.activeMap.name;
-    const viewPoint = await this.maps.activeMap.getViewPoint();
-    state.activeViewpoint = viewPoint?.isValid?.() ? viewPoint.toJSON() : undefined;
+    const viewpoint = await this.maps.activeMap.getViewpoint();
+    state.activeViewpoint = viewpoint?.isValid?.() ? viewpoint.toJSON() : undefined;
     state.layers = [...this.layers]
       .filter(l => l.isSupported(this.maps.activeMap) &&
         l[contextIdSymbol] !== defaultDynamicContextId &&
@@ -403,7 +403,7 @@ class VcsUiApp extends VcsApp {
           this._cachedAppState.activeViewpoint,
         );
       } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
-        await this.maps.activeMap.gotoViewPoint(new ViewPoint(this._cachedAppState.activeViewpoint));
+        await this.maps.activeMap.gotoViewpoint(new Viewpoint(this._cachedAppState.activeViewpoint));
       }
       this._cachedAppState.contextIds.splice(this._cachedAppState.contextIds.indexOf(context.id), 1);
     }

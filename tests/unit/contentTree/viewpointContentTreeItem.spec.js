@@ -1,4 +1,4 @@
-import { ViewPoint } from '@vcmap/core';
+import { Viewpoint } from '@vcmap/core';
 import {
   describe,
   it,
@@ -9,9 +9,9 @@ import {
   afterAll,
 } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import ViewPointContentTreeItem from '../../../src/contentTree/viewPointContentTreeItem.js';
+import ViewpointContentTreeItem from '../../../src/contentTree/viewpointContentTreeItem.js';
 
-describe('ViewPointContentTreeItem', () => {
+describe('ViewpointContentTreeItem', () => {
   describe('if there is a viewpoint', () => {
     let item;
     /** @type {VcsUiApp} */
@@ -20,9 +20,9 @@ describe('ViewPointContentTreeItem', () => {
 
     beforeEach(() => {
       app = new VcsUiApp();
-      viewpoint = new ViewPoint({});
-      app.viewPoints.add(viewpoint);
-      item = new ViewPointContentTreeItem({ name: 'foo', viewpointName: viewpoint.name }, app);
+      viewpoint = new Viewpoint({});
+      app.viewpoints.add(viewpoint);
+      item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: viewpoint.name }, app);
     });
 
     afterEach(() => {
@@ -35,7 +35,7 @@ describe('ViewPointContentTreeItem', () => {
     });
 
     it('should no longer be visible, if the viewpoint is removed', () => {
-      app.viewPoints.remove(viewpoint);
+      app.viewpoints.remove(viewpoint);
       expect(item.visible).to.be.false;
     });
   });
@@ -43,7 +43,7 @@ describe('ViewPointContentTreeItem', () => {
   describe('if viewpoint is not present', () => {
     it('should not be visible', () => {
       const app = new VcsUiApp();
-      const item = new ViewPointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
+      const item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
       expect(item.visible).to.be.false;
       item.destroy();
       app.destroy();
@@ -63,7 +63,7 @@ describe('ViewPointContentTreeItem', () => {
 
     describe('of an empty item', () => {
       it('should serialize name, type and layerName', () => {
-        const item = new ViewPointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
+        const item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
         const config = item.toJSON();
         expect(config).to.have.all.keys(['name', 'type', 'viewpointName']);
         item.destroy();
@@ -80,7 +80,7 @@ describe('ViewPointContentTreeItem', () => {
           icon: '$vcsPen',
           viewpointName: 'foo',
         };
-        const item = new ViewPointContentTreeItem(inputConfig, app);
+        const item = new ViewpointContentTreeItem(inputConfig, app);
         outputConfig = item.toJSON();
         item.destroy();
       });

@@ -131,7 +131,7 @@ describe('LayerContentTreeItem', () => {
       });
 
       it('should add a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewPointAction')).to.be.true;
+        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.true;
       });
 
       it('should add an extent action', () => {
@@ -178,7 +178,7 @@ describe('LayerContentTreeItem', () => {
       });
 
       it('should not have a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewPointAction')).to.be.false;
+        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.false;
       });
 
       it('should not have an extent action', () => {

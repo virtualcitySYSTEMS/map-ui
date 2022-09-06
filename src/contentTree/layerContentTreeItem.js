@@ -1,4 +1,4 @@
-import { ViewPoint } from '@vcmap/core';
+import { Viewpoint } from '@vcmap/core';
 import { reactive } from 'vue';
 import { StateActionState } from '../actions/stateRefAction.js';
 import { createGoToViewpointAction, createModalAction } from '../actions/actionHelper.js';
@@ -25,7 +25,7 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
  * @param {string=} viewpoint
  */
 export function setViewpointAction(item, app, viewpoint) {
-  const name = 'ViewPointAction';
+  const name = 'ViewpointAction';
   item.removeAction(name);
 
   if (viewpoint) {
@@ -35,7 +35,7 @@ export function setViewpointAction(item, app, viewpoint) {
         icon: 'mdi-crosshairs-gps',
       },
       viewpoint,
-      app.viewPoints,
+      app.viewpoints,
       app.maps,
     );
     item.addAction(action, 2);
@@ -144,14 +144,14 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
     if (this._layer) {
       const { extent } = this._layer.toJSON();
       if (extent) {
-        const viewpoint = ViewPoint.createViewPointFromExtent(this._layer.extent);
+        const viewpoint = Viewpoint.createViewpointFromExtent(this._layer.extent);
         const action = createGoToViewpointAction(
           {
             name: 'LayerExtentAction',
             title: 'content.layerExtentAction.title',
           },
           viewpoint,
-          this._app.viewPoints,
+          this._app.viewpoints,
           this._app.maps,
         );
         this.addAction(action, 8);

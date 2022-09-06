@@ -10,7 +10,7 @@ import {
   DataState,
   emptyStyle,
   Extent,
-  ViewPoint,
+  Viewpoint,
   deserializeLayer,
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
@@ -77,9 +77,9 @@ class OverviewMap {
 
     /**
      * @private
-     * @type {import("@vcmap/core").ViewPoint|null}
+     * @type {import("@vcmap/core").Viewpoint|null}
      */
-    this._cachedViewPoint = null;
+    this._cachedViewpoint = null;
 
     /**
      * @type {import("@vcmap/core").VectorLayer}
@@ -302,7 +302,7 @@ class OverviewMap {
     if (!this._active) {
       this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(() => {
         this._clearListeners();
-        this._cachedViewPoint = null;
+        this._cachedViewpoint = null;
         this._activate();
       });
     }
@@ -467,9 +467,9 @@ class OverviewMap {
         projection: mercatorProjection.toJSON(),
       });
 
-      const vp = ViewPoint.createViewPointFromExtent(extent);
+      const vp = Viewpoint.createViewpointFromExtent(extent);
       vp.distance /= this._obliqueResolutionFactor;
-      this._map.gotoViewPoint(vp);
+      this._map.gotoViewpoint(vp);
     }
   }
 
@@ -519,12 +519,12 @@ class OverviewMap {
    */
   _addNavigationListener(activeMap) {
     return this._mapClicked.addEventListener((e) => {
-      const vp = activeMap.getViewPointSync();
+      const vp = activeMap.getViewpointSync();
       const height = vp.groundPosition[2] ? vp.groundPosition[2] : 0.0;
       vp.groundPosition = Projection.mercatorToWgs84(e.positionOrPixel);
       vp.groundPosition[2] = height;
       vp.cameraPosition = null;
-      activeMap.gotoViewPoint(vp);
+      activeMap.gotoViewpoint(vp);
     });
   }
 
@@ -543,11 +543,11 @@ class OverviewMap {
    * @private
    */
   _addCameraFeature() {
-    const viewpoint = this._app.maps.activeMap.getViewPointSync();
-    if (!viewpoint || !viewpoint.isValid() || viewpoint.equals(this._cachedViewPoint)) {
+    const viewpoint = this._app.maps.activeMap.getViewpointSync();
+    if (!viewpoint || !viewpoint.isValid() || viewpoint.equals(this._cachedViewpoint)) {
       return;
     }
-    this._cachedViewPoint = viewpoint.clone();
+    this._cachedViewpoint = viewpoint.clone();
     const gp = viewpoint.groundPosition;
     const position = viewpoint.cameraPosition || gp;
     const { heading } = viewpoint;
@@ -583,7 +583,7 @@ class OverviewMap {
     viewpoint.cameraPosition = position;
     viewpoint.groundPosition = null;
     viewpoint.distance = distance * 4;
-    this._map.gotoViewPoint(viewpoint);
+    this._map.gotoViewpoint(viewpoint);
   }
 
   /**
@@ -630,7 +630,7 @@ class OverviewMap {
     this.cameraIconStyle.destroy();
     this.obliqueUnselectedStyle.destroy();
     this.obliqueSelectedStyle.destroy();
-    this._cachedViewPoint = null;
+    this._cachedViewpoint = null;
     this._mapClicked = null;
   }
 }

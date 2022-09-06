@@ -1,6 +1,6 @@
 {
   "mapcontainer": "vcs_map_container",
-  "startingViewPointName": "berlin",
+  "startingViewpointName": "berlin",
   "startingMapName": "cesium",
   "projection": {
     "epsg": "25833",
@@ -880,7 +880,7 @@
       "pitch": -40.93,
       "roll": 360,
       "animate": false,
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "properties": {
         "title": "Berlin"
       }
@@ -902,7 +902,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "properties": {
         "title": "Alexanderplatz"
       }
@@ -924,7 +924,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "ViewPoint"
+      "type": "Viewpoint"
     },
     {
       "name": "potsdamer_platz",
@@ -943,7 +943,7 @@
       "pitch": -90,
       "roll": 0,
       "animate": true,
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "properties": {
         "title": "Potsdamer Platz"
       }
@@ -955,7 +955,7 @@
         33.35758
       ],
       "pitch": -46.14,
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "heading": 359.84,
       "distance": 3267.86,
       "name": "pointcloud",
@@ -999,12 +999,12 @@
     {
       "name": "baseMap.places.alexanderplatz",
       "viewpointName": "alexanderplatz",
-      "type": "ViewPointContentTreeItem"
+      "type": "ViewpointContentTreeItem"
     },
     {
       "name": "baseMap.places.potsdamerPlatz",
       "viewpointName": "potsdamer_platz",
-      "type": "ViewPointContentTreeItem"
+      "type": "ViewpointContentTreeItem"
     },
     {
       "name": "building",
@@ -1059,13 +1059,13 @@
     {
       "name": "viewpoints.berlin",
       "viewpointName": "berlin",
-      "type": "ViewPointContentTreeItem",
+      "type": "ViewpointContentTreeItem",
       "title": "Berlin"
     },
     {
       "name": "viewpoints.brandenburgerTor",
       "viewpointName": "brandenburger_tor",
-      "type": "ViewPointContentTreeItem",
+      "type": "ViewpointContentTreeItem",
       "title": "Brandenburg Gate"
     },
     {
@@ -1077,23 +1077,23 @@
     {
       "name": "viewpoints.places.alexanderplatz",
       "viewpointName": "alexanderplatz",
-      "type": "ViewPointContentTreeItem"
+      "type": "ViewpointContentTreeItem"
     },
     {
       "name": "viewpoints.places.potsdamerPlatz",
       "viewpointName": "potsdamer_platz",
-      "type": "ViewPointContentTreeItem"
+      "type": "ViewpointContentTreeItem"
     },
     {
       "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
       "viewpointName": "kaiser_wilhelm_gedächtniskirche",
-      "type": "ViewPointContentTreeItem",
+      "type": "ViewpointContentTreeItem",
       "title": "Kaiser Wilhelm Memorial Church"
     },
     {
       "name": "viewpoints.oberbaumbruecke",
       "viewpointName": "oberbaumbrücke",
-      "type": "ViewPointContentTreeItem",
+      "type": "ViewpointContentTreeItem",
       "title": "Oberbaum Bridge"
     },
     {
@@ -1114,7 +1114,7 @@
     {
       "name": "reasonableGroup.berlin",
       "viewpointName": "berlin",
-      "type": "ViewPointContentTreeItem"
+      "type": "ViewpointContentTreeItem"
     },
     {
       "name": "reasonableLayerGroup",

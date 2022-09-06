@@ -14,7 +14,7 @@ import {
   OpenStreetMapLayer,
   VcsEvent,
   Projection,
-  ViewPoint,
+  Viewpoint,
   ObliqueMap,
   VectorStyleItem,
 } from '@vcmap/core';
@@ -147,18 +147,18 @@ describe('OverviewMap', () => {
       });
 
       await sleep();
-      const vp = map.getViewPointSync();
+      const vp = map.getViewpointSync();
       expect(vp.groundPosition[0]).to.be.closeTo(13, 0.00000001);
       expect(vp.groundPosition[1]).to.be.closeTo(52, 0.00000001);
     });
 
     it('should synchronize the overview map to the openlayers map', async () => {
-      await map.gotoViewPoint(new ViewPoint({
+      await map.gotoViewpoint(new Viewpoint({
         groundPosition: [13, 52, 0],
         distance: 100,
       }));
       map.olMap.renderSync();
-      const vp = overviewMap.map.getViewPointSync();
+      const vp = overviewMap.map.getViewpointSync();
       expect(vp.groundPosition[0]).to.be.closeTo(13, 0.00000001);
       expect(vp.groundPosition[1]).to.be.closeTo(52, 0.00000001);
     });
@@ -191,34 +191,34 @@ describe('OverviewMap', () => {
     });
 
     it('should not synchronize to the same viewpoint twice', async () => {
-      const initialVp = overviewMap.map.getViewPointSync();
-      const newVp = new ViewPoint({
+      const initialVp = overviewMap.map.getViewpointSync();
+      const newVp = new Viewpoint({
         groundPosition: [13, 52, 0],
         distance: 100,
       });
 
-      await map.gotoViewPoint(newVp);
+      await map.gotoViewpoint(newVp);
       map.olMap.renderSync();
-      await overviewMap.map.gotoViewPoint(initialVp);
+      await overviewMap.map.gotoViewpoint(initialVp);
       overviewMap.map.olMap.renderSync();
-      await map.gotoViewPoint(newVp);
+      await map.gotoViewpoint(newVp);
       map.olMap.renderSync();
-      const vp = overviewMap.map.getViewPointSync();
+      const vp = overviewMap.map.getViewpointSync();
       expect(vp.groundPosition[0]).to.be.closeTo(initialVp.groundPosition[0], 0.00000001);
       expect(vp.groundPosition[1]).to.be.closeTo(initialVp.groundPosition[1], 0.00000001);
     });
 
     it('should stop synchronizing a map, once its deactivated', async () => {
-      const initialVp = overviewMap.map.getViewPointSync();
-      const newVp = new ViewPoint({
+      const initialVp = overviewMap.map.getViewpointSync();
+      const newVp = new Viewpoint({
         groundPosition: [13, 52, 0],
         distance: 100,
       });
 
       await app.maps.setActiveMap(obliqueMap.name);
-      await map.gotoViewPoint(newVp);
+      await map.gotoViewpoint(newVp);
       map.olMap.renderSync();
-      const vp = overviewMap.map.getViewPointSync();
+      const vp = overviewMap.map.getViewpointSync();
       expect(vp.groundPosition[0]).to.be.closeTo(initialVp.groundPosition[0], 0.00000001);
       expect(vp.groundPosition[1]).to.be.closeTo(initialVp.groundPosition[1], 0.00000001);
       await app.maps.setActiveMap(map.name);
@@ -316,7 +316,7 @@ describe('OverviewMap', () => {
     });
 
     it('should zoom to the new images extent', async () => {
-      const gotoViewpointSpy = vi.spyOn(overviewMap.map, 'gotoViewPoint');
+      const gotoViewpointSpy = vi.spyOn(overviewMap.map, 'gotoViewpoint');
       await obliqueMap.setImageByName('034_070_110005034');
       expect(gotoViewpointSpy).toHaveBeenCalledTimes(1);
       const [vp] = gotoViewpointSpy.calls[0];
@@ -342,7 +342,7 @@ describe('OverviewMap', () => {
     });
 
     it('should not longer listen to overview map clicked events', () => {
-      vi.spyOn(map, 'gotoViewPoint');
+      vi.spyOn(map, 'gotoViewpoint');
       const feature = new Feature();
       feature.setId('test');
       const setImageOnMap = vi.spyOn(obliqueMap, 'setImageByName');

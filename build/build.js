@@ -55,7 +55,7 @@ function hashLibraries() {
           {
             transform(source, sid) {
               if (/src(\/|\\)setup.js/.test(sid)) {
-                return source.replace('/node_modules/@vcmap/cesium/Source/', './assets/cesium/');
+                return source.replace('/node_modules/@vcmap/cesium/build/CesiumUnminified/', './assets/cesium/');
               }
               return source;
             },

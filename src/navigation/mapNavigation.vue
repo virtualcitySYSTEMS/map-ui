@@ -73,7 +73,7 @@
    */
   function mapPostRender(map, headingRef, tiltRef) {
     const handler = () => {
-      const vp = map.getViewPointSync();
+      const vp = map.getViewpointSync();
       if (vp) {
         headingRef.value = vp.heading;
         tiltRef.value = vp.pitch;
@@ -98,7 +98,7 @@
    * @returns {Promise<void>}
    */
   async function zoom(map, out = false, zoomFactor = 2) {
-    const viewpoint = await map.getViewPoint();
+    const viewpoint = await map.getViewpoint();
     if (out) {
       viewpoint.distance *= zoomFactor;
     } else {
@@ -107,7 +107,7 @@
     viewpoint.animate = true;
     viewpoint.duration = 0.5;
     viewpoint.cameraPosition = null;
-    await map.gotoViewPoint(viewpoint);
+    await map.gotoViewpoint(viewpoint);
   }
 
   export default {
@@ -141,21 +141,21 @@
         async set(headingValue) {
           let vp;
           if (viewMode.value === OrientationToolsViewMode.OBLIQUE) {
-            vp = await app.maps.activeMap.getViewPoint();
+            vp = await app.maps.activeMap.getViewpoint();
           } else {
-            vp = app.maps.activeMap.getViewPointSync();
+            vp = app.maps.activeMap.getViewpointSync();
           }
           vp.heading = headingValue;
-          app.maps.activeMap.gotoViewPoint(vp);
+          app.maps.activeMap.gotoViewpoint(vp);
         },
       });
 
       const tilt = computed({
         get() { return tiltRef.value; },
         set(tiltValue) {
-          const vp = app.maps.activeMap.getViewPointSync(); // XXX make async and debounce
+          const vp = app.maps.activeMap.getViewpointSync(); // XXX make async and debounce
           vp.pitch = tiltValue;
-          app.maps.activeMap.gotoViewPoint(vp);
+          app.maps.activeMap.gotoViewpoint(vp);
         },
       });
 

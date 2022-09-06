@@ -41,7 +41,7 @@ export { default as NodeContentTreeItem } from './src/contentTree/nodeContentTre
 export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/obliqueCollectionContentTreeItem.js';
 export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.js';
 export { default as VcsObjectContentTreeItem } from './src/contentTree/vcsObjectContentTreeItem.js';
-export { default as ViewPointContentTreeItem } from './src/contentTree/viewPointContentTreeItem.js';
+export { default as ViewpointContentTreeItem } from './src/contentTree/viewpointContentTreeItem.js';
 
 export { default as WindowComponent } from './src/manager/window/WindowComponent.vue';
 export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.vue';

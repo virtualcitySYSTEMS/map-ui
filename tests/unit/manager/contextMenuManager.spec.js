@@ -150,9 +150,9 @@ describe('ContextMenuManager', () => {
     it('should close the window, if the maps viewpoint changes', async () => {
       expect(app.windowManager.has(contextMenuWindowId)).to.be.true;
       const { activeMap } = app.maps;
-      const vp = activeMap.getViewPointSync();
+      const vp = activeMap.getViewpointSync();
       vp.groundPosition[0] += 1;
-      await activeMap.gotoViewPoint(vp);
+      await activeMap.gotoViewpoint(vp);
       activeMap.olMap.renderSync();
       expect(app.windowManager.has(contextMenuWindowId)).to.be.false;
     });

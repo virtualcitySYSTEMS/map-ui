@@ -19,10 +19,10 @@ import { sortByOwner } from '../navbarManager.js';
  * @param {function():void} clear
  * @returns {function():void} - returns stop listener function.
  */
-function setupViewPointChanged(map, clear) {
-  const currentViewpoint = map.getViewPointSync();
+function setupViewpointChanged(map, clear) {
+  const currentViewpoint = map.getViewpointSync();
   const postRenderHandler = () => {
-    if (!currentViewpoint.equals(map.getViewPointSync(), 0.001)) {
+    if (!currentViewpoint.equals(map.getViewpointSync(), 0.001)) {
       clear();
     }
   };
@@ -91,7 +91,7 @@ class ContextMenuManager {
     this._listeners = [
       this._app.layers.stateChanged.addEventListener(clear),
       this._app.maps.mapActivated.addEventListener(clear),
-      setupViewPointChanged(this._app.maps.activeMap, clear),
+      setupViewpointChanged(this._app.maps.activeMap, clear),
     ];
   }
 

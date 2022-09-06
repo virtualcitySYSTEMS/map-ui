@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { check } from '@vcsuite/check';
-import { Collection, MapCollection, ViewPoint } from '@vcmap/core';
+import { Collection, MapCollection, Viewpoint } from '@vcmap/core';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { getWindowPositionOptions } from '../manager/window/windowManager.js';
 
@@ -231,8 +231,8 @@ export function createLinkAction(actionOptions, url) {
 
 /**
  * @param {ActionOptions} actionOptions
- * @param {string|import("@vcmap/core").ViewPoint} viewpoint
- * @param {import("@vcmap/core").Collection<import("@vcmap/core").ViewPoint>} viewpointCollection
+ * @param {string|import("@vcmap/core").Viewpoint} viewpoint
+ * @param {import("@vcmap/core").Collection<import("@vcmap/core").Viewpoint>} viewpointCollection
  * @param {import("@vcmap/core").MapCollection} mapCollection
  * @returns {VcsAction}
  */
@@ -242,7 +242,7 @@ export function createGoToViewpointAction(actionOptions, viewpoint, viewpointCol
     icon: [undefined, String],
     title: [undefined, String],
   });
-  check(viewpoint, [ViewPoint, String]);
+  check(viewpoint, [Viewpoint, String]);
   check(viewpointCollection, Collection);
   check(mapCollection, MapCollection);
 
@@ -255,7 +255,7 @@ export function createGoToViewpointAction(actionOptions, viewpoint, viewpointCol
         viewpointItem = viewpointCollection.getByKey(viewpoint);
       }
       if (viewpointItem) {
-        await mapCollection.activeMap.gotoViewPoint(viewpointItem);
+        await mapCollection.activeMap.gotoViewpoint(viewpointItem);
       }
     },
   };

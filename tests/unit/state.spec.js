@@ -4,7 +4,7 @@ import {
   expect,
   beforeAll,
 } from 'vitest';
-import { ViewPoint } from '@vcmap/core';
+import { Viewpoint } from '@vcmap/core';
 import { createEmptyState, getStateFromURL, setStateToUrl } from '../../src/state.js';
 
 describe('URL state IO', () => {
@@ -24,7 +24,7 @@ describe('URL state IO', () => {
 
       originalState.activeObliqueCollection = 'foo';
       originalState.activeMap = 'bar';
-      originalState.activeViewpoint = new ViewPoint({
+      originalState.activeViewpoint = new Viewpoint({
         cameraPosition: [1, 1, 2],
         groundPosition: [1, 1, 0],
         distance: 2,
@@ -55,7 +55,7 @@ describe('URL state IO', () => {
     });
 
     it('should recreate activeViewpoint', () => {
-      expect(new ViewPoint(recreatedState.activeViewpoint).equals(new ViewPoint(originalState.activeViewpoint)))
+      expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
         .to.be.true;
     });
   });
@@ -78,7 +78,7 @@ describe('URL state IO', () => {
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
-        originalState.activeViewpoint = new ViewPoint({
+        originalState.activeViewpoint = new Viewpoint({
           cameraPosition: [1, 1, 2],
           groundPosition: [1, 1, 0],
           distance: 2,
@@ -109,7 +109,7 @@ describe('URL state IO', () => {
       });
 
       it('should recreate activeViewpoint', () => {
-        expect(new ViewPoint(recreatedState.activeViewpoint).equals(new ViewPoint(originalState.activeViewpoint)))
+        expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
           .to.be.true;
       });
     });
@@ -130,7 +130,7 @@ describe('URL state IO', () => {
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
-        originalState.activeViewpoint = new ViewPoint({
+        originalState.activeViewpoint = new Viewpoint({
           cameraPosition: [1, 1, 2],
           groundPosition: [1, 1, 0],
           distance: 2,
@@ -161,7 +161,7 @@ describe('URL state IO', () => {
       });
 
       it('should recreate activeViewpoint', () => {
-        expect(new ViewPoint(recreatedState.activeViewpoint).equals(new ViewPoint(originalState.activeViewpoint)))
+        expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
           .to.be.true;
       });
     });

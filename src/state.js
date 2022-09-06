@@ -1,6 +1,6 @@
 import { check } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
-import { ViewPoint } from '@vcmap/core';
+import { Viewpoint } from '@vcmap/core';
 
 /**
  * @typedef {Object} LayerState
@@ -37,7 +37,7 @@ import { ViewPoint } from '@vcmap/core';
 
 /**
  * @typedef {Object} AppState
- * @property {import("@vcmap/core").ViewPointOptions} [activeViewpoint]
+ * @property {import("@vcmap/core").ViewpointOptions} [activeViewpoint]
  * @property {string} [activeMap]
  * @property {Array<string>} contextIds
  * @property {Array<LayerState>} layers
@@ -73,10 +73,10 @@ export function createEmptyState() {
 
 /**
  * @param {UrlViewpointState} state
- * @returns {import("@vcmap/core").ViewPointOptions|null}
+ * @returns {import("@vcmap/core").ViewpointOptions|null}
  */
 function parseUrlViewpointState(state) {
-  const vp = new ViewPoint({
+  const vp = new Viewpoint({
     cameraPosition: state[0] ?? undefined,
     groundPosition: state[1] ?? undefined,
     distance: state[2] > 0 ? state[2] : undefined,

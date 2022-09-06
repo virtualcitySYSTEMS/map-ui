@@ -11,7 +11,7 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * @typedef {VcsObjectContentTreeItemProperties} ObliqueCollectionContentTreeItemProperties
- * @property {string|import("@vcmap/core").ViewPoint} defaultViewpoint
+ * @property {string|import("@vcmap/core").Viewpoint} defaultViewpoint
  */
 
 /**
@@ -125,7 +125,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   async clicked() {
     if (this.visible && this._collection && this._app.maps.activeMap instanceof ObliqueMap) {
       const map = /** @type {import("@vcmap/core").Oblique} */ (this._app.maps.activeMap);
-      const vp = await map.getViewPoint();
+      const vp = await map.getViewpoint();
       if (this.state === StateActionState.INACTIVE) {
         this.state = StateActionState.LOADING;
         await map.setCollection(this._collection, vp);

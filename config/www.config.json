@@ -1,5 +1,5 @@
 {
-  "startingViewPointName": "startview",
+  "startingViewpointName": "startview",
   "startingMapName": "cesium",
   "projection": {
     "epsg": "25832",
@@ -1001,7 +1001,7 @@
   ],
   "viewpoints": [
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "Lüdenscheid",
       "cameraPosition": [
         7.628326765047903,
@@ -1020,7 +1020,7 @@
       "animate": true
     },
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "buch",
       "cameraPosition": [
         13.510024049521348,
@@ -1039,7 +1039,7 @@
       "animate": false
     },
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "soest",
       "cameraPosition": [
         8.109298382955318,
@@ -1058,7 +1058,7 @@
       "animate": true
     },
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "water",
       "cameraPosition": [
         13.339344385024594,
@@ -1077,7 +1077,7 @@
       "animate": false
     },
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "Lindau",
       "cameraPosition": [
         9.686669428645894,
@@ -1096,7 +1096,7 @@
       "animate": true
     },
     {
-      "type": "ViewPoint",
+      "type": "Viewpoint",
       "name": "startview",
       "cameraPosition": [
         13.37411102000604,

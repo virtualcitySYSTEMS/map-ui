@@ -14,14 +14,14 @@ import {
   OpenlayersMap,
   VectorLayer,
   VectorStyleItem,
-  ViewPoint,
+  Viewpoint,
 } from '@vcmap/core';
 import { setObliqueMap } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 
 /**
  * @param {VcsUiApp} app
- * @returns {ViewPoint}
+ * @returns {Viewpoint}
  */
 async function setupApp(app) {
   const context = new Context({ id: 'foo' });
@@ -148,11 +148,11 @@ async function setupApp(app) {
   app.maps.add(activeMap);
   await app.maps.setActiveMap(activeMap.name);
 
-  const activeViewpoint = new ViewPoint({
+  const activeViewpoint = new Viewpoint({
     groundPosition: [1, 1],
     distance: 2,
   });
-  await app.maps.activeMap.gotoViewPoint(activeViewpoint);
+  await app.maps.activeMap.gotoViewpoint(activeViewpoint);
   return activeViewpoint;
 }
 
@@ -246,7 +246,7 @@ describe('VcsUiApp', () => {
       });
 
       it('should set the active viewpoint', () => {
-        expect(new ViewPoint(state.activeViewpoint).equals(viewpoint)).to.be.true;
+        expect(new Viewpoint(state.activeViewpoint).equals(viewpoint)).to.be.true;
       });
 
       it('should add contexts', () => {
@@ -330,7 +330,7 @@ describe('VcsUiApp', () => {
       });
 
       it('should set the states viewpoint', async () => {
-        const vp = await app.maps.activeMap.getViewPoint();
+        const vp = await app.maps.activeMap.getViewpoint();
         expect(vp.equals(originalViewpoint)).to.be.true;
       });
     });
@@ -394,7 +394,7 @@ describe('VcsUiApp', () => {
       });
 
       it('should set the states viewpoint', async () => {
-        const vp = await app.maps.activeMap.getViewPoint();
+        const vp = await app.maps.activeMap.getViewpoint();
         expect(vp.equals(originalViewpoint)).to.be.true;
       });
     });
