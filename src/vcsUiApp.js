@@ -29,6 +29,7 @@ import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 import FeatureInfo from './featureInfo/featureInfo.js';
 import UiConfig from './uiConfig.js';
 import { createEmptyState, getStateFromURL } from './state.js';
+import { version } from '../package.json';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -95,6 +96,12 @@ function getLogger() {
  * @class
  */
 class VcsUiApp extends VcsApp {
+  /**
+   * Gets the version of the @vcmap/ui npm package
+   * @returns {string}
+   */
+  static getVersion() { return version; }
+
   constructor() {
     super();
     /**

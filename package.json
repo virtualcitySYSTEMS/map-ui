@@ -11,7 +11,7 @@
     "build-preview": "node build/buildPreview.js",
     "preview": "vite preview",
     "build": "node build/build.js",
-    "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\"",
+    "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\" index.js",
     "prepack": "node build/build.js",
     "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force"
   },

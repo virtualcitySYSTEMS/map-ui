@@ -27,7 +27,6 @@ import { Feature } from 'ol';
 import { check, checkMaybe } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ToolboxType } from '@vcmap/ui';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -36,6 +35,7 @@ import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
 /** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature|import("@vcmap/cesium").Entity} FeatureType */
 
