@@ -19,19 +19,19 @@
     >
       <!-- eslint-disable-next-line -->
       <template #item.key="{ item }">
-        <td class="vcs-table">
+        <td class="vcs-table px-2 overflow-max-width" :title="$t(item.key)">
           {{ $t(item.key) }}
         </td>
       </template>
       <!-- eslint-disable-next-line -->
       <template #item.value="{ item }">
-        <td class="vcs-table">
+        <td class="vcs-table px-2 overflow-max-width" :title="$t(item.value)">
           {{ $t(item.value) }}
         </td>
       </template>
       <template #footer>
         <v-divider />
-        <v-container class="pa-2" v-if="items.length > itemsPerPageRef">
+        <v-container class="pa-2 vcs-pagination-bar accent" v-if="items.length > itemsPerPageRef">
           <v-row
             dense
             no-gutters
@@ -55,20 +55,23 @@
                   v-for="(number, index) in itemsPerPageArray"
                   :key="index"
                   @click="updateItemsPerPage(number)"
+                  style="min-height: auto; height: 24px; text-align: right;"
                 >
                   <v-list-item-title>{{ number }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
-            <span class="grey--text mx-2">{{ $t('components.vcsTable.itemsPerPage') }}</span>
-            <span class="grey--text mx-2">{{ itemsFrom }} - {{ itemsTo }} of {{ items.length }}</span>
+            <span class="mx-2">{{ $t('components.vcsTable.itemsPerPage') }}</span>
+            <span class="mx-2">
+              {{ itemsFrom }} - {{ itemsTo }} {{ $t('components.vcsTable.ofItems') }} {{ numberOfItems }}
+            </span>
             <VcsButton
               small
               icon="mdi-chevron-left"
               @click="formerPage"
               tooltip="components.vcsTable.formerPage"
               :disabled="page < 2"
-              class="mx-2"
+              class="ml-1"
             />
             <VcsButton
               small
@@ -76,7 +79,7 @@
               @click="nextPage"
               tooltip="components.vcsTable.nextPage"
               :disabled="page > numberOfPages - 1"
-              class="mx-1"
+              class="ml-1"
             />
           </v-row>
         </v-container>
@@ -116,13 +119,18 @@
   }
 
   /**
-   * @description A table view for feature attributes using {@link https://vuetifyjs.com/en/api/v-data-table/#props|vuetify v-data-table }
+   * @description A table view for feature attributes using {@link https://vuetifyjs.com/en/api/v-data-table/#props v-data-table }
    * @vue-prop {string} featureId - feature's id
    * @vue-prop {Object} attributes - feature's attributes
    * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names
    * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
    * @vue-prop {string} [searchbarPlaceholder='Search'] - placeholder for searchbar
-   * @vue-computed {Array<{key:string,value:string}>} items - from attributes derived table items
+   * @vue-computed {Array<TableItem>} items - from attributes derived table items
+   * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
+   * @vue-computed {number} numberOfItems - number of filtered items (depending on search).
+   * @vue-computed {number} numberOfPages - number of pages depending on number of items, search and itemsPerPage.
+   * @vue-computed {number} itemsFrom - index of first item shown on current page.
+   * @vue-computed {number} itemsTo - index of last item shown on current page.
    */
   export default {
     name: 'VcsTable',
@@ -162,7 +170,13 @@
     },
     setup(props) {
       const vm = getCurrentInstance().proxy;
-
+      /**
+       * @type {Ref<UnwrapRef<string>>}
+       */
+      const search = ref('');
+      /**
+       * @type {ComputedRef<Array<TableItem>>}
+       */
       const items = computed(() => {
         return attributesToItems({
           featureId: props.featureId,
@@ -170,6 +184,33 @@
         });
       });
 
+      /**
+       * @param {any} value
+       * @param {string|undefined} filter
+       * @param {TableItem} item
+       * @returns {boolean}
+       */
+      const handleFilter = (value, filter, item) => {
+        if (filter) {
+          const q = filter.toLocaleLowerCase();
+          return [item.key, item.value].some((i) => {
+            const content = i.toString();
+            const translated = vm.$t(content);
+            return translated.toLowerCase().includes(q) || content.toLowerCase().includes(q);
+          });
+        }
+        return true;
+      };
+
+      /**
+       * @type {ComputedRef<TableItem[]>}
+       */
+      const filteredItems = computed(() => items.value.filter(item => handleFilter(item.value, search.value, item)));
+      const numberOfItems = computed(() => filteredItems.value.length);
+
+      /**
+       * @type {ComputedRef<Array<{text: string, value: string}>>}
+       */
       const translatedHeaders = computed(() => {
         return props.headers.map((hd) => {
           hd.text = vm.$t(hd.text);
@@ -177,42 +218,33 @@
         });
       });
 
+      /**
+       * @type {Ref<UnwrapRef<number>>}
+       */
       const itemsPerPageRef = ref(props.itemsPerPage);
       const numberOfPages = computed(() => {
-        return Math.ceil(items.value.length / itemsPerPageRef.value);
+        return Math.ceil(numberOfItems.value / itemsPerPageRef.value);
       });
-
+      /**
+       * @type {Ref<UnwrapRef<number>>}
+       */
       const page = ref(1);
       const itemsFrom = computed(() => ((page.value - 1) * itemsPerPageRef.value) + 1);
       const itemsTo = computed(() => {
         const last = page.value * itemsPerPageRef.value;
-        return last < items.value.length ? last : items.value.length;
+        return last < numberOfItems.value ? last : numberOfItems.value;
       });
 
-      /**
-       * @param {any} value
-       * @param {string} search
-       * @param {TableItem} item
-       * @returns {boolean}
-       */
-      // eslint-disable-next-line default-param-last
-      const handleFilter = (value, search = '', item) => {
-        const q = search.toLocaleLowerCase();
-        return [item.key, item.value].some((i) => {
-          const content = i.toString();
-          const translated = vm.$t(content);
-          return translated.toLowerCase().includes(q) || content.toLowerCase().includes(q);
-        });
-      };
-
       return {
-        search: ref(''),
+        search,
         page,
         items,
+        filteredItems,
         itemsPerPageRef,
         itemsFrom,
         itemsTo,
         numberOfPages,
+        numberOfItems,
         nextPage() {
           if (page.value + 1 <= numberOfPages.value) {
             page.value += 1;
@@ -233,13 +265,47 @@
   };
 </script>
 
-<style lang="scss"  scoped>
-.vcs-table {
-  td {
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+<style lang="scss" scoped>
+::v-deep{
+  .vcs-table {
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &.overflow-max-width{
+        max-width: 160px;
+      }
+      &.v-data-table__mobile-row{
+        justify-content: left;
+        height: 27px;
+        min-height: auto;
+      }
+    }
+    th.sortable{
+      padding: 0 8px;
+      span{
+        vertical-align: middle;
+        padding: 0 4px 0 0;
+      }
+    }
+  }
+  .v-data-table__mobile-row__cell{
+    td.vcs-table.overflow-max-width{
+      max-width: 260px;
+    }
+  }
+  .v-btn.vcs-button--small{
+    height: 100% !important;
+    display: block;
+  }
+}
+.vcs-pagination-bar{
+  .vcs-button-wrap{
+    height: 25px;
+    border: 1px solid lightgrey;
+    padding: 0 4px;
+    background-color: var(--v-basic-base);
+    border-radius: 4px;
   }
 }
 </style>

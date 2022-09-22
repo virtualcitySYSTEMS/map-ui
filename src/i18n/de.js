@@ -49,6 +49,7 @@ const messages = {
       value: 'Wert',
       searchbarPlaceholder: 'Name, Wert, ...',
       itemsPerPage: 'pro Seite',
+      ofItems: 'von',
       nextPage: 'Nächste Seite',
       formerPage: 'Vorherige Seite',
     },

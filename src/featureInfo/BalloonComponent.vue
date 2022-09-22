@@ -1,11 +1,11 @@
 <template>
   <v-card
-    class="mx-auto"
+    class="mx-auto elevation-0"
     max-width="400"
     v-if="position"
   >
     <slot name="balloon-header" :attrs="{...$props, ...$attrs}">
-      <v-list-item two-line>
+      <v-list-item class="px-2">
         <v-list-item-avatar
           tile
           size="40"
@@ -31,10 +31,10 @@
 
     <v-divider />
 
-    <v-card class="overflow-y-auto" max-height="250">
+    <v-card class="overflow-y-auto py-2" max-height="250">
       <slot :attrs="{...$props, ...$attrs}">
         <v-list v-for="(value, name, index) in attributes" :key="`attribute-${index}`">
-          <v-list-item>
+          <v-list-item class="px-2">
             <v-list-item-content>
               <v-list-item-title>
                 {{ name }}
@@ -124,17 +124,23 @@
     },
   };
 </script>
-
-<style>
-.balloon:before {
-  content: "";
-  position: absolute;
-  bottom: -20px;
-  left: 40px;
-  border-width: 20px 20px 0;
-  border-style: solid;
-  border-color: white transparent;
-  display: block;
-  width: 0;
-}
+<style lang="scss">
+  .balloon hr:first-child {
+    display: none;
+  }
+  .balloon:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    border-width: 20px 20px 0;
+    border-style: solid;
+    border-color: var(--v-basic-base) transparent;
+    display: block;
+    width: 0;
+  }
+  .balloon .v-card,
+  .balloon .v-list.v-sheet {
+    background-color: var(--v-basic-base) !important;
+  }
 </style>
