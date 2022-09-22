@@ -399,6 +399,10 @@
     {
       "name": "@vcmap/hello-world",
       "entry": "plugins/@vcmap/hello-world/index.js"
+    },
+    {
+      "name": "@vcmap/print",
+      "entry": "plugins/@vcmap/print/index.js"
     }
   ],
   "uiConfig": [

@@ -378,7 +378,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Summer Trees",
-      "url": "https://www.virtualcitymap.de/datasource-data/f764ffb4-723d-429f-b797-5ca4c1061201/tileset.json",
+      "url": "https://www.virtualcitymap.de/datasource-data/c8e48290-c1f3-491a-98a6-24ee1e0116d1/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -391,7 +391,7 @@
       "type": "TerrainLayer",
       "name": "GermanyBaseTerrain",
       "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "requestVertexNormals": true,
       "exclusiveGroups": [
         "terrain"
@@ -403,8 +403,8 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Berlin - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/72fa3c14-03bc-4c26-a4ac-8c6dec37e65a/tileset.json",
-      "activeOnStartup": false,
+      "url": "https://www.virtualcitymap.de/datasource-data/1da2e8e4-4e3b-4b15-a91b-7bfa967a8c11/tileset.json",
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "exclusiveGroups": [
@@ -455,7 +455,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Berlin LOD2 - Textured",
-      "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "url": "https://www.virtualcitymap.de/datasource-data/2c9e783d-3e17-40f4-b4d5-6cf9591dcb1f/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -554,7 +554,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Mesh Classification Layer",
       "url": "https://www.virtualcitymap.de/datasource-data/DEMO-Lindau/berlin_2D/tileset.json",
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "style": "dummyClassificationStyle",
@@ -653,7 +653,7 @@
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
       "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh_2020/",
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "allowPicking": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -724,7 +724,13 @@
       "properties": {
         "title": "Fließgeschwindigkeit, seltenes Ereignis (HQ100)",
         "defaultViewpoint": "soest",
-        "featureInfo": "waterspeed"
+        "featureInfo": "waterspeed",
+        "legend": [{
+          "type": "ImageLegendItem",
+          "tooltip": "Fließgeschwindigkeit",
+          "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=fliessgeschwindigkeiten_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
+          "popoutBtn": true
+        }]
       }
     },
     {
@@ -756,7 +762,13 @@
       "properties": {
         "title": "Wasserhöhen, seltenes Ereignis (HQ100)",
         "defaultViewpoint": "soest",
-        "featureInfo": "waterheight"
+        "featureInfo": "waterheight",
+        "legend": [{
+          "type": "ImageLegendItem",
+          "tooltip": "Fließgeschwindigkeit",
+          "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=wasserhoehen_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
+          "popoutBtn": true
+        }]
       }
     },
     {
@@ -1227,6 +1239,22 @@
       "type": "LayerContentTreeItem",
       "name": "thematic.waterareas2",
       "layerName": "festgesetzte Überschwemmungsgebiete"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "@vcmap/print",
+      "entry": "plugins/@vcmap/print/index.js",
+      "contactDetails": {
+        "department": "Entwicklung",
+        "name": "Virtual City Systems",
+        "streetAddress": "Tauentzienstr. 7 b/c",
+        "zipAndCity": "10789 Berlin",
+        "country": "Germany",
+        "mail": "info@vc.systems",
+        "phone": "+49 (0) 30 . 8904 . 871 . 0",
+        "fax": "+49 (0) 30 . 8904 . 871 . 0"
+      }
     }
   ]
 }

@@ -56,7 +56,7 @@
 
   /**
    * @description A component rendering configured legend information for active layers.
-   * @vue-prop {import("vue").Reactive<{string,LegendEntry}>} entries - legend entries to be displayed
+   * @vue-prop {import("vue").Ref<Array<LegendEntry>>} entries - legend entries to be displayed
    */
   export default {
     name: 'VcsLegend',
@@ -85,8 +85,13 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-list-item--dense {
   height: 32px;
+}
+::v-deep {
+  .treeview-label {
+    max-width: 189px;
+  }
 }
 </style>

@@ -189,32 +189,34 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
         },
       },
     };
-    await fs.promises.mkdir(path.join(process.cwd(), 'dist', 'plugins', plugin), { recursive: true });
+    const distPath = path.join(process.cwd(), 'dist', 'plugins', plugin);
+    if (!fs.existsSync(distPath)) {
+      await fs.promises.mkdir(distPath, { recursive: true });
+    }
     await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
   });
 
-  promises.push(...dependentPlugins.flatMap((pluginName) => {
+  promises.push(...dependentPlugins.map(async (pluginName) => {
     let scope = '';
     let name = pluginName;
     if (pluginName.startsWith('@')) {
       [scope, name] = pluginName.split('/');
     }
 
-    const copyPromises = [fs.promises.cp(
+    await fs.promises.cp(
       path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
       path.join(process.cwd(), 'dist', 'plugins', scope, name),
-      { recursive: true },
-    )];
+      { recursive: true, force: true },
+    );
 
+    // must be copied one after the other to avoid race conditions
     if (fs.existsSync(path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'))) {
-      copyPromises.push(fs.promises.cp(
+      await fs.promises.cp(
         path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'),
         path.join(process.cwd(), 'dist', 'plugins', scope, name, 'plugin-assets'),
-        { recursive: true },
-      ));
+        { recursive: true, force: true },
+      );
     }
-    return copyPromises;
   }));
-
   await Promise.all(promises);
 }

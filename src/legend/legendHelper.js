@@ -1,5 +1,5 @@
 import { getShapeFromOptions } from '@vcmap/core';
-import Vue, { reactive } from 'vue';
+import { ref } from 'vue';
 
 /**
  * @enum {string}
@@ -104,6 +104,7 @@ export function getImageSrcFromShape(image) {
 
 /**
  * @typedef {Object} LegendEntry
+ * @property {string} key
  * @property {string} title - layer or entry name
  * @property {Array<LegendItem>} legend - legend properties
  * @property {Array<VcsAction>} actions - popout actions
@@ -111,11 +112,12 @@ export function getImageSrcFromShape(image) {
 
 /**
  * creates a LegendEntry with title, options and optionally popout action to the entries array
+ * @param {string} key - layerName
  * @param {string} title
  * @param {Array<LegendItem>} legend
  * @returns {LegendEntry}
  */
-export function createLayerLegendEntry(title, legend) {
+export function createLayerLegendEntry(key, title, legend) {
   const actions = [];
   legend.forEach((item) => {
     // XXX only one popout button allowed. Rethink if use case for multiple popout buttons comes up.
@@ -128,19 +130,19 @@ export function createLayerLegendEntry(title, legend) {
       });
     }
   });
-  return { title, legend, actions };
+  return { key, title, legend, actions };
 }
 
 /**
  *
  * @param {VcsUiApp} app
- * @returns {{entries: import("vue").Reactive<{string,LegendEntry}>, destroy: (function():void)}}
+ * @returns {{entries: import("vue").Ref<Array<LegendEntry>>, destroy: (function():void)}}
  */
 export function getLegendEntries(app) {
   /**
-   * @type {import("vue").Reactive<{string,LegendEntry}>}
+   * @type {import("vue").Ref<Array<LegendEntry>>}>}
    */
-  const entries = reactive({});
+  const entries = ref([]);
   /**
    * @type {Object<string,function():void>}
    */
@@ -150,11 +152,14 @@ export function getLegendEntries(app) {
    * @param {import("@vcmap/core").Layer} layer
    */
   function removeEntryForLayer(layer) {
-    const key = layer.name;
-    Vue.delete(entries, key); // XXX Vue.delete can be removed on Vue3
-    if (styleChangedListener[key]) {
-      styleChangedListener[key]();
-      delete styleChangedListener[key];
+    const layerName = layer.name;
+    const index = entries.value.findIndex(({ key }) => { return key === layerName; });
+    if (index >= 0) {
+      entries.value.splice(index, 1);
+    }
+    if (styleChangedListener[layerName]) {
+      styleChangedListener[layerName]();
+      delete styleChangedListener[layerName];
     }
   }
 
@@ -170,7 +175,8 @@ export function getLegendEntries(app) {
       const title = layer.properties.title || layer.name;
       const legend = layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
-        Vue.set(entries, key, createLayerLegendEntry(title, legend)); // XXX Vue.set can be removed on Vue3
+        const legendEntry = createLayerLegendEntry(key, title, legend);
+        entries.value.push(legendEntry);
       }
       if (layer.styleChanged) {
         styleChangedListener[layer.name] = layer.styleChanged.addEventListener(() => syncLayerLegendEntries(layer));

@@ -178,10 +178,10 @@
 
     /**
      * adds or removes the legend button, depending on the number of entries
-     * @param {import("vue").Reactive<{string,LegendEntry}>} newEntries
+     * @param {Array<LegendEntry>} newEntries
      */
     const handleLegendButton = (newEntries) => {
-      if (Object.keys(newEntries).length > 0) {
+      if (newEntries.length > 0) {
         if (!app.navbarManager.has('legend')) {
           app.navbarManager.add(
             {
@@ -197,7 +197,7 @@
         app.windowManager.remove('legend');
       }
     };
-    handleLegendButton(entries);
+    handleLegendButton(entries.value);
 
     const stopWatching = watch(
       entries,
