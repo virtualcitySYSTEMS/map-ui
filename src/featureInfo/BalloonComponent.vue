@@ -8,14 +8,15 @@
       <v-list-item class="px-2">
         <v-list-item-avatar
           tile
-          size="40"
+          size="20"
+          class="mr-2 align-self-start"
         >
           <v-icon color="primary">
             $vcsInfo
           </v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="text-h5">
+          <v-list-item-title class="text-h6">
             {{ title }}
           </v-list-item-title>
           <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
@@ -142,5 +143,9 @@
   .balloon .v-card,
   .balloon .v-list.v-sheet {
     background-color: var(--v-basic-base) !important;
+  }
+  .balloon .v-list-item .v-list-item__title,
+  .balloon .v-list-item .v-list-item__subtitle {
+    line-height: 18px;
   }
 </style>
