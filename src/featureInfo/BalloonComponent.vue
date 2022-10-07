@@ -1,11 +1,11 @@
 <template>
   <v-card
-    class="mx-auto elevation-0"
+    class="mx-auto mb-1 elevation-0"
     max-width="400"
     v-if="position"
   >
     <slot name="balloon-header" :attrs="{...$props, ...$attrs}">
-      <v-list-item class="px-2">
+      <v-list-item class="px-2 pr-1 align-start">
         <v-list-item-avatar
           tile
           size="20"
@@ -15,24 +15,25 @@
             $vcsInfo
           </v-icon>
         </v-list-item-avatar>
-        <v-list-item-content>
+        <v-list-item-content class="py-2 pr-1 align-self-start">
           <v-list-item-title class="text-h6">
             {{ $t(title) }}
           </v-list-item-title>
-          <v-list-item-subtitle>{{ $t(subtitle) }}</v-list-item-subtitle>
+          <v-list-item-subtitle v-if="subtitle">
+            {{ $t(subtitle) }}
+          </v-list-item-subtitle>
         </v-list-item-content>
         <VcsButton
           @click.stop="close"
           small
           icon="mdi-close-thick"
-          class="mb-8"
         />
       </v-list-item>
     </slot>
 
     <v-divider />
 
-    <v-card class="overflow-y-auto py-2" max-height="250">
+    <v-card class="overflow-y-auto py-2 elevation-0" max-height="250">
       <slot :attrs="{...$props, ...$attrs}">
         <v-list v-for="(value, name, index) in attributes" :key="`attribute-${index}`">
           <v-list-item class="px-2">
@@ -125,6 +126,7 @@
     },
   };
 </script>
+
 <style lang="scss">
   .balloon hr:first-child {
     display: none;
@@ -136,13 +138,14 @@
     left: 40px;
     border-width: 20px 20px 0;
     border-style: solid;
-    border-color: var(--v-basic-base) transparent;
     display: block;
     width: 0;
   }
-  .balloon .v-card,
-  .balloon .v-list.v-sheet {
-    background-color: var(--v-basic-base) !important;
+  .v-sheet.theme--light.balloon:after{
+    border-color: #FFFFFF transparent;
+  }
+  .v-sheet.theme--dark.balloon:after{
+    border-color: #1E1E1E transparent;
   }
   .balloon .v-list-item .v-list-item__title,
   .balloon .v-list-item .v-list-item__subtitle {
