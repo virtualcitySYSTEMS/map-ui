@@ -37,8 +37,7 @@
 
 <script>
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
-  import { ObliqueMap, CesiumMap, OpenlayersMap } from '@vcmap/core';
-  import { unByKey } from 'ol/Observable.js';
+  import { ObliqueMap, CesiumMap } from '@vcmap/core';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
   import { getWindowComponentOptions } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
@@ -63,32 +62,6 @@
       return OrientationToolsViewMode.THREE_D;
     }
     return OrientationToolsViewMode.TWO_D;
-  }
-
-  /**
-   * @param {VcsMap} map
-   * @param {Ref<number>} headingRef
-   * @param {Ref<number>} tiltRef
-   * @returns {function():void}
-   */
-  function mapPostRender(map, headingRef, tiltRef) {
-    const handler = () => {
-      const vp = map.getViewpointSync();
-      if (vp) {
-        headingRef.value = vp.heading;
-        tiltRef.value = vp.pitch;
-      }
-    };
-
-    if (map instanceof CesiumMap) {
-      return map.getScene().postRender.addEventListener(handler);
-    } else if (map instanceof ObliqueMap || map instanceof OpenlayersMap) {
-      const key = map.olMap.on('postrender', handler);
-      return () => {
-        unByKey(key);
-      };
-    }
-    return () => {};
   }
 
   /**
@@ -125,17 +98,19 @@
       const headingRef = ref(0);
       const tiltRef = ref(0);
 
-      let postRenderHandler = () => {};
-
-      const setActiveMap = (map) => {
+      const handleRenderEvent = ({ map }) => {
         viewMode.value = getViewModeForMap(map);
-        postRenderHandler();
-        postRenderHandler = mapPostRender(map, headingRef, tiltRef);
+        const vp = map.getViewpointSync();
+        if (vp) {
+          headingRef.value = vp.heading;
+          tiltRef.value = vp.pitch;
+        }
       };
 
-      app.maps.mapActivated.addEventListener(setActiveMap);
-      setActiveMap(app.maps.activeMap);
-
+      const postRenderHandler = app.maps.postRender.addEventListener(handleRenderEvent);
+      if (app.maps.activeMap) {
+        handleRenderEvent({ map: app.maps.activeMap });
+      }
       const heading = computed({
         get() { return headingRef.value; },
         async set(headingValue) {
@@ -169,6 +144,7 @@
         if (destroy) {
           destroy();
         }
+        postRenderHandler();
       });
 
       return {

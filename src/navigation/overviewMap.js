@@ -1,6 +1,5 @@
 import {
   OpenlayersMap,
-  CesiumMap,
   ObliqueMap,
   VectorLayer,
   VectorStyleItem,
@@ -308,12 +307,10 @@ class OverviewMap {
     }
     this._active = true;
     const { activeMap } = this._app.maps;
-    if (activeMap instanceof CesiumMap) {
-      await this._initializeForCesium(activeMap);
-    } else if (activeMap instanceof OpenlayersMap) {
-      await this._initializeForOpenlayers(activeMap);
-    } else if (activeMap instanceof ObliqueMap) {
+    if (activeMap instanceof ObliqueMap) {
       await this._initializeForOblique(activeMap);
+    } else {
+      await this._initializePostRenderHandler(activeMap);
     }
   }
 
@@ -343,45 +340,19 @@ class OverviewMap {
   }
 
   /**
-   * @param {import("@vcmap/core").CesiumMap} cesiumMap
+   * @param {import("@vcmap/core").VcsMap} map
    * @returns {Promise<void>}
    * @private
    */
-  async _initializeForCesium(cesiumMap) {
+  async _initializePostRenderHandler(map) {
     if (!this._cameraIconLayer) {
       this._setupCameraIconLayer();
     }
-    if (cesiumMap.initialized) {
-      const cesiumViewer = cesiumMap.getCesiumWidget();
-      const cesiumScene = cesiumViewer.scene;
-      const navRemover = this._addNavigationListener(cesiumMap);
-      const prRemover = cesiumScene.postRender.addEventListener(this._addCameraFeature, this);
-      const cleanupTasks = () => {
-        prRemover();
-        navRemover();
-        this._cameraIconLayer.deactivate();
-      };
-      this._listeners.push(cleanupTasks);
-      await this._cameraIconLayer.activate();
-    }
-  }
-
-  /**
-   * @param {import("@vcmap/core").OpenlayersMap} map
-   * @returns {Promise<void>}
-   * @private
-   */
-  async _initializeForOpenlayers(map) {
-    if (!this._cameraIconLayer) {
-      this._setupCameraIconLayer();
-    }
-    const { olMap } = map;
-    const navListener = this._addNavigationListener(map);
-    const prUnKey = olMap.on('postrender', this._addCameraFeature.bind(this));
-
+    const navRemover = this._addNavigationListener(map);
+    const prRemover = map.postRender.addEventListener(this._addCameraFeature.bind(this));
     const cleanupTasks = () => {
-      unByKey(prUnKey);
-      navListener();
+      prRemover();
+      navRemover();
       this._cameraIconLayer.deactivate();
     };
     this._listeners.push(cleanupTasks);
@@ -543,7 +514,7 @@ class OverviewMap {
    * @private
    */
   _addCameraFeature() {
-    const viewpoint = this._app.maps.activeMap.getViewpointSync();
+    const viewpoint = this._app.maps.activeMap?.getViewpointSync();
     if (!viewpoint || !viewpoint.isValid() || viewpoint.equals(this._cachedViewpoint)) {
       return;
     }

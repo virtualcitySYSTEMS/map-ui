@@ -1,5 +1,6 @@
 # 5.0.0-rc.next
 - Update Openlayers to version 7.0.0
+- use new core postRenderHandler in NavigationControls and OverviewMap
 
 # 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue
