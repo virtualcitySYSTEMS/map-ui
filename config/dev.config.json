@@ -403,6 +403,10 @@
     {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js"
+    },
+    {
+      "name": "@vcmap/search-nominatim",
+      "entry": "plugins/@vcmap/search-nominatim/index.js"
     }
   ],
   "uiConfig": [

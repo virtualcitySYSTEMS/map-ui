@@ -54,7 +54,7 @@
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
-   * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field/|vuetify v-text-field}.
+   * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
    * Provides two height options depending on "dense" property:
    * - if dense is set true (default), height is 24 px
    * - if dense is set false, height is 32 px
@@ -101,7 +101,7 @@
         return this.joinedErrorBucket.length > 0 && (this.firstInput || !this.neverBlurred);
       },
       isOutlined() {
-        return (this.hover || this.focus || this.isError) && !(this.$attrs.disabled || this.$attrs.disabled === '');
+        return (this.$attrs.outlined || this.hover || this.focus || this.isError) && !(this.$attrs.disabled || this.$attrs.disabled === '');
       },
       joinedErrorBucket() {
         if (!this.isMounted) {
@@ -124,6 +124,8 @@
     },
     mounted() {
       this.isMounted = true;
+      // fix for autofocus
+      this.focus = this.$attrs.autofocus != null;
     },
   };
 </script>

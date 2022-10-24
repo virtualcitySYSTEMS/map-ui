@@ -70,6 +70,13 @@ const messages = {
     openInNew: 'In neuem Browser Tab öffnen',
     defaultLabelText: 'Text',
   },
+  search: {
+    title: 'Suche',
+    tooltip: 'Suche',
+    select: 'Suchergebnis selektieren',
+    placeholder: 'Suche nach Straße, Adresse, Ort, POI',
+    zoomToFeatureAction: 'Auf Ergebnis zoomen',
+  },
   toolbox: {
     flight: 'Flug',
     miscellaneous: 'Verschiedenes',

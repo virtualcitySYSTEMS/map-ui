@@ -9,6 +9,7 @@ export {
   createModalAction,
   createLinkAction,
   createGoToViewpointAction,
+  createZoomToFeatureAction,
 } from './src/actions/actionHelper.js';
 export {
   createStateRefAction,
@@ -68,11 +69,13 @@ export { default as ContextMenuInteraction } from './src/manager/contextMenu/con
 
 export { applyKeyMapping, applyValueMapping, default as AbstractFeatureInfoView } from './src/featureInfo/abstractFeatureInfoView.js';
 export { extractNestedKey, default as BalloonFeatureInfoView } from './src/featureInfo/balloonFeatureInfoView.js';
+export { default as AddressBalloonFeatureInfoView } from './src/featureInfo/addressBalloonFeatureInfoView.js';
 export { getBalloonPosition, setBalloonPosition, setupBalloonPositionListener } from './src/featureInfo/balloonHelper.js';
 export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
 export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';
 export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.js';
 export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.js';
+export { getHighlightStyle, featureInfoViewSymbol } from './src/featureInfo/featureInfo.js';
 
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';

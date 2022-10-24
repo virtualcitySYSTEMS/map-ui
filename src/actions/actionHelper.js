@@ -1,8 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { check } from '@vcsuite/check';
-import { Collection, MapCollection, Viewpoint } from '@vcmap/core';
+import { Collection, Extent, MapCollection, mercatorProjection, Viewpoint } from '@vcmap/core';
+import { Feature } from 'ol';
+import { reactive, ref } from 'vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { getWindowPositionOptions } from '../manager/window/windowManager.js';
+import { getWindowPositionOptions, WindowSlot } from '../manager/window/windowManager.js';
+import SearchComponent from '../search/searchComponent.vue';
 
 /**
  * @typedef {Object} ActionOptions
@@ -86,6 +89,60 @@ export function createToggleAction(actionOptions, windowComponent, windowManager
 
   const destroy = () => { listeners.forEach((cb) => { cb(); }); };
   return { action, destroy };
+}
+
+/**
+ * Creates a toggle button for the search tool, which is only available, if at least one search implementation is registered.
+ * @param {VcsUiApp} app
+ * @returns {{ searchAction: import("vue").Ref<import("vue").UnwrapRef<VcsAction>|null>, destroy: function():void }}
+ */
+export function createSearchButtonAction(app) {
+  let destroyAction = () => {};
+  const searchAction = ref(null);
+  const determineAction = () => {
+    if (app.windowManager.has('searchId')) {
+      app.windowManager.remove('searchId');
+    }
+    if (app.search.size > 0 && searchAction.value === null) {
+      const action = createToggleAction(
+        {
+          name: 'search.title',
+          icon: '$vcsSearch',
+          title: 'search.tooltip',
+        },
+        {
+          id: 'searchId',
+          component: SearchComponent,
+          state: { hideHeader: true },
+          slot: WindowSlot.DETACHED,
+          position: {
+            right: 0,
+            top: 0,
+            width: 440,
+          },
+        },
+        app.windowManager,
+        vcsAppSymbol,
+      );
+      destroyAction = action.destroy;
+      searchAction.value = reactive(action.action);
+    } else if (searchAction.value !== null) {
+      destroyAction();
+      destroyAction = () => {};
+      searchAction.value = null;
+    }
+  };
+  determineAction();
+  const listeners = [
+    app.search.added.addEventListener(determineAction),
+    app.search.removed.addEventListener(determineAction),
+  ];
+  const destroy = () => {
+    destroyAction();
+    listeners.forEach((cb) => { cb(); });
+  };
+
+  return { searchAction, destroy };
 }
 
 /**
@@ -257,6 +314,50 @@ export function createGoToViewpointAction(actionOptions, viewpoint, viewpointCol
       if (viewpointItem) {
         await mapCollection.activeMap.gotoViewpoint(viewpointItem);
       }
+    },
+  };
+}
+
+/**
+ * calculates and returns a viewpoint using feature's extent
+ * @param {import("ol").Feature<import("ol/geom/Geometry").default>} feature
+ * @returns {Viewpoint|null}
+ */
+export function getViewpointFromFeature(feature) {
+  const extent = new Extent({
+    coordinates: feature.getGeometry()?.getExtent?.(),
+    projection: mercatorProjection,
+  });
+
+  if (!extent || !extent.isValid()) {
+    return null;
+  }
+  return Viewpoint.createViewpointFromExtent(extent);
+}
+
+/**
+ * Creates an action, which when clicked, zooms to the provided feature
+ * @param {ActionOptions} actionOptions
+ * @param {import("ol").Feature<import("ol/geom/Geometry").default>} feature
+ * @param {import("@vcmap/core").MapCollection} mapCollection
+ * @returns {VcsAction|null} returns null if the feature does not have a geometry with a valid extent
+ */
+export function createZoomToFeatureAction(actionOptions, feature, mapCollection) {
+  check(actionOptions, {
+    name: String,
+    icon: [undefined, String],
+    title: [undefined, String],
+  });
+  check(feature, Feature);
+  check(mapCollection, MapCollection);
+
+  const viewpoint = getViewpointFromFeature(feature);
+
+  return {
+    title: 'search.zoomToFeatureAction',
+    ...actionOptions,
+    async callback() {
+      await mapCollection.activeMap.gotoViewpoint(viewpoint);
     },
   };
 }

@@ -59,7 +59,7 @@ function getLogger() {
  * @param {string} defaultFillColor
  * @returns {import("ol/style/Style").default|import("@vcmap/core").VectorStyleItem}
  */
-function getHighlightStyle(feature, layer, defaultFillColor) {
+export function getHighlightStyle(feature, layer, defaultFillColor) {
   if (layer && layer.highlightStyle) {
     return layer.highlightStyle;
   }
@@ -174,6 +174,12 @@ function setupFeatureInfoTool(app) {
  * @type {ClassRegistry<AbstractFeatureInfoView>}
  */
 export const featureInfoClassRegistry = new ClassRegistry();
+
+/**
+ * Symbol added to features to overwrite the layers predefined feature info
+ * @type {symbol}
+ */
+export const featureInfoViewSymbol = Symbol('featureInfoView');
 
 /**
  * @class FeatureInfo
@@ -355,7 +361,9 @@ class FeatureInfo {
     checkMaybe(windowPosition, [Number]);
     checkMaybe(featureInfoView, AbstractFeatureInfoView);
 
-    const usedFeatureInfoView = featureInfoView ?? this._getFeatureInfoViewForFeature(feature);
+    const usedFeatureInfoView = feature[featureInfoViewSymbol] ??
+      featureInfoView ??
+      this._getFeatureInfoViewForFeature(feature);
     const layer = this._app.layers.getByKey(feature[vcsLayerName]);
 
     if (usedFeatureInfoView && layer) {

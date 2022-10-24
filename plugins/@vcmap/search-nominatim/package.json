@@ -1,0 +1,43 @@
+{
+  "name": "@vcmap/search-nominatim",
+  "version": "1.0.0",
+  "description": "A search plugin for OSM Nominatim",
+  "main": "index.js",
+  "scripts": {
+    "prepublishOnly": "vcmplugin build",
+    "build": "vcmplugin build",
+    "pack": "vcmplugin pack",
+    "start": "vcmplugin serve",
+    "preview": "vcmplugin preview",
+    "buildStagingApp": "vcmplugin buildStagingApp",
+    "lint": "eslint \"{src,tests}/**/*.{js,vue}\""
+  },
+  "author": "support@vc.systems",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "@vcmap/core": "^5.0.0-rc.20"
+  },
+  "keywords": [
+    "vcmap",
+    "plugin"
+  ],
+  "files": [
+    "src/",
+    "dist/",
+    "plugin-assets/",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./src/index.js",
+    "./dist": "./dist/index.js"
+  },
+  "eslintIgnore": [
+    "node_modules"
+  ],
+  "eslintConfig": {
+    "root": true,
+    "extends": "@vcsuite/eslint-config/vue"
+  }
+}

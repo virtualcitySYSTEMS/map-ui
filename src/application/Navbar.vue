@@ -86,6 +86,17 @@
                   :show-icon="true"
                 />
               </v-menu>
+              <VcsButton
+                class="d-flex"
+                v-if="searchAction"
+                large
+                :key="searchAction.name"
+                :tooltip="searchAction.title"
+                :icon="searchAction.icon"
+                :active="searchAction.active"
+                @click.stop="searchAction.callback($event)"
+                v-bind="{...$attrs}"
+              />
               <v-menu
                 offset-y
                 v-if="menuActions.length > 0"
@@ -124,11 +135,12 @@
 </style>
 
 <script>
-  import { inject, ref, computed } from 'vue';
+  import { inject, ref, computed, onUnmounted } from 'vue';
   import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsButton from '../components/buttons/VcsButton.vue';
+  import { createSearchButtonAction } from '../actions/actionHelper.js';
 
   export default {
     name: 'VcsNavbar',
@@ -142,12 +154,19 @@
         () => getActionsByLocation(buttonComponents.value, location, [...app.plugins].map(p => p.name)),
       );
 
+      const { searchAction, destroy: destroySearchAction } = createSearchButtonAction(app);
+
+      onUnmounted(() => {
+        destroySearchAction();
+      });
+
       return {
         mapActions: getActions(ButtonLocation.MAP),
         contentActions: getActions(ButtonLocation.CONTENT),
         toolActions: getActions(ButtonLocation.TOOL),
         projectActions: getActions(ButtonLocation.PROJECT),
         shareActions: getActions(ButtonLocation.SHARE),
+        searchAction,
         menuActions: getActions(ButtonLocation.MENU),
         config: app.uiConfig.config,
       };

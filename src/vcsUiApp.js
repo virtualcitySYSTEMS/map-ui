@@ -30,6 +30,7 @@ import FeatureInfo from './featureInfo/featureInfo.js';
 import UiConfig from './uiConfig.js';
 import { createEmptyState, getStateFromURL } from './state.js';
 import { version } from '../package.json';
+import Search from './search/search.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -125,6 +126,7 @@ class VcsUiApp extends VcsApp {
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
+        this._search.removeOwner(plugin.name);
         if (plugin.i18n) {
           this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
         }
@@ -142,6 +144,7 @@ class VcsUiApp extends VcsApp {
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
+        this._search.removeOwner(plugin.name);
         this.i18n.removePluginMessages(plugin.name, plugin[contextIdSymbol]);
       }),
     ];
@@ -209,6 +212,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._contextMenuManager = new ContextMenuManager(this);
+
+    /**
+     * @type {Search}
+     * @private
+     */
+    this._search = new Search(this);
 
     /**
      * @type {AppState}
@@ -282,6 +291,12 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get contextMenuManager() { return this._contextMenuManager; }
+
+  /**
+   * @type {Search}
+   * @readonly
+   */
+  get search() { return this._search; }
 
   /**
    * @type {UiConfig}
@@ -447,6 +462,7 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._plugins);
     destroyCollection(this._contentTree);
     destroyCollection(this._i18n);
+    destroyCollection(this._search);
     this._contentTreeClassRegistry.destroy();
     this._featureInfo.destroy();
     this._uiConfig.destroy();

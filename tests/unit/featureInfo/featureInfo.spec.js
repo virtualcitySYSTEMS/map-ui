@@ -28,7 +28,7 @@ import { Color } from '@vcmap/cesium';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 import { defaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
-import { AbstractFeatureInfoView } from '../../../index.js';
+import { AbstractFeatureInfoView, featureInfoViewSymbol } from '../../../index.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
 describe('FeatureInfo', () => {
@@ -615,22 +615,36 @@ describe('FeatureInfo', () => {
 
   describe('overriding feature info view', () => {
     let app;
+    let layerFeatureInfo;
+    let layer;
 
     beforeAll(() => {
       app = new VcsUiApp();
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      layerFeatureInfo = new TableFeatureInfoView({ name: 'foo' });
+      app.featureInfo.collection.add(layerFeatureInfo);
+      layer = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      layer.properties.featureInfo = layerFeatureInfo.name;
+      app.layers.add(layer);
     });
 
     afterAll(() => {
+      layer.destroy();
       app.destroy();
     });
 
-    it('should override the feature info view of a layer', async () => {
-      const layer = new VectorLayer({
-        projection: mercatorProjection.toJSON(),
-      });
-      layer.properties.featureInfo = 'foo';
-      app.layers.add(layer);
+    it('should primarily use feature info view of a feature', async () => {
+      const feature = new Feature({});
+      feature[featureInfoViewSymbol] = new AbstractFeatureInfoView({}, {});
+      layer.addFeatures([feature]);
+      const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
+      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
+      expect(app.windowManager.get(app.featureInfo.windowId))
+        .to.have.property('component', feature[featureInfoViewSymbol].component);
+    });
+
+    it('should secondarily use provided feature info view overriding the feature info view of a layer', async () => {
       const feature = new Feature({});
       layer.addFeatures([feature]);
       const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
@@ -639,13 +653,21 @@ describe('FeatureInfo', () => {
         .to.have.property('component', overrideFeatureInfo.component);
     });
 
-    it('should allow for a layer to not have a feature info view defined', async () => {
-      const layer = new VectorLayer({
-        projection: mercatorProjection.toJSON(),
-      });
-      app.layers.add(layer);
+    it('should tertiary use the feature info view of a layer', async () => {
       const feature = new Feature({});
       layer.addFeatures([feature]);
+      await app.featureInfo.selectFeature(feature);
+      expect(app.windowManager.get(app.featureInfo.windowId))
+        .to.have.property('component', layerFeatureInfo.component);
+    });
+
+    it('should allow for a layer to not have a feature info view defined', async () => {
+      const layer2 = new VectorLayer({
+        projection: mercatorProjection.toJSON(),
+      });
+      app.layers.add(layer2);
+      const feature = new Feature({});
+      layer2.addFeatures([feature]);
       const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
       await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
       expect(app.windowManager.get(app.featureInfo.windowId))

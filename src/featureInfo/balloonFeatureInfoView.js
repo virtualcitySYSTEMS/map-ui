@@ -105,10 +105,10 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     return {
       ...properties,
       position: featureInfo.position ?? getPositionFromFeature(featureInfo.feature),
-      title: this.title ?
+      title: this.title != null ?
         extractNestedKey(this.title, properties.attributes, this.title) :
         properties.layerProperties.title,
-      subtitle: this.subtitle ?
+      subtitle: this.subtitle != null ?
         extractNestedKey(this.subtitle, properties.attributes, this.subtitle) :
         properties.featureId,
     };
