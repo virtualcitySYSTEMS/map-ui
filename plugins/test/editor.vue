@@ -21,6 +21,7 @@
   import { ref, inject } from 'vue';
   import { VcsButton } from '@vcmap/ui';
   import { Context } from '@vcmap/core';
+  import { VProgressCircular, VTextarea } from 'vuetify/lib';
 
   const contextId = 'foo';
 
@@ -28,6 +29,8 @@
     name: 'Editor',
     components: {
       VcsButton,
+      VTextarea,
+      VProgressCircular,
     },
     setup() {
       /** @type {VcsUiApp} */

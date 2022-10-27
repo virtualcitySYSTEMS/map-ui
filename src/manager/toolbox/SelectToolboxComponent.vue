@@ -88,6 +88,12 @@
 </style>
 <script>
   import { ref, computed } from 'vue';
+  import {
+    VMenu,
+    VIcon,
+    VToolbar,
+    VToolbarItems,
+  } from 'vuetify/lib';
   import VcsButton from '../../components/buttons/VcsButton.vue';
 
   /**
@@ -98,7 +104,13 @@
    */
   export default {
     name: 'ToolboxActionSelect',
-    components: { VcsButton },
+    components: {
+      VcsButton,
+      VMenu,
+      VIcon,
+      VToolbar,
+      VToolbarItems,
+    },
     props: {
       group: {
         type: Object,

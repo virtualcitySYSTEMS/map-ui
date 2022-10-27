@@ -47,6 +47,7 @@
 </style>
 <script>
   import { clamp } from 'ol/math.js';
+  import { VCard, VSlider } from 'vuetify/lib';
   import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
@@ -58,6 +59,8 @@
     name: 'TiltSlider',
     components: {
       VcsTooltip,
+      VCard,
+      VSlider,
     },
     props: {
       value: {

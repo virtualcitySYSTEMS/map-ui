@@ -47,6 +47,7 @@
 }
 </style>
 <script>
+  import { VCheckbox } from 'vuetify/lib';
   import VcsLabel from './VcsLabel.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import validate from '../notification/validation.js';
@@ -58,11 +59,15 @@
    * - if dense is set false, height is 32 px
    * Provides VcsTooltip to show error messages
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
-   * @vue-prop {string} label Label to be displayed, will be translated.
+   * @vue-prop {string} label - Label to be displayed, will be translated.
    */
   export default {
     name: 'VcsCheckbox',
-    components: { VcsTooltip, VcsLabel },
+    components: {
+      VcsTooltip,
+      VcsLabel,
+      VCheckbox,
+    },
     props: {
       tooltipPosition: {
         type: String,

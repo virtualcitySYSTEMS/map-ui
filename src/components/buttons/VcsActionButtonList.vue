@@ -38,6 +38,7 @@
 </style>
 <script>
 
+  import { VIcon, VMenu, VSpacer } from 'vuetify/lib';
   import VcsButton from './VcsButton.vue';
   import VcsActionList, { validateActions } from '../lists/VcsActionList.vue';
 
@@ -54,7 +55,13 @@
    */
   export default {
     name: 'VcsActionButtonList',
-    components: { VcsActionList, VcsButton },
+    components: {
+      VcsActionList,
+      VcsButton,
+      VMenu,
+      VIcon,
+      VSpacer,
+    },
     props: {
       actions: {
         type: Array,

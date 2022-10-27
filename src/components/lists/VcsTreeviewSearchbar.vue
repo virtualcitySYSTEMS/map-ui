@@ -108,6 +108,7 @@
 
   import { Subject } from 'rxjs';
   import { debounceTime } from 'rxjs/operators';
+  import { VIcon, VTextField } from 'vuetify/lib';
 
 
   /**
@@ -117,6 +118,10 @@
    */
   export default {
     name: 'VcsTreeviewSearchbar',
+    components: {
+      VIcon,
+      VTextField,
+    },
     props: {
       placeholder: {
         type: String,

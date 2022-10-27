@@ -31,6 +31,14 @@
 </template>
 <script>
 
+  import {
+    VIcon,
+    VListItem,
+    VListItemAvatar,
+    VListItemContent,
+    VListItemSubtitle,
+    VListItemTitle,
+  } from 'vuetify/lib';
   import BalloonComponent from './BalloonComponent.vue';
 
   /**
@@ -38,7 +46,15 @@
    */
   export default {
     name: 'AddressBalloonComponent',
-    components: { BalloonComponent },
+    components: {
+      BalloonComponent,
+      VListItem,
+      VListItemAvatar,
+      VIcon,
+      VListItemContent,
+      VListItemTitle,
+      VListItemSubtitle,
+    },
   };
 </script>
 

@@ -60,6 +60,15 @@
   import { inject, ref, onUnmounted } from 'vue';
   import { VcsButton } from '@vcmap/ui';
   import { GeoJSONLayer } from '@vcmap/core';
+  import {
+    VDialog,
+    VCard,
+    VForm,
+    VSelect,
+    VTextField,
+    VBtn,
+    VTextarea,
+  } from 'vuetify/lib';
   import Category from './Category.vue';
 
   export default {
@@ -67,6 +76,13 @@
     components: {
       Category,
       VcsButton,
+      VDialog,
+      VCard,
+      VForm,
+      VSelect,
+      VTextField,
+      VBtn,
+      VTextarea,
     },
     setup() {
       const app = inject('vcsApp');

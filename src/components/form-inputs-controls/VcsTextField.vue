@@ -51,6 +51,7 @@
 </style>
 
 <script>
+  import { VTextField } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
@@ -72,6 +73,7 @@
     name: 'VcsTextField',
     components: {
       VcsTooltip,
+      VTextField,
     },
     props: {
       tooltipPosition: {

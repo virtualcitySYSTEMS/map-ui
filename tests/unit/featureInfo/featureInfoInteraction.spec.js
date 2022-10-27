@@ -12,8 +12,8 @@ import { Cartesian2 } from '@vcmap/cesium';
 import { EventType, mercatorProjection, ModificationKeyType, PointerKeyType, VectorLayer } from '@vcmap/core';
 
 import { Feature } from 'ol';
+import VcsUiApp from '../../../src/vcsUiApp.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
-import { VcsUiApp } from '../../../index.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 
 describe('FeatureInfoInteraction', () => {

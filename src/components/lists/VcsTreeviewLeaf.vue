@@ -46,6 +46,7 @@
     ref,
   } from 'vue';
 
+  import { VIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
 
 
@@ -62,7 +63,10 @@
    * @vue-computed {boolean} leaf - Whether the item is a leaf item or not
    */
   export default {
-    components: { VcsActionButtonList },
+    components: {
+      VcsActionButtonList,
+      VIcon,
+    },
     props: {
       item: {
         type: Object,

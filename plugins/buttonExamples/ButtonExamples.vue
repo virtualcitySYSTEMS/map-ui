@@ -172,10 +172,37 @@
 <script>
   import { VcsButton, VcsActionButtonList } from '@vcmap/ui';
   import { ref } from 'vue';
+  import {
+    VCard,
+    VListItem,
+    VListItemContent,
+    VListItemTitle,
+    VListItemAction,
+    VSwitch,
+    VDivider,
+    VRow,
+    VCol,
+    VCardTitle,
+    VCardActions,
+  } from 'vuetify/lib';
 
   export default {
     name: 'ButtonExamples',
-    components: { VcsButton, VcsActionButtonList },
+    components: {
+      VcsButton,
+      VcsActionButtonList,
+      VCard,
+      VListItem,
+      VListItemContent,
+      VListItemTitle,
+      VListItemAction,
+      VSwitch,
+      VDivider,
+      VRow,
+      VCol,
+      VCardTitle,
+      VCardActions,
+    },
     setup() {
       const active = ref(false);
       const disabled = ref(false);

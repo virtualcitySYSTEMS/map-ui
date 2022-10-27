@@ -33,6 +33,7 @@
   import { fromEvent, merge, of, Subject } from 'rxjs';
   import { takeUntil, tap } from 'rxjs/operators';
 
+  import { VSheet } from 'vuetify/lib';
   import MapNavCompass from './mapNavCompass.vue';
 
   /**
@@ -45,6 +46,7 @@
     name: 'VcsCompass',
     components: {
       MapNavCompass,
+      VSheet,
     },
     props: {
       viewMode: {

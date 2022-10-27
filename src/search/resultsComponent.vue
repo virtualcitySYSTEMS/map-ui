@@ -27,6 +27,7 @@
 
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
+  import { VDivider, VList, VListItem, VListItemContent, VListItemGroup } from 'vuetify/lib';
   import ResultItem from './resultItem.vue';
 
   /**
@@ -37,7 +38,14 @@
    */
   export default {
     name: 'ResultsComponent',
-    components: { ResultItem },
+    components: {
+      ResultItem,
+      VList,
+      VListItemGroup,
+      VListItem,
+      VListItemContent,
+      VDivider,
+    },
     props: {
       query: {
         type: String,

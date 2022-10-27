@@ -34,6 +34,7 @@
   import {
     ref, inject, onUnmounted, getCurrentInstance, computed,
   } from 'vue';
+  import { VCol, VContainer, VRow } from 'vuetify/lib';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 
@@ -42,6 +43,9 @@
     components: {
       VcsSelect,
       VcsLabel,
+      VContainer,
+      VRow,
+      VCol,
     },
     setup() {
       const app = inject('vcsApp');

@@ -31,6 +31,7 @@
   } from 'vue';
   import { Subject } from 'rxjs';
   import { debounceTime, takeUntil } from 'rxjs/operators';
+  import { VColorPicker } from 'vuetify/lib';
 
   /**
    * @description
@@ -38,6 +39,9 @@
    */
   export default {
     name: 'VcsColorPicker',
+    components: {
+      VColorPicker,
+    },
     props: {
       width: {
         type: Number,

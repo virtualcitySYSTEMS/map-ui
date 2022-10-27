@@ -10,6 +10,8 @@ const configTest = defineConfig({
     },
     environment: 'jsdom',
     setupFiles: ['tests/setup.js'],
+    isolate: false,
+    threads: false,
   },
 });
 export default configTest;

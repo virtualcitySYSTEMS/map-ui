@@ -5,7 +5,8 @@ import {
   it,
   expect,
 } from 'vitest';
-import { getPluginAssetUrl, pluginBaseUrlSymbol, VcsUiApp } from '../../index.js';
+import VcsUiApp from '../../src/vcsUiApp.js';
+import { getPluginAssetUrl, pluginBaseUrlSymbol } from '../../src/pluginHelper.js';
 
 describe('getPluginAssetUrl', () => {
   let app;

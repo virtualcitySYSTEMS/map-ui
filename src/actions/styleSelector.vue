@@ -20,12 +20,21 @@
 
 <script>
   import { computed, inject, onUnmounted, ref } from 'vue';
+  import {
+    VChip, VList, VListItem, VListItemContent, VListItemIcon, VSheet,
+  } from 'vuetify/lib';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 
   export default {
     name: 'StyleSelector',
     components: {
       VcsSelect,
+      VSheet,
+      VList,
+      VListItem,
+      VListItemIcon,
+      VChip,
+      VListItemContent,
     },
     props: {
       availableStyles: {

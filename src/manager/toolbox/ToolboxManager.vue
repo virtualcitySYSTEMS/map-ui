@@ -72,6 +72,7 @@
 <script>
   import { inject, ref, computed, watch, onUnmounted } from 'vue';
   import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
+  import { VToolbar, VToolbarItems } from 'vuetify/lib';
   import { getComponentsByOrder, ToolboxType } from './toolboxManager.js';
   import ToolboxActionSelect from './SelectToolboxComponent.vue';
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
@@ -104,6 +105,8 @@
       ToolboxActionSelect,
       ToolboxActionGroup,
       VcsButton,
+      VToolbar,
+      VToolbarItems,
     },
     setup() {
       const app = inject('vcsApp');

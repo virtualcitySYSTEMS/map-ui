@@ -38,6 +38,7 @@
 <script>
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
+  import { VContainer, VRow } from 'vuetify/lib';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
   import { getWindowComponentOptions } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
@@ -90,6 +91,8 @@
       TiltSlider,
       VcsZoomButton,
       VcsCompass,
+      VContainer,
+      VRow,
     },
     setup() {
       /** @type {VcsUiApp} */

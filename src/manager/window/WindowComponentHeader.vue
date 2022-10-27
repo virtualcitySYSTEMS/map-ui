@@ -25,10 +25,15 @@
 </style>
 
 <script>
+  import { VIcon } from 'vuetify/lib';
   import VcsButton from '../../components/buttons/VcsButton.vue';
 
   export default {
-    components: { VcsButton },
+    name: 'WindowComponentHeader',
+    components: {
+      VcsButton,
+      VIcon,
+    },
     props: {
       windowState: {
         type: Object,

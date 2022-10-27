@@ -31,11 +31,18 @@
 <script>
   import { inject, onUnmounted, ref } from 'vue';
   import { getLogger } from '@vcsuite/logger';
+  import { VCard, VDivider, VIcon } from 'vuetify/lib';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './resultsComponent.vue';
 
   export default {
-    components: { ResultsComponent, VcsTextField },
+    components: {
+      ResultsComponent,
+      VcsTextField,
+      VCard,
+      VIcon,
+      VDivider,
+    },
     setup() {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');

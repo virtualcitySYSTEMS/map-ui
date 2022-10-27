@@ -28,7 +28,8 @@ import { Color } from '@vcmap/cesium';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 import { defaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
-import { AbstractFeatureInfoView, featureInfoViewSymbol } from '../../../index.js';
+import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.js';
+import { featureInfoViewSymbol } from '../../../src/featureInfo/featureInfo.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
 describe('FeatureInfo', () => {

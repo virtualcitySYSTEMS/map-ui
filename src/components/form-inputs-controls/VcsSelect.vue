@@ -49,6 +49,7 @@
 </style>
 <script>
 
+  import { VSelect } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import validate from '../notification/validation.js';
 
@@ -64,7 +65,10 @@
    */
   export default {
     name: 'VcsSelect',
-    components: { VcsTooltip },
+    components: {
+      VcsTooltip,
+      VSelect,
+    },
     props: {
       tooltipPosition: {
         type: String,

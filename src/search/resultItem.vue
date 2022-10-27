@@ -27,6 +27,7 @@
 
 <script>
   import { computed } from 'vue';
+  import { VIcon, VListItemIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
 
   /**
@@ -56,7 +57,11 @@
    */
   export default {
     name: 'ResultItem',
-    components: { VcsActionButtonList },
+    components: {
+      VcsActionButtonList,
+      VListItemIcon,
+      VIcon,
+    },
     props: {
       query: {
         type: String,

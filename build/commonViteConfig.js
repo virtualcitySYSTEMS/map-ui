@@ -2,8 +2,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
-import Components from 'unplugin-vue-components/vite';
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
 import { libraries } from './buildHelpers.js';
 
 const configMain = defineConfig({
@@ -15,16 +13,11 @@ const configMain = defineConfig({
     },
     dedupe: Object.keys(libraries),
   },
+  define: {
+    'process.env.NODE_ENV': '"development"',
+  },
   plugins: [
     createVuePlugin(),
-    Components({
-      resolvers: [
-        VuetifyResolver(),
-      ],
-      dirs: ['src'],
-      include: [],
-      exclude: [],
-    }),
   ],
   css: {
     preprocessorOptions: {

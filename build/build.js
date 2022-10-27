@@ -92,6 +92,9 @@ console.log('Building app');
 await build({
   configFile: './build/commonViteConfig.js',
   base: './',
+  define: {
+    'process.env.NODE_ENV': '"production"',
+  },
   build: {
     minify: true,
     emptyOutDir: true,
@@ -117,6 +120,9 @@ await Promise.all(Object.entries(libraryBuildOptions).map(async ([key, value]) =
     esbuild: {
       minify: true,
     },
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
     build: {
       write: false,
       emptyOutDir: false,
@@ -137,6 +143,9 @@ await Promise.all(Object.entries(libraryBuildOptions).map(async ([key, value]) =
 
   const libraryEntryConfig = {
     configFile: false,
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
     build: {
       emptyOutDir: false,
       lib: {

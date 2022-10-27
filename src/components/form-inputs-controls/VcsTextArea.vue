@@ -51,6 +51,7 @@
 </style>
 
 <script>
+  import { VTextarea } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
@@ -73,6 +74,7 @@
     name: 'VcsTextArea',
     components: {
       VcsTooltip,
+      VTextarea,
     },
     props: {
       tooltipPosition: {

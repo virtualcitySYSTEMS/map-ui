@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height pa-0" absolute fluid>
-    <Navbar />
+    <VcsNavbar />
     <v-container class="vcs-main pa-0" :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }" fluid absolute>
       <template v-if="$vuetify.breakpoint.xs">
         <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" draggable="false" class="mobile-logo">
@@ -56,12 +56,13 @@
     watch,
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
+  import { VContainer, VFooter } from 'vuetify/lib';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
   import { ButtonLocation } from '../manager/navbarManager.js';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
-  import Navbar from './Navbar.vue';
+  import VcsNavbar from './VcsNavbar.vue';
   import { createMapButtonAction, createToggleAction } from '../actions/actionHelper.js';
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
@@ -337,10 +338,12 @@
   export default {
     components: {
       MapNavigation,
-      Navbar,
+      VcsNavbar,
       VcsMap,
       WindowManagerComponent,
       ToolboxManagerComponent,
+      VContainer,
+      VFooter,
     },
     props: {
       appId: {

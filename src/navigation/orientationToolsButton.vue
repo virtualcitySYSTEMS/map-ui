@@ -23,6 +23,7 @@
 }
 </style>
 <script>
+  import { VCard, VIcon } from 'vuetify/lib';
   import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
@@ -33,7 +34,11 @@
    */
   export default {
     name: 'OrientationToolsButton',
-    components: { VcsTooltip },
+    components: {
+      VcsTooltip,
+      VCard,
+      VIcon,
+    },
     props: {
       icon: {
         type: String,

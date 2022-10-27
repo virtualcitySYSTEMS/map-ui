@@ -92,6 +92,16 @@
 <script>
 
   import { getStringColor } from '@vcmap/core';
+  import {
+    VFlex,
+    VImg,
+    VLayout,
+    VList,
+    VListItem,
+    VListItemContent,
+    VListItemIcon,
+    VListItemTitle,
+  } from 'vuetify/lib';
   import { StyleRowType, getImageSrcFromShape } from './legendHelper.js';
 
   /**
@@ -100,7 +110,16 @@
    */
   export default {
     name: 'StyleLegendItem',
-    components: { },
+    components: {
+      VList,
+      VLayout,
+      VFlex,
+      VListItem,
+      VListItemIcon,
+      VImg,
+      VListItemContent,
+      VListItemTitle,
+    },
     props: {
       item: {
         type: Object,

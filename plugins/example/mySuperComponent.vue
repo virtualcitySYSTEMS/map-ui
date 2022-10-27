@@ -107,11 +107,22 @@
 </template>
 <script>
 
-  import Vue from 'vue';
+  import {
+    VSheet,
+    VContainer,
+    VRow,
+    VCol,
+    VTextField,
+  } from 'vuetify/lib';
 
   export default {
     name: 'MySuperComponent',
     components: {
+      VSheet,
+      VContainer,
+      VRow,
+      VCol,
+      VTextField,
     },
     data() {
       return {

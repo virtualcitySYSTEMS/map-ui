@@ -110,15 +110,17 @@
 </style>
 <script>
 
-/**
- * @enum {string} TooltipPositions
- * @property {string} bottom
- * @property {string} left
- * @property {string} top
- * @property {string} right
- * @readonly
- * @module VcsTooltip
- */
+  import { VTooltip } from 'vuetify/lib';
+
+  /**
+   * @enum {string} TooltipPositions
+   * @property {string} bottom
+   * @property {string} left
+   * @property {string} top
+   * @property {string} right
+   * @readonly
+   * @module VcsTooltip
+   */
   const TooltipPositions = {
     bottom: 'arrow-top',
     top: 'arrow-bottom',
@@ -134,6 +136,9 @@
    */
   export default {
     name: 'VcsTooltip',
+    components: {
+      VTooltip,
+    },
     props: {
       tooltip: {
         type: String,

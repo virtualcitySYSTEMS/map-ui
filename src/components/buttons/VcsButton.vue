@@ -94,6 +94,7 @@
 </style>
 
 <script>
+  import { VBtn, VIcon } from 'vuetify/lib';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
@@ -118,7 +119,12 @@
    */
   export default {
     name: 'VcsButton',
-    components: { VcsTooltip, VcsBadge },
+    components: {
+      VcsTooltip,
+      VcsBadge,
+      VBtn,
+      VIcon,
+    },
     inheritAttrs: false,
     props: {
       active: {

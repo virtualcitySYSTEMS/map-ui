@@ -70,6 +70,7 @@
 }
 </style>
 <script>
+  import { VRadio, VRadioGroup } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsLabel from './VcsLabel.vue';
   import validate from '../notification/validation.js';
@@ -94,7 +95,12 @@
    */
   export default {
     name: 'VcsRadio',
-    components: { VcsTooltip, VcsLabel },
+    components: {
+      VcsTooltip,
+      VcsLabel,
+      VRadioGroup,
+      VRadio,
+    },
     props: {
       tooltipPosition: {
         type: String,

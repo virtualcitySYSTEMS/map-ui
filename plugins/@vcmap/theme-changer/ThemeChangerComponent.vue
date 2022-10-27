@@ -65,9 +65,33 @@
 </template>
 <script>
   import { inject } from 'vue';
+  import {
+    VCard,
+    VCardText,
+    VChip,
+    VListItem,
+    VListItemContent,
+    VListItemTitle,
+    VListItemAction,
+    VAvatar,
+    VIcon,
+    VDivider,
+  } from 'vuetify/lib';
 
   export default {
     name: 'ThemeChanger',
+    components: [
+      VCard,
+      VCardText,
+      VChip,
+      VListItem,
+      VListItemContent,
+      VListItemTitle,
+      VListItemAction,
+      VAvatar,
+      VIcon,
+      VDivider,
+    ],
     setup() {
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey('@vcmap/theme-changer');

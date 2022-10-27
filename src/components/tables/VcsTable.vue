@@ -89,6 +89,9 @@
 </template>
 <script>
   import { getCurrentInstance, ref, computed } from 'vue';
+  import {
+    VContainer, VDataTable, VList, VListItem, VListItemTitle, VMenu, VRow,
+  } from 'vuetify/lib';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
 
@@ -134,7 +137,17 @@
    */
   export default {
     name: 'VcsTable',
-    components: { VcsButton, VcsTreeviewSearchbar },
+    components: {
+      VcsButton,
+      VcsTreeviewSearchbar,
+      VDataTable,
+      VContainer,
+      VRow,
+      VMenu,
+      VList,
+      VListItem,
+      VListItemTitle,
+    },
     props: {
       featureId: {
         type: String,

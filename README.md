@@ -83,7 +83,7 @@ how safe it is to start developing with these components.
 - oblique RC
 - FeatureProvider BETA
 - ClassRegistry BETA
-- Editor TODO
+- Editor BETA
 
 ### @vcmap/ui
 - contentTree API BETA [CONTENT_TREE](documentation/CONTENT_TREE.md) // TODO doc
@@ -92,7 +92,7 @@ how safe it is to start developing with these components.
 - OrientationTools BETA
 - ActionConcept BETA [ACTIONS](documentation/ACTIONS.md)
 - PluginConcept RC [Plugin API](https://github.com/virtualcitySYSTEMS/map-plugin-cli)
-- SEARCH API TODO
+- SEARCH API BETA [SEARCH](documentation/SEARCH.md)
 - I18n API RC [INTERNATIONALIZATION](documentation/INTERNATIONALIZATION.md).
 - Components API RC [CATEGORIES](documentation/CATEGORIES.md).
 - Context Menu API RC [CONTEXT_MENU](documentation/CONTEXT_MENU.md) 
@@ -133,7 +133,7 @@ how safe it is to start developing with these components.
 ### Ui
 - Responsive View / mobile view DONE
 - Toolbar DONE
-- Search API + UI Prio 2
+- Search API + UI DONE
 - Overlay API Support  Prio 3
 - i18n DONE.
 - FeatureInfo Concept/API (Balloon) DONE
@@ -147,32 +147,32 @@ how safe it is to start developing with these components.
 - Notification Concept Prio 2
 
 ### Plugins
-| Plugin      | Dev Prio | Proj Prio
-| :----: | :----:| :----: |
-|Drawing (WIP)| 1 | 1|
-|Measurement| 1| 1|
-|PDF Export (WIP)|  1| 1|
-|Search Nominatim| 2| 1|
-|SwipeTool| 2| 1|
-|Shadow |  4| 1|
-|Planning|  4| 1|
-|MultiView |  4| 1|
-|Create Link DONE| 1|1|
-|HeightProfile |  4| 2|
-|Flight |  4| 2|
-|Export |  4| 2|
-|ViewShed |  4| 2|
-|TransparentTerrain |  4| 3|
-|Walkmode|  4| 3|
-|Publisher Integration Plugin|  3| 3|
-|ClippingTool |  4| 3|
-|AttributeEditor |  4| 3|
-|Query |  4| 3|
-|Positiondisplay|  2| 4|
-|Locator ? |  4| 4|
-|DisplayQuality |  4| 4|
-|Search esri |  4| 4|
-|Search WFS |  4| 4|
+|            Plugin            | Dev Prio | Proj Prio |
+|:----------------------------:|:--------:|:---------:|
+|        Drawing (WIP)         |    1     |     1     |
+|         Measurement          |    1     |     1     |
+|      PDF Export (DONE)       |    1     |     1     |
+|   Search Nominatim (DONE)    |    2     |     1     |
+|          SwipeTool           |    2     |     1     |
+|            Shadow            |    4     |     1     |
+|           Planning           |    4     |     1     |
+|          MultiView           |    4     |     1     |
+|      Create Link (DONE)      |    1     |     1     |
+|        HeightProfile         |    4     |     2     |
+|            Flight            |    4     |     2     |
+|            Export            |    4     |     2     |
+|           ViewShed           |    4     |     2     |
+|      TransparentTerrain      |    4     |     3     |
+|           Walkmode           |    4     |     3     |
+| Publisher Integration Plugin |    3     |     3     |
+|         ClippingTool         |    4     |     3     |
+|       AttributeEditor        |    4     |     3     |
+|            Query             |    4     |     3     |
+|       Positiondisplay        |    2     |     4     |
+|          Locator ?           |    4     |     4     |
+|        DisplayQuality        |    4     |     4     |
+|         Search esri          |    4     |     4     |
+|          Search WFS          |    4     |     4     |
 
 
 # Getting started

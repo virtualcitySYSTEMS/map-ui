@@ -136,6 +136,9 @@
 
 <script>
   import { inject, ref, computed, onUnmounted } from 'vue';
+  import {
+    VCol, VContainer, VDivider, VMenu, VRow, VToolbar, VToolbarItems,
+  } from 'vuetify/lib';
   import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';
@@ -144,7 +147,18 @@
 
   export default {
     name: 'VcsNavbar',
-    components: { VcsActionButtonList, VcsActionList, VcsButton },
+    components: {
+      VcsActionButtonList,
+      VcsActionList,
+      VcsButton,
+      VToolbar,
+      VContainer,
+      VRow,
+      VCol,
+      VToolbarItems,
+      VDivider,
+      VMenu,
+    },
     setup() {
       const app = inject('vcsApp');
 

@@ -16,9 +16,25 @@
 
 <script>
   import { Icons } from '@vcmap/ui';
+  import {
+    VSheet,
+    VList,
+    VListItem,
+    VListItemIcon,
+    VIcon,
+    VListItemTitle,
+  } from 'vuetify/lib';
 
   export default {
     name: 'AllIconsComponent',
+    components: [
+      VSheet,
+      VList,
+      VListItem,
+      VListItemIcon,
+      VIcon,
+      VListItemTitle,
+    ],
     computed: {
       icons() {
         return Object.keys(Icons).map(n => `$${n}`);

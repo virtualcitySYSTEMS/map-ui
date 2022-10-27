@@ -47,11 +47,37 @@
 </template>
 <script>
   import { inject } from 'vue';
+  import {
+    VList,
+    VContainer,
+    VCard,
+    VIcon,
+    VListItem,
+    VListItemContent,
+    VListItemTitle,
+    VListItemSubtitle,
+    VListItemAction,
+    VAvatar,
+    VDivider,
+  } from 'vuetify/lib';
   import ContextsListComponent from './ContextsListComponent.vue';
 
   export default {
     name: 'ProjectSelector',
-    components: { ContextsListComponent },
+    components: {
+      ContextsListComponent,
+      VList,
+      VContainer,
+      VCard,
+      VIcon,
+      VListItem,
+      VListItemContent,
+      VListItemTitle,
+      VListItemSubtitle,
+      VListItemAction,
+      VAvatar,
+      VDivider,
+    },
     setup() {
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey('@vcmap/project-selector');

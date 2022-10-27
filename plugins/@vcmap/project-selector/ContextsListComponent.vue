@@ -33,10 +33,17 @@
 
 <script>
   import { VcsTooltip } from '@vcmap/ui';
+  import { VChip, VContainer, VIcon, VList } from 'vuetify/lib';
 
   export default {
     name: 'ContextsListComponent',
-    components: { VcsTooltip },
+    components: {
+      VcsTooltip,
+      VContainer,
+      VList,
+      VChip,
+      VIcon,
+    },
     props: {
       contexts: {
         type: Array,

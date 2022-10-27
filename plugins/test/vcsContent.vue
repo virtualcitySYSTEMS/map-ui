@@ -14,8 +14,11 @@
 
 </style>
 <script>
+  import { VSheet } from 'vuetify/lib';
+
   export default {
     name: 'VcsContent',
+    components: [VSheet],
     setup() {
       return { };
     },

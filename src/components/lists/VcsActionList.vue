@@ -40,6 +40,9 @@
 </style>
 <script>
   import { is } from '@vcsuite/check';
+  import {
+    VIcon, VList, VListItem, VListItemContent, VListItemIcon, VListItemTitle,
+  } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
@@ -91,7 +94,15 @@
    */
   export default {
     name: 'VcsActionList',
-    components: { VcsTooltip },
+    components: {
+      VcsTooltip,
+      VList,
+      VListItem,
+      VListItemIcon,
+      VIcon,
+      VListItemTitle,
+      VListItemContent,
+    },
     props: {
       actions: {
         type: Array,

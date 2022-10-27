@@ -7,7 +7,10 @@
 
 <script>
 
+  import { VSheet } from 'vuetify/lib';
+
   export default {
     name: 'EmptyComponent',
+    components: [VSheet],
   };
 </script>

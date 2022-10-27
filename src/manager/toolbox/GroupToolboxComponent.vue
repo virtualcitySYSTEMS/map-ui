@@ -62,6 +62,12 @@
 </style>
 <script>
   import { computed, ref } from 'vue';
+  import {
+    VMenu,
+    VIcon,
+    VToolbar,
+    VToolbarItems,
+  } from 'vuetify/lib';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { getComponentsByOrder } from './toolboxManager.js';
 
@@ -78,7 +84,13 @@
    */
   export default {
     name: 'ToolboxActionGroup',
-    components: { VcsButton },
+    components: {
+      VcsButton,
+      VMenu,
+      VIcon,
+      VToolbar,
+      VToolbarItems,
+    },
     props: {
       group: {
         type: Object,

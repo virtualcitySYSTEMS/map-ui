@@ -56,6 +56,7 @@
 
 <script>
   import { getCurrentInstance, ref } from 'vue';
+  import { VTreeview } from 'vuetify/lib';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
 
@@ -68,7 +69,11 @@
    */
   export default {
     name: 'VcsTreeview',
-    components: { VcsTreeviewSearchbar, VcsTreeviewLeaf },
+    components: {
+      VcsTreeviewSearchbar,
+      VcsTreeviewLeaf,
+      VTreeview,
+    },
     props: {
       showSearchbar: {
         type: Boolean,

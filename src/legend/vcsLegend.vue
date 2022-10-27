@@ -50,6 +50,16 @@
 
 <script>
 
+  import {
+    VCard,
+    VExpansionPanels,
+    VExpansionPanel,
+    VExpansionPanelHeader,
+    VExpansionPanelContent,
+    VIcon,
+    VList,
+    VImg,
+  } from 'vuetify/lib';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './styleLegendItem.vue';
   import VcsTreeviewLeaf from '../components/lists/VcsTreeviewLeaf.vue';
@@ -60,7 +70,18 @@
    */
   export default {
     name: 'VcsLegend',
-    components: { VcsTreeviewLeaf, StyleLegendItem },
+    components: {
+      VcsTreeviewLeaf,
+      StyleLegendItem,
+      VCard,
+      VExpansionPanels,
+      VExpansionPanel,
+      VExpansionPanelHeader,
+      VExpansionPanelContent,
+      VIcon,
+      VList,
+      VImg,
+    },
     props: {
       entries: {
         type: Object,

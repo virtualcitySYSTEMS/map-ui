@@ -52,6 +52,15 @@
 <script>
 
   import { inject, onMounted, onUnmounted, watch } from 'vue';
+  import {
+    VCard, VDivider,
+    VIcon,
+    VList,
+    VListItem,
+    VListItemAvatar,
+    VListItemContent, VListItemSubtitle,
+    VListItemTitle,
+  } from 'vuetify/lib';
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.vue';
 
@@ -68,7 +77,18 @@
    */
   export default {
     name: 'BalloonComponent',
-    components: { VcsButton },
+    components: {
+      VcsButton,
+      VCard,
+      VList,
+      VListItem,
+      VListItemAvatar,
+      VIcon,
+      VListItemContent,
+      VListItemTitle,
+      VListItemSubtitle,
+      VDivider,
+    },
     props: {
       featureId: {
         type: String,

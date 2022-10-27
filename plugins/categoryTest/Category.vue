@@ -7,7 +7,7 @@
       <span class="float-right">
         <vcs-button icon="$vcsPlus" @click="dialog = true" />
         <vcs-button icon="mdi-download" @click="download" />
-        <a :href="downloadLink" target="_blank" ref="link" download="category.json"/>
+        <a :href="downloadLink" target="_blank" ref="link" download="category.json" />
       </span>
     </span>
 
@@ -26,7 +26,9 @@
           class="mb-1"
         >
           <v-list-item-content>
-            <v-list-item-title class="subtitle-1" >{{ item.name }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1">
+              {{ item.name }}
+            </v-list-item-title>
             <v-list-item-subtitle>{{ item.type }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -40,7 +42,9 @@
           @submit.prevent="addItem"
         >
           <v-textarea v-model="jsonString" />
-          <v-btn type="submit">Add</v-btn>
+          <v-btn type="submit">
+            Add
+          </v-btn>
         </v-form>
       </v-card>
     </v-dialog>
@@ -51,10 +55,32 @@
   import { inject, nextTick, ref } from 'vue';
   import { VcsButton } from '@vcmap/ui';
   import { getObjectFromClassRegistry } from '@vcmap/core';
+  import {
+    VVirtualScroll,
+    VListItem,
+    VListItemContent,
+    VListItemTitle,
+    VListItemSubtitle,
+    VDialog,
+    VCard,
+    VForm,
+    VTextarea,
+  } from 'vuetify/lib';
 
   export default {
     name: 'CategoryComponent',
-    components: { VcsButton },
+    components: {
+      VcsButton,
+      VVirtualScroll,
+      VListItem,
+      VListItemContent,
+      VListItemTitle,
+      VListItemSubtitle,
+      VDialog,
+      VCard,
+      VForm,
+      VTextarea,
+    },
     props: {
       categoryName: {
         type: String,

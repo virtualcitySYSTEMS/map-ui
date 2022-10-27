@@ -325,6 +325,7 @@
     VcsFormSection,
     VcsLabel,
   } from '@vcmap/ui';
+  import { VCol, VContainer, VForm, VRow } from 'vuetify/lib';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
 
   export default {
@@ -338,6 +339,10 @@
       VcsFormattedNumber,
       VcsFormSection,
       VcsLabel,
+      VForm,
+      VRow,
+      VCol,
+      VContainer,
     },
     props: {
       windowId: {

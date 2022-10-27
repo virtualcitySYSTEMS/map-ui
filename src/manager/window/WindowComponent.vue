@@ -44,9 +44,15 @@
   } from 'vue';
   import { fromEvent } from 'rxjs';
   import { switchMap, take, map, tap } from 'rxjs/operators';
+  import { VDivider, VSheet } from 'vuetify/lib';
   import { WindowSlot } from './windowManager.js';
 
   export default {
+    name: 'WindowComponent',
+    components: {
+      VSheet,
+      VDivider,
+    },
     props: {
       windowState: {
         type: Object,
