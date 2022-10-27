@@ -3,6 +3,7 @@
 - use new core postRenderHandler in NavigationControls and OverviewMap
 - Update vite to version 3.2.0 and vitest to 0.24.3
 - Renamed Navbar component to VcsNavbar
+- Added help concept for VcsFormSection
 
 # 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue

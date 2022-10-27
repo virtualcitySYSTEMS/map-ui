@@ -98,6 +98,7 @@ how safe it is to start developing with these components.
 - Context Menu API RC [CONTEXT_MENU](documentation/CONTEXT_MENU.md) 
 - FeatureInfo RC [FEATURE_INFO](documentation/FEATURE_INFO.md)
 - [State & Application Link](documentation/STATE.md) RC
+- [Help Concept](documentation/HELP.md) RC
 
 ##### components
 - VcsTextField BETA
@@ -142,7 +143,7 @@ how safe it is to start developing with these components.
 - Legend Concept/API DONE
 - Copyright/Attributions Concept / API  Prio 2
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  DONE
-- Help Concept / Beispielhaft implementieren  Prio 2
+- Help Concept / Beispielhaft implementieren  DONE
 - Components Concept/Categories / API DONE.
 - Notification Concept Prio 2
 

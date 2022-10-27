@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="isValid">
     <VcsFormSection
-      title="VcsFormSection"
+      title="VcsFormSection Select & Text Inputs"
       :title-actions="[
         {
           name: 'denseSelection',
@@ -10,12 +10,6 @@
           callback: () => this.dense = !this.dense
         },
         { name: 'noIcon', title: 'another action without icon', callback: () => {} },
-        {
-          name: 'help',
-          title: helpExample,
-          icon: 'mdi-help-circle',
-          callback: () => {},
-        },
         {
           name: 'toggleSection',
           title: 'toggle section',
@@ -32,6 +26,16 @@
         { name: 'alert', icon: 'mdi-message-text', callback: alertAction },
       ]"
     >
+      <template #help>
+        <ol>
+          <li>{{ $t('pluginExample.help1') }}:</li>
+          <span>{{ $t('pluginExample.help1desc') }}</span>
+          <li>{{ $t('pluginExample.help2') }}:</li>
+          <span>{{ $t('pluginExample.help2desc') }}</span>
+          <li>{{ $t('pluginExample.help3') }}:</li>
+          <span>{{ $t('pluginExample.help3desc') }}</span>
+        </ol>
+      </template>
       <template #default v-if="showSection">
         <v-container class="pa-2">
           <v-row
@@ -107,6 +111,35 @@
               />
             </v-col>
           </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col>
+              <VcsLabel html-for="emailInput" :dense="dense">
+                Email
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="emailInput"
+                :dense="dense"
+                type="email"
+                :rules="[isValidEmail]"
+                v-model="state.email"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </VcsFormSection>
+    <VcsFormSection
+      title="VcsFormSection Number Inputs"
+      help-text="pluginExample.help"
+    >
+      <template #default>
+        <v-container>
           <v-row
             :dense="dense"
             no-gutters
@@ -199,58 +232,14 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            :dense="dense"
-            no-gutters
-            align="center"
-          >
-            <v-col cols="1" class="px-1">
-              <VcsLabel html-for="textInput" :dense="dense" class="text-caption">
-                1
-              </VcsLabel>
-            </v-col>
-            <v-col>
-              <VcsSelect
-                :items="['A', 'B', 'C']"
-                :dense="dense"
-              />
-            </v-col>
-            <v-col>
-              <VcsSelect
-                :items="['A', 'B', 'C']"
-                :dense="dense"
-                multiple
-              />
-            </v-col>
-            <v-col>
-              <VcsTextField
-                id="textInput"
-                clearable
-                :dense="dense"
-                v-model="state.conditionalInput"
-              />
-            </v-col>
-          </v-row>
-          <v-row
-            :dense="dense"
-            no-gutters
-            align="center"
-          >
-            <v-col>
-              <VcsLabel html-for="emailInput" :dense="dense">
-                Email
-              </VcsLabel>
-            </v-col>
-            <v-col>
-              <VcsTextField
-                id="emailInput"
-                :dense="dense"
-                type="email"
-                :rules="[isValidEmail]"
-                v-model="state.email"
-              />
-            </v-col>
-          </v-row>
+        </v-container>
+      </template>
+    </VcsFormSection>
+    <VcsFormSection
+      title="VcsFormSection Radio & Checkbox"
+    >
+      <template #default>
+        <v-container>
           <v-row
             :dense="dense"
             no-gutters
@@ -296,6 +285,46 @@
         </v-container>
       </template>
     </vcsformsection>
+    <VcsFormSection
+      title="VcsFormSection Mixed Inputs"
+    >
+      <template #default>
+        <v-container>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col cols="1" class="px-1">
+              <VcsLabel html-for="textInput" :dense="dense" class="text-caption">
+                1
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsSelect
+                :items="['A', 'B', 'C']"
+                :dense="dense"
+              />
+            </v-col>
+            <v-col>
+              <VcsSelect
+                :items="['A', 'B', 'C']"
+                :dense="dense"
+                multiple
+              />
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="textInput"
+                clearable
+                :dense="dense"
+                v-model="state.conditionalInput"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </VcsFormSection>
     <VcsButton
       @click="logState(state)"
       :disabled="!isValid"
@@ -356,17 +385,9 @@
       const newUpdate = ref(true);
       watch(plugin.state, () => { newUpdate.value = true; });
 
-      const helpExample = [
-        'Please select an option.',
-        'If Option A is chosen, input of ConditionalInput must be \'test\'.',
-        'InitialTextInput stays in loading state as long as the initial text is not changed.',
-        'VcsFormattedNumber rounds the NumberInput to one decimal digit.',
-      ].join('\n');
-
       return {
         showSection: ref(true),
         dense: ref(true),
-        helpExample,
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,
         // do not put the whole config here, since it would become reactive

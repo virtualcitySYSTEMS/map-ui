@@ -44,6 +44,9 @@ const messages = {
   components: {
     title: 'Components',
     tooltip: 'Components',
+    vcsFormSection: {
+      help: 'Show help.',
+    },
     vcsTable: {
       key: 'Name',
       value: 'Value',
