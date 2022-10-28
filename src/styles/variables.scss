@@ -71,8 +71,11 @@ $treeview-node-level-width: 16px;
 $treeview-node-margin: 4px;
 $treeview-node-height: 32px; // 48px !default;
 
-/** Expansion Panel */
+/** Expansion Panel **/
 $expansion-panel-header-min-height: 32px; // 48px !default;
 $expansion-panel-active-header-min-height: 32px; // 64px !default;
 $expansion-panel-header-padding: 6px 0; // 16px 24px !default;
 $expansion-panel-content-padding: 0 0 4px; // 0 24px 16px !default;
+
+/** Footer **/
+$footer-padding: 0 8px; // 6px 16px !default;

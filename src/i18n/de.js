@@ -86,6 +86,10 @@ const messages = {
   },
   footer: {
     title: 'Fußzeile',
+    attributions: {
+      title: 'Attribution',
+      tooltip: 'Öffne Attribution Fenster',
+    },
   },
 };
 

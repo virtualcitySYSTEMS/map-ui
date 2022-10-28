@@ -99,6 +99,7 @@ how safe it is to start developing with these components.
 - FeatureInfo RC [FEATURE_INFO](documentation/FEATURE_INFO.md)
 - [State & Application Link](documentation/STATE.md) RC
 - [Help Concept](documentation/HELP.md) RC
+- Copyright RC [ATTRIBUTIONS](documentation/ATTRIBUTIONS.md)
 
 ##### components
 - VcsTextField BETA
@@ -141,7 +142,7 @@ how safe it is to start developing with these components.
   - Context API DONE
   - Hierachy B3dm
 - Legend Concept/API DONE
-- Copyright/Attributions Concept / API  Prio 2
+- Copyright/Attributions Concept / API  DONE
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  DONE
 - Help Concept / Beispielhaft implementieren  DONE
 - Components Concept/Categories / API DONE.

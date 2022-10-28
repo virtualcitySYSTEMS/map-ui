@@ -683,16 +683,16 @@
       "tilesetOptions": {
         "skipLevelOfDetail": true
       },
-      "copyright": {
-        "provider": "Berlin Partner für Wirtschaft und Technologie",
-        "url": "https://www.berlin-partner.de",
-        "year": "2020"
-      },
       "exclusiveGroups": [
         "bldg"
       ],
       "properties": {
-        "title": "3D-Mesh 2020"
+        "title": "3D-Mesh 2020",
+        "attributions": {
+          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
       }
     },
     {
@@ -779,11 +779,6 @@
       "tilingSchema": "mercator",
       "opacity": "1",
       "hiddenObjectIds": [],
-      "copyright": {
-        "provider": "Geoportal Berlin / Luftbild 2015, OpenStreetMap contributors",
-        "url": "http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/",
-        "year": "2018"
-      },
       "exclusiveGroups": [
         "base"
       ],
@@ -792,7 +787,12 @@
         "256"
       ],
       "properties": {
-        "title": "Aerial Image (2015)"
+        "title": "Aerial Image (2015)",
+        "attributions": {
+          "provider": "Geoportal Berlin / Luftbild 2015, OpenStreetMap contributors",
+          "url": "http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/",
+          "year": "2018"
+        }
       }
     },
     {
@@ -821,11 +821,6 @@
       },
       "opacity": "1",
       "hiddenObjectIds": [],
-      "copyright": {
-        "provider": "OpenStreetMap contributors",
-        "url": "http://www.openstreetmap.org/",
-        "year": "2019"
-      },
       "numberOfLevelZeroTilesX": 1,
       "numberOfLevelZeroTilesY": 1,
       "exclusiveGroups": [
@@ -833,7 +828,12 @@
       ],
       "properties": {
         "title": "OpenStreetMap",
-        "showInOverviewMap": true
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "OpenStreetMap contributors",
+          "url": "http://www.openstreetmap.org/",
+          "year": "2019"
+        }
       }
     },
     {
@@ -1146,17 +1146,19 @@
           "projection": {
             "epsg": "25833",
             "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
-          },
-          "copyright": {
-            "provider": "Berlin Partner / Senat von Berlin",
-            "url": "https://www.berlin-partner.de",
-            "year": "2020"
           }
         }
       ],
       "maxZoom": 7,
       "minZoom": 3,
-      "hideLevels": null
+      "hideLevels": null,
+      "properties:": {
+        "attributions": {
+          "provider": "Berlin Partner / Senat von Berlin",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
+      }
     }
   ],
   "plugins": [

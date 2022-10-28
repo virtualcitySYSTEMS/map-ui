@@ -31,6 +31,7 @@
 
 <script>
   import { computed, ref } from 'vue';
+  import { VAlert } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
 
   /**
@@ -46,7 +47,10 @@
    */
   export default {
     name: 'VcsFormSection',
-    components: { VcsActionButtonList },
+    components: {
+      VcsActionButtonList,
+      VAlert,
+    },
     props: {
       title: {
         type: String,

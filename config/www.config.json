@@ -338,7 +338,13 @@
   "maps": [
     {
       "type": "OpenlayersMap",
-      "name": "ol3"
+      "name": "ol3",
+      "properties": {
+        "attributions": {
+          "provider": "Open Layers",
+          "url": "https://openlayers.org/"
+        }
+      }
     },
     {
       "type": "CesiumMap",
@@ -353,12 +359,30 @@
       "fogDensity": 0.0002,
       "fogDensityMobile": 0.0004,
       "fogScreenSpaceError": 2,
-      "fogScreenSpaceErrorMobile": 4
+      "fogScreenSpaceErrorMobile": 4,
+      "properties": {
+        "attributions": {
+          "provider": "Cesium",
+          "url": "https://www.cesium.com/"
+        }
+      }
     },
     {
       "type": "ObliqueMap",
       "name": "Oblique Map",
-      "defaultCollectionName": "Schrägluftbilder 2020"
+      "defaultCollectionName": "Schrägluftbilder 2020",
+      "properties": {
+        "attributions": [
+          {
+            "provider": "Open Layers",
+            "url": "https://openlayers.org/"
+          },
+          {
+            "provider": "VCS",
+            "url": "https://vc.systems/en/"
+          }
+        ]
+      }
     }
   ],
   "layers": [
@@ -486,7 +510,12 @@
       },
       "properties": {
         "title": "Planwerk Innere Stadt",
-        "featureInfo": "tableBuildings"
+        "featureInfo": "tableBuildings",
+        "attributions": {
+          "provider": "Senatsverwaltung für Stadtentwicklung, Bauen und Wohnen",
+          "url": "https://www.stadtentwicklung.berlin.de/planen/stadtmodelle/de/digitale_innenstadt/3d/index.shtml",
+          "year": "2021"
+        }
       }
     },
     {
@@ -617,7 +646,12 @@
       "numberOfLevelZeroTilesY": 1,
       "properties": {
         "title": "Openstreetmap",
-        "showInOverviewMap": true
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "OpenStreetMap contributors",
+          "url": "https://www.openstreetmap.org/",
+          "year": "2018"
+        }
       }
     },
     {
@@ -646,7 +680,12 @@
       "tilingSchema": "mercator",
       "opacity": 0.9,
       "properties": {
-        "title": "True Orthophoto 2020"
+        "title": "True Orthophoto 2020",
+        "attributions": {
+          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
       }
     },
     {
@@ -665,7 +704,12 @@
         "terrain"
       ],
       "properties": {
-        "title": "3D-Mesh 2020"
+        "title": "3D-Mesh 2020",
+        "attributions": {
+          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
       }
     },
     {
@@ -865,7 +909,14 @@
         }
       ],
       "maxZoom": 7,
-      "minZoom": 0
+      "minZoom": 0,
+      "properties": {
+        "attributions": {
+          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
+      }
     }
   ],
   "styles": [

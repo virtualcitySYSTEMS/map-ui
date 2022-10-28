@@ -86,6 +86,10 @@ const messages = {
   },
   footer: {
     title: 'Footer',
+    attributions: {
+      title: 'Attributions',
+      tooltip: 'Open Attributions Window',
+    },
   },
 };
 

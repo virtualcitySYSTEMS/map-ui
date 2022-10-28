@@ -6,13 +6,23 @@
         <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" draggable="false" class="mobile-logo">
         <div v-else class="company-logo-mobile mobile-logo" />
       </template>
+      <VcsButton
+        v-if="!$vuetify.breakpoint.smAndUp && $vuetify.breakpoint.mobile"
+        :key="attributionAction.name"
+        :tooltip="attributionAction.title"
+        :icon="attributionAction.icon"
+        :active="attributionAction.active"
+        @click.stop="attributionAction.callback($event)"
+        small
+        class="z-index-1 mobile-attribution-btn"
+      />
       <VcsMap :map-id="mapId" />
       <MapNavigation />
       <ToolboxManagerComponent />
       <WindowManagerComponent />
     </v-container>
-    <v-footer absolute v-if="!$vuetify.breakpoint.xs">
-      {{ $t('footer.title') }}
+    <v-footer absolute v-if="$vuetify.breakpoint.smAndUp" min-height="22px">
+      <VcsAttributionsFooter :entries="attributionEntries" :attribution-action="attributionAction" />
     </v-footer>
   </v-container>
 </template>
@@ -26,7 +36,7 @@
   top: 48px;
   left: 0;
   right: 0;
-  bottom: 33px;
+  bottom: 22px;
 }
 
 .vcs-main-xs {
@@ -41,6 +51,12 @@
   top: 1rem;
   left: 1rem;
   z-index: 1;
+}
+
+.mobile-attribution-btn{
+  position: fixed;
+  right: 2px;
+  bottom: 56px;
 }
 
 </style>
@@ -71,6 +87,10 @@
   import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/vcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
+  import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
+  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsAttributions from './VcsAttributions.vue';
+  import { getAttributions } from './attributionsHelper.js';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -331,12 +351,53 @@
   }
 
   /**
+   * This helper gets attributions of all active maps, layers and oblique collections and returns an array of entries.
+   * It also returns a attributionAction to toggle the attributions window and a destroy function.
+   * @param {VcsUiApp} app
+   * @returns {{attributionEntries: import("vue").Ref<Array<AttributionEntry>>, attributionAction: VcsAction, destroyAttributions: function():void}}
+   */
+  export function setupAttributions(app) {
+    const { entries, destroy } = getAttributions(app);
+
+    const { action: attributionAction, destroy: attributionDestroy } = createToggleAction(
+      {
+        name: 'attributionToggle',
+        icon: 'mdi-chevron-double-right',
+        title: 'footer.attributions.tooltip',
+      },
+      {
+        id: 'attribution',
+        component: VcsAttributions,
+        state: {
+          headerTitle: 'footer.attributions.title',
+          headerIcon: 'mdi-copyright',
+        },
+        slot: WindowSlot.DYNAMIC_RIGHT,
+        props: { entries },
+      },
+      app.windowManager,
+      vcsAppSymbol,
+    );
+
+    return {
+      attributionEntries: entries,
+      attributionAction,
+      destroyAttributions: () => {
+        destroy();
+        attributionDestroy();
+      },
+    };
+  }
+
+  /**
    * The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
    * @vue-provide
    */
   export default {
     components: {
+      VcsButton,
+      VcsAttributionsFooter,
       MapNavigation,
       VcsNavbar,
       VcsMap,
@@ -363,6 +424,7 @@
       const settingsDestroy = setupSettingsWindow(app);
       const destroyComponentsWindow = setupComponentsWindow(app);
       const destroyThemingListener = setupUiConfigTheming(app, getCurrentInstance().proxy.$vuetify);
+      const { attributionEntries, attributionAction, destroyAttributions } = setupAttributions(app);
 
       let pluginMountedListener;
       onMounted(() => {
@@ -379,11 +441,14 @@
         settingsDestroy();
         destroyComponentsWindow();
         destroyThemingListener();
+        destroyAttributions();
       });
 
       return {
         mapId,
         mobileLogo: computed(() => app.uiConfig.config.value.mobileLogo ?? app.uiConfig.config.value.logo),
+        attributionEntries,
+        attributionAction,
       };
     },
   };
