@@ -154,3 +154,7 @@ publish:
   script:
     - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
     - npm publish --registry https://registry.npmjs.org --access public
+    - npm i -D @vcsuite/publishtox
+    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
+    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./config/www.config.json -d ./map.config.json
+

@@ -1306,9 +1306,7 @@
         "phone": "+49 (0) 30 . 8904 . 871 . 0",
         "fax": "+49 (0) 30 . 8904 . 871 . 0"
       }
-    }
-  ],
-  "plugins": [
+    },
     {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
