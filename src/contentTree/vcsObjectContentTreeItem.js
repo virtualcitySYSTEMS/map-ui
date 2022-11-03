@@ -9,7 +9,7 @@ import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js'
 
 /**
  * An abstract class for VcsObject based items.
- * It handle the overriding/setting of its own values based on
+ * It handles the overriding/setting of its own values based on
  * the VcsObjects properties bag.
  * @class
  * @template {VcsObjectContentTreeItemProperties} T

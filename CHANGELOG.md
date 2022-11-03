@@ -5,6 +5,14 @@
 - Renamed Navbar component to VcsNavbar
 - Added help concept for VcsFormSection
 - Added attributions for maps, layers and oblique collections
+- Fixed balloon placement
+- Fixed FeatureInfo breaking, if currently selected feature was unloaded from Cesium Scene
+- Fixed `getState` for url. Checking now, if layers have style before handling style.
+- Fixed OverviewMap z-index. Oblique layers have not been shown properly before.
+- Fixed OverviewMap synchronization on startup in 2D.
+- Introducing error handling in plugin hooks `onVcsAppMounted` and `initialize`.
+- Fixed avoiding html attributes as vue properties by renaming.
+- Added documentation for content tree.
 
 # 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue

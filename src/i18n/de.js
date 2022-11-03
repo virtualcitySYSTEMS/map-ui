@@ -44,6 +44,7 @@ const messages = {
   components: {
     title: 'Komponenten',
     tooltip: 'Komponenten',
+    close: 'Fenster schließen.',
     vcsFormSection: {
       help: 'Hilfe anzeigen.',
     },

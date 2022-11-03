@@ -14,7 +14,7 @@ function createResultItem(item) {
   feature[featureInfoViewSymbol] = new AddressBalloonFeatureInfoView({
     type: 'AddressBalloonFeatureInfoView',
     name: 'NominatimSearchBalloon',
-    subtitle: '',
+    balloonSubtitle: '',
     addressName: 'building',
     street: 'road',
     number: 'house_number',

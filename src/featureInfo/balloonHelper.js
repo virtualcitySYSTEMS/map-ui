@@ -99,6 +99,10 @@ export async function setupBalloonPositionListener(vcsApp, windowId, clickedPosi
 
     const map = app.maps.activeMap;
     if (map instanceof CesiumMap) {
+      if (!position[2]) {
+        const [position3D] = await map.getHeightFromTerrain([position]);
+        position[2] = position3D[2];
+      }
       const wgs84Position = Projection.mercatorToWgs84(position);
       const cartesian = Cartographic.toCartesian(Cartographic.fromDegrees(...wgs84Position));
       listeners.push(map.getScene().postRender.addEventListener((scene) => {

@@ -14,6 +14,7 @@
       @click.stop="close"
       small
       icon="mdi-close-thick"
+      tooltip="components.close"
     />
   </span>
 </template>

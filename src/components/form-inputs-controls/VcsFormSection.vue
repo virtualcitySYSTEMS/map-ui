@@ -1,9 +1,9 @@
 <template>
   <section class="vcs-form-section">
-    <slot name="title">
+    <slot name="header">
       <article class="pa-2 accent">
         <div class="form-section-header d-flex justify-space-between align-center">
-          <strong class="caption">{{ $t(title) }}</strong>
+          <strong class="caption">{{ $t(heading) }}</strong>
           <VcsActionButtonList
             :actions="actions"
             small
@@ -37,13 +37,13 @@
   /**
    * @description
    * Stylized form section with action buttons
-   * @vue-data {slot} [#title] - slot to override form section header
+   * @vue-data {slot} [#header] - slot to override form section header
    * @vue-data {slot} [#default] - slot with the section content
    * @vue-data {slot} [#help] - Slot to specify html based help. Gets precedence over helpText prop.
-   * @vue-prop {string} title - Title to be displayed, will be translated.
-   * @vue-prop {Array<VcsAction>}    titleActions - Icons to be displayed on the right side
+   * @vue-prop {string} heading - Title of the section to be displayed, will be translated.
+   * @vue-prop {Array<VcsAction>}    headerActions - Icons to be displayed on the right side
    * @vue-prop {string} [helpText] - Optional help text. Must be plain string. Use 'help' slot for html based help texts. Help slot has precedence over helpText prop.
-   * @vue-computed {Array<VcsAction>} actions - Returns title actions extended by a help action, if help prop is passed or help slot is used.
+   * @vue-computed {Array<VcsAction>} actions - Returns header actions extended by a help action, if help prop is passed or help slot is used.
    */
   export default {
     name: 'VcsFormSection',
@@ -52,11 +52,11 @@
       VAlert,
     },
     props: {
-      title: {
+      heading: {
         type: String,
         default: undefined,
       },
-      titleActions: {
+      headerActions: {
         type: Array,
         default: () => ([]),
       },
@@ -78,9 +78,9 @@
        */
       const actions = computed(() => {
         if (props.helpText || (slots.help && slots.help().length > 0)) {
-          return [helpAction, ...props.titleActions];
+          return [helpAction, ...props.headerActions];
         }
-        return props.titleActions;
+        return props.headerActions;
       });
 
       return {

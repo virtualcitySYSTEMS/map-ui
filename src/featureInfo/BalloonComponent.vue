@@ -17,16 +17,17 @@
         </v-list-item-avatar>
         <v-list-item-content class="py-2 pr-1 align-self-start">
           <v-list-item-title class="text-h6">
-            {{ $t(title) }}
+            {{ $t(balloonTitle) }}
           </v-list-item-title>
-          <v-list-item-subtitle v-if="subtitle">
-            {{ $t(subtitle) }}
+          <v-list-item-subtitle v-if="balloonSubtitle">
+            {{ $t(balloonSubtitle) }}
           </v-list-item-subtitle>
         </v-list-item-content>
         <VcsButton
           @click.stop="close"
           small
           icon="mdi-close-thick"
+          tooltip="components.close"
         />
       </v-list-item>
     </slot>
@@ -58,7 +59,8 @@
     VList,
     VListItem,
     VListItemAvatar,
-    VListItemContent, VListItemSubtitle,
+    VListItemContent,
+    VListItemSubtitle,
     VListItemTitle,
   } from 'vuetify/lib';
   import { setupBalloonPositionListener } from './balloonHelper.js';
@@ -68,8 +70,8 @@
    * @description A balloon viewing feature attributes. Size dynamic dependent on number of attributes.
    * Scrollable, if more than 6 attributes are provided.
    * @vue-prop {string} featureId - feature's id
-   * @vue-prop {string} title - balloon title
-   * @vue-prop {string} subtitle - balloon subtitle
+   * @vue-prop {string} balloonTitle - balloon title
+   * @vue-prop {string} balloonSubtitle - balloon subtitle
    * @vue-prop {Object} attributes - feature's attributes
    * @vue-prop {Array<import("ol/coordinate").Coordinate>} position - clicked position balloon is rendered at
    * @vue-data {slot} [#balloon-header] - slot to override balloon header, $props and $attrs are passed to `attrs`
@@ -94,11 +96,11 @@
         type: String,
         required: true,
       },
-      title: {
+      balloonTitle: {
         type: String,
         required: true,
       },
-      subtitle: {
+      balloonSubtitle: {
         type: String,
         required: true,
       },

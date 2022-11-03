@@ -40,7 +40,7 @@
       "projection": {
         "epsg": 4326
       },
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "vectorProperties": {
         "altitudeMode": "clampToGround"
       },

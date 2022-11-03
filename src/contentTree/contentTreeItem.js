@@ -7,30 +7,30 @@ import { createStateRefAction, StateActionState } from '../actions/stateRefActio
 
 /**
  * @typedef {Object} ContentTreeItemOptions
- * @property {string} name
+ * @property {string} name - name of the item defining the structure within the tree using dot notation.
  * @property {string} [title] - may be unset, if set from object properties later on. required otherwise
  * @property {string} [tooltip] - may be unset or set from object properties later on.
- * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - an icon URL or element to display
- * @property {number} [weight]
- * @property {string} [infoUrl]
- * @property {boolean} [initOpen=false]
+ * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - an icon URL or element to display.
+ * @property {number} [weight] - optional weighting of the item. higher weights come first.
+ * @property {string} [infoUrl] - optional info url providing link with additional information.
+ * @property {boolean} [initOpen=false] - groups being initially open or not.
  */
 
 /**
  * A readonly rendering interface of a ContentTreeItem.
  * @typedef {Object} TreeViewItem
  * @property {string} name
- * @property {boolean} visible
- * @property {boolean} clickable
- * @property {boolean} disabled
- * @property {StateActionState} state
- * @property {string} title
+ * @property {boolean} visible - Whether to display this item or not.
+ * @property {boolean} clickable - Whether this item reacts to click events, e.g. with visual feedback
+ * @property {boolean} disabled - Whether this item should be displayed as disabled.
+ * @property {StateActionState} state - The state of this item. NONE if this item cannot have a state.
+ * @property {string} title - The title to be displayed
  * @property {string} [tooltip]
- * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon
+ * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - An optional icon to display with this item. Can be an URL or HTMLElement.
  * @property {Array<VcsAction>} actions
  * @property {Array<TreeViewItem>} children
  * @property {Array<TreeViewItem>} visibleChildren - computed property
- * @property {function():Promise<void>} clicked
+ * @property {function():Promise<void>} clicked - A callback called once the item is clicked.
  */
 
 /**
@@ -376,7 +376,7 @@ class ContentTreeItem {
    * GoToExtent: 8
    * The default weight is set to always push new actions past these.
    * @param {VcsAction} action
-   * @param {number} [weight=0]
+   * @param {number} [weight=11]
    */
   addAction(action, weight = 11) {
     check(action.name, String);

@@ -26,14 +26,14 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
 
 /**
  * @typedef {FeatureInfoViewOptions} BalloonFeatureInfoViewOptions
- * @property {string} [title] - optional title to overwrite default (layerName). Can be attribute key (nested key using '.'), i18n key or text
- * @property {string} [subtitle] - optional window title to overwrite default (featureId). Can be attribute key (nested key using '.'), i18n key or text
+ * @property {string} [balloonTitle] - optional title to overwrite default (layerName). Can be attribute key (nested key using '.'), i18n key or text
+ * @property {string} [balloonSubtitle] - optional window title to overwrite default (featureId). Can be attribute key (nested key using '.'), i18n key or text
  */
 
 /**
  * @typedef {FeatureInfoProps} BalloonFeatureInfoViewProps
- * @property {string} title
- * @property {string} subtitle
+ * @property {string} balloonTitle
+ * @property {string} balloonSubtitle
  * @property {import("ol/coordinate").Coordinate} position
  */
 
@@ -87,12 +87,12 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     /**
      * @type {string}
      */
-    this.title = options.title;
+    this.balloonTitle = options.balloonTitle;
 
     /**
      * @type {string}
      */
-    this.subtitle = options.subtitle;
+    this.balloonSubtitle = options.balloonSubtitle;
   }
 
   /**
@@ -105,11 +105,11 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     return {
       ...properties,
       position: featureInfo.position ?? getPositionFromFeature(featureInfo.feature),
-      title: this.title != null ?
-        extractNestedKey(this.title, properties.attributes, this.title) :
+      balloonTitle: this.balloonTitle != null ?
+        extractNestedKey(this.balloonTitle, properties.attributes, this.balloonTitle) :
         properties.layerProperties.title,
-      subtitle: this.subtitle != null ?
-        extractNestedKey(this.subtitle, properties.attributes, this.subtitle) :
+      balloonSubtitle: this.balloonSubtitle != null ?
+        extractNestedKey(this.balloonSubtitle, properties.attributes, this.balloonSubtitle) :
         properties.featureId,
     };
   }
@@ -138,11 +138,11 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
    */
   toJSON() {
     const config = super.toJSON();
-    if (this.title) {
-      config.title = this.title;
+    if (this.balloonTitle) {
+      config.balloonTitle = this.balloonTitle;
     }
-    if (this.subtitle) {
-      config.subtitle = this.subtitle;
+    if (this.balloonSubtitle) {
+      config.balloonSubtitle = this.balloonSubtitle;
     }
     return config;
   }

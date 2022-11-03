@@ -24,8 +24,8 @@ describe('BalloonFeatureInfoView', () => {
       beforeAll(() => {
         inputConfig = {
           name: 'TestView',
-          title: 'My Balloon title',
-          subtitle: 'My Balloon subtitle',
+          balloonTitle: 'My Balloon title',
+          balloonSubtitle: 'My Balloon subtitle',
         };
         const abstractView = new BalloonFeatureInfoView(inputConfig);
         outputConfig = abstractView.toJSON();
@@ -36,10 +36,10 @@ describe('BalloonFeatureInfoView', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
       it('should configure title', () => {
-        expect(outputConfig).to.have.property('title', inputConfig.title);
+        expect(outputConfig).to.have.property('balloonTitle', inputConfig.balloonTitle);
       });
       it('should configure src', () => {
-        expect(outputConfig).to.have.property('subtitle', inputConfig.subtitle);
+        expect(outputConfig).to.have.property('balloonSubtitle', inputConfig.balloonSubtitle);
       });
     });
   });

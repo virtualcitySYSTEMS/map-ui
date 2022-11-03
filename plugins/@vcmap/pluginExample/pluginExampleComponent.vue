@@ -1,8 +1,8 @@
 <template>
   <v-form v-model="isValid">
     <VcsFormSection
-      title="VcsFormSection Select & Text Inputs"
-      :title-actions="[
+      heading="VcsFormSection Select & Text Inputs"
+      :header-actions="[
         {
           name: 'denseSelection',
           title: 'change row height',
@@ -135,7 +135,7 @@
       </template>
     </VcsFormSection>
     <VcsFormSection
-      title="VcsFormSection Number Inputs"
+      heading="VcsFormSection Number Inputs"
       help-text="pluginExample.help"
     >
       <template #default>
@@ -236,7 +236,7 @@
       </template>
     </VcsFormSection>
     <VcsFormSection
-      title="VcsFormSection Radio & Checkbox"
+      heading="VcsFormSection Radio & Checkbox"
     >
       <template #default>
         <v-container>
@@ -286,7 +286,7 @@
       </template>
     </vcsformsection>
     <VcsFormSection
-      title="VcsFormSection Mixed Inputs"
+      heading="VcsFormSection Mixed Inputs"
     >
       <template #default>
         <v-container>

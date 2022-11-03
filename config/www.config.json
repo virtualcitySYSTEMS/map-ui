@@ -1294,6 +1294,10 @@
   ],
   "plugins": [
     {
+      "name": "@vcmap/create-link",
+      "entry": "plugins/@vcmap/create-link/index.js"
+    },
+    {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js",
       "contactDetails": {

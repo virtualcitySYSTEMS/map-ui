@@ -90,7 +90,16 @@
 <script>
   import { getCurrentInstance, ref, computed } from 'vue';
   import {
-    VContainer, VDataTable, VList, VListItem, VListItemTitle, VMenu, VRow,
+    VCard,
+    VDivider,
+    VContainer,
+    VDataTable,
+    VList,
+    VListItem,
+    VListItemTitle,
+    VMenu,
+    VIcon,
+    VRow,
   } from 'vuetify/lib';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
@@ -140,10 +149,13 @@
     components: {
       VcsButton,
       VcsTreeviewSearchbar,
+      VCard,
       VDataTable,
       VContainer,
+      VDivider,
       VRow,
       VMenu,
+      VIcon,
       VList,
       VListItem,
       VListItemTitle,

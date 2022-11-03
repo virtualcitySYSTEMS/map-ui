@@ -205,7 +205,7 @@ class OverviewMap {
           clone.activate();
           const idx = this._map.layerCollection.indexOf(clone);
           if (idx < 0) {
-            this._map.layerCollection.add(clone);
+            this._map.layerCollection.add(clone, 0);
           } else {
             this._map.layerCollection.remove(clone);
             this._map.layerCollection.add(clone, idx);
@@ -298,6 +298,7 @@ class OverviewMap {
       this._setupMapInteraction();
     }
     await this._map.activate();
+    this.map.setTarget('overview-map-container');
     if (!this._active) {
       this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(() => {
         this._clearListeners();
@@ -323,7 +324,6 @@ class OverviewMap {
       this._app.windowManager.add(getWindowComponentOptions(), vcsAppSymbol);
     }
     await this._activate();
-    this.map.setTarget('overview-map-container');
   }
 
   /**
@@ -347,9 +347,10 @@ class OverviewMap {
   async _initializePostRenderHandler(map) {
     if (!this._cameraIconLayer) {
       this._setupCameraIconLayer();
+      this._syncCameraViewAndFeature();
     }
     const navRemover = this._addNavigationListener(map);
-    const prRemover = map.postRender.addEventListener(this._addCameraFeature.bind(this));
+    const prRemover = map.postRender.addEventListener(this._syncCameraViewAndFeature.bind(this));
     const cleanupTasks = () => {
       prRemover();
       navRemover();
@@ -513,7 +514,7 @@ class OverviewMap {
    * Adds and maintains the view and camera feature
    * @private
    */
-  _addCameraFeature() {
+  _syncCameraViewAndFeature() {
     const viewpoint = this._app.maps.activeMap?.getViewpointSync();
     if (!viewpoint || !viewpoint.isValid() || viewpoint.equals(this._cachedViewpoint)) {
       return;
@@ -525,8 +526,6 @@ class OverviewMap {
     let { distance } = viewpoint;
     if (position[2] && !(distance && distance < position[2] * 4)) {
       distance = position[2] * 4;
-    } else if (position[2] == null) {
-      position[2] = distance;
     }
 
     distance = distance > this.minimumHeight ? distance : this.minimumHeight;
@@ -551,9 +550,11 @@ class OverviewMap {
     this.cameraIconStyle.image.setRotation(rotationRadians);
 
     viewpoint.heading = 0;
-    viewpoint.cameraPosition = position;
-    viewpoint.groundPosition = null;
-    viewpoint.distance = distance * 4;
+    if (viewpoint.cameraPosition) {
+      viewpoint.cameraPosition = position;
+      viewpoint.groundPosition = null;
+      viewpoint.distance = distance * 4;
+    }
     this._map.gotoViewpoint(viewpoint);
   }
 

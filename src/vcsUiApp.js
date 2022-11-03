@@ -135,7 +135,11 @@ class VcsUiApp extends VcsApp {
           if (this._cachedAppState.contextIds.includes(plugin[contextIdSymbol])) {
             state = this._cachedAppState.plugins.find(s => s.name === plugin.name);
           }
-          plugin.initialize(this, state?.state);
+          try {
+            plugin.initialize(this, state?.state);
+          } catch (e) {
+            getLogger().error(`Error in plugin ${plugin.name} initialize hook`, e);
+          }
         }
       }),
       this._plugins.removed.addEventListener(async (plugin) => {
@@ -335,6 +339,7 @@ class VcsUiApp extends VcsApp {
           active: l.active || l.loading,
         };
         if (
+          l.style &&
           l.style.name !== l.defaultStyle.name &&
           this.styles.has(l.style) &&
           l.style[contextIdSymbol] !== defaultDynamicContextId &&

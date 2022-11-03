@@ -24,7 +24,7 @@ class FeatureInfoInteraction extends AbstractInteraction {
    */
   async pipe(event) {
     if (event.feature) {
-      if (!this._featureInfo.selectedFeature || event.feature.getId() !== this._featureInfo.selectedFeature.getId()) {
+      if (!this._featureInfo.selectedFeature || event.feature.getId() !== this._featureInfo.selectedFeatureId) {
         event.stopPropagation = true;
         await this._featureInfo.selectFeature(
           event.feature,

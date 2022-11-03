@@ -232,6 +232,11 @@ class FeatureInfo {
      */
     this._selectedFeature = null;
     /**
+     * @type {string|null}
+     * @private
+     */
+    this._selectedFeatureId = null;
+    /**
      * @type {Array<function():void>}
      * @private
      */
@@ -298,6 +303,12 @@ class FeatureInfo {
    * @readonly
    */
   get selectedFeature() { return this._selectedFeature; }
+
+  /**
+   * @type {null|string}
+   * @readonly
+   */
+  get selectedFeatureId() { return this._selectedFeatureId; }
 
   /**
    * The window id of the current features FeatureInfoView window
@@ -404,6 +415,7 @@ class FeatureInfo {
       );
 
       this._selectedFeature = feature;
+      this._selectedFeatureId = feature.getId();
       this._featureChanged.raiseEvent(this._selectedFeature);
     } else {
       this.clear();
@@ -436,6 +448,7 @@ class FeatureInfo {
     this._clearInternal();
     if (this._selectedFeature) {
       this._selectedFeature = null;
+      this._selectedFeatureId = null;
       this._featureChanged.raiseEvent(this._selectedFeature);
     }
   }

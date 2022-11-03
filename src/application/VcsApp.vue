@@ -73,6 +73,7 @@
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
+  import { getLogger } from '@vcsuite/logger';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
   import { ButtonLocation } from '../manager/navbarManager.js';
@@ -101,17 +102,23 @@
    * @returns {function():void}
    */
   export function setupPluginMountedListeners(app) {
-    [...app.plugins].forEach((plugin) => {
+    /**
+     * wrapped execution of onVcsAppMounted hook
+     * @param {VcsPlugin} plugin
+     */
+    function onVcsAppMounted(plugin) {
       if (plugin.onVcsAppMounted) {
-        plugin.onVcsAppMounted(app);
+        try {
+          plugin.onVcsAppMounted(app);
+        } catch (e) {
+          getLogger('VcsUiApp').error(`Error in plugin ${plugin.name} onVcsAppMounted hook`, e);
+        }
       }
-    });
+    }
 
-    return app.plugins.added.addEventListener((plugin) => {
-      if (plugin.onVcsAppMounted) {
-        plugin.onVcsAppMounted(app);
-      }
-    });
+    [...app.plugins].forEach(onVcsAppMounted);
+
+    return app.plugins.added.addEventListener(onVcsAppMounted);
   }
 
   /**

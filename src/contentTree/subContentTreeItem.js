@@ -6,7 +6,7 @@ import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js'
 export const subTreeSymbol = Symbol('SubTree');
 
 /**
- * A sub tree item. Subtrees are rendered in their own (not the main content tree).
+ * A subtree item. Subtrees are rendered in their own (not the main content tree).
  * They will receive their own toggle button in the nav bar.
  * Only toplevel items can be content tree items (with a name which does not have a .)
  * @class
