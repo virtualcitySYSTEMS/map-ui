@@ -21,7 +21,14 @@
             v-bind="{...$attrs, ...attrs}"
             v-on="{...$listeners, ...on}"
             @update:error="setError"
-          />
+          >
+            <template #selection="{ item, index }">
+              <span v-if="index === 0" class="text-truncate">{{ item }}</span>
+              <span v-if="index === 1" class="text-no-wrap grey--text text-caption">
+                (+{{ $attrs.value.length - 1 }})
+              </span>
+            </template>
+          </v-select>
         </span>
       </template>
     </VcsTooltip>
@@ -43,6 +50,15 @@
      .v-select__selection--comma,
      .v-select.v-text-field input {
        color: var(--v-primary-base);
+     }
+   }
+ }
+ .v-select{
+   &.v-select--is-multi{
+     ::v-deep {
+       .v-select__selections{
+          flex-wrap: nowrap;
+       }
      }
    }
  }

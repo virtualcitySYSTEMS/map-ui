@@ -292,28 +292,28 @@
         <v-container>
           <v-row
             :dense="dense"
-            no-gutters
             align="center"
           >
-            <v-col cols="1" class="px-1">
+            <v-col cols="1">
               <VcsLabel html-for="textInput" :dense="dense" class="text-caption">
                 1
               </VcsLabel>
             </v-col>
-            <v-col>
+            <v-col cols="3">
               <VcsSelect
                 :items="['A', 'B', 'C']"
                 :dense="dense"
               />
             </v-col>
-            <v-col>
+            <v-col cols="3">
               <VcsSelect
-                :items="['A', 'B', 'C']"
+                :items="['Annabella', 'Belladonna', 'Claudine']"
                 :dense="dense"
                 multiple
+                v-model="state.selectedMultiple"
               />
             </v-col>
-            <v-col>
+            <v-col cols="5">
               <VcsTextField
                 id="textInput"
                 clearable

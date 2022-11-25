@@ -25,6 +25,7 @@ function getLogger() {
 /**
  * @typedef PluginExampleState
  * @property {string} selected
+ * @property {Array<string>} selectedMultiple
  * @property {string} conditionalInput
  * @property {string} initialTextInput
  * @property {number} numberInput
@@ -74,6 +75,7 @@ export default function (config) {
    */
   const pluginState = reactive({
     selected: pluginConfig.selectOptions.value[0],
+    selectedMultiple: [],
     conditionalInput: '',
     initialTextInput: pluginConfig.initialTextInput.value,
     numberInput: 100.156,
