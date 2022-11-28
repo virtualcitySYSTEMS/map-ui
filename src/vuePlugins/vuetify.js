@@ -46,6 +46,8 @@ export function createVuetify() {
           accent: '#757575',
           warning: '#FFCE00',
           error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
         },
       },
     },

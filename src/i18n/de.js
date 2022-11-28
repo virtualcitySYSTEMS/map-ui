@@ -92,6 +92,12 @@ const messages = {
       tooltip: 'Öffne Attribution Fenster',
     },
   },
+  notification: {
+    error: 'Fehler',
+    warning: 'Warnung',
+    information: 'Information',
+    success: 'Erfolg',
+  },
 };
 
 export default messages;

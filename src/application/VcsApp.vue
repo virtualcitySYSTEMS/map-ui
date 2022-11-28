@@ -20,6 +20,7 @@
       <MapNavigation />
       <ToolboxManagerComponent />
       <WindowManagerComponent />
+      <NotifierComponent />
     </v-container>
     <v-footer absolute v-if="$vuetify.breakpoint.smAndUp" min-height="22px">
       <VcsAttributionsFooter :entries="attributionEntries" :attribution-action="attributionAction" />
@@ -92,6 +93,7 @@
   import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
+  import NotifierComponent from '../notifier/notifierComponent.vue';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -412,6 +414,7 @@
       ToolboxManagerComponent,
       VContainer,
       VFooter,
+      NotifierComponent,
     },
     props: {
       appId: {

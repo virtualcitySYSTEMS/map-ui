@@ -27,14 +27,14 @@
 
   export default {
     name: 'AllIconsComponent',
-    components: [
+    components: {
       VSheet,
       VList,
       VListItem,
       VListItemIcon,
       VIcon,
       VListItemTitle,
-    ],
+    },
     computed: {
       icons() {
         return Object.keys(Icons).map(n => `$${n}`);

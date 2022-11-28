@@ -47,7 +47,6 @@ $icon-size: 20px; // 24px !default;
 $icon-size-dense: 16px; // 20px !default;
 
 /** VcsSelect **/
-
 $select-dense-selections-margin: 4px 4px 3px 0; // 5px 4px 3px 0 !default;
 
 // list box
@@ -79,3 +78,10 @@ $expansion-panel-content-padding: 0 0 4px; // 0 24px 16px !default;
 
 /** Footer **/
 $footer-padding: 0 8px; // 6px 16px !default;
+
+/** Snackbar **/
+$snackbar-bottom: 36px;
+$snackbar-background-color: rgba(0, 0, 0, 0.8);
+$snackbar-content-padding: 8px;
+$snackbar-action-margin: 8px;
+$snackbar-wrapper-min-height: 36px;

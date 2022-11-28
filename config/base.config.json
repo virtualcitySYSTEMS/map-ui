@@ -1169,6 +1169,10 @@
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
+    },
+    {
+      "name": "notifier",
+      "entry": "plugins/notifier/index.js"
     }
   ]
 }

@@ -24,7 +24,8 @@
 </template>
 
 <script>
-  import { VcsTextField, VcsButton, setStateToUrl } from '@vcmap/ui';
+  import { VSheet } from 'vuetify/lib';
+  import { VcsTextField, VcsButton, setStateToUrl, NotificationType } from '@vcmap/ui';
   import { getCurrentInstance, inject, ref } from 'vue';
 
   export default {
@@ -38,6 +39,7 @@
     components: {
       VcsTextField,
       VcsButton,
+      VSheet,
     },
     setup(props) {
       const localLink = ref(props.link);
@@ -48,6 +50,7 @@
         const element = proxy.$el.querySelector('input');
         element.select();
         document.execCommand('copy');
+        app.notifier.add({ title: 'createLink.title', message: 'createLink.copied', type: NotificationType.SUCCESS });
       };
 
       const refresh = async () => {

@@ -102,6 +102,7 @@ export {
 } from './src/pluginHelper.js';
 export { getStateFromURL, createEmptyState, setStateToUrl } from './src/state.js';
 export { default as VcsUiApp } from './src/vcsUiApp.js';
+export { default as Notifier, NotificationType } from './src/notifier/notifier.js';
 export { default as Icons } from './src/icons/+all.js';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';

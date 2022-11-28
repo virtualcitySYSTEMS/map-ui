@@ -1,4 +1,7 @@
 # 5.0.0-rc.next
+- Adds the `Notifier` API to `VcsUiApp`.
+
+# 5.0.0-rc.15
 - Update Openlayers to version 7.0.0
 - use new core postRenderHandler in NavigationControls and OverviewMap
 - Update vite to version 3.2.0 and vitest to 0.24.3

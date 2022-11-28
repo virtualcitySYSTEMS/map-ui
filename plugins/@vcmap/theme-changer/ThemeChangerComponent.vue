@@ -76,11 +76,12 @@
     VAvatar,
     VIcon,
     VDivider,
+    VSwitch,
   } from 'vuetify/lib';
 
   export default {
     name: 'ThemeChanger',
-    components: [
+    components: {
       VCard,
       VCardText,
       VChip,
@@ -91,7 +92,8 @@
       VAvatar,
       VIcon,
       VDivider,
-    ],
+      VSwitch,
+    },
     setup() {
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey('@vcmap/theme-changer');

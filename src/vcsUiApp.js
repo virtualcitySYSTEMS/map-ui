@@ -31,6 +31,7 @@ import UiConfig from './uiConfig.js';
 import { createEmptyState, getStateFromURL } from './state.js';
 import { version } from '../package.json';
 import Search from './search/search.js';
+import Notifier from './notifier/notifier.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
@@ -224,6 +225,12 @@ class VcsUiApp extends VcsApp {
     this._search = new Search(this);
 
     /**
+     * @type {Notifier}
+     * @private
+     */
+    this._notifier = new Notifier();
+
+    /**
      * @type {AppState}
      * @private
      */
@@ -307,6 +314,12 @@ class VcsUiApp extends VcsApp {
    * @readonly
    */
   get uiConfig() { return this._uiConfig; }
+
+  /**
+   * @type {Notifier}
+   * @readonly
+   */
+  get notifier() { return this._notifier; }
 
   /**
    * Get the state of the application. When passed the forUrl flag, only a minimal set of states shall be provided for a sharable link to the current state (to ensure
