@@ -23,7 +23,7 @@
             @update:error="setError"
           >
             <template #selection="{ item, index }">
-              <span v-if="index === 0" class="text-truncate">{{ item }}</span>
+              <span v-if="index === 0" class="text-truncate">{{ item?.text ?? item }}</span>
               <span v-if="index === 1" class="text-no-wrap grey--text text-caption">
                 (+{{ $attrs.value.length - 1 }})
               </span>

@@ -301,7 +301,7 @@
             </v-col>
             <v-col cols="3">
               <VcsSelect
-                :items="['A', 'B', 'C']"
+                :items="[{value: 'a', text: 'A'}, {value: 'b', text: 'B'}, {value: 'c', text:'C'}]"
                 :dense="dense"
               />
             </v-col>
