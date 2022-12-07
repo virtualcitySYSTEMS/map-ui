@@ -7,6 +7,7 @@ import { toolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
 import AllIconsComponent from './allIconsComponent.vue';
+import TestList from './testList.vue';
 
 let source;
 
@@ -97,11 +98,27 @@ export default async function () {
         app.windowManager,
         '@vcmap/test',
       );
+      const { action: listAction, destroy: destroyList } = createToggleAction(
+        {
+          name: 'TestList',
+        },
+        {
+          id: 'testList',
+          state: {
+            headerTitle: 'Test List',
+          },
+          slot: WindowSlot.DYNAMIC_LEFT,
+          component: TestList,
+        },
+        app.windowManager,
+        '@vcmap/test',
+      );
       this._destroyActions = [
         destroyConfigEditorAction,
         destroyWindowAction,
         destroyIconAction,
         destroryClipboardDialogAction,
+        destroyList,
       ];
       const alertAction = {
         name: 'VC Systems',
@@ -127,6 +144,11 @@ export default async function () {
       );
       app.navbarManager.add(
         { id: 'alert', action: alertAction },
+        '@vcmap/test',
+        ButtonLocation.TOOL,
+      );
+      app.navbarManager.add(
+        { id: 'list', action: listAction },
         '@vcmap/test',
         ButtonLocation.TOOL,
       );

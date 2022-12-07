@@ -129,6 +129,7 @@ export { default as VcsFormattedNumber } from './src/components/form-output/VcsF
 
 export { default as VcsActionList, validateAction, validateActions } from './src/components/lists/VcsActionList.vue';
 // export { default as VcsEndlessList } from './src/components/lists/VcsEndlessList.vue';
+export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
 // export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';

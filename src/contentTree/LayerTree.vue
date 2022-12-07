@@ -3,7 +3,7 @@
     v-if="tree && tree.length"
     :items="tree"
     :open.sync="open"
-    :has-searchbar="true"
+    :show-searchbar="true"
     :searchbar-placeholder="'content.search.placeholder'"
     item-children="visibleChildren"
   />

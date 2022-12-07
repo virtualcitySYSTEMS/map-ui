@@ -60,10 +60,10 @@ $list-item-min-height: 32px; // 48px !default;
 $list-dense-min-height: 24px; // 40px !default;
 $list-item-content-padding: 4px 0; // 12px 0 !default;
 $list-dense-content-padding: 0 0; // 8px 0 !default;
-$list-item-action-icon-margin: 0 0; //32px !default;
+$list-item-action-icon-margin: 0; //32px !default;
 $list-item-action-margin: 0 0; // 12px 0 !default;
 $list-item-icon-margin: auto 0; // 16px 0 !default;
-
+$list-item-content-children-margin-bottom: 0; // 2px !default;
 
 /** Treeview **/
 $treeview-node-level-width: 16px;

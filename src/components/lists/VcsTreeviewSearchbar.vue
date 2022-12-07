@@ -17,7 +17,7 @@
         class="searchbar outlined rounded-xl align-center d-flex justify-center white pa-1 pl-6"
         :placeholder="$t(placeholder)"
         :value="value"
-        @input="$event => handleInput($event)"
+        v-on="$listeners"
         clearable
       />
     </slot>
@@ -104,12 +104,7 @@
 
 
 <script>
-  import { onMounted, onUnmounted } from 'vue';
-
-  import { Subject } from 'rxjs';
-  import { debounceTime } from 'rxjs/operators';
   import { VIcon, VTextField } from 'vuetify/lib';
-
 
   /**
    * @description Stylized wrapper around vuetify divider
@@ -139,23 +134,6 @@
         type: Boolean,
         default: false,
       },
-    },
-    setup(props, context) {
-      const sub = new Subject();
-      onMounted(() => {
-        sub.pipe(debounceTime(330)).subscribe(
-          (value) => {
-            context.emit('input', value);
-          },
-        );
-      });
-      onUnmounted(() => sub.unsubscribe());
-
-      return {
-        handleInput: (val) => {
-          sub.next(val);
-        },
-      };
     },
   };
 </script>
