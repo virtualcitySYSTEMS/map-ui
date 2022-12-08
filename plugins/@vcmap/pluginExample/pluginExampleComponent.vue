@@ -2,29 +2,7 @@
   <v-form v-model="isValid">
     <VcsFormSection
       heading="VcsFormSection Select & Text Inputs"
-      :header-actions="[
-        {
-          name: 'denseSelection',
-          title: 'change row height',
-          icon: dense ? 'mdi-arrow-split-horizontal' : 'mdi-arrow-collapse-vertical',
-          callback: () => this.dense = !this.dense
-        },
-        { name: 'noIcon', title: 'another action without icon', callback: () => {} },
-        {
-          name: 'toggleSection',
-          title: 'toggle section',
-          icon: showSection ? '$vcsMinus' : '$vcsPlus',
-          callback: () => this.showSection = !this.showSection
-        },
-        {
-          name: 'toggleIcon',
-          title: 'toggle switch example',
-          icon: showSection ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off',
-          active: showSection,
-          callback: () => this.showSection = !this.showSection
-        },
-        { name: 'alert', icon: 'mdi-message-text', callback: alertAction },
-      ]"
+      :header-actions="actions"
     >
       <template #help>
         <ol>
@@ -374,9 +352,17 @@
       VContainer,
     },
     props: {
-      windowId: {
-        type: String,
-        default: '',
+      actions: {
+        type: Array,
+        required: true,
+      },
+      dense: {
+        type: Object,
+        required: true,
+      },
+      showSection: {
+        type: Object,
+        required: true,
       },
     },
     setup() {
@@ -386,8 +372,6 @@
       watch(plugin.state, () => { newUpdate.value = true; });
 
       return {
-        showSection: ref(true),
-        dense: ref(true),
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,
         // do not put the whole config here, since it would become reactive
@@ -402,9 +386,6 @@
           // eslint-disable-next-line no-console
           console.log(plugin.getSerializedState());
           newUpdate.value = false;
-        },
-        alertAction() {
-          alert('alert');
         },
       };
     },

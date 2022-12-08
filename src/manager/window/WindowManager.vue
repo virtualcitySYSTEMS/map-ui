@@ -23,6 +23,7 @@
         <component
           :is="getHeaderComponent(id)"
           :window-state="getState(id)"
+          v-bind="getProps(id)"
           @close="close(id)"
         />
       </template>

@@ -22,6 +22,7 @@
   "files": [
     "index.js",
     "start.js",
+    "index.html",
     "map.config.json",
     "dist/",
     "src/",

@@ -19,7 +19,7 @@
       }"
       :draggable="isDynamic"
     >
-      <slot name="headerComponent" />
+      <slot name="headerComponent" :props="$attrs" />
     </div>
     <v-divider />
     <div
@@ -40,7 +40,7 @@
 
 <script>
   import {
-    onMounted, onUnmounted, computed, ref, nextTick,
+    onMounted, onUnmounted, computed, ref, nextTick, inject, provide,
   } from 'vue';
   import { fromEvent } from 'rxjs';
   import { switchMap, take, map, tap } from 'rxjs/operators';
@@ -133,6 +133,13 @@
           dropSub.unsubscribe();
         }
       });
+
+      const app = inject('vcsApp');
+      const { provides } = app.windowManager.get(windowState.id);
+      Object.entries(provides)
+        .forEach(([key, value]) => {
+          provide(key, value);
+        });
       return {
         isDynamic,
         isDocked,

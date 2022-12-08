@@ -11,6 +11,6 @@
 
   export default {
     name: 'EmptyComponent',
-    components: [VSheet],
+    components: { VSheet },
   };
 </script>

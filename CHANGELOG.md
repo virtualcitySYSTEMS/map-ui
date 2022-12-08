@@ -17,6 +17,9 @@
 - Introducing error handling in plugin hooks `onVcsAppMounted` and `initialize`.
 - Fixed avoiding html attributes as vue properties by renaming.
 - Added documentation for content tree.
+- Adds possibility to add actions on window component headers
+- WindowComponent props are now also passed to custom window header components
+- Adds provide API to window components
 
 # 5.0.0-rc.14
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue

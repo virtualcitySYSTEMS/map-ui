@@ -78,6 +78,7 @@ export const WindowPositions = {
  * @property {WindowState} [state]
  * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
  * @property {Object} [props]
+ * @property {Object} [provides]
  */
 
 /**
@@ -87,6 +88,8 @@ export const WindowPositions = {
  * @property {boolean} [hideHeader] be used to not show the header.
  * @property {string} [headerTitle]
  * @property {string} [headerIcon]
+ * @property {Array<VcsAction>} [headerActions]
+ * @property {number} [headerActionsOverflowCount]
  * @property {Object<string, string>} styles[styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
  * @property {Array<string>|Object<string,string>} [classes] Can be used to add additional classes to the root WindowComponent. Use Vue Class Bindings Syntax https://vuejs.org/v2/guide/class-and-style.html
  */
@@ -100,6 +103,7 @@ export const WindowPositions = {
  * @property {WindowState} state
  * @property {Ref<UnwrapRef<WindowSlot>>} slot
  * @property {Object} props
+ * @property {Object} provides
  */
 
 /**
@@ -417,7 +421,7 @@ class WindowManager {
   /**
    * adds a windowComponent to the WindowManager and renders the Window at the provided position/slot.
    * The reactive WindowState Object can be used to watch Changes on position/WindowSlot.
-   * The WindowState Object can also be used to change hideHeader, headerTitle, headerIcon, styles and classes
+   * The WindowState Object can also be used to change hideHeader, headerTitle, headerIcon, headerActions, styles and classes
    * @param {WindowComponentOptions|WindowComponent} windowComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
    * @throws {Error} if a windowComponent with the same ID has already been added
@@ -450,11 +454,14 @@ class WindowManager {
       hideHeader: !!windowComponentOptions?.state?.hideHeader,
       headerTitle: windowComponentOptions?.state?.headerTitle,
       headerIcon: windowComponentOptions?.state?.headerIcon,
+      headerActions: windowComponentOptions?.state?.headerActions,
+      headerActionsOverflow: windowComponentOptions?.state?.headerActionsOverflow,
       classes,
       styles,
     });
 
     const props = windowComponentOptions.props || {};
+    const provides = windowComponentOptions.provides || {};
 
     const position = reactive(windowPosition);
     /**
@@ -481,6 +488,9 @@ class WindowManager {
       },
       get props() {
         return props;
+      },
+      get provides() {
+        return provides;
       },
     };
     this._removeWindowAtSlot(slot);

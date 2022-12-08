@@ -7,6 +7,7 @@ import packageJSON from './package.json';
 import defaultConfig from './config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
 import pluginExampleComponent from './pluginExampleComponent.vue';
+import createExampleActions from './exampleActions.js';
 
 /**
  * @returns {Logger}
@@ -150,6 +151,8 @@ export default function (config) {
     getSerializedState,
     setSerializedState,
     onVcsAppMounted(app) {
+      const { actions, showSection, dense } = createExampleActions();
+
       const { action, destroy } = createToggleAction(
         {
           name: 'Plugin Example',
@@ -161,8 +164,14 @@ export default function (config) {
           component: pluginExampleComponent,
           slot: WindowSlot.DYNAMIC_LEFT,
           state: {
-            headerTitle: 'pluginExample.select',
+            headerTitle: 'pluginExample.title',
             headerIcon: '$vcsCircle',
+            headerActions: actions,
+          },
+          props: {
+            actions,
+            showSection,
+            dense,
           },
         },
         app.windowManager,

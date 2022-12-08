@@ -51,6 +51,9 @@
           component: EmptyComponent,
           headerComponent: MyCustomHeader,
           slot: WindowSlot.DYNAMIC_RIGHT,
+          props: {
+            sample: 'A window property',
+          },
         },
         {
           id: 'dynamicRight2',

@@ -13,6 +13,7 @@ export {
 } from './src/actions/actionHelper.js';
 export {
   createStateRefAction,
+  StateActionState,
 } from './src/actions/stateRefAction.js';
 
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
