@@ -408,6 +408,11 @@
     .v-list{
       .v-list-item {
         padding: 4px 8px 4px 16px;
+        display: grid;
+        grid-template-columns: auto auto;
+        &:after{
+          display: none;
+        }
         &.font-weight-bold{
           .v-list-item__title{
             font-weight: 700;

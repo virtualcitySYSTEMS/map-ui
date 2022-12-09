@@ -13,13 +13,12 @@
       item-key="name"
       :search="search"
       :filter="handleFilter"
-      :activatable="false"
     >
       <template #label="{ item }">
         <VcsTreeviewLeaf
           :item="item"
           :class="[item.clickable ? 'cursor-pointer' : '']"
-          @click.native="item.clickable && item.clicked()"
+          @click.native="item.clickable && item.clicked($event)"
         />
       </template>
     </v-treeview>

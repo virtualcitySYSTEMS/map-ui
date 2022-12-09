@@ -3,21 +3,22 @@
     class="d-flex flex-row align-center"
     v-if="item"
   >
-    <span v-if="item.icon" class="d-flex align-center">
-      <v-icon
-        v-if="iconType === iconTypes.string"
-        v-text="item.icon"
-        :size="16"
-        class="mr-1"
-      />
-      <span ref="imgContainer" />
-    </span>
-
     <div
-      class="position-relative col-8 pa-0 d-flex align-center treeview-label"
+      class="position-relative col-8 pa-0 d-flex align-center vcs-treeview-leaf"
       :title="$t(item.tooltip || item.title)"
     >
-      <span>{{ $t(item.title) }}</span>
+      <span
+        v-if="item.icon"
+      >
+        <v-icon
+          v-if="isStringIcon"
+          v-text="item.icon"
+          :size="16"
+          class="mr-1"
+        />
+        <ImageElementInjector :element="item.icon" v-else />
+      </span>
+      <span class="vcs-treeview-item-title">{{ $t(item.title) }}</span>
     </div>
     <VcsActionButtonList
       v-if="item.actions.length > 0"
@@ -31,7 +32,7 @@
   </div>
 </template>
 <style lang="css" scoped>
-.treeview-label span{
+.vcs-treeview-leaf .vcs-treeview-item-title{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -39,22 +40,10 @@
 </style>
 
 <script>
-  import
-  {
-    computed,
-    onMounted,
-    ref,
-  } from 'vue';
-
+  import { computed } from 'vue';
   import { VIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
-
-
-  const iconTypes = {
-    image: 'HTMLImageElement',
-    canvas: 'HTMLCanvasElement',
-    string: 'StringIcon',
-  };
+  import ImageElementInjector from '../imageElementInjector.vue';
 
   /**
    * @description
@@ -66,6 +55,7 @@
     components: {
       VcsActionButtonList,
       VIcon,
+      ImageElementInjector,
     },
     props: {
       item: {
@@ -74,32 +64,10 @@
       },
     },
     setup(props) {
-      const iconType = ref();
-      const imgContainer = ref();
-
       const leaf = computed(() => props.item?.children?.length === 0);
 
-      onMounted(() => { // TODO make icon reactive
-        const { icon } = props.item;
-        if (icon) {
-          if (icon instanceof HTMLImageElement) {
-            imgContainer.value.appendChild(icon);
-            iconType.value = iconTypes.image;
-          }
-          if (icon instanceof HTMLCanvasElement) {
-            imgContainer.value.appendChild(icon);
-            iconType.value = iconTypes.canvas;
-          }
-          if (typeof icon === 'string') {
-            iconType.value = iconTypes.string;
-          }
-        }
-      });
-
       return {
-        iconTypes,
-        iconType,
-        imgContainer,
+        isStringIcon: computed(() => typeof props.item.icon === 'string'),
         leaf,
       };
     },

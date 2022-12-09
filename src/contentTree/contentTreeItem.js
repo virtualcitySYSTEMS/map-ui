@@ -26,11 +26,11 @@ import { createStateRefAction, StateActionState } from '../actions/stateRefActio
  * @property {StateActionState} state - The state of this item. NONE if this item cannot have a state.
  * @property {string} title - The title to be displayed
  * @property {string} [tooltip]
- * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - An optional icon to display with this item. Can be an URL or HTMLElement.
+ * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be an URL or HTMLElement.
  * @property {Array<VcsAction>} actions
  * @property {Array<TreeViewItem>} children
  * @property {Array<TreeViewItem>} visibleChildren - computed property
- * @property {function():Promise<void>} clicked - A callback called once the item is clicked.
+ * @property {function(PointerEvent):Promise<void>} clicked - A callback called once the item is clicked.
  */
 
 /**
