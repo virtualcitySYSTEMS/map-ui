@@ -205,6 +205,11 @@ export default function (config) {
           help2desc: 'InitialTextInput bleibt solange im Lade-Status, bis sich der Wert \'myInitialText\' ändert.',
           help3: 'Geben Sie eine Email Adresse ein',
           help3desc: 'Email Adressen werden validiert.',
+          numbers: {
+            one: 'eins',
+            two: 'zwei',
+            three: 'drei',
+          },
         },
       },
       en: {
@@ -219,6 +224,11 @@ export default function (config) {
           help2desc: 'InitialTextInput text field stays in loading state, as long as \'myInitialText\' is not changed.',
           help3: 'Enter an email address.',
           help3desc: 'Emails get validated.',
+          numbers: {
+            one: 'one',
+            two: 'two',
+            three: 'three',
+          },
         },
       },
     },

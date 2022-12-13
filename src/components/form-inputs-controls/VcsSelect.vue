@@ -17,13 +17,16 @@
             :outlined="isOutlined"
             :dense="isDense"
             :height="isDense ? 24 : 32"
+            :item-text="item => $t(getText(item))"
             :class="$attrs.color === 'primary' ? 'primary--select' : ''"
             v-bind="{...$attrs, ...attrs}"
             v-on="{...$listeners, ...on}"
             @update:error="setError"
           >
             <template #selection="{ item, index }">
-              <span v-if="index === 0" class="text-truncate">{{ item?.text ?? item }}</span>
+              <span v-if="index === 0" class="text-truncate">
+                {{ $t(getText(item)) }}
+              </span>
               <span v-if="index === 1" class="text-no-wrap grey--text text-caption">
                 (+{{ $attrs.value.length - 1 }})
               </span>
@@ -71,11 +74,13 @@
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-select/ |vuetify select}.
+   * Translates the items text if it is an i18n string.
    * Provides two height options depending on "dense" property:
    * - if dense is set true (default), height is 24 px
    * - if dense is set false, height is 32 px
    * Provides VcsTooltip to show error messages
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * @vue-prop {Function} itemText - A function that is applied to each item and should return the item's text value.
    * @vue-computed {boolean} isDense - Whether size of select is dense.
    * @vue-computed {boolean} isOutlined - Select is outlined on either hover, focus or error, if not disabled.
    */
@@ -89,6 +94,10 @@
       tooltipPosition: {
         type: String,
         default: 'right',
+      },
+      itemText: {
+        type: Function,
+        default: undefined,
       },
     },
     data() {
@@ -110,6 +119,13 @@
       setError() {
         const rules = [...this.$attrs.rules].concat(this.$attrs.errorMessages);
         this.errorMessage = validate(rules, this.$attrs.value).join('\n');
+      },
+      getText(item) {
+        if (this.itemText) {
+          return this.itemText(item);
+        } else {
+          return item?.text ?? item;
+        }
       },
     },
   };

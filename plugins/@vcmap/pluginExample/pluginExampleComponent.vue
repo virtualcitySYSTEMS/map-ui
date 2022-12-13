@@ -279,13 +279,21 @@
             </v-col>
             <v-col cols="3">
               <VcsSelect
-                :items="[{value: 'a', text: 'A'}, {value: 'b', text: 'B'}, {value: 'c', text:'C'}]"
+                :items="[
+                  {value: 'one', i18n: 'pluginExample.numbers.one'},
+                  {value: 'two', i18n: 'pluginExample.numbers.two'},
+                  {value: 'three', i18n: 'pluginExample.numbers.three'}]"
+                :item-text="item => item.i18n"
                 :dense="dense"
               />
             </v-col>
             <v-col cols="3">
               <VcsSelect
-                :items="['Annabella', 'Belladonna', 'Claudine']"
+                :items="[
+                  {value: 'Anna', fullName: 'Annabella'},
+                  {value: 'Bella', fullName: 'Belladonna'},
+                  {value: 'Claudi', fullName: 'Claudine'}]"
+                :item-text="item => item.fullName"
                 :dense="dense"
                 multiple
                 v-model="state.selectedMultiple"
