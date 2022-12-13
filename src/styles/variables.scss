@@ -79,6 +79,16 @@ $expansion-panel-content-padding: 0 0 4px; // 0 24px 16px !default;
 /** Footer **/
 $footer-padding: 0 8px; // 6px 16px !default;
 
+/** Wizard **/
+$stepper-vertical-padding-bottom: 16px; // 36px !default;
+$stepper-vertical-step-padding: 12px 8px;
+$stepper-vertical-content-ltr-margin: -14px 0 -14px 13px; // -8px -36px -16px 36px !default;
+$stepper-vertical-content-ltr-padding: 16px 8px 16px 16px; // 16px 23px 16px 60px !default;
+$stepper-vertical-step-step-margin: 8px;
+$stepper-step-step-min-width: 12px;
+$stepper-step-step-width: 12px;
+$stepper-step-step-height: 12px;
+
 /** Snackbar **/
 $snackbar-bottom: 36px;
 $snackbar-background-color: rgba(0, 0, 0, 0.8);

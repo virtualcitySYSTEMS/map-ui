@@ -397,6 +397,10 @@
       "entry": "plugins/buttonExamples/index.js"
     },
     {
+      "name": "@vcmap/wizardExample",
+      "entry": "plugins/wizardExample/index.js"
+    },
+    {
       "name": "@vcmap/hello-world",
       "entry": "plugins/@vcmap/hello-world/index.js"
     },
