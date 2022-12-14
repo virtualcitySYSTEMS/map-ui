@@ -409,7 +409,7 @@
       .v-list-item {
         padding: 4px 8px 4px 16px;
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: 24px auto;
         &:after{
           display: none;
         }
