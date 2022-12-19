@@ -109,6 +109,45 @@
               />
             </v-col>
           </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col>
+              <VcsLabel html-for="prependedInput" :dense="dense">
+                String With Icon
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="prependedInput"
+                :dense="dense"
+                prepend-icon="mdi-map-marker"
+                v-model="state.prependedInput"
+              />
+            </v-col>
+          </v-row>
+          <v-row
+            :dense="dense"
+            no-gutters
+            align="center"
+          >
+            <v-col>
+              <VcsLabel html-for="fileInput" :dense="dense">
+                Email
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsTextField
+                id="fileInput"
+                :dense="dense"
+                type="file"
+                multiple
+                v-model="state.files"
+              />
+            </v-col>
+          </v-row>
         </v-container>
       </template>
     </VcsFormSection>

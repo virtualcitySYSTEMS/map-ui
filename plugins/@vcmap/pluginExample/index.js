@@ -82,6 +82,8 @@ export default function (config) {
     numberInput: 100.156,
     checkboxInput: false,
     email: '',
+    prependedInput: '',
+    files: [],
   });
 
 

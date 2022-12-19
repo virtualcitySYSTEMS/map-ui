@@ -11,7 +11,8 @@
       :max-width="200"
     >
       <template #activator="{ attrs }">
-        <v-text-field
+        <component
+          :is="inputComponent"
           ref="textFieldRef"
           hide-details
           :dense="isDense"
@@ -23,7 +24,7 @@
           v-bind="{...$attrs, ...attrs}"
           v-on="{...$listeners}"
           :height="isDense ? 24 : 32"
-          class="ma-0 pb-1 pt-1 primary--placeholder"
+          class="ma-0 pb-1 pt-1 primary--placeholder align-center"
           :class="$attrs.color === 'primary' ? 'primary--textfield' : ''"
         />
       </template>
@@ -51,7 +52,7 @@
 </style>
 
 <script>
-  import { VTextField } from 'vuetify/lib';
+  import { VTextField, VFileInput } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
@@ -74,6 +75,7 @@
     components: {
       VcsTooltip,
       VTextField,
+      VFileInput,
     },
     props: {
       tooltipPosition: {
@@ -92,6 +94,12 @@
       };
     },
     computed: {
+      inputComponent() {
+        if (this.$attrs.type === 'file') {
+          return 'VFileInput';
+        }
+        return 'VTextField';
+      },
       isClearable() {
         return (this.$attrs.clearable !== undefined && this.$attrs.clearable !== false) &&
           (this.hover || this.focus || this.isError);
