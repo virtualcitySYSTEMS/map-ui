@@ -84,12 +84,18 @@ export async function getInlinePlugins() {
  * @returns {Promise<void>}
  */
 export async function buildLibrary(libraryConfig, outputFolder, library, hash = '', base64Css = false) {
+  // Base64 contains the characters '+', '/', and '=', which have a reserved meaning in URLs.
+  // Base64url solves this by replacing '+' with '-' and '/' with '_'.
+  // See https://stackoverflow.com/a/55389212
   const cssInjectorCode = `
 function loadCss(href) {
+  const base64url = href
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
   return new Promise((resolve, reject) => {
     const elem = document.createElement('link');
     elem.rel = 'stylesheet';
-    elem.href = href;
+    elem.href = base64url;
     elem.defer = false;
     elem.async = false;
     elem.onload = resolve;

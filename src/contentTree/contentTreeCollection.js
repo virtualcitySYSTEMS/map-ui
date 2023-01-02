@@ -199,6 +199,15 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
+   * Returns all managed subtrees. Entries are not persisted and will change, if the trees get recalculated.
+   * @type {import("vue").Ref<Map<string, TreeViewItem>>}
+   * @readonly
+   */
+  get subTreeViewItems() {
+    return this._subTreeViewItems;
+  }
+
+  /**
    * All ids of the currently managed subtrees. Ids are not persisted and will change if
    * the trees get recalculated. The first ID is always the default tree. Other ids are subtree ids.
    * Order of ids is dependent on their position in the collection and weight.
