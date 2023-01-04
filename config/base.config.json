@@ -675,7 +675,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
-      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh_2020/",
+      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2020/",
       "activeOnStartup": false,
       "allowPicking": false,
       "screenSpaceError": 16,
@@ -753,46 +753,6 @@
         "featureInfo": "tableAll",
         "title": "layers.osmBuildingFootprints.title",
         "tooltip": "OpenStreetMap Building Polygons"
-      }
-    },
-    {
-      "name": "fisbroker-dop-2015",
-      "url": "https://karten.blc.shc.eu/cache/tms/1.0.0/osm-berlin-dop2015-combined/",
-      "type": "TMSLayer",
-      "datasourceId": "5dnXzoL27oPYQbEWQ",
-      "activeOnStartup": false,
-      "extent": {
-        "coordinates": [
-          248000,
-          5648000,
-          517000,
-          5968000
-        ],
-        "projection": {
-          "epsg": "25833",
-          "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
-        }
-      },
-      "format": "jpg",
-      "minLevel": "0",
-      "maxLevel": "20",
-      "tilingSchema": "mercator",
-      "opacity": "1",
-      "hiddenObjectIds": [],
-      "exclusiveGroups": [
-        "base"
-      ],
-      "tileSize": [
-        "256",
-        "256"
-      ],
-      "properties": {
-        "title": "Aerial Image (2015)",
-        "attributions": {
-          "provider": "Geoportal Berlin / Luftbild 2015, OpenStreetMap contributors",
-          "url": "http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/",
-          "year": "2018"
-        }
       }
     },
     {
@@ -1139,10 +1099,8 @@
       "activeOnStartup": true,
       "dataSets": [
         {
-          "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques_2020/image_tiled.json",
-          "terrainProvider": {
-            "url": "https://b.3d.blc.shc.eu/WAB/base_layer/cesium_terrain/"
-          },
+          "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/obliques_2020/image_tiled.json",
+          "terrainUrl": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/",
           "projection": {
             "epsg": "25833",
             "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"

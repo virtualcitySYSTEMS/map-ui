@@ -388,15 +388,17 @@
             .forEach(i => i.selectionChanged(false));
           selected.value = [];
           firstSelected = null;
+          emit('input', selected.value);
         },
         selectAll() {
           const currentSelection = [...selected.value];
           selected.value = this.renderingItems.slice(0);
           selected.value.forEach((item) => {
-            if (item.selectionChanged && currentSelection.includes(item)) {
+            if (item.selectionChanged && !currentSelection.includes(item)) {
               item.selectionChanged(true);
             }
           });
+          emit('input', selected.value);
         },
       };
     },

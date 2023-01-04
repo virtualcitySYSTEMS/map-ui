@@ -95,7 +95,8 @@ class Notifier {
    */
   add(notification) {
     const note = createNotification(notification, this);
-    this._notifications.value.push(note);
+    // use spread since push won't trigger updates
+    this._notifications.value = [...this._notifications.value, note];
     return note;
   }
 
@@ -103,10 +104,8 @@ class Notifier {
    * @param {Notification} notification
    */
   remove(notification) {
-    const index = this._notifications.value.indexOf(notification);
-    if (index > -1) {
-      this._notifications.value.splice(index, 1);
-    }
+    // reassign to trigger update
+    this._notifications.value = this._notifications.value.filter(n => n !== notification);
   }
 
   /**

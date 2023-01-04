@@ -7,6 +7,7 @@
     <template #activator="{ on, attrs }">
       <span v-on="on">
         <v-checkbox
+          :input-value="$attrs.value"
           on-icon="$vcsCheckboxChecked"
           off-icon="$vcsCheckbox"
           class="vcs-checkbox"

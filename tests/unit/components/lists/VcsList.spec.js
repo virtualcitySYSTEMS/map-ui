@@ -257,6 +257,61 @@ describe('VcsList', () => {
     });
   });
 
+  describe('selecting all items', () => {
+    let component;
+    let items;
+    let value;
+    let selectionChangedFoo;
+    let selectionChangedBar;
+    let selectionChangedBaz;
+
+    beforeAll(() => {
+      selectionChangedFoo = vi.fn();
+      selectionChangedBar = vi.fn();
+      selectionChangedBaz = vi.fn();
+      items = [
+        {
+          name: 'foo',
+          selectionChanged: selectionChangedFoo,
+        },
+        {
+          name: 'bar',
+          selectionChanged: selectionChangedBar,
+        },
+        {
+          name: 'baz',
+          selectionChanged: selectionChangedBaz,
+        },
+      ];
+      value = [items[0]];
+      component = shallowMount(VcsList, {
+        ...getMountOptionsWithI18n(),
+        propsData: { items, value, selectable: true },
+      });
+      component.vm.selectAll();
+    });
+
+    afterAll(() => {
+      component.destroy();
+    });
+
+    it('should emit a new value, selecting all items', () => {
+      const { input } = component.emitted();
+      expect(input).to.be.ok;
+      expect(input).have.lengthOf(1);
+      expect(input[0]).to.be.an('array').and.have.lengthOf(1);
+      expect(input[0][0]).to.be.an('array').and.have.lengthOf(items.length);
+      expect(input[0][0]).not.to.equal(value);
+      input[0][0].forEach((selected, idx) => expect(selected).to.have.property('name', items[idx].name));
+    });
+
+    it('should call selectionChanged on previously unselected items', () => {
+      expect(selectionChangedFoo).not.toHaveBeenCalled();
+      expect(selectionChangedBar).toHaveBeenCalledWith(true);
+      expect(selectionChangedBaz).toHaveBeenCalledWith(true);
+    });
+  });
+
   describe('selecting an item with CTRL', () => {
     describe('selecting an item', () => {
       let component;
@@ -986,6 +1041,60 @@ describe('VcsList', () => {
         expect(items[0].selectionChanged).toHaveBeenCalledWith(true);
         expect(items[2].selectionChanged).toHaveBeenCalledWith(true);
       });
+    });
+  });
+
+  describe('clear selection', () => {
+    let component;
+    let items;
+    let value;
+    let selectionChangedFoo;
+    let selectionChangedBar;
+    let selectionChangedBaz;
+
+    beforeAll(() => {
+      selectionChangedFoo = vi.fn();
+      selectionChangedBar = vi.fn();
+      selectionChangedBaz = vi.fn();
+      items = [
+        {
+          name: 'foo',
+          selectionChanged: selectionChangedFoo,
+        },
+        {
+          name: 'bar',
+          selectionChanged: selectionChangedBar,
+        },
+        {
+          name: 'baz',
+          selectionChanged: selectionChangedBaz,
+        },
+      ];
+      value = items;
+      component = shallowMount(VcsList, {
+        ...getMountOptionsWithI18n(),
+        propsData: { items, value, selectable: true },
+      });
+      component.vm.clear();
+    });
+
+    afterAll(() => {
+      component.destroy();
+    });
+
+    it('should emit a new value with empty selection', () => {
+      const { input } = component.emitted();
+      expect(input).to.be.ok;
+      expect(input).have.lengthOf(1);
+      expect(input[0]).to.be.an('array').and.have.lengthOf(1);
+      expect(input[0][0]).to.be.an('array').and.have.lengthOf(0);
+      expect(input[0][0]).not.to.equal(value);
+    });
+
+    it('should call selectionChanged on all items', () => {
+      expect(selectionChangedFoo).toHaveBeenCalledWith(false);
+      expect(selectionChangedBar).toHaveBeenCalledWith(false);
+      expect(selectionChangedBaz).toHaveBeenCalledWith(false);
     });
   });
 

@@ -3,6 +3,7 @@
     <VcsFormSection
       heading="VcsFormSection Select & Text Inputs"
       :header-actions="actions"
+      :action-button-list-overflow-count="4"
     >
       <template #help>
         <ol>
@@ -305,6 +306,12 @@
     <VcsFormSection
       heading="VcsFormSection Mixed Inputs"
     >
+      <template #header="{ heading }">
+        <article class="pa-2 secondary text--primary">
+          {{ heading }}
+          <h3>This is a custom header using header slot</h3>
+        </article>
+      </template>
       <template #default>
         <v-container>
           <v-row

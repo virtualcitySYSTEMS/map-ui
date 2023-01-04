@@ -495,7 +495,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Planwerk innere Stadt",
-      "url": "https://c.3d.blc.shc.eu/WAB/buildings/plannings/cesium_planwerk_innere_stadt/3444ad7c-b6a5-4623-9421-e80e37d5378c/",
+      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/plannings/cesium_planwerk_innere_stadt/3444ad7c-b6a5-4623-9421-e80e37d5378c/",
       "activeOnStartup": false,
       "allowPicking": false,
       "style": {
@@ -691,7 +691,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
-      "url": "https://a.3d.blc.shc.eu/WAB/base_layer/cesium_mesh_2020/",
+      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2020/",
       "activeOnStartup": false,
       "allowPicking": false,
       "screenSpaceError": 16,
@@ -894,14 +894,12 @@
   ],
   "obliqueCollections": [
     {
-      "name": "Schrägluftbilder 2020",
+      "name": "obliques",
       "activeOnStartup": true,
       "dataSets": [
         {
-          "url": "https://a.3d.blc.shc.eu/WAB/base_layer/obliques_2020/image_tiled.json",
-          "terrainProvider": {
-            "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9"
-          },
+          "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/obliques_2020/image_tiled.json",
+          "terrainUrl": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/",
           "projection": {
             "epsg": "25833",
             "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
@@ -909,10 +907,11 @@
         }
       ],
       "maxZoom": 7,
-      "minZoom": 0,
-      "properties": {
+      "minZoom": 3,
+      "hideLevels": null,
+      "properties:": {
         "attributions": {
-          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "provider": "Berlin Partner / Senat von Berlin",
           "url": "https://www.berlin-partner.de",
           "year": "2020"
         }

@@ -123,6 +123,7 @@
       title: 'Foo',
       tooltip: 'this is the foo',
       icon: 'mdi-pen',
+      selectionChanged: value => console.log('changed cb foo', value),
     },
     {
       name: 'bar',
@@ -136,11 +137,13 @@
           },
         },
       ],
+      selectionChanged: value => console.log('changed cb bar', value),
     },
     {
-      name: 'bar',
+      name: 'baz',
       title: 'Baz',
       tooltip: 'special baz',
+      selectionChanged: value => console.log('bchanged cb baz', value),
     },
   ];
 

@@ -80,7 +80,7 @@ export default function (config) {
     conditionalInput: '',
     initialTextInput: pluginConfig.initialTextInput.value,
     numberInput: 100.156,
-    checkboxInput: false,
+    checkboxInput: true,
     email: '',
     prependedInput: '',
     files: [],
