@@ -7,7 +7,7 @@ import Categories from './Categories.vue';
 export default async function categoryTest() {
   return {
     name: '@vcmap/categoryTest',
-    onVcsAppMounted(app) {
+    initialize(app) {
       const { action, destroy } = createToggleAction(
         {
           name: 'Category Editor',

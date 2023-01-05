@@ -1,5 +1,5 @@
-import { ref } from 'vue';
-import { contextIdSymbol, IndexedCollection } from '@vcmap/core';
+import { reactive } from 'vue';
+import { contextIdSymbol, IndexedCollection, VcsEvent } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import { sortByOwner } from '../navbarManager.js';
 import { validateAction, validateActions } from '../../components/lists/VcsActionList.vue';
@@ -8,7 +8,7 @@ import { validateAction, validateActions } from '../../components/lists/VcsActio
  * @callback MappingFunction
  * @param {T} item
  * @param {import("@vcmap/core").Category<T>} category
- * @param {import("@vcmap/ui").TreeViewItem} treeViewItem
+ * @param {import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }} listItem - you can add a destroy callback for cleanup
  * @template {Object} T
  */
 
@@ -30,63 +30,99 @@ import { validateAction, validateActions } from '../../components/lists/VcsActio
  */
 
 /**
- * uses the itemMappings to transform the given Item to an TreeViewItem usable in the VCSTreeView
+ * @typedef {Object} ManagedCategory
+ * @property {string} categoryName
+ * @property {string} title
+ * @property {Array<VcsAction>} actions
+ * @property {Array<VcsListItem & { destroy: (function():void|undefined) }>} items
+ * @property {boolean} selectable
+ * @property {boolean} singleSelect
+ * @property {Array<VcsListItem>} selection
+ * @property {function():void} destroy - called when the item is destroyed. do not call yourself, remove the category from the manager
+ */
+
+/**
+ * @typedef {Object} ManagedCategoryOptions
+ * @property {string} categoryName
+ * @property {boolean} [selectable]
+ * @property {boolean} [singleSelect]
+ * @property {Array<VcsAction>} [actions]
+ */
+
+/**
+ * uses the itemMappings to transform the given Item to an VcsListItem usable in the VcsList
  * @param {T} item
  * @param {import("@vcmap/core").Category<T>} category
  * @param {Array<ItemMapping<T>>} itemMappings
- * @returns {import("@vcmap/ui").TreeViewItem}
+ * @returns {import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }}
  * @template T
  * @private
  */
 function transformItem(item, category, itemMappings) {
   const keyProperty = category.collection.uniqueKey;
-  const treeViewItem = {
+  const listItem = {
     get id() { return item[keyProperty]; },
     title: item?.properties?.title || item[keyProperty],
     actions: [],
-    children: [],
   };
   itemMappings.forEach((itemMapping) => {
     if (itemMapping.predicate(item, category)) {
-      itemMapping.mappingFunction(item, category, treeViewItem);
+      itemMapping.mappingFunction(item, category, listItem);
     }
   });
-  treeViewItem.actions = treeViewItem.actions.filter((action) => {
+  listItem.actions = listItem.actions.filter((action) => {
     return validateAction(action);
   });
-  return treeViewItem;
+  return listItem;
 }
 
 /**
- * Inserts the item into the children array at the correct relative position in respect to the position of the item
+ * Inserts the item into the items array at the correct relative position in respect to the position of the item
  * in the collection
- * @param {import("@vcmap/ui").TreeViewItem} item
+ * @param {import("@vcmap/ui").VcsListItem} item
  * @param {import("@vcmap/core").Collection} collection
- * @param {Array<import("@vcmap/ui").TreeViewItem>} children
+ * @param {Array<import("@vcmap/ui").VcsListItem>} items
  * @private
  */
-function insertItem(item, collection, children) {
+function insertItem(item, collection, items) {
   if (collection instanceof IndexedCollection) {
     const newItemIndex = collection.indexOfKey(item.id);
     if (newItemIndex === collection.size - 1) {
-      children.push(item);
+      items.push(item);
     } else {
-      const positionInChildren = children.findIndex((treeViewItem) => {
-        const treeViewItemIndex = collection.indexOfKey(treeViewItem.id);
+      const positionInChildren = items.findIndex((listItem) => {
+        const treeViewItemIndex = collection.indexOfKey(listItem.id);
         return newItemIndex < treeViewItemIndex;
       });
       if (positionInChildren >= 0) {
-        children.splice(positionInChildren, 0, item);
+        items.splice(positionInChildren, 0, item);
+      } else {
+        items.push(item);
       }
     }
   } else {
-    children.push(item);
+    items.push(item);
   }
+}
+
+/**
+ * @param {ManagedCategoryOptions} current
+ * @param {ManagedCategoryOptions} next
+ * @returns {ManagedCategoryOptions}
+ */
+function reduceCategoryOptions(current, next) {
+  if (next.actions?.length > 0) {
+    current.actions.push(...next.actions);
+  }
+  current.selectable = current.selectable ?? next.selectable;
+  current.singleSelect = current.singleSelect ?? next.singleSelect;
+  return current;
 }
 
 /**
  * a categoryManager manages categories, and synchronizes a tree of VcsTreeView Items.
  * provides an API to add/remove Categories.
+ * @implements {VcsComponentManager<ManagedCategory, ManagedCategoryOptions>}
  */
 class CategoryManager {
   /**
@@ -100,16 +136,10 @@ class CategoryManager {
     this._app = app;
 
     /**
-     * @type {Map<string, Map<string|symbol, Array<import("@vcmap/ui").VcsAction>>>}
+     * @type {Map<string, Map<string|symbol, ManagedCategoryOptions>>}
      * @private
      */
-    this._managedCategories = new Map();
-
-    /**
-     * @type {Map<string, Array<function():void>>}
-     * @private
-     */
-    this._managedCategoriesListeners = new Map();
+    this._managedCategoryOptions = new Map();
 
     /**
      * @type {function():void}
@@ -117,7 +147,7 @@ class CategoryManager {
      */
     this._dynamicContextIdListener = this._app.dynamicContextIdChanged.addEventListener((id) => {
       this._dynamicContextId = id;
-      this._resetItems();
+      this._resetManagedCategories();
     });
 
     /**
@@ -139,12 +169,23 @@ class CategoryManager {
      * @private
      */
     this._itemMappings = [];
-
     /**
-     * @type {import("vue").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
+     * @type {Map<string, ManagedCategory>}
      * @private
      */
-    this._items = ref([]);
+    this._managedCategories = new Map();
+    /**
+     * @type {Array<string>}
+     */
+    this.componentIds = [];
+    /**
+     * @type {VcsEvent<ManagedCategory>}
+     */
+    this.added = new VcsEvent();
+    /**
+     * @type {VcsEvent<ManagedCategory>}
+     */
+    this.removed = new VcsEvent();
   }
 
   /**
@@ -158,27 +199,10 @@ class CategoryManager {
     const itemMappings = this._itemMappings.filter((itemMapping) => {
       return itemMapping.categoryNames.includes(category.name);
     });
-    const finishedUiItem = transformItem(item, category, itemMappings);
-    const categoryItem = this.items.value.find((elem) => { return elem.id === category.name; });
-    if (categoryItem) {
-      insertItem(finishedUiItem, category.collection, categoryItem.children);
-      /* if (category.collection instanceof IndexedCollection) {
-        const newItemIndex = category.collection.indexOf(item);
-        let indexToInsert = 0;
-        // eslint-disable-next-line for-direction
-        for (let index = categoryItem.children.length - 1; index >= 0; index--) {
-          const treeViewItem = categoryItem.children[index];
-          const treeViewItemIndex = category.collection.indexOfKey(treeViewItem.id);
-          if (treeViewItemIndex < newItemIndex) {
-            // should be added directly after this item
-            indexToInsert = index + 1;
-            break;
-          }
-        }
-        categoryItem.children.splice(indexToInsert, 0, finishedUiItem);
-      } else {
-        categoryItem.children.push(finishedUiItem);
-      } */
+    const listItem = transformItem(item, category, itemMappings);
+    const managedCategory = this.get(category.name);
+    if (managedCategory) {
+      insertItem(listItem, category.collection, managedCategory.items);
     }
   }
 
@@ -191,13 +215,14 @@ class CategoryManager {
    * @private
    */
   _handleItemMoved(item, category) {
-    const categoryItem = this.items.value.find((elem) => { return elem.id === category.name; });
-    if (categoryItem) {
-      const index = categoryItem.children.findIndex((elem) => { return elem.id === item.name; });
+    const managedCategory = this.get(category.name);
+    if (managedCategory) {
+      const index = managedCategory.items
+        .findIndex((elem) => { return elem.id === item[category.collection.uniqueKey]; });
       if (index > -1) {
-        const treeViewItem = categoryItem.children[index];
-        categoryItem.children.splice(index, 1);
-        insertItem(treeViewItem, category.collection, categoryItem.children);
+        const listItem = managedCategory.items[index];
+        managedCategory.items.splice(index, 1);
+        insertItem(listItem, category.collection, managedCategory.items);
       }
     }
   }
@@ -210,72 +235,74 @@ class CategoryManager {
    * @private
    */
   _handleItemRemoved(item, category) {
-    const categoryItem = this.items.value.find((elem) => { return elem.id === category.name; });
-    if (categoryItem) {
-      const index = categoryItem.children.findIndex((elem) => { return elem.id === item.name; });
+    const managedCategory = this.get(category.name);
+    if (managedCategory) {
+      const index = managedCategory.items
+        .findIndex((elem) => { return elem.id === item[category.collection.uniqueKey]; });
       if (index > -1) {
-        categoryItem.children.splice(index, 1);
+        const listItem = managedCategory.items[index];
+        if (listItem.destroy) {
+          listItem.destroy();
+        }
+        managedCategory.items.splice(index, 1);
       }
     }
   }
 
   /**
-   * removes all Items and rebuilds the item tree depending on the ContextId
+   * removes all items from all categories and rebuilds the item tree depending on the ContextId
    * @private
    */
-  _resetItems() {
-    this.items.value.splice(0);
-    this._managedCategories.forEach((value, categoryName) => {
-      this._resetCategory(categoryName);
+  _resetManagedCategories() {
+    this._managedCategoryOptions.forEach((value, categoryName) => {
+      this._resetCategoryItems(categoryName);
     });
   }
 
   /**
-   * resets the category, removes the currently managed state and rebuilds the categoryItem and all children
    * @param {string} categoryName
    * @private
    */
-  _resetCategory(categoryName) {
+  _resetCategoryItems(categoryName) {
+    const category = this._app.categories.getByKey(categoryName);
+    const managedCategory = this.get(categoryName);
+
+    if (category && managedCategory) {
+      const itemMappings = this._itemMappings.filter((itemMapping) => {
+        return itemMapping.categoryNames.includes(categoryName);
+      });
+      if (managedCategory.selection.length > 0) {
+        managedCategory.selection = [];
+      }
+      managedCategory.items.forEach((item) => {
+        if (item.destroy) {
+          item.destroy();
+        }
+      });
+      managedCategory.items = [...category.collection]
+        .filter((item) => {
+          return item[contextIdSymbol] === this._dynamicContextId;
+        })
+        .map((item) => {
+          return transformItem(item, category, itemMappings);
+        });
+    }
+  }
+
+  /**
+   * create the managed category
+   * @param {string} categoryName
+   * @returns {ManagedCategory}
+   * @private
+   */
+  _createManagedCategory(categoryName) {
     const category = this._app.categories.getByKey(categoryName);
     if (!category) {
       throw new Error(`Could not find Category: ${categoryName}`);
     }
-    // cleanup existing listeners
-    if (this._managedCategoriesListeners.has(categoryName)) {
-      this._managedCategoriesListeners.get(categoryName).forEach((listener) => {
-        listener();
-      });
-      this._managedCategoriesListeners.delete(categoryName);
-    }
 
-    const categoryItemIndex = this._items.value.findIndex((item) => {
-      return item.id === category.name;
-    });
-    const actions = [...this._managedCategories.get(category.name).values()].flatMap(ownerActions => ownerActions);
-
-    const itemMappings = this._itemMappings.filter((itemMapping) => {
-      return itemMapping.categoryNames.includes(category.name);
-    });
-    const children = [...category.collection]
-      .filter((item) => {
-        return item[contextIdSymbol] === this._dynamicContextId;
-      })
-      .map((item) => {
-        return transformItem(item, category, itemMappings);
-      });
-
-
-    const categoryItem = {
-      id: category.name,
-      title: category.title,
-      children,
-      actions,
-    };
-    if (categoryItemIndex >= 0) {
-      this._items.value.splice(categoryItemIndex, 1, categoryItem);
-    } else {
-      this._items.value.push(categoryItem);
-    }
+    const options = [...this._managedCategoryOptions.get(category.name).values()] // does not have to be sorted, since this is the first owner
+      .reduce(reduceCategoryOptions, { actions: [] });
 
     const listeners = [
       category.collection.added.addEventListener((item) => {
@@ -303,77 +330,124 @@ class CategoryManager {
       }));
     }
 
-    this._managedCategoriesListeners.set(category.name, listeners);
+    /** @type {ManagedCategory} */
+    const managedCategory = reactive({
+      ...options,
+      get categoryName() { return category.name; },
+      selection: [],
+      title: category.title,
+      items: [],
+      destroy() {
+        listeners.forEach((cb) => { cb(); });
+        this.items.forEach((item) => {
+          if (item.destroy) {
+            item.destroy();
+          }
+        });
+        this.items = [];
+      },
+    });
+
+    this._managedCategories.set(categoryName, managedCategory);
+    this._resetCategoryItems(categoryName);
+    this.componentIds.push(categoryName);
+    this.added.raiseEvent(managedCategory);
+
+    return managedCategory;
   }
 
   /**
-   * updates the root item of this category in the items array.
-   * Only updates the actions
+   * updates the managed categorys actions
    * @param {string} categoryName
    * @private
    */
   _updateCategory(categoryName) {
-    if (this._managedCategories.has(categoryName)) {
-      const categoryUiItem = this._items.value.find((item) => {
-        return item.id === categoryName;
-      });
-      if (categoryUiItem) {
+    if (this._managedCategoryOptions.has(categoryName)) {
+      const managedCategory = this.get(categoryName);
+      if (managedCategory) {
         const pluginNames = [...this._app.plugins].map(p => p.name);
-        const actions = [...this._managedCategories.get(categoryName).entries()]
+        const options = [...this._managedCategoryOptions.get(categoryName).entries()]
           .sort(([ownerA], [ownerB]) => sortByOwner(ownerA, ownerB, pluginNames))
           .map(([, value]) => value)
-          .flatMap(ownerActions => ownerActions);
-        categoryUiItem.actions = actions;
+          .reduce(reduceCategoryOptions, { actions: [] });
+        Object.assign(managedCategory, options);
       }
     }
+  }
+
+  /**
+   * @param {string} categoryName
+   * @returns {ManagedCategory|undefined}
+   */
+  get(categoryName) {
+    return this._managedCategories.get(categoryName);
+  }
+
+  /**
+   * @param {string} categoryName
+   * @returns {boolean}
+   */
+  has(categoryName) {
+    return this._managedCategories.has(categoryName);
   }
 
   /**
    * adds a category to this manager, the category will be shown in the components window.
    * If a category has been added by several owners the actions will be merged and sorted by the order of the
    * owner in the app.plugins collection.
-   * @param {string} categoryName
-   * @param {string | symbol} owner
-   * @param {Array<VcsAction>} actions
+   * @param {ManagedCategoryOptions} managedCategoryOptions
+   * @param {string|symbol} owner
+   * @returns {ManagedCategory}
    */
-  addCategory(categoryName, owner, actions) {
-    check(categoryName, String);
+  add(managedCategoryOptions, owner) {
+    check(managedCategoryOptions, { categoryName: String });
     check(owner, [String, Symbol]);
-    if (!validateActions(actions)) {
+
+    const { categoryName } = managedCategoryOptions;
+    if (managedCategoryOptions.actions && !validateActions(managedCategoryOptions.actions)) {
       throw new Error('Invalid actions Array');
     }
     if (!this._app.categories.hasKey(categoryName)) {
       throw new Error(`Could not find category: ${categoryName}`);
     }
 
-    if (this._managedCategories.get(categoryName)?.has(owner)) {
+    if (this._managedCategoryOptions.get(categoryName)?.has(owner)) {
       throw new Error(`Category has already been added by this owner: ${categoryName}, ${owner}`);
     }
 
-    if (!this._managedCategories.has(categoryName)) {
+    /** @type {ManagedCategoryOptions} */
+    const clonedOptions = {
+      categoryName,
+      actions: managedCategoryOptions.actions?.slice?.() ?? [],
+      selectable: managedCategoryOptions.selectable,
+      singleSelect: managedCategoryOptions.singleSelect,
+    };
+
+    if (!this._managedCategoryOptions.has(categoryName)) {
       const managedCategory = new Map();
-      managedCategory.set(owner, actions.slice());
-      this._managedCategories.set(categoryName, managedCategory);
-      this._resetCategory(categoryName);
+      managedCategory.set(owner, clonedOptions);
+      this._managedCategoryOptions.set(categoryName, managedCategory);
+      return this._createManagedCategory(categoryName);
     } else {
-      this._managedCategories.get(categoryName).set(owner, actions.slice());
+      this._managedCategoryOptions.get(categoryName).set(owner, clonedOptions);
       this._updateCategory(categoryName);
+      return this.get(categoryName);
     }
   }
 
   /**
-   * removes a category from this manager
+   * removes a category for a specific owner from this manager
    * @param {string} categoryName
-   * @param {string | symbol} owner
+   * @param {string|symbol} owner
    */
-  removeCategory(categoryName, owner) {
+  remove(categoryName, owner) {
     check(categoryName, String);
     check(owner, [String, Symbol]);
-    if (!this._managedCategories.has(categoryName)) {
+    if (!this._managedCategoryOptions.has(categoryName)) {
       return;
     }
-    this._managedCategories.get(categoryName).delete(owner);
-    if (this._managedCategories.get(categoryName).size > 0) {
+    this._managedCategoryOptions.get(categoryName).delete(owner);
+    if (this._managedCategoryOptions.get(categoryName).size > 0) {
       this._updateCategory(categoryName);
     } else {
       this._removeCategory(categoryName);
@@ -381,28 +455,26 @@ class CategoryManager {
   }
 
   /**
-   * removes a Category from management, removes all Listeners, and updates the treeViewItems
+   * removes a Category from management, removes all Listeners, and updates the listItems
    * @param {string} categoryName
    * @private
    */
   _removeCategory(categoryName) {
-    // remove rootCategoryItem
-    const categoryItemIndex = this._items.value.findIndex((item) => {
-      return item.id === categoryName;
-    });
-    if (categoryItemIndex >= 0) {
-      this._items.value.splice(categoryItemIndex, 1);
+    const managedCategory = this.get(categoryName);
+    this._managedCategoryOptions.delete(categoryName);
+    const index = this.componentIds.indexOf(categoryName);
+    if (index > -1) {
+      this.componentIds.splice(index, 1);
     }
-    this._managedCategoriesListeners.get(categoryName)
-      ?.forEach((listenerCallback) => {
-        listenerCallback();
-      });
-    this._managedCategoriesListeners.delete(categoryName);
-    this._managedCategories.delete(categoryName);
+    if (managedCategory) {
+      this._managedCategories.delete(categoryName);
+      managedCategory.destroy();
+      this.removed.raiseEvent(managedCategory);
+    }
   }
 
   /**
-   * adds MappingFunction the categoryManager. For the given categoryNames each Item will be transformed by the
+   * adds MappingFunction to the categoryManager. For the given categoryNames each Item will be transformed by the
    * mappingFunction if the predicate returns true.
    * @param {PredicateFunction} predicate
    * @param {MappingFunction} mappingFunction
@@ -431,8 +503,8 @@ class CategoryManager {
     };
     this._itemMappings.push(itemMapping);
     itemMapping.categoryNames.forEach((categoryName) => {
-      if (this._managedCategories.has(categoryName)) {
-        this._resetCategory(categoryName);
+      if (this._managedCategoryOptions.has(categoryName)) {
+        this._resetCategoryItems(categoryName);
       }
     });
   }
@@ -454,7 +526,7 @@ class CategoryManager {
       return true;
     });
     new Set(affectedCategories).forEach((categoryName) => {
-      this._resetCategory(categoryName);
+      this._resetCategoryItems(categoryName);
     });
   }
 
@@ -464,24 +536,36 @@ class CategoryManager {
    */
   removeOwner(owner) {
     check(owner, [String, Symbol]);
-    this._managedCategories.forEach((managedCategory, categoryName) => {
-      managedCategory.delete(owner);
+    const affectedCategories = [];
+    this._managedCategoryOptions.forEach((managedCategory, categoryName) => {
+      if (managedCategory.delete(owner)) {
+        affectedCategories.push(categoryName);
+      }
       if (managedCategory.size === 0) {
-        this._managedCategories.delete(categoryName);
+        this._managedCategoryOptions.delete(categoryName);
       }
     });
-    this._itemMappings = this._itemMappings.filter((itemMapping) => {
-      return itemMapping.owner !== owner;
+    affectedCategories.forEach((categoryName) => {
+      if (this._managedCategoryOptions.has(categoryName)) {
+        this._updateCategory(categoryName);
+      } else {
+        this._removeCategory(categoryName);
+      }
     });
-    this._resetItems();
+    this._itemMappings = this._itemMappings
+      .filter((itemMapping) => {
+        return itemMapping.owner !== owner;
+      });
+    this._resetManagedCategories();
   }
 
   /**
-   * Array to render in TreeView
-   * @returns {import("vue").Ref<Array<import("@vcmap/ui").TreeViewItem>>}
+   * Clears the manager of all added categories and item mappings
    */
-  get items() {
-    return this._items;
+  clear() {
+    [...this.componentIds]
+      .forEach((categoryName) => { this._removeCategory(categoryName); });
+    this._itemMappings = [];
   }
 
   /**
@@ -490,12 +574,14 @@ class CategoryManager {
   destroy() {
     this._dynamicContextIdListener();
     this._appCategoriesRemovedListener();
-    this.items.value.splice(0);
-    this._managedCategories.clear();
-    [...this._managedCategoriesListeners.values()].forEach((listeners) => {
-      listeners.forEach((listener) => { listener(); });
+    this.componentIds = [];
+    this._managedCategories.forEach((item) => {
+      item.destroy();
     });
-    this._managedCategoriesListeners.clear();
+    this._managedCategories.clear();
+    this._managedCategoryOptions.clear();
+    this.added.destroy();
+    this.removed.destroy();
   }
 }
 

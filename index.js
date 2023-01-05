@@ -21,7 +21,7 @@ export {
   default as VcsApp,
   setupMapNavbar,
   setupPluginMountedListeners,
-  setupComponentsWindow,
+  setupCategoryManagerWindow,
 } from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/vcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
@@ -63,7 +63,7 @@ export { default as ButtonManager } from './src/manager/buttonManager.js';
 export { default as NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
 export { default as ToolboxManager, ToolboxType } from './src/manager/toolbox/toolboxManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
-export { default as ComponentsManager } from './src/manager/categoryManager/ComponentsManager.vue';
+export { default as CategoryManagerComponent } from './src/manager/categoryManager/CategoryManager.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';

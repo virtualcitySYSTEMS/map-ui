@@ -65,6 +65,8 @@
     VCard,
     VForm,
     VTextarea,
+    VSheet,
+    VBtn,
   } from 'vuetify/lib';
 
   export default {
@@ -80,6 +82,8 @@
       VCard,
       VForm,
       VTextarea,
+      VSheet,
+      VBtn,
     },
     props: {
       categoryName: {
@@ -95,6 +99,7 @@
       const category = ref([]);
       const downloadLink = ref('');
       const open = ref(true);
+      const link = ref(null);
       if (categoryObject) {
         category.value = [...categoryObject.collection].map(c => ({ name: c.name, type: c.className || 'Object' }));
       }
@@ -105,6 +110,7 @@
         jsonString,
         downloadLink,
         open,
+        link,
         async addItem() {
           try {
             const config = JSON.parse(jsonString.value);
@@ -126,7 +132,7 @@
           downloadLink.value = `data:text/json;charset=utf-8,${encodeURIComponent(stringObject)}`;
           if (downloadLink.value) {
             nextTick(() => {
-              this.$refs.link.click();
+              link.value.click();
             });
           }
         },

@@ -85,7 +85,7 @@
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
-  import ComponentsManager from '../manager/categoryManager/ComponentsManager.vue';
+  import CategoryManager from '../manager/categoryManager/CategoryManager.vue';
   import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/vcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
@@ -276,56 +276,54 @@
   }
 
   /**
-   * This helper function will add a Components manager button to the navbar. The Components Manager
+   * This helper function will add a category manager button to the navbar. The category Manager
    * will only be shown if there is at least one category under management in the categoryManager.
    * @param {VcsUiApp} app
    * @returns {function():void}
    */
-  export function setupComponentsWindow(app) {
-    const { action: componentsManagerAction, destroy: destroyComponentsManagerAction } = createToggleAction(
+  export function setupCategoryManagerWindow(app) {
+    const id = 'category-manager';
+    const { action: categoryManagerAction, destroy } = createToggleAction(
       {
-        name: 'components-manager',
+        name: id,
         icon: '$vcsComponents',
-        title: 'components.tooltip',
+        title: 'categoryManager.tooltip',
       },
       {
-        id: 'component-manager',
+        id,
         state: {
-          headerTitle: 'components.title',
+          headerTitle: 'categoryManager.title',
           headerIcon: '$vcsComponents',
         },
-        component: ComponentsManager,
+        component: CategoryManager,
         slot: WindowSlot.STATIC,
       },
       app.windowManager,
       vcsAppSymbol,
     );
 
-    // only show Components Window if we have at least one managed Category
-    if (app.categoryManager.items.value.length > 0) {
-      app.navbarManager.add(
-        { id: 'component-manager', action: componentsManagerAction },
-        vcsAppSymbol,
-        ButtonLocation.CONTENT,
-      );
-    }
-    watch(app.categoryManager.items.value, () => {
-      if (app.categoryManager.items.value.length > 0) {
-        if (!app.navbarManager.has('component-manager')) {
+    const setupCategories = () => {
+      if (app.categoryManager.componentIds.length > 0) {
+        if (!app.navbarManager.has(id)) {
           app.navbarManager.add(
-            { id: 'component-manager', action: componentsManagerAction },
+            { id, action: categoryManagerAction },
             vcsAppSymbol,
             ButtonLocation.CONTENT,
           );
         }
       } else {
-        app.windowManager.remove('component-manager');
-        app.navbarManager.remove('component-manager');
+        app.windowManager.remove(id);
+        app.navbarManager.remove(id);
       }
-    });
+    };
+    const addedListener = app.categoryManager.added.addEventListener(setupCategories);
+    const removedListener = app.categoryManager.removed.addEventListener(setupCategories);
+    setupCategories();
 
     return () => {
-      destroyComponentsManagerAction();
+      destroy();
+      addedListener();
+      removedListener();
     };
   }
 
@@ -432,7 +430,7 @@
       const mapNavbarListener = setupMapNavbar(app);
       const legendDestroy = setupLegendWindow(app);
       const settingsDestroy = setupSettingsWindow(app);
-      const destroyComponentsWindow = setupComponentsWindow(app);
+      const destroyComponentsWindow = setupCategoryManagerWindow(app);
       const destroyThemingListener = setupUiConfigTheming(app, getCurrentInstance().proxy.$vuetify);
       const { attributionEntries, attributionAction, destroyAttributions } = setupAttributions(app);
 

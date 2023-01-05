@@ -41,9 +41,13 @@ const messages = {
     pitchTooltip: 'Kamera pitch: {0}°',
     overviewMapTooltip: 'Übersichtskarte',
   },
-  components: {
+  categoryManager: {
     title: 'Komponenten',
     tooltip: 'Komponenten',
+    more: 'Weitere anzeigen...',
+    empty: 'Es gibt noch keine Einträge.',
+  },
+  components: {
     close: 'Fenster schließen.',
     vcsFormSection: {
       help: 'Hilfe anzeigen.',

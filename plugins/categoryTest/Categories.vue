@@ -13,9 +13,9 @@
     <span>
       <VcsButton icon="$vcsPlus" @click="newDialog = true" />
       <VcsButton icon="$vcsExport" @click="uploadDialog = true" />
-      <VcsButton @click="addManagedCategories"> Add Categories To Manager </VcsButton>
+      <VcsButton @click="addManagedCategories">Add Categories To Manager</VcsButton>
+      <VcsButton @click="addFoobar">Add Foobar</VcsButton>
     </span>
-
     <v-dialog
       v-model="newDialog"
     >
@@ -121,17 +121,36 @@
           'viewpoints',
           'styles',
         ],
+        async addFoobar() {
+          if (!app.categories.hasKey('foobar')) {
+            const category = await app.categories.requestCategory({
+              name: 'foobar',
+              type: 'Category',
+              title: 'Foobar',
+            });
+            app.categoryManager.add({ categoryName: category.name }, '@vcmap/categoryTest');
+            app.categoryManager.addMappingFunction(() => true, (item, c, listItem) => {
+              listItem.title = item.name;
+            }, [category.name], '@vcmap/categoryTest');
+            for (let i = 0; i <= 12; i++) {
+              category.collection.add({
+                name: `foobar-${i}`,
+              });
+            }
+          }
+        },
         async add() {
           const { value: newCategoryValue } = newCategory;
           if (newCategoryValue.type === 'AppBackedCategory') {
             newCategoryValue.name = newCategoryValue.collectionName;
           }
-          await app.categories.requestCategory(newCategoryValue);
+          const category = await app.categories.requestCategory(newCategoryValue);
           newCategory.value = {
             name: 'new',
-            type: 'category.Category',
+            type: 'Category',
             collectionName: null,
           };
+          app.categoryManager.add({ categoryName: category.name }, '@vcmap/categoryTest');
           newDialog.value = false;
         },
         async upload() {
@@ -141,10 +160,11 @@
               console.error('must provide name');
               return;
             }
-            await app.categories.requestCategory({ name: jsonUpload.name, type: 'Category' });
+            const category = await app.categories.requestCategory({ name: jsonUpload.name, type: 'Category' });
             if (jsonUpload?.items?.length > 0) {
               await app.categories.parseCategoryItems(jsonUpload.name, jsonUpload.items, app.dynamicContextId);
             }
+            app.categoryManager.add({ categoryName: category.name }, '@vcmap/categoryTest');
             uploadString.value = '';
             uploadDialog.value = false;
           } catch (e) {
@@ -209,10 +229,8 @@
                 }));
               },
             }];
-            app.categoryManager.addCategory(layersCat.name, '@vcmap/categoryTest', actions);
-            app.categoryManager.addMappingFunction((item, category) => {
-              return category.name === 'layers';
-            }, (item, category, treeViewItem) => {
+            app.categoryManager.add({ categoryName: layersCat.name, actions }, '@vcmap/categoryTest');
+            app.categoryManager.addMappingFunction(() => true, (item, category, treeViewItem) => {
               // eslint-disable-next-line no-console
               const action = {
                 name: 'mySuperAction',
@@ -222,10 +240,6 @@
                 },
               };
               treeViewItem.actions.push(action);
-              treeViewItem.clickable = true;
-              treeViewItem.clicked = () => {
-                if (!item.active) item.activate(); else item.deactivate();
-              };
               const action2 = {
                 name: 'mySuperAction3',
                 icon: 'mdi-minus',
