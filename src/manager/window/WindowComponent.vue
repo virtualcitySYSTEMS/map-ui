@@ -2,8 +2,10 @@
   <v-sheet
     :id="`window-component--${windowState.id}`"
     class="elevation-3 position-absolute d-flex flex-column"
-    ref="windowComponentRef"
     @click="clicked"
+    @dragstart="dragStart"
+    @dragend="dragEnd"
+    :draggable="isDynamic"
     :class="{
       'rounded': !isDocked,
       'marginToTop': isDocked
@@ -11,13 +13,11 @@
   >
     <div
       v-if="!windowState.hideHeader"
-      ref="draggableHeaderRef"
       class="pa-2"
       :class="{
         'cursor-grab': isDynamic,
         'grey--text': !isOnTop,
       }"
-      :draggable="isDynamic"
     >
       <slot name="headerComponent" :props="$attrs" />
     </div>
@@ -40,13 +40,21 @@
 
 <script>
   import {
-    onMounted, onUnmounted, computed, ref, nextTick, inject, provide,
+    computed, inject, provide,
   } from 'vue';
-  import { fromEvent } from 'rxjs';
-  import { switchMap, take, map, tap } from 'rxjs/operators';
   import { VDivider, VSheet } from 'vuetify/lib';
   import { WindowSlot } from './windowManager.js';
 
+  /**
+   * WindowComponent defining the structure and style of VC Map windows
+   * @vue-prop {WindowState} windowState
+   * @vue-prop {boolean} isOnTop - Whether the component is focused
+   * @vue-prop {Object} slotWindow - slot ref of the window
+   * @vue-event {PointerEvent} clicked - raised when the component is clicked
+   * @vue-event {{dx: number, dy: number}} move - raised when the component is moved (dragged)
+   * @vue-data {slot} [#default] - slot with the window content
+   * @vue-data {slot} [#headerComponent] - slot to override the default header
+   */
   export default {
     name: 'WindowComponent',
     components: {
@@ -68,84 +76,50 @@
         required: true,
       },
     },
-    setup({ windowState, slotWindow }, { emit }) {
-      const draggableHeaderRef = ref(null);
-      const windowComponentRef = ref(null);
-      const isDynamic = computed(() => slotWindow.value !== WindowSlot.STATIC);
-      const isDocked = computed(() => slotWindow.value !== WindowSlot.DETACHED);
-      const clicked = (e) => {
-        emit('click', e);
-      };
-
-      let dragOverSub;
-      let dropSub;
-      onMounted(() => {
-        if (!windowState.hideHeader && slotWindow.value !== WindowSlot.STATIC) {
-          nextTick(() => {
-            const dragStart = fromEvent(draggableHeaderRef.value, 'dragstart');
-            const dragOver = fromEvent(document.body, 'dragover');
-            const drop = fromEvent(document.body, 'drop');
-            const dragThenDrop = dragStart.pipe(
-              tap(() => {
-                dragOverSub = dragOver.subscribe((e) => {
-                  // make it accepting drop events
-                  // TODO check if setting the position here works.
-                  e.preventDefault();
-                });
-              }),
-              switchMap((startEvent) => {
-                // To get to the Root Element of a Custom Component .$el is used here.
-                const style = window.getComputedStyle(windowComponentRef.value.$el, null);
-                const windowPosition = {
-                  top: parseInt(style.getPropertyValue('top'), 10),
-                  left: parseInt(style.getPropertyValue('left'), 10),
-                  width: parseInt(style.getPropertyValue('width'), 10),
-                  height: parseInt(style.getPropertyValue('height'), 10),
-                };
-                // set dataTransfer for Firefox
-                startEvent.dataTransfer.setData('text/html', null);
-
-                return drop.pipe(
-                  take(1),
-                  map((dropEvent) => {
-                    windowPosition.dx = startEvent.clientX - dropEvent.clientX;
-                    windowPosition.dy = startEvent.clientY - dropEvent.clientY;
-                    return windowPosition;
-                  }),
-                  tap(() => {
-                    dragOverSub.unsubscribe();
-                  }),
-                );
-              }),
-            );
-            dropSub = dragThenDrop.subscribe((pos) => {
-              emit('dropped', pos);
-            });
-          });
-        }
-      });
-
-      onUnmounted(() => {
-        if (dragOverSub) {
-          dragOverSub.unsubscribe();
-        }
-        if (dropSub) {
-          dropSub.unsubscribe();
-        }
-      });
-
+    setup(props, { emit }) {
       const app = inject('vcsApp');
-      const { provides } = app.windowManager.get(windowState.id);
+      const { provides } = app.windowManager.get(props.windowState.id);
       Object.entries(provides)
         .forEach(([key, value]) => {
           provide(key, value);
         });
+
+      const isDynamic = computed(() => props.slotWindow !== WindowSlot.STATIC);
+      const isDocked = computed(() => props.slotWindow !== WindowSlot.DETACHED);
+      /**
+       * @param {PointerEvent} e
+       */
+      const clicked = (e) => {
+        emit('click', e);
+      };
+      /**
+       * @type {DragEvent}
+       */
+      let startEvent;
+      /**
+       * @param {DragEvent} e
+       */
+      const dragStart = (e) => {
+        startEvent = e;
+      };
+      /**
+       * @param {DragEvent} endEvent
+       */
+      const dragEnd = (endEvent) => {
+        const movement = {
+          dx: endEvent.clientX - startEvent.clientX,
+          dy: endEvent.clientY - startEvent.clientY,
+        };
+        emit('moved', movement);
+        startEvent = null;
+      };
+
       return {
         isDynamic,
         isDocked,
-        draggableHeaderRef,
-        windowComponentRef,
         clicked,
+        dragStart,
+        dragEnd,
       };
     },
   };

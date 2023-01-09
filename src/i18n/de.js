@@ -48,6 +48,7 @@ const messages = {
     empty: 'Es gibt noch keine Einträge.',
   },
   components: {
+    pin: 'Fenster andocken.',
     close: 'Fenster schließen.',
     vcsFormSection: {
       help: 'Hilfe anzeigen.',

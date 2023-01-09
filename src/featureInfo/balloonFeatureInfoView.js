@@ -4,9 +4,8 @@ import { Cartographic, Entity, Math as CesiumMath } from '@vcmap/cesium';
 import { Projection } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-import { getWindowPositionOptions, WindowAlignment, WindowSlot } from '../manager/window/windowManager.js';
+import { WindowSlot } from '../manager/window/windowManager.js';
 import BalloonComponent from './BalloonComponent.vue';
-import { balloonOffset } from './balloonHelper.js';
 
 /**
  * derive value from attributes
@@ -124,12 +123,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     options.state.hideHeader = true;
     options.state.classes = ['balloon'];
     options.slot = WindowSlot.DETACHED;
-    options.position = getWindowPositionOptions(
-      (featureInfo.windowPosition?.[0] ?? 0) - balloonOffset.x, // if we do not have a windowPosition, let the next render handle it
-      (featureInfo.windowPosition?.[1] ?? 0) - balloonOffset.y,
-      null,
-      WindowAlignment.BOTTOM_LEFT,
-    );
+    // windowPosition is handled by next render
     return options;
   }
 

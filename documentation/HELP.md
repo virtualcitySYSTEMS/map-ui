@@ -1,13 +1,26 @@
 # Help Concept
 
 The concept foresees a context based help in the VC Map.
-This means help is only shown for the current task, a currently open window or plugin.
 Each plugin should provide own context specific help texts in their implementation.
-In general help sections should not contain screenshots.
+
+Help can either be provided 
+- window based, referencing a help document explaining the overall tool or 
+- section based, explaining one specific function of a tool.
+
+Help texts shall focus on the current task, a currently open window or plugin.
+In general help sections shall not contain screenshots.
+
+## Window Info
+
+To provide a documentation of the overall plugin explaining all features, a help page should be referenced.
+All [WindowComponent](./WINDOWS.md#windowcomponent)s provide an `infoUrl` option on the [WindowState](./WINDOWS.md#windowstate).
+Providing an url will render a help icon (?) on the [WindowHeader](./WINDOWS.md#header).
+
+> If you use the `hideHeader` option or use a custom `HeaderComponent`, make sure to implement your own help mechanism.
 
 ## VcsFormSection
 
-VC Map UI provides an ui component with an option to display help.
+VC Map UI provides an ui component with an option to display context based help.
 [VcsFormSection](../src/components/form-inputs-controls/VcsFormSection.vue) is meant to be used to structure form fields.
 To provide a help for a section, use the `helpText` prop to pass plain text or an [i18n](INTERNATIONALIZATION.md) string:
 

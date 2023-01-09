@@ -8,9 +8,9 @@
       :window-state="getState(id)"
       :slot-window="getSlot(id)"
       :z-index="zIndex"
-      @dropped="dropped(id, $event)"
+      @moved="move(id, $event)"
       @click="clicked(id)"
-      :style="getStyles(id, zIndex)"
+      :style="getStyles(id, zIndex).value"
       :class="getState(id).classes"
       :is-on-top="isOnTop(zIndex)"
     >
@@ -23,8 +23,11 @@
         <component
           :is="getHeaderComponent(id)"
           :window-state="getState(id)"
+          :is-on-top="isOnTop(zIndex)"
+          :slot-window="getSlot(id)"
           v-bind="getProps(id)"
           @close="close(id)"
+          @pin="pin(id)"
         />
       </template>
     </WindowComponent>
@@ -48,11 +51,15 @@
 </style>
 
 <script>
-  import { inject, ref } from 'vue';
+  import { computed, inject, onUnmounted, ref } from 'vue';
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
+  import { applyPositionOnTarget, getTargetSize, moveWindow } from './windowHelper.js';
 
+  /**
+   * WindowManager rendering all registered WindowComponents
+   */
   export default {
     name: 'VcsWindowManager',
     components: { WindowComponent },
@@ -60,55 +67,70 @@
       const app = inject('vcsApp');
       /** @type {WindowManager} */
       const { windowManager } = app;
-
       const { componentIds } = windowManager;
-
+      const targetSize = ref(null);
+      /**
+       * @param {string} id
+       * @returns {WindowState}
+       */
       const getState = (id) => {
         return windowManager.get(id)?.state;
       };
-
+      /**
+       * @param {string} id
+       * @returns {Object}
+       */
       const getProps = (id) => {
         return windowManager.get(id)?.props ?? {};
       };
-
+      /**
+       * @param {number} zIndex
+       * @returns {boolean}
+       */
       const isOnTop = (zIndex) => {
         return zIndex === componentIds.length - 1;
       };
-
-      const getStyles = (id, zIndex) => {
+      /**
+       * @param {string} id
+       * @param {number} zIndex
+       * @returns {import("vue").ComputedRef<Object>}
+       */
+      const getStyles = (id, zIndex) => computed(() => {
         const windowComponent = windowManager.get(id);
         const state = windowComponent?.state;
-        const position = windowComponent?.position;
+        const position = applyPositionOnTarget(windowComponent?.position, targetSize.value);
         return {
           zIndex,
-          left: position.left,
-          top: position.top,
-          right: position.right,
-          bottom: position.bottom,
-          width: position.width,
-          height: position.height,
+          ...position,
           ...(state.styles || {}),
         };
-      };
-
+      });
+      /**
+       * @param {string} id
+       */
       const clicked = (id) => {
         if (windowManager.has(id)) {
           windowManager.bringWindowToTop(id);
         }
       };
-
-      const dropped = (id, pos) => {
-        const { innerWidth, innerHeight } = window;
-        // clip position
-        const top = Math.min(Math.max(0, pos.top - pos.dy), innerHeight - pos.height);
-        const left = Math.min(Math.max(0, pos.left - pos.dx), innerWidth - pos.width);
-        windowManager.setWindowPositionOptions(id, {
-          top,
-          left,
-          width: pos.width,
-          height: pos.height,
-        });
+      /**
+       * @param {string} id
+       * @param {{dx: number, dy: number}} translation
+       */
+      const move = (id, translation) => {
+        moveWindow(id, translation, windowManager, targetSize.value);
       };
+
+      const setTargetSize = () => {
+        targetSize.value = getTargetSize(app.maps.target);
+      };
+      window.addEventListener('resize', setTargetSize);
+      const setTargetDestroy = app.maps.mapActivated.addEventListener(setTargetSize);
+
+      onUnmounted(() => {
+        window.removeEventListener('resize', setTargetSize);
+        setTargetDestroy();
+      });
 
       return {
         componentIds: ref(componentIds),
@@ -120,8 +142,9 @@
         isOnTop,
         getSlot: id => windowManager.get(id).slot,
         close: (id) => { windowManager.remove(id); },
-        dropped,
+        pin: (id) => { windowManager.pinWindow(id); },
         clicked,
+        move,
       };
     },
   };

@@ -150,6 +150,9 @@
 </script>
 
 <style lang="scss">
+  .balloon {
+    z-index: 0 !important;
+  }
   .balloon hr:first-child {
     display: none;
   }

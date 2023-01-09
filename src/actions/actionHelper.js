@@ -4,7 +4,8 @@ import { Collection, Extent, MapCollection, mercatorProjection, Viewpoint } from
 import { Feature } from 'ol';
 import { reactive, ref } from 'vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { getWindowPositionOptions, WindowSlot } from '../manager/window/windowManager.js';
+import { WindowSlot } from '../manager/window/windowManager.js';
+import { getWindowPositionOptions } from '../manager/window/windowHelper.js';
 import SearchComponent from '../search/searchComponent.vue';
 
 /**
@@ -189,11 +190,11 @@ export function createOverviewMapAction(overviewMap, windowComponent, windowMana
  * at the clicked position (the actions position) by default, unless the window component already has a position set.
  * @param {ActionOptions} actionOptions
  * @param {WindowComponentOptions} modalComponent
- * @param {WindowManager}  windowManager
+ * @param {VcsUiApp}  app
  * @param {string|symbol} owner
  * @returns {{action: VcsAction, destroy: Function}}
  */
-export function createModalAction(actionOptions, modalComponent, windowManager, owner) {
+export function createModalAction(actionOptions, modalComponent, app, owner) {
   check(actionOptions, {
     name: String,
     icon: [undefined, String],
@@ -216,7 +217,7 @@ export function createModalAction(actionOptions, modalComponent, windowManager, 
         left: 0,
         right: 0,
       });
-      elem.onclick = () => { windowManager.remove(id); };
+      elem.onclick = () => { app.windowManager.remove(id); };
       document.body.appendChild(elem);
     }
   };
@@ -235,20 +236,20 @@ export function createModalAction(actionOptions, modalComponent, windowManager, 
       if (!this.active) {
         this.active = true;
         const { left, top, width } = event.currentTarget.getBoundingClientRect();
-        const position = getWindowPositionOptions(left + width, top);
+        const position = getWindowPositionOptions(left + width, top, app.maps.target);
         const state = { ...modalComponent?.state, hideHeader: true };
-        windowManager.add({ position, ...modalComponent, id, state }, owner);
-        addModal(windowManager.componentIds.length - 2);
+        app.windowManager.add({ position, ...modalComponent, id, state }, owner);
+        addModal(app.windowManager.componentIds.length - 2);
       } else {
         this.active = false;
-        windowManager.remove(id);
+        app.windowManager.remove(id);
       }
       return null;
     },
   };
 
   const listeners = [
-    windowManager.removed.addEventListener(({ id: windowId }) => {
+    app.windowManager.removed.addEventListener(({ id: windowId }) => {
       if (windowId === id) {
         action.active = false;
         removeModal();

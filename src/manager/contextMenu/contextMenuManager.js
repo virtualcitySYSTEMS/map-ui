@@ -4,7 +4,8 @@ import { check } from '@vcsuite/check';
 import ContextMenuInteraction from './contextMenuInteraction.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
-import { getFittedWindowPositionOptionsFromMapEvent, WindowSlot } from '../window/windowManager.js';
+import { WindowSlot } from '../window/windowManager.js';
+import { getFittedWindowPositionOptionsFromMapEvent } from '../window/windowHelper.js';
 import ContextMenuComponent, { contextMenuWindowId } from './contextMenuComponent.vue';
 import { sortByOwner } from '../navbarManager.js';
 
@@ -108,7 +109,12 @@ class ContextMenuManager {
       .filter(validateAction);
 
     if (actions.length > 0) {
-      const position = getFittedWindowPositionOptionsFromMapEvent(event.windowPosition, 320, actions.length * 32);
+      const position = getFittedWindowPositionOptionsFromMapEvent(
+        event.windowPosition,
+        320,
+        actions.length * 32,
+        this._app.maps.target,
+      );
       if (position.left) { // ensure we nudge the window, so it does not trigger the default right click.
         position.left += 1;
       } else {

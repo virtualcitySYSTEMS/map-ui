@@ -73,7 +73,7 @@ export default async function () {
         app.windowManager,
         '@vcmap/test',
       );
-      const { action: clipboardDialogAction, destroy: destroryClipboardDialogAction } = createModalAction(
+      const { action: clipboardDialogAction, destroy: destroyClipboardDialogAction } = createModalAction(
         {
           name: 'Create Link',
         },
@@ -86,7 +86,9 @@ export default async function () {
               };
             },
             async created() {
-              this.url = setStateToUrl(await app.getState(true)).toString();
+              const url = new URL(window.location.href);
+              setStateToUrl(await app.getState(true), url);
+              this.url = url.toString();
             },
           },
           position: {
@@ -95,7 +97,7 @@ export default async function () {
             right: '8%',
           },
         },
-        app.windowManager,
+        app,
         '@vcmap/test',
       );
       const { action: listAction, destroy: destroyList } = createToggleAction(
@@ -117,7 +119,7 @@ export default async function () {
         destroyConfigEditorAction,
         destroyWindowAction,
         destroyIconAction,
-        destroryClipboardDialogAction,
+        destroyClipboardDialogAction,
         destroyList,
       ];
       const alertAction = {

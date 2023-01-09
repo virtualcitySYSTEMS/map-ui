@@ -44,7 +44,7 @@
 </script>
 
 <style scoped>
-.icons-window {
-  max-height: 600px;
-}
+/*.icons-window {*/
+/*  max-height: 600px;*/
+/*}*/
 </style>

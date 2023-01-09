@@ -8,10 +8,10 @@ import { vcsAppSymbol } from '../../pluginHelper.js';
 /**
  * @readonly
  * @enum {string}
- * @property {string} STATIC
- * @property {string} DYNAMIC_LEFT
- * @property {string} DYNAMIC_RIGHT
- * @property {string} DETACHED
+ * @property {string} STATIC - Static windows cannot be moved and will be positioned top-left.
+ * @property {string} DYNAMIC_LEFT - Positioned top-left, if no static window is present. Can be moved by user interaction.
+ * @property {string} DYNAMIC_RIGHT - Positioned top-right. Can be moved by user interaction.
+ * @property {string} DETACHED - Positioned at initial provided position. Can be moved by user interaction.
  */
 export const WindowSlot = {
   STATIC: 'static',
@@ -22,38 +22,47 @@ export const WindowSlot = {
 
 
 /**
- * @typedef WindowPositionOptions
+ * @typedef {Object} WindowPositionOptions
  * @property {string|number|undefined} left Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
  * @property {string|number|undefined} top Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
  * @property {string|number|undefined} right Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
  * @property {string|number|undefined} bottom Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} width Can be a css position string (e.g. '320px') number values are treated as `px` values
- * @property {string|number|undefined} height Can be pixel-value string (e.g. '320px') number values are treated as `px` values
+ * @property {string|number|undefined} width Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} height Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} maxHeight Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} maxWidth Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} minHeight Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} minWidth Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
  */
 
 /**
- * @typedef WindowPosition
- * @property {string} left - absolute to map container
- * @property {string} top - absolute to map container
- * @property {string} right - absolute to map container
- * @property {string} bottom - absolute to map container
- * @property {string} width
- * @property {string} height
+ * @typedef {Object} WindowPosition
+ * @property {string} left - The left CSS property participates in specifying the horizontal position of a window.
+ * @property {string} top - The top CSS property participates in specifying the vertical position of a window.
+ * @property {string} right - The right CSS property participates in specifying the horizontal position of a window.
+ * @property {string} bottom - The bottom CSS property participates in specifying the vertical position of a window.
+ * @property {string} width - The width CSS property sets an element's width.
+ * @property {string} height - The height CSS property sets an element's height.
+ * @property {string} [maxHeight] -  It prevents the used value of the height property from becoming larger than the value specified for max-height. (max is target height, will be automatically updated)
+ * @property {string} [maxWidth] - It prevents the used value of the width property from becoming larger than the value specified by max-width. (max is target width, will be automatically updated)
+ * @property {string} [minHeight] - It prevents the used value of the height property from becoming smaller than the value specified for min-height.
+ * @property {string} [minWidth] - It prevents the used value of the width property from becoming smaller than the value specified for min-width.
  */
 
 /**
  * @readonly
- * @enum {WindowPositionOptions}
- * @property {Position} TOP_LEFT position of the DYNAMIC_LEFT or STATIC Slot
- * @property {Position} TOP_LEFT2 position of the DYNAMIC_LEFT Slot if a STATIC is present
- * @property {Position} TOP_RIGHT position of the DYNAMIC_RIGHT Slot
- * @property {Position} DETACHED default position of DETACHED Windows if no position is given
+ * @enum {WindowPosition}
+ * @property {WindowPosition} TOP_LEFT position of the DYNAMIC_LEFT or STATIC Slot
+ * @property {WindowPosition} TOP_LEFT2 position of the DYNAMIC_LEFT Slot if a STATIC is present
+ * @property {WindowPosition} TOP_RIGHT position of the DYNAMIC_RIGHT Slot
+ * @property {WindowPosition} DETACHED default position of DETACHED Windows if no position is given
  * @private
  */
 export const WindowPositions = {
   TOP_LEFT: {
     left: '0px',
     top: '0px',
+    maxWidth: '320px',
   },
   TOP_LEFT2: {
     left: '320px',
@@ -62,6 +71,7 @@ export const WindowPositions = {
   TOP_RIGHT: {
     right: '0px',
     top: '0px',
+    maxHeight: '70%',
   },
   DETACHED: {
     left: '200px',
@@ -70,12 +80,32 @@ export const WindowPositions = {
 };
 
 /**
+ * Return true, if all values of pos1 match with the corresponding values of pos2
+ * @param {WindowPosition} pos1
+ * @param {WindowPosition} pos2
+ * @returns {boolean}
+ */
+export function compareWindowPositions(pos1, pos2) {
+  return !(Object.keys(pos1).some(key => pos1[key] !== pos2[key]));
+}
+
+/**
+ * Returns true, if the provided position is a slot position
+ * @param {WindowPosition} windowPosition
+ * @returns {boolean}
+ */
+export function isSlotPosition(windowPosition) {
+  return [WindowPositions.TOP_LEFT, WindowPositions.TOP_LEFT2, WindowPositions.TOP_RIGHT]
+    .some(s => compareWindowPositions(s, windowPosition));
+}
+
+/**
  * @typedef WindowComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {import("vue").Component} component Main Component which is shown below the header.
  * @property {import("vue").Component} [headerComponent] Replaces the Header Component.
- * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
  * @property {WindowState} [state]
+ * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
  * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
  * @property {Object} [props]
  * @property {Object} [provides]
@@ -86,11 +116,14 @@ export const WindowPositions = {
  * @property {string} id
  * @property {string|vcsAppSymbol} owner Owner of the window, set by windowManager on add
  * @property {boolean} [hideHeader] be used to not show the header.
+ * @property {boolean} [hidePin] be used to not show the pin button.
  * @property {string} [headerTitle]
  * @property {string} [headerIcon]
  * @property {Array<VcsAction>} [headerActions]
  * @property {number} [headerActionsOverflowCount]
- * @property {Object<string, string>} styles[styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
+ * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
+ * @property {boolean} [dockable] Auto derived from hidePin, current slot, current position and initial position.
+ * @property {Object<string, string>} [styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
  * @property {Array<string>|Object<string,string>} [classes] Can be used to add additional classes to the root WindowComponent. Use Vue Class Bindings Syntax https://vuejs.org/v2/guide/class-and-style.html
  */
 
@@ -99,9 +132,11 @@ export const WindowPositions = {
  * @property {string} id
  * @property {import("vue").Component} component
  * @property {import("vue").Component} [headerComponent]
- * @property {WindowPosition} position
  * @property {WindowState} state
- * @property {Ref<UnwrapRef<WindowSlot>>} slot
+ * @property {WindowPosition} position
+ * @property {WindowPositionOptions} initialPositionOptions
+ * @property {import("vue").Ref<WindowSlot>} slot
+ * @property {WindowSlot} initialSlot
  * @property {Object} props
  * @property {Object} provides
  */
@@ -110,7 +145,7 @@ export const WindowPositions = {
  * @param {string|number|undefined} pos
  * @returns {string|undefined}
  */
-function parsePosition(pos) {
+export function posToPixel(pos) {
   if (typeof pos === 'number') {
     return `${pos}px`;
   }
@@ -118,17 +153,18 @@ function parsePosition(pos) {
 }
 
 /**
+ * Returns CSS position string properties
  * @param {WindowPositionOptions} windowPositionOptions
  * @param {WindowPosition=} windowPosition
  * @returns {WindowPosition}
  */
 export function windowPositionFromOptions(windowPositionOptions, windowPosition = {}) {
-  let left = parsePosition(windowPositionOptions.left) || 'unset';
-  const right = parsePosition(windowPositionOptions.right) || 'unset';
-  let top = parsePosition(windowPositionOptions.top) || 'unset';
-  const bottom = parsePosition(windowPositionOptions.bottom) || 'unset';
-  let width = parsePosition(windowPositionOptions.width) || 'auto';
-  let height = parsePosition(windowPositionOptions.height) || 'auto';
+  let left = posToPixel(windowPositionOptions.left) || 'unset';
+  const right = posToPixel(windowPositionOptions.right) || 'unset';
+  let top = posToPixel(windowPositionOptions.top) || 'unset';
+  const bottom = posToPixel(windowPositionOptions.bottom) || 'unset';
+  let width = posToPixel(windowPositionOptions.width) || 'auto';
+  let height = posToPixel(windowPositionOptions.height) || 'auto';
   if (left !== 'unset' && right !== 'unset') {
     width = 'auto'; // left + right takes precedence over configured width
   } else if (width === 'auto') {
@@ -151,127 +187,37 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
     width,
     height,
   };
+  if (windowPositionOptions.maxWidth) {
+    result.maxWidth = posToPixel(windowPositionOptions.maxWidth);
+  }
+  if (windowPositionOptions.maxHeight) {
+    result.maxHeight = posToPixel(windowPositionOptions.maxHeight);
+  }
+  if (windowPositionOptions.minHeight) {
+    result.minHeight = posToPixel(windowPositionOptions.minHeight);
+  }
+  if (windowPositionOptions.minWidth) {
+    result.minWidth = posToPixel(windowPositionOptions.minWidth);
+  }
+
   return Object.assign(windowPosition, result);
 }
 
 /**
- * @enum {number}
- * @property {number} TOP_LEFT
- * @property {number} TOP_RIGHT
- * @property {number} BOTTOM_LEFT
- * @property {number} BOTTOM_RIGHT
+ * Sets a position on a component. Updates dockable state.
+ * @param {WindowComponent} windowComponent
+ * @param {WindowComponentOptions} windowPositionOptions
  */
-export const WindowAlignment = {
-  TOP_LEFT: 1,
-  TOP_RIGHT: 2,
-  BOTTOM_LEFT: 3,
-  BOTTOM_RIGHT: 4,
-};
-
-/**
- * @returns {HTMLElement|null}
- */
-function getActiveMapElement() {
-  const mapElements = document.getElementsByClassName('mapElement');
-  for (let i = 0; i < mapElements.length; i++) {
-    const element = mapElements.item(i);
-    if (element.style.display !== 'none') {
-      return element;
-    }
+function setWindowPosition(windowComponent, windowPositionOptions) {
+  const windowPosition = windowPositionFromOptions(windowPositionOptions, windowComponent.position);
+  // not one of the default Positions, so we also have to DETACH the windowState.
+  if (!isSlotPosition(windowPosition)) {
+    windowComponent.slot.value = WindowSlot.DETACHED;
   }
-  return null;
-}
-
-/**
- * WindowPositionOptions from client position relative to a HTMLElement
- * @param {number} x - client pixel position
- * @param {number} y - client pixel position
- * @param {HTMLElement} [element='mapElement'] - the element. if none is provided, the currently active mapElement will be taken
- * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
- * @returns {WindowPositionOptions}
- */
-export function getWindowPositionOptions(x, y, element, alignment = WindowAlignment.TOP_LEFT) {
-  const mapElement = element ?? getActiveMapElement();
-  if (!mapElement) {
-    return { left: x, top: y };
-  }
-
-  const { left, top, width, height } = mapElement.getBoundingClientRect();
-  if (alignment === WindowAlignment.TOP_LEFT) {
-    return { left: x - left, top: y - top };
-  } else if (alignment === WindowAlignment.TOP_RIGHT) {
-    return { right: (left + width) - x, top: y - top };
-  } else if (alignment === WindowAlignment.BOTTOM_LEFT) {
-    return { left: x - left, bottom: (height + top) - y };
-  }
-  return { right: (left + width) - x, bottom: (height + top) - y };
-}
-
-/**
- * Get window position options based on a pixel in the map
- * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
- * @param {WindowAlignment} [alignment]
- * @returns {WindowPositionOptions}
- */
-export function getWindowPositionOptionsFromMapEvent(windowPosition, alignment) {
-  const mapElement = getActiveMapElement();
-  if (!mapElement) {
-    return { left: windowPosition.x, top: windowPosition.y };
-  }
-
-  const { left, top } = mapElement.getBoundingClientRect();
-  return getWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, mapElement, alignment);
-}
-
-
-/**
- * Fits a window aligned top left so it fits into the parent. this will change the alignment to be bottom or right depending
- * on if the window would not fit into the parent.
- * @param {number} x - client pixel position
- * @param {number} y - client pixel position
- * @param {number} width - window width to fit
- * @param {number} height - window height to fit
- * @param {HTMLElement} [element='mapElement'] - the element. if none is provided, the currently active mapElement will be taken
- * @returns {WindowPositionOptions}
- */
-export function getFittedWindowPositionOptions(x, y, width, height, element) {
-  const mapElement = element ?? getActiveMapElement();
-  if (!mapElement) {
-    return { left: x, top: y };
-  }
-
-  const { width: parentWidth, height: parentHeight } = mapElement.getBoundingClientRect();
-  const bottom = y + height > parentHeight;
-  const right = x + width > parentWidth;
-  let alignment = WindowAlignment.TOP_LEFT;
-  if (bottom) {
-    if (right) {
-      alignment = WindowAlignment.BOTTOM_RIGHT;
-    } else {
-      alignment = WindowAlignment.BOTTOM_LEFT;
-    }
-  } else if (right) {
-    alignment = WindowAlignment.TOP_RIGHT;
-  }
-  return getWindowPositionOptions(x, y, mapElement, alignment);
-}
-
-/**
- * Fits a window aligned top left so it fits into currently active map. this will change the alignment to be bottom or right depending
- * on if the window would not fit into active map element.
- * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
- * @param {number} width
- * @param {number} height
- * @returns {WindowPositionOptions}
- */
-export function getFittedWindowPositionOptionsFromMapEvent(windowPosition, width, height) {
-  const mapElement = getActiveMapElement();
-  if (!mapElement) {
-    return { left: windowPosition.x, top: windowPosition.y };
-  }
-
-  const { left, top } = mapElement.getBoundingClientRect();
-  return getFittedWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, width, height, mapElement);
+  // check dockable state
+  const initialWindowPosition = windowPositionFromOptions(windowComponent.initialPositionOptions);
+  windowComponent.state.dockable = windowComponent.slot.value === WindowSlot.DETACHED &&
+    !compareWindowPositions(windowPosition, initialWindowPosition);
 }
 
 /**
@@ -300,6 +246,11 @@ class WindowManager {
      * @private
      */
     this._windowComponents = new Map();
+    /**
+     * @type {Map<string, WindowPosition>}
+     * @private
+     */
+    this._windowPositionsCache = new Map();
   }
 
   /**
@@ -327,6 +278,7 @@ class WindowManager {
     check(id, String);
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
+      this._cachePosition(windowComponent);
       const index = this.componentIds.indexOf(id);
       this.componentIds.splice(index, 1);
       this._windowComponents.delete(id);
@@ -342,14 +294,7 @@ class WindowManager {
   setWindowPositionOptions(id, windowPositionOptions) {
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
-      const isSlotPosition = windowPositionOptions === WindowPositions.TOP_LEFT ||
-        windowPositionOptions === WindowPositions.TOP_LEFT2 ||
-        windowPositionOptions === WindowPositions.TOP_RIGHT;
-      // not one of the default Positions, so we also have to DETACH the windowState.
-      if (!isSlotPosition) {
-        windowComponent.slot.value = WindowSlot.DETACHED;
-      }
-      windowPositionFromOptions(windowPositionOptions, windowComponent.position);
+      setWindowPosition(windowComponent, windowPositionOptions);
     }
   }
 
@@ -419,6 +364,42 @@ class WindowManager {
   }
 
   /**
+   * @param {string} id
+   * @returns {WindowPosition|undefined}
+   */
+  getCachedPosition(id) {
+    return this._windowPositionsCache.get(id);
+  }
+
+  /**
+   * Caches the position, if it differs from the initial position
+   * @param {WindowComponent} windowComponent
+   * @private
+   */
+  _cachePosition(windowComponent) {
+    const initialWindowPosition = windowPositionFromOptions(windowComponent.initialPositionOptions);
+    if (!compareWindowPositions(initialWindowPosition, windowComponent.position)) {
+      this._windowPositionsCache.set(windowComponent.id, { ...windowComponent.position });
+    }
+  }
+
+  /**
+   * Returns true, if cached position was assigned.
+   * @param {WindowComponent} windowComponent
+   * @returns {boolean}
+   * @private
+   */
+  _assignCachedPosition(windowComponent) {
+    if (this._windowPositionsCache.has(windowComponent.id)) {
+      const windowPosition = this.getCachedPosition(windowComponent.id);
+      setWindowPosition(windowComponent, windowPosition);
+      this._windowPositionsCache.delete(windowComponent.id);
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * adds a windowComponent to the WindowManager and renders the Window at the provided position/slot.
    * The reactive WindowState Object can be used to watch Changes on position/WindowSlot.
    * The WindowState Object can also be used to change hideHeader, headerTitle, headerIcon, headerActions, styles and classes
@@ -452,10 +433,13 @@ class WindowManager {
       id,
       owner,
       hideHeader: !!windowComponentOptions?.state?.hideHeader,
+      hidePin: !!windowComponentOptions?.state?.hidePin,
       headerTitle: windowComponentOptions?.state?.headerTitle,
       headerIcon: windowComponentOptions?.state?.headerIcon,
       headerActions: windowComponentOptions?.state?.headerActions,
       headerActionsOverflow: windowComponentOptions?.state?.headerActionsOverflow,
+      dockable: false,
+      infoUrl: windowComponentOptions?.state?.infoUrl,
       classes,
       styles,
     });
@@ -464,6 +448,7 @@ class WindowManager {
     const provides = windowComponentOptions.provides || {};
 
     const position = reactive(windowPosition);
+    const initialPosition = { ...windowPositionOptions };
     /**
      * @type {WindowComponent}
      */
@@ -483,8 +468,14 @@ class WindowManager {
       get slot() {
         return slotRef;
       },
+      get initialSlot() {
+        return slot;
+      },
       get position() {
         return position;
+      },
+      get initialPositionOptions() {
+        return initialPosition;
       },
       get props() {
         return props;
@@ -493,7 +484,10 @@ class WindowManager {
         return provides;
       },
     };
-    this._removeWindowAtSlot(slot);
+    const cached = this._assignCachedPosition(windowComponent);
+    if (!cached) {
+      this._removeWindowAtSlot(slot);
+    }
     this._windowComponents.set(id, windowComponent);
     this.componentIds.push(id);
     this._handleSlotsChanged(slot);
@@ -513,6 +507,24 @@ class WindowManager {
         this.componentIds.splice(index, 1);
       }
     }
+  }
+
+  /**
+   * Docks a window by resetting detached to its initial slot.
+   * Updates position according to its initial slot or initial position.
+   * Clears any cached position for this window.
+   * @param {string} id
+   */
+  pinWindow(id) {
+    const component = this.get(id);
+    if (!component?.state?.dockable) {
+      return;
+    }
+    this._removeWindowAtSlot(component.initialSlot);
+    component.slot.value = component.initialSlot;
+    const dockedPosition = this._getPositionOptionsForSlot(component.initialSlot, component.initialPositionOptions);
+    this.setWindowPositionOptions(id, dockedPosition);
+    this._windowPositionsCache.delete(id);
   }
 
   /**

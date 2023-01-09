@@ -48,6 +48,7 @@ const messages = {
     empty: 'There are no entries yet.',
   },
   components: {
+    pin: 'Pin window.',
     close: 'Close window.',
     vcsFormSection: {
       help: 'Show help.',

@@ -127,7 +127,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
             layerName: this._layerName,
           }),
         },
-        this._app.windowManager,
+        this._app,
         vcsAppSymbol,
       );
       this.addAction(action, 4);

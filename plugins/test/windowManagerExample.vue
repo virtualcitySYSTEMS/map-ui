@@ -88,7 +88,7 @@
         {
           id: 'position1',
           state: {
-            headerTitle: 'Example position1',
+            headerTitle: 'Example position1 relative',
           },
           component: VcsContent,
           position: {
@@ -101,15 +101,17 @@
         {
           id: 'position2',
           state: {
-            hideHeader: true,
-            headerTitle: 'Example position2',
+            hideHeader: false,
+            headerTitle: 'Example position2 absolute',
           },
           component: EmptyComponent,
           position: {
-            left: '35%',
-            right: '35%',
-            top: '40%',
-            bottom: '20%',
+            left: '200px',
+            top: '300px',
+            minHeight: '250px',
+            maxHeight: '500px',
+            minWidth: '400px',
+            maxWidth: '1000px',
           },
         },
       ];

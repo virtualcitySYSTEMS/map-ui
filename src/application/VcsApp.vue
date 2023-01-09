@@ -438,6 +438,7 @@
       onMounted(() => {
         pluginMountedListener = setupPluginMountedListeners(app);
         app.maps.setTarget(mapId);
+        app.mounted.raiseEvent(mapId);
       });
 
       onUnmounted(() => {

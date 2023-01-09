@@ -25,7 +25,6 @@ import {
 } from '@vcmap/cesium';
 import { Feature } from 'ol';
 import { check, checkMaybe } from '@vcsuite/check';
-import { v4 as uuidv4 } from 'uuid';
 
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
@@ -402,7 +401,7 @@ class FeatureInfo {
         });
         this._clearHighlightingCb = () => layer.featureVisibility.unHighlight([featureId]);
       }
-      this._windowId = uuidv4(); // we need to create a uuid, otherwise the window manager gets confused if we recreate a window in the same thread with the same id
+      this._windowId = usedFeatureInfoView.className; // use className for a type based position caching
       this._app.windowManager.add(
         {
           id: this._windowId,

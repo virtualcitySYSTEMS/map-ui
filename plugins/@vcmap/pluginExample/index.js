@@ -169,6 +169,7 @@ export default function (config) {
             headerTitle: 'pluginExample.title',
             headerIcon: '$vcsCircle',
             headerActions: actions,
+            infoUrl: 'https://vc.systems',
           },
           props: {
             actions,

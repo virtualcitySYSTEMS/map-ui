@@ -4,7 +4,7 @@ import { unByKey } from 'ol/Observable.js';
 import {
   getWindowPositionOptionsFromMapEvent,
   WindowAlignment,
-} from '../manager/window/windowManager.js';
+} from '../manager/window/windowHelper.js';
 
 /**
  * balloon offset from location or click position in pixel
@@ -63,8 +63,9 @@ export async function getBalloonPosition(app, position) {
  * @param {WindowManager} windowManager
  * @param {string} id - windowId of balloon
  * @param {import("@vcmap/cesium").Cartesian2|undefined} windowPosition
+ * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  */
-export function setBalloonPosition(windowManager, id, windowPosition) {
+export function setBalloonPosition(windowManager, id, windowPosition, target) {
   if (!windowPosition) {
     return;
   }
@@ -72,6 +73,7 @@ export function setBalloonPosition(windowManager, id, windowPosition) {
     id,
     getWindowPositionOptionsFromMapEvent(
       new Cartesian2(windowPosition.x - balloonOffset.x, windowPosition.y - balloonOffset.y),
+      target,
       WindowAlignment.BOTTOM_LEFT,
     ),
   );
@@ -106,10 +108,20 @@ export async function setupBalloonPositionListener(vcsApp, windowId, clickedPosi
       const wgs84Position = Projection.mercatorToWgs84(position);
       const cartesian = Cartographic.toCartesian(Cartographic.fromDegrees(...wgs84Position));
       listeners.push(map.getScene().postRender.addEventListener((scene) => {
-        setBalloonPosition(app.windowManager, windowId, getBalloonPositionCesium(scene, cartesian));
+        setBalloonPosition(
+          app.windowManager,
+          windowId,
+          getBalloonPositionCesium(scene, cartesian),
+          app.maps.target,
+        );
       }));
     } else if (map instanceof OpenlayersMap) {
-      const handler = () => setBalloonPosition(app.windowManager, windowId, getBalloonPositionOL(map.olMap, position));
+      const handler = () => setBalloonPosition(
+        app.windowManager,
+        windowId,
+        getBalloonPositionOL(map.olMap, position),
+        app.maps.target,
+      );
       const key = map.olMap.on(
         'postrender',
         handler,
@@ -121,7 +133,12 @@ export async function setupBalloonPositionListener(vcsApp, windowId, clickedPosi
         position,
       );
       listeners.push(map.imageChanged.addEventListener(setup.bind(null, app, windowId, position)));
-      const handler = () => setBalloonPosition(app.windowManager, windowId, getBalloonPositionOL(map.olMap, coords));
+      const handler = () => setBalloonPosition(
+        app.windowManager,
+        windowId,
+        getBalloonPositionOL(map.olMap, coords),
+        app.maps.target,
+      );
       const key = map.olMap.on(
         'postrender',
         handler,

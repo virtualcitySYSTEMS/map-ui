@@ -3,10 +3,14 @@
     <span>
       <v-icon
         v-if="windowState.headerIcon"
-        class="mr-2 primary--text"
+        class="mr-2"
+        :class="{ 'text--primary': isOnTop }"
         v-text="windowState.headerIcon"
       />
-      <h3 class="font-size-14 d-inline-block user-select-none font-weight-bold">
+      <h3
+        class="font-size-14 d-inline-block user-select-none font-weight-bold"
+        :class="{ 'text--primary': isOnTop }"
+      >
         {{ $t(windowState.headerTitle) }}
       </h3>
     </span>
@@ -20,9 +24,25 @@
         <v-divider
           vertical
           inset
-          class="mx-2"
+          class="mx-1"
         />
       </template>
+      <VcsButton
+        v-if="windowState.infoUrl"
+        @click.stop="infoAction.callback()"
+        small
+        :icon="infoAction.icon"
+        :tooltip="infoAction.title"
+        class="px-1"
+      />
+      <VcsButton
+        v-if="isDockable"
+        @click.stop="pin"
+        small
+        icon="mdi-pin"
+        tooltip="components.pin"
+        class="px-1"
+      />
       <VcsButton
         @click.stop="close"
         small
@@ -45,12 +65,16 @@
 
 <script>
   import { VIcon, VDivider } from 'vuetify/lib';
+  import { computed } from 'vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
+  import { createLinkAction } from '../../actions/actionHelper.js';
 
   /**
    * Default window component header with drag functionality close action and further optional window actions.
    * @vue-prop {WindowState}    windowState - state of the window component.
+   * @vue-event {void} pin - raised when pin button is clicked
+   * @vue-event {void} close - raised when close button is clicked
    */
   export default {
     name: 'WindowComponentHeader',
@@ -65,18 +89,36 @@
         type: Object,
         required: true,
       },
+      isOnTop: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+      slotWindow: {
+        type: Object,
+        required: true,
+      },
     },
     setup(props, { emit }) {
+      const pin = () => {
+        emit('pin');
+      };
       const close = () => {
         emit('close');
       };
-      const clicked = (e) => {
-        emit('click', e);
-      };
+      const isDockable = computed(() => !props.windowState.hidePin && props.windowState.dockable);
+
+      const infoAction = props.windowState.infoUrl ? createLinkAction({
+        name: 'info',
+        title: 'content.infoAction.title',
+        icon: '$vcsInfo',
+      }, props.windowState.infoUrl) : {};
 
       return {
+        pin,
         close,
-        clicked,
+        isDockable,
+        infoAction,
       };
     },
   };

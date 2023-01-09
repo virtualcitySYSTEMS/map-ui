@@ -52,12 +52,23 @@ export {
   default as WindowManager,
   WindowSlot,
   WindowPositions,
+  posToPixel,
+  windowPositionFromOptions,
+} from './src/manager/window/windowManager.js';
+export {
   WindowAlignment,
   getFittedWindowPositionOptions,
   getFittedWindowPositionOptionsFromMapEvent,
   getWindowPositionOptions,
   getWindowPositionOptionsFromMapEvent,
-} from './src/manager/window/windowManager.js';
+  posToNumber,
+  posToPercent,
+  optionsFromWindowPosition,
+  updateWindowPosition,
+  clipToTargetSize,
+  moveWindow,
+  applyPositionOnTarget,
+} from './src/manager/window/windowHelper.js';
 
 export { default as ButtonManager } from './src/manager/buttonManager.js';
 export { default as NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';

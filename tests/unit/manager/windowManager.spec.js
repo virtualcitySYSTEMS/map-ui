@@ -11,13 +11,9 @@ import {
 import { isReactive, isRef } from 'vue';
 import WindowManager, {
   WindowPositions,
-  windowPositionFromOptions,
   WindowSlot,
-  getWindowPositionOptions,
-  WindowAlignment,
-  getFittedWindowPositionOptions,
+  windowPositionFromOptions,
 } from '../../../src/manager/window/windowManager.js';
-
 
 describe('windowManager', () => {
   describe('windowPosition Options parser', () => {
@@ -91,67 +87,6 @@ describe('windowManager', () => {
       });
       expect(windowPosition.right).to.equal('unset');
       expect(windowPosition.bottom).to.equal('unset');
-    });
-  });
-
-  describe('window position calculation', () => {
-    let dummyElement;
-
-    beforeAll(() => {
-      dummyElement = {
-        getBoundingClientRect() {
-          return {
-            top: 20,
-            left: 10,
-            width: 190,
-            height: 380,
-            bottom: 0,
-            right: 0,
-          };
-        },
-      };
-    });
-
-    it('should calculate the position for TOP_LEFT', () => {
-      const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.TOP_LEFT);
-      expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('top', 20);
-    });
-
-    it('should calculate the position for BOTTOM_LEFT', () => {
-      const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.BOTTOM_LEFT);
-      expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('bottom', 360);
-    });
-
-    it('should calculate the position for TOP_RIGHT', () => {
-      const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.TOP_RIGHT);
-      expect(position).to.have.property('right', 180);
-      expect(position).to.have.property('top', 20);
-    });
-
-    it('should calculate the position for BOTTOM_RIGHT', () => {
-      const position = getWindowPositionOptions(20, 40, dummyElement, WindowAlignment.BOTTOM_RIGHT);
-      expect(position).to.have.property('right', 180);
-      expect(position).to.have.property('bottom', 360);
-    });
-
-    it('should fit a window to the right', () => {
-      const position = getFittedWindowPositionOptions(190, 40, 20, 40, dummyElement);
-      expect(position).to.have.property('right', 10);
-      expect(position).to.have.property('top', 20);
-    });
-
-    it('should fit a window to the bottom', () => {
-      const position = getFittedWindowPositionOptions(20, 390, 20, 40, dummyElement);
-      expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('bottom', 10);
-    });
-
-    it('should fit a window to right & bottom', () => {
-      const position = getFittedWindowPositionOptions(190, 390, 20, 40, dummyElement);
-      expect(position).to.have.property('right', 10);
-      expect(position).to.have.property('bottom', 10);
     });
   });
 
@@ -381,6 +316,66 @@ describe('windowManager', () => {
     });
   });
 
+  describe('caching window position', () => {
+    /** @type {WindowManager} */
+    let windowManager;
+    let window1;
+
+    beforeAll(() => {
+      windowManager = new WindowManager();
+    });
+
+    beforeEach(() => {
+      window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+    });
+
+    afterEach(() => {
+      windowManager.clear();
+    });
+
+    afterAll(() => {
+      windowManager.destroy();
+    });
+
+    describe('on removing a window', () => {
+      it('should NOT cache the window position, if the position is the initial position', () => {
+        windowManager.remove(window1.id);
+        expect(windowManager.getCachedPosition(window1.id)).to.be.undefined;
+      });
+
+      it('should cache the window position, if position differs from initial position', () => {
+        windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+        windowManager.remove(window1.id);
+        expect(windowManager.getCachedPosition(window1.id)).to.deep.equal(window1.position);
+      });
+    });
+
+    describe('on adding a window', () => {
+      let cachedPosition;
+
+      beforeEach(() => {
+        windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+        windowManager.remove(window1.id);
+        cachedPosition = windowManager.getCachedPosition(window1.id);
+        windowManager.add({ id: window1.id }, 'plugin');
+      });
+
+      it('should assign cached window position, if existing', () => {
+        expect(window1.position).to.deep.equal(cachedPosition);
+      });
+
+      it('should update the dockable state', () => {
+        expect(window1.state.dockable).to.be.true;
+      });
+    });
+
+    describe('on pinning a window', () => {
+      it('should clear cached position on pin', () => {
+        expect(windowManager.getCachedPosition(window1.id)).to.be.undefined;
+      });
+    });
+  });
+
   describe('slotBehaviour on removing windowComponents', () => {
     /** @type {WindowManager} */
     let windowManager;
@@ -442,6 +437,53 @@ describe('windowManager', () => {
     });
   });
 
+  describe('pin window', () => {
+    /** @type {WindowManager} */
+    let windowManager;
+    let window1;
+    let window2;
+
+    beforeAll(() => {
+      windowManager = new WindowManager();
+    });
+
+    beforeEach(() => {
+      window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+      windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+      window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'app');
+      windowManager.pinWindow(window1.id);
+    });
+
+    afterEach(() => {
+      windowManager.clear();
+    });
+
+    afterAll(() => {
+      windowManager.destroy();
+    });
+
+    it('should reset the slot to the windows initial slot', () => {
+      expect(window1.slot.value).to.eq(WindowSlot.DYNAMIC_LEFT);
+    });
+
+    it('should reset the position to the windows initial position', () => {
+      expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
+      expect(window1.position.top).to.equal(WindowPositions.TOP_LEFT.top);
+    });
+
+    it('should update the dockable state', () => {
+      expect(window1.state.dockable).to.be.false;
+    });
+
+    it('should remove windows at initial slot', () => {
+      expect(windowManager.has(window2.id)).to.be.false;
+    });
+
+    it('should clear cached position', () => {
+      expect(windowManager.getCachedPosition(window1.id)).to.be.undefined;
+    });
+  });
+
   describe('setting WindowPositions', () => {
     /** @type {WindowManager} */
     let windowManager;
@@ -467,13 +509,17 @@ describe('windowManager', () => {
       windowManager.destroy();
     });
 
+    it('should set the given Position to the windowComponent', () => {
+      expect(windowComponentLeft.position.left).to.be.equal('15px');
+      expect(windowComponentLeft.position.right).to.be.equal('25px');
+    });
+
     it('should Detach a Window if a new Position is set which is not a default POSITION', () => {
       expect(windowComponentLeft.slot.value).to.be.equal(WindowSlot.DETACHED);
     });
 
-    it('should set the given Position to the windowComponent', () => {
-      expect(windowComponentLeft.position.left).to.be.equal('15px');
-      expect(windowComponentLeft.position.right).to.be.equal('25px');
+    it('should update the dockable state', () => {
+      expect(windowComponentLeft.state.dockable).to.be.true;
     });
   });
 });

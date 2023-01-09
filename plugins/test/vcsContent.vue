@@ -18,7 +18,7 @@
 
   export default {
     name: 'VcsContent',
-    components: [VSheet],
+    components: { VSheet },
     setup() {
       return { };
     },

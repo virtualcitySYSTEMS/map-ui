@@ -8,7 +8,7 @@ import {
   defaultDynamicContextId,
   ObliqueMap,
   Viewpoint,
-  volatileContextId,
+  volatileContextId, VcsEvent,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -235,6 +235,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._cachedAppState = getStateFromURL(new URL(window.location.href));
+    /**
+     * An event triggered when the VcsApp was mounted and a target was set for the maps.
+     * Provides the id of the target html element.
+     * @type {import("@vcmap/core").VcsEvent<string>}
+     */
+    this.mounted = new VcsEvent();
   }
 
   /**
