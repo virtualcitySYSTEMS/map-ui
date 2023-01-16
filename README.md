@@ -94,7 +94,7 @@ how safe it is to start developing with these components.
 - PluginConcept RC [Plugin API](https://github.com/virtualcitySYSTEMS/map-plugin-cli)
 - SEARCH API BETA [SEARCH](documentation/SEARCH.md)
 - I18n API RC [INTERNATIONALIZATION](documentation/INTERNATIONALIZATION.md).
-- Components API RC [CATEGORIES](documentation/CATEGORIES.md).
+- CATEGORIES API RC [CATEGORIES](documentation/CATEGORIES.md).
 - Context Menu API RC [CONTEXT_MENU](documentation/CONTEXT_MENU.md) 
 - FeatureInfo RC [FEATURE_INFO](documentation/FEATURE_INFO.md)
 - [State & Application Link](documentation/STATE.md) RC
@@ -115,7 +115,7 @@ how safe it is to start developing with these components.
 - VcsFormSection ALPHA
 - VcsTreeView ALPHA
 - VcsTreeViewItem ALPHA
-- VcsList TODO
+- VcsList ALPHA
 - VcsListItem TODO
 - VcsBadge ALPHA
 - VcsColorPicker TODO
@@ -146,7 +146,7 @@ how safe it is to start developing with these components.
 - Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API  DONE
 - Help Concept / Beispielhaft implementieren  DONE
 - Components Concept/Categories / API DONE.
-- Notification Concept Prio 2
+- Notification Concept DONE
 
 ### Plugins
 |            Plugin            | Dev Prio | Proj Prio |
@@ -155,14 +155,14 @@ how safe it is to start developing with these components.
 |         Measurement          |    1     |     1     |
 |      PDF Export (DONE)       |    1     |     1     |
 |   Search Nominatim (DONE)    |    2     |     1     |
-|          SwipeTool           |    2     |     1     |
+|       SwipeTool (DONE)       |    2     |     1     |
 |            Shadow            |    4     |     1     |
 |           Planning           |    4     |     1     |
 |          MultiView           |    4     |     1     |
 |      Create Link (DONE)      |    1     |     1     |
 |        HeightProfile         |    4     |     2     |
 |            Flight            |    4     |     2     |
-|            Export            |    4     |     2     |
+|         Export (WIP)         |    4     |     2     |
 |           ViewShed           |    4     |     2     |
 |      TransparentTerrain      |    4     |     3     |
 |           Walkmode           |    4     |     3     |

@@ -1936,6 +1936,10 @@
       }
     },
     {
+      "name": "@vcmap/swipe-tool",
+      "entry": "plugins/@vcmap/swipe-tool/index.js"
+    },
+    {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
     }
