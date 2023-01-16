@@ -135,7 +135,7 @@ describe('LayerContentTreeItem', () => {
       });
 
       it('should add an extent action', () => {
-        expect(item.actions.some(a => a.name === 'LayerExtentAction')).to.be.true;
+        expect(item.actions.some(a => a.name === 'content.layerExtentAction.name')).to.be.true;
       });
 
       it('should add a style action', () => {

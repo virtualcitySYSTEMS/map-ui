@@ -8,6 +8,21 @@
   "i18n": [
     {
       "de": {
+        "layer": {
+          "buildings": "LOD2 Gebäude - Open Data 2022",
+          "summerTrees": "Sommerbäume",
+          "berlinLOD2Textured": "Gebäude texturiert 2013",
+          "historicImages1928": "Historische Luftbilder 1928",
+          "waterSpeed": "Fließgeschwindigkeit (HQ100)",
+          "waterHeight": "Wasserhöhen (HQ100)",
+          "securedFloodPlains": "Vorläufig gesicherte Überschwemmungsgebiete",
+          "designatedFloodPlains": "Festgesetzte Überschwemmungsgebiete",
+          "footprints": "OSM Gebäudegrundrisse"
+        },
+        "featureInfo": {
+          "waterSpeed": "Geschwindigkeit [m/s]",
+          "waterHeight": "Wasserhöhe [m]"
+        },
         "codeLists": {
           "values": {
             "roofType": {
@@ -332,6 +347,23 @@
             }
           }
         }
+      },
+      "en": {
+        "layer": {
+          "buildings": "LOD2 Buildings - Open Data 2022",
+          "summerTrees": "Summer Trees",
+          "berlinLOD2Textured": "Buildings textured 2013",
+          "historicImages1928": "Aerial Images 1928",
+          "waterSpeed": "Flow velocity (HQ100)",
+          "waterHeight": "Water heights (HQ100)",
+          "securedFloodPlains": "Provisionally secured floodplains",
+          "designatedFloodPlains": "Designated floodplains",
+          "footprints": "OSM building footprints"
+        },
+        "featureInfo": {
+          "waterSpeed": "Velocity [m/s]",
+          "waterHeight": "Water height [m]"
+        }
       }
     }
   ],
@@ -387,75 +419,21 @@
   ],
   "layers": [
     {
-      "type": "TerrainLayer",
-      "name": "BerlinWaterTerrain (level15)",
-      "url": "https://www.virtualcitymap.de/datasource-data/000834f6-8670-49d9-a430-df5b92474985/?baseTerrain=82JNcy7Xi7FNB3WXR",
-      "activeOnStartup": false,
-      "requestVertexNormals": true,
-      "exclusiveGroups": [
-        "terrain"
-      ],
-      "properties": {
-        "title": "Gelände Berlin Wasser"
-      }
-    },
-    {
       "type": "CesiumTilesetLayer",
-      "name": "Summer Trees",
-      "url": "https://www.virtualcitymap.de/datasource-data/c8e48290-c1f3-491a-98a6-24ee1e0116d1/tileset.json",
+      "name": "Bayern - LOD2 (pbr)",
+      "url": "https://www.virtualcitymap.de/datasource-data/40af565a-821b-4e23-9a2b-f9e69ba9a4d2/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
-        "title": "Sommerbäume",
-        "featureInfo": "tableTrees"
-      }
-    },
-    {
-      "type": "TerrainLayer",
-      "name": "GermanyBaseTerrain",
-      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
-      "activeOnStartup": true,
-      "requestVertexNormals": true,
-      "exclusiveGroups": [
-        "terrain"
-      ],
-      "properties": {
-        "title": "Deutschland Gelände"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Berlin - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/1da2e8e4-4e3b-4b15-a91b-7bfa967a8c11/tileset.json",
-      "activeOnStartup": true,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": [
-        "3D",
-        "classified"
-      ],
-      "properties": {
-        "title": "Berlin - LOD2",
+        "title": "Bayern - LOD2",
         "featureInfo": "tableBuildings"
       }
     },
     {
       "type": "CesiumTilesetLayer",
-      "name": "Niedersachsen - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/1c0a26a8-51ce-40f7-b2c4-ded6a3516c2b/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Niedersachsen - LOD2",
-        "featureInfo": "tableBuildings"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Sachsen - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/de2ce0aa-886e-4240-8201-2f7efe30d5ba/tileset.json",
+      "name": "Sachsen - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/fd876dab-dc81-46ae-bce1-fc7913981ed2/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -466,8 +444,32 @@
     },
     {
       "type": "CesiumTilesetLayer",
-      "name": "Thuringen - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/fe4bc221-5f08-4a80-bec4-18d3e3156f42/tileset.json",
+      "name": "Sachsen-Anhalt - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/3efd2b28-f83b-469b-a33b-a08e79384da6/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Sachsen-Anhalt - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Summer Trees (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/91c3ef8a-da68-4031-ae0d-57a86d619cc9/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "layer.summerTrees",
+        "featureInfo": "tableTrees"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Thüringen - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/628b571c-1e93-4f27-a9c0-e13a15848cfe/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -478,8 +480,93 @@
     },
     {
       "type": "CesiumTilesetLayer",
-      "name": "Berlin LOD2 - Textured",
-      "url": "https://www.virtualcitymap.de/datasource-data/2c9e783d-3e17-40f4-b4d5-6cf9591dcb1f/tileset.json",
+      "name": "Niedersachsen - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/72077dac-9695-4147-bb4a-c8840a529c14/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Niedersachsen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "NRW - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/ef0479d6-2c12-4510-b7c2-9d49f28507e4/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "NRW - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Hessen - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/5077faba-e3ac-4109-bfd9-3f18e8faf9b2/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Hessen - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Hamburg - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/1c95f6f5-0646-4613-bb2b-27d5f8615a20/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Hamburg - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Brandenburg - LOD2 (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/71640b45-eaee-4576-8caa-0dd12543b2bd/tileset.json",
+      "datasourceId": "fHWWCMfb46is5zhy9",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Brandenburg - LOD2",
+        "featureInfo": "tableBuildings"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Berlin untexturiert openData (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/f892f6af-180a-4eef-917f-5ff03c260b32/tileset.json",
+      "activeOnStartup": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": [
+        "3D",
+        "classified"
+      ],
+      "properties": {
+        "title": "Berlin - LOD2",
+        "featureInfo": "tableBuildings",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "ClassifiedbyRoofType",
+          "BuildingFunction",
+          "Transparentbuildings"
+        ]
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Berlin textured OpenData (pbr recalculation)",
+      "url": "https://www.virtualcitymap.de/datasource-data/632b42e6-b44c-450b-9436-93e48ca78ea2/tileset.json",
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
@@ -488,9 +575,43 @@
         "classified"
       ],
       "properties": {
-        "title": "Gebäude texturiert 2013",
+        "title": "layer.berlinLOD2Textured",
         "featureInfo": "tableBuildings"
       }
+    },
+    {
+      "type": "TerrainLayer",
+      "name": "BerlinWaterTerrain (level15)",
+      "url": "https://www.virtualcitymap.de/datasource-data/000834f6-8670-49d9-a430-df5b92474985/?baseTerrain=82JNcy7Xi7FNB3WXR",
+      "activeOnStartup": false,
+      "requestVertexNormals": true,
+      "exclusiveGroups": [
+        "terrain"
+      ]
+    },
+    {
+      "type": "WaterShaderLayer",
+      "name": "WaterLayer",
+      "activeOnStartup": false,
+      "url": "https://www.virtualcitymap.de/datasource-data/lindau_2022_water/berlin_section-T0.000000_tileset.json",
+      "shaderProperties": {
+        "waveScaling": 41,
+        "scaleWithHeight": true,
+        "velocityScaling": 0,
+        "animationCycle": 3,
+        "transparencyFactor": 5,
+        "waterColor": "#288a86"
+      }
+    },
+    {
+      "type": "TerrainLayer",
+      "name": "GermanyBaseTerrain",
+      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
+      "activeOnStartup": true,
+      "requestVertexNormals": true,
+      "exclusiveGroups": [
+        "terrain"
+      ]
     },
     {
       "type": "CesiumTilesetLayer",
@@ -516,67 +637,6 @@
           "url": "https://www.stadtentwicklung.berlin.de/planen/stadtmodelle/de/digitale_innenstadt/3d/index.shtml",
           "year": "2021"
         }
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Hessen - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/0b539146-1ef3-4501-9fa9-e96f8c0d7ea4/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Hessen - LOD2",
-        "featureInfo": "tableBuildings"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Hamburg - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/e52957af-1aab-4c5f-b3ad-95879c71c607/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Hamburg - LOD2",
-        "featureInfo": "tableBuildings"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Brandenburg - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/d290b81e-7483-4118-bc0f-38f1be00f418/tileset.json",
-      "datasourceId": "fHWWCMfb46is5zhy9",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Brandenburg - LOD2",
-        "featureInfo": "tableBuildings"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Sachsen-Anhalt - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/d5591edb-ba4b-4725-9b68-9c3a69d6965c/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Sachsen-Anhalt - LOD2",
-        "featureInfo": "tableBuildings"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "NRW - LOD2",
-      "url": "https://www.virtualcitymap.de/datasource-data/7826ecb7-7110-4b6a-9915-7e96719290ac/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "NRW - LOD2",
-        "featureInfo": "tableBuildings"
       }
     },
     {
@@ -736,7 +796,7 @@
       "maxLevel": 20,
       "tilingSchema": "geographic",
       "properties": {
-        "title": "Historische Luftbilder 1928"
+        "title": "layer.historicImages1928"
       }
     },
     {
@@ -766,12 +826,12 @@
       "responseType": "application/geojson",
       "opacity": 0.7,
       "properties": {
-        "title": "Fließgeschwindigkeit, seltenes Ereignis (HQ100)",
+        "title": "layer.waterSpeed",
         "defaultViewpoint": "soest",
-        "featureInfo": "waterspeed",
+        "featureInfo": "waterSpeed",
         "legend": [{
           "type": "ImageLegendItem",
-          "tooltip": "Fließgeschwindigkeit",
+          "tooltip": "layer.waterSpeed",
           "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=fliessgeschwindigkeiten_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
           "popoutBtn": true
         }]
@@ -804,12 +864,12 @@
       "responseType": "application/geojson",
       "opacity": 0.7,
       "properties": {
-        "title": "Wasserhöhen, seltenes Ereignis (HQ100)",
+        "title": "layer.waterHeight",
         "defaultViewpoint": "soest",
-        "featureInfo": "waterheight",
+        "featureInfo": "waterHeight",
         "legend": [{
           "type": "ImageLegendItem",
-          "tooltip": "Fließgeschwindigkeit",
+          "tooltip": "layer.waterHeight",
           "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=wasserhoehen_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
           "popoutBtn": true
         }]
@@ -837,7 +897,7 @@
       "maxLevel": 21,
       "tilingSchema": "geographic",
       "properties": {
-        "title": "vorläufig gesicherte Überschwemmungsgebiete",
+        "title": "layer.securedFloodPlains",
         "defaultViewpoint": "soest"
       }
     },
@@ -867,7 +927,7 @@
       "tilingSchema": "geographic",
       "responseType": "application/geojson",
       "properties": {
-        "title": "festgesetzte Überschwemmungsgebiete",
+        "title": "layer.designatedFloodPlains",
         "defaultViewpoint": "soest"
       }
     },
@@ -887,7 +947,7 @@
       },
       "activeOnStartup": false,
       "properties": {
-        "title": "OSM Gebäudegrundrisse",
+        "title": "layer.footprints",
         "featureInfo": "tableAll"
       }
     }
@@ -978,6 +1038,560 @@
         "show": "true",
         "color": "color('#ffffff', 0.05)"
       }
+    },
+    {
+      "name": "MeasuredHeightGreen",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (green)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#006d2c')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#edf8e9')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bae4b3')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74c476')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#31a354')"
+            ],
+            [
+              "true",
+              "color('#006d2c')"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#edf8e9"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bae4b3"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74c476"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#31a354"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#006d2c"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "MeasuredHeightBrown",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (brown)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#993404')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#ffffd4')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#fed98e')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#fe9929')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#d95f0e')"
+            ],
+            [
+              "true",
+              "color('#993404')"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffd4"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fed98e"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fe9929"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d95f0e"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#993404"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "MeasuredHeightBlue",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (blue)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.measuredHeight} === undefined",
+              "color('#045a8d')"
+            ],
+            [
+              "${attributes.measuredHeight} < 5",
+              "color('#f1eef6')"
+            ],
+            [
+              "${attributes.measuredHeight} < 15",
+              "color('#bdc9e1')"
+            ],
+            [
+              "${attributes.measuredHeight} < 30",
+              "color('#74a9cf')"
+            ],
+            [
+              "${attributes.measuredHeight} < 65",
+              "color('#2b8cbe')"
+            ],
+            [
+              "true",
+              "color('#045a8d')"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#f1eef6"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bdc9e1"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74a9cf"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#2b8cbe"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#045a8d"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "title": "Classified by Roof Type",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.roofType} === undefined",
+              "color('#cccccc')"
+            ],
+            [
+              "${attributes.roofType} === '1000' ",
+              "color('#91cf60')"
+            ],
+            [
+              "${attributes.roofType} === '2100' ",
+              "color('#fee08b')"
+            ],
+            [
+              "${attributes.roofType} === '2200' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3100' ",
+              "color('#8dd3c7')"
+            ],
+            [
+              "${attributes.roofType} === '3200' ",
+              "color('#fc8d59')"
+            ],
+            [
+              "${attributes.roofType} === '3300' ",
+              "color('#ffffb3')"
+            ],
+            [
+              "${attributes.roofType} === '3400' ",
+              "color('#bebada')"
+            ],
+            [
+              "${attributes.roofType} === '3500' ",
+              "color('#ffffbf')"
+            ],
+            [
+              "${attributes.roofType} === '3600' ",
+              "color('#fdb462')"
+            ],
+            [
+              "${attributes.roofType} === '3700' ",
+              "color('#b3de69')"
+            ],
+            [
+              "${attributes.roofType} === '3800' ",
+              "color('#ecc34e')"
+            ],
+            [
+              "${attributes.roofType} === '3900' ",
+              "color('#fccde5')"
+            ],
+            [
+              "${attributes.roofType} === '4000' ",
+              "color('#d590b3')"
+            ],
+            [
+              "${attributes.roofType} === '5000' ",
+              "color('#888888')"
+            ],
+            [
+              "${attributes.roofType} === '9999' ",
+              "color('#cccccc')"
+            ],
+            [
+              "true",
+              "color('#cccccc')"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#91cf60"
+                },
+                "title": "Flachdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fee08b"
+                },
+                "title": "Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Versetztes Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Satteldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fc8d59"
+                },
+                "title": "Walmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffb3"
+                },
+                "title": "Krüppelwalmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bebada"
+                },
+                "title": "Mansardendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffbf"
+                },
+                "title": "Zeltdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "Kegeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#b3de69"
+                },
+                "title": "Kuppeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ecc34e"
+                },
+                "title": "Sheddach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fccde5"
+                },
+                "title": "Bogendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d590b3"
+                },
+                "title": "Turmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#888888"
+                },
+                "title": "Mischform"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Sonstiges"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "ClassifiedbyRoofType"
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "title": "Einfärbung nach Gebäudefunktion",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "${attributes.function} === undefined",
+              "color('#d9d9d9')"
+            ],
+            [
+              "${attributes.function} === '1121' ",
+              "color('#7fc97f')"
+            ],
+            [
+              "${attributes.function} === '1004' ",
+              "color('#beaed4')"
+            ],
+            [
+              "${attributes.function} === '1799' ",
+              "color('#fdc086')"
+            ],
+            [
+              "${attributes.function} === '1231' ",
+              "color('#ffff99')"
+            ],
+            [
+              "true",
+              "color('#d9d9d9')"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#7fc97f"
+                },
+                "title": "1121"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "1004"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdc086"
+                },
+                "title": "1799"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffff99"
+                },
+                "title": "1231"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "other function"
+              }
+
+            ]
+          }
+        ]
+      },
+      "name": "BuildingFunction"
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "Transparentbuildings",
+      "title": "Transparent buildings",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            [
+              "true",
+              "color('#cccccc', 0.7)"
+            ]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Transparent buildings"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "featureInfo": [
@@ -1022,14 +1636,18 @@
     },
     {
       "type": "BalloonFeatureInfoView",
-      "name": "waterheight",
-      "title": "Wasserhöhe [m]",
+      "name": "waterHeight",
+      "keyMapping": {
+        "Wasserhöhe": "featureInfo.waterHeight"
+      },
       "attributeKeys": ["Wasserhöhe"]
     },
     {
       "type": "BalloonFeatureInfoView",
-      "name": "waterspeed",
-      "title": "Geschwindigkeit [m/s]",
+      "name": "waterSpeed",
+      "keyMapping": {
+        "Geschwindigkeit": "featureInfo.waterSpeed"
+      },
       "attributeKeys": ["Geschwindigkeit"]
     },
     {
@@ -1188,22 +1806,23 @@
       "type": "LayerGroupContentTreeItem",
       "name": "germany.lod2",
       "layerNames": [
-        "Berlin - LOD2",
-        "Brandenburg - LOD2",
-        "Hamburg - LOD2",
-        "Hessen - LOD2",
-        "NRW - LOD2",
-        "Sachsen - LOD2",
-        "Sachsen-Anhalt - LOD2",
-        "Thuringen - LOD2",
-        "Niedersachsen - LOD2",
+        "Bayern - LOD2 (pbr)",
+        "Berlin untexturiert openData (pbr recalculation)",
+        "Brandenburg - LOD2 (pbr recalculation)",
+        "Hamburg - LOD2 (pbr recalculation)",
+        "Hessen - LOD2 (pbr recalculation)",
+        "NRW - LOD2 (pbr recalculation)",
+        "Niedersachsen (pbr recalculation)",
+        "Sachsen - LOD2 (pbr recalculation)",
+        "Sachsen-Anhalt - LOD2 (pbr recalculation)",
+        "Thüringen - LOD2 (pbr recalculation)",
         "GermanyBaseTerrain"
       ],
       "layerNamesToDeactivate": [
         "mesh_surface",
         "Mesh Classification Layer"
       ],
-      "title": "LOD2 Gebäude - Open Data 2022"
+      "title": "layer.buildings"
     },
     {
       "type": "NodeContentTreeItem",
@@ -1219,15 +1838,16 @@
         "mesh_surface"
       ],
       "layerNamesToDeactivate": [
-        "Berlin - LOD2",
-        "Brandenburg - LOD2",
-        "Hamburg - LOD2",
-        "Hessen - LOD2",
-        "NRW - LOD2",
-        "Sachsen - LOD2",
-        "Sachsen-Anhalt - LOD2",
-        "Thuringen - LOD2",
-        "Niedersachsen - LOD2",
+        "Bayern - LOD2 (pbr)",
+        "Berlin untexturiert openData (pbr recalculation)",
+        "Brandenburg - LOD2 (pbr recalculation)",
+        "Hamburg - LOD2 (pbr recalculation)",
+        "Hessen - LOD2 (pbr recalculation)",
+        "NRW - LOD2 (pbr recalculation)",
+        "Niedersachsen (pbr recalculation)",
+        "Sachsen - LOD2 (pbr recalculation)",
+        "Sachsen-Anhalt - LOD2 (pbr recalculation)",
+        "Thüringen - LOD2 (pbr recalculation)",
         "GermanyBaseTerrain"
       ],
       "title": "3D-Mesh 2020"
@@ -1235,7 +1855,12 @@
     {
       "type": "LayerContentTreeItem",
       "name": "berlin.texturedBuildings",
-      "layerName": "Berlin LOD2 - Textured"
+      "layerName": "Berlin textured OpenData (pbr recalculation)"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.untexturedBuildings",
+      "layerName": "Berlin untexturiert openData (pbr recalculation)"
     },
     {
       "type": "LayerContentTreeItem",
@@ -1272,7 +1897,7 @@
     },
     {
       "type": "LayerContentTreeItem",
-      "name": "thematic.waterheight",
+      "name": "thematic.waterHeight",
       "layerName": "Wasserhöhen selten - NRW WMS"
     },
     {

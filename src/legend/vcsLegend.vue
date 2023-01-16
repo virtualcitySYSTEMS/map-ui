@@ -27,7 +27,13 @@
           <v-list dense>
             <div v-for="(item, idx) in entry.legend" :key="idx">
               <div v-if="item.type === LegendType.Image" class="mx-2">
-                <v-img :src="$t(item.src)" max-width="287" class="mx-2" :title="item.tooltip" />
+                <img
+                  :src="$t(item.src)"
+                  max-width="287"
+                  max-height="auto"
+                  class="mx-2 legend-image"
+                  :title="item.tooltip"
+                >
               </div>
               <div v-else-if="item.type === LegendType.Iframe" class="mx-2">
                 <iframe
@@ -58,7 +64,6 @@
     VExpansionPanelContent,
     VIcon,
     VList,
-    VImg,
   } from 'vuetify/lib';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './styleLegendItem.vue';
@@ -80,7 +85,6 @@
       VExpansionPanelContent,
       VIcon,
       VList,
-      VImg,
     },
     props: {
       entries: {
@@ -114,5 +118,10 @@
   .treeview-label {
     max-width: 189px;
   }
+}
+.legend-image {
+  max-width: 287px;
+  height: auto;
+  width: auto;
 }
 </style>

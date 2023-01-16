@@ -8,6 +8,9 @@ const messages = {
     menu: {
       tooltip: 'Menü',
     },
+    share: {
+      tooltip: 'Den aktuellen Kartenausschnitt teilen.',
+    },
   },
   content: {
     title: 'Inhalte',
@@ -30,7 +33,8 @@ const messages = {
       title: 'Öffne Stil Auswahl',
     },
     layerExtentAction: {
-      title: 'Jump to layer extent',
+      name: 'Ebenenausdehnung',
+      title: 'Auf Ebenenausdehnung zoomen',
     },
   },
   navigation: {
@@ -38,7 +42,7 @@ const messages = {
     obliqueRightTooltip: 'Schrägluftbild nach rechts drehen',
     zoomInTooltip: 'Hineinzoomen',
     zoomOutTooltip: 'Herauszoomen',
-    pitchTooltip: 'Kamera pitch: {0}°',
+    pitchTooltip: 'Kameraneigung: {0}°',
     overviewMapTooltip: 'Übersichtskarte',
   },
   categoryManager: {

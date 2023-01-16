@@ -40,9 +40,9 @@
           <v-list-item class="px-2">
             <v-list-item-content>
               <v-list-item-title>
-                {{ name }}
+                {{ $t(name) }}
               </v-list-item-title>
-              <v-list-item-subtitle>{{ value }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ $t(value) }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>

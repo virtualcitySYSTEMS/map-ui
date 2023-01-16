@@ -76,7 +76,7 @@
                     v-bind="attrs"
                     v-on="on"
                     large
-                    tooltip="Share current view of the map."
+                    tooltip="navbar.share.tooltip"
                     icon="$vcsShare"
                   />
                 </template>

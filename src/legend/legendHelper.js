@@ -1,5 +1,5 @@
 import { getShapeFromOptions } from '@vcmap/core';
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 
 /**
  * @enum {string}
@@ -142,7 +142,7 @@ export function getLegendEntries(app) {
   /**
    * @type {import("vue").Ref<Array<LegendEntry>>}>}
    */
-  const entries = ref([]);
+  const entries = shallowRef([]);
   /**
    * @type {Object<string,function():void>}
    */
@@ -153,10 +153,8 @@ export function getLegendEntries(app) {
    */
   function removeEntryForLayer(layer) {
     const layerName = layer.name;
-    const index = entries.value.findIndex(({ key }) => { return key === layerName; });
-    if (index >= 0) {
-      entries.value.splice(index, 1);
-    }
+    // reassign to trigger update
+    entries.value = entries.value.filter(({ key }) => key !== layerName);
     if (styleChangedListener[layerName]) {
       styleChangedListener[layerName]();
       delete styleChangedListener[layerName];
@@ -176,7 +174,8 @@ export function getLegendEntries(app) {
       const legend = layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
         const legendEntry = createLayerLegendEntry(key, title, legend);
-        entries.value.push(legendEntry);
+        // use spread since push won't trigger updates
+        entries.value = [...entries.value, legendEntry];
       }
       if (layer.styleChanged) {
         styleChangedListener[layer.name] = layer.styleChanged.addEventListener(() => syncLayerLegendEntries(layer));

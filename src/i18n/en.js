@@ -8,6 +8,9 @@ const messages = {
     menu: {
       tooltip: 'Menu',
     },
+    share: {
+      tooltip: 'Share current view of the map.',
+    },
   },
   content: {
     title: 'Content',
@@ -30,6 +33,7 @@ const messages = {
       title: 'Open Style selector',
     },
     layerExtentAction: {
+      name: 'Layer extent',
       title: 'Jump to layer extent',
     },
   },

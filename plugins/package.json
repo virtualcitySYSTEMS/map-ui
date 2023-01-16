@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "@vcmap/hello-world": "^1.0.7",
-    "@vcmap/print": "^1.0.1"
+    "@vcmap/print": "^1.0.2"
   }
 }

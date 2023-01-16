@@ -139,7 +139,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
    * @private
    */
   _setLayerExtentAction() {
-    const name = 'LayerExtentAction';
+    const name = 'content.layerExtentAction.name';
     this.removeAction(name);
     if (this._layer) {
       const { extent } = this._layer.toJSON();
@@ -147,7 +147,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         const viewpoint = Viewpoint.createViewpointFromExtent(this._layer.extent);
         const action = createGoToViewpointAction(
           {
-            name: 'LayerExtentAction',
+            name,
             title: 'content.layerExtentAction.title',
           },
           viewpoint,

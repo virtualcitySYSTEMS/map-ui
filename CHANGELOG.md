@@ -2,6 +2,7 @@
 - Adds the `Notifier` API to `VcsUiApp`.
 - Adds a `VcsList` component for standard item list rendering.
 - Adds new `VcsWizard` component as stylized wrapper of Vuetify VStepper
+- `WindowManager` refactoring and better window handling.
 
 # 5.0.0-rc.15
 - Update Openlayers to version 7.0.0
