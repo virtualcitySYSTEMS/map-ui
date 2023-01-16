@@ -1,16 +1,24 @@
 # Action
 
-The VcsAction is an interface describing a bistate system linked to a user interaction.
+The VcsAction is an interface describing a bi-state system linked to a user interaction.
+The bi-state can be extended to a tri-state logic using the `background` property.
+
+The standard use case for a bi-state action is toggling a window's state active and deactive.
+The tri-state use case is for tool's that can run in background. 
+The tri-state action callback toggles a tool active and deactive taking the tool's WindowComponents state into account.
+If the tool's WindowComponent is closed, the tool remains active, now running in background, which is indicated by an outlined in primary color button.
+
 
 ```js
   /**
-   * @interface VcsAction
-   * @property {string} name - reactive and translatable name rendered in overflow
-   * @property {string} [title] - reactive and translatable title rendered as tooltip
-   * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
-   * @property {Function} callback - callback function is triggered when the button is clicked
-   * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
-   */
+ * @interface VcsAction
+ * @property {string} name - reactive and translatable name rendered in overflow
+ * @property {string} [title] - reactive and translatable title rendered as tooltip
+ * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
+ * @property {Function} callback - callback function is triggered when the button is clicked
+ * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
+ * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
+ */
 ```
 
 An object implementing VcsAction can be used inside a [VcsActionButtonList](../src/components/buttons/VcsActionButtonList.vue) or on a [VcsButton](../src/components/buttons/VcsButton.vue):

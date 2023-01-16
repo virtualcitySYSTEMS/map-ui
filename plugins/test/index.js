@@ -3,7 +3,7 @@ import { Feature } from 'ol';
 import {
   ButtonLocation, createModalAction, createToggleAction, setStateToUrl, ToolboxType, WindowSlot,
 } from '@vcmap/ui';
-import { toolboxData } from './toolbox-data.js';
+import { getToolboxData } from './toolbox-data.js';
 import editor from './editor.vue';
 import windowManagerExample from './windowManagerExample.vue';
 import AllIconsComponent from './allIconsComponent.vue';
@@ -162,6 +162,7 @@ export default async function () {
         '@vcmap/test',
         ButtonLocation.TOOL,
       );
+      const { toolboxData, destroy: destroyToolboxData } = getToolboxData(app);
       toolboxData.forEach(([{ buttonComponents, ...toolboxComponentOptions }, owner]) => {
         let group;
         if (app.toolboxManager.has(toolboxComponentOptions.id)) {
@@ -173,6 +174,7 @@ export default async function () {
           buttonComponents.forEach(c => group.buttonManager.add(c, owner));
         }
       });
+      this._destroyActions.push(destroyToolboxData);
 
       app.contextMenuManager.addEventHandler(async (event) => {
         const actions = [{

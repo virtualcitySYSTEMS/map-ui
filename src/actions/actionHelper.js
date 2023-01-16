@@ -1,6 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import { check } from '@vcsuite/check';
-import { Collection, Extent, MapCollection, mercatorProjection, Viewpoint } from '@vcmap/core';
+import {
+  Collection, Extent, MapCollection, mercatorProjection, Viewpoint,
+} from '@vcmap/core';
 import { Feature } from 'ol';
 import { reactive, ref } from 'vue';
 import { vcsAppSymbol } from '../pluginHelper.js';

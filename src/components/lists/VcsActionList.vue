@@ -52,6 +52,7 @@
    * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
    * @property {Function} callback - callback function is triggered when the button is clicked
    * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
+   * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
    */
 
   /**
@@ -64,6 +65,7 @@
     icon: [undefined, String],
     callback: Function,
     active: [undefined, Boolean],
+    background: [undefined, Boolean],
   };
 
   /**

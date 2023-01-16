@@ -28,6 +28,7 @@
           :tooltip="group.action.title"
           :icon="group.action.icon"
           :active="group.action.active"
+          :background="group.action.background"
           @click.stop="group.action.callback($event)"
           v-bind="{...$attrs}"
           large

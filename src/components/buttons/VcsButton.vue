@@ -85,8 +85,14 @@
         padding: 0;
         position: relative;
 
-        &.vcs-button--active-disabled{
+        &.vcs-button--active-background {
           border: 2px solid var(--v-primary-base);
+          color: var(--v-secondary-base);
+          background-color: var(--v-accent-darken1) !important;
+        }
+
+        &.v-btn--disabled {
+          background-color: transparent !important;
         }
       }
     }
@@ -102,6 +108,7 @@
    * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn} using {@link VcsTooltip}.
    * @vue-prop {boolean}                                active - Whether button has background color. Applies vuetify primary color if color property is not set.
    * @vue-prop {string}                                 color - Passes property to v-btn in case prop active is true.
+   * @vue-prop {boolean}                                background - When applied with active the button shows an active-background state implying that a tool is active, but running in background, e.g. windowComponent closed.
    * @vue-prop {boolean}                                hasUpdate - Whether the button shows a badge in the top right.
    * @vue-prop {string}                                 icon - When given, will display an icon in the button. Replaces vuetify icon property.
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
@@ -134,6 +141,10 @@
       color: {
         type: String,
         default: undefined,
+      },
+      background: {
+        type: Boolean,
+        default: false,
       },
       hasUpdate: {
         type: Boolean,
@@ -175,7 +186,7 @@
           'font-weight-bold': this.isStandard,
           'text-capitalize': this.isStandard,
           'vcs-button--large': this.isLarge,
-          'vcs-button--active-disabled': this.active && this.$attrs.disabled,
+          'vcs-button--active-background': this.active && this.background && !this.$attrs.disabled,
         };
       },
       hasDefaultSlot() {
@@ -192,7 +203,7 @@
       },
       isOutlined() {
         if (this.isStandard) {
-          return this.active || this.$attrs.disabled;
+          return this.active || this.background;
         }
         return false;
       },

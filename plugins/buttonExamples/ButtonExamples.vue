@@ -32,6 +32,18 @@
         <v-switch v-model="active" />
       </v-list-item-action>
     </v-list-item>
+    <v-divider />
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="font-weight-bold">
+          ACTIVE BACKGROUND
+        </v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action>
+        <v-switch v-model="background" />
+      </v-list-item-action>
+    </v-list-item>
+    <v-divider />
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
@@ -56,6 +68,7 @@
                 <VcsButton
                   @click="toggle"
                   :active="active"
+                  :background="background"
                   color="primary"
                   :disabled="disabled"
                   :has-update="update"
@@ -74,6 +87,7 @@
                 <VcsButton
                   @click="toggle"
                   :active="active"
+                  :background="background"
                   :disabled="disabled"
                   :has-update="update"
                   tooltip="SECONDARY BUTTON"
@@ -101,6 +115,7 @@
                   @click="toggle"
                   :active="active"
                   :disabled="disabled"
+                  :background="background"
                   :has-update="update"
                   :icon="loading ? '$vcsProgress' : '$vcs3d'"
                   tooltip="ButtonClass large"
@@ -141,6 +156,7 @@
                 <VcsButton
                   @click="toggle"
                   :active="active"
+                  :background="background"
                   :disabled="disabled"
                   :icon="loading ? '$vcsProgress' : '$vcsColorSwatch'"
                   tooltip="ACTION BUTTON"
@@ -205,12 +221,14 @@
     },
     setup() {
       const active = ref(false);
+      const background = ref(false);
       const disabled = ref(false);
       const update = ref(false);
       const loading = ref(false);
 
       return {
         active,
+        background,
         disabled,
         update,
         loading,

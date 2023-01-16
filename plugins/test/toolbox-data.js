@@ -1,4 +1,7 @@
 import { ToolboxType } from '@vcmap/ui';
+import { reactive, shallowRef } from 'vue';
+import { VcsEvent } from '@vcmap/core';
+import VcsContent from './vcsContent.vue';
 
 const dummySelectAction = {
   active: false,
@@ -32,123 +35,177 @@ const dummySelectAction = {
   },
 };
 
+function createDummyTriStateAction(app) {
+  const windowComponent = {
+    id: 'tri-state-example',
+    state: {
+      headerTitle: 'Example Session Toggle',
+    },
+    component: VcsContent,
+  };
+
+  const action = reactive({
+    name: 'tri-state-action',
+    icon: 'mdi-triangle',
+    active: false,
+    background: false,
+    callback() {
+      if (this.active) {
+        if (this.background) {
+          return app.windowManager.add(windowComponent, '@vcmap/test');
+        } else {
+          app.windowManager.remove(windowComponent.id);
+          this.active = false;
+        }
+      } else {
+        this.active = true;
+        return app.windowManager.add(windowComponent, '@vcmap/test');
+      }
+      return null;
+    },
+  });
+
+  const listeners = [
+    app.windowManager.added.addEventListener(({ id }) => {
+      if (id === windowComponent.id) {
+        action.active = true;
+        action.background = false;
+      }
+    }),
+    app.windowManager.removed.addEventListener(({ id }) => {
+      if (id === windowComponent.id) {
+        action.background = true;
+      }
+    }),
+  ];
+
+  const destroy = () => {
+    if (app.windowManager.has(windowComponent.id)) {
+      app.windowManager.remove(windowComponent.id);
+    }
+    listeners.forEach(cb => cb());
+  };
+
+  return { action, destroy };
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export const toolboxData = [
-  [
-    {
-      id: 'singleSelect',
-      type: ToolboxType.SINGLE,
-      action: {
-        name: 'select',
-        title: 'single select',
-        icon: '$vcsPointSelect',
-        active: false,
-        callback() { this.active = !this.active; },
+export function getToolboxData(app) {
+  const { action: triStateAction, destroy } = createDummyTriStateAction(app);
+
+  const toolboxData = [
+    [
+      {
+        id: 'singleSelect',
+        type: ToolboxType.SINGLE,
+        action: {
+          name: 'select',
+          title: 'single select',
+          icon: '$vcsPointSelect',
+          active: false,
+          callback() { this.active = !this.active; },
+        },
       },
-    },
-    '@vcmap/test',
-  ],
-  [
-    {
-      id: 'multiSelect',
-      type: ToolboxType.SELECT,
-      action: {
-        name: 'multiSelect',
-        title: 'multi select',
-        ...dummySelectAction,
-        tools: [
+      '@vcmap/test',
+    ],
+    [
+      {
+        id: 'multiSelect',
+        type: ToolboxType.SELECT,
+        action: {
+          name: 'multiSelect',
+          title: 'multi select',
+          ...dummySelectAction,
+          tools: [
+            {
+              name: 'pen',
+              title: 'Item 1',
+              icon: '$vcsPen',
+            },
+            {
+              name: 'object',
+              title: 'Item 2',
+              icon: '$vcsObjectSelect',
+            },
+          ],
+        },
+      },
+      '@vcmap/test',
+    ],
+    [
+      {
+        id: 'measurement',
+        type: ToolboxType.SELECT,
+        action: {
+          name: 'measurement',
+          title: 'measurement',
+          ...dummySelectAction,
+          tools: [
+            {
+              name: 'distance',
+              title: '2D distance',
+              icon: '$vcs2dDistance',
+            },
+            {
+              name: 'area',
+              title: '2D area',
+              icon: '$vcs2dArea',
+            },
+            {
+              name: 'distance3D',
+              title: '3D distance',
+              icon: '$vcs3dDistance',
+            },
+            {
+              name: 'area3D',
+              title: '3D area',
+              icon: '$vcs3dArea',
+            },
+          ],
+        },
+      },
+      '@vcmap/test',
+    ],
+    [
+      {
+        id: 'toggle',
+        type: ToolboxType.SINGLE,
+        action: triStateAction,
+      },
+      '@vcmap/test',
+    ],
+    [
+      {
+        id: 'flight',
+        type: ToolboxType.GROUP,
+        icon: '$vcsVideoRecorder',
+        title: 'flight',
+        buttonComponents: [
           {
-            name: 'pen',
-            title: 'Item 1',
-            icon: '$vcsPen',
+            id: 'flight',
+            action: {
+              name: 'flight',
+              title: 'add flight',
+              icon: 'mdi-camera-plus',
+              active: false,
+              callback() { this.active = !this.active; },
+            },
           },
           {
-            name: 'object',
-            title: 'Item 2',
-            icon: '$vcsObjectSelect',
+            id: 'export',
+            action: {
+              name: 'export',
+              title: 'export flight',
+              icon: '$vcsExportFlight',
+              active: false,
+              callback() { this.active = !this.active; },
+            },
           },
         ],
       },
-    },
-    '@vcmap/test',
-  ],
-  [
-    {
-      id: 'measurement',
-      type: ToolboxType.SELECT,
-      action: {
-        name: 'measurement',
-        title: 'measurement',
-        ...dummySelectAction,
-        tools: [
-          {
-            name: 'distance',
-            title: '2D distance',
-            icon: '$vcs2dDistance',
-          },
-          {
-            name: 'area',
-            title: '2D area',
-            icon: '$vcs2dArea',
-          },
-          {
-            name: 'distance3D',
-            title: '3D distance',
-            icon: '$vcs3dDistance',
-          },
-          {
-            name: 'area3D',
-            title: '3D area',
-            icon: '$vcs3dArea',
-          },
-        ],
-      },
-    },
-    '@vcmap/test',
-  ],
-  [
-    {
-      id: 'toggle',
-      type: ToolboxType.SINGLE,
-      action: {
-        name: 'split',
-        title: 'split view',
-        icon: '$vcsSplitView',
-        active: false,
-        callback() { this.active = !this.active; },
-      },
-    },
-    '@vcmap/test',
-  ],
-  [
-    {
-      id: 'flight',
-      type: ToolboxType.GROUP,
-      icon: '$vcsVideoRecorder',
-      title: 'flight',
-      buttonComponents: [
-        {
-          id: 'flight',
-          action: {
-            name: 'flight',
-            title: 'add flight',
-            icon: 'mdi-camera-plus',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
-        },
-        {
-          id: 'export',
-          action: {
-            name: 'export',
-            title: 'export flight',
-            icon: '$vcsExportFlight',
-            active: false,
-            callback() { this.active = !this.active; },
-          },
-        },
-      ],
-    },
-    '@vcmap/test',
-  ],
-];
+      '@vcmap/test',
+    ],
+  ];
+
+  return { toolboxData, destroy };
+}
