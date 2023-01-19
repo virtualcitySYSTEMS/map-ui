@@ -181,7 +181,7 @@ how safe it is to start developing with these components.
 For a first start, clone the repo and call `npm i` `npm run start` This will start a development server. The 
 app can be opened with http://localhost:8080.
 
-Further Information see [GET_STARTED](documentation/_GET_STARTED.md) and [Plugin-cli](https://github.com/virtualcitySYSTEMS/map-plugin-cli).
+Further Information see [GET_STARTED](documentation/GET_STARTED.md) and [Plugin-cli](https://github.com/virtualcitySYSTEMS/map-plugin-cli).
 
 ## Included Dataset
 The included datasets for Berlin and Osnabrück in the app configurations in the project can only be used for Development.

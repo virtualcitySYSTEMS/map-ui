@@ -70,6 +70,7 @@ export async function getInlinePlugins() {
         plugins.push(`${scope}/${d.name}`);
       });
   }));
+
   return plugins;
 }
 

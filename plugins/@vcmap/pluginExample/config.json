@@ -1,6 +1,0 @@
-{
-    "name": "@vcmap/pluginExample",
-    "entry": "plugins/@vcmap/pluginExample/index.js",
-    "selectOptions": ["A", "B", "C", "D"],
-    "initialTextInput": "myInitialText"
-}

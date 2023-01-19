@@ -375,30 +375,50 @@
   ],
   "plugins": [
     {
-      "name": "test",
-      "entry": "plugins/test/index.js"
+      "name": "config-editor",
+      "entry": "plugins/@vcmap-show-case/config-editor/index.js"
     },
     {
-      "name": "example",
-      "entry": "plugins/example/index.js"
+      "name": "category-tester",
+      "entry": "plugins/@vcmap-show-case/category-tester/index.js"
     },
     {
-      "name": "categoryTest",
-      "entry": "plugins/categoryTest/index.js"
+      "name": "context-menu-tester",
+      "entry": "plugins/@vcmap-show-case/context-menu-tester/index.js"
     },
     {
-      "name": "@vcmap/pluginExample",
-      "entry": "plugins/@vcmap/pluginExample/index.js",
-      "selectOptions": ["Option A", "Option B", "Option C", "Option D"],
-      "initialTextInput": 123
+      "name": "notifier-tester",
+      "entry": "plugins/@vcmap-show-case/notifier-tester/index.js"
     },
     {
-      "name": "@vcmap/buttonExamples",
-      "entry": "plugins/buttonExamples/index.js"
+      "name": "window-tester",
+      "entry": "plugins/@vcmap-show-case/window-tester/index.js"
     },
     {
-      "name": "@vcmap/wizardExample",
-      "entry": "plugins/wizardExample/index.js"
+      "name": "buttons-example",
+      "entry": "plugins/@vcmap-show-case/buttons-example/index.js"
+    },
+    {
+      "name": "form-inputs-example",
+      "entry": "plugins/@vcmap-show-case/form-inputs-example/index.js",
+      "selectOptions": ["A", "B", "C", "D"],
+      "initialTextInput": "myInitialText"
+    },
+    {
+      "name": "icons-example",
+      "entry": "plugins/@vcmap-show-case/icons-example/index.js"
+    },
+    {
+      "name": "list-example",
+      "entry": "plugins/@vcmap-show-case/list-example/index.js"
+    },
+    {
+      "name": "textfields-example",
+      "entry": "plugins/@vcmap-show-case/textfields-example/index.js"
+    },
+    {
+      "name": "wizard-example",
+      "entry": "plugins/@vcmap-show-case/wizard-example/index.js"
     },
     {
       "name": "@vcmap/hello-world",

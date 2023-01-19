@@ -1,0 +1,5 @@
+{
+    "name": "form-inputs-example",
+    "selectOptions": ["A", "B", "C", "D"],
+    "initialTextInput": "myInitialText"
+}
