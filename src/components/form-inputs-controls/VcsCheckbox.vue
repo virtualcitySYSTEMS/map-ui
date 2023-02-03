@@ -21,7 +21,8 @@
         >
           <template #label>
             <VcsLabel :html-for="$attrs.id" :dense="!!$attrs.dense">
-              {{ $t($attrs.label) }}
+              <slot name="label" />
+              <span v-if="!$slots.label">{{ $t($attrs.label) }}</span>
             </VcsLabel>
           </template>
         </v-checkbox>
@@ -61,6 +62,7 @@
    * Provides VcsTooltip to show error messages
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string} label - Label to be displayed, will be translated.
+   * @vue-data {slot} [#label] - slot to pass html for Checkbox label. Overrides label passed as prop.
    */
   export default {
     name: 'VcsCheckbox',
