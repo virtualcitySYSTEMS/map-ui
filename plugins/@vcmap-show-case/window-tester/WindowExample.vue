@@ -36,7 +36,7 @@
         {
           id: 'dynamicLeft',
           headerTitle: 'Example dynamicLeft',
-          component: EmptyComponent,
+          component: VcsContent,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
@@ -44,15 +44,26 @@
           state: {
             headerTitle: 'Example dynamicLeft2',
           },
-          component: EmptyComponent,
+          component: VcsContent,
           slot: WindowSlot.DYNAMIC_LEFT,
+        },
+        {
+          id: 'dynamicLeft2 large',
+          state: {
+            headerTitle: 'Example dynamicLeft2 with 1000px width',
+          },
+          component: VcsContent,
+          slot: WindowSlot.DYNAMIC_LEFT,
+          position: {
+            width: '1000px',
+          },
         },
         {
           id: 'dynamicRight',
           state: {
             headerTitle: 'Example dynamicRight',
           },
-          component: EmptyComponent,
+          component: VcsContent,
           headerComponent: MyCustomHeader,
           slot: WindowSlot.DYNAMIC_RIGHT,
           props: {
@@ -64,7 +75,7 @@
           state: {
             headerTitle: 'Example dynamicRight2',
           },
-          component: EmptyComponent,
+          component: VcsContent,
           slot: WindowSlot.DYNAMIC_RIGHT,
         },
         {
@@ -73,7 +84,7 @@
             headerTitle: 'Example static',
             styles: { 'background-color': 'red' },
           },
-          component: VcsContent,
+          component: EmptyComponent,
           slot: WindowSlot.STATIC,
         },
         {
@@ -86,7 +97,7 @@
               }),
             },
           },
-          component: VcsContent,
+          component: EmptyComponent,
           slot: WindowSlot.STATIC,
         },
         {
@@ -108,7 +119,7 @@
             hideHeader: false,
             headerTitle: 'Example position2 absolute',
           },
-          component: EmptyComponent,
+          component: VcsContent,
           position: {
             left: '200px',
             top: '300px',
@@ -125,26 +136,26 @@
         getLogger('windowManagerExample').log('got unmounted');
       });
 
-      /**
-       * @type {Map<string, WindowComponent>}
-       */
-      const windowComponents = new Map();
-
       const app = inject('vcsApp');
       return {
         showTestClass,
         toggleClass() {
           showTestClass.value = !showTestClass.value;
+          if (app.windowManager.has('static2')) {
+            if (showTestClass.value) {
+              app.windowManager.get('static2').state.classes = ['vcsTest'];
+            } else {
+              app.windowManager.get('static2').state.classes = [];
+            }
+          }
         },
         toggle(e, windowId) {
           if (app.windowManager.has(windowId)) {
             app.windowManager.remove(windowId);
           } else {
             e.stopPropagation();
-            const windowComponentOptions =
-              windowComponents.get(windowId) || exampleWindows.find(item => item.id === windowId);
-            const windowComponent = app.windowManager.add(windowComponentOptions, 'WindowManagerExample');
-            windowComponents.set(windowId, windowComponent);
+            const windowComponentOptions = exampleWindows.find(item => item.id === windowId);
+            app.windowManager.add(windowComponentOptions, 'WindowManagerExample');
           }
         },
         examples: exampleWindows.map(item => item.id),

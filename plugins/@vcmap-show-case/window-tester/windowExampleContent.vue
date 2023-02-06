@@ -8,10 +8,6 @@
 
 <style scoped>
 
-.vcsTest span {
-  background-color: red;
-}
-
 </style>
 <script>
   import { VSheet } from 'vuetify/lib';

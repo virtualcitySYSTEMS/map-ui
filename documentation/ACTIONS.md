@@ -91,3 +91,8 @@ if (destroy) {
   destroy();
 }
 ```
+
+## Usage within VC Map UI
+
+The following image illustrates where different actions are used on the VC Map user interface:
+![UI Actions Overview](UI_ACTIONS.svg)

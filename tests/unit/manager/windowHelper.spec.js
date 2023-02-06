@@ -23,8 +23,8 @@ import WindowManager, {
 const targetRect = {
   top: 20,
   left: 10,
-  width: 190,
-  height: 380,
+  width: 1900,
+  height: 1080,
   bottom: 0,
   right: 0,
 };
@@ -50,36 +50,36 @@ describe('windowHelper', () => {
 
     it('should calculate the position for BOTTOM_LEFT', () => {
       const position = getWindowPositionOptions(20, 40, target, WindowAlignment.BOTTOM_LEFT);
-      expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('bottom', 360);
+      expect(position).to.have.property('left', 20 - targetSize.left);
+      expect(position).to.have.property('bottom', (targetSize.height + targetSize.top) - 40);
     });
 
     it('should calculate the position for TOP_RIGHT', () => {
       const position = getWindowPositionOptions(20, 40, target, WindowAlignment.TOP_RIGHT);
-      expect(position).to.have.property('right', 180);
-      expect(position).to.have.property('top', 20);
+      expect(position).to.have.property('right', (targetSize.left + targetSize.width) - 20);
+      expect(position).to.have.property('top', 40 - targetSize.top);
     });
 
     it('should calculate the position for BOTTOM_RIGHT', () => {
       const position = getWindowPositionOptions(20, 40, target, WindowAlignment.BOTTOM_RIGHT);
-      expect(position).to.have.property('right', 180);
-      expect(position).to.have.property('bottom', 360);
+      expect(position).to.have.property('right', (targetSize.left + targetSize.width) - 20);
+      expect(position).to.have.property('bottom', (targetSize.height + targetSize.top) - 40);
     });
 
     it('should fit a window to the right', () => {
-      const position = getFittedWindowPositionOptions(190, 40, 20, 40, target);
+      const position = getFittedWindowPositionOptions(1900, 40, 20, 40, target);
       expect(position).to.have.property('right', 10);
       expect(position).to.have.property('top', 20);
     });
 
     it('should fit a window to the bottom', () => {
-      const position = getFittedWindowPositionOptions(20, 390, 20, 40, target);
+      const position = getFittedWindowPositionOptions(20, 1090, 20, 40, target);
       expect(position).to.have.property('left', 10);
       expect(position).to.have.property('bottom', 10);
     });
 
     it('should fit a window to right & bottom', () => {
-      const position = getFittedWindowPositionOptions(190, 390, 20, 40, target);
+      const position = getFittedWindowPositionOptions(1900, 1090, 20, 40, target);
       expect(position).to.have.property('right', 10);
       expect(position).to.have.property('bottom', 10);
     });
@@ -181,16 +181,6 @@ describe('windowHelper', () => {
         expect(windowComponent.position).to.have.property('left', '50px');
         expect(windowComponent.position).to.have.property('top', '100px');
       });
-
-      it('should remove size restrictions of slots, if slot changes', () => {
-        console.log(windowComponent.position.maxWidth);
-        expect(windowComponent.slot.value).to.eq(WindowSlot.DYNAMIC_LEFT);
-        expect(windowComponent.position).to.have.property('maxWidth', WindowPositions.TOP_LEFT.maxWidth);
-        moveWindow(windowComponent.id, { dx: 50, dy: 100 }, windowManager, targetSize);
-        expect(windowComponent.slot.value).to.eq(WindowSlot.DETACHED);
-        console.log(windowComponent.position.maxWidth);
-        expect(windowComponent.position).to.have.property('maxWidth', 'unset');
-      });
     });
   });
 
@@ -202,12 +192,12 @@ describe('windowHelper', () => {
         expect(clippedPosition).to.have.property('top', 0);
       });
       it('should set lower bound of top', () => {
-        const windowPositionOptions = { top: 500 };
+        const windowPositionOptions = { top: 1090 };
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         expect(clippedPosition).to.have.property('top', targetRect.height - windowMoveMargin.bottom);
       });
       it('should set upper bound of bottom', () => {
-        const windowPositionOptions = { bottom: 200, height: 200 };
+        const windowPositionOptions = { bottom: 2000, height: 200 };
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         expect(clippedPosition).to.have.property('bottom', targetRect.height - windowPositionOptions.height);
       });
@@ -222,7 +212,7 @@ describe('windowHelper', () => {
         expect(clippedPosition).to.have.property('left', -windowPositionOptions.width + windowMoveMargin.left);
       });
       it('should set max bound of left', () => {
-        const windowPositionOptions = { left: 200, width: 100 };
+        const windowPositionOptions = { left: 2000, width: 100 };
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         expect(clippedPosition).to.have.property('left', targetRect.width - windowMoveMargin.left);
       });
@@ -232,7 +222,7 @@ describe('windowHelper', () => {
         expect(clippedPosition).to.have.property('right', -windowPositionOptions.width + windowMoveMargin.right);
       });
       it('should set max bound of right', () => {
-        const windowPositionOptions = { right: 300, width: 100 };
+        const windowPositionOptions = { right: 1900, width: 100 };
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         expect(clippedPosition).to.have.property('right', targetRect.width - windowMoveMargin.right);
       });
@@ -242,9 +232,19 @@ describe('windowHelper', () => {
         expect(clippedPosition).to.have.property('maxHeight', targetRect.height);
       });
       it('should limit maxWidth and maxHeight to the target size', () => {
-        const windowPositionOptions = { maxWidth: 500, maxHeight: 500 };
+        const windowPositionOptions = { maxWidth: 2500, maxHeight: 1500 };
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         expect(clippedPosition).to.have.property('maxWidth', targetRect.width);
+        expect(clippedPosition).to.have.property('maxHeight', targetRect.height);
+      });
+      it('should limit maxWidth of a TOP_LEFT2 positioned window, if a static window is active', () => {
+        const windowPositionOptions = optionsFromWindowPosition(
+          { ...WindowPositions.TOP_LEFT2, width: 1000 },
+          targetSize,
+        );
+        const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
+        const topLeft2 = posToNumber(WindowPositions.TOP_LEFT2.left, 'left', targetSize);
+        expect(clippedPosition).to.have.property('maxWidth', targetRect.width - topLeft2);
         expect(clippedPosition).to.have.property('maxHeight', targetRect.height);
       });
     });

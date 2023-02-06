@@ -7,12 +7,12 @@
     >
       <template #help>
         <ol>
-          <li>{{ $t('form-inputs-textfields-example.help1') }}:</li>
-          <span>{{ $t('form-inputs-textfields-example.help1desc') }}</span>
-          <li>{{ $t('form-inputs-textfields-example.help2') }}:</li>
-          <span>{{ $t('form-inputs-textfields-example.help2desc') }}</span>
-          <li>{{ $t('form-inputs-textfields-example.help3') }}:</li>
-          <span>{{ $t('form-inputs-textfields-example.help3desc') }}</span>
+          <li>{{ $t('form-inputs-example.help1') }}:</li>
+          <span>{{ $t('form-inputs-example.help1desc') }}</span>
+          <li>{{ $t('form-inputs-example.help2') }}:</li>
+          <span>{{ $t('form-inputs-example.help2desc') }}</span>
+          <li>{{ $t('form-inputs-example.help3') }}:</li>
+          <span>{{ $t('form-inputs-example.help3desc') }}</span>
         </ol>
       </template>
       <template #default v-if="showSection">
@@ -24,7 +24,7 @@
           >
             <v-col>
               <VcsLabel html-for="selectInput" :dense="dense">
-                {{ $t('form-inputs-textfields-example.select') }}
+                {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
             <v-col>
@@ -326,9 +326,9 @@
             <v-col cols="3">
               <VcsSelect
                 :items="[
-                  {value: 'one', i18n: 'form-inputs-textfields-example.numbers.one'},
-                  {value: 'two', i18n: 'form-inputs-textfields-example.numbers.two'},
-                  {value: 'three', i18n: 'form-inputs-textfields-example.numbers.three'}]"
+                  {value: 'one', i18n: 'form-inputs-example.numbers.one'},
+                  {value: 'two', i18n: 'form-inputs-example.numbers.two'},
+                  {value: 'three', i18n: 'form-inputs-example.numbers.three'}]"
                 :item-text="item => item.i18n"
                 :dense="dense"
               />

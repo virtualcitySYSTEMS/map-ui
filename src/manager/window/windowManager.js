@@ -62,16 +62,14 @@ export const WindowPositions = {
   TOP_LEFT: {
     left: '0px',
     top: '0px',
-    maxWidth: '320px',
   },
   TOP_LEFT2: {
-    left: '320px',
+    left: '322px', // 2px space
     top: '0px',
   },
   TOP_RIGHT: {
     right: '0px',
     top: '0px',
-    maxHeight: '70%',
   },
   DETACHED: {
     left: '200px',
@@ -120,7 +118,7 @@ export function isSlotPosition(windowPosition) {
  * @property {string} [headerTitle]
  * @property {string} [headerIcon]
  * @property {Array<VcsAction>} [headerActions]
- * @property {number} [headerActionsOverflowCount]
+ * @property {number} [headerActionsOverflow]
  * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
  * @property {boolean} [dockable] Auto derived from hidePin, current slot, current position and initial position.
  * @property {Object<string, string>} [styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
@@ -206,7 +204,7 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
 /**
  * Sets a position on a component. Updates dockable state.
  * @param {WindowComponent} windowComponent
- * @param {WindowComponentOptions} windowPositionOptions
+ * @param {WindowPositionOptions} windowPositionOptions
  */
 function setWindowPosition(windowComponent, windowPositionOptions) {
   const windowPosition = windowPositionFromOptions(windowPositionOptions, windowComponent.position);
@@ -309,9 +307,15 @@ class WindowManager {
       const staticWindow = this._findWindowBySlot(WindowSlot.STATIC);
       const dynamicWindowLeft = this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT);
       if (staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(dynamicWindowLeft.id, WindowPositions.TOP_LEFT2);
+        this.setWindowPositionOptions(
+          dynamicWindowLeft.id,
+          { ...dynamicWindowLeft.position, ...WindowPositions.TOP_LEFT2 },
+        );
       } else if (!staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(dynamicWindowLeft.id, WindowPositions.TOP_LEFT);
+        this.setWindowPositionOptions(
+          dynamicWindowLeft.id,
+          { ...dynamicWindowLeft.position, ...WindowPositions.TOP_LEFT },
+        );
       }
     }
   }
@@ -333,20 +337,20 @@ class WindowManager {
    */
   _getPositionOptionsForSlot(slot, position) {
     if (slot === WindowSlot.STATIC) {
-      return WindowPositions.TOP_LEFT;
+      return { ...WindowPositions.TOP_LEFT, maxWidth: '320px' };
     }
     if (slot === WindowSlot.DYNAMIC_LEFT) {
       const windowAtStatic = this._findWindowBySlot(WindowSlot.STATIC);
       if (windowAtStatic) {
-        return WindowPositions.TOP_LEFT2;
+        return { ...position, ...WindowPositions.TOP_LEFT2 };
       } else {
-        return WindowPositions.TOP_LEFT;
+        return { ...position, ...WindowPositions.TOP_LEFT };
       }
     }
     if (slot === WindowSlot.DYNAMIC_RIGHT) {
-      return WindowPositions.TOP_RIGHT;
+      return { ...position, ...WindowPositions.TOP_RIGHT };
     }
-    return position || WindowPositions.DETACHED;
+    return { ...WindowPositions.DETACHED, ...position };
   }
 
   /**

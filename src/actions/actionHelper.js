@@ -117,10 +117,8 @@ export function createSearchButtonAction(app) {
           id: 'searchId',
           component: SearchComponent,
           state: { hideHeader: true },
-          slot: WindowSlot.DETACHED,
+          slot: WindowSlot.DYNAMIC_RIGHT,
           position: {
-            right: 0,
-            top: 0,
             width: 440,
           },
         },

@@ -159,16 +159,17 @@ export default function (config) {
         {
           name: 'Form Inputs Example',
           icon: '$vcsHealthCareIndustries',
-          title: 'form-inputs-textfields-example.tooltip',
+          title: 'form-inputs-example.tooltip',
         },
         {
           id: 'formInputsExample',
           component: FormInputsExample,
           slot: WindowSlot.DYNAMIC_LEFT,
           state: {
-            headerTitle: 'form-inputs-textfields-example.title',
+            headerTitle: 'form-inputs-example.title',
             headerIcon: '$vcsCircle',
             headerActions: actions,
+            headerActionsOverflow: 2,
             infoUrl: 'https://vc.systems',
           },
           props: {

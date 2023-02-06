@@ -5,14 +5,18 @@
     @click="clicked"
     @dragstart="dragStart"
     @dragend="dragEnd"
-    :draggable="isDynamic"
+    :draggable="isDraggable"
     :class="{
       'rounded': !isDocked,
-      'marginToTop': isDocked
+      'marginToTop': isDocked,
+      'rounded-br': isDynamicLeft,
+      'rounded-bl': isDynamicRight,
     }"
   >
     <div
       v-if="!windowState.hideHeader"
+      @mousedown="mousedown"
+      @mouseup="isDraggable = false"
       class="pa-2"
       :class="{
         'cursor-grab': isDynamic,
@@ -23,7 +27,7 @@
     </div>
     <v-divider />
     <div
-      class="overflow-x-hidden"
+      class="overflow-x-hidden mb-1"
     >
       <slot />
     </div>
@@ -40,7 +44,7 @@
 
 <script>
   import {
-    computed, inject, provide,
+    computed, inject, provide, ref,
   } from 'vue';
   import { VDivider, VSheet } from 'vuetify/lib';
   import { WindowSlot } from './windowManager.js';
@@ -86,11 +90,29 @@
 
       const isDynamic = computed(() => props.slotWindow !== WindowSlot.STATIC);
       const isDocked = computed(() => props.slotWindow !== WindowSlot.DETACHED);
+      const isDockedLeft = computed(() => {
+        return props.slotWindow === WindowSlot.STATIC || props.slotWindow === WindowSlot.DYNAMIC_LEFT;
+      });
+      const isDockedRight = computed(() => props.slotWindow === WindowSlot.DYNAMIC_RIGHT);
+      const isDraggable = ref(false);
       /**
        * @param {PointerEvent} e
        */
       const clicked = (e) => {
         emit('click', e);
+      };
+      /**
+       * Sets window as draggable on mousedown on header.
+       * Stops bubbling of header action buttons.
+       * @param {MouseEvent} e
+       */
+      const mousedown = (e) => {
+        if (e.target.closest('button')) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        isDraggable.value = isDynamic.value;
       };
       /**
        * @type {DragEvent}
@@ -100,7 +122,16 @@
        * @param {DragEvent} e
        */
       const dragStart = (e) => {
+        if (!isDraggable.value) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         startEvent = e;
+        // set mouse cursor to move
+        e.dataTransfer.effectAllowed = 'move';
+        const preventDefaultDragover = dragOverEvent => dragOverEvent.preventDefault();
+        e.target.parentElement.ondragover = preventDefaultDragover;
+        app.maps.target.ondragover = preventDefaultDragover;
       };
       /**
        * @param {DragEvent} endEvent
@@ -112,14 +143,21 @@
         };
         emit('moved', movement);
         startEvent = null;
+        isDraggable.value = false;
+        endEvent.target.parentElement.ondragover = null;
+        app.maps.target.ondragover = null;
       };
 
       return {
         isDynamic,
         isDocked,
+        isDynamicLeft: isDockedLeft,
+        isDynamicRight: isDockedRight,
+        isDraggable,
         clicked,
         dragStart,
         dragEnd,
+        mousedown,
       };
     },
   };

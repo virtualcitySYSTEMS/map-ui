@@ -251,15 +251,6 @@ export function moveWindow(id, translation, windowManager, targetSize) {
   if (windowPositionOptions.right !== undefined) {
     windowPositionOptions.right -= translation.dx;
   }
-  // clear size restrictions
-  if (position.maxHeight === WindowPositions.TOP_RIGHT.maxHeight &&
-    slot.value === WindowSlot.DYNAMIC_RIGHT) {
-    windowPositionOptions.maxHeight = 'unset';
-  }
-  if (position.maxWidth === WindowPositions.TOP_LEFT.maxWidth &&
-    slot.value === WindowSlot.DYNAMIC_LEFT) {
-    windowPositionOptions.maxWidth = 'unset';
-  }
   const updatedPosition = updateWindowPosition(position, windowPositionOptions, targetSize);
   windowManager.setWindowPositionOptions(id, updatedPosition);
 }
@@ -319,6 +310,11 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
   }
   if (windowPositionOptions.maxHeight !== undefined) {
     clippedPosition.maxHeight = Math.min(windowPositionOptions.maxHeight, targetHeight);
+  }
+  // max width of a top left 2 window (active static window)
+  const topLeft2 = posToNumber(WindowPositions.TOP_LEFT2.left, 'left', targetSize);
+  if (clippedPosition.left === topLeft2) {
+    clippedPosition.maxWidth = Math.min(clippedPosition.maxWidth - topLeft2, targetWidth);
   }
 
   return clippedPosition;

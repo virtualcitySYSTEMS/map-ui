@@ -84,7 +84,7 @@ The state contains properties defining the window's header, its behaviour and st
  * @property {string} [headerTitle]
  * @property {string} [headerIcon]
  * @property {Array<VcsAction>} [headerActions]
- * @property {number} [headerActionsOverflowCount]
+ * @property {number} [headerActionsOverflow]
  * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
  * @property {boolean} [dockable] Auto derived from hidePin, current slot, current position and initial position.
  * @property {Object<string, string>} [styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
@@ -103,7 +103,7 @@ The [WindowState](#windowstate) object contains a couple of properties to config
 - `headerTitle` defining the window title
 - `headerIcon` defining an optional window icon
 - `headerActions` an array of `VcsActions` providing additional functionality
-- `headerActionsOverflowCount` the number of buttons rendered until overflow (default 3) and
+- `headerActionsOverflow` the number of buttons rendered until overflow (default 3) and
 - `infoUrl` an optional url referencing a help page (see [Help](./HELP.md#window-info)).
 
 ```js

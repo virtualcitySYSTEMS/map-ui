@@ -1,10 +1,15 @@
 <template>
   <v-sheet style="height: 100%">
-    Static Window
-    <v-sheet />
+    <span>
+      Static Window
+    </span>
   </v-sheet>
 </template>
-
+<style scoped>
+.vcsTest span {
+  background-color: red;
+}
+</style>
 <script>
 
   import { VSheet } from 'vuetify/lib';

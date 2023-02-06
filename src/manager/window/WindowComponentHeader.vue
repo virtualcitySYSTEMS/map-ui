@@ -18,7 +18,7 @@
       <template v-if="windowState.headerActions?.length > 0">
         <VcsActionButtonList
           :actions="windowState.headerActions"
-          :overflow-count="windowState.headerActionsOverflowCount ?? 3"
+          :overflow-count="windowState.headerActionsOverflow ?? 3"
           small
         />
         <v-divider
