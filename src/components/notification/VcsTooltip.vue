@@ -6,7 +6,7 @@
     :top="tooltipPosition === 'top'"
     :left="tooltipPosition === 'left'"
     :right="tooltipPosition === 'right'"
-    :open-delay="$attrs.openDelay || 200"
+    transition="expand-x-transition"
     v-bind="{...$props, ...$attrs}"
   >
     <template #activator="{ on, attrs }">

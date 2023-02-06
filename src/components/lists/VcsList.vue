@@ -31,16 +31,20 @@
           </v-icon>
         </v-list-item-action>
 
-        <v-list-item-content
-          :title="$t(tooltip || title)"
-        >
+        <v-list-item-content>
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
 
-          <v-list-item-title>
-            {{ $t(title) }}
-          </v-list-item-title>
+          <VcsTooltip
+            :tooltip="tooltip || title"
+          >
+            <template #activator="{ on, attrs }">
+              <v-list-item-title v-bind="attrs" v-on="on">
+                {{ $t(title) }}
+              </v-list-item-title>
+            </template>
+          </VcsTooltip>
 
           <vcs-action-button-list
             v-if="actions?.length > 0"
@@ -85,7 +89,6 @@
         </v-list-item-action>
 
         <v-list-item-content
-          :title="$t(item.tooltip || item.title)"
           :class="[selectable ? 'cursor-pointer' : '']"
           @click="select(item, $event)"
         >
@@ -93,9 +96,15 @@
             {{ item.icon }}
           </v-icon>
 
-          <v-list-item-title>
-            {{ $t(item.title) }}
-          </v-list-item-title>
+          <VcsTooltip
+            :tooltip="item.tooltip || item.title"
+          >
+            <template #activator="{ on, attrs }">
+              <v-list-item-title v-bind="attrs" v-on="on">
+                {{ $t(item.title) }}
+              </v-list-item-title>
+            </template>
+          </VcsTooltip>
 
           <vcs-action-button-list
             v-if="item.actions?.length > 0"
@@ -122,6 +131,7 @@
     VListItemTitle,
   } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+  import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
 
   /**
@@ -165,6 +175,7 @@
     components: {
       VcsTreeviewSearchbar,
       VcsActionButtonList,
+      VcsTooltip,
       VList,
       VListItem,
       VListItemContent,

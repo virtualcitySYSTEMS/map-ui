@@ -20,12 +20,6 @@ const messages = {
     infoAction: {
       title: 'Info',
     },
-    stateAction: {
-      titleInactive: 'Inactive',
-      titleActive: 'Active',
-      titleIndeterminate: 'Indetermine',
-      titleLoading: 'Loading',
-    },
     viewpointAction: {
       title: 'Go to viewpoint',
     },

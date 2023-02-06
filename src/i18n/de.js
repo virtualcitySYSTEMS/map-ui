@@ -20,12 +20,6 @@ const messages = {
     infoAction: {
       title: 'Weitere Informationen',
     },
-    stateAction: {
-      titleInactive: 'Deaktiviert',
-      titleActive: 'Aktiviert',
-      titleIndeterminate: 'Unbestimmbar',
-      titleLoading: 'Lädt...',
-    },
     viewpointAction: {
       title: 'Springe zur Ansicht',
     },

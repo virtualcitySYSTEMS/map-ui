@@ -5,7 +5,6 @@
   >
     <div
       class="position-relative col-8 pa-0 d-flex align-center vcs-treeview-leaf"
-      :title="$t(item.tooltip || item.title)"
     >
       <span
         v-if="item.icon"
@@ -18,8 +17,19 @@
         />
         <ImageElementInjector :element="item.icon" v-else />
       </span>
-      <span class="vcs-treeview-item-title">{{ $t(item.title) }}</span>
+      <VcsTooltip
+        :tooltip="item.tooltip || item.title"
+      >
+        <template #activator="{ on, attrs }">
+          <span
+            v-bind="attrs"
+            v-on="on"
+            class="vcs-treeview-item-title"
+          >{{ $t(item.title) }}</span>
+        </template>
+      </VcsTooltip>
     </div>
+
     <VcsActionButtonList
       v-if="item.actions.length > 0"
       :actions="item.actions"
@@ -44,6 +54,7 @@
   import { VIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import ImageElementInjector from '../imageElementInjector.vue';
+  import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
    * @description
@@ -53,6 +64,7 @@
    */
   export default {
     components: {
+      VcsTooltip,
       VcsActionButtonList,
       VIcon,
       ImageElementInjector,
