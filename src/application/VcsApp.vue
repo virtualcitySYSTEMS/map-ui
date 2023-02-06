@@ -70,7 +70,6 @@
     onMounted,
     onUnmounted,
     provide,
-    watch,
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
@@ -198,7 +197,10 @@
       {
         id: 'legend',
         component: VcsLegend,
-        state: { headerTitle: 'legend.title' },
+        state: {
+          headerTitle: 'legend.title',
+          headerIcon: '$vcsLegend',
+        },
         slot: WindowSlot.DYNAMIC_RIGHT,
         props: { entries },
       },
@@ -207,37 +209,54 @@
     );
 
     /**
-     * adds or removes the legend button, depending on the number of entries
-     * @param {Array<LegendEntry>} newEntries
+     * Adds a legend button, if not existing
      */
-    const handleLegendButton = (newEntries) => {
-      if (newEntries.length > 0) {
-        if (!app.navbarManager.has('legend')) {
-          app.navbarManager.add(
-            {
-              id: 'legend',
-              action: legendAction,
-            },
-            vcsAppSymbol,
-            ButtonLocation.TOOL,
-          );
-        }
-      } else {
+    const addLegend = () => {
+      if (!app.navbarManager.has('legend')) {
+        app.navbarManager.add(
+          {
+            id: 'legend',
+            action: legendAction,
+          },
+          vcsAppSymbol,
+          ButtonLocation.TOOL,
+        );
+      }
+    };
+
+    /**
+     * Handles legend button and window.
+     * Adds a button, if legend definitions are available or removes legend otherwise.
+     */
+    const handleLegend = () => {
+      const layersWithLegend = [...app.layers]
+        .filter(layer => layer.style?.properties?.legend ?? layer.properties?.legend);
+      const stylesWithLegend = [...app.styles].filter(style => style?.properties?.legend);
+      if (layersWithLegend < 1 && stylesWithLegend < 1) {
         app.navbarManager.remove('legend');
         app.windowManager.remove('legend');
       }
     };
-    handleLegendButton(entries.value);
 
-    const stopWatching = watch(
-      entries,
-      handleLegendButton,
-    );
+    const listeners = [
+      app.layers.added.addEventListener((layer) => {
+        if (layer.style?.properties?.legend ?? layer.properties?.legend) {
+          addLegend();
+        }
+      }),
+      app.styles.added.addEventListener((style) => {
+        if (style?.properties?.legend) {
+          addLegend();
+        }
+      }),
+      app.layers.removed.addEventListener(handleLegend),
+      app.styles.removed.addEventListener(handleLegend),
+    ];
 
     return () => {
       destroy();
       legendDestroy();
-      stopWatching();
+      listeners.forEach(cb => cb());
     };
   }
 

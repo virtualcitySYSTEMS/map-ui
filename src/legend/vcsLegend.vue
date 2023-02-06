@@ -1,16 +1,18 @@
 <template>
   <v-card
     class="overflow-y-auto"
-    max-height="500"
   >
     <v-expansion-panels
       accordion
       multiple
+      v-if="entries.length > 0"
+      v-model="panels"
     >
       <v-expansion-panel
         v-for="(entry,i) in entries"
         :key="i"
         class="pa-0 ma-0"
+        @change="entry.open = !entry.open"
       >
         <v-expansion-panel-header hide-actions>
           {{ $t(entry.title) }}
@@ -51,6 +53,9 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-sheet v-else class="ma-2">
+      {{ $t('legend.empty') }}
+    </v-sheet>
   </v-card>
 </template>
 
@@ -64,7 +69,9 @@
     VExpansionPanelContent,
     VIcon,
     VList,
+    VSheet,
   } from 'vuetify/lib';
+  import { computed } from 'vue';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './styleLegendItem.vue';
   import VcsTreeviewLeaf from '../components/lists/VcsTreeviewLeaf.vue';
@@ -72,6 +79,7 @@
   /**
    * @description A component rendering configured legend information for active layers.
    * @vue-prop {import("vue").Ref<Array<LegendEntry>>} entries - legend entries to be displayed
+   * @vue-computed {import("vue").ComputedRef<number[]>} panels - derives indices from entries array to define all panels as open
    */
   export default {
     name: 'VcsLegend',
@@ -85,6 +93,7 @@
       VExpansionPanelContent,
       VIcon,
       VList,
+      VSheet,
     },
     props: {
       entries: {
@@ -92,7 +101,7 @@
         required: true,
       },
     },
-    setup() {
+    setup(props) {
       /**
        * adapts the iframe height on load
        * @param {string} id - iframe's html id
@@ -102,9 +111,19 @@
         iframe.style.height = `${iframe.contentWindow.document.documentElement.scrollHeight}px`;
       };
 
+      /**
+       * Sets all entry panels open
+       * @type {import("vue").ComputedRef<number[]>}
+       */
+      const panels = computed(() => {
+        return [...Array(props.entries.length).keys()]
+          .filter((p, idx) => !!props.entries[idx].open);
+      });
+
       return {
         LegendType,
         setIframeHeight,
+        panels,
       };
     },
   };

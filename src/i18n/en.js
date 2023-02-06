@@ -80,6 +80,7 @@ const messages = {
   legend: {
     title: 'Legend',
     tooltip: 'Legend',
+    empty: 'Currently there are no legend entries available.',
     openInNew: 'Open in new tab',
     defaultLabelText: 'Text',
   },

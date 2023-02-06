@@ -106,6 +106,7 @@ export function getImageSrcFromShape(image) {
  * @typedef {Object} LegendEntry
  * @property {string} key
  * @property {string} title - layer or entry name
+ * @property {boolean} [open=true] - panel state of entry
  * @property {Array<LegendItem>} legend - legend properties
  * @property {Array<VcsAction>} actions - popout actions
  */
@@ -130,7 +131,7 @@ export function createLayerLegendEntry(key, title, legend) {
       });
     }
   });
-  return { key, title, legend, actions };
+  return { key, title, legend, actions, open: true };
 }
 
 /**
@@ -174,8 +175,8 @@ export function getLegendEntries(app) {
       const legend = layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
         const legendEntry = createLayerLegendEntry(key, title, legend);
-        // use spread since push won't trigger updates
-        entries.value = [...entries.value, legendEntry];
+        // use spread since push won't trigger updates. Put new entries at the start
+        entries.value = [legendEntry, ...entries.value];
       }
       if (layer.styleChanged) {
         styleChangedListener[layer.name] = layer.styleChanged.addEventListener(() => syncLayerLegendEntries(layer));
