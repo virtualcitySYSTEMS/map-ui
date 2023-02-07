@@ -25,7 +25,7 @@ function hashLibraries() {
     vue: {
       entry: path.join('lib', 'vue.js'),
     },
-    '@vcmap/cesium': {
+    '@vcmap-cesium/engine': {
       entry: path.join('lib', 'cesium.js'),
       rollupOptions: {
         plugins: [rollupPluginStripPragma({
@@ -55,7 +55,7 @@ function hashLibraries() {
           {
             transform(source, sid) {
               if (/src(\/|\\)setup.js/.test(sid)) {
-                return source.replace('/node_modules/@vcmap/cesium/Build/CesiumUnminified/', './assets/cesium/');
+                return source.replace('/node_modules/@vcmap-cesium/engine/Build/', './assets/cesium/');
               }
               return source;
             },

@@ -22,7 +22,7 @@ import {
   Cesium3DTilePointFeature,
   Color,
   Entity,
-} from '@vcmap/cesium';
+} from '@vcmap-cesium/engine';
 import { Feature } from 'ol';
 import { check, checkMaybe } from '@vcsuite/check';
 
@@ -36,7 +36,7 @@ import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
-/** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature|import("@vcmap/cesium").Entity} FeatureType */
+/** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
 /**
  * @typedef {Object} FeatureInfoEvent

@@ -6,13 +6,13 @@ import path from 'path';
  * @returns {Promise<void>}
  */
 export default async function buildCesium() {
-  const cesiumPath = path.join(process.cwd(), 'node_modules', '@vcmap', 'cesium', 'Build', 'Cesium');
+  const cesiumPath = path.join(process.cwd(), 'node_modules', '@vcmap-cesium', 'engine');
   const buildPath = path.join(process.cwd(), 'dist', 'assets', 'cesium');
   return Promise.all([
-    fs.promises.cp(path.join(cesiumPath, 'Assets'), path.join(buildPath, 'Assets'), {
+    fs.promises.cp(path.join(cesiumPath, 'Source', 'Assets'), path.join(buildPath, 'Assets'), {
       recursive: true,
     }),
-    fs.promises.cp(path.join(cesiumPath, 'Workers'), path.join(buildPath, 'Workers'), {
+    fs.promises.cp(path.join(cesiumPath, 'Build', 'Workers'), path.join(buildPath, 'Workers'), {
       recursive: true,
     }),
   ]);

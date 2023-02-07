@@ -1,4 +1,4 @@
-import { Cartesian2, Cartographic, SceneTransforms } from '@vcmap/cesium';
+import { Cartesian2, Cartographic, SceneTransforms } from '@vcmap-cesium/engine';
 import { CesiumMap, ObliqueMap, OpenlayersMap, Projection, transformToImage } from '@vcmap/core';
 import { unByKey } from 'ol/Observable.js';
 import {
@@ -13,9 +13,9 @@ import {
 export const balloonOffset = { x: 55, y: 25 };
 
 /**
- * @param {import("@vcmap/cesium").Scene} scene
- * @param {import("@vcmap/cesium").Cartesian3} cartesian
- * @returns {undefined|import("@vcmap/cesium").Cartesian2}
+ * @param {import("@vcmap-cesium/engine").Scene} scene
+ * @param {import("@vcmap-cesium/engine").Cartesian3} cartesian
+ * @returns {undefined|import("@vcmap-cesium/engine").Cartesian2}
  */
 function getBalloonPositionCesium(scene, cartesian) {
   return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian);
@@ -24,7 +24,7 @@ function getBalloonPositionCesium(scene, cartesian) {
 /**
  * @param {import("@vcmap/core").OpenlayersMap} olMap
  * @param {import("ol/coordinate").Coordinate} position
- * @returns {undefined|import("@vcmap/cesium").Cartesian2}
+ * @returns {undefined|import("@vcmap-cesium/engine").Cartesian2}
  */
 function getBalloonPositionOL(olMap, position) {
   const pixel = olMap.getPixelFromCoordinate(position);
@@ -62,7 +62,7 @@ export async function getBalloonPosition(app, position) {
  * sets the windowPosition of a balloon
  * @param {WindowManager} windowManager
  * @param {string} id - windowId of balloon
- * @param {import("@vcmap/cesium").Cartesian2|undefined} windowPosition
+ * @param {import("@vcmap-cesium/engine").Cartesian2|undefined} windowPosition
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  */
 export function setBalloonPosition(windowManager, id, windowPosition, target) {

@@ -1,6 +1,6 @@
 import { Feature } from 'ol';
 import { getCenter } from 'ol/extent.js';
-import { Cartographic, Entity, Math as CesiumMath } from '@vcmap/cesium';
+import { Cartographic, Entity, Math as CesiumMath } from '@vcmap-cesium/engine';
 import { Projection } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';

@@ -69,7 +69,7 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
 
   /**
    * derives address attributes from addressKeys
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
+   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
    * @returns {Object}
    */
   getAttributes(feature) {

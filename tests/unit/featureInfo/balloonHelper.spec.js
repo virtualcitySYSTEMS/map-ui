@@ -10,7 +10,7 @@ import {
 import { getCesiumMap } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
 import { getObliqueCollection } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
 import { ObliqueMap, OpenlayersMap } from '@vcmap/core';
-import { Cartesian2, SceneTransforms } from '@vcmap/cesium';
+import { Cartesian2, SceneTransforms } from '@vcmap-cesium/engine';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import { balloonOffset, setupBalloonPositionListener } from '../../../src/featureInfo/balloonHelper.js';
 import BalloonComponent from '../../../src/featureInfo/BalloonComponent.vue';

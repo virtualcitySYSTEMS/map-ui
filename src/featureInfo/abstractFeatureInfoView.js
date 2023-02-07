@@ -235,7 +235,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * Called by `getProperties()` to pass attributes as props object to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
    * It filters attributes of the feature by keys, performs value and key mapping, if provided.
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap/cesium").Cesium3DTileFeature|import("@vcmap/cesium").Cesium3DTilePointFeature} feature
+   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
    * @returns {Object}
    */
   getAttributes(feature) {

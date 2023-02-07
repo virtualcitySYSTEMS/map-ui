@@ -8,7 +8,7 @@ import {
   beforeEach,
   afterEach,
 } from 'vitest';
-import { Cartesian2 } from '@vcmap/cesium';
+import { Cartesian2 } from '@vcmap-cesium/engine';
 import { EventType, mercatorProjection, ModificationKeyType, PointerKeyType, VectorLayer } from '@vcmap/core';
 
 import { Feature } from 'ol';

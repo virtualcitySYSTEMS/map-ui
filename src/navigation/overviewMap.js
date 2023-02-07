@@ -14,7 +14,7 @@ import {
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
 import Feature from 'ol/Feature.js';
-import { Math as CesiumMath, Color } from '@vcmap/cesium';
+import { Math as CesiumMath, Color } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { WindowSlot } from '../manager/window/windowManager.js';

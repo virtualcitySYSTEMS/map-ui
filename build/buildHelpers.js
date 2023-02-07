@@ -145,7 +145,7 @@ function loadCss(href) {
  */
 export const libraries = {
   vue: 'vue',
-  '@vcmap/cesium': 'cesium',
+  '@vcmap-cesium/engine': 'cesium',
   ol: 'ol',
   '@vcmap/core': 'core',
   '@vcmap/ui': 'ui',

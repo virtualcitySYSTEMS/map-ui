@@ -23,7 +23,7 @@ import {
 } from '@vcmap/core';
 import { createDummyCesium3DTileFeature } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
 import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
-import { Color } from '@vcmap/cesium';
+import { Color } from '@vcmap-cesium/engine';
 
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';

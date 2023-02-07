@@ -12,6 +12,10 @@ const configMain = defineConfig(async ({ mode }) => {
   if (!production) {
     const host = determineHostFromArgv(port, https);
     proxy = await getPluginProxies(host, production);
+    proxy['/node_modules/@vcmap-cesium/engine/Build/Assets'] = {
+      target: host,
+      rewrite: path => path.replace(/Build/, 'Source'),
+    };
   }
 
   const config = {
@@ -35,7 +39,7 @@ const configMain = defineConfig(async ({ mode }) => {
         '@vcmap/core > rbush-knn',
         '@vcmap/core > rbush-knn > tinyqueue',
         '@vcmap/core > pbf',
-        '@vcmap/cesium',
+        '@vcmap-cesium/engine',
       ],
     };
   }

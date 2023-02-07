@@ -5,7 +5,7 @@ import {
   PointerKeyType,
   VectorLayer,
 } from '@vcmap/core';
-import { Cartesian2 } from '@vcmap/cesium';
+import { Cartesian2 } from '@vcmap-cesium/engine';
 import { Feature } from 'ol';
 import {
   describe,

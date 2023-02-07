@@ -70,7 +70,7 @@ export function getWindowPositionOptions(x, y, target, alignment = WindowAlignme
 
 /**
  * Get window position options based on a pixel in the map
- * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
+ * @param {import("@vcmap-cesium/engine").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  * @param {WindowAlignment} [alignment]
  * @returns {WindowPositionOptions}
@@ -121,7 +121,7 @@ export function getFittedWindowPositionOptions(x, y, width, height, target) {
 /**
  * Fits a window aligned top left, so it fits into currently active map. This will change the alignment to be bottom or right depending
  * on if the window would not fit into active map element.
- * @param {import("@vcmap/cesium").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
+ * @param {import("@vcmap-cesium/engine").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
  * @param {number} width
  * @param {number} height
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
