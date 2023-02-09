@@ -155,9 +155,9 @@ publish:
     - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
     - npm publish --registry https://registry.npmjs.org --access public
     - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
+    - cp ./config/www.config.json ./dist/map.config.json
     - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
-    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./config/www.config.json -d ./map.config.json
     - VERSION=$(node -pe "require('./package.json').version")
     - npm pack
     - tar -tf vcmap-ui-*.tgz | sed s/package/./ | zip -@ vcmap-ui.zip
-    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file deploy/vcmap-ui.zip "${CI_API_V4_URL}/projects/317/packages/generic/VCMap/${VERSION}/vcmap-ui-${VERSION}.zip"'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file vcmap-ui.zip "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-ui-${VERSION}.zip"'
