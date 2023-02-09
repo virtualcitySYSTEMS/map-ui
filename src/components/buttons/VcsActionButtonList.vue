@@ -9,6 +9,7 @@
       :active="button.active"
       @click.stop="button.callback($event)"
       v-bind="{...$attrs}"
+      v-on="{...$listeners}"
     />
     <v-menu
       v-if="overflowButtons.length > 0"

@@ -2,7 +2,7 @@
   <v-stepper
     vertical
     :value="value"
-    @change="(value) => emitValue(value)"
+    @change="newValue => $emit('input', newValue)"
   >
     <slot />
   </v-stepper>
@@ -15,7 +15,8 @@
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper/ |vuetify stepper}
    * Is always vertical.
    * Only passes the step property, all other props are ignored.
-   * @vue-prop {number} step - The current step of the stepper.
+   * @vue-prop {number} value - The current step of the stepper.
+   * @vue-data {slot} [#default] - Slot to add VcsWizardSteps.
    */
   export default {
     name: 'VcsWizard',
@@ -27,15 +28,6 @@
         type: Number,
         default: undefined,
       },
-    },
-    setup(props, { emit }) {
-      function emitValue(newValue) {
-        emit('input', typeof newValue !== 'number' ? Number(newValue) : newValue);
-      }
-
-      return {
-        emitValue,
-      };
     },
   };
 </script>
@@ -56,10 +48,8 @@
           }
         }
       }
-      .v-stepper__content {
-        &:not(:last-child) {
-          border-left: 2px solid rgba(0, 0, 0, 0.12) !important;
-        }
+      .step-border:not(:last-child) > .v-stepper__content {
+          border-left: 2px solid rgba(0, 0, 0, 0.12);
       }
     }
   }
@@ -91,23 +81,30 @@
           }
         }
       }
-      .v-stepper__content {
-        &:not(:last-child) {
-          border-left: 2px solid rgba(255, 255, 255, 0.8) !important;
-        }
+      .step-border:not(:last-child) > .v-stepper__content {
+          border-left: 2px solid rgba(255, 255, 255, 0.8);
       }
     }
   }
   ::v-deep{
     .v-stepper__step {
-      height: 40px;
+      align-items: start;
       .v-stepper__label {
         font-weight: 700;
         text-shadow: none !important;
+        position: relative;
+        &::before{
+          content: '';
+          position: absolute;
+          top: 14px;
+          bottom: 2px;
+          left: -15px;
+        }
       }
       .v-stepper__step__step {
         color: transparent;
         position: relative;
+        margin-top: 2px;
         &:before{
           content: '\25cf';
           color: var(--v-basic-base);

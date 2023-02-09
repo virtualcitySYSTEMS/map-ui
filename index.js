@@ -137,6 +137,7 @@ export { default as VcsSelect } from './src/components/form-inputs-controls/VcsS
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
+export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
 
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
 

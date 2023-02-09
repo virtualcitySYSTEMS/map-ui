@@ -1,0 +1,160 @@
+<template>
+  <div class="step-border">
+    <v-stepper-step
+      :step="step"
+      :editable="editable"
+      :complete="complete"
+      :rules="rules"
+    >
+      <div class="form-section-header d-flex justify-space-between align-center">
+        <slot name="header" />
+        <span v-if="!$slots.header">{{ $t(heading) }}</span>
+        <VcsActionButtonList
+          v-if="editable || Number(step) === Number(value)"
+          :actions="actions"
+          :overflow-count="actionButtonListOverflowCount"
+          small
+          @mousedown.stop
+          @touchstart.stop
+          @keydown.stop
+        />
+      </div>
+    </v-stepper-step>
+    <v-stepper-content
+      v-if="$slots.content"
+      class="pr-5"
+      :step="step"
+    >
+      <v-alert
+        :value="showHelp"
+        dense
+        text
+        color="grey"
+        class="mt-2 mb-0 font-weight-regular rounded-0 px-0 pt-0"
+      >
+        <slot name="help">
+          <span>{{ $t(helpText) }}</span>
+        </slot>
+      </v-alert>
+      <slot name="content" />
+    </v-stepper-content>
+  </div>
+</template>
+
+<script>
+  import { computed, reactive, watch } from 'vue';
+  import { VStepperStep, VStepperContent, VAlert } from 'vuetify/lib';
+  import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+
+  /**
+   * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper-step/ |vuetify VStepperStep} and
+   * {@link https://vuetifyjs.com/en/api/v-stepper-content/ |vuetify VStepperContent}.
+   * @vue-prop {number | string} step - Declares which step of the VcsWizard this VcsWizardStep is.
+   * @vue-prop {boolean} [editable=false] - If this step is editable. If so, user can jump to that step by clicking on the v-stepper-step.
+   * @vue-prop {boolean} [complete=false] - If this step is completed. Has effect on the look of the v-stepper-step.
+   * @vue-prop {Array} [rules] - Vuetify rules.
+   * @vue-prop {string} [heading] - The heading of this step. Is rendered in the v-stepper-step.
+   * @vue-prop {Array<VcsAction>} [headerActions] - Action buttons to be displayed on the right side of the v-stepper-step.
+   * @vue-prop {number} [actionButtonListOverflowCount] - Overflow count to use for the headerActions.
+   * @vue-prop {string} [helpText] - Optional help text. Must be plain string. Use 'help' slot for html based help texts. Help slot has precedence over helpText prop.
+   * @vue-prop {string | number} value - The current step of the VcsWizard.
+   * @vue-data {slot} [#header] - Slot to override the heading prop. Allows to pass html as v-stepper-step content.
+   * @vue-data {slot} [#content] - Slot to add content to the step. Is rendered in v-stepper-content.
+   * @vue-data {slot} [#help] - Slot to add html to the help section. Overrides content of helpText prop.
+   */
+  export default {
+    name: 'VcsWizardStep',
+    components: {
+      VStepperStep,
+      VStepperContent,
+      VcsActionButtonList,
+      VAlert,
+    },
+    props: {
+      step: {
+        type: [String, Number],
+        required: true,
+      },
+      editable: {
+        type: Boolean,
+        default: false,
+      },
+      complete: {
+        type: Boolean,
+        default: false,
+      },
+      rules: {
+        type: Array,
+        default: () => ([]),
+      },
+      heading: {
+        type: String,
+        default: undefined,
+      },
+      headerActions: {
+        type: Array,
+        default: () => ([]),
+      },
+      actionButtonListOverflowCount: {
+        type: Number,
+        required: false,
+        default: undefined,
+      },
+      helpText: {
+        type: String,
+        default: undefined,
+      },
+      value: {
+        type: [String, Number],
+        required: true,
+      },
+    },
+    setup(props, { slots, emit }) {
+      const helpAction = reactive({
+        name: 'help',
+        title: 'components.vcsFormSection.help',
+        active: false,
+        icon: 'mdi-help-circle',
+        callback() {
+          this.active = !this.active;
+          if (Number(props.value) !== Number(props.step) && props.editable) {
+            emit('input', props.step);
+          }
+        },
+      });
+      const showHelp = computed(() => helpAction.active);
+      // deactivate help when leaving a step
+      watch(() => props.value, (currentStep, previousStep) => {
+        if (Number(previousStep) === Number(props.step)) {
+          helpAction.active = false;
+        }
+      });
+      /**
+       * @type {ComputedRef<VcsAction>}
+       */
+      const actions = computed(() => {
+        if (props.helpText || (slots.help && slots.help().length > 0)) {
+          return [...props.headerActions, helpAction];
+        }
+        return props.headerActions;
+      });
+
+      return {
+        showHelp,
+        actions,
+      };
+    },
+  };
+</script>
+<style scoped lang="scss">
+  .v-alert--text:before{
+    background-color: transparent;
+  }
+  .v-stepper__step {
+    ::v-deep {
+      .v-ripple__container {
+        display: none !important;
+      }
+    }
+  }
+</style>
