@@ -25,6 +25,14 @@
       </v-row>
       <v-row justify="center">
         <OrientationToolsButton
+          v-if="homeAction.icon"
+          :icon="homeAction.icon"
+          :tooltip="homeAction.title"
+          @click.stop="homeAction.callback($event)"
+        />
+      </v-row>
+      <v-row justify="center">
+        <OrientationToolsButton
           :icon="overviewAction.icon"
           :tooltip="overviewAction.title"
           :color="overviewAction.active ? 'primary' : undefined"
@@ -36,16 +44,65 @@
 </template>
 
 <script>
-  import { computed, inject, ref, reactive, onUnmounted } from 'vue';
+  import {
+    computed, inject, ref, reactive, onUnmounted,
+  } from 'vue';
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/lib';
-  import { createOverviewMapAction } from '../actions/actionHelper.js';
+  import { createGoToViewpointAction, createOverviewMapAction } from '../actions/actionHelper.js';
   import { getWindowComponentOptions } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
   import VcsZoomButton from './vcsZoomButton.vue';
   import TiltSlider from './tiltSlider.vue';
   import ObliqueRotation from './obliqueRotation.vue';
   import OrientationToolsButton from './orientationToolsButton.vue';
+
+  /**
+   * Creates a go-to viewpoint action from a startingViewpointName defined in a context
+   * @param {VcsUiApp} app
+   * @returns {{action: import("vue").Reactive<{}>, destroy: function():void}}
+   */
+  function setupHomeButton(app) {
+    const initialAction = { icon: undefined, title: undefined, active: undefined, callback: undefined };
+    const action = reactive({ ...initialAction });
+    /**
+     * Gets the starting viewpoint of the last added context, where a startingViewpointName was defined
+     * and sets it on the home button action.
+     */
+    const updateStartingViewpoint = () => {
+      let viewpoint = null;
+      for (let idx = app.contexts.length - 1; idx >= 0; idx--) {
+        const { startingViewpointName } = app.contexts[idx].config;
+        if (startingViewpointName && app.viewpoints.hasKey(startingViewpointName)) {
+          viewpoint = app.viewpoints.getByKey(startingViewpointName);
+          break;
+        }
+      }
+      if (!viewpoint) {
+        Object.assign(action, { ...initialAction });
+      } else {
+        Object.assign(action, createGoToViewpointAction(
+          {
+            name: 'home-action',
+            title: 'navigation.homeButton',
+            icon: '$vcsHomePoint',
+          },
+          viewpoint,
+          app.viewpoints,
+          app.maps,
+        ));
+      }
+    };
+
+    const listener = [
+      app.contextAdded.addEventListener(updateStartingViewpoint),
+      app.contextRemoved.addEventListener(updateStartingViewpoint),
+    ];
+
+    const destroy = () => { listener.forEach(cb => cb()); };
+
+    return { action, destroy };
+  }
 
   /**
    * @enum {string}
@@ -143,11 +200,14 @@
         app.windowManager,
       );
 
+      const { action: homeAction, destroy: homeDestroy } = setupHomeButton(app);
+
       onUnmounted(() => {
         if (destroy) {
           destroy();
         }
         postRenderHandler();
+        homeDestroy();
       });
 
       return {
@@ -159,6 +219,7 @@
         zoomIn() { zoom(app.maps.activeMap); }, // debounce?
         zoomOut() { zoom(app.maps.activeMap, true); },
         overviewAction: reactive(action),
+        homeAction,
       };
     },
   };
@@ -168,7 +229,7 @@
   .nav-container {
     position: absolute;
     right: 2rem;
-    bottom: 2rem;
+    bottom: 1rem;
     width: unset;
     &.mobile{
       top: 1rem;
@@ -178,7 +239,8 @@
   }
   .nav-container > {
     .row {
-      margin-bottom: 15px;
+      margin-top: 15px;
+      margin-bottom: 0;
     }
   }
 </style>

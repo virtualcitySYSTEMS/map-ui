@@ -38,6 +38,7 @@ const messages = {
     zoomOutTooltip: 'Zoom out',
     pitchTooltip: 'Camera pitch: {0}°',
     overviewMapTooltip: 'Overview Map',
+    homeButton: 'Go to starting view',
   },
   categoryManager: {
     title: 'Components',

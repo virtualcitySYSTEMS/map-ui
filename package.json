@@ -37,7 +37,6 @@
     "@vcsuite/check": "^1.1.2",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",
-    "rxjs": "^6.6.6",
     "uuid": "^8.3.2",
     "vue-i18n": "^8.24.1"
   },

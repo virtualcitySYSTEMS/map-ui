@@ -350,7 +350,7 @@ class WindowManager {
     if (slot === WindowSlot.DYNAMIC_RIGHT) {
       return { ...position, ...WindowPositions.TOP_RIGHT };
     }
-    return { ...WindowPositions.DETACHED, ...position };
+    return position || WindowPositions.DETACHED;
   }
 
   /**

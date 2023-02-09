@@ -5,7 +5,7 @@
   >
     <template #activator="{ on, attrs }">
       <v-card
-        elevation="2"
+        elevation="0"
         class="h-8 w-8 d-flex align-center justify-center text-center btn-orientation-tools"
         v-bind="{ ...$attrs, ...attrs }"
         v-on="{ ...$listeners, ...on }"

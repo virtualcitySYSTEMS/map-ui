@@ -17,6 +17,7 @@ import Feature from 'ol/Feature.js';
 import { Math as CesiumMath, Color } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
+import { Icon } from 'ol/style.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
 import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
@@ -34,13 +35,26 @@ export function getWindowComponentOptions() {
     id: 'overview-map-container',
     state: {
       hideHeader: true,
+      classes: ['overview-map'],
     },
     position: {
       right: '100px',
       bottom: '25px',
-      width: '272px',
-      height: '223px',
+      width: '300px',
+      height: '240px',
     },
+  };
+}
+
+/**
+ * @param {string} color
+ * @returns {import("ol/style/Icon").Options}
+ */
+function getCameraIcon(color) {
+  return {
+    src: `data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8'?%3E%3Csvg id='cam' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 81.06 49.47'%3E%3Cdefs%3E%3ClinearGradient id='1' x1='40.53' y1='48.97' x2='40.53' y2='.25' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='${encodeURIComponent(color)}'/%3E%3Cstop offset='.46' stop-color='${encodeURIComponent(color)}' stop-opacity='.60'/%3E%3Cstop offset='.65' stop-color='${encodeURIComponent(color)}' stop-opacity='.40'/%3E%3Cstop offset='.83' stop-color='${encodeURIComponent(color)}' stop-opacity='.20'/%3E%3Cstop offset='.89' stop-color='${encodeURIComponent(color)}' stop-opacity='.15'/%3E%3Cstop offset='1' stop-color='transparent' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='2' x1='40.53' y1='49.37' x2='40.53' y2='0' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='.24' stop-color='${encodeURIComponent(color)}'/%3E%3Cstop offset='.38' stop-color='${encodeURIComponent(color)}' stop-opacity='.93'/%3E%3Cstop offset='.57' stop-color='${encodeURIComponent(color)}' stop-opacity='.70'/%3E%3Cstop offset='.78' stop-color='${encodeURIComponent(color)}' stop-opacity='.38'/%3E%3Cstop offset='1' stop-color='transparent' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='40.53 48.97 80.53 .25 .53 .25 40.53 48.97' fill='url(%231)' stroke='url(%232)' stroke-miterlimit='10' stroke-width='.5px'/%3E%3Ccircle cx='40.53' cy='42.97' r='6' fill='${encodeURIComponent(color)}' stroke='%23fff' stroke-miterlimit='10'/%3E%3C/svg%3E`,
+    scale: 0.5,
+    color,
   };
 }
 
@@ -151,10 +165,7 @@ class OverviewMap {
      * @type {import("@vcmap/core").VectorStyleItem}
      */
     this.cameraIconStyle = new VectorStyleItem({
-      image: {
-        src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAA8CAYAAADxJz2MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDphMzhlODgyYy00ZGYzLTZkNGMtYWZhYy1hYTkwOTI3MjRiYjEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYxRkE1MDlENjRDMTFFNTlGRjhFMzM3RTA3MDJFMDciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYxRkE1MDhENjRDMTFFNTlGRjhFMzM3RTA3MDJFMDciIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OGJiODg5ODItZGM0Zi0xNjQyLWEyZDYtODJkZTcxMGNhNjkwIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6YzY5MTdhNjAtZDYzYy0xMWU1LThjNTgt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',
-        anchor: [0.5, 1],
-      },
+      image: getCameraIcon(defaultPrimaryColor),
     });
 
     /**
@@ -220,12 +231,12 @@ class OverviewMap {
       }),
       this._app.uiConfig.added.addEventListener((item) => {
         if (item?.name === 'primaryColor') {
-          this._setObliqueColor(item.value);
+          this._updatePrimaryColor(item.value);
         }
       }),
       this._app.uiConfig.removed.addEventListener((item) => {
         if (item?.name === 'primaryColor') {
-          this._setObliqueColor(defaultPrimaryColor);
+          this._updatePrimaryColor(defaultPrimaryColor);
         }
       }),
     ];
@@ -267,12 +278,16 @@ class OverviewMap {
    * @param {string} color
    * @private
    */
-  _setObliqueColor(color) {
+  _updatePrimaryColor(color) {
     this.obliqueUnselectedStyle?.stroke?.setColor(color);
     this.obliqueSelectedStyle?.stroke?.setColor(color);
     this._obliqueTileLayer?.forceRedraw?.();
     this._obliqueImageLayer?.forceRedraw?.();
     this._obliqueSelectedImageLayer?.forceRedraw?.();
+    const rotation = this.cameraIconStyle.image.getRotation();
+    this.cameraIconStyle.image = new Icon(getCameraIcon(color));
+    this.cameraIconStyle.image.setRotation(rotation);
+    this._cameraIconLayer?.getFeatureById('cameraFeature')?.setStyle(this.cameraIconStyle.style);
   }
 
   /**
@@ -299,6 +314,7 @@ class OverviewMap {
     }
     await this._map.activate();
     this.map.setTarget('overview-map-container');
+    this._map.target?.firstChild?.classList?.add('overviewMapElement');
     if (!this._active) {
       this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(() => {
         this._clearListeners();

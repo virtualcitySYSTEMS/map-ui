@@ -8,7 +8,7 @@
         d="M4,0,8,13H0Z"
         transform="translate(1)"
         fill="currentColor"
-        @click="emit(0)"
+        @click="emit($event, 0)"
       />
       <path
         :class="canEmit ? 'cursor-pointer' : ''"
@@ -17,7 +17,7 @@
         d="M4,0,8,13H0Z"
         transform="translate(9 58) rotate(180)"
         fill="rgba(88,88,88,0.51)"
-        @click="emit(180)"
+        @click="emit($event, 180)"
       />
     </g>
     <g id="Group_1653" data-name="Group 1653" transform="translate(0 33) rotate(-90)">
@@ -27,7 +27,7 @@
         data-name="Polygon 14"
         d="M4,0,8,13H0Z"
         fill="rgba(88,88,88,0.51)"
-        @click="emit(270)"
+        @click="emit($event, 270)"
       />
       <path
         :class="canEmit ? 'cursor-pointer' : ''"
@@ -36,7 +36,7 @@
         d="M4,0,8,13H0Z"
         transform="translate(8 58) rotate(180)"
         fill="rgba(88,88,88,0.51)"
-        @click="emit(90)"
+        @click="emit($event, 90)"
       />
     </g>
     <g id="Group_1672" data-name="Group 1672" transform="translate(1)" v-if="!hideTicks">
@@ -143,19 +143,25 @@
       },
     },
     methods: {
-      emit(event) {
+      emit(event, dir) {
         if (this.canEmit) {
-          this.$emit('direction-click', event);
+          event.preventDefault();
+          event.stopPropagation();
+          this.$emit('direction-click', dir);
         }
       },
     },
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   svg {
     width: 85%;
     height: 85%;
     margin: 7.5%;
+  }
+
+  svg path:hover {
+    fill: var(--v-base-lighten5) !important;
   }
 </style>

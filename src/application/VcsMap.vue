@@ -14,6 +14,15 @@
       overflow: hidden; /* Fix for iFrame content */
     }
 
+    .overviewMapElement {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 3px;
+      right: 3px;
+      overflow: hidden; /* Fix for iFrame content */
+    }
+
     .cesium-widget,
     .cesium-widget canvas {
       width: 100%;
