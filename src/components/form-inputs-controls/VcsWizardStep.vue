@@ -5,12 +5,15 @@
       :editable="editable"
       :complete="complete"
       :rules="rules"
+      class="pr-5"
     >
-      <div class="form-section-header d-flex justify-space-between align-center">
+      <div class="d-flex justify-space-between align-center">
         <slot name="header" />
-        <span v-if="!$slots.header">{{ $t(heading) }}</span>
+        <div v-if="!$slots.header" class="py-3">
+          <span>{{ $t(heading) }}</span>
+        </div>
         <VcsActionButtonList
-          v-if="editable || Number(step) === Number(value)"
+          v-if="Number(step) === Number(value)"
           :actions="actions"
           :overflow-count="actionButtonListOverflowCount"
           small
@@ -156,5 +159,8 @@
         display: none !important;
       }
     }
+  }
+  .v-stepper__content {
+    padding-left: 15px;
   }
 </style>

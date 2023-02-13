@@ -39,7 +39,7 @@
         &--active {
           background-color: rgba(34, 34, 34, 0.1);
           .v-stepper__label {
-            color: rgba(34, 34, 34, 0.8);
+            color: var(--v-primary-base);
           }
         }
         &--complete {
@@ -59,7 +59,7 @@
         &--active {
           background-color: rgba(255, 255, 255, 0.5);
           .v-stepper__label {
-            color: rgba(255, 255, 255, 1);
+            color: var(--v-primary-base);
           }
         }
         &--complete {
@@ -88,23 +88,17 @@
   }
   ::v-deep{
     .v-stepper__step {
-      align-items: start;
+      padding-top: 0;
+      padding-bottom: 0;
       .v-stepper__label {
         font-weight: 700;
         text-shadow: none !important;
-        position: relative;
-        &::before{
-          content: '';
-          position: absolute;
-          top: 14px;
-          bottom: 2px;
-          left: -15px;
-        }
       }
       .v-stepper__step__step {
         color: transparent;
         position: relative;
         margin-top: 2px;
+        margin-right: 9px;
         &:before{
           content: '\25cf';
           color: var(--v-basic-base);
