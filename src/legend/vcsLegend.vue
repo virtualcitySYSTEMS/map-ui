@@ -1,5 +1,5 @@
 <template>
-  <v-card
+  <v-sheet
     class="overflow-y-auto"
   >
     <v-expansion-panels
@@ -7,47 +7,48 @@
       multiple
       v-if="entries.length > 0"
       v-model="panels"
+      class="rounded-0"
     >
       <v-expansion-panel
         v-for="(entry,i) in entries"
         :key="i"
-        class="pa-0 ma-0"
+        class="px-2"
         @change="entry.open = !entry.open"
       >
         <v-expansion-panel-header hide-actions>
-          {{ $t(entry.title) }}
           <template #default="{ open }">
-            <div class="d-flex">
-              <v-icon :class="{ 'v-treeview-node__toggle': !open }">
-                mdi-chevron-down
-              </v-icon>
-              <VcsTreeviewLeaf class="w-full" :item="entry" />
+            <div class="d-flex justify-space-between">
+              <div class="d-flex align-center">
+                <v-icon class="mr-1" :class="{ 'rotate': !open }">
+                  mdi-chevron-down
+                </v-icon>
+                {{ $t(entry.title) }}
+              </div>
+              <VcsActionButtonList small :actions="entry.actions" />
             </div>
           </template>
         </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="pl-6 pb-2">
           <v-list dense>
             <div v-for="(item, idx) in entry.legend" :key="idx">
-              <div v-if="item.type === LegendType.Image" class="mx-2">
+              <div v-if="item.type === LegendType.Image">
                 <img
                   :src="$t(item.src)"
-                  max-width="287"
-                  max-height="auto"
-                  class="mx-2 legend-image"
+                  class="legend-image"
                   :title="item.tooltip"
                 >
               </div>
-              <div v-else-if="item.type === LegendType.Iframe" class="mx-2">
+              <div v-else-if="item.type === LegendType.Iframe">
                 <iframe
                   :id="`legendIframe${idx}`"
                   :src="$t(item.src)"
                   scrolling="no"
-                  width="287"
+                  style="width: 100%; height: 100%;"
                   frameBorder="0"
                   @load="setIframeHeight(`legendIframe${idx}`)"
                 />
               </div>
-              <style-legend-item v-else :item="item" class="mx-2" />
+              <style-legend-item v-else :item="item" />
             </div>
           </v-list>
         </v-expansion-panel-content>
@@ -56,13 +57,12 @@
     <v-sheet v-else class="ma-2">
       {{ $t('legend.empty') }}
     </v-sheet>
-  </v-card>
+  </v-sheet>
 </template>
 
 <script>
 
   import {
-    VCard,
     VExpansionPanels,
     VExpansionPanel,
     VExpansionPanelHeader,
@@ -74,7 +74,7 @@
   import { computed } from 'vue';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './styleLegendItem.vue';
-  import VcsTreeviewLeaf from '../components/lists/VcsTreeviewLeaf.vue';
+  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
 
   /**
    * @description A component rendering configured legend information for active layers.
@@ -84,9 +84,8 @@
   export default {
     name: 'VcsLegend',
     components: {
-      VcsTreeviewLeaf,
+      VcsActionButtonList,
       StyleLegendItem,
-      VCard,
       VExpansionPanels,
       VExpansionPanel,
       VExpansionPanelHeader,
@@ -130,17 +129,11 @@
 </script>
 
 <style lang="scss" scoped>
-.v-list-item--dense {
-  height: 32px;
-}
-::v-deep {
-  .treeview-label {
-    max-width: 189px;
-  }
-}
 .legend-image {
-  max-width: 287px;
+  max-width: 100%;
   height: auto;
-  width: auto;
+}
+.rotate {
+  transform: rotate(-90deg);
 }
 </style>

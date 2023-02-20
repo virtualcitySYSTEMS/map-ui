@@ -6,7 +6,11 @@
         :key="idx"
         :class="{ 'w-full': item.colNr === 1, 'w-half': item.colNr !== 1 }"
       >
-        <v-list-item dense>
+        <v-list-item
+          dense
+          class="pa-0"
+          :class="determineInnerPadding(idx)"
+        >
           <v-list-item-icon class="pr-2">
             <v-img
               v-if="row.type === StyleRowType.Icon || row.type === StyleRowType.Shape"
@@ -126,7 +130,24 @@
         required: true,
       },
     },
-    setup() {
+    setup(props) {
+      /**
+       * Determines if a list item has padding right or left, so it has correct spacing to second row.
+       * @param {number} index The index of the list item. Starts with 0.
+       * @returns {string} Vuetify padding helper.
+       */
+      function determineInnerPadding(index) {
+        // check if there are more than two columns
+        if (props.item.colNr !== 1) {
+          // check if even number. If so, it is located in the left column and needs padding on the right.
+          if (index % 2 === 0) {
+            return 'pr-2';
+          } else {
+            return 'pl-2';
+          }
+        }
+        return '';
+      }
       return {
         StyleRowType,
         getImageSrcFromShape,
@@ -136,6 +157,7 @@
           }
           return null;
         },
+        determineInnerPadding,
       };
     },
   };
