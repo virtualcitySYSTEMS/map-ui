@@ -8,6 +8,7 @@ const configMain = defineConfig({
   resolve: {
     alias: {
       '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
+      '@cesium/engine': '@vcmap-cesium/engine',
       vue: 'vue/dist/vue.esm.js',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
