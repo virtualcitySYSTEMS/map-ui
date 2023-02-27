@@ -126,6 +126,7 @@ export function createFeatureInfoSession(app) {
 
 /**
  * @param {VcsUiApp} app
+ * @returns {function():void}
  */
 function setupFeatureInfoTool(app) {
   /** @type {FeatureInfoSession|null} */
@@ -153,6 +154,9 @@ function setupFeatureInfoTool(app) {
     },
   };
 
+  if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
+    action.callback();
+  }
   app.toolboxManager.add(
     {
       id: 'featureInfo',
@@ -161,6 +165,13 @@ function setupFeatureInfoTool(app) {
     },
     vcsAppSymbol,
   );
+
+  return () => {
+    if (session) {
+      session.stop();
+    }
+    app.toolboxManager.remove('featureInfo');
+  };
 }
 
 /**
@@ -266,7 +277,11 @@ class FeatureInfo {
           this.clear();
         }
       }),
-      this._app.contextAdded.addEventListener(() => this.clear()),
+      this._app.contextAdded.addEventListener(() => {
+        this.clear();
+        this._destroyFeatureInfoTool();
+        this._destroyFeatureInfoTool = setupFeatureInfoTool(this._app);
+      }),
       this._app.contextRemoved.addEventListener(() => this.clear()),
     ];
     /**
@@ -275,8 +290,11 @@ class FeatureInfo {
      * @private
      */
     this._scratchLayer = null;
-
-    setupFeatureInfoTool(this._app);
+    /**
+     * @type {function():void}
+     * @private
+     */
+    this._destroyFeatureInfoTool = setupFeatureInfoTool(this._app);
   }
 
   /**
@@ -458,7 +476,7 @@ class FeatureInfo {
   destroy() {
     this._clearInternal();
     this._featureChanged.destroy();
-    this._app.toolboxManager.remove('featureInfo');
+    this._destroyFeatureInfoTool();
     if (this._scratchLayer) {
       this._app.layers.remove(this._scratchLayer);
       this._scratchLayer.destroy();

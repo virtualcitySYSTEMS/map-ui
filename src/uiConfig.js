@@ -13,6 +13,7 @@ import { ref } from 'vue';
  * @property {string} [mobileLogo] - an alternative logo to display in mobile view
  * @property {string} [appTitle] - an optional title to display next to the company logo
  * @property {string} [primaryColor] - an optional primary color to use in all themes
+ * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
  */
 
 /**

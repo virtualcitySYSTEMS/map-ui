@@ -29,7 +29,7 @@ import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 import { defaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
 import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.js';
-import { featureInfoViewSymbol } from '../../../src/featureInfo/featureInfo.js';
+import FeatureInfo, { featureInfoViewSymbol } from '../../../src/featureInfo/featureInfo.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
 describe('FeatureInfo', () => {
@@ -780,17 +780,33 @@ describe('FeatureInfo', () => {
   describe('feature info tool button', () => {
     describe('setting up the toolbox', () => {
       let app;
+      let action;
 
-      beforeAll(() => {
+      beforeEach(() => {
         app = new VcsUiApp();
+        ({ action } = app.toolboxManager.get('featureInfo'));
       });
 
-      afterAll(() => {
+      afterEach(() => {
         app.destroy();
       });
 
       it('should add the featureInfo tool button', () => {
         expect(app.toolboxManager.has('featureInfo')).to.be.true;
+      });
+
+      it('should activate the tool on startup, if startingFeatureInfo is not false', () => {
+        expect(app.uiConfig.getByKey('startingFeatureInfo')).to.be.undefined;
+        expect(action).to.have.property('active', true);
+      });
+
+      it('should NOT activate the tool on startup, if startingFeatureInfo is false', () => {
+        app.uiConfig.add({ name: 'startingFeatureInfo', value: false });
+        expect(app.uiConfig.getByKey('startingFeatureInfo')?.value).to.be.false;
+        app.featureInfo.destroy();
+        const featureInfo = new FeatureInfo(app);
+        expect(action).to.have.property('active', false);
+        featureInfo.destroy();
       });
     });
 
@@ -801,7 +817,6 @@ describe('FeatureInfo', () => {
       beforeAll(() => {
         app = new VcsUiApp();
         ({ action } = app.toolboxManager.get('featureInfo'));
-        action.callback();
       });
 
       afterAll(() => {
@@ -826,7 +841,6 @@ describe('FeatureInfo', () => {
         app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
 
         ({ action } = app.toolboxManager.get('featureInfo'));
-        action.callback();
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),
         });
@@ -864,7 +878,6 @@ describe('FeatureInfo', () => {
         app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
 
         ({ action } = app.toolboxManager.get('featureInfo'));
-        action.callback();
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),
         });

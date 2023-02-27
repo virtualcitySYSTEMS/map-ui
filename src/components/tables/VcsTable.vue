@@ -19,14 +19,24 @@
     >
       <!-- eslint-disable-next-line -->
       <template #item.key="{ item }">
-        <td class="vcs-table px-2 overflow-max-width" :title="$t(item.key)">
+        <td
+          :title="$t(item.key)"
+          class="vcs-table px-2 overflow-max-width"
+          :style="{'max-width': headers[0].width }"
+        >
           {{ $t(item.key) }}
         </td>
       </template>
       <!-- eslint-disable-next-line -->
       <template #item.value="{ item }">
-        <td class="vcs-table px-2 overflow-max-width" :title="$t(item.value)">
-          {{ $t(item.value) }}
+        <td
+          :title="$t(item.value)"
+          class="vcs-table px-2 overflow-max-width"
+          :style="{'max-width': headers[1].width }"
+        >
+          <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
+            {{ $t(item.value) }}
+          </span>
         </td>
       </template>
       <template #footer>
@@ -35,7 +45,6 @@
           <v-row
             dense
             no-gutters
-            align="center"
             justify="center"
           >
             <v-menu offset-y dense>
@@ -291,15 +300,23 @@
 </script>
 
 <style lang="scss" scoped>
+.single-line {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.multi-line {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  height: auto;
+  max-height: 96px;
+}
 ::v-deep{
   .vcs-table {
     td {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      &.overflow-max-width{
-        max-width: 160px;
-      }
       &.v-data-table__mobile-row{
         justify-content: left;
         height: 27px;
