@@ -1,6 +1,6 @@
 <template>
-  <v-list>
-    <v-list-item v-for="({key, title, attributions}) in entries" :key="key">
+  <v-list class="px-1">
+    <v-list-item v-for="({key, title, attributions}) in entries" :key="key" class="px-1">
       <v-list-item-content>
         <v-list-item-title>{{ $t(title) }}</v-list-item-title>
         <v-list-item-subtitle
