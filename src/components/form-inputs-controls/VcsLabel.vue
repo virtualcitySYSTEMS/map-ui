@@ -1,8 +1,17 @@
 <template>
-  <label :htmlFor="htmlFor" class="vcs-label" :class="{'vcs-label-dense': dense}">
+  <label
+    :htmlFor="htmlFor"
+    class="vcs-label"
+    :class="{
+      'vcs-label-dense': dense,
+      'px-1': dense,
+      'px-2': !dense,
+    }"
+  >
     <slot />
   </label>
 </template>
+
 <style lang="scss" scoped>
 @import "../../styles/vcsGrid.scss";
 @import "../../styles/vcsFont";

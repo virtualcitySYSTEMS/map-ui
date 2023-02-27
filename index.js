@@ -120,6 +120,7 @@ export { default as Icons } from './src/components/icons/+all.js';
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
 export { default as VcsTooltip } from './src/components/notification/VcsTooltip.vue';
+export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';
 
 export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 

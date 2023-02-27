@@ -3,17 +3,19 @@
     :tooltip-position="tooltipPosition"
     :tooltip="errorMessage"
     color="error"
+    :max-width="200"
   >
     <template #activator="{ on, attrs }">
       <span v-on="on">
         <v-radio-group
+          ref="radioGroup"
           hide-details
           class="w-full vcs-radio-group"
-          :dense="$attrs.dense!==false"
+          :dense="isDense"
           :ripple="false"
+          light
           v-bind="{...$attrs, ...attrs}"
           v-on="{...$listeners, ...on}"
-          @update:error="setError"
         >
           <v-radio
             v-for="(item, idx) in items"
@@ -23,10 +25,10 @@
             :color="item.color ?? 'secondary'"
             :value="item.value ?? item"
             :disabled="item.disabled ?? false"
-            :class="$attrs.dense!==false ? 'vcs-radio-dense' : 'vcs-radio'"
+            :class="isDense ? 'vcs-radio-dense' : 'vcs-radio'"
           >
             <template #label>
-              <VcsLabel :html-for="`radio-${idx}`" :dense="!!$attrs.dense">
+              <VcsLabel :html-for="`radio-${idx}`" :dense="isDense">
                 {{ $t(item.label ?? item) }}
               </VcsLabel>
             </template>
@@ -57,12 +59,16 @@
       .v-input--selection-controls__input{
         margin: 0;
       }
+      label.v-label.error--text {
+        animation: none;
+      }
     }
   }
 }
 .vcs-radio {
   height: 40px;
   align-items: center;
+  padding-left: 4px;
 }
 .vcs-radio-dense {
   height: 32px;
@@ -70,10 +76,11 @@
 }
 </style>
 <script>
+  import { computed, ref } from 'vue';
   import { VRadio, VRadioGroup } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsLabel from './VcsLabel.vue';
-  import validate from '../notification/validation.js';
+  import { useErrorSync } from './composables.js';
 
   /**
    * @typedef {Object} VcsRadioItem
@@ -111,16 +118,17 @@
         required: true,
       },
     },
-    data() {
+    setup(props, { attrs }) {
+      const radioGroup = ref();
+
+      const errorMessage = useErrorSync(radioGroup);
+      const isDense = computed(() => attrs.dense !== false);
+
       return {
-        errorMessage: '',
+        radioGroup,
+        errorMessage,
+        isDense,
       };
-    },
-    methods: {
-      setError() {
-        const rules = [...this.$attrs.rules].concat(this.$attrs.errorMessages);
-        this.errorMessage = validate(rules, this.$attrs.value).join('\n');
-      },
     },
     model: {
       event: 'change',

@@ -10,15 +10,18 @@
       v-model.number="step"
     >
       <template #content>
-        <div>
-          This is the content of the first step.
-        </div>
-        <VcsButton
-          @click="increaseStep()"
-          class="my-2"
-        >
-          Next
-        </VcsButton>
+        <!-- px-2 because does not contain input components -->
+        <v-container class="px-2 py-0">
+          <div>
+            This is the content of the first step.
+          </div>
+          <VcsButton
+            @click="increaseStep()"
+            class="my-2"
+          >
+            Next
+          </VcsButton>
+        </v-container>
       </template>
     </VcsWizardStep>
     <VcsWizardStep
@@ -38,20 +41,21 @@
         </ol>
       </template>
       <template #content>
-        <v-form ref="form" v-model="formValid" lazy-validation>
-          <VcsSelect
-            :items="['this', 'is', 'a', 'test']"
-            v-model="selection"
-            label="Select"
-            class="my-2"
-            :rules="[v => (!!v && v !== 'this') || 'Please select a valid option.']"
-          />
-          <VcsButton
-            @click="decreaseStep()"
-          >
-            Back
-          </VcsButton>
-        </v-form>
+        <v-container class="px-1 py-0">
+          <v-form ref="form" v-model="formValid" lazy-validation>
+            <VcsSelect
+              :items="['this', 'is', 'a', 'test']"
+              v-model="selection"
+              placeholder="Select"
+              :rules="[v => (!!v && v !== 'this') || 'Please select a valid option.']"
+            />
+            <VcsButton
+              @click="decreaseStep()"
+            >
+              Back
+            </VcsButton>
+          </v-form>
+        </v-container>
       </template>
     </VcsWizardStep>
     <VcsWizardStep
@@ -74,7 +78,7 @@
 
 <script>
   import { VcsWizard, VcsWizardStep, VcsButton, VcsSelect } from '@vcmap/ui';
-  import { VForm } from 'vuetify/lib';
+  import { VForm, VContainer } from 'vuetify/lib';
   import { ref } from 'vue';
 
   /** Component to showcase the VcsWizard and VcsWizardStep. */
@@ -86,6 +90,7 @@
       VcsButton,
       VcsSelect,
       VForm,
+      VContainer,
     },
     setup() {
       const step = ref(1);

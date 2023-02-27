@@ -1,27 +1,36 @@
 <template>
-  <div
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
-  >
+  <div>
     <VcsTooltip
       :tooltip-position="tooltipPosition"
       :tooltip="errorMessage"
       color="error"
+      :max-width="200"
     >
       <template #activator="{ on, attrs }">
         <span v-on="on">
           <v-select
+            ref="selectField"
             append-icon="mdi-chevron-down"
             hide-details
             flat
-            :outlined="isOutlined"
+            outlined
             :dense="isDense"
             :height="isDense ? 24 : 32"
             :item-text="item => $t(getText(item))"
-            :class="$attrs.color === 'primary' ? 'primary--select' : ''"
+            class="py-1 primary--placeholder"
+            :class="{
+              'remove-outline': !isOutlined,
+              'input--dense': isDense,
+              'input--not-dense': !isDense,
+              'outline--current': focus,
+              'outline--error': !!errorMessage,
+            }"
             v-bind="{...$attrs, ...attrs}"
             v-on="{...$listeners, ...on}"
-            @update:error="setError"
+            @focus="focus = true;"
+            @blur="focus = false;"
+            @mouseover="hover = true"
+            @mouseleave="hover = false"
           >
             <template #selection="{ item, index }">
               <span v-if="index === 0" class="text-truncate">
@@ -38,39 +47,85 @@
   </div>
 </template>
 <style lang="scss" scoped>
- .v-text-field {
-   padding: 0;
-   margin: 0;
- }
-
- .vcs-select-hover{
-   color: var(--v-primary-base) !important;
- }
-
- .primary--select {
-   ::v-deep {
-     .v-select__selection,
-     .v-select__selection--comma,
-     .v-select.v-text-field input {
-       color: var(--v-primary-base);
-     }
-   }
- }
- .v-select{
-   &.v-select--is-multi{
-     ::v-deep {
-       .v-select__selections{
+  .primary--placeholder {
+    ::v-deep {
+      input::placeholder {
+        color: var(--v-primary-base);
+        font-style: italic;
+        opacity: 1;
+      }
+    }
+  }
+  .v-select{
+    &.v-select--is-multi{
+      ::v-deep {
+        .v-select__selections{
           flex-wrap: nowrap;
-       }
-     }
-   }
- }
+        }
+      }
+    }
+  }
+  .remove-outline {
+    ::v-deep {
+      fieldset {
+        border-width: 0px;
+        border-radius: 0px;
+      }
+    }
+  }
+  .outline--current {
+    ::v-deep {
+      .v-input__slot fieldset, .v-input__slot .v-select__slot {
+        border-color: currentColor;
+        transition: border-color 0.5s ease;
+      }
+    }
+  }
+  .outline--error {
+    ::v-deep {
+      .v-input__slot fieldset, .v-input__slot .v-select__slot {
+        border-color: var(--v-error-base);
+      }
+    }
+  }
+  .input--dense {
+    ::v-deep {
+      .v-input__slot {
+        padding: 0 4px !important;
+      }
+      fieldset {
+        padding-left: 2px;
+      }
+    }
+  }
+  .input--not-dense {
+    ::v-deep {
+      .v-input__slot {
+        padding: 0 8px !important;
+      }
+      fieldset {
+        padding-left: 6px;
+      }
+    }
+  }
+  .v-input {
+    ::v-deep {
+      fieldset {
+        border-radius: 2px;
+        border-color: var(--v-secondary-lighten5);
+      }
+      .v-select__slot {
+        border-bottom: 1px solid var(--v-secondary-lighten5);
+      }
+    }
+  }
 </style>
 <script>
 
   import { VSelect } from 'vuetify/lib';
+  import { computed, ref } from 'vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
-  import validate from '../notification/validation.js';
+  import { useErrorSync } from './composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-select/ |vuetify select}.
@@ -100,33 +155,36 @@
         default: undefined,
       },
     },
-    data() {
-      return {
-        hover: false,
-        errorMessage: '',
-      };
-    },
-    computed: {
-      isDense() {
-        return this.$attrs.dense !== undefined && this.$attrs.dense !== false;
-      },
-      isOutlined() {
-        return (this.hover || this.errorMessage.length > 0) &&
-          !(this.$attrs.disabled || this.$attrs.disabled === '');
-      },
-    },
-    methods: {
-      setError() {
-        const rules = [...this.$attrs.rules].concat(this.$attrs.errorMessages);
-        this.errorMessage = validate(rules, this.$attrs.value).join('\n');
-      },
-      getText(item) {
-        if (this.itemText) {
-          return this.itemText(item);
+    setup(props, { attrs }) {
+      const hover = ref(false);
+      const focus = ref(false);
+      // $ref to v-select element
+      const selectField = ref();
+
+      const errorMessage = useErrorSync(selectField);
+
+      const isDense = computed(() => attrs.dense !== false);
+      const isOutlined = computed(() => {
+        return (hover.value || focus.value || !!errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+      });
+
+      function getText(item) {
+        if (props.itemText) {
+          return props.itemText(item);
         } else {
           return item?.text ?? item;
         }
-      },
+      }
+
+      return {
+        hover,
+        focus,
+        errorMessage,
+        isDense,
+        isOutlined,
+        getText,
+        selectField,
+      };
     },
   };
 </script>

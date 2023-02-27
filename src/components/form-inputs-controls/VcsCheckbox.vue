@@ -3,24 +3,26 @@
     :tooltip-position="tooltipPosition"
     :tooltip="errorMessage"
     color="error"
+    :max-width="200"
   >
     <template #activator="{ on, attrs }">
       <span v-on="on">
         <v-checkbox
+          ref="checkbox"
           :input-value="$attrs.value"
           on-icon="$vcsCheckboxChecked"
           off-icon="$vcsCheckbox"
           class="vcs-checkbox"
+          :class="{'pl-1': !isDense }"
           hide-details
           indeterminate-icon="$vcsCheckboxIndeterminate"
-          :dense="$attrs.dense!==false"
+          :dense="isDense"
           :ripple="false"
           v-bind="{...$attrs, ...attrs}"
           v-on="{...$listeners, ...on}"
-          @update:error="setError"
         >
           <template #label>
-            <VcsLabel :html-for="$attrs.id" :dense="!!$attrs.dense">
+            <VcsLabel :html-for="$attrs.id" :dense="isDense">
               <slot name="label" />
               <span v-if="!$slots.label">{{ $t($attrs.label) }}</span>
             </VcsLabel>
@@ -31,28 +33,33 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
-.vcs-checkbox {
-  ::v-deep {
-    label.v-label,
-    .v-icon.v-icon{
-      color: inherit;
-    }
-    .v-input--selection-controls__input {
-      margin: 0;
-      padding: 0;
+  .vcs-checkbox {
+    ::v-deep {
+      label.v-label,
+      .v-icon.v-icon{
+        color: inherit;
+      }
+      .v-input--selection-controls__input {
+        margin: 0;
+        padding: 0;
+      }
+      label.v-label.error--text {
+        animation: none;
+      }
     }
   }
-}
-.v-input--selection-controls {
-  margin: 0;
-  padding: 0;
-}
+  .v-input--selection-controls {
+    margin: 0;
+    padding: 0;
+  }
+
 </style>
 <script>
+  import { computed, ref } from 'vue';
   import { VCheckbox } from 'vuetify/lib';
   import VcsLabel from './VcsLabel.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
-  import validate from '../notification/validation.js';
+  import { useErrorSync } from './composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
@@ -77,16 +84,17 @@
         default: 'right',
       },
     },
-    data() {
+    setup(props, { attrs }) {
+      const checkbox = ref();
+
+      const errorMessage = useErrorSync(checkbox);
+      const isDense = computed(() => attrs.dense !== false);
+
       return {
-        errorMessage: '',
+        checkbox,
+        errorMessage,
+        isDense,
       };
-    },
-    methods: {
-      setError() {
-        const rules = [...this.$attrs.rules].concat(this.$attrs.errorMessages);
-        this.errorMessage = validate(rules, this.$attrs.value).join('\n');
-      },
     },
     model: {
       event: 'change',

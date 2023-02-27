@@ -6,26 +6,36 @@
     <VcsTooltip
       :tooltip-position="tooltipPosition"
       :tooltip="errorMessage"
-      :value="(hover || focus) && isError"
       color="error"
       :max-width="200"
     >
-      <template #activator="{ attrs }">
+      <template #activator="{ attrs, on }">
         <component
           :is="inputComponent"
           ref="textFieldRef"
           hide-details
+          :hide-spin-buttons="!showSpinButtons"
           :dense="isDense"
           :clearable="isClearable"
-          @focus="focus = true"
-          @blur="focus = neverBlurred = false"
-          @input="firstInput = true"
-          :outlined="isOutlined"
+          @focus="focus = true;"
+          @blur="focus = false;"
+          @input="$emit('input', value)"
+          @keydown="handleEsc"
+          :value="visibleValue"
+          :type="type"
+          outlined
           v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners}"
+          v-on="{...$listeners, ...on}"
           :height="isDense ? 24 : 32"
-          class="ma-0 pb-1 pt-1 primary--placeholder align-center"
-          :class="$attrs.color === 'primary' ? 'primary--textfield' : ''"
+          class="py-1 primary--placeholder align-center"
+          :class="{
+            'remove-outline': !isOutlined,
+            'outline--current': focus,
+            'outline--error': !!errorMessage,
+            'input--dense': isDense,
+            'input--not-dense': !isDense,
+            'file-border-bottom': inputComponent === 'VFileInput' && !focus && !hover && !errorMessage,
+          }"
         />
       </template>
     </VcsTooltip>
@@ -33,27 +43,102 @@
 </template>
 
 <style lang="scss" scoped>
-.primary--placeholder {
-  ::v-deep {
-    input::placeholder {
-      color: var(--v-primary-base);
-      font-style: italic;
-      opacity: 1;
+  .primary--placeholder {
+    ::v-deep {
+      input::placeholder {
+        color: var(--v-primary-base);
+        font-style: italic;
+        opacity: 1;
+      }
     }
   }
-}
-.primary--textfield {
-  ::v-deep {
-    input {
-      color: var(--v-primary-base);
+  .remove-outline {
+    ::v-deep {
+      fieldset {
+        border-width: 0px;
+        border-radius: 0px;
+      }
     }
   }
-}
+  .outline--current {
+    ::v-deep {
+      .v-input__slot fieldset {
+        border-color: currentColor;
+        transition: border-color 0.5s ease;
+      }
+      .v-text-field__slot input {
+        border-color: transparent;
+      }
+    }
+  }
+  .outline--error {
+    ::v-deep {
+      .v-input__slot fieldset, .v-text-field__slot input {
+        border-color: var(--v-error-base);
+      }
+    }
+  }
+  .input--dense {
+    ::v-deep {
+      .v-text-field__slot input {
+        height: 24px;
+      }
+      .v-input__slot {
+        padding: 0 4px !important;
+      }
+      fieldset {
+        padding-left: 2px;
+      }
+    }
+  }
+  .input--not-dense {
+    ::v-deep {
+      .v-input__slot {
+        padding: 0 8px !important;
+      }
+      fieldset {
+        padding-left: 6px;
+      }
+    }
+  }
+  .file-border-bottom {
+    ::v-deep {
+      .v-file-input__text {
+        border-bottom: 1px solid var(--v-secondary-lighten5);
+        border-radius: 0px;
+      }
+    }
+  }
+  .v-input {
+    ::v-deep {
+      input {
+        height: 32px;
+        border-bottom: 1px solid var(--v-secondary-lighten5);
+        border-radius: 0px;
+      }
+      input::selection {
+        background-color: var(--v-primary-base);
+      }
+      .v-text-field__prefix {
+        padding-right: 8px;
+        color: var(--v-secondary-base)
+      }
+      .v-text-field__suffix {
+        padding-left: 4px;
+      }
+      fieldset {
+        border-radius: 2px;
+        border-color: var(--v-secondary-lighten5);
+      }
+    }
+  }
 </style>
 
 <script>
+  import { computed, onMounted, ref, watch } from 'vue';
   import { VTextField, VFileInput } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
+  import { useErrorSync } from './composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
@@ -63,12 +148,15 @@
    * Provides VcsTooltip to
    * - show error messages on focus
    * - show tooltips, if supplied, when hovered over append-icon
+   * When clicking esc key, previous input is restored.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * @vue-prop {string}                                 unit - Unit for number input fields. Is displayed behind the number.
+   * @vue-prop {boolean}                                showSpinButtons - If true, spin buttons are displayed in number input fields. Overrides Vuetify hide-spin-buttons.
    * @vue-computed {boolean}                            isClearable - Whether textfield is isClearable. Makes sure icon is only shown on focus, hover or error.
    * @vue-computed {boolean}                            isDense - Whether size of textfield is dense.
-   * @vue-computed {boolean}                            isError - Whether errorBucket is not empty and textfield was focused at least once.
    * @vue-computed {boolean}                            isOutlined - Textfield is outlined on either hover, focus or error, if not disabled.
-   * @vue-computed {Array<string>}                      joinedErrorBucket - errorBucket + errorMessages of child v-text-field.
+   * @vue-computed {string | number}                    visibleValue - Returns the number input as string with unit, in case unit is provided.
+   * @vue-computed {string}                             type - The input field type. If number input field is blurred and unit is provided, type changes to text field, so unit can be displayed in input field.
    */
   export default {
     name: 'VcsTextField',
@@ -82,60 +170,85 @@
         type: String,
         default: 'right',
       },
+      unit: {
+        type: String,
+        default: '',
+      },
+      showSpinButtons: {
+        type: Boolean,
+        default: false,
+      },
     },
-    data() {
-      return {
-        hover: false,
-        focus: false,
-        firstInput: false,
-        neverBlurred: true,
-        isMounted: false,
-        errorMessage: '',
-      };
-    },
-    computed: {
-      inputComponent() {
-        if (this.$attrs.type === 'file') {
+    setup(props, { attrs }) {
+      const hover = ref(false);
+      const focus = ref(false);
+      const prevValue = ref();
+      const textFieldRef = ref();
+
+      onMounted(() => {
+        // fix for autofocus
+        focus.value = attrs.autofocus != null;
+        // store initial value for esc function.
+        prevValue.value = attrs.value;
+      });
+
+      const errorMessage = useErrorSync(textFieldRef);
+
+      const inputComponent = computed(() => {
+        if (attrs.type === 'file') {
           return 'VFileInput';
         }
         return 'VTextField';
-      },
-      isClearable() {
-        return (this.$attrs.clearable !== undefined && this.$attrs.clearable !== false) &&
-          (this.hover || this.focus || this.isError);
-      },
-      isDense() {
-        return this.$attrs.dense !== undefined && this.$attrs.dense !== false;
-      },
-      isError() {
-        return this.joinedErrorBucket.length > 0 && (this.firstInput || !this.neverBlurred);
-      },
-      isOutlined() {
-        return (this.$attrs.outlined || this.hover || this.focus || this.isError) && !(this.$attrs.disabled || this.$attrs.disabled === '');
-      },
-      joinedErrorBucket() {
-        if (!this.isMounted) {
-          return false;
+      });
+      const isClearable = computed(() => {
+        return (attrs.clearable !== undefined && attrs.clearable !== false) &&
+          (hover.value || focus.value || !!errorMessage.value);
+      });
+      const isDense = computed(() => attrs.dense !== false);
+      const isOutlined = computed(() => {
+        return (hover.value || focus.value || !!errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+      });
+      const visibleValue = computed(() => {
+        if (attrs.type === 'number' && attrs.value && props.unit && !focus.value && !hover.value) {
+          return `${attrs.value} ${props.unit}`;
         } else {
-          return this.$refs.textFieldRef.errorBucket.concat(this.$refs.textFieldRef.errorMessages).join('\n');
+          return attrs.value;
         }
-      },
-    },
-    watch: {
-      joinedErrorBucket(newValue, oldValue) {
-        if (oldValue && !newValue) {
-          setTimeout(() => {
-            this.errorMessage = newValue;
-          }, 200);
+      });
+      const type = computed(() => {
+        if (attrs.type === 'number' && !focus.value) {
+          return 'text';
         } else {
-          this.errorMessage = newValue;
+          return attrs.type || 'text';
         }
-      },
-    },
-    mounted() {
-      this.isMounted = true;
-      // fix for autofocus
-      this.focus = this.$attrs.autofocus != null;
+      });
+
+      function handleEsc(event) {
+        if (event.key === 'Escape') {
+          textFieldRef.value.blur();
+          this.$emit('input', prevValue.value);
+        }
+      }
+
+      watch(focus, (isFocused) => {
+        if (isFocused) {
+          prevValue.value = attrs.value;
+        }
+      });
+
+      return {
+        hover,
+        focus,
+        inputComponent,
+        isClearable,
+        isDense,
+        isOutlined,
+        visibleValue,
+        type,
+        handleEsc,
+        textFieldRef,
+        errorMessage,
+      };
     },
   };
 </script>

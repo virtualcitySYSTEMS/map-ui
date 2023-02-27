@@ -4,6 +4,8 @@
 - Adds new `VcsWizard` component as stylized wrapper of Vuetify VStepper
 - `WindowManager` refactoring and better window handling.
 - Added `background` flag to `VcsAction`
+- Refactoring of the input components design and functionality.
+- Fixed the error display behaviour of input components in combination with a form element.
 
 # 5.0.0-rc.15
 - Update Openlayers to version 7.0.0

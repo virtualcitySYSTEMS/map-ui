@@ -74,7 +74,7 @@ export default function (config) {
   /**
    * @type {FormInputsExampleState}
    */
-  const pluginState = reactive({
+  const pluginState = {
     selected: pluginConfig.selectOptions.value[0],
     selectedMultiple: [],
     conditionalInput: '',
@@ -84,7 +84,10 @@ export default function (config) {
     email: '',
     prependedInput: '',
     files: [],
-  });
+  };
+
+  /** @type {FormInputsExampleState} */
+  const defaultState = JSON.parse(JSON.stringify(pluginState));
 
 
   /**
@@ -149,7 +152,8 @@ export default function (config) {
     get version() { return packageJSON.version; },
     get vcMapVersion() { return packageJSON.vcMapVersion; },
     config: pluginConfig,
-    state: pluginState,
+    state: reactive(pluginState),
+    resetState: () => Object.assign(pluginState, JSON.parse(JSON.stringify(defaultState))),
     getSerializedState,
     setSerializedState,
     onVcsAppMounted(app) {

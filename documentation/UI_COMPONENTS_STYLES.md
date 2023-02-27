@@ -24,3 +24,37 @@ The style is defined on three levels following this order:
 3. scoped [css](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS) within single components
 
 New components should follow this order of style definitions.
+
+## Best practises
+When using input components:
+- Wrap input components always in a container (v-containter, div, etc.) with the following classes:
+   - px-1 (4px left and right)
+   - py-0
+- When using v-rows, they should have the following classes:
+   - no-gutters
+- If adding non input components, like a p-tag, make sure to add 4px padding at left and right side. If there are no input components at all, use px-2 for the container.
+
+Example:
+``` html
+<template>
+   <v-container class="px-1 py-0">
+      <v-row no-gutters>
+         <v-col>
+            <VcsLabel html-for="textInput">Label</VcsLabel>
+         </v-col>
+         <v-col>
+            <VcsTextField
+               id="textInput"
+            />
+         </v-col>
+      </v-row>
+      <v-row no-gutters>
+         <v-col>
+            <div class="px-1">
+               <p>This is not an input element</p>
+            </div>
+         </v-col>
+      </v-row>
+   </v-container>
+</template>
+```

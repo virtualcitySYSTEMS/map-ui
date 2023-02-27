@@ -12,17 +12,12 @@
         </div>
       </article>
     </slot>
-    <v-alert
-      :value="showHelp"
-      dense
-      text
-      color="secondary"
-      class="ma-0"
+    <VcsHelp
+      :text="helpText"
+      :show="showHelp"
     >
-      <slot name="help">
-        <span>{{ $t(helpText) }}</span>
-      </slot>
-    </v-alert>
+      <slot name="help" />
+    </VcsHelp>
     <article class="section-content">
       <slot />
     </article>
@@ -32,8 +27,8 @@
 
 <script>
   import { computed, reactive } from 'vue';
-  import { VAlert } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+  import VcsHelp from '../notification/VcsHelp.vue';
 
   /**
    * @description
@@ -51,7 +46,7 @@
     name: 'VcsFormSection',
     components: {
       VcsActionButtonList,
-      VAlert,
+      VcsHelp,
     },
     props: {
       heading: {
@@ -98,3 +93,9 @@
     },
   };
 </script>
+
+<style scoped>
+  .v-alert--text:before{
+    background-color: transparent;
+  }
+</style>

@@ -5,7 +5,7 @@
       :editable="editable"
       :complete="complete"
       :rules="rules"
-      class="pr-5"
+      class="pr-6"
     >
       <div class="d-flex justify-space-between align-center">
         <slot name="header" />
@@ -25,20 +25,15 @@
     </v-stepper-step>
     <v-stepper-content
       v-if="$slots.content"
-      class="pr-5"
+      class="pr-4"
       :step="step"
     >
-      <v-alert
-        :value="showHelp"
-        dense
-        text
-        color="grey"
-        class="mt-2 mb-0 font-weight-regular rounded-0 px-0 pt-0"
+      <VcsHelp
+        :text="helpText"
+        :show="showHelp"
       >
-        <slot name="help">
-          <span>{{ $t(helpText) }}</span>
-        </slot>
-      </v-alert>
+        <slot name="help" />
+      </VcsHelp>
       <slot name="content" />
     </v-stepper-content>
   </div>
@@ -46,8 +41,9 @@
 
 <script>
   import { computed, reactive, watch } from 'vue';
-  import { VStepperStep, VStepperContent, VAlert } from 'vuetify/lib';
+  import { VStepperStep, VStepperContent } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+  import VcsHelp from '../notification/VcsHelp.vue';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper-step/ |vuetify VStepperStep} and
@@ -71,7 +67,7 @@
       VStepperStep,
       VStepperContent,
       VcsActionButtonList,
-      VAlert,
+      VcsHelp,
     },
     props: {
       step: {
@@ -161,6 +157,6 @@
     }
   }
   .v-stepper__content {
-    padding-left: 15px;
+    padding-left: 2px !important;
   }
 </style>

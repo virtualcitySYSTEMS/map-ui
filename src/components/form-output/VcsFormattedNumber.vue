@@ -1,5 +1,5 @@
 <template>
-  <span class="vcs-formatted-number" :class="{'vcs-formatted-number-dense': dense}">
+  <span class="vcs-formatted-number px-1" :class="{'vcs-formatted-number-dense': dense}">
     {{ formatted }}
     <span v-if="unit === SpecialUnits.SQM">
       m<sup>2</sup>

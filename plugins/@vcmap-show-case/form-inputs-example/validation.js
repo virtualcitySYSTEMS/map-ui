@@ -13,7 +13,7 @@ export function isValidText(value) {
  * @returns {boolean|string}
  */
 export function conditionalTest(value, condition) {
-  if (condition === 'Option A') {
+  if (condition === 'B') {
     return value === 'test' || `input ${value} must be "test"`;
   } else {
     return true;

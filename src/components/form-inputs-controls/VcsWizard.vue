@@ -98,7 +98,7 @@
         color: transparent;
         position: relative;
         margin-top: 2px;
-        margin-right: 9px;
+        margin-right: 5px;
         &:before{
           content: '\25cf';
           color: var(--v-basic-base);

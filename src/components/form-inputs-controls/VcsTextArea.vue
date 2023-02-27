@@ -1,30 +1,33 @@
 <template>
-  <div
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
-  >
+  <div>
     <VcsTooltip
       :tooltip-position="tooltipPosition"
       :tooltip="errorMessage"
-      :value="(hover || focus) && isError"
       color="error"
       :max-width="200"
     >
-      <template #activator="{ attrs }">
+      <template #activator="{ on, attrs }">
         <v-textarea
           ref="textAreaRef"
           hide-details
           :dense="isDense"
           :clearable="isClearable"
           @focus="focus = true"
-          @blur="focus = neverBlurred = false"
-          @input="firstInput = true"
-          :outlined="isOutlined"
+          @blur="focus = false"
+          @mouseover="hover = true"
+          @mouseleave="hover = false"
+          outlined
           v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners}"
+          v-on="{...$listeners, ...on}"
           :rows="$attrs.rows || (isDense ? 3 : 5)"
-          class="ma-0 pb-1 pt-1 primary--placeholder"
-          :class="$attrs.color === 'primary' ? 'primary--textarea' : ''"
+          class="ma-0 py-1 primary--placeholder"
+          :class="{
+            'remove-outline': !isOutlined,
+            'outline--current': focus,
+            'outline--error': errorMessage,
+            'input--dense': isDense,
+            'input--not-dense': !isDense,
+          }"
         />
       </template>
     </VcsTooltip>
@@ -41,18 +44,77 @@
     }
   }
 }
-.primary--textarea {
-  ::v-deep {
-    textarea {
-      color: var(--v-primary-base);
+.remove-outline {
+    ::v-deep {
+      fieldset {
+        border-width: 0px;
+        border-radius: 0px;
+      }
     }
   }
-}
+  .outline--current {
+    ::v-deep {
+      .v-input__slot fieldset {
+        border-color: currentColor;
+        transition: border-color 0.5s ease;
+      }
+      .v-text-field__slot textarea {
+        border-color: transparent;
+      }
+    }
+  }
+  .outline--error {
+    ::v-deep {
+      .v-input__slot fieldset, .v-text-field__slot textarea {
+        border-color: var(--v-error-base);
+      }
+    }
+  }
+  .input--dense {
+    ::v-deep {
+      .v-input__slot {
+        padding: 0 4px !important;
+      }
+      fieldset {
+        padding-left: 2px;
+      }
+    }
+  }
+  .input--not-dense {
+    ::v-deep {
+      .v-input__slot {
+        padding: 0 8px !important;
+      }
+      fieldset {
+        padding-left: 6px;
+      }
+    }
+  }
+  .v-input {
+    ::v-deep {
+      textarea {
+        border-bottom: 1px solid var(--v-secondary-lighten5);
+        border-radius: 0px;
+      }
+      textarea::selection {
+        background-color: var(--v-primary-base);
+      }
+      fieldset {
+        border-radius: 2px;
+        border-color: var(--v-secondary-lighten5);
+      }
+      .v-text-field__slot {
+        margin-right: 0px !important;
+      }
+    }
+  }
 </style>
 
 <script>
+  import { computed, ref } from 'vue';
   import { VTextarea } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
+  import { useErrorSync } from './composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
@@ -82,51 +144,30 @@
         default: 'right',
       },
     },
-    data() {
+    setup(props, { attrs }) {
+      const hover = ref(false);
+      const focus = ref(false);
+      const textAreaRef = ref();
+
+      const errorMessage = useErrorSync(textAreaRef);
+
+      const isClearable = computed(() => {
+        return (attrs.clearable !== undefined && attrs.clearable !== false) &&
+          (hover.value || focus.value || errorMessage.value);
+      });
+      const isDense = computed(() => attrs.dense !== false);
+      const isOutlined = computed(() => {
+        return (hover.value || focus.value || errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+      });
       return {
-        hover: false,
-        focus: false,
-        firstInput: false,
-        neverBlurred: true,
-        isMounted: false,
-        errorMessage: '',
+        hover,
+        focus,
+        textAreaRef,
+        errorMessage,
+        isClearable,
+        isDense,
+        isOutlined,
       };
-    },
-    computed: {
-      isClearable() {
-        return (this.$attrs.clearable !== undefined && this.$attrs.clearable !== false) &&
-          (this.hover || this.focus || this.isError);
-      },
-      isDense() {
-        return this.$attrs.dense !== undefined && this.$attrs.dense !== false;
-      },
-      isError() {
-        return this.joinedErrorBucket.length > 0 && (this.firstInput || !this.neverBlurred);
-      },
-      isOutlined() {
-        return (this.hover || this.focus || this.isError) && !(this.$attrs.disabled || this.$attrs.disabled === '');
-      },
-      joinedErrorBucket() {
-        if (!this.isMounted) {
-          return false;
-        } else {
-          return this.$refs.textAreaRef.errorBucket.concat(this.$refs.textAreaRef.errorMessages).join('\n');
-        }
-      },
-    },
-    watch: {
-      joinedErrorBucket(newValue, oldValue) {
-        if (oldValue && !newValue) {
-          setTimeout(() => {
-            this.errorMessage = newValue;
-          }, 200);
-        } else {
-          this.errorMessage = newValue;
-        }
-      },
-    },
-    mounted() {
-      this.isMounted = true;
     },
   };
 </script>
