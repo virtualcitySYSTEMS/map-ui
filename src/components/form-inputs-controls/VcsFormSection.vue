@@ -1,7 +1,7 @@
 <template>
   <section class="vcs-form-section">
     <slot name="header" :heading="heading" :actions="actions">
-      <article class="pa-2 accent">
+      <article class="pa-2 base lighten-3">
         <div class="form-section-header d-flex justify-space-between align-center">
           <strong class="caption">{{ $t(heading) }}</strong>
           <VcsActionButtonList
@@ -15,6 +15,7 @@
     <VcsHelp
       :text="helpText"
       :show="showHelp"
+      class="base lighten-4"
     >
       <slot name="help" />
     </VcsHelp>

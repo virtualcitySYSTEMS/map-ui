@@ -33,18 +33,30 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
+@import '../../styles/shades.scss';
   .vcs-checkbox {
     ::v-deep {
-      label.v-label,
-      .v-icon.v-icon{
-        color: inherit;
-      }
       .v-input--selection-controls__input {
         margin: 0;
         padding: 0;
       }
       label.v-label.error--text {
         animation: none;
+      }
+      .v-icon,
+      .v-label {
+        &.theme--light {
+          color: map-get($shades, 'black') !important;
+          &.error--text{
+            color: var(--v-error-base) !important;
+          }
+        }
+        &.theme--dark {
+          color: map-get($shades, 'white') !important;
+          &.error--text{
+            color: var(--v-error-base) !important;
+          }
+        }
       }
     }
   }

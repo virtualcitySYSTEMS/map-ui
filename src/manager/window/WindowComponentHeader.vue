@@ -4,11 +4,11 @@
       <v-icon
         v-if="windowState.headerIcon"
         class="mr-2"
-        :class="{ 'text--primary': isOnTop }"
+        :class="{ 'primary--text': isOnTop }"
         v-text="windowState.headerIcon"
       />
       <h3
-        class="font-size-14 d-inline-block user-select-none font-weight-bold"
+        class="d-inline-block user-select-none font-weight-bold"
         :class="{ 'text--primary': isOnTop }"
       >
         {{ $t(windowState.headerTitle) }}

@@ -47,8 +47,8 @@
 .remove-outline {
     ::v-deep {
       fieldset {
-        border-width: 0px;
-        border-radius: 0px;
+        border-width: 0;
+        border-radius: 0;
       }
     }
   }
@@ -93,18 +93,18 @@
   .v-input {
     ::v-deep {
       textarea {
-        border-bottom: 1px solid var(--v-secondary-lighten5);
-        border-radius: 0px;
+        border-bottom: 1px solid var(--v-base-base);
+        border-radius: 0;
       }
       textarea::selection {
         background-color: var(--v-primary-base);
       }
       fieldset {
         border-radius: 2px;
-        border-color: var(--v-secondary-lighten5);
+        border-color: var(--v-base-base);
       }
       .v-text-field__slot {
-        margin-right: 0px !important;
+        margin-right: 0 !important;
       }
     }
   }

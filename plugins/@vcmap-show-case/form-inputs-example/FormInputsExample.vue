@@ -291,7 +291,7 @@
       heading="VcsFormSection Mixed Inputs"
     >
       <template #header="{ heading }">
-        <article class="pa-2 secondary text--primary">
+        <article class="pa-2 text--primary">
           {{ heading }}
           <h3>This is a custom header using header slot</h3>
         </article>

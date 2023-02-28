@@ -13,7 +13,6 @@
           class="w-full vcs-radio-group"
           :dense="isDense"
           :ripple="false"
-          light
           v-bind="{...$attrs, ...attrs}"
           v-on="{...$listeners, ...on}"
         >
@@ -22,9 +21,9 @@
             :id="`radio-${idx}`"
             :key="`radio-${idx}`"
             :ripple="false"
-            :color="item.color ?? 'secondary'"
             :value="item.value ?? item"
             :disabled="item.disabled ?? false"
+            class="ma-0"
             :class="isDense ? 'vcs-radio-dense' : 'vcs-radio'"
           >
             <template #label>
@@ -40,11 +39,12 @@
 </template>
 <style lang="scss" scoped>
 @import "../../styles/vcsFont";
+@import '../../styles/shades.scss';
 .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child) {
   margin-bottom: 0;
 }
-.v-input{
-  &.vcs-radio-group{
+.v-input {
+  &.vcs-radio-group {
     ::v-deep {
       margin-top: 0;
       padding-top: 0;
@@ -52,11 +52,23 @@
       .v-icon.v-icon{
         font-size: $base-font-size;
         color: inherit;
+        &.theme--light{
+          color: map-get($shades, 'black') !important;
+          &.error--text{
+            color: var(--v-error-base) !important;
+          }
+        }
+        &.theme--dark{
+          color: map-get($shades, 'white') !important;
+          &.error--text{
+            color: var(--v-error-base) !important;
+          }
+        }
       }
-      .v-radio:not(:last-child):not(:only-child){
+      .v-radio:not(:last-child):not(:only-child) {
         margin-bottom: 0;
       }
-      .v-input--selection-controls__input{
+      .v-input--selection-controls__input {
         margin: 0;
       }
       label.v-label.error--text {

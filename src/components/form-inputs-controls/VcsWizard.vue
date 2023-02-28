@@ -32,10 +32,14 @@
   };
 </script>
 <style scoped lang="scss">
+@import '../../styles/shades.scss';
 .v-stepper{
   &.theme--light {
     ::v-deep{
       .v-stepper__step {
+        .v-stepper__label {
+          color: map-get($shades, 'black');
+        }
         &--active {
           background-color: rgba(34, 34, 34, 0.1);
           .v-stepper__label {
@@ -44,8 +48,11 @@
         }
         &--complete {
           .v-stepper__label {
-            color: rgba(0, 0, 0, 0.38);
+            color: map-get($shades, 'black');
           }
+        }
+        .v-stepper__step__step::before {
+          color: map-get($shades, 'white');
         }
       }
       .step-border:not(:last-child) > .v-stepper__content {
@@ -56,6 +63,9 @@
   &.theme--dark {
     ::v-deep{
       .v-stepper__step {
+        .v-stepper__label {
+          color: map-get($shades, 'white');
+        }
         &--active {
           background-color: rgba(255, 255, 255, 0.5);
           .v-stepper__label {
@@ -64,12 +74,15 @@
         }
         &--complete {
           .v-stepper__label {
-            color: rgba(255, 255, 255, 0.5);
+            color: map-get($shades, 'white');
           }
         }
         .v-stepper__step__step {
           .v-icon {
             color: transparent;
+          }
+          &:before{
+            color: map-get($shades, 'black');
           }
         }
         &.v-stepper__step--error{
@@ -101,7 +114,6 @@
         margin-right: 5px;
         &:before{
           content: '\25cf';
-          color: var(--v-basic-base);
           font-size: 18px;
           position: absolute;
           top: -9px;

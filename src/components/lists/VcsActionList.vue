@@ -12,7 +12,6 @@
       <template #activator="{ on, attrs }">
         <v-list-item
           :class="action.active ? 'primary--text' : ''"
-          color="primary"
           @click="action.callback($event)"
           v-bind="{...$attrs, ...attrs}"
           v-on="{...$listeners, ...on}"

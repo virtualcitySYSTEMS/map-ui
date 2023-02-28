@@ -33,7 +33,7 @@
           :width="16"
           large
         >
-          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" color="accent" class="text--darken-3" />
+          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
         </VcsButton>
       </template>
 
@@ -41,7 +41,6 @@
         class="vcs-toolbox-2 toolbar__secondary mx-auto v-sheet marginToTop justify-center"
         :height="40"
         width="fit-content"
-        color="basic"
         dense
       >
         <v-toolbar-items class="w-full">
@@ -62,6 +61,8 @@
   </div>
 </template>
 <style lang="scss">
+@import '../../styles/shades.scss';
+
 .vcs-toolbox-action-selected > .v-btn.vcs-button--large {
   max-width: 40px;
 }
@@ -71,9 +72,14 @@
 }
 
 .vcs-toolbox-action-select-button--active {
-  //border: 2px solid var(--v-basic-base);
-  border-radius: 5px;
-  background: var(--v-basic-base);
+  //border: 2px solid var(--v-shades-base);
+  border-radius: 4px;
+}
+.theme--light .vcs-toolbox-action-select-button--active {
+  background: map-get($shades, 'white');
+}
+.theme--dark .vcs-toolbox-action-select-button--active {
+  background: map-get($shades, 'black');
 }
 
 .vcs-toolbox-2 {

@@ -8,7 +8,7 @@
           tile
           size="40"
         >
-          <v-icon size="20" color="secondary">
+          <v-icon size="20">
             $vcsHomePoint
           </v-icon>
         </v-list-item-avatar>

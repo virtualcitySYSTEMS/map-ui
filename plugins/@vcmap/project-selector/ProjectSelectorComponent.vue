@@ -7,7 +7,7 @@
     >
       <v-card
         class="ma-1"
-        :color="project.active ? 'accent' : undefined"
+        :color="project.active ? 'base lighten-3' : undefined"
         @click="selectProject(project)"
         hover
         outlined

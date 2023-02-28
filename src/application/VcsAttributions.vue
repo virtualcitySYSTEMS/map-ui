@@ -11,7 +11,6 @@
           <a
             :href="attribution.url"
             target="_blank"
-            class="text--secondary"
           >
             {{ $t(attribution.provider) }} {{ attribution.year }}
           </a>

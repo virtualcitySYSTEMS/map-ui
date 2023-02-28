@@ -27,7 +27,7 @@ import { Color } from '@vcmap-cesium/engine';
 
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
-import { defaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
+import { getDefaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
 import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.js';
 import FeatureInfo, { featureInfoViewSymbol } from '../../../src/featureInfo/featureInfo.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
@@ -133,7 +133,7 @@ describe('FeatureInfo', () => {
     beforeAll(() => {
       app = new VcsUiApp();
       app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
-      fillColor = Color.fromCssColorString(app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor)
+      fillColor = Color.fromCssColorString(app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor())
         .withAlpha(0.8);
     });
 

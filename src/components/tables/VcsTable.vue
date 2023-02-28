@@ -15,13 +15,13 @@
       :search="search"
       :custom-filter="handleFilter"
       hide-default-footer
-      class="vcs-table"
+      class="vcs-table rounded-0"
     >
       <!-- eslint-disable-next-line -->
       <template #item.key="{ item }">
         <td
           :title="$t(item.key)"
-          class="vcs-table px-2 overflow-max-width"
+          class="vcs-table px-2 overflow-max-width rounded-0"
           :style="{'max-width': headers[0].width }"
         >
           {{ $t(item.key) }}
@@ -31,7 +31,7 @@
       <template #item.value="{ item }">
         <td
           :title="$t(item.value)"
-          class="vcs-table px-2 overflow-max-width"
+          class="vcs-table px-2 overflow-max-width rounded-0"
           :style="{'max-width': headers[1].width }"
         >
           <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
@@ -40,8 +40,8 @@
         </td>
       </template>
       <template #footer>
-        <v-divider />
-        <v-container class="pa-2 vcs-pagination-bar accent" v-if="items.length > itemsPerPageRef">
+        <v-divider class="base" />
+        <v-container class="pa-2 vcs-pagination-bar base lighten-3" v-if="items.length > itemsPerPageRef">
           <v-row
             dense
             no-gutters
@@ -300,6 +300,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/shades.scss';
+
 .single-line {
   display: block;
   white-space: nowrap;
@@ -314,40 +316,49 @@
   height: auto;
   max-height: 96px;
 }
-::v-deep{
+
+::v-deep {
   .vcs-table {
     td {
-      &.v-data-table__mobile-row{
+      &.v-data-table__mobile-row {
         justify-content: left;
         height: 27px;
         min-height: auto;
       }
     }
-    th.sortable{
+    th.sortable {
       padding: 0 8px;
-      span{
+      span {
         vertical-align: middle;
         padding: 0 4px 0 0;
       }
     }
   }
-  .v-data-table__mobile-row__cell{
-    td.vcs-table.overflow-max-width{
+  .v-data-table__mobile-row__cell {
+    td.vcs-table.overflow-max-width {
       max-width: 260px;
     }
   }
-  .v-btn.vcs-button--small{
+  .v-btn.vcs-button--small {
     height: 100% !important;
     display: block;
   }
 }
-.vcs-pagination-bar{
-  .vcs-button-wrap{
+.vcs-pagination-bar {
+  .vcs-button-wrap {
     height: 25px;
-    border: 1px solid lightgrey;
+    border: 1px solid var(--v-base-base);
     padding: 0 4px;
-    background-color: var(--v-basic-base);
     border-radius: 4px;
+    &:hover {
+      border: 1px solid var(--v-primary-base);
+    }
   }
+}
+.theme--light .vcs-pagination-bar .vcs-button-wrap {
+  background-color: map-get($shades, 'white');
+}
+.theme--dark .vcs-pagination-bar.vcs-button-wrap {
+  background-color: map-get($shades, 'black');
 }
 </style>

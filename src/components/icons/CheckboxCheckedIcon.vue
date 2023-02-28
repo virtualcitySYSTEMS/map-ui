@@ -1,16 +1,9 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg id="icon-checkbox-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-    <rect
-      id="bg"
-      width="12"
-      height="12"
-      rx="1"
-      transform="translate(2 2)"
-      fill="rgba(34,34,34,0.8)"
-    />
-    <path id="hook" d="M13.525,6.363a.776.776,0,0,0-1.1.171h0L8.68,11.741,6.3,9.789a.778.778,0,0,0-1.108.15.825.825,0,0,0,.121,1.114l3.021,2.478a.784.784,0,0,0,1.12-.141l.009-.012L13.695,7.5a.824.824,0,0,0-.17-1.132Z" transform="translate(-1.364 -1.831)" fill="#fff" />
-    <rect id="size" width="16" height="16" fill="none" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g id="icon-checkbox-check">
+      <path fill="currentColor" d="m13,2H3c-.55,0-1,.45-1,1v10c0,.55.45,1,1,1h10c.55,0,1-.45,1-1V3c0-.55-.45-1-1-1Zm-.67,3.67l-4.23,5.88h0s-.01.03-.02.03c-.27.34-.77.39-1.1.12l-3.02-2.48c-.33-.28-.38-.77-.12-1.11,0,0,.01-.01.02-.02.27-.34.76-.4,1.09-.13l2.38,1.95,3.74-5.21s0-.01.01-.02c.26-.34.74-.41,1.09-.15h0c.35.27.43.78.17,1.14Z"/>
+    </g>
   </svg>
 </template>

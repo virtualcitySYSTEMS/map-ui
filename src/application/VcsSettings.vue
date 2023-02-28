@@ -5,16 +5,6 @@
       align="center"
     >
       <v-col>
-        <VcsLabel>
-          {{ $t('settings.languageTitle') }}
-        </VcsLabel>
-      </v-col>
-    </v-row>
-    <v-row
-      no-gutters
-      align="center"
-    >
-      <v-col>
         <VcsLabel html-for="settingsLanguageSelect">
           {{ $t('settings.languageSelector') }}
         </VcsLabel>
@@ -24,6 +14,27 @@
           id="settingsLanguageSelect"
           :items="languages"
           v-model="language"
+        />
+      </v-col>
+    </v-row>
+    <v-row
+      no-gutters
+      align="center"
+    >
+      <v-col>
+        <VcsLabel html-for="settingsLanguageSelect">
+          {{ $t('settings.theme.title') }}
+        </VcsLabel>
+      </v-col>
+      <v-col>
+        <VcsRadio
+          dense
+          :items="[
+            { label: 'settings.theme.light', value: false },
+            { label: 'settings.theme.dark', value: true },
+          ]"
+          v-model="$vuetify.theme.dark"
+          row
         />
       </v-col>
     </v-row>
@@ -37,11 +48,13 @@
   import { VCol, VContainer, VRow } from 'vuetify/lib';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
+  import VcsRadio from '../components/form-inputs-controls/VcsRadio.vue';
 
   export default {
     name: 'VcsSettings',
     components: {
       VcsSelect,
+      VcsRadio,
       VcsLabel,
       VContainer,
       VRow,

@@ -69,7 +69,7 @@
     getCurrentInstance,
     onMounted,
     onUnmounted,
-    provide,
+    provide, watch,
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
@@ -350,6 +350,7 @@
    * This helper sets up a listener to sync the theming relevant keys from the {@see UiConfigObject}
    * with a given vuetify instance. Use this helper, if you do not use the VcsApp component and wish to evaluate
    * the theming keys. Returns a function to stop syncing.
+   * Also adds a watcher to vuetify theme, which triggers themeChanged event on the VcsUiApp.
    * @param {VcsUiApp} app
    * @param {import("vuetify").Framework} vuetify
    * @returns {function():void} - call to stop syncing
@@ -358,21 +359,28 @@
     const listeners = [
       app.uiConfig.added.addEventListener((item) => {
         if (item.name === 'primaryColor') {
-          vuetify.theme.themes.dark.primary = item.value;
-          vuetify.theme.themes.light.primary = item.value;
+          vuetify.theme.themes.dark.primary = item.value?.dark || item.value;
+          vuetify.theme.themes.light.primary = item.value?.light || item.value;
+          app.themeChanged.raiseEvent();
         }
       }),
       app.uiConfig.removed.addEventListener((item) => {
         if (item.name === 'primaryColor') {
-          vuetify.theme.themes.dark.primary = defaultPrimaryColor;
-          vuetify.theme.themes.light.primary = defaultPrimaryColor;
+          vuetify.theme.themes.dark.primary = defaultPrimaryColor.dark;
+          vuetify.theme.themes.light.primary = defaultPrimaryColor.light;
+          app.themeChanged.raiseEvent();
         }
       }),
     ];
+    const stopWatching = watch(
+      () => vuetify.theme.dark,
+      () => app.themeChanged.raiseEvent(),
+    );
 
     return () => {
       listeners.forEach((cb) => { cb(); });
       listeners.splice(0);
+      stopWatching();
     };
   }
 

@@ -1,6 +1,42 @@
+@import 'shades.scss';
+
 /** Global **/
 $font-size: 14px;
 $font-size-root: 14px;
+
+$material-dark: (
+        'background': map-get($shades, 'black'),
+        'cards': map-get($shades, 'black'),
+        'text-fields': (
+                'outlined': var(--v-base-base),
+                'outlined-hover': var(--v-base-base),
+        ),
+        'input-bottom-line': var(--v-base-base),
+        'dividers': var(--v-base-lighten2),
+        'toolbar': rgba(map-get($shades, 'black'), 0.8),
+        'table': (
+                'hover': var(--v-base-lighten4),
+        ),
+);
+$material-light: (
+        'text-fields': (
+                'outlined': var(--v-base-base),
+                'outlined-hover': var(--v-base-base),
+        ),
+        'input-bottom-line': var(--v-base-base),
+        'text': (
+                'primary': map-get($shades, 'black'),
+                'disabled': rgba(map-get($shades, 'black'), 0.3),
+        ),
+        'buttons': (
+                'disabled': rgba(map-get($shades, 'black'), 0.5),
+        ),
+        'dividers': var(--v-base-lighten2),
+        'toolbar': rgba(map-get($shades, 'white'), 0.8),
+        'table': (
+                'hover': var(--v-base-lighten4),
+        ),
+);
 
 // input font and icon
 $input-font-size: $font-size;
@@ -20,14 +56,14 @@ $text-field-solo-dense-control-min-height: 22px; //38px !default;
 $text-field-outlined-fieldset-border: 1px solid currentColor; // 2px solid currentColor !default;
 
 // dense non outlined
-$text-field-dense-padding: 2px 0px 1px; //4px 0 2px !default;
+$text-field-dense-padding: 2px 0 1px; //4px 0 2px !default;
 
 // clear icon non dense
 $text-field-enclosed-prepend-append-margin-top: 9px;
 
 // tooltip icon in append slot
 $text-field-outlined-append-prepend-outer-margin-top: 4px; // 18px !default;
-$text-field-append-prepend-margin: 0px; // 4px !default;
+$text-field-append-prepend-margin: 0; // 4px !default;
 $text-field-outlined-prepend-append-margin-top: 4px; // 8px !default;
 
 // label position for outlined Label dense and non-dense
@@ -39,8 +75,8 @@ $text-field-label-top: 2px; // 6px !default;
 $text-field-label-active-transform: translateY(-14px) scale(.75); //translateY(-18px) scale(.75) !default;
 
 /** VcsTextarea **/
-$textarea-box-enclosed-single-outlined-margin-top: 0px; // 10px !default;
-$textarea-dense-box-enclosed-single-outlined-margin-top: 0px; // 6px !default;
+$textarea-box-enclosed-single-outlined-margin-top: 0; // 10px !default;
+$textarea-dense-box-enclosed-single-outlined-margin-top: 0; // 6px !default;
 
 /** VcsCheckbox **/
 $icon-size: 20px; // 24px !default;

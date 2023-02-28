@@ -6,7 +6,6 @@
       <v-list-item
         v-for="(item, index) in results"
         :key="index"
-        color="secondary"
         class="px-0"
       >
         <v-list-item-content>

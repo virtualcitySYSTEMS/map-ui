@@ -3,8 +3,7 @@
     :value="show"
     dense
     text
-    color="grey"
-    class="mt-2 mb-0 font-weight-regular rounded-0 px-2 pt-0"
+    class="mb-0 font-weight-regular rounded-0 px-2 pt-2"
   >
     <slot>
       <span>{{ $t(text) }}</span>

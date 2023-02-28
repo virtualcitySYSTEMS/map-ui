@@ -1,14 +1,13 @@
 <template>
-  <span class="attribution-wrap">
+  <span class="d-inline-block text-truncate mr-10 attribution-wrap">
     <span v-for="attribution in mergedAttributions" class="attribution-span" :key="attribution.provider">
       <a
         :href="attribution.url"
         target="_blank"
-        class="text--secondary"
       >{{ $t(attribution.provider) }} <span>{{ attribution.years }}</span></a>
     </span>
     <VcsButton
-      class="d-flex text--secondary"
+      class="d-flex"
       small
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
@@ -20,18 +19,13 @@
 </template>
 
 <style lang="scss" scoped>
-  .attribution-wrap{
-    white-space: nowrap;
-    margin-right: 40px;
-    overflow: hidden;
-    text-overflow: ellipsis;
 
-    .vcs-button-wrap{
-      position: absolute;
-      right: 4px;
-      bottom: 3px;
-    }
+  .attribution-wrap .vcs-button-wrap {
+    position: absolute;
+    right: 4px;
+    bottom: 3px;
   }
+
   a:before {
     content: '\00a9\00a0';
   }
@@ -40,17 +34,17 @@
     &:before {
       content: '\00a0\007c\00a0';
     }
-    &:first-child::before{
+    &:first-child::before {
       content: '';
     }
-    span{
+    span {
       font-size: inherit;
     }
   }
 
 </style>
 
-<script >
+<script>
 
   import { computed } from 'vue';
   import { mergeAttributions } from './attributionsHelper.js';

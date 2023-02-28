@@ -107,6 +107,11 @@ class VcsUiApp extends VcsApp {
   constructor() {
     super();
     /**
+     * An event triggered when the vuetify theme mode changes or the primary color is updated by a new uiConfig entry.
+     * @type {VcsEvent<void>}
+     */
+    this.themeChanged = new VcsEvent();
+    /**
      * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
      * @private
      */

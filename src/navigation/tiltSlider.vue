@@ -10,8 +10,7 @@
         v-bind="attrs"
       >
         <v-slider
-          color="secondary"
-          track-color="accent"
+          track-color="base lighten-3"
           v-model="tilt"
           :max="0"
           :min="-90"
@@ -24,6 +23,7 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
+  @import '../styles/shades.scss';
   .vcs-slider{
     ::v-deep {
       .v-slider {
@@ -40,6 +40,34 @@
         left: -8px;
         &:before{
           background-color: transparent;
+        }
+      }
+    }
+  }
+  .v-application .theme--light.vcs-slider {
+    ::v-deep {
+      .v-slider {
+        .v-slider__track-container{
+          .v-slider__track-fill {
+            background-color: map-get($shades, 'black') !important;
+          }
+        }
+        .v-slider__thumb {
+          background-color: map-get($shades, 'black') !important;
+        }
+      }
+    }
+  }
+  .v-application .theme--dark.vcs-slider {
+    ::v-deep {
+      .v-slider {
+        .v-slider__track-container{
+          .v-slider__track-fill {
+            background-color: map-get($shades, 'white') !important;
+          }
+        }
+        .v-slider__thumb {
+          background-color: map-get($shades, 'white') !important;
         }
       }
     }
@@ -93,7 +121,3 @@
     },
   };
 </script>
-
-<style scoped>
-
-</style>

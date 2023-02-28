@@ -1,6 +1,6 @@
 <template>
   <v-sheet>
-    <v-sheet class="pa-2">
+    <v-sheet class="px-2 d-grid">
       <v-switch
         v-model="selectable"
         label="Selectable"
@@ -286,5 +286,8 @@
 </script>
 
 <style lang="scss" scoped>
-
+.d-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 </style>

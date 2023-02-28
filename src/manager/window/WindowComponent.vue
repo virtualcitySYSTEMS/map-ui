@@ -20,7 +20,6 @@
       class="pa-2"
       :class="{
         'cursor-grab': isDynamic,
-        'grey--text': !isOnTop,
       }"
     >
       <slot name="headerComponent" :props="$attrs" />

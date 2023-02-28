@@ -1,24 +1,7 @@
+<!-- eslint-disable max-len -->
+
 <template>
-  <svg id="icon-checkbox-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-    <rect
-      id="Rectangle_123"
-      data-name="Rectangle 123"
-      width="12"
-      height="12"
-      rx="1"
-      transform="translate(2 2)"
-      fill="rgba(34,34,34,0.8)"
-    />
-    <line
-      id="Line_84"
-      data-name="Line 84"
-      x2="4"
-      transform="translate(6 8)"
-      fill="none"
-      stroke="#fff"
-      stroke-linecap="round"
-      stroke-width="2"
-    />
-    <rect id="size" width="16" height="16" fill="none" />
+  <svg id="icon-checkbox-half" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <path fill="currentColor" d="m13,2H3c-.55,0-1,.45-1,1v10c0,.55.45,1,1,1h10c.55,0,1-.45,1-1V3c0-.55-.45-1-1-1Zm-3,7h-4c-.55,0-1-.45-1-1s.45-1,1-1h4c.55,0,1,.45,1,1s-.45,1-1,1Z" />
   </svg>
 </template>

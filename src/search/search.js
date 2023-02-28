@@ -13,7 +13,7 @@ import { check } from '@vcsuite/check';
 import { Icon } from 'ol/style.js';
 import { getLogger } from '@vcsuite/logger';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+import { getDefaultPrimaryColor, getColorByKey } from '../vuePlugins/vuetify.js';
 import { getViewpointFromFeature } from '../actions/actionHelper.js';
 
 /**
@@ -70,39 +70,29 @@ function setupSearchResultLayer(app) {
   app.layers.add(resultLayer);
 
   const style = new VectorStyleItem({
-    image: getPointResultIcon(defaultPrimaryColor),
+    image: getPointResultIcon(getDefaultPrimaryColor()),
     fill: {
       color: 'rgba(237, 237, 237, 0.1)',
     },
     stroke: {
-      color: defaultPrimaryColor,
+      color: getDefaultPrimaryColor(),
       width: 5,
     },
   });
   resultLayer.setStyle(style);
 
-  function setResultColor(color) {
+  function setResultColor() {
+    const color = getColorByKey('primary');
     style.stroke?.setColor(color);
     style.image = new Icon(getPointResultIcon(color));
     resultLayer.forceRedraw();
   }
 
-  const listeners = [
-    app.uiConfig.added.addEventListener((item) => {
-      if (item.name === 'primaryColor') {
-        setResultColor(item.value);
-      }
-    }),
-    app.uiConfig.removed.addEventListener((item) => {
-      if (item.name === 'primaryColor') {
-        setResultColor(defaultPrimaryColor);
-      }
-    }),
-  ];
+  const themChangedListener = app.themeChanged.addEventListener(setResultColor);
 
   const destroy = () => {
     resultLayer.destroy();
-    listeners.forEach(cb => cb());
+    themChangedListener();
   };
 
   return { resultLayer, destroy };

@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto mb-1 elevation-0"
+    class="mx-auto elevation-0 rounded-0"
     max-width="400"
     v-if="position"
   >
@@ -34,9 +34,9 @@
 
     <v-divider />
 
-    <v-card class="overflow-y-auto py-2 elevation-0" max-height="250">
+    <v-card class="overflow-y-auto py-2 elevation-0" max-height="250" color="transparent">
       <slot :attrs="{...$props, ...$attrs}">
-        <v-list v-for="(value, name, index) in attributes" :key="`attribute-${index}`">
+        <v-list v-for="(value, name, index) in attributes" :key="`attribute-${index}`" color="transparent">
           <v-list-item class="px-2">
             <v-list-item-content>
               <v-list-item-title>
@@ -150,6 +150,8 @@
 </script>
 
 <style lang="scss">
+@import '../styles/shades.scss';
+
   .balloon {
     z-index: 0 !important;
   }
@@ -166,11 +168,11 @@
     display: block;
     width: 0;
   }
-  .v-sheet.theme--light.balloon:after{
-    border-color: #FFFFFF transparent;
+  .theme--light .balloon:after {
+    border-color: map-get($shades, 'white') transparent;
   }
-  .v-sheet.theme--dark.balloon:after{
-    border-color: #1E1E1E transparent;
+  .theme--dark .balloon:after {
+    border-color: map-get($shades, 'black') transparent;
   }
   .balloon .v-list-item .v-list-item__title,
   .balloon .v-list-item .v-list-item__subtitle {

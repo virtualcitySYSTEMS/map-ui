@@ -14,12 +14,12 @@
           :icon="group.icon"
           :tooltip="group.title"
           :active="open || hasActiveAction"
-          :color="hasActiveAction ? 'primary' : 'basic'"
+          :color="hasActiveAction ? 'primary' : ''"
           v-bind="attrs"
           v-on="on"
           large
         >
-          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" color="accent" class="text--darken-3" />
+          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
         </VcsButton>
       </template>
 
@@ -28,7 +28,6 @@
         class="vcs-toolbox-2 toolbar__secondary mx-auto v-sheet marginToTop"
         :height="40"
         width="fit-content"
-        color="basic"
         dense
       >
         <v-toolbar-items class="w-full">

@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-2 accent position-relative d-flex flex-row justify-space-between align-center">
+  <div class="pa-2 base lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0">
     <slot name="prepend">
       <v-icon
         class="search-icon my-0 ml-1"
@@ -14,7 +14,7 @@
         solo
         dense
         hide-details
-        class="searchbar outlined rounded-xl align-center d-flex justify-center white pa-1 pl-6"
+        class="searchbar outlined rounded-xl align-center d-flex justify-center base lighten-4 pa-1 pl-6"
         :placeholder="$t(placeholder)"
         :value="value"
         v-on="$listeners"
@@ -44,7 +44,7 @@
     border-radius: 9999rem;
     outline-style: none;
     font-size: 12px;
-    box-shadow: 0 0 0 1px #dedede;
+    box-shadow: 0 0 0 1px var(--v-base-lighten2);
 
     &:focus {
       box-shadow: 0 0 0 1px var(--v-primary-base);
@@ -81,7 +81,7 @@
     .v-input.outlined {
       outline-style: none;
       font-size: 12px;
-      box-shadow: 0 0 0 1px #dedede;
+      box-shadow: 0 0 0 1px var(--v-base-lighten2);
 
       &:focus,
       &.v-input--is-focused {

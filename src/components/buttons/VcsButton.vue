@@ -52,7 +52,7 @@
         font-size: 12px;
         border: 1px solid transparent;
         &:hover{
-          color: var(--v-accent-lighten5) !important;
+          color: var(--v-base-lighten5) !important;
           border-color: var(--v-primary-base);
           background-color: var(--v-primary-base);
         }
@@ -87,8 +87,7 @@
 
         &.vcs-button--active-background {
           border: 2px solid var(--v-primary-base);
-          color: var(--v-secondary-base);
-          background-color: var(--v-accent-darken1) !important;
+          background-color: var(--v-base-lighten2) !important;
         }
 
         &.v-btn--disabled {

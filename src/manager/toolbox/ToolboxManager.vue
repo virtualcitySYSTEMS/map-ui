@@ -50,13 +50,6 @@
         padding: 0;
       }
     }
-
-    &.theme--light.v-toolbar.v-sheet {
-      background-color: #ffffffda;
-    }
-    &.theme--dark.v-toolbar.v-sheet {
-      background-color: #000000da;
-    }
   }
 
   .marginToTop {

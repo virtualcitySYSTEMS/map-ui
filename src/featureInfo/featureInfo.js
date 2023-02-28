@@ -33,7 +33,7 @@ import TableFeatureInfoView from './tableFeatureInfoView.js';
 import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
-import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
 /** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
@@ -404,7 +404,7 @@ class FeatureInfo {
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor,
+            this._app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
           ),
         });
         this._clearHighlightingCb = () => this._scratchLayer.featureVisibility.unHighlight([featureId]);
@@ -414,7 +414,7 @@ class FeatureInfo {
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor,
+            this._app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
           ),
         });
         this._clearHighlightingCb = () => layer.featureVisibility.unHighlight([featureId]);

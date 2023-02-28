@@ -3,9 +3,13 @@
 </template>
 
 <style lang="scss" scoped>
-  .v-application .badge {
-    border: 1px solid var(--v-basic-base) !important;
+@import '../../styles/shades.scss';
+  .v-application .theme--light .badge {
+    border: 1px solid map-get($shades, 'white') !important;
   }
+.v-application .theme--dark .badge {
+  border: 1px solid map-get($shades, 'black') !important;
+}
 </style>
 
 

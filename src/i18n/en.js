@@ -65,8 +65,12 @@ const messages = {
   settings: {
     title: 'Settings',
     tooltip: 'Settings',
-    languageTitle: 'Language settings',
     languageSelector: 'Language',
+    theme: {
+      title: 'Color theme',
+      dark: 'Dark',
+      light: 'Light',
+    },
   },
   featureInfo: {
     activateToolTitle: 'Activate Infotool',

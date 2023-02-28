@@ -4,7 +4,6 @@
     dense
     elevation="0"
     :height="$vuetify.breakpoint.xs ? '56px' : '48px'"
-    :color="'var(--v-basic-base)'"
     :bottom="$vuetify.breakpoint.xs ? 'bottom' : undefined"
     width="100%"
   >
@@ -31,7 +30,7 @@
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
-                class="mx-2"
+                class="mx-2 base lighten-2"
                 vertical
                 inset
               />

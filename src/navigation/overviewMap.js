@@ -20,7 +20,7 @@ import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
-import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+import { getDefaultPrimaryColor, getColorByKey } from '../vuePlugins/vuetify.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import VcsMap from '../application/VcsMap.vue';
 
@@ -112,7 +112,7 @@ class OverviewMap {
      */
     this._obliqueSelectedImageLayer = null;
 
-    const primary = app.uiConfig.config.value.primaryColor ?? defaultPrimaryColor;
+    const primary = app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor();
     const fillColor = Color.fromCssColorString('#EDEDED');
 
     /**
@@ -165,7 +165,7 @@ class OverviewMap {
      * @type {import("@vcmap/core").VectorStyleItem}
      */
     this.cameraIconStyle = new VectorStyleItem({
-      image: getCameraIcon(defaultPrimaryColor),
+      image: getCameraIcon(getDefaultPrimaryColor()),
     });
 
     /**
@@ -229,16 +229,7 @@ class OverviewMap {
           this._map.layerCollection.remove(clone);
         }
       }),
-      this._app.uiConfig.added.addEventListener((item) => {
-        if (item?.name === 'primaryColor') {
-          this._updatePrimaryColor(item.value);
-        }
-      }),
-      this._app.uiConfig.removed.addEventListener((item) => {
-        if (item?.name === 'primaryColor') {
-          this._updatePrimaryColor(defaultPrimaryColor);
-        }
-      }),
+      this._app.themeChanged.addEventListener(this._updatePrimaryColor.bind(this)),
     ];
   }
 
@@ -275,10 +266,10 @@ class OverviewMap {
   }
 
   /**
-   * @param {string} color
    * @private
    */
-  _updatePrimaryColor(color) {
+  _updatePrimaryColor() {
+    const color = getColorByKey('primary');
     this.obliqueUnselectedStyle?.stroke?.setColor(color);
     this.obliqueSelectedStyle?.stroke?.setColor(color);
     this._obliqueTileLayer?.forceRedraw?.();

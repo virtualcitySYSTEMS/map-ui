@@ -55,8 +55,8 @@
   .remove-outline {
     ::v-deep {
       fieldset {
-        border-width: 0px;
-        border-radius: 0px;
+        border-width: 0;
+        border-radius: 0;
       }
     }
   }
@@ -104,8 +104,8 @@
   .file-border-bottom {
     ::v-deep {
       .v-file-input__text {
-        border-bottom: 1px solid var(--v-secondary-lighten5);
-        border-radius: 0px;
+        border-bottom: 1px solid var(--v-base-base);
+        border-radius: 0;
       }
     }
   }
@@ -113,22 +113,21 @@
     ::v-deep {
       input {
         height: 32px;
-        border-bottom: 1px solid var(--v-secondary-lighten5);
-        border-radius: 0px;
+        border-bottom: 1px solid var(--v-base-base);
+        border-radius: 0;
       }
       input::selection {
         background-color: var(--v-primary-base);
       }
       .v-text-field__prefix {
         padding-right: 8px;
-        color: var(--v-secondary-base)
       }
       .v-text-field__suffix {
         padding-left: 4px;
       }
       fieldset {
         border-radius: 2px;
-        border-color: var(--v-secondary-lighten5);
+        border-color: var(--v-base-base);
       }
     }
   }

@@ -36,7 +36,7 @@
               <span v-if="index === 0" class="text-truncate">
                 {{ $t(getText(item)) }}
               </span>
-              <span v-if="index === 1" class="text-no-wrap grey--text text-caption">
+              <span v-if="index === 1" class="text-no-wrap text-caption">
                 (+{{ $attrs.value.length - 1 }})
               </span>
             </template>
@@ -68,8 +68,8 @@
   .remove-outline {
     ::v-deep {
       fieldset {
-        border-width: 0px;
-        border-radius: 0px;
+        border-width: 0;
+        border-radius: 0;
       }
     }
   }
@@ -112,10 +112,10 @@
     ::v-deep {
       fieldset {
         border-radius: 2px;
-        border-color: var(--v-secondary-lighten5);
+        border-color: var(--v-base-base);
       }
       .v-select__slot {
-        border-bottom: 1px solid var(--v-secondary-lighten5);
+        border-bottom: 1px solid var(--v-base-base);
       }
     }
   }

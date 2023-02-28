@@ -4,10 +4,11 @@
     v-if="item"
   >
     <div
-      class="position-relative col-8 pa-0 d-flex align-center vcs-treeview-leaf"
+      class="position-relative col-8 pa-0 d-flex align-center"
     >
       <span
         v-if="item.icon"
+        class="d-inline-flex"
       >
         <v-icon
           v-if="isStringIcon"
@@ -24,7 +25,7 @@
           <span
             v-bind="attrs"
             v-on="on"
-            class="vcs-treeview-item-title"
+            class="d-inline-block text-truncate"
           >{{ $t(item.title) }}</span>
         </template>
       </VcsTooltip>
@@ -41,13 +42,6 @@
     />
   </div>
 </template>
-<style lang="css" scoped>
-.vcs-treeview-leaf .vcs-treeview-item-title{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
 
 <script>
   import { computed } from 'vue';

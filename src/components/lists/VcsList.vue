@@ -418,38 +418,19 @@
 
 <style lang="scss" scoped>
   ::v-deep {
-    .v-list{
+    .v-list {
       .v-list-item {
         padding: 4px 8px 4px 16px;
         &:after{
           display: none;
         }
-        &.font-weight-bold{
-          .v-list-item__title{
+        &.font-weight-bold {
+          .v-list-item__title {
             font-weight: 700;
           }
         }
-        &.v-list-item--active{
-          padding: 4px 8px 3px 16px;
-          &.theme--light{
-            background-color: var(--v-primary-base);
-            border-bottom: 1px solid var(--v-primary-darken1);
-          }
-        }
-        &.v-list-item.theme--dark{
-          &.v-list-item--active{
-            background-color: var(--v-primary-darken1);
-            border-bottom: 1px solid var(--v-primary-darken2);
-            &:nth-child(even){
-              background-color: var(--v-primary-darken1);
-            }
-          }
-          &:nth-child(even){
-            background-color: rgba(255, 255, 255, 0.15);
-          }
-        }
         &:nth-child(even) {
-          background-color: var(--v-accent-base);
+          background-color: var(--v-base-lighten4);
         }
         .v-list-item__action {
           .v-icon {
@@ -463,9 +444,9 @@
           .action-btn-wrap {
             flex: 1 1 auto;
           }
-          .v-icon{
+          .v-icon {
             font-size: 16px;
-            .v-icon__component{
+            .v-icon__component {
               width: 16px;
               height: 16px;
             }
