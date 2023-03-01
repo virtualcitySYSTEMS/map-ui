@@ -16,8 +16,10 @@
           </v-icon>
         </v-list-item-avatar>
         <v-list-item-content class="py-2 pr-1 align-self-start">
-          <v-list-item-title class="text-h6">
-            {{ $t(balloonTitle) }}
+          <v-list-item-title>
+            <h3 class="font-weight-bold">
+              {{ $t(balloonTitle) }}
+            </h3>
           </v-list-item-title>
           <v-list-item-subtitle v-if="balloonSubtitle">
             {{ $t(balloonSubtitle) }}
@@ -28,6 +30,7 @@
           small
           icon="mdi-close-thick"
           tooltip="components.close"
+          class="mt-1 mr-1"
         />
       </v-list-item>
     </slot>
