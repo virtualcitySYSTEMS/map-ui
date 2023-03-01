@@ -143,6 +143,17 @@ deployStagingCluster:
     project: vcsuite/devops/manifests
     branch: main
 
+deployNew:
+  <<: *after_build_definition
+  stage: publish
+  only:
+    variables:
+      - $DEPLOY
+  script:
+    - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
+    - cp ./config/www.config.json ./dist/map.config.json
+    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
+
 publish:
   <<: *after_build_definition
   stage: publish

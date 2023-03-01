@@ -590,20 +590,6 @@
       ]
     },
     {
-      "type": "WaterShaderLayer",
-      "name": "WaterLayer",
-      "activeOnStartup": false,
-      "url": "https://www.virtualcitymap.de/datasource-data/lindau_2022_water/berlin_section-T0.000000_tileset.json",
-      "shaderProperties": {
-        "waveScaling": 41,
-        "scaleWithHeight": true,
-        "velocityScaling": 0,
-        "animationCycle": 3,
-        "transparencyFactor": 5,
-        "waterColor": "#288a86"
-      }
-    },
-    {
       "type": "TerrainLayer",
       "name": "GermanyBaseTerrain",
       "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
@@ -1967,6 +1953,6 @@
           "title": "Mesh model"
         }
       ]
-    }    
+    }
   ]
 }
