@@ -21,7 +21,7 @@
       <template #item.key="{ item }">
         <td
           :title="$t(item.key)"
-          class="vcs-table px-2 overflow-max-width rounded-0"
+          class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
           :style="{'max-width': headers[0].width }"
         >
           {{ $t(item.key) }}
@@ -31,7 +31,7 @@
       <template #item.value="{ item }">
         <td
           :title="$t(item.value)"
-          class="vcs-table px-2 overflow-max-width rounded-0"
+          class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
           :style="{'max-width': headers[1].width }"
         >
           <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
@@ -39,9 +39,9 @@
           </span>
         </td>
       </template>
-      <template #footer>
-        <v-divider class="base" />
-        <v-container class="pa-2 vcs-pagination-bar base lighten-3" v-if="items.length > itemsPerPageRef">
+      <template #footer v-if="items.length > itemsPerPageRef">
+        <v-divider />
+        <v-container class="pa-2 vcs-pagination-bar">
           <v-row
             dense
             no-gutters
@@ -317,9 +317,22 @@
   max-height: 96px;
 }
 
+.noBorder {
+  border-bottom: none !important;
+}
+
 ::v-deep {
   .vcs-table {
+    tbody tr {
+      &:hover {
+        background-color: transparent !important;
+      }
+      &:nth-child(odd) {
+        background-color: var(--v-base-lighten4) !important;
+      }
+    }
     td {
+      font-size: 14px !important;
       &.v-data-table__mobile-row {
         justify-content: left;
         height: 27px;
@@ -333,6 +346,16 @@
         padding: 0 4px 0 0;
       }
     }
+    &.theme--light {
+      thead tr th {
+        color: map-get($shades, 'black') !important;
+      }
+    }
+    &.theme--dark {
+      thead tr th {
+        color: map-get($shades, 'white') !important;
+      }
+    }
   }
   .v-data-table__mobile-row__cell {
     td.vcs-table.overflow-max-width {
@@ -344,21 +367,16 @@
     display: block;
   }
 }
+
 .vcs-pagination-bar {
   .vcs-button-wrap {
     height: 25px;
-    border: 1px solid var(--v-base-base);
+    border: 1px solid;
     padding: 0 4px;
     border-radius: 4px;
     &:hover {
       border: 1px solid var(--v-primary-base);
     }
   }
-}
-.theme--light .vcs-pagination-bar .vcs-button-wrap {
-  background-color: map-get($shades, 'white');
-}
-.theme--dark .vcs-pagination-bar.vcs-button-wrap {
-  background-color: map-get($shades, 'black');
 }
 </style>
