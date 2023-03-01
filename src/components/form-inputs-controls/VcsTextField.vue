@@ -19,8 +19,9 @@
           :clearable="isClearable"
           @focus="focus = true;"
           @blur="focus = false;"
-          @input="$emit('input', value)"
-          @keydown="handleEsc"
+          @input="value => $emit('input', value)"
+          @keydown.esc="handleEsc"
+          @keydown="event => $emit('keydown', event)"
           :value="visibleValue"
           :type="type"
           outlined
@@ -134,7 +135,7 @@
 </style>
 
 <script>
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import { VTextField, VFileInput } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
@@ -178,17 +179,14 @@
         default: false,
       },
     },
-    setup(props, { attrs }) {
+    setup(props, { attrs, emit }) {
       const hover = ref(false);
       const focus = ref(false);
-      const prevValue = ref();
       const textFieldRef = ref();
 
       onMounted(() => {
         // fix for autofocus
         focus.value = attrs.autofocus != null;
-        // store initial value for esc function.
-        prevValue.value = attrs.value;
       });
 
       const errorMessage = useErrorSync(textFieldRef);
@@ -211,7 +209,7 @@
         if (attrs.type === 'number' && attrs.value && props.unit && !focus.value && !hover.value) {
           return `${attrs.value} ${props.unit}`;
         } else {
-          return attrs.value;
+          return attrs.value || '';
         }
       });
       const type = computed(() => {
@@ -222,18 +220,10 @@
         }
       });
 
-      function handleEsc(event) {
-        if (event.key === 'Escape') {
-          textFieldRef.value.blur();
-          this.$emit('input', prevValue.value);
-        }
+      function handleEsc() {
+        textFieldRef.value.blur();
+        emit('input', textFieldRef.value.initialValue);
       }
-
-      watch(focus, (isFocused) => {
-        if (isFocused) {
-          prevValue.value = attrs.value;
-        }
-      });
 
       return {
         hover,

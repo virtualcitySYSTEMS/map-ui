@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <span class="d-flex justify-space-between align-center ma-1">
+  <v-sheet>
+    <span class="d-flex justify-space-between align-center mt-1 mx-1">
       <v-icon
         class="mx-2"
       >
@@ -15,13 +15,12 @@
         :placeholder="$t('search.placeholder')"
         v-model.trim="query"
         @keydown.enter="search"
-        @keydown.esc="clear"
         @input="reset"
       />
     </span>
-    <v-divider />
+    <v-divider class="mt-1" v-if="!!results.length" />
     <ResultsComponent :query="query" :results="results" />
-  </v-card>
+  </v-sheet>
 </template>
 
 <style>
@@ -31,7 +30,7 @@
 <script>
   import { inject, onUnmounted, ref } from 'vue';
   import { getLogger } from '@vcsuite/logger';
-  import { VCard, VDivider, VIcon } from 'vuetify/lib';
+  import { VSheet, VDivider, VIcon } from 'vuetify/lib';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './resultsComponent.vue';
 
@@ -39,7 +38,7 @@
     components: {
       ResultsComponent,
       VcsTextField,
-      VCard,
+      VSheet,
       VIcon,
       VDivider,
     },
