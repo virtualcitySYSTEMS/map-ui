@@ -1942,6 +1942,31 @@
     {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
-    }
+    },
+    {
+      "name": "@vcmap/export",
+      "entry": "plugins/@vcmap/export/index.js",
+      "crs": ["EPSG:25832", "EPSG:4326"],
+      "allowCrsTextInput": false,
+      "fmeSecurityToken": "abdec250f1d7f09c6383248d8596bf48ef436d6d",
+      "fmeServerUrl": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmedatadownload/germany_viewer/MultiExporter.fmw",
+      "dataProjection": {
+        "epsg": "25832",
+        "proj4": "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+      },
+      "dataSourceOptionsList": [
+        { "type": "cityModel" },
+        {
+          "type": "oblique",
+          "obliqueCollectionName": "obliques"
+        },
+        {
+          "type": "geojson",
+          "geojsonUrl": "https://download-berlin3d.virtualcitymap.de/datasource-data/HOSTING-Berlin-DLPortal/2020_mesh_index.json",
+          "baseUrl": "https://download-berlin3d.virtualcitymap.de/datasource-data/berlin_mesh_2021",
+          "title": "Mesh model"
+        }
+      ]
+    }    
   ]
 }
