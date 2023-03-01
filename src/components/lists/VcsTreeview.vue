@@ -32,8 +32,8 @@
       min-height: 40px;
     }
     // Border around root nodes with children included
-    > .v-treeview-node {
-      border-bottom: 1px solid var(--v-basic-darken1);
+    > .v-treeview-node:not(:last-child) {
+      border-bottom: 1px solid var(--v-base-lighten2);
     }
     // Only Root Entries have a bold font
     > .v-treeview-node > .v-treeview-node__root > .v-treeview-node__content > .v-treeview-node__label {
