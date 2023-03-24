@@ -1,65 +1,15 @@
 <!-- eslint-disable max-len -->
 <template>
-  <svg id="icon_24_legend" xmlns="http://www.w3.org/2000/svg" width="24" height="25.523" viewBox="0 0 24 25.523">
-    <rect id="size" width="24" height="24" transform="translate(0 1.523)" fill="none" />
-    <g id="Group_1711" data-name="Group 1711" transform="translate(-712 -904)">
-      <rect
-        id="size-2"
-        data-name="size"
-        width="24"
-        height="24"
-        transform="translate(712 904.521)"
-        fill="none"
-      />
-      <rect
-        id="Rectangle_747"
-        data-name="Rectangle 747"
-        width="6.677"
-        height="6.677"
-        rx="2"
-        transform="translate(713 921.323)"
-        fill="currentColor"
-      />
-      <path id="Polygon_8" data-name="Polygon 8" d="M3.474,0,6.947,5.955H0Z" transform="translate(713 904)" fill="currentColor" />
-      <circle
-        id="Ellipse_88"
-        data-name="Ellipse 88"
-        cx="3.338"
-        cy="3.338"
-        r="3.338"
-        transform="translate(713 912.677)"
-        fill="currentColor"
-      />
-      <line
-        id="Line_297"
-        data-name="Line 297"
-        x2="9"
-        transform="translate(724 907.978)"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-width="3"
-      />
-      <line
-        id="Line_298"
-        data-name="Line 298"
-        x2="9"
-        transform="translate(724 916.016)"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-width="3"
-      />
-      <line
-        id="Line_299"
-        data-name="Line 299"
-        x2="9"
-        transform="translate(724 924.053)"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-width="3"
-      />
+  <svg id="icon_24_legend" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g transform="translate(-438 -549)">
+      <g fill="currentColor">
+        <path d="M446.8,562.318a2.87,2.87,0,0,0-4.052,0l-1.766,1.765a2.87,2.87,0,0,0,0,4.053l1.766,1.765a2.868,2.868,0,0,0,4.052,0l1.766-1.765a2.87,2.87,0,0,0,0-4.053Zm.352,4.4-1.766,1.765a.865.865,0,0,1-1.224,0l-1.766-1.765a.869.869,0,0,1,0-1.225l1.766-1.765a.867.867,0,0,1,1.224,0l1.765,1.765A.868.868,0,0,1,447.155,566.722Z" />
+        <path d="M445.642,551.372a1,1,0,0,0-1.728,0l-4.156,7.124a1,1,0,0,0,.864,1.5h8.311a1,1,0,0,0,.863-1.5ZM442.363,558l2.415-4.14,2.414,4.14Z" />
+        <path d="M459,563h-7a1,1,0,0,0,0,2h7a1,1,0,0,0,0-2Z" />
+        <path d="M459,567h-7a1,1,0,0,0,0,2h7a1,1,0,0,0,0-2Z" />
+        <path d="M452,554h7a1,1,0,0,0,0-2h-7a1,1,0,0,0,0,2Z" />
+        <path d="M459,556h-7a1,1,0,0,0,0,2h7a1,1,0,0,0,0-2Z" />
+      </g>
     </g>
   </svg>
 </template>
