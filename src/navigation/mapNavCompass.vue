@@ -162,6 +162,6 @@
   }
 
   svg path:hover {
-    fill: var(--v-base-lighten5) !important;
+    fill: var(--v-primary-lighten1) !important;
   }
 </style>
