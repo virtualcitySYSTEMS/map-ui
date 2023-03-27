@@ -84,6 +84,24 @@ class NavbarManager extends ButtonManager {
     buttonComponent[locationSymbol] = location;
     return buttonComponent;
   }
+
+  /**
+   * Toggles a button of provided id by executing its callback.
+   * Use active flag to force a state to be applied.
+   * @param {string} id
+   * @param {boolean} [active]
+   */
+  toggle(id, active = undefined) {
+    check(id, String);
+    const { action } = this.get(id);
+    if (active !== undefined) {
+      if (action?.active !== active) {
+        action.callback();
+      }
+    } else if (action) {
+      action.callback();
+    }
+  }
 }
 
 export default NavbarManager;

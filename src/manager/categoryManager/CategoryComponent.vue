@@ -1,48 +1,54 @@
 <template>
-  <v-container>
-    <v-row @click="open = !open" class="px-2 py-1 cursor-pointer">
-      <span>
-        <v-icon v-if="open">mdi-chevron-up</v-icon>
-        <v-icon v-else>mdi-chevron-down</v-icon>
-      </span>
-      <span class="flex-grow-1 flex-shrink-1">{{ $t(category.title) }}</span>
-      <vcs-action-button-list
-        v-if="category.actions?.length > 0"
-        :actions="category.actions"
-        small
-      />
-    </v-row>
-    <template v-if="open">
-      <v-row>
-        <v-col class="pa-0">
-          <vcs-list
-            :items="category.items.slice(0, 10)"
-            :selectable="category.selectable"
-            :single-select="category.singleSelect"
-            v-model="selection"
-            :show-title="false"
+  <v-expansion-panel
+    class="px-2"
+    @change="open = !open"
+  >
+    <v-expansion-panel-header hide-actions>
+      <template #default="{ open }">
+        <div class="d-flex justify-space-between">
+          <div class="d-flex align-center">
+            <v-icon class="mr-1" :class="{ 'rotate': !open }">
+              mdi-chevron-down
+            </v-icon>
+            {{ $t(category.title) }}
+          </div>
+          <VcsActionButtonList
+            v-if="category.actions?.length > 0"
+            :actions="category.actions"
+            small
+            class="float-end"
           />
-        </v-col>
-      </v-row>
-      <v-row v-if="category.items.length > 10">
-        <v-col class="pa-0">
-          <VcsButton @click="openCategoryItemWindow" class="pa-2" small>
-            {{ $t('categoryManager.more') }}
-          </VcsButton>
-        </v-col>
-      </v-row>
-      <v-row v-else-if="category.items.length === 0">
-        <v-col class="pa-2">
-          {{ $t('categoryManager.empty') }}
-        </v-col>
-      </v-row>
-    </template>
-  </v-container>
+        </div>
+      </template>
+    </v-expansion-panel-header>
+    <v-expansion-panel-content class="pb-1">
+      <vcs-list
+        :items="category.items.slice(0, 10)"
+        :selectable="category.selectable"
+        :single-select="category.singleSelect"
+        v-model="selection"
+        :show-title="false"
+      />
+      <v-sheet v-if="category.items.length > 10" class="ma-2 pl-2">
+        <VcsButton @click="openCategoryItemWindow" small>
+          {{ $t('categoryManager.more') }}
+        </VcsButton>
+      </v-sheet>
+      <v-sheet v-else-if="category.items.length === 0" class="ma-2 pl-2">
+        {{ $t('categoryManager.empty') }}
+      </v-sheet>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
   import { computed, inject, ref } from 'vue';
-  import { VIcon, VContainer, VRow, VCol } from 'vuetify/lib';
+  import {
+    VIcon, VExpansionPanel,
+    VExpansionPanelHeader,
+    VExpansionPanelContent,
+    VSheet,
+  } from 'vuetify/lib';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
@@ -54,11 +60,12 @@
     name: 'CategoryComponent',
     components: {
       VcsActionButtonList,
-      VcsList,
-      VContainer,
-      VRow,
       VcsButton,
-      VCol,
+      VcsList,
+      VExpansionPanel,
+      VExpansionPanelHeader,
+      VExpansionPanelContent,
+      VSheet,
       VIcon,
     },
     props: {
@@ -110,6 +117,8 @@
   };
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.rotate {
+  transform: rotate(-90deg);
+}
 </style>

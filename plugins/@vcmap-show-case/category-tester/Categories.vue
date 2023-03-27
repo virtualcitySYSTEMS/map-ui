@@ -176,7 +176,7 @@
           if (!app.categories.hasKey('layers')) {
             const layersCat = await app.categories.requestCategory({
               name: 'layers',
-              type: 'AppBackedCategory',
+              type: 'Category',
               collectionName: 'layers',
               title: 'categories.layers',
             });

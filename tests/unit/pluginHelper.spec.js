@@ -6,7 +6,7 @@ import {
   expect,
 } from 'vitest';
 import VcsUiApp from '../../src/vcsUiApp.js';
-import { getPluginAssetUrl, pluginBaseUrlSymbol } from '../../src/pluginHelper.js';
+import { getPluginAssetUrl, getPluginEntry, pluginBaseUrlSymbol } from '../../src/pluginHelper.js';
 
 describe('getPluginAssetUrl', () => {
   let app;
@@ -50,5 +50,22 @@ describe('getPluginAssetUrl', () => {
   it('should return the asset url preferring asset query', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/?bar=true&foo=true';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json?bar=false')).to.equal('http://localhost/foo/bar.json?bar=false&foo=true');
+  });
+});
+
+describe('getPluginEntry', () => {
+  let base;
+
+  beforeAll(() => {
+    base = 'http://localhost/map';
+  });
+
+  it('should return a relative url, if base is the same', () => {
+    expect(getPluginEntry(base, 'http://localhost/map/plugins/foo/index.js')).to.equal('plugins/foo/index.js');
+  });
+
+  it('should return an absolute url, if base is different', () => {
+    console.log(getPluginEntry(base, 'https://virtualcitymap.de/map/plugins/foo/index.js'));
+    expect(getPluginEntry(base, 'https://virtualcitymap.de/map/plugins/foo/index.js')).to.equal('https://virtualcitymap.de/map/plugins/foo/index.js');
   });
 });

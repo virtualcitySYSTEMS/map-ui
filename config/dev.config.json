@@ -418,6 +418,10 @@
       "entry": "plugins/@vcmap-show-case/textfields-example/index.js"
     },
     {
+      "name": "table-example",
+      "entry": "plugins/@vcmap-show-case/table-example/index.js"
+    },
+    {
       "name": "wizard-example",
       "entry": "plugins/@vcmap-show-case/wizard-example/index.js"
     },

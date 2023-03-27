@@ -116,11 +116,31 @@ export async function loadPlugin(name, config) {
 }
 
 /**
+ * @param {string} base
+ * @param {string} pluginBase
+ * @returns {string}
+ */
+export function getPluginEntry(base, pluginBase) {
+  const baseUrl = new URL(base);
+  const pluginBaseUrl = new URL(pluginBase);
+  if (baseUrl.origin !== pluginBaseUrl.origin) {
+    return pluginBase;
+  }
+  const baseSubs = baseUrl.pathname.split('/');
+  const pluginSubs = pluginBaseUrl.pathname.split('/');
+  return pluginSubs
+    .filter((sub, idx) => sub !== baseSubs[idx])
+    .join('/');
+}
+
+/**
  * @param {VcsPlugin} plugin
  * @returns {Object}
  */
 export function serializePlugin(plugin) {
   const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
+  serializedPlugin.name = plugin.name;
+  serializedPlugin.entry = getPluginEntry(window.location.href, plugin[pluginBaseUrlSymbol]);
   serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
   serializedPlugin[pluginBaseUrlSymbol] = plugin[pluginBaseUrlSymbol];
   return serializedPlugin;

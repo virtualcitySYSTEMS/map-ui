@@ -1,117 +1,37 @@
 <template>
-  <v-card>
-    <VcsTreeviewSearchbar
-      v-if="showSearchbar"
-      :placeholder="$t(searchbarPlaceholder)"
-      v-model="search"
-    />
-    <v-data-table
-      dense
-      item-key="key"
-      :headers="translatedHeaders"
-      :items="items"
-      :items-per-page.sync="itemsPerPageRef"
-      :page.sync="page"
-      :search="search"
-      :custom-filter="handleFilter"
-      hide-default-footer
-      class="vcs-table rounded-0"
-    >
-      <!-- eslint-disable-next-line -->
-      <template #item.key="{ item }">
-        <td
-          :title="$t(item.key)"
-          class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-          :style="{'max-width': headers[0].width }"
-        >
-          {{ $t(item.key) }}
-        </td>
-      </template>
-      <!-- eslint-disable-next-line -->
-      <template #item.value="{ item }">
-        <td
-          :title="$t(item.value)"
-          class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-          :style="{'max-width': headers[1].width }"
-        >
-          <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
-            {{ $t(item.value) }}
-          </span>
-        </td>
-      </template>
-      <template #footer v-if="items.length > itemsPerPageRef">
-        <v-divider />
-        <v-container class="pa-2 vcs-pagination-bar">
-          <v-row
-            dense
-            no-gutters
-            justify="center"
-          >
-            <v-menu offset-y dense>
-              <template #activator="{ on, attrs }">
-                <VcsButton
-                  small
-                  color="primary"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  {{ itemsPerPageRef }}
-                  <v-icon>mdi-chevron-down</v-icon>
-                </VcsButton>
-              </template>
-              <v-list>
-                <v-list-item
-                  v-for="(number, index) in itemsPerPageArray"
-                  :key="index"
-                  @click="updateItemsPerPage(number)"
-                  style="min-height: auto; height: 24px; text-align: right;"
-                >
-                  <v-list-item-title>{{ number }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <span class="mx-2">{{ $t('components.vcsTable.itemsPerPage') }}</span>
-            <span class="mx-2">
-              {{ itemsFrom }} - {{ itemsTo }} {{ $t('components.vcsTable.ofItems') }} {{ numberOfItems }}
-            </span>
-            <VcsButton
-              small
-              icon="mdi-chevron-left"
-              @click="formerPage"
-              tooltip="components.vcsTable.formerPage"
-              :disabled="page < 2"
-              class="ml-1"
-            />
-            <VcsButton
-              small
-              icon="mdi-chevron-right"
-              @click="nextPage"
-              tooltip="components.vcsTable.nextPage"
-              :disabled="page > numberOfPages - 1"
-              class="ml-1"
-            />
-          </v-row>
-        </v-container>
-      </template>
-    </v-data-table>
-  </v-card>
+  <VcsDataTable
+    :items="items"
+    :headers="headers"
+    item-key="key"
+    v-bind="$attrs"
+  >
+    <!-- eslint-disable-next-line -->
+    <template #item.key="{ item }">
+      <td
+        :title="$t(item.key)"
+        class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
+        :style="{'max-width': headers[0].width }"
+      >
+        {{ $t(item.key) }}
+      </td>
+    </template>
+    <!-- eslint-disable-next-line -->
+    <template #item.value="{ item }">
+      <td
+        :title="$t(item.value)"
+        class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
+        :style="{'max-width': headers[1].width }"
+      >
+        <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
+          {{ $t(item.value) }}
+        </span>
+      </td>
+    </template>
+  </VcsDataTable>
 </template>
 <script>
-  import { getCurrentInstance, ref, computed } from 'vue';
-  import {
-    VCard,
-    VDivider,
-    VContainer,
-    VDataTable,
-    VList,
-    VListItem,
-    VListItemTitle,
-    VMenu,
-    VIcon,
-    VRow,
-  } from 'vuetify/lib';
-  import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import { computed } from 'vue';
+  import VcsDataTable from './VcsDataTable.vue';
 
   /**
    * @typedef {Object} TableItem
@@ -140,34 +60,16 @@
   }
 
   /**
-   * @description A table view for feature attributes using {@link https://vuetifyjs.com/en/api/v-data-table/#props v-data-table }
+   * @description A table view for feature attributes using VcsDataTable
    * @vue-prop {string} featureId - feature's id
    * @vue-prop {Object} attributes - feature's attributes
    * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names
-   * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
-   * @vue-prop {string} [searchbarPlaceholder='Search'] - placeholder for searchbar
    * @vue-computed {Array<TableItem>} items - from attributes derived table items
-   * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
-   * @vue-computed {number} numberOfItems - number of filtered items (depending on search).
-   * @vue-computed {number} numberOfPages - number of pages depending on number of items, search and itemsPerPage.
-   * @vue-computed {number} itemsFrom - index of first item shown on current page.
-   * @vue-computed {number} itemsTo - index of last item shown on current page.
    */
   export default {
     name: 'VcsTable',
     components: {
-      VcsButton,
-      VcsTreeviewSearchbar,
-      VCard,
-      VDataTable,
-      VContainer,
-      VDivider,
-      VRow,
-      VMenu,
-      VIcon,
-      VList,
-      VListItem,
-      VListItemTitle,
+      VcsDataTable,
     },
     props: {
       featureId: {
@@ -185,29 +87,8 @@
           { text: 'components.vcsTable.value', value: 'value', width: '160px' },
         ],
       },
-      itemsPerPage: {
-        type: Number,
-        default: 10,
-      },
-      itemsPerPageArray: {
-        type: Array,
-        default: () => [5, 10, 15],
-      },
-      showSearchbar: {
-        type: Boolean,
-        default: true,
-      },
-      searchbarPlaceholder: {
-        type: String,
-        default: 'components.vcsTable.searchbarPlaceholder',
-      },
     },
     setup(props) {
-      const vm = getCurrentInstance().proxy;
-      /**
-       * @type {Ref<UnwrapRef<string>>}
-       */
-      const search = ref('');
       /**
        * @type {ComputedRef<Array<TableItem>>}
        */
@@ -218,89 +99,14 @@
         });
       });
 
-      /**
-       * @param {any} value
-       * @param {string|undefined} filter
-       * @param {TableItem} item
-       * @returns {boolean}
-       */
-      const handleFilter = (value, filter, item) => {
-        if (filter) {
-          const q = filter.toLocaleLowerCase();
-          return [item.key, item.value].some((i) => {
-            const content = i.toString();
-            const translated = vm.$t(content);
-            return translated.toLowerCase().includes(q) || content.toLowerCase().includes(q);
-          });
-        }
-        return true;
-      };
-
-      /**
-       * @type {ComputedRef<TableItem[]>}
-       */
-      const filteredItems = computed(() => items.value.filter(item => handleFilter(item.value, search.value, item)));
-      const numberOfItems = computed(() => filteredItems.value.length);
-
-      /**
-       * @type {ComputedRef<Array<{text: string, value: string}>>}
-       */
-      const translatedHeaders = computed(() => {
-        return props.headers.map((hd) => {
-          hd.text = vm.$t(hd.text);
-          return hd;
-        });
-      });
-
-      /**
-       * @type {Ref<UnwrapRef<number>>}
-       */
-      const itemsPerPageRef = ref(props.itemsPerPage);
-      const numberOfPages = computed(() => {
-        return Math.ceil(numberOfItems.value / itemsPerPageRef.value);
-      });
-      /**
-       * @type {Ref<UnwrapRef<number>>}
-       */
-      const page = ref(1);
-      const itemsFrom = computed(() => ((page.value - 1) * itemsPerPageRef.value) + 1);
-      const itemsTo = computed(() => {
-        const last = page.value * itemsPerPageRef.value;
-        return last < numberOfItems.value ? last : numberOfItems.value;
-      });
-
       return {
-        search,
-        page,
         items,
-        filteredItems,
-        itemsPerPageRef,
-        itemsFrom,
-        itemsTo,
-        numberOfPages,
-        numberOfItems,
-        nextPage() {
-          if (page.value + 1 <= numberOfPages.value) {
-            page.value += 1;
-          }
-        },
-        formerPage() {
-          if (page.value - 1 >= 1) {
-            page.value -= 1;
-          }
-        },
-        updateItemsPerPage(number) {
-          itemsPerPageRef.value = number;
-        },
-        handleFilter,
-        translatedHeaders,
       };
     },
   };
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/shades.scss';
 
 .single-line {
   display: block;
@@ -322,60 +128,9 @@
 }
 
 ::v-deep {
-  .vcs-table {
-    tbody tr {
-      &:hover {
-        background-color: transparent !important;
-      }
-      &:nth-child(odd) {
-        background-color: var(--v-base-lighten4) !important;
-      }
-    }
-    td {
-      font-size: 14px !important;
-      &.v-data-table__mobile-row {
-        justify-content: left;
-        height: 27px;
-        min-height: auto;
-      }
-    }
-    th.sortable {
-      padding: 0 8px;
-      span {
-        vertical-align: middle;
-        padding: 0 4px 0 0;
-      }
-    }
-    &.theme--light {
-      thead tr th {
-        color: map-get($shades, 'black') !important;
-      }
-    }
-    &.theme--dark {
-      thead tr th {
-        color: map-get($shades, 'white') !important;
-      }
-    }
-  }
   .v-data-table__mobile-row__cell {
     td.vcs-table.overflow-max-width {
       max-width: 260px;
-    }
-  }
-  .v-btn.vcs-button--small {
-    height: 100% !important;
-    display: block;
-  }
-}
-
-.vcs-pagination-bar {
-  .vcs-button-wrap {
-    height: 25px;
-    border: 1px solid;
-    padding: 0 4px;
-    border-radius: 4px;
-    &:hover {
-      border: 1px solid var(--v-primary-base);
     }
   }
 }

@@ -123,6 +123,7 @@ export { default as VcsTooltip } from './src/components/notification/VcsTooltip.
 export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';
 
 export { default as VcsTable } from './src/components/tables/VcsTable.vue';
+export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vue';
 
 // export { default as VcsConfirmationDialog } from './src/components/dialogs/VcsConfirmationDialog.vue';
 
@@ -147,7 +148,7 @@ export { default as VcsActionList, validateAction, validateActions } from './src
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
-// export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
+export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
 
 // export { default as VcsMediaControls } from './src/components/media-controls/VcsMediaControls.vue';
 

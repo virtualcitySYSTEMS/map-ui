@@ -17,11 +17,18 @@
         <v-list-item-action
           v-if="selectable"
         >
+          <v-spacer v-if="singleSelect" />
           <v-icon
-            v-if="selected.length === renderingItems.length"
+            v-else-if="selected.length === renderingItems.length"
             @click="clear"
           >
             mdi-check-circle-outline
+          </v-icon>
+          <v-icon
+            v-else-if="selected.length > 0 && selected.length < renderingItems.length"
+            @click="selectAll()"
+          >
+            mdi-minus-circle-outline
           </v-icon>
           <v-icon
             v-else
@@ -52,7 +59,6 @@
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
             small
-            right
           />
         </v-list-item-content>
       </v-list-item>
@@ -64,6 +70,7 @@
         @mousedown.shift="$event.preventDefault()"
         @mouseover="hovering = index"
         @mouseout="hovering = null"
+        :class="{ 'v-list-item__lighten_even': lightenEven, 'v-list-item__lighten_odd': !lightenEven }"
       >
         <v-list-item-action
           v-if="selectable"
@@ -112,7 +119,6 @@
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
             small
-            right
           />
         </v-list-item-content>
       </v-list-item>
@@ -129,6 +135,7 @@
     VListItemAction,
     VIcon,
     VListItemTitle,
+    VSpacer,
   } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
@@ -182,6 +189,7 @@
       VListItemAction,
       VIcon,
       VListItemTitle,
+      VSpacer,
     },
     props: {
       /** @type {Array<VcsListItem>} */
@@ -246,6 +254,9 @@
       /** @type {import("vue").Ref<string>} */
       const query = ref('');
       const hovering = ref(null);
+      const lightenEven = computed(() => {
+        return !(!props.searchable && !props.showTitle);
+      });
       let firstSelected = null;
 
       watch(props, () => {
@@ -281,6 +292,7 @@
       return {
         query,
         hovering,
+        lightenEven,
         /**
          * @type {import("vue").ComputedRef<Array<VcsListItem>>}
          */
@@ -419,6 +431,16 @@
 <style lang="scss" scoped>
   ::v-deep {
     .v-list {
+      .v-list-item__lighten_even {
+        &:nth-child(even) {
+          background-color: var(--v-base-lighten4);
+        }
+      }
+      .v-list-item__lighten_odd {
+        &:nth-child(odd) {
+          background-color: var(--v-base-lighten4);
+        }
+      }
       .v-list-item {
         padding: 4px 8px 4px 16px;
         &:after{
@@ -428,9 +450,6 @@
           .v-list-item__title {
             font-weight: 700;
           }
-        }
-        &:nth-child(even) {
-          background-color: var(--v-base-lighten4);
         }
         .v-list-item__action {
           .v-icon {

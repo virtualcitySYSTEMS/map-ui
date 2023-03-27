@@ -55,11 +55,15 @@ const messages = {
     vcsTable: {
       key: 'Name',
       value: 'Wert',
+    },
+    vcsDataTable: {
       searchbarPlaceholder: 'Name, Wert, ...',
       itemsPerPage: 'pro Seite',
       ofItems: 'von',
       nextPage: 'Nächste Seite',
       formerPage: 'Vorherige Seite',
+      noDataPlaceholder: 'Keine Daten verfügbar',
+      noResultsPlaceholder: 'Keine übereinstimmenden Einträge gefunden',
     },
   },
   settings: {

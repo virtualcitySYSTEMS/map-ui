@@ -66,14 +66,12 @@
     VCard,
     VForm,
     VTextarea,
-    VBtn,
   } from 'vuetify/lib';
 
   export default {
     name: 'CategoryComponent',
     components: {
       VcsButton,
-      VSheet,
       VVirtualScroll,
       VListItem,
       VListItemContent,
@@ -84,7 +82,6 @@
       VForm,
       VTextarea,
       VSheet,
-      VBtn,
     },
     props: {
       categoryName: {

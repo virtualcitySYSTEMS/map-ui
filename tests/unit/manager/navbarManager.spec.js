@@ -111,4 +111,40 @@ describe('NavbarManager', () => {
       expect(actions[0]).to.have.property('name', 'testApp');
     });
   });
+
+  describe('toggling buttons from the Manager', () => {
+    /** @type {NavbarManager} */
+    let navbarManager;
+    let action;
+
+    beforeAll(() => {
+      navbarManager = new NavbarManager();
+      action = {
+        name: 'test',
+        active: false,
+        callback() {
+          this.active = !this.active;
+        },
+      };
+    });
+
+    afterAll(() => {
+      navbarManager.destroy();
+    });
+
+
+    it('should toggle a buttons state', () => {
+      const buttonComponent = navbarManager.add({ id: 'test-toggle', action: { ...action } }, 'plugin', ButtonLocation.TOOL);
+      expect(buttonComponent.action.active).to.be.false;
+      navbarManager.toggle('test-toggle');
+      expect(buttonComponent.action.active).to.be.true;
+    });
+
+    it('should NOT toggle a buttons state, when provided flag equals buttons state', () => {
+      const buttonComponent = navbarManager.add({ id: 'test-toggle-flag', action: { ...action } }, 'plugin', ButtonLocation.TOOL);
+      expect(buttonComponent.action.active).to.be.false;
+      navbarManager.toggle('test-toggle-flag', false);
+      expect(buttonComponent.action.active).to.be.false;
+    });
+  });
 });
