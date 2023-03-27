@@ -1,3 +1,9 @@
-import { initApp } from '@vcmap/ui';
+// to load a map.config.json containing a set of configs
+import { initAppFromMapConfig } from '@vcmap/ui';
 
-initApp('#app', 'map.config.json');
+initAppFromMapConfig('#app', 'map.config.json');
+
+// to load a single config
+// import { initAppFromContext } from '@vcmap/ui';
+
+// initAppFromContext('#app', 'config/projects.config.json');

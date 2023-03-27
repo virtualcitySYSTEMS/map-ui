@@ -6,6 +6,7 @@
 - Added `background` flag to `VcsAction`
 - Refactoring of the input components design and functionality.
 - Fixed the error display behaviour of input components in combination with a form element.
+- Adapt `initApp` method and add new methods `initAppFromContext` and `initAppFromMapConfig` to be used for initialization in `start.js`.
 
 # 5.0.0-rc.15
 - Update Openlayers to version 7.0.0
