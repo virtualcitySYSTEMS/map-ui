@@ -3,6 +3,7 @@
     vertical
     :value="value"
     @change="newValue => $emit('input', newValue)"
+    class="rounded-0"
   >
     <slot />
   </v-stepper>
@@ -61,13 +62,14 @@
     }
   }
   &.theme--dark {
+    background: map-get($shades, 'black');
     ::v-deep{
       .v-stepper__step {
         .v-stepper__label {
           color: map-get($shades, 'white');
         }
         &--active {
-          background-color: rgba(255, 255, 255, 0.5);
+          background-color: rgba(255, 255, 255, 0.17);
           .v-stepper__label {
             color: var(--v-primary-base);
           }
