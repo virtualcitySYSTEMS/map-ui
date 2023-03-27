@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto elevation-0 rounded-0"
+    class="mx-auto elevation-0"
     max-width="400"
     v-if="position"
   >
@@ -164,12 +164,13 @@
   .balloon:after {
     content: "";
     position: absolute;
-    bottom: -20px;
+    bottom: -12px;
     left: 40px;
-    border-width: 20px 20px 0;
+    border-width: 12px 10px 0;
     border-style: solid;
     display: block;
     width: 0;
+    filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.3));
   }
   .theme--light .balloon:after {
     border-color: map-get($shades, 'white') transparent;
