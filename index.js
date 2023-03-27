@@ -101,6 +101,7 @@ export { default as VcsZoomButton } from './src/navigation/vcsZoomButton.vue';
 
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
 export { createVuetify, vuetify, getColorByKey, getDefaultPrimaryColor } from './src/vuePlugins/vuetify.js';
+export { downloadURI, downloadBlob, downloadText, downloadCanvas } from './src/downloadHelper.js';
 export { default as initApp, initAppFromContext, initAppFromMapConfig } from './src/init.js';
 export {
   vcsAppSymbol,
