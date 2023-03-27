@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="items" class="pa-2">
+  <v-sheet v-if="items" class="pt-1 pb-0 px-2">
     <VcsSelect :items="items" v-model="currentStyle" />
     <v-list v-if="currentStyleLegend.length > 0">
       <v-list-item

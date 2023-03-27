@@ -24,9 +24,14 @@
     >
       <slot name="headerComponent" :props="$attrs" />
     </div>
-    <v-divider />
+    <v-divider
+      v-if="!windowState.hideHeader"
+    />
     <div
       class="overflow-x-hidden mb-1"
+      :class="{
+        'rounded': !isDocked,
+      }"
     >
       <slot />
     </div>
