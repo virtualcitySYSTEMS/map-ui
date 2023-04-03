@@ -5,17 +5,17 @@
     v-if="position"
   >
     <slot name="balloon-header" :attrs="{...$props, ...$attrs}">
-      <v-list-item class="px-2 pr-1 align-start">
+      <v-list-item class="px-2 align-center">
         <v-list-item-avatar
           tile
-          size="20"
-          class="mr-2 align-self-start"
+          size="16"
+          class="mr-2"
         >
           <v-icon color="primary">
             $vcsInfo
           </v-icon>
         </v-list-item-avatar>
-        <v-list-item-content class="py-2 pr-1 align-self-start">
+        <v-list-item-content class="pr-1">
           <v-list-item-title>
             <h3 class="font-weight-bold">
               {{ $t(balloonTitle) }}
@@ -30,7 +30,7 @@
           small
           icon="mdi-close-thick"
           tooltip="components.close"
-          class="mt-1 mr-1"
+          class="d-flex"
         />
       </v-list-item>
     </slot>
