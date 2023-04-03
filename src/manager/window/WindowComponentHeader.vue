@@ -6,6 +6,7 @@
         class="mr-2"
         :class="{ 'primary--text': isOnTop }"
         v-text="windowState.headerIcon"
+        size="16"
       />
       <h3
         class="d-inline-block user-select-none font-weight-bold"
@@ -33,7 +34,7 @@
         small
         :icon="infoAction.icon"
         :tooltip="infoAction.title"
-        class="px-1"
+        class="px-1 d-flex"
       />
       <VcsButton
         v-if="isDockable"
@@ -41,13 +42,14 @@
         small
         icon="mdi-pin"
         tooltip="components.pin"
-        class="px-1"
+        class="px-1 d-flex"
       />
       <VcsButton
         @click.stop="close"
         small
         icon="mdi-close-thick"
         tooltip="components.close"
+        class="d-flex"
       />
     </div>
   </span>
