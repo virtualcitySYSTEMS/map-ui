@@ -141,6 +141,7 @@ export { default as VcsTextField } from './src/components/form-inputs-controls/V
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
 export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
+export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.vue';
 
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
 

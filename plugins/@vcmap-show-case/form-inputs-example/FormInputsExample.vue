@@ -143,6 +143,19 @@
               />
             </v-col>
           </v-row>
+          <v-row
+            no-gutters
+            align="center"
+          >
+            <v-col>
+              <VcsLabel html-for="dateInput" :dense="dense">
+                Date
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsDatePicker id="dateInput" v-model="state.dateInput" />
+            </v-col>
+          </v-row>
         </v-container>
       </template>
     </VcsFormSection>
@@ -254,7 +267,9 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel :dense="dense">Text</VcsLabel>
+              <VcsLabel :dense="dense">
+                Text
+              </VcsLabel>
             </v-col>
           </v-row>
           <v-row
@@ -370,6 +385,7 @@
     VcsFormSection,
     VcsLabel,
     VcsTextArea,
+    VcsDatePicker,
   } from '@vcmap/ui';
   import { VCol, VContainer, VForm, VRow } from 'vuetify/lib';
   import packageJSON from './package.json';
@@ -391,6 +407,7 @@
       VRow,
       VCol,
       VContainer,
+      VcsDatePicker,
     },
     props: {
       actions: {

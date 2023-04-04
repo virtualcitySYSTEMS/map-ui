@@ -111,6 +111,9 @@ const messages = {
     information: 'Information',
     success: 'Erfolg',
   },
+  datePicker: {
+    today: 'Heute',
+  },
 };
 
 export default messages;

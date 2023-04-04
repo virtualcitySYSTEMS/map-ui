@@ -37,6 +37,7 @@ import Notifier from './notifier/notifier.js';
  * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
  * @property {Array<Object>} [plugins]
  * @property {Array<ContentTreeItemOptions>} [contentTree]
+ * @property {Array<UiConfigurationItem>} [uiConfig]
  */
 
 /**

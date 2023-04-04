@@ -84,6 +84,7 @@ export default function (config) {
     email: '',
     prependedInput: '',
     files: [],
+    dateInput: '',
   };
 
   /** @type {FormInputsExampleState} */
