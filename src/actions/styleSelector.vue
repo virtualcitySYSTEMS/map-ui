@@ -1,6 +1,16 @@
 <template>
-  <v-sheet v-if="items" class="pt-1 pb-0 px-2">
-    <VcsSelect :items="items" v-model="currentStyle" />
+  <v-sheet v-if="items" class="pt-1 pb-0 px-0">
+    <v-list>
+      <v-list-item
+        v-for="(item, index) in items"
+        :key="index"
+        @click.stop="select(item.value)"
+      >
+        <v-list-item-title :class="{ 'primary--text': item.value === currentStyleName }">
+          {{ item.text }}
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
     <v-list v-if="currentStyleLegend.length > 0">
       <v-list-item
         v-for="(entry, index) in currentStyleLegend"
@@ -21,18 +31,17 @@
 <script>
   import { computed, inject, onUnmounted, ref } from 'vue';
   import {
-    VChip, VList, VListItem, VListItemContent, VListItemIcon, VSheet,
+    VChip, VList, VListItem, VListItemContent, VListItemIcon, VListItemTitle, VSheet,
   } from 'vuetify/lib';
-  import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
 
   export default {
     name: 'StyleSelector',
     components: {
-      VcsSelect,
       VSheet,
       VList,
       VListItem,
       VListItemIcon,
+      VListItemTitle,
       VChip,
       VListItemContent,
     },
@@ -46,8 +55,8 @@
         required: true,
       },
     },
-    setup({ layerName, availableStyles }) {
-      /** @type {VcsApp} */
+    setup({ layerName, availableStyles }, { attrs }) {
+      /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       /** @type {import("@vcmap/core").FeatureLayer} */
       const layer = app.layers.getByKey(layerName);
@@ -68,16 +77,6 @@
         styleChangedListener();
       });
 
-      const currentStyle = computed({
-        get() { return currentStyleName.value; },
-        set(styleName) {
-          const style = styleName === defaultStyle ?
-            layer.defaultStyle :
-            app.styles.getByKey(styleName);
-          layer.setStyle(style);
-        },
-      });
-
       const items = computed(() => {
         return [
           { text: 'Default', value: defaultStyle },
@@ -85,15 +84,23 @@
         ];
       });
 
+      function select(styleName) {
+        const style = styleName === defaultStyle ?
+          layer.defaultStyle :
+          app.styles.getByKey(styleName);
+        layer.setStyle(style);
+        app.windowManager.remove(attrs['window-state'].id);
+      }
+
       return {
-        currentStyle,
+        currentStyleName,
         currentStyleLegend,
         items,
+        select,
       };
     },
   };
 </script>
 
 <style scoped>
-
 </style>

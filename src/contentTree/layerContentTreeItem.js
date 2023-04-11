@@ -122,6 +122,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         },
         {
           component,
+          position: {
+            width: 200,
+          },
           props: reactive({
             availableStyles: availableStyles.slice(),
             layerName: this._layerName,

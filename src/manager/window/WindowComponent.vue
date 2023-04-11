@@ -108,8 +108,6 @@
       const mousedown = (e) => {
         emit('mousedown', e);
         if (e.target.closest('button')) {
-          e.preventDefault();
-          e.stopPropagation();
           return;
         }
         isDraggable.value = isDynamic.value;

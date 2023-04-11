@@ -203,29 +203,18 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
   check(owner, [String, vcsAppSymbol]);
 
   const id = uuid();
+  const { position: windowPositionOptions, ...component } = modalComponent;
+  let modalActivator = null;
 
-  const addModal = (zIndex) => {
-    const child = document.getElementById(id);
-    if (!child) {
-      const elem = document.createElement('div');
-      elem.id = id;
-      Object.assign(elem.style, {
-        position: 'absolute',
-        zIndex,
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      });
-      elem.onclick = () => { app.windowManager.remove(id); };
-      document.body.appendChild(elem);
-    }
-  };
-
-  const removeModal = () => {
-    const child = document.getElementById(id);
-    if (child) {
-      child.parentElement.removeChild(child);
+  /**
+   * Closes the modal at mousedown on an app element
+   * Requires mousedown event bubbling on app elements (same behaviour as v-menu).
+   * @param {MouseEvent} e
+   */
+  const handleMouseDown = (e) => {
+    const div = document.getElementById(`window-component--${id}`);
+    if (!div?.contains(e.target) && !modalActivator?.contains(e.target)) {
+      app.windowManager.remove(id);
     }
   };
 
@@ -236,10 +225,11 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
       if (!this.active) {
         this.active = true;
         const { left, top, width } = event.currentTarget.getBoundingClientRect();
-        const position = getWindowPositionOptions(left + width, top, app.maps.target);
+        modalActivator = event.currentTarget;
+        const position = { ...getWindowPositionOptions(left + width, top, app.maps.target), ...windowPositionOptions };
         const state = { ...modalComponent?.state, hideHeader: true };
-        app.windowManager.add({ position, ...modalComponent, id, state }, owner);
-        addModal(app.windowManager.componentIds.length - 2);
+        app.windowManager.add({ position, ...component, id, state }, owner);
+        document.addEventListener('mousedown', handleMouseDown);
       } else {
         this.active = false;
         app.windowManager.remove(id);
@@ -252,10 +242,9 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
     app.windowManager.removed.addEventListener(({ id: windowId }) => {
       if (windowId === id) {
         action.active = false;
-        removeModal();
+        document.removeEventListener('mousedown', handleMouseDown);
       }
     }),
-    removeModal,
   ];
 
   const destroy = () => { listeners.forEach((cb) => { cb(); }); };
