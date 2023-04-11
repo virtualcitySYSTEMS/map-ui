@@ -229,7 +229,7 @@ describe('windowHelper', () => {
       it('should set maxWidth and maxHeight, if not set', () => {
         const clippedPosition = clipToTargetSize({}, targetSize);
         expect(clippedPosition).to.have.property('maxWidth', targetRect.width);
-        expect(clippedPosition).to.have.property('maxHeight', targetRect.height);
+        expect(clippedPosition).to.have.property('maxHeight', targetRect.height - 4);
       });
       it('should limit maxWidth and maxHeight to the target size', () => {
         const windowPositionOptions = { maxWidth: 2500, maxHeight: 1500 };
@@ -245,7 +245,7 @@ describe('windowHelper', () => {
         const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
         const topLeft2 = posToNumber(WindowPositions.TOP_LEFT2.left, 'left', targetSize);
         expect(clippedPosition).to.have.property('maxWidth', targetRect.width - topLeft2);
-        expect(clippedPosition).to.have.property('maxHeight', targetRect.height);
+        expect(clippedPosition).to.have.property('maxHeight', targetRect.height - 4);
       });
     });
 
@@ -267,7 +267,7 @@ describe('windowHelper', () => {
         expect(appliedPosition).to.have.property('width', windowPosition.width);
         expect(appliedPosition).to.have.property('height', windowPosition.height);
         expect(appliedPosition).to.have.property('maxWidth', posToPixel(targetRect.width));
-        expect(appliedPosition).to.have.property('maxHeight', posToPixel(targetRect.height));
+        expect(appliedPosition).to.have.property('maxHeight', posToPixel(targetRect.height - 4));
       });
     });
   });

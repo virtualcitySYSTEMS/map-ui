@@ -304,7 +304,7 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
     clippedPosition.height = windowPositionOptions.height;
   }
   clippedPosition.maxWidth = targetWidth;
-  clippedPosition.maxHeight = targetHeight;
+  clippedPosition.maxHeight = targetHeight - 4; // 2px space plus 2px due to margin bottom
   if (windowPositionOptions.maxWidth !== undefined) {
     clippedPosition.maxWidth = Math.min(windowPositionOptions.maxWidth, targetWidth);
   }

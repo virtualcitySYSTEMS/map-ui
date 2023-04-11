@@ -9,7 +9,7 @@
       :slot-window="getSlot(id)"
       :z-index="zIndex"
       @moved="move(id, $event)"
-      @click="clicked(id)"
+      @mousedown="mousedown(id)"
       :style="getStyles(id, zIndex).value"
       :class="getState(id).classes"
       :is-on-top="isOnTop(zIndex)"
@@ -108,7 +108,7 @@
       /**
        * @param {string} id
        */
-      const clicked = (id) => {
+      const mousedown = (id) => {
         if (windowManager.has(id)) {
           windowManager.bringWindowToTop(id);
         }
@@ -143,7 +143,7 @@
         getSlot: id => windowManager.get(id).slot,
         close: (id) => { windowManager.remove(id); },
         pin: (id) => { windowManager.pinWindow(id); },
-        clicked,
+        mousedown,
         move,
       };
     },

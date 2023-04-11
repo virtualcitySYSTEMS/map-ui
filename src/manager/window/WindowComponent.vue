@@ -2,7 +2,7 @@
   <v-sheet
     :id="`window-component--${windowState.id}`"
     class="elevation-3 position-absolute d-flex flex-column"
-    @click="clicked"
+    @click="$emit('click', $event)"
     @dragstart="dragStart"
     @dragend="dragEnd"
     :draggable="isDraggable"
@@ -58,7 +58,8 @@
    * @vue-prop {WindowState} windowState
    * @vue-prop {boolean} isOnTop - Whether the component is focused
    * @vue-prop {Object} slotWindow - slot ref of the window
-   * @vue-event {PointerEvent} clicked - raised when the component is clicked
+   * @vue-event {PointerEvent} click - raised when the component is clicked
+   * @vue-event {MouseEvent} mousedown - raised when the component is mousedown
    * @vue-event {{dx: number, dy: number}} move - raised when the component is moved (dragged)
    * @vue-data {slot} [#default] - slot with the window content
    * @vue-data {slot} [#headerComponent] - slot to override the default header
@@ -100,17 +101,12 @@
       const isDockedRight = computed(() => props.slotWindow === WindowSlot.DYNAMIC_RIGHT);
       const isDraggable = ref(false);
       /**
-       * @param {PointerEvent} e
-       */
-      const clicked = (e) => {
-        emit('click', e);
-      };
-      /**
        * Sets window as draggable on mousedown on header.
        * Stops bubbling of header action buttons.
        * @param {MouseEvent} e
        */
       const mousedown = (e) => {
+        emit('mousedown', e);
         if (e.target.closest('button')) {
           e.preventDefault();
           e.stopPropagation();
@@ -133,9 +129,6 @@
         startEvent = e;
         // set mouse cursor to move
         e.dataTransfer.effectAllowed = 'move';
-        const preventDefaultDragover = dragOverEvent => dragOverEvent.preventDefault();
-        e.target.parentElement.ondragover = preventDefaultDragover;
-        app.maps.target.ondragover = preventDefaultDragover;
       };
       /**
        * @param {DragEvent} endEvent
@@ -158,7 +151,6 @@
         isDynamicLeft: isDockedLeft,
         isDynamicRight: isDockedRight,
         isDraggable,
-        clicked,
         dragStart,
         dragEnd,
         mousedown,
