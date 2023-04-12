@@ -17,11 +17,9 @@
           :hide-spin-buttons="!showSpinButtons"
           :dense="isDense"
           :clearable="isClearable"
-          @focus="focus = true;"
-          @blur="focus = false;"
-          @input="value => $emit('input', value)"
-          @keydown.esc="handleEsc"
-          @keydown="event => $emit('keydown', event)"
+          @focus="onFocus"
+          @blur="onBlur"
+          @keydown.esc="onEscape"
           :value="visibleValue"
           :type="type"
           outlined
@@ -220,9 +218,19 @@
         }
       });
 
-      function handleEsc() {
+      function onEscape(event) {
         textFieldRef.value.blur();
         emit('input', textFieldRef.value.initialValue);
+        emit('keydown', event);
+      }
+
+      function onBlur(event) {
+        focus.value = false;
+        emit('blur', event);
+      }
+      function onFocus(event) {
+        focus.value = true;
+        emit('focus', event);
       }
 
       return {
@@ -234,9 +242,11 @@
         isOutlined,
         visibleValue,
         type,
-        handleEsc,
+        onEscape,
         textFieldRef,
         errorMessage,
+        onBlur,
+        onFocus,
       };
     },
   };
