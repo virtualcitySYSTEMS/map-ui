@@ -93,6 +93,7 @@ const messages = {
     select: 'Select result item',
     placeholder: 'Search for Street, Address, Landmark, POI',
     zoomToFeatureAction: 'Zoom to result',
+    zoomToAll: 'Zoom to all',
   },
   toolbox: {
     flight: 'flight',

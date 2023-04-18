@@ -3,16 +3,16 @@
     :class="{ 'win-container-mobile' : $vuetify.breakpoint.xs }"
   >
     <WindowComponent
-      v-for="(id, zIndex) in componentIds"
+      v-for="id in componentIds"
       :key="id"
       :window-state="getState(id)"
       :slot-window="getSlot(id)"
-      :z-index="zIndex"
+      :z-index="getComponent(id).zIndex"
       @moved="move(id, $event)"
-      @mousedown="mousedown(id)"
-      :style="getStyles(id, zIndex).value"
+      @mousedown="bringWindowToTop(id)"
+      :style="getStyles(id).value"
       :class="getState(id).classes"
-      :is-on-top="isOnTop(zIndex)"
+      :is-on-top="isOnTop(id)"
     >
       <component
         :is="getComponent(id)"
@@ -23,7 +23,7 @@
         <component
           :is="getHeaderComponent(id)"
           :window-state="getState(id)"
-          :is-on-top="isOnTop(zIndex)"
+          :is-on-top="isOnTop(id)"
           :slot-window="getSlot(id)"
           v-bind="getProps(id)"
           @close="close(id)"
@@ -84,23 +84,22 @@
         return windowManager.get(id)?.props ?? {};
       };
       /**
-       * @param {number} zIndex
+       * @param {string} id
        * @returns {boolean}
        */
-      const isOnTop = (zIndex) => {
-        return zIndex === componentIds.length - 1;
+      const isOnTop = (id) => {
+        return windowManager.get(id)?.zIndex.value === componentIds.length - 1;
       };
       /**
        * @param {string} id
-       * @param {number} zIndex
        * @returns {import("vue").ComputedRef<Object>}
        */
-      const getStyles = (id, zIndex) => computed(() => {
+      const getStyles = id => computed(() => {
         const windowComponent = windowManager.get(id);
         const state = windowComponent?.state;
         const position = applyPositionOnTarget(windowComponent?.position, targetSize.value);
         return {
-          zIndex,
+          zIndex: windowComponent.zIndex.value,
           ...position,
           ...(state.styles || {}),
         };
@@ -108,8 +107,8 @@
       /**
        * @param {string} id
        */
-      const mousedown = (id) => {
-        if (windowManager.has(id)) {
+      const bringWindowToTop = (id) => {
+        if (windowManager.has(id) && !isOnTop(id)) {
           windowManager.bringWindowToTop(id);
         }
       };
@@ -143,7 +142,7 @@
         getSlot: id => windowManager.get(id).slot,
         close: (id) => { windowManager.remove(id); },
         pin: (id) => { windowManager.pinWindow(id); },
-        mousedown,
+        bringWindowToTop,
         move,
       };
     },

@@ -2,7 +2,7 @@
   <v-sheet
     :id="`window-component--${windowState.id}`"
     class="elevation-3 position-absolute d-flex flex-column"
-    @click="$emit('click', $event)"
+    v-on="{ ...$listeners }"
     @dragstart="dragStart"
     @dragend="dragEnd"
     :draggable="isDraggable"

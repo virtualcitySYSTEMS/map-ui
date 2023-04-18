@@ -93,6 +93,7 @@ const messages = {
     select: 'Suchergebnis selektieren',
     placeholder: 'Suche nach Straße, Adresse, Ort, POI',
     zoomToFeatureAction: 'Auf Ergebnis zoomen',
+    zoomToAll: 'Zu allen Ergebnissen zoomen',
   },
   toolbox: {
     flight: 'Flug',

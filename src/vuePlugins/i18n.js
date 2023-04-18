@@ -21,6 +21,7 @@ export function createVueI18n() {
     messages: {
       en: {},
     },
+    postTranslation: (val, key) => (typeof val === 'string' ? val : key),
   });
   return i18n;
 }

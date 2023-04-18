@@ -242,9 +242,6 @@ class Search extends IndexedCollection {
         });
       if (this._currentResults.value.length > 0) {
         await this._resultLayer.activate();
-        const extent = this._resultLayer.getZoomToExtent();
-        const viewpoint = Viewpoint.createViewpointFromExtent(extent);
-        await this._app.maps.activeMap.gotoViewpoint(viewpoint);
         this.resultsChanged.raiseEvent(this._currentResults.value.slice(0));
       }
     }
@@ -284,6 +281,18 @@ class Search extends IndexedCollection {
    */
   abort() {
     [...this._array].forEach(impl => impl.abort?.());
+  }
+
+  /**
+   * Zooms to the extent of all available result features
+   * @returns {Promise<void>}
+   */
+  async zoomToAll() {
+    if (this._resultLayer.getFeatures().length > 0) {
+      const extent = this._resultLayer.getZoomToExtent();
+      const viewpoint = Viewpoint.createViewpointFromExtent(extent);
+      await this._app.maps.activeMap.gotoViewpoint(viewpoint);
+    }
   }
 
   /**

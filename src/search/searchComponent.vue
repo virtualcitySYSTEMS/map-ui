@@ -20,6 +20,14 @@
     </span>
     <v-divider class="mt-1" v-if="!!results.length" />
     <ResultsComponent :query="query" :results="results" />
+    <v-divider v-if="!!results.length" />
+    <VcsButton
+      v-if="!!results.length"
+      class="d-flex pt-1 px-1 justify-end"
+      @click="zoomToAll"
+    >
+      {{ $t('search.zoomToAll') }}
+    </VcsButton>
   </v-sheet>
 </template>
 
@@ -33,9 +41,11 @@
   import { VSheet, VDivider, VIcon } from 'vuetify/lib';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './resultsComponent.vue';
+  import VcsButton from '../components/buttons/VcsButton.vue';
 
   export default {
     components: {
+      VcsButton,
       ResultsComponent,
       VcsTextField,
       VSheet,
@@ -72,6 +82,10 @@
         searching.value = false;
       };
 
+      const zoomToAll = () => {
+        app.search.zoomToAll();
+      };
+
       onUnmounted(() => {
         clear();
       });
@@ -83,6 +97,7 @@
         reset,
         clear,
         search,
+        zoomToAll,
       };
     },
   };

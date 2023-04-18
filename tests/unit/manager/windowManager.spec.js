@@ -8,7 +8,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import { isReactive, isRef } from 'vue';
+import { computed, isReactive, isRef } from 'vue';
 import WindowManager, {
   WindowPositions,
   WindowSlot,
@@ -182,6 +182,11 @@ describe('windowManager', () => {
         it('position should be reactive', () => {
           expect(isReactive(windowComponent.position)).to.be.true;
         });
+
+        it('zIndex should be readonly', () => {
+          expect(() => { windowComponent.zIndex.value = 5; }).to.throw;
+          expect(() => { windowComponent.zIndex = computed(() => 5); }).to.throw;
+        });
       });
     });
 
@@ -241,7 +246,7 @@ describe('windowManager', () => {
       });
     });
 
-    describe('should handle ordering of windowComponents', () => {
+    describe('should handle ordering of windowComponents managing zIndices', () => {
       beforeAll(() => {
         windowManager = new WindowManager();
       });
@@ -261,12 +266,14 @@ describe('windowManager', () => {
         expect(windowManager.componentIds).to.have.ordered.members([window1.id, window2.id]);
       });
 
-      it('should reorder array, if a window is put on top with bringWindowToTop', () => {
+      it('should update zIndex, if a window is put on top with bringWindowToTop', () => {
         const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
         const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        expect(windowManager.componentIds).to.have.ordered.members([window1.id, window2.id]);
+        expect(window1.zIndex.value).to.equal(0);
+        expect(window2.zIndex.value).to.equal(1);
         windowManager.bringWindowToTop(window1.id);
-        expect(windowManager.componentIds).to.have.ordered.members([window2.id, window1.id]);
+        expect(window1.zIndex.value).to.equal(1);
+        expect(window2.zIndex.value).to.equal(0);
       });
     });
   });

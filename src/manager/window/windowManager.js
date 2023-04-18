@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { parseEnumValue } from '@vcsuite/parsers';
@@ -137,6 +137,7 @@ export function isSlotPosition(windowPosition) {
  * @property {WindowSlot} initialSlot
  * @property {Object} props
  * @property {Object} provides
+ * @property {import("vue").ComputedGetter<number>} zIndex
  */
 
 /**
@@ -238,6 +239,11 @@ class WindowManager {
      * @type {Array<string>}
      */
     this.componentIds = [];
+    /**
+     * reactive ordered array of ids, defining the zIndex of a component
+     * @type {import("vue").Ref<Array<string>>}
+     */
+    this._zIndices = ref([]);
 
     /**
      * @type {Map<string, WindowComponent>}
@@ -277,8 +283,8 @@ class WindowManager {
     const windowComponent = this._windowComponents.get(id);
     if (windowComponent) {
       this._cachePosition(windowComponent);
-      const index = this.componentIds.indexOf(id);
-      this.componentIds.splice(index, 1);
+      this.componentIds.splice(this.componentIds.indexOf(id), 1);
+      this._zIndices.value.splice(this._zIndices.value.indexOf(id), 1);
       this._windowComponents.delete(id);
       this._handleSlotsChanged(windowComponent.slot.value);
       this.removed.raiseEvent(windowComponent);
@@ -453,6 +459,7 @@ class WindowManager {
 
     const position = reactive(windowPosition);
     const initialPosition = { ...windowPositionOptions };
+    const zIndex = computed(() => this._zIndices.value.indexOf(id));
     /**
      * @type {WindowComponent}
      */
@@ -487,6 +494,9 @@ class WindowManager {
       get provides() {
         return provides;
       },
+      get zIndex() {
+        return zIndex;
+      },
     };
     const cached = this._assignCachedPosition(windowComponent);
     if (!cached) {
@@ -494,6 +504,7 @@ class WindowManager {
     }
     this._windowComponents.set(id, windowComponent);
     this.componentIds.push(id);
+    this._zIndices.value.push(id);
     this._handleSlotsChanged(slot);
     this.added.raiseEvent(windowComponent);
     return windowComponent;
@@ -505,10 +516,10 @@ class WindowManager {
    */
   bringWindowToTop(id) {
     if (this.has(id)) {
-      const index = this.componentIds.indexOf(id);
-      if (index >= 0 && index !== this.componentIds.length - 1) {
-        this.componentIds.push(id);
-        this.componentIds.splice(index, 1);
+      const index = this._zIndices.value.indexOf(id);
+      if (index >= 0 && index !== this._zIndices.value.length - 1) {
+        this._zIndices.value.push(id);
+        this._zIndices.value.splice(index, 1);
       }
     }
   }

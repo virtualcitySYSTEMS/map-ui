@@ -20,6 +20,7 @@
           @focus="onFocus"
           @blur="onBlur"
           @keydown.esc="onEscape"
+          @keydown="$emit('keydown', $event)"
           :value="visibleValue"
           :type="type"
           outlined

@@ -52,8 +52,7 @@ export function getWindowComponentOptions() {
  */
 function getCameraIcon(color) {
   return {
-    src: `data:image/svg+xml,%3C?xml version='1.0' encoding='UTF-8'?%3E%3Csvg id='cam' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 81.06 49.47'%3E%3Cdefs%3E%3ClinearGradient id='1' x1='40.53' y1='48.97' x2='40.53' y2='.25' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='${encodeURIComponent(color)}'/%3E%3Cstop offset='.46' stop-color='${encodeURIComponent(color)}' stop-opacity='.60'/%3E%3Cstop offset='.65' stop-color='${encodeURIComponent(color)}' stop-opacity='.40'/%3E%3Cstop offset='.83' stop-color='${encodeURIComponent(color)}' stop-opacity='.20'/%3E%3Cstop offset='.89' stop-color='${encodeURIComponent(color)}' stop-opacity='.15'/%3E%3Cstop offset='1' stop-color='transparent' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='2' x1='40.53' y1='49.37' x2='40.53' y2='0' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='.24' stop-color='${encodeURIComponent(color)}'/%3E%3Cstop offset='.38' stop-color='${encodeURIComponent(color)}' stop-opacity='.93'/%3E%3Cstop offset='.57' stop-color='${encodeURIComponent(color)}' stop-opacity='.70'/%3E%3Cstop offset='.78' stop-color='${encodeURIComponent(color)}' stop-opacity='.38'/%3E%3Cstop offset='1' stop-color='transparent' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='40.53 48.97 80.53 .25 .53 .25 40.53 48.97' fill='url(%231)' stroke='url(%232)' stroke-miterlimit='10' stroke-width='.5px'/%3E%3Ccircle cx='40.53' cy='42.97' r='6' fill='${encodeURIComponent(color)}' stroke='%23fff' stroke-miterlimit='10'/%3E%3C/svg%3E`,
-    scale: 0.5,
+    src: `data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Asvg%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22121.58616%22%20height%3D%2274.204994%22%20viewBox%3D%220%200%2032.169671%2019.633405%22%20version%3D%221.1%22%20id%3D%22svg216%22%3E%3Cdefs%20id%3D%22defs213%22%3E%3ClinearGradient%20id%3D%221-0%22%20x1%3D%2240.529999%22%20y1%3D%2248.970001%22%20x2%3D%2240.529999%22%20y2%3D%220.25%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20id%3D%22stop399%22%2F%3E%3Cstop%20offset%3D%22.46%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.60%22%20id%3D%22stop401%22%2F%3E%3Cstop%20offset%3D%22.65%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.40%22%20id%3D%22stop403%22%2F%3E%3Cstop%20offset%3D%22.83%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.20%22%20id%3D%22stop405%22%2F%3E%3Cstop%20offset%3D%22.89%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.15%22%20id%3D%22stop407%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop409%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%222-9%22%20x1%3D%2240.529999%22%20y1%3D%2249.369999%22%20x2%3D%2240.529999%22%20y2%3D%220%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%22.24%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20id%3D%22stop412%22%2F%3E%3Cstop%20offset%3D%22.38%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.93%22%20id%3D%22stop414%22%2F%3E%3Cstop%20offset%3D%22.57%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.70%22%20id%3D%22stop416%22%2F%3E%3Cstop%20offset%3D%22.78%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.38%22%20id%3D%22stop418%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop420%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22layer1%22%20transform%3D%22translate(5.3616118%2C3.2722342)%22%3E%3Cpolygon%20points%3D%220.53%2C0.25%2040.53%2C48.97%2080.53%2C0.25%20%22%20fill%3D%22url(%231)%22%20stroke%3D%22url(%232)%22%20stroke-miterlimit%3D%2210%22%20stroke-width%3D%220.5px%22%20id%3D%22polygon425%22%20style%3D%22fill%3Aurl(%231-0)%3Bstroke%3Aurl(%232-9)%22%20transform%3D%22matrix(0.396875%2C0%2C0%2C0.396875%2C-5.3621201%2C-3.2722342)%22%2F%3E%3Ccircle%20cx%3D%2210.723224%22%20cy%3D%2213.781484%22%20r%3D%222.3812499%22%20fill%3D%22${encodeURIComponent(color)}%22%20stroke%3D%22%23ffffff%22%20stroke-miterlimit%3D%2210%22%20id%3D%22circle427%22%20style%3D%22stroke-width%3A0.396874%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E`,
     color,
   };
 }
@@ -304,7 +303,7 @@ class OverviewMap {
       this._setupMapInteraction();
     }
     await this._map.activate();
-    this.map.setTarget('overview-map-container');
+    this._map.setTarget('overview-map-container');
     this._map.target?.firstChild?.classList?.add('overviewMapElement');
     if (!this._active) {
       this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(() => {
@@ -540,8 +539,9 @@ class OverviewMap {
       return;
     }
     let cameraFeature = this._cameraIconLayer.getFeatureById('cameraFeature');
+    const coords = Projection.wgs84ToMercator(position);
     if (!cameraFeature) {
-      const cameraGeometry = new Point([position[0], position[1]]);
+      const cameraGeometry = new Point(coords);
       cameraFeature = new Feature({
         geometry: cameraGeometry,
       });
@@ -549,7 +549,7 @@ class OverviewMap {
       cameraFeature.setStyle(this.cameraIconStyle.style);
       this._cameraIconLayer.addFeatures([cameraFeature]);
     }
-    cameraFeature.getGeometry().setCoordinates(Projection.wgs84ToMercator(position));
+    cameraFeature.getGeometry().setCoordinates(coords);
 
     const rotationDegrees = viewpoint.heading;
     const rotationRadians = CesiumMath.toRadians(rotationDegrees);
