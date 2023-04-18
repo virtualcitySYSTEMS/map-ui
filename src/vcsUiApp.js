@@ -1,14 +1,15 @@
 import {
   VcsApp,
-  contextIdSymbol,
+  moduleIdSymbol,
   Collection,
   makeOverrideCollection,
   destroyCollection,
   OverrideClassRegistry,
-  defaultDynamicContextId,
+  defaultDynamicModuleId,
   ObliqueMap,
   Viewpoint,
-  volatileContextId, VcsEvent,
+  volatileModuleId,
+  VcsEvent,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -38,6 +39,8 @@ import Notifier from './notifier/notifier.js';
  * @property {Array<Object>} [plugins]
  * @property {Array<ContentTreeItemOptions>} [contentTree]
  * @property {Array<UiConfigurationItem>} [uiConfig]
+ * @property {Array<FeatureInfoViewOptions>} [featureInfo]
+ * @property {Array<Object>} [i18n]
  */
 
 /**
@@ -118,7 +121,7 @@ class VcsUiApp extends VcsApp {
      */
     this._plugins = makeOverrideCollection(
       new Collection(),
-      () => this.dynamicContextId,
+      () => this.dynamicModuleId,
       serializePlugin,
       deserializePlugin,
     );
@@ -135,11 +138,11 @@ class VcsUiApp extends VcsApp {
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
         if (plugin.i18n) {
-          this.i18n.addPluginMessages(plugin.name, plugin[contextIdSymbol], plugin.i18n);
+          this.i18n.addPluginMessages(plugin.name, plugin[moduleIdSymbol], plugin.i18n);
         }
         if (plugin.initialize) {
           let state;
-          if (this._cachedAppState.contextIds.includes(plugin[contextIdSymbol])) {
+          if (this._cachedAppState.moduleIds.includes(plugin[moduleIdSymbol])) {
             state = this._cachedAppState.plugins.find(s => s.name === plugin.name);
           }
           try {
@@ -156,7 +159,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
-        this.i18n.removePluginMessages(plugin.name, plugin[contextIdSymbol]);
+        this.i18n.removePluginMessages(plugin.name, plugin[moduleIdSymbol]);
       }),
     ];
 
@@ -193,7 +196,7 @@ class VcsUiApp extends VcsApp {
      * @type {UiConfig}
      * @private
      */
-    this._uiConfig = new UiConfig(() => this.dynamicContextId);
+    this._uiConfig = new UiConfig(() => this.dynamicModuleId);
     /**
      * @type {FeatureInfo}
      * @private
@@ -210,7 +213,7 @@ class VcsUiApp extends VcsApp {
      * @type {I18nCollection<Object>}
      * @private
      */
-    this._i18n = new I18nCollection(() => this.dynamicContextId);
+    this._i18n = new I18nCollection(() => this.dynamicModuleId);
 
     /**
      * @type {CategoryManager}
@@ -342,17 +345,17 @@ class VcsUiApp extends VcsApp {
    */
   async getState(forUrl) {
     const state = createEmptyState();
-    state.contextIds = this.contexts
-      .filter(({ id }) => id !== defaultDynamicContextId)
-      .map(({ id }) => id);
+    state.moduleIds = this.modules
+      .filter(({ _id }) => _id !== defaultDynamicModuleId)
+      .map(({ _id }) => _id);
 
     state.activeMap = this.maps.activeMap.name;
     const viewpoint = await this.maps.activeMap.getViewpoint();
     state.activeViewpoint = viewpoint?.isValid?.() ? viewpoint.toJSON() : undefined;
     state.layers = [...this.layers]
       .filter(l => l.isSupported(this.maps.activeMap) &&
-        l[contextIdSymbol] !== defaultDynamicContextId &&
-        l[contextIdSymbol] !== volatileContextId &&
+        l[moduleIdSymbol] !== defaultDynamicModuleId &&
+        l[moduleIdSymbol] !== volatileModuleId &&
         (
           ((l.active || l.loading) && !l.activeOnStartup) ||
           (!l.active && l.activeOnStartup) ||
@@ -367,8 +370,8 @@ class VcsUiApp extends VcsApp {
           l.style &&
           l.style.name !== l.defaultStyle.name &&
           this.styles.has(l.style) &&
-          l.style[contextIdSymbol] !== defaultDynamicContextId &&
-          l.style[contextIdSymbol] !== volatileContextId
+          l.style[moduleIdSymbol] !== defaultDynamicModuleId &&
+          l.style[moduleIdSymbol] !== volatileModuleId
         ) {
           layerState.styleName = l.style.name;
         }
@@ -376,8 +379,8 @@ class VcsUiApp extends VcsApp {
       });
 
     state.plugins = await Promise.all([...this.plugins]
-      .filter(p => p[contextIdSymbol] !== defaultDynamicContextId &&
-        p[contextIdSymbol] !== volatileContextId &&
+      .filter(p => p[moduleIdSymbol] !== defaultDynamicModuleId &&
+        p[moduleIdSymbol] !== volatileModuleId &&
         typeof p.getState === 'function')
       .map(async p => ({ name: p.name, state: await p.getState(forUrl) })));
 
@@ -388,12 +391,12 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @param {import("@vcmap/core").Context} context
+   * @param {import("@vcmap/core").VcsModule} module
    * @returns {Promise<void>}
    * @protected
    */
-  async _parseContext(context) {
-    const { config } = context;
+  async _parseModule(module) {
+    const { config } = module;
     if (Array.isArray(config.plugins)) {
       const plugins = await Promise.all(config.plugins.map(async (pluginConfig) => {
         const plugin = await loadPlugin(pluginConfig.name, pluginConfig);
@@ -403,7 +406,7 @@ class VcsUiApp extends VcsApp {
         if (!isValidPackageName(plugin.name)) {
           getLogger().warning(`plugin ${plugin.name} has no valid package name!`);
         }
-        plugin[contextIdSymbol] = context.id;
+        plugin[moduleIdSymbol] = module._id;
         return plugin;
       }));
 
@@ -412,22 +415,22 @@ class VcsUiApp extends VcsApp {
         .map(p => this._plugins.override(p));
     }
     if (Array.isArray(config.i18n)) {
-      await this.i18n.parseItems(config.i18n, context.id);
+      await this.i18n.parseItems(config.i18n, module._id);
     }
-    await super._parseContext(context);
-    await this._contentTree.parseItems(config.contentTree, context.id);
-    await this._uiConfig.parseItems(config.uiConfig, context.id);
-    await this._featureInfo.collection.parseItems(config.featureInfo, context.id);
+    await super._parseModule(module);
+    await this._contentTree.parseItems(config.contentTree, module._id);
+    await this._uiConfig.parseItems(config.uiConfig, module._id);
+    await this._featureInfo.collection.parseItems(config.featureInfo, module._id);
   }
 
   /**
-   * @param {import("@vcmap/core").Context} context
+   * @param {import("@vcmap/core").VcsModule} module
    * @returns {Promise<void>}
    * @protected
    */
-  async _setContextState(context) {
-    await super._setContextState(context);
-    if (this._cachedAppState.contextIds.includes(context.id)) {
+  async _setModuleState(module) {
+    await super._setModuleState(module);
+    if (this._cachedAppState.moduleIds.includes(module._id)) {
       this._cachedAppState.layers.forEach((layerState) => {
         const layer = this.layers.getByKey(layerState.name);
         if (layer) {
@@ -457,23 +460,23 @@ class VcsUiApp extends VcsApp {
       } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
         await this.maps.activeMap.gotoViewpoint(new Viewpoint(this._cachedAppState.activeViewpoint));
       }
-      this._cachedAppState.contextIds.splice(this._cachedAppState.contextIds.indexOf(context.id), 1);
+      this._cachedAppState.moduleIds.splice(this._cachedAppState.moduleIds.indexOf(module._id), 1);
     }
   }
 
   /**
-   * @param {string} contextId
+   * @param {string} moduleId
    * @returns {Promise<void>}
    * @protected
    */
-  async _removeContext(contextId) {
+  async _removeModule(moduleId) {
     await Promise.all([
-      super._removeContext(contextId),
-      this._plugins.removeContext(contextId),
-      this._i18n.removeContext(contextId),
-      this._contentTree.removeContext(contextId),
-      this._featureInfo.collection.removeContext(contextId),
-      this._uiConfig.removeContext(contextId),
+      super._removeModule(moduleId),
+      this._plugins.removeModule(moduleId),
+      this._i18n.removeModule(moduleId),
+      this._contentTree.removeModule(moduleId),
+      this._featureInfo.collection.removeModule(moduleId),
+      this._uiConfig.removeModule(moduleId),
     ]);
   }
 

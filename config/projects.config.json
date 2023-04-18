@@ -1,43 +1,26 @@
 {
+  "name": "projectsDemo",
   "plugins": [
     {
       "name": "@vcmap/project-selector",
       "entry": "plugins/@vcmap/project-selector/index.js",
       "selected": "",
-      "selectedContexts": ["development", "codeLists"],
+      "selectedModules": ["config/dev.config.json", "config/codes.config.json"],
       "open": true,
       "projects": [
         {
           "name": "VC Map HOSTING",
           "description": "AEROWEST DEMO (Standard Hosting Layout)",
-          "contexts": [
-            { "configUrl": "config/aerowest.config.json" }
-          ]
+          "modules": ["config/aerowest.config.json"]
         },
         {
           "name": "VC Map Demo",
           "description": "VC Map Demo www.virtualcitymap.de",
-          "contexts": [
-            { "configUrl": "config/www.config.json" }
-          ]
+          "modules": ["config/www.config.json"]
         }
       ],
-      "contexts": [
-        {
-          "name": "development",
-          "description": "context containing examples, showcases and other stuff",
-          "configUrl": "config/dev.config.json"
-        },
-        {
-          "name": "codeLists",
-          "description": "context containing code lists for key and attribute mapping",
-          "configUrl": "config/codes.config.json"
-        },
-        {
-          "name": "graphFeatureInfo",
-          "description": "context adding a graph Feature Info view",
-          "configUrl": "config/graphFeatureInfo.config.json"
-        }
+      "modules": [
+        "config/dev.config.json", "config/codes.config.json", "config/graphFeatureInfo.config.json"
       ]
     }
   ]

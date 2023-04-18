@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { contextIdSymbol, IndexedCollection } from '@vcmap/core';
+import { moduleIdSymbol, IndexedCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 
 /**
@@ -51,59 +51,59 @@ export function mergeDeep(...sources) {
  */
 class I18nCollection extends IndexedCollection {
   /**
-   * @param {function():string} getDynamicContextId - function to get the current dynamic context id
+   * @param {function():string} getDynamicModuleId - function to get the current dynamic module id
    */
-  constructor(getDynamicContextId) {
+  constructor(getDynamicModuleId) {
     super(false);
     /**
      * @type {function(): string}
      * @private
      */
-    this._getDynamicContextId = getDynamicContextId;
+    this._getDynamicModuleId = getDynamicModuleId;
   }
 
   /**
    * @inheritDoc
    */
   add(item) {
-    if (!item[contextIdSymbol]) {
-      item[contextIdSymbol] = this._getDynamicContextId();
+    if (!item[moduleIdSymbol]) {
+      item[moduleIdSymbol] = this._getDynamicModuleId();
     }
     super.add(item);
   }
 
   /**
    * @param {Array<Object>} configArray
-   * @param {string} contextId
+   * @param {string} moduleId
    * @returns {Promise<void>}
    */
-  async parseItems(configArray, contextId) {
+  async parseItems(configArray, moduleId) {
     if (Array.isArray(configArray)) {
       configArray.forEach((item) => {
-        item[contextIdSymbol] = contextId;
+        item[moduleIdSymbol] = moduleId;
         this.add(item);
       });
     }
   }
 
   /**
-   * @param {string} contextId
+   * @param {string} moduleId
    */
-  async removeContext(contextId) {
+  async removeModule(moduleId) {
     [...this]
-      .filter(item => item[contextIdSymbol] === contextId)
+      .filter(item => item[moduleIdSymbol] === moduleId)
       .forEach((item) => {
         this.remove(item);
       });
   }
 
   /**
-   * @param {string} contextId
+   * @param {string} moduleId
    * @returns {Array<Object>}
    */
-  serializeContext(contextId) {
+  serializeModule(moduleId) {
     return [...this]
-      .filter(item => item[contextIdSymbol] === contextId)
+      .filter(item => item[moduleIdSymbol] === moduleId)
       .filter(item => !item[i18nPluginSymbol])
       .map(item => JSON.parse(JSON.stringify(item)));
   }
@@ -112,12 +112,12 @@ class I18nCollection extends IndexedCollection {
    * This method adds plugin messages to the collection. It is no necessary to call this function
    * from within a plugin. Use the i18n property on your plugin.
    * @param {string} plugin Name of the plugin
-   * @param {string} contextId
+   * @param {string} moduleId
    * @param {Object} messages
    */
-  addPluginMessages(plugin, contextId, messages) {
+  addPluginMessages(plugin, moduleId, messages) {
     messages[i18nPluginSymbol] = plugin;
-    messages[contextIdSymbol] = contextId;
+    messages[moduleIdSymbol] = moduleId;
     this.add(messages);
   }
 
@@ -125,11 +125,11 @@ class I18nCollection extends IndexedCollection {
    * This method removes plugin messages from the collection. It is no necessary to call this function
    * from within a plugin. Once your plugin is removed, the VcsUiApp will call this for you.
    * @param {string} pluginName
-   * @param {string} contextId
+   * @param {string} moduleId
    */
-  removePluginMessages(pluginName, contextId) {
+  removePluginMessages(pluginName, moduleId) {
     [...this]
-      .filter(item => item[i18nPluginSymbol] === pluginName && item[contextIdSymbol] === contextId)
+      .filter(item => item[i18nPluginSymbol] === pluginName && item[moduleIdSymbol] === moduleId)
       .forEach((item) => {
         this.remove(item);
       });
@@ -147,7 +147,7 @@ class I18nCollection extends IndexedCollection {
    * @inheritDoc
    */
   destroy() {
-    this._getDynamicContextId = null;
+    this._getDynamicModuleId = null;
     super.destroy();
   }
 }

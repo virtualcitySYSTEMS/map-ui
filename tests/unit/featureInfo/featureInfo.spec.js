@@ -12,14 +12,16 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import {
   CesiumTilesetLayer,
-  Context,
+  VcsModule,
   getDefaultVectorStyleItemOptions,
   isProvidedFeature,
   mercatorProjection,
   OpenlayersMap,
   vcsLayerName,
-  VectorLayer, VectorStyleItem,
-  WMSLayer, WMTSLayer,
+  VectorLayer,
+  VectorStyleItem,
+  WMSLayer,
+  WMTSLayer,
 } from '@vcmap/core';
 import { createDummyCesium3DTileFeature } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
 import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
@@ -47,7 +49,7 @@ describe('FeatureInfo', () => {
       app.layers.add(layer);
       const feature = new Feature({});
       layer.addFeatures([feature]);
-      await app.addContext(new Context({ id: 'remove' }));
+      await app.addModule(new VcsModule({ _id: 'remove' }));
       await app.featureInfo.selectFeature(feature);
     });
 
@@ -73,13 +75,13 @@ describe('FeatureInfo', () => {
       expect(app.featureInfo.selectedFeature).to.be.null;
     });
 
-    it('should clear, when adding a new context', async () => {
-      await app.addContext(new Context({ id: 'add' }));
+    it('should clear, when adding a new module', async () => {
+      await app.addModule(new VcsModule({ _id: 'add' }));
       expect(app.featureInfo.selectedFeature).to.be.null;
     });
 
-    it('should clear, when removing a context', async () => {
-      await app.removeContext('remove');
+    it('should clear, when removing a module', async () => {
+      await app.removeModule('remove');
       expect(app.featureInfo.selectedFeature).to.be.null;
     });
   });
@@ -291,7 +293,7 @@ describe('FeatureInfo', () => {
           layer = new CesiumTilesetLayer({});
           layer.properties.featureInfo = 'foo';
           app.layers.add(layer);
-          const feature = createDummyCesium3DTileFeature({ id: 'foo' });
+          const feature = createDummyCesium3DTileFeature({ _id: 'foo' });
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
           highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;

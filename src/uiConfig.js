@@ -23,12 +23,12 @@ import { ref } from 'vue';
  */
 class UiConfig extends Collection {
   /**
-   * @param {function():string} getDynamicContextId
+   * @param {function():string} getDynamicModuleId
    */
-  constructor(getDynamicContextId) {
+  constructor(getDynamicModuleId) {
     super();
 
-    makeOverrideCollection(this, getDynamicContextId);
+    makeOverrideCollection(this, getDynamicModuleId);
     /**
      * This object just acts as a go between for reactivity until we have vue3
      * @todo vue3 cleanup

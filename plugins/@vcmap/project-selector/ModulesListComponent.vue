@@ -4,17 +4,17 @@
       color="rgba(0,0,0,0)"
     >
       <v-chip
-        v-for="(context, index) in contexts"
+        v-for="(module, index) in modules"
         :key="index"
         class="mx-1"
-        :color="context.active ? 'primary' : undefined"
+        :color="module.active ? 'primary' : undefined"
         :disabled="!toggleable"
-        @click="toggle(context)"
+        @click="toggle(module)"
       >
-        {{ context.name || context.configUrl }}
+        {{ module.name || module.configUrl }}
         <VcsTooltip
-          v-if="context.description"
-          :tooltip="context.description"
+          v-if="module.description && toggleable"
+          :tooltip="module.description"
         >
           <template #activator="{ on, attrs }">
             <v-icon
@@ -36,7 +36,7 @@
   import { VChip, VContainer, VIcon, VList } from 'vuetify/lib';
 
   export default {
-    name: 'ContextsListComponent',
+    name: 'ModulesListComponent',
     components: {
       VcsTooltip,
       VContainer,
@@ -45,7 +45,7 @@
       VIcon,
     },
     props: {
-      contexts: {
+      modules: {
         type: Array,
         required: true,
       },
@@ -55,9 +55,9 @@
       },
     },
     methods: {
-      toggle(context) {
+      toggle(module) {
         if (this.toggleable) {
-          this.$emit('toggle-context', context);
+          this.$emit('toggle-module', module);
         }
       },
     },

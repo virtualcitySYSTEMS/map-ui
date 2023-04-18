@@ -126,7 +126,7 @@
           dialog.value = false;
         },
         download() {
-          const stringObject = JSON.stringify(categoryObject.serializeForContext(app.dynamicContextId), null, 2);
+          const stringObject = JSON.stringify(categoryObject.serializeModule(app.dynamicModuleId), null, 2);
           downloadLink.value = `data:text/json;charset=utf-8,${encodeURIComponent(stringObject)}`;
           if (downloadLink.value) {
             nextTick(() => {

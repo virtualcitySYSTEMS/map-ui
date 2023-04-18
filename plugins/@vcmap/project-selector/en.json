@@ -2,6 +2,9 @@
   "project-selector": {
     "project" : {
       "title": "Projects"
+    },
+    "module" : {
+      "title": "Modules"
     }
   }
 }

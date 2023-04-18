@@ -8,10 +8,10 @@
       v-else
     />
 
-    <VcsButton @click="replaceContext">
+    <VcsButton @click="replaceModule">
       Apply
     </VcsButton>
-    <VcsButton @click="removeContext">
+    <VcsButton @click="removeModule">
       Remove
     </VcsButton>
   </div>
@@ -20,10 +20,10 @@
 <script>
   import { ref, inject } from 'vue';
   import { VcsButton } from '@vcmap/ui';
-  import { Context } from '@vcmap/core';
+  import { VcsModule } from '@vcmap/core';
   import { VProgressCircular, VTextarea } from 'vuetify/lib';
 
-  const contextId = 'foo';
+  const moduleId = 'foo';
 
   export default {
     name: 'Editor',
@@ -35,25 +35,25 @@
     setup() {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
-      const context = app.getContextById(contextId);
-      const configString = ref(JSON.stringify(context ? context.config : {}, null, 2));
+      const module = app.getModuleById(moduleId);
+      const configString = ref(JSON.stringify(module ? module.config : {}, null, 2));
       const loading = ref(false);
 
       return {
         configString,
         loading,
-        async replaceContext() {
+        async replaceModule() {
           loading.value = true;
           const config = JSON.parse(configString.value);
-          config.id = contextId;
-          const newContext = new Context(config);
-          await this.removeContext();
-          await app.addContext(newContext);
+          config.id = moduleId;
+          const newModule = new VcsModule(config);
+          await this.removeModule();
+          await app.addModule(newModule);
           loading.value = false;
         },
-        async removeContext() {
-          if (app.getContextById(contextId)) {
-            await app.removeContext(contextId);
+        async removeModule() {
+          if (app.getModuleById(moduleId)) {
+            await app.removeModule(moduleId);
           }
         },
       };

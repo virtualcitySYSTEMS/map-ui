@@ -14,7 +14,7 @@ describe('URL state IO', () => {
 
     beforeAll(() => {
       originalState = createEmptyState();
-      originalState.contextIds.push('foo');
+      originalState.moduleIds.push('foo');
       originalState.plugins.push({ name: 'foo', state: [] });
       originalState.plugins.push({ name: 'bar', state: [] });
 
@@ -34,8 +34,8 @@ describe('URL state IO', () => {
       recreatedState = getStateFromURL(url);
     });
 
-    it('should recreate contextIds', () => {
-      expect(recreatedState.contextIds).to.deep.eql(originalState.contextIds);
+    it('should recreate moduleIds', () => {
+      expect(recreatedState.moduleIds).to.deep.eql(originalState.moduleIds);
     });
 
     it('should recreate plugins', () => {
@@ -67,7 +67,7 @@ describe('URL state IO', () => {
 
       beforeAll(() => {
         originalState = createEmptyState();
-        originalState.contextIds.push('foo');
+        originalState.moduleIds.push('foo');
         originalState.plugins.push({ name: 'foo', state: [] });
         originalState.plugins.push({ name: 'bar', state: new Array(2048).fill('X').join('') });
         originalState.plugins.push({ name: 'baz', state: [] });
@@ -88,8 +88,8 @@ describe('URL state IO', () => {
         recreatedState = getStateFromURL(url);
       });
 
-      it('should recreate contextIds', () => {
-        expect(recreatedState.contextIds).to.deep.eql(originalState.contextIds);
+      it('should recreate moduleIds', () => {
+        expect(recreatedState.moduleIds).to.deep.eql(originalState.moduleIds);
       });
 
       it('should recreate all plugins which could fit', () => {
@@ -120,7 +120,7 @@ describe('URL state IO', () => {
 
       beforeAll(() => {
         originalState = createEmptyState();
-        originalState.contextIds.push('foo');
+        originalState.moduleIds.push('foo');
         originalState.plugins.push({ name: 'foo', state: [] });
         originalState.plugins.push({ name: 'bar', state: [] });
 
@@ -140,8 +140,8 @@ describe('URL state IO', () => {
         recreatedState = getStateFromURL(url);
       });
 
-      it('should recreate contextIds', () => {
-        expect(recreatedState.contextIds).to.deep.eql(originalState.contextIds);
+      it('should recreate moduleIds', () => {
+        expect(recreatedState.moduleIds).to.deep.eql(originalState.moduleIds);
       });
 
       it('should recreate all plugins which could fit', () => {

@@ -39,7 +39,7 @@ import { Viewpoint } from '@vcmap/core';
  * @typedef {Object} AppState
  * @property {import("@vcmap/core").ViewpointOptions} [activeViewpoint]
  * @property {string} [activeMap]
- * @property {Array<string>} contextIds
+ * @property {Array<string>} moduleIds
  * @property {Array<LayerState>} layers
  * @property {Array<PluginState>} plugins
  * @property {string} [activeObliqueCollection]
@@ -48,7 +48,7 @@ import { Viewpoint } from '@vcmap/core';
 /**
  * The URL state of the app is an array. To null parameters, pass in 0 instead.
  * The first entry is the viewpoint state, the second the active map name
- * The third is an array of contexts to apply the state to
+ * The third is an array of modules to apply the state to
  * the fourth is an array of layer states
  * the fifth is an array of plugin states
  * the sixth is the currently active oblique collection or 0 if not applicable
@@ -65,7 +65,7 @@ const MAX_URL_LENGTH = 2048;
  */
 export function createEmptyState() {
   return {
-    contextIds: [],
+    moduleIds: [],
     layers: [],
     plugins: [],
   };
@@ -143,7 +143,7 @@ function parseUrlAppState(urlState) {
     state.activeMap = urlState[1];
   }
   if (Array.isArray(urlState[2])) {
-    state.contextIds = urlState[2].slice();
+    state.moduleIds = urlState[2].slice();
   }
   if (Array.isArray(urlState[3])) {
     urlState[3].forEach((urlLayerState) => {
@@ -190,7 +190,7 @@ function writeUrlAppState(state, maxLength) {
     urlState[1] = state.activeMap;
   }
 
-  urlState[2] = state.contextIds.slice();
+  urlState[2] = state.moduleIds.slice();
   urlState[3] = [];
   urlState[4] = [];
 
@@ -247,7 +247,7 @@ export function setStateToUrl(state, url) {
     activeObliqueCollection: [String, undefined],
     layers: Array,
     plugins: Array,
-    contextIds: [String],
+    moduleIds: [String],
   });
   check(url, URL);
 

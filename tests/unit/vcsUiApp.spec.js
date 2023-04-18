@@ -9,8 +9,9 @@ import {
   vi,
 } from 'vitest';
 import {
-  Context,
-  contextIdSymbol, markVolatile,
+  VcsModule,
+  moduleIdSymbol,
+  markVolatile,
   OpenlayersMap,
   VectorLayer,
   VectorStyleItem,
@@ -24,9 +25,9 @@ import VcsUiApp from '../../src/vcsUiApp.js';
  * @returns {Viewpoint}
  */
 async function setupApp(app) {
-  const context = new Context({ id: 'foo' });
-  await app.addContext(context);
-  await app.setDynamicContext(context);
+  const module = new VcsModule({ _id: 'foo' });
+  await app.addModule(module);
+  await app.setDynamicModule(module);
 
   const activeLayer = new VectorLayer({
     name: 'activeLayer',
@@ -63,24 +64,24 @@ async function setupApp(app) {
   await unsupportedLayer.activate();
   app.layers.add(unsupportedLayer);
 
-  await app.resetDynamicContext();
-  const dynamicContextLayer = new VectorLayer({
-    name: 'dynamicContextLayer',
+  await app.resetDynamicModule();
+  const dynamicModuleLayer = new VectorLayer({
+    name: 'dynamicModuleLayer',
   });
-  await dynamicContextLayer.activate();
-  app.layers.add(dynamicContextLayer);
+  await dynamicModuleLayer.activate();
+  app.layers.add(dynamicModuleLayer);
 
-  const dynamicContextStyle = new VectorStyleItem({
-    name: 'dynamicContextStyle',
+  const dynamicModuleStyle = new VectorStyleItem({
+    name: 'dynamicModuleStyle',
   });
-  app.styles.add(dynamicContextStyle);
+  app.styles.add(dynamicModuleStyle);
 
-  const pluginInDefaultContext = {
-    name: 'pluginInDefaultContext',
+  const pluginInDefaultModule = {
+    name: 'pluginInDefaultModule',
     getState() { return 'foo'; },
   };
-  app.plugins.add(pluginInDefaultContext);
-  await app.setDynamicContext(context);
+  app.plugins.add(pluginInDefaultModule);
+  await app.setDynamicModule(module);
 
   const volatileStyle = new VectorStyleItem({
     name: 'volatileStyle',
@@ -106,18 +107,18 @@ async function setupApp(app) {
   styledInactiveLayer.setStyle(style);
   app.layers.add(styledInactiveLayer);
 
-  const layerStyledByDefaultDynamicContext = new VectorLayer({
-    name: 'layerStyledByDefaultDynamicContext',
+  const layerStyledByDefaultDynamicModule = new VectorLayer({
+    name: 'layerStyledByDefaultDynamicModule',
   });
-  await layerStyledByDefaultDynamicContext.activate();
-  layerStyledByDefaultDynamicContext.setStyle(dynamicContextStyle);
-  app.layers.add(layerStyledByDefaultDynamicContext);
+  await layerStyledByDefaultDynamicModule.activate();
+  layerStyledByDefaultDynamicModule.setStyle(dynamicModuleStyle);
+  app.layers.add(layerStyledByDefaultDynamicModule);
 
   const layerStyledByVolatileStyle = new VectorLayer({
     name: 'layerStyledByVolatileStyle',
   });
   await layerStyledByVolatileStyle.activate();
-  layerStyledByDefaultDynamicContext.setStyle(volatileStyle);
+  layerStyledByDefaultDynamicModule.setStyle(volatileStyle);
   app.layers.add(layerStyledByVolatileStyle);
 
   const pluginWithGetState = {
@@ -196,8 +197,8 @@ describe('VcsUiApp', () => {
           expect(state.layers.find(s => s.name === 'unsupportedLayer')).to.be.undefined;
         });
 
-        it('should not add layers which are part of the dynamic context', () => {
-          expect(state.layers.find(s => s.name === 'dynamicContextLayer')).to.be.undefined;
+        it('should not add layers which are part of the dynamic module', () => {
+          expect(state.layers.find(s => s.name === 'dynamicModuleLayer')).to.be.undefined;
         });
 
         it('should not add layers which are volatile', () => {
@@ -208,9 +209,9 @@ describe('VcsUiApp', () => {
           expect(state.layers.find(s => s.name === 'styledInactiveLayer')).to.be.undefined;
         });
 
-        it('should not add the style name to layers, if the style is part of the dynamic context', () => {
+        it('should not add the style name to layers, if the style is part of the dynamic module', () => {
           expect(state.layers).to.deep
-            .include({ name: 'layerStyledByDefaultDynamicContext', active: true });
+            .include({ name: 'layerStyledByDefaultDynamicModule', active: true });
         });
 
         it('should not add the style name to layers, if the style is volatile', () => {
@@ -232,8 +233,8 @@ describe('VcsUiApp', () => {
           expect(state.plugins.find(s => s.name === 'pluginWithoutGetState')).to.be.undefined;
         });
 
-        it('should not add plugins in the default dynamic context', () => {
-          expect(state.plugins.find(s => s.name === 'pluginInDefaultContext')).to.be.undefined;
+        it('should not add plugins in the default dynamic module', () => {
+          expect(state.plugins.find(s => s.name === 'pluginInDefaultModule')).to.be.undefined;
         });
 
         it('should not add plugins which are volatile', () => {
@@ -249,8 +250,8 @@ describe('VcsUiApp', () => {
         expect(new Viewpoint(state.activeViewpoint).equals(viewpoint)).to.be.true;
       });
 
-      it('should add contexts', () => {
-        expect([...state.contextIds]).to.have.members(['foo']);
+      it('should add modules', () => {
+        expect([...state.moduleIds]).to.have.members(['foo']);
       });
     });
 
@@ -275,8 +276,8 @@ describe('VcsUiApp', () => {
     });
   });
 
-  describe('loading context', () => {
-    describe('loading a context, which has a state', () => {
+  describe('loading module', () => {
+    describe('loading a module, which has a state', () => {
       /**
        * @type {VcsUiApp}
        */
@@ -289,16 +290,16 @@ describe('VcsUiApp', () => {
         const originalApp = new VcsUiApp();
         originalViewpoint = await setupApp(originalApp);
         config = {
-          id: 'foo',
-          maps: originalApp.maps.serializeContext('foo'),
-          layers: originalApp.layers.serializeContext('foo'),
-          styles: originalApp.styles.serializeContext('foo'),
+          _id: 'foo',
+          maps: originalApp.maps.serializeModule('foo'),
+          layers: originalApp.layers.serializeModule('foo'),
+          styles: originalApp.styles.serializeModule('foo'),
         };
         state = await originalApp.getState();
         originalApp.destroy();
         app = new VcsUiApp();
         app._cachedAppState = state;
-        await app.addContext(new Context(config));
+        await app.addModule(new VcsModule(config));
       });
 
       afterAll(() => {
@@ -335,7 +336,7 @@ describe('VcsUiApp', () => {
       });
     });
 
-    describe('loading of a context twice, which has a state', () => {
+    describe('loading of a module twice, which has a state', () => {
       /**
        * @type {VcsUiApp}
        */
@@ -348,21 +349,21 @@ describe('VcsUiApp', () => {
         const originalApp = new VcsUiApp();
         originalViewpoint = await setupApp(originalApp);
         config = {
-          id: 'foo',
-          maps: originalApp.maps.serializeContext('foo'),
-          layers: originalApp.layers.serializeContext('foo'),
-          styles: originalApp.styles.serializeContext('foo'),
+          _id: 'foo',
+          maps: originalApp.maps.serializeModule('foo'),
+          layers: originalApp.layers.serializeModule('foo'),
+          styles: originalApp.styles.serializeModule('foo'),
         };
         state = await originalApp.getState();
         originalApp.destroy();
         app = new VcsUiApp();
         app._cachedAppState = state;
-        await app.addContext(new Context(config));
-        await app.removeContext('foo');
+        await app.addModule(new VcsModule(config));
+        await app.removeModule('foo');
         const newMap = new OpenlayersMap({});
         app.maps.add(newMap);
         await app.maps.setActiveMap(newMap.name);
-        await app.addContext(new Context(config));
+        await app.addModule(new VcsModule(config));
       });
 
       afterAll(() => {
@@ -405,7 +406,7 @@ describe('VcsUiApp', () => {
       beforeEach(() => {
         app = new VcsUiApp();
         app._cachedAppState = {
-          contextIds: ['foo'],
+          moduleIds: ['foo'],
           layers: [],
           plugins: [
             {
@@ -420,7 +421,7 @@ describe('VcsUiApp', () => {
         app.destroy();
       });
 
-      it('should set the state in initialize, if the plugin has a state and is part of the contextIds of the state', () => {
+      it('should set the state in initialize, if the plugin has a state and is part of the moduleIds of the state', () => {
         const spy = vi.fn();
         const plugin = {
           name: 'foo',
@@ -428,12 +429,12 @@ describe('VcsUiApp', () => {
             spy(state);
           },
         };
-        plugin[contextIdSymbol] = 'foo';
+        plugin[moduleIdSymbol] = 'foo';
         app.plugins.add(plugin);
         expect(spy).toHaveBeenCalledWith('foo');
       });
 
-      it('should not set the state in initialize, if the plugin has a state and is not part of the contextIds of the state', () => {
+      it('should not set the state in initialize, if the plugin has a state and is not part of the moduleIds of the state', () => {
         const spy = vi.fn();
         const plugin = {
           name: 'foo',

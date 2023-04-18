@@ -1,4 +1,6 @@
 {
+  "name": "VC Map HOSTING",
+  "description": "AEROWEST DEMO (Standard Hosting Layout)",
   "mapcontainer": "vcs_map_container",
   "startingViewpointName": "Start",
   "startingMapName": "Cesium Map",

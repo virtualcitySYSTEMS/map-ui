@@ -1,5 +1,5 @@
 # Components Concept
-Components is a central control element to show Items of Categories from the VcsApp.dynamicContext.
+Components is a central control element to show Items of Categories from the VcsApp dynamic module.
 For content to be shown in the Components window a Category has to be added to the VcsApp and a Plugin or the VcsApp has
 to add the Category to the `categoryManager`. 
 
@@ -69,7 +69,7 @@ category.collection.added.addEventListener((item) => {
 ```
 
 ## Managing MappingFunctions. 
-Items associated with the "dynamicContext" in a managed Category will be shown in the Components window. Plugins can add `MappingFunctions` to
+Items associated with the "dynamicModule" in a managed Category will be shown in the Components window. Plugins can add `MappingFunctions` to
 the `categoryManager` to define the corresponding VcsListItem for each Item. The `PredicateFunction` can be used to restrict the
 `MappingFunction` to specific Items, for example only GeoJSON Layer.
 

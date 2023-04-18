@@ -2,7 +2,7 @@
   <v-container>
     <h1>{{ $t('project-selector.project.title') }}</h1>
     <v-list
-      v-for="(project, index) in state.projects.value"
+      v-for="(project, index) in state.projects"
       :key="index"
     >
       <v-card
@@ -19,9 +19,9 @@
               {{ project.name }}
             </v-list-item-title>
             <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
-            <ContextsListComponent
-              :contexts="project.contexts"
-              @toggle-context="toggleContext"
+            <ModulesListComponent
+              :modules="project.modules"
+              @toggle-module="toggleModule"
               :toggleable="false"
             />
           </v-list-item-content>
@@ -38,10 +38,10 @@
       </v-card>
     </v-list>
     <v-divider />
-    <h1>Contexts</h1>
-    <ContextsListComponent
-      :contexts="state.contexts.value"
-      @toggle-context="toggleContext"
+    <h1>{{ $t('project-selector.module.title') }}</h1>
+    <ModulesListComponent
+      :modules="state.modules"
+      @toggle-module="toggleModule"
     />
   </v-container>
 </template>
@@ -60,12 +60,12 @@
     VAvatar,
     VDivider,
   } from 'vuetify/lib';
-  import ContextsListComponent from './ContextsListComponent.vue';
+  import ModulesListComponent from './ModulesListComponent.vue';
 
   export default {
     name: 'ProjectSelector',
     components: {
-      ContextsListComponent,
+      ModulesListComponent,
       VList,
       VContainer,
       VCard,
@@ -87,11 +87,11 @@
         this.loading = undefined;
       }
 
-      async function toggleContext(context) {
-        if (context.active) {
-          await plugin.unloadContext(app, context);
+      async function toggleModule(module) {
+        if (module.active) {
+          await plugin.unloadModule(app, module);
         } else {
-          await plugin.loadContext(app, context);
+          await plugin.loadModule(app, module);
         }
       }
 
@@ -100,7 +100,7 @@
         state: plugin.state,
         config: plugin.config,
         selectProject,
-        toggleContext,
+        toggleModule,
       };
     },
   };

@@ -58,7 +58,7 @@
   import OrientationToolsButton from './orientationToolsButton.vue';
 
   /**
-   * Creates a go-to viewpoint action from a startingViewpointName defined in a context
+   * Creates a go-to viewpoint action from a startingViewpointName defined in a module
    * @param {VcsUiApp} app
    * @returns {{action: import("vue").Reactive<{}>, destroy: function():void}}
    */
@@ -66,13 +66,13 @@
     const initialAction = { icon: undefined, title: undefined, active: undefined, callback: undefined };
     const action = reactive({ ...initialAction });
     /**
-     * Gets the starting viewpoint of the last added context, where a startingViewpointName was defined
+     * Gets the starting viewpoint of the last added module, where a startingViewpointName was defined
      * and sets it on the home button action.
      */
     const updateStartingViewpoint = () => {
       let viewpoint = null;
-      for (let idx = app.contexts.length - 1; idx >= 0; idx--) {
-        const { startingViewpointName } = app.contexts[idx].config;
+      for (let idx = app.modules.length - 1; idx >= 0; idx--) {
+        const { startingViewpointName } = app.modules[idx].config;
         if (startingViewpointName && app.viewpoints.hasKey(startingViewpointName)) {
           viewpoint = app.viewpoints.getByKey(startingViewpointName);
           break;
@@ -95,8 +95,8 @@
     };
 
     const listener = [
-      app.contextAdded.addEventListener(updateStartingViewpoint),
-      app.contextRemoved.addEventListener(updateStartingViewpoint),
+      app.moduleAdded.addEventListener(updateStartingViewpoint),
+      app.moduleRemoved.addEventListener(updateStartingViewpoint),
     ];
 
     const destroy = () => { listener.forEach(cb => cb()); };

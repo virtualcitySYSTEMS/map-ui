@@ -23,7 +23,7 @@
     "index.js",
     "start.js",
     "index.html",
-    "map.config.json",
+    "app.config.json",
     "dist/",
     "src/",
     "plugins/",
@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "~1.1.2",
-    "@vcmap/core": "~5.0.0-rc.27",
+    "@vcmap/core": "^5.0.0-rc.30",
     "ol": "~7.2.2",
     "vue": "~2.7.3",
     "vuetify": "~2.6.7"

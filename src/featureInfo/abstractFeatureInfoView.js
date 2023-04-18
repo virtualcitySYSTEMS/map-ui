@@ -217,7 +217,7 @@ class AbstractFeatureInfoView extends VcsObject {
   }
 
   /**
-   * window options, configured in a context, used only internally by AbstractFeatureInfoView or subclass
+   * window options, configured in a module, used only internally by AbstractFeatureInfoView or subclass
    * @type {WindowComponentOptions|Object}
    * @readonly
    */

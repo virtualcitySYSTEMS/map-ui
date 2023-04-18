@@ -8,7 +8,7 @@ import {
   afterAll,
   vi,
 } from 'vitest';
-import { Context } from '@vcmap/core';
+import { VcsModule } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import CategoryManager from '../../../src/manager/categoryManager/categoryManager.js';
 
@@ -24,12 +24,12 @@ describe('categoryManager', () => {
     await app.categories.parseCategoryItems(
       'cat1',
       [{ name: 'item1' }, { name: 'item2' }],
-      app.dynamicContextId,
+      app.dynamicModuleId,
     );
     await app.categories.parseCategoryItems(
       'cat2',
       [{ id: 'item3' }, { id: 'item4' }, { id: 'item5' }],
-      app.dynamicContextId,
+      app.dynamicModuleId,
     );
   });
 
@@ -149,17 +149,17 @@ describe('categoryManager', () => {
         category1.collection.remove(newItem);
       });
 
-      it('should ignore newly added items not associated to the dynamicContext', async () => {
+      it('should ignore newly added items not associated to the dynamicModule', async () => {
         expect(cat1Item.items).to.have.lengthOf(2);
-        const newContext = new Context({});
-        await app.addContext(newContext);
+        const newModule = new VcsModule({});
+        await app.addModule(newModule);
         await app.categories.parseCategoryItems(
           'cat1',
           [{ name: 'item7' }, { name: 'item8' }],
-          newContext.id,
+          newModule._id,
         );
         expect(cat1Item.items).to.have.lengthOf(2);
-        await app.removeContext(newContext.id);
+        await app.removeModule(newModule._id);
       });
     });
   });
@@ -442,7 +442,7 @@ describe('categoryManager', () => {
     });
   });
 
-  describe('dynamicContextChanged', () => {
+  describe('dynamicModuleChanged', () => {
     let categoryManager;
 
     beforeAll(() => {
@@ -457,17 +457,17 @@ describe('categoryManager', () => {
     });
 
     describe('should filter ', () => {
-      let context;
+      let module;
 
       beforeEach(async () => {
-        context = new Context({});
-        await app.addContext(context);
-        app.setDynamicContext(context);
+        module = new VcsModule({});
+        await app.addModule(module);
+        app.setDynamicModule(module);
       });
 
       afterEach(async () => {
-        app.resetDynamicContext();
-        await app.removeContext(context.id);
+        app.resetDynamicModule();
+        await app.removeModule(module._id);
       });
 
       it('should synchronize the category items in the managed category list', () => {
@@ -485,18 +485,18 @@ describe('categoryManager', () => {
         category1.collection.remove(item6);
       });
 
-      it('should update after resetting the dynamicContext', () => {
-        app.resetDynamicContext();
+      it('should update after resetting the dynamicModule', () => {
+        app.resetDynamicModule();
         const listItemCat1 = categoryManager.get(category1.name);
         expect(listItemCat1.items).to.have.lengthOf(2);
         const listItemCat2 = categoryManager.get(category2.name);
         expect(listItemCat2.items).to.have.lengthOf(3);
       });
 
-      it('should ignore removing an item from a context which is not the dynamicContext', () => {
+      it('should ignore removing an item from a module which is not the dynamicModule', () => {
         const item6 = { name: 'item6' };
         category1.collection.add(item6);
-        app.resetDynamicContext();
+        app.resetDynamicModule();
         category1.collection.remove(item6);
         const listItemCat1 = categoryManager.get(category1.name);
         expect(listItemCat1.items).to.have.lengthOf(2);
@@ -539,7 +539,7 @@ describe('categoryManager', () => {
       await app.categories.parseCategoryItems(
         'cat3',
         [{ name: 'item1' }, { name: 'item2' }],
-        app.dynamicContextId,
+        app.dynamicModuleId,
       );
       categoryManager = new CategoryManager(app);
       categoryManager.add({ categoryName: 'cat3', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');

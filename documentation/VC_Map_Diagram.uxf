@@ -48,7 +48,7 @@ layer=2</panel_attributes>
 --
 - Provides the core GIS
 abstractions: map, layer etc.
-- Provides Context Concept
+- Provides Module Concept
 - Provides GIS utilities.
 bg=green
 layer=2</panel_attributes>

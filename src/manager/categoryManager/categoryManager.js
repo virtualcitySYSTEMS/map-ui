@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { contextIdSymbol, IndexedCollection, VcsEvent } from '@vcmap/core';
+import { moduleIdSymbol, IndexedCollection, VcsEvent } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import { sortByOwner } from '../navbarManager.js';
 import { validateAction, validateActions } from '../../components/lists/VcsActionList.vue';
@@ -145,8 +145,8 @@ class CategoryManager {
      * @type {function():void}
      * @private
      */
-    this._dynamicContextIdListener = this._app.dynamicContextIdChanged.addEventListener((id) => {
-      this._dynamicContextId = id;
+    this._dynamicModuleIdListener = this._app.dynamicModuleIdChanged.addEventListener((id) => {
+      this._dynamicModuleId = id;
       this._resetManagedCategories();
     });
 
@@ -162,7 +162,7 @@ class CategoryManager {
      * @type {string}
      * @private
      */
-    this._dynamicContextId = this._app.dynamicContextId;
+    this._dynamicModuleId = this._app.dynamicModuleId;
 
     /**
      * @type {Array<ItemMapping<*>>}
@@ -250,7 +250,7 @@ class CategoryManager {
   }
 
   /**
-   * removes all items from all categories and rebuilds the item tree depending on the ContextId
+   * removes all items from all categories and rebuilds the item tree depending on the ModuleId
    * @private
    */
   _resetManagedCategories() {
@@ -281,7 +281,7 @@ class CategoryManager {
       });
       managedCategory.items = [...category.collection]
         .filter((item) => {
-          return item[contextIdSymbol] === this._dynamicContextId;
+          return item[moduleIdSymbol] === this._dynamicModuleId;
         })
         .map((item) => {
           return transformItem(item, category, itemMappings);
@@ -306,17 +306,17 @@ class CategoryManager {
 
     const listeners = [
       category.collection.added.addEventListener((item) => {
-        if (item[contextIdSymbol] === this._dynamicContextId) {
+        if (item[moduleIdSymbol] === this._dynamicModuleId) {
           this._handleItemAdded(item, category);
         }
       }),
       category.collection.removed.addEventListener((item) => {
-        if (item[contextIdSymbol] === this._dynamicContextId) {
+        if (item[moduleIdSymbol] === this._dynamicModuleId) {
           this._handleItemRemoved(item, category);
         }
       }),
       category.collection.replaced.addEventListener((replacedEvent) => {
-        if (replacedEvent.old[contextIdSymbol] === this._dynamicContextId) {
+        if (replacedEvent.old[moduleIdSymbol] === this._dynamicModuleId) {
           this._handleItemRemoved(replacedEvent.old, category);
         }
       }),
@@ -324,7 +324,7 @@ class CategoryManager {
 
     if (category.collection instanceof IndexedCollection) {
       listeners.push(category.collection.moved.addEventListener((item) => {
-        if (item[contextIdSymbol] === this._dynamicContextId) {
+        if (item[moduleIdSymbol] === this._dynamicModuleId) {
           this._handleItemMoved(item, category);
         }
       }));
@@ -572,7 +572,7 @@ class CategoryManager {
    * destroys the categoryManager, removes all Listeners and clears all Managed Categories
    */
   destroy() {
-    this._dynamicContextIdListener();
+    this._dynamicModuleIdListener();
     this._appCategoriesRemovedListener();
     this.componentIds = [];
     this._managedCategories.forEach((item) => {

@@ -1,16 +1,16 @@
 # State
 The `State` of an app describes _the difference_ of the current applications state and
-the contexts it has loaded. For instance, the currently active layers (or inactive layers, 
+the modules it has loaded. For instance, the currently active layers (or inactive layers, 
 which would be active on startup), a style defined on an active layer, the current viewpoint
 are all stored within the state.
 
-On loading the app, the state is set **once** for each context for which the state was defined.
-Once all contexts for which the state was defined have been loaded once, reloading them
+On loading the app, the state is set **once** for each module for which the state was defined.
+Once all modules for which the state was defined have been loaded once, reloading them
 will no longer set the state.
 
 Furthermore, each plugin may provide its own state via the `getState(forUrl: boolean):*` API. During
 initialization of the plugin, the state is passed into the plugin (if the plugin is loaded
-in a context for which the state applies). Plugins may define any number of state
+in a module for which the state applies). Plugins may define any number of state
 parameters, for instance the current window position of their windows, include form values,
 drawn geometries, selected features etc. Since the state can also be used
 to create a link to the current application, including a subset of the state,

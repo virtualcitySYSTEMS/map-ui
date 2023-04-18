@@ -1,5 +1,5 @@
 {
-  "configs": [
+  "modules": [
     "config/projects.config.json"
   ]
 }

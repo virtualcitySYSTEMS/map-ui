@@ -10,8 +10,8 @@ await Promise.all([
     plugins: [vcsOl()],
   }, true),
   fs.promises.cp(
-    getProjectPath('map.config.json'),
-    path.join(process.cwd(), 'dist', 'map.config.json'),
+    getProjectPath('app.config.json'),
+    path.join(process.cwd(), 'dist', 'app.config.json'),
   ),
   fs.promises.cp(
     getProjectPath('config'),

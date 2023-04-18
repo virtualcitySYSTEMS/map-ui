@@ -1,4 +1,6 @@
 {
+  "name": "development",
+  "description": "module containing examples, showcases and other stuff",
   "startingViewpointName": "potsdamer_platz",
   "i18n": [
     {

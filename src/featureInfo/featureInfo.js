@@ -211,7 +211,7 @@ class FeatureInfo {
      */
     this._collection = makeOverrideCollection(
       new Collection(),
-      () => this._app.dynamicContextId,
+      () => this._app.dynamicModuleId,
       null,
       config => getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
       AbstractFeatureInfoView,
@@ -277,12 +277,12 @@ class FeatureInfo {
           this.clear();
         }
       }),
-      this._app.contextAdded.addEventListener(() => {
+      this._app.moduleAdded.addEventListener(() => {
         this.clear();
         this._destroyFeatureInfoTool();
         this._destroyFeatureInfoTool = setupFeatureInfoTool(this._app);
       }),
-      this._app.contextRemoved.addEventListener(() => this.clear()),
+      this._app.moduleRemoved.addEventListener(() => this.clear()),
     ];
     /**
      * A vector layer to render provided features on

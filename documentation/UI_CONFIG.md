@@ -1,7 +1,7 @@
 # UI Config
 The UI configuration is meant to provide means to configure certain aspects of
-the UI, for instance the primary theme color or the logo used. UI configuration
-is context sensitive and may be overridden in later contexts. Within a contexts 
+the UI, for instance the primary theme color or the logo used. UI configuration, as all configuration parts,
+is depending on the currently loaded modules and may be overridden. Within a VcsModule 
 configuration, the UI configuration is provided by an Array of configuration items,
 which in turn is mapped to an `OverrideCollection` on the `VcsUiApp` called `uiConfig`. 
 Each entry provides a `name` (aka key) and `value` for the configuration. To override a

@@ -3,8 +3,8 @@
 For internationalization the @vcmap/ui uses VueI18n, see https://kazupon.github.io/vue-i18n/.
 - delivers English and German I18n files.
 - provides an api for plugins to inject plugin specific I18n mappings.
-- extends the Context with a section `i18n`, to inject I18n on Context loading.
-- allows to overwrite I18n keys with a Context (configuration file).
+- extends the VcsModule with a section `i18n`, to inject I18n on VcsModule loading.
+- allows to overwrite I18n keys with a VcsModule (configuration file).
 
 
 ## I18n keys
@@ -16,7 +16,7 @@ Further sections like `navigation`, eg. should not overlap with sections for dyn
 // TODO define how to name stuff. 
 
 I18n keys are managed in the `vcsUiApp.i18n` `Collection`. New keys can be added to the Collection via 
-the `i18n` section in the Context (configuration file), the `i18n` section in a Plugin or via the API. 
+the `i18n` section in the VcsModule (configuration file), the `i18n` section in a Plugin or via the API. 
 
 ```javascript
   app.i18n.add({ de: { myMessages: 'test' } });
@@ -29,9 +29,9 @@ All added I18n keys will be merged in the order they have been added to the coll
 Dynamic content is defined as content not known when starting the app, e.g. the title of a layer defined in the layer properties.
 On rendering all dynamic content will be processed by VueI18n, so in the default case, 
 the key will not be found and the key(layerTitle) will be shown. If the layer title should be translated, 
-a `i18n` section can be added to the Context.
+a `i18n` section can be added to the VcsModule.
 
-Example Context configuration file:
+Example VcsModule configuration file:
 ```json
 {
   "i18n": {
@@ -68,7 +68,7 @@ Example Context configuration file:
 ```
 This example, with the locale set to `en` will render the title of the layer named `myLayer1` as `myLayerTitle` and the 
 title of the layer named `myLayer` as `myLayerTitle english`.  
-The translations should be in the same section in the I18n as the dynamic context, so for a layer use the `layers.` prefix, 
+The translations should be in the same section in the I18n as the dynamic module, so for a layer use the `layers.` prefix, 
 for styles use `styles.` etc.
 
 
@@ -149,7 +149,7 @@ To add a new language to the following approach can be taken.
   const english = allI18nKeys.en;
   const stringifiedJSON = JSON.stringify(english, null, 2);
 ```
-- write the stringifiedJSON to a new Context file with the following content. This example uses `pl` as an example.
+- write the stringifiedJSON to a new VcsModule configuration file with the following content. This example uses `pl` as an example.
 ```JSON
 {
   "i18n": [{
@@ -159,7 +159,7 @@ To add a new language to the following approach can be taken.
 ```
 - translate all english keys to the new language. 
 
-This new Context file can now be loaded as a Context in the vcMap.
+This new VcsModule configuration file can now be loaded as a VcsModule in the vcMap.
 
 ## Setup Vue/VueI18n/VcsApp 
 

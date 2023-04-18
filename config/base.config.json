@@ -1,4 +1,5 @@
 {
+  "name": "VcsBaseConfig",
   "mapcontainer": "vcs_map_container",
   "startingViewpointName": "berlin",
   "startingMapName": "cesium",

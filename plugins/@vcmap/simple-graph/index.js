@@ -8,7 +8,7 @@ export default async function () {
     onVcsAppMounted(app) {
       /** Example for registering custom component on FeatureInfo */
       app.featureInfo.classRegistry.registerClass(
-        app.dynamicContextId,
+        app.dynamicModuleId,
         SimpleGraphView.className,
         SimpleGraphView,
       );

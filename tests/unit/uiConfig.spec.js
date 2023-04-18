@@ -12,10 +12,10 @@ import UiConfig from '../../src/uiConfig.js';
 import { sleep } from '../helpers.js';
 
 describe('UiConfig', () => {
-  let getDynamicContextId;
+  let getDynamicModuleId;
 
   beforeAll(() => {
-    getDynamicContextId = () => 'dynamicContextId';
+    getDynamicModuleId = () => 'dynamicModuleId';
   });
 
   describe('adding of keys', () => {
@@ -25,7 +25,7 @@ describe('UiConfig', () => {
     let uiConfig;
 
     beforeEach(() => {
-      uiConfig = new UiConfig(getDynamicContextId);
+      uiConfig = new UiConfig(getDynamicModuleId);
     });
 
     afterEach(() => {
@@ -62,7 +62,7 @@ describe('UiConfig', () => {
     let item;
 
     beforeEach(() => {
-      uiConfig = new UiConfig(getDynamicContextId);
+      uiConfig = new UiConfig(getDynamicModuleId);
       item = { name: 'foo', value: 'bar' };
       uiConfig.add(item);
     });

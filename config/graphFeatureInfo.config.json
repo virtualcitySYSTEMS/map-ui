@@ -1,4 +1,6 @@
 {
+  "name": "graphFeatureInfo",
+  "description": "module adding a graph Feature Info view",
   "featureInfo": [
     {
       "type": "SimpleGraphView",
@@ -94,7 +96,7 @@
   "plugins": [
     {
       "name": "simple-graph",
-      "entry": "plugins/simple-graph/index.js"
+      "entry": "plugins/@vcmap/simple-graph/index.js"
     }
   ]
 }

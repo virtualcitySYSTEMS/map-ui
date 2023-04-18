@@ -4,7 +4,7 @@ import {
   it,
   beforeEach, afterEach,
 } from 'vitest';
-import { contextIdSymbol } from '@vcmap/core';
+import { moduleIdSymbol } from '@vcmap/core';
 import I18nCollection, { mergeDeep, isObject, i18nPluginSymbol } from '../../src/i18n/i18nCollection.js';
 
 
@@ -86,7 +86,7 @@ describe('i18nCollection', () => {
     let elem2;
 
     beforeEach(() => {
-      i18n = new I18nCollection(() => { return 'contextId'; });
+      i18n = new I18nCollection(() => { return 'moduleId'; });
       elem1 = { de: { myKey: 'test' } };
       elem2 = { de: { myKey2: 'test2' } };
       i18n.add(elem1);
@@ -97,30 +97,30 @@ describe('i18nCollection', () => {
       i18n.destroy();
     });
 
-    it('should add the dynamicContextID to all added elements', () => {
-      expect(elem1[contextIdSymbol]).to.be.equal('contextId');
-      expect(elem2[contextIdSymbol]).to.be.equal('contextId');
+    it('should add the dynamicmoduleId to all added elements', () => {
+      expect(elem1[moduleIdSymbol]).to.be.equal('moduleId');
+      expect(elem2[moduleIdSymbol]).to.be.equal('moduleId');
     });
 
-    it('should remove context specific items on removeContext', async () => {
-      i18n.parseItems([{ new2: 'newItems' }], 'contextId2');
+    it('should remove module specific items on removeModule', async () => {
+      i18n.parseItems([{ new2: 'newItems' }], 'moduleId2');
       expect(i18n.size).to.be.equal(3);
-      i18n.removeContext('contextId');
+      i18n.removeModule('moduleId');
       expect(i18n.size).to.be.equal(1);
-      i18n.removeContext('contextId2');
+      i18n.removeModule('moduleId2');
       expect(i18n.size).to.be.equal(0);
     });
 
     describe('plugin handling', () => {
       it('should add the i18nPluginSymbol to items added by a plugin', () => {
-        i18n.addPluginMessages('myPlugin', 'newContextId', { key: 'message' });
+        i18n.addPluginMessages('myPlugin', 'newmoduleId', { key: 'message' });
         expect(i18n.size).to.be.equal(3);
         expect(i18n.get(2)[i18nPluginSymbol]).to.be.equal('myPlugin');
       });
 
       it('should remove plugin items which where previously added', () => {
-        i18n.addPluginMessages('myPlugin', 'newContextId', { key: 'message' });
-        i18n.removePluginMessages('myPlugin', 'newContextId');
+        i18n.addPluginMessages('myPlugin', 'newmoduleId', { key: 'message' });
+        i18n.removePluginMessages('myPlugin', 'newmoduleId');
         expect(i18n.size).to.be.equal(2);
       });
     });
@@ -131,12 +131,12 @@ describe('i18nCollection', () => {
     let configArray;
 
     beforeEach(async () => {
-      i18n = new I18nCollection(() => { return 'contextId'; });
+      i18n = new I18nCollection(() => { return 'moduleId'; });
       configArray = [
         { de: { myKey: 'test' } },
         { de: { myKey2: 'test2' } },
       ];
-      await i18n.parseItems(configArray, 'configContextId');
+      await i18n.parseItems(configArray, 'configModuleId');
     });
 
     afterEach(() => {
@@ -147,18 +147,18 @@ describe('i18nCollection', () => {
       expect(i18n.size).to.be.equal(2);
     });
 
-    it('should add the provided contextId to the parsed items', () => {
-      expect(i18n.get(0)[contextIdSymbol]).to.be.equal('configContextId');
-      expect(i18n.get(1)[contextIdSymbol]).to.be.equal('configContextId');
+    it('should add the provided moduleId to the parsed items', () => {
+      expect(i18n.get(0)[moduleIdSymbol]).to.be.equal('configModuleId');
+      expect(i18n.get(1)[moduleIdSymbol]).to.be.equal('configModuleId');
     });
 
     it('should serialize items from a configuration array', () => {
-      expect(i18n.serializeContext('configContextId')).to.deep.equal(configArray);
+      expect(i18n.serializeModule('configModuleId')).to.deep.equal(configArray);
     });
 
     it('should ignore plugin items on serialization', () => {
-      i18n.addPluginMessages('myPlugin', 'configContextId', { test: 'test' });
-      expect(i18n.serializeContext('configContextId')).to.deep.equal(configArray);
+      i18n.addPluginMessages('myPlugin', 'configModuleId', { test: 'test' });
+      expect(i18n.serializeModule('configModuleId')).to.deep.equal(configArray);
     });
   });
 });

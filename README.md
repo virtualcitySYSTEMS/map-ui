@@ -42,7 +42,7 @@ Provides an abstraction layer around 2D, 3D and oblique Maps. Provides the follo
 - layers
 - interactions
 - styles
-- application and context/config handling
+- application and module/config handling
 
 ### [@vcmap/ui](https://github.com/virtualcitySYSTEMS/map-ui)
 This Project, provides
@@ -75,7 +75,7 @@ how safe it is to start developing with these components.
 - STABLE: conforms to SemVer concept. 
 
 ### @vcmap/core
-- Context Concept RC
+- Module Concept RC
 - Categories Concept BETA
 - Layers/Maps RC
 - Styles: BETA

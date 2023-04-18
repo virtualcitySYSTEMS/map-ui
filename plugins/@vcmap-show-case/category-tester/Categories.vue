@@ -163,7 +163,7 @@
             }
             const category = await app.categories.requestCategory({ name: jsonUpload.name, type: 'Category' });
             if (jsonUpload?.items?.length > 0) {
-              await app.categories.parseCategoryItems(jsonUpload.name, jsonUpload.items, app.dynamicContextId);
+              await app.categories.parseCategoryItems(jsonUpload.name, jsonUpload.items, app.dynamicModuleId);
             }
             app.categoryManager.add({ categoryName: category.name }, packageJSON.name);
             uploadString.value = '';

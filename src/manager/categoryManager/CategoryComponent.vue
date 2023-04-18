@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel
     class="px-2"
-    @change="open = !open"
+    @change="active = !active"
   >
     <v-expansion-panel-header hide-actions>
       <template #default="{ open }">
@@ -79,7 +79,7 @@
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       const windowId = `${category.id}-category-list`;
-      const open = ref(false);
+      const active = ref(false);
 
       const selection = computed({
         get() { return category.selection; },
@@ -91,7 +91,7 @@
 
       return {
         selection,
-        open,
+        active,
         openCategoryItemWindow() {
           if (app.windowManager.has(windowId)) {
             setTimeout(() => {

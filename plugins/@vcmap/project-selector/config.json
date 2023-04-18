@@ -2,14 +2,14 @@
     "name": "projectSelector",
     "entry": "plugins/@vcmap/project-selector/index.js",
     "selected": "VC Map Base",
-    "selectedContexts": [],
+    "selectedModules": [],
     "open": false,
     "projects": [
         {
             "name": "VC Map Base",
             "description": "Base Layout with basic datasets",
-            "contexts": [ { "configUrl": "config/base.config.json" } ]
+            "modules": [ "config/base.config.json" ]
         }
     ],
-    "contexts": []
+    "modules": []
 }

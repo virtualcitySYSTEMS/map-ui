@@ -1,4 +1,6 @@
 {
+  "name": "VC Map Demo",
+  "description": "VC Map Demo www.virtualcitymap.de",
   "startingViewpointName": "startview",
   "startingMapName": "cesium",
   "projection": {

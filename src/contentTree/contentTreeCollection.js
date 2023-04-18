@@ -306,7 +306,7 @@ export function createContentTreeCollection(app) {
 
   const overrideCollection = makeOverrideCollection(
     collection,
-    () => app.dynamicContextId,
+    () => app.dynamicModuleId,
     null,
     config => getObjectFromClassRegistry(app.contentTreeClassRegistry, config, app),
     ContentTreeItem,

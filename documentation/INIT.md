@@ -10,18 +10,18 @@ It also loads the starting script, which initializes the VcsApp.
 
 The `start.js` calls a method which creates a new `VcsApp` instance.
 You have two different options provided by the following methods:
-- [initAppFromMapConfig](#initappfrommapconfig)
-- [initAppFromContext](#initappfrommapconfig)
+- [initAppFromAppConfig](#initappfromappconfig)
+- [initAppFromModule](#initappfromcontext)
 
-### initAppFromMapConfig
+### initAppFromAppConfig
 This approach is for a modular loading of configs in a predefined order.
-You have to provide a so called `map.config.json`, which defines a set of config urls to be loaded.
+You have to provide a so called `app.config.json`, which defines a set of config urls to be loaded.
 Each configuration file specified is fetched and the instantiated context is added to the VcsApp.
 
-#### map.config.json
+#### app.config.json
 ```json
 {
-  "configs": [
+  "modules": [
     "config/www.config.json",
     "config/codes.config.json"
   ]
@@ -30,14 +30,14 @@ Each configuration file specified is fetched and the instantiated context is add
 
 #### start.js
 ```js
-import { initAppFromMapConfig } from '@vcmap/ui';
+import { initAppFromAppConfig } from '@vcmap/ui';
 
-initAppFromMapConfig('#app', 'map.config.json');
+initAppFromAppConfig('#app', 'app.config.json');
 ```
 
 > The order of configs is important, because map objects can be overwritten by other definitions specified in a context loaded afterwards.
 
-### initAppFromContext
+### initAppFromModule
 The second option is to load only one single config. In this case the complete application is defined in this single file.
 Other configs cannot be referenced.
 
@@ -63,7 +63,7 @@ Other configs cannot be referenced.
 
 #### start.js
 ```js
-import { initAppFromContext } from '@vcmap/ui';
+import { initAppFromModule } from '@vcmap/ui';
 
-initAppFromContext('#app', 'config.json');
+initAppFromModule('#app', 'config.json');
 ```
