@@ -1,9 +1,4 @@
-import {
-  describe,
-  beforeAll,
-  expect,
-  it,
-} from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 import BalloonFeatureInfoView from '../../../src/featureInfo/balloonFeatureInfoView.js';
 
 describe('BalloonFeatureInfoView', () => {
@@ -36,10 +31,16 @@ describe('BalloonFeatureInfoView', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
       it('should configure title', () => {
-        expect(outputConfig).to.have.property('balloonTitle', inputConfig.balloonTitle);
+        expect(outputConfig).to.have.property(
+          'balloonTitle',
+          inputConfig.balloonTitle,
+        );
       });
       it('should configure src', () => {
-        expect(outputConfig).to.have.property('balloonSubtitle', inputConfig.balloonSubtitle);
+        expect(outputConfig).to.have.property(
+          'balloonSubtitle',
+          inputConfig.balloonSubtitle,
+        );
       });
     });
   });

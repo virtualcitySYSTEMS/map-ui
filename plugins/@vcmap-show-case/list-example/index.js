@@ -7,9 +7,15 @@ import ListExample from './ListExample.vue';
  */
 export default async function iconsExample() {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     onVcsAppMounted(app) {
       const { action, destroy } = createToggleAction(
         {
@@ -27,11 +33,7 @@ export default async function iconsExample() {
         app.windowManager,
         packageJSON.name,
       );
-      app.navbarManager.add(
-        { action },
-        packageJSON.name,
-        ButtonLocation.TOOL,
-      );
+      app.navbarManager.add({ action }, packageJSON.name, ButtonLocation.TOOL);
       this._destroyAction = destroy;
     },
     destroy() {

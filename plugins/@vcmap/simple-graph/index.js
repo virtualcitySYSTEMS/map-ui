@@ -2,7 +2,7 @@ import SimpleGraphView from './simpleGraphView.js';
 /**
  * @returns {VcsPlugin}
  */
-export default async function () {
+export default async function simpleGraph() {
   return {
     name: '@vcmap/simpleGraph',
     onVcsAppMounted(app) {

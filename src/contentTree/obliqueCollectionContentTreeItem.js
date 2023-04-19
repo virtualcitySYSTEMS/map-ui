@@ -27,7 +27,9 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   /**
    * @type {string}
    */
-  static get className() { return 'ObliqueCollectionContentTreeItem'; }
+  static get className() {
+    return 'ObliqueCollectionContentTreeItem';
+  }
 
   /**
    * @param {ObliqueCollectionContentTreeItemOptions} options
@@ -73,7 +75,9 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
    * @private
    */
   _clearListeners() {
-    this._listeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
     this._listeners.splice(0);
   }
 
@@ -95,36 +99,54 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
 
     if (!this._collection) {
       this.visible = false;
-      this._listeners.push(this._app.obliqueCollections.added.addEventListener(resetCallback));
+      this._listeners.push(
+        this._app.obliqueCollections.added.addEventListener(resetCallback),
+      );
     } else {
       const map = this._app.maps.activeMap;
       if (map instanceof ObliqueMap) {
         this.visible = true;
-        this.state = map.collection === this._collection ?
-          StateActionState.ACTIVE :
-          StateActionState.INACTIVE;
-        this._listeners.push(map.collectionChanged.addEventListener(() => {
-          this.state = map.collection === this._collection ?
-            StateActionState.ACTIVE :
-            StateActionState.INACTIVE;
-        }));
+        this.state =
+          map.collection === this._collection
+            ? StateActionState.ACTIVE
+            : StateActionState.INACTIVE;
+        this._listeners.push(
+          map.collectionChanged.addEventListener(() => {
+            this.state =
+              map.collection === this._collection
+                ? StateActionState.ACTIVE
+                : StateActionState.INACTIVE;
+          }),
+        );
       } else {
         this.visible = false;
       }
 
       this.setPropertiesFromObject(this._collection);
-      this._listeners.push(this._app.maps.mapActivated.addEventListener(() => {
-        this._setup();
-      }));
+      this._listeners.push(
+        this._app.maps.mapActivated.addEventListener(() => {
+          this._setup();
+        }),
+      );
 
-      this._listeners.push(this._app.obliqueCollections.removed.addEventListener(resetCallback));
-      this._listeners.push(this._app.obliqueCollections.added.addEventListener(resetCallback));
+      this._listeners.push(
+        this._app.obliqueCollections.removed.addEventListener(resetCallback),
+      );
+      this._listeners.push(
+        this._app.obliqueCollections.added.addEventListener(resetCallback),
+      );
     }
   }
 
   async clicked() {
-    if (this.visible && this._collection && this._app.maps.activeMap instanceof ObliqueMap) {
-      const map = /** @type {import("@vcmap/core").Oblique} */ (this._app.maps.activeMap);
+    if (
+      this.visible &&
+      this._collection &&
+      this._app.maps.activeMap instanceof ObliqueMap
+    ) {
+      const map = /** @type {import("@vcmap/core").Oblique} */ (
+        this._app.maps.activeMap
+      );
       const vp = await map.getViewpoint();
       if (this.state === StateActionState.INACTIVE) {
         this.state = StateActionState.LOADING;
@@ -152,4 +174,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default ObliqueCollectionContentTreeItem;
-contentTreeClassRegistry.registerClass(ObliqueCollectionContentTreeItem.className, ObliqueCollectionContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  ObliqueCollectionContentTreeItem.className,
+  ObliqueCollectionContentTreeItem,
+);

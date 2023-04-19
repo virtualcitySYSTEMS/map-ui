@@ -1,30 +1,27 @@
 <template>
-  <span class="vcs-formatted-number px-1" :class="{'vcs-formatted-number-dense': dense}">
+  <span
+    class="vcs-formatted-number px-1"
+    :class="{ 'vcs-formatted-number-dense': dense }"
+  >
     {{ formatted }}
-    <span v-if="unit === SpecialUnits.SQM">
-      m<sup>2</sup>
-    </span>
-    <span v-else-if="unit === SpecialUnits.CBM">
-      m<sup>3</sup>
-    </span>
-    <span v-else-if="unit === SpecialUnits.DEG">
-      °
-    </span>
+    <span v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
+    <span v-else-if="unit === SpecialUnits.CBM"> m<sup>3</sup> </span>
+    <span v-else-if="unit === SpecialUnits.DEG"> ° </span>
     <span v-else>
       {{ unit }}
     </span>
   </span>
 </template>
 <style lang="scss" scoped>
-@import "../../styles/vcsGrid.scss";
-@import "../../styles/vcsFont";
-.vcs-formatted-number {
-  font-size: $base-font-size;
-  line-height: $line-height-base;
-}
-.vcs-formatted-number-dense {
-  line-height: $line-height-dense;
-}
+  @import '../../styles/vcsGrid.scss';
+  @import '../../styles/vcsFont';
+  .vcs-formatted-number {
+    font-size: $base-font-size;
+    line-height: $line-height-base;
+  }
+  .vcs-formatted-number-dense {
+    line-height: $line-height-dense;
+  }
 </style>
 <script>
   import { computed } from 'vue';
@@ -36,17 +33,17 @@
    * @param {number} fractionDigits
    * @returns {string|number}
    */
-  export function numberToLocaleString(value, fractionDigits) { // XXX todo maybe merge with dateTime helpers in core?
+  export function numberToLocaleString(value, fractionDigits) {
+    // XXX todo maybe merge with dateTime helpers in core?
     const number = parseInt(value, 10);
     if (Number.isNaN(number)) {
       return number;
     }
 
-    return (/** @type {number} */ value)
-      .toLocaleString(navigator.language, {
-        minimumFractionDigits: fractionDigits,
-        maximumFractionDigits: fractionDigits,
-      });
+    return /** @type {number} */ value.toLocaleString(navigator.language, {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    });
   }
 
   /**
@@ -93,7 +90,9 @@
       },
     },
     setup(props) {
-      const formatted = computed(() => numberToLocaleString(props.value, props.fractionDigits));
+      const formatted = computed(() =>
+        numberToLocaleString(props.value, props.fractionDigits),
+      );
       return {
         SpecialUnits,
         formatted,

@@ -1,22 +1,20 @@
-import {
-  describe,
-  beforeAll,
-  afterAll,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, beforeAll, afterAll, expect, it, vi } from 'vitest';
 
 import { getCesiumMap } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
 import { getObliqueCollection } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
 import { ObliqueMap, OpenlayersMap } from '@vcmap/core';
 import { Cartesian2, SceneTransforms } from '@vcmap-cesium/engine';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import { balloonOffset, setupBalloonPositionListener } from '../../../src/featureInfo/balloonHelper.js';
+import {
+  balloonOffset,
+  setupBalloonPositionListener,
+} from '../../../src/featureInfo/balloonHelper.js';
 import BalloonComponent from '../../../src/featureInfo/BalloonComponent.vue';
 import { sleep } from '../../helpers.js';
 
-const clickedPosition = [1489140.34538515, 6894774.914271692, 59.57478554330297];
+const clickedPosition = [
+  1489140.34538515, 6894774.914271692, 59.57478554330297,
+];
 const rect = { left: 0, top: 0, height: 500, width: 500 };
 
 /**
@@ -32,20 +30,22 @@ async function setupAppForEvents(app, map) {
   document.body.append(target);
   app.maps.setTarget(target);
 
-  app.windowManager.add({
-    id: 'balloon',
-    component: BalloonComponent,
-    props: {
-      position: clickedPosition,
+  app.windowManager.add(
+    {
+      id: 'balloon',
+      component: BalloonComponent,
+      props: {
+        position: clickedPosition,
+      },
     },
-  }, 'test');
+    'test',
+  );
 
   return () => {
     app.maps.setTarget(null);
     app.destroy();
   };
 }
-
 
 describe('BalloonHelper', () => {
   let app;
@@ -66,10 +66,17 @@ describe('BalloonHelper', () => {
 
     it('should update position on render', () => {
       const { activeMap } = app.maps;
-      vi.spyOn(SceneTransforms, 'wgs84ToWindowCoordinates').mockImplementationOnce(() => new Cartesian2());
+      vi.spyOn(
+        SceneTransforms,
+        'wgs84ToWindowCoordinates',
+      ).mockImplementationOnce(() => new Cartesian2());
       activeMap.getScene().postRender.raiseEvent(activeMap.getScene());
-      expect(app.windowManager.get('balloon').position.left).to.equal(`${rect.left - balloonOffset.x}px`);
-      expect(app.windowManager.get('balloon').position.bottom).to.equal(`${balloonOffset.y}px`);
+      expect(app.windowManager.get('balloon').position.left).to.equal(
+        `${rect.left - balloonOffset.x}px`,
+      );
+      expect(app.windowManager.get('balloon').position.bottom).to.equal(
+        `${balloonOffset.y}px`,
+      );
     });
   });
 
@@ -89,11 +96,18 @@ describe('BalloonHelper', () => {
 
     it('should update position on render', async () => {
       const { activeMap } = app.maps;
-      vi.spyOn(activeMap.olMap, 'getPixelFromCoordinate').mockImplementationOnce(() => [0, 0]);
+      vi.spyOn(
+        activeMap.olMap,
+        'getPixelFromCoordinate',
+      ).mockImplementationOnce(() => [0, 0]);
       activeMap.olMap.renderSync();
       await sleep();
-      expect(app.windowManager.get('balloon').position.left).to.equal(`${rect.left - balloonOffset.x}px`);
-      expect(app.windowManager.get('balloon').position.bottom).to.equal(`${balloonOffset.y}px`);
+      expect(app.windowManager.get('balloon').position.left).to.equal(
+        `${rect.left - balloonOffset.x}px`,
+      );
+      expect(app.windowManager.get('balloon').position.bottom).to.equal(
+        `${balloonOffset.y}px`,
+      );
     });
   });
 
@@ -117,23 +131,37 @@ describe('BalloonHelper', () => {
 
     it('should update position on render', async () => {
       const { activeMap } = app.maps;
-      vi.spyOn(activeMap.olMap, 'getPixelFromCoordinate').mockImplementationOnce(() => [0, 0]);
+      vi.spyOn(
+        activeMap.olMap,
+        'getPixelFromCoordinate',
+      ).mockImplementationOnce(() => [0, 0]);
       activeMap.olMap.renderSync();
       await sleep();
-      expect(app.windowManager.get('balloon').position.left).to.equal(`${rect.left - balloonOffset.x}px`);
-      expect(app.windowManager.get('balloon').position.bottom).to.equal(`${balloonOffset.y}px`);
+      expect(app.windowManager.get('balloon').position.left).to.equal(
+        `${rect.left - balloonOffset.x}px`,
+      );
+      expect(app.windowManager.get('balloon').position.bottom).to.equal(
+        `${balloonOffset.y}px`,
+      );
     });
 
     it('should update position after image change', async () => {
       const { activeMap } = app.maps;
       await activeMap.setCollection(getObliqueCollection());
       await activeMap.initialize();
-      vi.spyOn(activeMap.olMap, 'getPixelFromCoordinate').mockImplementationOnce(() => [0, 0]);
+      vi.spyOn(
+        activeMap.olMap,
+        'getPixelFromCoordinate',
+      ).mockImplementationOnce(() => [0, 0]);
       await activeMap.setImageByName('otherImage');
       activeMap.olMap.renderSync();
       await sleep();
-      expect(app.windowManager.get('balloon').position.left).to.equal(`${rect.left - balloonOffset.x}px`);
-      expect(app.windowManager.get('balloon').position.bottom).to.equal(`${balloonOffset.y}px`);
+      expect(app.windowManager.get('balloon').position.left).to.equal(
+        `${rect.left - balloonOffset.x}px`,
+      );
+      expect(app.windowManager.get('balloon').position.bottom).to.equal(
+        `${balloonOffset.y}px`,
+      );
     });
   });
 });

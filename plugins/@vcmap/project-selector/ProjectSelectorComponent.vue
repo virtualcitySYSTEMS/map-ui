@@ -1,10 +1,7 @@
 <template>
   <v-container>
     <h1>{{ $t('project-selector.project.title') }}</h1>
-    <v-list
-      v-for="(project, index) in state.projects"
-      :key="index"
-    >
+    <v-list v-for="(project, index) in state.projects" :key="index">
       <v-card
         class="ma-1"
         :color="project.active ? 'base lighten-3' : undefined"
@@ -18,7 +15,9 @@
             <v-list-item-title class="font-weight-bold">
               {{ project.name }}
             </v-list-item-title>
-            <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{
+              project.description
+            }}</v-list-item-subtitle>
             <ModulesListComponent
               :modules="project.modules"
               @toggle-module="toggleModule"
@@ -26,11 +25,7 @@
             />
           </v-list-item-content>
           <v-list-item-action>
-            <v-avatar
-              color="success"
-              size="30"
-              v-if="project.active"
-            >
+            <v-avatar color="success" size="30" v-if="project.active">
               <v-icon>mdi-check</v-icon>
             </v-avatar>
           </v-list-item-action>

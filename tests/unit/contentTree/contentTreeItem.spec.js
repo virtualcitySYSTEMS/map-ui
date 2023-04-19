@@ -60,12 +60,10 @@ describe('ContentTreeItem', () => {
   describe('adding actions', () => {
     it('should push all actions, if not passing weights', () => {
       const item = new ContentTreeItem({ name: 'foo' }, app);
-      const actions = [
-        { name: 'foo' },
-        { name: 'bar' },
-        { name: 'baz' },
-      ];
-      actions.forEach((a) => { item.addAction(a); });
+      const actions = [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }];
+      actions.forEach((a) => {
+        item.addAction(a);
+      });
       expect(item.actions).to.have.ordered.members(actions);
       item.destroy();
     });
@@ -78,7 +76,9 @@ describe('ContentTreeItem', () => {
         [{ name: 'baz' }, -1],
         [{ name: 'foobar' }, 2],
       ];
-      actions.forEach(([a, weight]) => { item.addAction(a, weight); });
+      actions.forEach(([a, weight]) => {
+        item.addAction(a, weight);
+      });
       expect(item.actions).to.have.ordered.members([
         actions[2][0],
         actions[3][0],

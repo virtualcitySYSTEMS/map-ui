@@ -28,10 +28,9 @@
     },
     setup(props) {
       const app = inject('vcsApp');
-      const { id } = props.windowState;
-      const open = app.contentTree.getTreeOpenStateRef(id);
+      const open = app.contentTree.getTreeOpenStateRef(props.windowState.id);
       return {
-        tree: app.contentTree.getComputedVisibleTree(id),
+        tree: app.contentTree.getComputedVisibleTree(props.windowState.id),
         open,
       };
     },

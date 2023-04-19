@@ -33,7 +33,10 @@ export function downloadBlob(blob, fileName) {
  * @param {string} fileName
  */
 export function downloadText(text, fileName) {
-  downloadURI(`data:text/plain;charset=utf-8,${encodeURIComponent(text)}`, fileName);
+  downloadURI(
+    `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`,
+    fileName,
+  );
 }
 
 /**

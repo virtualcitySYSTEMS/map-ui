@@ -28,9 +28,11 @@ function hashLibraries() {
     '@vcmap-cesium/engine': {
       entry: path.join('lib', 'cesium.js'),
       rollupOptions: {
-        plugins: [rollupPluginStripPragma({
-          pragmas: ['debug'],
-        })],
+        plugins: [
+          rollupPluginStripPragma({
+            pragmas: ['debug'],
+          }),
+        ],
       },
     },
     ol: {
@@ -55,7 +57,10 @@ function hashLibraries() {
           {
             transform(source, sid) {
               if (/src(\/|\\)setup.js/.test(sid)) {
-                return source.replace('/node_modules/@vcmap-cesium/engine/Build/', './assets/cesium/');
+                return source.replace(
+                  '/node_modules/@vcmap-cesium/engine/Build/',
+                  './assets/cesium/',
+                );
               }
               return source;
             },
@@ -70,16 +75,15 @@ function hashLibraries() {
   };
 
   const libraryPaths = {};
-  Object.entries(libraryBuildOptions)
-    .forEach(([key, value]) => {
-      if (!libraries[key]) {
-        throw new Error(`Trying to build unexported library ${key}`);
-      }
-      value.lib = libraries[key];
-      value.hash = `${uuid().substring(0, 6)}`;
-      libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
-      value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
-    });
+  Object.entries(libraryBuildOptions).forEach(([key, value]) => {
+    if (!libraries[key]) {
+      throw new Error(`Trying to build unexported library ${key}`);
+    }
+    value.lib = libraries[key];
+    value.hash = `${uuid().substring(0, 6)}`;
+    libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
+    value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
+  });
 
   return { libraryBuildOptions, libraryPaths };
 }
@@ -108,67 +112,73 @@ await build({
 });
 
 console.log('Building Libraries');
-await Promise.all(Object.entries(libraryBuildOptions).map(async ([key, value]) => {
-  console.log('Building Library: ', key);
-  const external = Object.keys(libraryBuildOptions).filter((library) => { return key !== library; });
-  const output = {
-    ...value.rollupOptions?.output,
-    paths: libraryPaths,
-  };
-  const libraryConfig = {
-    configFile: './build/commonViteConfig.js',
-    esbuild: {
-      minify: true,
-    },
-    define: {
-      'process.env.NODE_ENV': '"production"',
-    },
-    build: {
-      write: false,
-      emptyOutDir: false,
-      lib: {
-        entry: path.resolve(process.cwd(), value.entry),
-        formats: ['es'],
-        fileName: `assets/${value.lib}.${value.hash}`,
+await Promise.all(
+  Object.entries(libraryBuildOptions).map(async ([key, value]) => {
+    console.log('Building Library: ', key);
+    const external = Object.keys(libraryBuildOptions).filter((library) => {
+      return key !== library;
+    });
+    const output = {
+      ...value.rollupOptions?.output,
+      paths: libraryPaths,
+    };
+    const libraryConfig = {
+      configFile: './build/commonViteConfig.js',
+      esbuild: {
+        minify: true,
       },
-      rollupOptions: {
-        ...value.rollupOptions,
-        output,
-        external,
+      define: {
+        'process.env.NODE_ENV': '"production"',
       },
-    },
-  };
-  await buildLibrary(libraryConfig, 'assets', value.lib, value.hash);
-  console.log('Building Library Entry: ', key);
-
-  const libraryEntryConfig = {
-    configFile: false,
-    define: {
-      'process.env.NODE_ENV': '"production"',
-    },
-    build: {
-      emptyOutDir: false,
-      lib: {
-        entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
-        formats: ['es'],
-        fileName: () => { return `assets/${value.lib}.js`; },
-      },
-      rollupOptions: {
-        ...value.rollupOptions,
-        external: [key],
-        output: {
-          paths: libraryPaths,
+      build: {
+        write: false,
+        emptyOutDir: false,
+        lib: {
+          entry: path.resolve(process.cwd(), value.entry),
+          formats: ['es'],
+          fileName: `assets/${value.lib}.${value.hash}`,
+        },
+        rollupOptions: {
+          ...value.rollupOptions,
+          output,
+          external,
         },
       },
-    },
-  };
-  await build(libraryEntryConfig);
-  await fs.promises.cp(
-    path.join('src', 'assets', 'font'),
-    path.join('dist', 'assets', 'font'),
-    { recursive: true },
-  );
-}));
+    };
+    await buildLibrary(libraryConfig, 'assets', value.lib, value.hash);
+    console.log('Building Library Entry: ', key);
+
+    const libraryEntryConfig = {
+      configFile: false,
+      define: {
+        'process.env.NODE_ENV': '"production"',
+      },
+      build: {
+        emptyOutDir: false,
+        lib: {
+          entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
+          formats: ['es'],
+          fileName: () => {
+            return `assets/${value.lib}.js`;
+          },
+        },
+        rollupOptions: {
+          ...value.rollupOptions,
+          external: [key],
+          output: {
+            paths: libraryPaths,
+          },
+        },
+      },
+    };
+    await build(libraryEntryConfig);
+    await fs.promises.cp(
+      path.join('src', 'assets', 'font'),
+      path.join('dist', 'assets', 'font'),
+      { recursive: true },
+    );
+  }),
+);
 
 await buildCesium();
 console.log('Finished Building vcMap');

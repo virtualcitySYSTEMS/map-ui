@@ -9,6 +9,7 @@ Only attributions of active objects are shown.
 Attributions can be added to maps, layers and oblique collections.
 An attributions entry within the objects property bag, can be either an object for a single attribution or an array to store multiple attributions.
 The entry options are defined as:
+
 ```js
 /**
  * @typedef {Object} Attribution.Options
@@ -19,6 +20,7 @@ The entry options are defined as:
 ```
 
 ### Map Example
+
 ```json
 {
   "type": "ObliqueMap",
@@ -40,6 +42,7 @@ The entry options are defined as:
 ```
 
 ### Layer Example
+
 ```json
 {
   "type": "CesiumTilesetLayer",
@@ -52,10 +55,7 @@ The entry options are defined as:
   "tilesetOptions": {
     "skipLevelOfDetail": true
   },
-  "exclusiveGroups": [
-    "3D",
-    "terrain"
-  ],
+  "exclusiveGroups": ["3D", "terrain"],
   "properties": {
     "title": "3D-Mesh 2020",
     "attributions": {
@@ -68,6 +68,7 @@ The entry options are defined as:
 ```
 
 ### Oblique Collection Example
+
 ```json
 {
   "name": "Schrägluftbilder 2020",

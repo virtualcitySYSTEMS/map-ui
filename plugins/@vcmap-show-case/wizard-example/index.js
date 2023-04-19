@@ -7,9 +7,15 @@ import WizardExample from './wizardExample.vue';
  */
 export default async () => {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     onVcsAppMounted(app) {
       const { action, destroy } = createToggleAction(
         {

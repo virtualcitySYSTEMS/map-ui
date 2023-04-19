@@ -36,22 +36,29 @@ export const NotificationType = {
  * @returns {Notification}
  */
 function createNotification(options, notifier) {
-  const {
-    type,
-    title,
-    message,
-    timeout,
-  } = options;
+  const { type, title, message, timeout } = options;
   const id = uuidv4();
   const open = ref(true);
 
   return {
-    get id() { return id; },
-    get type() { return type; },
-    get title() { return title; },
-    get message() { return message; },
-    get timeout() { return timeout ?? 5000; },
-    get open() { return open; },
+    get id() {
+      return id;
+    },
+    get type() {
+      return type;
+    },
+    get title() {
+      return title;
+    },
+    get message() {
+      return message;
+    },
+    get timeout() {
+      return timeout ?? 5000;
+    },
+    get open() {
+      return open;
+    },
     set open(value) {
       open.value = value?.value ?? value; // when used as a v-model, this is set as a boolean
       if (!open.value) {
@@ -105,7 +112,9 @@ class Notifier {
    */
   remove(notification) {
     // reassign to trigger update
-    this._notifications.value = this._notifications.value.filter(n => n !== notification);
+    this._notifications.value = this._notifications.value.filter(
+      (n) => n !== notification,
+    );
   }
 
   /**

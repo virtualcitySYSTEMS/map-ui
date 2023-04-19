@@ -1,14 +1,10 @@
 <template>
   <v-sheet>
-    <span>
-      content
-    </span>
+    <span> content </span>
   </v-sheet>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 <script>
   import { VSheet } from 'vuetify/lib';
 
@@ -16,7 +12,7 @@
     name: 'WindowExampleContent',
     components: { VSheet },
     setup() {
-      return { };
+      return {};
     },
   };
 </script>

@@ -3,7 +3,10 @@ import { check, checkMaybe } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
 import { createLinkAction } from '../actions/actionHelper.js';
-import { createStateRefAction, StateActionState } from '../actions/stateRefAction.js';
+import {
+  createStateRefAction,
+  StateActionState,
+} from '../actions/stateRefAction.js';
 
 /**
  * @typedef {Object} ContentTreeItemOptions
@@ -51,7 +54,9 @@ class ContentTreeItem {
   /**
    * @type {string}
    */
-  static get className() { return 'ContentTreeItem'; }
+  static get className() {
+    return 'ContentTreeItem';
+  }
 
   /**
    * @param {ContentTreeItemOptions} options
@@ -248,7 +253,9 @@ class ContentTreeItem {
   /**
    * @type {string|null}
    */
-  get infoUrl() { return this._infoUrl; }
+  get infoUrl() {
+    return this._infoUrl;
+  }
 
   /**
    * @param {string} url
@@ -260,11 +267,14 @@ class ContentTreeItem {
       this._infoUrl = url;
       const name = 'infoUrl';
       if (this._infoUrl) {
-        const action = createLinkAction({
-          name,
-          title: 'content.infoAction.title',
-          icon: '$vcsInfo',
-        }, this._infoUrl);
+        const action = createLinkAction(
+          {
+            name,
+            title: 'content.infoAction.title',
+            icon: '$vcsInfo',
+          },
+          this._infoUrl,
+        );
         this.addAction(action, 6);
       } else {
         this.removeAction(name);
@@ -323,7 +333,9 @@ class ContentTreeItem {
   /**
    * @type {number}
    */
-  get weight() { return this._weight; }
+  get weight() {
+    return this._weight;
+  }
 
   /**
    * @param {number} weight
@@ -352,7 +364,10 @@ class ContentTreeItem {
         this.removeAction(name);
         destroy();
       };
-    } else if (this._stateActionListener && this.state === StateActionState.NONE) {
+    } else if (
+      this._stateActionListener &&
+      this.state === StateActionState.NONE
+    ) {
       this._stateActionListener();
       this._stateActionListener = null;
     }
@@ -364,7 +379,7 @@ class ContentTreeItem {
    * @private
    */
   _getActionIndex(actionName) {
-    return this._actions.value.findIndex(a => a.name === actionName);
+    return this._actions.value.findIndex((a) => a.name === actionName);
   }
 
   /**
@@ -387,7 +402,9 @@ class ContentTreeItem {
       throw new Error('Action names must be unique');
     }
     action[actionWeightSymbol] = weight;
-    const insertIndex = this._actions.value.findIndex(a => a[actionWeightSymbol] > weight);
+    const insertIndex = this._actions.value.findIndex(
+      (a) => a[actionWeightSymbol] > weight,
+    );
     if (insertIndex > -1) {
       this._actions.value.splice(insertIndex, 0, action);
     } else {
@@ -429,7 +446,9 @@ class ContentTreeItem {
       icon: this._icon,
       actions: this._actions,
       children: this._children,
-      visibleChildren: computed(() => this._children.value.filter(c => c.visible)),
+      visibleChildren: computed(() =>
+        this._children.value.filter((c) => c.visible),
+      ),
       clicked,
     });
   }
@@ -478,5 +497,8 @@ class ContentTreeItem {
   }
 }
 
-contentTreeClassRegistry.registerClass(ContentTreeItem.className, ContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  ContentTreeItem.className,
+  ContentTreeItem,
+);
 export default ContentTreeItem;

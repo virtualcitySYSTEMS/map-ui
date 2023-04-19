@@ -18,7 +18,9 @@ import {
   serializePlugin,
   deserializePlugin,
 } from './pluginHelper.js';
-import ToolboxManager, { setupDefaultGroups } from './manager/toolbox/toolboxManager.js';
+import ToolboxManager, {
+  setupDefaultGroups,
+} from './manager/toolbox/toolboxManager.js';
 import WindowManager from './manager/window/windowManager.js';
 import NavbarManager from './manager/navbarManager.js';
 import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
@@ -73,7 +75,6 @@ import Notifier from './notifier/notifier.js';
  * @api
  */
 
-
 /**
  * @interface VcsComponentManager
  * @template {Object} T - the component type
@@ -106,7 +107,9 @@ class VcsUiApp extends VcsApp {
    * Gets the version of the @vcmap/ui npm package
    * @returns {string}
    */
-  static getVersion() { return version; }
+  static getVersion() {
+    return version;
+  }
 
   constructor() {
     super();
@@ -138,17 +141,26 @@ class VcsUiApp extends VcsApp {
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
         if (plugin.i18n) {
-          this.i18n.addPluginMessages(plugin.name, plugin[moduleIdSymbol], plugin.i18n);
+          this.i18n.addPluginMessages(
+            plugin.name,
+            plugin[moduleIdSymbol],
+            plugin.i18n,
+          );
         }
         if (plugin.initialize) {
           let state;
           if (this._cachedAppState.moduleIds.includes(plugin[moduleIdSymbol])) {
-            state = this._cachedAppState.plugins.find(s => s.name === plugin.name);
+            state = this._cachedAppState.plugins.find(
+              (s) => s.name === plugin.name,
+            );
           }
           try {
             plugin.initialize(this, state?.state);
           } catch (e) {
-            getLogger().error(`Error in plugin ${plugin.name} initialize hook`, e);
+            getLogger().error(
+              `Error in plugin ${plugin.name} initialize hook`,
+              e,
+            );
           }
         }
       }),
@@ -167,7 +179,9 @@ class VcsUiApp extends VcsApp {
      * @type {OverrideClassRegistry<ContentTreeItem>}
      * @private
      */
-    this._contentTreeClassRegistry = new OverrideClassRegistry(contentTreeClassRegistry);
+    this._contentTreeClassRegistry = new OverrideClassRegistry(
+      contentTreeClassRegistry,
+    );
 
     /**
      * @type {OverrideContentTreeCollection}
@@ -256,85 +270,113 @@ class VcsUiApp extends VcsApp {
    * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
    * @readonly
    */
-  get plugins() { return this._plugins; }
+  get plugins() {
+    return this._plugins;
+  }
 
   /**
    * @type {OverrideContentTreeCollection}
    * @readonly
    */
-  get contentTree() { return this._contentTree; }
+  get contentTree() {
+    return this._contentTree;
+  }
 
   /**
    * @type {OverrideClassRegistry<ContentTreeItem>}
    * @readonly
    */
-  get contentTreeClassRegistry() { return this._contentTreeClassRegistry; }
+  get contentTreeClassRegistry() {
+    return this._contentTreeClassRegistry;
+  }
 
   /**
    * @returns {ToolboxManager}
    * @readonly
    */
-  get toolboxManager() { return this._toolboxManager; }
+  get toolboxManager() {
+    return this._toolboxManager;
+  }
 
   /**
    * @returns {WindowManager}
    * @readonly
    */
-  get windowManager() { return this._windowManager; }
+  get windowManager() {
+    return this._windowManager;
+  }
 
   /**
    * @returns {NavbarManager}
    * @readonly
    */
-  get navbarManager() { return this._navbarManager; }
+  get navbarManager() {
+    return this._navbarManager;
+  }
 
   /**
    * @returns {FeatureInfo}
    * @readonly
    */
-  get featureInfo() { return this._featureInfo; }
+  get featureInfo() {
+    return this._featureInfo;
+  }
 
   /**
    * @type {OverviewMap}
    * @readonly
    */
-  get overviewMap() { return this._overviewMap; }
+  get overviewMap() {
+    return this._overviewMap;
+  }
 
   /**
    * @type {I18nCollection}
    * @readonly
    */
-  get i18n() { return this._i18n; }
+  get i18n() {
+    return this._i18n;
+  }
 
   /**
    * @returns {CategoryManager}
    * @readonly
    */
-  get categoryManager() { return this._categoryManager; }
+  get categoryManager() {
+    return this._categoryManager;
+  }
 
   /**
    * @type {ContextMenuManager}
    * @readonly
    */
-  get contextMenuManager() { return this._contextMenuManager; }
+  get contextMenuManager() {
+    return this._contextMenuManager;
+  }
 
   /**
    * @type {Search}
    * @readonly
    */
-  get search() { return this._search; }
+  get search() {
+    return this._search;
+  }
 
   /**
    * @type {UiConfig}
    * @readonly
    */
-  get uiConfig() { return this._uiConfig; }
+  get uiConfig() {
+    return this._uiConfig;
+  }
 
   /**
    * @type {Notifier}
    * @readonly
    */
-  get notifier() { return this._notifier; }
+  get notifier() {
+    return this._notifier;
+  }
 
   /**
    * Get the state of the application. When passed the forUrl flag, only a minimal set of states shall be provided for a sharable link to the current state (to ensure
@@ -351,16 +393,21 @@ class VcsUiApp extends VcsApp {
 
     state.activeMap = this.maps.activeMap.name;
     const viewpoint = await this.maps.activeMap.getViewpoint();
-    state.activeViewpoint = viewpoint?.isValid?.() ? viewpoint.toJSON() : undefined;
+    state.activeViewpoint = viewpoint?.isValid?.()
+      ? viewpoint.toJSON()
+      : undefined;
     state.layers = [...this.layers]
-      .filter(l => l.isSupported(this.maps.activeMap) &&
-        l[moduleIdSymbol] !== defaultDynamicModuleId &&
-        l[moduleIdSymbol] !== volatileModuleId &&
-        (
-          ((l.active || l.loading) && !l.activeOnStartup) ||
-          (!l.active && l.activeOnStartup) ||
-          ((l.active || l.loading) && l.style !== l.defaultStyle && this.styles.has(l.style))
-        ))
+      .filter(
+        (l) =>
+          l.isSupported(this.maps.activeMap) &&
+          l[moduleIdSymbol] !== defaultDynamicModuleId &&
+          l[moduleIdSymbol] !== volatileModuleId &&
+          (((l.active || l.loading) && !l.activeOnStartup) ||
+            (!l.active && l.activeOnStartup) ||
+            ((l.active || l.loading) &&
+              l.style !== l.defaultStyle &&
+              this.styles.has(l.style))),
+      )
       .map((l) => {
         const layerState = {
           name: l.name,
@@ -378,11 +425,16 @@ class VcsUiApp extends VcsApp {
         return layerState;
       });
 
-    state.plugins = await Promise.all([...this.plugins]
-      .filter(p => p[moduleIdSymbol] !== defaultDynamicModuleId &&
-        p[moduleIdSymbol] !== volatileModuleId &&
-        typeof p.getState === 'function')
-      .map(async p => ({ name: p.name, state: await p.getState(forUrl) })));
+    state.plugins = await Promise.all(
+      [...this.plugins]
+        .filter(
+          (p) =>
+            p[moduleIdSymbol] !== defaultDynamicModuleId &&
+            p[moduleIdSymbol] !== volatileModuleId &&
+            typeof p.getState === 'function',
+        )
+        .map(async (p) => ({ name: p.name, state: await p.getState(forUrl) })),
+    );
 
     if (this.maps.activeMap instanceof ObliqueMap) {
       state.activeObliqueCollection = this.maps.activeMap.collection.name;
@@ -398,21 +450,23 @@ class VcsUiApp extends VcsApp {
   async _parseModule(module) {
     const { config } = module;
     if (Array.isArray(config.plugins)) {
-      const plugins = await Promise.all(config.plugins.map(async (pluginConfig) => {
-        const plugin = await loadPlugin(pluginConfig.name, pluginConfig);
-        if (!plugin) {
-          return null;
-        }
-        if (!isValidPackageName(plugin.name)) {
-          getLogger().warning(`plugin ${plugin.name} has no valid package name!`);
-        }
-        plugin[moduleIdSymbol] = module._id;
-        return plugin;
-      }));
+      const plugins = await Promise.all(
+        config.plugins.map(async (pluginConfig) => {
+          const plugin = await loadPlugin(pluginConfig.name, pluginConfig);
+          if (!plugin) {
+            return null;
+          }
+          if (!isValidPackageName(plugin.name)) {
+            getLogger().warning(
+              `plugin ${plugin.name} has no valid package name!`,
+            );
+          }
+          plugin[moduleIdSymbol] = module._id;
+          return plugin;
+        }),
+      );
 
-      plugins
-        .filter(p => p)
-        .map(p => this._plugins.override(p));
+      plugins.filter((p) => p).map((p) => this._plugins.override(p));
     }
     if (Array.isArray(config.i18n)) {
       await this.i18n.parseItems(config.i18n, module._id);
@@ -420,7 +474,10 @@ class VcsUiApp extends VcsApp {
     await super._parseModule(module);
     await this._contentTree.parseItems(config.contentTree, module._id);
     await this._uiConfig.parseItems(config.uiConfig, module._id);
-    await this._featureInfo.collection.parseItems(config.featureInfo, module._id);
+    await this._featureInfo.collection.parseItems(
+      config.featureInfo,
+      module._id,
+    );
   }
 
   /**
@@ -440,27 +497,43 @@ class VcsUiApp extends VcsApp {
             layer.deactivate();
           }
 
-          if (layerState.styleName && this.styles.hasKey(layerState.styleName) && layer.setStyle) {
+          if (
+            layerState.styleName &&
+            this.styles.hasKey(layerState.styleName) &&
+            layer.setStyle
+          ) {
             layer.setStyle(this.styles.getByKey(layerState.styleName));
           }
         }
       });
-      if (this._cachedAppState.activeMap && this.maps.hasKey(this._cachedAppState.activeMap)) {
+      if (
+        this._cachedAppState.activeMap &&
+        this.maps.hasKey(this._cachedAppState.activeMap)
+      ) {
         await this.maps.setActiveMap(this._cachedAppState.activeMap);
       }
       if (
         this._cachedAppState.activeObliqueCollection &&
         this.maps.activeMap instanceof ObliqueMap &&
-        this.obliqueCollections.hasKey(this._cachedAppState.activeObliqueCollection)
+        this.obliqueCollections.hasKey(
+          this._cachedAppState.activeObliqueCollection,
+        )
       ) {
         await this.maps.activeMap.setCollection(
-          this.obliqueCollections.getByKey(this._cachedAppState.activeObliqueCollection),
+          this.obliqueCollections.getByKey(
+            this._cachedAppState.activeObliqueCollection,
+          ),
           this._cachedAppState.activeViewpoint,
         );
       } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
-        await this.maps.activeMap.gotoViewpoint(new Viewpoint(this._cachedAppState.activeViewpoint));
+        await this.maps.activeMap.gotoViewpoint(
+          new Viewpoint(this._cachedAppState.activeViewpoint),
+        );
       }
-      this._cachedAppState.moduleIds.splice(this._cachedAppState.moduleIds.indexOf(module._id), 1);
+      this._cachedAppState.moduleIds.splice(
+        this._cachedAppState.moduleIds.indexOf(module._id),
+        1,
+      );
     }
   }
 
@@ -490,7 +563,9 @@ class VcsUiApp extends VcsApp {
     this.categoryManager.destroy();
     this.contextMenuManager.destroy();
     this._overviewMap.destroy();
-    this._pluginListeners.forEach((cb) => { cb(); });
+    this._pluginListeners.forEach((cb) => {
+      cb();
+    });
     this._pluginListeners = [];
     destroyCollection(this._plugins);
     destroyCollection(this._contentTree);

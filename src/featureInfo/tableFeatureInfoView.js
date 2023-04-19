@@ -27,7 +27,9 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   /**
    * @type {string}
    */
-  static get className() { return 'TableFeatureInfoView'; }
+  static get className() {
+    return 'TableFeatureInfoView';
+  }
 
   /** @returns {TableFeatureInfoViewOptions} */
   static getDefaultOptions() {
@@ -47,13 +49,16 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
     /**
      * @type {number[]}
      */
-    this.itemsPerPageArray = options.itemsPerPageArray || defaultOptions.itemsPerPageArray;
+    this.itemsPerPageArray =
+      options.itemsPerPageArray || defaultOptions.itemsPerPageArray;
 
     const itemsPerPage = options.itemsPerPage || defaultOptions.itemsPerPage;
     /**
      * @type {number}
      */
-    this.itemsPerPage = this.itemsPerPageArray.includes(itemsPerPage) ? itemsPerPage : this.itemsPerPageArray[0];
+    this.itemsPerPage = this.itemsPerPageArray.includes(itemsPerPage)
+      ? itemsPerPage
+      : this.itemsPerPageArray[0];
     /**
      * @type {boolean}
      */
@@ -90,8 +95,13 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   toJSON() {
     const config = super.toJSON();
     const defaultOptions = TableFeatureInfoView.getDefaultOptions();
-    if (this.itemsPerPageArray.length !== defaultOptions.itemsPerPageArray.length ||
-      this.itemsPerPageArray.some((e, idx) => e !== defaultOptions.itemsPerPageArray[idx])) {
+    if (
+      this.itemsPerPageArray.length !==
+        defaultOptions.itemsPerPageArray.length ||
+      this.itemsPerPageArray.some(
+        (e, idx) => e !== defaultOptions.itemsPerPageArray[idx],
+      )
+    ) {
       config.itemsPerPageArray = this.itemsPerPageArray;
     }
     if (this.itemsPerPage !== defaultOptions.itemsPerPage) {

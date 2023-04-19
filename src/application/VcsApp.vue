@@ -1,9 +1,20 @@
 <template>
   <v-container class="fill-height pa-0" absolute fluid>
     <VcsNavbar />
-    <v-container class="vcs-main pa-0" :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }" fluid absolute>
+    <v-container
+      class="vcs-main pa-0"
+      :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }"
+      fluid
+      absolute
+    >
       <template v-if="$vuetify.breakpoint.xs">
-        <img v-if="mobileLogo" :src="mobileLogo" alt="Logo" draggable="false" class="mobile-logo">
+        <img
+          v-if="mobileLogo"
+          :src="mobileLogo"
+          alt="Logo"
+          draggable="false"
+          class="mobile-logo"
+        />
         <div v-else class="company-logo-mobile mobile-logo" />
       </template>
       <VcsButton
@@ -23,43 +34,45 @@
       <NotifierComponent />
     </v-container>
     <v-footer absolute v-if="$vuetify.breakpoint.smAndUp" min-height="22px">
-      <VcsAttributionsFooter :entries="attributionEntries" :attribution-action="attributionAction" />
+      <VcsAttributionsFooter
+        :entries="attributionEntries"
+        :attribution-action="attributionAction"
+      />
     </v-footer>
   </v-container>
 </template>
 
 <style scoped lang="scss">
-::v-deep .v-application--wrap {
-  min-height: fit-content;
-}
-.vcs-main {
-  position: absolute;
-  top: 48px;
-  left: 0;
-  right: 0;
-  bottom: 22px;
-}
+  ::v-deep .v-application--wrap {
+    min-height: fit-content;
+  }
+  .vcs-main {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 22px;
+  }
 
-.vcs-main-xs {
-  top: 0;
-  bottom: 56px;
-}
+  .vcs-main-xs {
+    top: 0;
+    bottom: 56px;
+  }
 
-.mobile-logo {
-  max-height: 40px;
-  max-width: 70px;
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1;
-}
+  .mobile-logo {
+    max-height: 40px;
+    max-width: 70px;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1;
+  }
 
-.mobile-attribution-btn{
-  position: fixed;
-  right: 2px;
-  bottom: 56px;
-}
-
+  .mobile-attribution-btn {
+    position: fixed;
+    right: 2px;
+    bottom: 56px;
+  }
 </style>
 
 <script>
@@ -69,7 +82,8 @@
     getCurrentInstance,
     onMounted,
     onUnmounted,
-    provide, watch,
+    provide,
+    watch,
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
@@ -80,7 +94,10 @@
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsMap from './VcsMap.vue';
   import VcsNavbar from './VcsNavbar.vue';
-  import { createMapButtonAction, createToggleAction } from '../actions/actionHelper.js';
+  import {
+    createMapButtonAction,
+    createToggleAction,
+  } from '../actions/actionHelper.js';
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
@@ -112,7 +129,10 @@
         try {
           plugin.onVcsAppMounted(app);
         } catch (e) {
-          getLogger('VcsUiApp').error(`Error in plugin ${plugin.name} onVcsAppMounted hook`, e);
+          getLogger('VcsUiApp').error(
+            `Error in plugin ${plugin.name} onVcsAppMounted hook`,
+            e,
+          );
         }
       }
     }
@@ -175,7 +195,7 @@
     return () => {
       mapAddedListener();
       mapRemovedListener();
-      Object.values(mapButtonActionDestroy).forEach(cb => cb());
+      Object.values(mapButtonActionDestroy).forEach((cb) => cb());
     };
   }
 
@@ -229,9 +249,12 @@
      * Adds a button, if legend definitions are available or removes legend otherwise.
      */
     const handleLegend = () => {
-      const layersWithLegend = [...app.layers]
-        .filter(layer => layer.style?.properties?.legend ?? layer.properties?.legend);
-      const stylesWithLegend = [...app.styles].filter(style => style?.properties?.legend);
+      const layersWithLegend = [...app.layers].filter(
+        (layer) => layer.style?.properties?.legend ?? layer.properties?.legend,
+      );
+      const stylesWithLegend = [...app.styles].filter(
+        (style) => style?.properties?.legend,
+      );
       if (layersWithLegend < 1 && stylesWithLegend < 1) {
         app.navbarManager.remove('legend');
         app.windowManager.remove('legend');
@@ -256,7 +279,7 @@
     return () => {
       destroy();
       legendDestroy();
-      listeners.forEach(cb => cb());
+      listeners.forEach((cb) => cb());
     };
   }
 
@@ -266,21 +289,22 @@
    * @returns {function():void}
    */
   export function setupSettingsWindow(app) {
-    const { action: settingsAction, destroy: settingsDestroy } = createToggleAction(
-      {
-        name: 'settings.title',
-        icon: 'mdi-cog',
-        title: 'settings.tooltip',
-      },
-      {
-        id: 'settingsId',
-        component: VcsSettings,
-        state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
-        slot: WindowSlot.DYNAMIC_RIGHT,
-      },
-      app.windowManager,
-      vcsAppSymbol,
-    );
+    const { action: settingsAction, destroy: settingsDestroy } =
+      createToggleAction(
+        {
+          name: 'settings.title',
+          icon: 'mdi-cog',
+          title: 'settings.tooltip',
+        },
+        {
+          id: 'settingsId',
+          component: VcsSettings,
+          state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
+          slot: WindowSlot.DYNAMIC_RIGHT,
+        },
+        app.windowManager,
+        vcsAppSymbol,
+      );
     app.navbarManager.add(
       {
         id: 'settingsToggle',
@@ -335,8 +359,10 @@
         app.navbarManager.remove(id);
       }
     };
-    const addedListener = app.categoryManager.added.addEventListener(setupCategories);
-    const removedListener = app.categoryManager.removed.addEventListener(setupCategories);
+    const addedListener =
+      app.categoryManager.added.addEventListener(setupCategories);
+    const removedListener =
+      app.categoryManager.removed.addEventListener(setupCategories);
     setupCategories();
 
     return () => {
@@ -378,7 +404,9 @@
     );
 
     return () => {
-      listeners.forEach((cb) => { cb(); });
+      listeners.forEach((cb) => {
+        cb();
+      });
       listeners.splice(0);
       stopWatching();
     };
@@ -393,25 +421,26 @@
   export function setupAttributions(app) {
     const { entries, destroy } = getAttributions(app);
 
-    const { action: attributionAction, destroy: attributionDestroy } = createToggleAction(
-      {
-        name: 'attributionToggle',
-        icon: 'mdi-chevron-double-right',
-        title: 'footer.attributions.tooltip',
-      },
-      {
-        id: 'attribution',
-        component: VcsAttributions,
-        state: {
-          headerTitle: 'footer.attributions.title',
-          headerIcon: 'mdi-copyright',
+    const { action: attributionAction, destroy: attributionDestroy } =
+      createToggleAction(
+        {
+          name: 'attributionToggle',
+          icon: 'mdi-chevron-double-right',
+          title: 'footer.attributions.tooltip',
         },
-        slot: WindowSlot.DYNAMIC_RIGHT,
-        props: { entries },
-      },
-      app.windowManager,
-      vcsAppSymbol,
-    );
+        {
+          id: 'attribution',
+          component: VcsAttributions,
+          state: {
+            headerTitle: 'footer.attributions.title',
+            headerIcon: 'mdi-copyright',
+          },
+          slot: WindowSlot.DYNAMIC_RIGHT,
+          props: { entries },
+        },
+        app.windowManager,
+        vcsAppSymbol,
+      );
 
     return {
       attributionEntries: entries,
@@ -458,8 +487,12 @@
       const legendDestroy = setupLegendWindow(app);
       const settingsDestroy = setupSettingsWindow(app);
       const destroyComponentsWindow = setupCategoryManagerWindow(app);
-      const destroyThemingListener = setupUiConfigTheming(app, getCurrentInstance().proxy.$vuetify);
-      const { attributionEntries, attributionAction, destroyAttributions } = setupAttributions(app);
+      const destroyThemingListener = setupUiConfigTheming(
+        app,
+        getCurrentInstance().proxy.$vuetify,
+      );
+      const { attributionEntries, attributionAction, destroyAttributions } =
+        setupAttributions(app);
 
       let pluginMountedListener;
       onMounted(() => {
@@ -482,7 +515,11 @@
 
       return {
         mapId,
-        mobileLogo: computed(() => app.uiConfig.config.value.mobileLogo ?? app.uiConfig.config.value.logo),
+        mobileLogo: computed(
+          () =>
+            app.uiConfig.config.value.mobileLogo ??
+            app.uiConfig.config.value.logo,
+        ),
         attributionEntries,
         attributionAction,
       };

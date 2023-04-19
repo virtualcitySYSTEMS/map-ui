@@ -1,12 +1,9 @@
 <template>
-  <div class="pa-2 base lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0">
+  <div
+    class="pa-2 base lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0"
+  >
     <slot name="prepend">
-      <v-icon
-        class="search-icon my-0 ml-1"
-        v-text="'$vcsSearch'"
-        slot="prepend"
-        size="12"
-      />
+      <v-icon class="search-icon my-0 ml-1" size="12"> $vcsSearch </v-icon>
     </slot>
 
     <slot>
@@ -23,7 +20,7 @@
     </slot>
 
     <slot name="append">
-      <v-icon v-if="hasFilter" v-text="'$vcsFilter'" class="ml-2" size="16" />
+      <v-icon v-if="hasFilter" class="ml-2" size="16">$vcsFilter</v-icon>
     </slot>
   </div>
 </template>
@@ -73,7 +70,9 @@
       min-height: unset;
     }
 
-    .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) > .v-input__control > .v-input__slot,
+    .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
+      > .v-input__control
+      > .v-input__slot,
     .v-text-field.v-text-field--enclosed .v-text-field__details {
       padding-right: 0;
     }
@@ -89,19 +88,24 @@
       }
     }
 
-    .v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__prefix,
-    .v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__suffix,
+    .v-text-field.v-input--dense:not(
+        .v-text-field--outlined
+      ).v-text-field__prefix,
+    .v-text-field.v-input--dense:not(
+        .v-text-field--outlined
+      ).v-text-field__suffix,
     .v-text-field.v-input--dense:not(.v-text-field--outlined) input {
       padding: 0;
     }
 
-    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+      > .v-input__control
+      > .v-input__slot {
       box-shadow: none;
       border-radius: 0;
     }
   }
 </style>
-
 
 <script>
   import { VIcon, VTextField } from 'vuetify/lib';
@@ -124,7 +128,7 @@
       },
       customClasses: {
         type: Array,
-        default: () => ([]),
+        default: () => [],
       },
       value: {
         type: String,

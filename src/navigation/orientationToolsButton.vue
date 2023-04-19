@@ -1,25 +1,22 @@
 <template>
-  <VcsTooltip
-    :tooltip-position="tooltipPosition"
-    :tooltip="tooltip"
-  >
+  <VcsTooltip :tooltip-position="tooltipPosition" :tooltip="tooltip">
     <template #activator="{ on, attrs }">
       <v-card
         class="h-8 w-8 d-flex align-center justify-center text-center btn-orientation-tools"
         v-bind="{ ...$attrs, ...attrs }"
         v-on="{ ...$listeners, ...on }"
       >
-        <v-icon v-text="icon" size="16" />
+        <v-icon size="16">{{ icon }}</v-icon>
       </v-card>
     </template>
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
-.btn-orientation-tools{
-  &:before{
-    background-color: transparent !important;
+  .btn-orientation-tools {
+    &:before {
+      background-color: transparent !important;
+    }
   }
-}
 </style>
 <script>
   import { VCard, VIcon } from 'vuetify/lib';

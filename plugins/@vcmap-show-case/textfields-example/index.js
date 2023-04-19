@@ -8,11 +8,17 @@ import mySuperComponent from './TextfieldsExample.vue';
  * @param {FormInputsExampleConfig} config
  * @returns {VcsPlugin}
  */
-export default async function (config) {
+export default async function textfieldsExample(config) {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     initialize(app) {
       console.log('initialize', app, config);
     },

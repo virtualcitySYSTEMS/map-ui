@@ -71,7 +71,9 @@ class UiConfig extends Collection {
    * @inheritDoc
    */
   destroy() {
-    this._listeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
     this._listeners = [];
     super.destroy();
   }

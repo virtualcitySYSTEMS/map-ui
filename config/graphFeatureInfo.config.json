@@ -6,12 +6,33 @@
       "type": "SimpleGraphView",
       "name": "graphBar",
       "attributeKeys": [
-        "globalRadRoofsMonth_01", "globalRadRoofsMonth_02", "globalRadRoofsMonth_03",
-        "globalRadRoofsMonth_04", "globalRadRoofsMonth_05", "globalRadRoofsMonth_06",
-        "globalRadRoofsMonth_07", "globalRadRoofsMonth_08", "globalRadRoofsMonth_09",
-        "globalRadRoofsMonth_10", "globalRadRoofsMonth_11", "globalRadRoofsMonth_12"
+        "globalRadRoofsMonth_01",
+        "globalRadRoofsMonth_02",
+        "globalRadRoofsMonth_03",
+        "globalRadRoofsMonth_04",
+        "globalRadRoofsMonth_05",
+        "globalRadRoofsMonth_06",
+        "globalRadRoofsMonth_07",
+        "globalRadRoofsMonth_08",
+        "globalRadRoofsMonth_09",
+        "globalRadRoofsMonth_10",
+        "globalRadRoofsMonth_11",
+        "globalRadRoofsMonth_12"
       ],
-      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "labels": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
       "color": "secondary",
       "graph": "bar",
       "gradient": ["red", "orange", "yellow"],
@@ -28,12 +49,33 @@
       "type": "SimpleGraphView",
       "name": "graphTrend",
       "attributeKeys": [
-        "globalRadRoofsMonth_01", "globalRadRoofsMonth_02", "globalRadRoofsMonth_03",
-        "globalRadRoofsMonth_04", "globalRadRoofsMonth_05", "globalRadRoofsMonth_06",
-        "globalRadRoofsMonth_07", "globalRadRoofsMonth_08", "globalRadRoofsMonth_09",
-        "globalRadRoofsMonth_10", "globalRadRoofsMonth_11", "globalRadRoofsMonth_12"
+        "globalRadRoofsMonth_01",
+        "globalRadRoofsMonth_02",
+        "globalRadRoofsMonth_03",
+        "globalRadRoofsMonth_04",
+        "globalRadRoofsMonth_05",
+        "globalRadRoofsMonth_06",
+        "globalRadRoofsMonth_07",
+        "globalRadRoofsMonth_08",
+        "globalRadRoofsMonth_09",
+        "globalRadRoofsMonth_10",
+        "globalRadRoofsMonth_11",
+        "globalRadRoofsMonth_12"
       ],
-      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "labels": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
       "color": "secondary",
       "window": {
         "slot": "detached",
@@ -61,9 +103,7 @@
         "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
         "year": "2018"
       },
-      "exclusiveGroups": [
-        "bldg"
-      ],
+      "exclusiveGroups": ["bldg"],
       "properties": {
         "title": "layers.lod2_solar_year.title",
         "featureInfo": "graphBar"
@@ -84,9 +124,7 @@
         "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
         "year": "2018"
       },
-      "exclusiveGroups": [
-        "bldg"
-      ],
+      "exclusiveGroups": ["bldg"],
       "properties": {
         "title": "layers.lod_solar_year_shading.title",
         "featureInfo": "graphTrend"

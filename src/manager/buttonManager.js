@@ -45,7 +45,6 @@ class ButtonManager {
     this._buttonComponents = new Map();
   }
 
-
   /**
    * @param {string} id
    * @returns {ButtonComponent}
@@ -91,7 +90,9 @@ class ButtonManager {
     check(owner, [String, vcsAppSymbol]);
 
     if (buttonComponentOptions.id && this.has(buttonComponentOptions.id)) {
-      throw new Error(`A button with id ${buttonComponentOptions.id} has already been registered.`);
+      throw new Error(
+        `A button with id ${buttonComponentOptions.id} has already been registered.`,
+      );
     }
     const id = buttonComponentOptions.id || uuidv4();
 
@@ -134,7 +135,9 @@ class ButtonManager {
    */
   clear() {
     const componentIds = [...this.componentIds];
-    componentIds.forEach((id) => { this.remove(id); });
+    componentIds.forEach((id) => {
+      this.remove(id);
+    });
   }
 
   /**

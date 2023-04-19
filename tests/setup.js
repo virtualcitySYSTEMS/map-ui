@@ -4,7 +4,6 @@ import CanvasRenderingContext2D from 'jest-canvas-mock/lib/classes/CanvasRenderi
 import Path2D from 'jest-canvas-mock/lib/classes/Path2D.js';
 import ResizeObserver from 'resize-observer-polyfill';
 
-
 global.jest = vi;
 global.CanvasRenderingContext2D = CanvasRenderingContext2D;
 global.Path2D = Path2D;

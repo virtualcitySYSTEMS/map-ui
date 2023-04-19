@@ -143,9 +143,12 @@ export function sortByOwner(compA, compB, order = []) {
  * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
  * @returns {Array<ToolboxComponent|ButtonComponent>}
  */
-export function getComponentsByOrder(components, order = [], compareFn = sortByOwner) {
-  return [...components]
-    .sort((a, b) => compareFn(a, b, order));
+export function getComponentsByOrder(
+  components,
+  order = [],
+  compareFn = sortByOwner,
+) {
+  return [...components].sort((a, b) => compareFn(a, b, order));
 }
 
 /**
@@ -155,7 +158,9 @@ export function getComponentsByOrder(components, order = [], compareFn = sortByO
  * @param {Array<ToolboxComponentOptions>} groups
  */
 export function setupDefaultGroups(toolboxManager, groups = defaultGroups) {
-  groups.forEach(toolboxComponentOptions => toolboxManager.add(toolboxComponentOptions, vcsAppSymbol));
+  groups.forEach((toolboxComponentOptions) =>
+    toolboxManager.add(toolboxComponentOptions, vcsAppSymbol),
+  );
 }
 
 /**
@@ -234,7 +239,9 @@ class ToolboxManager {
     check(owner, [String, vcsAppSymbol]);
 
     if (toolboxComponentOptions.id && this.has(toolboxComponentOptions.id)) {
-      throw new Error(`A toolGroup with id ${toolboxComponentOptions.id} has already been registered.`);
+      throw new Error(
+        `A toolGroup with id ${toolboxComponentOptions.id} has already been registered.`,
+      );
     }
     const id = toolboxComponentOptions.id || uuidv4();
     const { type } = toolboxComponentOptions;
@@ -270,11 +277,13 @@ class ToolboxManager {
         ...ActionPattern,
         selected: Function,
         currentIndex: Number,
-        tools: [{
-          name: String,
-          title: [undefined, String],
-          icon: String,
-        }],
+        tools: [
+          {
+            name: String,
+            title: [undefined, String],
+            icon: String,
+          },
+        ],
       });
       /**
        * @type {SelectToolboxComponent}
@@ -335,7 +344,9 @@ class ToolboxManager {
    */
   clear() {
     const componentIds = [...this.componentIds];
-    componentIds.forEach((id) => { this.remove(id); });
+    componentIds.forEach((id) => {
+      this.remove(id);
+    });
   }
 
   /**

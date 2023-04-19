@@ -1,10 +1,7 @@
 <template>
   <v-sheet style="height: 100%">
     <v-container class="pa-2">
-      <v-row
-        dense
-        align="center"
-      >
+      <v-row dense>
         <v-col>
           <label> test</label>
         </v-col>
@@ -12,9 +9,7 @@
           <v-text-field hide-details dense outlined />
         </v-col>
       </v-row>
-      <v-row
-        dense
-      >
+      <v-row dense>
         <v-col>
           <v-text-field dense hide-details outlined class="ma-0" />
         </v-col>
@@ -28,32 +23,21 @@
           <v-text-field label="test" dense hide-details class="ma-0" />
         </v-col>
       </v-row>
-      <v-row
-        dense
-      >
+      <v-row dense>
         <v-col>
           <v-text-field hide-details outlined />
         </v-col>
         <v-col>
-          <v-text-field
-            hide-details
-            class="ma-0 pb-1 pt-1"
-          />
+          <v-text-field hide-details class="ma-0 pb-1 pt-1" />
         </v-col>
         <v-col>
           <v-text-field label="test" hide-details outlined />
         </v-col>
         <v-col>
-          <v-text-field
-            label="test"
-            hide-details
-            class="ma-0 pb-1 pt-1"
-          />
+          <v-text-field label="test" hide-details class="ma-0 pb-1 pt-1" />
         </v-col>
       </v-row>
-      <v-row
-        dense
-      >
+      <v-row dense>
         <v-col>
           <v-text-field
             dense
@@ -101,14 +85,7 @@
   </v-sheet>
 </template>
 <script>
-
-  import {
-    VSheet,
-    VContainer,
-    VRow,
-    VCol,
-    VTextField,
-  } from 'vuetify/lib';
+  import { VSheet, VContainer, VRow, VCol, VTextField } from 'vuetify/lib';
 
   export default {
     name: 'TextfieldsExample',

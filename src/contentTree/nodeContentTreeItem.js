@@ -1,5 +1,7 @@
 import { watch } from 'vue';
-import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
+import ContentTreeItem, {
+  contentTreeClassRegistry,
+} from './contentTreeItem.js';
 
 /**
  * A group item which has _no click handler_
@@ -10,7 +12,9 @@ class NodeContentTreeItem extends ContentTreeItem {
   /**
    * @returns {string}
    */
-  static get className() { return 'NodeContentTreeItem'; }
+  static get className() {
+    return 'NodeContentTreeItem';
+  }
 
   /**
    * @param {ContentTreeItemOptions} options
@@ -21,10 +25,14 @@ class NodeContentTreeItem extends ContentTreeItem {
 
     this.clickable = false;
 
-    this._childWatcher = watch(this._children, () => {
-      const children = this._children.value;
-      this.visible = children.some(c => c.visible);
-    }, { deep: true });
+    this._childWatcher = watch(
+      this._children,
+      () => {
+        const children = this._children.value;
+        this.visible = children.some((c) => c.visible);
+      },
+      { deep: true },
+    );
   }
 
   destroy() {
@@ -34,4 +42,7 @@ class NodeContentTreeItem extends ContentTreeItem {
 }
 
 export default NodeContentTreeItem;
-contentTreeClassRegistry.registerClass(NodeContentTreeItem.className, NodeContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  NodeContentTreeItem.className,
+  NodeContentTreeItem,
+);

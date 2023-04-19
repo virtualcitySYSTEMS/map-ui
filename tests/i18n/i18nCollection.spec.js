@@ -1,12 +1,10 @@
-import {
-  describe,
-  expect,
-  it,
-  beforeEach, afterEach,
-} from 'vitest';
+import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { moduleIdSymbol } from '@vcmap/core';
-import I18nCollection, { mergeDeep, isObject, i18nPluginSymbol } from '../../src/i18n/i18nCollection.js';
-
+import I18nCollection, {
+  mergeDeep,
+  isObject,
+  i18nPluginSymbol,
+} from '../../src/i18n/i18nCollection.js';
 
 describe('i18nCollection', () => {
   describe('isObject', () => {
@@ -52,7 +50,7 @@ describe('i18nCollection', () => {
       const source = { test: { test2: 2 } };
       const source2 = { test: { test3: 2 } };
       const source3 = { test: { test3: 3 } };
-      const source4 = { test: { test4: { } } };
+      const source4 = { test: { test4: {} } };
       const merged = mergeDeep(source, source2, source3, source4);
       expect(merged.test).to.have.keys(['test2', 'test3', 'test4']);
       expect(merged.test.test3).to.be.equal(3);
@@ -86,7 +84,9 @@ describe('i18nCollection', () => {
     let elem2;
 
     beforeEach(() => {
-      i18n = new I18nCollection(() => { return 'moduleId'; });
+      i18n = new I18nCollection(() => {
+        return 'moduleId';
+      });
       elem1 = { de: { myKey: 'test' } };
       elem2 = { de: { myKey2: 'test2' } };
       i18n.add(elem1);
@@ -131,11 +131,10 @@ describe('i18nCollection', () => {
     let configArray;
 
     beforeEach(async () => {
-      i18n = new I18nCollection(() => { return 'moduleId'; });
-      configArray = [
-        { de: { myKey: 'test' } },
-        { de: { myKey2: 'test2' } },
-      ];
+      i18n = new I18nCollection(() => {
+        return 'moduleId';
+      });
+      configArray = [{ de: { myKey: 'test' } }, { de: { myKey2: 'test2' } }];
       await i18n.parseItems(configArray, 'configModuleId');
     });
 

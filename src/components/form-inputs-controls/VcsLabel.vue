@@ -13,18 +13,17 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../../styles/vcsGrid.scss";
-@import "../../styles/vcsFont";
-.vcs-label {
-  font-size: $base-font-size;
-  line-height: $line-height-base;
-}
-.vcs-label-dense {
-  line-height: $line-height-dense;
-}
+  @import '../../styles/vcsGrid.scss';
+  @import '../../styles/vcsFont';
+  .vcs-label {
+    font-size: $base-font-size;
+    line-height: $line-height-base;
+  }
+  .vcs-label-dense {
+    line-height: $line-height-dense;
+  }
 </style>
 <script>
-
   /**
    * @description Stylized wrapper around {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label |label label}.
    * pass the label text as innerHtml

@@ -1,7 +1,10 @@
 import { Viewpoint } from '@vcmap/core';
 import { reactive } from 'vue';
 import { StateActionState } from '../actions/stateRefAction.js';
-import { createGoToViewpointAction, createModalAction } from '../actions/actionHelper.js';
+import {
+  createGoToViewpointAction,
+  createModalAction,
+} from '../actions/actionHelper.js';
 import component from '../actions/styleSelector.vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
@@ -65,7 +68,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
    * @todo this has to be refactored, just so we can read the config as is
    * @returns {string}
    */
-  static get className() { return 'LayerContentTreeItem'; }
+  static get className() {
+    return 'LayerContentTreeItem';
+  }
 
   /**
    * @param {LayerContentTreeItemOptions} options
@@ -85,9 +90,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
      * @type {Array<string>}
      * @private
      */
-    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate) ?
-      options.layerNamesToDeactivate.slice() :
-      [];
+    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate)
+      ? options.layerNamesToDeactivate.slice()
+      : [];
 
     /**
      * @type {Array<Function>}
@@ -147,7 +152,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
     if (this._layer) {
       const { extent } = this._layer.toJSON();
       if (extent) {
-        const viewpoint = Viewpoint.createViewpointFromExtent(this._layer.extent);
+        const viewpoint = Viewpoint.createViewpointFromExtent(
+          this._layer.extent,
+        );
         const action = createGoToViewpointAction(
           {
             name,
@@ -177,7 +184,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
    * @private
    */
   _clearListeners() {
-    this._listeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
     this._listeners.splice(0);
   }
 
@@ -198,23 +207,33 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
 
     if (!this._layer) {
       this.visible = false;
-      this._listeners.push(this._app.layers.added.addEventListener(resetHandler));
+      this._listeners.push(
+        this._app.layers.added.addEventListener(resetHandler),
+      );
     } else {
       this.visible = this._layer.isSupported(this._app.maps.activeMap);
       this.state = getStateFromLayer(this._layer);
       this._setLayerExtentAction();
       this.setPropertiesFromObject(this._layer);
 
-      this._listeners.push(this._app.layers.removed.addEventListener(resetHandler));
-      this._listeners.push(this._app.layers.added.addEventListener(resetHandler));
+      this._listeners.push(
+        this._app.layers.removed.addEventListener(resetHandler),
+      );
+      this._listeners.push(
+        this._app.layers.added.addEventListener(resetHandler),
+      );
 
-      this._listeners.push(this._layer.stateChanged.addEventListener(() => {
-        this.state = getStateFromLayer(this._layer);
-      }));
+      this._listeners.push(
+        this._layer.stateChanged.addEventListener(() => {
+          this.state = getStateFromLayer(this._layer);
+        }),
+      );
 
-      this._listeners.push(this._app.maps.mapActivated.addEventListener(() => {
-        this.visible = this._layer.isSupported(this._app.maps.activeMap);
-      }));
+      this._listeners.push(
+        this._app.maps.mapActivated.addEventListener(() => {
+          this.visible = this._layer.isSupported(this._app.maps.activeMap);
+        }),
+      );
     }
   }
 
@@ -223,9 +242,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
       if (this.state === StateActionState.INACTIVE) {
         await this._layer.activate();
         this._layerNamesToDeactivate
-          .map(n => this._app.layers.getByKey(n))
-          .filter(l => l)
-          .forEach(l => l.deactivate());
+          .map((n) => this._app.layers.getByKey(n))
+          .filter((l) => l)
+          .forEach((l) => l.deactivate());
       } else {
         this._layer.deactivate();
       }
@@ -249,4 +268,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default LayerContentTreeItem;
-contentTreeClassRegistry.registerClass(LayerContentTreeItem.className, LayerContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  LayerContentTreeItem.className,
+  LayerContentTreeItem,
+);

@@ -13,7 +13,7 @@ export default function validate(rules, value) {
         }
         return rule;
       })
-      .filter(val => val !== true);
+      .filter((val) => val !== true);
   }
   return [];
 }

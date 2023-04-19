@@ -12,7 +12,9 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
  * @class
  */
 class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
-  static get className() { return 'ViewpointContentTreeItem'; }
+  static get className() {
+    return 'ViewpointContentTreeItem';
+  }
 
   /**
    * @param {ViewpointContentTreeItemOptions} options
@@ -48,7 +50,9 @@ class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
    * @private
    */
   _clearListeners() {
-    this._listeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
     this._listeners.splice(0);
   }
 
@@ -69,12 +73,18 @@ class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
 
     if (!this.viewpoint) {
       this.visible = false;
-      this._listeners.push(this._app.viewpoints.added.addEventListener(resetCallback));
+      this._listeners.push(
+        this._app.viewpoints.added.addEventListener(resetCallback),
+      );
     } else {
       this.visible = true;
       this.setPropertiesFromObject(this.viewpoint);
-      this._listeners.push(this._app.viewpoints.added.addEventListener(resetCallback));
-      this._listeners.push(this._app.viewpoints.removed.addEventListener(resetCallback));
+      this._listeners.push(
+        this._app.viewpoints.added.addEventListener(resetCallback),
+      );
+      this._listeners.push(
+        this._app.viewpoints.removed.addEventListener(resetCallback),
+      );
     }
   }
 
@@ -104,4 +114,7 @@ class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
 }
 
 export default ViewpointContentTreeItem;
-contentTreeClassRegistry.registerClass(ViewpointContentTreeItem.className, ViewpointContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  ViewpointContentTreeItem.className,
+  ViewpointContentTreeItem,
+);

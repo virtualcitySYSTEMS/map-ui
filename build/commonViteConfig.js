@@ -17,9 +17,7 @@ const configMain = defineConfig({
   define: {
     'process.env.NODE_ENV': '"development"',
   },
-  plugins: [
-    createVuePlugin(),
-  ],
+  plugins: [createVuePlugin()],
   css: {
     preprocessorOptions: {
       sass: {

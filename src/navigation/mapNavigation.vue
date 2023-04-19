@@ -1,24 +1,16 @@
 <template>
-  <v-container :class="$vuetify.breakpoint.xs ? 'nav-container mobile' : 'nav-container'">
+  <v-container
+    :class="$vuetify.breakpoint.xs ? 'nav-container mobile' : 'nav-container'"
+  >
     <v-row>
-      <VcsCompass
-        :view-mode="viewMode"
-        v-model="heading"
-      />
+      <VcsCompass :view-mode="viewMode" v-model="heading" />
     </v-row>
-    <v-row
-      v-if="isOblique"
-    >
-      <ObliqueRotation
-        v-model="heading"
-      />
+    <v-row v-if="isOblique">
+      <ObliqueRotation v-model="heading" />
     </v-row>
     <template v-if="$vuetify.breakpoint.mdAndUp">
       <v-row justify="center">
-        <VcsZoomButton
-          @zoom-out="zoomOut()"
-          @zoom-in="zoomIn()"
-        />
+        <VcsZoomButton @zoom-out="zoomOut()" @zoom-in="zoomIn()" />
       </v-row>
       <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
         <TiltSlider v-model="tilt" />
@@ -44,12 +36,13 @@
 </template>
 
 <script>
-  import {
-    computed, inject, ref, reactive, onUnmounted,
-  } from 'vue';
+  import { computed, inject, ref, reactive, onUnmounted } from 'vue';
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/lib';
-  import { createGoToViewpointAction, createOverviewMapAction } from '../actions/actionHelper.js';
+  import {
+    createGoToViewpointAction,
+    createOverviewMapAction,
+  } from '../actions/actionHelper.js';
   import { getWindowComponentOptions } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
   import VcsZoomButton from './vcsZoomButton.vue';
@@ -63,7 +56,12 @@
    * @returns {{action: import("vue").Reactive<{}>, destroy: function():void}}
    */
   function setupHomeButton(app) {
-    const initialAction = { icon: undefined, title: undefined, active: undefined, callback: undefined };
+    const initialAction = {
+      icon: undefined,
+      title: undefined,
+      active: undefined,
+      callback: undefined,
+    };
     const action = reactive({ ...initialAction });
     /**
      * Gets the starting viewpoint of the last added module, where a startingViewpointName was defined
@@ -73,7 +71,10 @@
       let viewpoint = null;
       for (let idx = app.modules.length - 1; idx >= 0; idx--) {
         const { startingViewpointName } = app.modules[idx].config;
-        if (startingViewpointName && app.viewpoints.hasKey(startingViewpointName)) {
+        if (
+          startingViewpointName &&
+          app.viewpoints.hasKey(startingViewpointName)
+        ) {
           viewpoint = app.viewpoints.getByKey(startingViewpointName);
           break;
         }
@@ -81,16 +82,19 @@
       if (!viewpoint) {
         Object.assign(action, { ...initialAction });
       } else {
-        Object.assign(action, createGoToViewpointAction(
-          {
-            name: 'home-action',
-            title: 'navigation.homeButton',
-            icon: '$vcsHomePoint',
-          },
-          viewpoint,
-          app.viewpoints,
-          app.maps,
-        ));
+        Object.assign(
+          action,
+          createGoToViewpointAction(
+            {
+              name: 'home-action',
+              title: 'navigation.homeButton',
+              icon: '$vcsHomePoint',
+            },
+            viewpoint,
+            app.viewpoints,
+            app.maps,
+          ),
+        );
       }
     };
 
@@ -99,7 +103,9 @@
       app.moduleRemoved.addEventListener(updateStartingViewpoint),
     ];
 
-    const destroy = () => { listener.forEach(cb => cb()); };
+    const destroy = () => {
+      listener.forEach((cb) => cb());
+    };
 
     return { action, destroy };
   }
@@ -167,12 +173,15 @@
         }
       };
 
-      const postRenderHandler = app.maps.postRender.addEventListener(handleRenderEvent);
+      const postRenderHandler =
+        app.maps.postRender.addEventListener(handleRenderEvent);
       if (app.maps.activeMap) {
         handleRenderEvent({ map: app.maps.activeMap });
       }
       const heading = computed({
-        get() { return headingRef.value; },
+        get() {
+          return headingRef.value;
+        },
         async set(headingValue) {
           let vp;
           if (viewMode.value === OrientationToolsViewMode.OBLIQUE) {
@@ -186,7 +195,9 @@
       });
 
       const tilt = computed({
-        get() { return tiltRef.value; },
+        get() {
+          return tiltRef.value;
+        },
         set(tiltValue) {
           const vp = app.maps.activeMap.getViewpointSync(); // XXX make async and debounce
           vp.pitch = tiltValue;
@@ -214,10 +225,18 @@
         viewMode,
         heading,
         tilt,
-        is3D: computed(() => viewMode.value === OrientationToolsViewMode.THREE_D),
-        isOblique: computed(() => viewMode.value === OrientationToolsViewMode.OBLIQUE),
-        zoomIn() { zoom(app.maps.activeMap); }, // debounce?
-        zoomOut() { zoom(app.maps.activeMap, true); },
+        is3D: computed(
+          () => viewMode.value === OrientationToolsViewMode.THREE_D,
+        ),
+        isOblique: computed(
+          () => viewMode.value === OrientationToolsViewMode.OBLIQUE,
+        ),
+        zoomIn() {
+          zoom(app.maps.activeMap);
+        }, // debounce?
+        zoomOut() {
+          zoom(app.maps.activeMap, true);
+        },
         overviewAction: reactive(action),
         homeAction,
       };
@@ -231,7 +250,7 @@
     right: 2rem;
     bottom: 1rem;
     width: unset;
-    &.mobile{
+    &.mobile {
       top: 1rem;
       right: 1rem;
       bottom: auto;

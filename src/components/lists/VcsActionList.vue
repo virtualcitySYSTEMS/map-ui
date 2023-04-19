@@ -1,28 +1,24 @@
 <template>
-  <v-list
-    v-if="actions.length > 0"
-  >
+  <v-list v-if="actions.length > 0">
     <VcsTooltip
       v-for="(action, index) in actions"
       :key="`${action.name}-${index}`"
       :tooltip="action.title"
       :tooltip-position="tooltipPosition"
-      v-bind="{...tooltipProps}"
+      v-bind="{ ...tooltipProps }"
     >
       <template #activator="{ on, attrs }">
         <v-list-item
           :class="action.active ? 'primary--text' : ''"
           @click="action.callback($event)"
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
         >
           <v-list-item-icon v-if="showIcon && action.icon">
-            <v-icon v-text="action.icon" small />
+            <v-icon small>{{ action.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-content
-            class="vcs-action-list"
-          >
-            <v-list-item-title v-text="$t(action.name)" />
+          <v-list-item-content class="vcs-action-list">
+            <v-list-item-title>{{ $t(action.name) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -30,17 +26,22 @@
   </v-list>
 </template>
 <style lang="scss">
-.vcs-action-list {
-  width: 100%;
-  &:hover{
-    color: var(--v-primary-base);
+  .vcs-action-list {
+    width: 100%;
+    &:hover {
+      color: var(--v-primary-base);
+    }
   }
-}
 </style>
 <script>
   import { is } from '@vcsuite/check';
   import {
-    VIcon, VList, VListItem, VListItemContent, VListItemIcon, VListItemTitle,
+    VIcon,
+    VList,
+    VListItem,
+    VListItemContent,
+    VListItemIcon,
+    VListItemTitle,
   } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
@@ -82,7 +83,6 @@
   export function validateActions(actions) {
     return actions.every(validateAction);
   }
-
 
   /**
    * @description

@@ -38,29 +38,25 @@
           </v-list-item-action>
         </v-list-item>
         <v-card class="my-1 ma-1 py-1 white">
-          <h2>
-            light
-          </h2>
+          <h2>light</h2>
           <v-chip
             class="mx-1"
             label
             :color="theme.light[key]?.base || theme.light[key]"
-            v-for="(key, index) in Object.keys(theme.light)"
-            :key="index"
+            v-for="(key, lightIdx) in Object.keys(theme.light)"
+            :key="lightIdx"
           >
             {{ key }}
           </v-chip>
         </v-card>
         <v-card class="my-1 ma-1 py-1 black">
-          <h2 class="white--text">
-            dark
-          </h2>
+          <h2 class="white--text">dark</h2>
           <v-chip
             class="mx-1"
             label
             :color="theme.dark[key]?.base || theme.dark[key]"
-            v-for="(key, index) in Object.keys(theme.dark)"
-            :key="index"
+            v-for="(key, darkIdx) in Object.keys(theme.dark)"
+            :key="darkIdx"
           >
             {{ key }}
           </v-chip>

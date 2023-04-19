@@ -4,11 +4,7 @@
     tooltip-position="left"
   >
     <template #activator="{ on, attrs }">
-      <v-card
-        class="w-8"
-        v-on="on"
-        v-bind="attrs"
-      >
+      <v-card class="w-8" v-on="on" v-bind="attrs">
         <v-slider
           track-color="base lighten-3"
           v-model="tilt"
@@ -24,21 +20,21 @@
 </template>
 <style lang="scss" scoped>
   @import '../styles/shades.scss';
-  .vcs-slider{
+  .vcs-slider {
     ::v-deep {
       .v-slider {
         min-height: 48px;
         margin-top: 8px;
         margin-bottom: 8px;
       }
-      .v-slider__thumb{
+      .v-slider__thumb {
         cursor: pointer;
         border-radius: 3px;
         width: 16px;
         height: 4px;
         border: 0;
         left: -8px;
-        &:before{
+        &:before {
           background-color: transparent;
         }
       }
@@ -47,7 +43,7 @@
   .v-application .theme--light.vcs-slider {
     ::v-deep {
       .v-slider {
-        .v-slider__track-container{
+        .v-slider__track-container {
           .v-slider__track-fill {
             background-color: map-get($shades, 'black') !important;
           }
@@ -61,7 +57,7 @@
   .v-application .theme--dark.vcs-slider {
     ::v-deep {
       .v-slider {
-        .v-slider__track-container{
+        .v-slider__track-container {
           .v-slider__track-fill {
             background-color: map-get($shades, 'white') !important;
           }

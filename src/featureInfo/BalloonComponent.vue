@@ -1,19 +1,9 @@
 <template>
-  <v-card
-    class="mx-auto elevation-0"
-    max-width="400"
-    v-if="position"
-  >
-    <slot name="balloon-header" :attrs="{...$props, ...$attrs}">
+  <v-card class="mx-auto elevation-0" max-width="400" v-if="position">
+    <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-2 align-center">
-        <v-list-item-avatar
-          tile
-          size="16"
-          class="mr-2"
-        >
-          <v-icon color="primary">
-            $vcsInfo
-          </v-icon>
+        <v-list-item-avatar tile size="16" class="mr-2">
+          <v-icon color="primary"> $vcsInfo </v-icon>
         </v-list-item-avatar>
         <v-list-item-content class="pr-1">
           <v-list-item-title>
@@ -37,9 +27,17 @@
 
     <v-divider />
 
-    <v-card class="overflow-y-auto py-2 elevation-0" max-height="250" color="transparent">
-      <slot :attrs="{...$props, ...$attrs}">
-        <v-list v-for="(value, name, index) in attributes" :key="`attribute-${index}`" color="transparent">
+    <v-card
+      class="overflow-y-auto py-2 elevation-0"
+      max-height="250"
+      color="transparent"
+    >
+      <slot :attrs="{ ...$props, ...$attrs }">
+        <v-list
+          v-for="(value, name, index) in attributes"
+          :key="`attribute-${index}`"
+          color="transparent"
+        >
           <v-list-item class="px-2">
             <v-list-item-content>
               <v-list-item-title>
@@ -54,10 +52,10 @@
   </v-card>
 </template>
 <script>
-
   import { inject, onMounted, onUnmounted, watch } from 'vue';
   import {
-    VCard, VDivider,
+    VCard,
+    VDivider,
     VIcon,
     VList,
     VListItem,
@@ -128,13 +126,24 @@
       };
 
       onMounted(async () => {
-        balloonPositionListener = await setupBalloonPositionListener(app, windowId, props.position);
+        balloonPositionListener = await setupBalloonPositionListener(
+          app,
+          windowId,
+          props.position,
+        );
       });
 
-      watch(() => props.featureId, async () => {
-        destroyListener();
-        balloonPositionListener = await setupBalloonPositionListener(app, windowId, props.position);
-      });
+      watch(
+        () => props.featureId,
+        async () => {
+          destroyListener();
+          balloonPositionListener = await setupBalloonPositionListener(
+            app,
+            windowId,
+            props.position,
+          );
+        },
+      );
 
       onUnmounted(() => {
         destroyListener();
@@ -153,7 +162,7 @@
 </script>
 
 <style lang="scss">
-@import '../styles/shades.scss';
+  @import '../styles/shades.scss';
 
   .balloon {
     z-index: 0 !important;
@@ -162,7 +171,7 @@
     display: none;
   }
   .balloon:after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: -12px;
     left: 40px;

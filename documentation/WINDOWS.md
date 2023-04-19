@@ -43,11 +43,13 @@ A new WindowComponent can be created from `WindowComponentOptions` by passing th
 
 You always have to provide a Vue Component defining the window's content. All other options are optional.
 A minimal example of adding a window component by an owner called `'owner'` would look like:
+
 ```js
 app.windowManager.add({ component: MyComponent }, 'owner');
 ```
 
 To check whether a component is registered on the manager or get said component, call:
+
 ```js
 app.windowManager.has('windowId');
 ```
@@ -57,6 +59,7 @@ const component = app.windowManager.get('windowId');
 ```
 
 In the same manner a component can be removed from the manager:
+
 ```js
 app.windowManager.remove('windowId');
 ```
@@ -65,6 +68,7 @@ app.windowManager.remove('windowId');
 > Using this id, you can easily get or remove your component.
 
 You can also remove all windows of a specific owner, which is performed by the app, whenever plugins are unloaded:
+
 ```js
 app.windowManager.removeOwner('pluginXY');
 ```
@@ -98,6 +102,7 @@ Usually each window has a header. The default header component provides a drag f
 Optionally it can have a help and a pin button.
 
 The [WindowState](#windowstate) object contains a couple of properties to configure the header:
+
 - `hideHeader` to be used to not show the header (default false)
 - `hidePin` to be used to not show the pin button on the header (default false)
 - `headerTitle` defining the window title
@@ -107,58 +112,72 @@ The [WindowState](#windowstate) object contains a couple of properties to config
 - `infoUrl` an optional url referencing a help page (see [Help](./HELP.md#window-info)).
 
 ```js
-vcsUiApp.windowManager.add({
-  component: MyComponent,
-  state: {
-    headerTitle: 'pluginExample.title',
-    headerIcon: '$vcsCircle',
-    headerActions: [ { name: 'MyAction', icon: '$vcsPoint', callback: () => {} } ],
-    infoUrl: 'https://vc.systems/help/pluginExample'
-  }
-}, 'owner');
+vcsUiApp.windowManager.add(
+  {
+    component: MyComponent,
+    state: {
+      headerTitle: 'pluginExample.title',
+      headerIcon: '$vcsCircle',
+      headerActions: [
+        { name: 'MyAction', icon: '$vcsPoint', callback: () => {} },
+      ],
+      infoUrl: 'https://vc.systems/help/pluginExample',
+    },
+  },
+  'owner',
+);
 ```
 
 Alternatively you can define a custom HeaderComponent using `headerComponent` on the [WindowComponentOptions](#windowcomponent).
-This will make use of the named slot `headerComponent`. 
+This will make use of the named slot `headerComponent`.
 All props specified on the WindowComponentOptions are passed to the HeaderComponent slot.
 
 In `detached` state windows usually have a pin button.
 On click windows are repositioned at their initial [slot](#slot) or [position](#position).
-To prevent a window from being pinned, this button can be hidden setting `hidePin` to true. 
+To prevent a window from being pinned, this button can be hidden setting `hidePin` to true.
 
 ### Style
 
 The style of the root window component can be affected using `styles` or `classes` on the [WindowState](#windowstate) object.
 
 Example for binding a style:
+
 ```js
-app.windowManager.add({
-  state: {
-    headerTitle: 'Example style',
-    styles: { 'background-color': 'red' },
+app.windowManager.add(
+  {
+    state: {
+      headerTitle: 'Example style',
+      styles: { 'background-color': 'red' },
+    },
+    component: MyComponent,
   },
-  component: MyComponent,
-}, 'owner');
+  'owner',
+);
 ```
 
 Example for binding a class:
+
 ```js
-app.windowManager.add({
-  state: {
-    headerTitle: 'Example class',
-    classes: {
-      vcsTest: computed(() => {
-        return showTestClass.value;
-      }),
+app.windowManager.add(
+  {
+    state: {
+      headerTitle: 'Example class',
+      classes: {
+        vcsTest: computed(() => {
+          return showTestClass.value;
+        }),
+      },
     },
+    component: MyComponent,
   },
-  component: MyComponent,
-}, 'owner');
+  'owner',
+);
 ```
 
 ## Position
 
 The position of a window follows CSS position properties:
+
 ```js
 /**
  * @typedef {Object} WindowPosition
@@ -176,6 +195,7 @@ The position of a window follows CSS position properties:
 ```
 
 The following options can be defined:
+
 ```js
 /**
  * @typedef {Object} WindowPositionOptions
@@ -195,6 +215,7 @@ The following options can be defined:
 > The position options will be ignored on `add`, if WindowSlot is not DETACHED.
 
 Do not update the position property of a window Component directly. Use the WindowManager's `setWindowPositionOptions` method instead:
+
 ```js
 app.windowManager.setWindowPositionOptions('windowId', {
   left: '30%',
@@ -205,17 +226,23 @@ app.windowManager.setWindowPositionOptions('windowId', {
 ```
 
 To parse WindowPosition from options use:
+
 ```js
-const parsedPosition = windowPositionFromOptions(windowPositionOptions, windowPosition = {});
+const parsedPosition = windowPositionFromOptions(
+  windowPositionOptions,
+  (windowPosition = {}),
+);
 ```
 
 To get numerical absolute position values use:
+
 ```js
 const { target } = app.maps; // the current map target
 const numericPosition = optionsFromWindowPosition(windowPosition, target);
 ```
 
 There are more helper functions to work with the window's position (see [WindowHelper](../src/manager/window/windowHelper.js)):
+
 - `getWindowPositionOptions` Get WindowPositionOptions from client position relative to a HTMLElement.
 - `getWindowPositionOptionsFromMapEvent` Get window position options based on a pixel in the map.
 - `getFittedWindowPositionOptions` Fits a window aligned top left, so it fits into the parent.
@@ -226,7 +253,9 @@ There are more helper functions to work with the window's position (see [WindowH
 - `applyPositionOnTarget` Applies the position on the target clipping the position to the target's size.
 
 ## Slot
+
 The WindowManager offers four slot types:
+
 ```js
 /**
  * @readonly
@@ -237,6 +266,7 @@ The WindowManager offers four slot types:
  * @property {string} DETACHED - Positioned at initial provided position. Can be moved by user interaction.
  */
 ```
+
 See [GET_STARTED](./GET_STARTED.md#overview-ui-elements) for a visualization of the slot positions.
 
 > If WindowSlot is not DETACHED, the position will be ignored on `add`.
@@ -244,6 +274,6 @@ See [GET_STARTED](./GET_STARTED.md#overview-ui-elements) for a visualization of 
 ## Props & Provide/Inject
 
 Properties can be passed to a window component using a `props` object on the `WindowComponentOptions`.
-To avoid prop drilling, `WindowManager` implements the provide API of vue. 
+To avoid prop drilling, `WindowManager` implements the provide API of vue.
 You can pass properties to be used in any child component of your window component using a `provides` object on the `WindowComomponentOptions` and inject the property within the child.
 For more information on provide/inject see [Vue API](https://vuejs.org/guide/components/provide-inject.html).

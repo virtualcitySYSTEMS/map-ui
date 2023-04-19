@@ -1,9 +1,6 @@
 <template>
   <v-sheet class="d-flex flew-row align-center pl-2 pr-2">
-    <VcsTextField
-      :value="localLink"
-      class="d-flex col-10 pa-0 mr-2"
-    />
+    <VcsTextField :value="localLink" class="d-flex col-10 pa-0 mr-2" />
     <div class="d-flex col-2 justify-end pa-0">
       <VcsButton
         small
@@ -25,7 +22,12 @@
 
 <script>
   import { VSheet } from 'vuetify/lib';
-  import { VcsTextField, VcsButton, setStateToUrl, NotificationType } from '@vcmap/ui';
+  import {
+    VcsTextField,
+    VcsButton,
+    setStateToUrl,
+    NotificationType,
+  } from '@vcmap/ui';
   import { getCurrentInstance, inject, ref } from 'vue';
 
   export default {
@@ -50,7 +52,11 @@
         const element = proxy.$el.querySelector('input');
         element.select();
         document.execCommand('copy');
-        app.notifier.add({ title: 'createLink.title', message: 'createLink.copied', type: NotificationType.SUCCESS });
+        app.notifier.add({
+          title: 'createLink.title',
+          message: 'createLink.copied',
+          type: NotificationType.SUCCESS,
+        });
       };
 
       const refresh = async () => {
@@ -69,6 +75,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -25,7 +25,7 @@ describe('GroupContentTreeItem', () => {
       new ContentTreeItem({ name: 'foo.bar' }, app),
     ];
 
-    childrenArray.push(...children.map(c => c.getTreeViewItem()));
+    childrenArray.push(...children.map((c) => c.getTreeViewItem()));
 
     return { item, children };
   }
@@ -44,12 +44,16 @@ describe('GroupContentTreeItem', () => {
 
     beforeAll(() => {
       ({ item, children } = setupGroupItem());
-      children.forEach((c) => { c.visible = false; });
+      children.forEach((c) => {
+        c.visible = false;
+      });
     });
 
     afterAll(() => {
       item.destroy();
-      children.forEach((c) => { c.destroy(); });
+      children.forEach((c) => {
+        c.destroy();
+      });
     });
 
     it('should be visible, if a single child is visible', async () => {
@@ -59,7 +63,9 @@ describe('GroupContentTreeItem', () => {
     });
 
     it('should be invisible, if all children are not visible', async () => {
-      children.forEach((c) => { c.visible = false; });
+      children.forEach((c) => {
+        c.visible = false;
+      });
       await sleep();
       expect(item.visible).to.be.false;
     });
@@ -71,16 +77,22 @@ describe('GroupContentTreeItem', () => {
 
     beforeAll(() => {
       ({ item, children } = setupGroupItem());
-      children.forEach((c) => { c.state = StateActionState.NONE; });
+      children.forEach((c) => {
+        c.state = StateActionState.NONE;
+      });
     });
 
     afterAll(() => {
       item.destroy();
-      children.forEach((c) => { c.destroy(); });
+      children.forEach((c) => {
+        c.destroy();
+      });
     });
 
     it('should have a state of NONE, if all items have a state of NONE', async () => {
-      children.forEach((c) => { c.state = StateActionState.NONE; });
+      children.forEach((c) => {
+        c.state = StateActionState.NONE;
+      });
       await sleep();
       expect(item.state).to.equal(StateActionState.NONE);
     });
@@ -114,13 +126,19 @@ describe('GroupContentTreeItem', () => {
 
     beforeEach(() => {
       ({ item, children } = setupGroupItem());
-      children.forEach((c) => { c.state = StateActionState.NONE; });
-      spies = item.getTreeViewItem().children.map(c => vi.spyOn(c, 'clicked'));
+      children.forEach((c) => {
+        c.state = StateActionState.NONE;
+      });
+      spies = item
+        .getTreeViewItem()
+        .children.map((c) => vi.spyOn(c, 'clicked'));
     });
 
     afterEach(() => {
       item.destroy();
-      children.forEach((c) => { c.destroy(); });
+      children.forEach((c) => {
+        c.destroy();
+      });
     });
 
     it('should click all visible children with a state not NONE, if the group is ACTIVE', async () => {

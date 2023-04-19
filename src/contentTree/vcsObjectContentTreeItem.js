@@ -1,4 +1,6 @@
-import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
+import ContentTreeItem, {
+  contentTreeClassRegistry,
+} from './contentTreeItem.js';
 
 /**
  * @typedef {Object} VcsObjectContentTreeItemProperties
@@ -21,7 +23,9 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
    * @type {string}
    * @readonly
    */
-  static get className() { return 'VcsObjectContentTreeItem'; }
+  static get className() {
+    return 'VcsObjectContentTreeItem';
+  }
 
   /**
    * @param {ContentTreeItemOptions} options
@@ -71,12 +75,11 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
   setPropertiesFromObject(object) {
     this._currentObjectProperties = object.properties;
     const mergedProperties = { ...this._currentObjectProperties };
-    Object.entries(this._ownProperties)
-      .forEach(([key, value]) => {
-        if (value !== undefined) {
-          mergedProperties[key] = value;
-        }
-      });
+    Object.entries(this._ownProperties).forEach(([key, value]) => {
+      if (value !== undefined) {
+        mergedProperties[key] = value;
+      }
+    });
     this._setProperties(mergedProperties);
   }
 
@@ -85,16 +88,22 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
    */
   toJSON() {
     const config = super.toJSON();
-    Object.entries(this._currentObjectProperties)
-      .forEach(([key, value]) => {
-        if (config[key] && config[key] === value && this._ownProperties[key] !== value) {
-          delete config[key];
-        }
-      });
+    Object.entries(this._currentObjectProperties).forEach(([key, value]) => {
+      if (
+        config[key] &&
+        config[key] === value &&
+        this._ownProperties[key] !== value
+      ) {
+        delete config[key];
+      }
+    });
 
     return config;
   }
 }
 
-contentTreeClassRegistry.registerClass(VcsObjectContentTreeItem.className, VcsObjectContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  VcsObjectContentTreeItem.className,
+  VcsObjectContentTreeItem,
+);
 export default VcsObjectContentTreeItem;

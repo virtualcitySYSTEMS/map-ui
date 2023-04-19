@@ -49,11 +49,12 @@ export default async function initApp(mountTarget) {
   new Vue({
     vuetify,
     i18n,
-    render: h => h(VcsAppComponentWrapper, {
-      props: {
-        appId: app.id,
-      },
-    }),
+    render: (h) =>
+      h(VcsAppComponentWrapper, {
+        props: {
+          appId: app.id,
+        },
+      }),
   }).$mount(mountTarget);
 
   setupI18n(app, i18n);
@@ -72,8 +73,7 @@ export async function initAppFromModule(mountTarget, configUrl) {
 
   const app = await initApp(mountTarget);
   if (configUrl) {
-    const config = await fetch(configUrl)
-      .then(response => response.json());
+    const config = await fetch(configUrl).then((response) => response.json());
     const module = new VcsModule(config);
     await app.addModule(module);
   }
@@ -95,23 +95,26 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
   /**
    * @type {{modules: Array<string|VcsUiAppConfig>}}
    */
-  const appConfig = await fetch(appUrl)
-    .then(response => response.json());
+  const appConfig = await fetch(appUrl).then((response) => response.json());
 
   check(appConfig.modules, [String, Object]);
 
-  const modules = await Promise.all(appConfig.modules.map(async (c) => {
-    if (is(c, VcsUiAppConfigPattern)) {
-      return new VcsModule(/** @type{import("@vcmap/core").VcsAppConfig} */ c);
-    } else if (is(c, String)) {
-      const response = await fetch(c);
-      if (response.ok) {
-        const config = await response.json();
-        return new VcsModule(config);
+  const modules = await Promise.all(
+    appConfig.modules.map(async (c) => {
+      if (is(c, VcsUiAppConfigPattern)) {
+        return new VcsModule(
+          /** @type{import("@vcmap/core").VcsAppConfig} */ c,
+        );
+      } else if (is(c, String)) {
+        const response = await fetch(c);
+        if (response.ok) {
+          const config = await response.json();
+          return new VcsModule(config);
+        }
       }
-    }
-    return null;
-  }));
+      return null;
+    }),
+  );
   // eslint-disable-next-line no-restricted-syntax
   for await (const module of modules) {
     if (module) {

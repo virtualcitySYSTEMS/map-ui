@@ -1,17 +1,11 @@
 <template>
-  <div
-    class="ma-1 d-flex flex-row align-center"
-    v-if="item"
-  >
+  <div class="ma-1 d-flex flex-row align-center" v-if="item">
     <v-list-item-icon v-if="item.icon" class="px-1">
       <v-icon>
         {{ item.icon }}
       </v-icon>
     </v-list-item-icon>
-    <div
-      class="px-2 d-flex align-center"
-      :title="$t('search.select')"
-    >
+    <div class="px-2 d-flex align-center" :title="$t('search.select')">
       <span v-html="marked" />
     </div>
     <VcsActionButtonList
@@ -38,11 +32,14 @@
   function markText(text, query) {
     let replacement = text;
     if (query) {
-      const partials = query.split(/[.,\s]/)
-        .filter(partial => partial.trim());
+      const partials = query
+        .split(/[.,\s]/)
+        .filter((partial) => partial.trim());
       partials.forEach((partial) => {
-        replacement = replacement
-          .replaceAll(new RegExp(`(^|[^>])(${partial})`, 'ig'), '<span class="primary--text">$2</span>');
+        replacement = replacement.replaceAll(
+          new RegExp(`(^|[^>])(${partial})`, 'ig'),
+          '<span class="primary--text">$2</span>',
+        );
       });
     }
     return replacement;
@@ -84,6 +81,4 @@
   };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

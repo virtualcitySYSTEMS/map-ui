@@ -20,7 +20,10 @@ import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
-import { getDefaultPrimaryColor, getColorByKey } from '../vuePlugins/vuetify.js';
+import {
+  getDefaultPrimaryColor,
+  getColorByKey,
+} from '../vuePlugins/vuetify.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import VcsMap from '../application/VcsMap.vue';
 
@@ -52,7 +55,27 @@ export function getWindowComponentOptions() {
  */
 function getCameraIcon(color) {
   return {
-    src: `data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Asvg%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22121.58616%22%20height%3D%2274.204994%22%20viewBox%3D%220%200%2032.169671%2019.633405%22%20version%3D%221.1%22%20id%3D%22svg216%22%3E%3Cdefs%20id%3D%22defs213%22%3E%3ClinearGradient%20id%3D%221-0%22%20x1%3D%2240.529999%22%20y1%3D%2248.970001%22%20x2%3D%2240.529999%22%20y2%3D%220.25%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20id%3D%22stop399%22%2F%3E%3Cstop%20offset%3D%22.46%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.60%22%20id%3D%22stop401%22%2F%3E%3Cstop%20offset%3D%22.65%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.40%22%20id%3D%22stop403%22%2F%3E%3Cstop%20offset%3D%22.83%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.20%22%20id%3D%22stop405%22%2F%3E%3Cstop%20offset%3D%22.89%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.15%22%20id%3D%22stop407%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop409%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%222-9%22%20x1%3D%2240.529999%22%20y1%3D%2249.369999%22%20x2%3D%2240.529999%22%20y2%3D%220%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%22.24%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20id%3D%22stop412%22%2F%3E%3Cstop%20offset%3D%22.38%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.93%22%20id%3D%22stop414%22%2F%3E%3Cstop%20offset%3D%22.57%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.70%22%20id%3D%22stop416%22%2F%3E%3Cstop%20offset%3D%22.78%22%20stop-color%3D%22${encodeURIComponent(color)}%22%20stop-opacity%3D%22.38%22%20id%3D%22stop418%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop420%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22layer1%22%20transform%3D%22translate(5.3616118%2C3.2722342)%22%3E%3Cpolygon%20points%3D%220.53%2C0.25%2040.53%2C48.97%2080.53%2C0.25%20%22%20fill%3D%22url(%231)%22%20stroke%3D%22url(%232)%22%20stroke-miterlimit%3D%2210%22%20stroke-width%3D%220.5px%22%20id%3D%22polygon425%22%20style%3D%22fill%3Aurl(%231-0)%3Bstroke%3Aurl(%232-9)%22%20transform%3D%22matrix(0.396875%2C0%2C0%2C0.396875%2C-5.3621201%2C-3.2722342)%22%2F%3E%3Ccircle%20cx%3D%2210.723224%22%20cy%3D%2213.781484%22%20r%3D%222.3812499%22%20fill%3D%22${encodeURIComponent(color)}%22%20stroke%3D%22%23ffffff%22%20stroke-miterlimit%3D%2210%22%20id%3D%22circle427%22%20style%3D%22stroke-width%3A0.396874%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E`,
+    src: `data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Asvg%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22121.58616%22%20height%3D%2274.204994%22%20viewBox%3D%220%200%2032.169671%2019.633405%22%20version%3D%221.1%22%20id%3D%22svg216%22%3E%3Cdefs%20id%3D%22defs213%22%3E%3ClinearGradient%20id%3D%221-0%22%20x1%3D%2240.529999%22%20y1%3D%2248.970001%22%20x2%3D%2240.529999%22%20y2%3D%220.25%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20id%3D%22stop399%22%2F%3E%3Cstop%20offset%3D%22.46%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.60%22%20id%3D%22stop401%22%2F%3E%3Cstop%20offset%3D%22.65%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.40%22%20id%3D%22stop403%22%2F%3E%3Cstop%20offset%3D%22.83%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.20%22%20id%3D%22stop405%22%2F%3E%3Cstop%20offset%3D%22.89%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.15%22%20id%3D%22stop407%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop409%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%222-9%22%20x1%3D%2240.529999%22%20y1%3D%2249.369999%22%20x2%3D%2240.529999%22%20y2%3D%220%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%22.24%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20id%3D%22stop412%22%2F%3E%3Cstop%20offset%3D%22.38%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.93%22%20id%3D%22stop414%22%2F%3E%3Cstop%20offset%3D%22.57%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.70%22%20id%3D%22stop416%22%2F%3E%3Cstop%20offset%3D%22.78%22%20stop-color%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stop-opacity%3D%22.38%22%20id%3D%22stop418%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22transparent%22%20stop-opacity%3D%220%22%20id%3D%22stop420%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22layer1%22%20transform%3D%22translate(5.3616118%2C3.2722342)%22%3E%3Cpolygon%20points%3D%220.53%2C0.25%2040.53%2C48.97%2080.53%2C0.25%20%22%20fill%3D%22url(%231)%22%20stroke%3D%22url(%232)%22%20stroke-miterlimit%3D%2210%22%20stroke-width%3D%220.5px%22%20id%3D%22polygon425%22%20style%3D%22fill%3Aurl(%231-0)%3Bstroke%3Aurl(%232-9)%22%20transform%3D%22matrix(0.396875%2C0%2C0%2C0.396875%2C-5.3621201%2C-3.2722342)%22%2F%3E%3Ccircle%20cx%3D%2210.723224%22%20cy%3D%2213.781484%22%20r%3D%222.3812499%22%20fill%3D%22${encodeURIComponent(
+      color,
+    )}%22%20stroke%3D%22%23ffffff%22%20stroke-miterlimit%3D%2210%22%20id%3D%22circle427%22%20style%3D%22stroke-width%3A0.396874%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E`,
     color,
   };
 }
@@ -111,7 +134,8 @@ class OverviewMap {
      */
     this._obliqueSelectedImageLayer = null;
 
-    const primary = app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor();
+    const primary =
+      app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor();
     const fillColor = Color.fromCssColorString('#EDEDED');
 
     /**
@@ -228,7 +252,9 @@ class OverviewMap {
           this._map.layerCollection.remove(clone);
         }
       }),
-      this._app.themeChanged.addEventListener(this._updatePrimaryColor.bind(this)),
+      this._app.themeChanged.addEventListener(
+        this._updatePrimaryColor.bind(this),
+      ),
     ];
   }
 
@@ -277,7 +303,9 @@ class OverviewMap {
     const rotation = this.cameraIconStyle.image.getRotation();
     this.cameraIconStyle.image = new Icon(getCameraIcon(color));
     this.cameraIconStyle.image.setRotation(rotation);
-    this._cameraIconLayer?.getFeatureById('cameraFeature')?.setStyle(this.cameraIconStyle.style);
+    this._cameraIconLayer
+      ?.getFeatureById('cameraFeature')
+      ?.setStyle(this.cameraIconStyle.style);
   }
 
   /**
@@ -288,9 +316,10 @@ class OverviewMap {
     const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
     this._mapClicked = overviewMapClickedInteraction.mapClicked;
     this._eventHandler.addPersistentInteraction(overviewMapClickedInteraction);
-    this._mapPointerListener = this._map.pointerInteractionEvent.addEventListener((e) => {
-      this._eventHandler.handleMapEvent(e);
-    });
+    this._mapPointerListener =
+      this._map.pointerInteractionEvent.addEventListener((e) => {
+        this._eventHandler.handleMapEvent(e);
+      });
   }
 
   /**
@@ -306,11 +335,13 @@ class OverviewMap {
     this._map.setTarget('overview-map-container');
     this._map.target?.firstChild?.classList?.add('overviewMapElement');
     if (!this._active) {
-      this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(() => {
-        this._clearListeners();
-        this._cachedViewpoint = null;
-        this._activate();
-      });
+      this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(
+        () => {
+          this._clearListeners();
+          this._cachedViewpoint = null;
+          this._activate();
+        },
+      );
     }
     this._active = true;
     const { activeMap } = this._app.maps;
@@ -356,7 +387,9 @@ class OverviewMap {
       this._syncCameraViewAndFeature();
     }
     const navRemover = this._addNavigationListener(map);
-    const prRemover = map.postRender.addEventListener(this._syncCameraViewAndFeature.bind(this));
+    const prRemover = map.postRender.addEventListener(
+      this._syncCameraViewAndFeature.bind(this),
+    );
     const cleanupTasks = () => {
       prRemover();
       navRemover();
@@ -379,8 +412,10 @@ class OverviewMap {
       if (e.feature) {
         const id = e.feature.getId().toString();
         if (this._obliqueTileLayer.getFeatureById(id)) {
-          const image = await obliqueMap.collection
-            .loadImageForCoordinate(e.positionOrPixel, this._obliqueViewDirection);
+          const image = await obliqueMap.collection.loadImageForCoordinate(
+            e.positionOrPixel,
+            this._obliqueViewDirection,
+          );
           if (image) {
             await obliqueMap.setImageByName(image.name);
           }
@@ -392,8 +427,12 @@ class OverviewMap {
 
     const listeners = [
       mapClickedListener,
-      obliqueMap.imageChanged.addEventListener(this._obliqueImageChange.bind(this)),
-      obliqueMap.collectionChanged.addEventListener(this._obliqueCollectionChanged.bind(this)),
+      obliqueMap.imageChanged.addEventListener(
+        this._obliqueImageChange.bind(this),
+      ),
+      obliqueMap.collectionChanged.addEventListener(
+        this._obliqueCollectionChanged.bind(this),
+      ),
     ];
 
     const prUnKey = this._map.olMap.once('postrender', () => {
@@ -406,7 +445,9 @@ class OverviewMap {
       this._obliqueImageLayer.deactivate();
       this._obliqueSelectedImageLayer.deactivate();
       unByKey(prUnKey);
-      listeners.forEach((l) => { l(); });
+      listeners.forEach((l) => {
+        l();
+      });
     };
     this._listeners.push(cleanupTasks);
     await this._obliqueTileLayer.activate();
@@ -458,7 +499,9 @@ class OverviewMap {
     const obliqueTileStyle = new VectorStyleItem({});
     obliqueTileStyle.style = (feature) => {
       if (feature.get('state') === DataState.PENDING) {
-        return /** @type {ol/style/Style} */ (this.obliqueUnselectedStyle.style);
+        return /** @type {ol/style/Style} */ (
+          this.obliqueUnselectedStyle.style
+        );
       }
       return emptyStyle;
     };
@@ -522,7 +565,11 @@ class OverviewMap {
    */
   _syncCameraViewAndFeature() {
     const viewpoint = this._app.maps.activeMap?.getViewpointSync();
-    if (!viewpoint || !viewpoint.isValid() || viewpoint.equals(this._cachedViewpoint)) {
+    if (
+      !viewpoint ||
+      !viewpoint.isValid() ||
+      viewpoint.equals(this._cachedViewpoint)
+    ) {
       return;
     }
     this._cachedViewpoint = viewpoint.clone();
@@ -569,13 +616,13 @@ class OverviewMap {
    * @private
    */
   _clearListeners() {
-    this._listeners.forEach(cb => cb());
+    this._listeners.forEach((cb) => cb());
     this._listeners.splice(0);
   }
 
   destroy() {
     this._clearListeners();
-    this._collectionListeners.forEach(cb => cb());
+    this._collectionListeners.forEach((cb) => cb());
     this._collectionListeners = [];
     if (this._mapPointerListener) {
       this._mapPointerListener();

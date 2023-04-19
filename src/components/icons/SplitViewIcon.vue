@@ -1,7 +1,12 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25.003" viewBox="0 0 25 25.003">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25"
+    height="25.003"
+    viewBox="0 0 25 25.003"
+  >
     <g id="icon_24_splitview" transform="translate(0.5 0.5)">
       <path
         id="Union_46"

@@ -1,9 +1,10 @@
 # UI Config
+
 The UI configuration is meant to provide means to configure certain aspects of
 the UI, for instance the primary theme color or the logo used. UI configuration, as all configuration parts,
-is depending on the currently loaded modules and may be overridden. Within a VcsModule 
+is depending on the currently loaded modules and may be overridden. Within a VcsModule
 configuration, the UI configuration is provided by an Array of configuration items,
-which in turn is mapped to an `OverrideCollection` on the `VcsUiApp` called `uiConfig`. 
+which in turn is mapped to an `OverrideCollection` on the `VcsUiApp` called `uiConfig`.
 Each entry provides a `name` (aka key) and `value` for the configuration. To override a
 previously defined configuration parameter, simple use the `override` API on the collection
 with the same `name`.
@@ -19,11 +20,12 @@ You can easily be extended the config for custom use (see example).
 
 The following outlines how to use the `UiConfig` in your `Vue` component and add
 your own custom property.
+
 ```vue
 <template>
-  <VcsButton 
-    :color="uiConfig.myColor ?? 'primary'" 
-    icon="$vcsTouch" 
+  <VcsButton
+    :color="uiConfig.myColor ?? 'primary'"
+    icon="$vcsTouch"
     @click="toggle"
   />
 </template>
@@ -38,7 +40,7 @@ your own custom property.
     setup() {
       const app = inject('vcsApp');
       let item;
-      
+
       return {
         uiConfig: app.uiConfig.config,
         toggle() {
@@ -51,7 +53,7 @@ your own custom property.
           }
         },
       };
-    }
-  }
+    },
+  };
 </script>
 ```

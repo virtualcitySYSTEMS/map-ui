@@ -5,10 +5,13 @@ import { buildPluginsForPreview, getProjectPath } from './buildHelpers.js';
 
 console.log('Building Plugins');
 await Promise.all([
-  buildPluginsForPreview({
-    configFile: './build/commonViteConfig.js',
-    plugins: [vcsOl()],
-  }, true),
+  buildPluginsForPreview(
+    {
+      configFile: './build/commonViteConfig.js',
+      plugins: [vcsOl()],
+    },
+    true,
+  ),
   fs.promises.cp(
     getProjectPath('app.config.json'),
     path.join(process.cwd(), 'dist', 'app.config.json'),

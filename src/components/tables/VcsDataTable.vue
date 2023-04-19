@@ -14,14 +14,20 @@
       :page.sync="page"
       :search="search"
       :custom-filter="handleFilter"
-      :no-data-text="$attrs.noDataText ?? $t('components.vcsDataTable.noDataPlaceholder')"
-      :no-results-text="$attrs.noResultsText ?? $t('components.vcsDataTable.noResultsPlaceholder')"
+      :no-data-text="
+        $attrs.noDataText ?? $t('components.vcsDataTable.noDataPlaceholder')
+      "
+      :no-results-text="
+        $attrs.noResultsText ??
+        $t('components.vcsDataTable.noResultsPlaceholder')
+      "
       :single-select="singleSelect"
       hide-default-footer
       v-bind="$attrs"
       v-on="$listeners"
       class="vcs-table rounded-0"
     >
+      <!-- eslint-disable-next-line -->
       <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
         <slot :name="slot" v-bind="scope" />
       </template>
@@ -42,21 +48,14 @@
           >
             mdi-minus-circle-outline
           </v-icon>
-          <v-icon
-            v-else
-            @click="on.input(true)"
-            class="vcs-select-icon"
-          >
+          <v-icon v-else @click="on.input(true)" class="vcs-select-icon">
             mdi-circle-outline
           </v-icon>
         </div>
       </template>
       <!-- eslint-disable-next-line -->
       <template v-slot:item.data-table-select="{ isSelected, select, index }">
-        <div
-          @mouseover="hovering = index"
-          @mouseout="hovering = null"
-        >
+        <div @mouseover="hovering = index" @mouseout="hovering = null">
           <v-icon
             v-if="isSelected"
             @click="select(!isSelected)"
@@ -65,17 +64,15 @@
             mdi-check-circle-outline
           </v-icon>
           <v-icon
-            v-else-if="hovering === index || (!singleSelect && value.length > 0)"
+            v-else-if="
+              hovering === index || (!singleSelect && value.length > 0)
+            "
             @click="select(!isSelected)"
             class="vcs-select-icon"
           >
             mdi-circle-outline
           </v-icon>
-          <v-icon
-            v-else
-            @click="select(!isSelected)"
-            class="vcs-select-icon"
-          >
+          <v-icon v-else @click="select(!isSelected)" class="vcs-select-icon">
             mdi-circle-small
           </v-icon>
         </div>
@@ -83,19 +80,10 @@
       <template #footer v-if="items.length > itemsPerPageRef">
         <v-divider />
         <v-container class="pa-2 vcs-pagination-bar">
-          <v-row
-            dense
-            no-gutters
-            justify="center"
-          >
+          <v-row dense no-gutters justify="center">
             <v-menu offset-y dense>
               <template #activator="{ on, attrs }">
-                <VcsButton
-                  small
-                  color="primary"
-                  v-bind="attrs"
-                  v-on="on"
-                >
+                <VcsButton small color="primary" v-bind="attrs" v-on="on">
                   {{ itemsPerPageRef }}
                   <v-icon>mdi-chevron-down</v-icon>
                 </VcsButton>
@@ -105,15 +93,18 @@
                   v-for="(number, index) in itemsPerPageArray"
                   :key="index"
                   @click="updateItemsPerPage(number)"
-                  style="min-height: auto; height: 24px; text-align: right;"
+                  style="min-height: auto; height: 24px; text-align: right"
                 >
                   <v-list-item-title>{{ number }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
-            <span class="mx-2">{{ $t('components.vcsDataTable.itemsPerPage') }}</span>
+            <span class="mx-2">{{
+              $t('components.vcsDataTable.itemsPerPage')
+            }}</span>
             <span class="mx-2">
-              {{ itemsFrom }} - {{ itemsTo }} {{ $t('components.vcsDataTable.ofItems') }} {{ numberOfItems }}
+              {{ itemsFrom }} - {{ itemsTo }}
+              {{ $t('components.vcsDataTable.ofItems') }} {{ numberOfItems }}
             </span>
             <VcsButton
               small
@@ -243,7 +234,10 @@
           return Object.values(item).some((i) => {
             const content = i.toString();
             const translated = vm.$t(content);
-            return translated.toLowerCase().includes(q) || content.toLowerCase().includes(q);
+            return (
+              translated.toLowerCase().includes(q) ||
+              content.toLowerCase().includes(q)
+            );
           });
         }
         return true;
@@ -252,8 +246,11 @@
       /**
        * @type {ComputedRef<Array<Object>>}
        */
-      const filteredItems = computed(() => props.items
-        .filter(item => handleFilter(item.value, search.value, item)));
+      const filteredItems = computed(() =>
+        props.items.filter((item) =>
+          handleFilter(item.value, search.value, item),
+        ),
+      );
       const numberOfItems = computed(() => filteredItems.value.length);
       const totalNumber = computed(() => props.items.length);
 
@@ -278,7 +275,9 @@
        * @type {Ref<UnwrapRef<number>>}
        */
       const page = ref(1);
-      const itemsFrom = computed(() => ((page.value - 1) * itemsPerPageRef.value) + 1);
+      const itemsFrom = computed(
+        () => (page.value - 1) * itemsPerPageRef.value + 1,
+      );
       const itemsTo = computed(() => {
         const last = page.value * itemsPerPageRef.value;
         return last < numberOfItems.value ? last : numberOfItems.value;
@@ -316,71 +315,71 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/shades.scss';
+  @import '../../styles/shades.scss';
 
-.vcs-select-icon {
-  &.v-icon {
-    font-size: 16px;
-    .v-icon__component {
-      width: 16px;
-      height: 16px;
+  .vcs-select-icon {
+    &.v-icon {
+      font-size: 16px;
+      .v-icon__component {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
-}
 
-::v-deep {
-  .vcs-table {
-    tbody tr {
+  ::v-deep {
+    .vcs-table {
+      tbody tr {
+        &:hover {
+          background-color: transparent !important;
+        }
+        &:nth-child(odd) {
+          background-color: var(--v-base-lighten4) !important;
+        }
+      }
+      td {
+        font-size: 14px !important;
+        &.v-data-table__mobile-row {
+          justify-content: left;
+          height: 27px;
+          min-height: auto;
+        }
+      }
+      th.sortable {
+        padding: 0 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        span {
+          vertical-align: middle;
+          padding: 0 4px 0 0;
+        }
+      }
+      &.theme--light {
+        thead tr th {
+          color: map-get($shades, 'black') !important;
+        }
+      }
+      &.theme--dark {
+        thead tr th {
+          color: map-get($shades, 'white') !important;
+        }
+      }
+    }
+    .v-btn.vcs-button--small {
+      height: 100% !important;
+      display: block;
+    }
+  }
+
+  .vcs-pagination-bar {
+    .vcs-button-wrap {
+      height: 25px;
+      border: 1px solid;
+      padding: 0 4px;
+      border-radius: 4px;
       &:hover {
-        background-color: transparent !important;
-      }
-      &:nth-child(odd) {
-        background-color: var(--v-base-lighten4) !important;
-      }
-    }
-    td {
-      font-size: 14px !important;
-      &.v-data-table__mobile-row {
-        justify-content: left;
-        height: 27px;
-        min-height: auto;
-      }
-    }
-    th.sortable {
-      padding: 0 8px;
-      overflow: hidden;
-      white-space: nowrap;
-      span {
-        vertical-align: middle;
-        padding: 0 4px 0 0;
-      }
-    }
-    &.theme--light {
-      thead tr th {
-        color: map-get($shades, 'black') !important;
-      }
-    }
-    &.theme--dark {
-      thead tr th {
-        color: map-get($shades, 'white') !important;
+        border: 1px solid var(--v-primary-base);
       }
     }
   }
-  .v-btn.vcs-button--small {
-    height: 100% !important;
-    display: block;
-  }
-}
-
-.vcs-pagination-bar {
-  .vcs-button-wrap {
-    height: 25px;
-    border: 1px solid;
-    padding: 0 4px;
-    border-radius: 4px;
-    &:hover {
-      border: 1px solid var(--v-primary-base);
-    }
-  }
-}
 </style>

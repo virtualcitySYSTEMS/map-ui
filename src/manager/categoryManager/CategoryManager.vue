@@ -17,10 +17,7 @@
 
 <script>
   import { inject, ref, computed } from 'vue';
-  import {
-    VExpansionPanels,
-    VSheet,
-  } from 'vuetify/lib';
+  import { VExpansionPanels, VSheet } from 'vuetify/lib';
   import CategoryComponent from './CategoryComponent.vue';
 
   /**
@@ -38,7 +35,9 @@
     setup() {
       const app = inject('vcsApp');
       const categoryIds = ref(app.categoryManager.componentIds);
-      const categories = computed(() => categoryIds.value.map(id => app.categoryManager.get(id)));
+      const categories = computed(() =>
+        categoryIds.value.map((id) => app.categoryManager.get(id)),
+      );
 
       return {
         categories,

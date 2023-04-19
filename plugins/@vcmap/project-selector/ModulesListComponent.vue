@@ -1,8 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-list
-      color="rgba(0,0,0,0)"
-    >
+    <v-list color="rgba(0,0,0,0)">
       <v-chip
         v-for="(module, index) in modules"
         :key="index"
@@ -19,8 +17,8 @@
           <template #activator="{ on, attrs }">
             <v-icon
               right
-              v-bind="{...$attrs, ...attrs}"
-              v-on="{...$listeners, ...on}"
+              v-bind="{ ...$attrs, ...attrs }"
+              v-on="{ ...$listeners, ...on }"
             >
               mdi-help-circle
             </v-icon>
@@ -64,6 +62,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

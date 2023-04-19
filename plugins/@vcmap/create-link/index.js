@@ -1,4 +1,9 @@
-import { ButtonLocation, NotificationType, setStateToUrl, WindowSlot } from '@vcmap/ui';
+import {
+  ButtonLocation,
+  NotificationType,
+  setStateToUrl,
+  WindowSlot,
+} from '@vcmap/ui';
 import FallbackCreateLink from './fallbackCreateLink.vue';
 
 const name = '@vcmap/create-link';
@@ -34,7 +39,7 @@ export default function createLink() {
           tooltip: 'Dialog zum kopieren des Applikationslinks anzeigen.',
           copyToClipboard: 'Applikationslink in Zwischenablage kopieren',
           refreshTooltip: 'Applikationslink aktualisieren',
-          copied: 'Applikationslink in Zwischenablage kopiert.'
+          copied: 'Applikationslink in Zwischenablage kopiert.',
         },
       },
       en: {
@@ -52,9 +57,9 @@ export default function createLink() {
      * @param {VcsUiApp} app
      */
     initialize(app) {
-      const title = navigator.clipboard ?
-        'createLink.copyToClipboard' :
-        'createLink.tooltip';
+      const title = navigator.clipboard
+        ? 'createLink.copyToClipboard'
+        : 'createLink.tooltip';
 
       app.navbarManager.add(
         {
@@ -71,7 +76,11 @@ export default function createLink() {
               setStateToUrl(state, url);
               if (navigator.clipboard) {
                 await navigator.clipboard.writeText(url.toString());
-                app.notifier.add({ title: 'createLink.title', message: 'createLink.copied', type: NotificationType.SUCCESS });
+                app.notifier.add({
+                  title: 'createLink.title',
+                  message: 'createLink.copied',
+                  type: NotificationType.SUCCESS,
+                });
               } else {
                 createFallbackWindow(app, url.toString());
               }

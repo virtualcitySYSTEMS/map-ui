@@ -1,7 +1,7 @@
 # Search
 
 Search API defines a [SearchImplementation](#SearchImplementation) interface and a [ResultItem](#ResultItem) interface.
-Plugins implementing those interfaces can be registered and will then be used by the Search Bar of the Map UI. 
+Plugins implementing those interfaces can be registered and will then be used by the Search Bar of the Map UI.
 
 ## Search Bar
 
@@ -13,6 +13,7 @@ Depending on the registered search plugins, the search bar can offer autocomplet
 ## SearchImplementation
 
 Search plugins must obey the interface defined as:
+
 ```js
 /**
  * @interface SearchImpl
@@ -31,9 +32,10 @@ By providing an owner (name of the plugin) the app can remove implementations, i
 > Name and owner of SearchImpl's must be equal. This enforces uniqueness inside the search IndexedCollection, since SearchImpl's only exist for the lifetime of the plugin they are owned by.
 
 Example for adding a search implementation within an `index.js` of a plugin:
+
 ```js
 import { version, name } from './package.json';
-import MySearchImplementation from './mySearchImplemenation.js'
+import MySearchImplementation from './mySearchImplemenation.js';
 
 /**
  * @param {Object} config - the configuration of this plugin instance, passed in from the app.
@@ -45,8 +47,12 @@ export default function SearchPlugin(config) {
   return {
     _instance: null,
     _app: null,
-    get name() { return name; },
-    get version() { return version; },
+    get name() {
+      return name;
+    },
+    get version() {
+      return version;
+    },
     /**
      * @param {import("@vcmap/ui").VcsUiApp} vcsUiApp
      */
@@ -60,7 +66,9 @@ export default function SearchPlugin(config) {
 ```
 
 ## ResultItem
+
 Each search plugin can define its own result item, which must comply with the following interface:
+
 ```js
 /**
  * A readonly rendering interface of a ResultItem.
@@ -75,10 +83,11 @@ Each search plugin can define its own result item, which must comply with the fo
 ```
 
 If a feature is provided, the Search API adds a default click handler.
-This default click handler zooms to the feature. 
+This default click handler zooms to the feature.
 If the feature has a FeatureInfoView (see [FeatureInfo](FEATURE_INFO.md)), the feature is selected and the corresponding FeatureInfoView is opened.
 
 Example for a function creating a feature result item with FeatureInfoView:
+
 ```js
 /**
  *
@@ -117,10 +126,13 @@ const resultItems = await app.search.search('Berlin');
 const resultItems = app.search.currentResults;
 
 // listening to resultsChanged event
-app.search.resultsChanged.addEventListener((newResults) => console.log(newResults));
+app.search.resultsChanged.addEventListener((newResults) =>
+  console.log(newResults),
+);
 ```
 
 The suggest function iterates over all registered implementations providing a suggest function and returns a flat array of suggestions for autocomplete.
+
 ```js
 const suggestions = await app.search.search('Berlin');
 ```
@@ -128,6 +140,7 @@ const suggestions = await app.search.search('Berlin');
 Before a new search or suggest request is done, ongoing requests are aborted, if search implementations provide an abort method.
 The abort method of implementations should abort any ongoing requests to search or suggest without throwing an error.
 You can use [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) to implement abort in a search implementation:
+
 ```js
 /**
  * @class
@@ -140,27 +153,27 @@ class MySearchImplementation {
    */
   constructor(options, app) {
     // ...
-    
+
     /**
      * @type {AbortController}
      * @private
      */
     this._controller = new AbortController();
   }
-  
+
   /**
    * @param {string} q - search value
    * @returns {Array<ResultItem>}
    */
   async search(q) {
     // ...
-    
-    const {signal} = this._controller.signal;
-    const response = await fetch(url, {signal});
+
+    const { signal } = this._controller.signal;
+    const response = await fetch(url, { signal });
     const results = await response.json();
     // return search results
   }
-  
+
   abort() {
     this._controller.abort();
   }

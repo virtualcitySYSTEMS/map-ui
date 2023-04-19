@@ -1,6 +1,7 @@
 # State
+
 The `State` of an app describes _the difference_ of the current applications state and
-the modules it has loaded. For instance, the currently active layers (or inactive layers, 
+the modules it has loaded. For instance, the currently active layers (or inactive layers,
 which would be active on startup), a style defined on an active layer, the current viewpoint
 are all stored within the state.
 

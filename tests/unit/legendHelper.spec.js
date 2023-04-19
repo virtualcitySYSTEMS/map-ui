@@ -1,8 +1,9 @@
-import {
-  describe, expect, it, beforeAll, beforeEach, afterEach,
-} from 'vitest';
+import { describe, expect, it, beforeAll, beforeEach, afterEach } from 'vitest';
 import { OpenlayersMap, VectorLayer, VectorStyleItem } from '@vcmap/core';
-import { getLegendEntries, createLayerLegendEntry } from '../../src/legend/legendHelper.js';
+import {
+  getLegendEntries,
+  createLayerLegendEntry,
+} from '../../src/legend/legendHelper.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 
 const legend = [
@@ -78,14 +79,27 @@ describe('createLegendEntries', () => {
     });
 
     it('should create a legend entry for active layers with configured legend', () => {
-      const expectedEntry = createLayerLegendEntry('activeLayer', 'activeLayer', legend);
+      const expectedEntry = createLayerLegendEntry(
+        'activeLayer',
+        'activeLayer',
+        legend,
+      );
       const entry = entries.value.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntry);
     });
 
     it('should create a legend entry for active layers having style with configured legend preferring the style legend over the layer legend', () => {
-      const expectedEntry = createLayerLegendEntry('activeLayer', 'activeLayer', styleLegend);
-      activeLayer.setStyle(new VectorStyleItem({ name: 'style', properties: { legend: styleLegend } }));
+      const expectedEntry = createLayerLegendEntry(
+        'activeLayer',
+        'activeLayer',
+        styleLegend,
+      );
+      activeLayer.setStyle(
+        new VectorStyleItem({
+          name: 'style',
+          properties: { legend: styleLegend },
+        }),
+      );
       const entry = entries.value.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntry);
       activeLayer.clearStyle();
@@ -94,7 +108,11 @@ describe('createLegendEntries', () => {
 
   describe('updating legend entries', () => {
     it('should update a legend entry for layers with configured legend on activation', async () => {
-      const expectedEntry = createLayerLegendEntry('inactiveLayer', 'inactiveLayer', legend);
+      const expectedEntry = createLayerLegendEntry(
+        'inactiveLayer',
+        'inactiveLayer',
+        legend,
+      );
       let entry = entries.value.find(({ key }) => key === 'inactiveLayer');
       expect(entry).to.be.undefined;
       await inactiveLayer.activate();
@@ -104,12 +122,27 @@ describe('createLegendEntries', () => {
     });
 
     it('should update a legend entry on style change', () => {
-      const expectedEntry = createLayerLegendEntry('activeLayer', 'activeLayer', styleLegend);
-      activeLayer.setStyle(new VectorStyleItem({ name: 'style', properties: { legend: styleLegend } }));
+      const expectedEntry = createLayerLegendEntry(
+        'activeLayer',
+        'activeLayer',
+        styleLegend,
+      );
+      activeLayer.setStyle(
+        new VectorStyleItem({
+          name: 'style',
+          properties: { legend: styleLegend },
+        }),
+      );
       let entry = entries.value.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntry);
-      const expectedEntryChanged = createLayerLegendEntry('activeLayer', 'activeLayer', legend);
-      activeLayer.setStyle(new VectorStyleItem({ name: 'styleChanged', properties: { legend } }));
+      const expectedEntryChanged = createLayerLegendEntry(
+        'activeLayer',
+        'activeLayer',
+        legend,
+      );
+      activeLayer.setStyle(
+        new VectorStyleItem({ name: 'styleChanged', properties: { legend } }),
+      );
       entry = entries.value.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntryChanged);
       activeLayer.clearStyle();
@@ -118,8 +151,17 @@ describe('createLegendEntries', () => {
 
   describe('removing legend entries', () => {
     it('should remove a legend entry for layers having style with configured legend on deactivation', async () => {
-      layer.setStyle(new VectorStyleItem({ name: 'style', properties: { legend: styleLegend } }));
-      const expectedEntry = createLayerLegendEntry('layer', 'layer', styleLegend);
+      layer.setStyle(
+        new VectorStyleItem({
+          name: 'style',
+          properties: { legend: styleLegend },
+        }),
+      );
+      const expectedEntry = createLayerLegendEntry(
+        'layer',
+        'layer',
+        styleLegend,
+      );
       let entry = entries.value.find(({ key }) => key === 'layer');
       expect(entry).to.deep.equal(expectedEntry);
       layer.deactivate();
@@ -130,7 +172,11 @@ describe('createLegendEntries', () => {
     });
 
     it('should remove a legend entry for layers with configured legend on deactivation', async () => {
-      const expectedEntry = createLayerLegendEntry('activeLayer', 'activeLayer', legend);
+      const expectedEntry = createLayerLegendEntry(
+        'activeLayer',
+        'activeLayer',
+        legend,
+      );
       let entry = entries.value.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntry);
       activeLayer.deactivate();
@@ -140,8 +186,17 @@ describe('createLegendEntries', () => {
     });
 
     it('should remove a legend entry for layers having no style after style change', () => {
-      layer.setStyle(new VectorStyleItem({ name: 'style', properties: { legend: styleLegend } }));
-      const expectedEntry = createLayerLegendEntry('layer', 'layer', styleLegend);
+      layer.setStyle(
+        new VectorStyleItem({
+          name: 'style',
+          properties: { legend: styleLegend },
+        }),
+      );
+      const expectedEntry = createLayerLegendEntry(
+        'layer',
+        'layer',
+        styleLegend,
+      );
       const entry = entries.value.find(({ key }) => key === 'layer');
       expect(entry).to.deep.equal(expectedEntry);
       layer.clearStyle();

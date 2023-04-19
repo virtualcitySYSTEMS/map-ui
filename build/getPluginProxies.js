@@ -8,7 +8,10 @@ import { getPluginDirectory, getPluginNames } from './buildHelpers.js';
  * @param {boolean} [production=false]
  * @returns {Promise<Record<string, string | import("vite").ProxyOptions>>}
  */
-export default async function getPluginProxies(target = 'http://localhost:8080', production = false) {
+export default async function getPluginProxies(
+  target = 'http://localhost:8080',
+  production = false,
+) {
   const root = process.cwd();
   const pluginsDir = getPluginDirectory();
   const plugins = await getPluginNames();
@@ -20,11 +23,21 @@ export default async function getPluginProxies(target = 'http://localhost:8080',
       rewrite: (route) => {
         const rest = route.replace(new RegExp(`^/plugins/${plugin}/`), '');
         const file = rest || 'index.js';
-        const pluginDir = path.posix.join(path.relative(root, pluginsDir), 'node_modules', plugin);
+        const pluginDir = path.posix.join(
+          path.relative(root, pluginsDir),
+          'node_modules',
+          plugin,
+        );
         if (/plugin-assets\//.test(file)) {
           return path.posix.join(pluginDir, file);
         }
-        return path.posix.join(path.relative(root, pluginsDir), 'node_modules', plugin, production ? 'dist' : 'src', file);
+        return path.posix.join(
+          path.relative(root, pluginsDir),
+          'node_modules',
+          plugin,
+          production ? 'dist' : 'src',
+          file,
+        );
       },
     };
   });

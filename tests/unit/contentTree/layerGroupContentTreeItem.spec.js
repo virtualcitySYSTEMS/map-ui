@@ -16,7 +16,10 @@ describe('LayerGroupContentTreeItem', () => {
   describe('if no layers are present', () => {
     it('should not be visible', () => {
       const app = new VcsUiApp();
-      const item = new LayerGroupContentTreeItem({ name: 'foo', layerNames: ['foo'] }, app);
+      const item = new LayerGroupContentTreeItem(
+        { name: 'foo', layerNames: ['foo'] },
+        app,
+      );
       expect(item.visible).to.be.false;
       app.destroy();
       item.destroy();
@@ -38,16 +41,21 @@ describe('LayerGroupContentTreeItem', () => {
         { mapNames: ['ol'] },
         { mapNames: ['ol'] },
         { mapNames: ['bar'] },
-      ].map(config => new VectorLayer(config));
+      ].map((config) => new VectorLayer(config));
 
       layers.forEach((l) => {
         app.layers.add(l);
       });
       layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
       app.layers.add(layerToDeactivate);
-      item = new LayerGroupContentTreeItem({
-        name: 'foo', layerNames: layers.map(l => l.name), layerNamesToDeactivate: [layerToDeactivate.name],
-      }, app);
+      item = new LayerGroupContentTreeItem(
+        {
+          name: 'foo',
+          layerNames: layers.map((l) => l.name),
+          layerNamesToDeactivate: [layerToDeactivate.name],
+        },
+        app,
+      );
     });
 
     afterEach(() => {
@@ -74,12 +82,12 @@ describe('LayerGroupContentTreeItem', () => {
 
     describe('state', () => {
       it('should be active, if all layers are active', async () => {
-        await Promise.all(layers.map(l => l.activate()));
+        await Promise.all(layers.map((l) => l.activate()));
         expect(item.state).to.equal(StateActionState.ACTIVE);
       });
 
       it('should be inactive, if all layers are inactive', () => {
-        layers.map(l => l.deactivate());
+        layers.map((l) => l.deactivate());
         expect(item.state).to.equal(StateActionState.INACTIVE);
       });
 
@@ -107,7 +115,7 @@ describe('LayerGroupContentTreeItem', () => {
     describe('click behavior', () => {
       it('should activate all inactive layers, if all layers inactive', async () => {
         await item.clicked();
-        expect(layers.filter(l => l.active)).to.have.members(layers);
+        expect(layers.filter((l) => l.active)).to.have.members(layers);
       });
 
       it('should deactivate all layers given by layersToDeactivate', async () => {
@@ -120,20 +128,20 @@ describe('LayerGroupContentTreeItem', () => {
         const [layer1] = layers;
         await layer1.activate();
         await item.clicked();
-        expect(layers.filter(l => l.active)).to.have.members(layers);
+        expect(layers.filter((l) => l.active)).to.have.members(layers);
       });
 
       it('should activate all inactive layers, if some layers are loading', async () => {
         const [layer1] = layers;
         layer1.activate();
         await item.clicked();
-        expect(layers.filter(l => l.active)).to.have.members(layers);
+        expect(layers.filter((l) => l.active)).to.have.members(layers);
       });
 
       it('should deactivate all layers, if all layers are active', async () => {
-        await Promise.all(layers.map(l => l.activate()));
+        await Promise.all(layers.map((l) => l.activate()));
         await item.clicked();
-        expect(layers.filter(l => l.active)).to.be.empty;
+        expect(layers.filter((l) => l.active)).to.be.empty;
       });
     });
   });
@@ -166,16 +174,28 @@ describe('LayerGroupContentTreeItem', () => {
       });
 
       it('should only configure type, name, layerNames and layerNamesToDeactivate', () => {
-        expect(outputConfig).to.have.all.keys(['name', 'type', 'layerNames', 'layerNamesToDeactivate']);
+        expect(outputConfig).to.have.all.keys([
+          'name',
+          'type',
+          'layerNames',
+          'layerNamesToDeactivate',
+        ]);
       });
 
       it('should configure layerNamesToDeactivate', () => {
-        expect(outputConfig).to.have.property('layerNamesToDeactivate', outputConfig.layerNamesToDeactivate);
+        expect(outputConfig).to.have.property(
+          'layerNamesToDeactivate',
+          outputConfig.layerNamesToDeactivate,
+        );
       });
 
       it('should configure layerNames', () => {
-        expect(outputConfig).to.have.property('layerNames').and.to.eql(inputConfig.layerNames);
-        expect(outputConfig).to.have.property('layerNames').and.to.not.equal(inputConfig.layerNames);
+        expect(outputConfig)
+          .to.have.property('layerNames')
+          .and.to.eql(inputConfig.layerNames);
+        expect(outputConfig)
+          .to.have.property('layerNames')
+          .and.to.not.equal(inputConfig.layerNames);
       });
     });
 
@@ -197,7 +217,10 @@ describe('LayerGroupContentTreeItem', () => {
       });
 
       it('should configure defaultViewpoint', () => {
-        expect(outputConfig).to.have.property('defaultViewpoint', outputConfig.defaultViewpoint);
+        expect(outputConfig).to.have.property(
+          'defaultViewpoint',
+          outputConfig.defaultViewpoint,
+        );
       });
     });
   });

@@ -7,10 +7,14 @@
       <span class="float-right">
         <vcs-button icon="$vcsPlus" @click="dialog = true" />
         <vcs-button icon="mdi-download" @click="download" />
-        <a :href="downloadLink" target="_blank" ref="link" download="category.json" />
+        <a
+          :href="downloadLink"
+          target="_blank"
+          ref="link"
+          download="category.json"
+        />
       </span>
     </span>
-
 
     <v-virtual-scroll
       item-height="44px"
@@ -20,11 +24,8 @@
       :bench="6"
       width="100%"
     >
-      <template #default="{item}">
-        <v-list-item
-          :key="item.name"
-          class="mb-1"
-        >
+      <template #default="{ item }">
+        <v-list-item :key="item.name" class="mb-1">
           <v-list-item-content>
             <v-list-item-title class="subtitle-1">
               {{ item.name }}
@@ -34,17 +35,11 @@
         </v-list-item>
       </template>
     </v-virtual-scroll>
-    <v-dialog
-      v-model="dialog"
-    >
+    <v-dialog v-model="dialog">
       <v-card>
-        <v-form
-          @submit.prevent="addItem"
-        >
+        <v-form @submit.prevent="addItem">
           <v-textarea v-model="jsonString" />
-          <vcs-button type="submit">
-            Add
-          </vcs-button>
+          <vcs-button type="submit"> Add </vcs-button>
         </v-form>
       </v-card>
     </v-dialog>
@@ -99,7 +94,10 @@
       const open = ref(true);
       const link = ref(null);
       if (categoryObject) {
-        category.value = [...categoryObject.collection].map(c => ({ name: c.name, type: c.className || 'Object' }));
+        category.value = [...categoryObject.collection].map((c) => ({
+          name: c.name,
+          type: c.className || 'Object',
+        }));
       }
 
       return {
@@ -113,11 +111,19 @@
           try {
             const config = JSON.parse(jsonString.value);
             if (categoryObject.classRegistryName) {
-              categoryObject.collection.add(getObjectFromClassRegistry(app[categoryObject.classRegistryName], config));
+              categoryObject.collection.add(
+                getObjectFromClassRegistry(
+                  app[categoryObject.classRegistryName],
+                  config,
+                ),
+              );
             } else {
               categoryObject.collection.add(config);
             }
-            category.value = [...categoryObject.collection].map(c => ({ name: c.name, type: c.className || 'Object' }));
+            category.value = [...categoryObject.collection].map((c) => ({
+              name: c.name,
+              type: c.className || 'Object',
+            }));
             jsonString.value = '{\n}';
           } catch (e) {
             // eslint-disable-next-line no-console
@@ -126,8 +132,14 @@
           dialog.value = false;
         },
         download() {
-          const stringObject = JSON.stringify(categoryObject.serializeModule(app.dynamicModuleId), null, 2);
-          downloadLink.value = `data:text/json;charset=utf-8,${encodeURIComponent(stringObject)}`;
+          const stringObject = JSON.stringify(
+            categoryObject.serializeModule(app.dynamicModuleId),
+            null,
+            2,
+          );
+          downloadLink.value = `data:text/json;charset=utf-8,${encodeURIComponent(
+            stringObject,
+          )}`;
           if (downloadLink.value) {
             nextTick(() => {
               link.value.click();
@@ -139,6 +151,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

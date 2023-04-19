@@ -1,32 +1,17 @@
 <template>
-  <div
-    class="d-flex flex-row align-center"
-    v-if="item"
-  >
-    <div
-      class="position-relative col-8 pa-0 d-flex align-center"
-    >
-      <span
-        v-if="item.icon"
-        class="d-inline-flex"
-      >
-        <v-icon
-          v-if="isStringIcon"
-          v-text="item.icon"
-          :size="16"
-          class="mr-1"
-        />
+  <div class="d-flex flex-row align-center" v-if="item">
+    <div class="position-relative col-8 pa-0 d-flex align-center">
+      <span v-if="item.icon" class="d-inline-flex">
+        <v-icon v-if="isStringIcon" :size="16" class="mr-1">
+          {{ item.icon }}
+        </v-icon>
         <ImageElementInjector :element="item.icon" v-else />
       </span>
-      <VcsTooltip
-        :tooltip="item.tooltip || item.title"
-      >
+      <VcsTooltip :tooltip="item.tooltip || item.title">
         <template #activator="{ on, attrs }">
-          <span
-            v-bind="attrs"
-            v-on="on"
-            class="d-inline-block text-truncate"
-          >{{ $t(item.title) }}</span>
+          <span v-bind="attrs" v-on="on" class="d-inline-block text-truncate">{{
+            $t(item.title)
+          }}</span>
         </template>
       </VcsTooltip>
     </div>

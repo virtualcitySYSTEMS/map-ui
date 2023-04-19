@@ -22,7 +22,10 @@ describe('ViewpointContentTreeItem', () => {
       app = new VcsUiApp();
       viewpoint = new Viewpoint({});
       app.viewpoints.add(viewpoint);
-      item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: viewpoint.name }, app);
+      item = new ViewpointContentTreeItem(
+        { name: 'foo', viewpointName: viewpoint.name },
+        app,
+      );
     });
 
     afterEach(() => {
@@ -43,7 +46,10 @@ describe('ViewpointContentTreeItem', () => {
   describe('if viewpoint is not present', () => {
     it('should not be visible', () => {
       const app = new VcsUiApp();
-      const item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
+      const item = new ViewpointContentTreeItem(
+        { name: 'foo', viewpointName: 'foo' },
+        app,
+      );
       expect(item.visible).to.be.false;
       item.destroy();
       app.destroy();
@@ -63,7 +69,10 @@ describe('ViewpointContentTreeItem', () => {
 
     describe('of an empty item', () => {
       it('should serialize name, type and layerName', () => {
-        const item = new ViewpointContentTreeItem({ name: 'foo', viewpointName: 'foo' }, app);
+        const item = new ViewpointContentTreeItem(
+          { name: 'foo', viewpointName: 'foo' },
+          app,
+        );
         const config = item.toJSON();
         expect(config).to.have.all.keys(['name', 'type', 'viewpointName']);
         item.destroy();

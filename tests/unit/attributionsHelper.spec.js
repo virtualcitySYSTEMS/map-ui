@@ -1,11 +1,17 @@
+import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import {
-  describe, expect, it, beforeAll, afterAll,
-} from 'vitest';
-import { CesiumTilesetLayer, ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
+  CesiumTilesetLayer,
+  ObliqueMap,
+  OpenlayersMap,
+  VectorLayer,
+} from '@vcmap/core';
 import VcsUiApp from '../../src/vcsUiApp.js';
-import { getAttributions, mergeAttributions } from '../../src/application/attributionsHelper.js';
+import {
+  getAttributions,
+  mergeAttributions,
+} from '../../src/application/attributionsHelper.js';
 
-const getKey = object => `${object.className}_${object.name}`;
+const getKey = (object) => `${object.className}_${object.name}`;
 
 const getDummyAttribution = (provider, year) => ({
   provider,
@@ -89,7 +95,9 @@ describe('createAttributionEntries', () => {
     it('should create an attribution entry for each active map, layer or oblique collection with configured attribution', () => {
       expect(entries.value).to.have.length(3);
       expect(entries.value.map(({ key }) => key)).to.have.members([
-        getKey(olMap), getKey(activeLayer), getKey(activeLayer2),
+        getKey(olMap),
+        getKey(activeLayer),
+        getKey(activeLayer2),
       ]);
     });
 
@@ -102,24 +110,27 @@ describe('createAttributionEntries', () => {
       await layer.activate();
       expect(entries.value).to.have.length(4);
       expect(entries.value.map(({ key }) => key)).to.have.members([
-        getKey(olMap), getKey(activeLayer), getKey(activeLayer2), getKey(layer),
+        getKey(olMap),
+        getKey(activeLayer),
+        getKey(activeLayer2),
+        getKey(layer),
       ]);
       layer.deactivate();
       app.layers.remove(layer);
     });
 
     it('should NOT create an attribution entry for inactive layers', () => {
-      const entry = entries.value.find(e => e.key === getKey(inactiveLayer));
+      const entry = entries.value.find((e) => e.key === getKey(inactiveLayer));
       expect(entry).to.be.undefined;
     });
 
     it('should NOT create an attribution entry for inactive maps', () => {
-      const entry = entries.value.find(e => e.key === getKey(obliqueMap));
+      const entry = entries.value.find((e) => e.key === getKey(obliqueMap));
       expect(entry).to.be.undefined;
     });
 
     it('should NOT create an attribution entry for not supported layers of current map', () => {
-      const entry = entries.value.find(e => e.key === getKey(cesiumLayer));
+      const entry = entries.value.find((e) => e.key === getKey(cesiumLayer));
       expect(entry).to.be.undefined;
     });
   });
@@ -151,10 +162,10 @@ describe('createAttributionEntries', () => {
 
     it('should update a attribution entry for layers with configured attribution on activation', async () => {
       const key = getKey(inactiveLayer);
-      let entry = entries.value.find(e => e.key === key);
+      let entry = entries.value.find((e) => e.key === key);
       expect(entry).to.be.undefined;
       await inactiveLayer.activate();
-      entry = entries.value.find(e => e.key === key);
+      entry = entries.value.find((e) => e.key === key);
       expect(entry).to.deep.equal({
         key,
         title: `${inactiveLayer.className}: ${inactiveLayer.name}`,
@@ -204,19 +215,29 @@ describe('createAttributionEntries', () => {
 
     it('should remove a attribution entry for layers with configured attribution on deactivation', async () => {
       expect(entries.value).to.have.length(2);
-      expect(entries.value.map(({ key }) => key)).to.have.members([getKey(activeLayer), getKey(activeLayer2)]);
+      expect(entries.value.map(({ key }) => key)).to.have.members([
+        getKey(activeLayer),
+        getKey(activeLayer2),
+      ]);
       activeLayer.deactivate();
       expect(entries.value).to.have.length(1);
-      expect(entries.value.map(({ key }) => key)).to.have.members([getKey(activeLayer2)]);
+      expect(entries.value.map(({ key }) => key)).to.have.members([
+        getKey(activeLayer2),
+      ]);
       await activeLayer.activate();
     });
 
     it('should remove a attribution entry when a layer is removed from the layerCollection of the activeMap', () => {
       expect(entries.value).to.have.length(2);
-      expect(entries.value.map(({ key }) => key)).to.have.members([getKey(activeLayer), getKey(activeLayer2)]);
+      expect(entries.value.map(({ key }) => key)).to.have.members([
+        getKey(activeLayer),
+        getKey(activeLayer2),
+      ]);
       app.maps.activeMap.layerCollection.remove(activeLayer);
       expect(entries.value).to.have.length(1);
-      expect(entries.value.map(({ key }) => key)).to.have.members([getKey(activeLayer2)]);
+      expect(entries.value.map(({ key }) => key)).to.have.members([
+        getKey(activeLayer2),
+      ]);
       app.maps.activeMap.layerCollection.add(activeLayer);
     });
   });
@@ -242,19 +263,22 @@ describe('createAttributionEntries', () => {
     });
 
     it('should merge same providers to one entry', async () => {
-      const fooEntries = attributions.filter(e => e.provider === 'foo');
+      const fooEntries = attributions.filter((e) => e.provider === 'foo');
       expect(fooEntries).to.have.length(1);
     });
 
     it('should update url with value of latest entry of same provider', () => {
       const { url } = getDummyAttribution('foo', 2024);
-      const fooEntries = attributions.filter(e => e.provider === 'foo');
+      const fooEntries = attributions.filter((e) => e.provider === 'foo');
       expect(fooEntries[0]).to.have.property('url', url);
     });
 
     it('should sort and remove duplicates from years array returning a joined string', () => {
-      const fooEntries = attributions.filter(e => e.provider === 'foo');
-      expect(fooEntries[0]).to.have.property('years', [2022, 2023, 2024].join(', '));
+      const fooEntries = attributions.filter((e) => e.provider === 'foo');
+      expect(fooEntries[0]).to.have.property(
+        'years',
+        [2022, 2023, 2024].join(', '),
+      );
     });
   });
 });

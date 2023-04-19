@@ -49,11 +49,18 @@ export function applyValueMapping(attributes, mapping) {
     })
     .forEach((mappingKey) => {
       if (Object.hasOwn(attributes, mappingKey)) {
-        attributes[mappingKey] = getMappedValue(mapping[mappingKey], attributes[mappingKey]);
+        attributes[mappingKey] = getMappedValue(
+          mapping[mappingKey],
+          attributes[mappingKey],
+        );
       } else {
         const mappingKeys = mappingKey.split('.');
         mappingKeys.reduce((obj, key, index) => {
-          if (obj && Object.hasOwn(obj, key) && index === mappingKeys.length - 1) {
+          if (
+            obj &&
+            Object.hasOwn(obj, key) &&
+            index === mappingKeys.length - 1
+          ) {
             obj[key] = getMappedValue(mapping[mappingKey], obj[key]);
           }
           return obj?.[key];
@@ -109,7 +116,11 @@ export function applyKeyMapping(attributes, mapping) {
       } else {
         const mappingKeys = mappingKey.split('.');
         mappingKeys.reduce((obj, key, index) => {
-          if (obj && Object.hasOwn(obj, key) && index === mappingKeys.length - 1) {
+          if (
+            obj &&
+            Object.hasOwn(obj, key) &&
+            index === mappingKeys.length - 1
+          ) {
             attributes[mapping[mappingKey]] = obj[key];
             delete obj[key];
           }
@@ -152,13 +163,12 @@ export function applyAttributeFilter(attributes, keys, result = {}) {
     }
   });
 
-  Object.entries(nestedKeys)
-    .forEach(([parent, pKs]) => {
-      if (typeof attributes[parent] === 'object') {
-        result[parent] = {};
-        applyAttributeFilter(attributes[parent], pKs, result[parent]);
-      }
-    });
+  Object.entries(nestedKeys).forEach(([parent, pKs]) => {
+    if (typeof attributes[parent] === 'object') {
+      result[parent] = {};
+      applyAttributeFilter(attributes[parent], pKs, result[parent]);
+    }
+  });
   return result;
 }
 
@@ -173,7 +183,9 @@ class AbstractFeatureInfoView extends VcsObject {
   /**
    * @type {string}
    */
-  static get className() { return 'AbstractFeatureInfoView'; }
+  static get className() {
+    return 'AbstractFeatureInfoView';
+  }
 
   /** @returns {FeatureInfoViewOptions} */
   static getDefaultOptions() {
@@ -221,14 +233,18 @@ class AbstractFeatureInfoView extends VcsObject {
    * @type {WindowComponentOptions|Object}
    * @readonly
    */
-  get window() { return this._window; }
+  get window() {
+    return this._window;
+  }
 
   /**
    * component provided by a FeatureInfoView class, passed to featureInfo via `getWindowComponentOptions()`
    * @type {import("vue").Component|undefined}
    * @readonly
    */
-  get component() { return this._component; }
+  get component() {
+    return this._component;
+  }
 
   /**
    * This method returns all relevant attributes for this view.

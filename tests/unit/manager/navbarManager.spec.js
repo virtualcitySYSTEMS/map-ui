@@ -26,8 +26,7 @@ describe('NavbarManager', () => {
         id: 'id',
         action: {
           name: 'test',
-          callback() {
-          },
+          callback() {},
         },
       };
     });
@@ -41,7 +40,11 @@ describe('NavbarManager', () => {
         addedSpy = vi.fn();
         navbarManager = new NavbarManager();
         navbarManager.added.addEventListener(addedSpy);
-        buttonComponent = navbarManager.add(buttonComponentOptions, 'plugin', ButtonLocation.TOOL);
+        buttonComponent = navbarManager.add(
+          buttonComponentOptions,
+          'plugin',
+          ButtonLocation.TOOL,
+        );
       });
 
       afterAll(() => {
@@ -75,8 +78,7 @@ describe('NavbarManager', () => {
       buttonComponentOptions = {
         action: {
           name: 'test',
-          callback() {
-          },
+          callback() {},
         },
       };
     });
@@ -89,24 +91,71 @@ describe('NavbarManager', () => {
       navbarManager.destroy();
     });
 
-
     it('should get only actions of specified button location', () => {
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin3', ButtonLocation.TOOL);
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin1', ButtonLocation.MENU);
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin2', ButtonLocation.CONTENT);
-      navbarManager.add({ ...buttonComponentOptions, action: { name: 'testApp', callback() {} } }, vcsAppSymbol, ButtonLocation.CONTENT);
-      const buttonComponents = navbarManager.componentIds.map(id => navbarManager.get(id));
-      const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin3',
+        ButtonLocation.TOOL,
+      );
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin1',
+        ButtonLocation.MENU,
+      );
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin2',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        {
+          ...buttonComponentOptions,
+          action: { name: 'testApp', callback() {} },
+        },
+        vcsAppSymbol,
+        ButtonLocation.CONTENT,
+      );
+      const buttonComponents = navbarManager.componentIds.map((id) =>
+        navbarManager.get(id),
+      );
+      const actions = getActionsByLocation(
+        buttonComponents,
+        ButtonLocation.CONTENT,
+      );
       expect(actions.length).to.be.equal(2);
     });
 
     it('should get actions sorted by owner', () => {
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin1', ButtonLocation.CONTENT);
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin2', ButtonLocation.CONTENT);
-      navbarManager.add({ ...buttonComponentOptions }, 'plugin3', ButtonLocation.CONTENT);
-      navbarManager.add({ ...buttonComponentOptions, action: { name: 'testApp', callback() {} } }, vcsAppSymbol, ButtonLocation.CONTENT);
-      const buttonComponents = navbarManager.componentIds.map(id => navbarManager.get(id));
-      const actions = getActionsByLocation(buttonComponents, ButtonLocation.CONTENT);
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin1',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin2',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        { ...buttonComponentOptions },
+        'plugin3',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        {
+          ...buttonComponentOptions,
+          action: { name: 'testApp', callback() {} },
+        },
+        vcsAppSymbol,
+        ButtonLocation.CONTENT,
+      );
+      const buttonComponents = navbarManager.componentIds.map((id) =>
+        navbarManager.get(id),
+      );
+      const actions = getActionsByLocation(
+        buttonComponents,
+        ButtonLocation.CONTENT,
+      );
       expect(actions.length).to.be.equal(4);
       expect(actions[0]).to.have.property('name', 'testApp');
     });
@@ -132,16 +181,23 @@ describe('NavbarManager', () => {
       navbarManager.destroy();
     });
 
-
     it('should toggle a buttons state', () => {
-      const buttonComponent = navbarManager.add({ id: 'test-toggle', action: { ...action } }, 'plugin', ButtonLocation.TOOL);
+      const buttonComponent = navbarManager.add(
+        { id: 'test-toggle', action: { ...action } },
+        'plugin',
+        ButtonLocation.TOOL,
+      );
       expect(buttonComponent.action.active).to.be.false;
       navbarManager.toggle('test-toggle');
       expect(buttonComponent.action.active).to.be.true;
     });
 
     it('should NOT toggle a buttons state, when provided flag equals buttons state', () => {
-      const buttonComponent = navbarManager.add({ id: 'test-toggle-flag', action: { ...action } }, 'plugin', ButtonLocation.TOOL);
+      const buttonComponent = navbarManager.add(
+        { id: 'test-toggle-flag', action: { ...action } },
+        'plugin',
+        ButtonLocation.TOOL,
+      );
       expect(buttonComponent.action.active).to.be.false;
       navbarManager.toggle('test-toggle-flag', false);
       expect(buttonComponent.action.active).to.be.false;

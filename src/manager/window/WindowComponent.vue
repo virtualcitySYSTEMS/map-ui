@@ -7,8 +7,8 @@
     @dragend="dragEnd"
     :draggable="isDraggable"
     :class="{
-      'rounded': !isDocked,
-      'marginToTop': isDocked,
+      rounded: !isDocked,
+      marginToTop: isDocked,
       'rounded-br': isDynamicLeft,
       'rounded-bl': isDynamicRight,
     }"
@@ -24,13 +24,11 @@
     >
       <slot name="headerComponent" :props="$attrs" />
     </div>
-    <v-divider
-      v-if="!windowState.hideHeader"
-    />
+    <v-divider v-if="!windowState.hideHeader" />
     <div
       class="overflow-x-hidden mb-1"
       :class="{
-        'rounded': !isDocked,
+        rounded: !isDocked,
       }"
     >
       <slot />
@@ -39,17 +37,13 @@
 </template>
 
 <style scoped>
-
- .marginToTop {
-   margin-top: 2px;
- }
-
+  .marginToTop {
+    margin-top: 2px;
+  }
 </style>
 
 <script>
-  import {
-    computed, inject, provide, ref,
-  } from 'vue';
+  import { computed, inject, provide, ref } from 'vue';
   import { VDivider, VSheet } from 'vuetify/lib';
   import { WindowSlot } from './windowManager.js';
 
@@ -88,17 +82,21 @@
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const { provides } = app.windowManager.get(props.windowState.id);
-      Object.entries(provides)
-        .forEach(([key, value]) => {
-          provide(key, value);
-        });
+      Object.entries(provides).forEach(([key, value]) => {
+        provide(key, value);
+      });
 
       const isDynamic = computed(() => props.slotWindow !== WindowSlot.STATIC);
       const isDocked = computed(() => props.slotWindow !== WindowSlot.DETACHED);
       const isDockedLeft = computed(() => {
-        return props.slotWindow === WindowSlot.STATIC || props.slotWindow === WindowSlot.DYNAMIC_LEFT;
+        return (
+          props.slotWindow === WindowSlot.STATIC ||
+          props.slotWindow === WindowSlot.DYNAMIC_LEFT
+        );
       });
-      const isDockedRight = computed(() => props.slotWindow === WindowSlot.DYNAMIC_RIGHT);
+      const isDockedRight = computed(
+        () => props.slotWindow === WindowSlot.DYNAMIC_RIGHT,
+      );
       const isDraggable = ref(false);
       /**
        * Sets window as draggable on mousedown on header.
@@ -156,4 +154,3 @@
     },
   };
 </script>
-

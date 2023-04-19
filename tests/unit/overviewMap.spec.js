@@ -25,7 +25,6 @@ import VcsUiApp from '../../src/vcsUiApp.js';
 import OverviewMap from '../../src/navigation/overviewMap.js';
 import { sleep } from '../helpers.js';
 
-
 describe('OverviewMap', () => {
   let app;
   let map;
@@ -49,10 +48,12 @@ describe('OverviewMap', () => {
 
     beforeAll(async () => {
       overviewMap = new OverviewMap(app);
-      app.layers.add(new OpenStreetMapLayer({
-        name: 'Openstreetmap OSM Cache',
-        properties: { showInOverviewMap: true },
-      }));
+      app.layers.add(
+        new OpenStreetMapLayer({
+          name: 'Openstreetmap OSM Cache',
+          properties: { showInOverviewMap: true },
+        }),
+      );
       await overviewMap.activate();
     });
 
@@ -66,9 +67,16 @@ describe('OverviewMap', () => {
 
     it('should add base and cameraIcon layer and activate both', () => {
       expect([...overviewMap.map.layerCollection]).to.have.lengthOf(2);
-      expect([...overviewMap.map.layerCollection].some(l => l instanceof VectorLayer)).to.be.true;
-      expect([...overviewMap.map.layerCollection].some(l => l instanceof Layer)).to.be.true;
-      expect([...overviewMap.map.layerCollection].every(l => l.active)).to.be.true;
+      expect(
+        [...overviewMap.map.layerCollection].some(
+          (l) => l instanceof VectorLayer,
+        ),
+      ).to.be.true;
+      expect(
+        [...overviewMap.map.layerCollection].some((l) => l instanceof Layer),
+      ).to.be.true;
+      expect([...overviewMap.map.layerCollection].every((l) => l.active)).to.be
+        .true;
     });
 
     it('should activate the map', () => {
@@ -109,7 +117,9 @@ describe('OverviewMap', () => {
 
     it('should have the cameraIconStyle', () => {
       const cameraFeature = overviewMap._cameraIconLayer.getFeatures()[0];
-      expect(cameraFeature.getStyle()).to.equal(overviewMap.cameraIconStyle.style);
+      expect(cameraFeature.getStyle()).to.equal(
+        overviewMap.cameraIconStyle.style,
+      );
     });
   });
 
@@ -153,10 +163,12 @@ describe('OverviewMap', () => {
     });
 
     it('should synchronize the overview map to the openlayers map', async () => {
-      await map.gotoViewpoint(new Viewpoint({
-        groundPosition: [13, 52, 0],
-        distance: 100,
-      }));
+      await map.gotoViewpoint(
+        new Viewpoint({
+          groundPosition: [13, 52, 0],
+          distance: 100,
+        }),
+      );
       map.olMap.renderSync();
       const vp = overviewMap.map.getViewpointSync();
       expect(vp.groundPosition[0]).to.be.closeTo(13, 0.00000001);
@@ -185,7 +197,9 @@ describe('OverviewMap', () => {
       });
       await sleep();
       const cameraFeature = overviewMap._cameraIconLayer.getFeatures()[0];
-      const coords = Projection.mercatorToWgs84(cameraFeature.getGeometry().getCoordinates());
+      const coords = Projection.mercatorToWgs84(
+        cameraFeature.getGeometry().getCoordinates(),
+      );
       expect(coords[0]).to.be.closeTo(13, 0.00001);
       expect(coords[1]).to.be.closeTo(52, 0.00001);
     });
@@ -204,8 +218,14 @@ describe('OverviewMap', () => {
       await map.gotoViewpoint(newVp);
       map.olMap.renderSync();
       const vp = overviewMap.map.getViewpointSync();
-      expect(vp.groundPosition[0]).to.be.closeTo(initialVp.groundPosition[0], 0.00000001);
-      expect(vp.groundPosition[1]).to.be.closeTo(initialVp.groundPosition[1], 0.00000001);
+      expect(vp.groundPosition[0]).to.be.closeTo(
+        initialVp.groundPosition[0],
+        0.00000001,
+      );
+      expect(vp.groundPosition[1]).to.be.closeTo(
+        initialVp.groundPosition[1],
+        0.00000001,
+      );
     });
 
     it('should stop synchronizing a map, once its deactivated', async () => {
@@ -219,8 +239,14 @@ describe('OverviewMap', () => {
       await map.gotoViewpoint(newVp);
       map.olMap.renderSync();
       const vp = overviewMap.map.getViewpointSync();
-      expect(vp.groundPosition[0]).to.be.closeTo(initialVp.groundPosition[0], 0.00000001);
-      expect(vp.groundPosition[1]).to.be.closeTo(initialVp.groundPosition[1], 0.00000001);
+      expect(vp.groundPosition[0]).to.be.closeTo(
+        initialVp.groundPosition[0],
+        0.00000001,
+      );
+      expect(vp.groundPosition[1]).to.be.closeTo(
+        initialVp.groundPosition[1],
+        0.00000001,
+      );
       await app.maps.setActiveMap(map.name);
     });
   });
@@ -239,14 +265,32 @@ describe('OverviewMap', () => {
     });
 
     it('should setup and activate oblique layers', () => {
-      expect(overviewMap.obliqueUnselectedStyle).to.be.an.instanceof(VectorStyleItem);
-      expect(overviewMap.obliqueSelectedStyle).to.be.an.instanceof(VectorStyleItem);
+      expect(overviewMap.obliqueUnselectedStyle).to.be.an.instanceof(
+        VectorStyleItem,
+      );
+      expect(overviewMap.obliqueSelectedStyle).to.be.an.instanceof(
+        VectorStyleItem,
+      );
       expect(overviewMap._obliqueTileLayer).to.be.an.instanceof(VectorLayer);
       expect(overviewMap._obliqueImageLayer).to.be.an.instanceof(VectorLayer);
-      expect(overviewMap._obliqueSelectedImageLayer).to.be.an.instanceof(VectorLayer);
-      expect(overviewMap.map.layerCollection.hasKey(overviewMap._obliqueTileLayer.name)).to.be.true;
-      expect(overviewMap.map.layerCollection.hasKey(overviewMap._obliqueImageLayer.name)).to.be.true;
-      expect(overviewMap.map.layerCollection.hasKey(overviewMap._obliqueSelectedImageLayer.name)).to.be.true;
+      expect(overviewMap._obliqueSelectedImageLayer).to.be.an.instanceof(
+        VectorLayer,
+      );
+      expect(
+        overviewMap.map.layerCollection.hasKey(
+          overviewMap._obliqueTileLayer.name,
+        ),
+      ).to.be.true;
+      expect(
+        overviewMap.map.layerCollection.hasKey(
+          overviewMap._obliqueImageLayer.name,
+        ),
+      ).to.be.true;
+      expect(
+        overviewMap.map.layerCollection.hasKey(
+          overviewMap._obliqueSelectedImageLayer.name,
+        ),
+      ).to.be.true;
       expect(overviewMap._obliqueTileLayer.active).to.be.true;
       expect(overviewMap._obliqueImageLayer.active).to.be.true;
       expect(overviewMap._obliqueSelectedImageLayer.active).to.be.true;
@@ -311,8 +355,14 @@ describe('OverviewMap', () => {
 
     it('should set the current feature on the oblique selected image layer', async () => {
       await obliqueMap.setImageByName('034_070_110005034');
-      expect(overviewMap._obliqueSelectedImageLayer.getFeatures()).to.have.lengthOf(1);
-      expect(overviewMap._obliqueSelectedImageLayer.getFeatureById('034_070_110005034')).to.be.not.null;
+      expect(
+        overviewMap._obliqueSelectedImageLayer.getFeatures(),
+      ).to.have.lengthOf(1);
+      expect(
+        overviewMap._obliqueSelectedImageLayer.getFeatureById(
+          '034_070_110005034',
+        ),
+      ).to.be.not.null;
     });
 
     it('should zoom to the new images extent', async () => {
@@ -320,8 +370,14 @@ describe('OverviewMap', () => {
       await obliqueMap.setImageByName('034_070_110005034');
       expect(gotoViewpointSpy).toHaveBeenCalledTimes(1);
       const [vp] = gotoViewpointSpy.calls[0];
-      const center = Projection.mercatorToWgs84(getCenter(obliqueMap
-        .collection.imageFeatureSource.getFeatureById('034_070_110005034').getGeometry().getExtent()));
+      const center = Projection.mercatorToWgs84(
+        getCenter(
+          obliqueMap.collection.imageFeatureSource
+            .getFeatureById('034_070_110005034')
+            .getGeometry()
+            .getExtent(),
+        ),
+      );
       expect(vp.groundPosition[0]).to.be.closeTo(center[0], 0.000001);
       expect(vp.groundPosition[1]).to.be.closeTo(center[1], 0.000001);
     });

@@ -1,9 +1,6 @@
 <template>
   <div @click.stop="close">
-    <VcsActionList
-      :actions="actions"
-      :show-icon="true"
-    />
+    <VcsActionList :actions="actions" :show-icon="true" />
   </div>
 </template>
 
@@ -39,5 +36,4 @@
   };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

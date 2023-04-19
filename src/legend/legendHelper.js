@@ -43,7 +43,6 @@ export const StyleRowType = {
  * @property {string} src - the source url. Can be an i18n string.
  */
 
-
 /**
  * @typedef {LegendItem} StyleLegendItem
  * @property {number} [colNr=2] Number of columns. Valid values are 1 or 2. Per default 2.
@@ -172,27 +171,33 @@ export function getLegendEntries(app) {
     if (layer.active) {
       const key = layer.name;
       const title = layer.properties.title || layer.name;
-      const legend = layer.style?.properties?.legend ?? layer.properties?.legend;
+      const legend =
+        layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
         const legendEntry = createLayerLegendEntry(key, title, legend);
         // use spread since push won't trigger updates. Put new entries at the start
         entries.value = [legendEntry, ...entries.value];
       }
       if (layer.styleChanged) {
-        styleChangedListener[layer.name] = layer.styleChanged.addEventListener(() => syncLayerLegendEntries(layer));
+        styleChangedListener[layer.name] = layer.styleChanged.addEventListener(
+          () => syncLayerLegendEntries(layer),
+        );
       }
     }
   }
 
-  const destroyChangedListener = app.layers.stateChanged.addEventListener(syncLayerLegendEntries);
-  const destroyRemovedListener = app.layers.removed.addEventListener(removeEntryForLayer);
+  const destroyChangedListener = app.layers.stateChanged.addEventListener(
+    syncLayerLegendEntries,
+  );
+  const destroyRemovedListener =
+    app.layers.removed.addEventListener(removeEntryForLayer);
 
   [...app.layers].forEach(syncLayerLegendEntries);
 
   const destroy = () => {
     destroyChangedListener();
     destroyRemovedListener();
-    Object.values(styleChangedListener).forEach(cb => cb());
+    Object.values(styleChangedListener).forEach((cb) => cb());
   };
 
   return { entries, destroy };

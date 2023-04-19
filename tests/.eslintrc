@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "@vcsuite/eslint-config/node"
-  ],
-  "plugins": [
-    "mocha"
-  ],
+  "extends": ["@vcsuite/eslint-config/node"],
+  "plugins": ["mocha"],
   "rules": {
     "no-underscore-dangle": 0,
     "no-unused-expressions": 0,

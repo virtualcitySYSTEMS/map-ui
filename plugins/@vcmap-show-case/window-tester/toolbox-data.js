@@ -12,7 +12,7 @@ const dummySelectAction = {
     this.active = false;
   },
   _start() {
-    const startSession = tool => ({ type: tool });
+    const startSession = (tool) => ({ type: tool });
     this._session = startSession(this.tools[this.currentIndex].name);
     this.active = true;
     console.log('starting session', this._session);
@@ -83,7 +83,7 @@ function createDummyTriStateAction(app) {
     if (app.windowManager.has(windowComponent.id)) {
       app.windowManager.remove(windowComponent.id);
     }
-    listeners.forEach(cb => cb());
+    listeners.forEach((cb) => cb());
   };
 
   return { action, destroy };
@@ -103,7 +103,9 @@ export function getToolboxData(app) {
           title: 'single select',
           icon: '$vcsPointSelect',
           active: false,
-          callback() { this.active = !this.active; },
+          callback() {
+            this.active = !this.active;
+          },
         },
       },
       packageJSON.name,
@@ -188,7 +190,9 @@ export function getToolboxData(app) {
               title: 'add flight',
               icon: 'mdi-camera-plus',
               active: false,
-              callback() { this.active = !this.active; },
+              callback() {
+                this.active = !this.active;
+              },
             },
           },
           {
@@ -198,7 +202,9 @@ export function getToolboxData(app) {
               title: 'export flight',
               icon: '$vcsExportFlight',
               active: false,
-              callback() { this.active = !this.active; },
+              callback() {
+                this.active = !this.active;
+              },
             },
           },
         ],

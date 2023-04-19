@@ -8,8 +8,8 @@
       :icon="button.icon"
       :active="button.active"
       @click.stop="button.callback($event)"
-      v-bind="{...$attrs}"
-      v-on="{...$listeners}"
+      v-bind="{ ...$attrs }"
+      v-on="{ ...$listeners }"
     />
     <v-menu
       v-if="overflowButtons.length > 0"
@@ -19,26 +19,24 @@
       offset-x
     >
       <template #activator="{ on, attrs }">
-        <VcsButton
-          v-bind="{...$attrs, ...attrs}"
-          v-on="on"
-          class="d-flex"
-        >
-          <v-icon v-text="overflowIcon" />
+        <VcsButton v-bind="{ ...$attrs, ...attrs }" v-on="on" class="d-flex">
+          <v-icon>{{ overflowIcon }}</v-icon>
         </VcsButton>
       </template>
       <VcsActionList :actions="overflowButtons" />
     </v-menu>
-    <v-spacer v-else-if="blockOverflow" class="flex-grow-0 d-inline-block px-2" />
+    <v-spacer
+      v-else-if="blockOverflow"
+      class="flex-grow-0 d-inline-block px-2"
+    />
   </div>
 </template>
 <style lang="scss">
-.action-btn-wrap{
-  gap: 8px;
-}
+  .action-btn-wrap {
+    gap: 8px;
+  }
 </style>
 <script>
-
   import { VIcon, VMenu, VSpacer } from 'vuetify/lib';
   import VcsButton from './VcsButton.vue';
   import VcsActionList, { validateActions } from '../lists/VcsActionList.vue';
@@ -83,17 +81,21 @@
       },
     },
     computed: {
-      right() { return this.$attrs.right !== undefined && this.$attrs.right !== false; },
+      right() {
+        return this.$attrs.right !== undefined && this.$attrs.right !== false;
+      },
       buttons() {
-        const buttons = this.actions.filter(i => i.icon).slice(0, this.overflowCount);
+        const buttons = this.actions
+          .filter((i) => i.icon)
+          .slice(0, this.overflowCount);
         if (this.right) {
           return buttons.reverse();
         }
         return buttons;
       },
       overflowButtons() {
-        const buttonsNames = this.buttons.map(i => i.name);
-        return this.actions.filter(i => !buttonsNames.includes(i.name));
+        const buttonsNames = this.buttons.map((i) => i.name);
+        return this.actions.filter((i) => !buttonsNames.includes(i.name));
       },
       classes() {
         const classes = ['d-flex', 'align-center', 'action-btn-wrap'];

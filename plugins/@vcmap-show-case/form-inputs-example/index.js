@@ -1,7 +1,6 @@
 import { ref, reactive, watch } from 'vue';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
-
 import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
 import defaultConfig from './config.json';
@@ -46,7 +45,7 @@ export function getDefaultConfig() {
  * @param {FormInputsExampleConfig} config
  * @returns {VcsPlugin}
  */
-export default function (config) {
+export default function formInputsExample(config) {
   /**
    * @type {FormInputsExampleConfig}
    */
@@ -54,7 +53,9 @@ export default function (config) {
     // not reactive can be put without using reactive or ref
     nonReactiveProp: 'nonReactive',
     // no validation, ref to track config changes; use reactive on nested arrays or objects
-    selectOptions: ref([...config.selectOptions] || [...defaultConfig.selectOptions]),
+    selectOptions: ref(
+      [...config.selectOptions] || [...defaultConfig.selectOptions],
+    ),
     // ref prop with getter setter --> validation
     _initialTextInput: ref(defaultConfig.initialTextInput),
     set initialTextInput(value) {
@@ -62,10 +63,15 @@ export default function (config) {
       if (validation === true) {
         this._initialTextInput.value = value;
       } else {
-        getLogger().error('Error setting initialTextInput on plugin config:', validation);
+        getLogger().error(
+          'Error setting initialTextInput on plugin config:',
+          validation,
+        );
       }
     },
-    get initialTextInput() { return this._initialTextInput; },
+    get initialTextInput() {
+      return this._initialTextInput;
+    },
   };
   if (config.initialTextInput) {
     pluginConfig.initialTextInput = config.initialTextInput;
@@ -90,7 +96,6 @@ export default function (config) {
   /** @type {FormInputsExampleState} */
   const defaultState = JSON.parse(JSON.stringify(pluginState));
 
-
   /**
    * watcher to update state, when specific config properties are changed
    * @see https://v3.vuejs.org/guide/reactivity-computed-watchers.html#watching-multiple-sources
@@ -100,7 +105,7 @@ export default function (config) {
    * - if reactive objects or arrays shall be watched, you'll need to add option `{ deep: true }`
    *   @see https://v3.vuejs.org/guide/reactivity-computed-watchers.html#watching-reactive-objects
    *   in this case you may need a separate watcher, since watching multiple sources seems only to work for refs
-   * @returns {WatchStopHandle}
+   * @returns {import("vue").WatchStopHandle}
    */
   const stopWatching = watch(
     [pluginConfig.selectOptions, pluginConfig.initialTextInput],
@@ -133,14 +138,20 @@ export default function (config) {
      * @type {Object<string, true|string>}
      */
     const validation = {
-      conditionalInput: conditionalTest(stateObject.conditionalInput, stateObject.selected),
+      conditionalInput: conditionalTest(
+        stateObject.conditionalInput,
+        stateObject.selected,
+      ),
       initialTextInput: isValidText(stateObject.initialTextInput),
       email: isValidEmail(stateObject.email),
     };
     Object.keys(validation).forEach((key) => {
       if (validation[key] !== true) {
         // XXX warning or error???
-        getLogger().warning(`Validation failed for state property "${key}":`, validation[key]);
+        getLogger().warning(
+          `Validation failed for state property "${key}":`,
+          validation[key],
+        );
         // XXX should invalid props be assigned or not?
         delete stateObject[key];
       }
@@ -149,12 +160,19 @@ export default function (config) {
   }
 
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     config: pluginConfig,
     state: reactive(pluginState),
-    resetState: () => Object.assign(pluginState, JSON.parse(JSON.stringify(defaultState))),
+    resetState: () =>
+      Object.assign(pluginState, JSON.parse(JSON.stringify(defaultState))),
     getSerializedState,
     setSerializedState,
     onVcsAppMounted(app) {
@@ -209,9 +227,11 @@ export default function (config) {
           tooltip: 'Form Inputs Beispiel Plugin',
           help: 'Geben Sie eine Zahl in das Feld NumberInput ein. VcsFormattedNumber rundet auf eine Dezimalstelle.',
           help1: 'Wählen Sie eine Option',
-          help1desc: 'Wenn \'Option A\' gewählt ist, muss der bedingte Input \'test\' sein.',
-          help2: 'Ändern Sie den Wert von \'myInitialText\'',
-          help2desc: 'InitialTextInput bleibt solange im Lade-Status, bis sich der Wert \'myInitialText\' ändert.',
+          help1desc:
+            "Wenn 'Option A' gewählt ist, muss der bedingte Input 'test' sein.",
+          help2: "Ändern Sie den Wert von 'myInitialText'",
+          help2desc:
+            "InitialTextInput bleibt solange im Lade-Status, bis sich der Wert 'myInitialText' ändert.",
           help3: 'Geben Sie eine Email Adresse ein',
           help3desc: 'Email Adressen werden validiert.',
           numbers: {
@@ -228,9 +248,11 @@ export default function (config) {
           tooltip: 'Form Inputs Example Plugin',
           help: 'Enter a number to the NumberInput field. VcsFormattedNumber rounds to one decimal digit.',
           help1: 'Select an option',
-          help1desc: 'If \'Option A\' is chosen, conditional input must be \'test\'.',
-          help2: 'Change \'myInitialText\' to some other value',
-          help2desc: 'InitialTextInput text field stays in loading state, as long as \'myInitialText\' is not changed.',
+          help1desc:
+            "If 'Option A' is chosen, conditional input must be 'test'.",
+          help2: "Change 'myInitialText' to some other value",
+          help2desc:
+            "InitialTextInput text field stays in loading state, as long as 'myInitialText' is not changed.",
           help3: 'Enter an email address.',
           help3desc: 'Emails get validated.',
           numbers: {

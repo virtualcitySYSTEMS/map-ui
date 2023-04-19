@@ -6,14 +6,18 @@ import {
   VcsEvent,
   vcsLayerName,
   VectorLayer,
-  VectorStyleItem, Viewpoint,
+  VectorStyleItem,
+  Viewpoint,
 } from '@vcmap/core';
 import { shallowRef } from 'vue';
 import { check } from '@vcsuite/check';
 import { Icon } from 'ol/style.js';
 import { getLogger } from '@vcsuite/logger';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { getDefaultPrimaryColor, getColorByKey } from '../vuePlugins/vuetify.js';
+import {
+  getDefaultPrimaryColor,
+  getColorByKey,
+} from '../vuePlugins/vuetify.js';
 import { getViewpointFromFeature } from '../actions/actionHelper.js';
 
 /**
@@ -26,7 +30,6 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  * @property {function():Promise<void>} [clicked] Obligatory, if no feature is provided. Can overwrite default zoom to feature behaviour.
  * @property {import("ol").Feature|undefined} [feature] If a feature is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
  */
-
 
 /**
  * @interface SearchImpl
@@ -43,7 +46,9 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  */
 function getPointResultIcon(color) {
   return {
-    src: `data:image/svg+xml,%3Csvg xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:cc='http://creativecommons.org/ns%23' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' id='icon_24_poi' width='24' height='23.994' viewBox='0 0 24 23.994' sodipodi:docname='mapIcon.svg'%3E%3Cg id='Gruppe_1972' transform='translate(-571 -609.477)'%3E%3Cpath id='Pfad_773' d='M583,611a8.009,8.009,0,0,0-8,8c0,5.314,6.952,13.32,7.248,13.658a1,1,0,0,0,1.5,0c.3-.338,7.248-8.344,7.248-13.658A8.009,8.009,0,0,0,583,611Zm0,19.444c-2.18-2.685-6-8.09-6-11.444a6,6,0,0,1,12,0C589,622.354,585.18,627.759,583,630.444Z' fill='currentColor' /%3E%3Cpath id='Pfad_774' d='M583,615a4,4,0,1,0,4,4A4,4,0,0,0,583,615Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,583,621Z' fill='currentColor' /%3E%3C/g%3E%3Cpath fill='${encodeURIComponent(color)}' d='M 11.672998,20.526286 C 8.5115524,16.526958 6.4310003,12.714969 6.0702695,10.260963 6.0109099,9.8571482 6.0115821,9.1201807 6.0716855,8.7084104 6.4424582,6.1682348 8.3335069,4.1603103 10.828528,3.6575721 c 1.904966,-0.383844 3.881822,0.1903514 5.289639,1.5364231 0.993092,0.9495349 1.610829,2.1488769 1.810148,3.5144152 0.0601,0.4117703 0.06077,1.1487378 0.0014,1.5525526 -0.357076,2.429138 -2.337816,6.081898 -5.487559,10.119822 -0.224045,0.287223 -0.415188,0.530536 -0.424763,0.540696 -0.0096,0.01016 -0.16456,-0.167678 -0.344411,-0.395195 z m 0.990366,-7.047968 c 0.894914,-0.146674 1.762065,-0.627065 2.349286,-1.301476 0.86707,-0.995812 1.194989,-2.3427819 0.880571,-3.6170541 -0.379849,-1.5394474 -1.596396,-2.6842781 -3.173401,-2.9863277 -0.368703,-0.070619 -1.070937,-0.070619 -1.43964,0 C 9.7056173,5.875042 8.48604,7.0227247 8.1067793,8.5597879 7.8410265,9.6368274 8.0329903,10.787029 8.6317551,11.705317 c 0.5717674,0.876885 1.4205679,1.474277 2.4457369,1.721329 0.47704,0.114961 1.079877,0.134602 1.585872,0.05167 z' id='path1432' /%3E%3C/svg%3E`,
+    src: `data:image/svg+xml,%3Csvg xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:cc='http://creativecommons.org/ns%23' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' id='icon_24_poi' width='24' height='23.994' viewBox='0 0 24 23.994' sodipodi:docname='mapIcon.svg'%3E%3Cg id='Gruppe_1972' transform='translate(-571 -609.477)'%3E%3Cpath id='Pfad_773' d='M583,611a8.009,8.009,0,0,0-8,8c0,5.314,6.952,13.32,7.248,13.658a1,1,0,0,0,1.5,0c.3-.338,7.248-8.344,7.248-13.658A8.009,8.009,0,0,0,583,611Zm0,19.444c-2.18-2.685-6-8.09-6-11.444a6,6,0,0,1,12,0C589,622.354,585.18,627.759,583,630.444Z' fill='currentColor' /%3E%3Cpath id='Pfad_774' d='M583,615a4,4,0,1,0,4,4A4,4,0,0,0,583,615Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,583,621Z' fill='currentColor' /%3E%3C/g%3E%3Cpath fill='${encodeURIComponent(
+      color,
+    )}' d='M 11.672998,20.526286 C 8.5115524,16.526958 6.4310003,12.714969 6.0702695,10.260963 6.0109099,9.8571482 6.0115821,9.1201807 6.0716855,8.7084104 6.4424582,6.1682348 8.3335069,4.1603103 10.828528,3.6575721 c 1.904966,-0.383844 3.881822,0.1903514 5.289639,1.5364231 0.993092,0.9495349 1.610829,2.1488769 1.810148,3.5144152 0.0601,0.4117703 0.06077,1.1487378 0.0014,1.5525526 -0.357076,2.429138 -2.337816,6.081898 -5.487559,10.119822 -0.224045,0.287223 -0.415188,0.530536 -0.424763,0.540696 -0.0096,0.01016 -0.16456,-0.167678 -0.344411,-0.395195 z m 0.990366,-7.047968 c 0.894914,-0.146674 1.762065,-0.627065 2.349286,-1.301476 0.86707,-0.995812 1.194989,-2.3427819 0.880571,-3.6170541 -0.379849,-1.5394474 -1.596396,-2.6842781 -3.173401,-2.9863277 -0.368703,-0.070619 -1.070937,-0.070619 -1.43964,0 C 9.7056173,5.875042 8.48604,7.0227247 8.1067793,8.5597879 7.8410265,9.6368274 8.0329903,10.787029 8.6317551,11.705317 c 0.5717674,0.876885 1.4205679,1.474277 2.4457369,1.721329 0.47704,0.114961 1.079877,0.134602 1.585872,0.05167 z' id='path1432' /%3E%3C/svg%3E`,
     scale: 1,
     color,
   };
@@ -103,7 +108,6 @@ function setupSearchResultLayer(app) {
  * @type {symbol}
  */
 const searchImplOwnerSymbol = Symbol('featureInfoView');
-
 
 /**
  * Collection of SearchImpl
@@ -185,7 +189,9 @@ class Search extends IndexedCollection {
     check(owner, [String, vcsAppSymbol]);
     check(item.search, Function);
     if (item.name !== owner) {
-      getLogger('Search').warning('SearchImplementations must be named as the plugin they are owned by.');
+      getLogger('Search').warning(
+        'SearchImplementations must be named as the plugin they are owned by.',
+      );
     }
     item[searchImplOwnerSymbol] = owner;
     super.add(item, index);
@@ -212,8 +218,12 @@ class Search extends IndexedCollection {
    */
   async search(q) {
     this.clearResults();
-    const promises = await Promise.allSettled([...this._array].map(impl => impl.search(q)));
-    const isAborted = promises.some(r => r.status === 'rejected' && r.reason?.name === 'AbortError');
+    const promises = await Promise.allSettled(
+      [...this._array].map((impl) => impl.search(q)),
+    );
+    const isAborted = promises.some(
+      (r) => r.status === 'rejected' && r.reason?.name === 'AbortError',
+    );
     if (!isAborted) {
       const results = promises
         .map((o) => {
@@ -226,7 +236,7 @@ class Search extends IndexedCollection {
         .flat();
 
       this._currentResults.value = results
-        .filter(r => r.feature || r.clicked)
+        .filter((r) => r.feature || r.clicked)
         .map((item) => {
           if (item.feature) {
             this._resultLayer.addFeatures([item.feature]);
@@ -254,13 +264,17 @@ class Search extends IndexedCollection {
    * @returns {Promise<Array<string>>}
    */
   async suggest(q) {
-    const promises = await Promise.allSettled([...this._array].map((impl) => {
-      if (impl.suggest) {
-        return impl.suggest(q);
-      }
-      return Promise.resolve([]);
-    }));
-    const isAborted = promises.some(r => r.status === 'rejected' && r.reason?.name === 'AbortError');
+    const promises = await Promise.allSettled(
+      [...this._array].map((impl) => {
+        if (impl.suggest) {
+          return impl.suggest(q);
+        }
+        return Promise.resolve([]);
+      }),
+    );
+    const isAborted = promises.some(
+      (r) => r.status === 'rejected' && r.reason?.name === 'AbortError',
+    );
     if (isAborted) {
       return [];
     }
@@ -280,7 +294,7 @@ class Search extends IndexedCollection {
    * Aborting any ongoing request
    */
   abort() {
-    [...this._array].forEach(impl => impl.abort?.());
+    [...this._array].forEach((impl) => impl.abort?.());
   }
 
   /**
@@ -306,7 +320,10 @@ class Search extends IndexedCollection {
     }
     this._resultLayer.removeAllFeatures();
     this._resultLayer.deactivate();
-    if (this._app.featureInfo.selectedFeature?.[vcsLayerName] === this._resultLayer.name) {
+    if (
+      this._app.featureInfo.selectedFeature?.[vcsLayerName] ===
+      this._resultLayer.name
+    ) {
       this._app.featureInfo.clear();
     }
   }
@@ -315,7 +332,7 @@ class Search extends IndexedCollection {
    * @inheritDoc
    */
   destroy() {
-    [...this._array].forEach(impl => impl.destroy());
+    [...this._array].forEach((impl) => impl.destroy());
     this.resultsChanged.destroy();
     this._destroyResultLayer();
     super.destroy();

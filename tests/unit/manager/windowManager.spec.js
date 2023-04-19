@@ -132,7 +132,9 @@ describe('windowManager', () => {
       });
 
       it('should add the windowComponentId to the componentIds array', () => {
-        expect(windowManager.componentIds).to.have.members([windowComponentOptions.id]);
+        expect(windowManager.componentIds).to.have.members([
+          windowComponentOptions.id,
+        ]);
       });
 
       it('should fire the added Event', () => {
@@ -143,16 +145,22 @@ describe('windowManager', () => {
         expect(windowManager.add.bind(windowManager, { id: 'test' })).to.throw;
       });
       it('should throw if same windowId is already managed', () => {
-        expect(windowManager.add.bind(windowManager, [{ id: 'test' }, 'plugin'])).to.throw;
+        expect(
+          windowManager.add.bind(windowManager, [{ id: 'test' }, 'plugin']),
+        ).to.throw;
       });
 
       describe('returns a windowComponent', () => {
         it('id should be readonly', () => {
-          expect(() => { windowComponent.id = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.id = 'new';
+          }).to.throw;
         });
 
         it('state should be readonly', () => {
-          expect(() => { windowComponent.state = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.state = 'new';
+          }).to.throw;
         });
 
         it('state should be reactive', () => {
@@ -160,15 +168,21 @@ describe('windowManager', () => {
         });
 
         it('component should be readonly', () => {
-          expect(() => { windowComponent.component = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.component = 'new';
+          }).to.throw;
         });
 
         it('headerComponent should be readonly', () => {
-          expect(() => { windowComponent.headerComponent = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.headerComponent = 'new';
+          }).to.throw;
         });
 
         it('slot should be readonly', () => {
-          expect(() => { windowComponent.slot = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.slot = 'new';
+          }).to.throw;
         });
 
         it('slot should be reactive', () => {
@@ -176,7 +190,9 @@ describe('windowManager', () => {
         });
 
         it('position should be readonly', () => {
-          expect(() => { windowComponent.position = 'new'; }).to.throw;
+          expect(() => {
+            windowComponent.position = 'new';
+          }).to.throw;
         });
 
         it('position should be reactive', () => {
@@ -184,8 +200,12 @@ describe('windowManager', () => {
         });
 
         it('zIndex should be readonly', () => {
-          expect(() => { windowComponent.zIndex.value = 5; }).to.throw;
-          expect(() => { windowComponent.zIndex = computed(() => 5); }).to.throw;
+          expect(() => {
+            windowComponent.zIndex.value = 5;
+          }).to.throw;
+          expect(() => {
+            windowComponent.zIndex = computed(() => 5);
+          }).to.throw;
         });
       });
     });
@@ -204,41 +224,71 @@ describe('windowManager', () => {
       });
 
       it('should remove windowComponent at DYNAMIC_LEFT slot on adding a new DYNAMIC_LEFT windowComponent', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_LEFT },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_LEFT },
+          'plugin',
+        );
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at DYNAMIC_RIGHT slot on adding a new DYNAMIC_RIGHT windowComponent', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_RIGHT }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_RIGHT }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_RIGHT },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_RIGHT },
+          'plugin',
+        );
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at STATIC slot on adding a new STATIC windowComponent', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.STATIC }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.STATIC }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.STATIC },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.STATIC },
+          'plugin',
+        );
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should allow several windowComponents at the DETACHED slot', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(2);
       });
 
       it('should move dynamicLeft Slot to TOP_LEFT2 if a STATIC Slot is added', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_LEFT },
+          'plugin',
+        );
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
-        const window2 = windowManager.add({ slot: WindowSlot.STATIC }, 'plugin');
+        const window2 = windowManager.add(
+          { slot: WindowSlot.STATIC },
+          'plugin',
+        );
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
@@ -260,15 +310,30 @@ describe('windowManager', () => {
       });
 
       it('should add new Components at the end of the array', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
         expect(windowManager.componentIds.length).to.be.equal(2);
-        expect(windowManager.componentIds).to.have.ordered.members([window1.id, window2.id]);
+        expect(windowManager.componentIds).to.have.ordered.members([
+          window1.id,
+          window2.id,
+        ]);
       });
 
       it('should update zIndex, if a window is put on top with bringWindowToTop', () => {
-        const window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-        const window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
+        const window2 = windowManager.add(
+          { slot: WindowSlot.DETACHED },
+          'plugin',
+        );
         expect(window1.zIndex.value).to.equal(0);
         expect(window2.zIndex.value).to.equal(1);
         windowManager.bringWindowToTop(window1.id);
@@ -351,9 +416,14 @@ describe('windowManager', () => {
       });
 
       it('should cache the window position, if position differs from initial position', () => {
-        windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+        windowManager.setWindowPositionOptions(window1.id, {
+          left: 500,
+          top: 40,
+        });
         windowManager.remove(window1.id);
-        expect(windowManager.getCachedPosition(window1.id)).to.deep.equal(window1.position);
+        expect(windowManager.getCachedPosition(window1.id)).to.deep.equal(
+          window1.position,
+        );
       });
     });
 
@@ -361,7 +431,10 @@ describe('windowManager', () => {
       let cachedPosition;
 
       beforeEach(() => {
-        windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+        windowManager.setWindowPositionOptions(window1.id, {
+          left: 500,
+          top: 40,
+        });
         windowManager.remove(window1.id);
         cachedPosition = windowManager.getCachedPosition(window1.id);
         windowManager.add({ id: window1.id }, 'plugin');
@@ -394,8 +467,14 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      windowComponentLeft = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
-      windowComponentStatic = windowManager.add({ slot: WindowSlot.STATIC }, 'plugin');
+      windowComponentLeft = windowManager.add(
+        { slot: WindowSlot.DYNAMIC_LEFT },
+        'plugin',
+      );
+      windowComponentStatic = windowManager.add(
+        { slot: WindowSlot.STATIC },
+        'plugin',
+      );
     });
 
     afterEach(() => {
@@ -407,9 +486,13 @@ describe('windowManager', () => {
     });
 
     it('should restore DYNAMIC_LEFT windowComponent Position on STATIC Remove', () => {
-      expect(windowComponentLeft.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
+      expect(windowComponentLeft.position.left).to.equal(
+        WindowPositions.TOP_LEFT2.left,
+      );
       windowManager.remove(windowComponentStatic.id);
-      expect(windowComponentLeft.position.left).to.equal(WindowPositions.TOP_LEFT.left);
+      expect(windowComponentLeft.position.left).to.equal(
+        WindowPositions.TOP_LEFT.left,
+      );
     });
   });
 
@@ -456,7 +539,10 @@ describe('windowManager', () => {
 
     beforeEach(() => {
       window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
-      windowManager.setWindowPositionOptions(window1.id, { left: 500, top: 40 });
+      windowManager.setWindowPositionOptions(window1.id, {
+        left: 500,
+        top: 40,
+      });
       window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'app');
       windowManager.pinWindow(window1.id);
     });
@@ -501,7 +587,10 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      windowComponentLeft = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+      windowComponentLeft = windowManager.add(
+        { slot: WindowSlot.DYNAMIC_LEFT },
+        'plugin',
+      );
       windowManager.setWindowPositionOptions(windowComponentLeft.id, {
         left: 15,
         right: 25,

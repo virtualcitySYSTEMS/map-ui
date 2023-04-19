@@ -13,13 +13,13 @@
           on-icon="$vcsCheckboxChecked"
           off-icon="$vcsCheckbox"
           class="vcs-checkbox"
-          :class="{'pl-1': !isDense }"
+          :class="{ 'pl-1': !isDense }"
           hide-details
           indeterminate-icon="$vcsCheckboxIndeterminate"
           :dense="isDense"
           :ripple="false"
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
         >
           <template #label>
             <VcsLabel :html-for="$attrs.id" :dense="isDense">
@@ -33,7 +33,7 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
-@import '../../styles/shades.scss';
+  @import '../../styles/shades.scss';
   .vcs-checkbox {
     ::v-deep {
       .v-input--selection-controls__input {
@@ -47,13 +47,13 @@
       .v-label {
         &.theme--light {
           color: map-get($shades, 'black') !important;
-          &.error--text{
+          &.error--text {
             color: var(--v-error-base) !important;
           }
         }
         &.theme--dark {
           color: map-get($shades, 'white') !important;
-          &.error--text{
+          &.error--text {
             color: var(--v-error-base) !important;
           }
         }
@@ -64,7 +64,6 @@
     margin: 0;
     padding: 0;
   }
-
 </style>
 <script>
   import { computed, ref } from 'vue';

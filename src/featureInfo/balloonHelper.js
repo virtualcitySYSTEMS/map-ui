@@ -1,5 +1,15 @@
-import { Cartesian2, Cartographic, SceneTransforms } from '@vcmap-cesium/engine';
-import { CesiumMap, ObliqueMap, OpenlayersMap, Projection, transformToImage } from '@vcmap/core';
+import {
+  Cartesian2,
+  Cartographic,
+  SceneTransforms,
+} from '@vcmap-cesium/engine';
+import {
+  CesiumMap,
+  ObliqueMap,
+  OpenlayersMap,
+  Projection,
+  transformToImage,
+} from '@vcmap/core';
 import { unByKey } from 'ol/Observable.js';
 import {
   getWindowPositionOptionsFromMapEvent,
@@ -44,15 +54,14 @@ export async function getBalloonPosition(app, position) {
   const map = app.maps.activeMap;
   if (map instanceof CesiumMap) {
     const wgs84Position = Projection.mercatorToWgs84(position);
-    const cartesian = Cartographic.toCartesian(Cartographic.fromDegrees(...wgs84Position));
+    const cartesian = Cartographic.toCartesian(
+      Cartographic.fromDegrees(...wgs84Position),
+    );
     return getBalloonPositionCesium(map.getScene(), cartesian);
   } else if (map instanceof OpenlayersMap) {
     return getBalloonPositionOL(map.olMap, position);
   } else if (map instanceof ObliqueMap) {
-    const { coords } = await transformToImage(
-      map.currentImage,
-      position,
-    );
+    const { coords } = await transformToImage(map.currentImage, position);
     return getBalloonPositionOL(map.olMap, coords);
   }
   return undefined;
@@ -72,7 +81,10 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
   windowManager.setWindowPositionOptions(
     id,
     getWindowPositionOptionsFromMapEvent(
-      new Cartesian2(windowPosition.x - balloonOffset.x, windowPosition.y - balloonOffset.y),
+      new Cartesian2(
+        windowPosition.x - balloonOffset.x,
+        windowPosition.y - balloonOffset.y,
+      ),
       target,
       WindowAlignment.BOTTOM_LEFT,
     ),
@@ -85,19 +97,25 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
  * @param {import("ol/coordinate").Coordinate} clickedPosition - position in mercator
  * @returns {Promise<(() => void)>}
  */
-export async function setupBalloonPositionListener(vcsApp, windowId, clickedPosition) {
+export async function setupBalloonPositionListener(
+  vcsApp,
+  windowId,
+  clickedPosition,
+) {
   const listeners = [];
 
   const destroy = () => {
-    listeners.forEach(cb => cb());
+    listeners.forEach((cb) => cb());
   };
 
   const setup = async (app, id, position) => {
     destroy();
 
-    listeners.push(app.maps.mapActivated.addEventListener(
-      setup.bind(null, app, id, position),
-    ));
+    listeners.push(
+      app.maps.mapActivated.addEventListener(
+        setup.bind(null, app, id, position),
+      ),
+    );
 
     const map = app.maps.activeMap;
     if (map instanceof CesiumMap) {
@@ -106,43 +124,44 @@ export async function setupBalloonPositionListener(vcsApp, windowId, clickedPosi
         position[2] = position3D[2];
       }
       const wgs84Position = Projection.mercatorToWgs84(position);
-      const cartesian = Cartographic.toCartesian(Cartographic.fromDegrees(...wgs84Position));
-      listeners.push(map.getScene().postRender.addEventListener((scene) => {
+      const cartesian = Cartographic.toCartesian(
+        Cartographic.fromDegrees(...wgs84Position),
+      );
+      listeners.push(
+        map.getScene().postRender.addEventListener((scene) => {
+          setBalloonPosition(
+            app.windowManager,
+            windowId,
+            getBalloonPositionCesium(scene, cartesian),
+            app.maps.target,
+          );
+        }),
+      );
+    } else if (map instanceof OpenlayersMap) {
+      const handler = () =>
         setBalloonPosition(
           app.windowManager,
           windowId,
-          getBalloonPositionCesium(scene, cartesian),
+          getBalloonPositionOL(map.olMap, position),
           app.maps.target,
         );
-      }));
-    } else if (map instanceof OpenlayersMap) {
-      const handler = () => setBalloonPosition(
-        app.windowManager,
-        windowId,
-        getBalloonPositionOL(map.olMap, position),
-        app.maps.target,
-      );
-      const key = map.olMap.on(
-        'postrender',
-        handler,
-      );
+      const key = map.olMap.on('postrender', handler);
       listeners.push(() => unByKey(key));
     } else if (map instanceof ObliqueMap) {
-      const { coords } = await transformToImage(
-        map.currentImage,
-        position,
+      const { coords } = await transformToImage(map.currentImage, position);
+      listeners.push(
+        map.imageChanged.addEventListener(
+          setup.bind(null, app, windowId, position),
+        ),
       );
-      listeners.push(map.imageChanged.addEventListener(setup.bind(null, app, windowId, position)));
-      const handler = () => setBalloonPosition(
-        app.windowManager,
-        windowId,
-        getBalloonPositionOL(map.olMap, coords),
-        app.maps.target,
-      );
-      const key = map.olMap.on(
-        'postrender',
-        handler,
-      );
+      const handler = () =>
+        setBalloonPosition(
+          app.windowManager,
+          windowId,
+          getBalloonPositionOL(map.olMap, coords),
+          app.maps.target,
+        );
+      const key = map.olMap.on('postrender', handler);
       listeners.push(() => unByKey(key));
     }
   };

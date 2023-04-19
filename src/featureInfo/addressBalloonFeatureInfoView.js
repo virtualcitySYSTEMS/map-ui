@@ -1,4 +1,6 @@
-import BalloonFeatureInfoView, { extractNestedKey } from './balloonFeatureInfoView.js';
+import BalloonFeatureInfoView, {
+  extractNestedKey,
+} from './balloonFeatureInfoView.js';
 import AddressBalloonComponent from './AddressBalloonComponent.vue';
 
 /**
@@ -20,7 +22,9 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
   /**
    * @type {string}
    */
-  static get className() { return 'AddressBalloonFeatureInfoView'; }
+  static get className() {
+    return 'AddressBalloonFeatureInfoView';
+  }
 
   /** @returns {AddressBalloonFeatureInfoViewOptions} */
   static getDefaultOptions() {
@@ -44,15 +48,20 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
     /**
      * @type {string|null}
      */
-    this.addressName = options.addressName !== undefined ? options.addressName : defaultOptions.addressName;
+    this.addressName =
+      options.addressName !== undefined
+        ? options.addressName
+        : defaultOptions.addressName;
     /**
      * @type {string|null}
      */
-    this.street = options.street !== undefined ? options.street : defaultOptions.street;
+    this.street =
+      options.street !== undefined ? options.street : defaultOptions.street;
     /**
      * @type {string|null}
      */
-    this.number = options.number !== undefined ? options.number : defaultOptions.number;
+    this.number =
+      options.number !== undefined ? options.number : defaultOptions.number;
     /**
      * @type {string|null}
      */
@@ -64,7 +73,8 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
     /**
      * @type {string|null}
      */
-    this.country = options.country !== undefined ? options.country : defaultOptions.country;
+    this.country =
+      options.country !== undefined ? options.country : defaultOptions.country;
   }
 
   /**
@@ -83,7 +93,9 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
         }
       }
     };
-    Object.keys(AddressBalloonFeatureInfoView.getDefaultOptions()).forEach(key => applyAddressKeys(key));
+    Object.keys(AddressBalloonFeatureInfoView.getDefaultOptions()).forEach(
+      (key) => applyAddressKeys(key),
+    );
     return obj;
   }
 

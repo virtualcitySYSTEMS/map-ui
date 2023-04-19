@@ -1,9 +1,4 @@
-import {
-  describe,
-  beforeAll,
-  expect,
-  it,
-} from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import AbstractFeatureInfoView, {
@@ -19,10 +14,13 @@ describe('AbstractFeatureInfoView', () => {
   let filteredAttributes;
 
   beforeAll(() => {
-    abstractFeatureInfoView = new AbstractFeatureInfoView({
-      name: 'TestView',
-      attributeKeys: ['name', 'function'],
-    }, { name: 'VueComponent' });
+    abstractFeatureInfoView = new AbstractFeatureInfoView(
+      {
+        name: 'TestView',
+        attributeKeys: ['name', 'function'],
+      },
+      { name: 'VueComponent' },
+    );
 
     featureId = 'test';
     filteredAttributes = {
@@ -55,20 +53,31 @@ describe('AbstractFeatureInfoView', () => {
     it('should return a value, if mapping provides a template string', () => {
       const attributes = { ...filteredAttributes };
       // eslint-disable-next-line no-template-curly-in-string
-      applyValueMapping(attributes, { function: 'codeLists.values.function.${value}' });
-      expect(attributes).to.have.property('function', `codeLists.values.function.${feature.getProperty('function')}`);
+      applyValueMapping(attributes, {
+        // eslint-disable-next-line no-template-curly-in-string
+        function: 'codeLists.values.function.${value}',
+      });
+      expect(attributes).to.have.property(
+        'function',
+        `codeLists.values.function.${feature.getProperty('function')}`,
+      );
     });
 
     it('should apply value mapping for nested values', () => {
       const attributes = { foo: { bar: null } };
       applyValueMapping(attributes, { 'foo.bar': 'bar' });
-      expect(attributes).to.have.property('foo').and.to.have.property('bar', 'bar');
+      expect(attributes)
+        .to.have.property('foo')
+        .and.to.have.property('bar', 'bar');
     });
 
     it('should apply value mapping to deeply nested keys', () => {
       const attributes = { foo: { bar: { baz: null } } };
       applyValueMapping(attributes, { 'foo.bar.baz': 'bar' });
-      expect(attributes).to.have.property('foo').and.to.have.property('bar').and.to.have.property('baz', 'bar');
+      expect(attributes)
+        .to.have.property('foo')
+        .and.to.have.property('bar')
+        .and.to.have.property('baz', 'bar');
     });
 
     it('should apply value mapping for keys with a period', () => {
@@ -82,7 +91,10 @@ describe('AbstractFeatureInfoView', () => {
     it('should return mapped key, if mapping provides a new key', () => {
       const attributes = { ...filteredAttributes };
       applyKeyMapping(attributes, { function: 'mappedKeyFunction' });
-      expect(attributes).to.have.property('mappedKeyFunction', filteredAttributes.function);
+      expect(attributes).to.have.property(
+        'mappedKeyFunction',
+        filteredAttributes.function,
+      );
     });
 
     it('should delete old key, if mapping provides a new key', () => {
@@ -94,7 +106,10 @@ describe('AbstractFeatureInfoView', () => {
     it('should leave key unchanged, if mapping does NOT provide a new value', () => {
       const attributes = { ...filteredAttributes };
       applyKeyMapping(attributes, { usage: 'mappedKeyUsage' });
-      expect(attributes).to.have.property('function', filteredAttributes.function);
+      expect(attributes).to.have.property(
+        'function',
+        filteredAttributes.function,
+      );
     });
 
     it('should apply key mapping for nested keys', () => {
@@ -108,7 +123,8 @@ describe('AbstractFeatureInfoView', () => {
       const attributes = { foo: { bar: { baz: null } } };
       applyKeyMapping(attributes, { 'foo.bar.baz': 'bar' });
       expect(attributes).to.have.property('bar', null);
-      expect(attributes).to.have.property('foo').and.to.have.property('bar').and.to.be.empty;
+      expect(attributes).to.have.property('foo').and.to.have.property('bar').and
+        .to.be.empty;
     });
 
     it('should apply key mapping for keys with a period', () => {
@@ -122,7 +138,9 @@ describe('AbstractFeatureInfoView', () => {
       const attributes = { foo: { bar: true, baz: true } };
       applyKeyMapping(attributes, { foo: 'baz', 'foo.bar': 'bar' });
       expect(attributes).to.have.property('bar', true);
-      expect(attributes).to.have.property('baz').and.to.have.property('baz', true);
+      expect(attributes)
+        .to.have.property('baz')
+        .and.to.have.property('baz', true);
       expect(attributes).to.not.have.property('foo');
     });
   });
@@ -164,7 +182,8 @@ describe('AbstractFeatureInfoView', () => {
 
     it('should filter for top level keys with a period', () => {
       const filtered = applyAttributeFilter(attributes, ['foo.bar']);
-      expect(filtered).to.have.property('foo.bar')
+      expect(filtered)
+        .to.have.property('foo.bar')
         .and.to.eql({ foo: true, bar: true });
       expect(filtered).to.have.all.keys(['foo.bar']);
     });
@@ -172,7 +191,9 @@ describe('AbstractFeatureInfoView', () => {
 
   describe('getAttributes', () => {
     it('should filter attributes by given attributeKeys', () => {
-      expect(abstractFeatureInfoView.getAttributes(feature)).to.be.deep.equal(filteredAttributes);
+      expect(abstractFeatureInfoView.getAttributes(feature)).to.be.deep.equal(
+        filteredAttributes,
+      );
     });
 
     it('should apply value mapping', () => {
@@ -196,14 +217,19 @@ describe('AbstractFeatureInfoView', () => {
         name,
         'codeLists.keys.function': `codeLists.values.function.${filteredAttributes.function}`,
       });
-      expect(abstractFeatureInfoView.getAttributes(feature)).to.not.have.property('function');
+      expect(
+        abstractFeatureInfoView.getAttributes(feature),
+      ).to.not.have.property('function');
     });
   });
 
   describe('getting config', () => {
     describe('of a default abstractFeatureInfoView', () => {
       it('should return the type and name', () => {
-        const abstractView = new AbstractFeatureInfoView({ name: 'TestView' }, { name: 'VueComponent' });
+        const abstractView = new AbstractFeatureInfoView(
+          { name: 'TestView' },
+          { name: 'VueComponent' },
+        );
         const config = abstractView.toJSON();
         expect(config).to.have.property('type', 'AbstractFeatureInfoView');
         expect(config).to.have.property('name', 'TestView');
@@ -229,7 +255,9 @@ describe('AbstractFeatureInfoView', () => {
             position: [0, 0],
           },
         };
-        const abstractView = new AbstractFeatureInfoView(inputConfig, { name: 'VueComponent' });
+        const abstractView = new AbstractFeatureInfoView(inputConfig, {
+          name: 'VueComponent',
+        });
         outputConfig = abstractView.toJSON();
         abstractView.destroy();
       });
@@ -238,16 +266,27 @@ describe('AbstractFeatureInfoView', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
       it('should configure attributeKeys', () => {
-        expect(outputConfig.attributeKeys).to.deep.equal(inputConfig.attributeKeys);
+        expect(outputConfig.attributeKeys).to.deep.equal(
+          inputConfig.attributeKeys,
+        );
       });
       it('should configure keyMapping', () => {
-        expect(outputConfig.keyMapping).to.have.property('function', inputConfig.keyMapping.function);
+        expect(outputConfig.keyMapping).to.have.property(
+          'function',
+          inputConfig.keyMapping.function,
+        );
       });
       it('should configure valueMapping', () => {
-        expect(outputConfig.valueMapping).to.have.property('function', inputConfig.valueMapping.function);
+        expect(outputConfig.valueMapping).to.have.property(
+          'function',
+          inputConfig.valueMapping.function,
+        );
       });
       it('should configure window', () => {
-        expect(outputConfig.window).to.have.property('position', inputConfig.window.position);
+        expect(outputConfig.window).to.have.property(
+          'position',
+          inputConfig.window.position,
+        );
       });
     });
   });

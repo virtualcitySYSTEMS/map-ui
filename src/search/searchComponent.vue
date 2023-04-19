@@ -1,11 +1,7 @@
 <template>
   <v-sheet>
     <span class="d-flex justify-space-between align-center mt-1 mx-1">
-      <v-icon
-        class="mx-2"
-      >
-        $vcsSearch
-      </v-icon>
+      <v-icon class="mx-2"> $vcsSearch </v-icon>
       <VcsTextField
         class="font-size-14 d-inline-block user-select-none w-full mx-2"
         autofocus
@@ -31,9 +27,7 @@
   </v-sheet>
 </template>
 
-<style>
-
-</style>
+<style></style>
 
 <script>
   import { inject, onUnmounted, ref } from 'vue';

@@ -61,7 +61,9 @@ export function getPluginAssetUrl(app, pluginName, asset) {
 export function isValidPackageName(name) {
   check(name, String);
 
-  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name);
+  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(
+    name,
+  );
 }
 
 /**
@@ -73,7 +75,10 @@ export async function loadPlugin(name, config) {
   let module = config.entry;
 
   if (!/^(https?:\/\/|\/)/.test(module)) {
-    module = `${window.location.origin}${window.location.pathname.replace(/\/?$/, '/')}${module}`;
+    module = `${window.location.origin}${window.location.pathname.replace(
+      /\/?$/,
+      '/',
+    )}${module}`;
   } else if (module === '_dev') {
     module = `/${name}.js`;
   }
@@ -85,13 +90,16 @@ export async function loadPlugin(name, config) {
 
   try {
     let plugin;
-    if (window.VcsPluginLoaderFunction) { // TODO PluginLoaderfunction needs to be documented.
+    if (window.VcsPluginLoaderFunction) {
+      // TODO PluginLoaderfunction needs to be documented.
       plugin = await window.VcsPluginLoaderFunction(name, module);
     } else {
       plugin = await import(/* @vite-ignore */ module);
     }
     if (plugin.default == null || typeof plugin.default !== 'function') {
-      getLogger().error(`plugin ${name} does not provide a default exported function`);
+      getLogger().error(
+        `plugin ${name} does not provide a default exported function`,
+      );
       return null;
     }
     const baseUrl = new URL(module);
@@ -128,9 +136,7 @@ export function getPluginEntry(base, pluginBase) {
   }
   const baseSubs = baseUrl.pathname.split('/');
   const pluginSubs = pluginBaseUrl.pathname.split('/');
-  return pluginSubs
-    .filter((sub, idx) => sub !== baseSubs[idx])
-    .join('/');
+  return pluginSubs.filter((sub, idx) => sub !== baseSubs[idx]).join('/');
 }
 
 /**
@@ -140,7 +146,10 @@ export function getPluginEntry(base, pluginBase) {
 export function serializePlugin(plugin) {
   const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
   serializedPlugin.name = plugin.name;
-  serializedPlugin.entry = getPluginEntry(window.location.href, plugin[pluginBaseUrlSymbol]);
+  serializedPlugin.entry = getPluginEntry(
+    window.location.href,
+    plugin[pluginBaseUrlSymbol],
+  );
   serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
   serializedPlugin[pluginBaseUrlSymbol] = plugin[pluginBaseUrlSymbol];
   return serializedPlugin;
@@ -151,7 +160,9 @@ export function serializePlugin(plugin) {
  * @returns {Promise<VcsPlugin>}
  */
 export async function deserializePlugin(serializedPlugin) {
-  const reincarnation = await serializedPlugin[pluginFactorySymbol](serializedPlugin);
+  const reincarnation = await serializedPlugin[pluginFactorySymbol](
+    serializedPlugin,
+  );
   reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
   reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
   return reincarnation;

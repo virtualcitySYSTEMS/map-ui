@@ -1,7 +1,13 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg id="icon_24_house_size" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <svg
+    id="icon_24_house_size"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
     <path
       id="Vereinigungsmenge_62"
       data-name="Vereinigungsmenge 62"

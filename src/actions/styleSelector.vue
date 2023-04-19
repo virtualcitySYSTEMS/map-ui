@@ -6,7 +6,9 @@
         :key="index"
         @click.stop="select(item.value)"
       >
-        <v-list-item-title :class="{ 'primary--text': item.value === currentStyleName }">
+        <v-list-item-title
+          :class="{ 'primary--text': item.value === currentStyleName }"
+        >
           {{ item.text }}
         </v-list-item-title>
       </v-list-item>
@@ -31,7 +33,13 @@
 <script>
   import { computed, inject, onUnmounted, ref } from 'vue';
   import {
-    VChip, VList, VListItem, VListItemContent, VListItemIcon, VListItemTitle, VSheet,
+    VChip,
+    VList,
+    VListItem,
+    VListItemContent,
+    VListItemIcon,
+    VListItemTitle,
+    VSheet,
   } from 'vuetify/lib';
 
   export default {
@@ -55,11 +63,11 @@
         required: true,
       },
     },
-    setup({ layerName, availableStyles }, { attrs }) {
+    setup(props, { attrs }) {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       /** @type {import("@vcmap/core").FeatureLayer} */
-      const layer = app.layers.getByKey(layerName);
+      const layer = app.layers.getByKey(props.layerName);
       const currentStyleName = ref(layer.style.name);
       const currentStyleLegend = ref([]);
       const defaultStyle = layer.defaultStyle.name;
@@ -72,7 +80,8 @@
       }
       setStyle(layer.style);
       // TODO error handling if layer is missing or not a feature layer
-      const styleChangedListener = layer.styleChanged.addEventListener(setStyle);
+      const styleChangedListener =
+        layer.styleChanged.addEventListener(setStyle);
       onUnmounted(() => {
         styleChangedListener();
       });
@@ -80,14 +89,15 @@
       const items = computed(() => {
         return [
           { text: 'Default', value: defaultStyle },
-          ...availableStyles.map(s => ({ text: s, value: s })),
+          ...props.availableStyles.map((s) => ({ text: s, value: s })),
         ];
       });
 
       function select(styleName) {
-        const style = styleName === defaultStyle ?
-          layer.defaultStyle :
-          app.styles.getByKey(styleName);
+        const style =
+          styleName === defaultStyle
+            ? layer.defaultStyle
+            : app.styles.getByKey(styleName);
         layer.setStyle(style);
         app.windowManager.remove(attrs['window-state'].id);
       }
@@ -102,5 +112,4 @@
   };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -2,19 +2,27 @@ import packageJSON from './package.json';
 
 export default () => {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     initialize(vcsApp) {
       vcsApp.contextMenuManager.addEventHandler(async (event) => {
-        const actions = [{
-          id: 'foo2',
-          name: 'Log Position',
-          icon: '$vcsInfo',
-          callback() {
-            console.log(event.positionOrPixel);
+        const actions = [
+          {
+            id: 'foo2',
+            name: 'Log Position',
+            icon: '$vcsInfo',
+            callback() {
+              console.log(event.positionOrPixel);
+            },
           },
-        }];
+        ];
         if (event.feature) {
           actions.push({
             id: 'foo',

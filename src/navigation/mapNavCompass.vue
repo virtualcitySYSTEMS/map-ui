@@ -1,5 +1,10 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 58 58">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="58"
+    height="58"
+    viewBox="0 0 58 58"
+  >
     <g id="Group_1654" data-name="Group 1654" transform="translate(24)">
       <path
         :class="canEmit ? 'cursor-pointer' : ''"
@@ -20,7 +25,11 @@
         @click="emit($event, 180)"
       />
     </g>
-    <g id="Group_1653" data-name="Group 1653" transform="translate(0 33) rotate(-90)">
+    <g
+      id="Group_1653"
+      data-name="Group 1653"
+      transform="translate(0 33) rotate(-90)"
+    >
       <path
         :class="canEmit ? 'cursor-pointer' : ''"
         id="west_arrow"
@@ -39,7 +48,12 @@
         @click="emit($event, 90)"
       />
     </g>
-    <g id="Group_1672" data-name="Group 1672" transform="translate(1)" v-if="!hideTicks">
+    <g
+      id="Group_1672"
+      data-name="Group 1672"
+      transform="translate(1)"
+      v-if="!hideTicks"
+    >
       <line
         id="Line_289-2"
         data-name="Line 289"

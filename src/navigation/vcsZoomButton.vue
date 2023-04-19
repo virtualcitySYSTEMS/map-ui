@@ -30,24 +30,23 @@
   };
 </script>
 <style lang="scss" scoped>
-.vcs-navigation-zoom {
-  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 2px 0;
-  .inner{
-    box-shadow: rgba(0, 0, 0, 0.25) 0 0 10px 0 inset;
-  }
-  ::v-deep {
-    .btn-orientation-tools{
-      &:first-child{
-        box-shadow: rgba(0, 0, 0, 0.25) -2px 2px 1px -2px,
-        rgba(0, 0, 0, 0.08) 1px 0 0 0,
-        rgba(0, 0, 0, 0.05) -1px 1px 1px 1px !important;
-      }
-      &:last-child{
-        box-shadow: rgba(0, 0, 0, 0.25) -2px 3px 1px -2px,
-        rgba(0, 0, 0, 0.08) 1px 4px 2px 0,
-        rgba(0, 0, 0, 0.05) -1px 1px 1px 1px !important;
+  .vcs-navigation-zoom {
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 2px 0;
+    .inner {
+      box-shadow: rgba(0, 0, 0, 0.25) 0 0 10px 0 inset;
+    }
+    ::v-deep {
+      .btn-orientation-tools {
+        &:first-child {
+          box-shadow: rgba(0, 0, 0, 0.25) -2px 2px 1px -2px,
+            rgba(0, 0, 0, 0.08) 1px 0 0 0, rgba(0, 0, 0, 0.05) -1px 1px 1px 1px !important;
+        }
+        &:last-child {
+          box-shadow: rgba(0, 0, 0, 0.25) -2px 3px 1px -2px,
+            rgba(0, 0, 0, 0.08) 1px 4px 2px 0,
+            rgba(0, 0, 0, 0.05) -1px 1px 1px 1px !important;
+        }
       }
     }
   }
-}
 </style>

@@ -1,9 +1,5 @@
-
-
 module.exports = {
-  plugins: [
-    'node_modules/jsdoc-vuejs',
-  ],
+  plugins: ['node_modules/jsdoc-vuejs'],
   tags: {
     allowUnknownTags: ['true'],
   },

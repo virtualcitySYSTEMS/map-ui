@@ -1,11 +1,9 @@
 <template>
-  <div
-    class="vcs-button-wrap"
-  >
+  <div class="vcs-button-wrap">
     <VcsTooltip
       :tooltip="tooltip"
       :tooltip-position="tooltipPosition"
-      v-bind="{...tooltipProps}"
+      v-bind="{ ...tooltipProps }"
     >
       <template #activator="{ on, attrs }">
         <v-btn
@@ -15,43 +13,40 @@
           :class="classes"
           :ripple="!isSmall ? { class: 'primary--text text--darken-4' } : false"
           elevation="0"
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
         >
-          <v-icon v-if="icon" v-text="icon" :class="{ 'mr-2': hasDefaultSlot }" />
+          <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+            {{ icon }}
+          </v-icon>
           <slot />
         </v-btn>
       </template>
     </VcsTooltip>
-    <VcsBadge
-      v-if="hasUpdate"
-      :color="'warning'"
-      class="position-absolute"
-    />
+    <VcsBadge v-if="hasUpdate" :color="'warning'" class="position-absolute" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .vcs-button-wrap{
+  .vcs-button-wrap {
     position: relative;
     display: inline-block;
   }
-  .badge{
+  .badge {
     top: -3px;
     right: -3px;
   }
-  .v-btn{
-    &--outlined{
+  .v-btn {
+    &--outlined {
       border: thin solid currentColor;
     }
-    &.vcs-button{
-
+    &.vcs-button {
       &--standard {
         min-width: 48px;
         height: 32px;
         font-size: 12px;
         border: 1px solid transparent;
-        &:hover{
+        &:hover {
           color: var(--v-base-lighten5) !important;
           border-color: var(--v-primary-base);
           background-color: var(--v-primary-base);
@@ -61,14 +56,14 @@
       &--small {
         height: 16px;
         min-width: auto;
-        &:hover{
+        &:hover {
           color: var(--v-primary-base);
         }
-        &::before{
+        &::before {
           display: none; /*prevents unwanted mouseover effect*/
         }
         ::v-deep {
-          .v-icon{
+          .v-icon {
             font-size: 16px;
           }
 
@@ -185,7 +180,8 @@
           'font-weight-bold': this.isStandard,
           'text-capitalize': this.isStandard,
           'vcs-button--large': this.isLarge,
-          'vcs-button--active-background': this.active && this.background && !this.$attrs.disabled,
+          'vcs-button--active-background':
+            this.active && this.background && !this.$attrs.disabled,
         };
       },
       hasDefaultSlot() {

@@ -1,11 +1,10 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-} from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { Viewpoint } from '@vcmap/core';
-import { createEmptyState, getStateFromURL, setStateToUrl } from '../../src/state.js';
+import {
+  createEmptyState,
+  getStateFromURL,
+  setStateToUrl,
+} from '../../src/state.js';
 
 describe('URL state IO', () => {
   describe('normal state', () => {
@@ -20,7 +19,11 @@ describe('URL state IO', () => {
 
       originalState.layers.push({ name: 'foo', active: true });
       originalState.layers.push({ name: 'bar', active: false });
-      originalState.layers.push({ name: 'baz', active: true, styleName: 'foo' });
+      originalState.layers.push({
+        name: 'baz',
+        active: true,
+        styleName: 'foo',
+      });
 
       originalState.activeObliqueCollection = 'foo';
       originalState.activeMap = 'bar';
@@ -47,7 +50,9 @@ describe('URL state IO', () => {
     });
 
     it('should recreate activeObliqueCollection', () => {
-      expect(recreatedState.activeObliqueCollection).to.equal(originalState.activeObliqueCollection);
+      expect(recreatedState.activeObliqueCollection).to.equal(
+        originalState.activeObliqueCollection,
+      );
     });
 
     it('should recreate activeMap', () => {
@@ -55,8 +60,11 @@ describe('URL state IO', () => {
     });
 
     it('should recreate activeViewpoint', () => {
-      expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
-        .to.be.true;
+      expect(
+        new Viewpoint(recreatedState.activeViewpoint).equals(
+          new Viewpoint(originalState.activeViewpoint),
+        ),
+      ).to.be.true;
     });
   });
 
@@ -69,12 +77,19 @@ describe('URL state IO', () => {
         originalState = createEmptyState();
         originalState.moduleIds.push('foo');
         originalState.plugins.push({ name: 'foo', state: [] });
-        originalState.plugins.push({ name: 'bar', state: new Array(2048).fill('X').join('') });
+        originalState.plugins.push({
+          name: 'bar',
+          state: new Array(2048).fill('X').join(''),
+        });
         originalState.plugins.push({ name: 'baz', state: [] });
 
         originalState.layers.push({ name: 'foo', active: true });
         originalState.layers.push({ name: 'bar', active: false });
-        originalState.layers.push({ name: 'baz', active: true, styleName: 'foo' });
+        originalState.layers.push({
+          name: 'baz',
+          active: true,
+          styleName: 'foo',
+        });
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
@@ -93,7 +108,10 @@ describe('URL state IO', () => {
       });
 
       it('should recreate all plugins which could fit', () => {
-        expect(recreatedState.plugins).to.deep.eql([originalState.plugins[0], originalState.plugins[2]]);
+        expect(recreatedState.plugins).to.deep.eql([
+          originalState.plugins[0],
+          originalState.plugins[2],
+        ]);
       });
 
       it('should recreate layers', () => {
@@ -101,7 +119,9 @@ describe('URL state IO', () => {
       });
 
       it('should recreate activeObliqueCollection', () => {
-        expect(recreatedState.activeObliqueCollection).to.equal(originalState.activeObliqueCollection);
+        expect(recreatedState.activeObliqueCollection).to.equal(
+          originalState.activeObliqueCollection,
+        );
       });
 
       it('should recreate activeMap', () => {
@@ -109,8 +129,11 @@ describe('URL state IO', () => {
       });
 
       it('should recreate activeViewpoint', () => {
-        expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
-          .to.be.true;
+        expect(
+          new Viewpoint(recreatedState.activeViewpoint).equals(
+            new Viewpoint(originalState.activeViewpoint),
+          ),
+        ).to.be.true;
       });
     });
 
@@ -125,8 +148,16 @@ describe('URL state IO', () => {
         originalState.plugins.push({ name: 'bar', state: [] });
 
         originalState.layers.push({ name: 'foo', active: true });
-        originalState.layers.push({ name: 'bar', active: true, styleName: new Array(2048).fill('X').join('') });
-        originalState.layers.push({ name: 'baz', active: true, styleName: 'foo' });
+        originalState.layers.push({
+          name: 'bar',
+          active: true,
+          styleName: new Array(2048).fill('X').join(''),
+        });
+        originalState.layers.push({
+          name: 'baz',
+          active: true,
+          styleName: 'foo',
+        });
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
@@ -149,11 +180,16 @@ describe('URL state IO', () => {
       });
 
       it('should recreate layers', () => {
-        expect(recreatedState.layers).to.deep.eql([originalState.layers[0], originalState.layers[2]]);
+        expect(recreatedState.layers).to.deep.eql([
+          originalState.layers[0],
+          originalState.layers[2],
+        ]);
       });
 
       it('should recreate activeObliqueCollection', () => {
-        expect(recreatedState.activeObliqueCollection).to.equal(originalState.activeObliqueCollection);
+        expect(recreatedState.activeObliqueCollection).to.equal(
+          originalState.activeObliqueCollection,
+        );
       });
 
       it('should recreate activeMap', () => {
@@ -161,8 +197,11 @@ describe('URL state IO', () => {
       });
 
       it('should recreate activeViewpoint', () => {
-        expect(new Viewpoint(recreatedState.activeViewpoint).equals(new Viewpoint(originalState.activeViewpoint)))
-          .to.be.true;
+        expect(
+          new Viewpoint(recreatedState.activeViewpoint).equals(
+            new Viewpoint(originalState.activeViewpoint),
+          ),
+        ).to.be.true;
       });
     });
   });

@@ -24,9 +24,7 @@
     <v-divider />
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="font-weight-bold">
-          ACTIVE
-        </v-list-item-title>
+        <v-list-item-title class="font-weight-bold"> ACTIVE </v-list-item-title>
       </v-list-item-content>
       <v-list-item-action>
         <v-switch v-model="active" />
@@ -58,6 +56,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
+          <!-- eslint-disable-next-line -->
           &ltVcsButton standard/&gt (default)
         </v-list-item-title>
         <v-row>
@@ -104,6 +103,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
+          <!-- eslint-disable-next-line -->
           &ltVcsButton large/&gt (e.g. Navbar)
         </v-list-item-title>
         <v-row>
@@ -130,8 +130,17 @@
               <v-card-actions>
                 <VcsActionButtonList
                   :actions="[
-                    { name: 'Tool 1', title: 'Overflow Button with active state', callback: toggle, active },
-                    { name: 'Tool 2', title: 'Overflow Button without state', callback: toggle },
+                    {
+                      name: 'Tool 1',
+                      title: 'Overflow Button with active state',
+                      callback: toggle,
+                      active,
+                    },
+                    {
+                      name: 'Tool 2',
+                      title: 'Overflow Button without state',
+                      callback: toggle,
+                    },
                   ]"
                   :overflow-count="0"
                   button-class="large"
@@ -146,6 +155,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
+          <!-- eslint-disable-next-line -->
           &ltVcsButton small/&gt
         </v-list-item-title>
         <v-row>
@@ -171,8 +181,17 @@
               <v-card-actions>
                 <VcsActionButtonList
                   :actions="[
-                    { name: 'Action 1', title: 'Overflow Button with active state', callback: toggle, active },
-                    { name: 'Action 2', title: 'Overflow Button without state', callback: toggle },
+                    {
+                      name: 'Action 1',
+                      title: 'Overflow Button with active state',
+                      callback: toggle,
+                      active,
+                    },
+                    {
+                      name: 'Action 2',
+                      title: 'Overflow Button without state',
+                      callback: toggle,
+                    },
                   ]"
                   :overflow-count="0"
                   small

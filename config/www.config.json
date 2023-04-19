@@ -548,10 +548,7 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": [
-        "3D",
-        "classified"
-      ],
+      "exclusiveGroups": ["3D", "classified"],
       "properties": {
         "title": "Berlin - LOD2",
         "featureInfo": "tableBuildings",
@@ -572,10 +569,7 @@
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": [
-        "3D",
-        "classified"
-      ],
+      "exclusiveGroups": ["3D", "classified"],
       "properties": {
         "title": "layer.berlinLOD2Textured",
         "featureInfo": "tableBuildings"
@@ -587,9 +581,7 @@
       "url": "https://www.virtualcitymap.de/datasource-data/000834f6-8670-49d9-a430-df5b92474985/?baseTerrain=82JNcy7Xi7FNB3WXR",
       "activeOnStartup": false,
       "requestVertexNormals": true,
-      "exclusiveGroups": [
-        "terrain"
-      ]
+      "exclusiveGroups": ["terrain"]
     },
     {
       "type": "TerrainLayer",
@@ -597,9 +589,7 @@
       "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
       "activeOnStartup": true,
       "requestVertexNormals": true,
-      "exclusiveGroups": [
-        "terrain"
-      ]
+      "exclusiveGroups": ["terrain"]
     },
     {
       "type": "CesiumTilesetLayer",
@@ -638,9 +628,7 @@
       "tilesetOptions": {
         "classificationType": 2
       },
-      "exclusiveGroups": [
-        "classified"
-      ],
+      "exclusiveGroups": ["classified"],
       "properties": {
         "title": "3D-Mesh 2020",
         "featureInfo": "balloonGebInfo"
@@ -658,11 +646,7 @@
       "properties": {
         "title": "Punktwolke Berlin Buch",
         "defaultViewpoint": "buch",
-        "availableStyles": [
-          "CIR",
-          "Tree-ID",
-          "Distance"
-        ]
+        "availableStyles": ["CIR", "Tree-ID", "Distance"]
       }
     },
     {
@@ -677,12 +661,7 @@
       "tileMatrixSetID": "osm_grid",
       "maxLevel": 19,
       "extent": {
-        "coordinates": [
-          -180,
-          -85,
-          180,
-          85
-        ],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
           "epsg": "EPSG:4326"
         }
@@ -709,9 +688,7 @@
       "activeOnStartup": true,
       "extent": {
         "coordinates": [
-          13.04758181842805,
-          52.31643877872646,
-          13.76741895135349,
+          13.04758181842805, 52.31643877872646, 13.76741895135349,
           52.68540597146242
         ],
         "projection": {
@@ -721,10 +698,7 @@
       "format": "png",
       "minLevel": 8,
       "maxLevel": 18,
-      "tileSize": [
-        256,
-        256
-      ],
+      "tileSize": [256, 256],
       "tilingSchema": "mercator",
       "opacity": 0.9,
       "properties": {
@@ -747,10 +721,7 @@
       "tilesetOptions": {
         "skipLevelOfDetail": true
       },
-      "exclusiveGroups": [
-        "3D",
-        "terrain"
-      ],
+      "exclusiveGroups": ["3D", "terrain"],
       "properties": {
         "title": "3D-Mesh 2020",
         "attributions": {
@@ -768,9 +739,7 @@
       "activeOnStartup": false,
       "extent": {
         "coordinates": [
-          13.213981608814816,
-          52.41457895062166,
-          13.581125179911801,
+          13.213981608814816, 52.41457895062166, 13.581125179911801,
           52.590806074020236
         ],
         "projection": {
@@ -794,9 +763,7 @@
       "activeOnStartup": false,
       "extent": {
         "coordinates": [
-          5.591229155264556,
-          50.335667211619835,
-          9.001144728260876,
+          5.591229155264556, 50.335667211619835, 9.001144728260876,
           52.5802231834015
         ],
         "projection": {
@@ -817,12 +784,14 @@
         "title": "layer.waterSpeed",
         "defaultViewpoint": "soest",
         "featureInfo": "waterSpeed",
-        "legend": [{
-          "type": "ImageLegendItem",
-          "tooltip": "layer.waterSpeed",
-          "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=fliessgeschwindigkeiten_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
-          "popoutBtn": true
-        }]
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "tooltip": "layer.waterSpeed",
+            "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=fliessgeschwindigkeiten_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
+            "popoutBtn": true
+          }
+        ]
       }
     },
     {
@@ -832,9 +801,7 @@
       "activeOnStartup": false,
       "extent": {
         "coordinates": [
-          5.591229155264556,
-          50.335667211619835,
-          9.001144728260876,
+          5.591229155264556, 50.335667211619835, 9.001144728260876,
           52.5802231834015
         ],
         "projection": {
@@ -855,12 +822,14 @@
         "title": "layer.waterHeight",
         "defaultViewpoint": "soest",
         "featureInfo": "waterHeight",
-        "legend": [{
-          "type": "ImageLegendItem",
-          "tooltip": "layer.waterHeight",
-          "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=wasserhoehen_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
-          "popoutBtn": true
-        }]
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "tooltip": "layer.waterHeight",
+            "src": "https://sgx.geodatenzentrum.de/wms_starkregen__sess-1426bd3e-179d-49b1-b0dd-2994524ac2a8?format=image%2Fpng&layer=wasserhoehen_selten&sld_version=1.1.0&request=GetLegendGraphic&service=WMS&version=1.1.1&styles=",
+            "popoutBtn": true
+          }
+        ]
       }
     },
     {
@@ -870,9 +839,7 @@
       "activeOnStartup": false,
       "extent": {
         "coordinates": [
-          5.591229155264556,
-          50.335667211619835,
-          9.001144728260876,
+          5.591229155264556, 50.335667211619835, 9.001144728260876,
           52.5802231834015
         ],
         "projection": {
@@ -896,9 +863,7 @@
       "activeOnStartup": false,
       "extent": {
         "coordinates": [
-          5.591229155264556,
-          50.335667211619835,
-          9.001144728260876,
+          5.591229155264556, 50.335667211619835, 9.001144728260876,
           52.5802231834015
         ],
         "projection": {
@@ -925,9 +890,7 @@
       "minLevel": 15,
       "maxLevel": 21,
       "tileProvider": {
-        "baseLevels": [
-          14
-        ],
+        "baseLevels": [14],
         "idProperty": "osm_id",
         "useSpatialIndex": false,
         "type": "MVTTileProvider",
@@ -988,10 +951,7 @@
               "${TREE_ID} > 0",
               "mix(color('#00FF00') * (${TREE_ID} % 21) / 20, ${COLOR}, 0.5)"
             ],
-            [
-              "true",
-              "${COLOR}"
-            ]
+            ["true", "${COLOR}"]
           ]
         },
         "pointSize": 2
@@ -1009,10 +969,7 @@
               "${DISTANCE} > 4",
               "mix(color('#ffff00'), color('#bd0000'), clamp(0, 1, (${DISTANCE}-4)/5))"
             ],
-            [
-              "true",
-              "${COLOR}"
-            ]
+            ["true", "${COLOR}"]
           ]
         },
         "pointSize": 2
@@ -1035,34 +992,13 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#006d2c')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#edf8e9')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#edf8e9')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#bae4b3')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#74c476')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#31a354')"
-            ],
-            [
-              "true",
-              "color('#006d2c')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#006d2c')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 15", "color('#bae4b3')"],
+            ["${attributes.measuredHeight} < 30", "color('#74c476')"],
+            ["${attributes.measuredHeight} < 65", "color('#31a354')"],
+            ["true", "color('#006d2c')"]
           ]
         }
       },
@@ -1120,30 +1056,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#993404')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#ffffd4')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#fed98e')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#fe9929')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#d95f0e')"
-            ],
-            [
-              "true",
-              "color('#993404')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#993404')"],
+            ["${attributes.measuredHeight} < 5", "color('#ffffd4')"],
+            ["${attributes.measuredHeight} < 15", "color('#fed98e')"],
+            ["${attributes.measuredHeight} < 30", "color('#fe9929')"],
+            ["${attributes.measuredHeight} < 65", "color('#d95f0e')"],
+            ["true", "color('#993404')"]
           ]
         }
       },
@@ -1201,30 +1119,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#045a8d')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#f1eef6')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#bdc9e1')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#74a9cf')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#2b8cbe')"
-            ],
-            [
-              "true",
-              "color('#045a8d')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#045a8d')"],
+            ["${attributes.measuredHeight} < 5", "color('#f1eef6')"],
+            ["${attributes.measuredHeight} < 15", "color('#bdc9e1')"],
+            ["${attributes.measuredHeight} < 30", "color('#74a9cf')"],
+            ["${attributes.measuredHeight} < 65", "color('#2b8cbe')"],
+            ["true", "color('#045a8d')"]
           ]
         }
       },
@@ -1281,74 +1181,23 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.roofType} === undefined",
-              "color('#cccccc')"
-            ],
-            [
-              "${attributes.roofType} === '1000' ",
-              "color('#91cf60')"
-            ],
-            [
-              "${attributes.roofType} === '2100' ",
-              "color('#fee08b')"
-            ],
-            [
-              "${attributes.roofType} === '2200' ",
-              "color('#8dd3c7')"
-            ],
-            [
-              "${attributes.roofType} === '3100' ",
-              "color('#8dd3c7')"
-            ],
-            [
-              "${attributes.roofType} === '3200' ",
-              "color('#fc8d59')"
-            ],
-            [
-              "${attributes.roofType} === '3300' ",
-              "color('#ffffb3')"
-            ],
-            [
-              "${attributes.roofType} === '3400' ",
-              "color('#bebada')"
-            ],
-            [
-              "${attributes.roofType} === '3500' ",
-              "color('#ffffbf')"
-            ],
-            [
-              "${attributes.roofType} === '3600' ",
-              "color('#fdb462')"
-            ],
-            [
-              "${attributes.roofType} === '3700' ",
-              "color('#b3de69')"
-            ],
-            [
-              "${attributes.roofType} === '3800' ",
-              "color('#ecc34e')"
-            ],
-            [
-              "${attributes.roofType} === '3900' ",
-              "color('#fccde5')"
-            ],
-            [
-              "${attributes.roofType} === '4000' ",
-              "color('#d590b3')"
-            ],
-            [
-              "${attributes.roofType} === '5000' ",
-              "color('#888888')"
-            ],
-            [
-              "${attributes.roofType} === '9999' ",
-              "color('#cccccc')"
-            ],
-            [
-              "true",
-              "color('#cccccc')"
-            ]
+            ["${attributes.roofType} === undefined", "color('#cccccc')"],
+            ["${attributes.roofType} === '1000' ", "color('#91cf60')"],
+            ["${attributes.roofType} === '2100' ", "color('#fee08b')"],
+            ["${attributes.roofType} === '2200' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3100' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3200' ", "color('#fc8d59')"],
+            ["${attributes.roofType} === '3300' ", "color('#ffffb3')"],
+            ["${attributes.roofType} === '3400' ", "color('#bebada')"],
+            ["${attributes.roofType} === '3500' ", "color('#ffffbf')"],
+            ["${attributes.roofType} === '3600' ", "color('#fdb462')"],
+            ["${attributes.roofType} === '3700' ", "color('#b3de69')"],
+            ["${attributes.roofType} === '3800' ", "color('#ecc34e')"],
+            ["${attributes.roofType} === '3900' ", "color('#fccde5')"],
+            ["${attributes.roofType} === '4000' ", "color('#d590b3')"],
+            ["${attributes.roofType} === '5000' ", "color('#888888')"],
+            ["${attributes.roofType} === '9999' ", "color('#cccccc')"],
+            ["true", "color('#cccccc')"]
           ]
         }
       },
@@ -1475,30 +1324,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.function} === undefined",
-              "color('#d9d9d9')"
-            ],
-            [
-              "${attributes.function} === '1121' ",
-              "color('#7fc97f')"
-            ],
-            [
-              "${attributes.function} === '1004' ",
-              "color('#beaed4')"
-            ],
-            [
-              "${attributes.function} === '1799' ",
-              "color('#fdc086')"
-            ],
-            [
-              "${attributes.function} === '1231' ",
-              "color('#ffff99')"
-            ],
-            [
-              "true",
-              "color('#d9d9d9')"
-            ]
+            ["${attributes.function} === undefined", "color('#d9d9d9')"],
+            ["${attributes.function} === '1121' ", "color('#7fc97f')"],
+            ["${attributes.function} === '1004' ", "color('#beaed4')"],
+            ["${attributes.function} === '1799' ", "color('#fdc086')"],
+            ["${attributes.function} === '1231' ", "color('#ffff99')"],
+            ["true", "color('#d9d9d9')"]
           ]
         }
       },
@@ -1542,7 +1373,6 @@
                 },
                 "title": "other function"
               }
-
             ]
           }
         ]
@@ -1556,12 +1386,7 @@
       "declarativeStyle": {
         "show": "true",
         "color": {
-          "conditions": [
-            [
-              "true",
-              "color('#cccccc', 0.7)"
-            ]
-          ]
+          "conditions": [["true", "color('#cccccc', 0.7)"]]
         }
       },
       "properties": {
@@ -1672,14 +1497,10 @@
       "type": "Viewpoint",
       "name": "Lüdenscheid",
       "cameraPosition": [
-        7.628326765047903,
-        51.19524414598677,
-        567.4244392829526
+        7.628326765047903, 51.19524414598677, 567.4244392829526
       ],
       "groundPosition": [
-        7.628881118887374,
-        51.19874066185536,
-        327.79466475129635
+        7.628881118887374, 51.19874066185536, 327.79466475129635
       ],
       "distance": 458.54351897275285,
       "heading": 5.688482507076805,
@@ -1691,14 +1512,10 @@
       "type": "Viewpoint",
       "name": "buch",
       "cameraPosition": [
-        13.510024049521348,
-        52.61701500801688,
-        963.616637428691
+        13.510024049521348, 52.61701500801688, 963.616637428691
       ],
       "groundPosition": [
-        13.509501235009397,
-        52.63010587662207,
-        64.52947347468726
+        13.509501235009397, 52.63010587662207, 64.52947347468726
       ],
       "distance": 1712.3223745287837,
       "heading": 358.6079576057926,
@@ -1710,14 +1527,10 @@
       "type": "Viewpoint",
       "name": "soest",
       "cameraPosition": [
-        8.109298382955318,
-        51.559597246671196,
-        961.5073981367838
+        8.109298382955318, 51.559597246671196, 961.5073981367838
       ],
       "groundPosition": [
-        8.106925457830526,
-        51.570398058304164,
-        100.65761284152735
+        8.106925457830526, 51.570398058304164, 100.65761284152735
       ],
       "distance": 1487.426133239795,
       "heading": 352.20412276200915,
@@ -1729,14 +1542,10 @@
       "type": "Viewpoint",
       "name": "water",
       "cameraPosition": [
-        13.339344385024594,
-        52.5088954811299,
-        130.03569559547765
+        13.339344385024594, 52.5088954811299, 130.03569559547765
       ],
       "groundPosition": [
-        13.33729902776962,
-        52.511465636098464,
-        9.99406298444336
+        13.33729902776962, 52.511465636098464, 9.99406298444336
       ],
       "distance": 339.8414978184529,
       "heading": 334.10164666457615,
@@ -1748,14 +1557,10 @@
       "type": "Viewpoint",
       "name": "Lindau",
       "cameraPosition": [
-        9.686669428645894,
-        47.54783307574758,
-        470.61319069904147
+        9.686669428645894, 47.54783307574758, 470.61319069904147
       ],
       "groundPosition": [
-        9.680928124911006,
-        47.5415384162223,
-        389.84056816057506
+        9.680928124911006, 47.5415384162223, 389.84056816057506
       ],
       "distance": 826.5617352083572,
       "heading": 211.7001766176285,
@@ -1767,14 +1572,10 @@
       "type": "Viewpoint",
       "name": "startview",
       "cameraPosition": [
-        13.37411102000604,
-        52.5126411114975,
-        1039.4376606886788
+        13.37411102000604, 52.5126411114975, 1039.4376606886788
       ],
       "groundPosition": [
-        13.371271496304264,
-        52.52529109057904,
-        31.074206921777545
+        13.371271496304264, 52.52529109057904, 31.074206921777545
       ],
       "distance": 1742.3485377937602,
       "heading": 352.20412240931404,
@@ -1806,10 +1607,7 @@
         "Thüringen - LOD2 (pbr recalculation)",
         "GermanyBaseTerrain"
       ],
-      "layerNamesToDeactivate": [
-        "mesh_surface",
-        "Mesh Classification Layer"
-      ],
+      "layerNamesToDeactivate": ["mesh_surface", "Mesh Classification Layer"],
       "title": "layer.buildings"
     },
     {
@@ -1821,10 +1619,7 @@
     {
       "type": "LayerGroupContentTreeItem",
       "name": "berlin.mesh",
-      "layerNames": [
-        "Mesh Classification Layer",
-        "mesh_surface"
-      ],
+      "layerNames": ["Mesh Classification Layer", "mesh_surface"],
       "layerNamesToDeactivate": [
         "Bayern - LOD2 (pbr)",
         "Berlin untexturiert openData (pbr recalculation)",

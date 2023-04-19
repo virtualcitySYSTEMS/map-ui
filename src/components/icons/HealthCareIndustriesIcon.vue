@@ -1,5 +1,10 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="23.51" height="23.542" viewBox="0 0 23.51 23.542">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="23.51"
+    height="23.542"
+    viewBox="0 0 23.51 23.542"
+  >
     <g id="Group_845" data-name="Group 845" transform="translate(0.639 0.64)">
       <path
         id="Path_432"

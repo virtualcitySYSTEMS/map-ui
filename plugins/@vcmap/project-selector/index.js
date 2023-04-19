@@ -44,19 +44,31 @@ import en from './en.json';
  * @returns {VcsPlugin}
  */
 export default async function projectSelector(config) {
-  const { selected, selectedModules, open, projects = [], modules = [] } = config;
+  const {
+    selected,
+    selectedModules,
+    open,
+    projects = [],
+    modules = [],
+  } = config;
 
   const pluginConfig = reactive({
     selected: selected || defaultConfig.selected,
     selectedModules: selectedModules || defaultConfig.selectedModules,
     open: open || defaultConfig.open,
-    projects: /** @type {Array<ProjectOptions>} */[...defaultConfig.projects, ...projects],
-    modules: /** @type {Array<string>} */[...defaultConfig.modules, ...modules],
+    projects: /** @type {Array<ProjectOptions>} */ [
+      ...defaultConfig.projects,
+      ...projects,
+    ],
+    modules: /** @type {Array<string>} */ [
+      ...defaultConfig.modules,
+      ...modules,
+    ],
   });
 
   const pluginState = reactive({
-    projects: /** @type {Array<Project>} */[],
-    modules: /** @type {Array<VcsModuleState>} */[],
+    projects: /** @type {Array<Project>} */ [],
+    modules: /** @type {Array<VcsModuleState>} */ [],
   });
 
   /**
@@ -81,7 +93,11 @@ export default async function projectSelector(config) {
     const project = {
       name,
       description,
-      modules: configUrls.map(configUrl => ({ _id: undefined, configUrl, active: false })),
+      modules: configUrls.map((configUrl) => ({
+        _id: undefined,
+        configUrl,
+        active: false,
+      })),
       active: false,
     };
     pluginState.projects.push(project);
@@ -91,7 +107,9 @@ export default async function projectSelector(config) {
    * @param {Project} project
    */
   function removeProject(project) {
-    const projectIdx = pluginState.projects.findIndex(p => p.name === project.name);
+    const projectIdx = pluginState.projects.findIndex(
+      (p) => p.name === project.name,
+    );
     pluginState.projects.splice(projectIdx, 1);
   }
 
@@ -115,7 +133,10 @@ export default async function projectSelector(config) {
         }
       }
     } catch (err) {
-      getLogger().error(`Failed loading module from ${moduleState.configUrl}`, err);
+      getLogger().error(
+        `Failed loading module from ${moduleState.configUrl}`,
+        err,
+      );
     }
   }
 
@@ -139,9 +160,11 @@ export default async function projectSelector(config) {
    */
   async function deselectProject(app, project) {
     if (project.active) {
-      await Promise.all([...project.modules].map((moduleState) => {
-        return unloadModule(app, moduleState);
-      }));
+      await Promise.all(
+        [...project.modules].map((moduleState) => {
+          return unloadModule(app, moduleState);
+        }),
+      );
       project.active = false;
     }
   }
@@ -153,20 +176,30 @@ export default async function projectSelector(config) {
    */
   async function selectProject(app, project) {
     if (!project.active) {
-      await Promise.all([...pluginState.projects].map((p) => {
-        return deselectProject(app, p);
-      }));
-      await Promise.all([...project.modules].map((moduleState) => {
-        return loadModule(app, moduleState);
-      }));
+      await Promise.all(
+        [...pluginState.projects].map((p) => {
+          return deselectProject(app, p);
+        }),
+      );
+      await Promise.all(
+        [...project.modules].map((moduleState) => {
+          return loadModule(app, moduleState);
+        }),
+      );
       project.active = true;
     }
   }
 
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     config: pluginConfig,
     state: pluginState,
     addModule,
@@ -207,15 +240,17 @@ export default async function projectSelector(config) {
       );
       this._destroyAction = destroy;
 
-      pluginConfig.modules.forEach(c => addModule(c));
-      pluginConfig.projects.forEach(p => addProject(p));
-      const projectToSelect = [...pluginState.projects]
-        .find(p => p.name === pluginConfig.selected) ||
-        pluginState.projects[0];
+      pluginConfig.modules.forEach((c) => addModule(c));
+      pluginConfig.projects.forEach((p) => addProject(p));
+      const projectToSelect =
+        [...pluginState.projects].find(
+          (p) => p.name === pluginConfig.selected,
+        ) || pluginState.projects[0];
       selectProject(app, projectToSelect);
-      const modulesToSelect = [...pluginState.modules]
-        .filter(m => pluginConfig.selectedModules.includes(m.configUrl));
-      modulesToSelect.forEach(m => loadModule(app, m));
+      const modulesToSelect = [...pluginState.modules].filter((m) =>
+        pluginConfig.selectedModules.includes(m.configUrl),
+      );
+      modulesToSelect.forEach((m) => loadModule(app, m));
       if (pluginConfig.open) {
         app.windowManager.add(windowComponent, packageJSON.name);
       }

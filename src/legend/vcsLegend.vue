@@ -1,7 +1,5 @@
 <template>
-  <v-sheet
-    class="overflow-y-auto"
-  >
+  <v-sheet class="overflow-y-auto">
     <v-expansion-panels
       accordion
       multiple
@@ -10,7 +8,7 @@
       class="rounded-0"
     >
       <v-expansion-panel
-        v-for="(entry,i) in entries"
+        v-for="(entry, i) in entries"
         :key="i"
         class="px-2"
         @change="entry.open = !entry.open"
@@ -19,7 +17,7 @@
           <template #default="{ open }">
             <div class="d-flex justify-space-between">
               <div class="d-flex align-center">
-                <v-icon class="mr-1" :class="{ 'rotate': !open }">
+                <v-icon class="mr-1" :class="{ rotate: !open }">
                   mdi-chevron-down
                 </v-icon>
                 {{ $t(entry.title) }}
@@ -36,14 +34,14 @@
                   :src="$t(item.src)"
                   class="legend-image"
                   :title="item.tooltip"
-                >
+                />
               </div>
               <div v-else-if="item.type === LegendType.Iframe">
                 <iframe
                   :id="`legendIframe${idx}`"
                   :src="$t(item.src)"
                   scrolling="no"
-                  style="width: 100%; height: 100%;"
+                  style="width: 100%; height: 100%"
                   frameBorder="0"
                   @load="setIframeHeight(`legendIframe${idx}`)"
                 />
@@ -61,7 +59,6 @@
 </template>
 
 <script>
-
   import {
     VExpansionPanels,
     VExpansionPanel,
@@ -115,8 +112,9 @@
        * @type {import("vue").ComputedRef<number[]>}
        */
       const panels = computed(() => {
-        return [...Array(props.entries.length).keys()]
-          .filter((p, idx) => !!props.entries[idx].open);
+        return [...Array(props.entries.length).keys()].filter(
+          (p, idx) => !!props.entries[idx].open,
+        );
       });
 
       return {
@@ -129,11 +127,11 @@
 </script>
 
 <style lang="scss" scoped>
-.legend-image {
-  max-width: 100%;
-  height: auto;
-}
-.rotate {
-  transform: rotate(-90deg);
-}
+  .legend-image {
+    max-width: 100%;
+    height: auto;
+  }
+  .rotate {
+    transform: rotate(-90deg);
+  }
 </style>

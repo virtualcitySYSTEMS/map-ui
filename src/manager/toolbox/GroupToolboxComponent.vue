@@ -9,7 +9,7 @@
     >
       <template #activator="{ on, attrs }">
         <VcsButton
-          class="vcs-toolbox-toogle-button"
+          class="vcs-toolbox-toggle-button"
           width="48"
           :icon="group.icon"
           :tooltip="group.title"
@@ -19,7 +19,7 @@
           v-on="on"
           large
         >
-          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+          <v-icon>{{ open ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
         </VcsButton>
       </template>
 
@@ -33,13 +33,13 @@
         <v-toolbar-items class="w-full">
           <div class="d-flex align-center justify-space-between w-full mx-1">
             <VcsButton
-              v-for="({id, action}) in orderedButtons"
+              v-for="{ id, action } in orderedButtons"
               :key="id"
               :tooltip="action.title"
               :icon="action.icon"
               :active="action.active"
               @click="action.callback($event)"
-              v-bind="{...$attrs}"
+              v-bind="{ ...$attrs }"
               large
             />
           </div>
@@ -49,24 +49,19 @@
   </div>
 </template>
 <style lang="scss">
-.vcs-toolbox-2 {
-  .v-toolbar__content {
-    padding: 0;
+  .vcs-toolbox-2 {
+    .v-toolbar__content {
+      padding: 0;
+    }
   }
-}
 
-.marginToTop {
-  margin-top: 3px;
-}
+  .marginToTop {
+    margin-top: 3px;
+  }
 </style>
 <script>
   import { computed, ref } from 'vue';
-  import {
-    VMenu,
-    VIcon,
-    VToolbar,
-    VToolbarItems,
-  } from 'vuetify/lib';
+  import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/lib';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { getComponentsByOrder } from './toolboxManager.js';
 
@@ -102,10 +97,14 @@
       const buttons = computed(() => {
         const { buttonManager } = props.group;
         const buttonIds = ref(buttonManager.componentIds);
-        return buttonIds.value.map(id => buttonManager.get(id));
+        return buttonIds.value.map((id) => buttonManager.get(id));
       });
-      const orderedButtons = computed(() => getComponentsByOrder(buttons.value));
-      const hasActiveAction = computed(() => orderedButtons.value.some(a => a.action.active));
+      const orderedButtons = computed(() =>
+        getComponentsByOrder(buttons.value),
+      );
+      const hasActiveAction = computed(() =>
+        orderedButtons.value.some((a) => a.action.active),
+      );
 
       /**
        * v-menu auto prop is not working as expected.
@@ -115,7 +114,7 @@
       const nudgeLeft = computed(() => {
         const toolboxBtnWidth = 42 + 8; // with padding
         const menuBtnWidth = 48;
-        return (buttons.value.length * (toolboxBtnWidth / 2)) - (menuBtnWidth / 2);
+        return buttons.value.length * (toolboxBtnWidth / 2) - menuBtnWidth / 2;
       });
 
       return {

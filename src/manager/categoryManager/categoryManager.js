@@ -2,7 +2,10 @@ import { reactive } from 'vue';
 import { moduleIdSymbol, IndexedCollection, VcsEvent } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import { sortByOwner } from '../navbarManager.js';
-import { validateAction, validateActions } from '../../components/lists/VcsActionList.vue';
+import {
+  validateAction,
+  validateActions,
+} from '../../components/lists/VcsActionList.vue';
 
 /**
  * @callback MappingFunction
@@ -61,7 +64,9 @@ import { validateAction, validateActions } from '../../components/lists/VcsActio
 function transformItem(item, category, itemMappings) {
   const keyProperty = category.collection.uniqueKey;
   const listItem = {
-    get id() { return item[keyProperty]; },
+    get id() {
+      return item[keyProperty];
+    },
     title: item?.properties?.title || item[keyProperty],
     actions: [],
   };
@@ -145,18 +150,20 @@ class CategoryManager {
      * @type {function():void}
      * @private
      */
-    this._dynamicModuleIdListener = this._app.dynamicModuleIdChanged.addEventListener((id) => {
-      this._dynamicModuleId = id;
-      this._resetManagedCategories();
-    });
+    this._dynamicModuleIdListener =
+      this._app.dynamicModuleIdChanged.addEventListener((id) => {
+        this._dynamicModuleId = id;
+        this._resetManagedCategories();
+      });
 
     /**
      * @type {function():void}
      * @private
      */
-    this._appCategoriesRemovedListener = this._app.categories.removed.addEventListener((category) => {
-      this._removeCategory(category.name);
-    });
+    this._appCategoriesRemovedListener =
+      this._app.categories.removed.addEventListener((category) => {
+        this._removeCategory(category.name);
+      });
 
     /**
      * @type {string}
@@ -217,8 +224,9 @@ class CategoryManager {
   _handleItemMoved(item, category) {
     const managedCategory = this.get(category.name);
     if (managedCategory) {
-      const index = managedCategory.items
-        .findIndex((elem) => { return elem.id === item[category.collection.uniqueKey]; });
+      const index = managedCategory.items.findIndex((elem) => {
+        return elem.id === item[category.collection.uniqueKey];
+      });
       if (index > -1) {
         const listItem = managedCategory.items[index];
         managedCategory.items.splice(index, 1);
@@ -237,8 +245,9 @@ class CategoryManager {
   _handleItemRemoved(item, category) {
     const managedCategory = this.get(category.name);
     if (managedCategory) {
-      const index = managedCategory.items
-        .findIndex((elem) => { return elem.id === item[category.collection.uniqueKey]; });
+      const index = managedCategory.items.findIndex((elem) => {
+        return elem.id === item[category.collection.uniqueKey];
+      });
       if (index > -1) {
         const listItem = managedCategory.items[index];
         if (listItem.destroy) {
@@ -301,7 +310,9 @@ class CategoryManager {
       throw new Error(`Could not find Category: ${categoryName}`);
     }
 
-    const options = [...this._managedCategoryOptions.get(category.name).values()] // does not have to be sorted, since this is the first owner
+    const options = [
+      ...this._managedCategoryOptions.get(category.name).values(),
+    ] // does not have to be sorted, since this is the first owner
       .reduce(reduceCategoryOptions, { actions: [] });
 
     const listeners = [
@@ -323,22 +334,28 @@ class CategoryManager {
     ];
 
     if (category.collection instanceof IndexedCollection) {
-      listeners.push(category.collection.moved.addEventListener((item) => {
-        if (item[moduleIdSymbol] === this._dynamicModuleId) {
-          this._handleItemMoved(item, category);
-        }
-      }));
+      listeners.push(
+        category.collection.moved.addEventListener((item) => {
+          if (item[moduleIdSymbol] === this._dynamicModuleId) {
+            this._handleItemMoved(item, category);
+          }
+        }),
+      );
     }
 
     /** @type {ManagedCategory} */
     const managedCategory = reactive({
       ...options,
-      get categoryName() { return category.name; },
+      get categoryName() {
+        return category.name;
+      },
       selection: [],
       title: category.title,
       items: [],
       destroy() {
-        listeners.forEach((cb) => { cb(); });
+        listeners.forEach((cb) => {
+          cb();
+        });
         this.items.forEach((item) => {
           if (item.destroy) {
             item.destroy();
@@ -365,9 +382,13 @@ class CategoryManager {
     if (this._managedCategoryOptions.has(categoryName)) {
       const managedCategory = this.get(categoryName);
       if (managedCategory) {
-        const pluginNames = [...this._app.plugins].map(p => p.name);
-        const options = [...this._managedCategoryOptions.get(categoryName).entries()]
-          .sort(([ownerA], [ownerB]) => sortByOwner(ownerA, ownerB, pluginNames))
+        const pluginNames = [...this._app.plugins].map((p) => p.name);
+        const options = [
+          ...this._managedCategoryOptions.get(categoryName).entries(),
+        ]
+          .sort(([ownerA], [ownerB]) =>
+            sortByOwner(ownerA, ownerB, pluginNames),
+          )
           .map(([, value]) => value)
           .reduce(reduceCategoryOptions, { actions: [] });
         Object.assign(managedCategory, options);
@@ -404,7 +425,10 @@ class CategoryManager {
     check(owner, [String, Symbol]);
 
     const { categoryName } = managedCategoryOptions;
-    if (managedCategoryOptions.actions && !validateActions(managedCategoryOptions.actions)) {
+    if (
+      managedCategoryOptions.actions &&
+      !validateActions(managedCategoryOptions.actions)
+    ) {
       throw new Error('Invalid actions Array');
     }
     if (!this._app.categories.hasKey(categoryName)) {
@@ -412,7 +436,9 @@ class CategoryManager {
     }
 
     if (this._managedCategoryOptions.get(categoryName)?.has(owner)) {
-      throw new Error(`Category has already been added by this owner: ${categoryName}, ${owner}`);
+      throw new Error(
+        `Category has already been added by this owner: ${categoryName}, ${owner}`,
+      );
     }
 
     /** @type {ManagedCategoryOptions} */
@@ -489,10 +515,17 @@ class CategoryManager {
     if (categoryNames.length === 0) {
       throw new Error('Provide at least one categoryName');
     }
-    if (this._itemMappings.find((itemMapping) => {
-      return itemMapping.mappingFunction === mappingFunction && itemMapping.owner === owner;
-    })) {
-      throw new Error('Could not add MappingFunction, the MappingFunction is already under management');
+    if (
+      this._itemMappings.find((itemMapping) => {
+        return (
+          itemMapping.mappingFunction === mappingFunction &&
+          itemMapping.owner === owner
+        );
+      })
+    ) {
+      throw new Error(
+        'Could not add MappingFunction, the MappingFunction is already under management',
+      );
     }
     /** @type {ItemMapping} */
     const itemMapping = {
@@ -519,7 +552,10 @@ class CategoryManager {
     check(owner, [String, Symbol]);
     const affectedCategories = [];
     this._itemMappings = this._itemMappings.filter((itemMapping) => {
-      if (itemMapping.mappingFunction === mappingFunction && itemMapping.owner === owner) {
+      if (
+        itemMapping.mappingFunction === mappingFunction &&
+        itemMapping.owner === owner
+      ) {
         affectedCategories.push(...itemMapping.categoryNames);
         return false;
       }
@@ -552,10 +588,9 @@ class CategoryManager {
         this._removeCategory(categoryName);
       }
     });
-    this._itemMappings = this._itemMappings
-      .filter((itemMapping) => {
-        return itemMapping.owner !== owner;
-      });
+    this._itemMappings = this._itemMappings.filter((itemMapping) => {
+      return itemMapping.owner !== owner;
+    });
     this._resetManagedCategories();
   }
 
@@ -563,8 +598,9 @@ class CategoryManager {
    * Clears the manager of all added categories and item mappings
    */
   clear() {
-    [...this.componentIds]
-      .forEach((categoryName) => { this._removeCategory(categoryName); });
+    [...this.componentIds].forEach((categoryName) => {
+      this._removeCategory(categoryName);
+    });
     this._itemMappings = [];
   }
 

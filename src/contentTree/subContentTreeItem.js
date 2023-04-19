@@ -1,4 +1,6 @@
-import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
+import ContentTreeItem, {
+  contentTreeClassRegistry,
+} from './contentTreeItem.js';
 
 /**
  * @type {symbol}
@@ -13,7 +15,9 @@ export const subTreeSymbol = Symbol('SubTree');
  * @extends {ContentTreeItem}
  */
 class SubContentTreeItem extends ContentTreeItem {
-  static get className() { return 'SubContentTreeItem'; }
+  static get className() {
+    return 'SubContentTreeItem';
+  }
 
   /**
    * @param {ContentTreeItemOptions} options
@@ -23,7 +27,9 @@ class SubContentTreeItem extends ContentTreeItem {
     super(options, app);
 
     if (!this.name || this.name.split('.').length > 1) {
-      throw new Error(`Sub trees may only be defined on top level. Tree ${this.name} is nested or undefined`);
+      throw new Error(
+        `Sub trees may only be defined on top level. Tree ${this.name} is nested or undefined`,
+      );
     }
     this.clickable = false;
   }
@@ -39,4 +45,7 @@ class SubContentTreeItem extends ContentTreeItem {
 }
 
 export default SubContentTreeItem;
-contentTreeClassRegistry.registerClass(SubContentTreeItem.className, SubContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  SubContentTreeItem.className,
+  SubContentTreeItem,
+);

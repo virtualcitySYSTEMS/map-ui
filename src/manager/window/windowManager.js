@@ -20,7 +20,6 @@ export const WindowSlot = {
   DETACHED: 'detached',
 };
 
-
 /**
  * @typedef {Object} WindowPositionOptions
  * @property {string|number|undefined} left Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
@@ -84,7 +83,7 @@ export const WindowPositions = {
  * @returns {boolean}
  */
 export function compareWindowPositions(pos1, pos2) {
-  return !(Object.keys(pos1).some(key => pos1[key] !== pos2[key]));
+  return !Object.keys(pos1).some((key) => pos1[key] !== pos2[key]);
 }
 
 /**
@@ -93,8 +92,11 @@ export function compareWindowPositions(pos1, pos2) {
  * @returns {boolean}
  */
 export function isSlotPosition(windowPosition) {
-  return [WindowPositions.TOP_LEFT, WindowPositions.TOP_LEFT2, WindowPositions.TOP_RIGHT]
-    .some(s => compareWindowPositions(s, windowPosition));
+  return [
+    WindowPositions.TOP_LEFT,
+    WindowPositions.TOP_LEFT2,
+    WindowPositions.TOP_RIGHT,
+  ].some((s) => compareWindowPositions(s, windowPosition));
 }
 
 /**
@@ -157,7 +159,10 @@ export function posToPixel(pos) {
  * @param {WindowPosition=} windowPosition
  * @returns {WindowPosition}
  */
-export function windowPositionFromOptions(windowPositionOptions, windowPosition = {}) {
+export function windowPositionFromOptions(
+  windowPositionOptions,
+  windowPosition = {},
+) {
   let left = posToPixel(windowPositionOptions.left) || 'unset';
   const right = posToPixel(windowPositionOptions.right) || 'unset';
   let top = posToPixel(windowPositionOptions.top) || 'unset';
@@ -208,14 +213,20 @@ export function windowPositionFromOptions(windowPositionOptions, windowPosition 
  * @param {WindowPositionOptions} windowPositionOptions
  */
 function setWindowPosition(windowComponent, windowPositionOptions) {
-  const windowPosition = windowPositionFromOptions(windowPositionOptions, windowComponent.position);
+  const windowPosition = windowPositionFromOptions(
+    windowPositionOptions,
+    windowComponent.position,
+  );
   // not one of the default Positions, so we also have to DETACH the windowState.
   if (!isSlotPosition(windowPosition)) {
     windowComponent.slot.value = WindowSlot.DETACHED;
   }
   // check dockable state
-  const initialWindowPosition = windowPositionFromOptions(windowComponent.initialPositionOptions);
-  windowComponent.state.dockable = windowComponent.slot.value === WindowSlot.DETACHED &&
+  const initialWindowPosition = windowPositionFromOptions(
+    windowComponent.initialPositionOptions,
+  );
+  windowComponent.state.dockable =
+    windowComponent.slot.value === WindowSlot.DETACHED &&
     !compareWindowPositions(windowPosition, initialWindowPosition);
 }
 
@@ -313,15 +324,15 @@ class WindowManager {
       const staticWindow = this._findWindowBySlot(WindowSlot.STATIC);
       const dynamicWindowLeft = this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT);
       if (staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(
-          dynamicWindowLeft.id,
-          { ...dynamicWindowLeft.position, ...WindowPositions.TOP_LEFT2 },
-        );
+        this.setWindowPositionOptions(dynamicWindowLeft.id, {
+          ...dynamicWindowLeft.position,
+          ...WindowPositions.TOP_LEFT2,
+        });
       } else if (!staticWindow && dynamicWindowLeft) {
-        this.setWindowPositionOptions(
-          dynamicWindowLeft.id,
-          { ...dynamicWindowLeft.position, ...WindowPositions.TOP_LEFT },
-        );
+        this.setWindowPositionOptions(dynamicWindowLeft.id, {
+          ...dynamicWindowLeft.position,
+          ...WindowPositions.TOP_LEFT,
+        });
       }
     }
   }
@@ -332,7 +343,9 @@ class WindowManager {
    * @private
    */
   _findWindowBySlot(slot) {
-    return Array.from(this._windowComponents.values()).find(item => item.slot.value === slot);
+    return Array.from(this._windowComponents.values()).find(
+      (item) => item.slot.value === slot,
+    );
   }
 
   /**
@@ -387,9 +400,15 @@ class WindowManager {
    * @private
    */
   _cachePosition(windowComponent) {
-    const initialWindowPosition = windowPositionFromOptions(windowComponent.initialPositionOptions);
-    if (!compareWindowPositions(initialWindowPosition, windowComponent.position)) {
-      this._windowPositionsCache.set(windowComponent.id, { ...windowComponent.position });
+    const initialWindowPosition = windowPositionFromOptions(
+      windowComponent.initialPositionOptions,
+    );
+    if (
+      !compareWindowPositions(initialWindowPosition, windowComponent.position)
+    ) {
+      this._windowPositionsCache.set(windowComponent.id, {
+        ...windowComponent.position,
+      });
     }
   }
 
@@ -422,22 +441,26 @@ class WindowManager {
     check(owner, [String, vcsAppSymbol]);
 
     if (windowComponentOptions.id && this.has(windowComponentOptions.id)) {
-      throw new Error(`A window with id ${windowComponentOptions.id} has already been registered.`);
+      throw new Error(
+        `A window with id ${windowComponentOptions.id} has already been registered.`,
+      );
     }
     const id = windowComponentOptions.id || uuidv4();
-    const slotOption = windowComponentOptions.slot?.value || windowComponentOptions.slot;
+    const slotOption =
+      windowComponentOptions.slot?.value || windowComponentOptions.slot;
     const slot = parseEnumValue(slotOption, WindowSlot, WindowSlot.DETACHED);
-    const windowPositionOptions = this._getPositionOptionsForSlot(slot, windowComponentOptions.position);
+    const windowPositionOptions = this._getPositionOptionsForSlot(
+      slot,
+      windowComponentOptions.position,
+    );
     const windowPosition = windowPositionFromOptions(windowPositionOptions);
 
     const slotRef = ref(slot);
-    const {
-      component, headerComponent,
-    } = windowComponentOptions;
+    const { component, headerComponent } = windowComponentOptions;
     const styles = { ...windowComponentOptions?.state?.styles };
-    const classes = Array.isArray(windowComponentOptions?.state?.classes) ?
-      [...(windowComponentOptions?.state?.classes ?? [])] :
-      { ...windowComponentOptions?.state?.classes };
+    const classes = Array.isArray(windowComponentOptions?.state?.classes)
+      ? [...(windowComponentOptions?.state?.classes ?? [])]
+      : { ...windowComponentOptions?.state?.classes };
 
     const state = reactive({
       id,
@@ -447,7 +470,8 @@ class WindowManager {
       headerTitle: windowComponentOptions?.state?.headerTitle,
       headerIcon: windowComponentOptions?.state?.headerIcon,
       headerActions: windowComponentOptions?.state?.headerActions,
-      headerActionsOverflow: windowComponentOptions?.state?.headerActionsOverflow,
+      headerActionsOverflow:
+        windowComponentOptions?.state?.headerActionsOverflow,
       dockable: false,
       infoUrl: windowComponentOptions?.state?.infoUrl,
       classes,
@@ -537,7 +561,10 @@ class WindowManager {
     }
     this._removeWindowAtSlot(component.initialSlot);
     component.slot.value = component.initialSlot;
-    const dockedPosition = this._getPositionOptionsForSlot(component.initialSlot, component.initialPositionOptions);
+    const dockedPosition = this._getPositionOptionsForSlot(
+      component.initialSlot,
+      component.initialPositionOptions,
+    );
     this.setWindowPositionOptions(id, dockedPosition);
     this._windowPositionsCache.delete(id);
   }
@@ -561,7 +588,9 @@ class WindowManager {
    */
   clear() {
     const componentIds = [...this.componentIds];
-    componentIds.forEach((id) => { this.remove(id); });
+    componentIds.forEach((id) => {
+      this.remove(id);
+    });
   }
 
   /**

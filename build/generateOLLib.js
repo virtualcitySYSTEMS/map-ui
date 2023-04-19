@@ -19,13 +19,13 @@ function parseOutput(output) {
   try {
     info = JSON.parse(String(output));
   } catch (err) {
-    throw new Error(`Failed to parse output as JSON: ${ output}`);
+    throw new Error(`Failed to parse output as JSON: ${output}`);
   }
   if (!Array.isArray(info.symbols)) {
-    throw new Error(`Expected symbols array: ${ output}`);
+    throw new Error(`Expected symbols array: ${output}`);
   }
   if (!Array.isArray(info.defines)) {
-    throw new Error(`Expected defines array: ${ output}`);
+    throw new Error(`Expected defines array: ${output}`);
   }
 
   return info;
@@ -41,9 +41,7 @@ function getBinaryPath(binaryName) {
 
   const expectedPaths = [
     path.join('node_modules', '.bin', binary),
-    path.resolve(
-      path.join('node_modules', 'jsdoc', '.bin', binary),
-    ),
+    path.resolve(path.join('node_modules', 'jsdoc', '.bin', binary)),
   ];
 
   for (let i = 0; i < expectedPaths.length; i++) {
@@ -54,7 +52,7 @@ function getBinaryPath(binaryName) {
   }
 
   throw Error(
-    `JsDoc binary was not found in any of the expected paths: ${ expectedPaths}`,
+    `JsDoc binary was not found in any of the expected paths: ${expectedPaths}`,
   );
 }
 
@@ -64,11 +62,7 @@ function getBinaryPath(binaryName) {
  *     If provided with an empty list of paths, resolves with null.
  */
 function spawnJSDoc() {
-  const jsdocConfig = path.join(
-    'build',
-    'info',
-    'conf.json',
-  );
+  const jsdocConfig = path.join('build', 'info', 'conf.json');
 
   return new Promise((resolve, reject) => {
     let output = '';
@@ -108,7 +102,7 @@ function spawnJSDoc() {
 async function getSymbols() {
   const info = await spawnJSDoc();
   return info.symbols.filter(
-    symbol => symbol.kind !== 'member' || symbol.exports,
+    (symbol) => symbol.kind !== 'member' || symbol.exports,
   );
 }
 
@@ -131,7 +125,10 @@ function getImport(symbol, member) {
     from = defaultExport[0].replace(/^module:/, '');
     importName = 'default';
     exportName = from.replace(/[./]+/g, '$');
-  } else if (namedExport.length > 1 && (member || (symbol.exports && symbol.exports !== 'default'))) {
+  } else if (
+    namedExport.length > 1 &&
+    (member || (symbol.exports && symbol.exports !== 'default'))
+  ) {
     from = namedExport[0].replace(/^module:/, '');
     importName = member || symbol.exports;
     exportName = `${from.replace(/[./]+/g, '$')}$${importName}`;
@@ -178,8 +175,8 @@ function generateExports(symbols) {
     }
   });
   const source = Object.keys(imports)
-    .map(line => line.replace('from \'ol/', 'from \'ol/'))
-    .map(line => line.replace('from \'ol\'', 'from \'ol/index.js\''))
+    .map((line) => line.replace("from 'ol/", "from 'ol/"))
+    .map((line) => line.replace("from 'ol'", "from 'ol/index.js'"))
     .join('\n');
   return `${source}\nexport * from 'ol/index.js';\n`;
 }

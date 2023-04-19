@@ -8,13 +8,21 @@ export default function createExampleActions() {
     reactive({
       name: 'denseSelection',
       title: 'change row height',
-      icon: dense.value ? 'mdi-arrow-split-horizontal' : 'mdi-arrow-collapse-vertical',
+      icon: dense.value
+        ? 'mdi-arrow-split-horizontal'
+        : 'mdi-arrow-collapse-vertical',
       callback() {
         dense.value = !dense.value;
-        this.icon = dense.value ? 'mdi-arrow-split-horizontal' : 'mdi-arrow-collapse-vertical';
+        this.icon = dense.value
+          ? 'mdi-arrow-split-horizontal'
+          : 'mdi-arrow-collapse-vertical';
       },
     }),
-    { name: 'noIcon', title: 'another action without icon', callback: () => {} },
+    {
+      name: 'noIcon',
+      title: 'another action without icon',
+      callback: () => {},
+    },
     reactive({
       name: 'toggleSection',
       title: 'toggle section',
@@ -37,7 +45,9 @@ export default function createExampleActions() {
     {
       name: 'alert',
       icon: 'mdi-message-text',
-      callback() { alert('alert'); },
+      callback() {
+        alert('alert');
+      },
     },
   ];
 

@@ -11,7 +11,10 @@
     "build-preview": "node build/buildPreview.js",
     "preview": "vite preview",
     "build": "node build/build.js",
-    "lint": "eslint \"{src,tests,build}/**/*.{js,mjs,vue}\" index.js",
+    "lint:js": "eslint . --ext .vue,.js,.cjs,.mjs,.ts,.cts,.mts",
+    "lint:prettier": "prettier --check .",
+    "lint": "npm run lint:js && npm run lint:prettier",
+    "format": "prettier --write --list-different . && npm run lint:js -- --fix",
     "prepack": "node build/build.js",
     "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force"
   },
@@ -49,7 +52,7 @@
   },
   "devDependencies": {
     "@vcmap/rollup-plugin-vcs-ol": "^1.0.2",
-    "@vcsuite/eslint-config": "^2.1.1",
+    "@vcsuite/eslint-config": "^3.0.3",
     "@vitest/coverage-c8": "^0.24.3",
     "@vue/test-utils": "^1.3.3",
     "eslint": "^8.9.0",
@@ -82,9 +85,6 @@
   },
   "eslintConfig": {
     "root": true,
-    "env": {
-      "node": true
-    },
     "extends": [
       "@vcsuite/eslint-config/vue"
     ],
@@ -107,6 +107,14 @@
       "jsdoc/check-tag-names": "off"
     }
   },
+  "eslintIgnore": [
+    "dist",
+    "exampleData",
+    "lib",
+    "coverage",
+    "docs"
+  ],
+  "prettier": "@vcsuite/eslint-config/prettier.js",
   "browserslist": [
     "last 2 Chrome versions",
     "not Chrome < 97",

@@ -5,7 +5,6 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 import de from '../i18n/de.js';
 import en from '../i18n/en.js';
 
-
 Vue.use(VueI18n);
 
 /**
@@ -64,7 +63,8 @@ export function setupI18n(app, i18n) {
     }),
   ];
   return function tearDownI18nSetup() {
-    destroyFunctions.forEach((destroy) => { destroy(); });
+    destroyFunctions.forEach((destroy) => {
+      destroy();
+    });
   };
 }
-

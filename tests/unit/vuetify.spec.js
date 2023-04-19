@@ -1,9 +1,9 @@
+import { describe, it, expect } from 'vitest';
 import {
-  describe,
-  it,
-  expect,
-} from 'vitest';
-import { vuetify, defaultPrimaryColor, getColorByKey } from '../../src/vuePlugins/vuetify.js';
+  vuetify,
+  defaultPrimaryColor,
+  getColorByKey,
+} from '../../src/vuePlugins/vuetify.js';
 
 /**
  * copied from browser
@@ -33,8 +33,8 @@ const cssColors = {
 
 const variations = [
   'base',
-  ...[1, 2, 3, 4, 5].map(idx => `lighten${idx}`),
-  ...[1, 2, 3, 4].map(idx => `darken${idx}`),
+  ...[1, 2, 3, 4, 5].map((idx) => `lighten${idx}`),
+  ...[1, 2, 3, 4].map((idx) => `darken${idx}`),
 ];
 
 describe('vuetify', () => {
@@ -50,7 +50,9 @@ describe('vuetify', () => {
       });
       it('should return primary variations', () => {
         variations.forEach((v) => {
-          expect(getColorByKey('primary', v).toUpperCase()).to.equal(cssColors[`--v-primary-${v}`].toUpperCase());
+          expect(getColorByKey('primary', v).toUpperCase()).to.equal(
+            cssColors[`--v-primary-${v}`].toUpperCase(),
+          );
         });
       });
     });
@@ -62,7 +64,9 @@ describe('vuetify', () => {
       it('should return base variations', () => {
         variations.forEach((v) => {
           console.log(v);
-          expect(getColorByKey('base', v).toUpperCase()).to.equal(cssColors[`--v-base-${v}`].toUpperCase());
+          expect(getColorByKey('base', v).toUpperCase()).to.equal(
+            cssColors[`--v-base-${v}`].toUpperCase(),
+          );
         });
       });
     });

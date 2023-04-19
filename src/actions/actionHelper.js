@@ -1,7 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { check } from '@vcsuite/check';
 import {
-  Collection, Extent, MapCollection, mercatorProjection, Viewpoint,
+  Collection,
+  Extent,
+  MapCollection,
+  mercatorProjection,
+  Viewpoint,
 } from '@vcmap/core';
 import { Feature } from 'ol';
 import { reactive, ref } from 'vue';
@@ -55,7 +59,12 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
  * @param {string|symbol} owner
  * @returns {{action: VcsAction, destroy: Function}}
  */
-export function createToggleAction(actionOptions, windowComponent, windowManager, owner) {
+export function createToggleAction(
+  actionOptions,
+  windowComponent,
+  windowManager,
+  owner,
+) {
   check(actionOptions, {
     name: String,
     icon: [undefined, String],
@@ -90,7 +99,11 @@ export function createToggleAction(actionOptions, windowComponent, windowManager
     }),
   ];
 
-  const destroy = () => { listeners.forEach((cb) => { cb(); }); };
+  const destroy = () => {
+    listeners.forEach((cb) => {
+      cb();
+    });
+  };
   return { action, destroy };
 }
 
@@ -140,7 +153,9 @@ export function createSearchButtonAction(app) {
   ];
   const destroy = () => {
     destroyAction();
-    listeners.forEach((cb) => { cb(); });
+    listeners.forEach((cb) => {
+      cb();
+    });
   };
 
   return { searchAction, destroy };
@@ -153,7 +168,11 @@ export function createSearchButtonAction(app) {
  * @param {WindowManager}  windowManager
  * @returns {(function(): void)|*}
  */
-export function createOverviewMapAction(overviewMap, windowComponent, windowManager) {
+export function createOverviewMapAction(
+  overviewMap,
+  windowComponent,
+  windowManager,
+) {
   const { action, destroy } = createToggleAction(
     {
       name: 'overviewMapToggle',
@@ -180,7 +199,9 @@ export function createOverviewMapAction(overviewMap, windowComponent, windowMana
 
   const destroyAction = () => {
     destroy();
-    listeners.forEach((cb) => { cb(); });
+    listeners.forEach((cb) => {
+      cb();
+    });
   };
   return { action, destroy: destroyAction };
 }
@@ -224,9 +245,13 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
     callback(event) {
       if (!this.active) {
         this.active = true;
-        const { left, top, width } = event.currentTarget.getBoundingClientRect();
+        const { left, top, width } =
+          event.currentTarget.getBoundingClientRect();
         modalActivator = event.currentTarget;
-        const position = { ...getWindowPositionOptions(left + width, top, app.maps.target), ...windowPositionOptions };
+        const position = {
+          ...getWindowPositionOptions(left + width, top, app.maps.target),
+          ...windowPositionOptions,
+        };
         const state = { ...modalComponent?.state, hideHeader: true };
         app.windowManager.add({ position, ...component, id, state }, owner);
         document.addEventListener('mousedown', handleMouseDown);
@@ -247,7 +272,11 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
     }),
   ];
 
-  const destroy = () => { listeners.forEach((cb) => { cb(); }); };
+  const destroy = () => {
+    listeners.forEach((cb) => {
+      cb();
+    });
+  };
   return { action, destroy };
 }
 
@@ -283,7 +312,12 @@ export function createLinkAction(actionOptions, url) {
  * @param {import("@vcmap/core").MapCollection} mapCollection
  * @returns {VcsAction}
  */
-export function createGoToViewpointAction(actionOptions, viewpoint, viewpointCollection, mapCollection) {
+export function createGoToViewpointAction(
+  actionOptions,
+  viewpoint,
+  viewpointCollection,
+  mapCollection,
+) {
   check(actionOptions, {
     name: String,
     icon: [undefined, String],
@@ -332,7 +366,11 @@ export function getViewpointFromFeature(feature) {
  * @param {import("@vcmap/core").MapCollection} mapCollection
  * @returns {VcsAction|null} returns null if the feature does not have a geometry with a valid extent
  */
-export function createZoomToFeatureAction(actionOptions, feature, mapCollection) {
+export function createZoomToFeatureAction(
+  actionOptions,
+  feature,
+  mapCollection,
+) {
   check(actionOptions, {
     name: String,
     icon: [undefined, String],

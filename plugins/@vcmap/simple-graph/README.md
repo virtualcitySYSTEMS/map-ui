@@ -2,10 +2,9 @@
 
 This is a plugin adding a new Feature Info View using {@link https://vuetifyjs.com/en/api/v-sparkline/#props|vuetify v-sparkline }.
 
-| View class                              | VueComponent                                       | description                                              |
-|-----------------------------------------|----------------------------------------------------|----------------------------------------------------------|
+| View class                            | VueComponent                                     | description                                              |
+| ------------------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
 | [SimpleGraphView](simpleGraphView.js) | [SimpleGraphComponent](SimpleGraphComponent.vue) | A simple graph view including trend lines and bar graph. |
-
 
 ## configuration
 
@@ -15,7 +14,7 @@ Use `{WindowComponentOptions} window` to define the position and size of the gra
 The graph can be configured as follows:
 
 | Property | Type                     | default   | Description                                          |
-|----------|--------------------------|-----------|------------------------------------------------------|
+| -------- | ------------------------ | --------- | ---------------------------------------------------- |
 | labels   | string[] &#124; number[] | []        | optional array of strings labeling all data points   |
 | graph    | string                   | 'trend'   | Choose between a trendline or bars                   |
 | color    | string                   | 'primary' | optional color of the sparkline of the graph         |
@@ -30,12 +29,33 @@ The graph can be configured as follows:
   "type": "SimpleGraphView",
   "name": "graphBar",
   "attributeKeys": [
-    "globalRadRoofsMonth_01", "globalRadRoofsMonth_02", "globalRadRoofsMonth_03",
-    "globalRadRoofsMonth_04", "globalRadRoofsMonth_05", "globalRadRoofsMonth_06",
-    "globalRadRoofsMonth_07", "globalRadRoofsMonth_08", "globalRadRoofsMonth_09",
-    "globalRadRoofsMonth_10", "globalRadRoofsMonth_11", "globalRadRoofsMonth_12"
+    "globalRadRoofsMonth_01",
+    "globalRadRoofsMonth_02",
+    "globalRadRoofsMonth_03",
+    "globalRadRoofsMonth_04",
+    "globalRadRoofsMonth_05",
+    "globalRadRoofsMonth_06",
+    "globalRadRoofsMonth_07",
+    "globalRadRoofsMonth_08",
+    "globalRadRoofsMonth_09",
+    "globalRadRoofsMonth_10",
+    "globalRadRoofsMonth_11",
+    "globalRadRoofsMonth_12"
   ],
-  "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "labels": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
   "color": "secondary",
   "graph": "bar",
   "gradient": ["red", "orange", "yellow"],

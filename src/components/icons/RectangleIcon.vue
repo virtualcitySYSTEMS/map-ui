@@ -1,9 +1,29 @@
 <!-- eslint-disable max-len -->
 <template>
-  <svg id="icon_24_rectangle" xmlns="http://www.w3.org/2000/svg" width="24" height="24.008" viewBox="0 0 24 24.008">
-    <g id="streamline-icon-vectors-anchor-square-1-alternate_24x24" data-name="streamline-icon-vectors-anchor-square-1-alternate@24x24">
-      <path id="Path_23" data-name="Path 23" d="M20.25,7.5h1.5a.25.25,0,0,1,.25.25v8.5a.25.25,0,0,1-.25.25h-1.5a.25.25,0,0,1-.25-.25V7.75A.25.25,0,0,1,20.25,7.5ZM7.75,2h8.5a.25.25,0,0,1,.25.25v1.5a.25.25,0,0,1-.25.25H7.75a.25.25,0,0,1-.25-.25V2.25A.25.25,0,0,1,7.75,2ZM2.25,7.5h1.5A.25.25,0,0,1,4,7.75v8.5a.25.25,0,0,1-.25.25H2.25A.25.25,0,0,1,2,16.25V7.75A.25.25,0,0,1,2.25,7.5ZM7.75,20h8.5a.25.25,0,0,1,.25.25v1.5a.25.25,0,0,1-.25.25H7.75a.25.25,0,0,1-.25-.25v-1.5A.25.25,0,0,1,7.75,20ZM21,0a3,3,0,1,1-3,3A3,3,0,0,1,21,0ZM3,0A3,3,0,1,1,0,3,3,3,0,0,1,3,0ZM21,18a3,3,0,1,1-3,3A3,3,0,0,1,21,18ZM3,18a3,3,0,1,1-3,3A3,3,0,0,1,3,18Z" fill="currentColor" />
+  <svg
+    id="icon_24_rectangle"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24.008"
+    viewBox="0 0 24 24.008"
+  >
+    <g
+      id="streamline-icon-vectors-anchor-square-1-alternate_24x24"
+      data-name="streamline-icon-vectors-anchor-square-1-alternate@24x24"
+    >
+      <path
+        id="Path_23"
+        data-name="Path 23"
+        d="M20.25,7.5h1.5a.25.25,0,0,1,.25.25v8.5a.25.25,0,0,1-.25.25h-1.5a.25.25,0,0,1-.25-.25V7.75A.25.25,0,0,1,20.25,7.5ZM7.75,2h8.5a.25.25,0,0,1,.25.25v1.5a.25.25,0,0,1-.25.25H7.75a.25.25,0,0,1-.25-.25V2.25A.25.25,0,0,1,7.75,2ZM2.25,7.5h1.5A.25.25,0,0,1,4,7.75v8.5a.25.25,0,0,1-.25.25H2.25A.25.25,0,0,1,2,16.25V7.75A.25.25,0,0,1,2.25,7.5ZM7.75,20h8.5a.25.25,0,0,1,.25.25v1.5a.25.25,0,0,1-.25.25H7.75a.25.25,0,0,1-.25-.25v-1.5A.25.25,0,0,1,7.75,20ZM21,0a3,3,0,1,1-3,3A3,3,0,0,1,21,0ZM3,0A3,3,0,1,1,0,3,3,3,0,0,1,3,0ZM21,18a3,3,0,1,1-3,3A3,3,0,0,1,21,18ZM3,18a3,3,0,1,1-3,3A3,3,0,0,1,3,18Z"
+        fill="currentColor"
+      />
     </g>
-    <rect id="size" width="24" height="24" transform="translate(0 0.008)" fill="none" />
+    <rect
+      id="size"
+      width="24"
+      height="24"
+      transform="translate(0 0.008)"
+      fill="none"
+    />
   </svg>
 </template>

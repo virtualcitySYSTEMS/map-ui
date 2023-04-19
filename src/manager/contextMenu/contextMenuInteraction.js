@@ -1,4 +1,9 @@
-import { AbstractInteraction, EventType, ModificationKeyType, PointerKeyType } from '@vcmap/core';
+import {
+  AbstractInteraction,
+  EventType,
+  ModificationKeyType,
+  PointerKeyType,
+} from '@vcmap/core';
 
 /**
  * Class to call a callback on right click and a callback on any other click

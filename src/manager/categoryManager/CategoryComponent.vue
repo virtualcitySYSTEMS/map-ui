@@ -1,13 +1,10 @@
 <template>
-  <v-expansion-panel
-    class="px-2"
-    @change="active = !active"
-  >
+  <v-expansion-panel class="px-2" @change="active = !active">
     <v-expansion-panel-header hide-actions>
       <template #default="{ open }">
         <div class="d-flex justify-space-between">
           <div class="d-flex align-center">
-            <v-icon class="mr-1" :class="{ 'rotate': !open }">
+            <v-icon class="mr-1" :class="{ rotate: !open }">
               mdi-chevron-down
             </v-icon>
             {{ $t(category.title) }}
@@ -44,7 +41,8 @@
 <script>
   import { computed, inject, ref } from 'vue';
   import {
-    VIcon, VExpansionPanel,
+    VIcon,
+    VExpansionPanel,
     VExpansionPanelHeader,
     VExpansionPanelContent,
     VSheet,
@@ -69,23 +67,24 @@
       VIcon,
     },
     props: {
-      /** @type {ManagedCategory} */
       category: {
         type: Object,
         required: true,
       },
     },
-    setup({ category }) {
+    setup(props) {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
-      const windowId = `${category.id}-category-list`;
+      const windowId = `${props.category.id}-category-list`;
       const active = ref(false);
 
       const selection = computed({
-        get() { return category.selection; },
+        get() {
+          return props.category.selection;
+        },
         set(value) {
           // eslint-disable-next-line vue/no-mutating-props
-          category.selection = value;
+          props.category.selection = value;
         },
       });
 
@@ -98,18 +97,21 @@
               app.windowManager.bringWindowToTop(windowId);
             }, 0);
           } else {
-            app.windowManager.add({
-              id: windowId,
-              component: CategoryComponentList,
-              props: {
-                category,
-                windowId,
+            app.windowManager.add(
+              {
+                id: windowId,
+                component: CategoryComponentList,
+                props: {
+                  category: props.category,
+                  windowId,
+                },
+                provides: {
+                  selection,
+                },
+                slot: WindowSlot.DYNAMIC_LEFT,
               },
-              provides: {
-                selection,
-              },
-              slot: WindowSlot.DYNAMIC_LEFT,
-            }, vcsAppSymbol);
+              vcsAppSymbol,
+            );
           }
         },
       };
@@ -118,7 +120,7 @@
 </script>
 
 <style lang="scss" scoped>
-.rotate {
-  transform: rotate(-90deg);
-}
+  .rotate {
+    transform: rotate(-90deg);
+  }
 </style>

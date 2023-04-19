@@ -1,6 +1,10 @@
 <template>
   <v-list class="px-1">
-    <v-list-item v-for="({key, title, attributions}) in entries" :key="key" class="px-1">
+    <v-list-item
+      v-for="{ key, title, attributions } in entries"
+      :key="key"
+      class="px-1"
+    >
       <v-list-item-content>
         <v-list-item-title>{{ $t(title) }}</v-list-item-title>
         <v-list-item-subtitle
@@ -8,10 +12,7 @@
           :key="attribution.provider"
           :title="`${$t(attribution.provider)} ${attribution.year}`"
         >
-          <a
-            :href="attribution.url"
-            target="_blank"
-          >
+          <a :href="attribution.url" target="_blank">
             {{ $t(attribution.provider) }} {{ attribution.year }}
           </a>
         </v-list-item-subtitle>
@@ -21,16 +22,14 @@
 </template>
 
 <style lang="scss" scoped>
-
   ::v-deep {
     a:before {
-      content: '\00a9\00a0'
+      content: '\00a9\00a0';
     }
   }
-
 </style>
 
-<script >
+<script>
   import {
     VList,
     VListItem,

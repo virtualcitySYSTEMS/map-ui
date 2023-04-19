@@ -32,7 +32,11 @@ exports.publish = function publish(data) {
           }
         }
         if (this.kind === 'class') {
-          if (!('extends' in this) || typeof this.api === 'boolean' || this.exports) {
+          if (
+            !('extends' in this) ||
+            typeof this.api === 'boolean' ||
+            this.exports
+          ) {
             classes[this.longname] = this;
             return true;
           }
@@ -68,7 +72,7 @@ exports.publish = function publish(data) {
         assert.strictEqual(
           doc.inherited,
           true,
-          `Unexpected export on private class: ${ doc.longname}`,
+          `Unexpected export on private class: ${doc.longname}`,
         );
         include = false;
       }
@@ -83,7 +87,10 @@ exports.publish = function publish(data) {
           path: path.join(doc.meta.path, doc.meta.filename),
           default: doc.define.default,
         });
-      } else if (doc.kind === 'typedef' || (doc.isEnum === true && !doc.exports)) {
+      } else if (
+        doc.kind === 'typedef' ||
+        (doc.isEnum === true && !doc.exports)
+      ) {
         typedefs.push({
           name: doc.longname,
           types: getTypes(doc.type.names),
@@ -144,7 +151,11 @@ exports.publish = function publish(data) {
         }
 
         // eslint-disable-next-line no-nested-ternary
-        const target = isExterns ? externs : (doc.api || doc.exports) ? symbols : base;
+        const target = isExterns
+          ? externs
+          : doc.api || doc.exports
+          ? symbols
+          : base;
         const existingSymbol = symbolsByName[symbol.name];
         if (existingSymbol) {
           const idx = target.indexOf(existingSymbol);

@@ -1,20 +1,23 @@
 <template>
-  <span class="d-flex justify-space-between align-center window-component-header">
-    <span>
+  <div
+    class="d-flex justify-space-between align-center window-component-header"
+  >
+    <h3>
       <v-icon
         v-if="windowState.headerIcon"
         class="mr-2"
         :class="{ 'primary--text': isOnTop }"
-        v-text="windowState.headerIcon"
         size="16"
-      />
-      <h3
+      >
+        {{ windowState.headerIcon }}
+      </v-icon>
+      <span
         class="d-inline-block user-select-none font-weight-bold"
         :class="{ 'text--primary': isOnTop }"
       >
         {{ $t(windowState.headerTitle) }}
-      </h3>
-    </span>
+      </span>
+    </h3>
     <div class="d-flex justify-space-between align-center">
       <template v-if="windowState.headerActions?.length > 0">
         <VcsActionButtonList
@@ -22,11 +25,7 @@
           :overflow-count="windowState.headerActionsOverflow ?? 3"
           small
         />
-        <v-divider
-          vertical
-          inset
-          class="mx-1"
-        />
+        <v-divider vertical inset class="mx-1" />
       </template>
       <VcsButton
         v-if="windowState.infoUrl"
@@ -52,17 +51,17 @@
         class="d-flex"
       />
     </div>
-  </span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.window-component-header{
-  max-height: 16px;
+  .window-component-header {
+    max-height: 16px;
 
-  .v-divider--vertical.v-divider--inset {
-    margin-top: 2px;
+    .v-divider--vertical.v-divider--inset {
+      margin-top: 2px;
+    }
   }
-}
 </style>
 
 <script>
@@ -108,13 +107,20 @@
       const close = () => {
         emit('close');
       };
-      const isDockable = computed(() => !props.windowState.hidePin && props.windowState.dockable);
+      const isDockable = computed(
+        () => !props.windowState.hidePin && props.windowState.dockable,
+      );
 
-      const infoAction = props.windowState.infoUrl ? createLinkAction({
-        name: 'info',
-        title: 'content.infoAction.title',
-        icon: '$vcsInfo',
-      }, props.windowState.infoUrl) : {};
+      const infoAction = props.windowState.infoUrl
+        ? createLinkAction(
+            {
+              name: 'info',
+              title: 'content.infoAction.title',
+              icon: '$vcsInfo',
+            },
+            props.windowState.infoUrl,
+          )
+        : {};
 
       return {
         pin,
@@ -125,4 +131,3 @@
     },
   };
 </script>
-

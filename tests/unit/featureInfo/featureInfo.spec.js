@@ -31,7 +31,9 @@ import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
 import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.js';
-import FeatureInfo, { featureInfoViewSymbol } from '../../../src/featureInfo/featureInfo.js';
+import FeatureInfo, {
+  featureInfoViewSymbol,
+} from '../../../src/featureInfo/featureInfo.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
 describe('FeatureInfo', () => {
@@ -116,7 +118,9 @@ describe('FeatureInfo', () => {
     });
 
     it('should highlight selected feature', () => {
-      expect(layer.featureVisibility.highlightedObjects).to.have.property(feature.getId());
+      expect(layer.featureVisibility.highlightedObjects).to.have.property(
+        feature.getId(),
+      );
     });
 
     it('should set the current feature', () => {
@@ -135,8 +139,9 @@ describe('FeatureInfo', () => {
     beforeAll(() => {
       app = new VcsUiApp();
       app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
-      fillColor = Color.fromCssColorString(app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor())
-        .withAlpha(0.8);
+      fillColor = Color.fromCssColorString(
+        app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
+      ).withAlpha(0.8);
     });
 
     afterAll(() => {
@@ -163,7 +168,9 @@ describe('FeatureInfo', () => {
             const feature = new Feature({});
             layer.addFeatures([feature]);
             await app.featureInfo.selectFeature(feature);
-            highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+            highlightStyle =
+              layer.featureVisibility.highlightedObjects[feature.getId()].style
+                .style;
             ({ style } = layer);
           });
 
@@ -174,23 +181,33 @@ describe('FeatureInfo', () => {
           });
 
           it('should set the storkes color to the primary color', () => {
-            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getStroke().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should set the strokes width to twice as much', () => {
-            expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+            expect(highlightStyle.getStroke().getWidth()).to.equal(
+              style.style.getStroke().getWidth() * 2,
+            );
           });
 
           it('should set the style image scale to twice as much', () => {
-            expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+            expect(highlightStyle.getImage().getScale()).to.equal(
+              style.style.getImage().getScale() * 2,
+            );
           });
 
           it('should change the text color to the primary color', () => {
-            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should change the texts scale to twice as much', () => {
-            expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+            expect(highlightStyle.getText().getScale()).to.equal(
+              (style.style.getText().getScale() ?? 1) * 2,
+            );
           });
         });
 
@@ -203,22 +220,29 @@ describe('FeatureInfo', () => {
               feature.setStyle(style);
               layer.addFeatures([feature]);
               await app.featureInfo.selectFeature(feature);
-              return layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+              return layer.featureVisibility.highlightedObjects[feature.getId()]
+                .style.style;
             };
           });
 
           it('should set the scale on the styles images to twice as much', async () => {
             const style = new Style({ image: new Circle({ radius: 5 }) });
             const highlightStyle = await setupFeature(style);
-            expect(highlightStyle.getImage().getScale()).to.equal(style.getImage().getScale() * 2);
+            expect(highlightStyle.getImage().getScale()).to.equal(
+              style.getImage().getScale() * 2,
+            );
           });
 
           it('should set the width & color on a styles stroke', async () => {
-            const style = new Style({ stroke: new Stroke({ color: '#FF00FF', width: 1 }) });
+            const style = new Style({
+              stroke: new Stroke({ color: '#FF00FF', width: 1 }),
+            });
             const highlightStyle = await setupFeature(style);
 
             expect(highlightStyle.getStroke().getWidth()).to.equal(2);
-            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getStroke().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should set the color on a styles fill', async () => {
@@ -232,7 +256,10 @@ describe('FeatureInfo', () => {
 
           it('should set scale on text', async () => {
             const style = new Style({
-              text: new Text({ stroke: new Stroke({ width: 1, color: '#FF00FF' }), text: 'foo' }),
+              text: new Text({
+                stroke: new Stroke({ width: 1, color: '#FF00FF' }),
+                text: 'foo',
+              }),
             });
             style.getText().setScale(2);
             const highlightStyle = await setupFeature(style);
@@ -250,7 +277,9 @@ describe('FeatureInfo', () => {
             });
             const highlightStyle = await setupFeature(style);
 
-            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
         });
       });
@@ -271,7 +300,9 @@ describe('FeatureInfo', () => {
           const feature = new Feature({});
           layer.addFeatures([feature]);
           await app.featureInfo.selectFeature(feature);
-          expect(layer.featureVisibility.highlightedObjects[feature.getId()].style).to.equal(layer.highlightStyle);
+          expect(
+            layer.featureVisibility.highlightedObjects[feature.getId()].style,
+          ).to.equal(layer.highlightStyle);
         });
 
         it('should use the highlight style, if the feature has a style', async () => {
@@ -279,7 +310,9 @@ describe('FeatureInfo', () => {
           feature.style = new Style();
           layer.addFeatures([feature]);
           await app.featureInfo.selectFeature(feature);
-          expect(layer.featureVisibility.highlightedObjects[feature.getId()].style).to.equal(layer.highlightStyle);
+          expect(
+            layer.featureVisibility.highlightedObjects[feature.getId()].style,
+          ).to.equal(layer.highlightStyle);
         });
       });
     });
@@ -296,7 +329,9 @@ describe('FeatureInfo', () => {
           const feature = createDummyCesium3DTileFeature({ _id: 'foo' });
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
-          highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+          highlightStyle =
+            layer.featureVisibility.highlightedObjects[feature.getId()].style
+              .style;
         });
 
         it('should set the fill color to the primary colors', () => {
@@ -318,7 +353,8 @@ describe('FeatureInfo', () => {
           const feature = createDummyCesium3DTileFeature({ id: 'foo' });
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
-          highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style;
+          highlightStyle =
+            layer.featureVisibility.highlightedObjects[feature.getId()].style;
         });
 
         it('should use the highlight style', () => {
@@ -346,8 +382,9 @@ describe('FeatureInfo', () => {
             feature[isProvidedFeature] = true;
             feature[vcsLayerName] = layer.name;
             await app.featureInfo.selectFeature(feature);
-            highlightStyle = app.featureInfo._scratchLayer.featureVisibility
-              .highlightedObjects[feature.getId()].style.style;
+            highlightStyle =
+              app.featureInfo._scratchLayer.featureVisibility
+                .highlightedObjects[feature.getId()].style.style;
             style = new VectorStyleItem(getDefaultVectorStyleItemOptions());
           });
 
@@ -358,23 +395,33 @@ describe('FeatureInfo', () => {
           });
 
           it('should set the stroke color to the primary color', () => {
-            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getStroke().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should set the strokes width to twice as much', () => {
-            expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+            expect(highlightStyle.getStroke().getWidth()).to.equal(
+              style.style.getStroke().getWidth() * 2,
+            );
           });
 
           it('should set the style image scale to twice as much', () => {
-            expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+            expect(highlightStyle.getImage().getScale()).to.equal(
+              style.style.getImage().getScale() * 2,
+            );
           });
 
           it('should change the text color to the primary color', () => {
-            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should change the texts scale to twice as much', () => {
-            expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+            expect(highlightStyle.getText().getScale()).to.equal(
+              (style.style.getText().getScale() ?? 1) * 2,
+            );
           });
         });
 
@@ -396,15 +443,21 @@ describe('FeatureInfo', () => {
           it('should set the scale on the styles images to twice as much', async () => {
             const style = new Style({ image: new Circle({ radius: 5 }) });
             const highlightStyle = await setupFeature(style);
-            expect(highlightStyle.getImage().getScale()).to.equal(style.getImage().getScale() * 2);
+            expect(highlightStyle.getImage().getScale()).to.equal(
+              style.getImage().getScale() * 2,
+            );
           });
 
           it('should set the width & color on a styles stroke', async () => {
-            const style = new Style({ stroke: new Stroke({ color: '#FF00FF', width: 1 }) });
+            const style = new Style({
+              stroke: new Stroke({ color: '#FF00FF', width: 1 }),
+            });
             const highlightStyle = await setupFeature(style);
 
             expect(highlightStyle.getStroke().getWidth()).to.equal(2);
-            expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getStroke().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
 
           it('should set the color on a styles fill', async () => {
@@ -418,7 +471,10 @@ describe('FeatureInfo', () => {
 
           it('should set scale on text', async () => {
             const style = new Style({
-              text: new Text({ stroke: new Stroke({ width: 1, color: '#FF00FF' }), text: 'foo' }),
+              text: new Text({
+                stroke: new Stroke({ width: 1, color: '#FF00FF' }),
+                text: 'foo',
+              }),
             });
             style.getText().setScale(2);
             const highlightStyle = await setupFeature(style);
@@ -436,7 +492,9 @@ describe('FeatureInfo', () => {
             });
             const highlightStyle = await setupFeature(style);
 
-            expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+            expect(highlightStyle.getText().getFill().getColor()).to.equal(
+              fillColor.toCssColorString(),
+            );
           });
         });
       });
@@ -456,8 +514,10 @@ describe('FeatureInfo', () => {
           feature[isProvidedFeature] = true;
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
-          const highlightStyle = app.featureInfo._scratchLayer.featureVisibility
-            .highlightedObjects[feature.getId()].style;
+          const highlightStyle =
+            app.featureInfo._scratchLayer.featureVisibility.highlightedObjects[
+              feature.getId()
+            ].style;
           expect(highlightStyle).to.equal(layer.highlightStyle);
         });
 
@@ -467,8 +527,10 @@ describe('FeatureInfo', () => {
           feature[vcsLayerName] = layer.name;
           feature.setStyle(new Style({}));
           await app.featureInfo.selectFeature(feature);
-          const highlightStyle = app.featureInfo._scratchLayer.featureVisibility
-            .highlightedObjects[feature.getId()].style;
+          const highlightStyle =
+            app.featureInfo._scratchLayer.featureVisibility.highlightedObjects[
+              feature.getId()
+            ].style;
           expect(highlightStyle).to.equal(layer.highlightStyle);
         });
       });
@@ -488,7 +550,9 @@ describe('FeatureInfo', () => {
         feature.setStyle(() => layer.style.style);
         layer.addFeatures([feature]);
         await app.featureInfo.selectFeature(feature);
-        highlightStyle = layer.featureVisibility.highlightedObjects[feature.getId()].style.style;
+        highlightStyle =
+          layer.featureVisibility.highlightedObjects[feature.getId()].style
+            .style;
         ({ style } = layer);
       });
 
@@ -499,23 +563,33 @@ describe('FeatureInfo', () => {
       });
 
       it('should set the storkes color to the primary color', () => {
-        expect(highlightStyle.getStroke().getColor()).to.equal(fillColor.toCssColorString());
+        expect(highlightStyle.getStroke().getColor()).to.equal(
+          fillColor.toCssColorString(),
+        );
       });
 
       it('should set the strokes width to twice as much', () => {
-        expect(highlightStyle.getStroke().getWidth()).to.equal(style.style.getStroke().getWidth() * 2);
+        expect(highlightStyle.getStroke().getWidth()).to.equal(
+          style.style.getStroke().getWidth() * 2,
+        );
       });
 
       it('should set the style image scale to twice as much', () => {
-        expect(highlightStyle.getImage().getScale()).to.equal(style.style.getImage().getScale() * 2);
+        expect(highlightStyle.getImage().getScale()).to.equal(
+          style.style.getImage().getScale() * 2,
+        );
       });
 
       it('should change the text color to the primary color', () => {
-        expect(highlightStyle.getText().getFill().getColor()).to.equal(fillColor.toCssColorString());
+        expect(highlightStyle.getText().getFill().getColor()).to.equal(
+          fillColor.toCssColorString(),
+        );
       });
 
       it('should change the texts scale to twice as much', () => {
-        expect(highlightStyle.getText().getScale()).to.equal((style.style.getText().getScale() ?? 1) * 2);
+        expect(highlightStyle.getText().getScale()).to.equal(
+          (style.style.getText().getScale() ?? 1) * 2,
+        );
       });
     });
   });
@@ -534,7 +608,9 @@ describe('FeatureInfo', () => {
         feature = new Feature({ geometry: new Point([1, 1, 1]) });
         feature[isProvidedFeature] = true;
         feature[vcsLayerName] = layer.name;
-        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        app.featureInfo.collection.add(
+          new TableFeatureInfoView({ name: 'foo' }),
+        );
         selectedCallback = vi.fn();
         app.featureInfo.featureChanged.addEventListener(selectedCallback);
         await app.featureInfo.selectFeature(feature);
@@ -554,7 +630,9 @@ describe('FeatureInfo', () => {
       });
 
       it('should highlight selected feature on the scratch layer', () => {
-        expect(app.featureInfo._scratchLayer.featureVisibility.highlightedObjects).to.have.property(feature.getId());
+        expect(
+          app.featureInfo._scratchLayer.featureVisibility.highlightedObjects,
+        ).to.have.property(feature.getId());
       });
 
       it('should set the current feature', () => {
@@ -580,7 +658,9 @@ describe('FeatureInfo', () => {
         feature = new Feature({ geometry: new Point([1, 1, 1]) });
         feature[isProvidedFeature] = true;
         feature[vcsLayerName] = layer.name;
-        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        app.featureInfo.collection.add(
+          new TableFeatureInfoView({ name: 'foo' }),
+        );
         await app.featureInfo.selectFeature(feature);
         ({ windowId } = app.featureInfo);
         selectedCallback = vi.fn();
@@ -598,8 +678,9 @@ describe('FeatureInfo', () => {
       });
 
       it('should clear highlight selected feature', () => {
-        expect(app.featureInfo._scratchLayer.featureVisibility.highlightedObjects)
-          .to.not.have.property(feature.getId());
+        expect(
+          app.featureInfo._scratchLayer.featureVisibility.highlightedObjects,
+        ).to.not.have.property(feature.getId());
       });
 
       it('should remove all features from the scratchLayer', () => {
@@ -642,26 +723,42 @@ describe('FeatureInfo', () => {
       feature[featureInfoViewSymbol] = new AbstractFeatureInfoView({}, {});
       layer.addFeatures([feature]);
       const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
-      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
-      expect(app.windowManager.get(app.featureInfo.windowId))
-        .to.have.property('component', feature[featureInfoViewSymbol].component);
+      await app.featureInfo.selectFeature(
+        feature,
+        null,
+        null,
+        overrideFeatureInfo,
+      );
+      expect(app.windowManager.get(app.featureInfo.windowId)).to.have.property(
+        'component',
+        feature[featureInfoViewSymbol].component,
+      );
     });
 
     it('should secondarily use provided feature info view overriding the feature info view of a layer', async () => {
       const feature = new Feature({});
       layer.addFeatures([feature]);
       const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
-      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
-      expect(app.windowManager.get(app.featureInfo.windowId))
-        .to.have.property('component', overrideFeatureInfo.component);
+      await app.featureInfo.selectFeature(
+        feature,
+        null,
+        null,
+        overrideFeatureInfo,
+      );
+      expect(app.windowManager.get(app.featureInfo.windowId)).to.have.property(
+        'component',
+        overrideFeatureInfo.component,
+      );
     });
 
     it('should tertiary use the feature info view of a layer', async () => {
       const feature = new Feature({});
       layer.addFeatures([feature]);
       await app.featureInfo.selectFeature(feature);
-      expect(app.windowManager.get(app.featureInfo.windowId))
-        .to.have.property('component', layerFeatureInfo.component);
+      expect(app.windowManager.get(app.featureInfo.windowId)).to.have.property(
+        'component',
+        layerFeatureInfo.component,
+      );
     });
 
     it('should allow for a layer to not have a feature info view defined', async () => {
@@ -672,9 +769,16 @@ describe('FeatureInfo', () => {
       const feature = new Feature({});
       layer2.addFeatures([feature]);
       const overrideFeatureInfo = new AbstractFeatureInfoView({}, {});
-      await app.featureInfo.selectFeature(feature, null, null, overrideFeatureInfo);
-      expect(app.windowManager.get(app.featureInfo.windowId))
-        .to.have.property('component', overrideFeatureInfo.component);
+      await app.featureInfo.selectFeature(
+        feature,
+        null,
+        null,
+        overrideFeatureInfo,
+      );
+      expect(app.windowManager.get(app.featureInfo.windowId)).to.have.property(
+        'component',
+        overrideFeatureInfo.component,
+      );
     });
   });
 
@@ -767,7 +871,9 @@ describe('FeatureInfo', () => {
     });
 
     it('should clear highlight selected feature', () => {
-      expect(layer.featureVisibility.highlightedObjects).to.not.have.property(feature.getId());
+      expect(layer.featureVisibility.highlightedObjects).to.not.have.property(
+        feature.getId(),
+      );
     });
 
     it('should set the current feature to null', () => {
@@ -830,7 +936,11 @@ describe('FeatureInfo', () => {
       });
 
       it('should add an interaction to the event handler', () => {
-        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.exist;
+        expect(
+          app.maps.eventHandler.interactions.find(
+            (i) => i instanceof FeatureInfoInteraction,
+          ),
+        ).to.exist;
       });
     });
 
@@ -840,7 +950,9 @@ describe('FeatureInfo', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        app.featureInfo.collection.add(
+          new TableFeatureInfoView({ name: 'foo' }),
+        );
 
         ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({
@@ -863,7 +975,11 @@ describe('FeatureInfo', () => {
       });
 
       it('should remove any interactions', () => {
-        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.be.undefined;
+        expect(
+          app.maps.eventHandler.interactions.find(
+            (i) => i instanceof FeatureInfoInteraction,
+          ),
+        ).to.be.undefined;
       });
 
       it('should clear the feature info', () => {
@@ -877,7 +993,9 @@ describe('FeatureInfo', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+        app.featureInfo.collection.add(
+          new TableFeatureInfoView({ name: 'foo' }),
+        );
 
         ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({
@@ -900,7 +1018,11 @@ describe('FeatureInfo', () => {
       });
 
       it('should remove any interactions', () => {
-        expect(app.maps.eventHandler.interactions.find(i => i instanceof FeatureInfoInteraction)).to.be.undefined;
+        expect(
+          app.maps.eventHandler.interactions.find(
+            (i) => i instanceof FeatureInfoInteraction,
+          ),
+        ).to.be.undefined;
       });
 
       it('should clear the feature info', () => {
@@ -909,4 +1031,3 @@ describe('FeatureInfo', () => {
     });
   });
 });
-

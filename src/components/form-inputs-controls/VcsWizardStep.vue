@@ -23,15 +23,8 @@
         />
       </div>
     </v-stepper-step>
-    <v-stepper-content
-      v-if="$slots.content"
-      class="pr-4"
-      :step="step"
-    >
-      <VcsHelp
-        :text="helpText"
-        :show="showHelp"
-      >
+    <v-stepper-content v-if="$slots.content" class="pr-4" :step="step">
+      <VcsHelp :text="helpText" :show="showHelp">
         <slot name="help" />
       </VcsHelp>
       <slot name="content" />
@@ -84,7 +77,7 @@
       },
       rules: {
         type: Array,
-        default: () => ([]),
+        default: () => [],
       },
       heading: {
         type: String,
@@ -92,7 +85,7 @@
       },
       headerActions: {
         type: Array,
-        default: () => ([]),
+        default: () => [],
       },
       actionButtonListOverflowCount: {
         type: Number,
@@ -123,13 +116,16 @@
       });
       const showHelp = computed(() => helpAction.active);
       // deactivate help when leaving a step
-      watch(() => props.value, (currentStep, previousStep) => {
-        if (Number(previousStep) === Number(props.step)) {
-          helpAction.active = false;
-        }
-      });
+      watch(
+        () => props.value,
+        (currentStep, previousStep) => {
+          if (Number(previousStep) === Number(props.step)) {
+            helpAction.active = false;
+          }
+        },
+      );
       /**
-       * @type {ComputedRef<VcsAction>}
+       * @type {import("vue").ComputedRef<VcsAction>}
        */
       const actions = computed(() => {
         if (props.helpText || (slots.help && slots.help().length > 0)) {
@@ -146,7 +142,7 @@
   };
 </script>
 <style scoped lang="scss">
-  .v-alert--text:before{
+  .v-alert--text:before {
     background-color: transparent;
   }
   .v-stepper__step {

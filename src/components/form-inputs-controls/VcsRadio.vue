@@ -13,8 +13,8 @@
           class="w-full vcs-radio-group"
           :dense="isDense"
           :ripple="false"
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
         >
           <v-radio
             v-for="(item, idx) in items"
@@ -38,54 +38,54 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
-@import "../../styles/vcsFont";
-@import '../../styles/shades.scss';
-.v-input--radio-group--column .v-radio:not(:last-child):not(:only-child) {
-  margin-bottom: 0;
-}
-.v-input {
-  &.vcs-radio-group {
-    ::v-deep {
-      margin-top: 0;
-      padding-top: 0;
-      label.v-label,
-      .v-icon.v-icon{
-        font-size: $base-font-size;
-        color: inherit;
-        &.theme--light{
-          color: map-get($shades, 'black') !important;
-          &.error--text{
-            color: var(--v-error-base) !important;
+  @import '../../styles/vcsFont';
+  @import '../../styles/shades.scss';
+  .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child) {
+    margin-bottom: 0;
+  }
+  .v-input {
+    &.vcs-radio-group {
+      ::v-deep {
+        margin-top: 0;
+        padding-top: 0;
+        label.v-label,
+        .v-icon.v-icon {
+          font-size: $base-font-size;
+          color: inherit;
+          &.theme--light {
+            color: map-get($shades, 'black') !important;
+            &.error--text {
+              color: var(--v-error-base) !important;
+            }
+          }
+          &.theme--dark {
+            color: map-get($shades, 'white') !important;
+            &.error--text {
+              color: var(--v-error-base) !important;
+            }
           }
         }
-        &.theme--dark{
-          color: map-get($shades, 'white') !important;
-          &.error--text{
-            color: var(--v-error-base) !important;
-          }
+        .v-radio:not(:last-child):not(:only-child) {
+          margin-bottom: 0;
         }
-      }
-      .v-radio:not(:last-child):not(:only-child) {
-        margin-bottom: 0;
-      }
-      .v-input--selection-controls__input {
-        margin: 0;
-      }
-      label.v-label.error--text {
-        animation: none;
+        .v-input--selection-controls__input {
+          margin: 0;
+        }
+        label.v-label.error--text {
+          animation: none;
+        }
       }
     }
   }
-}
-.vcs-radio {
-  height: 40px;
-  align-items: center;
-  padding-left: 4px;
-}
-.vcs-radio-dense {
-  height: 32px;
-  align-items: center;
-}
+  .vcs-radio {
+    height: 40px;
+    align-items: center;
+    padding-left: 4px;
+  }
+  .vcs-radio-dense {
+    height: 32px;
+    align-items: center;
+  }
 </style>
 <script>
   import { computed, ref } from 'vue';

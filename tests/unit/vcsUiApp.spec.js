@@ -78,7 +78,9 @@ async function setupApp(app) {
 
   const pluginInDefaultModule = {
     name: 'pluginInDefaultModule',
-    getState() { return 'foo'; },
+    getState() {
+      return 'foo';
+    },
   };
   app.plugins.add(pluginInDefaultModule);
   await app.setDynamicModule(module);
@@ -123,20 +125,26 @@ async function setupApp(app) {
 
   const pluginWithGetState = {
     name: 'pluginWithGetState',
-    getState() { return 'foo'; },
+    getState() {
+      return 'foo';
+    },
   };
   app.plugins.add(pluginWithGetState);
 
   const volatilePlugin = {
     name: 'volatilePlugin',
-    getState() { return 'foo'; },
+    getState() {
+      return 'foo';
+    },
   };
   markVolatile(volatilePlugin);
   app.plugins.add(volatilePlugin);
 
   const pluginWithAsyncGetState = {
     name: 'pluginWithAsyncGetState',
-    getState() { return Promise.resolve('bar'); },
+    getState() {
+      return Promise.resolve('bar');
+    },
   };
   app.plugins.add(pluginWithAsyncGetState);
 
@@ -177,68 +185,96 @@ describe('VcsUiApp', () => {
 
       describe('layer handling', () => {
         it('should add active layers, which are not active on startup', () => {
-          expect(state.layers).to.deep.include({ name: 'activeLayer', active: true });
+          expect(state.layers).to.deep.include({
+            name: 'activeLayer',
+            active: true,
+          });
         });
 
         it('should add inactive active on startup layers', () => {
-          expect(state.layers).to.deep.include({ name: 'deactivatedActiveOnStartupLayer', active: false });
+          expect(state.layers).to.deep.include({
+            name: 'deactivatedActiveOnStartupLayer',
+            active: false,
+          });
         });
 
         it('should add the style for styled layers, if the layer is active', () => {
-          expect(state.layers).to.deep
-            .include({ name: 'styledActiveLayer', active: true, styleName: 'style' });
+          expect(state.layers).to.deep.include({
+            name: 'styledActiveLayer',
+            active: true,
+            styleName: 'style',
+          });
         });
 
         it('should not add active active on startup layers', () => {
-          expect(state.layers.find(s => s.name === 'activeActiveOnStartupLayer')).to.be.undefined;
+          expect(
+            state.layers.find((s) => s.name === 'activeActiveOnStartupLayer'),
+          ).to.be.undefined;
         });
 
         it('should not add unsupported layers', () => {
-          expect(state.layers.find(s => s.name === 'unsupportedLayer')).to.be.undefined;
+          expect(state.layers.find((s) => s.name === 'unsupportedLayer')).to.be
+            .undefined;
         });
 
         it('should not add layers which are part of the dynamic module', () => {
-          expect(state.layers.find(s => s.name === 'dynamicModuleLayer')).to.be.undefined;
+          expect(state.layers.find((s) => s.name === 'dynamicModuleLayer')).to
+            .be.undefined;
         });
 
         it('should not add layers which are volatile', () => {
-          expect(state.layers.find(s => s.name === 'volatileActiveLayer')).to.be.undefined;
+          expect(state.layers.find((s) => s.name === 'volatileActiveLayer')).to
+            .be.undefined;
         });
 
         it('should not add styled inactive layers', () => {
-          expect(state.layers.find(s => s.name === 'styledInactiveLayer')).to.be.undefined;
+          expect(state.layers.find((s) => s.name === 'styledInactiveLayer')).to
+            .be.undefined;
         });
 
         it('should not add the style name to layers, if the style is part of the dynamic module', () => {
-          expect(state.layers).to.deep
-            .include({ name: 'layerStyledByDefaultDynamicModule', active: true });
+          expect(state.layers).to.deep.include({
+            name: 'layerStyledByDefaultDynamicModule',
+            active: true,
+          });
         });
 
         it('should not add the style name to layers, if the style is volatile', () => {
-          expect(state.layers).to.deep
-            .include({ name: 'layerStyledByVolatileStyle', active: true });
+          expect(state.layers).to.deep.include({
+            name: 'layerStyledByVolatileStyle',
+            active: true,
+          });
         });
       });
 
       describe('plugin handling', () => {
         it('should add plugins with a getState function', () => {
-          expect(state.plugins).to.deep.include({ name: 'pluginWithGetState', state: 'foo' });
+          expect(state.plugins).to.deep.include({
+            name: 'pluginWithGetState',
+            state: 'foo',
+          });
         });
 
         it('should add a pugin with an async getState function', () => {
-          expect(state.plugins).to.deep.include({ name: 'pluginWithAsyncGetState', state: 'bar' });
+          expect(state.plugins).to.deep.include({
+            name: 'pluginWithAsyncGetState',
+            state: 'bar',
+          });
         });
 
         it('should not add plugins without a getState function', () => {
-          expect(state.plugins.find(s => s.name === 'pluginWithoutGetState')).to.be.undefined;
+          expect(state.plugins.find((s) => s.name === 'pluginWithoutGetState'))
+            .to.be.undefined;
         });
 
         it('should not add plugins in the default dynamic module', () => {
-          expect(state.plugins.find(s => s.name === 'pluginInDefaultModule')).to.be.undefined;
+          expect(state.plugins.find((s) => s.name === 'pluginInDefaultModule'))
+            .to.be.undefined;
         });
 
         it('should not add plugins which are volatile', () => {
-          expect(state.plugins.find(s => s.name === 'volatilePlugin')).to.be.undefined;
+          expect(state.plugins.find((s) => s.name === 'volatilePlugin')).to.be
+            .undefined;
         });
       });
 
@@ -247,7 +283,8 @@ describe('VcsUiApp', () => {
       });
 
       it('should set the active viewpoint', () => {
-        expect(new Viewpoint(state.activeViewpoint).equals(viewpoint)).to.be.true;
+        expect(new Viewpoint(state.activeViewpoint).equals(viewpoint)).to.be
+          .true;
       });
 
       it('should add modules', () => {

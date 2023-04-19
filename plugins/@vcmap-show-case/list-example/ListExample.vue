@@ -1,32 +1,19 @@
 <template>
   <v-sheet>
     <v-sheet class="px-2 d-grid">
-      <v-switch
-        v-model="selectable"
-        label="Selectable"
-      />
+      <v-switch v-model="selectable" label="Selectable" />
       <v-switch
         :disabled="!selectable"
         v-model="selectSingle"
         label=" Single Select"
       />
-      <v-switch
-        v-model="searchable"
-        label="Searchable"
-      />
-      <v-dialog
-        v-model="dialog"
-        width="400"
-      >
+      <v-switch v-model="searchable" label="Searchable" />
+      <v-dialog v-model="dialog" width="400">
         <template #activator="{ on }">
-          <vcs-button v-on="on">
-            Add An item
-          </vcs-button>
+          <vcs-button v-on="on"> Add An item </vcs-button>
         </template>
         <v-card class="pa-2">
-          <v-form
-            @submit.prevent="add"
-          >
+          <v-form @submit.prevent="add">
             <vcs-text-field
               v-model="newItem.name"
               label="Name"
@@ -41,43 +28,29 @@
             <v-switch label="disabled" v-model="newItem.disabled" />
             <v-switch label="random icon" v-model="newItem.icon" />
             <v-switch label="console.log action" v-model="newItem.action" />
-            <v-switch label="console.log on clicked" v-model="newItem.clicked" />
-            <v-switch label="console.log selected state" v-model="newItem.selected" />
-            <vcs-button
-              type="submit"
-            >
-              Add
-            </vcs-button>
+            <v-switch
+              label="console.log on clicked"
+              v-model="newItem.clicked"
+            />
+            <v-switch
+              label="console.log selected state"
+              v-model="newItem.selected"
+            />
+            <vcs-button type="submit"> Add </vcs-button>
           </v-form>
         </v-card>
       </v-dialog>
       <v-divider class="ma-2" />
-      <v-switch
-        v-model="showTitle"
-        label="Show Title"
-      />
+      <v-switch v-model="showTitle" label="Show Title" />
       <vcs-text-field v-model="title" placeholder="Title" />
-      <v-switch
-        v-model="titleActions"
-        label="Title Actions"
-      />
-      <v-switch
-        v-model="titleIcon"
-        label="Title Icon"
-      />
+      <v-switch v-model="titleActions" label="Title Actions" />
+      <v-switch v-model="titleIcon" label="Title Icon" />
       <v-divider class="ma-2" />
       <template v-if="selectable">
-        <vcs-button
-          @click="selected = []"
-        >
-          Clear Selection
-        </vcs-button>
+        <vcs-button @click="selected = []"> Clear Selection </vcs-button>
         <v-switch v-model="showSelection" label="Show Selection" />
         <ul v-if="showSelection">
-          <li
-            v-for="(i, index) in selected"
-            :key="`item-${index}`"
-          >
+          <li v-for="(i, index) in selected" :key="`item-${index}`">
             {{ i.title }}
           </li>
         </ul>
@@ -123,7 +96,7 @@
       title: 'Foo',
       tooltip: 'this is the foo',
       icon: 'mdi-pen',
-      selectionChanged: value => console.log('changed cb foo', value),
+      selectionChanged: (value) => console.log('changed cb foo', value),
     },
     {
       name: 'bar',
@@ -137,13 +110,13 @@
           },
         },
       ],
-      selectionChanged: value => console.log('changed cb bar', value),
+      selectionChanged: (value) => console.log('changed cb bar', value),
     },
     {
       name: 'baz',
       title: 'Baz',
       tooltip: 'special baz',
-      selectionChanged: value => console.log('bchanged cb baz', value),
+      selectionChanged: (value) => console.log('bchanged cb baz', value),
     },
   ];
 
@@ -197,8 +170,8 @@
         newItem,
         dialog,
         required: [
-          v => !!v || 'Input may not be null',
-          v => v.length > 0 || 'Input must have a length',
+          (v) => !!v || 'Input may not be null',
+          (v) => v.length > 0 || 'Input must have a length',
         ],
         add() {
           const item = {
@@ -217,7 +190,7 @@
               {
                 name: 'console.log',
                 callback() {
-                  console.log('hi, i\'m: ', item.name);
+                  console.log("hi, i'm: ", item.name);
                 },
               },
             ];
@@ -230,8 +203,8 @@
           }
 
           if (newItem.value.selected) {
-            item.selectionChanged = (selected) => {
-              if (selected) {
+            item.selectionChanged = (selectedValue) => {
+              if (selectedValue) {
                 console.log(`${item.name} is selected`);
               } else {
                 console.log(`${item.name} is no longer selected`);
@@ -257,12 +230,14 @@
           },
           set(value) {
             if (value) {
-              titleActionsArray.value = [{
-                name: 'console.log foo',
-                callback() {
-                  console.log('foo');
+              titleActionsArray.value = [
+                {
+                  name: 'console.log foo',
+                  callback() {
+                    console.log('foo');
+                  },
                 },
-              }];
+              ];
             } else {
               titleActionsArray.value = [];
             }
@@ -286,8 +261,8 @@
 </script>
 
 <style lang="scss" scoped>
-.d-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+  .d-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 </style>

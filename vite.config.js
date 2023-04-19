@@ -14,7 +14,7 @@ const configMain = defineConfig(async ({ mode }) => {
     proxy = await getPluginProxies(host, production);
     proxy['/node_modules/@vcmap-cesium/engine/Build/Assets'] = {
       target: host,
-      rewrite: path => path.replace(/Build/, 'Source'),
+      rewrite: (path) => path.replace(/Build/, 'Source'),
     };
   }
 
@@ -30,10 +30,7 @@ const configMain = defineConfig(async ({ mode }) => {
 
   if (process.env.NO_OPTIMIZED_CORE) {
     config.optimizeDeps = {
-      exclude: [
-        '@vcmap/core',
-        'ol',
-      ],
+      exclude: ['@vcmap/core', 'ol'],
       include: [
         '@vcmap/core > fast-deep-equal',
         '@vcmap/core > rbush-knn',

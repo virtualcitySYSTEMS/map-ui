@@ -1,32 +1,19 @@
 <template>
   <v-sheet>
     <v-sheet class="px-2 d-grid">
-      <v-switch
-        v-model="selectable"
-        label="Selectable"
-      />
+      <v-switch v-model="selectable" label="Selectable" />
       <v-switch
         :disabled="!selectable"
         v-model="selectSingle"
         label=" Single Select"
       />
-      <v-switch
-        v-model="searchable"
-        label="Searchable"
-      />
-      <v-dialog
-        v-model="dialog"
-        width="400"
-      >
+      <v-switch v-model="searchable" label="Searchable" />
+      <v-dialog v-model="dialog" width="400">
         <template #activator="{ on }">
-          <vcs-button v-on="on">
-            Add An item
-          </vcs-button>
+          <vcs-button v-on="on"> Add An item </vcs-button>
         </template>
         <v-card class="pa-2">
-          <v-form
-            @submit.prevent="add"
-          >
+          <v-form @submit.prevent="add">
             <vcs-text-field
               v-model="newItem.name"
               label="Name"
@@ -37,16 +24,8 @@
               label="type"
               :rules="required"
             />
-            <vcs-text-field
-              v-model="newItem.date"
-              type="date"
-              label="date"
-            />
-            <vcs-button
-              type="submit"
-            >
-              Add
-            </vcs-button>
+            <vcs-text-field v-model="newItem.date" type="date" label="date" />
+            <vcs-button type="submit"> Add </vcs-button>
           </v-form>
         </v-card>
       </v-dialog>
@@ -76,14 +55,13 @@
 </template>
 
 <script>
-  import { VcsDataTable, VcsButton, VcsTextField, VcsActionButtonList } from '@vcmap/ui';
   import {
-    VSwitch,
-    VSheet,
-    VDialog,
-    VCard,
-    VForm,
-  } from 'vuetify/lib';
+    VcsDataTable,
+    VcsButton,
+    VcsTextField,
+    VcsActionButtonList,
+  } from '@vcmap/ui';
+  import { VSwitch, VSheet, VDialog, VCard, VForm } from 'vuetify/lib';
   import { ref } from 'vue';
 
   const defaultHeaders = [
@@ -171,8 +149,8 @@
         newItem,
         dialog,
         required: [
-          v => !!v || 'Input may not be null',
-          v => v.length > 0 || 'Input must have a length',
+          (v) => !!v || 'Input may not be null',
+          (v) => v.length > 0 || 'Input must have a length',
         ],
         add() {
           const item = {
@@ -195,8 +173,8 @@
 </script>
 
 <style lang="scss" scoped>
-.d-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+  .d-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 </style>

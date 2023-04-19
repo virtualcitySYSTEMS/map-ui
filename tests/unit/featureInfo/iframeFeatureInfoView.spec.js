@@ -1,9 +1,4 @@
-import {
-  describe,
-  beforeAll,
-  expect,
-  it,
-} from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 import IframeFeatureInfoView from '../../../src/featureInfo/iframeFeatureInfoView.js';
 
 describe('IframeFeatureInfoView', () => {

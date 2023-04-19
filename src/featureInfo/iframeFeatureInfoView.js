@@ -41,7 +41,9 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
   /**
    * @type {string}
    */
-  static get className() { return 'IframeFeatureInfoView'; }
+  static get className() {
+    return 'IframeFeatureInfoView';
+  }
 
   /**
    * @param {IframeFeatureInfoViewOptions} options

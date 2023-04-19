@@ -18,7 +18,10 @@
                 large
               />
               <v-divider
-                v-if="mapActions.length > 0 && (contentActions.length > 0 || toolActions.length > 0)"
+                v-if="
+                  mapActions.length > 0 &&
+                  (contentActions.length > 0 || toolActions.length > 0)
+                "
                 class="mx-2"
                 vertical
                 inset
@@ -45,7 +48,13 @@
         <v-col class="align-center d-flex justify-center">
           <div class="d-flex">
             <template v-if="!$vuetify.breakpoint.xs">
-              <img v-if="config.logo" class="logo" :src="config.logo" draggable="false" alt="Logo">
+              <img
+                v-if="config.logo"
+                class="logo"
+                :src="config.logo"
+                draggable="false"
+                alt="Logo"
+              />
               <div v-else class="company-logo logo" />
             </template>
             <div v-if="!$vuetify.breakpoint.sm && config.appTitle" class="ml-4">
@@ -56,20 +65,14 @@
         <v-col class="align-content-end d-flex justify-end">
           <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
             <div class="d-flex align-center">
-              <VcsActionButtonList
-                :actions="projectActions"
-                large
-              />
+              <VcsActionButtonList :actions="projectActions" large />
               <v-divider
                 v-if="projectActions.length > 0 && menuActions.length > 0"
                 vertical
                 inset
                 class="mx-2"
               />
-              <v-menu
-                offset-y
-                v-if="shareActions.length > 0"
-              >
+              <v-menu offset-y v-if="shareActions.length > 0">
                 <template #activator="{ on, attrs }">
                   <VcsButton
                     v-bind="attrs"
@@ -94,12 +97,9 @@
                 :icon="searchAction.icon"
                 :active="searchAction.active"
                 @click.stop="searchAction.callback($event)"
-                v-bind="{...$attrs}"
+                v-bind="{ ...$attrs }"
               />
-              <v-menu
-                offset-y
-                v-if="menuActions.length > 0"
-              >
+              <v-menu offset-y v-if="menuActions.length > 0">
                 <template #activator="{ on, attrs }">
                   <VcsButton
                     v-bind="attrs"
@@ -124,7 +124,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .v-toolbar__items > div{
+  .v-toolbar__items > div {
     gap: 8px;
   }
   .logo {
@@ -136,9 +136,18 @@
 <script>
   import { inject, ref, computed, onUnmounted } from 'vue';
   import {
-    VCol, VContainer, VDivider, VMenu, VRow, VToolbar, VToolbarItems,
+    VCol,
+    VContainer,
+    VDivider,
+    VMenu,
+    VRow,
+    VToolbar,
+    VToolbarItems,
   } from 'vuetify/lib';
-  import { ButtonLocation, getActionsByLocation } from '../manager/navbarManager.js';
+  import {
+    ButtonLocation,
+    getActionsByLocation,
+  } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsButton from '../components/buttons/VcsButton.vue';
@@ -162,12 +171,20 @@
       const app = inject('vcsApp');
 
       const navbarButtonIds = ref(app.navbarManager.componentIds);
-      const buttonComponents = computed(() => navbarButtonIds.value.map(id => app.navbarManager.get(id)));
-      const getActions = location => computed(
-        () => getActionsByLocation(buttonComponents.value, location, [...app.plugins].map(p => p.name)),
+      const buttonComponents = computed(() =>
+        navbarButtonIds.value.map((id) => app.navbarManager.get(id)),
       );
+      const getActions = (location) =>
+        computed(() =>
+          getActionsByLocation(
+            buttonComponents.value,
+            location,
+            [...app.plugins].map((p) => p.name),
+          ),
+        );
 
-      const { searchAction, destroy: destroySearchAction } = createSearchButtonAction(app);
+      const { searchAction, destroy: destroySearchAction } =
+        createSearchButtonAction(app);
 
       onUnmounted(() => {
         destroySearchAction();

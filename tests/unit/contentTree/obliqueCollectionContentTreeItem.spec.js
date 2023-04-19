@@ -1,11 +1,9 @@
-import { DefaultObliqueCollection, ObliqueMap, OpenlayersMap } from '@vcmap/core';
 import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-  afterAll,
-} from 'vitest';
+  DefaultObliqueCollection,
+  ObliqueMap,
+  OpenlayersMap,
+} from '@vcmap/core';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import ObliqueCollectionContentTreeItem from '../../../src/contentTree/obliqueCollectionContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
@@ -30,7 +28,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
       app.obliqueCollections.add(collection);
       app.obliqueCollections.add(otherCollection);
       await map.setCollection(otherCollection);
-      item = new ObliqueCollectionContentTreeItem({ name: 'foo', collectionName: collection.name }, app);
+      item = new ObliqueCollectionContentTreeItem(
+        { name: 'foo', collectionName: collection.name },
+        app,
+      );
     });
 
     afterAll(() => {
@@ -102,7 +103,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
         const collection = new DefaultObliqueCollection({});
         collection.properties.defaultViewpoint = 'foo';
         app.obliqueCollections.add(collection);
-        item = new ObliqueCollectionContentTreeItem({ name: 'foo', collectionName: collection.name }, app);
+        item = new ObliqueCollectionContentTreeItem(
+          { name: 'foo', collectionName: collection.name },
+          app,
+        );
       });
 
       afterAll(() => {
@@ -111,10 +115,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
       });
 
       it('should add a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.true;
+        expect(item.actions.some((a) => a.name === 'ViewpointAction')).to.be
+          .true;
       });
     });
-
 
     describe('if a collection is overriden with less properties', () => {
       let item;
@@ -128,7 +132,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
         const collection = new DefaultObliqueCollection({});
         collection.properties.defaultViewpoint = 'foo';
         app.obliqueCollections.add(collection);
-        item = new ObliqueCollectionContentTreeItem({ name: 'foo', collectionName: collection.name }, app);
+        item = new ObliqueCollectionContentTreeItem(
+          { name: 'foo', collectionName: collection.name },
+          app,
+        );
         const overrideCollection = new DefaultObliqueCollection({});
         overrideCollection.name = collection.name;
         app.obliqueCollections.override(overrideCollection);
@@ -140,7 +147,8 @@ describe('ObliqueCollectionContentTreeItem', () => {
       });
 
       it('should not have a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.false;
+        expect(item.actions.some((a) => a.name === 'ViewpointAction')).to.be
+          .false;
       });
     });
   });
@@ -148,7 +156,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
   describe('if collection is not present', () => {
     it('should not be visible', () => {
       const app = new VcsUiApp();
-      const item = new ObliqueCollectionContentTreeItem({ name: 'foo', collectionName: 'foo' }, app);
+      const item = new ObliqueCollectionContentTreeItem(
+        { name: 'foo', collectionName: 'foo' },
+        app,
+      );
       expect(item.visible).to.be.false;
       item.destroy();
       app.destroy();
@@ -158,7 +169,10 @@ describe('ObliqueCollectionContentTreeItem', () => {
   describe('serialize', () => {
     it('should serialize name, type and collectionName', () => {
       const app = new VcsUiApp();
-      const item = new ObliqueCollectionContentTreeItem({ name: 'foo', collectionName: 'foo' }, app);
+      const item = new ObliqueCollectionContentTreeItem(
+        { name: 'foo', collectionName: 'foo' },
+        app,
+      );
       const config = item.toJSON();
       expect(config).to.have.all.keys(['name', 'type', 'collectionName']);
       item.destroy();

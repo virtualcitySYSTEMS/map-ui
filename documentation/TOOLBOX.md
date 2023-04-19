@@ -3,6 +3,7 @@
 The toolbox is a container for tools. Plugins can add [ToolboxComponents](#ToolboxComponents) or buttons to predefined groups of `@vcmap/ui` or own groups.
 The ToolboxManager manages these groups and group's content. It implements the `VcsComponentManager<ToolboxComponent,ToolboxComponentOptions>` interface.
 Each registered `ToolboxComponent` has an id, a type and an owner:
+
 ```js
 /**
  * @typedef {Object} ToolboxComponent
@@ -13,11 +14,13 @@ Each registered `ToolboxComponent` has an id, a type and an owner:
 ```
 
 This basic ToolboxComponent schema is extended by three different types:
- - [SingleToolboxComponent](#SingleToolboxComponent)
- - [SelectToolboxComponent](#SelectToolboxComponent)
- - [GroupToolboxComponent](#GroupToolboxComponent)
+
+- [SingleToolboxComponent](#SingleToolboxComponent)
+- [SelectToolboxComponent](#SelectToolboxComponent)
+- [GroupToolboxComponent](#GroupToolboxComponent)
 
 To add a new ToolboxComponent, you have to provide `ToolboxComponentOptions` (again extended by options for three different types):
+
 ```js
 /**
  * @typedef {Object} ToolboxComponentOptions
@@ -27,14 +30,16 @@ To add a new ToolboxComponent, you have to provide `ToolboxComponentOptions` (ag
 ```
 
 Important notes on ToolboxComponents:
- - ToolboxComponents are static. Once added, they cannot be changed or updated.
- - ToolboxComponents of plugins are removed from the app, when the plugin is removed.
- - GroupToolboxComponent is a special case. It can be changed by adding or removing buttons. 
+
+- ToolboxComponents are static. Once added, they cannot be changed or updated.
+- ToolboxComponents of plugins are removed from the app, when the plugin is removed.
+- GroupToolboxComponent is a special case. It can be changed by adding or removing buttons.
 
 > Avoid adding buttons to groups owned by other plugin, since this may lead to unexpected behaviour (see [GroupToolboxComponent](#GroupToolboxComponent)).
 
 The `ToolboxComponents` are sorted by owner and plugin order. For VcsApp owned app a predefined defaultOrder exists.
 To be rendered in Toolbox components must meet certain conditions:
+
 - SingleToolboxComponent: no further conditions
 - SelectToolboxComponent: must have at least two tools
 - GroupToolboxComponent: must have at least one member (button)
@@ -42,6 +47,7 @@ To be rendered in Toolbox components must meet certain conditions:
 ## ToolboxComponents
 
 The ToolboxManager supports three different `ToolboxType`s with different behaviour:
+
 ```js
 /**
  * Possible group types. Define behaviour of group:
@@ -53,7 +59,9 @@ The ToolboxManager supports three different `ToolboxType`s with different behavi
 ```
 
 ### SingleToolboxComponent
+
 Renders one **single** toggle button.
+
 ```js
 /**
  * @typedef {ToolboxComponent} SingleToolboxComponent
@@ -62,6 +70,7 @@ Renders one **single** toggle button.
 ```
 
 To add a SingleToolboxComponent, use `add()` method of ToolboxManager providing `SingleToolboxComponentOptions`:
+
 ```js
 /**
  * @typedef {ToolboxComponentOptions} SingleToolboxComponentOptions
@@ -83,7 +92,8 @@ app.toolboxManager.add(
 );
 ```
 
-### SelectToolboxComponent 
+### SelectToolboxComponent
+
 The **select** type offers an exclusive selection of a tool within this group.
 It implements an extended `VcsAction` called `ToolboxSelectAction` with a selected callback, a list of tools and a currentIndex.
 By default, the first item of the group is rendered next to a dropdown arrow.
@@ -95,7 +105,6 @@ Clicking the selected item, calls the `callback` of `ToolboxSelectAction`.
 It is proposed `callback` activates or deactivates the tool, e.g. by starting or stopping a session.
 
 ```js
-
 /**
  * @typedef {ToolboxComponent} SelectToolboxComponent
  * @property {ToolboxSelectAction} action
@@ -140,7 +149,7 @@ const selectGroup = app.toolboxManager.add(
         this.active = false;
       },
       _start() {
-        const startSession = tool => ({ type: tool });
+        const startSession = (tool) => ({ type: tool });
         this._session = startSession(this.tools[this.currentIndex].name);
         this.active = true;
         console.log('starting session', this._session);
@@ -180,6 +189,7 @@ const selectGroup = app.toolboxManager.add(
 ```
 
 ### GroupToolboxComponent
+
 The **group** type provides a non-exclusive group of tools. The group button with dropdown arrow is always rendered on top level.
 Multiple group items can be activated. The group button shows an active state, as soon as one of the group's tools is active.
 
@@ -190,7 +200,7 @@ Multiple group items can be activated. The group button shows an active state, a
  * @property {string|undefined} title
  * @property {ButtonManager} buttonManager
  */
-``` 
+```
 
 To add a GroupToolboxComponent, use `add()` method of ToolboxManager providing `GroupToolboxComponentOptions`:
 
@@ -234,9 +244,11 @@ const buttonComponents = [
       active: false,
       callback() {},
     },
-  }
+  },
 ];
-buttonComponents.forEach(button => group.buttonManager.add(button,'sample-plugin'));
+buttonComponents.forEach((button) =>
+  group.buttonManager.add(button, 'sample-plugin'),
+);
 ```
 
 You can also add buttons to existing groups. Be aware, that groups can be removed.
@@ -246,19 +258,21 @@ Therefore, a plugin you are dependent on might not or no longer exist.
 Add your own group instead or use a group owned by the VcsUiApp:
 
 ```js
-app.toolboxManager
-    .get('miscellaneous').buttonManager
-    .add({
-      action: {
-        name: 'mySpecialTool',
-        title: 'a special tool',
-        icon: 'mdi-special',
-        active: false,
-        callback() {},
-      },
-    },'sample-plugin');
+app.toolboxManager.get('miscellaneous').buttonManager.add(
+  {
+    action: {
+      name: 'mySpecialTool',
+      title: 'a special tool',
+      icon: 'mdi-special',
+      active: false,
+      callback() {},
+    },
+  },
+  'sample-plugin',
+);
 ```
 
 Predefined groups of VcsUiApp are:
+
 - flight (group for flight tools)
 - miscellaneous (container group for miscellaneous tools)

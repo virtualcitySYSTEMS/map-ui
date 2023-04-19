@@ -1,8 +1,5 @@
 <template>
-  <div
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
-  >
+  <div @mouseover="hover = true" @mouseleave="hover = false">
     <VcsTooltip
       :tooltip-position="tooltipPosition"
       :tooltip="errorMessage"
@@ -24,8 +21,8 @@
           :value="visibleValue"
           :type="type"
           outlined
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
           :height="isDense ? 24 : 32"
           class="py-1 primary--placeholder align-center"
           :class="{
@@ -34,7 +31,11 @@
             'outline--error': !!errorMessage,
             'input--dense': isDense,
             'input--not-dense': !isDense,
-            'file-border-bottom': inputComponent === 'VFileInput' && !focus && !hover && !errorMessage,
+            'file-border-bottom':
+              inputComponent === 'VFileInput' &&
+              !focus &&
+              !hover &&
+              !errorMessage,
           }"
         />
       </template>
@@ -73,7 +74,8 @@
   }
   .outline--error {
     ::v-deep {
-      .v-input__slot fieldset, .v-text-field__slot input {
+      .v-input__slot fieldset,
+      .v-text-field__slot input {
         border-color: var(--v-error-base);
       }
     }
@@ -197,15 +199,27 @@
         return 'VTextField';
       });
       const isClearable = computed(() => {
-        return (attrs.clearable !== undefined && attrs.clearable !== false) &&
-          (hover.value || focus.value || !!errorMessage.value);
+        return (
+          attrs.clearable !== undefined &&
+          attrs.clearable !== false &&
+          (hover.value || focus.value || !!errorMessage.value)
+        );
       });
       const isDense = computed(() => attrs.dense !== false);
       const isOutlined = computed(() => {
-        return (hover.value || focus.value || !!errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+        return (
+          (hover.value || focus.value || !!errorMessage.value) &&
+          !(attrs.disabled || attrs.disabled === '')
+        );
       });
       const visibleValue = computed(() => {
-        if (attrs.type === 'number' && attrs.value && props.unit && !focus.value && !hover.value) {
+        if (
+          attrs.type === 'number' &&
+          attrs.value &&
+          props.unit &&
+          !focus.value &&
+          !hover.value
+        ) {
           return `${attrs.value} ${props.unit}`;
         } else {
           return attrs.value || '';

@@ -28,9 +28,10 @@ The interface is also implemented by [WindowManager](./WINDOWS.md) and [ToolboxM
 ## ButtonManager
 
 The ButtonManager is a basic container for a set of buttons.
-Buttons can be added and removed. 
+Buttons can be added and removed.
 
 To add a button, provide `ButtonComponentOptions` consisting of an optional id and an action, plus the owner of the button.
+
 ```js
 /**
  * @typedef ButtonComponentOptions
@@ -39,32 +40,47 @@ To add a button, provide `ButtonComponentOptions` consisting of an optional id a
  */
 
 const buttonManager = app.toolboxManager.get('miscellaneous').buttonManager; // Toolbox groups use the buttonManager to manage their buttons. It could be used in other contexts, too.
-buttonManager.add({
-  id: 'buttonId',
-  action: {
-    name: 'action',
-    callback() {},
+buttonManager.add(
+  {
+    id: 'buttonId',
+    action: {
+      name: 'action',
+      callback() {},
+    },
   },
-}, 'myPlugin')
+  'myPlugin',
+);
 ```
+
 All added buttons are stored in a key value store. To access a button call:
+
 ```js
 const buttonComponent = buttonManager.get('buttonId');
 ```
+
 If you need to track state changes, you can listen to `added` and `removed` events emitted, whenever a button is added or removed.
 In ui components it might be enough to make use of the reactive component ids array by a computed property:
+
 ```js
-computed(() => [...buttonManager.componentIds.value].map(id => buttonManager.get(id)));
+computed(() =>
+  [...buttonManager.componentIds.value].map((id) => buttonManager.get(id)),
+);
 ```
+
 To remove a button use the button component's id.
+
 ```js
 buttonManager.remove('buttonId');
 ```
+
 You can also remove all buttons of a specific owner, which is performed by the app on the [NavbarManager](#NavbarManager), whenever plugins are unloaded:
+
 ```js
 buttonManager.removeOwner('myPlugin');
 ```
+
 To clear all buttons from the manager call:
+
 ```js
 buttonManager.clear();
 ```
@@ -78,6 +94,7 @@ NavbarManager extends the add method of ButtonManager. Additionally, to `buttonC
 you have to provide a render position.
 
 Possible render positions from left to right are defined by the `ButtonLocation` enumeration object:
+
 ```js
 /**
  * Possible render positions of buttons in navbar from left to right
@@ -90,13 +107,13 @@ Possible render positions from left to right are defined by the `ButtonLocation`
  * @property {number} MENU - menu buttons rendered in dropdown menu (settings)
  */
 export const ButtonLocation = {
-    MAP: 0,
-    CONTENT: 1,
-    TOOL: 2,
-    PROJECT: 3,
-    SHARE: 4,
-    MENU: 5,
-  };
+  MAP: 0,
+  CONTENT: 1,
+  TOOL: 2,
+  PROJECT: 3,
+  SHARE: 4,
+  MENU: 5,
+};
 
 app.navbarManager.add(
   { id: 'myPlugin', action },

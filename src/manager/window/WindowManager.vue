@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="{ 'win-container-mobile' : $vuetify.breakpoint.xs }"
-  >
+  <div :class="{ 'win-container-mobile': $vuetify.breakpoint.xs }">
     <WindowComponent
       v-for="id in componentIds"
       :key="id"
@@ -41,13 +39,12 @@
     width: 100%;
   }
   .win-container-mobile > {
-    div{
+    div {
       width: 100% !important;
       inset: unset !important;
       border-radius: 0 !important;
     }
   }
-
 </style>
 
 <script>
@@ -55,7 +52,11 @@
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
-  import { applyPositionOnTarget, getTargetSize, moveWindow } from './windowHelper.js';
+  import {
+    applyPositionOnTarget,
+    getTargetSize,
+    moveWindow,
+  } from './windowHelper.js';
 
   /**
    * WindowManager rendering all registered WindowComponents
@@ -94,16 +95,20 @@
        * @param {string} id
        * @returns {import("vue").ComputedRef<Object>}
        */
-      const getStyles = id => computed(() => {
-        const windowComponent = windowManager.get(id);
-        const state = windowComponent?.state;
-        const position = applyPositionOnTarget(windowComponent?.position, targetSize.value);
-        return {
-          zIndex: windowComponent.zIndex.value,
-          ...position,
-          ...(state.styles || {}),
-        };
-      });
+      const getStyles = (id) =>
+        computed(() => {
+          const windowComponent = windowManager.get(id);
+          const state = windowComponent?.state;
+          const position = applyPositionOnTarget(
+            windowComponent?.position,
+            targetSize.value,
+          );
+          return {
+            zIndex: windowComponent.zIndex.value,
+            ...position,
+            ...(state.styles || {}),
+          };
+        });
       /**
        * @param {string} id
        */
@@ -124,7 +129,8 @@
         targetSize.value = getTargetSize(app.maps.target);
       };
       window.addEventListener('resize', setTargetSize);
-      const setTargetDestroy = app.maps.mapActivated.addEventListener(setTargetSize);
+      const setTargetDestroy =
+        app.maps.mapActivated.addEventListener(setTargetSize);
 
       onUnmounted(() => {
         window.removeEventListener('resize', setTargetSize);
@@ -133,15 +139,20 @@
 
       return {
         componentIds: ref(componentIds),
-        getComponent: id => windowManager.get(id).component,
-        getHeaderComponent: id => windowManager.get(id).headerComponent || WindowComponentHeader,
+        getComponent: (id) => windowManager.get(id).component,
+        getHeaderComponent: (id) =>
+          windowManager.get(id).headerComponent || WindowComponentHeader,
         getStyles,
         getState,
         getProps,
         isOnTop,
-        getSlot: id => windowManager.get(id).slot,
-        close: (id) => { windowManager.remove(id); },
-        pin: (id) => { windowManager.pinWindow(id); },
+        getSlot: (id) => windowManager.get(id).slot,
+        close: (id) => {
+          windowManager.remove(id);
+        },
+        pin: (id) => {
+          windowManager.pinWindow(id);
+        },
         bringWindowToTop,
         move,
       };

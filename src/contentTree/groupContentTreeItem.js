@@ -1,5 +1,7 @@
 import { watch } from 'vue';
-import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
+import ContentTreeItem, {
+  contentTreeClassRegistry,
+} from './contentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 
 /**
@@ -11,7 +13,9 @@ class GroupContentTreeItem extends ContentTreeItem {
   /**
    * @returns {string}
    */
-  static get className() { return 'GroupContentTreeItem'; }
+  static get className() {
+    return 'GroupContentTreeItem';
+  }
 
   /**
    * @param {ContentTreeItemOptions} options
@@ -24,22 +28,34 @@ class GroupContentTreeItem extends ContentTreeItem {
      * @type {function():void}
      * @private
      */
-    this._childWatcher = watch(this._children, () => {
-      const children = this._children.value;
-      this.visible = children.some(c => c.visible);
-      if (children.every(c => c.state === StateActionState.NONE)) {
-        this.state = StateActionState.NONE;
-      } else {
-        const childrenWithState = children.filter(c => c.state !== StateActionState.NONE);
-        if (childrenWithState.every(c => c.state === StateActionState.ACTIVE)) {
-          this.state = StateActionState.ACTIVE;
-        } else if (childrenWithState.every(c => c.state === StateActionState.INACTIVE)) {
-          this.state = StateActionState.INACTIVE;
+    this._childWatcher = watch(
+      this._children,
+      () => {
+        const children = this._children.value;
+        this.visible = children.some((c) => c.visible);
+        if (children.every((c) => c.state === StateActionState.NONE)) {
+          this.state = StateActionState.NONE;
         } else {
-          this.state = StateActionState.INDETERMINATE;
+          const childrenWithState = children.filter(
+            (c) => c.state !== StateActionState.NONE,
+          );
+          if (
+            childrenWithState.every((c) => c.state === StateActionState.ACTIVE)
+          ) {
+            this.state = StateActionState.ACTIVE;
+          } else if (
+            childrenWithState.every(
+              (c) => c.state === StateActionState.INACTIVE,
+            )
+          ) {
+            this.state = StateActionState.INACTIVE;
+          } else {
+            this.state = StateActionState.INDETERMINATE;
+          }
         }
-      }
-    }, { deep: true });
+      },
+      { deep: true },
+    );
   }
 
   async clicked() {
@@ -47,13 +63,16 @@ class GroupContentTreeItem extends ContentTreeItem {
       return;
     }
 
-    const statePredicate = this.state === StateActionState.ACTIVE ?
-      state => state !== StateActionState.NONE :
-      state => state !== StateActionState.NONE && state !== StateActionState.ACTIVE;
+    const statePredicate =
+      this.state === StateActionState.ACTIVE
+        ? (state) => state !== StateActionState.NONE
+        : (state) =>
+            state !== StateActionState.NONE &&
+            state !== StateActionState.ACTIVE;
 
     const promises = this._children.value
-      .filter(c => c.visible && statePredicate(c.state))
-      .map(c => c.clicked());
+      .filter((c) => c.visible && statePredicate(c.state))
+      .map((c) => c.clicked());
     await Promise.all(promises);
   }
 
@@ -64,4 +83,7 @@ class GroupContentTreeItem extends ContentTreeItem {
 }
 
 export default GroupContentTreeItem;
-contentTreeClassRegistry.registerClass(GroupContentTreeItem.className, GroupContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  GroupContentTreeItem.className,
+  GroupContentTreeItem,
+);

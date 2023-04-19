@@ -16,7 +16,7 @@
             outlined
             :dense="isDense"
             :height="isDense ? 24 : 32"
-            :item-text="item => $t(getText(item))"
+            :item-text="(item) => $t(getText(item))"
             class="py-1 primary--placeholder"
             :class="{
               'remove-outline': !isOutlined,
@@ -25,10 +25,10 @@
               'outline--current': focus,
               'outline--error': !!errorMessage,
             }"
-            v-bind="{...$attrs, ...attrs}"
-            v-on="{...$listeners, ...on}"
-            @focus="focus = true;"
-            @blur="focus = false;"
+            v-bind="{ ...$attrs, ...attrs }"
+            v-on="{ ...$listeners, ...on }"
+            @focus="focus = true"
+            @blur="focus = false"
             @mouseover="hover = true"
             @mouseleave="hover = false"
           >
@@ -56,10 +56,10 @@
       }
     }
   }
-  .v-select{
-    &.v-select--is-multi{
+  .v-select {
+    &.v-select--is-multi {
       ::v-deep {
-        .v-select__selections{
+        .v-select__selections {
           flex-wrap: nowrap;
         }
       }
@@ -75,7 +75,8 @@
   }
   .outline--current {
     ::v-deep {
-      .v-input__slot fieldset, .v-input__slot .v-select__slot {
+      .v-input__slot fieldset,
+      .v-input__slot .v-select__slot {
         border-color: currentColor;
         transition: border-color 0.5s ease;
       }
@@ -83,7 +84,8 @@
   }
   .outline--error {
     ::v-deep {
-      .v-input__slot fieldset, .v-input__slot .v-select__slot {
+      .v-input__slot fieldset,
+      .v-input__slot .v-select__slot {
         border-color: var(--v-error-base);
       }
     }
@@ -121,7 +123,6 @@
   }
 </style>
 <script>
-
   import { VSelect } from 'vuetify/lib';
   import { computed, ref } from 'vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
@@ -165,7 +166,10 @@
 
       const isDense = computed(() => attrs.dense !== false);
       const isOutlined = computed(() => {
-        return (hover.value || focus.value || !!errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+        return (
+          (hover.value || focus.value || !!errorMessage.value) &&
+          !(attrs.disabled || attrs.disabled === '')
+        );
       });
 
       function getText(item) {
@@ -188,4 +192,3 @@
     },
   };
 </script>
-

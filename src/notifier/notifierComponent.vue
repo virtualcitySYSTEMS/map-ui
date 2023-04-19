@@ -2,17 +2,17 @@
   <div>
     <v-snackbar
       dark
-      v-for="(notification) in notifications"
+      v-for="notification in notifications"
       :key="notification.id"
       v-model="notification.open"
       :timeout="notification.timeout"
     >
-      <v-icon
-        :color="notification.type"
-      >
+      <v-icon :color="notification.type">
         {{ icon[notification.type] }}
       </v-icon>
-      <span class="snack-title">{{ $t(notification.title || defaultTitle[notification.type]) }}</span>
+      <span class="snack-title">{{
+        $t(notification.title || defaultTitle[notification.type])
+      }}</span>
       <template #action="{ attrs }">
         <VcsButton
           icon="mdi-close"
@@ -62,23 +62,23 @@
 </script>
 
 <style lang="scss" scoped>
-.v-snack{
-  ::v-deep{
-    .v-snack__content{
-      display: grid;
-      gap: 8px 4px;
-      grid-template-columns: 20px auto;
-      .v-icon{
-        grid-row-start: 1;
-        grid-row-end: 3;
-        align-self: start;
-        font-size: 17px;
+  .v-snack {
+    ::v-deep {
+      .v-snack__content {
+        display: grid;
+        gap: 8px 4px;
+        grid-template-columns: 20px auto;
+        .v-icon {
+          grid-row-start: 1;
+          grid-row-end: 3;
+          align-self: start;
+          font-size: 17px;
+        }
+      }
+      .v-snack__action {
+        align-self: flex-start;
+        margin-top: 4px;
       }
     }
-    .v-snack__action{
-      align-self: flex-start;
-      margin-top: 4px;
-    }
   }
-}
 </style>

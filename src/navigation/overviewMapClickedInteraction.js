@@ -1,4 +1,9 @@
-import { VcsEvent, EventType, ModificationKeyType, AbstractInteraction } from '@vcmap/core';
+import {
+  VcsEvent,
+  EventType,
+  ModificationKeyType,
+  AbstractInteraction,
+} from '@vcmap/core';
 
 /**
  * @class

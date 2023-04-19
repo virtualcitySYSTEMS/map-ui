@@ -1,7 +1,13 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg id="icon_24_point" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <svg
+    id="icon_24_point"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
     <g id="Group_269" data-name="Group 269" transform="translate(-63 -114.008)">
       <g id="Group_62" data-name="Group 62">
         <circle

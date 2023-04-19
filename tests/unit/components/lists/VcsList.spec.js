@@ -162,7 +162,6 @@ describe('VcsList', () => {
       let value;
       let selectionChanged;
 
-
       beforeAll(() => {
         selectionChanged = vi.fn();
         items = [
@@ -302,7 +301,9 @@ describe('VcsList', () => {
       expect(input[0]).to.be.an('array').and.have.lengthOf(1);
       expect(input[0][0]).to.be.an('array').and.have.lengthOf(items.length);
       expect(input[0][0]).not.to.equal(value);
-      input[0][0].forEach((selected, idx) => expect(selected).to.have.property('name', items[idx].name));
+      input[0][0].forEach((selected, idx) =>
+        expect(selected).to.have.property('name', items[idx].name),
+      );
     });
 
     it('should call selectionChanged on previously unselected items', () => {
@@ -515,7 +516,6 @@ describe('VcsList', () => {
       let items;
       let value;
       let selectionChanged;
-
 
       beforeAll(() => {
         selectionChanged = vi.fn();
@@ -1276,7 +1276,6 @@ describe('VcsList', () => {
         component.destroy();
       });
 
-
       it('should not emit a new value', () => {
         expect(component.emitted()).to.not.have.property('input');
       });
@@ -1426,13 +1425,17 @@ describe('VcsList', () => {
 
     it('should not render invisible items', () => {
       items[2].visible = false;
-      component.setProps({ items: items.map(i => ({ ...i })) });
+      component.setProps({ items: items.map((i) => ({ ...i })) });
       expect(component.vm.renderingItems).to.not.include(items[2]);
     });
 
     it('should only rendered queried items', () => {
       component.vm.query = 'foo';
-      expect(component.vm.renderingItems).to.have.members([items[0], items[3], items[4]]);
+      expect(component.vm.renderingItems).to.have.members([
+        items[0],
+        items[3],
+        items[4],
+      ]);
     });
   });
 });

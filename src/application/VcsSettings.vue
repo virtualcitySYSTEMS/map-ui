@@ -1,9 +1,6 @@
 <template>
   <v-container class="px-1 py-0">
-    <v-row
-      no-gutters
-      align="center"
-    >
+    <v-row no-gutters>
       <v-col>
         <VcsLabel html-for="settingsLanguageSelect">
           {{ $t('settings.languageSelector') }}
@@ -17,10 +14,7 @@
         />
       </v-col>
     </v-row>
-    <v-row
-      no-gutters
-      align="center"
-    >
+    <v-row no-gutters>
       <v-col>
         <VcsLabel html-for="settingsLanguageSelect">
           {{ $t('settings.theme.title') }}
@@ -42,9 +36,7 @@
 </template>
 
 <script>
-  import {
-    ref, inject, onUnmounted, getCurrentInstance, computed,
-  } from 'vue';
+  import { ref, inject, onUnmounted, getCurrentInstance, computed } from 'vue';
   import { VCol, VContainer, VRow } from 'vuetify/lib';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
@@ -84,7 +76,8 @@
         localLanguage.value = app.locale;
       };
       setLocale();
-      const localeChangedListener = app.localeChanged.addEventListener(setLocale);
+      const localeChangedListener =
+        app.localeChanged.addEventListener(setLocale);
       const addedListener = app.i18n.added.addEventListener(setupI18n);
       const removedListener = app.i18n.removed.addEventListener(setupI18n);
 

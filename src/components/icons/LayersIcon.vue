@@ -1,8 +1,18 @@
 <!-- eslint-disable max-len -->
 <template>
-  <svg id="icon_24_layer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <svg
+    id="icon_24_layer"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
     <rect id="size" width="24" height="24" fill="none" />
-    <g id="Gruppe_1965" data-name="Gruppe 1965" transform="translate(-590.995 -459.826)">
+    <g
+      id="Gruppe_1965"
+      data-name="Gruppe 1965"
+      transform="translate(-590.995 -459.826)"
+    >
       <path
         id="Pfad_752"
         data-name="Pfad 752"

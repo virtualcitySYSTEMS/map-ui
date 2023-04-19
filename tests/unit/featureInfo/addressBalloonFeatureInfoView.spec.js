@@ -1,9 +1,4 @@
-import {
-  describe,
-  beforeAll,
-  expect,
-  it,
-} from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import AddressBalloonFeatureInfoView from '../../../src/featureInfo/addressBalloonFeatureInfoView.js';
@@ -41,24 +36,46 @@ describe('AddressBalloonFeatureInfoView', () => {
 
     it('should map address attributes existing on the feature', () => {
       const attributes = addressBalloonFeatureInfoView.getAttributes(feature);
-      expect(attributes).to.have.property('addressName', addressAttributes['gml:name']);
-      expect(attributes).to.have.property('street', addressAttributes.Address.Street);
-      expect(attributes).to.have.property('number', addressAttributes.Address.HouseNumber);
-      expect(attributes).to.have.property('city', addressAttributes.Address.City);
-      expect(attributes).to.have.property('zip', addressAttributes.Address.ZipCode);
+      expect(attributes).to.have.property(
+        'addressName',
+        addressAttributes['gml:name'],
+      );
+      expect(attributes).to.have.property(
+        'street',
+        addressAttributes.Address.Street,
+      );
+      expect(attributes).to.have.property(
+        'number',
+        addressAttributes.Address.HouseNumber,
+      );
+      expect(attributes).to.have.property(
+        'city',
+        addressAttributes.Address.City,
+      );
+      expect(attributes).to.have.property(
+        'zip',
+        addressAttributes.Address.ZipCode,
+      );
     });
 
     it('should NOT pass address keys configured with null', () => {
-      expect(addressBalloonFeatureInfoView.getAttributes(feature)).not.to.have.property('country');
+      expect(
+        addressBalloonFeatureInfoView.getAttributes(feature),
+      ).not.to.have.property('country');
     });
   });
 
   describe('getting config', () => {
     describe('of a default AddressBalloonFeatureInfoView', () => {
       it('should return the type and name', () => {
-        const abstractView = new AddressBalloonFeatureInfoView({ name: 'TestView' });
+        const abstractView = new AddressBalloonFeatureInfoView({
+          name: 'TestView',
+        });
         const config = abstractView.toJSON();
-        expect(config).to.have.property('type', 'AddressBalloonFeatureInfoView');
+        expect(config).to.have.property(
+          'type',
+          'AddressBalloonFeatureInfoView',
+        );
         expect(config).to.have.property('name', 'TestView');
       });
     });

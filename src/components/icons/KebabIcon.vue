@@ -1,8 +1,18 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg id="icon-kebab" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-    <g id="Group_860" data-name="Group 860" transform="translate(10 0) rotate(90)">
+  <svg
+    id="icon-kebab"
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+  >
+    <g
+      id="Group_860"
+      data-name="Group 860"
+      transform="translate(10 0) rotate(90)"
+    >
       <circle
         id="Ellipse_40"
         data-name="Ellipse 40"

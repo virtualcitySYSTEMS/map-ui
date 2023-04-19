@@ -51,7 +51,12 @@ export function getTargetSize(target) {
  * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
  * @returns {WindowPositionOptions}
  */
-export function getWindowPositionOptions(x, y, target, alignment = WindowAlignment.TOP_LEFT) {
+export function getWindowPositionOptions(
+  x,
+  y,
+  target,
+  alignment = WindowAlignment.TOP_LEFT,
+) {
   const targetSize = getTargetSize(target);
   if (!targetSize) {
     return { left: x, top: y };
@@ -61,11 +66,11 @@ export function getWindowPositionOptions(x, y, target, alignment = WindowAlignme
   if (alignment === WindowAlignment.TOP_LEFT) {
     return { left: x - left, top: y - top };
   } else if (alignment === WindowAlignment.TOP_RIGHT) {
-    return { right: (left + width) - x, top: y - top };
+    return { right: left + width - x, top: y - top };
   } else if (alignment === WindowAlignment.BOTTOM_LEFT) {
-    return { left: x - left, bottom: (height + top) - y };
+    return { left: x - left, bottom: height + top - y };
   }
-  return { right: (left + width) - x, bottom: (height + top) - y };
+  return { right: left + width - x, bottom: height + top - y };
 }
 
 /**
@@ -75,16 +80,24 @@ export function getWindowPositionOptions(x, y, target, alignment = WindowAlignme
  * @param {WindowAlignment} [alignment]
  * @returns {WindowPositionOptions}
  */
-export function getWindowPositionOptionsFromMapEvent(windowPosition, target, alignment) {
+export function getWindowPositionOptionsFromMapEvent(
+  windowPosition,
+  target,
+  alignment,
+) {
   const targetSize = getTargetSize(target);
   if (!targetSize) {
     return { left: windowPosition.x, top: windowPosition.y };
   }
 
   const { left, top } = targetSize;
-  return getWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, target, alignment);
+  return getWindowPositionOptions(
+    windowPosition.x + left,
+    windowPosition.y + top,
+    target,
+    alignment,
+  );
 }
-
 
 /**
  * Fits a window aligned top left, so it fits into the parent. This will change the alignment to be bottom or right depending
@@ -127,13 +140,24 @@ export function getFittedWindowPositionOptions(x, y, width, height, target) {
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  * @returns {WindowPositionOptions}
  */
-export function getFittedWindowPositionOptionsFromMapEvent(windowPosition, width, height, target) {
+export function getFittedWindowPositionOptionsFromMapEvent(
+  windowPosition,
+  width,
+  height,
+  target,
+) {
   const targetSize = getTargetSize(target);
   if (!targetSize) {
     return { left: windowPosition.x, top: windowPosition.y };
   }
   const { left, top } = targetSize;
-  return getFittedWindowPositionOptions(windowPosition.x + left, windowPosition.y + top, width, height, target);
+  return getFittedWindowPositionOptions(
+    windowPosition.x + left,
+    windowPosition.y + top,
+    width,
+    height,
+    target,
+  );
 }
 
 /**
@@ -148,7 +172,9 @@ export function posToNumber(pos, key, targetSize) {
     if (pos.match(/^-?\d+\.?\d*px$/)) {
       return parseInt(pos, 10);
     } else if (targetSize && pos.match(/^-?\d+\.?\d*%$/)) {
-      const scalar = ['bottom', 'top', 'height', 'maxHeight'].includes(key) ? targetSize?.height : targetSize?.width;
+      const scalar = ['bottom', 'top', 'height', 'maxHeight'].includes(key)
+        ? targetSize?.height
+        : targetSize?.width;
       return (parseInt(pos, 10) / 100) * scalar;
     }
     return undefined;
@@ -166,7 +192,9 @@ export function posToPercent(pos, key, targetSize) {
   if (!targetSize) {
     return undefined;
   }
-  const scalar = ['bottom', 'top', 'height', 'maxHeight'].includes(key) ? targetSize.height : targetSize.width;
+  const scalar = ['bottom', 'top', 'height', 'maxHeight'].includes(key)
+    ? targetSize.height
+    : targetSize.width;
   return `${((pos / scalar) * 100).toFixed(0)}%`;
 }
 
@@ -204,7 +232,11 @@ export function updateWindowPosition(previous, update, targetSize) {
    * @returns {string}
    */
   const toString = (key, prev, updated) => {
-    if (prev[key] === 'auto' || prev[key] === 'unset' || updated[key] === undefined) {
+    if (
+      prev[key] === 'auto' ||
+      prev[key] === 'unset' ||
+      updated[key] === undefined
+    ) {
       return prev[key];
     } else if (updated[key] !== 'auto' && updated[key] !== 'unset') {
       const numeric = posToNumber(updated[key], key, targetSize);
@@ -223,7 +255,6 @@ export function updateWindowPosition(previous, update, targetSize) {
   });
   return updatedPosition;
 }
-
 
 /**
  * Move window position in x and y.
@@ -251,7 +282,11 @@ export function moveWindow(id, translation, windowManager, targetSize) {
   if (windowPositionOptions.right !== undefined) {
     windowPositionOptions.right -= translation.dx;
   }
-  const updatedPosition = updateWindowPosition(position, windowPositionOptions, targetSize);
+  const updatedPosition = updateWindowPosition(
+    position,
+    windowPositionOptions,
+    targetSize,
+  );
   windowManager.setWindowPositionOptions(id, updatedPosition);
 }
 
@@ -274,15 +309,18 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
     );
   }
   if (windowPositionOptions.bottom !== undefined) {
-    const height = windowPositionOptions.height ||
-      targetHeight - windowPositionOptions.bottom - windowPositionOptions.top || windowMoveMargin.bottom;
+    const height =
+      windowPositionOptions.height ||
+      targetHeight - windowPositionOptions.bottom - windowPositionOptions.top ||
+      windowMoveMargin.bottom;
     clippedPosition.bottom = Math.min(
       Math.max(windowPositionOptions.bottom, -height + windowMoveMargin.bottom),
       targetHeight - height,
     );
   }
   if (windowPositionOptions.left !== undefined) {
-    const width = windowPositionOptions.width ||
+    const width =
+      windowPositionOptions.width ||
       targetWidth - windowPositionOptions.right - windowPositionOptions.left;
     clippedPosition.left = Math.min(
       Math.max(windowPositionOptions.left, -width + windowMoveMargin.left),
@@ -290,7 +328,8 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
     );
   }
   if (windowPositionOptions.right !== undefined) {
-    const width = windowPositionOptions.width ||
+    const width =
+      windowPositionOptions.width ||
       targetWidth - windowPositionOptions.right - windowPositionOptions.left;
     clippedPosition.right = Math.min(
       Math.max(windowPositionOptions.right, -width + windowMoveMargin.right),
@@ -306,15 +345,28 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
   clippedPosition.maxWidth = targetWidth;
   clippedPosition.maxHeight = targetHeight - 4; // 2px space plus 2px due to margin bottom
   if (windowPositionOptions.maxWidth !== undefined) {
-    clippedPosition.maxWidth = Math.min(windowPositionOptions.maxWidth, targetWidth);
+    clippedPosition.maxWidth = Math.min(
+      windowPositionOptions.maxWidth,
+      targetWidth,
+    );
   }
   if (windowPositionOptions.maxHeight !== undefined) {
-    clippedPosition.maxHeight = Math.min(windowPositionOptions.maxHeight, targetHeight);
+    clippedPosition.maxHeight = Math.min(
+      windowPositionOptions.maxHeight,
+      targetHeight,
+    );
   }
   // max width of a top left 2 window (active static window)
-  const topLeft2 = posToNumber(WindowPositions.TOP_LEFT2.left, 'left', targetSize);
+  const topLeft2 = posToNumber(
+    WindowPositions.TOP_LEFT2.left,
+    'left',
+    targetSize,
+  );
   if (clippedPosition.left === topLeft2) {
-    clippedPosition.maxWidth = Math.min(clippedPosition.maxWidth - topLeft2, targetWidth);
+    clippedPosition.maxWidth = Math.min(
+      clippedPosition.maxWidth - topLeft2,
+      targetWidth,
+    );
   }
 
   return clippedPosition;
@@ -332,6 +384,10 @@ export function applyPositionOnTarget(position, targetSize) {
   }
   const windowPositionOptions = optionsFromWindowPosition(position, targetSize);
   const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
-  const updatedPosition = updateWindowPosition(position, clippedPosition, targetSize);
+  const updatedPosition = updateWindowPosition(
+    position,
+    clippedPosition,
+    targetSize,
+  );
   return windowPositionFromOptions(updatedPosition);
 }

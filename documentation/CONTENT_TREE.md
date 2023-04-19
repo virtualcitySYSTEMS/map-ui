@@ -1,16 +1,17 @@
 # Content Tree
 
-The content tree maintains items like layers or viewpoints and creates a hierarchical, structured tree view. 
+The content tree maintains items like layers or viewpoints and creates a hierarchical, structured tree view.
 
 ## Configuration
 
-The content tree is configured within its own section of the map config. 
+The content tree is configured within its own section of the map config.
 It is defined as a flat array of objects containing item options, which are deserialized to [ContentTreeItem](../src/contentTree/contentTreeItem.js)s.
 
 Example content tree config:
+
 ```json
 {
-  "contentTree":  [
+  "contentTree": [
     {
       "name": "baseMap",
       "type": "SubContentTreeItem",
@@ -61,8 +62,10 @@ The `name` option of an item specifies the structure of the content tree. Using 
 The `type` option defines the item type. Following types with specific behaviour and further options are available:
 
 ### Groups
+
 - [GroupContentTreeItem](../src/contentTree/groupContentTreeItem.js): A clickable group item. When clicked, every child with a state not NONE will also be clicked.
 - [LayerGroupContentTreeItem](../src/contentTree/layerGroupContentTreeItem.js): A layer group. When clicked will try to activate all layers in the group or deactivate all layer in the group if all are active.
+
 ```js
 /**
  * @typedef {ContentTreeItemOptions} LayerGroupContentTreeItemOptions
@@ -71,26 +74,34 @@ The `type` option defines the item type. Following types with specific behaviour
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
 ```
+
 - [NodeContentTreeItem](../src/contentTree/nodeContentTreeItem.js): A group item which has _no click handler_.
 
 ### VcsObject
+
 [VcsObjectContentTreeItem](../src/contentTree/vcsObjectContentTreeItem.js): An abstract class for VcsObject based items. It handles the overriding/setting of its own values based on the VcsObjects properties bag.
+
 - [LayerContentTreeItem](../src/contentTree/layerContentTreeItem.js): A layer item. Activates/deactivates the layer when clicked.
+
 ```js
 /**
-* @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
-* @property {string} layerName
-* @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated if the click activates the layer
-  */
+ * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
+ * @property {string} layerName
+ * @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated if the click activates the layer
+ */
 ```
+
 - [ObliqueCollectionContentTreeItem](../src/contentTree/obliqueCollectionContentTreeItem.js): An oblique collection item. Sets/unsets the oblique collection when clicked.
+
 ```js
 /**
  * @typedef {ContentTreeItemOptions} ObliqueCollectionContentTreeItemOptions
  * @property {string} collectionName
  */
 ```
+
 - [ViewpointContentTreeItem](../src/contentTree/viewpointContentTreeItem.js): A viewpoint item. Sets the viewpoint on the currently active map when clicked.
+
 ```js
 /**
  * @typedef {VcsObjectContentTreeItem.Options} ViewpointContentTreeItemOptions
@@ -99,6 +110,7 @@ The `type` option defines the item type. Following types with specific behaviour
 ```
 
 ### Subtree
+
 - [SubContentTreeItem](../src/contentTree/subContentTreeItem.js): A subtree item. Subtrees are rendered in their own (not the main content tree).
   They will receive their own toggle button in the nav bar.
   Only toplevel items can be content tree items (with a name which does not have a .)
@@ -107,9 +119,9 @@ The `type` option defines the item type. Following types with specific behaviour
 
 The [ContentTreeCollection](../src/contentTree/contentTreeCollection.js) is an overridable indexed collection of [ContentTreeItem](../src/contentTree/contentTreeItem.js)s.
 
-The ContentTreeCollection maintains its items and creates a sorted, hierarchical tree view. 
+The ContentTreeCollection maintains its items and creates a sorted, hierarchical tree view.
 The tree gets updated, if an item is added or removed or if weight of an item changes.
-For each subtree an action button is added to the navbar. 
+For each subtree an action button is added to the navbar.
 
 ## ContentTreeItem
 
@@ -134,7 +146,7 @@ Each [ContentTreeItem](../src/contentTree/contentTreeItem.js) in the [ContentTre
  */
 ```
 
-Items must have a name, a state and a title. 
+Items must have a name, a state and a title.
 Items can be displayed as visible or not, clickable or not and disabled or not.
 It may have a tooltip, an icon, actions and children.
 
@@ -148,7 +160,7 @@ To manage actions ContentTreeItem class provides an API:
   - StyleSelector: 4
   - InfoUrl: 6
   - GoToExtent: 8
-The default weight is set to always push new actions past these.
+    The default weight is set to always push new actions past these.
 
 > Action names must be unique within a ContentTreeItem!
 
@@ -157,5 +169,5 @@ The default weight is set to always push new actions past these.
 ### State
 
 Per default a state action is added to all items, except if they were configured with state `NONE`.
-The state action contains the clicked callback function of an item. 
+The state action contains the clicked callback function of an item.
 It visualizes the states `INACTIVE`, `LOADING`, `ACTIVE` and `INDETERMINATE` on the tree view item.

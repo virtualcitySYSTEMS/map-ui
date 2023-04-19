@@ -21,9 +21,14 @@ describe('LayerContentTreeItem', () => {
       layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
       app.layers.add(layer);
       app.layers.add(layerToDeactivate);
-      item = new LayerContentTreeItem({
-        name: 'foo', layerName: layer.name, layerNamesToDeactivate: [layerToDeactivate.name],
-      }, app);
+      item = new LayerContentTreeItem(
+        {
+          name: 'foo',
+          layerName: layer.name,
+          layerNamesToDeactivate: [layerToDeactivate.name],
+        },
+        app,
+      );
     });
 
     afterAll(() => {
@@ -122,7 +127,10 @@ describe('LayerContentTreeItem', () => {
           },
         });
         app.layers.add(layer);
-        item = new LayerContentTreeItem({ name: 'foo', layerName: layer.name }, app);
+        item = new LayerContentTreeItem(
+          { name: 'foo', layerName: layer.name },
+          app,
+        );
       });
 
       afterAll(() => {
@@ -131,18 +139,20 @@ describe('LayerContentTreeItem', () => {
       });
 
       it('should add a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.true;
+        expect(item.actions.some((a) => a.name === 'ViewpointAction')).to.be
+          .true;
       });
 
       it('should add an extent action', () => {
-        expect(item.actions.some(a => a.name === 'content.layerExtentAction.name')).to.be.true;
+        expect(
+          item.actions.some((a) => a.name === 'content.layerExtentAction.name'),
+        ).to.be.true;
       });
 
       it('should add a style action', () => {
-        expect(item.actions.some(a => a.name === 'StyleSelector')).to.be.true;
+        expect(item.actions.some((a) => a.name === 'StyleSelector')).to.be.true;
       });
     });
-
 
     describe('if a layer is overriden with less properties', () => {
       let item;
@@ -168,7 +178,10 @@ describe('LayerContentTreeItem', () => {
           },
         });
         app.layers.add(layer);
-        item = new LayerContentTreeItem({ name: 'foo', layerName: layer.name }, app);
+        item = new LayerContentTreeItem(
+          { name: 'foo', layerName: layer.name },
+          app,
+        );
         app.layers.override(new VectorLayer({ name: layer.name }));
       });
 
@@ -178,15 +191,18 @@ describe('LayerContentTreeItem', () => {
       });
 
       it('should not have a viewpoint action', () => {
-        expect(item.actions.some(a => a.name === 'ViewpointAction')).to.be.false;
+        expect(item.actions.some((a) => a.name === 'ViewpointAction')).to.be
+          .false;
       });
 
       it('should not have an extent action', () => {
-        expect(item.actions.some(a => a.name === 'LayerExtentAction')).to.be.false;
+        expect(item.actions.some((a) => a.name === 'LayerExtentAction')).to.be
+          .false;
       });
 
       it('should not have a style action', () => {
-        expect(item.actions.some(a => a.name === 'StyleSelector')).to.be.false;
+        expect(item.actions.some((a) => a.name === 'StyleSelector')).to.be
+          .false;
       });
     });
   });
@@ -194,7 +210,10 @@ describe('LayerContentTreeItem', () => {
   describe('if layer is not present', () => {
     it('should not be visible', () => {
       const app = new VcsUiApp();
-      const item = new LayerContentTreeItem({ name: 'foo', layerName: 'foo' }, app);
+      const item = new LayerContentTreeItem(
+        { name: 'foo', layerName: 'foo' },
+        app,
+      );
       expect(item.visible).to.be.false;
       item.destroy();
       app.destroy();
@@ -204,9 +223,17 @@ describe('LayerContentTreeItem', () => {
   describe('serialize', () => {
     it('should serialize name, type and layerName, layerNamesToDeactivate', () => {
       const app = new VcsUiApp();
-      const item = new LayerContentTreeItem({ name: 'foo', layerName: 'foo', layerNamesToDeactivate: ['foo2'] }, app);
+      const item = new LayerContentTreeItem(
+        { name: 'foo', layerName: 'foo', layerNamesToDeactivate: ['foo2'] },
+        app,
+      );
       const config = item.toJSON();
-      expect(config).to.have.all.keys(['name', 'type', 'layerName', 'layerNamesToDeactivate']);
+      expect(config).to.have.all.keys([
+        'name',
+        'type',
+        'layerName',
+        'layerNamesToDeactivate',
+      ]);
       item.destroy();
       app.destroy();
     });

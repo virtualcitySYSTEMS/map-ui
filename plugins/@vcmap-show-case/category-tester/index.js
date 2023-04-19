@@ -7,9 +7,15 @@ import Categories from './Categories.vue';
  */
 export default async function categoryTest() {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     initialize(app) {
       const { action, destroy } = createToggleAction(
         {

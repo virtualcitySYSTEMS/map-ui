@@ -56,18 +56,18 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should create children of items with a parent', () => {
-      const baseItem = tree.find(i => i.name === 'base');
+      const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem).to.have.property('children').and.to.have.lengthOf(3);
     });
 
     it('should create nested children', () => {
-      const baseItem = tree.find(i => i.name === 'base');
-      const barItem = baseItem.children.find(i => i.name === 'base.bar');
+      const baseItem = tree.find((i) => i.name === 'base');
+      const barItem = baseItem.children.find((i) => i.name === 'base.bar');
       expect(barItem).to.have.property('children').and.to.have.lengthOf(1);
     });
 
     it('should respect weights', () => {
-      const baseItem = tree.find(i => i.name === 'base');
+      const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem.children[0]).to.have.property('name', 'base.baz');
       expect(baseItem.children[2]).to.have.property('name', 'base.bar');
     });
@@ -78,7 +78,9 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should add a navbar action', () => {
-      expect(app.navbarManager.componentIds).to.have.ordered.members(collection.subTreeIds);
+      expect(app.navbarManager.componentIds).to.have.ordered.members(
+        collection.subTreeIds,
+      );
     });
   });
 
@@ -106,9 +108,15 @@ describe('ContentTreeCollection', () => {
       });
       collection.add(new SubContentTreeItem({ name: 'sub' }, app));
       collection.add(createVisibleContentTreeItem({ name: 'sub.base' }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.bar' }, app));
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.bar' }, app),
+      );
       [id, subTreeId] = collection.subTreeIds;
       tree = collection.getComputedVisibleTree(id).value;
       subTree = collection.getComputedVisibleTree(subTreeId).value;
@@ -124,20 +132,20 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should create children of items with a parent', () => {
-      const baseItem = tree.find(i => i.name === 'base');
+      const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem).to.have.property('children').and.to.have.lengthOf(3);
-      const subBaseItem = subTree.find(i => i.name === 'sub.base');
+      const subBaseItem = subTree.find((i) => i.name === 'sub.base');
       expect(subBaseItem).to.have.property('children').and.to.have.lengthOf(2);
     });
 
     it('should create nested children', () => {
-      const baseItem = tree.find(i => i.name === 'base');
-      const barItem = baseItem.children.find(i => i.name === 'base.bar');
+      const baseItem = tree.find((i) => i.name === 'base');
+      const barItem = baseItem.children.find((i) => i.name === 'base.bar');
       expect(barItem).to.have.property('children').and.to.have.lengthOf(1);
     });
 
     it('should respect weights', () => {
-      const baseItem = tree.find(i => i.name === 'base');
+      const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem.children[0]).to.have.property('name', 'base.baz');
       expect(baseItem.children[2]).to.have.property('name', 'base.bar');
       expect(subTree[0]).to.have.property('name', 'sub.bar');
@@ -152,7 +160,9 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should add a navbar action', () => {
-      expect(app.navbarManager.componentIds).to.have.ordered.members(collection.subTreeIds);
+      expect(app.navbarManager.componentIds).to.have.ordered.members(
+        collection.subTreeIds,
+      );
     });
   });
 
@@ -177,10 +187,18 @@ describe('ContentTreeCollection', () => {
         collection.add(createVisibleContentTreeItem(options, app));
       });
       collection.add(new SubContentTreeItem({ name: 'sub' }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base', initOpen: true }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.bar' }, app));
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base', initOpen: true }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.bar' }, app),
+      );
       [id, subTreeId] = collection.subTreeIds;
     });
 
@@ -189,11 +207,16 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should return the default trees open state', () => {
-      expect(collection.getTreeOpenStateRef(id).value).to.have.members(['base', 'foo']);
+      expect(collection.getTreeOpenStateRef(id).value).to.have.members([
+        'base',
+        'foo',
+      ]);
     });
 
     it('should return the sub trees open state', () => {
-      expect(collection.getTreeOpenStateRef(subTreeId).value).to.have.members(['sub.base']);
+      expect(collection.getTreeOpenStateRef(subTreeId).value).to.have.members([
+        'sub.base',
+      ]);
     });
 
     it('should always return the same reference', () => {
@@ -223,9 +246,15 @@ describe('ContentTreeCollection', () => {
       });
       collection.add(new SubContentTreeItem({ name: 'sub' }, app));
       collection.add(createVisibleContentTreeItem({ name: 'sub.base' }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.bar' }, app));
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.bar' }, app),
+      );
     });
 
     afterEach(() => {
@@ -246,8 +275,12 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should recreate the tree if an item was overridden', () => {
-      collection.override(createVisibleContentTreeItem({ name: 'base', title: 'foo' }, app));
-      collection.override(createVisibleContentTreeItem({ name: 'sub.bar' }, app));
+      collection.override(
+        createVisibleContentTreeItem({ name: 'base', title: 'foo' }, app),
+      );
+      collection.override(
+        createVisibleContentTreeItem({ name: 'sub.bar' }, app),
+      );
       const [id, subTreeId] = collection.subTreeIds;
 
       const tree = collection.getComputedVisibleTree(id).value;
@@ -271,7 +304,7 @@ describe('ContentTreeCollection', () => {
       expect(tree).to.have.lengthOf(1);
 
       const subTree = collection.getComputedVisibleTree(subTreeId).value;
-      const subBase = subTree.find(i => i.name === 'sub.base');
+      const subBase = subTree.find((i) => i.name === 'sub.base');
       expect(subBase.children).to.have.lengthOf(1);
     });
 
@@ -302,9 +335,15 @@ describe('ContentTreeCollection', () => {
       });
       collection.add(new SubContentTreeItem({ name: 'sub' }, app));
       collection.add(createVisibleContentTreeItem({ name: 'sub.base' }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app));
-      collection.add(createVisibleContentTreeItem({ name: 'sub.base.bar' }, app));
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.bar', weight: 1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.foo', weight: -1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'sub.base.bar' }, app),
+      );
     });
 
     afterEach(() => {
@@ -324,7 +363,7 @@ describe('ContentTreeCollection', () => {
       expect(tree[0]).to.have.property('name', 'foo');
 
       const subTree = collection.getComputedVisibleTree(subTreeId).value;
-      const subBase = subTree.find(i => i.name === 'sub.base');
+      const subBase = subTree.find((i) => i.name === 'sub.base');
       expect(subBase.children[0]).to.have.property('name', 'sub.base.foo');
     });
 

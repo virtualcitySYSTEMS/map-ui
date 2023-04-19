@@ -1,5 +1,8 @@
 import { Extent, parseGeoJSON, wgs84Projection } from '@vcmap/core';
-import { AddressBalloonFeatureInfoView, featureInfoViewSymbol } from '@vcmap/ui';
+import {
+  AddressBalloonFeatureInfoView,
+  featureInfoViewSymbol,
+} from '@vcmap/ui';
 
 /**
  *
@@ -120,7 +123,9 @@ class Nominatim {
     }
 
     if (this.extent) {
-      params.viewbox = this.extent.getCoordinatesInProjection(wgs84Projection).join(',');
+      params.viewbox = this.extent
+        .getCoordinatesInProjection(wgs84Projection)
+        .join(',');
       params.bounded = 1;
     }
 

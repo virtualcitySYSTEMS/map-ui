@@ -13,10 +13,7 @@
     </VcsButton>
   </div>
 </template>
-<style>
-
-
-</style>
+<style></style>
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
@@ -154,11 +151,16 @@
             app.windowManager.remove(windowId);
           } else {
             e.stopPropagation();
-            const windowComponentOptions = exampleWindows.find(item => item.id === windowId);
-            app.windowManager.add(windowComponentOptions, 'WindowManagerExample');
+            const windowComponentOptions = exampleWindows.find(
+              (item) => item.id === windowId,
+            );
+            app.windowManager.add(
+              windowComponentOptions,
+              'WindowManagerExample',
+            );
           }
         },
-        examples: exampleWindows.map(item => item.id),
+        examples: exampleWindows.map((item) => item.id),
       };
     },
   };

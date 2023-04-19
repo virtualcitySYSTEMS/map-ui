@@ -2,7 +2,9 @@
   <section class="vcs-form-section">
     <slot name="header" :heading="heading" :actions="actions">
       <article class="pa-2 base lighten-3">
-        <div class="form-section-header d-flex justify-space-between align-center">
+        <div
+          class="form-section-header d-flex justify-space-between align-center"
+        >
           <strong class="caption">{{ $t(heading) }}</strong>
           <VcsActionButtonList
             :actions="actions"
@@ -12,11 +14,7 @@
         </div>
       </article>
     </slot>
-    <VcsHelp
-      :text="helpText"
-      :show="showHelp"
-      class="base lighten-4"
-    >
+    <VcsHelp :text="helpText" :show="showHelp" class="base lighten-4">
       <slot name="help" />
     </VcsHelp>
     <article class="section-content">
@@ -24,7 +22,6 @@
     </article>
   </section>
 </template>
-
 
 <script>
   import { computed, reactive } from 'vue';
@@ -56,7 +53,7 @@
       },
       headerActions: {
         type: Array,
-        default: () => ([]),
+        default: () => [],
       },
       actionButtonListOverflowCount: {
         type: Number,
@@ -74,11 +71,13 @@
         title: 'components.vcsFormSection.help',
         active: false,
         icon: 'mdi-help-circle',
-        callback() { this.active = !this.active; },
+        callback() {
+          this.active = !this.active;
+        },
       });
       const showHelp = computed(() => helpAction.active);
       /**
-       * @type {ComputedRef<VcsAction>}
+       * @type {import("vue").ComputedRef<VcsAction>}
        */
       const actions = computed(() => {
         if (props.helpText || (slots.help && slots.help().length > 0)) {
@@ -96,7 +95,7 @@
 </script>
 
 <style scoped>
-  .v-alert--text:before{
+  .v-alert--text:before {
     background-color: transparent;
   }
 </style>

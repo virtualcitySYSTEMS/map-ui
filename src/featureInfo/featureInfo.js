@@ -69,7 +69,9 @@ export function getHighlightStyle(feature, layer, defaultFillColor) {
     if (typeof style === 'function') {
       style = style(feature, 1);
     }
-    style = style?.clone?.() ?? new VectorStyleItem(getDefaultVectorStyleItemOptions()).style;
+    style =
+      style?.clone?.() ??
+      new VectorStyleItem(getDefaultVectorStyleItemOptions()).style;
     if (style.getText()) {
       if (style.getText().getFill()) {
         style.getText().getFill().setColor(fillColor.toCssColorString());
@@ -102,10 +104,9 @@ export function createFeatureInfoSession(app) {
   /** @type {function():void} */
   let stop;
   const interaction = new FeatureInfoInteraction(app.featureInfo);
-  const listener = eventHandler.addExclusiveInteraction(
-    interaction,
-    () => { stop?.(); },
-  );
+  const listener = eventHandler.addExclusiveInteraction(interaction, () => {
+    stop?.();
+  });
   const currentFeatureInteractionEvent = eventHandler.featureInteraction.active;
   eventHandler.featureInteraction.setActive(EventType.CLICK);
 
@@ -213,14 +214,17 @@ class FeatureInfo {
       new Collection(),
       () => this._app.dynamicModuleId,
       null,
-      config => getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
+      (config) =>
+        getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
       AbstractFeatureInfoView,
     );
     /**
      * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
      * @private
      */
-    this._featureInfoClassRegistry = new OverrideClassRegistry(featureInfoClassRegistry);
+    this._featureInfoClassRegistry = new OverrideClassRegistry(
+      featureInfoClassRegistry,
+    );
     /**
      * @type {function():void|null}
      * @private
@@ -252,11 +256,10 @@ class FeatureInfo {
      */
     this._listeners = [
       this._app.maps.mapActivated.addEventListener((map) => {
-        if (
-          this._windowId &&
-          this._app.windowManager.has(this._windowId)
-        ) {
-          const { layerName } = this._app.windowManager.get(this._windowId).props;
+        if (this._windowId && this._app.windowManager.has(this._windowId)) {
+          const { layerName } = this._app.windowManager.get(
+            this._windowId,
+          ).props;
           const layer = this._app.layers.getByKey(layerName);
           if (layer && !layer.isSupported(map)) {
             this._app.windowManager.remove(this._windowId);
@@ -267,7 +270,8 @@ class FeatureInfo {
         if (
           this._windowId &&
           this._app.windowManager.has(this._windowId) &&
-          this._app.windowManager.get(this._windowId).props.layerName === layer.name
+          this._app.windowManager.get(this._windowId).props.layerName ===
+            layer.name
         ) {
           this._app.windowManager.remove(this._windowId);
         }
@@ -301,31 +305,41 @@ class FeatureInfo {
    * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
    * @readonly
    */
-  get collection() { return this._collection; }
+  get collection() {
+    return this._collection;
+  }
 
   /**
    * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
    * @readonly
    */
-  get classRegistry() { return this._featureInfoClassRegistry; }
+  get classRegistry() {
+    return this._featureInfoClassRegistry;
+  }
 
   /**
    * @type {VcsEvent<null|FeatureType>}
    * @readonly
    */
-  get featureChanged() { return this._featureChanged; }
+  get featureChanged() {
+    return this._featureChanged;
+  }
 
   /**
    * @type {null|FeatureType}
    * @readonly
    */
-  get selectedFeature() { return this._selectedFeature; }
+  get selectedFeature() {
+    return this._selectedFeature;
+  }
 
   /**
    * @type {null|string}
    * @readonly
    */
-  get selectedFeatureId() { return this._selectedFeatureId; }
+  get selectedFeatureId() {
+    return this._selectedFeatureId;
+  }
 
   /**
    * The window id of the current features FeatureInfoView window
@@ -360,14 +374,18 @@ class FeatureInfo {
     const layer = this._app.layers.getByKey(feature[vcsLayerName]);
     const name = layer?.properties?.featureInfo;
     if (!name) {
-      getLogger().debug(`No view has been configured for layer '${layer?.name}'.`);
+      getLogger().debug(
+        `No view has been configured for layer '${layer?.name}'.`,
+      );
       return null;
     }
     if (!this._collection.hasKey(name)) {
       getLogger().warning(`No view with name '${name}' has been registered.`);
       return null;
     }
-    return /** @type {AbstractFeatureInfoView} */ this._collection.getByKey(name);
+    return /** @type {AbstractFeatureInfoView} */ this._collection.getByKey(
+      name,
+    );
   }
 
   /**
@@ -384,12 +402,18 @@ class FeatureInfo {
    * @returns {Promise<void>}
    */
   async selectFeature(feature, position, windowPosition, featureInfoView) {
-    check(feature, [Feature, Entity, Cesium3DTileFeature, Cesium3DTilePointFeature]);
+    check(feature, [
+      Feature,
+      Entity,
+      Cesium3DTileFeature,
+      Cesium3DTilePointFeature,
+    ]);
     checkMaybe(position, [Number]);
     checkMaybe(windowPosition, [Number]);
     checkMaybe(featureInfoView, AbstractFeatureInfoView);
 
-    const usedFeatureInfoView = feature[featureInfoViewSymbol] ??
+    const usedFeatureInfoView =
+      feature[featureInfoViewSymbol] ??
       featureInfoView ??
       this._getFeatureInfoViewForFeature(feature);
     const layer = this._app.layers.getByKey(feature[vcsLayerName]);
@@ -404,20 +428,24 @@ class FeatureInfo {
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
+            this._app.uiConfig.config.value.primaryColor ??
+              getDefaultPrimaryColor(),
           ),
         });
-        this._clearHighlightingCb = () => this._scratchLayer.featureVisibility.unHighlight([featureId]);
+        this._clearHighlightingCb = () =>
+          this._scratchLayer.featureVisibility.unHighlight([featureId]);
       } else if (layer.featureVisibility) {
         const featureId = feature.getId();
         layer.featureVisibility.highlight({
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
+            this._app.uiConfig.config.value.primaryColor ??
+              getDefaultPrimaryColor(),
           ),
         });
-        this._clearHighlightingCb = () => layer.featureVisibility.unHighlight([featureId]);
+        this._clearHighlightingCb = () =>
+          layer.featureVisibility.unHighlight([featureId]);
       }
       this._windowId = usedFeatureInfoView.className; // use className for a type based position caching
       this._app.windowManager.add(
@@ -481,7 +509,7 @@ class FeatureInfo {
       this._app.layers.remove(this._scratchLayer);
       this._scratchLayer.destroy();
     }
-    this._listeners.forEach(cb => cb());
+    this._listeners.forEach((cb) => cb());
     this._listeners.splice(0);
     this._collection.destroy();
     this._featureInfoClassRegistry.destroy();
@@ -489,7 +517,19 @@ class FeatureInfo {
 }
 
 export default FeatureInfo;
-featureInfoClassRegistry.registerClass(TableFeatureInfoView.className, TableFeatureInfoView);
-featureInfoClassRegistry.registerClass(IframeFeatureInfoView.className, IframeFeatureInfoView);
-featureInfoClassRegistry.registerClass(BalloonFeatureInfoView.className, BalloonFeatureInfoView);
-featureInfoClassRegistry.registerClass(AddressBalloonFeatureInfoView.className, AddressBalloonFeatureInfoView);
+featureInfoClassRegistry.registerClass(
+  TableFeatureInfoView.className,
+  TableFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  IframeFeatureInfoView.className,
+  IframeFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  BalloonFeatureInfoView.className,
+  BalloonFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  AddressBalloonFeatureInfoView.className,
+  AddressBalloonFeatureInfoView,
+);

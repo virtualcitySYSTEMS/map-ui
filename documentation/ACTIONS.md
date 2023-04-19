@@ -4,13 +4,12 @@ The VcsAction is an interface describing a bi-state system linked to a user inte
 The bi-state can be extended to a tri-state logic using the `background` property.
 
 The standard use case for a bi-state action is toggling a window's state active and deactive.
-The tri-state use case is for tool's that can run in background. 
+The tri-state use case is for tool's that can run in background.
 The tri-state action callback toggles a tool active and deactive taking the tool's WindowComponents state into account.
 If the tool's WindowComponent is closed, the tool remains active, now running in background, which is indicated by an outlined in primary color button.
 
-
 ```js
-  /**
+/**
  * @interface VcsAction
  * @property {string} name - reactive and translatable name rendered in overflow
  * @property {string} [title] - reactive and translatable title rendered as tooltip
@@ -38,7 +37,7 @@ const action = {
 
 ```html
 <VcsButton
-  :id="action.name"      
+  :id="action.name"
   :tooltip="action.title"
   :icon="action.icon"
   :active="action.active"

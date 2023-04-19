@@ -17,10 +17,7 @@
       </template>
       <template #default v-if="showSection">
         <v-container class="py-0 px-1">
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="selectInput" :dense="dense">
                 {{ $t('form-inputs-example.select') }}
@@ -31,16 +28,13 @@
                 id="selectInput"
                 :items="selectOptions"
                 :dense="dense"
-                :rules="[v => v !== 'D' || 'D is not allowed']"
+                :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 v-model="state.selected"
                 color="purple"
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="conditionalInput" :dense="dense">
                 ConditionalInput
@@ -51,47 +45,42 @@
                 id="conditionalInput"
                 clearable
                 :dense="dense"
-                :rules="[conditionalTest(state.conditionalInput, state.selected)]"
+                :rules="[
+                  conditionalTest(state.conditionalInput, state.selected),
+                ]"
                 v-model="state.conditionalInput"
                 placeholder="conditional"
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsTextField
                 :dense="dense"
                 v-model="state.initialTextInput"
                 :rules="[isValidText]"
                 :loading="state.initialTextInput === 'myInitialText'"
-                :error-messages="!state.checkboxInput ? ['manual error message depending on checkbox'] : undefined"
+                :error-messages="
+                  !state.checkboxInput
+                    ? ['manual error message depending on checkbox']
+                    : undefined
+                "
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsTextArea
                 :dense="dense"
-                :rules="[v => !!v || 'text area must not be empty']"
+                :rules="[(v) => !!v || 'text area must not be empty']"
                 placeholder="This is a text area"
                 rows="2"
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="emailInput" :dense="dense">
-                Email
-              </VcsLabel>
+              <VcsLabel html-for="emailInput" :dense="dense"> Email </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
@@ -105,10 +94,7 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="prependedInput" :dense="dense">
                 String With Icon
@@ -124,10 +110,7 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="fileInput" :dense="dense">
                 File input
@@ -143,14 +126,9 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="dateInput" :dense="dense">
-                Date
-              </VcsLabel>
+              <VcsLabel html-for="dateInput" :dense="dense"> Date </VcsLabel>
             </v-col>
             <v-col>
               <VcsDatePicker id="dateInput" v-model="state.dateInput" />
@@ -165,10 +143,7 @@
     >
       <template #default>
         <v-container class="py-0 px-1">
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="numberInput" :dense="dense">
                 NumberInput
@@ -186,10 +161,7 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="formattedNumber" :dense="dense">
                 VcsFormattedNumber
@@ -205,10 +177,7 @@
               />
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsTextField
                 id="coordinateX"
@@ -246,42 +215,41 @@
         </v-container>
       </template>
     </VcsFormSection>
-    <VcsFormSection
-      heading="VcsFormSection Radio & Checkbox"
-    >
+    <VcsFormSection heading="VcsFormSection Radio & Checkbox">
       <template #default>
         <v-container class="py-0 px-1">
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsRadio
                 :dense="dense"
-                :items="[...selectOptions, { label: 'Radio Option E colored', color: 'primary', value: 'E' }]"
+                :items="[
+                  ...selectOptions,
+                  {
+                    label: 'Radio Option E colored',
+                    color: 'primary',
+                    value: 'E',
+                  },
+                ]"
                 v-model="state.selected"
-                :rules="[v => v !== 'D' || 'D is not allowed']"
+                :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 row
               />
             </v-col>
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel :dense="dense">
-                Text
-              </VcsLabel>
+              <VcsLabel :dense="dense"> Text </VcsLabel>
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="center"
-          >
+          <v-row no-gutters>
             <v-col>
               <VcsCheckbox
                 id="checkboxInput"
                 label="CheckboxInput"
                 :dense="dense"
-                :rules="[() => state.checkboxInput || 'Please accept our terms of use']"
+                :rules="[
+                  () => state.checkboxInput || 'Please accept our terms of use',
+                ]"
                 v-model="state.checkboxInput"
               />
             </v-col>
@@ -301,10 +269,8 @@
           </v-row>
         </v-container>
       </template>
-    </vcsformsection>
-    <VcsFormSection
-      heading="VcsFormSection Mixed Inputs"
-    >
+    </VcsFormSection>
+    <VcsFormSection heading="VcsFormSection Mixed Inputs">
       <template #header="{ heading }">
         <article class="pa-2 text--primary">
           {{ heading }}
@@ -313,21 +279,24 @@
       </template>
       <template #default>
         <v-container class="py-0 px-1">
-          <v-row
-            align="center"
-          >
+          <v-row>
             <v-col cols="1">
-              <VcsLabel html-for="textInput" :dense="dense" class="text-caption">
+              <VcsLabel
+                html-for="textInput"
+                :dense="dense"
+                class="text-caption"
+              >
                 1
               </VcsLabel>
             </v-col>
             <v-col>
               <VcsSelect
                 :items="[
-                  {value: 'one', i18n: 'form-inputs-example.numbers.one'},
-                  {value: 'two', i18n: 'form-inputs-example.numbers.two'},
-                  {value: 'three', i18n: 'form-inputs-example.numbers.three'}]"
-                :item-text="item => item.i18n"
+                  { value: 'one', i18n: 'form-inputs-example.numbers.one' },
+                  { value: 'two', i18n: 'form-inputs-example.numbers.two' },
+                  { value: 'three', i18n: 'form-inputs-example.numbers.three' },
+                ]"
+                :item-text="(item) => item.i18n"
                 :dense="dense"
                 placeholder="Numbers"
               />
@@ -335,14 +304,17 @@
             <v-col>
               <VcsSelect
                 :items="[
-                  {value: 'Anna', fullName: 'Annabella'},
-                  {value: 'Bella', fullName: 'Belladonna'},
-                  {value: 'Claudi', fullName: 'Claudine'}]"
-                :item-text="item => item.fullName"
+                  { value: 'Anna', fullName: 'Annabella' },
+                  { value: 'Bella', fullName: 'Belladonna' },
+                  { value: 'Claudi', fullName: 'Claudine' },
+                ]"
+                :item-text="(item) => item.fullName"
                 :dense="dense"
                 multiple
                 v-model="state.selectedMultiple"
-                :rules="[v => !!v.length || 'Please select at least one option.']"
+                :rules="[
+                  (v) => !!v.length || 'Please select at least one option.',
+                ]"
               />
             </v-col>
           </v-row>
@@ -359,17 +331,8 @@
       >
         Log State
       </VcsButton>
-      <VcsButton
-        @click="validate();"
-      >
-        Val
-      </VcsButton>
-      <VcsButton
-        @click="resetState();"
-        icon="$vcsReturn"
-      >
-        Reset
-      </VcsButton>
+      <VcsButton @click="validate()"> Val </VcsButton>
+      <VcsButton @click="resetState()" icon="$vcsReturn"> Reset </VcsButton>
     </div>
   </v-form>
 </template>
@@ -427,7 +390,9 @@
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey(packageJSON.name);
       const newUpdate = ref(true);
-      watch(plugin.state, () => { newUpdate.value = true; });
+      watch(plugin.state, () => {
+        newUpdate.value = true;
+      });
       const form = ref();
 
       return {
@@ -458,7 +423,7 @@
   };
 </script>
 <style lang="scss" scoped>
-label{
-  font-size: 12px;
-}
+  label {
+    font-size: 12px;
+  }
 </style>

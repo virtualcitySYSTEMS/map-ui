@@ -1,22 +1,10 @@
 <template>
   <v-sheet>
-    <v-text-field
-      v-model="message"
-      label="Message"
-    />
-    <v-text-field
-      v-model.number=timeout
-      label="Timeout"
-    />
-    <VcsCheckbox
-      v-model="hasTimeout"
-      label="Toggle Timeout"
-    />
+    <v-text-field v-model="message" label="Message" />
+    <v-text-field v-model.number="timeout" label="Timeout" />
+    <VcsCheckbox v-model="hasTimeout" label="Toggle Timeout" />
     <v-list>
-      <v-list-item
-        v-for="type in types"
-        :key="type"
-      >
+      <v-list-item v-for="type in types" :key="type">
         {{ type }}
         <v-list-item-action @click="notify(type)">
           <v-icon>mdi-plus</v-icon>
@@ -31,7 +19,16 @@
 </template>
 
 <script>
-  import { VSheet, VList, VListItem, VListItemAction, VTextField, VIcon, VCard, VDivider } from 'vuetify/lib';
+  import {
+    VSheet,
+    VList,
+    VListItem,
+    VListItemAction,
+    VTextField,
+    VIcon,
+    VCard,
+    VDivider,
+  } from 'vuetify/lib';
   import { NotificationType, VcsCheckbox } from '@vcmap/ui';
   import { computed, inject, ref } from 'vue';
 
@@ -82,7 +79,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
-
+<style scoped></style>

@@ -4,9 +4,15 @@ import component from './notifierTester.vue';
 
 export default function createNotifierPlugin() {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     initialize(vcsApp) {
       const { action, destroy } = createToggleAction(
         {

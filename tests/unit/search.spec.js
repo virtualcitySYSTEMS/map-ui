@@ -1,12 +1,18 @@
 import {
-  describe, expect, it, beforeAll, beforeEach, afterAll, afterEach, vi,
+  describe,
+  expect,
+  it,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  afterEach,
+  vi,
 } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import { OpenlayersMap } from '@vcmap/core';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import { createSearchButtonAction } from '../../src/actions/actionHelper.js';
-
 
 describe('search', () => {
   /** @type {VcsUiApp} */
@@ -17,7 +23,11 @@ describe('search', () => {
    * @param {string} name
    * @returns {SearchImpl}
    */
-  const getDummyImpl = (name = 'impl') => ({ name, search: () => {}, destroy: () => {} });
+  const getDummyImpl = (name = 'impl') => ({
+    name,
+    search: () => {},
+    destroy: () => {},
+  });
 
   const getAbortImpl = () => {
     let rej;
@@ -75,7 +85,9 @@ describe('search', () => {
     });
 
     it('should only be added, if search is provided', () => {
-      expect(app.search.add.bind({ name: 'impl', destroy: () => {} }, 'owner')).to.throw();
+      expect(
+        app.search.add.bind({ name: 'impl', destroy: () => {} }, 'owner'),
+      ).to.throw();
     });
   });
 
@@ -86,7 +98,9 @@ describe('search', () => {
       app.maps.add(map);
       await app.maps.setActiveMap(map.name);
       impls = [
-        getDummyImpl('impl1'), getDummyImpl('impl2'), getDummyImpl('impl3'),
+        getDummyImpl('impl1'),
+        getDummyImpl('impl2'),
+        getDummyImpl('impl3'),
       ];
       impls.forEach((impl, idx) => app.search.add(impl, `owner-${idx}`));
     });
@@ -129,20 +143,38 @@ describe('search', () => {
 
     it('should clear old results', async () => {
       await app.search.search('bar');
-      expect(app.search.currentResults.value.some(item => item.title.includes('foo'))).to.be.false;
-      expect(app.search.currentResults.value.every(item => item.title.includes('bar'))).to.be.true;
+      expect(
+        app.search.currentResults.value.some((item) =>
+          item.title.includes('foo'),
+        ),
+      ).to.be.false;
+      expect(
+        app.search.currentResults.value.every((item) =>
+          item.title.includes('bar'),
+        ),
+      ).to.be.true;
     });
 
     it('should return results of different implementations in the add order of those implementations', () => {
-      expect(app.search.currentResults.value.map(r => r.title)).to.have.ordered.members(['feature-foo', 'clicked-foo']);
+      expect(
+        app.search.currentResults.value.map((r) => r.title),
+      ).to.have.ordered.members(['feature-foo', 'clicked-foo']);
     });
 
     it('should filter out results without feature or clicked handler', () => {
-      expect(app.search.currentResults.value.some(item => item.title.includes('invalid'))).to.be.false;
+      expect(
+        app.search.currentResults.value.some((item) =>
+          item.title.includes('invalid'),
+        ),
+      ).to.be.false;
     });
 
     it('should add a default clicked handler to results with feature', () => {
-      expect(app.search.currentResults.value.find(item => item.title === 'feature-foo')).to.have.property('clicked');
+      expect(
+        app.search.currentResults.value.find(
+          (item) => item.title === 'feature-foo',
+        ),
+      ).to.have.property('clicked');
     });
 
     it('should add results with feature to the result layer', () => {
@@ -164,22 +196,64 @@ describe('search', () => {
     });
 
     it('should return results, if one impl throws an error', async () => {
-      app.search.add({ name: 'impl1', search: searchFeature, destroy: () => {} }, 'impl1');
-      app.search.add({ name: 'impl2', search() { return Promise.reject(new Error('Test error')); }, destroy: () => {} }, 'impl2');
+      app.search.add(
+        { name: 'impl1', search: searchFeature, destroy: () => {} },
+        'impl1',
+      );
+      app.search.add(
+        {
+          name: 'impl2',
+          search() {
+            return Promise.reject(new Error('Test error'));
+          },
+          destroy: () => {},
+        },
+        'impl2',
+      );
       await app.search.search('foo');
       expect(app.search.currentResults.value).to.have.length(1);
     });
 
     it('should return empty results array, if all impl throw an error', async () => {
-      app.search.add({ name: 'impl1', search() { return Promise.reject(new Error('Test error')); }, destroy: () => {} }, 'impl1');
-      app.search.add({ name: 'impl2', search() { return Promise.reject(new Error('Test error')); }, destroy: () => {} }, 'impl2');
+      app.search.add(
+        {
+          name: 'impl1',
+          search() {
+            return Promise.reject(new Error('Test error'));
+          },
+          destroy: () => {},
+        },
+        'impl1',
+      );
+      app.search.add(
+        {
+          name: 'impl2',
+          search() {
+            return Promise.reject(new Error('Test error'));
+          },
+          destroy: () => {},
+        },
+        'impl2',
+      );
       await app.search.search('foo');
       expect(app.search.currentResults.value).to.be.empty;
     });
 
     it('should return an empty results array, if one of the impls aborts', async () => {
-      app.search.add({ name: 'impl1', search: searchFeature, destroy: () => {} }, 'impl1');
-      app.search.add({ name: 'impl2', search() { return Promise.reject(new Error('Test error')); }, destroy: () => {} }, 'impl2');
+      app.search.add(
+        { name: 'impl1', search: searchFeature, destroy: () => {} },
+        'impl1',
+      );
+      app.search.add(
+        {
+          name: 'impl2',
+          search() {
+            return Promise.reject(new Error('Test error'));
+          },
+          destroy: () => {},
+        },
+        'impl2',
+      );
       app.search.add(getAbortImpl(), 'abort');
       const searchPromise = app.search.search('foo');
       app.search.abort();
@@ -196,8 +270,18 @@ describe('search', () => {
       await app.maps.setActiveMap(map.name);
       impls = [
         { name: 'impl1', search: searchFeature, destroy: () => {} },
-        { name: 'impl2', search: searchClicked, suggest: q => [`impl2-${q}`], destroy: () => {} },
-        { name: 'impl3', search: searchInvalidResult, suggest: q => [`impl3-${q}`], destroy: () => {} },
+        {
+          name: 'impl2',
+          search: searchClicked,
+          suggest: (q) => [`impl2-${q}`],
+          destroy: () => {},
+        },
+        {
+          name: 'impl3',
+          search: searchInvalidResult,
+          suggest: (q) => [`impl3-${q}`],
+          destroy: () => {},
+        },
       ];
       impls.forEach((impl, idx) => app.search.add(impl, `owner-${idx}`));
     });
@@ -222,7 +306,9 @@ describe('search', () => {
         {
           name: 'impl0',
           search: searchFeature,
-          suggest: () => { return Promise.resolve('suggestion'); },
+          suggest: () => {
+            return Promise.resolve('suggestion');
+          },
           destroy: () => {},
         },
         getAbortImpl(),
@@ -266,7 +352,10 @@ describe('search', () => {
     });
 
     it('should raise resultsChanged event, if new result items are available', async () => {
-      app.search.add({ name: 'impl1', search: searchFeature, destroy: () => {} }, 'owner');
+      app.search.add(
+        { name: 'impl1', search: searchFeature, destroy: () => {} },
+        'owner',
+      );
       const resultsChangedSpy = vi.fn();
       app.search.resultsChanged.addEventListener(resultsChangedSpy);
       await app.search.search('foo');
@@ -274,7 +363,10 @@ describe('search', () => {
     });
 
     it('should NOT raise resultsChanged event, if result array is empty', async () => {
-      app.search.add({ name: 'impl1', search: searchInvalidResult, destroy: () => {} }, 'owner');
+      app.search.add(
+        { name: 'impl1', search: searchInvalidResult, destroy: () => {} },
+        'owner',
+      );
       const resultsChangedSpy = vi.fn();
       app.search.resultsChanged.addEventListener(resultsChangedSpy);
       await app.search.search('foo');
@@ -282,7 +374,10 @@ describe('search', () => {
     });
 
     it('should raise resultsChanged event, if existing results have been cleared', async () => {
-      app.search.add({ name: 'impl1', search: searchFeature, destroy: () => {} }, 'owner');
+      app.search.add(
+        { name: 'impl1', search: searchFeature, destroy: () => {} },
+        'owner',
+      );
       await app.search.search('foo');
       const resultsChangedSpy = vi.fn();
       app.search.resultsChanged.addEventListener(resultsChangedSpy);
@@ -304,9 +399,14 @@ describe('search', () => {
       const map = new OpenlayersMap({ name: 'ol' });
       app.maps.add(map);
       await app.maps.setActiveMap(map.name);
-      app.search.add({ name: 'impl', search: searchFeature, destroy: () => {} }, 'owner');
+      app.search.add(
+        { name: 'impl', search: searchFeature, destroy: () => {} },
+        'owner',
+      );
       await app.search.search('foo');
-      app.search.currentResults.value.find(item => item.title === 'feature-foo').clicked();
+      app.search.currentResults.value
+        .find((item) => item.title === 'feature-foo')
+        .clicked();
       app.search.clearResults();
     });
 

@@ -1,9 +1,15 @@
 <template>
-  <div :id="mapId" @click.right.stop="(e) => { e.preventDefault(); }" />
+  <div
+    :id="mapId"
+    @click.right.stop="
+      (e) => {
+        e.preventDefault();
+      }
+    "
+  />
 </template>
 
 <style lang="scss" scoped>
-
   ::v-deep {
     .mapElement {
       position: absolute;
@@ -30,11 +36,9 @@
       touch-action: none;
     }
   }
-
 </style>
 
-<script >
-
+<script>
   export default {
     name: 'VcsMap',
     props: {

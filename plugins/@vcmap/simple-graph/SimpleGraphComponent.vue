@@ -13,14 +13,11 @@
   />
 </template>
 <script>
-
   import { VSparkline } from 'vuetify/lib';
 
   export default {
     name: 'SimpleGraphComponent',
-    components: [
-      VSparkline,
-    ],
+    components: [VSparkline],
     props: {
       attributes: {
         type: Object,
@@ -59,6 +56,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

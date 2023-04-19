@@ -1,5 +1,11 @@
 <template>
-  <svg id="icon_24_burger" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <svg
+    id="icon_24_burger"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
     <rect id="size" width="24" height="24" fill="none" />
     <g id="Group_1047" data-name="Group 1047" transform="translate(866 20294)">
       <rect

@@ -23,6 +23,7 @@ The legend will be rendered within the legends window, whenever the layer is act
 The legend for this layer is static as long as no style with legend definition is set.
 
 Example:
+
 ```json
 {
   "type": "CzmlLayer",
@@ -49,6 +50,7 @@ It overwrites a legend definition on the layer, if one is existing.
 If style changes, the legend updates accordingly.
 
 Example:
+
 ```json
 {
   "type": "DeclarativeStyleItem",
@@ -57,12 +59,7 @@ Example:
   "declarativeStyle": {
     "show": "true",
     "color": {
-      "conditions": [
-        [
-          "true",
-          "color('#cccccc', 0.7)"
-        ]
-      ]
+      "conditions": [["true", "color('#cccccc', 0.7)"]]
     }
   },
   "properties": {
@@ -85,11 +82,13 @@ Example:
 ```
 
 ### LegendItems
+
 Each LegendItem must provide a type. The type determines the rendering of an item.
 Specialised options of a legend item are type based.
 The following **LegendTypes** are available:
 
 ##### ImageLegendItem
+
 An item rendering the image of a provided source. Use an i18n string as `src`, if you want to provide a translatable legend.
 If multiple ImageLegendItems are used within a legend definition, only one can have a popout button!
 For further explanations a tooltip can be defined, showing up on hover.
@@ -104,6 +103,7 @@ For further explanations a tooltip can be defined, showing up on hover.
 ```
 
 Example:
+
 ```json
 {
   "type": "ImageLegendItem",
@@ -112,6 +112,7 @@ Example:
 ```
 
 ##### IframeLegendItem
+
 An item rendering a provided source as iframe. Use an i18n string as `src`, if you want to provide a translatable legend.
 If multiple IframeLegendItems are used within a legend definition, only one can have a popout button!
 
@@ -122,7 +123,9 @@ If multiple IframeLegendItems are used within a legend definition, only one can 
  * @property {string} src - the source url. Can be an i18n string.
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "IframeLegendItem",
@@ -131,11 +134,13 @@ Example:
 ```
 
 #### StyleLegendItem
+
 A list of parametrized style items, configured row by row. Each row consists of an icon derived from a Style definition and a corresponding title.
 If long titles are used, item can be configured to have only one column (`nrCol: 1`). Default are two columns in a flexbox.
 Each row of type `StyleLegendRow` can be either [StrokeLegendRow](#StrokeLegendRow), [FillLegendRow](#FillLegendRow),
 [CircleLegendRow](#CircleLegendRow), [IconLegendRow](#IconLegendRow), [RegularShapeLegendRow](#RegularShapeLegendRow) or
 [TextLegendRow](#TextLegendRow). For further explanations rows can have a tooltip, showing up on hover.
+
 ```js
 /**
  * @typedef {LegendItem} StyleLegendItem
@@ -150,7 +155,9 @@ Each row of type `StyleLegendRow` can be either [StrokeLegendRow](#StrokeLegendR
  * @property {string} [tooltip] - Optional further explanation of the legend row. If no tooltip is provided, the title is used instead.
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "StyleLegendItem",
@@ -176,14 +183,18 @@ Example:
 ```
 
 ##### StrokeLegendRow
+
 A row rendering a line according to provided stroke options with a title.
+
 ```js
 /**
  * @typedef {StyleLegendRow} StrokeLegendRow
  * @property {import("ol/style/Stroke").Options} stroke
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "StrokeLegendRow",
@@ -196,7 +207,9 @@ Example:
 ```
 
 ##### FillLegendRow
+
 A row rendering a filled polygon according to provided fill (and stroke) options with a title.
+
 ```js
 /**
  * @typedef {StyleLegendRow} FillLegendRow
@@ -204,7 +217,9 @@ A row rendering a filled polygon according to provided fill (and stroke) options
  * @property {import("ol/style/Stroke").Options} [stroke]
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "FillLegendRow",
@@ -220,14 +235,18 @@ Example:
 ```
 
 #### CircleLegendRow
+
 A row rendering a circle according to provided fill (and stroke) options with a title.
+
 ```js
 /**
  * @typedef {StyleLegendRow} CircleLegendRow
  * @property {import("ol/style/Circle").Options} image
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "CircleLegendRow",
@@ -247,14 +266,18 @@ Example:
 ```
 
 #### IconLegendRow
+
 A row rendering an icon according to provided image icon options with a title.
+
 ```js
 /**
  * @typedef {StyleLegendRow} IconLegendRow
  * @property {import("ol/style/Icon").Options} image
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "IconLegendRow",
@@ -267,14 +290,18 @@ Example:
 ```
 
 #### RegularShapeLegendRow
+
 A row rendering a shape according to provided image options with a title.
+
 ```js
 /**
  * @typedef {StyleLegendRow} RegularShapeLegendRow
  * @property {import("ol/style/RegularShape").Options} image
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "RegularShapeLegendRow",
@@ -296,8 +323,10 @@ Example:
 ```
 
 #### TextLegendRow
+
 A row rendering a text according to provided text options with a title.
 Optional `label` is used as text content (might not be displayed completely due to size).
+
 ```js
 /**
  * @typedef {StyleLegendRow} TextLegendRow
@@ -305,7 +334,9 @@ Optional `label` is used as text content (might not be displayed completely due 
  * @property {string} [label='Text']
  */
 ```
+
 Example:
+
 ```json
 {
   "type": "TextLegendRow",

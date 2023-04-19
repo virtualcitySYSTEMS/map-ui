@@ -200,20 +200,31 @@ function writeUrlAppState(state, maxLength) {
 
   state.layers.forEach((layerState) => {
     const layerUrlState = writeUrlLayerState(layerState);
-    if ((JSON.stringify(urlState).length + JSON.stringify(layerUrlState).length) < maxLength) {
+    if (
+      JSON.stringify(urlState).length + JSON.stringify(layerUrlState).length <
+      maxLength
+    ) {
       urlState[3].push(layerUrlState);
     }
   });
 
   state.plugins.forEach((pluginState) => {
     const urlPluginState = writeUrlPluginState(pluginState);
-    if ((JSON.stringify(urlState).length + JSON.stringify(urlPluginState).length) < maxLength) {
+    if (
+      JSON.stringify(urlState).length + JSON.stringify(urlPluginState).length <
+      maxLength
+    ) {
       urlState[4].push(urlPluginState);
     }
   });
 
-  if (urlState[3].length !== state.layers.length || urlState[4].length !== state.plugins.length) {
-    getLogger('StateManagement').warning('State too large for URL: Not all layers and plugins are represented');
+  if (
+    urlState[3].length !== state.layers.length ||
+    urlState[4].length !== state.plugins.length
+  ) {
+    getLogger('StateManagement').warning(
+      'State too large for URL: Not all layers and plugins are represented',
+    );
   }
 
   return urlState;
@@ -230,7 +241,9 @@ export function getStateFromURL(url) {
     try {
       return parseUrlAppState(JSON.parse(url.searchParams.get('state')));
     } catch (e) {
-      getLogger('StateManager').error('failed to parse the state URL parameter');
+      getLogger('StateManager').error(
+        'failed to parse the state URL parameter',
+      );
     }
   }
   return createEmptyState();
@@ -252,5 +265,8 @@ export function setStateToUrl(state, url) {
   check(url, URL);
 
   const maxLength = MAX_URL_LENGTH - url.toString().length;
-  url.searchParams.set('state', JSON.stringify(writeUrlAppState(state, maxLength)));
+  url.searchParams.set(
+    'state',
+    JSON.stringify(writeUrlAppState(state, maxLength)),
+  );
 }

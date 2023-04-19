@@ -19,7 +19,7 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
   check(attrs, Object);
 
   const keys = key.split('.');
-  const derivedValue = keys.reduce((obj, prop) => (obj[prop] || {}), attrs);
+  const derivedValue = keys.reduce((obj, prop) => obj[prop] || {}, attrs);
   return typeof derivedValue === 'string' ? derivedValue : defaultValue;
 }
 
@@ -74,7 +74,9 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
   /**
    * @type {string}
    */
-  static get className() { return 'BalloonFeatureInfoView'; }
+  static get className() {
+    return 'BalloonFeatureInfoView';
+  }
 
   /**
    * @param {BalloonFeatureInfoViewOptions} options
@@ -103,13 +105,24 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      position: featureInfo.position ?? getPositionFromFeature(featureInfo.feature),
-      balloonTitle: this.balloonTitle != null ?
-        extractNestedKey(this.balloonTitle, properties.attributes, this.balloonTitle) :
-        properties.layerProperties.title,
-      balloonSubtitle: this.balloonSubtitle != null ?
-        extractNestedKey(this.balloonSubtitle, properties.attributes, this.balloonSubtitle) :
-        properties.featureId,
+      position:
+        featureInfo.position ?? getPositionFromFeature(featureInfo.feature),
+      balloonTitle:
+        this.balloonTitle != null
+          ? extractNestedKey(
+              this.balloonTitle,
+              properties.attributes,
+              this.balloonTitle,
+            )
+          : properties.layerProperties.title,
+      balloonSubtitle:
+        this.balloonSubtitle != null
+          ? extractNestedKey(
+              this.balloonSubtitle,
+              properties.attributes,
+              this.balloonSubtitle,
+            )
+          : properties.featureId,
     };
   }
 

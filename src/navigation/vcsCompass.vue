@@ -4,14 +4,7 @@
       transform: `rotate(${compassRotation}deg)`,
     }"
     @click="$emit('input', 0)"
-    class="
-        h-16 w-16
-        d-flex flex-column justify-center align-center
-        position-relative
-        rounded-circle
-        user-select-none
-        transition-transform-200-ease
-      "
+    class="h-16 w-16 d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease"
     elevation="1"
   >
     <span>N</span>
@@ -24,7 +17,6 @@
     />
   </v-sheet>
 </template>
-
 
 <script>
   import { computed, ref } from 'vue';

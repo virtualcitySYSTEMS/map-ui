@@ -1,4 +1,5 @@
 # 5.0.0-rc.next
+
 - Adds the `Notifier` API to `VcsUiApp`.
 - Adds a `VcsList` component for standard item list rendering.
 - Adds new `VcsWizard` component as stylized wrapper of Vuetify VStepper
@@ -10,6 +11,7 @@
 - Updating `Context` to `VcsModule`
 
 # 5.0.0-rc.15
+
 - Update Openlayers to version 7.0.0
 - use new core postRenderHandler in NavigationControls and OverviewMap
 - Update vite to version 3.2.0 and vitest to 0.24.3
@@ -29,6 +31,7 @@
 - Adds provide API to window components
 
 # 5.0.0-rc.14
+
 - Added vcs rotation icons and replaced the former used mdi oblique rotator icons in obliqueRotation.vue
 - Updated buttonExample plugin to vue 2.7 by making plugin state reactive
 - Added support of tooltips for ContentTreeItems. Tooltips can be defined in config, if none is defined title is used instead.
@@ -37,12 +40,14 @@
 - Fixed text rendering of VcsActionButtonList on Firefox
 
 # 5.0.0-rc.12
+
 - Adds further vcs-icons from layout catalog: VCS Wireframe 8.8.xd, also updated some icon layouts as shown in the same catalog
 - Fixed bug for toolbox submenu where the icons did overflow if the menu above was shorter than the submenu
 - Changed the toolbox topmenu for layout discussion - if the submenu ist open and longer than the menu above the bottom corners shouldn't be rounded
 - Refactoring of ToolboxManager. Extension providing three toolbox component types. See [ToolboxManager](documentation/TOOLBOX.md).
 
 # 5.0.0-rc.11
+
 - Added new Components Concept with the new `categoryManager` see [Components](documentation/CATEGORIES.md).
 - Added new I18n concept, see [I18n](documentation/INTERNATIONALIZATION.md).
 - Redesigned VcsApp.vue setup to export `setupPluginMountedListeners` & `setupMapNavbar`

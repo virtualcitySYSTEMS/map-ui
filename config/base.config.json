@@ -49,14 +49,8 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${olcs_geometryType} === 2",
-              "color('#49eb34')"
-            ],
-            [
-              "true",
-              "color('#707070')"
-            ]
+            ["${olcs_geometryType} === 2", "color('#49eb34')"],
+            ["true", "color('#707070')"]
           ]
         }
       }
@@ -69,34 +63,13 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#006d2c')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#edf8e9')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#edf8e9')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#bae4b3')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#74c476')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#31a354')"
-            ],
-            [
-              "true",
-              "color('#006d2c')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#006d2c')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 15", "color('#bae4b3')"],
+            ["${attributes.measuredHeight} < 30", "color('#74c476')"],
+            ["${attributes.measuredHeight} < 65", "color('#31a354')"],
+            ["true", "color('#006d2c')"]
           ]
         }
       },
@@ -154,30 +127,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#993404')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#ffffd4')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#fed98e')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#fe9929')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#d95f0e')"
-            ],
-            [
-              "true",
-              "color('#993404')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#993404')"],
+            ["${attributes.measuredHeight} < 5", "color('#ffffd4')"],
+            ["${attributes.measuredHeight} < 15", "color('#fed98e')"],
+            ["${attributes.measuredHeight} < 30", "color('#fe9929')"],
+            ["${attributes.measuredHeight} < 65", "color('#d95f0e')"],
+            ["true", "color('#993404')"]
           ]
         }
       },
@@ -235,30 +190,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.measuredHeight} === undefined",
-              "color('#045a8d')"
-            ],
-            [
-              "${attributes.measuredHeight} < 5",
-              "color('#f1eef6')"
-            ],
-            [
-              "${attributes.measuredHeight} < 15",
-              "color('#bdc9e1')"
-            ],
-            [
-              "${attributes.measuredHeight} < 30",
-              "color('#74a9cf')"
-            ],
-            [
-              "${attributes.measuredHeight} < 65",
-              "color('#2b8cbe')"
-            ],
-            [
-              "true",
-              "color('#045a8d')"
-            ]
+            ["${attributes.measuredHeight} === undefined", "color('#045a8d')"],
+            ["${attributes.measuredHeight} < 5", "color('#f1eef6')"],
+            ["${attributes.measuredHeight} < 15", "color('#bdc9e1')"],
+            ["${attributes.measuredHeight} < 30", "color('#74a9cf')"],
+            ["${attributes.measuredHeight} < 65", "color('#2b8cbe')"],
+            ["true", "color('#045a8d')"]
           ]
         }
       },
@@ -315,74 +252,23 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.roofType} === undefined",
-              "color('#cccccc')"
-            ],
-            [
-              "${attributes.roofType} === '1000' ",
-              "color('#91cf60')"
-            ],
-            [
-              "${attributes.roofType} === '2100' ",
-              "color('#fee08b')"
-            ],
-            [
-              "${attributes.roofType} === '2200' ",
-              "color('#8dd3c7')"
-            ],
-            [
-              "${attributes.roofType} === '3100' ",
-              "color('#8dd3c7')"
-            ],
-            [
-              "${attributes.roofType} === '3200' ",
-              "color('#fc8d59')"
-            ],
-            [
-              "${attributes.roofType} === '3300' ",
-              "color('#ffffb3')"
-            ],
-            [
-              "${attributes.roofType} === '3400' ",
-              "color('#bebada')"
-            ],
-            [
-              "${attributes.roofType} === '3500' ",
-              "color('#ffffbf')"
-            ],
-            [
-              "${attributes.roofType} === '3600' ",
-              "color('#fdb462')"
-            ],
-            [
-              "${attributes.roofType} === '3700' ",
-              "color('#b3de69')"
-            ],
-            [
-              "${attributes.roofType} === '3800' ",
-              "color('#ecc34e')"
-            ],
-            [
-              "${attributes.roofType} === '3900' ",
-              "color('#fccde5')"
-            ],
-            [
-              "${attributes.roofType} === '4000' ",
-              "color('#d590b3')"
-            ],
-            [
-              "${attributes.roofType} === '5000' ",
-              "color('#888888')"
-            ],
-            [
-              "${attributes.roofType} === '9999' ",
-              "color('#cccccc')"
-            ],
-            [
-              "true",
-              "color('#cccccc')"
-            ]
+            ["${attributes.roofType} === undefined", "color('#cccccc')"],
+            ["${attributes.roofType} === '1000' ", "color('#91cf60')"],
+            ["${attributes.roofType} === '2100' ", "color('#fee08b')"],
+            ["${attributes.roofType} === '2200' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3100' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3200' ", "color('#fc8d59')"],
+            ["${attributes.roofType} === '3300' ", "color('#ffffb3')"],
+            ["${attributes.roofType} === '3400' ", "color('#bebada')"],
+            ["${attributes.roofType} === '3500' ", "color('#ffffbf')"],
+            ["${attributes.roofType} === '3600' ", "color('#fdb462')"],
+            ["${attributes.roofType} === '3700' ", "color('#b3de69')"],
+            ["${attributes.roofType} === '3800' ", "color('#ecc34e')"],
+            ["${attributes.roofType} === '3900' ", "color('#fccde5')"],
+            ["${attributes.roofType} === '4000' ", "color('#d590b3')"],
+            ["${attributes.roofType} === '5000' ", "color('#888888')"],
+            ["${attributes.roofType} === '9999' ", "color('#cccccc')"],
+            ["true", "color('#cccccc')"]
           ]
         }
       },
@@ -509,30 +395,12 @@
         "show": "true",
         "color": {
           "conditions": [
-            [
-              "${attributes.function} === undefined",
-              "color('#d9d9d9')"
-            ],
-            [
-              "${attributes.function} === '1121' ",
-              "color('#7fc97f')"
-            ],
-            [
-              "${attributes.function} === '1004' ",
-              "color('#beaed4')"
-            ],
-            [
-              "${attributes.function} === '1799' ",
-              "color('#fdc086')"
-            ],
-            [
-              "${attributes.function} === '1231' ",
-              "color('#ffff99')"
-            ],
-            [
-              "true",
-              "color('#d9d9d9')"
-            ]
+            ["${attributes.function} === undefined", "color('#d9d9d9')"],
+            ["${attributes.function} === '1121' ", "color('#7fc97f')"],
+            ["${attributes.function} === '1004' ", "color('#beaed4')"],
+            ["${attributes.function} === '1799' ", "color('#fdc086')"],
+            ["${attributes.function} === '1231' ", "color('#ffff99')"],
+            ["true", "color('#d9d9d9')"]
           ]
         }
       },
@@ -576,7 +444,6 @@
                 },
                 "title": "other function"
               }
-
             ]
           }
         ]
@@ -590,12 +457,7 @@
       "declarativeStyle": {
         "show": "true",
         "color": {
-          "conditions": [
-            [
-              "true",
-              "color('#cccccc', 0.7)"
-            ]
-          ]
+          "conditions": [["true", "color('#cccccc', 0.7)"]]
         }
       },
       "properties": {
@@ -684,9 +546,7 @@
       "tilesetOptions": {
         "skipLevelOfDetail": true
       },
-      "exclusiveGroups": [
-        "bldg"
-      ],
+      "exclusiveGroups": ["bldg"],
       "properties": {
         "title": "3D-Mesh 2020",
         "attributions": {
@@ -703,9 +563,7 @@
       "activeOnStartup": false,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": [
-        "bldg"
-      ],
+      "exclusiveGroups": ["bldg"],
       "properties": {
         "title": "Gebäude texturiert 2013",
         "featureInfo": "filteredTable"
@@ -718,9 +576,7 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": [
-        "bldg"
-      ],
+      "exclusiveGroups": ["bldg"],
       "properties": {
         "availableStyles": [
           "MeasuredHeightGreen",
@@ -741,9 +597,7 @@
       "maxLevel": 21,
       "zIndex": 11,
       "tileProvider": {
-        "baseLevels": [
-          14
-        ],
+        "baseLevels": [14],
         "idProperty": "osm_id",
         "useSpatialIndex": false,
         "type": "MVTTileProvider",
@@ -770,12 +624,7 @@
       "maxLevel": 19,
       "tilingSchema": "mercator",
       "extent": {
-        "coordinates": [
-          -180,
-          -85,
-          180,
-          85
-        ],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
           "epsg": "EPSG:4326"
         }
@@ -784,9 +633,7 @@
       "hiddenObjectIds": [],
       "numberOfLevelZeroTilesX": 1,
       "numberOfLevelZeroTilesY": 1,
-      "exclusiveGroups": [
-        "base"
-      ],
+      "exclusiveGroups": ["base"],
       "properties": {
         "title": "OpenStreetMap",
         "showInOverviewMap": true,
@@ -803,9 +650,7 @@
       "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
       "activeOnStartup": true,
       "requestVertexNormals": true,
-      "exclusiveGroups": [
-        "terrain"
-      ],
+      "exclusiveGroups": ["terrain"],
       "properties": {
         "title": "Deutschland Gelände"
       }
@@ -827,14 +672,10 @@
     {
       "name": "berlin",
       "cameraPosition": [
-        13.370550000000003,
-        52.51230000000001,
-        677.0294500017116
+        13.370550000000003, 52.51230000000001, 677.0294500017116
       ],
       "groundPosition": [
-        13.377973747219107,
-        52.51718187188212,
-        34.500300497361984
+        13.377973747219107, 52.51718187188212, 34.500300497361984
       ],
       "distance": 980.8215342887953,
       "heading": 42.84999999999993,
@@ -850,14 +691,10 @@
       "name": "alexanderplatz",
       "distance": 1027.743747894252,
       "cameraPosition": [
-        13.410279816026053,
-        52.52102244255272,
-        1064.4366076344213
+        13.410279816026053, 52.52102244255272, 1064.4366076344213
       ],
       "groundPosition": [
-        13.410279818110775,
-        52.52102207564875,
-        36.69286055319397
+        13.410279818110775, 52.52102207564875, 36.69286055319397
       ],
       "heading": 360,
       "pitch": -90,
@@ -872,14 +709,10 @@
       "name": "brandenburger_tor",
       "distance": 663.6051001967426,
       "cameraPosition": [
-        13.37790869834864,
-        52.51627705004426,
-        698.3750083957117
+        13.37790869834864, 52.51627705004426, 698.3750083957117
       ],
       "groundPosition": [
-        13.37790869845283,
-        52.516277047668844,
-        34.76990820023149
+        13.37790869845283, 52.516277047668844, 34.76990820023149
       ],
       "heading": 360,
       "pitch": -90,
@@ -891,14 +724,10 @@
       "name": "potsdamer_platz",
       "distance": 730.0034266375318,
       "cameraPosition": [
-        13.375567390072897,
-        52.50932719713967,
-        765.2515153338176
+        13.375567390072897, 52.50932719713967, 765.2515153338176
       ],
       "groundPosition": [
-        13.375567390058034,
-        52.50932719590491,
-        35.24808869690339
+        13.375567390058034, 52.50932719590491, 35.24808869690339
       ],
       "heading": 360,
       "pitch": -90,
@@ -910,11 +739,7 @@
       }
     },
     {
-      "groundPosition": [
-        13.35948,
-        52.51442,
-        33.35758
-      ],
+      "groundPosition": [13.35948, 52.51442, 33.35758],
       "pitch": -46.14,
       "type": "Viewpoint",
       "heading": 359.84,
@@ -923,7 +748,7 @@
       "animate": true
     }
   ],
-  "contentTree":  [
+  "contentTree": [
     {
       "name": "baseMap",
       "type": "SubContentTreeItem",
@@ -934,7 +759,6 @@
       "name": "baseMap.trees",
       "type": "LayerContentTreeItem",
       "layerName": "Bäume"
-
     },
     {
       "name": "baseMap.terrain",
@@ -1080,11 +904,7 @@
     {
       "name": "reasonableLayerGroup",
       "type": "LayerGroupContentTreeItem",
-      "layerNames": [
-        "buildings",
-        "Bäume",
-        "GermanyBaseTerrain.4"
-      ],
+      "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain.4"],
       "title": "Buildings - Trees - Terrain"
     },
     {

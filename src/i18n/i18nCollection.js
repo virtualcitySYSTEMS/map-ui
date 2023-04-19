@@ -10,7 +10,7 @@ import { getLogger } from '@vcsuite/logger';
  * @returns {boolean}
  */
 export function isObject(item) {
-  return (!!item && typeof item === 'object' && !Array.isArray(item));
+  return !!item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**
@@ -28,9 +28,11 @@ export const i18nPluginSymbol = Symbol('I18nPluginSymbol');
 export function mergeDeep(...sources) {
   return sources.reduce((prev, obj) => {
     Object.entries(obj).forEach(([key, value]) => {
-      if (isObject(prev[key]) && isObject(value)) { // recursive merge if both values are objects.
+      if (isObject(prev[key]) && isObject(value)) {
+        // recursive merge if both values are objects.
         prev[key] = mergeDeep(prev[key], value);
-      } else if (isObject(prev[key])) { // do not override complex object with atomic value
+      } else if (isObject(prev[key])) {
+        // do not override complex object with atomic value
         getLogger('i18n').warning(
           `Overwriting a complex Object I18n Key with a string value is not allowed. Value:
           ${JSON.stringify(prev[key])}, newValue: ${JSON.stringify(obj[key])}`,
@@ -44,7 +46,6 @@ export function mergeDeep(...sources) {
     return prev;
   }, {});
 }
-
 
 /**
  * @extends {IndexedCollection<Object>}
@@ -91,7 +92,7 @@ class I18nCollection extends IndexedCollection {
    */
   async removeModule(moduleId) {
     [...this]
-      .filter(item => item[moduleIdSymbol] === moduleId)
+      .filter((item) => item[moduleIdSymbol] === moduleId)
       .forEach((item) => {
         this.remove(item);
       });
@@ -103,9 +104,9 @@ class I18nCollection extends IndexedCollection {
    */
   serializeModule(moduleId) {
     return [...this]
-      .filter(item => item[moduleIdSymbol] === moduleId)
-      .filter(item => !item[i18nPluginSymbol])
-      .map(item => JSON.parse(JSON.stringify(item)));
+      .filter((item) => item[moduleIdSymbol] === moduleId)
+      .filter((item) => !item[i18nPluginSymbol])
+      .map((item) => JSON.parse(JSON.stringify(item)));
   }
 
   /**
@@ -129,7 +130,11 @@ class I18nCollection extends IndexedCollection {
    */
   removePluginMessages(pluginName, moduleId) {
     [...this]
-      .filter(item => item[i18nPluginSymbol] === pluginName && item[moduleIdSymbol] === moduleId)
+      .filter(
+        (item) =>
+          item[i18nPluginSymbol] === pluginName &&
+          item[moduleIdSymbol] === moduleId,
+      )
       .forEach((item) => {
         this.remove(item);
       });

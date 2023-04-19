@@ -1,5 +1,10 @@
-import ContentTreeItem, { contentTreeClassRegistry } from './contentTreeItem.js';
-import { getStateFromLayer, setViewpointAction } from './layerContentTreeItem.js';
+import ContentTreeItem, {
+  contentTreeClassRegistry,
+} from './contentTreeItem.js';
+import {
+  getStateFromLayer,
+  setViewpointAction,
+} from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 
 /**
@@ -14,16 +19,16 @@ import { StateActionState } from '../actions/stateRefAction.js';
  * @returns {StateActionState}
  */
 function getStateFromLayers(layers) {
-  const states = layers.map(l => getStateFromLayer(l));
-  if (states.some(s => s === StateActionState.LOADING)) {
+  const states = layers.map((l) => getStateFromLayer(l));
+  if (states.some((s) => s === StateActionState.LOADING)) {
     return StateActionState.LOADING;
   }
 
-  if (states.every(s => s === StateActionState.INACTIVE)) {
+  if (states.every((s) => s === StateActionState.INACTIVE)) {
     return StateActionState.INACTIVE;
   }
 
-  if (states.every(s => s === StateActionState.ACTIVE)) {
+  if (states.every((s) => s === StateActionState.ACTIVE)) {
     return StateActionState.ACTIVE;
   }
   return StateActionState.INDETERMINATE;
@@ -39,7 +44,9 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
    * @readonly
    * @type {string}
    */
-  static get className() { return 'LayerGroupContentTreeItem'; }
+  static get className() {
+    return 'LayerGroupContentTreeItem';
+  }
 
   /**
    * @param {LayerGroupContentTreeItemOptions} options
@@ -52,17 +59,17 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
      * @type {Array<string>}
      * @private
      */
-    this._layerNames = Array.isArray(options.layerNames) ?
-      options.layerNames.slice() :
-      [];
+    this._layerNames = Array.isArray(options.layerNames)
+      ? options.layerNames.slice()
+      : [];
 
     /**
      * @type {Array<string>}
      * @private
      */
-    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate) ?
-      options.layerNamesToDeactivate.slice() :
-      [];
+    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate)
+      ? options.layerNamesToDeactivate.slice()
+      : [];
 
     /**
      * @type {Array<function():void>}
@@ -85,15 +92,17 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
    */
   get _layers() {
     return this._layerNames
-      .map(n => this._app.layers.getByKey(n))
-      .filter(l => l);
+      .map((n) => this._app.layers.getByKey(n))
+      .filter((l) => l);
   }
 
   /**
    * @private
    */
   _clearListeners() {
-    this._listeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
     this._listeners.splice(0);
   }
 
@@ -113,22 +122,30 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     };
     const layers = this._layers;
 
-    this.visible = layers.some(l => l.isSupported(this._app.maps.activeMap));
+    this.visible = layers.some((l) => l.isSupported(this._app.maps.activeMap));
     this.state = getStateFromLayers(layers);
     setViewpointAction(this, this._app, this._defaultViewpoint);
 
-    this._listeners.push(this._app.layers.removed.addEventListener(resetHandler));
+    this._listeners.push(
+      this._app.layers.removed.addEventListener(resetHandler),
+    );
     this._listeners.push(this._app.layers.added.addEventListener(resetHandler));
 
     layers.forEach((layer) => {
-      this._listeners.push(layer.stateChanged.addEventListener(() => {
-        this.state = getStateFromLayers(layers);
-      }));
+      this._listeners.push(
+        layer.stateChanged.addEventListener(() => {
+          this.state = getStateFromLayers(layers);
+        }),
+      );
     });
 
-    this._listeners.push(this._app.maps.mapActivated.addEventListener(() => {
-      this.visible = !!layers.find(l => l.isSupported(this._app.maps.activeMap));
-    }));
+    this._listeners.push(
+      this._app.maps.mapActivated.addEventListener(() => {
+        this.visible = !!layers.find((l) =>
+          l.isSupported(this._app.maps.activeMap),
+        );
+      }),
+    );
   }
 
   /**
@@ -136,15 +153,17 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
    */
   async clicked() {
     const layers = this._layers;
-    const activate = layers.some(l => !(l.active || l.loading));
+    const activate = layers.some((l) => !(l.active || l.loading));
     if (activate) {
-      await Promise.all(layers.map(l => l.activate()));
+      await Promise.all(layers.map((l) => l.activate()));
       this._layerNamesToDeactivate
-        .map(n => this._app.layers.getByKey(n))
-        .filter(l => l)
-        .forEach(l => l.deactivate());
+        .map((n) => this._app.layers.getByKey(n))
+        .filter((l) => l)
+        .forEach((l) => l.deactivate());
     } else {
-      layers.forEach((l) => { l.deactivate(); });
+      layers.forEach((l) => {
+        l.deactivate();
+      });
     }
   }
 
@@ -171,4 +190,7 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
 }
 
 export default LayerGroupContentTreeItem;
-contentTreeClassRegistry.registerClass(LayerGroupContentTreeItem.className, LayerGroupContentTreeItem);
+contentTreeClassRegistry.registerClass(
+  LayerGroupContentTreeItem.className,
+  LayerGroupContentTreeItem,
+);

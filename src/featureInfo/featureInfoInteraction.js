@@ -1,4 +1,8 @@
-import { AbstractInteraction, EventType, ModificationKeyType } from '@vcmap/core';
+import {
+  AbstractInteraction,
+  EventType,
+  ModificationKeyType,
+} from '@vcmap/core';
 
 /**
  * @class
@@ -24,13 +28,15 @@ class FeatureInfoInteraction extends AbstractInteraction {
    */
   async pipe(event) {
     if (event.feature) {
-      if (!this._featureInfo.selectedFeature || event.feature.getId() !== this._featureInfo.selectedFeatureId) {
+      if (
+        !this._featureInfo.selectedFeature ||
+        event.feature.getId() !== this._featureInfo.selectedFeatureId
+      ) {
         event.stopPropagation = true;
-        await this._featureInfo.selectFeature(
-          event.feature,
-          event.position,
-          [event.windowPosition.x, event.windowPosition.y],
-        );
+        await this._featureInfo.selectFeature(event.feature, event.position, [
+          event.windowPosition.x,
+          event.windowPosition.y,
+        ]);
       }
     } else {
       await this._featureInfo.clear();

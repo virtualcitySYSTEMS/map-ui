@@ -23,8 +23,7 @@ describe('ButtonManager', () => {
         id: 'id',
         action: {
           name: 'test',
-          callback() {
-          },
+          callback() {},
         },
       };
     });
@@ -49,7 +48,9 @@ describe('ButtonManager', () => {
         expect(buttonManager.has(buttonComponentOptions.id));
       });
       it('should add the buttonComponentId to the componentIds array', () => {
-        expect(buttonManager.componentIds).to.have.members([buttonComponentOptions.id]);
+        expect(buttonManager.componentIds).to.have.members([
+          buttonComponentOptions.id,
+        ]);
       });
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
@@ -59,13 +60,21 @@ describe('ButtonManager', () => {
         expect(buttonManager.add.bind(buttonManager, { id: 'test' })).to.throw;
       });
       it('should throw if same buttonId is already managed', () => {
-        expect(buttonManager.add.bind(buttonManager, [{ id: 'test' }, 'plugin'])).to.throw;
+        expect(
+          buttonManager.add.bind(buttonManager, [{ id: 'test' }, 'plugin']),
+        ).to.throw;
       });
 
       it('should add new Components at the end of the array', () => {
-        const buttonComponent2 = buttonManager.add({ ...buttonComponentOptions, id: 'id2' }, 'plugin2');
+        const buttonComponent2 = buttonManager.add(
+          { ...buttonComponentOptions, id: 'id2' },
+          'plugin2',
+        );
         expect(buttonManager.componentIds.length).to.be.equal(2);
-        expect(buttonManager.componentIds).to.have.ordered.members([buttonComponent.id, buttonComponent2.id]);
+        expect(buttonManager.componentIds).to.have.ordered.members([
+          buttonComponent.id,
+          buttonComponent2.id,
+        ]);
       });
 
       describe('returns a buttonComponent', () => {

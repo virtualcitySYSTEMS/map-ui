@@ -10,7 +10,11 @@ import { fileURLToPath } from 'url';
  * @returns {string}
  */
 export function getProjectPath(...pathSegments) {
-  return path.join(path.dirname(fileURLToPath(import.meta.url)), '..', ...pathSegments);
+  return path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '..',
+    ...pathSegments,
+  );
 }
 
 /**
@@ -27,19 +31,23 @@ export function getPluginDirectory() {
  */
 export async function getPluginNames() {
   const pluginsDir = getPluginDirectory();
-  const packageJsonContent = await fs.promises.readFile(path.join(pluginsDir, 'package.json'));
-  const {
-    dependencies: plugins,
-    optionalDependencies: internalPlugins,
-  } = JSON.parse(packageJsonContent.toString());
+  const packageJsonContent = await fs.promises.readFile(
+    path.join(pluginsDir, 'package.json'),
+  );
+  const { dependencies: plugins, optionalDependencies: internalPlugins } =
+    JSON.parse(packageJsonContent.toString());
   const pluginNames = plugins ? Object.keys(plugins) : [];
-  if (internalPlugins) { // internal plugins are mapped as optional dependencies only add them, if they exist
-    Object.keys(internalPlugins)
-      .forEach((internalPlugin) => {
-        if (fs.existsSync(path.join(pluginsDir, 'node_modules', ...internalPlugin.split('/')))) {
-          pluginNames.push(internalPlugin);
-        }
-      });
+  if (internalPlugins) {
+    // internal plugins are mapped as optional dependencies only add them, if they exist
+    Object.keys(internalPlugins).forEach((internalPlugin) => {
+      if (
+        fs.existsSync(
+          path.join(pluginsDir, 'node_modules', ...internalPlugin.split('/')),
+        )
+      ) {
+        pluginNames.push(internalPlugin);
+      }
+    });
   }
   return pluginNames;
 }
@@ -49,9 +57,12 @@ export async function getPluginNames() {
  */
 export async function getInlinePlugins() {
   const pluginsDirectory = getPluginDirectory();
-  const dirs = await fs.promises.readdir(pluginsDirectory, { withFileTypes: true });
-  const topLevelDirs = dirs
-    .filter(d => d.isDirectory() && d.name !== 'node_modules');
+  const dirs = await fs.promises.readdir(pluginsDirectory, {
+    withFileTypes: true,
+  });
+  const topLevelDirs = dirs.filter(
+    (d) => d.isDirectory() && d.name !== 'node_modules',
+  );
   const plugins = [];
   const scopes = [];
   topLevelDirs.forEach((d) => {
@@ -62,14 +73,19 @@ export async function getInlinePlugins() {
     }
   });
 
-  await Promise.all(scopes.map(async (scope) => {
-    const scopeDirs = await fs.promises.readdir(path.join(pluginsDirectory, scope), { withFileTypes: true });
-    scopeDirs
-      .filter(d => d.isDirectory() && d.name !== 'node_modules')
-      .forEach((d) => {
-        plugins.push(`${scope}/${d.name}`);
-      });
-  }));
+  await Promise.all(
+    scopes.map(async (scope) => {
+      const scopeDirs = await fs.promises.readdir(
+        path.join(pluginsDirectory, scope),
+        { withFileTypes: true },
+      );
+      scopeDirs
+        .filter((d) => d.isDirectory() && d.name !== 'node_modules')
+        .forEach((d) => {
+          plugins.push(`${scope}/${d.name}`);
+        });
+    }),
+  );
 
   return plugins;
 }
@@ -84,7 +100,13 @@ export async function getInlinePlugins() {
  * @param {boolean} [base64Css = false] inline css. must be true for plugins
  * @returns {Promise<void>}
  */
-export async function buildLibrary(libraryConfig, outputFolder, library, hash = '', base64Css = false) {
+export async function buildLibrary(
+  libraryConfig,
+  outputFolder,
+  library,
+  hash = '',
+  base64Css = false,
+) {
   // Base64 contains the characters '+', '/', and '=', which have a reserved meaning in URLs.
   // Base64url solves this by replacing '+' with '-' and '/' with '_'.
   // See https://stackoverflow.com/a/55389212
@@ -110,16 +132,34 @@ function loadCss(href) {
     let css = false;
     if (output[1] && output[1].type === 'asset') {
       if (base64Css) {
-        css = `data:text/css;base64,${Buffer.from(output[1].source).toString('base64url')}`;
+        css = `data:text/css;base64,${Buffer.from(output[1].source).toString(
+          'base64url',
+        )}`;
       } else {
-        await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.css`), output[1].source);
+        await fs.promises.writeFile(
+          path.join(
+            process.cwd(),
+            'dist',
+            outputFolder,
+            `${library}${addedHash}.css`,
+          ),
+          output[1].source,
+        );
         css = `./${outputFolder}/${library}${addedHash}.css`;
       }
     }
     if (output[0] && output[0].type === 'chunk') {
       let code = css ? `${cssInjectorCode} await loadCss('${css}');` : '';
       code += output[0].code;
-      await fs.promises.writeFile(path.join(process.cwd(), 'dist', outputFolder, `${library}${addedHash}.js`), code);
+      await fs.promises.writeFile(
+        path.join(
+          process.cwd(),
+          'dist',
+          outputFolder,
+          `${library}${addedHash}.js`,
+        ),
+        code,
+      );
     }
   };
 
@@ -132,7 +172,9 @@ function loadCss(href) {
     libraryBuilds.prependListener('event', async (event) => {
       // debounce
       if (event.code === 'BUNDLE_END') {
-        const res = await event.result.generate(libraryConfig?.build?.rollupOptions?.output ?? {});
+        const res = await event.result.generate(
+          libraryConfig?.build?.rollupOptions?.output ?? {},
+        );
         await write(res.output);
       }
     });
@@ -172,7 +214,9 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
       const libraryPath = path.join('dist', 'assets', `${value}.js`);
       const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
       const relativePath = path.relative(pluginPath, libraryPath);
-      relativePluginPaths[key] = relativePath.split(path.sep).join(path.posix.sep);
+      relativePluginPaths[key] = relativePath
+        .split(path.sep)
+        .join(path.posix.sep);
     });
 
     const pluginConfig = {
@@ -204,27 +248,52 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
     await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
   });
 
-  promises.push(...dependentPlugins.map(async (pluginName) => {
-    let scope = '';
-    let name = pluginName;
-    if (pluginName.startsWith('@')) {
-      [scope, name] = pluginName.split('/');
-    }
+  promises.push(
+    ...dependentPlugins.map(async (pluginName) => {
+      let scope = '';
+      let name = pluginName;
+      if (pluginName.startsWith('@')) {
+        [scope, name] = pluginName.split('/');
+      }
 
-    await fs.promises.cp(
-      path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
-      path.join(process.cwd(), 'dist', 'plugins', scope, name),
-      { recursive: true, force: true },
-    );
-
-    // must be copied one after the other to avoid race conditions
-    if (fs.existsSync(path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'))) {
       await fs.promises.cp(
-        path.join(pluginsDirectory, 'node_modules', scope, name, 'plugin-assets'),
-        path.join(process.cwd(), 'dist', 'plugins', scope, name, 'plugin-assets'),
+        path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
+        path.join(process.cwd(), 'dist', 'plugins', scope, name),
         { recursive: true, force: true },
       );
-    }
-  }));
+
+      // must be copied one after the other to avoid race conditions
+      if (
+        fs.existsSync(
+          path.join(
+            pluginsDirectory,
+            'node_modules',
+            scope,
+            name,
+            'plugin-assets',
+          ),
+        )
+      ) {
+        await fs.promises.cp(
+          path.join(
+            pluginsDirectory,
+            'node_modules',
+            scope,
+            name,
+            'plugin-assets',
+          ),
+          path.join(
+            process.cwd(),
+            'dist',
+            'plugins',
+            scope,
+            name,
+            'plugin-assets',
+          ),
+          { recursive: true, force: true },
+        );
+      }
+    }),
+  );
   await Promise.all(promises);
 }

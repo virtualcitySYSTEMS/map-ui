@@ -29,7 +29,7 @@ export function mergeAttributions(entries) {
         if (year) {
           const index = providerObject.years.indexOf(year);
           if (url && index === -1) {
-            if (providerObject.years.every(y => Number(y) < Number(year))) {
+            if (providerObject.years.every((y) => Number(y) < Number(year))) {
               providerObject.url = url;
             }
             if (year) {
@@ -46,7 +46,7 @@ export function mergeAttributions(entries) {
       }
     });
   });
-  return Object.keys(providers).map(provider => ({
+  return Object.keys(providers).map((provider) => ({
     provider,
     years: providers[provider].years.join(', '),
     url: providers[provider].url,
@@ -77,14 +77,19 @@ export function getAttributions(app) {
    */
   function addAttributions(object) {
     const { attributions } = object.properties;
-    if (!attributions) { return; }
+    if (!attributions) {
+      return;
+    }
     const key = `${object.className}_${object.name}`;
-    const idx = entries.value.findIndex(e => e.key === key);
+    const idx = entries.value.findIndex((e) => e.key === key);
     if (idx < 0) {
       entries.value.push({
         key,
-        title: object.properties?.title ?? `${object.className}: ${object.name}`,
-        attributions: Array.isArray(attributions) ? attributions : [attributions],
+        title:
+          object.properties?.title ?? `${object.className}: ${object.name}`,
+        attributions: Array.isArray(attributions)
+          ? attributions
+          : [attributions],
       });
     }
   }
@@ -93,7 +98,9 @@ export function getAttributions(app) {
    * @param {import("@vcmap/core").VcsMap|import("@vcmap/core").Layer|import("@vcmap/core").ObliqueCollection} object
    */
   function removeAttributions(object) {
-    const idx = entries.value.findIndex(e => e.key === `${object.className}_${object.name}`);
+    const idx = entries.value.findIndex(
+      (e) => e.key === `${object.className}_${object.name}`,
+    );
     if (idx >= 0) {
       entries.value.splice(idx, 1);
     }
@@ -104,7 +111,9 @@ export function getAttributions(app) {
    * @param {import("@vcmap/core").VcsMap|import("@vcmap/core").Layer|import("@vcmap/core").ObliqueCollection} object
    */
   function syncAttributions(object) {
-    if (object?.properties?.attributions === undefined) { return; }
+    if (object?.properties?.attributions === undefined) {
+      return;
+    }
     if (object.active || object.loaded) {
       addAttributions(object);
     } else {
@@ -117,7 +126,9 @@ export function getAttributions(app) {
    * @param {import("@vcmap/core").VcsMap} map
    */
   function initAttributions(map) {
-    if (!map) { return; }
+    if (!map) {
+      return;
+    }
     obliqueListener();
     entries.value.splice(0);
     syncAttributions(map);
@@ -128,7 +139,8 @@ export function getAttributions(app) {
     });
     if (map instanceof ObliqueMap) {
       syncAttributions(map.collection);
-      obliqueListener = map.collectionChanged.addEventListener(syncAttributions);
+      obliqueListener =
+        map.collectionChanged.addEventListener(syncAttributions);
     }
   }
 
@@ -142,7 +154,7 @@ export function getAttributions(app) {
   initAttributions(app.maps.activeMap);
 
   const destroy = () => {
-    listeners.forEach(cb => cb());
+    listeners.forEach((cb) => cb());
     obliqueListener();
   };
 

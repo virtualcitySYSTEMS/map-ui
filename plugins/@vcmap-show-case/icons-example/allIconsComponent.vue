@@ -1,10 +1,6 @@
 <template>
   <v-sheet class="overflow-auto icons-window">
-    <vcs-list
-      :items="icons"
-      :searchable="true"
-      :show-title="false"
-    />
+    <vcs-list :items="icons" :searchable="true" :show-title="false" />
   </v-sheet>
 </template>
 
@@ -31,21 +27,25 @@
               name: 'copy-icon-to-clipboard',
               icon: 'mdi-content-copy',
               title: `Copy ${key}`,
-              callback: async () => { await navigator.clipboard.writeText(key); },
+              callback: async () => {
+                await navigator.clipboard.writeText(key);
+              },
             },
           ],
         };
       };
 
       return {
-        icons: computed(() => Object.keys(Icons).map(icon => createListItem(icon))),
+        icons: computed(() =>
+          Object.keys(Icons).map((icon) => createListItem(icon)),
+        ),
       };
     },
   };
 </script>
 
 <style scoped>
-.icons-window {
-  max-height: 600px;
-}
+  .icons-window {
+    max-height: 600px;
+  }
 </style>

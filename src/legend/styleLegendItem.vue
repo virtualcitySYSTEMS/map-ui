@@ -6,20 +6,25 @@
         :key="idx"
         :class="{ 'w-full': item.colNr === 1, 'w-half': item.colNr !== 1 }"
       >
-        <v-list-item
-          dense
-          class="pa-0"
-          :class="determineInnerPadding(idx)"
-        >
+        <v-list-item dense class="pa-0" :class="determineInnerPadding(idx)">
           <v-list-item-icon class="pr-2">
             <v-img
-              v-if="row.type === StyleRowType.Icon || row.type === StyleRowType.Shape"
+              v-if="
+                row.type === StyleRowType.Icon ||
+                row.type === StyleRowType.Shape
+              "
               width="32"
               height="24"
               contain
               :src="getImageSrcFromShape(row.image)"
             />
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24" v-else>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="24"
+              viewBox="0 0 32 24"
+              v-else
+            >
               <text
                 v-if="row.type === StyleRowType.Text"
                 :style="`font:${row.text.font}`"
@@ -75,7 +80,9 @@
                 :stroke-dashoffset="row.image?.stroke?.lineDashOffset"
                 :stroke-miterlimit="row.image?.stroke?.miterLimit"
                 :stroke-width="row.image?.stroke?.width"
-                :fill="getColor(row.image?.fill?.color) || 'rgba(255,255,255,0)'"
+                :fill="
+                  getColor(row.image?.fill?.color) || 'rgba(255,255,255,0)'
+                "
               />
             </svg>
           </v-list-item-icon>
@@ -94,7 +101,6 @@
 </template>
 
 <script>
-
   import { getStringColor } from '@vcmap/core';
   import {
     VFlex,
@@ -164,7 +170,7 @@
 </script>
 
 <style scoped>
-.v-list-item--dense {
-  height: 32px;
-}
+  .v-list-item--dense {
+    height: 32px;
+  }
 </style>

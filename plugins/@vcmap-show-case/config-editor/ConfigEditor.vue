@@ -1,19 +1,10 @@
 <template>
   <div>
-    <v-textarea
-      v-model="configString"
-      v-if="!loading"
-    />
-    <v-progress-circular
-      v-else
-    />
+    <v-textarea v-model="configString" v-if="!loading" />
+    <v-progress-circular v-else />
 
-    <VcsButton @click="replaceModule">
-      Apply
-    </VcsButton>
-    <VcsButton @click="removeModule">
-      Remove
-    </VcsButton>
+    <VcsButton @click="replaceModule"> Apply </VcsButton>
+    <VcsButton @click="removeModule"> Remove </VcsButton>
   </div>
 </template>
 
@@ -26,7 +17,7 @@
   const moduleId = 'foo';
 
   export default {
-    name: 'Editor',
+    name: 'ConfigEditor',
     components: {
       VcsButton,
       VTextarea,
@@ -36,7 +27,9 @@
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       const module = app.getModuleById(moduleId);
-      const configString = ref(JSON.stringify(module ? module.config : {}, null, 2));
+      const configString = ref(
+        JSON.stringify(module ? module.config : {}, null, 2),
+      );
       const loading = ref(false);
 
       return {
@@ -61,6 +54,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

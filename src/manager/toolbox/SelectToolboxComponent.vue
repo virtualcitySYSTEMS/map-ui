@@ -2,7 +2,7 @@
   <div
     v-if="group.action"
     :class="{ 'vcs-toolbox-action-select-button--active': open }"
-    style="width:fit-content"
+    style="width: fit-content"
   >
     <VcsButton
       :key="group.action.tools[group.action.currentIndex].name"
@@ -10,7 +10,7 @@
       :icon="group.action.tools[group.action.currentIndex].icon"
       :active="group.action.active"
       @click.stop="group.action.callback($event)"
-      v-bind="{...$attrs}"
+      v-bind="{ ...$attrs }"
       class="vcs-toolbox-action-selected"
       :min-width="32"
       :width="32"
@@ -33,7 +33,7 @@
           :width="16"
           large
         >
-          <v-icon v-text="open ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+          <v-icon>{{ open ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
         </VcsButton>
       </template>
 
@@ -51,7 +51,7 @@
               :tooltip="item.title"
               :icon="item.icon"
               @click="group.action.selected(index)"
-              v-bind="{...$attrs}"
+              v-bind="{ ...$attrs }"
               large
             />
           </div>
@@ -61,45 +61,40 @@
   </div>
 </template>
 <style lang="scss">
-@import '../../styles/shades.scss';
+  @import '../../styles/shades.scss';
 
-.vcs-toolbox-action-selected > .v-btn.vcs-button--large {
-  max-width: 40px;
-}
-
-.vcs-toolbox-action-select > .v-btn.vcs-button--large {
-  max-width: 8px;
-}
-
-.vcs-toolbox-action-select-button--active {
-  //border: 2px solid var(--v-shades-base);
-  border-radius: 4px;
-}
-.theme--light .vcs-toolbox-action-select-button--active {
-  background: map-get($shades, 'white');
-}
-.theme--dark .vcs-toolbox-action-select-button--active {
-  background: map-get($shades, 'black');
-}
-
-.vcs-toolbox-2 {
-  .v-toolbar__content {
-    padding: 0;
+  .vcs-toolbox-action-selected > .v-btn.vcs-button--large {
+    max-width: 40px;
   }
-}
 
-.marginToTop {
-  margin-top: 3px;
-}
+  .vcs-toolbox-action-select > .v-btn.vcs-button--large {
+    max-width: 8px;
+  }
+
+  .vcs-toolbox-action-select-button--active {
+    //border: 2px solid var(--v-shades-base);
+    border-radius: 4px;
+  }
+  .theme--light .vcs-toolbox-action-select-button--active {
+    background: map-get($shades, 'white');
+  }
+  .theme--dark .vcs-toolbox-action-select-button--active {
+    background: map-get($shades, 'black');
+  }
+
+  .vcs-toolbox-2 {
+    .v-toolbar__content {
+      padding: 0;
+    }
+  }
+
+  .marginToTop {
+    margin-top: 3px;
+  }
 </style>
 <script>
   import { ref, computed } from 'vue';
-  import {
-    VMenu,
-    VIcon,
-    VToolbar,
-    VToolbarItems,
-  } from 'vuetify/lib';
+  import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/lib';
   import VcsButton from '../../components/buttons/VcsButton.vue';
 
   /**
@@ -134,7 +129,10 @@
       const nudgeLeft = computed(() => {
         const toolboxBtnWidth = 42 + 8; // with padding
         const menuBtnWidth = 16;
-        return (props.group.action.tools.length * (toolboxBtnWidth / 2)) + (menuBtnWidth / 2);
+        return (
+          props.group.action.tools.length * (toolboxBtnWidth / 2) +
+          menuBtnWidth / 2
+        );
       });
 
       return {

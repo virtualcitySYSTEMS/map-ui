@@ -20,7 +20,10 @@ describe('Notifier', () => {
     });
 
     it('should set the message', () => {
-      expect(notifier.notifications.value[0]).to.have.property('message', 'hello world');
+      expect(notifier.notifications.value[0]).to.have.property(
+        'message',
+        'hello world',
+      );
     });
 
     it('should set the title', () => {
@@ -28,7 +31,9 @@ describe('Notifier', () => {
     });
 
     it('should set open to true', () => {
-      expect(notifier.notifications.value[0]).to.have.property('open').and.to.have.property('value', true);
+      expect(notifier.notifications.value[0])
+        .to.have.property('open')
+        .and.to.have.property('value', true);
     });
 
     it('should set a default timeout of 5000', () => {
@@ -36,7 +41,9 @@ describe('Notifier', () => {
     });
 
     it('should set an internal id', () => {
-      expect(notifier.notifications.value[0]).to.have.property('id').and.to.be.a('string');
+      expect(notifier.notifications.value[0])
+        .to.have.property('id')
+        .and.to.be.a('string');
     });
   });
 

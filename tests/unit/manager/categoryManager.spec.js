@@ -19,8 +19,15 @@ describe('categoryManager', () => {
 
   beforeAll(async () => {
     app = new VcsUiApp();
-    category1 = await app.categories.requestCategory({ name: 'cat1', type: 'Category' });
-    category2 = await app.categories.requestCategory({ name: 'cat2', type: 'Category', keyProperty: 'id' });
+    category1 = await app.categories.requestCategory({
+      name: 'cat1',
+      type: 'Category',
+    });
+    category2 = await app.categories.requestCategory({
+      name: 'cat2',
+      type: 'Category',
+      keyProperty: 'id',
+    });
     await app.categories.parseCategoryItems(
       'cat1',
       [{ name: 'item1' }, { name: 'item2' }],
@@ -46,9 +53,27 @@ describe('categoryManager', () => {
       added = vi.fn();
       categoryManager = new CategoryManager(app);
       categoryManager.added.addEventListener(added);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
     });
 
     afterAll(() => {
@@ -57,7 +82,10 @@ describe('categoryManager', () => {
 
     it('should add both categories to the component ids', () => {
       expect(categoryManager.componentIds.length).to.be.equal(2);
-      expect(categoryManager.componentIds).to.have.ordered.members(['cat1', 'cat2']);
+      expect(categoryManager.componentIds).to.have.ordered.members([
+        'cat1',
+        'cat2',
+      ]);
     });
 
     it('should set the title of the managed category', () => {
@@ -170,9 +198,21 @@ describe('categoryManager', () => {
 
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', selectable: true }, 'myOwner1');
-      categoryManager.add({ categoryName: 'cat1', selectable: false, singleSelect: true }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        { categoryName: 'cat1', selectable: true },
+        'myOwner1',
+      );
+      categoryManager.add(
+        { categoryName: 'cat1', selectable: false, singleSelect: true },
+        'myOwner2',
+      );
     });
 
     afterAll(() => {
@@ -184,7 +224,10 @@ describe('categoryManager', () => {
     });
 
     it('should set the first singleSelect option', () => {
-      expect(categoryManager.get('cat1')).to.have.property('singleSelect', true);
+      expect(categoryManager.get('cat1')).to.have.property(
+        'singleSelect',
+        true,
+      );
     });
   });
 
@@ -195,15 +238,36 @@ describe('categoryManager', () => {
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
       destroy = vi.fn();
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
       categoryManager.addMappingFunction(
-        i => i.id === 'item3',
-        (i, c, listItem) => { listItem.destroy = destroy; return listItem; },
+        (i) => i.id === 'item3',
+        (i, c, listItem) => {
+          listItem.destroy = destroy;
+          return listItem;
+        },
         ['cat2'],
         'myOwner',
       );
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
     });
 
     afterAll(() => {
@@ -221,7 +285,8 @@ describe('categoryManager', () => {
         categoryManager.removed.addEventListener(removed);
         addedListenerNumber = category2.collection.added.numberOfListeners;
         removedListenerNumber = category2.collection.removed.numberOfListeners;
-        replacedListenerNumber = category2.collection.replaced.numberOfListeners;
+        replacedListenerNumber =
+          category2.collection.replaced.numberOfListeners;
         categoryManager.remove('cat2', 'myOwner');
       });
 
@@ -238,15 +303,21 @@ describe('categoryManager', () => {
       });
 
       it('should stop listen to the category.added event', () => {
-        expect(category2.collection.added.numberOfListeners).to.be.equal(addedListenerNumber - 1);
+        expect(category2.collection.added.numberOfListeners).to.be.equal(
+          addedListenerNumber - 1,
+        );
       });
 
       it('should stop listen to the category.removed event', () => {
-        expect(category2.collection.removed.numberOfListeners).to.be.equal(removedListenerNumber - 1);
+        expect(category2.collection.removed.numberOfListeners).to.be.equal(
+          removedListenerNumber - 1,
+        );
       });
 
       it('should stop listen to the category.replaced event', () => {
-        expect(category2.collection.replaced.numberOfListeners).to.be.equal(replacedListenerNumber - 1);
+        expect(category2.collection.replaced.numberOfListeners).to.be.equal(
+          replacedListenerNumber - 1,
+        );
       });
     });
 
@@ -261,7 +332,8 @@ describe('categoryManager', () => {
         categoryManager.removed.addEventListener(removed);
         addedListenerNumber = category2.collection.added.numberOfListeners;
         removedListenerNumber = category2.collection.removed.numberOfListeners;
-        replacedListenerNumber = category2.collection.replaced.numberOfListeners;
+        replacedListenerNumber =
+          category2.collection.replaced.numberOfListeners;
         categoryManager.remove('cat1', 'myOwner');
       });
 
@@ -279,15 +351,21 @@ describe('categoryManager', () => {
       });
 
       it('should keep the listener on the category.added event', () => {
-        expect(category2.collection.added.numberOfListeners).to.be.equal(addedListenerNumber);
+        expect(category2.collection.added.numberOfListeners).to.be.equal(
+          addedListenerNumber,
+        );
       });
 
       it('should keep the listener on the category.removed event', () => {
-        expect(category2.collection.removed.numberOfListeners).to.be.equal(removedListenerNumber);
+        expect(category2.collection.removed.numberOfListeners).to.be.equal(
+          removedListenerNumber,
+        );
       });
 
       it('should keep the listener on the category.replaced event', () => {
-        expect(category2.collection.replaced.numberOfListeners).to.be.equal(replacedListenerNumber);
+        expect(category2.collection.replaced.numberOfListeners).to.be.equal(
+          replacedListenerNumber,
+        );
       });
     });
   });
@@ -301,9 +379,27 @@ describe('categoryManager', () => {
 
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
       predicateFunctionItem1 = (item) => {
         return item.name === 'item1';
       };
@@ -323,37 +419,74 @@ describe('categoryManager', () => {
     });
 
     it('should change the category items in the managed category', () => {
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionTitleChange, ['cat1'], 'myOwner');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionTitleChange,
+        ['cat1'],
+        'myOwner',
+      );
       let categoryTreeViewItem = categoryManager.get(category1.name);
       expect(categoryTreeViewItem.items[0].title).to.be.equal('TITLETEST');
       expect(categoryTreeViewItem.items[1].title).to.be.equal('item2');
-      categoryManager.removeMappingFunction(mappingFunctionTitleChange, 'myOwner');
+      categoryManager.removeMappingFunction(
+        mappingFunctionTitleChange,
+        'myOwner',
+      );
       categoryTreeViewItem = categoryManager.get(category1.name);
       expect(categoryTreeViewItem.items[0].title).to.be.equal('item1');
     });
 
     it('should not change an item if the predicateFunction returns false', () => {
-      categoryManager.addMappingFunction(predicateFunctionNone, mappingFunctionTitleChange, ['cat1'], 'myOwner');
+      categoryManager.addMappingFunction(
+        predicateFunctionNone,
+        mappingFunctionTitleChange,
+        ['cat1'],
+        'myOwner',
+      );
       const categoryTreeViewItem = categoryManager.get(category1.name);
       expect(categoryTreeViewItem.items[0].title).to.be.equal('item1');
-      categoryManager.removeMappingFunction(mappingFunctionTitleChange, 'myOwner');
+      categoryManager.removeMappingFunction(
+        mappingFunctionTitleChange,
+        'myOwner',
+      );
     });
 
     it('should apply several MappingFunctions', () => {
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionTitleChange, ['cat1'], 'myOwner');
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionActionsChange, ['cat1'], 'myOwner');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionTitleChange,
+        ['cat1'],
+        'myOwner',
+      );
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionActionsChange,
+        ['cat1'],
+        'myOwner',
+      );
       const categoryTreeViewItem = categoryManager.get(category1.name);
       expect(categoryTreeViewItem.items[0].title).to.be.equal('TITLETEST');
       expect(categoryTreeViewItem.items[0].actions).to.have.lengthOf(1);
-      categoryManager.removeMappingFunction(mappingFunctionTitleChange, 'myOwner');
-      categoryManager.removeMappingFunction(mappingFunctionActionsChange, 'myOwner');
+      categoryManager.removeMappingFunction(
+        mappingFunctionTitleChange,
+        'myOwner',
+      );
+      categoryManager.removeMappingFunction(
+        mappingFunctionActionsChange,
+        'myOwner',
+      );
     });
 
     it('should ignore invalid actions', () => {
       const invalidActionFunction = (item, category, listItem) => {
-        listItem.actions.push({ });
+        listItem.actions.push({});
       };
-      categoryManager.addMappingFunction(predicateFunctionItem1, invalidActionFunction, ['cat1'], 'myOwner');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        invalidActionFunction,
+        ['cat1'],
+        'myOwner',
+      );
       const categoryTreeViewItem = categoryManager.get(category1.name);
       expect(categoryTreeViewItem.items[0].actions).to.have.lengthOf(0);
       categoryManager.removeMappingFunction(invalidActionFunction, 'myOwner');
@@ -362,12 +495,20 @@ describe('categoryManager', () => {
     it('should destroy items, when setting a new mapping function', () => {
       const destroy = vi.fn();
       categoryManager.addMappingFunction(
-        i => i.id === 'item3',
-        (i, c, listItem) => { listItem.destroy = destroy; return listItem; },
+        (i) => i.id === 'item3',
+        (i, c, listItem) => {
+          listItem.destroy = destroy;
+          return listItem;
+        },
         ['cat2'],
         'myOwner',
       );
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionTitleChange, ['cat2'], 'myOwner');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionTitleChange,
+        ['cat2'],
+        'myOwner',
+      );
       expect(destroy).toHaveBeenCalled();
     });
   });
@@ -379,16 +520,39 @@ describe('categoryManager', () => {
 
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
       predicateFunctionItem1 = (item) => {
         return item.name === 'item1';
       };
       mappingFunctionTitleChange = (item, category, listItem) => {
         listItem.title = 'TITLETEST';
       };
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionTitleChange, ['cat1'], 'myOwner2');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionTitleChange,
+        ['cat1'],
+        'myOwner2',
+      );
       categoryManager.removeOwner('myOwner2');
     });
 
@@ -419,16 +583,39 @@ describe('categoryManager', () => {
 
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
       predicateFunctionItem1 = (item) => {
         return item.name === 'item1';
       };
       mappingFunctionTitleChange = (item, category, listItem) => {
         listItem.title = 'TITLETEST';
       };
-      categoryManager.addMappingFunction(predicateFunctionItem1, mappingFunctionTitleChange, ['cat1'], 'myOwner2');
+      categoryManager.addMappingFunction(
+        predicateFunctionItem1,
+        mappingFunctionTitleChange,
+        ['cat1'],
+        'myOwner2',
+      );
       categoryManager.removeOwner('myOwner');
     });
 
@@ -447,9 +634,27 @@ describe('categoryManager', () => {
 
     beforeAll(() => {
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat2', actions: [{ name: 'action2', callback: () => {} }] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [{ name: 'action3', callback: () => {} }] }, 'myOwner2');
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat2',
+          actions: [{ name: 'action2', callback: () => {} }],
+        },
+        'myOwner',
+      );
+      categoryManager.add(
+        {
+          categoryName: 'cat1',
+          actions: [{ name: 'action3', callback: () => {} }],
+        },
+        'myOwner2',
+      );
     });
 
     afterAll(() => {
@@ -514,9 +719,18 @@ describe('categoryManager', () => {
       categoryManager = new CategoryManager(app);
       app.plugins.add({ name: 'myOwner2' });
       app.plugins.add({ name: 'myOwner' });
-      actions = [{ name: 'action3', callback: () => {} }, { name: 'action1', callback: () => {} }];
-      categoryManager.add({ categoryName: 'cat1', actions: [actions[1]] }, 'myOwner');
-      categoryManager.add({ categoryName: 'cat1', actions: [actions[0]] }, 'myOwner2');
+      actions = [
+        { name: 'action3', callback: () => {} },
+        { name: 'action1', callback: () => {} },
+      ];
+      categoryManager.add(
+        { categoryName: 'cat1', actions: [actions[1]] },
+        'myOwner',
+      );
+      categoryManager.add(
+        { categoryName: 'cat1', actions: [actions[0]] },
+        'myOwner2',
+      );
     });
 
     afterAll(() => {
@@ -535,18 +749,30 @@ describe('categoryManager', () => {
     let categoryManager;
 
     beforeAll(async () => {
-      category3 = await app.categories.requestCategory({ name: 'cat3', type: 'Category' });
+      category3 = await app.categories.requestCategory({
+        name: 'cat3',
+        type: 'Category',
+      });
       await app.categories.parseCategoryItems(
         'cat3',
         [{ name: 'item1' }, { name: 'item2' }],
         app.dynamicModuleId,
       );
       categoryManager = new CategoryManager(app);
-      categoryManager.add({ categoryName: 'cat3', actions: [{ name: 'action1', callback: () => {} }] }, 'myOwner');
+      categoryManager.add(
+        {
+          categoryName: 'cat3',
+          actions: [{ name: 'action1', callback: () => {} }],
+        },
+        'myOwner',
+      );
       destroy = vi.fn();
       categoryManager.addMappingFunction(
         () => true,
-        (i, c, listItem) => { listItem.destroy = destroy; return listItem; },
+        (i, c, listItem) => {
+          listItem.destroy = destroy;
+          return listItem;
+        },
         ['cat3'],
         'myOwner',
       );

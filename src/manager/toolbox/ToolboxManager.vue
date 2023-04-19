@@ -1,6 +1,8 @@
 <template>
   <v-toolbar
-    v-if="toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp"
+    v-if="
+      toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp
+    "
     class="vcs-toolbox toolbar__secondary mx-auto v-sheet marginToTop"
     :class="{ 'rounded-b': !open }"
     :height="40"
@@ -16,12 +18,12 @@
         <ToolboxActionGroup
           v-if="group.type === ToolboxType.GROUP"
           :group="group"
-          @toggle="(groupOpen) => open = groupOpen"
+          @toggle="(groupOpen) => (open = groupOpen)"
         />
         <ToolboxActionSelect
           v-else-if="group.type === ToolboxType.SELECT"
           :group="group"
-          @toggle="(selectOpen) => open = selectOpen"
+          @toggle="(selectOpen) => (open = selectOpen)"
         />
         <VcsButton
           v-else
@@ -30,7 +32,7 @@
           :active="group.action.active"
           :background="group.action.background"
           @click.stop="group.action.callback($event)"
-          v-bind="{...$attrs}"
+          v-bind="{ ...$attrs }"
           large
         />
       </div>
@@ -56,7 +58,7 @@
     margin-top: 2px;
   }
 
-  .v-toolbar__items > div{
+  .v-toolbar__items > div {
     gap: 8px;
     width: fit-content;
     display: inline-block;
@@ -107,7 +109,9 @@
 
       const toolboxComponentIds = ref(app.toolboxManager.componentIds);
       const groups = computed(() => {
-        return toolboxComponentIds.value.map(id => app.toolboxManager.get(id));
+        return toolboxComponentIds.value.map((id) =>
+          app.toolboxManager.get(id),
+        );
       });
 
       /**
@@ -119,11 +123,15 @@
        * @returns {boolean}
        */
       function filterFunc(c) {
-        return c.type === ToolboxType.SINGLE ||
+        return (
+          c.type === ToolboxType.SINGLE ||
           c?.action?.tools?.length > 1 ||
-          c.buttonManager?.componentIds?.length > 0;
+          c.buttonManager?.componentIds?.length > 0
+        );
       }
-      const orderedGroups = computed(() => getComponentsByOrder(groups.value).filter(filterFunc));
+      const orderedGroups = computed(() =>
+        getComponentsByOrder(groups.value).filter(filterFunc),
+      );
 
       const toolboxOpen = ref(true);
       const toolboxToggleAction = {

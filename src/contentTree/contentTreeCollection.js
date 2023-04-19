@@ -1,5 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
-import { IndexedCollection, makeOverrideCollection, getObjectFromClassRegistry } from '@vcmap/core';
+import {
+  IndexedCollection,
+  makeOverrideCollection,
+  getObjectFromClassRegistry,
+} from '@vcmap/core';
 import { v4 as uuid } from 'uuid';
 import { computed, ref } from 'vue';
 import ContentTreeItem from './contentTreeItem.js';
@@ -56,7 +60,10 @@ class ContentTreeCollection extends IndexedCollection {
     this._listeners = [
       this.added.addEventListener((child) => {
         recreateTree();
-        this._weightListeners.set(child.name, child.weightChanged.addEventListener(recreateTree));
+        this._weightListeners.set(
+          child.name,
+          child.weightChanged.addEventListener(recreateTree),
+        );
       }),
       this.removed.addEventListener((child) => {
         recreateTree();
@@ -71,7 +78,10 @@ class ContentTreeCollection extends IndexedCollection {
      * @type {SubContentTreeItem}
      * @private
      */
-    this._defaultSubtreeItem = new SubContentTreeItem({ name: 'Content', icon: '$vcsLayers', title: 'content.title' }, app);
+    this._defaultSubtreeItem = new SubContentTreeItem(
+      { name: 'Content', icon: '$vcsLayers', title: 'content.title' },
+      app,
+    );
     /**
      * @type {import("vue").Ref<Map<string, TreeViewItem>>}
      * @private
@@ -95,7 +105,9 @@ class ContentTreeCollection extends IndexedCollection {
    */
   _clearSubTrees() {
     this._subTreeViewItems.value.clear();
-    this._subTreeListeners.forEach((cb) => { cb(); });
+    this._subTreeListeners.forEach((cb) => {
+      cb();
+    });
   }
 
   /**
@@ -104,7 +116,8 @@ class ContentTreeCollection extends IndexedCollection {
    * @returns {function():void}
    * @private
    */
-  _createSubtreeActionButton(subTreeViewItem, slot = WindowSlot.STATIC) { // TODO make configurable?
+  _createSubtreeActionButton(subTreeViewItem, slot = WindowSlot.STATIC) {
+    // TODO make configurable?
     const id = uuid();
     const app = this._app;
     const { action, destroy } = createToggleAction(
@@ -181,21 +194,24 @@ class ContentTreeCollection extends IndexedCollection {
       const childMaps = [...children.values()];
       childMaps.forEach(setChildren);
       treeViewItem.children.splice(0);
-      treeViewItem.children.push(...childMaps.map(c => c.treeViewItem));
+      treeViewItem.children.push(...childMaps.map((c) => c.treeViewItem));
       return treeViewItem;
     };
 
-    const topLevelItems = [...baseTreeMap.values()]
-      .map(setChildren);
+    const topLevelItems = [...baseTreeMap.values()].map(setChildren);
     const defaultSubTreeViewItem = this._defaultSubtreeItem.getTreeViewItem();
     defaultSubTreeViewItem.children.splice(0);
-    defaultSubTreeViewItem.children.push(...topLevelItems.filter(i => !i[subTreeSymbol]));
+    defaultSubTreeViewItem.children.push(
+      ...topLevelItems.filter((i) => !i[subTreeSymbol]),
+    );
     const subTrees = [
       defaultSubTreeViewItem,
-      ...topLevelItems.filter(i => i[subTreeSymbol]),
+      ...topLevelItems.filter((i) => i[subTreeSymbol]),
     ];
 
-    this._subTreeListeners = subTrees.map(subTree => this._createSubtreeActionButton(subTree));
+    this._subTreeListeners = subTrees.map((subTree) =>
+      this._createSubtreeActionButton(subTree),
+    );
   }
 
   /**
@@ -251,11 +267,13 @@ class ContentTreeCollection extends IndexedCollection {
     if (subTree) {
       if (subTree === this._subTreeViewItems.value.values().next().value) {
         const subTreeNames = [...this._subTreeViewItems.value.values()]
-          .filter(s => s !== subTree)
-          .map(s => s.name);
-        return this._array.filter(i => !subTreeNames.some(name => i.name.startsWith(name)));
+          .filter((s) => s !== subTree)
+          .map((s) => s.name);
+        return this._array.filter(
+          (i) => !subTreeNames.some((name) => i.name.startsWith(name)),
+        );
       }
-      return this._array.filter(i => i.name.startsWith(subTree.name));
+      return this._array.filter((i) => i.name.startsWith(subTree.name));
     }
     return [];
   }
@@ -268,9 +286,11 @@ class ContentTreeCollection extends IndexedCollection {
     const subTree = this._getSubTree(id);
     if (subTree) {
       if (!subTree[subTreeOpenStateSymbol]) {
-        subTree[subTreeOpenStateSymbol] = ref(this.getChildrenForSubTree(id)
-          .filter(i => i.initOpen)
-          .map(i => i.name));
+        subTree[subTreeOpenStateSymbol] = ref(
+          this.getChildrenForSubTree(id)
+            .filter((i) => i.initOpen)
+            .map((i) => i.name),
+        );
       }
       return subTree[subTreeOpenStateSymbol];
     }
@@ -280,8 +300,12 @@ class ContentTreeCollection extends IndexedCollection {
   destroy() {
     this._clearSubTrees();
     this._defaultSubtreeItem.destroy();
-    this._listeners.forEach((cb) => { cb(); });
-    this._weightListeners.forEach((cb) => { cb(); });
+    this._listeners.forEach((cb) => {
+      cb();
+    });
+    this._weightListeners.forEach((cb) => {
+      cb();
+    });
     this._weightListeners.clear();
     super.destroy();
   }
@@ -308,11 +332,13 @@ export function createContentTreeCollection(app) {
     collection,
     () => app.dynamicModuleId,
     null,
-    config => getObjectFromClassRegistry(app.contentTreeClassRegistry, config, app),
+    (config) =>
+      getObjectFromClassRegistry(app.contentTreeClassRegistry, config, app),
     ContentTreeItem,
   );
 
-  const originalParseItems = overrideCollection.parseItems.bind(overrideCollection);
+  const originalParseItems =
+    overrideCollection.parseItems.bind(overrideCollection);
   overrideCollection.parseItems = async function parseItems(...args) {
     this._suspendListeners = true;
     await originalParseItems(...args);

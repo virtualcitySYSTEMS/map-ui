@@ -20,7 +20,9 @@ class SimpleGraphView extends AbstractFeatureInfoView {
   /**
    * @type {string}
    */
-  static get className() { return 'SimpleGraphView'; }
+  static get className() {
+    return 'SimpleGraphView';
+  }
 
   /**
    * @param {SimpleGraphFeatureInfoViewOptions} options

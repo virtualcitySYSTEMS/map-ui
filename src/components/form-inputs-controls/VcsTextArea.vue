@@ -17,8 +17,8 @@
           @mouseover="hover = true"
           @mouseleave="hover = false"
           outlined
-          v-bind="{...$attrs, ...attrs}"
-          v-on="{...$listeners, ...on}"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="{ ...$listeners, ...on }"
           :rows="$attrs.rows || (isDense ? 3 : 5)"
           class="ma-0 py-1 primary--placeholder"
           :class="{
@@ -35,16 +35,16 @@
 </template>
 
 <style lang="scss" scoped>
-.primary--placeholder {
-  ::v-deep {
-    textarea::placeholder {
-      color: var(--v-primary-base);
-      font-style: italic;
-      opacity: 1;
+  .primary--placeholder {
+    ::v-deep {
+      textarea::placeholder {
+        color: var(--v-primary-base);
+        font-style: italic;
+        opacity: 1;
+      }
     }
   }
-}
-.remove-outline {
+  .remove-outline {
     ::v-deep {
       fieldset {
         border-width: 0;
@@ -65,7 +65,8 @@
   }
   .outline--error {
     ::v-deep {
-      .v-input__slot fieldset, .v-text-field__slot textarea {
+      .v-input__slot fieldset,
+      .v-text-field__slot textarea {
         border-color: var(--v-error-base);
       }
     }
@@ -152,12 +153,18 @@
       const errorMessage = useErrorSync(textAreaRef);
 
       const isClearable = computed(() => {
-        return (attrs.clearable !== undefined && attrs.clearable !== false) &&
-          (hover.value || focus.value || errorMessage.value);
+        return (
+          attrs.clearable !== undefined &&
+          attrs.clearable !== false &&
+          (hover.value || focus.value || errorMessage.value)
+        );
       });
       const isDense = computed(() => attrs.dense !== false);
       const isOutlined = computed(() => {
-        return (hover.value || focus.value || errorMessage.value) && !(attrs.disabled || attrs.disabled === '');
+        return (
+          (hover.value || focus.value || errorMessage.value) &&
+          !(attrs.disabled || attrs.disabled === '')
+        );
       });
       return {
         hover,

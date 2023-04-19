@@ -27,21 +27,23 @@
         required: true,
       },
     },
-    setup({ category, windowId }) {
+    setup(props) {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
 
       const selection = computed({
-        get() { return category.selection; },
+        get() {
+          return props.category.selection;
+        },
         set(value) {
           // eslint-disable-next-line vue/no-mutating-props
-          category.selection = value;
+          props.category.selection = value;
         },
       });
 
       watch(app.categoryManager.componentIds, () => {
-        if (!app.categoryManager.get(category.id)) {
-          app.windowManager.remove(windowId);
+        if (!app.categoryManager.get(props.category.id)) {
+          app.windowManager.remove(props.windowId);
         }
       });
 
@@ -52,6 +54,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

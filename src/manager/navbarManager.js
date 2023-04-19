@@ -38,11 +38,16 @@ export function sortByOwner(ownerA, ownerB, order = []) {
  * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
  * @returns {Array<VcsAction>}
  */
-export function getActionsByLocation(buttonComponents, location, order = [], compareFn = sortByOwner) {
+export function getActionsByLocation(
+  buttonComponents,
+  location,
+  order = [],
+  compareFn = sortByOwner,
+) {
   return [...buttonComponents]
-    .filter(b => b[locationSymbol] === location)
+    .filter((b) => b[locationSymbol] === location)
     .sort((a, b) => compareFn(a.owner, b.owner, order))
-    .map(b => b.action);
+    .map((b) => b.action);
 }
 
 /**

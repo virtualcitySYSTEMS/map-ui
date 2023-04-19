@@ -437,15 +437,23 @@ const IconMap = {
   },
 };
 
-const nameCapitalized = (name) => { return name.charAt(0).toUpperCase() + name.slice(1); };
+const nameCapitalized = (name) => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
 
 const prefixed = (iconMap) => {
-  return Object
-    .entries(iconMap)
-    .reduce((previousValue, [key, value]) => ({ ...previousValue, [`vcs${nameCapitalized(key)}`]: value }), {});
+  return Object.entries(iconMap).reduce(
+    (previousValue, [key, value]) => ({
+      ...previousValue,
+      [`vcs${nameCapitalized(key)}`]: value,
+    }),
+    {},
+  );
 };
 
 const Icons = prefixed(IconMap);
 export const IconIds = Object.keys(IconMap);
-export const IconNames = Object.keys(Icons).map((name) => { return `$${name}`; });
+export const IconNames = Object.keys(Icons).map((name) => {
+  return `$${name}`;
+});
 export default Icons;

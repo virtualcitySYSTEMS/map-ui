@@ -3,8 +3,9 @@
 The concept foresees a context based help in the VC Map.
 Each plugin should provide own context specific help texts in their implementation.
 
-Help can either be provided 
-- window based, referencing a help document explaining the overall tool or 
+Help can either be provided
+
+- window based, referencing a help document explaining the overall tool or
 - section based, explaining one specific function of a tool.
 
 Help texts shall focus on the current task, a currently open window or plugin.
@@ -28,8 +29,7 @@ To provide a help for a section, use the `helpText` prop to pass plain text or a
 <VcsFormSection
   heading="pluginExample.formSectionTitle"
   help-text="pluginExample.helpText"
->
-</VcsFormSection>
+></VcsFormSection>
 ```
 
 To provide a html based help, you may use the `help` slot of VcsFormSection:
@@ -52,4 +52,3 @@ Whenever either a `helpText` prop is provided or the `#help` slot is implemented
 If you make use of the `headerActions` prop, the help action will always be the first action displayed.
 
 > Notice, that `#help` slot takes precedence over the `helpText` prop!
-

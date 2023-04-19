@@ -78,14 +78,17 @@ describe('ContextMenuManager', () => {
       ({ contextMenuManager } = app);
       contextMenuManager.addEventHandler(({ feature }) => {
         if (feature) {
-          return [{
-            name: 'foo',
-            callback() {},
-          }];
+          return [
+            {
+              name: 'foo',
+              callback() {},
+            },
+          ];
         }
         return [];
       }, 'foo');
-      ({ raiseRightClick, raiseLeftClick, raiseMiddleClick, destroy } = await setupAppForEvents(app));
+      ({ raiseRightClick, raiseLeftClick, raiseMiddleClick, destroy } =
+        await setupAppForEvents(app));
     });
 
     afterEach(() => {
@@ -133,10 +136,15 @@ describe('ContextMenuManager', () => {
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      app.contextMenuManager.addEventHandler(() => [{
-        name: 'foo',
-        callback() {},
-      }], 'foo');
+      app.contextMenuManager.addEventHandler(
+        () => [
+          {
+            name: 'foo',
+            callback() {},
+          },
+        ],
+        'foo',
+      );
 
       ({ raiseRightClick, destroy } = await setupAppForEvents(app));
       await raiseRightClick();
@@ -220,8 +228,12 @@ describe('ContextMenuManager', () => {
       app.plugins.add({ name: 'bar' });
 
       let validation = '';
-      contextMenuManager.addEventHandler(() => { validation += 'bar'; }, 'bar');
-      contextMenuManager.addEventHandler(() => { validation += 'foo'; }, 'foo');
+      contextMenuManager.addEventHandler(() => {
+        validation += 'bar';
+      }, 'bar');
+      contextMenuManager.addEventHandler(() => {
+        validation += 'foo';
+      }, 'foo');
       await raiseRightClick();
       expect(validation).to.equal('foobar');
     });

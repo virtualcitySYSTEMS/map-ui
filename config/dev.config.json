@@ -151,12 +151,7 @@
                   "angle": 1.5707963267948966,
                   "scale": 4,
                   "fill": {
-                    "color": [
-                      255,
-                      0,
-                      255,
-                      0.8
-                    ]
+                    "color": [255, 0, 255, 0.8]
                   },
                   "stroke": {
                     "color": "#000000",
@@ -235,12 +230,7 @@
       "layers": "mroadbylden,mroadbyln,isophonelden67,isophoneln57,lsemroadby",
       "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
       "extent": {
-        "coordinates": [
-          8.799200,
-          47.156072,
-          14.055682,
-          50.670961
-        ],
+        "coordinates": [8.7992, 47.156072, 14.055682, 50.670961],
         "projection": {
           "epsg": "4326"
         }
@@ -349,7 +339,7 @@
       }
     }
   ],
-  "contentTree":  [
+  "contentTree": [
     {
       "name": "geojson",
       "layerName": "testGeojson",

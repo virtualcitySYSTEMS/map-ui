@@ -10,7 +10,7 @@
       <td
         :title="$t(item.key)"
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-        :style="{'max-width': headers[0].width }"
+        :style="{ 'max-width': headers[0].width }"
       >
         {{ $t(item.key) }}
       </td>
@@ -20,9 +20,14 @@
       <td
         :title="$t(item.value)"
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-        :style="{'max-width': headers[1].width }"
+        :style="{ 'max-width': headers[1].width }"
       >
-        <span :class="{ 'single-line': !/\s/.test(item.value), 'multi-line': /\s/.test(item.value), }">
+        <span
+          :class="{
+            'single-line': !/\s/.test(item.value),
+            'multi-line': /\s/.test(item.value),
+          }"
+        >
           {{ $t(item.value) }}
         </span>
       </td>
@@ -45,14 +50,20 @@
    * @param {string} [parent]
    * @returns {Array<TableItem>}
    */
-  export function attributesToItems(attributes, items = [], parent = undefined) {
+  export function attributesToItems(
+    attributes,
+    items = [],
+    parent = undefined,
+  ) {
     const nestedKey = (key, nested) => (nested ? `${nested}.${key}` : key);
     Object.entries(attributes).forEach(([key, value]) => {
       if (value instanceof Object) {
         attributesToItems(value, items, nestedKey(key, parent));
       } else {
         const item = { key: nestedKey(key, parent), value };
-        if (parent) { item.group = parent; }
+        if (parent) {
+          item.group = parent;
+        }
         items.push(item);
       }
     });
@@ -107,31 +118,30 @@
 </script>
 
 <style lang="scss" scoped>
+  .single-line {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .multi-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    height: auto;
+    max-height: 96px;
+  }
 
-.single-line {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.multi-line {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  height: auto;
-  max-height: 96px;
-}
+  .noBorder {
+    border-bottom: none !important;
+  }
 
-.noBorder {
-  border-bottom: none !important;
-}
-
-::v-deep {
-  .v-data-table__mobile-row__cell {
-    td.vcs-table.overflow-max-width {
-      max-width: 260px;
+  ::v-deep {
+    .v-data-table__mobile-row__cell {
+      td.vcs-table.overflow-max-width {
+        max-width: 260px;
+      }
     }
   }
-}
 </style>

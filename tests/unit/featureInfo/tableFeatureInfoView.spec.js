@@ -1,9 +1,4 @@
-import {
-  describe,
-  beforeAll,
-  expect,
-  it,
-} from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 
 describe('TableFeatureInfoView', () => {
@@ -38,13 +33,22 @@ describe('TableFeatureInfoView', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
       it('should configure itemsPerPageArray', () => {
-        expect(outputConfig).to.have.property('itemsPerPageArray', inputConfig.itemsPerPageArray);
+        expect(outputConfig).to.have.property(
+          'itemsPerPageArray',
+          inputConfig.itemsPerPageArray,
+        );
       });
       it('should configure itemsPerPage', () => {
-        expect(outputConfig).to.have.property('itemsPerPage', inputConfig.itemsPerPage);
+        expect(outputConfig).to.have.property(
+          'itemsPerPage',
+          inputConfig.itemsPerPage,
+        );
       });
       it('should configure searchbarPlaceholder', () => {
-        expect(outputConfig).to.have.property('searchbarPlaceholder', inputConfig.searchbarPlaceholder);
+        expect(outputConfig).to.have.property(
+          'searchbarPlaceholder',
+          inputConfig.searchbarPlaceholder,
+        );
       });
     });
   });

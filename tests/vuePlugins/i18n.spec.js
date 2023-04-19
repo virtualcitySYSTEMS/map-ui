@@ -1,14 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-  beforeEach,
-  afterEach,
-  beforeAll,
-} from 'vitest';
+import { describe, expect, it, beforeEach, afterEach, beforeAll } from 'vitest';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import { createVueI18n, setupI18n } from '../../src/vuePlugins/i18n.js';
-
 
 describe('setupI18n', () => {
   let app;

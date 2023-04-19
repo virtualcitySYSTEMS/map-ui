@@ -37,7 +37,7 @@ export default async function themeChanger(config) {
   const availableThemes = [vcsTheme, ...customThemes];
 
   const pluginConfig = {
-    themes: ref(/** @type {Array<VcMapTheme> */[]),
+    themes: ref(/** @type {Array<VcMapTheme> */ []),
   };
 
   const pluginState = {
@@ -53,12 +53,18 @@ export default async function themeChanger(config) {
     check(theme.dark, Object);
     pluginConfig.themes.value.push(theme);
   }
-  availableThemes.forEach(t => addTheme(t));
+  availableThemes.forEach((t) => addTheme(t));
 
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     config: pluginConfig,
     state: pluginState,
     addTheme,

@@ -1,19 +1,21 @@
-import {
-  ButtonLocation,
-  createToggleAction,
-  WindowSlot,
-} from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
-import editor from './editor.vue';
+import ConfigEditor from './ConfigEditor.vue';
 
 /**
  * @returns {VcsPlugin}
  */
-export default async function () {
+export default async function configEditor() {
   return {
-    get name() { return packageJSON.name; },
-    get version() { return packageJSON.version; },
-    get vcMapVersion() { return packageJSON.vcMapVersion; },
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get vcMapVersion() {
+      return packageJSON.vcMapVersion;
+    },
     onVcsAppMounted(app) {
       const { action, destroy } = createToggleAction(
         {
@@ -24,7 +26,7 @@ export default async function () {
           state: {
             headerTitle: 'Config Editor',
           },
-          component: editor,
+          component: ConfigEditor,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         app.windowManager,

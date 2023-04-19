@@ -71,38 +71,77 @@ export {
 } from './src/manager/window/windowHelper.js';
 
 export { default as ButtonManager } from './src/manager/buttonManager.js';
-export { default as NavbarManager, ButtonLocation, getActionsByLocation } from './src/manager/navbarManager.js';
-export { default as ToolboxManager, ToolboxType } from './src/manager/toolbox/toolboxManager.js';
+export {
+  default as NavbarManager,
+  ButtonLocation,
+  getActionsByLocation,
+} from './src/manager/navbarManager.js';
+export {
+  default as ToolboxManager,
+  ToolboxType,
+} from './src/manager/toolbox/toolboxManager.js';
 export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
 export { default as CategoryManagerComponent } from './src/manager/categoryManager/CategoryManager.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
 
-export { applyKeyMapping, applyValueMapping, default as AbstractFeatureInfoView } from './src/featureInfo/abstractFeatureInfoView.js';
-export { extractNestedKey, default as BalloonFeatureInfoView } from './src/featureInfo/balloonFeatureInfoView.js';
+export {
+  applyKeyMapping,
+  applyValueMapping,
+  default as AbstractFeatureInfoView,
+} from './src/featureInfo/abstractFeatureInfoView.js';
+export {
+  extractNestedKey,
+  default as BalloonFeatureInfoView,
+} from './src/featureInfo/balloonFeatureInfoView.js';
 export { default as AddressBalloonFeatureInfoView } from './src/featureInfo/addressBalloonFeatureInfoView.js';
-export { getBalloonPosition, setBalloonPosition, setupBalloonPositionListener } from './src/featureInfo/balloonHelper.js';
+export {
+  getBalloonPosition,
+  setBalloonPosition,
+  setupBalloonPositionListener,
+} from './src/featureInfo/balloonHelper.js';
 export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
 export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';
 export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.js';
 export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.js';
-export { getHighlightStyle, featureInfoViewSymbol } from './src/featureInfo/featureInfo.js';
+export {
+  getHighlightStyle,
+  featureInfoViewSymbol,
+} from './src/featureInfo/featureInfo.js';
 
 export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/mapNavigation.vue';
 export { default as ObliqueRotation } from './src/navigation/obliqueRotation.vue';
 export { default as OrientationToolsButton } from './src/navigation/orientationToolsButton.vue';
-export { getWindowComponentOptions, default as OverviewMap } from './src/navigation/overviewMap.js';
+export {
+  getWindowComponentOptions,
+  default as OverviewMap,
+} from './src/navigation/overviewMap.js';
 export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.js';
 export { default as TiltSlider } from './src/navigation/tiltSlider.vue';
 export { default as VcsCompass } from './src/navigation/vcsCompass.vue';
 export { default as VcsZoomButton } from './src/navigation/vcsZoomButton.vue';
 
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
-export { createVuetify, vuetify, getColorByKey, getDefaultPrimaryColor } from './src/vuePlugins/vuetify.js';
-export { downloadURI, downloadBlob, downloadText, downloadCanvas } from './src/downloadHelper.js';
-export { default as initApp, VcsUiAppConfigPattern, initAppFromModule, initAppFromAppConfig } from './src/init.js';
+export {
+  createVuetify,
+  vuetify,
+  getColorByKey,
+  getDefaultPrimaryColor,
+} from './src/vuePlugins/vuetify.js';
+export {
+  downloadURI,
+  downloadBlob,
+  downloadText,
+  downloadCanvas,
+} from './src/downloadHelper.js';
+export {
+  default as initApp,
+  VcsUiAppConfigPattern,
+  initAppFromModule,
+  initAppFromAppConfig,
+} from './src/init.js';
 export {
   vcsAppSymbol,
   pluginFactorySymbol,
@@ -113,9 +152,16 @@ export {
   serializePlugin,
   deserializePlugin,
 } from './src/pluginHelper.js';
-export { getStateFromURL, createEmptyState, setStateToUrl } from './src/state.js';
+export {
+  getStateFromURL,
+  createEmptyState,
+  setStateToUrl,
+} from './src/state.js';
 export { default as VcsUiApp } from './src/vcsUiApp.js';
-export { default as Notifier, NotificationType } from './src/notifier/notifier.js';
+export {
+  default as Notifier,
+  NotificationType,
+} from './src/notifier/notifier.js';
 export { default as Icons } from './src/components/icons/+all.js';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
@@ -145,7 +191,11 @@ export { default as VcsDatePicker } from './src/components/form-inputs-controls/
 
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
 
-export { default as VcsActionList, validateAction, validateActions } from './src/components/lists/VcsActionList.vue';
+export {
+  default as VcsActionList,
+  validateAction,
+  validateActions,
+} from './src/components/lists/VcsActionList.vue';
 // export { default as VcsEndlessList } from './src/components/lists/VcsEndlessList.vue';
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
@@ -158,8 +208,7 @@ export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreev
 // export { default as VcsMenu } from './src/components/menus/VcsMenu.vue';
 // export { default as VcsOverflowMenu } from './src/components/menus/VcsOverflowMenu.vue';
 
-
-// export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
+export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';
