@@ -37,7 +37,7 @@ import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
 
 /**
- * @typedef {import("@vcmap/core").VcsAppConfig} VcsUiAppConfig
+ * @typedef {import("@vcmap/core").VcsModuleConfig} VcsUiModuleConfig
  * @property {Array<Object>} [plugins]
  * @property {Array<ContentTreeItemOptions>} [contentTree]
  * @property {Array<UiConfigurationItem>} [uiConfig]
@@ -535,6 +535,19 @@ class VcsUiApp extends VcsApp {
         1,
       );
     }
+  }
+
+  /**
+   * @param {string} moduleId
+   * @returns {VcsUiModuleConfig}
+   */
+  serializeModule(moduleId) {
+    const config = super.serializeModule(moduleId);
+    config.uiConfig = this._uiConfig.serializeModule(moduleId);
+    config.featureInfo = this._featureInfo.collection.serializeModule(moduleId);
+    config.i18n = this._i18n.serializeModule(moduleId);
+    config.plugins = this._plugins.serializeModule(moduleId);
+    return config;
   }
 
   /**

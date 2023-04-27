@@ -9,6 +9,7 @@
 - Fixed the error display behaviour of input components in combination with a form element.
 - Adapt `initApp` method and add new methods `initAppFromModule` and `initAppFromAppConfig` to be used for initialization in `start.js`.
 - Updating `Context` to `VcsModule`
+- Adds `serializeModule` method to `VcsUiApp`, which serializes all ui specific properties of the app for a provided module id.
 
 # 5.0.0-rc.15
 

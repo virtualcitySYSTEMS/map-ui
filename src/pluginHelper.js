@@ -81,6 +81,9 @@ export async function loadPlugin(name, config) {
     )}${module}`;
   } else if (module === '_dev') {
     module = `/${name}.js`;
+  } else if (module === 'http://localhost/_test') {
+    // early escape to bypass module loading for testing, see VcsUiApp.spec.js
+    return null;
   }
 
   // if (!context.security.isTrustedUrl(module)) { XXX missing pipeline security
