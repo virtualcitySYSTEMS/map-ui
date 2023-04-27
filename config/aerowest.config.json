@@ -10,6 +10,7 @@
   },
   "i18n": [
     {
+      "name": "Aerowest",
       "de": {
         "footer": {
           "title": "test"

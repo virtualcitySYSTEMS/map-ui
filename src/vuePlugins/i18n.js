@@ -45,7 +45,7 @@ function setI18n(messages, i18n) {
  * @returns {function():void} returns a destroy function
  */
 export function setupI18n(app, i18n) {
-  const defaultMessages = { en, de };
+  const defaultMessages = { name: 'default', en, de };
   defaultMessages[i18nPluginSymbol] = vcsAppSymbol;
   app.i18n.add(defaultMessages);
 

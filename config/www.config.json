@@ -9,6 +9,7 @@
   },
   "i18n": [
     {
+      "name": "Demo",
       "de": {
         "layer": {
           "buildings": "LOD2 Gebäude - Open Data 2022",

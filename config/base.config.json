@@ -9,6 +9,7 @@
   },
   "i18n": [
     {
+      "name": "base",
       "de": {
         "layers": {
           "pointcloud": {

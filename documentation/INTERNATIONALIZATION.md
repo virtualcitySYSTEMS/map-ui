@@ -22,6 +22,16 @@ the `i18n` section in the VcsModule (configuration file), the `i18n` section in 
 app.i18n.add({ de: { myMessages: 'test' } });
 ```
 
+You can optionally provide a name and properties, when adding new messages:
+
+```javascript
+app.i18n.add({
+  name: 'MyI18nMappings',
+  properties: {},
+  de: { myMessages: 'test' },
+});
+```
+
 All added I18n keys will be merged in the order they have been added to the collection.
 
 ## Translating Dynamic Content
@@ -35,22 +45,25 @@ Example VcsModule configuration file:
 
 ```json
 {
-  "i18n": {
-    "de": {
-      "layers": {
-        "myLayer": {
-          "title": "myLayerTitle Deutsch"
+  "i18n": [
+    {
+      "name": "My i18n configuration",
+      "de": {
+        "layers": {
+          "myLayer": {
+            "title": "myLayerTitle Deutsch"
+          }
         }
-      }
-    },
-    "en": {
-      "layers": {
-        "myLayer": {
-          "title": "myLayerTitle english"
+      },
+      "en": {
+        "layers": {
+          "myLayer": {
+            "title": "myLayerTitle english"
+          }
         }
       }
     }
-  },
+  ],
   "layers": [
     {
       "name": "myLayer1",
@@ -152,6 +165,7 @@ const stringifiedJSON = JSON.stringify(english, null, 2);
 ```JSON
 {
   "i18n": [{
+    "name": "polish i18n configuration",
     "pl": stringifiedJSON
   }]
 }

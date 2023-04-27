@@ -4,6 +4,7 @@
   "startingViewpointName": "potsdamer_platz",
   "i18n": [
     {
+      "name": "dev",
       "de": {
         "layers": {
           "wmsLayerLaerm": {
