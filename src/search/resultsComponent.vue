@@ -4,7 +4,11 @@
       <v-list-item v-for="(item, index) in results" :key="index" class="px-0">
         <v-list-item-content>
           <ResultItem :item="item" :query="query" class="cursor-pointer" />
-          <v-divider v-if="index < results.length - 1" :key="index" />
+          <v-divider
+            v-if="index < results.length - 1"
+            :key="index"
+            class="base lighten-3"
+          />
         </v-list-item-content>
       </v-list-item>
     </v-list-item-group>

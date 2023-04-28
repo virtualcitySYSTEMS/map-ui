@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-1 d-flex flex-row align-center" v-if="item">
+  <div class="ma-2 d-flex flex-row align-center" v-if="item">
     <v-list-item-icon v-if="item.icon" class="px-1">
       <v-icon>
         {{ item.icon }}

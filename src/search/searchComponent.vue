@@ -1,9 +1,9 @@
 <template>
   <v-sheet>
-    <span class="d-flex justify-space-between align-center mt-1 mx-1">
-      <v-icon class="mx-2"> $vcsSearch </v-icon>
+    <span class="d-flex justify-space-between align-center mt-1 ml-2">
+      <v-icon class="pa-1"> $vcsSearch </v-icon>
       <VcsTextField
-        class="font-size-14 d-inline-block user-select-none w-full mx-2"
+        class="d-inline-block user-select-none w-full mx-1"
         autofocus
         :loading="searching"
         clearable
@@ -14,7 +14,7 @@
         @input="reset"
       />
     </span>
-    <v-divider class="mt-1" v-if="!!results.length" />
+    <v-divider class="mt-1 base darken-1" v-if="!!results.length" />
     <ResultsComponent :query="query" :results="results" />
     <v-divider v-if="!!results.length" />
     <VcsButton
@@ -27,7 +27,23 @@
   </v-sheet>
 </template>
 
-<style></style>
+<style lang="scss" scoped>
+  ::v-deep {
+    .v-input {
+      fieldset {
+        padding: 0 !important;
+      }
+      fieldset,
+      input {
+        border-color: transparent !important;
+      }
+    }
+    .v-icon .v-icon__component {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>
 
 <script>
   import { inject, onUnmounted, ref } from 'vue';
