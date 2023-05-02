@@ -1,83 +1,164 @@
 <template>
-  <v-sheet>
-    <v-sheet class="px-2 d-grid">
-      <v-switch v-model="selectable" label="Selectable" />
-      <v-switch
-        :disabled="!selectable"
-        v-model="selectSingle"
-        label=" Single Select"
-      />
-      <v-switch v-model="searchable" label="Searchable" />
-      <v-dialog v-model="dialog" width="400">
-        <template #activator="{ on }">
-          <vcs-button v-on="on"> Add An item </vcs-button>
+  <div>
+    <v-container class="py-0 px-1">
+      <v-row no-gutters>
+        <v-col>
+          <v-switch
+            dense
+            v-model="selectable"
+            label="Selectable"
+            class="ma-0"
+          />
+        </v-col>
+        <v-col>
+          <v-switch
+            dense
+            :disabled="!selectable"
+            v-model="selectSingle"
+            label=" Single Select"
+            class="ma-0"
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-switch
+            dense
+            v-model="searchable"
+            label="Searchable"
+            class="ma-0"
+          />
+        </v-col>
+        <v-col>
+          <v-dialog v-model="dialog" width="400">
+            <template #activator="{ on }">
+              <vcs-form-button v-on="on"> Add An item </vcs-form-button>
+            </template>
+            <v-card class="pa-2">
+              <v-form @submit.prevent="add">
+                <vcs-text-field
+                  v-model="newItem.name"
+                  label="Name"
+                  :rules="required"
+                />
+                <vcs-text-field
+                  v-model="newItem.title"
+                  label="Title"
+                  :rules="required"
+                />
+                <v-switch
+                  dense
+                  label="visible"
+                  v-model="newItem.visible"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
+                  label="disabled"
+                  v-model="newItem.disabled"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
+                  label="random icon"
+                  v-model="newItem.icon"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
+                  label="console.log action"
+                  v-model="newItem.action"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
+                  label="console.log on clicked"
+                  v-model="newItem.clicked"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
+                  label="console.log selected state"
+                  v-model="newItem.selected"
+                  class="ma-0"
+                />
+                <vcs-form-button type="submit"> Add </vcs-form-button>
+              </v-form>
+            </v-card>
+          </v-dialog>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-divider class="my-1" />
+    <v-container class="py-0 px-1">
+      <v-row no-gutters>
+        <v-col>
+          <v-switch dense v-model="showTitle" label="Show Title" class="ma-0" />
+        </v-col>
+        <v-col>
+          <vcs-text-field v-model="title" placeholder="Title" />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-switch
+            dense
+            v-model="titleActions"
+            label="Title Actions"
+            class="ma-0"
+          />
+        </v-col>
+        <v-col>
+          <v-switch dense v-model="titleIcon" label="Title Icon" class="ma-0" />
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-divider class="my-1" />
+    <v-container class="py-0 px-1">
+      <v-row no-gutters>
+        <template v-if="selectable">
+          <v-col>
+            <vcs-form-button @click="selected = []"> Clear </vcs-form-button>
+          </v-col>
+          <v-col>
+            <v-switch
+              dense
+              v-model="showSelection"
+              label="Show Selection"
+              class="ma-0"
+            />
+          </v-col>
+          <ul v-if="showSelection">
+            <li v-for="(i, index) in selected" :key="`item-${index}`">
+              {{ i.title }}
+            </li>
+          </ul>
         </template>
-        <v-card class="pa-2">
-          <v-form @submit.prevent="add">
-            <vcs-text-field
-              v-model="newItem.name"
-              label="Name"
-              :rules="required"
-            />
-            <vcs-text-field
-              v-model="newItem.title"
-              label="Title"
-              :rules="required"
-            />
-            <v-switch label="visible" v-model="newItem.visible" />
-            <v-switch label="disabled" v-model="newItem.disabled" />
-            <v-switch label="random icon" v-model="newItem.icon" />
-            <v-switch label="console.log action" v-model="newItem.action" />
-            <v-switch
-              label="console.log on clicked"
-              v-model="newItem.clicked"
-            />
-            <v-switch
-              label="console.log selected state"
-              v-model="newItem.selected"
-            />
-            <vcs-button type="submit"> Add </vcs-button>
-          </v-form>
-        </v-card>
-      </v-dialog>
-      <v-divider class="ma-2" />
-      <v-switch v-model="showTitle" label="Show Title" />
-      <vcs-text-field v-model="title" placeholder="Title" />
-      <v-switch v-model="titleActions" label="Title Actions" />
-      <v-switch v-model="titleIcon" label="Title Icon" />
-      <v-divider class="ma-2" />
-      <template v-if="selectable">
-        <vcs-button @click="selected = []"> Clear Selection </vcs-button>
-        <v-switch v-model="showSelection" label="Show Selection" />
-        <ul v-if="showSelection">
-          <li v-for="(i, index) in selected" :key="`item-${index}`">
-            {{ i.title }}
-          </li>
-        </ul>
-      </template>
-      <v-divider class="ma-2" />
-    </v-sheet>
+      </v-row>
 
-    <vcs-list
-      :items="items"
-      :selectable="selectable"
-      :single-select="selectSingle"
-      :searchable="searchable"
-      :show-title="showTitle"
-      :icon="titleIconSrc"
-      :actions="titleActionsArray"
-      :title="title"
-      v-model="selected"
-    />
-  </v-sheet>
+      <vcs-list
+        :items="items"
+        :selectable="selectable"
+        :single-select="selectSingle"
+        :searchable="searchable"
+        :show-title="showTitle"
+        :icon="titleIconSrc"
+        :actions="titleActionsArray"
+        :title="title"
+        v-model="selected"
+      />
+    </v-container>
+  </div>
 </template>
 
 <script>
-  import { VcsList, VcsButton, VcsTextField, Icons } from '@vcmap/ui';
+  import { VcsList, VcsFormButton, VcsTextField, Icons } from '@vcmap/ui';
   import {
     VSwitch,
     VDivider,
-    VSheet,
+    VContainer,
+    VRow,
+    VCol,
     VDialog,
     VCard,
     VForm,
@@ -124,11 +205,13 @@
     name: 'ListExample',
     components: {
       VcsList,
-      VcsButton,
+      VcsFormButton,
       VcsTextField,
       VSwitch,
       VDivider,
-      VSheet,
+      VContainer,
+      VRow,
+      VCol,
       VDialog,
       VCard,
       VForm,

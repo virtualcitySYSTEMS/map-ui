@@ -1,26 +1,31 @@
 <template>
-  <div>
-    <v-textarea v-model="configString" v-if="!loading" />
+  <v-container class="py-0 px-1">
+    <VcsTextArea v-model="configString" v-if="!loading" />
     <v-progress-circular v-else />
 
-    <VcsButton @click="replaceModule"> Apply </VcsButton>
-    <VcsButton @click="removeModule"> Remove </VcsButton>
-  </div>
+    <div class="d-flex gap-2 px-1 pt-2 pb-1 justify-end">
+      <VcsFormButton variant="filled" @click="replaceModule">
+        Apply
+      </VcsFormButton>
+      <VcsFormButton @click="removeModule"> Remove </VcsFormButton>
+    </div>
+  </v-container>
 </template>
 
 <script>
   import { ref, inject } from 'vue';
-  import { VcsButton } from '@vcmap/ui';
+  import { VcsTextArea, VcsFormButton } from '@vcmap/ui';
   import { VcsModule } from '@vcmap/core';
-  import { VProgressCircular, VTextarea } from 'vuetify/lib';
+  import { VContainer, VProgressCircular } from 'vuetify/lib';
 
   const moduleId = 'foo';
 
   export default {
     name: 'ConfigEditor',
     components: {
-      VcsButton,
-      VTextarea,
+      VcsFormButton,
+      VcsTextArea,
+      VContainer,
       VProgressCircular,
     },
     setup() {

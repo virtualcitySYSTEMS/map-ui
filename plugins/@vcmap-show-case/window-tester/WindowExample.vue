@@ -1,16 +1,17 @@
 <template>
   <div>
-    <VcsButton
+    <VcsFormButton
       v-for="(example, index) in examples"
       :key="`b-${index}`"
       @click="(e) => toggle(e, example)"
+      class="pa-1"
     >
       toggle {{ example }}
-    </VcsButton>
+    </VcsFormButton>
 
-    <VcsButton @click="toggleClass()" :active="showTestClass">
+    <VcsFormButton @click="toggleClass()" :active="showTestClass" class="pa-1">
       Change Static2 TestClass
-    </VcsButton>
+    </VcsFormButton>
   </div>
 </template>
 <style></style>
@@ -18,7 +19,7 @@
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
 
-  import { WindowSlot, VcsButton } from '@vcmap/ui';
+  import { WindowSlot, VcsFormButton } from '@vcmap/ui';
   import VcsContent from './windowExampleContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
   import EmptyComponent from './emptyComponent.vue';
@@ -27,7 +28,7 @@
 
   export default {
     name: 'WindowExample',
-    components: { VcsButton },
+    components: { VcsFormButton },
     setup() {
       const exampleWindows = [
         {

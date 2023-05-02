@@ -11,6 +11,7 @@
 - Updating `Context` to `VcsModule`
 - Adds `serializeModule` method to `VcsUiApp`, which serializes all ui specific properties of the app for a provided module id.
 - Changing `i18n` collection to have unique key `name`.
+- Add new button component `VcsFormButton`.
 
 # 5.0.0-rc.15
 

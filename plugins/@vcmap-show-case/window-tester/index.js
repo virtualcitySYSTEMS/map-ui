@@ -29,7 +29,7 @@ export default async function windowTester() {
           },
           component: windowExample,
           position: {
-            left: '60%',
+            left: '55%',
             right: '10%',
             top: '10%',
           },

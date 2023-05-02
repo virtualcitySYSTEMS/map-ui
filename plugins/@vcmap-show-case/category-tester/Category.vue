@@ -5,8 +5,18 @@
         {{ categoryName }}
       </span>
       <span class="float-right">
-        <vcs-button icon="$vcsPlus" @click="dialog = true" />
-        <vcs-button icon="mdi-download" @click="download" />
+        <vcs-button
+          small
+          icon="$vcsPlus"
+          @click.stop="dialog = true"
+          class="ma-1"
+        />
+        <vcs-button
+          small
+          icon="mdi-download"
+          @click.stop="download"
+          class="ma-1"
+        />
         <a
           :href="downloadLink"
           target="_blank"

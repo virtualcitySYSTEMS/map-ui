@@ -165,6 +165,7 @@ export {
 export { default as Icons } from './src/components/icons/+all.js';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
+export { default as VcsFormButton } from './src/components/buttons/VcsFormButton.vue';
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
 export { default as VcsTooltip } from './src/components/notification/VcsTooltip.vue';
 export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';

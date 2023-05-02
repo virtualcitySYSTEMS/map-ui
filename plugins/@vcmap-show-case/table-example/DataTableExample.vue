@@ -1,16 +1,17 @@
 <template>
   <v-sheet>
     <v-sheet class="px-2 d-grid">
-      <v-switch v-model="selectable" label="Selectable" />
+      <v-switch v-model="selectable" label="Selectable" class="ma-0" />
       <v-switch
         :disabled="!selectable"
         v-model="selectSingle"
         label=" Single Select"
+        class="ma-0"
       />
-      <v-switch v-model="searchable" label="Searchable" />
+      <v-switch v-model="searchable" label="Searchable" class="ma-0" />
       <v-dialog v-model="dialog" width="400">
         <template #activator="{ on }">
-          <vcs-button v-on="on"> Add An item </vcs-button>
+          <vcs-form-button v-on="on"> Add An item </vcs-form-button>
         </template>
         <v-card class="pa-2">
           <v-form @submit.prevent="add">
@@ -25,7 +26,9 @@
               :rules="required"
             />
             <vcs-text-field v-model="newItem.date" type="date" label="date" />
-            <vcs-button type="submit"> Add </vcs-button>
+            <vcs-form-button type="submit" variant="filled">
+              Add
+            </vcs-form-button>
           </v-form>
         </v-card>
       </v-dialog>
@@ -57,7 +60,7 @@
 <script>
   import {
     VcsDataTable,
-    VcsButton,
+    VcsFormButton,
     VcsTextField,
     VcsActionButtonList,
   } from '@vcmap/ui';
@@ -115,7 +118,7 @@
     name: 'DataTableExample',
     components: {
       VcsDataTable,
-      VcsButton,
+      VcsFormButton,
       VcsTextField,
       VcsActionButtonList,
       VSwitch,

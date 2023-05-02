@@ -8,14 +8,20 @@
       />
     </div>
     <hr />
-    <span>
-      <VcsButton icon="$vcsPlus" @click="newDialog = true" />
-      <VcsButton icon="$vcsExport" @click="uploadDialog = true" />
-      <VcsButton @click="addManagedCategories"
-        >Add Categories To Manager</VcsButton
-      >
-      <VcsButton @click="addFoobar">Add Foobar</VcsButton>
-    </span>
+    <div class="d-flex gap-2 px-2 pt-2 pb-1">
+      <div class="d-flex gap-2">
+        <VcsFormButton icon="$vcsPlus" @click="newDialog = true" />
+        <VcsFormButton icon="$vcsExport" @click="uploadDialog = true" />
+      </div>
+      <div class="d-flex gap-2 w-full justify-end">
+        <VcsFormButton @click="addManagedCategories" variant="filled"
+          >Add Categories</VcsFormButton
+        >
+        <VcsFormButton @click="addFoobar" variant="filled"
+          >Add Foobar</VcsFormButton
+        >
+      </div>
+    </div>
     <v-dialog v-model="newDialog">
       <v-card class="pa-2">
         <v-form @submit.prevent="add">
@@ -47,7 +53,7 @@
 
 <script>
   import { inject, ref, onUnmounted } from 'vue';
-  import { VcsButton } from '@vcmap/ui';
+  import { VcsFormButton } from '@vcmap/ui';
   import { GeoJSONLayer } from '@vcmap/core';
   import {
     VDialog,
@@ -65,7 +71,7 @@
     name: 'CategoriesComponent',
     components: {
       Category,
-      VcsButton,
+      VcsFormButton,
       VDialog,
       VCard,
       VForm,

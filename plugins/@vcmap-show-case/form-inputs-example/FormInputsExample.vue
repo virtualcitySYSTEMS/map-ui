@@ -254,17 +254,17 @@
               />
             </v-col>
             <v-col>
-              <VcsButton
+              <VcsFormButton
                 :is-active="state.checkboxInput"
                 @click="state.checkboxInput = !state.checkboxInput"
                 tooltip="toggle button"
                 color="warning"
                 tooltip-position="right"
-                small
+                class="pt-1"
               >
                 <span v-if="state.checkboxInput">Active-true</span>
                 <span v-else>Active-false</span>
-              </VcsButton>
+              </VcsFormButton>
             </v-col>
           </v-row>
         </v-container>
@@ -321,18 +321,24 @@
         </v-container>
       </template>
     </VcsFormSection>
-    <div class="d-flex justify-space-between px-2">
-      <VcsButton
-        @click="logState(state)"
-        :disabled="!isValid"
-        :tooltip="'Log current state in console'"
-        :has-update="isValid && newUpdate"
-        class="mx-2 mb-2"
-      >
-        Log State
-      </VcsButton>
-      <VcsButton @click="validate()"> Val </VcsButton>
-      <VcsButton @click="resetState()" icon="$vcsReturn"> Reset </VcsButton>
+    <div class="d-flex gap-2 px-2 pt-2 pb-1">
+      <div class="d-flex gap-2">
+        <VcsFormButton @click="validate()"> Val </VcsFormButton>
+        <VcsFormButton @click="resetState()" icon="$vcsReturn">
+          Reset
+        </VcsFormButton>
+      </div>
+      <div class="d-flex gap-2 w-full justify-end">
+        <VcsFormButton
+          variant="filled"
+          @click="logState(state)"
+          :disabled="!isValid"
+          :tooltip="'Log current state in console'"
+          :has-update="isValid && newUpdate"
+        >
+          Log State
+        </VcsFormButton>
+      </div>
     </div>
   </v-form>
 </template>
@@ -342,7 +348,7 @@
     VcsSelect,
     VcsCheckbox,
     VcsRadio,
-    VcsButton,
+    VcsFormButton,
     VcsTextField,
     VcsFormattedNumber,
     VcsFormSection,
@@ -357,7 +363,7 @@
   export default {
     name: 'FormInputsExample',
     components: {
-      VcsButton,
+      VcsFormButton,
       VcsSelect,
       VcsTextField,
       VcsCheckbox,

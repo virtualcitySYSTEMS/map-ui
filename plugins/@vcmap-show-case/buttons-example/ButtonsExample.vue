@@ -57,6 +57,49 @@
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
           <!-- eslint-disable-next-line -->
+          &ltVcsFormButton /&gt
+        </v-list-item-title>
+        <v-row>
+          <v-col>
+            <v-card>
+              <v-card-title>OUTLINED</v-card-title>
+              <v-card-actions>
+                <VcsFormButton
+                  @click="toggle"
+                  :disabled="disabled"
+                  :has-update="update"
+                  :loading="loading"
+                  tooltip="OUTLINED BUTTON"
+                >
+                  OUTLINED
+                </VcsFormButton>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card>
+              <v-card-title>FILLED</v-card-title>
+              <v-card-actions>
+                <VcsFormButton
+                  @click="toggle"
+                  :disabled="disabled"
+                  :has-update="update"
+                  :loading="loading"
+                  tooltip="FILLED BUTTON"
+                  variant="filled"
+                >
+                  FILLED
+                </VcsFormButton>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-list-item-content>
+    </v-list-item>
+    <v-divider />
+    <!--<v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="font-weight-bold">
           &ltVcsButton standard/&gt (default)
         </v-list-item-title>
         <v-row>
@@ -99,7 +142,7 @@
         </v-row>
       </v-list-item-content>
     </v-list-item>
-    <v-divider />
+    <v-divider />-->
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
@@ -117,7 +160,8 @@
                   :disabled="disabled"
                   :background="background"
                   :has-update="update"
-                  :icon="loading ? '$vcsProgress' : '$vcs3d'"
+                  :loading="loading"
+                  icon="$vcs3d"
                   tooltip="ButtonClass large"
                   large
                 />
@@ -168,7 +212,8 @@
                   :active="active"
                   :background="background"
                   :disabled="disabled"
-                  :icon="loading ? '$vcsProgress' : '$vcsColorSwatch'"
+                  :loading="loading"
+                  icon="$vcsColorSwatch"
                   tooltip="ACTION BUTTON"
                   small
                 />
@@ -205,7 +250,7 @@
   </v-card>
 </template>
 <script>
-  import { VcsButton, VcsActionButtonList } from '@vcmap/ui';
+  import { VcsButton, VcsFormButton, VcsActionButtonList } from '@vcmap/ui';
   import { ref } from 'vue';
   import {
     VCard,
@@ -225,6 +270,7 @@
     name: 'ButtonsExample',
     components: {
       VcsButton,
+      VcsFormButton,
       VcsActionButtonList,
       VCard,
       VListItem,

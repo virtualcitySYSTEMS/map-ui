@@ -15,6 +15,66 @@ The repository provides a set of generic UI components based on Vuetify:
 - [notification](../src/components/notification)
 - [tables](../src/components/tables)
 
+### Buttons
+
+The ui provides two kinds of buttons:
+
+#### [VcsButton](../src/components/buttons/VcsButton.vue)
+
+A button to be used as Tool (`large` variant) or Action Button (`small` variant).
+Its main usage is with a [VcsAction](./ACTIONS.md):
+
+- Tool button (Navbar, Toolbox)
+
+```html
+<VcsButton
+  large
+  :id="action.name"
+  :tooltip="action.title"
+  :icon="action.icon"
+  :active="action.active"
+  @click.stop="action.callback($event)"
+/>
+```
+
+- Action button (form sections, content tree, ...)
+
+```html
+<VcsButton
+  small
+  :id="action.name"
+  :tooltip="action.title"
+  :icon="action.icon"
+  :active="action.active"
+  @click.stop="action.callback($event)"
+/>
+```
+
+#### [VcsFormButton](../src/components/buttons/VcsFormButton.vue)
+
+A button to be used within windows or form fields.
+The VcsFormButton has two variants to differentiate the importance of buttons used in a row and put emphasis on primary actions:
+
+- outlined (default)
+- filled (emphasised variant for primary actions)
+
+All properties and attributes of a VcsButton are passed to the v-btn, which the VcsButton is based on.
+The following example shows a row of buttons with secondary and primary actions:
+
+```html
+<div class="d-flex gap-2 px-2 pt-2 pb-1">
+  <div class="d-flex gap-2">
+    <VcsFormButton icon="$vcsPlus" @click="newDialog = true" />
+    <VcsFormButton icon="$vcsExport" @click="uploadDialog = true" />
+  </div>
+  <div class="d-flex gap-2 w-full justify-end">
+    <VcsFormButton @click="addManagedCategories" variant="filled">
+      Save
+    </VcsFormButton>
+  </div>
+</div>
+```
+
 ## Styles
 
 This ui components library follow an individual style on top of [vuetify](https://vuetifyjs.com), customized by overwriting styles and extended by own style definitions.

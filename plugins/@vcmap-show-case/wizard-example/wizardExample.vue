@@ -11,7 +11,9 @@
         <!-- px-2 because does not contain input components -->
         <v-container class="px-2 py-0">
           <div>This is the content of the first step.</div>
-          <VcsButton @click="increaseStep()" class="my-2"> Next </VcsButton>
+          <VcsFormButton @click="increaseStep()" class="my-2">
+            Next
+          </VcsFormButton>
         </v-container>
       </template>
     </VcsWizardStep>
@@ -42,7 +44,7 @@
                 (v) => (!!v && v !== 'this') || 'Please select a valid option.',
               ]"
             />
-            <VcsButton @click="decreaseStep()"> Back </VcsButton>
+            <VcsFormButton @click="decreaseStep()"> Back </VcsFormButton>
           </v-form>
         </v-container>
       </template>
@@ -50,9 +52,13 @@
     <VcsWizardStep step="3" v-model.number="step">
       <template #header>
         <div class="d-flex flex-grow-1 flex-row-reverse">
-          <VcsButton :disabled="!selection || !formValid" @click="finish()">
+          <VcsFormButton
+            :disabled="!selection || !formValid"
+            @click="finish()"
+            variant="filled"
+          >
             Finish
-          </VcsButton>
+          </VcsFormButton>
         </div>
       </template>
     </VcsWizardStep>
@@ -60,7 +66,12 @@
 </template>
 
 <script>
-  import { VcsWizard, VcsWizardStep, VcsButton, VcsSelect } from '@vcmap/ui';
+  import {
+    VcsWizard,
+    VcsWizardStep,
+    VcsFormButton,
+    VcsSelect,
+  } from '@vcmap/ui';
   import { VForm, VContainer } from 'vuetify/lib';
   import { ref } from 'vue';
 
@@ -70,7 +81,7 @@
     components: {
       VcsWizard,
       VcsWizardStep,
-      VcsButton,
+      VcsFormButton,
       VcsSelect,
       VForm,
       VContainer,
