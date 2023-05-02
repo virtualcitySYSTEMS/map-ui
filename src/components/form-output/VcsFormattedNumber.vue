@@ -15,8 +15,9 @@
 <style lang="scss" scoped>
   @import '../../styles/vcsGrid.scss';
   @import '../../styles/vcsFont';
-  .vcs-formatted-number {
-    font-size: $base-font-size;
+  .vcs-formatted-number,
+  .vcs-formatted-number span {
+    font-size: $vcs-font-size;
     line-height: $line-height-base;
   }
   .vcs-formatted-number-dense {

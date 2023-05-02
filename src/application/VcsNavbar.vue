@@ -8,10 +8,10 @@
     width="100%"
   >
     <v-container fluid class="pa-0">
-      <v-row no-gutters>
+      <v-row no-gutters class="align-center">
         <v-col>
           <v-toolbar-items>
-            <div class="d-flex align-center">
+            <div class="d-flex">
               <VcsActionButtonList
                 :actions="mapActions"
                 :overflow-count="3"
@@ -45,8 +45,8 @@
             </div>
           </v-toolbar-items>
         </v-col>
-        <v-col class="align-center d-flex justify-center">
-          <div class="d-flex">
+        <v-col class="d-flex justify-center">
+          <div class="d-flex align-center">
             <template v-if="!$vuetify.breakpoint.xs">
               <img
                 v-if="config.logo"
@@ -64,7 +64,7 @@
         </v-col>
         <v-col class="align-content-end d-flex justify-end">
           <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
-            <div class="d-flex align-center">
+            <div class="d-flex">
               <VcsActionButtonList :actions="projectActions" large />
               <v-divider
                 v-if="projectActions.length > 0 && menuActions.length > 0"

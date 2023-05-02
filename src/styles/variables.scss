@@ -1,8 +1,9 @@
 @import 'shades.scss';
+@import 'vcsFont.scss';
 
 /** Global **/
-$font-size: 14px;
-$font-size-root: 14px;
+$font-size: $vcs-font-size;
+$font-size-root: $vcs-font-size;
 
 $material-dark: (
   'background': map-get($shades, 'black'),
@@ -43,6 +44,7 @@ $input-font-size: $font-size;
 $input-icon-height: 16px; // 24px !default;
 $input-icon-width: 16px; // 24px !default;
 $input-icon-min-width: 16px; // 24px !default;
+$input-icon-font-size: 16px;
 
 /** VcsTextfield **/
 
@@ -70,6 +72,7 @@ $text-field-outlined-label-position-x: 6px;
 $text-field-outlined-label-position-y: -14px;
 $text-field-outlined-dense-label-position-x: 2px;
 $text-field-outlined-dense-label-position-y: -10px;
+$label-font-size: $font-size; // 1rem !default;
 $text-field-label-top: 2px; // 6px !default;
 $text-field-label-active-transform: translateY(-14px) scale(0.75); //translateY(-18px) scale(.75) !default;
 
@@ -130,3 +133,6 @@ $snackbar-background-color: rgba(0, 0, 0, 0.8);
 $snackbar-content-padding: 8px;
 $snackbar-action-margin: 8px;
 $snackbar-wrapper-min-height: 36px;
+
+/** Datatable **/
+$data-table-regular-row-font-size: $font-size;

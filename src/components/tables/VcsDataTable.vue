@@ -316,69 +316,75 @@
 
 <style lang="scss" scoped>
   @import '../../styles/shades.scss';
+  @import '../../styles/variables.scss';
 
   .vcs-select-icon {
     &.v-icon {
-      font-size: 16px;
+      font-size: $input-icon-font-size;
+
       .v-icon__component {
-        width: 16px;
-        height: 16px;
+        width: $input-icon-width;
+        height: $input-icon-height;
       }
     }
-  }
 
-  ::v-deep {
-    .vcs-table {
-      tbody tr {
-        &:hover {
-          background-color: transparent !important;
+    ::v-deep {
+      .vcs-table {
+        tbody tr {
+          &:hover {
+            background-color: transparent !important;
+          }
+
+          &:nth-child(odd) {
+            background-color: var(--v-base-lighten4) !important;
+          }
         }
-        &:nth-child(odd) {
-          background-color: var(--v-base-lighten4) !important;
+
+        td {
+          &.v-data-table__mobile-row {
+            justify-content: left;
+            height: 27px;
+            min-height: auto;
+          }
         }
       }
+
       td {
-        font-size: 14px !important;
         &.v-data-table__mobile-row {
           justify-content: left;
           height: 27px;
           min-height: auto;
         }
-      }
-      th.sortable {
-        padding: 0 8px;
-        overflow: hidden;
-        white-space: nowrap;
-        span {
-          vertical-align: middle;
-          padding: 0 4px 0 0;
-        }
-      }
-      &.theme--light {
-        thead tr th {
-          color: map-get($shades, 'black') !important;
-        }
-      }
-      &.theme--dark {
-        thead tr th {
-          color: map-get($shades, 'white') !important;
-        }
-      }
-    }
-    .v-btn.vcs-button--small {
-      height: 100% !important;
-      display: block;
-    }
-  }
 
-  .vcs-pagination-bar {
-    .vcs-button-wrap {
-      height: 25px;
-      border: 1px solid;
-      padding: 0 4px;
-      border-radius: 4px;
-      &:hover {
-        border: 1px solid var(--v-primary-base);
+        &.theme--light {
+          thead tr th {
+            color: map-get($shades, 'black') !important;
+          }
+        }
+
+        &.theme--dark {
+          thead tr th {
+            color: map-get($shades, 'white') !important;
+          }
+        }
+      }
+
+      .v-btn.vcs-button--small {
+        height: 100% !important;
+        display: block;
+      }
+    }
+
+    .vcs-pagination-bar {
+      .vcs-button-wrap {
+        height: 25px;
+        border: 1px solid;
+        padding: 0 4px;
+        border-radius: 4px;
+
+        &:hover {
+          border: 1px solid var(--v-primary-base);
+        }
       }
     }
   }

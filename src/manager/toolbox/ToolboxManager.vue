@@ -61,7 +61,6 @@
   .v-toolbar__items > div {
     gap: 8px;
     width: fit-content;
-    display: inline-block;
   }
 </style>
 

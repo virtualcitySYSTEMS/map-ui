@@ -38,7 +38,7 @@
   </VcsTooltip>
 </template>
 <style lang="scss" scoped>
-  @import '../../styles/vcsFont';
+  @import '../../styles/vcsFont.scss';
   @import '../../styles/shades.scss';
   .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child) {
     margin-bottom: 0;
@@ -50,7 +50,7 @@
         padding-top: 0;
         label.v-label,
         .v-icon.v-icon {
-          font-size: $base-font-size;
+          font-size: $vcs-font-size;
           color: inherit;
           &.theme--light {
             color: map-get($shades, 'black') !important;

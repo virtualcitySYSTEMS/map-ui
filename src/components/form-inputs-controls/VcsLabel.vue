@@ -16,7 +16,7 @@
   @import '../../styles/vcsGrid.scss';
   @import '../../styles/vcsFont';
   .vcs-label {
-    font-size: $base-font-size;
+    font-size: $vcs-font-size;
     line-height: $line-height-base;
   }
   .vcs-label-dense {

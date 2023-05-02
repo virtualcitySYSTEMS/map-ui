@@ -5,7 +5,7 @@
         <div
           class="form-section-header d-flex justify-space-between align-center"
         >
-          <strong class="caption">{{ $t(heading) }}</strong>
+          <strong>{{ $t(heading) }}</strong>
           <VcsActionButtonList
             :actions="actions"
             :overflow-count="actionButtonListOverflowCount"
