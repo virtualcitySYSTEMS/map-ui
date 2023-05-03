@@ -5,11 +5,11 @@
       :editable="editable"
       :complete="complete"
       :rules="rules"
-      class="pr-6"
+      class="pr-2"
     >
       <div class="d-flex justify-space-between align-center">
         <slot name="header" />
-        <div v-if="!$slots.header" class="py-3">
+        <div v-if="!$slots.header" class="step-label-wrap">
           <span>{{ $t(heading) }}</span>
         </div>
         <VcsActionButtonList
@@ -154,5 +154,9 @@
   }
   .v-stepper__content {
     padding-left: 2px !important;
+  }
+  .step-label-wrap {
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
   }
 </style>

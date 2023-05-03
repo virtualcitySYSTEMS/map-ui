@@ -112,7 +112,7 @@
         .v-stepper__step__step {
           color: transparent;
           position: relative;
-          margin-top: 2px;
+          margin-top: 1px;
           margin-right: 5px;
           &:before {
             content: '\25cf';

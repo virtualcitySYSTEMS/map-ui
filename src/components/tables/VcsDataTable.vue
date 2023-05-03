@@ -80,7 +80,7 @@
       <template #footer v-if="items.length > itemsPerPageRef">
         <v-divider />
         <v-container class="pa-2 vcs-pagination-bar">
-          <v-row dense no-gutters justify="center">
+          <v-row dense no-gutters justify="center" class="align-center">
             <v-menu offset-y dense>
               <template #activator="{ on, attrs }">
                 <VcsButton small color="primary" v-bind="attrs" v-on="on">
@@ -327,20 +327,21 @@
         height: $input-icon-height;
       }
     }
+  }
+  ::v-deep {
+    .vcs-table {
+      tbody tr {
+        &:hover {
+          background-color: transparent !important;
+        }
 
-    ::v-deep {
-      .vcs-table {
-        tbody tr {
-          &:hover {
-            background-color: transparent !important;
-          }
-
-          &:nth-child(odd) {
-            background-color: var(--v-base-lighten4) !important;
-          }
+        &:nth-child(odd) {
+          background-color: var(--v-base-lighten4) !important;
         }
 
         td {
+          padding: 0 8px !important;
+
           &.v-data-table__mobile-row {
             justify-content: left;
             height: 27px;
@@ -348,42 +349,48 @@
           }
         }
       }
-
-      td {
-        &.v-data-table__mobile-row {
-          justify-content: left;
-          height: 27px;
-          min-height: auto;
-        }
-
-        &.theme--light {
-          thead tr th {
-            color: map-get($shades, 'black') !important;
-          }
-        }
-
-        &.theme--dark {
-          thead tr th {
-            color: map-get($shades, 'white') !important;
-          }
-        }
-      }
-
-      .v-btn.vcs-button--small {
-        height: 100% !important;
-        display: block;
-      }
     }
 
-    .vcs-pagination-bar {
-      .vcs-button-wrap {
-        height: 25px;
-        border: 1px solid;
-        padding: 0 4px;
-        border-radius: 4px;
+    th {
+      padding: 0 8px !important;
 
-        &:hover {
-          border: 1px solid var(--v-primary-base);
+      &.sortable {
+        overflow: hidden;
+        white-space: nowrap;
+
+        span {
+          vertical-align: middle;
+          padding: 0 4px 0 0;
+
+          &.theme--light {
+            thead tr th {
+              color: map-get($shades, 'black') !important;
+            }
+          }
+
+          &.theme--dark {
+            thead tr th {
+              color: map-get($shades, 'white') !important;
+            }
+          }
+        }
+
+        .v-btn.vcs-button--small {
+          height: 100% !important;
+          display: block;
+        }
+      }
+
+      .vcs-pagination-bar {
+        .vcs-button-wrap {
+          height: 25px;
+          border: 1px solid;
+          padding: 0 4px;
+          border-radius: 4px;
+
+          &:hover {
+            border: 1px solid var(--v-primary-base);
+          }
         }
       }
     }

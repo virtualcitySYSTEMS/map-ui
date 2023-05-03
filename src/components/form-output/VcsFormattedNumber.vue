@@ -1,6 +1,6 @@
 <template>
   <span
-    class="vcs-formatted-number px-1"
+    class="vcs-formatted-number pr-2 pl-1"
     :class="{ 'vcs-formatted-number-dense': dense }"
   >
     {{ formatted }}

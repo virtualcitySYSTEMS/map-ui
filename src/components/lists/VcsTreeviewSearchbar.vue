@@ -74,7 +74,7 @@
       > .v-input__control
       > .v-input__slot,
     .v-text-field.v-text-field--enclosed .v-text-field__details {
-      padding-right: 0;
+      padding: 0 8px;
     }
 
     .v-input.outlined {

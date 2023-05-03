@@ -2,10 +2,10 @@
   <div
     class="d-flex justify-space-between align-center window-component-header"
   >
-    <h3>
+    <h3 class="d-flex align-center">
       <v-icon
         v-if="windowState.headerIcon"
-        class="mr-2"
+        class="mr-1"
         :class="{ 'primary--text': isOnTop }"
         size="16"
       >
@@ -58,6 +58,9 @@
   .window-component-header {
     max-height: 16px;
 
+    h3 {
+      line-height: 16px;
+    }
     .v-divider--vertical.v-divider--inset {
       margin-top: 2px;
     }
