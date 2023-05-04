@@ -10,6 +10,7 @@
       <template #activator="{ on, attrs }">
         <v-list-item
           :class="action.active ? 'primary--text' : ''"
+          :disabled="action.disabled"
           @click="action.callback($event)"
           v-bind="{ ...$attrs, ...attrs }"
           v-on="{ ...$listeners, ...on }"
@@ -53,6 +54,7 @@
    * @property {Function} callback - callback function is triggered when the button is clicked
    * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
    * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
+   * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
    */
 
   /**
@@ -66,6 +68,7 @@
     callback: Function,
     active: [undefined, Boolean],
     background: [undefined, Boolean],
+    disabled: [undefined, Boolean],
   };
 
   /**

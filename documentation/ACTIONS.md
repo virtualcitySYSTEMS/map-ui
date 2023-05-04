@@ -17,6 +17,7 @@ If the tool's WindowComponent is closed, the tool remains active, now running in
  * @property {Function} callback - callback function is triggered when the button is clicked
  * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
  * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
+ * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
  */
 ```
 
@@ -35,12 +36,13 @@ const action = {
 };
 ```
 
-```html
+```vue
 <VcsButton
   :id="action.name"
   :tooltip="action.title"
   :icon="action.icon"
   :active="action.active"
+  :disabled="actions.disabled"
   @click.stop="action.callback($event)"
 />
 ```

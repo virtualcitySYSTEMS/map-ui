@@ -665,7 +665,8 @@
       "screenSpaceErrorMobile": 32,
       "properties": {
         "title": "Sommerbäume",
-        "featureInfo": "tableTrees"
+        "featureInfo": "tableTrees",
+        "defaultViewpoint": "berlin"
       }
     }
   ],

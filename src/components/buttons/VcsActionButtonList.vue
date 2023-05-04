@@ -7,6 +7,7 @@
       :tooltip="button.title"
       :icon="button.icon"
       :active="button.active"
+      :disabled="button.disabled"
       @click.stop="button.callback($event)"
       v-bind="{ ...$attrs }"
       v-on="{ ...$listeners }"

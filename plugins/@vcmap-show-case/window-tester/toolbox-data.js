@@ -112,6 +112,26 @@ export function getToolboxData(app) {
     ],
     [
       {
+        id: 'singleSelect2',
+        type: ToolboxType.SINGLE,
+        action: {
+          name: 'select',
+          title: 'single select',
+          icon: 'mdi-eye',
+          active: false,
+          disabled: false,
+          callback() {
+            this.disabled = true;
+            setTimeout(() => {
+              this.disabled = false;
+            }, 2000);
+          },
+        },
+      },
+      packageJSON.name,
+    ],
+    [
+      {
         id: 'multiSelect',
         type: ToolboxType.SELECT,
         action: {
@@ -162,6 +182,7 @@ export function getToolboxData(app) {
               name: 'area3D',
               title: '3D area',
               icon: '$vcs3dArea',
+              disabled: true,
             },
           ],
         },
@@ -201,6 +222,7 @@ export function getToolboxData(app) {
               name: 'export',
               title: 'export flight',
               icon: '$vcsExportFlight',
+              disabled: true,
               active: false,
               callback() {
                 this.active = !this.active;
@@ -208,6 +230,55 @@ export function getToolboxData(app) {
             },
           },
         ],
+      },
+      packageJSON.name,
+    ],
+    [
+      {
+        id: 'flight2',
+        type: ToolboxType.GROUP,
+        icon: '$vcsVideoRecorder',
+        title: 'flight2',
+        disabled: true,
+        buttonComponents: [
+          {
+            id: 'flight',
+            action: {
+              name: 'flight',
+              title: 'add flight',
+              icon: 'mdi-camera-plus',
+              active: false,
+              callback() {
+                this.active = !this.active;
+              },
+            },
+          },
+        ],
+      },
+      packageJSON.name,
+    ],
+    [
+      {
+        id: 'multiSelect2',
+        type: ToolboxType.SELECT,
+        action: {
+          name: 'multiSelect',
+          title: 'multi select',
+          disabled: true,
+          ...dummySelectAction,
+          tools: [
+            {
+              name: 'pen',
+              title: 'Item 3',
+              icon: '$vcsPen',
+            },
+            {
+              name: 'object',
+              title: 'Item 4',
+              icon: '$vcsObjectSelect',
+            },
+          ],
+        },
       },
       packageJSON.name,
     ],

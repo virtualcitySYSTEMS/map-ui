@@ -39,6 +39,7 @@ export const ToolboxType = {
  * @typedef {ToolboxComponentOptions} GroupToolboxComponentOptions
  * @property {string} icon - Group icon
  * @property {string} [title] - Optional group title, for dropdown
+ * @property {boolean} [disabled=false]
  */
 
 /**
@@ -58,6 +59,7 @@ export const ToolboxType = {
  * @property {string|undefined} icon
  * @property {string|undefined} title
  * @property {ButtonManager} buttonManager
+ * @property {boolean} [disabled=false]
  */
 
 /**
@@ -77,6 +79,7 @@ export const ToolboxType = {
  * @property {string} name
  * @property {string} [title]
  * @property {string} icon
+ * @property {boolean} [disabled=false]
  */
 
 /**
@@ -277,11 +280,13 @@ class ToolboxManager {
         ...ActionPattern,
         selected: Function,
         currentIndex: Number,
+        disabled: [undefined, Boolean],
         tools: [
           {
             name: String,
             title: [undefined, String],
             icon: String,
+            disabled: [undefined, Boolean],
           },
         ],
       });
@@ -297,13 +302,15 @@ class ToolboxManager {
     } else {
       check(toolboxComponentOptions.icon, String);
       checkMaybe(toolboxComponentOptions.title, String);
-      const { icon, title = undefined } = toolboxComponentOptions;
+      checkMaybe(toolboxComponentOptions.disabled, Boolean);
+      const { icon, title = undefined, disabled } = toolboxComponentOptions;
       const buttonManager = new ButtonManager();
       /**
        * @type {GroupToolboxComponent}
        */
       toolboxComponent = {
         ...toolboxComponent,
+        disabled,
         get icon() {
           return icon;
         },

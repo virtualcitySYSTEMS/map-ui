@@ -16,6 +16,7 @@
       :tooltip="attributionAction.title"
       :icon="attributionAction.icon"
       :active="attributionAction.active"
+      :disabled="attributionAction.disabled"
       @click.stop="attributionAction.callback($event)"
     />
   </span>

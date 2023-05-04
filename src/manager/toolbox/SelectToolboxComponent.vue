@@ -9,6 +9,7 @@
       :tooltip="group.action.tools[group.action.currentIndex].title"
       :icon="group.action.tools[group.action.currentIndex].icon"
       :active="group.action.active"
+      :disabled="group.action.disabled"
       @click.stop="group.action.callback($event)"
       v-bind="{ ...$attrs }"
       class="vcs-toolbox-action-selected"
@@ -26,6 +27,7 @@
       <template #activator="{ on, attrs }">
         <VcsButton
           :tooltip="group.action.title"
+          :disabled="group.action.disabled"
           v-bind="attrs"
           v-on="on"
           class="vcs-toolbox-action-select"
@@ -50,6 +52,7 @@
               :key="`${item.name}-${index}`"
               :tooltip="item.title"
               :icon="item.icon"
+              :disabled="item.disabled"
               @click="group.action.selected(index)"
               v-bind="{ ...$attrs }"
               large
