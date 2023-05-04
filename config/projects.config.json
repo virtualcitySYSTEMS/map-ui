@@ -1,5 +1,6 @@
 {
   "name": "projectsDemo",
+  "_id": "projectsConfig",
   "plugins": [
     {
       "name": "@vcmap/project-selector",

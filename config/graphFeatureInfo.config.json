@@ -1,5 +1,6 @@
 {
   "name": "graphFeatureInfo",
+  "_id": "graphFeatureInfo",
   "description": "module adding a graph Feature Info view",
   "featureInfo": [
     {

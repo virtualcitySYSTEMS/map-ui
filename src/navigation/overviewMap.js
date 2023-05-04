@@ -141,19 +141,6 @@ class OverviewMap {
     /**
      * @type {VectorStyleItem}
      */
-    this.obliqueUnselectedStyle = new VectorStyleItem({
-      fill: {
-        color: fillColor.withAlpha(0.1).toCssColorString(),
-      },
-      stroke: {
-        color: primary,
-        width: 1,
-      },
-    });
-
-    /**
-     * @type {VectorStyleItem}
-     */
     this.obliqueSelectedStyle = new VectorStyleItem({
       fill: {
         color: fillColor.withAlpha(0.8).toCssColorString(),
@@ -295,10 +282,7 @@ class OverviewMap {
    */
   _updatePrimaryColor() {
     const color = getColorByKey('primary');
-    this.obliqueUnselectedStyle?.stroke?.setColor(color);
     this.obliqueSelectedStyle?.stroke?.setColor(color);
-    this._obliqueTileLayer?.forceRedraw?.();
-    this._obliqueImageLayer?.forceRedraw?.();
     this._obliqueSelectedImageLayer?.forceRedraw?.();
     const rotation = this.cameraIconStyle.image.getRotation();
     this.cameraIconStyle.image = new Icon(getCameraIcon(color));
@@ -496,12 +480,13 @@ class OverviewMap {
    * @private
    */
   _setupObliqueLayers() {
+    const almostTransparentStyle = new VectorStyleItem({
+      fill: { color: 'rgba(0, 0, 0, 0.000001)' },
+    });
     const obliqueTileStyle = new VectorStyleItem({});
     obliqueTileStyle.style = (feature) => {
       if (feature.get('state') === DataState.PENDING) {
-        return /** @type {ol/style/Style} */ (
-          this.obliqueUnselectedStyle.style
-        );
+        return almostTransparentStyle.style;
       }
       return emptyStyle;
     };
@@ -515,7 +500,7 @@ class OverviewMap {
     const obliqueImageStyle = new VectorStyleItem({});
     obliqueImageStyle.style = (feature) => {
       if (feature.get('viewDirection') === this._obliqueViewDirection) {
-        return this.obliqueUnselectedStyle.style;
+        return almostTransparentStyle.style;
       }
       return emptyStyle;
     };
@@ -654,7 +639,6 @@ class OverviewMap {
       this._eventHandler.destroy();
     }
     this.cameraIconStyle.destroy();
-    this.obliqueUnselectedStyle.destroy();
     this.obliqueSelectedStyle.destroy();
     this._cachedViewpoint = null;
     this._mapClicked = null;

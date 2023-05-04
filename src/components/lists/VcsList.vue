@@ -13,7 +13,7 @@
             v-else-if="selected.length === renderingItems.length"
             @click="clear"
           >
-            mdi-check-circle-outline
+            mdi-check-circle
           </v-icon>
           <v-icon
             v-else-if="
@@ -21,7 +21,7 @@
             "
             @click="selectAll()"
           >
-            mdi-minus-circle-outline
+            mdi-minus-circle
           </v-icon>
           <v-icon v-else @click="selectAll()"> mdi-circle-outline </v-icon>
         </v-list-item-action>
@@ -29,9 +29,9 @@
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
-          <VcsTooltip :tooltip="$t(tooltip || title)">
+          <VcsTooltip :tooltip="$t(listHeaderTooltip)">
             <template #activator="{ on, attrs }">
-              <v-list-item-title v-bind="attrs" v-on="on">
+              <v-list-item-title v-bind="attrs" v-on="on" ref="listHeader">
                 {{ $t(title) }}
               </v-list-item-title>
             </template>
@@ -67,7 +67,7 @@
       >
         <v-list-item-action v-if="selectable">
           <v-icon v-if="selected.includes(item)" @click="remove(item)">
-            mdi-check-circle-outline
+            mdi-check-circle
           </v-icon>
           <v-icon
             v-else-if="
@@ -92,11 +92,11 @@
             :tooltip="
               dragging !== undefined
                 ? undefined
-                : $t(item.tooltip || item.title)
+                : $t(item.tooltip || overflowTitle(index, item.title))
             "
           >
             <template #activator="{ on, attrs }">
-              <v-list-item-title v-bind="attrs" v-on="on">
+              <v-list-item-title v-bind="attrs" v-on="on" ref="titles">
                 {{ $t(item.title) }}
               </v-list-item-title>
             </template>
@@ -279,6 +279,8 @@
         return !(!props.searchable && !props.showTitle);
       });
       let firstSelected = null;
+      const titles = ref([]);
+      const listHeader = ref(null);
 
       watch(
         props,
@@ -497,6 +499,25 @@
         },
         drag,
         drop,
+        titles,
+        overflowTitle(index, alternative) {
+          const elem = titles.value[index];
+          if (elem && elem.offsetWidth < elem.scrollWidth) {
+            return alternative;
+          }
+          return '';
+        },
+        listHeader,
+        listHeaderTooltip: computed(() => {
+          if (props.tooltip) {
+            return props.tooltip;
+          }
+          const elem = listHeader.value;
+          if (elem && elem.offsetWidth < elem.scrollWidth) {
+            return props.title;
+          }
+          return '';
+        }),
       };
     },
   };

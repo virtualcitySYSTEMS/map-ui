@@ -7,11 +7,15 @@
         </v-icon>
         <ImageElementInjector :element="item.icon" v-else />
       </span>
-      <VcsTooltip :tooltip="item.tooltip || item.title">
+      <VcsTooltip :tooltip="tooltip">
         <template #activator="{ on, attrs }">
-          <span v-bind="attrs" v-on="on" class="d-inline-block text-truncate">{{
-            $t(item.title)
-          }}</span>
+          <span
+            v-bind="attrs"
+            v-on="on"
+            class="d-inline-block text-truncate"
+            ref="titleElem"
+            >{{ $t(item.title) }}</span
+          >
         </template>
       </VcsTooltip>
     </div>
@@ -29,7 +33,7 @@
 </template>
 
 <script>
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { VIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import ImageElementInjector from '../imageElementInjector.vue';
@@ -56,10 +60,22 @@
     },
     setup(props) {
       const leaf = computed(() => props.item?.children?.length === 0);
+      const titleElem = ref(null);
 
       return {
         isStringIcon: computed(() => typeof props.item.icon === 'string'),
         leaf,
+        titleElem,
+        tooltip: computed(() => {
+          if (props.item.tooltip) {
+            return props.item.tooltip;
+          }
+          const elem = titleElem.value;
+          if (elem && elem.offsetWidth < elem.scrollWidth) {
+            return props.item.title;
+          }
+          return '';
+        }),
       };
     },
   };

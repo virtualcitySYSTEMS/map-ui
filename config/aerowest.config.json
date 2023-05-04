@@ -1,5 +1,6 @@
 {
   "name": "VC Map HOSTING",
+  "_id": "vcmap-aerowest-hosting",
   "description": "AEROWEST DEMO (Standard Hosting Layout)",
   "mapcontainer": "vcs_map_container",
   "startingViewpointName": "Start",

@@ -39,14 +39,14 @@
             @click="on.input(false)"
             class="vcs-select-icon"
           >
-            mdi-check-circle-outline
+            mdi-check-circle
           </v-icon>
           <v-icon
             v-else-if="props.indeterminate"
             @click="on.input(true)"
             class="vcs-select-icon"
           >
-            mdi-minus-circle-outline
+            mdi-minus-circle
           </v-icon>
           <v-icon v-else @click="on.input(true)" class="vcs-select-icon">
             mdi-circle-outline
@@ -61,7 +61,7 @@
             @click="select(!isSelected)"
             class="vcs-select-icon"
           >
-            mdi-check-circle-outline
+            mdi-check-circle
           </v-icon>
           <v-icon
             v-else-if="

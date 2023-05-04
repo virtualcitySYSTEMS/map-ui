@@ -19,6 +19,9 @@ export const defaultPrimaryColor = {
  * @returns {import("vuetify").default}
  */
 export function createVuetify() {
+  const dark =
+    window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
+
   return new Vuetify({
     treeShake: false,
     defaultAssets: {
@@ -27,6 +30,7 @@ export function createVuetify() {
       },
     },
     theme: {
+      dark,
       options: {
         customProperties: true,
       },

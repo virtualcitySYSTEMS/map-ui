@@ -1,6 +1,7 @@
 {
   "name": "VcsBaseConfig",
   "mapcontainer": "vcs_map_container",
+  "_id": "VcsBaseConfig",
   "startingViewpointName": "berlin",
   "startingMapName": "cesium",
   "projection": {
@@ -907,7 +908,7 @@
       "name": "reasonableLayerGroup",
       "type": "LayerGroupContentTreeItem",
       "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain.4"],
-      "title": "Buildings - Trees - Terrain"
+      "title": "Buildings - Trees - Terrain. A Layer Group Item"
     },
     {
       "name": "berlin_obliques",

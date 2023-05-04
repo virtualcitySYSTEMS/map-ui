@@ -265,9 +265,6 @@ describe('OverviewMap', () => {
     });
 
     it('should setup and activate oblique layers', () => {
-      expect(overviewMap.obliqueUnselectedStyle).to.be.an.instanceof(
-        VectorStyleItem,
-      );
       expect(overviewMap.obliqueSelectedStyle).to.be.an.instanceof(
         VectorStyleItem,
       );

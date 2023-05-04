@@ -112,7 +112,8 @@
     "exampleData",
     "lib",
     "coverage",
-    "docs"
+    "docs",
+    "*timestamp-*.mjs"
   ],
   "prettier": "@vcsuite/eslint-config/prettier.js",
   "browserslist": [

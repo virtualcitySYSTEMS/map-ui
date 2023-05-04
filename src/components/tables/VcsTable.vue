@@ -8,7 +8,6 @@
     <!-- eslint-disable-next-line -->
     <template #item.key="{ item }">
       <td
-        :title="$t(item.key)"
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
         :style="{ 'max-width': headers[0].width }"
       >
@@ -18,7 +17,6 @@
     <!-- eslint-disable-next-line -->
     <template #item.value="{ item }">
       <td
-        :title="$t(item.value)"
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
         :style="{ 'max-width': headers[1].width }"
       >

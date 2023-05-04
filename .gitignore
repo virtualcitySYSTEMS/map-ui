@@ -27,6 +27,7 @@ pnpm-debug.log*
 # test output
 .nyc_output
 coverage
+*timestamp-*.mjs
 
 # static output
 docs

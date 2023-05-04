@@ -227,7 +227,6 @@
     {
       name: 'bar',
       title: 'Bar',
-      tooltip: 'just a bar',
       actions: [
         {
           name: 'console.log',

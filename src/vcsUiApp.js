@@ -425,7 +425,7 @@ class VcsUiApp extends VcsApp {
         return layerState;
       });
 
-    state.plugins = await Promise.all(
+    const plugins = await Promise.all(
       [...this.plugins]
         .filter(
           (p) =>
@@ -433,8 +433,17 @@ class VcsUiApp extends VcsApp {
             p[moduleIdSymbol] !== volatileModuleId &&
             typeof p.getState === 'function',
         )
-        .map(async (p) => ({ name: p.name, state: await p.getState(forUrl) })),
+        .map(async (p) => {
+          try {
+            return { name: p.name, state: await p.getState(forUrl) };
+          } catch (e) {
+            getLogger().error(e);
+            return null;
+          }
+        }),
     );
+
+    state.plugins = plugins.filter((p) => p);
 
     if (this.maps.activeMap instanceof ObliqueMap) {
       state.activeObliqueCollection = this.maps.activeMap.collection.name;
@@ -523,7 +532,7 @@ class VcsUiApp extends VcsApp {
           this.obliqueCollections.getByKey(
             this._cachedAppState.activeObliqueCollection,
           ),
-          this._cachedAppState.activeViewpoint,
+          new Viewpoint(this._cachedAppState.activeViewpoint),
         );
       } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
         await this.maps.activeMap.gotoViewpoint(
