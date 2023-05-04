@@ -117,7 +117,7 @@ describe('BalloonHelper', () => {
     beforeAll(async () => {
       app = new VcsUiApp();
       const map = new ObliqueMap({});
-      await map.setCollection(getObliqueCollection());
+      await map.setCollection(await getObliqueCollection());
       await map.initialize();
       await map.setImageByName('036_064_116005331');
       destroy = await setupAppForEvents(app, map);
@@ -147,7 +147,7 @@ describe('BalloonHelper', () => {
 
     it('should update position after image change', async () => {
       const { activeMap } = app.maps;
-      await activeMap.setCollection(getObliqueCollection());
+      await activeMap.setCollection(await getObliqueCollection());
       await activeMap.initialize();
       vi.spyOn(
         activeMap.olMap,

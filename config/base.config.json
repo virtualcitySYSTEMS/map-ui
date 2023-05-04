@@ -923,7 +923,9 @@
       "dataSets": [
         {
           "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/obliques_2020/image_tiled.json",
-          "terrainUrl": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/",
+          "terrainProvider": {
+            "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/"
+          },
           "projection": {
             "epsg": "25833",
             "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"

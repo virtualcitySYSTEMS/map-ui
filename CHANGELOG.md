@@ -1,9 +1,6 @@
 # 5.0.0-rc.next
 
 - VcsAction has a disabled state
-
-# 5.0.0-rc.23
-
 - Adds the `Notifier` API to `VcsUiApp`.
 - Adds a `VcsList` component for standard item list rendering.
 - Adds new `VcsWizard` component as stylized wrapper of Vuetify VStepper
@@ -16,6 +13,8 @@
 - Adds `serializeModule` method to `VcsUiApp`, which serializes all ui specific properties of the app for a provided module id.
 - Changing `i18n` collection to have unique key `name`.
 - Add new button component `VcsFormButton`.
+- Updated Cesium to v1.105
+- Updated Openlayers to 7.3.0
 
 # 5.0.0-rc.15
 

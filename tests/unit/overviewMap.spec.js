@@ -341,7 +341,7 @@ describe('OverviewMap', () => {
       await app.maps.setActiveMap(obliqueMap.name);
       overviewMap = new OverviewMap(app);
       await obliqueMap.initialize();
-      obliqueMap.setCollection(getObliqueCollection());
+      obliqueMap.setCollection(await getObliqueCollection());
       await overviewMap.activate();
     });
 
