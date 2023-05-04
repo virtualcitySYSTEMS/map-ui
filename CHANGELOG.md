@@ -1,5 +1,10 @@
 # 5.0.0-rc.next
 
+- Added Shadow Plugin to Demo Application and external plugins
+- Changed ZoomToAll Button in Search to use new VcsFormButton
+
+# 5.0.0-rc.24
+
 - VcsAction has a disabled state
 - Adds the `Notifier` API to `VcsUiApp`.
 - Adds a `VcsList` component for standard item list rendering.

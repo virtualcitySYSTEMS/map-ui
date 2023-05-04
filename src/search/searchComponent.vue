@@ -17,13 +17,11 @@
     <v-divider class="mt-1 base darken-1" v-if="!!results.length" />
     <ResultsComponent :query="query" :results="results" />
     <v-divider v-if="!!results.length" />
-    <VcsButton
-      v-if="!!results.length"
-      class="d-flex pt-1 px-1 justify-end"
-      @click="zoomToAll"
-    >
-      {{ $t('search.zoomToAll') }}
-    </VcsButton>
+    <div v-if="!!results.length" class="d-flex px-2 pt-2 pb-1 justify-end">
+      <VcsFormButton @click="zoomToAll" variant="outlined">
+        {{ $t('search.zoomToAll') }}
+      </VcsFormButton>
+    </div>
   </v-sheet>
 </template>
 
@@ -51,11 +49,11 @@
   import { VSheet, VDivider, VIcon } from 'vuetify/lib';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './resultsComponent.vue';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsFormButton from '../components/buttons/VcsFormButton.vue';
 
   export default {
     components: {
-      VcsButton,
+      VcsFormButton,
       ResultsComponent,
       VcsTextField,
       VSheet,
