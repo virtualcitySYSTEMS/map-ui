@@ -15,6 +15,7 @@
 - Add new button component `VcsFormButton`.
 - Updated Cesium to v1.105
 - Updated Openlayers to 7.3.0
+- Add draggable option to `VcsList`.
 
 # 5.0.0-rc.15
 

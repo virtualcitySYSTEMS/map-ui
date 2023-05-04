@@ -21,10 +21,12 @@
     <v-expansion-panel-content class="pb-1">
       <vcs-list
         :items="category.items.slice(0, 10)"
+        :draggable="category.draggable"
         :selectable="category.selectable"
         :single-select="category.singleSelect"
         v-model="selection"
         :show-title="false"
+        @itemMoved="move"
       />
       <v-sheet v-if="category.items.length > 10" class="ma-2 pl-2">
         <VcsButton @click="openCategoryItemWindow" small>
@@ -47,6 +49,7 @@
     VExpansionPanelContent,
     VSheet,
   } from 'vuetify/lib';
+  import { IndexedCollection } from '@vcmap/core';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
@@ -88,6 +91,19 @@
         },
       });
 
+      const { collection } = app.categories.getByKey(
+        props.category.categoryName,
+      );
+      /**
+       * index of the first item within the collection
+       * @type {ComputedRef<number>}
+       */
+      const collectionItemOffset = computed(() => {
+        return [...collection].findIndex(
+          (i) => i[collection.uniqueKey] === props.category.items[0]?.id,
+        );
+      });
+
       return {
         selection,
         active,
@@ -111,6 +127,15 @@
                 slot: WindowSlot.DYNAMIC_LEFT,
               },
               vcsAppSymbol,
+            );
+          }
+        },
+        move({ item, targetIndex }) {
+          if (collection instanceof IndexedCollection) {
+            const collectionItem = collection.getByKey(item.id);
+            collection.moveTo(
+              collectionItem,
+              targetIndex + collectionItemOffset.value,
             );
           }
         },

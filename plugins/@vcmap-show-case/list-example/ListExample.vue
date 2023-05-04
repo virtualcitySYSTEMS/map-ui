@@ -1,35 +1,88 @@
 <template>
-  <div>
-    <v-container class="py-0 px-1">
-      <v-row no-gutters>
-        <v-col>
-          <v-switch
-            dense
-            v-model="selectable"
-            label="Selectable"
-            class="ma-0"
-          />
-        </v-col>
-        <v-col>
-          <v-switch
-            dense
-            :disabled="!selectable"
-            v-model="selectSingle"
-            label=" Single Select"
-            class="ma-0"
-          />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-switch
-            dense
-            v-model="searchable"
-            label="Searchable"
-            class="ma-0"
-          />
-        </v-col>
-        <v-col>
+  <v-sheet>
+    <VcsFormSection heading="Settings">
+      <v-container class="py-0 px-1">
+        <v-row no-gutters>
+          <v-col>
+            <v-switch
+              v-model="selectable"
+              label="Selectable"
+              class="ma-0"
+              dense
+            />
+          </v-col>
+          <v-col>
+            <v-switch
+              :disabled="!selectable"
+              v-model="selectSingle"
+              label=" Single Select"
+              class="ma-0"
+              dense
+            />
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-switch
+              dense
+              v-model="searchable"
+              label="Searchable"
+              class="ma-0"
+            />
+          </v-col>
+          <v-col>
+            <v-switch
+              dense
+              v-model="draggable"
+              label="Draggable"
+              class="ma-0"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </VcsFormSection>
+    <VcsFormSection heading="Title">
+      <v-container class="py-0 px-1">
+        <v-row no-gutters>
+          <v-col>
+            <v-switch
+              dense
+              v-model="showTitle"
+              label="Show Title"
+              class="ma-0"
+            />
+          </v-col>
+          <v-col>
+            <vcs-text-field
+              v-model="title"
+              placeholder="Title"
+              :disabled="!showTitle"
+            />
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-switch
+              v-model="titleActions"
+              label="Title Actions"
+              class="ma-0"
+              dense
+            />
+          </v-col>
+          <v-col>
+            <v-switch
+              dense
+              v-model="titleIcon"
+              label="Title Icon"
+              class="ma-0"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </VcsFormSection>
+    <VcsFormSection heading="Item">
+      <v-container class="py-1 px-1">
+        <v-row no-gutters>
           <v-dialog v-model="dialog" width="400">
             <template #activator="{ on }">
               <vcs-form-button v-on="on"> Add An item </vcs-form-button>
@@ -66,12 +119,17 @@
                 />
                 <v-switch
                   dense
+                  label="hasUpdate"
+                  v-model="newItem.hasUpdate"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
                   label="console.log action"
                   v-model="newItem.action"
                   class="ma-0"
                 />
                 <v-switch
-                  dense
                   label="console.log on clicked"
                   v-model="newItem.clicked"
                   class="ma-0"
@@ -86,82 +144,69 @@
               </v-form>
             </v-card>
           </v-dialog>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="my-1" />
-    <v-container class="py-0 px-1">
-      <v-row no-gutters>
-        <v-col>
-          <v-switch dense v-model="showTitle" label="Show Title" class="ma-0" />
-        </v-col>
-        <v-col>
-          <vcs-text-field v-model="title" placeholder="Title" />
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-switch
-            dense
-            v-model="titleActions"
-            label="Title Actions"
-            class="ma-0"
-          />
-        </v-col>
-        <v-col>
-          <v-switch dense v-model="titleIcon" label="Title Icon" class="ma-0" />
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider class="my-1" />
-    <v-container class="py-0 px-1">
-      <v-row no-gutters>
-        <template v-if="selectable">
-          <v-col>
-            <vcs-form-button @click="selected = []"> Clear </vcs-form-button>
-          </v-col>
-          <v-col>
-            <v-switch
-              dense
-              v-model="showSelection"
-              label="Show Selection"
-              class="ma-0"
-            />
-          </v-col>
-          <ul v-if="showSelection">
+        </v-row>
+      </v-container>
+    </VcsFormSection>
+    <VcsFormSection heading="Selection">
+      <v-container class="py-1 px-1">
+        <v-row no-gutters>
+          <template v-if="selectable">
+            <v-col>
+              <vcs-form-button @click="selected = []"> Clear </vcs-form-button>
+            </v-col>
+            <v-col>
+              <v-switch
+                v-model="showSelection"
+                label="Show Selection"
+                dense
+                class="ma-0"
+              />
+            </v-col>
+          </template>
+        </v-row>
+        <v-row no-gutters>
+          <ul v-if="showSelection" class="mx-2">
             <li v-for="(i, index) in selected" :key="`item-${index}`">
               {{ i.title }}
             </li>
           </ul>
-        </template>
-      </v-row>
+        </v-row>
+      </v-container>
+    </VcsFormSection>
 
-      <vcs-list
-        :items="items"
-        :selectable="selectable"
-        :single-select="selectSingle"
-        :searchable="searchable"
-        :show-title="showTitle"
-        :icon="titleIconSrc"
-        :actions="titleActionsArray"
-        :title="title"
-        v-model="selected"
-      />
-    </v-container>
-  </div>
+    <vcs-list
+      :items="items"
+      :draggable="draggable"
+      :selectable="selectable"
+      :single-select="selectSingle"
+      :searchable="searchable"
+      :show-title="showTitle"
+      :icon="titleIconSrc"
+      :actions="titleActionsArray"
+      :title="title"
+      v-model="selected"
+      @item-moved="move"
+    />
+  </v-sheet>
 </template>
 
 <script>
-  import { VcsList, VcsFormButton, VcsTextField, Icons } from '@vcmap/ui';
+  import {
+    VcsList,
+    VcsFormButton,
+    VcsTextField,
+    Icons,
+    VcsFormSection,
+  } from '@vcmap/ui';
   import {
     VSwitch,
-    VDivider,
-    VContainer,
-    VRow,
-    VCol,
+    VSheet,
     VDialog,
     VCard,
     VForm,
+    VContainer,
+    VRow,
+    VCol,
   } from 'vuetify/lib';
   import { computed, ref } from 'vue';
 
@@ -207,16 +252,18 @@
       VcsList,
       VcsFormButton,
       VcsTextField,
+      VcsFormSection,
       VSwitch,
-      VDivider,
-      VContainer,
-      VRow,
-      VCol,
+      VSheet,
       VDialog,
       VCard,
       VForm,
+      VContainer,
+      VRow,
+      VCol,
     },
     setup() {
+      const draggable = ref(true);
       const selectable = ref(true);
       const searchable = ref(true);
       const selectSingle = ref(false);
@@ -240,6 +287,7 @@
       const dialog = ref(false);
 
       return {
+        draggable,
         selectable,
         searchable,
         selectSingle,
@@ -262,6 +310,7 @@
             title: newItem.value.title,
             disabled: newItem.value.disabled,
             visible: newItem.value.visible,
+            hasUpdate: newItem.value.hasUpdate,
           };
 
           if (newItem.value.icon) {
@@ -304,6 +353,7 @@
             action: false,
             clicked: false,
             selected: false,
+            hasUpdate: false,
           };
           dialog.value = false;
         },
@@ -338,6 +388,17 @@
             }
           },
         }),
+        move({ item, targetIndex }) {
+          let target = targetIndex;
+          target = target >= 0 ? target : 0;
+          target =
+            target < items.value.length ? target : items.value.length - 1;
+          const from = items.value.indexOf(item);
+          if (from !== target) {
+            items.value.splice(from, 1);
+            items.value.splice(target, 0, item);
+          }
+        },
       };
     },
   };

@@ -25,20 +25,17 @@
           </v-icon>
           <v-icon v-else @click="selectAll()"> mdi-circle-outline </v-icon>
         </v-list-item-action>
-
         <v-list-item-content>
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
-
-          <VcsTooltip :tooltip="tooltip || title">
+          <VcsTooltip :tooltip="$t(tooltip || title)">
             <template #activator="{ on, attrs }">
               <v-list-item-title v-bind="attrs" v-on="on">
                 {{ $t(title) }}
               </v-list-item-title>
             </template>
           </VcsTooltip>
-
           <vcs-action-button-list
             v-if="actions?.length > 0"
             :actions="actions"
@@ -56,9 +53,16 @@
         @mousedown.shift="$event.preventDefault()"
         @mouseover="hovering = index"
         @mouseout="hovering = undefined"
+        :draggable="isDraggable"
+        @dragstart="drag($event, item, index)"
+        @mouseup="drop($event, index)"
         :class="{
           'v-list-item__lighten_even': lightenEven,
           'v-list-item__lighten_odd': !lightenEven,
+          'vcs-draggable-item': isDraggable,
+          'v-list-item__dragged': dragging === index,
+          'border-bottom': borderBottom(index),
+          'border-top': borderTop(index),
         }"
       >
         <v-list-item-action v-if="selectable">
@@ -77,23 +81,29 @@
             mdi-circle-small
           </v-icon>
         </v-list-item-action>
-
         <v-list-item-content
-          :class="[selectable ? 'cursor-pointer' : '']"
+          :class="[selectable && !isDraggable ? 'cursor-pointer' : '']"
           @click="select(item, $event)"
         >
           <v-icon v-if="item.icon">
             {{ item.icon }}
           </v-icon>
-
-          <VcsTooltip :tooltip="item.tooltip || item.title">
+          <VcsTooltip
+            :tooltip="
+              dragging !== undefined
+                ? undefined
+                : $t(item.tooltip || item.title)
+            "
+          >
             <template #activator="{ on, attrs }">
               <v-list-item-title v-bind="attrs" v-on="on">
                 {{ $t(item.title) }}
               </v-list-item-title>
             </template>
           </VcsTooltip>
-
+        </v-list-item-content>
+        <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
+        <v-list-item-action>
           <vcs-action-button-list
             v-if="item.actions?.length > 0"
             :actions="item.actions"
@@ -101,7 +111,7 @@
             :overflow-count="actionButtonListOverflowCount"
             small
           />
-        </v-list-item-content>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
@@ -121,6 +131,7 @@
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
+  import VcsBadge from '../notification/VcsBadge.vue';
 
   /**
    * @typedef {Object} VcsListItem
@@ -130,8 +141,15 @@
    * @property {string} title - The title to be displayed
    * @property {string} [tooltip]
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
+   * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
    * @property {Array<VcsAction>} [actions]
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
+   */
+
+  /**
+   * @typedef {Object} ItemMovedEvent
+   * @property {VcsListItem} item
+   * @property {number} targetIndex
    */
 
   /**
@@ -146,6 +164,7 @@
    * Clicking with SHIFT will create a selection range, starting or ending with the first item in the list
    * or the last normally selected item (not the last item clicked with CTRL for instance).
    * @vue-prop {Array<VcsListItem>} items
+   * @vue-prop {boolean} [draggable=false]
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
    * @vue-prop {Array<VcsListItem>} [value=[]] - the initial items to be selected.
@@ -157,10 +176,12 @@
    * @vue-prop {string} [icon] - icon to prepend to the list title
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
    * @vue-prop {Array<VcsAction>} [actions] - actions to render in the list title
+   * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
    */
   export default {
     name: 'VcsList',
     components: {
+      VcsBadge,
       VcsTreeviewSearchbar,
       VcsActionButtonList,
       VcsTooltip,
@@ -176,6 +197,10 @@
       items: {
         type: Array,
         required: true,
+      },
+      draggable: {
+        type: Boolean,
+        default: false,
       },
       selectable: {
         type: Boolean,
@@ -234,6 +259,22 @@
       const query = ref('');
       /** @type {import("vue").Ref<number|undefined>} */
       const hovering = ref(undefined);
+      /** @type {import("vue").Ref<number|undefined>} */
+      const dragging = ref(undefined);
+      const borderBottom = (index) => {
+        return (
+          dragging.value !== undefined &&
+          dragging.value < index &&
+          index === hovering.value
+        );
+      };
+      const borderTop = (index) => {
+        return (
+          dragging.value !== undefined &&
+          dragging.value > index &&
+          index === hovering.value
+        );
+      };
       const lightenEven = computed(() => {
         return !(!props.searchable && !props.showTitle);
       });
@@ -278,9 +319,45 @@
         },
       );
 
+      /**
+       * @type {VcsListItem|null}
+       */
+      let draggedItem = null;
+
+      /**
+       * @param {MouseEvent} e
+       * @param {number} targetIndex
+       */
+      function drop(e, targetIndex) {
+        if (draggedItem !== null && targetIndex !== undefined) {
+          emit('item-moved', { item: draggedItem, targetIndex });
+        }
+        draggedItem = null;
+        dragging.value = undefined;
+        document.removeEventListener('mouseup', drop);
+      }
+
+      /**
+       * @param {MouseEvent} e
+       * @param {VcsListItem} item
+       * @param {number} index
+       */
+      function drag(e, item, index) {
+        dragging.value = index;
+        draggedItem = item;
+        e.dataTransfer.effectAllowed = 'move';
+        document.addEventListener('mouseup', drop);
+      }
+
       return {
         query,
         hovering,
+        dragging,
+        isDraggable: computed(() => {
+          return query.value === '' && props.draggable;
+        }),
+        borderBottom,
+        borderTop,
         lightenEven,
         /**
          * @type {import("vue").ComputedRef<Array<VcsListItem>>}
@@ -418,6 +495,8 @@
           });
           emit('input', selected.value);
         },
+        drag,
+        drop,
       };
     },
   };
@@ -436,8 +515,23 @@
           background-color: var(--v-base-lighten4);
         }
       }
+      .v-list-item__dragged {
+        background-color: var(--v-base-lighten2) !important;
+      }
       .v-list-item {
         padding: 4px 8px 4px 16px;
+        &.vcs-draggable-item:hover {
+          cursor: grab;
+          user-select: none;
+        }
+        &.border-bottom {
+          border-bottom: solid;
+          border-bottom-color: var(--v-base-lighten2);
+        }
+        &.border-top {
+          border-top: solid;
+          border-top-color: var(--v-base-lighten2);
+        }
         &:after {
           display: none;
         }

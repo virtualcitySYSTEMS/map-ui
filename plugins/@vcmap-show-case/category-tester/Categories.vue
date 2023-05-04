@@ -127,7 +127,7 @@
               title: 'Foobar',
             });
             app.categoryManager.add(
-              { categoryName: category.name },
+              { categoryName: category.name, draggable: true },
               packageJSON.name,
             );
             app.categoryManager.addMappingFunction(
@@ -250,7 +250,7 @@
               },
             ];
             app.categoryManager.add(
-              { categoryName: layersCat.name, actions },
+              { categoryName: layersCat.name, actions, draggable: true },
               packageJSON.name,
             );
             app.categoryManager.addMappingFunction(

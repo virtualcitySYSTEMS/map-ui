@@ -8,7 +8,7 @@ import {
   afterAll,
   vi,
 } from 'vitest';
-import { VcsModule } from '@vcmap/core';
+import { VcsModule, Collection } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import CategoryManager from '../../../src/manager/categoryManager/categoryManager.js';
 
@@ -112,6 +112,25 @@ describe('categoryManager', () => {
 
     it('should call the added event for every newly added managed category', () => {
       expect(added).toHaveBeenCalledTimes(2);
+    });
+
+    it('should allow draggable option only for underlying IndexedCollections', async () => {
+      const category3 = await app.categories.requestCategory({
+        name: 'cat3',
+        type: 'Category',
+      });
+      category3.setCollection(new Collection());
+      const cat3Item = categoryManager.add(
+        { categoryName: 'cat3', draggable: true },
+        'myOwner',
+      );
+      expect(cat3Item).to.have.property('draggable', false);
+      await app.categories.requestCategory({ name: 'cat4', type: 'Category' });
+      const cat4Item = categoryManager.add(
+        { categoryName: 'cat4', draggable: true },
+        'myOwner',
+      );
+      expect(cat4Item).to.have.property('draggable', true);
     });
 
     describe('category items', () => {

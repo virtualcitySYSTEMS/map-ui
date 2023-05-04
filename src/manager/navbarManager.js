@@ -98,13 +98,15 @@ class NavbarManager extends ButtonManager {
    */
   toggle(id, active = undefined) {
     check(id, String);
-    const { action } = this.get(id);
-    if (active !== undefined) {
-      if (action?.active !== active) {
+    if (this.has(id)) {
+      const { action } = this.get(id);
+      if (active !== undefined) {
+        if (action?.active !== active) {
+          action.callback();
+        }
+      } else if (action) {
         action.callback();
       }
-    } else if (action) {
-      action.callback();
     }
   }
 }

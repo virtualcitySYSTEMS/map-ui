@@ -38,6 +38,7 @@ import {
  * @property {string} title
  * @property {Array<VcsAction>} actions
  * @property {Array<VcsListItem & { destroy: (function():void|undefined) }>} items
+ * @property {boolean} draggable
  * @property {boolean} selectable
  * @property {boolean} singleSelect
  * @property {Array<VcsListItem>} selection
@@ -47,6 +48,7 @@ import {
 /**
  * @typedef {Object} ManagedCategoryOptions
  * @property {string} categoryName
+ * @property {boolean} [draggable] - only allowed for categories with underlying IndexedCollections
  * @property {boolean} [selectable]
  * @property {boolean} [singleSelect]
  * @property {Array<VcsAction>} [actions]
@@ -119,6 +121,7 @@ function reduceCategoryOptions(current, next) {
   if (next.actions?.length > 0) {
     current.actions.push(...next.actions);
   }
+  current.draggable = current.draggable ?? next.draggable;
   current.selectable = current.selectable ?? next.selectable;
   current.singleSelect = current.singleSelect ?? next.singleSelect;
   return current;
@@ -440,11 +443,17 @@ class CategoryManager {
         `Category has already been added by this owner: ${categoryName}, ${owner}`,
       );
     }
+    if (managedCategoryOptions.draggable) {
+      const { collection } = this._app.categories.getByKey(categoryName);
+      managedCategoryOptions.draggable =
+        collection instanceof IndexedCollection;
+    }
 
     /** @type {ManagedCategoryOptions} */
     const clonedOptions = {
       categoryName,
       actions: managedCategoryOptions.actions?.slice?.() ?? [],
+      draggable: managedCategoryOptions.draggable,
       selectable: managedCategoryOptions.selectable,
       singleSelect: managedCategoryOptions.singleSelect,
     };
