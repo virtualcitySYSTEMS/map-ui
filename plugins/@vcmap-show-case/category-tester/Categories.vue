@@ -127,13 +127,18 @@
               title: 'Foobar',
             });
             app.categoryManager.add(
-              { categoryName: category.name, draggable: true },
+              {
+                categoryName: category.name,
+                actions: [{ name: 'foobar', callback: () => {} }],
+                draggable: true,
+              },
               packageJSON.name,
             );
             app.categoryManager.addMappingFunction(
               () => true,
               (item, c, listItem) => {
                 listItem.title = item.name;
+                listItem.actions = [{ name: 'foobar', callback: () => {} }];
               },
               [category.name],
               packageJSON.name,

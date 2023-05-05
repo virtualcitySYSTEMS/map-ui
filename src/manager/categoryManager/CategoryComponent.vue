@@ -13,7 +13,6 @@
             v-if="category.actions?.length > 0"
             :actions="category.actions"
             small
-            class="float-end"
           />
         </div>
       </template>
@@ -147,5 +146,15 @@
 <style lang="scss" scoped>
   .rotate {
     transform: rotate(-90deg);
+  }
+  ::v-deep {
+    .v-list {
+      .v-list-item {
+        padding: 4px 0 4px 16px;
+      }
+      .v-list-item__action {
+        min-width: auto;
+      }
+    }
   }
 </style>

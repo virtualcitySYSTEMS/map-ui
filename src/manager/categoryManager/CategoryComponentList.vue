@@ -79,4 +79,10 @@
   };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+  ::v-deep {
+    .v-list .v-list-item__action {
+      min-width: auto;
+    }
+  }
+</style>
