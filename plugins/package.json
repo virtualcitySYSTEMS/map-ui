@@ -4,6 +4,7 @@
     "@vcmap/print": "^1.0.2",
     "@vcmap/swipe-tool": "^1.0.3",
     "@vcmap/export": "^1.0.1",
-    "@vcmap/shadow": "^1.0.1"
+    "@vcmap/shadow": "^1.0.1",
+    "@vcmap/draw": "^1.0.0"
   }
 }

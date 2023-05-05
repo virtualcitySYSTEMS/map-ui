@@ -1732,6 +1732,10 @@
       "entry": "plugins/@vcmap/shadow/index.js"
     },
     {
+      "name": "@vcmap/draw",
+      "entry": "plugins/@vcmap/draw/index.js"
+    },
+    {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
     },
