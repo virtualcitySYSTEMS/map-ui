@@ -14,9 +14,14 @@
         v-bind="{ ...$attrs, ...attrs }"
         v-on="{ ...$listeners, ...on }"
         :prepend-icon="icon"
+        :dense="isDense"
         readonly
         hide-details
         class="ma-0 py-1"
+        :class="{
+          'input--dense': isDense,
+          'input--not-dense': !isDense,
+        }"
       />
     </template>
     <v-date-picker
@@ -35,7 +40,7 @@
 <style lang="scss" scoped>
   ::v-deep {
     .v-input__control {
-      padding: 0 8px;
+      padding: 0 4px;
     }
   }
 </style>
@@ -73,7 +78,7 @@
       VDatePicker,
       VBtn,
     },
-    setup(props, context) {
+    setup(props, { emit, attrs }) {
       /**
        * @type {import("@vcmap/ui").VcsUiApp}
        */
@@ -83,6 +88,8 @@
       const localValue = ref(props.value);
       const menuOpen = ref(false);
       const locale = ref(app.locale);
+
+      const isDense = computed(() => attrs.dense !== false);
 
       const isValid = (date) => !Number.isNaN(Date.parse(date));
       const setFromValue = () => {
@@ -125,13 +132,14 @@
         get: () => localValue.value,
         set: (nv) => {
           localValue.value = nv;
-          context.emit('input', localValue.value);
+          emit('input', localValue.value);
         },
       });
 
       return {
         formattedDate,
         date,
+        isDense,
         menuOpen,
         formatDate,
         locale,
