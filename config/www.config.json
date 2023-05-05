@@ -561,7 +561,8 @@
           "ClassifiedbyRoofType",
           "BuildingFunction",
           "Transparentbuildings"
-        ]
+        ],
+        "exportWorkbench": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmedatadownload/germany_viewer/MultiExporter.fmw"
       }
     },
     {
