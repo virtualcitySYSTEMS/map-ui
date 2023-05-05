@@ -562,7 +562,7 @@
           "BuildingFunction",
           "Transparentbuildings"
         ],
-        "exportWorkbench": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmedatadownload/germany_viewer/MultiExporter.fmw"
+        "exportWorkbench": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmejobsubmitter/DUMMY/dummy.fmw"
       }
     },
     {
@@ -1744,8 +1744,8 @@
       "entry": "plugins/@vcmap/export/index.js",
       "crs": ["EPSG:25832", "EPSG:4326"],
       "allowCrsTextInput": false,
-      "fmeSecurityToken": "abdec250f1d7f09c6383248d8596bf48ef436d6d",
-      "fmeServerUrl": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmedatadownload/germany_viewer/MultiExporter.fmw",
+      "fmeSecurityToken": "fc3baf381c993d0a1228613f230244c663a6a268",
+      "fmeServerUrl": "https://fmeserver-virtualcitysystems--2.fmecloud.com/fmejobsubmitter/DUMMY/dummy.fmw",
       "dataProjection": {
         "epsg": "25832",
         "proj4": "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
