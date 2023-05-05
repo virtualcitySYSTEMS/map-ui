@@ -1,9 +1,9 @@
 <template>
-  <v-list class="px-1">
+  <v-list class="px-2">
     <v-list-item
       v-for="{ key, title, attributions } in entries"
       :key="key"
-      class="px-1"
+      class="px-0"
     >
       <v-list-item-content>
         <v-list-item-title>{{ $t(title) }}</v-list-item-title>
@@ -22,9 +22,24 @@
 </template>
 
 <style lang="scss" scoped>
-  ::v-deep {
-    a:before {
-      content: '\00a9\00a0';
+  @import '../styles/shades.scss';
+
+  .theme--light {
+    a {
+      color: map-get($shades, 'black');
+    }
+  }
+  .theme--dark {
+    a {
+      color: map-get($shades, 'white');
+    }
+  }
+  a {
+    &:hover {
+      color: var(--v-primary-base);
+    }
+    &:before {
+      content: '\00a9';
     }
   }
 </style>
