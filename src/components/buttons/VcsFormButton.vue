@@ -80,10 +80,12 @@
         border: thin solid currentColor;
         &:hover {
           border-color: var(--v-primary-lighten1) !important;
-          &::before {
-            background-color: var(--v-primary-lighten4) !important;
-            opacity: 1;
-          }
+        }
+        &.theme--light:hover::before {
+          opacity: 0.16;
+        }
+        &.theme--dark:hover::before {
+          opacity: 0.32;
         }
       }
 

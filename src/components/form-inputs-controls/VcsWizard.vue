@@ -3,7 +3,7 @@
     vertical
     :value="value"
     @change="(newValue) => $emit('input', newValue)"
-    class="rounded-0"
+    class="rounded-0 pb-1"
   >
     <slot />
   </v-stepper>
@@ -113,7 +113,6 @@
           color: transparent;
           position: relative;
           margin-top: 1px;
-          margin-right: 5px;
           &:before {
             content: '\25cf';
             font-size: 18px;
@@ -130,8 +129,8 @@
           }
         }
       }
-      .v-stepper__content.v-stepper__wrapper {
-        margin: 4px 0;
+      .v-stepper__content .v-stepper__wrapper {
+        margin: 4px 0 4px 4px;
       }
     }
   }
