@@ -565,6 +565,9 @@
           .v-icon {
             font-size: 16px;
           }
+          &:last-child {
+            min-width: auto;
+          }
         }
         .v-list-item__content {
           flex-wrap: nowrap;

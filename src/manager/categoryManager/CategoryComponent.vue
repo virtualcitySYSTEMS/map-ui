@@ -1,6 +1,6 @@
 <template>
-  <v-expansion-panel class="px-2" @change="active = !active">
-    <v-expansion-panel-header hide-actions>
+  <v-expansion-panel @change="active = !active">
+    <v-expansion-panel-header hide-actions class="px-2">
       <template #default="{ open }">
         <div class="d-flex justify-space-between">
           <div class="d-flex align-center">
@@ -147,13 +147,13 @@
   .rotate {
     transform: rotate(-90deg);
   }
+  .v-icon {
+    font-size: 16px;
+  }
   ::v-deep {
     .v-list {
       .v-list-item {
-        padding: 4px 0 4px 16px;
-      }
-      .v-list-item__action {
-        min-width: auto;
+        padding: 4px 8px 4px 28px;
       }
     }
   }
