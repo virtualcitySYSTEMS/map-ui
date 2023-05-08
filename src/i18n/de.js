@@ -14,6 +14,7 @@ const messages = {
   },
   content: {
     title: 'Inhalte',
+    empty: 'Aktuell sind keine Einträge verfügbar.',
     search: {
       placeholder: 'Elemente suchen',
     },

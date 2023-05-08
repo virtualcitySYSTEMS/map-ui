@@ -41,15 +41,15 @@
           .v-stepper__label {
             color: map-get($shades, 'black');
           }
+          &--complete {
+            .v-stepper__label {
+              color: map-get($shades, 'black');
+            }
+          }
           &--active {
             background-color: rgba(34, 34, 34, 0.1);
             .v-stepper__label {
               color: var(--v-primary-base);
-            }
-          }
-          &--complete {
-            .v-stepper__label {
-              color: map-get($shades, 'black');
             }
           }
           .v-stepper__step__step::before {
@@ -68,15 +68,15 @@
           .v-stepper__label {
             color: map-get($shades, 'white');
           }
+          &--complete {
+            .v-stepper__label {
+              color: map-get($shades, 'white');
+            }
+          }
           &--active {
             background-color: rgba(255, 255, 255, 0.17);
             .v-stepper__label {
               color: var(--v-primary-base);
-            }
-          }
-          &--complete {
-            .v-stepper__label {
-              color: map-get($shades, 'white');
             }
           }
           .v-stepper__step__step {

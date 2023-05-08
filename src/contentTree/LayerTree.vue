@@ -1,16 +1,22 @@
 <template>
-  <VcsTreeview
-    v-if="tree && tree.length"
-    :items="tree"
-    :open.sync="open"
-    :show-searchbar="true"
-    :searchbar-placeholder="'content.search.placeholder'"
-    item-children="visibleChildren"
-  />
+  <div>
+    <VcsTreeview
+      v-if="tree && tree.length"
+      :items="tree"
+      :open.sync="open"
+      :show-searchbar="true"
+      :searchbar-placeholder="'content.search.placeholder'"
+      item-children="visibleChildren"
+    />
+    <v-sheet v-else class="ma-2">
+      {{ $t('content.empty') }}
+    </v-sheet>
+  </div>
 </template>
 
 <script>
   import { inject } from 'vue';
+  import { VSheet } from 'vuetify/lib';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
   /**
@@ -19,7 +25,7 @@
    */
   export default {
     name: 'VcsLayerTree',
-    components: { VcsTreeview },
+    components: { VcsTreeview, VSheet },
     props: {
       windowState: {
         type: Object,
