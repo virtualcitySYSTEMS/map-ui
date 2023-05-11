@@ -103,8 +103,7 @@ class I18nCollection extends IndexedCollection {
   async parseItems(configArray, moduleId) {
     if (Array.isArray(configArray)) {
       configArray.forEach((item) => {
-        item[moduleIdSymbol] = moduleId;
-        this.add(item);
+        this.add({ ...item, [moduleIdSymbol]: moduleId });
       });
     }
   }

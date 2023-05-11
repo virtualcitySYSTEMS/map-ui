@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import path from 'path';
 import { defineConfig } from 'vite';
-import { createVuePlugin } from 'vite-plugin-vue2';
+import vue2 from '@vitejs/plugin-vue2';
 import { libraries } from './buildHelpers.js';
 
 const configMain = defineConfig({
@@ -17,7 +17,7 @@ const configMain = defineConfig({
   define: {
     'process.env.NODE_ENV': '"development"',
   },
-  plugins: [createVuePlugin()],
+  plugins: [vue2()],
   css: {
     preprocessorOptions: {
       sass: {

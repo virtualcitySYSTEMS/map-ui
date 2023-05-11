@@ -134,7 +134,10 @@ describe('i18nCollection', () => {
       i18n = new I18nCollection(() => {
         return 'moduleId';
       });
-      configArray = [{ de: { myKey: 'test' } }, { de: { myKey2: 'test2' } }];
+      configArray = [
+        { name: 'test', de: { myKey: 'test' } },
+        { name: 'test2', de: { myKey2: 'test2' } },
+      ];
       await i18n.parseItems(configArray, 'configModuleId');
     });
 

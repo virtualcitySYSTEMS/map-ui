@@ -4,6 +4,7 @@
 - Added Draw Plugin to Demo Application and external plugins
 - Added Shadow Plugin to Demo Application and external plugins
 - Changed ZoomToAll Button in Search to use new VcsFormButton
+- Updated ViteJS to version 4.3
 
 # 5.0.0-rc.24
 

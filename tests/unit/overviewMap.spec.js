@@ -366,7 +366,7 @@ describe('OverviewMap', () => {
       const gotoViewpointSpy = vi.spyOn(overviewMap.map, 'gotoViewpoint');
       await obliqueMap.setImageByName('034_070_110005034');
       expect(gotoViewpointSpy).toHaveBeenCalledTimes(1);
-      const [vp] = gotoViewpointSpy.calls[0];
+      const [vp] = gotoViewpointSpy.mock.calls[0];
       const center = Projection.mercatorToWgs84(
         getCenter(
           obliqueMap.collection.imageFeatureSource

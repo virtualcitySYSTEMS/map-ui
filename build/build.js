@@ -172,12 +172,13 @@ await Promise.all(
       },
     };
     await build(libraryEntryConfig);
-    await fs.promises.cp(
-      path.join('src', 'assets', 'font'),
-      path.join('dist', 'assets', 'font'),
-      { recursive: true },
-    );
   }),
+);
+
+await fs.promises.cp(
+  path.join('src', 'assets', 'font'),
+  path.join('dist', 'assets', 'font'),
+  { recursive: true },
 );
 
 await buildCesium();
