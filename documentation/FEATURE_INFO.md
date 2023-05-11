@@ -99,7 +99,7 @@ class MyNewViewClass extends BalloonFeatureInfoView {
 Once defined, a view class can be registered at FeatureInfo using the API:
 
 ```js
-app.featureInfo.classRegistry.registerClass(
+app.featureInfoClassRegistry.registerClass(
   app.dynamicContextId,
   MyNewFeatureInfoView.className,
   MyNewFeatureInfoView,

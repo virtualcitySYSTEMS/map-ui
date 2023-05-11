@@ -7,7 +7,7 @@ export default async function simpleGraph() {
     name: '@vcmap/simpleGraph',
     onVcsAppMounted(app) {
       /** Example for registering custom component on FeatureInfo */
-      app.featureInfo.classRegistry.registerClass(
+      app.featureInfoClassRegistry.registerClass(
         app.dynamicModuleId,
         SimpleGraphView.className,
         SimpleGraphView,

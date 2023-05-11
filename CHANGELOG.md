@@ -5,6 +5,8 @@
 - Added Shadow Plugin to Demo Application and external plugins
 - Changed ZoomToAll Button in Search to use new VcsFormButton
 - Updated ViteJS to version 4.3
+- Change featureInfo to be an override collection and both featureInfo and featureInfoClassRegistry to be an VcsUiApp property
+- Add olcs attribute key filtering to `AbstractFeatureInfoView` getAttributes
 
 # 5.0.0-rc.24
 

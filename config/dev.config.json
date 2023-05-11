@@ -27,7 +27,12 @@
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloon",
       "title": "This is a Balloon Title",
-      "subtitle": "olcs_altitudeMode"
+      "subtitle": "olcs_altitudeMode",
+      "keyMapping": {
+        "olcs_storeyNumber": "Storey Number",
+        "olcs_storeyHeight": "Storey Height",
+        "olcs_altitudeMode": "Altitude Mode"
+      }
     },
     {
       "type": "BalloonFeatureInfoView",

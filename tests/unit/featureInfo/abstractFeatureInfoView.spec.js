@@ -4,6 +4,7 @@ import Point from 'ol/geom/Point.js';
 import AbstractFeatureInfoView, {
   applyAttributeFilter,
   applyKeyMapping,
+  applyOlcsAttributeFilter,
   applyValueMapping,
 } from '../../../src/featureInfo/abstractFeatureInfoView.js';
 
@@ -186,6 +187,52 @@ describe('AbstractFeatureInfoView', () => {
         .to.have.property('foo.bar')
         .and.to.eql({ foo: true, bar: true });
       expect(filtered).to.have.all.keys(['foo.bar']);
+    });
+  });
+
+  describe('filter olcs attributes', () => {
+    let attributes;
+
+    beforeAll(() => {
+      attributes = {
+        foo: { bar: true, baz: false },
+        bar: true,
+        baz: true,
+        'foo.bar': { foo: true, bar: true },
+        olcs_storeyHeight: 5,
+        olcs_altitudeMode: 'absolute',
+      };
+    });
+
+    it('should filter olcs keys', () => {
+      const filteredOlcs = applyOlcsAttributeFilter(attributes);
+      expect(filteredOlcs).to.not.have.property('olcs_storeyHeight');
+      expect(filteredOlcs).to.not.have.property('olcs_altitudeMode');
+      expect(Object.keys(filteredOlcs)).to.have.length(4);
+    });
+
+    it('should leave other keys', () => {
+      const keys = ['bar'];
+      const filtered = applyAttributeFilter(attributes, keys);
+      const filteredOlcs = applyOlcsAttributeFilter(filtered, keys);
+      expect(filteredOlcs).to.have.property('bar', true);
+      expect(filteredOlcs).to.not.have.property('olcs_storeyHeight');
+      expect(filteredOlcs).to.not.have.property('olcs_altitudeMode');
+    });
+
+    it('should NOT filter olcs keys provided as attributeKeys', () => {
+      const keys = ['bar', 'olcs_storeyHeight'];
+      const filtered = applyAttributeFilter(attributes, keys);
+      const filteredOlcs = applyOlcsAttributeFilter(filtered, keys);
+      expect(filtered).to.have.property('bar', true);
+      expect(filteredOlcs).to.have.property('olcs_storeyHeight', 5);
+    });
+
+    it('should NOT filter olcs keys mapped using keyMapping', () => {
+      applyKeyMapping(attributes, { olcs_storeyHeight: 'Storey Height' });
+      const filteredOlcs = applyOlcsAttributeFilter(attributes);
+      expect(filteredOlcs).to.not.have.property('olcs_altitudeMode');
+      expect(filteredOlcs).to.have.property('Storey Height', 5);
     });
   });
 

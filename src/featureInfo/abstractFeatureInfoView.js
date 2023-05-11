@@ -173,6 +173,21 @@ export function applyAttributeFilter(attributes, keys, result = {}) {
 }
 
 /**
+ * Filters all olcs attributes, not provided as keys
+ * @param {Object<string, *>} attributes
+ * @param {Array<string>} keys
+ * @returns {Object}
+ */
+export function applyOlcsAttributeFilter(attributes, keys = []) {
+  return Object.keys(attributes)
+    .filter((key) => keys.includes(key) || !/^olcs_/.test(key))
+    .reduce((obj, key) => {
+      obj[key] = attributes[key];
+      return obj;
+    }, {});
+}
+
+/**
  * Abstract class to be extended by FeatureInfoView classes
  * Subclasses must always provide a component and may overwrite class methods.
  * @abstract
@@ -265,7 +280,7 @@ class AbstractFeatureInfoView extends VcsObject {
     if (this.keyMapping) {
       applyKeyMapping(attributes, this.keyMapping);
     }
-    return attributes;
+    return applyOlcsAttributeFilter(attributes, this.attributeKeys);
   }
 
   /**

@@ -10,6 +10,7 @@ import {
   Viewpoint,
   volatileModuleId,
   VcsEvent,
+  getObjectFromClassRegistry,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -29,12 +30,15 @@ import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/categoryManager/categoryManager.js';
 import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
-import FeatureInfo from './featureInfo/featureInfo.js';
+import FeatureInfo, {
+  featureInfoClassRegistry,
+} from './featureInfo/featureInfo.js';
 import UiConfig from './uiConfig.js';
 import { createEmptyState, getStateFromURL } from './state.js';
 import { version } from '../package.json';
 import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
+import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig} VcsUiModuleConfig
@@ -176,7 +180,7 @@ class VcsUiApp extends VcsApp {
     ];
 
     /**
-     * @type {OverrideClassRegistry<ContentTreeItem>}
+     * @type {import("@vcmap/core").OverrideClassRegistry<ContentTreeItem>}
      * @private
      */
     this._contentTreeClassRegistry = new OverrideClassRegistry(
@@ -212,10 +216,24 @@ class VcsUiApp extends VcsApp {
      */
     this._uiConfig = new UiConfig(() => this.dynamicModuleId);
     /**
-     * @type {FeatureInfo}
+     * @type {import("@vcmap/core").OverrideClassRegistry<AbstractFeatureInfoView>}
      * @private
      */
-    this._featureInfo = new FeatureInfo(this);
+    this._featureInfoClassRegistry = new OverrideClassRegistry(
+      featureInfoClassRegistry,
+    );
+    /**
+     * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
+     * @private
+     */
+    this._featureInfo = makeOverrideCollection(
+      new FeatureInfo(this),
+      () => this.dynamicModuleId,
+      null,
+      (config) =>
+        getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
+      AbstractFeatureInfoView,
+    );
 
     /**
      * @type {OverviewMap}
@@ -283,11 +301,19 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {OverrideClassRegistry<ContentTreeItem>}
+   * @type {import("@vcmap/core").OverrideClassRegistry<ContentTreeItem>}
    * @readonly
    */
   get contentTreeClassRegistry() {
     return this._contentTreeClassRegistry;
+  }
+
+  /**
+   * @type {import("@vcmap/core").OverrideClassRegistry<AbstractFeatureInfoView>}
+   * @readonly
+   */
+  get featureInfoClassRegistry() {
+    return this._featureInfoClassRegistry;
   }
 
   /**
@@ -483,10 +509,7 @@ class VcsUiApp extends VcsApp {
     await super._parseModule(module);
     await this._contentTree.parseItems(config.contentTree, module._id);
     await this._uiConfig.parseItems(config.uiConfig, module._id);
-    await this._featureInfo.collection.parseItems(
-      config.featureInfo,
-      module._id,
-    );
+    await this._featureInfo.parseItems(config.featureInfo, module._id);
   }
 
   /**
@@ -553,7 +576,7 @@ class VcsUiApp extends VcsApp {
   serializeModule(moduleId) {
     const config = super.serializeModule(moduleId);
     config.uiConfig = this._uiConfig.serializeModule(moduleId);
-    config.featureInfo = this._featureInfo.collection.serializeModule(moduleId);
+    config.featureInfo = this._featureInfo.serializeModule(moduleId);
     config.i18n = this._i18n.serializeModule(moduleId);
     config.plugins = this._plugins.serializeModule(moduleId);
     return config;
@@ -570,7 +593,7 @@ class VcsUiApp extends VcsApp {
       this._plugins.removeModule(moduleId),
       this._i18n.removeModule(moduleId),
       this._contentTree.removeModule(moduleId),
-      this._featureInfo.collection.removeModule(moduleId),
+      this._featureInfo.removeModule(moduleId),
       this._uiConfig.removeModule(moduleId),
     ]);
   }
@@ -594,6 +617,7 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._i18n);
     destroyCollection(this._search);
     this._contentTreeClassRegistry.destroy();
+    this._featureInfoClassRegistry.destroy();
     this._featureInfo.destroy();
     this._uiConfig.destroy();
     super.destroy();

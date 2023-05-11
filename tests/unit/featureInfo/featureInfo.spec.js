@@ -43,7 +43,7 @@ describe('FeatureInfo', () => {
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
       layer = new VectorLayer({
         projection: mercatorProjection.toJSON(),
       });
@@ -103,7 +103,7 @@ describe('FeatureInfo', () => {
       app.layers.add(layer);
       feature = new Feature({ geometry: new Point([1, 1, 1]) });
       layer.addFeatures([feature]);
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
       selectedCallback = vi.fn();
       app.featureInfo.featureChanged.addEventListener(selectedCallback);
       await app.featureInfo.selectFeature(feature);
@@ -138,7 +138,7 @@ describe('FeatureInfo', () => {
 
     beforeAll(() => {
       app = new VcsUiApp();
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
       fillColor = Color.fromCssColorString(
         app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
       ).withAlpha(0.8);
@@ -608,9 +608,7 @@ describe('FeatureInfo', () => {
         feature = new Feature({ geometry: new Point([1, 1, 1]) });
         feature[isProvidedFeature] = true;
         feature[vcsLayerName] = layer.name;
-        app.featureInfo.collection.add(
-          new TableFeatureInfoView({ name: 'foo' }),
-        );
+        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
         selectedCallback = vi.fn();
         app.featureInfo.featureChanged.addEventListener(selectedCallback);
         await app.featureInfo.selectFeature(feature);
@@ -658,9 +656,7 @@ describe('FeatureInfo', () => {
         feature = new Feature({ geometry: new Point([1, 1, 1]) });
         feature[isProvidedFeature] = true;
         feature[vcsLayerName] = layer.name;
-        app.featureInfo.collection.add(
-          new TableFeatureInfoView({ name: 'foo' }),
-        );
+        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
         await app.featureInfo.selectFeature(feature);
         ({ windowId } = app.featureInfo);
         selectedCallback = vi.fn();
@@ -705,7 +701,7 @@ describe('FeatureInfo', () => {
     beforeAll(() => {
       app = new VcsUiApp();
       layerFeatureInfo = new TableFeatureInfoView({ name: 'foo' });
-      app.featureInfo.collection.add(layerFeatureInfo);
+      app.featureInfo.add(layerFeatureInfo);
       layer = new VectorLayer({
         projection: mercatorProjection.toJSON(),
       });
@@ -787,7 +783,7 @@ describe('FeatureInfo', () => {
 
     beforeAll(() => {
       app = new VcsUiApp();
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
     });
 
     afterAll(() => {
@@ -853,7 +849,7 @@ describe('FeatureInfo', () => {
       app.layers.add(layer);
       feature = new Feature({ geometry: new Point([1, 1, 1]) });
       layer.addFeatures([feature]);
-      app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
       await app.featureInfo.selectFeature(feature);
       ({ windowId } = app.featureInfo);
       selectedCallback = vi.fn();
@@ -950,9 +946,7 @@ describe('FeatureInfo', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.featureInfo.collection.add(
-          new TableFeatureInfoView({ name: 'foo' }),
-        );
+        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
         ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({
@@ -993,9 +987,7 @@ describe('FeatureInfo', () => {
 
       beforeAll(async () => {
         app = new VcsUiApp();
-        app.featureInfo.collection.add(
-          new TableFeatureInfoView({ name: 'foo' }),
-        );
+        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
         ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({

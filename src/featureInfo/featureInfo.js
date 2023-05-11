@@ -1,11 +1,8 @@
 import {
   EventType,
-  makeOverrideCollection,
   Collection,
-  getObjectFromClassRegistry,
   VcsEvent,
   vcsLayerName,
-  OverrideClassRegistry,
   ClassRegistry,
   fromCesiumColor,
   VectorLayer,
@@ -194,37 +191,22 @@ export const featureInfoViewSymbol = Symbol('featureInfoView');
 
 /**
  * @class FeatureInfo
- * @description Provides registration of featureInfoClasses and stores featureInfoView instances in its collection.
+ * @description Provides registration of featureInfoClasses and stores featureInfoView instances.
+ * @extends {Collection<AbstractFeatureInfoView>}
+ * @implements {import("@vcmap/core").OverrideCollectionInterface<AbstractFeatureInfoView>}
  */
-class FeatureInfo {
+class FeatureInfo extends Collection {
   /**
    * @param {VcsUiApp} app
    */
   constructor(app) {
+    super();
+
     /**
      * @type {VcsUiApp}
      * @private
      */
     this._app = app;
-    /**
-     * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
-     * @private
-     */
-    this._collection = makeOverrideCollection(
-      new Collection(),
-      () => this._app.dynamicModuleId,
-      null,
-      (config) =>
-        getObjectFromClassRegistry(this._featureInfoClassRegistry, config),
-      AbstractFeatureInfoView,
-    );
-    /**
-     * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
-     * @private
-     */
-    this._featureInfoClassRegistry = new OverrideClassRegistry(
-      featureInfoClassRegistry,
-    );
     /**
      * @type {function():void|null}
      * @private
@@ -302,22 +284,6 @@ class FeatureInfo {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideCollection<AbstractFeatureInfoView>}
-   * @readonly
-   */
-  get collection() {
-    return this._collection;
-  }
-
-  /**
-   * @type {OverrideClassRegistry<AbstractFeatureInfoView>}
-   * @readonly
-   */
-  get classRegistry() {
-    return this._featureInfoClassRegistry;
-  }
-
-  /**
    * @type {VcsEvent<null|FeatureType>}
    * @readonly
    */
@@ -379,13 +345,11 @@ class FeatureInfo {
       );
       return null;
     }
-    if (!this._collection.hasKey(name)) {
+    if (!this.hasKey(name)) {
       getLogger().warning(`No view with name '${name}' has been registered.`);
       return null;
     }
-    return /** @type {AbstractFeatureInfoView} */ this._collection.getByKey(
-      name,
-    );
+    return /** @type {AbstractFeatureInfoView} */ this.getByKey(name);
   }
 
   /**
@@ -502,6 +466,7 @@ class FeatureInfo {
    * Destroys the feature info and all its events & listeners
    */
   destroy() {
+    super.destroy();
     this._clearInternal();
     this._featureChanged.destroy();
     this._destroyFeatureInfoTool();
@@ -511,8 +476,6 @@ class FeatureInfo {
     }
     this._listeners.forEach((cb) => cb());
     this._listeners.splice(0);
-    this._collection.destroy();
-    this._featureInfoClassRegistry.destroy();
   }
 }
 

@@ -30,7 +30,7 @@ describe('FeatureInfoInteraction', () => {
 
   beforeAll(() => {
     app = new VcsUiApp();
-    app.featureInfo.collection.add(new TableFeatureInfoView({ name: 'foo' }));
+    app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
     const layer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
