@@ -1,6 +1,7 @@
 dist/
 exampleData/
 lib/
+public/
 test-report.xml
 
 # local env files

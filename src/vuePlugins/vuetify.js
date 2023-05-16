@@ -1,4 +1,3 @@
-import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import { genVariations } from 'vuetify/lib/services/theme/utils.js';

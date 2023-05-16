@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@import 'vcsFont.scss';
 
 .v-application {
   h1,
@@ -14,7 +14,7 @@
   .caption,
   .tooltip,
   p {
-    font-size: $font-size;
+    font-size: $vcs-font-size;
     &:not(.v-icon) {
       font-family: 'Titillium Web', sans-serif !important;
     }

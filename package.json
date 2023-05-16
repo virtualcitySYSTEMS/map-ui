@@ -37,7 +37,6 @@
     "!plugins/node_modules/"
   ],
   "dependencies": {
-    "@mdi/font": "^5.9.55",
     "@vcsuite/check": "^1.1.2",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.1",

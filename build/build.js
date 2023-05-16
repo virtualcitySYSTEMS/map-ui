@@ -2,11 +2,19 @@ import path from 'path';
 import fs from 'fs';
 import { build } from 'vite';
 import { v4 as uuid } from 'uuid';
+
 import rollupPluginStripPragma from 'rollup-plugin-strip-pragma';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
+
 import generateOLLib from './generateOLLib.js';
 import buildCesium from './buildCesium.js';
-import { buildLibrary, libraries } from './buildHelpers.js';
+import {
+  buildLibrary,
+  getFileMd5,
+  getFilesInDirectory,
+  libraries,
+  writeRewrittenFile,
+} from './buildHelpers.js';
 
 /**
  * @typedef {Object} LibraryBuildOption
@@ -92,15 +100,85 @@ const { libraryBuildOptions, libraryPaths } = hashLibraries();
 console.log('Building ol dump file');
 await generateOLLib();
 
+/** Cleaning/recreating Dist Folder */
+if (await fs.existsSync(path.join(process.cwd(), 'dist'))) {
+  await fs.promises.rm(path.join(process.cwd(), 'dist'), { recursive: true });
+}
+const assetsFolder = path.join(process.cwd(), 'dist', 'assets');
+await fs.promises.mkdir(assetsFolder, { recursive: true });
+
+/**
+ * Prepare and Copy Public folder to dist Folder. This Process will also hash the static files using a MD5 File hash.
+ * The renamed fileNames will be saved in the hashedPublicFiles Map. This can be used later to rewrite references
+ * to the public assets to the correct new fileName.
+ */
+
+const publicFolder = path.join(process.cwd(), 'public');
+const publicAssetsFolder = path.join(process.cwd(), 'public', 'assets');
+const fileTypesToHash = ['.png', '.css', '.svg', '.woff2'];
+/**
+ * we exclude the materialDesignIcons font because we do not want to also rewrite the materialDesignIcons.css file.
+ * The .woff2 is loaded with the materialDesignIcons Version number as a query parameter. So this also makes sure,
+ * that the browser can cache the file.
+ */
+const filesToExclude = [
+  path.join(
+    'assets',
+    '@mdi',
+    'font',
+    'fonts',
+    'materialdesignicons-webfont.woff2',
+  ),
+];
+const hashedPublicFiles = new Map();
+const filesToCopy = new Map();
+// eslint-disable-next-line no-restricted-syntax
+for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
+  const fileType = path.extname(filePath);
+  const relativePath = path.relative(publicFolder, filePath);
+  const relativePathInDist = path.relative(publicAssetsFolder, filePath);
+  if (
+    fileTypesToHash.includes(fileType) &&
+    !filesToExclude.includes(relativePath)
+  ) {
+    const fileHash = await getFileMd5(filePath);
+    const hashedFileUrl = path.posix.join(
+      ...path.dirname(relativePathInDist).split(path.sep),
+      `${path.basename(filePath, fileType)}.${fileHash.slice(0, 6)}${fileType}`,
+    );
+    hashedPublicFiles.set(
+      path.posix.join(...relativePath.split(path.sep)),
+      hashedFileUrl,
+    );
+    const newFilePath = path.join(
+      assetsFolder,
+      path.dirname(relativePathInDist),
+      `${path.basename(relativePath, fileType)}.${fileHash.slice(
+        0,
+        6,
+      )}${fileType}`,
+    );
+    filesToCopy.set(filePath, newFilePath);
+  } else {
+    const newFilePath = path.join(assetsFolder, relativePathInDist);
+    filesToCopy.set(filePath, newFilePath);
+  }
+}
+// eslint-disable-next-line no-restricted-syntax
+for await (const [originalFilePath, newFilePath] of filesToCopy) {
+  await fs.promises.cp(originalFilePath, newFilePath);
+}
+
 console.log('Building app');
-await build({
+const buildoutput = await build({
   configFile: './build/commonViteConfig.js',
   base: './',
   define: {
     'process.env.NODE_ENV': '"production"',
   },
   build: {
-    minify: true,
+    write: false,
+    modulePreload: false,
     emptyOutDir: true,
     rollupOptions: {
       external: Object.keys(libraries),
@@ -111,6 +189,39 @@ await build({
   },
 });
 
+/**
+ * Building the Main entrypoint (index.html + index.js)
+ * This will ensure that all references to public assets will be rewritten to the hashed filename
+ */
+await Promise.all(
+  buildoutput.output?.map((output) => {
+    if (output.type === 'asset') {
+      const { source, fileName } = output;
+      return writeRewrittenFile(
+        path.join(process.cwd(), 'dist', fileName),
+        source,
+        hashedPublicFiles,
+        'assets',
+      );
+    }
+    if (output.type === 'chunk') {
+      const { code, fileName } = output;
+      return writeRewrittenFile(
+        path.join(process.cwd(), 'dist', fileName),
+        code,
+        hashedPublicFiles,
+        'assets',
+      );
+    }
+    return undefined;
+  }),
+);
+
+/**
+ * Building the Libraries, (vue, vuetify, openlayers, cesium, core, and ui). This will build one hashed library.hash.js
+ * file and a second one library.js which will reexport all ES6 Modules. All references to these librarys will be
+ * set as externals while building these libraries or later the plugins.
+ */
 console.log('Building Libraries');
 await Promise.all(
   Object.entries(libraryBuildOptions).map(async ([key, value]) => {
@@ -124,9 +235,6 @@ await Promise.all(
     };
     const libraryConfig = {
       configFile: './build/commonViteConfig.js',
-      esbuild: {
-        minify: true,
-      },
       define: {
         'process.env.NODE_ENV': '"production"',
       },
@@ -136,7 +244,7 @@ await Promise.all(
         lib: {
           entry: path.resolve(process.cwd(), value.entry),
           formats: ['es'],
-          fileName: `assets/${value.lib}.${value.hash}`,
+          fileName: `${value.lib}.${value.hash}`,
         },
         rollupOptions: {
           ...value.rollupOptions,
@@ -145,7 +253,14 @@ await Promise.all(
         },
       },
     };
-    await buildLibrary(libraryConfig, 'assets', value.lib, value.hash);
+    await buildLibrary(
+      libraryConfig,
+      'assets',
+      value.lib,
+      value.hash,
+      false,
+      hashedPublicFiles,
+    );
     console.log('Building Library Entry: ', key);
 
     const libraryEntryConfig = {
@@ -155,6 +270,7 @@ await Promise.all(
       },
       build: {
         emptyOutDir: false,
+        copyPublicDir: false,
         lib: {
           entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
           formats: ['es'],
@@ -174,12 +290,8 @@ await Promise.all(
     await build(libraryEntryConfig);
   }),
 );
-
-await fs.promises.cp(
-  path.join('src', 'assets', 'font'),
-  path.join('dist', 'assets', 'font'),
-  { recursive: true },
-);
-
+/**
+ * Copy Cesium Static Assets to the dist/assets folder
+ */
 await buildCesium();
 console.log('Finished Building vcMap');

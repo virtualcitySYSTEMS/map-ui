@@ -6,28 +6,32 @@
     <link
       rel="icon"
       type="image/png"
-      href="src/assets/favicon-32.png"
+      href="./assets/favicon-32.png"
       sizes="32x32"
     />
     <link
       rel="icon"
       type="image/png"
-      href="src/assets/favicon-128.png"
+      href="./assets/favicon-128.png"
       sizes="128x128"
     />
     <link
       rel="icon"
       type="image/png"
-      href="src/assets/favicon-180.png"
+      href="./assets/favicon-180.png"
       sizes="180x180"
     />
     <link
       rel="icon"
       type="image/png"
-      href="src/assets/favicon-192.png"
+      href="./assets/favicon-192.png"
       sizes="192x192"
     />
-    <link rel="icon" type="image/svg+xml" href="src/assets/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="./assets/@mdi/font/css/materialdesignicons.min.css"
+    />
   </head>
   <body style="height: 100vh">
     <noscript>
@@ -97,6 +101,10 @@
         }
       }
     </style>
-    <script type="module" src="./start.js"></script>
+    <script type="module">
+      import { initAppFromAppConfig } from '@vcmap/ui';
+
+      initAppFromAppConfig('#app', 'app.config.json');
+    </script>
   </body>
 </html>

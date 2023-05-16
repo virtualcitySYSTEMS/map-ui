@@ -7,6 +7,14 @@
 @import './vcsFont';
 @import './vcsGrid';
 
+/* latin-ext */
+@font-face {
+  font-family: 'Titillium Web';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/font/TitilliumWeb-Regular.woff2) format('woff2');
+}
+
 html.vcs-ui {
   overflow-x: hidden !important;
   overflow-y: hidden !important;

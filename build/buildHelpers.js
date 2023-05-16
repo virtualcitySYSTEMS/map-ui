@@ -3,6 +3,7 @@
 import { build } from 'vite'; // vite is also a plugin-cli dep
 import fs from 'fs';
 import path from 'path';
+import { createHash } from 'crypto';
 import { fileURLToPath } from 'url';
 
 /**
@@ -15,6 +16,28 @@ export function getProjectPath(...pathSegments) {
     '..',
     ...pathSegments,
   );
+}
+
+export async function getFileMd5(filePath) {
+  const hash = createHash('md5');
+  const stream = fs.createReadStream(filePath);
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const chunk of stream) {
+    hash.update(chunk);
+  }
+  return hash.digest('hex');
+}
+
+export async function* getFilesInDirectory(filePath) {
+  const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of entries) {
+    if (file.isDirectory()) {
+      yield* getFilesInDirectory(path.join(filePath, file.name));
+    } else if (file.isFile()) {
+      yield path.join(filePath, file.name);
+    }
+  }
 }
 
 /**
@@ -91,6 +114,32 @@ export async function getInlinePlugins() {
 }
 
 /**
+ * Writes content in the file and replaces references to public assets with the hashed url.
+ * @param {string} filePath
+ * @param {string} content
+ * @param {Map<string, string>?} rewrittenPublicAssets
+ * @param {string?} assetsPrefix prefixes the hashed asset url with this string
+ * @returns {Promise<void>}
+ */
+export async function writeRewrittenFile(
+  filePath,
+  content,
+  rewrittenPublicAssets,
+  assetsPrefix,
+) {
+  let fileContent = content;
+  if (rewrittenPublicAssets) {
+    rewrittenPublicAssets.forEach((hashed, ori) => {
+      const rewrittenUrl = assetsPrefix
+        ? path.posix.join(assetsPrefix, hashed)
+        : hashed;
+      fileContent = fileContent.replaceAll(ori, rewrittenUrl);
+    });
+  }
+  return fs.promises.writeFile(filePath, fileContent);
+}
+
+/**
  * builds the given configuration and writes the library to the provided outputFolder. If the build contains css a .css
  * file will also be written and injected into the .js file.
  * @param {Object} libraryConfig Vitejs InlineConfig
@@ -98,6 +147,7 @@ export async function getInlinePlugins() {
  * @param {string} library
  * @param {string} [hash]
  * @param {boolean} [base64Css = false] inline css. must be true for plugins
+ * @param {undefined|Map} [rewrittenPublicAssets=undefined] rewrittenPublicAssets Map of original filename to Hashed Filename in public folder
  * @returns {Promise<void>}
  */
 export async function buildLibrary(
@@ -106,6 +156,7 @@ export async function buildLibrary(
   library,
   hash = '',
   base64Css = false,
+  rewrittenPublicAssets = undefined,
 ) {
   // Base64 contains the characters '+', '/', and '=', which have a reserved meaning in URLs.
   // Base64url solves this by replacing '+' with '-' and '/' with '_'.
@@ -136,7 +187,7 @@ function loadCss(href) {
           'base64url',
         )}`;
       } else {
-        await fs.promises.writeFile(
+        await writeRewrittenFile(
           path.join(
             process.cwd(),
             'dist',
@@ -144,14 +195,19 @@ function loadCss(href) {
             `${library}${addedHash}.css`,
           ),
           output[1].source,
+          rewrittenPublicAssets,
         );
-        css = `./${outputFolder}/${library}${addedHash}.css`;
+        if (outputFolder) {
+          css = `./${outputFolder}/${library}${addedHash}.css`;
+        } else {
+          css = `./${library}${addedHash}.css`;
+        }
       }
     }
     if (output[0] && output[0].type === 'chunk') {
       let code = css ? `${cssInjectorCode} await loadCss('${css}');` : '';
       code += output[0].code;
-      await fs.promises.writeFile(
+      await writeRewrittenFile(
         path.join(
           process.cwd(),
           'dist',
@@ -159,6 +215,7 @@ function loadCss(href) {
           `${library}${addedHash}.js`,
         ),
         code,
+        rewrittenPublicAssets,
       );
     }
   };
