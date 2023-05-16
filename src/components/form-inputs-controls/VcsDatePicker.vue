@@ -42,6 +42,12 @@
     .v-input__control {
       padding: 0 4px;
     }
+    .v-input__prepend-outer {
+      margin-right: 4px;
+    }
+    .v-icon {
+      font-size: 16px;
+    }
   }
 </style>
 <script>

@@ -127,6 +127,12 @@
       .v-text-field__suffix {
         padding-left: 4px;
       }
+      .v-input__prepend-outer {
+        margin-right: 4px;
+      }
+      .v-icon {
+        font-size: 16px;
+      }
       fieldset {
         border-radius: 2px;
         border-color: var(--v-base-base);
