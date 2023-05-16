@@ -172,5 +172,7 @@ publish:
     - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
     - VERSION=$(node -pe "require('./package.json').version")
     - npm pack
+    - npm run bundle
     - tar -tf vcmap-ui-*.tgz | sed s/package/./ | zip -@ vcmap-ui.zip
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file vcmap-ui.zip "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-ui-${VERSION}.zip"'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/vcmap-bundle.tar.gz "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-bundle-${VERSION}.tar.gz"'

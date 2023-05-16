@@ -11,6 +11,7 @@
     "build-preview": "node build/buildPreview.js",
     "preview": "vite preview",
     "build": "node build/build.js",
+    "bundle": "node build/bundle.js",
     "lint:js": "eslint . --ext .vue,.js,.cjs,.mjs,.ts,.cts,.mts",
     "lint:prettier": "prettier --check .",
     "lint": "npm run lint:js && npm run lint:prettier",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@vcmap/rollup-plugin-vcs-ol": "^1.0.2",
     "@vcsuite/eslint-config": "^3.0.3",
+    "@vitejs/plugin-vue2": "^2.2.0",
     "@vitest/coverage-c8": "^0.31.0",
     "@vue/test-utils": "^1.3.5",
     "eslint": "^8.9.0",
@@ -65,9 +67,9 @@
     "resize-observer-polyfill": "1.5.1",
     "rollup-plugin-strip-pragma": "^1.0.0",
     "sass": "1.32.13",
+    "tar": "^6.1.14",
     "typescript": "^4.2.4",
     "vite": "^4.3.5",
-    "@vitejs/plugin-vue2": "^2.2.0",
     "vitest": "^0.31.0"
   },
   "stylelint": {

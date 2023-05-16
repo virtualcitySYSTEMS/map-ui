@@ -195,6 +195,101 @@ export const libraries = {
   'vuetify/lib': 'vuetify',
 };
 
+const toCopy = [
+  'plugin-assets',
+  'package.json',
+  'config.json',
+  'LICENSE.md',
+  'CHANGELOG.md',
+  'README.md',
+];
+
+async function buildInlinePlugin(plugin, baseConfig, minify) {
+  // the relative path between plugins and libraries, is not known beforehand, so we calculate the distance.
+  // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
+  const relativePluginPaths = {};
+  Object.entries(libraries).forEach(([key, value]) => {
+    const libraryPath = path.join('dist', 'assets', `${value}.js`);
+    const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
+    const relativePath = path.relative(pluginPath, libraryPath);
+    relativePluginPaths[key] = relativePath
+      .split(path.sep)
+      .join(path.posix.sep);
+  });
+
+  const pluginDir = getProjectPath('plugins', plugin);
+  const pluginConfig = {
+    ...baseConfig,
+    esbuild: {
+      minify,
+    },
+    build: {
+      write: false,
+      emptyOutDir: false,
+      outDir: `dist/plugins/${plugin}/`,
+      lib: {
+        entry: path.join(pluginDir, 'index.js'),
+        formats: ['es'],
+        fileName: 'index',
+      },
+      rollupOptions: {
+        external: Object.keys(libraries),
+        output: {
+          paths: relativePluginPaths,
+        },
+      },
+    },
+  };
+  const distPath = path.join(process.cwd(), 'dist', 'plugins', plugin);
+  if (!fs.existsSync(distPath)) {
+    await fs.promises.mkdir(distPath, { recursive: true });
+  }
+  await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
+  await Promise.all(
+    toCopy.map(async (entry) => {
+      if (fs.existsSync(path.join(pluginDir, entry))) {
+        await fs.promises.cp(
+          path.join(pluginDir, entry),
+          path.join(distPath, entry),
+          { recursive: true, force: true },
+        );
+      }
+    }),
+  );
+}
+
+async function buildDependentPlugin(pluginName) {
+  const pluginsDirectory = getPluginDirectory();
+  let scope = '';
+  let name = pluginName;
+  if (pluginName.startsWith('@')) {
+    [scope, name] = pluginName.split('/');
+  }
+
+  await fs.promises.cp(
+    path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
+    path.join(process.cwd(), 'dist', 'plugins', scope, name),
+    { recursive: true, force: true },
+  );
+
+  // must be copied one after the other to avoid race conditions
+  await Promise.all(
+    toCopy.map(async (entry) => {
+      if (
+        fs.existsSync(
+          path.join(pluginsDirectory, 'node_modules', scope, name, entry),
+        )
+      ) {
+        await fs.promises.cp(
+          path.join(pluginsDirectory, 'node_modules', scope, name, entry),
+          path.join(process.cwd(), 'dist', 'plugins', scope, name, entry),
+          { recursive: true, force: true },
+        );
+      }
+    }),
+  );
+}
+
 /**
  * Will build a preview of all the current plugins & inline plugins
  * @param {import("vite").InlineConfig} [baseConfig={}] - the base config to use. build & esbuild will be completely overwritten
@@ -202,98 +297,32 @@ export const libraries = {
  * @returns {Promise<void>}
  */
 export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
-  const pluginsDirectory = getPluginDirectory();
   const inlinePlugins = await getInlinePlugins();
   const dependentPlugins = await getPluginNames();
 
-  const promises = inlinePlugins.map(async (plugin) => {
-    // the relative path between plugins and libraries, is not known beforehand, so we calculate the distance.
-    // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
-    const relativePluginPaths = {};
-    Object.entries(libraries).forEach(([key, value]) => {
-      const libraryPath = path.join('dist', 'assets', `${value}.js`);
-      const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
-      const relativePath = path.relative(pluginPath, libraryPath);
-      relativePluginPaths[key] = relativePath
-        .split(path.sep)
-        .join(path.posix.sep);
-    });
-
-    const pluginConfig = {
-      ...baseConfig,
-      esbuild: {
-        minify,
-      },
-      build: {
-        write: false,
-        emptyOutDir: false,
-        outDir: `dist/plugins/${plugin}/`,
-        lib: {
-          entry: getProjectPath('plugins', plugin, 'index.js'),
-          formats: ['es'],
-          fileName: 'index',
-        },
-        rollupOptions: {
-          external: Object.keys(libraries),
-          output: {
-            paths: relativePluginPaths,
-          },
-        },
-      },
-    };
-    const distPath = path.join(process.cwd(), 'dist', 'plugins', plugin);
-    if (!fs.existsSync(distPath)) {
-      await fs.promises.mkdir(distPath, { recursive: true });
-    }
-    await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
-  });
+  const promises = inlinePlugins.map((plugin) =>
+    buildInlinePlugin(plugin, baseConfig, minify),
+  );
 
   promises.push(
-    ...dependentPlugins.map(async (pluginName) => {
-      let scope = '';
-      let name = pluginName;
-      if (pluginName.startsWith('@')) {
-        [scope, name] = pluginName.split('/');
-      }
+    ...dependentPlugins.map(async (pluginName) =>
+      buildDependentPlugin(pluginName, baseConfig, minify),
+    ),
+  );
+  await Promise.all(promises);
+}
 
-      await fs.promises.cp(
-        path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
-        path.join(process.cwd(), 'dist', 'plugins', scope, name),
-        { recursive: true, force: true },
-      );
+export async function buildPluginsForBundle(baseConfig = {}) {
+  const inlinePlugins = await getInlinePlugins();
+  const dependentPlugins = await getPluginNames();
+  const promises = inlinePlugins
+    .filter((plugin) => plugin.startsWith('@vcmap/'))
+    .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));
 
-      // must be copied one after the other to avoid race conditions
-      if (
-        fs.existsSync(
-          path.join(
-            pluginsDirectory,
-            'node_modules',
-            scope,
-            name,
-            'plugin-assets',
-          ),
-        )
-      ) {
-        await fs.promises.cp(
-          path.join(
-            pluginsDirectory,
-            'node_modules',
-            scope,
-            name,
-            'plugin-assets',
-          ),
-          path.join(
-            process.cwd(),
-            'dist',
-            'plugins',
-            scope,
-            name,
-            'plugin-assets',
-          ),
-          { recursive: true, force: true },
-        );
-      }
-    }),
+  promises.push(
+    ...dependentPlugins.map(async (pluginName) =>
+      buildDependentPlugin(pluginName),
+    ),
   );
   await Promise.all(promises);
 }

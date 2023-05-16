@@ -85,6 +85,11 @@ export async function loadPlugin(name, config) {
     // early escape to bypass module loading for testing, see VcsUiApp.spec.js
     return null;
   }
+  if (config.version) {
+    const moduleUrl = new URL(module, window.location.href);
+    moduleUrl.searchParams.set('version', config.version);
+    module = moduleUrl.toString();
+  }
 
   // if (!context.security.isTrustedUrl(module)) { XXX missing pipeline security
   //   getLogger().warning(`suppressed loading of insecure plugin ${module}`);
