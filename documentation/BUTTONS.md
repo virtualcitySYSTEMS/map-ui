@@ -37,6 +37,7 @@ To add a button, provide `ButtonComponentOptions` consisting of an optional id a
  * @typedef ButtonComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {VcsAction} action Action performed by button.
+ * @property {number} [weight=0] Optional weight affecting the displaying order
  */
 
 const buttonManager = app.toolboxManager.get('miscellaneous').buttonManager; // Toolbox groups use the buttonManager to manage their buttons. It could be used in other contexts, too.

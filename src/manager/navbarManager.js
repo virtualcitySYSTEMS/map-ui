@@ -1,5 +1,5 @@
 import { check } from '@vcsuite/check';
-import ButtonManager from './buttonManager.js';
+import ButtonManager, { sortByWeight } from './buttonManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
 export const locationSymbol = Symbol('location');
@@ -35,18 +35,19 @@ export function sortByOwner(ownerA, ownerB, order = []) {
  * @param {Array<ButtonComponent>} buttonComponents
  * @param {ButtonLocation} location Button render position
  * @param {string[]} [order] optional order to sort by (plugin names)
- * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
+ * @param {function(buttonA:ButtonComponent, buttonB:ButtonComponent):number} [compareFn=sortByOwner] Per default components are sorted by weight (highest first) and owner (app first, then plugins)
  * @returns {Array<VcsAction>}
  */
 export function getActionsByLocation(
   buttonComponents,
   location,
   order = [],
-  compareFn = sortByOwner,
+  compareFn = (a, b) =>
+    sortByWeight(a.weight, b.weight) || sortByOwner(a.owner, b.owner, order),
 ) {
   return [...buttonComponents]
     .filter((b) => b[locationSymbol] === location)
-    .sort((a, b) => compareFn(a.owner, b.owner, order))
+    .sort(compareFn)
     .map((b) => b.action);
 }
 

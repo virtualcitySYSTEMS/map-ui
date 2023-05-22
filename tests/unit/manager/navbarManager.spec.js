@@ -159,6 +159,46 @@ describe('NavbarManager', () => {
       expect(actions.length).to.be.equal(4);
       expect(actions[0]).to.have.property('name', 'testApp');
     });
+
+    it('should get actions sorted by weight and owner', () => {
+      navbarManager.add(
+        { action: { name: 'plugin1', callback() {} } },
+        'plugin1',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        { action: { name: 'plugin2', callback() {} }, weight: 1 },
+        'plugin2',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        { action: { name: 'plugin3', callback() {} }, weight: -1 },
+        'plugin3',
+        ButtonLocation.CONTENT,
+      );
+      navbarManager.add(
+        {
+          ...buttonComponentOptions,
+          action: { name: 'testApp', callback() {} },
+        },
+        vcsAppSymbol,
+        ButtonLocation.CONTENT,
+      );
+      const buttonComponents = navbarManager.componentIds.map((id) =>
+        navbarManager.get(id),
+      );
+      const actions = getActionsByLocation(
+        buttonComponents,
+        ButtonLocation.CONTENT,
+      );
+      expect(actions.length).to.be.equal(4);
+      expect(actions.map((a) => a.name)).to.have.ordered.members([
+        'plugin2',
+        'testApp',
+        'plugin1',
+        'plugin3',
+      ]);
+    });
   });
 
   describe('toggling buttons from the Manager', () => {

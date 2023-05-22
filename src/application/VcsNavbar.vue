@@ -28,7 +28,7 @@
               />
               <VcsActionButtonList
                 :actions="contentActions"
-                :overflow-count="$vuetify.breakpoint.xs ? 2 : 3"
+                :overflow-count="$vuetify.breakpoint.xs ? 3 : 4"
                 large
               />
               <v-divider

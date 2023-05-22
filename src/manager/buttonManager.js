@@ -6,9 +6,19 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 import { ActionPattern } from '../components/lists/VcsActionList.vue';
 
 /**
+ * @param {number} weightA
+ * @param {number} weightB
+ * @returns {number}
+ */
+export function sortByWeight(weightA, weightB) {
+  return weightB - weightA;
+}
+
+/**
  * @typedef ButtonComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {VcsAction} action Action performed by button.
+ * @property {number} [weight=0] Optional weight affecting the displaying order
  */
 
 /**
@@ -16,6 +26,7 @@ import { ActionPattern } from '../components/lists/VcsActionList.vue';
  * @property {string} id
  * @property {string|vcsAppSymbol} owner
  * @property {VcsAction} action
+ * @property {number} weight
  */
 
 /**
@@ -86,6 +97,7 @@ class ButtonManager {
    */
   add(buttonComponentOptions, owner) {
     checkMaybe(buttonComponentOptions.id, String);
+    checkMaybe(buttonComponentOptions.weight, Number);
     check(buttonComponentOptions.action, ActionPattern);
     check(owner, [String, vcsAppSymbol]);
 
@@ -108,6 +120,9 @@ class ButtonManager {
       },
       get action() {
         return reactive(buttonComponentOptions.action);
+      },
+      get weight() {
+        return buttonComponentOptions.weight || 0;
       },
     };
 

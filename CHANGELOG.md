@@ -9,6 +9,7 @@
 - Add olcs attribute key filtering to `AbstractFeatureInfoView` getAttributes
 - Hide ui elements depending on configuration (navigation, overview map, feature info)
 - Add `vue-i18n` instance to app to offer translate methods outside vue components.
+- Add optional `weight` property to buttonComponents affecting the displaying order
 
 # 5.0.0-rc.24
 

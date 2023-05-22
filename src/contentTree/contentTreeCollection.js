@@ -141,7 +141,7 @@ class ContentTreeCollection extends IndexedCollection {
     );
 
     this._app.navbarManager.add(
-      { id, action },
+      { id, action, weight: 100 },
       vcsAppSymbol,
       ButtonLocation.CONTENT,
     );

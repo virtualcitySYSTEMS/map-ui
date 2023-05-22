@@ -240,7 +240,7 @@
             action: legendAction,
           },
           vcsAppSymbol,
-          ButtonLocation.TOOL,
+          ButtonLocation.CONTENT,
         );
       }
     };
