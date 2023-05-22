@@ -152,23 +152,49 @@ function setupFeatureInfoTool(app) {
     },
   };
 
-  if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
-    action.callback();
+  function addFeatureInfoButton() {
+    if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
+      action.callback();
+    }
+    app.toolboxManager.add(
+      {
+        id: 'featureInfo',
+        type: ToolboxType.SINGLE,
+        action,
+      },
+      vcsAppSymbol,
+    );
   }
-  app.toolboxManager.add(
-    {
-      id: 'featureInfo',
-      type: ToolboxType.SINGLE,
-      action,
-    },
-    vcsAppSymbol,
-  );
+
+  if ([...app.layers].some((l) => l.properties?.featureInfo)) {
+    addFeatureInfoButton();
+  }
+
+  const listeners = [
+    app.layers.added.addEventListener((layer) => {
+      if (
+        layer?.properties?.featureInfo &&
+        !app.toolboxManager.has('featureInfo')
+      ) {
+        addFeatureInfoButton();
+      }
+    }),
+    app.layers.removed.addEventListener(() => {
+      if (
+        ![...app.layers].some((l) => l.properties?.featureInfo) &&
+        app.toolboxManager.has('featureInfo')
+      ) {
+        app.toolboxManager.remove('featureInfo');
+      }
+    }),
+  ];
 
   return () => {
     if (session) {
       session.stop();
     }
     app.toolboxManager.remove('featureInfo');
+    listeners.forEach((cb) => cb());
   };
 }
 

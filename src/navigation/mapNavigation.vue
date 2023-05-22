@@ -25,6 +25,7 @@
       </v-row>
       <v-row justify="center">
         <OrientationToolsButton
+          v-if="showOverviewButton"
           :icon="overviewAction.icon"
           :tooltip="overviewAction.title"
           :color="overviewAction.active ? 'primary' : undefined"
@@ -43,7 +44,10 @@
     createGoToViewpointAction,
     createOverviewMapAction,
   } from '../actions/actionHelper.js';
-  import { getWindowComponentOptions } from './overviewMap.js';
+  import {
+    getWindowComponentOptions,
+    overviewMapLayerSymbol,
+  } from './overviewMap.js';
   import VcsCompass from './vcsCompass.vue';
   import VcsZoomButton from './vcsZoomButton.vue';
   import TiltSlider from './tiltSlider.vue';
@@ -205,19 +209,40 @@
         },
       });
 
-      const { action, destroy } = createOverviewMapAction(
-        app.overviewMap,
-        getWindowComponentOptions(),
-        app.windowManager,
+      const { action: overviewAction, destroy: overviewDestroy } =
+        createOverviewMapAction(
+          app.overviewMap,
+          getWindowComponentOptions(),
+          app.windowManager,
+        );
+      const showOverviewButton = ref(
+        app.overviewMap.map.layerCollection.size > 0,
       );
+      const overviewMapListeners = [
+        app.overviewMap.map.layerCollection.added.addEventListener(() => {
+          showOverviewButton.value = true;
+        }),
+        app.overviewMap.map.layerCollection.removed.addEventListener(() => {
+          if (
+            [...app.overviewMap.map.layerCollection].filter(
+              (l) => !l[overviewMapLayerSymbol],
+            ).length < 1 &&
+            app.overviewMap.active
+          ) {
+            app.overviewMap.deactivate();
+            showOverviewButton.value = false;
+          }
+        }),
+      ];
 
       const { action: homeAction, destroy: homeDestroy } = setupHomeButton(app);
 
       onUnmounted(() => {
-        if (destroy) {
-          destroy();
+        if (overviewDestroy) {
+          overviewDestroy();
         }
         postRenderHandler();
+        overviewMapListeners.forEach((cb) => cb());
         homeDestroy();
       });
 
@@ -237,7 +262,8 @@
         zoomOut() {
           zoom(app.maps.activeMap, true);
         },
-        overviewAction: reactive(action),
+        overviewAction: reactive(overviewAction),
+        showOverviewButton,
         homeAction,
       };
     },

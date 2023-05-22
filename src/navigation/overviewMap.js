@@ -27,6 +27,8 @@ import {
 import { vcsAppSymbol } from '../pluginHelper.js';
 import VcsMap from '../application/VcsMap.vue';
 
+export const overviewMapLayerSymbol = Symbol('overviewMapLayerSymbol');
+
 /**
  * @returns {WindowComponentOptions}
  */
@@ -331,7 +333,7 @@ class OverviewMap {
     const { activeMap } = this._app.maps;
     if (activeMap instanceof ObliqueMap) {
       await this._initializeForOblique(activeMap);
-    } else {
+    } else if (activeMap) {
       await this._initializePostRenderHandler(activeMap);
     }
   }
@@ -496,6 +498,7 @@ class OverviewMap {
       style: obliqueTileStyle,
       zIndex: 1,
     });
+    this._obliqueTileLayer[overviewMapLayerSymbol] = true;
 
     const obliqueImageStyle = new VectorStyleItem({});
     obliqueImageStyle.style = (feature) => {
@@ -509,10 +512,12 @@ class OverviewMap {
       projection: mercatorProjection.toJSON(),
       style: obliqueImageStyle,
     });
+    this._obliqueImageLayer[overviewMapLayerSymbol] = true;
     this._obliqueSelectedImageLayer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
       style: this.obliqueSelectedStyle,
     });
+    this._obliqueSelectedImageLayer[overviewMapLayerSymbol] = true;
     this._map.layerCollection.add(this._obliqueImageLayer);
     this._map.layerCollection.add(this._obliqueSelectedImageLayer);
     this._map.layerCollection.add(this._obliqueTileLayer);
@@ -540,6 +545,7 @@ class OverviewMap {
         projection: mercatorProjection.toJSON(),
         zIndex: 50,
       });
+      this._cameraIconLayer[overviewMapLayerSymbol] = true;
       this._map.layerCollection.add(this._cameraIconLayer);
     }
   }

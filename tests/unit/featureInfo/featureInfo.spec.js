@@ -888,6 +888,11 @@ describe('FeatureInfo', () => {
 
       beforeEach(() => {
         app = new VcsUiApp();
+        const layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
         ({ action } = app.toolboxManager.get('featureInfo'));
       });
 
@@ -920,6 +925,11 @@ describe('FeatureInfo', () => {
 
       beforeAll(() => {
         app = new VcsUiApp();
+        const layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+        app.layers.add(layer);
         ({ action } = app.toolboxManager.get('featureInfo'));
       });
 
@@ -948,7 +958,6 @@ describe('FeatureInfo', () => {
         app = new VcsUiApp();
         app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
-        ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),
         });
@@ -957,6 +966,7 @@ describe('FeatureInfo', () => {
         const feature = new Feature({});
         layer.addFeatures([feature]);
         await app.featureInfo.selectFeature(feature);
+        ({ action } = app.toolboxManager.get('featureInfo'));
         action.callback();
       });
 
@@ -989,7 +999,6 @@ describe('FeatureInfo', () => {
         app = new VcsUiApp();
         app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
-        ({ action } = app.toolboxManager.get('featureInfo'));
         const layer = new VectorLayer({
           projection: mercatorProjection.toJSON(),
         });
@@ -998,6 +1007,7 @@ describe('FeatureInfo', () => {
         const feature = new Feature({});
         layer.addFeatures([feature]);
         await app.featureInfo.selectFeature(feature);
+        ({ action } = app.toolboxManager.get('featureInfo'));
         app.maps.eventHandler.removeExclusive();
       });
 

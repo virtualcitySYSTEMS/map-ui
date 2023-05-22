@@ -93,6 +93,28 @@ if (destroy) {
 }
 ```
 
+## Disabling Actions
+
+Actions can have a disabled flag. If your action is only executable for a specific condition, you need to maintain its compatibility.
+For example, if a tool can only be used in 3D, make use of the `mapActivated` event:
+
+```js
+const { action, destroy } = createToggleAction();
+
+const mapChangedListener = app.maps.mapActivated.addEventListener((map) => {
+  if (!(map instanceof CesiumMap)) {
+    if (app.windowManager.has(windowComponent.id)) {
+      app.windowManager.remove(windowComponent.id);
+    }
+    action.disabled = true;
+  } else {
+    action.disabled = false;
+  }
+});
+```
+
+> For toggle actions it is best practice to remove windows of currently not compatible tools.
+
 ## Usage within VC Map UI
 
 The following image illustrates where different actions are used on the VC Map user interface:

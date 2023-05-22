@@ -123,3 +123,6 @@ app.navbarManager.add(
 ```
 
 All other methods behave similar to the ButtonManager.
+
+> As a plugin developer you need to make sure, that buttons in the navbar are disabled, if not compatible.
+> See [Disabling Actions](./ACTIONS.md#disabling-actions) for more information.

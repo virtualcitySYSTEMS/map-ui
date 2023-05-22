@@ -146,7 +146,7 @@
       };
 
       function handleToolboxButton() {
-        if (groups.value.length > 0) {
+        if (orderedGroups.value.length > 0) {
           if (!app.navbarManager.has('toolbox')) {
             app.navbarManager.add(
               {

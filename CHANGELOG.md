@@ -7,6 +7,7 @@
 - Updated ViteJS to version 4.3
 - Change featureInfo to be an override collection and both featureInfo and featureInfoClassRegistry to be an VcsUiApp property
 - Add olcs attribute key filtering to `AbstractFeatureInfoView` getAttributes
+- Hide ui elements depending on configuration (navigation, overview map, feature info)
 
 # 5.0.0-rc.24
 

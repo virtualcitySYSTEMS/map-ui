@@ -28,7 +28,7 @@
         class="z-index-1 mobile-attribution-btn"
       />
       <VcsMap :map-id="mapId" />
-      <MapNavigation />
+      <MapNavigation v-if="showMapNavigation" />
       <ToolboxManagerComponent />
       <WindowManagerComponent />
       <NotifierComponent />
@@ -83,6 +83,7 @@
     onMounted,
     onUnmounted,
     provide,
+    ref,
     watch,
   } from 'vue';
   import { getVcsAppById } from '@vcmap/core';
@@ -452,6 +453,28 @@
     };
   }
 
+  export function setupMapNavigation(app) {
+    const showMapNavigation = ref(false);
+
+    const listeners = [
+      app.maps.added.addEventListener(() => {
+        showMapNavigation.value = true;
+      }),
+      app.maps.removed.addEventListener(() => {
+        if (app.maps.size < 1) {
+          showMapNavigation.value = false;
+        }
+      }),
+    ];
+
+    return {
+      showMapNavigation,
+      destroy: () => {
+        listeners.forEach((cb) => cb());
+      },
+    };
+  }
+
   /**
    * The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
@@ -493,6 +516,8 @@
       );
       const { attributionEntries, attributionAction, destroyAttributions } =
         setupAttributions(app);
+      const { showMapNavigation, destroy: destroyMapNavigationListener } =
+        setupMapNavigation(app);
 
       let pluginMountedListener;
       onMounted(() => {
@@ -511,6 +536,7 @@
         destroyComponentsWindow();
         destroyThemingListener();
         destroyAttributions();
+        destroyMapNavigationListener();
       });
 
       return {
@@ -522,6 +548,7 @@
         ),
         attributionEntries,
         attributionAction,
+        showMapNavigation,
       };
     },
   };

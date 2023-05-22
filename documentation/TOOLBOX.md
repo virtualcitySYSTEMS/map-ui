@@ -44,6 +44,10 @@ To be rendered in Toolbox components must meet certain conditions:
 - SelectToolboxComponent: must have at least two tools
 - GroupToolboxComponent: must have at least one member (button)
 
+> As a plugin developer you need to make sure, that buttons in the toolbox are disabled, if not compatible.
+> See [Disabling Actions](./ACTIONS.md#disabling-actions) for more information.
+> For ToolboxSelectItems and GroupToolboxComponents it can be done similar to actions.
+
 ## ToolboxComponents
 
 The ToolboxManager supports three different `ToolboxType`s with different behaviour:
@@ -122,6 +126,7 @@ It is proposed `callback` activates or deactivates the tool, e.g. by starting or
  * @property {string} name
  * @property {string} [title]
  * @property {string} icon
+ * @property {boolean} [disabled=false]
  */
 ```
 
@@ -199,6 +204,7 @@ Multiple group items can be activated. The group button shows an active state, a
  * @property {string|undefined} icon
  * @property {string|undefined} title
  * @property {ButtonManager} buttonManager
+ * @property {boolean} [disabled=false]
  */
 ```
 
