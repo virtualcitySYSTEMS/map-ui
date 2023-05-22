@@ -114,10 +114,24 @@
     ::v-deep {
       fieldset {
         border-radius: 2px;
-        border-color: var(--v-base-base);
       }
       .v-select__slot {
         border-bottom: 1px solid var(--v-base-base);
+      }
+    }
+    &.v-text-field--outlined:hover {
+      ::v-deep {
+        fieldset {
+          border: 1px solid currentColor;
+        }
+      }
+    }
+    &.v-input--is-focused:hover,
+    &.v-input--is-focused {
+      ::v-deep {
+        .v-select__slot {
+          border-bottom: 1px solid var(--v-primary-base);
+        }
       }
     }
   }

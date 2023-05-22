@@ -30,7 +30,6 @@
                 :dense="dense"
                 :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 v-model="state.selected"
-                color="purple"
               />
             </v-col>
           </v-row>
