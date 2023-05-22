@@ -96,6 +96,12 @@ To make a text in a component translatable use:
 
 ## VcsApp
 
+The VueI18n instance is part of the [VcsUiApp](../src/vcsUiApp.js). To translate a text in a JavaScript file use:
+
+```js
+const translated = vcsUiApp.vueI18n.t('form.project.title');
+```
+
 The VcsApp instance has a property `locale` to access and set the current application locale. There is
 also a `localeChanged` event.
 
@@ -175,16 +181,17 @@ const stringifiedJSON = JSON.stringify(english, null, 2);
 
 This new VcsModule configuration file can now be loaded as a VcsModule in the vcMap.
 
-## Setup Vue/VueI18n/VcsApp
+## Setup Vue/VueI18n/VcsUiApp
 
-To setup a VcsApp with I18n support the VueI18n Plugin must be registered with the used Vue instance.
-There is a 1:1 relationship between a VcsApp, a VueI18n instance and a Vue instance.
+There is a 1:1 relationship between a VcsUiApp, a VueI18n instance and a Vue instance.
 
-To setup the relationship between the VcsApp and a VueI18n instance the `setupI18n` function can be used. The `setupI18n`
-function will setup listeners on the `i18n` Collection and the `localeChanged` event to synchronize the messages and currentLocale
+This relationship between the VcsUiApp and a VueI18n instance is set on VcsUiApp initialization.
+Within the constructor of VcsUiApp, the VueI18n instance is created and using the `setupI18n` function
+listeners on the `i18n` Collection and the `localeChanged` event are set up to synchronize the messages and currentLocale
 with the VueI18n instance.
+The last step is binding the VueI18n instance of the VcsUiApp to the Vue instance.
 
-Example setup to load a VcsApp, setup Vue and VueI18n
+Example setup to init a VcsApp, setup Vue and VueI18n (see [initApp](../src/init.js) and [i18n](../src/vuePlugins/i18n.js)):
 
 ```javascript
 import {
@@ -193,11 +200,9 @@ import {
   setupI18n,
   VcsUiApp,
 } from '@vcmap/ui';
-const app = new VcsUiApp();
-const i18n = createVueI18n();
-const teardownFunction = setupI18n(app, i18n);
+const app = new VcsUiApp(); // executes createI18n() and setupI18n()
 new Vue({
-  i18n,
+  i18n: app.vueI18n,
   render: (h) =>
     h(VcsAppComponentWrapper, {
       props: {

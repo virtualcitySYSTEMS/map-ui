@@ -3,7 +3,6 @@ import { check, checkMaybe, is } from '@vcsuite/check';
 import { VcsModule } from '@vcmap/core';
 import VcsAppComponentWrapper from './application/vcsAppWrapper.vue';
 import { vuetify } from './vuePlugins/vuetify.js';
-import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import VcsUiApp from './vcsUiApp.js';
 
 /**
@@ -45,10 +44,9 @@ export const VcsUiAppConfigPattern = {
 export default async function initApp(mountTarget) {
   check(mountTarget, String);
   const app = new VcsUiApp();
-  const i18n = createVueI18n();
   new Vue({
     vuetify,
-    i18n,
+    i18n: app.vueI18n,
     render: (h) =>
       h(VcsAppComponentWrapper, {
         props: {
@@ -57,7 +55,6 @@ export default async function initApp(mountTarget) {
       }),
   }).$mount(mountTarget);
 
-  setupI18n(app, i18n);
   return app;
 }
 

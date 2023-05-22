@@ -9,10 +9,10 @@ Vue.use(VueI18n);
 
 /**
  * creates a new VueI18n Instance.
- * @returns {VueI18n}
+ * @returns {import("vue-i18n").VueI18n}
  */
 export function createVueI18n() {
-  const i18n = new VueI18n({
+  return new VueI18n({
     locale: 'en',
     silentFallbackWarn: true,
     silentTranslationWarn: true,
@@ -22,44 +22,43 @@ export function createVueI18n() {
     },
     postTranslation: (val, key) => (typeof val === 'string' ? val : key),
   });
-  return i18n;
 }
 
 /**
- * sets the messages to the given I18n Instance;
- * @param {Object} messages
- * @param {VueI18n} i18n
+ * sets the messages to the app's I18n Instance;
+ * @param {VcsUiApp} app
  */
-function setI18n(messages, i18n) {
-  i18n.availableLocales.forEach((locale) => {
-    i18n.setLocaleMessage(locale, undefined);
+function setI18nMessages(app) {
+  app.vueI18n.availableLocales.forEach((locale) => {
+    app.vueI18n.setLocaleMessage(locale, undefined);
   });
-  Object.entries(messages).forEach(([locale, localeMessages]) => {
-    i18n.setLocaleMessage(locale, localeMessages);
-  });
+  Object.entries(app.i18n.getMergedMessages()).forEach(
+    ([locale, localeMessages]) => {
+      app.vueI18n.setLocaleMessage(locale, localeMessages);
+    },
+  );
 }
 
 /**
  * @param {VcsUiApp} app
- * @param {VueI18n} i18n
  * @returns {function():void} returns a destroy function
  */
-export function setupI18n(app, i18n) {
+export function setupI18n(app) {
   const defaultMessages = { name: 'default', en, de };
   defaultMessages[i18nPluginSymbol] = vcsAppSymbol;
   app.i18n.add(defaultMessages);
 
-  setI18n(app.i18n.getMergedMessages(), i18n);
-  i18n.locale = app.locale;
+  setI18nMessages(app);
+  app.vueI18n.locale = app.locale;
   const destroyFunctions = [
     app.i18n.added.addEventListener(() => {
-      setI18n(app.i18n.getMergedMessages(), i18n);
+      setI18nMessages(app);
     }),
     app.i18n.removed.addEventListener(() => {
-      setI18n(app.i18n.getMergedMessages(), i18n);
+      setI18nMessages(app);
     }),
     app.localeChanged.addEventListener((locale) => {
-      i18n.locale = locale;
+      app.vueI18n.locale = locale;
     }),
   ];
   return function tearDownI18nSetup() {

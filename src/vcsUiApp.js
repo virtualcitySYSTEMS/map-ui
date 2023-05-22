@@ -39,6 +39,7 @@ import { version } from '../package.json';
 import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
 import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
+import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig} VcsUiModuleConfig
@@ -248,6 +249,19 @@ class VcsUiApp extends VcsApp {
     this._i18n = new I18nCollection(() => this.dynamicModuleId);
 
     /**
+     *
+     * @type {import("vue-i18n").VueI18n}
+     * @private
+     */
+    this._vueI18n = createVueI18n();
+    /**
+     *
+     * @type {function(): void}
+     * @private
+     */
+    this._vueI18nDestroy = setupI18n(this);
+
+    /**
      * @type {CategoryManager}
      * @private
      */
@@ -362,6 +376,14 @@ class VcsUiApp extends VcsApp {
    */
   get i18n() {
     return this._i18n;
+  }
+
+  /**
+   * @returns {import("vue-i18n").VueI18n}
+   * @readonly
+   */
+  get vueI18n() {
+    return this._vueI18n;
   }
 
   /**
@@ -616,6 +638,7 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._contentTree);
     destroyCollection(this._i18n);
     destroyCollection(this._search);
+    this._vueI18nDestroy();
     this._contentTreeClassRegistry.destroy();
     this._featureInfoClassRegistry.destroy();
     this._featureInfo.destroy();
