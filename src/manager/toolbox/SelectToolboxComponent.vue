@@ -4,7 +4,7 @@
     :class="{ 'vcs-toolbox-action-select-button--active': open }"
     style="width: fit-content"
   >
-    <VcsButton
+    <VcsToolButton
       :key="group.action.tools[group.action.currentIndex].name"
       :tooltip="group.action.tools[group.action.currentIndex].title"
       :icon="group.action.tools[group.action.currentIndex].icon"
@@ -15,7 +15,6 @@
       class="vcs-toolbox-action-selected"
       :min-width="32"
       :width="32"
-      large
     />
     <v-menu
       v-model="open"
@@ -25,7 +24,7 @@
       z-index="0"
     >
       <template #activator="{ on, attrs }">
-        <VcsButton
+        <VcsToolButton
           :tooltip="group.action.title"
           :disabled="group.action.disabled"
           v-bind="attrs"
@@ -33,10 +32,9 @@
           class="vcs-toolbox-action-select"
           :min-width="16"
           :width="16"
-          large
         >
           <v-icon>{{ open ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </VcsButton>
+        </VcsToolButton>
       </template>
 
       <v-toolbar
@@ -47,7 +45,7 @@
       >
         <v-toolbar-items class="w-full">
           <div class="d-flex align-center justify-space-between w-full mx-1">
-            <VcsButton
+            <VcsToolButton
               v-for="(item, index) in group.action.tools"
               :key="`${item.name}-${index}`"
               :tooltip="item.title"
@@ -55,7 +53,6 @@
               :disabled="item.disabled"
               @click="group.action.selected(index)"
               v-bind="{ ...$attrs }"
-              large
             />
           </div>
         </v-toolbar-items>
@@ -98,7 +95,7 @@
 <script>
   import { ref, computed } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/lib';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
+  import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
 
   /**
    * @description
@@ -109,7 +106,7 @@
   export default {
     name: 'ToolboxActionSelect',
     components: {
-      VcsButton,
+      VcsToolButton,
       VMenu,
       VIcon,
       VToolbar,

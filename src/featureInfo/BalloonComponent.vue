@@ -17,7 +17,6 @@
         </v-list-item-content>
         <VcsButton
           @click.stop="close"
-          small
           icon="mdi-close-thick"
           tooltip="components.close"
           class="d-flex"

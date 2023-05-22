@@ -83,7 +83,7 @@
           <v-row dense no-gutters justify="center" class="align-center">
             <v-menu offset-y dense>
               <template #activator="{ on, attrs }">
-                <VcsButton small color="primary" v-bind="attrs" v-on="on">
+                <VcsButton color="primary" v-bind="attrs" v-on="on">
                   {{ itemsPerPageRef }}
                   <v-icon>mdi-chevron-down</v-icon>
                 </VcsButton>
@@ -107,7 +107,6 @@
               {{ $t('components.vcsDataTable.ofItems') }} {{ numberOfItems }}
             </span>
             <VcsButton
-              small
               icon="mdi-chevron-left"
               @click="formerPage"
               tooltip="components.vcsDataTable.formerPage"
@@ -115,7 +114,6 @@
               class="ml-1"
             />
             <VcsButton
-              small
               icon="mdi-chevron-right"
               @click="nextPage"
               tooltip="components.vcsDataTable.nextPage"
@@ -375,7 +373,7 @@
           }
         }
 
-        .v-btn.vcs-button--small {
+        .v-btn.vcs-button {
           height: 100% !important;
           display: block;
         }

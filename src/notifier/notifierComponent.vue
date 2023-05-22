@@ -16,7 +16,6 @@
       <template #action="{ attrs }">
         <VcsButton
           icon="mdi-close"
-          small
           v-bind="attrs"
           @click="notification.open = false"
         />

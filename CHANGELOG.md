@@ -10,6 +10,7 @@
 - Hide ui elements depending on configuration (navigation, overview map, feature info)
 - Add `vue-i18n` instance to app to offer translate methods outside vue components.
 - Add optional `weight` property to buttonComponents affecting the displaying order
+- Button refactoring: added new component `VcsToolButton` to be used in Navbar, simplified `VcsButton` and added documentation.
 
 # 5.0.0-rc.24
 

@@ -23,14 +23,12 @@
         <VcsActionButtonList
           :actions="windowState.headerActions"
           :overflow-count="windowState.headerActionsOverflow ?? 3"
-          small
         />
         <v-divider vertical inset class="mx-1" />
       </template>
       <VcsButton
         v-if="windowState.infoUrl"
         @click.stop="infoAction.callback()"
-        small
         :icon="infoAction.icon"
         :tooltip="infoAction.title"
         class="px-1 d-flex"
@@ -38,14 +36,12 @@
       <VcsButton
         v-if="isDockable"
         @click.stop="pin"
-        small
         icon="mdi-pin"
         tooltip="components.pin"
         class="px-1 d-flex"
       />
       <VcsButton
         @click.stop="close"
-        small
         icon="mdi-close-thick"
         tooltip="components.close"
         class="d-flex"

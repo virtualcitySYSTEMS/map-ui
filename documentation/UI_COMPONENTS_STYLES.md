@@ -17,31 +17,14 @@ The repository provides a set of generic UI components based on Vuetify:
 
 ### Buttons
 
-The ui provides two kinds of buttons:
+The ui provides three kinds of buttons:
 
 #### [VcsButton](../src/components/buttons/VcsButton.vue)
 
-A button to be used as Tool (`large` variant) or Action Button (`small` variant).
-Its main usage is with a [VcsAction](./ACTIONS.md):
-
-- Tool button (Navbar, Toolbox)
+An action item button to be used in form sections, content tree or at similar usages.
 
 ```html
 <VcsButton
-  large
-  :id="action.name"
-  :tooltip="action.title"
-  :icon="action.icon"
-  :active="action.active"
-  @click.stop="action.callback($event)"
-/>
-```
-
-- Action button (form sections, content tree, ...)
-
-```html
-<VcsButton
-  small
   :id="action.name"
   :tooltip="action.title"
   :icon="action.icon"
@@ -73,6 +56,20 @@ The following example shows a row of buttons with secondary and primary actions:
     </VcsFormButton>
   </div>
 </div>
+```
+
+#### [VcsToolButton](../src/components/buttons/VcsToolButton.vue)
+
+A button to be used as Tool button. Its main usage is within the Navbar using the [NavbarManager](./BUTTONS.md#navbarmanager).
+
+```html
+<VcsToolButton
+  :id="action.name"
+  :tooltip="action.title"
+  :icon="action.icon"
+  :active="action.active"
+  @click.stop="action.callback($event)"
+/>
 ```
 
 ## Styles

@@ -12,7 +12,6 @@
           <VcsActionButtonList
             v-if="category.actions?.length > 0"
             :actions="category.actions"
-            small
           />
         </div>
       </template>
@@ -28,7 +27,7 @@
         @itemMoved="move"
       />
       <v-sheet v-if="category.items.length > 10" class="ma-2 pl-2">
-        <VcsButton @click="openCategoryItemWindow" small>
+        <VcsButton @click="openCategoryItemWindow">
           {{ $t('categoryManager.more') }}
         </VcsButton>
       </v-sheet>

@@ -9,7 +9,6 @@
           <VcsActionButtonList
             :actions="actions"
             :overflow-count="actionButtonListOverflowCount"
-            small
           />
         </div>
       </article>

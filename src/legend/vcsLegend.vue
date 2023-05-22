@@ -22,7 +22,7 @@
                 </v-icon>
                 {{ $t(entry.title) }}
               </div>
-              <VcsActionButtonList small :actions="entry.actions" />
+              <VcsActionButtonList :actions="entry.actions" />
             </div>
           </template>
         </v-expansion-panel-header>

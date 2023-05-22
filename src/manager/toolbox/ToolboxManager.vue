@@ -25,7 +25,7 @@
           :group="group"
           @toggle="(selectOpen) => (open = selectOpen)"
         />
-        <VcsButton
+        <VcsToolButton
           v-else
           :tooltip="group.action.title"
           :icon="group.action.icon"
@@ -34,7 +34,6 @@
           :disabled="group.action.disabled"
           @click.stop="group.action.callback($event)"
           v-bind="{ ...$attrs }"
-          large
         />
       </div>
     </v-toolbar-items>
@@ -72,7 +71,7 @@
   import { getComponentsByOrder, ToolboxType } from './toolboxManager.js';
   import ToolboxActionSelect from './SelectToolboxComponent.vue';
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
+  import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
 
   /**
    * @typedef {Object} ToolboxButtonGroup
@@ -100,7 +99,7 @@
     components: {
       ToolboxActionSelect,
       ToolboxActionGroup,
-      VcsButton,
+      VcsToolButton,
       VToolbar,
       VToolbarItems,
     },

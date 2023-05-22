@@ -3,14 +3,12 @@
     <VcsTextField :value="localLink" class="d-flex col-10 pa-0 mr-2" />
     <div class="d-flex col-2 justify-end pa-0">
       <VcsButton
-        small
         icon="mdi-content-copy"
         class="mr-2"
         @click="copy"
         :title="$t('createLink.copyToClipboard')"
       />
       <VcsButton
-        small
         icon="mdi-refresh"
         class="mr-2"
         @click="refresh"

@@ -8,7 +8,7 @@
       z-index="0"
     >
       <template #activator="{ on, attrs }">
-        <VcsButton
+        <VcsToolButton
           class="vcs-toolbox-toggle-button"
           width="48"
           :icon="group.icon"
@@ -18,10 +18,9 @@
           :color="hasActiveAction ? 'primary' : ''"
           v-bind="attrs"
           v-on="on"
-          large
         >
           <v-icon>{{ open ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </VcsButton>
+        </VcsToolButton>
       </template>
 
       <v-toolbar
@@ -33,7 +32,7 @@
       >
         <v-toolbar-items class="w-full">
           <div class="d-flex align-center justify-space-between w-full mx-1">
-            <VcsButton
+            <VcsToolButton
               v-for="{ id, action } in orderedButtons"
               :key="id"
               :tooltip="action.title"
@@ -42,7 +41,6 @@
               :active="action.active"
               @click="action.callback($event)"
               v-bind="{ ...$attrs }"
-              large
             />
           </div>
         </v-toolbar-items>
@@ -64,7 +62,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/lib';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
+  import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { getComponentsByOrder } from './toolboxManager.js';
 
   /**
@@ -81,7 +79,7 @@
   export default {
     name: 'ToolboxActionGroup',
     components: {
-      VcsButton,
+      VcsToolButton,
       VMenu,
       VIcon,
       VToolbar,

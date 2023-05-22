@@ -50,7 +50,6 @@
           :actions="item.actions"
           :block-overflow="true"
           :overflow-count="2"
-          small
         />
       </template>
     </vcs-data-table>

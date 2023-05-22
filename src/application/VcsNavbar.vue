@@ -15,7 +15,7 @@
               <VcsActionButtonList
                 :actions="mapActions"
                 :overflow-count="3"
-                large
+                button="VcsToolButton"
               />
               <v-divider
                 v-if="
@@ -29,7 +29,7 @@
               <VcsActionButtonList
                 :actions="contentActions"
                 :overflow-count="$vuetify.breakpoint.xs ? 3 : 4"
-                large
+                button="VcsToolButton"
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
@@ -40,7 +40,7 @@
               <VcsActionButtonList
                 :actions="toolActions"
                 v-if="$vuetify.breakpoint.mdAndUp"
-                large
+                button="VcsToolButton"
               />
             </div>
           </v-toolbar-items>
@@ -65,19 +65,22 @@
         <v-col class="align-content-end d-flex justify-end">
           <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
             <div class="d-flex">
-              <VcsActionButtonList :actions="projectActions" large />
+              <VcsActionButtonList
+                :actions="projectActions"
+                button="VcsToolButton"
+              />
               <v-divider
                 v-if="projectActions.length > 0 && menuActions.length > 0"
                 vertical
                 inset
                 class="mx-2"
               />
+
               <v-menu offset-y v-if="shareActions.length > 0">
                 <template #activator="{ on, attrs }">
-                  <VcsButton
+                  <VcsToolButton
                     v-bind="attrs"
                     v-on="on"
-                    large
                     tooltip="navbar.share.tooltip"
                     icon="$vcsShare"
                   />
@@ -88,10 +91,9 @@
                   :show-icon="true"
                 />
               </v-menu>
-              <VcsButton
+              <VcsToolButton
                 class="d-flex"
                 v-if="searchAction"
-                large
                 :key="searchAction.name"
                 :tooltip="searchAction.title"
                 :icon="searchAction.icon"
@@ -101,10 +103,9 @@
               />
               <v-menu offset-y v-if="menuActions.length > 0">
                 <template #activator="{ on, attrs }">
-                  <VcsButton
+                  <VcsToolButton
                     v-bind="attrs"
                     v-on="on"
-                    large
                     tooltip="navbar.menu.tooltip"
                     icon="$vcsMenu"
                   />
@@ -150,7 +151,7 @@
   } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import VcsActionList from '../components/lists/VcsActionList.vue';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsToolButton from '../components/buttons/VcsToolButton.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
 
   export default {
@@ -158,7 +159,7 @@
     components: {
       VcsActionButtonList,
       VcsActionList,
-      VcsButton,
+      VcsToolButton,
       VToolbar,
       VContainer,
       VRow,

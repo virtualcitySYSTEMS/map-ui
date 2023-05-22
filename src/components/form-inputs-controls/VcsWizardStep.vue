@@ -16,7 +16,6 @@
           v-if="Number(step) === Number(value)"
           :actions="actions"
           :overflow-count="actionButtonListOverflowCount"
-          small
           @mousedown.stop
           @touchstart.stop
           @keydown.stop

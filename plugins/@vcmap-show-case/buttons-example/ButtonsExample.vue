@@ -62,34 +62,53 @@
         <v-row>
           <v-col>
             <v-card>
-              <v-card-title>OUTLINED</v-card-title>
+              <v-card-title>Form fields</v-card-title>
               <v-card-actions>
-                <VcsFormButton
-                  @click="toggle"
-                  :disabled="disabled"
-                  :has-update="update"
-                  :loading="loading"
-                  tooltip="OUTLINED BUTTON"
-                >
-                  OUTLINED
-                </VcsFormButton>
+                <div class="d-flex gap-2">
+                  <VcsFormButton
+                    @click="toggle"
+                    :disabled="disabled"
+                    :has-update="update"
+                    :loading="loading"
+                    tooltip="OUTLINED BUTTON"
+                  >
+                    OUTLINED
+                  </VcsFormButton>
+                  <VcsFormButton
+                    @click="toggle"
+                    :disabled="disabled"
+                    :has-update="update"
+                    :loading="loading"
+                    tooltip="FILLED BUTTON"
+                    variant="filled"
+                  >
+                    FILLED
+                  </VcsFormButton>
+                </div>
               </v-card-actions>
             </v-card>
           </v-col>
           <v-col>
             <v-card>
-              <v-card-title>FILLED</v-card-title>
+              <v-card-title>OVERFLOW</v-card-title>
               <v-card-actions>
-                <VcsFormButton
-                  @click="toggle"
-                  :disabled="disabled"
-                  :has-update="update"
-                  :loading="loading"
-                  tooltip="FILLED BUTTON"
-                  variant="filled"
-                >
-                  FILLED
-                </VcsFormButton>
+                <VcsActionButtonList
+                  :actions="[
+                    {
+                      name: 'Action 1',
+                      title: 'Overflow Button with active state',
+                      callback: toggle,
+                      active,
+                    },
+                    {
+                      name: 'Action 2',
+                      title: 'Overflow Button without state',
+                      callback: toggle,
+                    },
+                  ]"
+                  button="VcsFormButton"
+                  :overflow-count="0"
+                />
               </v-card-actions>
             </v-card>
           </v-col>
@@ -97,64 +116,18 @@
       </v-list-item-content>
     </v-list-item>
     <v-divider />
-    <!--<v-list-item>
-      <v-list-item-content>
-        <v-list-item-title class="font-weight-bold">
-          &ltVcsButton standard/&gt (default)
-        </v-list-item-title>
-        <v-row>
-          <v-col>
-            <v-card>
-              <v-card-title>PRIMARY</v-card-title>
-              <v-card-actions>
-                <VcsButton
-                  @click="toggle"
-                  :active="active"
-                  :background="background"
-                  color="primary"
-                  :disabled="disabled"
-                  :has-update="update"
-                  :icon="loading ? '$vcsProgress' : ''"
-                  tooltip="PRIMARY BUTTON"
-                >
-                  PRIMARY
-                </VcsButton>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-          <v-col>
-            <v-card>
-              <v-card-title>SECONDARY</v-card-title>
-              <v-card-actions>
-                <VcsButton
-                  @click="toggle"
-                  :active="active"
-                  :background="background"
-                  :disabled="disabled"
-                  :has-update="update"
-                  tooltip="SECONDARY BUTTON"
-                >
-                  SECONDARY
-                </VcsButton>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-list-item-content>
-    </v-list-item>
-    <v-divider />-->
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
           <!-- eslint-disable-next-line -->
-          &ltVcsButton large/&gt (e.g. Navbar)
+          &ltVcsToolButton/&gt
         </v-list-item-title>
         <v-row>
           <v-col>
             <v-card>
-              <v-card-title>STANDARD</v-card-title>
+              <v-card-title>Navbar</v-card-title>
               <v-card-actions>
-                <VcsButton
+                <VcsToolButton
                   @click="toggle"
                   :active="active"
                   :disabled="disabled"
@@ -162,8 +135,7 @@
                   :has-update="update"
                   :loading="loading"
                   icon="$vcs3d"
-                  tooltip="ButtonClass large"
-                  large
+                  tooltip="VcsToolButton"
                 />
               </v-card-actions>
             </v-card>
@@ -186,8 +158,8 @@
                       callback: toggle,
                     },
                   ]"
+                  button="VcsToolButton"
                   :overflow-count="0"
-                  button-class="large"
                 />
               </v-card-actions>
             </v-card>
@@ -200,22 +172,21 @@
       <v-list-item-content>
         <v-list-item-title class="font-weight-bold">
           <!-- eslint-disable-next-line -->
-          &ltVcsButton small/&gt
+          &ltVcsButton/&gt
         </v-list-item-title>
         <v-row>
           <v-col>
             <v-card>
-              <v-card-title>STANDARD</v-card-title>
+              <v-card-title>Action Item</v-card-title>
               <v-card-actions>
                 <VcsButton
                   @click="toggle"
                   :active="active"
-                  :background="background"
+                  :has-update="update"
                   :disabled="disabled"
                   :loading="loading"
                   icon="$vcsColorSwatch"
                   tooltip="ACTION BUTTON"
-                  small
                 />
               </v-card-actions>
             </v-card>
@@ -239,7 +210,6 @@
                     },
                   ]"
                   :overflow-count="0"
-                  small
                 />
               </v-card-actions>
             </v-card>
@@ -250,7 +220,12 @@
   </v-card>
 </template>
 <script>
-  import { VcsButton, VcsFormButton, VcsActionButtonList } from '@vcmap/ui';
+  import {
+    VcsButton,
+    VcsToolButton,
+    VcsFormButton,
+    VcsActionButtonList,
+  } from '@vcmap/ui';
   import { ref } from 'vue';
   import {
     VCard,
@@ -270,6 +245,7 @@
     name: 'ButtonsExample',
     components: {
       VcsButton,
+      VcsToolButton,
       VcsFormButton,
       VcsActionButtonList,
       VCard,

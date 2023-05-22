@@ -11,7 +11,6 @@
     </span>
     <VcsButton
       class="d-flex"
-      small
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
       :icon="attributionAction.icon"

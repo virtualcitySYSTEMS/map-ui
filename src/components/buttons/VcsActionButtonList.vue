@@ -1,14 +1,16 @@
 <template>
   <div v-if="actions.length > 0" :class="classes">
-    <VcsButton
+    <component
+      :is="button"
       class="d-flex"
-      v-for="(button, index) in buttons"
-      :key="`${button.name}-${index}`"
-      :tooltip="button.title"
-      :icon="button.icon"
-      :active="button.active"
-      :disabled="button.disabled"
-      @click.stop="button.callback($event)"
+      v-for="(btn, index) in buttons"
+      :key="`${btn.name}-${index}`"
+      :tooltip="btn.title"
+      :icon="btn.icon"
+      :active="btn.active"
+      :disabled="btn.disabled"
+      :background="btn.background"
+      @click.stop="btn.callback($event)"
       v-bind="{ ...$attrs }"
       v-on="{ ...$listeners }"
     />
@@ -20,9 +22,14 @@
       offset-x
     >
       <template #activator="{ on, attrs }">
-        <VcsButton v-bind="{ ...$attrs, ...attrs }" v-on="on" class="d-flex">
+        <component
+          :is="button"
+          v-bind="{ ...$attrs, ...attrs }"
+          v-on="on"
+          class="d-flex"
+        >
           <v-icon>{{ overflowIcon }}</v-icon>
-        </VcsButton>
+        </component>
       </template>
       <VcsActionList :actions="overflowButtons" />
     </v-menu>
@@ -40,6 +47,8 @@
 <script>
   import { VIcon, VMenu, VSpacer } from 'vuetify/lib';
   import VcsButton from './VcsButton.vue';
+  import VcsToolButton from './VcsToolButton.vue';
+  import VcsFormButton from './VcsFormButton.vue';
   import VcsActionList, { validateActions } from '../lists/VcsActionList.vue';
 
   /**
@@ -47,6 +56,7 @@
    * A component rendering a list of actions with overflow mechanic using
    * {@link VcsButton} and {@link VcsActionList}.
    * @vue-prop {Array<VcsAction>} actions - Array of actions
+   * @vue-prop {string} [button='VcsButton'] - used button type (one of 'VcsButton', 'VcsToolButton' or 'VcsFormButton)
    * @vue-prop {number} [overflowCount=2] - number of buttons rendered until overflow.
    * @vue-prop {string} [overflowIcon='$vcsKebab'] - optional custom icon for overflow button
    * @vue-prop {boolean} [blockOverflow=false] - if space for the overflow should be blocked or not (e.g. when rendering lists in a grid)
@@ -58,6 +68,8 @@
     components: {
       VcsActionList,
       VcsButton,
+      VcsToolButton,
+      VcsFormButton,
       VMenu,
       VIcon,
       VSpacer,
@@ -67,6 +79,12 @@
         type: Array,
         required: true,
         validator: validateActions,
+      },
+      button: {
+        type: String,
+        default: 'VcsButton',
+        validator: (type) =>
+          ['VcsButton', 'VcsToolButton', 'VcsFormButton'].includes(type),
       },
       overflowCount: {
         type: Number,

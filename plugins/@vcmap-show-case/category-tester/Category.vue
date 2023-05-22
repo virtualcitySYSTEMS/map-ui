@@ -1,67 +1,75 @@
 <template>
-  <v-sheet>
-    <span class="pa-1 mb-2" @click.stop="open = !open">
-      <span class="headline">
-        {{ categoryName }}
-      </span>
-      <span class="float-right">
-        <vcs-button
-          small
-          icon="$vcsPlus"
-          @click.stop="dialog = true"
-          class="ma-1"
-        />
-        <vcs-button
-          small
-          icon="mdi-download"
-          @click.stop="download"
-          class="ma-1"
-        />
+  <VcsFormSection
+    :heading="categoryName"
+    :header-actions="[
+      {
+        name: 'toggle',
+        icon: open ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off',
+        callback() {
+          open = !open;
+        },
+      },
+      {
+        name: 'add',
+        icon: '$vcsPlus',
+        callback() {
+          dialog = true;
+        },
+      },
+      {
+        name: 'download',
+        icon: 'mdi-download',
+        callback: download,
+      },
+    ]"
+    :action-button-list-overflow-count="3"
+  >
+    <template #default>
+      <v-container class="py-0 px-1">
         <a
           :href="downloadLink"
           target="_blank"
           ref="link"
           download="category.json"
         />
-      </span>
-    </span>
-
-    <v-virtual-scroll
-      item-height="44px"
-      v-if="open"
-      :height="6 * 44"
-      :items="category"
-      :bench="6"
-      width="100%"
-    >
-      <template #default="{ item }">
-        <v-list-item :key="item.name" class="mb-1">
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-1">
-              {{ item.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{ item.type }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-virtual-scroll>
-    <v-dialog v-model="dialog">
-      <v-card>
-        <v-form @submit.prevent="addItem">
-          <v-textarea v-model="jsonString" />
-          <vcs-button type="submit"> Add </vcs-button>
-        </v-form>
-      </v-card>
-    </v-dialog>
-  </v-sheet>
+        <v-virtual-scroll
+          item-height="44px"
+          v-if="open"
+          :height="6 * 44"
+          :items="category"
+          :bench="6"
+          width="100%"
+        >
+          <template #default="{ item }">
+            <v-list-item :key="item.name" class="mb-1">
+              <v-list-item-content>
+                <v-list-item-title class="subtitle-1">
+                  {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>{{ item.type }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-virtual-scroll>
+        <v-dialog v-model="dialog">
+          <v-card>
+            <v-form @submit.prevent="addItem">
+              <v-textarea v-model="jsonString" />
+              <vcs-button type="submit"> Add </vcs-button>
+            </v-form>
+          </v-card>
+        </v-dialog>
+      </v-container>
+    </template>
+  </VcsFormSection>
 </template>
 
 <script>
   import { inject, nextTick, ref } from 'vue';
-  import { VcsButton } from '@vcmap/ui';
+  import { VcsButton, VcsFormSection } from '@vcmap/ui';
   import { getObjectFromClassRegistry } from '@vcmap/core';
   import {
-    VSheet,
+    VContainer,
     VVirtualScroll,
     VListItem,
     VListItemContent,
@@ -77,6 +85,8 @@
     name: 'CategoryComponent',
     components: {
       VcsButton,
+      VcsFormSection,
+      VContainer,
       VVirtualScroll,
       VListItem,
       VListItemContent,
@@ -86,7 +96,6 @@
       VCard,
       VForm,
       VTextarea,
-      VSheet,
     },
     props: {
       categoryName: {

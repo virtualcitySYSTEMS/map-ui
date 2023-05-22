@@ -41,7 +41,6 @@
             :actions="actions"
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
-            small
           />
         </v-list-item-content>
       </v-list-item>
@@ -109,7 +108,6 @@
             :actions="item.actions"
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
-            small
           />
         </v-list-item-action>
       </v-list-item>

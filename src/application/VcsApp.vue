@@ -24,7 +24,6 @@
         :icon="attributionAction.icon"
         :active="attributionAction.active"
         @click.stop="attributionAction.callback($event)"
-        small
         class="z-index-1 mobile-attribution-btn"
       />
       <VcsMap :map-id="mapId" />
