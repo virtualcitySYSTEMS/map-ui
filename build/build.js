@@ -197,9 +197,14 @@ await Promise.all(
   buildoutput.output?.map((output) => {
     if (output.type === 'asset') {
       const { source, fileName } = output;
+      // remove loading of materialdesignicons from index.html, we will later inject this in the ui.js
+      const fileContent = source.replace(
+        /<link[^>]*href=".*materialdesignicons\.min\.css"[^>]*(>[^<]*<\/link>|\/>)/,
+        '',
+      );
       return writeRewrittenFile(
         path.join(process.cwd(), 'dist', fileName),
-        source,
+        fileContent,
         hashedPublicFiles,
         'assets',
       );

@@ -206,6 +206,14 @@ function loadCss(href) {
     }
     if (output[0] && output[0].type === 'chunk') {
       let code = css ? `${cssInjectorCode} await loadCss('${css}');` : '';
+      // inject materialDesignIcons here. We removed it earlier from the index.html
+      if (library === 'ui') {
+        const hashedPath = rewrittenPublicAssets.get(
+          'assets/@mdi/font/css/materialdesignicons.min.css',
+        );
+        code += `await loadCss('./${path.posix.join('assets', hashedPath)}');`;
+      }
+
       code += output[0].code;
       await writeRewrittenFile(
         path.join(
