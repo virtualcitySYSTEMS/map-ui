@@ -18,9 +18,9 @@
           @blur="onBlur"
           @keydown.esc="onEscape"
           @keydown="$emit('keydown', $event)"
-          :value="visibleValue"
           :type="type"
           outlined
+          v-model="visibleValue"
           v-bind="{ ...$attrs, ...attrs }"
           v-on="{ ...$listeners, ...on }"
           :height="isDense ? 24 : 32"
@@ -218,18 +218,23 @@
           !(attrs.disabled || attrs.disabled === '')
         );
       });
-      const visibleValue = computed(() => {
-        if (
-          attrs.type === 'number' &&
-          attrs.value &&
-          props.unit &&
-          !focus.value &&
-          !hover.value
-        ) {
-          return `${attrs.value} ${props.unit}`;
-        } else {
-          return attrs.value || '';
-        }
+      const visibleValue = computed({
+        get() {
+          if (
+            attrs.type === 'number' &&
+            attrs.value &&
+            props.unit &&
+            !focus.value &&
+            !hover.value
+          ) {
+            return `${attrs.value} ${props.unit}`;
+          } else {
+            return attrs.value ?? '';
+          }
+        },
+        set(event) {
+          emit('input', event);
+        },
       });
       const type = computed(() => {
         if (attrs.type === 'number' && !focus.value) {

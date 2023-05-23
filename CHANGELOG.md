@@ -11,6 +11,7 @@
 - Add `vue-i18n` instance to app to offer translate methods outside vue components.
 - Add optional `weight` property to buttonComponents affecting the displaying order
 - Button refactoring: added new component `VcsToolButton` to be used in Navbar, simplified `VcsButton` and added documentation.
+- Fixes file input for `VcsTextfield`
 
 # 5.0.0-rc.24
 

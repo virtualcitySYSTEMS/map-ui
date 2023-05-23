@@ -97,11 +97,11 @@
 
       const isDense = computed(() => attrs.dense !== false);
 
-      const isValid = (date) => !Number.isNaN(Date.parse(date));
+      const isValid = (date) => !Number.isNaN(new Date(date).getTime());
       const setFromValue = () => {
         if (isValid(localValue.value)) {
           localValue.value = props.value;
-        } else {
+        } else if (localValue.value) {
           // eslint-disable-next-line no-console
           console.error('Invalid date provided: ', props.value);
         }
