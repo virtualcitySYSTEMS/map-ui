@@ -42,8 +42,8 @@ const messages = {
     homeButton: 'Springe zur Startansicht',
   },
   categoryManager: {
-    title: 'Komponenten',
-    tooltip: 'Komponenten',
+    title: 'Mein Arbeitsbereich',
+    tooltip: 'Mein Arbeitsbereich',
     more: 'Weitere anzeigen...',
     empty: 'Es gibt noch keine Einträge.',
   },

@@ -42,8 +42,8 @@ const messages = {
     homeButton: 'Go to starting view',
   },
   categoryManager: {
-    title: 'Components',
-    tooltip: 'Components',
+    title: 'My Workspace',
+    tooltip: 'My Workspace',
     more: 'Show more...',
     empty: 'There are no entries yet.',
   },

@@ -92,23 +92,25 @@ function transformItem(item, category, itemMappings) {
  * @private
  */
 function insertItem(item, collection, items) {
-  if (collection instanceof IndexedCollection) {
-    const newItemIndex = collection.indexOfKey(item.id);
-    if (newItemIndex === collection.size - 1) {
-      items.push(item);
-    } else {
-      const positionInChildren = items.findIndex((listItem) => {
-        const treeViewItemIndex = collection.indexOfKey(listItem.id);
-        return newItemIndex < treeViewItemIndex;
-      });
-      if (positionInChildren >= 0) {
-        items.splice(positionInChildren, 0, item);
-      } else {
+  if (!items.includes(item)) {
+    if (collection instanceof IndexedCollection) {
+      const newItemIndex = collection.indexOfKey(item.id);
+      if (newItemIndex === collection.size - 1) {
         items.push(item);
+      } else {
+        const positionInChildren = items.findIndex((listItem) => {
+          const treeViewItemIndex = collection.indexOfKey(listItem.id);
+          return newItemIndex < treeViewItemIndex;
+        });
+        if (positionInChildren >= 0) {
+          items.splice(positionInChildren, 0, item);
+        } else {
+          items.push(item);
+        }
       }
+    } else {
+      items.push(item);
     }
-  } else {
-    items.push(item);
   }
 }
 

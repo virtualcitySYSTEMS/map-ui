@@ -24,7 +24,7 @@
         :single-select="category.singleSelect"
         v-model="selection"
         :show-title="false"
-        @itemMoved="move"
+        @item-moved="move"
       />
       <v-sheet v-if="category.items.length > 10" class="ma-2 pl-2">
         <VcsButton @click="openCategoryItemWindow">
