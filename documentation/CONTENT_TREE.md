@@ -70,7 +70,6 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {ContentTreeItemOptions} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
- * @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated on click if the click activates the layer in layerNames
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
 ```
@@ -87,7 +86,6 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
  * @property {string} layerName
- * @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated if the click activates the layer
  */
 ```
 

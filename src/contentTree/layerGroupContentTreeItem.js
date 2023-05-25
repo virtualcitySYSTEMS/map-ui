@@ -6,11 +6,11 @@ import {
   setViewpointAction,
 } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
+import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
  * @typedef {ContentTreeItemOptions} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
- * @property {Array<string>} layerNamesToDeactivate list of LayerNames which should be deactivated on click if the click activates the layer in layerNames
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
 
@@ -61,14 +61,6 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
      */
     this._layerNames = Array.isArray(options.layerNames)
       ? options.layerNames.slice()
-      : [];
-
-    /**
-     * @type {Array<string>}
-     * @private
-     */
-    this._layerNamesToDeactivate = Array.isArray(options.layerNamesToDeactivate)
-      ? options.layerNamesToDeactivate.slice()
       : [];
 
     /**
@@ -152,18 +144,17 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
    * @returns {Promise<void>}
    */
   async clicked() {
+    await super.clicked();
     const layers = this._layers;
     const activate = layers.some((l) => !(l.active || l.loading));
     if (activate) {
       await Promise.all(layers.map((l) => l.activate()));
-      this._layerNamesToDeactivate
-        .map((n) => this._app.layers.getByKey(n))
-        .filter((l) => l)
-        .forEach((l) => l.deactivate());
+      executeCallbacks(this._app, this._onActivate);
     } else {
       layers.forEach((l) => {
         l.deactivate();
       });
+      executeCallbacks(this._app, this._onDeactivate);
     }
   }
 
@@ -173,7 +164,6 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.layerNames = this._layerNames.slice();
-    config.layerNamesToDeactivate = this._layerNamesToDeactivate.slice();
     if (this._defaultViewpoint) {
       config.defaultViewpoint = this._defaultViewpoint;
     }

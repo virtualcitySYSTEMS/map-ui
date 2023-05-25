@@ -21,7 +21,8 @@
           "waterHeight": "Wasserhöhen (HQ100)",
           "securedFloodPlains": "Vorläufig gesicherte Überschwemmungsgebiete",
           "designatedFloodPlains": "Festgesetzte Überschwemmungsgebiete",
-          "footprints": "OSM Gebäudegrundrisse"
+          "footprints": "OSM Gebäudegrundrisse",
+          "GermanyBaseTerrain": "Gelände"
         },
         "featureInfo": {
           "waterSpeed": "Geschwindigkeit [m/s]",
@@ -362,7 +363,8 @@
           "waterHeight": "Water heights (HQ100)",
           "securedFloodPlains": "Provisionally secured floodplains",
           "designatedFloodPlains": "Designated floodplains",
-          "footprints": "OSM building footprints"
+          "footprints": "OSM building footprints",
+          "GermanyBaseTerrain": "Terrain"
         },
         "featureInfo": {
           "waterSpeed": "Velocity [m/s]",
@@ -426,7 +428,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Bayern - LOD2 (pbr)",
       "url": "https://www.virtualcitymap.de/datasource-data/40af565a-821b-4e23-9a2b-f9e69ba9a4d2/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -438,7 +440,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Sachsen - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/fd876dab-dc81-46ae-bce1-fc7913981ed2/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -450,7 +452,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Sachsen-Anhalt - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/3efd2b28-f83b-469b-a33b-a08e79384da6/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -474,7 +476,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Thüringen - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/628b571c-1e93-4f27-a9c0-e13a15848cfe/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -486,7 +488,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Niedersachsen - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/72077dac-9695-4147-bb4a-c8840a529c14/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -498,7 +500,7 @@
       "type": "CesiumTilesetLayer",
       "name": "NRW - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/ef0479d6-2c12-4510-b7c2-9d49f28507e4/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -510,7 +512,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Hessen - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/5077faba-e3ac-4109-bfd9-3f18e8faf9b2/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -522,7 +524,7 @@
       "type": "CesiumTilesetLayer",
       "name": "Hamburg - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/1c95f6f5-0646-4613-bb2b-27d5f8615a20/tileset.json",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -535,7 +537,7 @@
       "name": "Brandenburg - LOD2 (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/71640b45-eaee-4576-8caa-0dd12543b2bd/tileset.json",
       "datasourceId": "fHWWCMfb46is5zhy9",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "properties": {
@@ -577,14 +579,6 @@
         "title": "layer.berlinLOD2Textured",
         "featureInfo": "tableBuildings"
       }
-    },
-    {
-      "type": "TerrainLayer",
-      "name": "BerlinWaterTerrain (level15)",
-      "url": "https://www.virtualcitymap.de/datasource-data/000834f6-8670-49d9-a430-df5b92474985/?baseTerrain=82JNcy7Xi7FNB3WXR",
-      "activeOnStartup": false,
-      "requestVertexNormals": true,
-      "exclusiveGroups": ["terrain"]
     },
     {
       "type": "TerrainLayer",
@@ -1609,11 +1603,25 @@
         "Niedersachsen (pbr recalculation)",
         "Sachsen - LOD2 (pbr recalculation)",
         "Sachsen-Anhalt - LOD2 (pbr recalculation)",
-        "Thüringen - LOD2 (pbr recalculation)",
-        "GermanyBaseTerrain"
+        "Thüringen - LOD2 (pbr recalculation)"
       ],
-      "layerNamesToDeactivate": ["mesh_surface", "Mesh Classification Layer"],
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["mesh_surface", "Mesh Classification Layer"]
+        },
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["GermanyBaseTerrain"]
+        }
+      ],
       "title": "layer.buildings"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "germany.terrain",
+      "layerName": "GermanyBaseTerrain",
+      "title": "layer.GermanyBaseTerrain"
     },
     {
       "type": "NodeContentTreeItem",
@@ -1625,30 +1633,55 @@
       "type": "LayerGroupContentTreeItem",
       "name": "berlin.mesh",
       "layerNames": ["Mesh Classification Layer", "mesh_surface"],
-      "layerNamesToDeactivate": [
-        "Bayern - LOD2 (pbr)",
-        "Berlin untexturiert openData (pbr recalculation)",
-        "Brandenburg - LOD2 (pbr recalculation)",
-        "Hamburg - LOD2 (pbr recalculation)",
-        "Hessen - LOD2 (pbr recalculation)",
-        "NRW - LOD2 (pbr recalculation)",
-        "Niedersachsen (pbr recalculation)",
-        "Sachsen - LOD2 (pbr recalculation)",
-        "Sachsen-Anhalt - LOD2 (pbr recalculation)",
-        "Thüringen - LOD2 (pbr recalculation)",
-        "GermanyBaseTerrain"
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": [
+            "Bayern - LOD2 (pbr)",
+            "Berlin untexturiert openData (pbr recalculation)",
+            "Brandenburg - LOD2 (pbr recalculation)",
+            "Hamburg - LOD2 (pbr recalculation)",
+            "Hessen - LOD2 (pbr recalculation)",
+            "NRW - LOD2 (pbr recalculation)",
+            "Niedersachsen (pbr recalculation)",
+            "Sachsen - LOD2 (pbr recalculation)",
+            "Sachsen-Anhalt - LOD2 (pbr recalculation)",
+            "Thüringen - LOD2 (pbr recalculation)",
+            "GermanyBaseTerrain"
+          ]
+        }
       ],
       "title": "3D-Mesh 2020"
     },
     {
       "type": "LayerContentTreeItem",
       "name": "berlin.texturedBuildings",
-      "layerName": "Berlin textured OpenData (pbr recalculation)"
+      "layerName": "Berlin textured OpenData (pbr recalculation)",
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["Mesh Classification Layer", "mesh_surface"]
+        },
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["GermanyBaseTerrain"]
+        }
+      ]
     },
     {
       "type": "LayerContentTreeItem",
       "name": "berlin.untexturedBuildings",
-      "layerName": "Berlin untexturiert openData (pbr recalculation)"
+      "layerName": "Berlin untexturiert openData (pbr recalculation)",
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["Mesh Classification Layer", "mesh_surface"]
+        },
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["GermanyBaseTerrain"]
+        }
+      ]
     },
     {
       "type": "LayerContentTreeItem",

@@ -371,6 +371,21 @@
       "name": "wmsLayerLaerm",
       "layerName": "wmsLayerLaerm",
       "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.myTest",
+      "type": "ContentTreeItem",
+      "title": "test SwitchMapCallback Test",
+      "onClick": [
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["buildings_untextured"]
+        },
+        {
+          "type": "SwitchMapCallback",
+          "mapName": "ol3"
+        }
+      ]
     }
   ],
   "plugins": [
@@ -435,6 +450,10 @@
     {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
+    },
+    {
+      "name": "switch-map-callback-example",
+      "entry": "plugins/@vcmap-show-case/switch-map-callback-example/index.js"
     }
   ],
   "uiConfig": [

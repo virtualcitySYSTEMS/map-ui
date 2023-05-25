@@ -16,6 +16,15 @@ export {
   StateActionState,
 } from './src/actions/stateRefAction.js';
 
+export {
+  default as VcsCallback,
+  executeCallbacks,
+} from './src/callback/vcsCallback.js';
+export { default as ActivateLayersCallback } from './src/callback/activateLayersCallback.js';
+export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.js';
+export { default as GoToViewpointCallback } from './src/callback/goToViewpointCallback.js';
+export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.js';
+
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,

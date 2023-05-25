@@ -1,8 +1,15 @@
-import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
+import {
+  DeclarativeStyleItem,
+  ObliqueMap,
+  OpenlayersMap,
+  VectorLayer,
+} from '@vcmap/core';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
+import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import { sleep } from '../../helpers.js';
 
 describe('LayerContentTreeItem', () => {
   describe('if there is a layer', () => {
@@ -25,7 +32,6 @@ describe('LayerContentTreeItem', () => {
         {
           name: 'foo',
           layerName: layer.name,
-          layerNamesToDeactivate: [layerToDeactivate.name],
         },
         app,
       );
@@ -56,14 +62,6 @@ describe('LayerContentTreeItem', () => {
         layer.deactivate();
         await item.clicked();
         expect(layer.active).to.be.true;
-      });
-
-      it('should deactivate the layerNamesToDeactive on click', async () => {
-        await app.maps.setActiveMap('ol');
-        await layerToDeactivate.activate();
-        layer.deactivate();
-        await item.clicked();
-        expect(layerToDeactivate.active).to.be.false;
       });
     });
 
@@ -220,20 +218,76 @@ describe('LayerContentTreeItem', () => {
     });
   });
 
+  describe('clicked', () => {
+    let item;
+    /** @type {VcsUiApp} */
+    let app;
+    let layer;
+    let style;
+
+    beforeAll(async () => {
+      app = new VcsUiApp();
+      layer = new VectorLayer({});
+      style = new DeclarativeStyleItem({});
+      app.layers.add(layer);
+      app.styles.add(style);
+      item = new LayerContentTreeItem(
+        {
+          name: 'foo',
+          layerName: layer.name,
+          onActivate: [
+            {
+              type: 'ApplyLayerStyleCallback',
+              layerName: layer.name,
+              styleName: style.name,
+            },
+          ],
+          onDeactivate: [
+            {
+              type: 'DeaactivateLayersCallback',
+              layerNames: ['layerToDeactivate'],
+            },
+          ],
+        },
+        app,
+      );
+      app.callbackClassRegistry.registerClass(
+        app.dynamicModuleId,
+        ApplyLayerStyleCallback.className,
+        ApplyLayerStyleCallback,
+      );
+    });
+
+    it('should execute all onActivate callbacks on activation', async () => {
+      expect(item).to.have.property('state', StateActionState.INACTIVE);
+      await item.clicked();
+      await sleep(0);
+      expect(item).to.have.property('state', StateActionState.ACTIVE);
+      expect(layer.style).to.have.property('name', style.name);
+    });
+
+    it('should execute all onDeactivate callbacks on deactivation', async () => {
+      const layerToDeactivate = new VectorLayer({});
+      await layerToDeactivate.activate();
+      app.layers.add(layer);
+      expect(item).to.have.property('state', StateActionState.ACTIVE);
+      expect(layer).to.have.property('active', true);
+      await item.clicked();
+      await sleep(0);
+      expect(item).to.have.property('state', StateActionState.INACTIVE);
+      expect(layer).to.have.property('active', false);
+    });
+  });
+
   describe('serialize', () => {
-    it('should serialize name, type and layerName, layerNamesToDeactivate', () => {
+    it('should serialize name, type and layerName', () => {
       const app = new VcsUiApp();
       const item = new LayerContentTreeItem(
-        { name: 'foo', layerName: 'foo', layerNamesToDeactivate: ['foo2'] },
+        { name: 'foo', layerName: 'foo' },
         app,
       );
       const config = item.toJSON();
-      expect(config).to.have.all.keys([
-        'name',
-        'type',
-        'layerName',
-        'layerNamesToDeactivate',
-      ]);
+      expect(config).to.have.all.keys(['name', 'type', 'layerName']);
       item.destroy();
       app.destroy();
     });

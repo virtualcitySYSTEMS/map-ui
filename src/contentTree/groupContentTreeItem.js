@@ -59,6 +59,7 @@ class GroupContentTreeItem extends ContentTreeItem {
   }
 
   async clicked() {
+    await super.clicked();
     if (this.state === StateActionState.NONE) {
       return;
     }

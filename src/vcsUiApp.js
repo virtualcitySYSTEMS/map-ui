@@ -40,6 +40,7 @@ import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
 import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
+import { callbackClassRegistry } from './callback/vcsCallback.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig} VcsUiModuleConfig
@@ -181,6 +182,14 @@ class VcsUiApp extends VcsApp {
     ];
 
     /**
+     * @type {OverrideClassRegistry<VcsCallbackItem>}
+     * @private
+     */
+    this._callbackClassRegistry = new OverrideClassRegistry(
+      callbackClassRegistry,
+    );
+
+    /**
      * @type {import("@vcmap/core").OverrideClassRegistry<ContentTreeItem>}
      * @private
      */
@@ -312,6 +321,14 @@ class VcsUiApp extends VcsApp {
    */
   get contentTree() {
     return this._contentTree;
+  }
+
+  /**
+   * @type {import("@vcmap/core").OverrideClassRegistry<VcsCallback>}
+   * @readonly
+   */
+  get callbackClassRegistry() {
+    return this._callbackClassRegistry;
   }
 
   /**

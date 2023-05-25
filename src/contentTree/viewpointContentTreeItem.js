@@ -89,6 +89,7 @@ class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   async clicked() {
+    await super.clicked();
     if (this._app.maps.activeMap && this.viewpoint) {
       await this._app.maps.activeMap.gotoViewpoint(this.viewpoint);
     }

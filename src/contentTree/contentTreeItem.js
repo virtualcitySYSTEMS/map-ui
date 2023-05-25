@@ -7,6 +7,7 @@ import {
   createStateRefAction,
   StateActionState,
 } from '../actions/stateRefAction.js';
+import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
  * @typedef {Object} ContentTreeItemOptions
@@ -17,6 +18,9 @@ import {
  * @property {number} [weight] - optional weighting of the item. higher weights come first.
  * @property {string} [infoUrl] - optional info url providing link with additional information.
  * @property {boolean} [initOpen=false] - groups being initially open or not.
+ * @property {VcsCallbackOptions} [onClick] - optional callback actions executed on click
+ * @property {VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
+ * @property {VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
  */
 
 /**
@@ -157,7 +161,21 @@ class ContentTreeItem {
      * @type {boolean}
      */
     this.initOpen = parseBoolean(options.initOpen, false);
-
+    /**
+     * @type {Array<VcsCallbackOptions>}
+     * @protected
+     */
+    this._onClick = options.onClick ?? [];
+    /**
+     * @type {Array<VcsCallbackOptions>}
+     * @protected
+     */
+    this._onActivate = options.onActivate ?? [];
+    /**
+     * @type {Array<VcsCallbackOptions>}
+     * @protected
+     */
+    this._onDeactivate = options.onDeactivate ?? [];
     /**
      * @type {VcsEvent<number>}
      */
@@ -426,8 +444,9 @@ class ContentTreeItem {
    * A callback called once the item is clicked.
    * @returns {Promise<void>}
    */
-  // eslint-disable-next-line class-methods-use-this,no-empty-function
-  async clicked() {}
+  async clicked() {
+    executeCallbacks(this._app, this._onClick);
+  }
 
   /**
    * Returns a readonly TreeViewItem used for rendering the current item.

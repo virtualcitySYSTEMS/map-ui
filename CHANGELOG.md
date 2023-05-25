@@ -12,6 +12,7 @@
 - Add optional `weight` property to buttonComponents affecting the displaying order
 - Button refactoring: added new component `VcsToolButton` to be used in Navbar, simplified `VcsButton` and added documentation.
 - Fixes file input for `VcsTextfield`
+- Add `VcsCallback` concept and implement onClick, onActivate and onDeactivate for content tree items
 
 # 5.0.0-rc.24
 

@@ -3,6 +3,7 @@ import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { setViewpointAction } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
+import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
  * @typedef {ContentTreeItemOptions} ObliqueCollectionContentTreeItemOptions
@@ -139,6 +140,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   async clicked() {
+    await super.clicked();
     if (
       this.visible &&
       this._collection &&
@@ -151,9 +153,11 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
       if (this.state === StateActionState.INACTIVE) {
         this.state = StateActionState.LOADING;
         await map.setCollection(this._collection, vp);
+        executeCallbacks(this._app, this._onActivate);
       } else if (this.state === StateActionState.ACTIVE) {
         this.state = StateActionState.INACTIVE;
         await map.setCollection(defaultCollection, vp);
+        executeCallbacks(this._app, this._onDeactivate);
       }
     }
   }

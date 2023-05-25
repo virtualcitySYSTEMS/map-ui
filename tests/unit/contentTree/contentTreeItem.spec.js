@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { VectorLayer } from '@vcmap/core';
+import ActivateLayersCallback from '../../../src/callback/activateLayersCallback.js';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
 import VcsUiApp from '../../../src/vcsUiApp.js';
+import { sleep } from '../../helpers.js';
 
 describe('ContentTreeItem', () => {
   let app;
@@ -155,6 +158,30 @@ describe('ContentTreeItem', () => {
       it('should configure weight', () => {
         expect(outputConfig).to.have.property('weight', inputConfig.weight);
       });
+    });
+  });
+
+  describe('clicked', () => {
+    it('should execute all onClick callbacks', async () => {
+      app.callbackClassRegistry.registerClass(
+        app.dynamicModuleId,
+        ActivateLayersCallback.className,
+        ActivateLayersCallback,
+      );
+      const layer = new VectorLayer({ name: 'test' });
+      app.layers.add(layer);
+      const item = new ContentTreeItem(
+        {
+          name: 'foo',
+          onClick: [{ type: 'ActivateLayersCallback', layerNames: ['test'] }],
+        },
+        app,
+      );
+      expect(layer).to.have.property('active', false);
+      await item.clicked();
+      await sleep(0);
+      expect(layer).to.have.property('active', true);
+      item.destroy();
     });
   });
 });

@@ -804,13 +804,40 @@
     {
       "name": "building.texturedBuildings",
       "layerName": "buildings",
-      "type": "LayerContentTreeItem"
+      "type": "LayerContentTreeItem",
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["mesh_surface", "buildings_untextured"]
+        },
+        { "type": "GoToViewpointCallback", "viewpoint": "alexanderplatz" }
+      ],
+      "onDeactivate": [
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["buildings_untextured"]
+        }
+      ]
     },
     {
       "name": "building.untexturedBuildings",
       "infoUrl": "https://vc.systems",
       "layerName": "buildings_untextured",
-      "type": "LayerContentTreeItem"
+      "type": "LayerContentTreeItem",
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["buildings", "mesh_surface"]
+        },
+        {
+          "type": "ApplyLayerStyleCallback",
+          "layerName": "buildings_untextured",
+          "styleName": "MeasuredHeightGreen"
+        }
+      ],
+      "onDeactivate": [
+        { "type": "ActivateLayersCallback", "layerNames": ["buildings"] }
+      ]
     },
     {
       "name": "building.osmBuildingFootprints",
