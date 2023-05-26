@@ -132,6 +132,10 @@
     max-height: 36px;
     margin: 0 auto;
   }
+  .v-toolbar.v-toolbar--bottom {
+    bottom: 0;
+    position: fixed;
+  }
 </style>
 
 <script>
