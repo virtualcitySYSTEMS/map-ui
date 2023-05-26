@@ -194,6 +194,7 @@ export { default as VcsFormSection } from './src/components/form-inputs-controls
 // export { default as VcsInputColumnDimensions } from './src/components/form-inputs-controls/VcsInputColumnDimensions.vue';
 // export { default as VcsMinimalCheckbox } from './src/components/form-inputs-controls/VcsMinimalCheckbox.vue';
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
+export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';

@@ -160,6 +160,22 @@
               />
             </v-col>
           </v-row>
+          <v-row no-gutters class="align-center">
+            <v-col>
+              <VcsLabel html-for="sliderInput" :dense="dense">
+                Slider
+              </VcsLabel>
+            </v-col>
+            <v-col>
+              <VcsSlider
+                id="sliderInput"
+                :dense="dense"
+                type="number"
+                step="1"
+                v-model.number="state.numberInput"
+              />
+            </v-col>
+          </v-row>
           <v-row no-gutters>
             <v-col>
               <VcsLabel html-for="formattedNumber" :dense="dense">
@@ -354,6 +370,7 @@
     VcsLabel,
     VcsTextArea,
     VcsDatePicker,
+    VcsSlider,
   } from '@vcmap/ui';
   import { VCol, VContainer, VForm, VRow } from 'vuetify/lib';
   import packageJSON from './package.json';
@@ -376,6 +393,7 @@
       VCol,
       VContainer,
       VcsDatePicker,
+      VcsSlider,
     },
     props: {
       actions: {

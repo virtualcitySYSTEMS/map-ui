@@ -1,5 +1,6 @@
 # 5.0.0-rc.next
 
+- Added new `VcsSlider` component and integrated it inside `@vcmap-show-case\form-inputs-example\FormInputsExample.vue`
 - New @vcmap/Core Dependency fixed Bug with vectorTileLayer
 - Added Draw Plugin to Demo Application and external plugins
 - Added Shadow Plugin to Demo Application and external plugins
