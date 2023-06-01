@@ -1,7 +1,7 @@
 import { describe, beforeAll, afterAll, expect, it, vi } from 'vitest';
 
-import { getCesiumMap } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
-import { getObliqueCollection } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
+import { getCesiumMap } from '@vcmap/core/dist/tests/unit/helpers/cesiumHelpers.js';
+import { getObliqueCollection } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import { ObliqueMap, OpenlayersMap } from '@vcmap/core';
 import { Cartesian2, SceneTransforms } from '@vcmap-cesium/engine';
 import VcsUiApp from '../../../src/vcsUiApp.js';

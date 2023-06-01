@@ -23,7 +23,7 @@ import {
   WMSLayer,
   WMTSLayer,
 } from '@vcmap/core';
-import { createDummyCesium3DTileFeature } from '@vcmap/core/tests/unit/helpers/cesiumHelpers.js';
+import { createDummyCesium3DTileFeature } from '@vcmap/core/dist/tests/unit/helpers/cesiumHelpers.js';
 import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
 import { Color } from '@vcmap-cesium/engine';
 

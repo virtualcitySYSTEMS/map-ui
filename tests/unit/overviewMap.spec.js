@@ -18,7 +18,7 @@ import {
   ObliqueMap,
   VectorStyleItem,
 } from '@vcmap/core';
-import { getObliqueCollection } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
+import { getObliqueCollection } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import { getCenter } from 'ol/extent.js';
 import Feature from 'ol/Feature.js';
 import VcsUiApp from '../../src/vcsUiApp.js';

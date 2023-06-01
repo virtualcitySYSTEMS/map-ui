@@ -234,13 +234,23 @@ function loadCss(href) {
   } else if (libraryBuilds.output) {
     await write(libraryBuilds.output);
   } else {
-    libraryBuilds.prependListener('event', async (event) => {
-      // debounce
-      if (event.code === 'BUNDLE_END') {
-        const res = await event.result.generate(
-          libraryConfig?.build?.rollupOptions?.output ?? {},
-        );
-        await write(res.output);
+    /**
+     * This is used by the plugin-cli. If the libraryConfic includes watch: { }
+     * Rollup will start in Watch Mode. So we restart the browser on filechanges in the plugin-cli preview mode.
+     * See: https://rollupjs.org/javascript-api/#rollup-watch
+     * Also we need to add our BUNDLE_END event onCurrentRun, otherwise the bundle is already closed by vitejs.
+     * See: https://github.com/vitejs/vite/blob/main/packages/vite/src/node/build.ts#L674
+     */
+    libraryBuilds.on('event', (event) => {
+      if (event.code === 'START') {
+        libraryBuilds.onCurrentRun('event', async (innerEvent) => {
+          if (innerEvent.code === 'BUNDLE_END') {
+            const res = await innerEvent.result.generate(
+              libraryConfig?.build?.rollupOptions?.output ?? {},
+            );
+            await write(res.output);
+          }
+        });
       }
     });
   }

@@ -17,7 +17,7 @@ import {
   VectorStyleItem,
   Viewpoint,
 } from '@vcmap/core';
-import { setObliqueMap } from '@vcmap/core/tests/unit/helpers/obliqueHelpers.js';
+import { setObliqueMap } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import { pluginBaseUrlSymbol } from '../../src/pluginHelper.js';
 
