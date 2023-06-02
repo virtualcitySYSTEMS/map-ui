@@ -89,8 +89,12 @@ export {
   default as ToolboxManager,
   ToolboxType,
 } from './src/manager/toolbox/toolboxManager.js';
-export { default as CategoryManager } from './src/manager/categoryManager/categoryManager.js';
-export { default as CategoryManagerComponent } from './src/manager/categoryManager/CategoryManager.vue';
+export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
+export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
+export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
+export { default as CollectionComponentProvider } from './src/manager/collectionManager/CollectionComponentProvider.vue';
+export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.vue';
+export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';

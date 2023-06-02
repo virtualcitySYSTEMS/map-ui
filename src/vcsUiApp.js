@@ -28,7 +28,7 @@ import { createContentTreeCollection } from './contentTree/contentTreeCollection
 import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
-import CategoryManager from './manager/categoryManager/categoryManager.js';
+import CategoryManager from './manager/collectionManager/categoryManager.js';
 import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 import FeatureInfo, {
   featureInfoClassRegistry,

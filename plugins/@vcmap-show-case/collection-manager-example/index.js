@@ -1,11 +1,16 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import {
+  ButtonLocation,
+  createToggleAction,
+  WindowSlot,
+  CollectionManager,
+} from '@vcmap/ui';
 import packageJSON from './package.json';
-import Categories from './CategoriesExample.vue';
+import CollectionManagerExample from './CollectionManagerExample.vue';
 
 /**
  * @returns {VcsPlugin}
  */
-export default async function categoryTest() {
+export default async function collectionManagerExample() {
   return {
     get name() {
       return packageJSON.name;
@@ -17,29 +22,33 @@ export default async function categoryTest() {
       return packageJSON.vcMapVersion;
     },
     initialize(app) {
+      const collectionManager = new CollectionManager(app);
       const { action, destroy } = createToggleAction(
         {
-          name: 'Category Tester',
-          title: 'Category Tester Plugin',
+          name: 'Collection Manager Tester',
+          title: 'Collection Manager Tester',
           icon: '$vcsPen',
         },
         {
-          id: 'category-editor',
-          component: Categories,
+          id: 'collection-editor',
+          component: CollectionManagerExample,
           slot: WindowSlot.DETACHED,
           state: {
-            headerTitle: 'Category Tester',
+            headerTitle: 'Collection Manager Tester',
             headerIcon: '$vcsPen',
           },
           position: {
             width: 500,
+          },
+          provides: {
+            collectionManager,
           },
         },
         app.windowManager,
         packageJSON.name,
       );
       app.navbarManager.add(
-        { id: 'category-editor', action },
+        { id: 'collection-editor', action },
         packageJSON.name,
         ButtonLocation.TOOL,
       );
@@ -47,20 +56,12 @@ export default async function categoryTest() {
     },
     i18n: {
       de: {
-        categoryTester: {
-          title: 'Titel',
-          draggable: 'verschiebbar',
-          selectable: 'selektierbar',
-          singleSelect: 'Einfachauswahl',
-        },
+        select: 'Collection',
+        addFailed: 'Die gewählte Collection wurde bereits hinzugefügt!',
       },
       en: {
-        categoryTester: {
-          title: 'Title',
-          draggable: 'draggable',
-          selectable: 'selectable',
-          singleSelect: 'single select',
-        },
+        select: 'Collection',
+        addFailed: 'The selected collection is already added!',
       },
     },
     destroy() {

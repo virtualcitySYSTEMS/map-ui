@@ -7,39 +7,36 @@
             <v-icon class="mr-1" :class="{ rotate: !open }">
               mdi-chevron-down
             </v-icon>
-            {{ $t(category.title) }}
+            {{ $t(title) }}
           </div>
-          <VcsActionButtonList
-            v-if="category.actions?.length > 0"
-            :actions="category.actions"
-          />
+          <VcsActionButtonList v-if="actions?.length > 0" :actions="actions" />
         </div>
       </template>
     </v-expansion-panel-header>
     <v-expansion-panel-content class="pb-1">
       <vcs-list
-        :items="category.items.slice(0, 10)"
-        :draggable="category.draggable"
-        :selectable="category.selectable"
-        :single-select="category.singleSelect"
+        :items="items.slice(0, 10)"
+        :draggable="draggable"
+        :selectable="selectable"
+        :single-select="singleSelect"
         v-model="selection"
         :show-title="false"
         @item-moved="move"
       />
-      <v-sheet v-if="category.items.length > 10" class="ma-2 pl-2">
-        <VcsButton @click="openCategoryItemWindow">
-          {{ $t('categoryManager.more') }}
+      <v-sheet v-if="items.length > 10" class="ma-2 pl-2">
+        <VcsButton @click="openCollectionComponentList">
+          {{ $t('collectionManager.more') }}
         </VcsButton>
       </v-sheet>
-      <v-sheet v-else-if="category.items.length === 0" class="ma-2 pl-2">
-        {{ $t('categoryManager.empty') }}
+      <v-sheet v-else-if="items.length === 0" class="ma-2 pl-2">
+        {{ $t('collectionManager.empty') }}
       </v-sheet>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script>
-  import { computed, inject, ref } from 'vue';
+  import { inject, ref } from 'vue';
   import {
     VIcon,
     VExpansionPanel,
@@ -52,11 +49,15 @@
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
-  import CategoryComponentList from './CategoryComponentList.vue';
   import { WindowSlot } from '../window/windowManager.js';
+  import CollectionComponentList from './CollectionComponentList.vue';
 
+  /**
+   * Renders the first ten items of a collectionComponent in a List. Uses CollectionComponentList to render more items.
+   * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
+   */
   export default {
-    name: 'CategoryComponent',
+    name: 'CollectionComponent',
     components: {
       VcsActionButtonList,
       VcsButton,
@@ -67,45 +68,37 @@
       VSheet,
       VIcon,
     },
-    props: {
-      category: {
-        type: Object,
-        required: true,
-      },
-    },
-    setup(props) {
+    setup() {
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
-      const windowId = `${props.category.id}-category-list`;
+      /**
+       * @type {CollectionComponent}
+       */
+      const collectionComponent = inject('collectionComponent');
+      const windowId = `${collectionComponent.id}-list`;
       const active = ref(false);
 
-      const selection = computed({
-        get() {
-          return props.category.selection;
-        },
-        set(value) {
-          // eslint-disable-next-line vue/no-mutating-props
-          props.category.selection = value;
-        },
-      });
-
-      const { collection } = app.categories.getByKey(
-        props.category.categoryName,
-      );
-      /**
-       * index of the first item within the collection
-       * @type {ComputedRef<number>}
-       */
-      const collectionItemOffset = computed(() => {
-        return [...collection].findIndex(
-          (i) => i[collection.uniqueKey] === props.category.items[0]?.id,
-        );
-      });
-
       return {
-        selection,
+        title: collectionComponent.title,
+        items: collectionComponent.items,
+        selection: collectionComponent.selection,
+        draggable: collectionComponent.draggable,
+        selectable: collectionComponent.selectable,
+        singleSelect: collectionComponent.singleSelect,
+        actions: collectionComponent.getActions(),
+        move({ item, targetIndex }) {
+          if (collectionComponent.collection instanceof IndexedCollection) {
+            const collectionItem = collectionComponent.collection.getByKey(
+              item.name,
+            );
+            collectionComponent.collection.moveTo(
+              collectionItem,
+              targetIndex, // collectionItemOffset.value for paginated lists?
+            );
+          }
+        },
         active,
-        openCategoryItemWindow() {
+        openCollectionComponentList() {
           if (app.windowManager.has(windowId)) {
             setTimeout(() => {
               app.windowManager.bringWindowToTop(windowId);
@@ -114,26 +107,16 @@
             app.windowManager.add(
               {
                 id: windowId,
-                component: CategoryComponentList,
+                component: CollectionComponentList,
                 props: {
-                  category: props.category,
                   windowId,
                 },
                 provides: {
-                  selection,
+                  collectionComponent,
                 },
                 slot: WindowSlot.DYNAMIC_LEFT,
               },
               vcsAppSymbol,
-            );
-          }
-        },
-        move({ item, targetIndex }) {
-          if (collection instanceof IndexedCollection) {
-            const collectionItem = collection.getByKey(item.id);
-            collection.moveTo(
-              collectionItem,
-              targetIndex + collectionItemOffset.value,
             );
           }
         },

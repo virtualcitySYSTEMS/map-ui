@@ -101,7 +101,7 @@
   import MapNavigation from '../navigation/mapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
-  import CategoryManager from '../manager/categoryManager/CategoryManager.vue';
+  import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
   import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/vcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
@@ -338,7 +338,10 @@
           headerTitle: 'categoryManager.title',
           headerIcon: '$vcsComponents',
         },
-        component: CategoryManager,
+        component: CollectionManager,
+        provides: {
+          collectionManager: app.categoryManager,
+        },
         slot: WindowSlot.STATIC,
       },
       app.windowManager,

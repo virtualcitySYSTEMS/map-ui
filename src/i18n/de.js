@@ -44,6 +44,8 @@ const messages = {
   categoryManager: {
     title: 'Mein Arbeitsbereich',
     tooltip: 'Mein Arbeitsbereich',
+  },
+  collectionManager: {
     more: 'Weitere anzeigen...',
     empty: 'Es gibt noch keine Einträge.',
   },

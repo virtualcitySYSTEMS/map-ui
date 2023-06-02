@@ -44,6 +44,8 @@ const messages = {
   categoryManager: {
     title: 'My Workspace',
     tooltip: 'My Workspace',
+  },
+  collectionManager: {
     more: 'Show more...',
     empty: 'There are no entries yet.',
   },

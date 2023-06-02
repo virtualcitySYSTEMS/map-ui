@@ -394,6 +394,10 @@
       "entry": "plugins/@vcmap-show-case/config-editor/index.js"
     },
     {
+      "name": "collection-manager-example",
+      "entry": "plugins/@vcmap-show-case/collection-manager-example/index.js"
+    },
+    {
       "name": "category-tester",
       "entry": "plugins/@vcmap-show-case/category-tester/index.js"
     },

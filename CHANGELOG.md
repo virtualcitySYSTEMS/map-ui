@@ -14,6 +14,7 @@
 - Button refactoring: added new component `VcsToolButton` to be used in Navbar, simplified `VcsButton` and added documentation.
 - Fixes file input for `VcsTextfield`
 - Add `VcsCallback` concept and implement onClick, onActivate and onDeactivate for content tree items
+- Add new `CollectionManager` and refactored `CategoryManager`. See [Collections](documentation/COLLECTIONS.md).
 
 # 5.0.0-rc.24
 

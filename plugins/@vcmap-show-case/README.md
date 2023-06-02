@@ -10,10 +10,11 @@ This directory contains show-case plugins demonstrating the usage of VC Map UI c
 - [list-example](./list-example/README.md)
 - [textfields-example](./textfields-example/README.md)
 - [wizard-example](./wizard-example/README.md)
+- [collection-manager-example](./collection-manager-example/README.md)
 
 ## concepts
 
-- [category-tester](./category-tester/README.md)
+- [category-tester](category-tester/README.md)
 - [config-editor](./config-editor/README.md)
 - [context-menu-tester](./context-menu-tester/README.md)
 - [notifier-tester](./notifier-tester/README.md)
