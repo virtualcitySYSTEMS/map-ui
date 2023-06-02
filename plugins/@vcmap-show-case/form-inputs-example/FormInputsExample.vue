@@ -18,12 +18,12 @@
       <template #default v-if="showSection">
         <v-container class="py-0 px-1">
           <v-row no-gutters>
-            <v-col>
+            <v-col class="w-max-half">
               <VcsLabel html-for="selectInput" :dense="dense">
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
-            <v-col>
+            <v-col class="w-max-half">
               <VcsSelect
                 id="selectInput"
                 :items="selectOptions"

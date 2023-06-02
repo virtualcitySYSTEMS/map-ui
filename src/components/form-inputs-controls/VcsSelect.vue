@@ -33,7 +33,7 @@
             @mouseleave="hover = false"
           >
             <template #selection="{ item, index }">
-              <span v-if="index === 0" class="text-truncate">
+              <span v-if="index === 0" class="text-truncate w-full">
                 {{ $t(getText(item)) }}
               </span>
               <span v-if="index === 1" class="text-no-wrap text-caption">
