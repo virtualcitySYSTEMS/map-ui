@@ -225,6 +225,8 @@ export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreev
 // export { default as VcsOverflowMenu } from './src/components/menus/VcsOverflowMenu.vue';
 
 export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
+export { default as VcsDefaultLogo } from './src/logo.svg';
+export { default as VcsDefaultMobileLogo } from './src/logo-mobile.svg';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

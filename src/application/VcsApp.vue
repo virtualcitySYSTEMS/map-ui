@@ -15,7 +15,6 @@
           draggable="false"
           class="mobile-logo"
         />
-        <div v-else class="company-logo-mobile mobile-logo" />
       </template>
       <VcsButton
         v-if="!$vuetify.breakpoint.smAndUp && $vuetify.breakpoint.mobile"
@@ -110,6 +109,7 @@
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import NotifierComponent from '../notifier/notifierComponent.vue';
+  import VcsDefaultLogoMobile from '../logo-mobile.svg';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -546,7 +546,8 @@
         mobileLogo: computed(
           () =>
             app.uiConfig.config.value.mobileLogo ??
-            app.uiConfig.config.value.logo,
+            app.uiConfig.config.value.logo ??
+            VcsDefaultLogoMobile,
         ),
         attributionEntries,
         attributionAction,

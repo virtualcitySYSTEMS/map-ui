@@ -48,14 +48,7 @@
         <v-col class="d-flex justify-center">
           <div class="d-flex align-center">
             <template v-if="!$vuetify.breakpoint.xs">
-              <img
-                v-if="config.logo"
-                class="logo"
-                :src="config.logo"
-                draggable="false"
-                alt="Logo"
-              />
-              <div v-else class="company-logo logo" />
+              <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
             <div v-if="!$vuetify.breakpoint.sm && config.appTitle" class="ml-4">
               {{ $t(config.appTitle) }}
@@ -157,6 +150,7 @@
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsToolButton from '../components/buttons/VcsToolButton.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
+  import VcsDefaultLogo from '../logo.svg';
 
   export default {
     name: 'VcsNavbar',
@@ -188,6 +182,10 @@
           ),
         );
 
+      const logo = computed(() => {
+        return app.uiConfig.config.value.logo ?? VcsDefaultLogo;
+      });
+
       const { searchAction, destroy: destroySearchAction } =
         createSearchButtonAction(app);
 
@@ -204,6 +202,7 @@
         searchAction,
         menuActions: getActions(ButtonLocation.MENU),
         config: app.uiConfig.config,
+        logo,
       };
     },
   };
