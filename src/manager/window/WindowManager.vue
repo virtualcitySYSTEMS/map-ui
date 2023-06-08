@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'win-container-mobile': $vuetify.breakpoint.xs }">
+  <div :class="{ 'win-container-mobile': addMobileClass }">
     <WindowComponent
       v-for="id in componentIds"
       :key="id"
@@ -34,21 +34,28 @@
 
 <style scoped lang="scss">
   .win-container-mobile {
-    position: absolute;
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    right: 0;
     z-index: 2;
-    width: 100%;
+    display: contents;
   }
   .win-container-mobile > {
     div {
       width: 100% !important;
+      max-width: 100% !important;
       inset: unset !important;
       border-radius: 0 !important;
+      overflow: auto;
+      bottom: 0 !important;
+      max-height: 50% !important;
     }
   }
 </style>
 
 <script>
-  import { computed, inject, onUnmounted, ref } from 'vue';
+  import { computed, getCurrentInstance, inject, onUnmounted, ref } from 'vue';
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
@@ -125,6 +132,15 @@
         moveWindow(id, translation, windowManager, targetSize.value);
       };
 
+      const componentIdRef = ref(componentIds);
+
+      const addMobileClass = computed(() => {
+        return (
+          getCurrentInstance().proxy.$vuetify.breakpoint.xs &&
+          componentIdRef.value.length > 0
+        );
+      });
+
       const setTargetSize = () => {
         targetSize.value = getTargetSize(app.maps.target);
       };
@@ -138,7 +154,7 @@
       });
 
       return {
-        componentIds: ref(componentIds),
+        componentIds: componentIdRef,
         getComponent: (id) => windowManager.get(id).component,
         getHeaderComponent: (id) =>
           windowManager.get(id).headerComponent || WindowComponentHeader,
@@ -155,6 +171,7 @@
         },
         bringWindowToTop,
         move,
+        addMobileClass,
       };
     },
   };

@@ -138,7 +138,7 @@
   ::v-deep {
     .v-data-table__mobile-row__cell {
       td.vcs-table.overflow-max-width {
-        max-width: 260px;
+        max-width: 100% !important;
       }
     }
   }

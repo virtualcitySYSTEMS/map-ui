@@ -50,7 +50,10 @@
             <template v-if="!$vuetify.breakpoint.xs">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
-            <div v-if="!$vuetify.breakpoint.sm && config.appTitle" class="ml-4">
+            <div
+              v-if="$vuetify.breakpoint.mdAndUp && config.appTitle"
+              class="ml-4"
+            >
               {{ $t(config.appTitle) }}
             </div>
           </div>

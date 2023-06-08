@@ -342,8 +342,10 @@
 
           &.v-data-table__mobile-row {
             justify-content: left;
-            height: 27px;
             min-height: auto;
+            .v-data-table__mobile-row__header {
+              min-width: 50px;
+            }
           }
         }
       }

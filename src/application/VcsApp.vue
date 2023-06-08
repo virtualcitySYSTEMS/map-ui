@@ -69,7 +69,7 @@
   .mobile-attribution-btn {
     position: fixed;
     right: 2px;
-    bottom: 56px;
+    bottom: 36px;
   }
 </style>
 
