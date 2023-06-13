@@ -617,6 +617,7 @@ class VcsUiApp extends VcsApp {
     config.uiConfig = this._uiConfig.serializeModule(moduleId);
     config.featureInfo = this._featureInfo.serializeModule(moduleId);
     config.i18n = this._i18n.serializeModule(moduleId);
+    config.contentTree = this._contentTree.serializeModule(moduleId);
     config.plugins = this._plugins.serializeModule(moduleId);
     return config;
   }

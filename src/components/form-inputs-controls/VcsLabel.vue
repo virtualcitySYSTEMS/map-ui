@@ -4,6 +4,7 @@
     class="vcs-label"
     :class="{
       'vcs-label-dense': dense,
+      'vcs-label-required': required,
       'px-1': dense,
       'px-2': !dense,
     }"
@@ -22,6 +23,10 @@
   .vcs-label-dense {
     line-height: $line-height-dense;
   }
+  .vcs-label-required:after {
+    content: ' *';
+    color: var(--v-error-base);
+  }
 </style>
 <script>
   /**
@@ -29,6 +34,7 @@
    * pass the label text as innerHtml
    * @vue-prop {string} htmlFor - an id reference the label is meant for
    * @vue-prop {boolean} [dense=true] - default line height is 32px (dense). If set false, height is 40px.
+   * @vue-prop {boolean} [required=false] - Marks an input field as required by adding an asterisk after the label.
    */
   export default {
     name: 'VcsLabel',
@@ -40,6 +46,10 @@
       dense: {
         type: Boolean,
         default: true,
+      },
+      required: {
+        type: Boolean,
+        default: false,
       },
     },
   };

@@ -1,5 +1,9 @@
 # 5.0.0-rc.next
 
+- Add a required prop to `VcsLabel` marking input fields as required using an asterisk.
+
+# 5.0.0-rc.26
+
 - Added new `VcsSlider` component and integrated it inside `@vcmap-show-case\form-inputs-example\FormInputsExample.vue`
 - New @vcmap/Core Dependency fixed Bug with vectorTileLayer
 - Added Draw Plugin to Demo Application and external plugins

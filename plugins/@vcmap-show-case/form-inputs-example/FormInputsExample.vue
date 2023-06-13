@@ -79,7 +79,9 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="emailInput" :dense="dense"> Email </VcsLabel>
+              <VcsLabel html-for="emailInput" :dense="dense" required>
+                Email
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
