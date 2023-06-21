@@ -228,5 +228,10 @@ export { default as VcsBadge } from './src/components/notification/VcsBadge.vue'
 export { default as VcsDefaultLogo } from './src/logo.svg';
 export { default as VcsDefaultMobileLogo } from './src/logo-mobile.svg';
 
+export { default as VcsFillSelector } from './src/components/style/VcsFillSelector.vue';
+export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.vue';
+export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.vue';
+export { default as VcsStrokeMenu } from './src/components/style/VcsStrokeMenu.vue';
+
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

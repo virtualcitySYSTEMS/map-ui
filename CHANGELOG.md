@@ -1,6 +1,7 @@
 # 5.0.0-rc.next
 
 - Add a required prop to `VcsLabel` marking input fields as required using an asterisk.
+- Adds `VcsFillSelector`, `VcsStrokeSelector`, `VcsFillMenu` and `VcsStrokeMenu` components to model fill and stroke of style objects and integrates them into then new `@vcmap-show-case\style-input-example` plugin.
 
 # 5.0.0-rc.26
 

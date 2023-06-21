@@ -68,6 +68,12 @@ const messages = {
       noDataPlaceholder: 'No data available',
       noResultsPlaceholder: 'No matching records found',
     },
+    style: {
+      fill: 'Fill',
+      stroke: 'Stroke',
+      reset: 'Reset',
+      lineWidth: 'Line width',
+    },
   },
   settings: {
     title: 'Settings',

@@ -68,6 +68,12 @@ const messages = {
       noDataPlaceholder: 'Keine Daten verfügbar',
       noResultsPlaceholder: 'Keine übereinstimmenden Einträge gefunden',
     },
+    style: {
+      fill: 'Füllstil',
+      stroke: 'Linienstil',
+      reset: 'Zurücksetzen',
+      lineWidth: 'Linienbreite',
+    },
   },
   settings: {
     title: 'Einstellungen',

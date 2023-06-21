@@ -444,6 +444,10 @@
       "entry": "plugins/@vcmap-show-case/wizard-example/index.js"
     },
     {
+      "name": "style-input-example",
+      "entry": "plugins/@vcmap-show-case/style-input-example/index.js"
+    },
+    {
       "name": "@vcmap/hello-world",
       "entry": "plugins/@vcmap/hello-world/index.js"
     },
