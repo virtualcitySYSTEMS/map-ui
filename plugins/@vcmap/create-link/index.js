@@ -34,18 +34,18 @@ export default function createLink() {
     i18n: {
       de: {
         createLink: {
-          title: 'Link Kopieren',
-          windowTitle: 'Applikationslink',
-          tooltip: 'Dialog zum kopieren des Applikationslinks anzeigen.',
-          copyToClipboard: 'Applikationslink in Zwischenablage kopieren',
-          refreshTooltip: 'Applikationslink aktualisieren',
-          copied: 'Applikationslink in Zwischenablage kopiert.',
+          title: 'Link kopieren',
+          windowTitle: 'Anwendungslink',
+          tooltip: 'Dialog zum Kopieren des Anwendungslinks anzeigen',
+          copyToClipboard: 'Anwendungslinks in Zwischenablage kopieren',
+          refreshTooltip: 'Anwendungslinks aktualisieren',
+          copied: 'Der Anwendungslink in wurde in die Zwischenablage kopiert.',
         },
       },
       en: {
         createLink: {
-          title: 'Copy Link',
-          windowTitle: 'Application Link',
+          title: 'Copy link',
+          windowTitle: 'Application link',
           tooltip: 'Open dialog to copy application link to clipboard',
           copyToClipboard: 'Copy application link to clipboard',
           refreshTooltip: 'Refresh application link',

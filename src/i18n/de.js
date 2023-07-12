@@ -9,7 +9,7 @@ const messages = {
       tooltip: 'Menü',
     },
     share: {
-      tooltip: 'Den aktuellen Kartenausschnitt teilen.',
+      tooltip: 'Aktuellen Kartenausschnitt teilen',
     },
   },
   content: {
@@ -22,24 +22,24 @@ const messages = {
       title: 'Weitere Informationen',
     },
     viewpointAction: {
-      title: 'Springe zur Ansicht',
+      title: 'Zur Ansicht springen',
     },
     styleAction: {
-      title: 'Öffne Stil Auswahl',
+      title: 'Stilauswahl öffnen',
     },
     layerExtentAction: {
-      name: 'Ebenenausdehnung',
+      name: 'Auf Ebene zoomen',
       title: 'Auf Ebenenausdehnung zoomen',
     },
   },
   navigation: {
-    obliqueLeftTooltip: 'Schrägluftbild nach links drehen',
-    obliqueRightTooltip: 'Schrägluftbild nach rechts drehen',
+    obliqueLeftTooltip: 'Ansicht nach links drehen',
+    obliqueRightTooltip: 'Ansicht nach rechts drehen',
     zoomInTooltip: 'Hineinzoomen',
     zoomOutTooltip: 'Herauszoomen',
     pitchTooltip: 'Kameraneigung: {0}°',
     overviewMapTooltip: 'Übersichtskarte',
-    homeButton: 'Springe zur Startansicht',
+    homeButton: 'Zur Startansicht springen',
   },
   categoryManager: {
     title: 'Mein Arbeitsbereich',
@@ -50,10 +50,10 @@ const messages = {
     empty: 'Es gibt noch keine Einträge.',
   },
   components: {
-    pin: 'Fenster andocken.',
-    close: 'Fenster schließen.',
+    pin: 'Fenster andocken',
+    close: 'Fenster schließen',
     vcsFormSection: {
-      help: 'Hilfe anzeigen.',
+      help: 'Hilfe anzeigen',
     },
     vcsTable: {
       key: 'Name',
@@ -86,8 +86,8 @@ const messages = {
     },
   },
   featureInfo: {
-    activateToolTitle: 'Informationstool aktivieren',
-    deactivateToolTitle: 'Informationstool deaktivieren',
+    activateToolTitle: 'Informationswerkzeug aktivieren',
+    deactivateToolTitle: 'Informationswerkzeug deaktivieren',
   },
   legend: {
     title: 'Legende',
@@ -99,10 +99,10 @@ const messages = {
   search: {
     title: 'Suche',
     tooltip: 'Suche',
-    select: 'Suchergebnis selektieren',
-    placeholder: 'Suche nach Straße, Adresse, Ort, POI',
+    select: 'Suchergebnis auswählen',
+    placeholder: 'Suche nach Adresse oder Ort/Sehenswürdigkeit',
     zoomToFeatureAction: 'Auf Ergebnis zoomen',
-    zoomToAll: 'Zu allen Ergebnissen zoomen',
+    zoomToAll: 'Auf alle Ergebnisse zoomen',
   },
   toolbox: {
     flight: 'Flug',
@@ -111,8 +111,8 @@ const messages = {
   footer: {
     title: 'Fußzeile',
     attributions: {
-      title: 'Attribution',
-      tooltip: 'Öffne Attribution Fenster',
+      title: 'Attributionen',
+      tooltip: 'Öffne Attributionsfenster',
     },
   },
   notification: {

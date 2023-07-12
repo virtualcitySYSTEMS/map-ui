@@ -1,15 +1,15 @@
 const messages = {
   navbar: {
     maps: {
-      CesiumMap: 'Activate 3D map',
-      OpenlayersMap: 'Activate 2D map',
-      ObliqueMap: 'Activate Oblique map',
+      CesiumMap: 'Enable 3D view',
+      OpenlayersMap: 'Enable 2D view',
+      ObliqueMap: 'Enable oblique view',
     },
     menu: {
       tooltip: 'Menu',
     },
     share: {
-      tooltip: 'Share current view of the map.',
+      tooltip: 'Share current view of the map',
     },
   },
   content: {
@@ -19,27 +19,27 @@ const messages = {
       placeholder: 'Search elements',
     },
     infoAction: {
-      title: 'Info',
+      title: 'Further informationen',
     },
     viewpointAction: {
       title: 'Go to viewpoint',
     },
     styleAction: {
-      title: 'Open Style selector',
+      title: 'Open style selector',
     },
     layerExtentAction: {
-      name: 'Layer extent',
-      title: 'Jump to layer extent',
+      name: 'Zoom to extent',
+      title: 'Zoom to layer extent',
     },
   },
   navigation: {
-    obliqueLeftTooltip: 'Rotate view left',
-    obliqueRightTooltip: 'Rotate view right',
+    obliqueLeftTooltip: 'Rotate view to left',
+    obliqueRightTooltip: 'Rotate view to right',
     zoomInTooltip: 'Zoom in',
     zoomOutTooltip: 'Zoom out',
     pitchTooltip: 'Camera pitch: {0}°',
-    overviewMapTooltip: 'Overview Map',
-    homeButton: 'Go to starting view',
+    overviewMapTooltip: 'Show overview map',
+    homeButton: 'Go to home view',
   },
   categoryManager: {
     title: 'My Workspace',
@@ -50,21 +50,21 @@ const messages = {
     empty: 'There are no entries yet.',
   },
   components: {
-    pin: 'Pin window.',
-    close: 'Close window.',
+    pin: 'Dock window',
+    close: 'Close window',
     vcsFormSection: {
-      help: 'Show help.',
+      help: 'Show help',
     },
     vcsTable: {
       key: 'Name',
       value: 'Value',
     },
     vcsDataTable: {
-      searchbarPlaceholder: 'Name, Value, ...',
+      searchbarPlaceholder: 'Name, value, ...',
       itemsPerPage: 'per page',
       ofItems: 'of',
       nextPage: 'Next page',
-      formerPage: 'Former page',
+      formerPage: 'Previous page',
       noDataPlaceholder: 'No data available',
       noResultsPlaceholder: 'No matching records found',
     },
@@ -77,7 +77,7 @@ const messages = {
   },
   settings: {
     title: 'Settings',
-    tooltip: 'Settings',
+    tooltip: 'Configure settings',
     languageSelector: 'Language',
     theme: {
       title: 'Color theme',
@@ -86,8 +86,8 @@ const messages = {
     },
   },
   featureInfo: {
-    activateToolTitle: 'Activate Infotool',
-    deactivateToolTitle: 'Deactivate Infotool',
+    activateToolTitle: 'Enable Info Tool',
+    deactivateToolTitle: 'Disable Info Tool',
   },
   legend: {
     title: 'Legend',
@@ -100,7 +100,7 @@ const messages = {
     title: 'Search',
     tooltip: 'Search',
     select: 'Select result item',
-    placeholder: 'Search for Street, Address, Landmark, POI',
+    placeholder: 'Search for address or landmark/point of interest',
     zoomToFeatureAction: 'Zoom to result',
     zoomToAll: 'Zoom to all',
   },
@@ -112,7 +112,7 @@ const messages = {
     title: 'Footer',
     attributions: {
       title: 'Attributions',
-      tooltip: 'Open Attributions Window',
+      tooltip: 'Open attributions window',
     },
   },
   notification: {
