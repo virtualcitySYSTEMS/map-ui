@@ -22,6 +22,7 @@ import ComponentsIcon from './ComponentsIcon.vue';
 import ConeIcon from './ConeIcon.vue';
 import DimensionsHouseIcon from './DimensionsHouseIcon.vue';
 import EditIcon from './EditIcon.vue';
+import EditVerticesIcon from './EditVerticesIcon.vue';
 import ElevationProfileIcon from './ElevationProfileIcon.vue';
 import ExportAreaIcon from './ExportAreaIcon.vue';
 import ExportFlightIcon from './ExportFlightIcon.vue';
@@ -203,6 +204,9 @@ const IconMap = {
   },
   edit: {
     component: EditIcon,
+  },
+  editVertices: {
+    component: EditVerticesIcon,
   },
   elevationProfile: {
     component: ElevationProfileIcon,
