@@ -53,6 +53,7 @@
    * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
    * @property {Function} callback - callback function is triggered when the button is clicked
    * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
+   * @property {boolean} [hasUpdate=false] - optional hasUpdate of button. If true, a yellow notification is rendered next to the button
    * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
    * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
    */
@@ -68,6 +69,7 @@
     callback: Function,
     active: [undefined, Boolean],
     background: [undefined, Boolean],
+    hasUpdate: [undefined, Boolean],
     disabled: [undefined, Boolean],
   };
 

@@ -69,6 +69,7 @@ export function createToggleAction(
     name: String,
     icon: [undefined, String],
     title: [undefined, String],
+    hasUpdate: [undefined, Boolean],
   });
   check(windowComponent, { id: String });
   check(owner, [String, vcsAppSymbol]);

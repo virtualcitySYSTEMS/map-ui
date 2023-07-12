@@ -9,6 +9,7 @@
       :icon="btn.icon"
       :active="btn.active"
       :disabled="btn.disabled"
+      :has-update="btn.hasUpdate"
       :background="btn.background"
       @click.stop="btn.callback($event)"
       v-bind="{ ...$attrs }"
