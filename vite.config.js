@@ -16,6 +16,10 @@ const configMain = defineConfig(async ({ mode }) => {
       target: host,
       rewrite: (path) => path.replace(/Build/, 'Source'),
     };
+    proxy['/node_modules/@vcmap-cesium/engine/Build/ThirdParty'] = {
+      target: host,
+      rewrite: (path) => path.replace(/Build/, 'Source'),
+    };
   }
 
   const config = {

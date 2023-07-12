@@ -28,5 +28,12 @@ export default async function buildCesium() {
         recursive: true,
       },
     ),
+    fs.promises.cp(
+      path.join(cesiumPath, 'Source', 'ThirdParty'),
+      path.join(buildPath, 'ThirdParty'),
+      {
+        recursive: true,
+      },
+    ),
   ]);
 }
