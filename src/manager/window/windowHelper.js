@@ -263,13 +263,23 @@ export function updateWindowPosition(previous, update, targetSize) {
  * @param {{dx: number, dy: number}} translation - translation in px
  * @param {WindowManager} windowManager
  * @param {DOMRect} targetSize - the map's target size
+ * @param {WindowPosition|null} windowPosition - Optional position to be preferred over windowComponent's position as start.
  */
-export function moveWindow(id, translation, windowManager, targetSize) {
+export function moveWindow(
+  id,
+  translation,
+  windowManager,
+  targetSize,
+  windowPosition = null,
+) {
   const { position, slot } = windowManager.get(id);
   if (slot.value === WindowSlot.STATIC) {
     return;
   }
-  const windowPositionOptions = optionsFromWindowPosition(position, targetSize);
+  const windowPositionOptions = optionsFromWindowPosition(
+    windowPosition || position,
+    targetSize,
+  );
   if (windowPositionOptions.top !== undefined) {
     windowPositionOptions.top += translation.dy;
   }
@@ -373,16 +383,78 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
 }
 
 /**
- * Applies the position on the target clipping the position to the target's size.
+ * Derives a child window position from a parent window, placing the child top-right of the parent.
+ * @param {WindowPositionOptions} windowPositionOptions - numerical WindowPositionOptions
+ * @param {DOMRect} targetSize - the map's target size
+ * @param {WindowPositionOptions} parentPosition - numerical WindowPositionOptions
+ */
+export function applyParentPosition(
+  windowPositionOptions,
+  targetSize,
+  parentPosition,
+) {
+  const {
+    left,
+    right,
+    top,
+    bottom,
+    width,
+    height,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+  } = optionsFromWindowPosition(parentPosition, targetSize);
+  let parentWidth = width;
+  if (minWidth !== undefined && minWidth > width) {
+    parentWidth = minWidth;
+  }
+  if (maxWidth !== undefined && maxWidth < width) {
+    parentWidth = maxWidth;
+  }
+  if (parentWidth === undefined) {
+    parentWidth = targetSize.width - right - left;
+  }
+  let parentLeft = left;
+  if (parentLeft === undefined) {
+    parentLeft = targetSize.width - right - parentWidth;
+  }
+  let parentTop = top;
+  if (parentTop === undefined) {
+    let parentHeight = height;
+    if (minHeight !== undefined && minHeight > height) {
+      parentHeight = minHeight;
+    }
+    if (maxHeight !== undefined && maxHeight < height) {
+      parentHeight = maxHeight;
+    }
+    parentTop = targetSize.height - bottom - parentHeight;
+  }
+  windowPositionOptions.left = parentLeft + parentWidth + 2;
+  windowPositionOptions.top = parentTop;
+}
+
+/**
+ * Returns the position applied on the target by clipping the position to the target's size.
+ * Maintains units of the input position.
+ * If parent position is provided, returned position is placed top-right of its parent
  * @param {WindowPosition} position
  * @param {DOMRect} targetSize
+ * @param {WindowPosition|null} parentPosition
  * @returns {WindowPosition}
  */
-export function applyPositionOnTarget(position, targetSize) {
+export function getPositionAppliedOnTarget(
+  position,
+  targetSize,
+  parentPosition,
+) {
   if (!targetSize) {
     return position;
   }
   const windowPositionOptions = optionsFromWindowPosition(position, targetSize);
+  if (parentPosition) {
+    applyParentPosition(windowPositionOptions, targetSize, parentPosition);
+  }
   const clippedPosition = clipToTargetSize(windowPositionOptions, targetSize);
   const updatedPosition = updateWindowPosition(
     position,

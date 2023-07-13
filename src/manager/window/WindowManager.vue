@@ -60,7 +60,7 @@
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
   import {
-    applyPositionOnTarget,
+    getPositionAppliedOnTarget,
     getTargetSize,
     moveWindow,
   } from './windowHelper.js';
@@ -99,21 +99,33 @@
         return windowManager.get(id)?.zIndex.value === componentIds.length - 1;
       };
       /**
+       * @param {WindowComponent} windowComponent
+       * @returns {WindowPosition|null}
+       */
+      const getPosition = (windowComponent) => {
+        if (!windowComponent) {
+          return null;
+        }
+        const parentComponent =
+          !windowComponent?.state?.dockable &&
+          windowManager.get(windowComponent.parentId);
+        return getPositionAppliedOnTarget(
+          windowComponent?.position,
+          targetSize.value,
+          getPosition(parentComponent),
+        );
+      };
+      /**
        * @param {string} id
        * @returns {import("vue").ComputedRef<Object>}
        */
       const getStyles = (id) =>
         computed(() => {
           const windowComponent = windowManager.get(id);
-          const state = windowComponent?.state;
-          const position = applyPositionOnTarget(
-            windowComponent?.position,
-            targetSize.value,
-          );
           return {
             zIndex: windowComponent.zIndex.value,
-            ...position,
-            ...(state.styles || {}),
+            ...getPosition(windowComponent),
+            ...(windowComponent?.state?.styles || {}),
           };
         });
       /**
@@ -129,7 +141,9 @@
        * @param {{dx: number, dy: number}} translation
        */
       const move = (id, translation) => {
-        moveWindow(id, translation, windowManager, targetSize.value);
+        const windowComponent = windowManager.get(id);
+        const position = getPosition(windowComponent);
+        moveWindow(id, translation, windowManager, targetSize.value, position);
       };
 
       const componentIdRef = ref(componentIds);

@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, afterEach, describe, expect, it } from 'vitest';
 import {
-  applyPositionOnTarget,
+  applyParentPosition,
+  getPositionAppliedOnTarget,
   clipToTargetSize,
   getFittedWindowPositionOptions,
   getTargetSize,
@@ -364,6 +365,123 @@ describe('windowHelper', () => {
       });
     });
 
+    describe('applyParentPosition', () => {
+      it('should apply a parent position', () => {
+        const windowPosition = optionsFromWindowPosition(
+          {
+            top: '10px',
+            left: '60px',
+            width: '20px',
+            height: '20px',
+          },
+          targetSize,
+        );
+        const parentPosition = optionsFromWindowPosition(
+          {
+            top: '20px',
+            left: '10%',
+            width: '20%',
+          },
+          targetSize,
+        );
+        applyParentPosition(windowPosition, targetSize, parentPosition);
+        expect(windowPosition).to.have.property('top', parentPosition.top);
+        expect(windowPosition).to.have.property(
+          'left',
+          parentPosition.left + parentPosition.width + 2,
+        );
+        expect(windowPosition).to.have.property('width', windowPosition.width);
+        expect(windowPosition).to.have.property(
+          'height',
+          windowPosition.height,
+        );
+      });
+
+      it('should consider minWidth of parent', () => {
+        const windowPosition = optionsFromWindowPosition(
+          {
+            top: '10px',
+            left: '60px',
+            width: '20px',
+            height: '20px',
+          },
+          targetSize,
+        );
+        const parentPosition = optionsFromWindowPosition(
+          {
+            top: '20px',
+            left: '10%',
+            width: '200px',
+            minWidth: '300px',
+          },
+          targetSize,
+        );
+        applyParentPosition(windowPosition, targetSize, parentPosition);
+        expect(windowPosition).to.have.property('top', parentPosition.top);
+        expect(windowPosition).to.have.property(
+          'left',
+          parentPosition.left + parentPosition.minWidth + 2,
+        );
+      });
+
+      it('should derive parentWidth from left right', () => {
+        const windowPosition = optionsFromWindowPosition(
+          {
+            top: '10px',
+            left: '60px',
+            width: '20px',
+            height: '20px',
+          },
+          targetSize,
+        );
+        const parentPosition = optionsFromWindowPosition(
+          {
+            top: '20px',
+            left: '10%',
+            right: '20%',
+          },
+          targetSize,
+        );
+        const parentWidth =
+          targetSize.width - parentPosition.left - parentPosition.right;
+        applyParentPosition(windowPosition, targetSize, parentPosition);
+        expect(windowPosition).to.have.property('top', parentPosition.top);
+        expect(windowPosition).to.have.property(
+          'left',
+          parentPosition.left + parentWidth + 2,
+        );
+      });
+
+      it('should derive parentTop from bottom and height', () => {
+        const windowPosition = optionsFromWindowPosition(
+          {
+            top: '10px',
+            left: '60px',
+            width: '20px',
+            height: '20px',
+          },
+          targetSize,
+        );
+        const parentPosition = optionsFromWindowPosition(
+          {
+            bottom: '20px',
+            left: '10%',
+            width: '200px',
+            height: '20%',
+          },
+          targetSize,
+        );
+        const parentTop =
+          targetSize.height - parentPosition.bottom - parentPosition.height;
+        applyParentPosition(windowPosition, targetSize, parentPosition);
+        expect(windowPosition).to.have.property('top', parentTop);
+        expect(windowPosition).to.have.property(
+          'left',
+          parentPosition.left + parentPosition.width + 2,
+        );
+      });
+    });
+
     describe('applyPositionOnTarget', () => {
       it('should apply all boundary conditions of the target', () => {
         const windowPosition = {
@@ -374,7 +492,7 @@ describe('windowHelper', () => {
           width: '110%',
           height: 'auto',
         };
-        const appliedPosition = applyPositionOnTarget(
+        const appliedPosition = getPositionAppliedOnTarget(
           windowPosition,
           targetSize,
         );

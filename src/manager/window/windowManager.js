@@ -11,12 +11,14 @@ import { vcsAppSymbol } from '../../pluginHelper.js';
  * @property {string} STATIC - Static windows cannot be moved and will be positioned top-left.
  * @property {string} DYNAMIC_LEFT - Positioned top-left, if no static window is present. Can be moved by user interaction.
  * @property {string} DYNAMIC_RIGHT - Positioned top-right. Can be moved by user interaction.
+ * @property {string} DYNAMIC_CHILD - Positioned top-right of a parent window. Can be moved by user interaction. Will be moved with parent window, if docked. Requires parentId.
  * @property {string} DETACHED - Positioned at initial provided position. Can be moved by user interaction.
  */
 export const WindowSlot = {
   STATIC: 'static',
   DYNAMIC_LEFT: 'dynamicLeft',
   DYNAMIC_RIGHT: 'dynamicRight',
+  DYNAMIC_CHILD: 'dynamicChild',
   DETACHED: 'detached',
 };
 
@@ -102,11 +104,12 @@ export function isSlotPosition(windowPosition) {
 /**
  * @typedef WindowComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
+ * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
  * @property {import("vue").Component} component Main Component which is shown below the header.
  * @property {import("vue").Component} [headerComponent] Replaces the Header Component.
  * @property {WindowState} [state]
- * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
- * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
+ * @property {WindowPositionOptions} [position] Will be merged with default position for slot
+ * @property {WindowSlot} [slot]
  * @property {Object} [props]
  * @property {Object} [provides]
  */
@@ -130,10 +133,11 @@ export function isSlotPosition(windowPosition) {
 /**
  * @typedef WindowComponent
  * @property {string} id
+ * @property {string} [parentId]
  * @property {import("vue").Component} component
  * @property {import("vue").Component} [headerComponent]
  * @property {WindowState} state
- * @property {WindowPosition} position
+ * @property {WindowPosition} [position]
  * @property {WindowPositionOptions} initialPositionOptions
  * @property {import("vue").Ref<WindowSlot>} slot
  * @property {WindowSlot} initialSlot
@@ -225,9 +229,16 @@ function setWindowPosition(windowComponent, windowPositionOptions) {
   const initialWindowPosition = windowPositionFromOptions(
     windowComponent.initialPositionOptions,
   );
+  const isInitialPosition = compareWindowPositions(
+    windowPosition,
+    initialWindowPosition,
+  );
   windowComponent.state.dockable =
-    windowComponent.slot.value === WindowSlot.DETACHED &&
-    !compareWindowPositions(windowPosition, initialWindowPosition);
+    windowComponent.slot.value === WindowSlot.DETACHED && !isInitialPosition;
+
+  if (isInitialPosition) {
+    windowComponent.slot.value = windowComponent.initialSlot;
+  }
 }
 
 /**
@@ -299,6 +310,12 @@ class WindowManager {
       this._windowComponents.delete(id);
       this._handleSlotsChanged(windowComponent.slot.value);
       this.removed.raiseEvent(windowComponent);
+      const child = Array.from(this._windowComponents.values()).find(
+        ({ parentId }) => id === parentId,
+      );
+      if (child) {
+        this.remove(child.id);
+      }
     }
   }
 
@@ -368,6 +385,9 @@ class WindowManager {
     }
     if (slot === WindowSlot.DYNAMIC_RIGHT) {
       return { ...position, ...WindowPositions.TOP_RIGHT };
+    }
+    if (slot === WindowSlot.DYNAMIC_CHILD) {
+      return { ...position, ...WindowPositions.TOP_LEFT };
     }
     return position || WindowPositions.DETACHED;
   }
@@ -449,6 +469,14 @@ class WindowManager {
     const slotOption =
       windowComponentOptions.slot?.value || windowComponentOptions.slot;
     const slot = parseEnumValue(slotOption, WindowSlot, WindowSlot.DETACHED);
+    if (
+      slot === WindowSlot.DYNAMIC_CHILD &&
+      !this.has(windowComponentOptions.parentId)
+    ) {
+      throw new Error(
+        `The mandatory parent window with id ${windowComponentOptions.parentId} is not registered. Add the parent window or choose another slot than dynamicChild.`,
+      );
+    }
     const windowPositionOptions = this._getPositionOptionsForSlot(
       slot,
       windowComponentOptions.position,
@@ -490,6 +518,9 @@ class WindowManager {
     const windowComponent = {
       get id() {
         return id;
+      },
+      get parentId() {
+        return windowComponentOptions?.parentId;
       },
       get state() {
         return state;
@@ -561,11 +592,12 @@ class WindowManager {
     }
     this._removeWindowAtSlot(component.initialSlot);
     component.slot.value = component.initialSlot;
+    component.state.dockable = false;
     const dockedPosition = this._getPositionOptionsForSlot(
       component.initialSlot,
       component.initialPositionOptions,
     );
-    this.setWindowPositionOptions(id, dockedPosition);
+    windowPositionFromOptions(dockedPosition, component.position);
     this._windowPositionsCache.delete(id);
   }
 

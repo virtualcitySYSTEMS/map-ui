@@ -149,6 +149,24 @@ describe('windowManager', () => {
           windowManager.add.bind(windowManager, [{ id: 'test' }, 'plugin']),
         ).to.throw;
       });
+      it('should throw if slot DYNAMIC_CHILD is used without parentId or if the parent window is not registered', () => {
+        expect(
+          windowManager.add.bind(windowManager, [
+            { id: 'testDynamicChild', slot: WindowSlot.DYNAMIC_CHILD },
+            'plugin',
+          ]),
+        ).to.throw;
+        expect(
+          windowManager.add.bind(windowManager, [
+            {
+              id: 'testDynamicChild',
+              parentId: 'parent',
+              slot: WindowSlot.DYNAMIC_CHILD,
+            },
+            'plugin',
+          ]),
+        ).to.throw;
+      });
 
       describe('returns a windowComponent', () => {
         it('id should be readonly', () => {
@@ -386,6 +404,18 @@ describe('windowManager', () => {
       expect(removedSpy).toHaveBeenCalledTimes(1);
       expect(removedSpy).toHaveBeenCalledWith(window1);
     });
+
+    it('should remove child windows, when removing the parent', () => {
+      const window3 = windowManager.add(
+        { slot: WindowSlot.DYNAMIC_CHILD, parentId: window2.id },
+        'plugin',
+      );
+      expect(windowManager.has(window2.id)).to.be.true;
+      expect(windowManager.has(window3.id)).to.be.true;
+      windowManager.remove(window2.id);
+      expect(windowManager.has(window2.id)).to.be.false;
+      expect(windowManager.has(window3.id)).to.be.false;
+    });
   });
 
   describe('caching window position', () => {
@@ -616,6 +646,13 @@ describe('windowManager', () => {
 
     it('should update the dockable state', () => {
       expect(windowComponentLeft.state.dockable).to.be.true;
+    });
+
+    it('should reset the initial slot, if window returned to initial position', () => {
+      windowManager.pinWindow(windowComponentLeft.id);
+      expect(windowComponentLeft.slot.value).to.be.equal(
+        WindowSlot.DYNAMIC_LEFT,
+      );
     });
   });
 });

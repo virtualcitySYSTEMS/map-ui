@@ -91,7 +91,8 @@
       const isDockedLeft = computed(() => {
         return (
           props.slotWindow === WindowSlot.STATIC ||
-          props.slotWindow === WindowSlot.DYNAMIC_LEFT
+          props.slotWindow === WindowSlot.DYNAMIC_LEFT ||
+          props.slotWindow === WindowSlot.DYNAMIC_CHILD
         );
       });
       const isDockedRight = computed(

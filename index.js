@@ -68,6 +68,7 @@ export {
   WindowAlignment,
   getFittedWindowPositionOptions,
   getFittedWindowPositionOptionsFromMapEvent,
+  getTargetSize,
   getWindowPositionOptions,
   getWindowPositionOptionsFromMapEvent,
   posToNumber,
@@ -76,7 +77,8 @@ export {
   updateWindowPosition,
   clipToTargetSize,
   moveWindow,
-  applyPositionOnTarget,
+  applyParentPosition,
+  getPositionAppliedOnTarget,
 } from './src/manager/window/windowHelper.js';
 
 export { default as ButtonManager } from './src/manager/buttonManager.js';

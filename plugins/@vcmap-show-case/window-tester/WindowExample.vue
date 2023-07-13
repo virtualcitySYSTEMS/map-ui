@@ -20,9 +20,11 @@
   import { getLogger } from '@vcsuite/logger';
 
   import { WindowSlot, VcsFormButton } from '@vcmap/ui';
-  import VcsContent from './windowExampleContent.vue';
+  import WindowExampleToggleChild from './windowExampleToggleChild.vue';
+  import WindowExampleContent from './windowExampleContent.vue';
   import MyCustomHeader from './myCustomHeader.vue';
   import EmptyComponent from './emptyComponent.vue';
+  import { name as owner } from './package.json';
 
   const showTestClass = ref(false);
 
@@ -34,7 +36,7 @@
         {
           id: 'dynamicLeft',
           headerTitle: 'Example dynamicLeft',
-          component: VcsContent,
+          component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
@@ -42,7 +44,7 @@
           state: {
             headerTitle: 'Example dynamicLeft2',
           },
-          component: VcsContent,
+          component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
@@ -50,7 +52,7 @@
           state: {
             headerTitle: 'Example dynamicLeft2 with 1000px width',
           },
-          component: VcsContent,
+          component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
           position: {
             width: '1000px',
@@ -61,7 +63,7 @@
           state: {
             headerTitle: 'Example dynamicRight',
           },
-          component: VcsContent,
+          component: WindowExampleContent,
           headerComponent: MyCustomHeader,
           slot: WindowSlot.DYNAMIC_RIGHT,
           props: {
@@ -73,7 +75,7 @@
           state: {
             headerTitle: 'Example dynamicRight2',
           },
-          component: VcsContent,
+          component: WindowExampleContent,
           slot: WindowSlot.DYNAMIC_RIGHT,
         },
         {
@@ -82,7 +84,7 @@
             headerTitle: 'Example static',
             styles: { 'background-color': 'red' },
           },
-          component: EmptyComponent,
+          component: WindowExampleToggleChild,
           slot: WindowSlot.STATIC,
         },
         {
@@ -103,7 +105,7 @@
           state: {
             headerTitle: 'Example position1 relative',
           },
-          component: VcsContent,
+          component: WindowExampleToggleChild,
           position: {
             left: '30%',
             right: '30%',
@@ -117,7 +119,7 @@
             hideHeader: false,
             headerTitle: 'Example position2 absolute',
           },
-          component: VcsContent,
+          component: WindowExampleToggleChild,
           position: {
             left: '200px',
             top: '300px',
@@ -155,10 +157,7 @@
             const windowComponentOptions = exampleWindows.find(
               (item) => item.id === windowId,
             );
-            app.windowManager.add(
-              windowComponentOptions,
-              'WindowManagerExample',
-            );
+            app.windowManager.add(windowComponentOptions, owner);
           }
         },
         examples: exampleWindows.map((item) => item.id),

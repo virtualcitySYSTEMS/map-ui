@@ -5,6 +5,8 @@ It tracks the [WindowState](#windowstate), the current [Slot](#Slot) and [Positi
 The WindowManager caches the position of closed windows, if they were moved from there initial position, and restores the position on reopen.
 It also takes care of window resize by applying the size of the current map target to all windows and by repositioning windows, which would be shifted out of screen.
 
+> For full examples take a look at the [@vcmap-show-case/window-tester](../plugins/@vcmap-show-case/window-tester) plugin.
+
 ## WindowComponent
 
 WindowComponent defines the properties of a VC Map window. All parts will be explained later on.
@@ -13,15 +15,17 @@ WindowComponent defines the properties of a VC Map window. All parts will be exp
 /**
  * @typedef WindowComponent
  * @property {string} id
+ * @property {string} [parentId]
  * @property {import("vue").Component} component
  * @property {import("vue").Component} [headerComponent]
  * @property {WindowState} state
- * @property {WindowPosition} position
+ * @property {WindowPosition} [position]
  * @property {WindowPositionOptions} initialPositionOptions
  * @property {import("vue").Ref<WindowSlot>} slot
  * @property {WindowSlot} initialSlot
  * @property {Object} props
  * @property {Object} provides
+ * @property {import("vue").ComputedGetter<number>} zIndex
  */
 ```
 
@@ -31,11 +35,12 @@ A new WindowComponent can be created from `WindowComponentOptions` by passing th
 /**
  * @typedef WindowComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
+ * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
  * @property {import("vue").Component} component Main Component which is shown below the header.
  * @property {import("vue").Component} [headerComponent] Replaces the Header Component.
  * @property {WindowState} [state]
- * @property {WindowPositionOptions} [position] Will be ignored if WindowSlot !== DETACHED, can be given otherwise or default will be used
- * @property {WindowSlot} [slot] If WindowSlot is not detached the position will be ignored
+ * @property {WindowPositionOptions} [position] Will be merged with default position for slot
+ * @property {WindowSlot} [slot]
  * @property {Object} [props]
  * @property {Object} [provides]
  */
@@ -212,7 +217,7 @@ The following options can be defined:
  */
 ```
 
-> The position options will be ignored on `add`, if WindowSlot is not DETACHED.
+> Depending on the provided slot the position options will be merged on `add` with the default position of the WindowSlot.
 
 Do not update the position property of a window Component directly. Use the WindowManager's `setWindowPositionOptions` method instead:
 
@@ -234,11 +239,15 @@ const parsedPosition = windowPositionFromOptions(
 );
 ```
 
+This will set default values and assign the options on a provided windowPosition (2nd parameter).
+
+### WindowHelper
+
 To get numerical absolute position values use:
 
 ```js
-const { target } = app.maps; // the current map target
-const numericPosition = optionsFromWindowPosition(windowPosition, target);
+const targetSize = getTargetSize(app.maps.target); // the current map target
+const numericPosition = optionsFromWindowPosition(windowPosition, targetSize);
 ```
 
 There are more helper functions to work with the window's position (see [WindowHelper](../src/manager/window/windowHelper.js)):
@@ -250,11 +259,11 @@ There are more helper functions to work with the window's position (see [WindowH
 - `updateWindowPosition` Returns an updated WindowPosition by applying new options keeping the original object unchanged.
 - `moveWindow` Move window position in x and y.
 - `clipToTargetSize` Clips a provided WindowPosition corresponding to the size of its target.
-- `applyPositionOnTarget` Applies the position on the target clipping the position to the target's size.
+- `getPositionAppliedOnTarget` Returns the position applied on the target by clipping the position to the target's size.
 
 ## Slot
 
-The WindowManager offers four slot types:
+The WindowManager offers five slot types:
 
 ```js
 /**
@@ -263,13 +272,46 @@ The WindowManager offers four slot types:
  * @property {string} STATIC - Static windows cannot be moved and will be positioned top-left.
  * @property {string} DYNAMIC_LEFT - Positioned top-left, if no static window is present. Can be moved by user interaction.
  * @property {string} DYNAMIC_RIGHT - Positioned top-right. Can be moved by user interaction.
+ * @property {string} DYNAMIC_CHILD - Positioned top-right of a parent window. Can be moved by user interaction. Will be moved with parent window, if docked. Requires parentId.
  * @property {string} DETACHED - Positioned at initial provided position. Can be moved by user interaction.
  */
 ```
 
 See [GET_STARTED](./GET_STARTED.md#overview-ui-elements) for a visualization of the slot positions.
 
-> If WindowSlot is not DETACHED, the position will be ignored on `add`.
+Depending on the provided slot the position options will be merged on `add` with the default position of the WindowSlot.
+
+### Dynamic Child Slot
+
+The dynamic child slot binds a window to a parent window, which is defined by a `parentId`:
+
+```js
+const parentWindowComponentOptions = {
+  id: 'parent',
+  componet: ParentComponent,
+  slot: WindowSlot.DYNAMIC_LEFT,
+};
+
+const childWindowComponentOptions = {
+  id: 'child',
+  parentId: 'parent',
+  component: ChildComponent,
+  slot: WindowSlot.DYNAMIC_CHILD,
+  position: {
+    width: '200px',
+    // left and top will be overwritten by the derived child position next to its parent
+  },
+};
+```
+
+> The parent window's slot must be one of `'STATIC'`, `'DYNAMIC_LEFT'` or `'DETACHED'`.
+
+Behaviour of the child window:
+
+- The child window is always opened top-right of the parent window.
+- The child window can be moved away from and docked to the parent window.
+- The child window is moved with the parent window, if it is docked.
+- The child window is closed, when the parent window is closed.
 
 ## Props & Provide/Inject
 
