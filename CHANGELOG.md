@@ -5,6 +5,8 @@
 - The VcsAction now has a `hasUpdate` property and the VcsActionButtonList forwards the property to the Button Renderer
 - Fixed Cesium missing Thirdparty lib. (Draco encoded datasets should now work)
 - I18n Text review
+- Add new WindowSlot `dynamicChild`, which binds a window to a parent window.
+- Add `expandable` property to VcsFormSection
 
 # 5.0.0-rc.26
 

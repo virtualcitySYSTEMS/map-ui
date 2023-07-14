@@ -2,6 +2,8 @@
   <v-form v-model="isValid" ref="form">
     <VcsFormSection
       heading="VcsFormSection Select & Text Inputs"
+      expandable
+      start-open
       :header-actions="actions"
       :action-button-list-overflow-count="4"
     >
@@ -15,7 +17,7 @@
           <span>{{ $t('form-inputs-example.help3desc') }}</span>
         </ol>
       </template>
-      <template #default v-if="showSection">
+      <template #default>
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col class="w-max-half">
@@ -403,10 +405,6 @@
         required: true,
       },
       dense: {
-        type: Object,
-        required: true,
-      },
-      showSection: {
         type: Object,
         required: true,
       },

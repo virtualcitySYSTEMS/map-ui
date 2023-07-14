@@ -23,25 +23,6 @@ export default function createExampleActions() {
       title: 'another action without icon',
       callback: () => {},
     },
-    reactive({
-      name: 'toggleSection',
-      title: 'toggle section',
-      icon: showSection.value ? '$vcsMinus' : '$vcsPlus',
-      callback() {
-        showSection.value = !showSection.value;
-        this.icon = showSection.value ? '$vcsMinus' : '$vcsPlus';
-      },
-    }),
-    reactive({
-      name: 'toggleIcon',
-      title: 'toggle switch textfields-example',
-      icon: showSection.value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off',
-      active: showSection.value,
-      callback() {
-        showSection.value = !showSection.value;
-        this.active = showSection.value;
-      },
-    }),
     {
       name: 'alert',
       icon: 'mdi-message-text',
