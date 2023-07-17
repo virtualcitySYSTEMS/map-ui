@@ -24,6 +24,7 @@
           v-bind="{ ...$attrs, ...attrs }"
           v-on="{ ...$listeners, ...on }"
           :height="isDense ? 24 : 32"
+          :rules="rules"
           class="py-1 primary--placeholder align-center"
           :class="{
             'remove-outline': !isOutlined,
@@ -244,6 +245,16 @@
         }
       });
 
+      const rules = computed(() => {
+        if (attrs.type === 'number' && Array.isArray(attrs.rules)) {
+          return attrs.rules.map((rule) => {
+            return (value) => rule(parseFloat(value));
+          });
+        } else {
+          return attrs.rules;
+        }
+      });
+
       function onEscape(event) {
         textFieldRef.value.blur();
         emit('input', textFieldRef.value.initialValue);
@@ -268,6 +279,7 @@
         isOutlined,
         visibleValue,
         type,
+        rules,
         onEscape,
         textFieldRef,
         errorMessage,

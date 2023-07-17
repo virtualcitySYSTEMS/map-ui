@@ -1,6 +1,6 @@
 <template>
   <MenuWrapper
-    v-bind="{ value, valueDefault }"
+    v-bind="{ value, valueDefault, disabled }"
     :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
     v-on="$listeners"
     name="components.style.stroke"
@@ -49,6 +49,10 @@
       valueDefault: {
         type: Object,
         default: undefined,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props) {

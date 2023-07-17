@@ -194,6 +194,7 @@ export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vu
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
 export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
+export { default as VcsRadioGrid } from './src/components/form-inputs-controls/VcsRadioGrid.vue';
 // export { default as VcsColorPicker } from './src/components/form-inputs-controls/VcsColorPicker.vue';
 export { default as VcsFormSection } from './src/components/form-inputs-controls/VcsFormSection.vue';
 // export { default as VcsInputColumnCoordinates } from './src/components/form-inputs-controls/VcsInputColumnCoordinates.vue';
@@ -234,6 +235,8 @@ export { default as VcsFillSelector } from './src/components/style/VcsFillSelect
 export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.vue';
 export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.vue';
 export { default as VcsStrokeMenu } from './src/components/style/VcsStrokeMenu.vue';
+export { default as VcsImageSelector } from './src/components/style/VcsImageSelector.vue';
+export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.vue';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

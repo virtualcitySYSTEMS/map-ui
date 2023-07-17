@@ -2,6 +2,7 @@
 
 - Add a required prop to `VcsLabel` marking input fields as required using an asterisk.
 - Adds `VcsFillSelector`, `VcsStrokeSelector`, `VcsFillMenu` and `VcsStrokeMenu` components to model fill and stroke of style objects and integrates them into then new `@vcmap-show-case\style-input-example` plugin.
+- Adds `VcsImageSelector` and `VcsImageMenu` components to model ol/style/Image JSON representation and integrates them into then new `@vcmap-show-case\style-input-example` plugin.
 - The VcsAction now has a `hasUpdate` property and the VcsActionButtonList forwards the property to the Button Renderer
 - Fixed Cesium missing Thirdparty lib. (Draco encoded datasets should now work)
 - I18n Text review

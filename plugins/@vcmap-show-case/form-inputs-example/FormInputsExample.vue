@@ -337,6 +337,26 @@
               />
             </v-col>
           </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <VcsRadioGrid
+                v-model="state.selected"
+                :items="[
+                  { value: 'A', src: 'mdi-circle-outline' },
+                  { value: 'B', src: 'mdi-close' },
+                  { value: 'C', src: 'mdi-triangle-outline' },
+                  { value: 'D', src: 'mdi-square-outline' },
+                ]"
+                :dense="dense"
+                :rules="[(v) => v !== 'D' || 'Square is not allowed']"
+              >
+                <!-- if label slot is not used, src is forwarded to img src -->
+                <template #label="{ src }">
+                  <v-icon size="24">{{ src }}</v-icon>
+                </template>
+              </VcsRadioGrid>
+            </v-col>
+          </v-row>
         </v-container>
       </template>
     </VcsFormSection>
@@ -375,8 +395,9 @@
     VcsTextArea,
     VcsDatePicker,
     VcsSlider,
+    VcsRadioGrid,
   } from '@vcmap/ui';
-  import { VCol, VContainer, VForm, VRow } from 'vuetify/lib';
+  import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/lib';
   import packageJSON from './package.json';
   import { isValidText, conditionalTest, isValidEmail } from './validation.js';
 
@@ -398,6 +419,8 @@
       VContainer,
       VcsDatePicker,
       VcsSlider,
+      VcsRadioGrid,
+      VIcon,
     },
     props: {
       actions: {

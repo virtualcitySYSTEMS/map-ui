@@ -1,12 +1,19 @@
 <template>
   <v-sheet>
     <div class="d-flex align-center py-1">
-      <VcsCheckbox :value="!!value" @change="handleCheckbox" />
+      <VcsCheckbox
+        :value="!!value"
+        @change="handleCheckbox"
+        :disabled="disabled"
+      />
       <v-menu
         :close-on-content-click="false"
+        :close-on-click="false"
         v-model="isMenuOpen"
         :absolute="true"
-        :disabled="!value"
+        :disabled="!value || disabled"
+        min-width="300"
+        max-width="300"
       >
         <template #activator="{ on, attrs }">
           <VcsTooltip :tooltip="name">
@@ -95,6 +102,10 @@
       name: {
         required: true,
         type: String,
+      },
+      disabled: {
+        default: false,
+        type: Boolean,
       },
     },
     setup(props, { emit }) {
