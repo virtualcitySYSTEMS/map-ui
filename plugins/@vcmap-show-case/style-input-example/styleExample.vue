@@ -13,6 +13,10 @@
         v-model="styleOptions.image"
         :value-default="defaultStyleOptions"
       />
+      <VcsTextMenu
+        v-model="styleOptions.text"
+        :value-default="defaultStyleOptions"
+      />
     </VcsFormSection>
     <VcsFormSection heading="Fill Selector">
       <VcsFillSelector v-model="styleOptions.fill" />
@@ -23,6 +27,12 @@
     <VcsFormSection heading="Image Selector">
       <VcsImageSelector
         v-model="styleOptions.image"
+        :value-default="defaultStyleOptions"
+      />
+    </VcsFormSection>
+    <VcsFormSection heading="Text Selector">
+      <VcsTextSelector
+        v-model="styleOptions.text"
         :value-default="defaultStyleOptions"
       />
     </VcsFormSection>
@@ -40,9 +50,11 @@
     VcsStrokeMenu,
     VcsImageSelector,
     VcsImageMenu,
+    VcsTextSelector,
+    VcsTextMenu,
   } from '@vcmap/ui';
   import { parseColor } from '@vcmap/core';
-  import { Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
+  import { Fill, Icon, RegularShape, Stroke, Style, Text } from 'ol/style.js';
 
   export default {
     name: 'StyleExample',
@@ -55,6 +67,8 @@
       VcsStrokeSelector,
       VcsImageSelector,
       VcsImageMenu,
+      VcsTextSelector,
+      VcsTextMenu,
     },
     setup() {
       const exampleStyle = new Style({
@@ -68,6 +82,11 @@
           fill: new Fill({ color: 'rgba(255,255,255,1)' }),
           stroke: new Stroke({ color: 'rgba(0,0,0,1)', width: 1 }),
         }),
+        text: new Text({
+          font: '10px Arial, Helvetica, sans-serif',
+          fill: new Fill({ color: 'rgba(0,0,0,1)' }),
+          stroke: new Stroke({ color: 'rgba(255,255,255,1)', width: 1 }),
+        }),
       });
 
       const defaultStyleOptions = {
@@ -79,17 +98,23 @@
         radius: 10,
         scale: 1,
         opacity: 1,
+        font: '10px Arial, Helvetica, sans-serif',
+        offsetX: 0,
+        offsetY: 0,
+        text: '',
       };
 
       const styleOptions = ref({
         fill: undefined,
         stroke: undefined,
         image: undefined,
+        text: undefined,
       });
 
       const fill = exampleStyle.getFill();
       const stroke = exampleStyle.getStroke();
       const image = exampleStyle.getImage();
+      const text = exampleStyle.getText();
 
       // TODO: Replace with new getStyleOptions from @vcmap/core as soon as available
       if (fill) {
@@ -106,26 +131,42 @@
       if (image) {
         if (image instanceof RegularShape) {
           styleOptions.value.image = {
-            points: exampleStyle.getImage().getPoints(),
-            radius: exampleStyle.getImage().getRadius(),
-            radius2: exampleStyle.getImage().getRadius2(),
-            angle: exampleStyle.getImage().getAngle(),
+            points: image.getPoints(),
+            radius: image.getRadius(),
+            radius2: image.getRadius2(),
+            angle: image.getAngle(),
             fill: {
-              color: parseColor(exampleStyle.getImage().getFill().getColor()),
+              color: parseColor(image.getFill().getColor()),
             },
             stroke: {
-              color: parseColor(exampleStyle.getImage().getStroke().getColor()),
-              width: exampleStyle.getImage().getStroke().getWidth(),
+              color: parseColor(image.getStroke().getColor()),
+              width: image.getStroke().getWidth(),
             },
             src: 'mdi-circle-outline',
           };
         } else if (image instanceof Icon) {
           styleOptions.value.image = {
-            src: exampleStyle.getImage().getSrc(),
-            scale: exampleStyle.getImage().getScale(),
-            opacity: exampleStyle.getImage().getOpacity(),
+            src: image.getSrc(),
+            scale: image.getScale(),
+            opacity: image.getOpacity(),
           };
         }
+      }
+      if (text) {
+        styleOptions.value.text = {
+          font: text.getFont(),
+          fill: {
+            color: parseColor(text.getFill()?.getColor()),
+          },
+          stroke: {
+            color: parseColor(text.getStroke()?.getColor()),
+            width: text.getStroke().getWidth(),
+          },
+          textBaseline: text.getTextBaseline(),
+          offsetY: text.getOffsetY(),
+          offsetX: text.getOffsetX(),
+          text: text.getText(),
+        };
       }
 
       onMounted(() => {
@@ -133,6 +174,7 @@
           const newFill = styleOptions.value.fill;
           const newStroke = styleOptions.value.stroke;
           const newImage = styleOptions.value.image;
+          // const newText = styleOptions.value.text;
           // TODO: Replace with new getStyleFromOptions from @vcmap/core as soon as available
           exampleStyle.setFill(newFill ? new Fill(newFill) : null);
           exampleStyle.setStroke(newStroke ? new Stroke(newStroke) : null);
