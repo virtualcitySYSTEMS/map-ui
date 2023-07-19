@@ -1,39 +1,28 @@
 <template>
   <v-sheet>
     <VcsFormSection heading="Style menus">
-      <VcsFillMenu
-        v-model="styleOptions.fill"
-        :value-default="defaultStyleOptions.fill"
-      />
-      <VcsStrokeMenu
-        v-model="styleOptions.stroke"
-        :value-default="defaultStyleOptions.stroke"
-      />
-      <VcsImageMenu
-        v-model="styleOptions.image"
-        :value-default="defaultStyleOptions"
-      />
-      <VcsTextMenu
-        v-model="styleOptions.text"
+      <VcsVectorStyleComponent
+        v-model="styleOptions"
         :value-default="defaultStyleOptions"
       />
     </VcsFormSection>
-    <VcsFormSection heading="Fill Selector">
+    <VcsFormSection :expandable="true" heading="Fill Selector">
       <VcsFillSelector v-model="styleOptions.fill" />
     </VcsFormSection>
-    <VcsFormSection heading="Stroke Selector">
+    <VcsFormSection :expandable="true" heading="Stroke Selector">
       <VcsStrokeSelector v-model="styleOptions.stroke" />
     </VcsFormSection>
-    <VcsFormSection heading="Image Selector">
+    <VcsFormSection :expandable="true" heading="Image Selector">
       <VcsImageSelector
         v-model="styleOptions.image"
-        :value-default="defaultStyleOptions"
+        :value-default="defaultStyleOptions.image"
+        :extended-shape-settings="true"
       />
     </VcsFormSection>
-    <VcsFormSection heading="Text Selector">
+    <VcsFormSection :expandable="true" heading="Text Selector">
       <VcsTextSelector
         v-model="styleOptions.text"
-        :value-default="defaultStyleOptions"
+        :value-default="defaultStyleOptions.text"
       />
     </VcsFormSection>
   </v-sheet>
@@ -45,13 +34,11 @@
   import {
     VcsFormSection,
     VcsFillSelector,
-    VcsFillMenu,
     VcsStrokeSelector,
-    VcsStrokeMenu,
     VcsImageSelector,
-    VcsImageMenu,
     VcsTextSelector,
-    VcsTextMenu,
+    VcsVectorStyleComponent,
+    VectorStyleMenus,
   } from '@vcmap/ui';
   import { parseColor } from '@vcmap/core';
   import { Fill, Icon, RegularShape, Stroke, Style, Text } from 'ol/style.js';
@@ -61,14 +48,11 @@
     components: {
       VSheet,
       VcsFormSection,
-      VcsFillMenu,
-      VcsStrokeMenu,
       VcsFillSelector,
       VcsStrokeSelector,
       VcsImageSelector,
-      VcsImageMenu,
       VcsTextSelector,
-      VcsTextMenu,
+      VcsVectorStyleComponent,
     },
     setup() {
       const exampleStyle = new Style({
@@ -95,13 +79,22 @@
           color: [0, 0, 0, 1],
           width: 2,
         },
-        radius: 10,
-        scale: 1,
-        opacity: 1,
-        font: '10px Arial, Helvetica, sans-serif',
-        offsetX: 0,
-        offsetY: 0,
-        text: '',
+        image: {
+          fill: undefined,
+          stroke: {
+            color: [0, 0, 0, 1],
+            width: 2,
+          },
+          radius: 10,
+          scale: 1,
+          opacity: 1,
+        },
+        text: {
+          font: '10px Arial, Helvetica, sans-serif',
+          offsetX: 0,
+          offsetY: 0,
+          text: '',
+        },
       };
 
       const styleOptions = ref({
@@ -191,6 +184,7 @@
       return {
         styleOptions,
         defaultStyleOptions,
+        VectorStyleMenus,
       };
     },
   };

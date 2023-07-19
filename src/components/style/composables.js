@@ -37,7 +37,7 @@ export function between(value, range) {
  * @param {string} key The key of the modelObject that should be return on get and updated on set.
  * @param {*} defaultValue Default value for the key of the modelObject.
  * @param {function(event: string, ...args: any[]):void} emit The emit function of the component context that is using this composable.
- * @param {Array<number>} [range] The allowed range for this value.
+ * @param {Array<number>} [range] The allowed range of numbers.
  * @param {Array<number>} [isRequired] If value is required.
  * @returns {*} The value to the key param if the getter is called.
  */
@@ -51,7 +51,7 @@ export function useSelectedKey(
 ) {
   return computed({
     get() {
-      if (modelObject()?.[key] === undefined) {
+      if (modelObject()?.[key] === undefined && isRequired) {
         return defaultValue;
       }
       return modelObject()?.[key];
@@ -67,7 +67,9 @@ export function useSelectedKey(
         return;
       }
       const newModelObject = JSON.parse(JSON.stringify(modelObject()));
-      emit('input', Object.assign(newModelObject, { [key]: value }));
+      // is needed to get e.g. from square shape to x by setting radius2 from 0 to undefined
+      const newValue = value === '' ? undefined : value;
+      emit('input', Object.assign(newModelObject, { [key]: newValue }));
     },
   });
 }

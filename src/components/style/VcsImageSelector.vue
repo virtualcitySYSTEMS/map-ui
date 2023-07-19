@@ -22,15 +22,18 @@
       />
     </div>
     <v-divider />
-    <v-container class="px-1 py-0">
-      <div v-if="selectedType === ImageType.ICON" class="pt-2">
-        <VcsRadioGrid
-          :value="value?.src"
-          @change="setIcon"
-          :items="iconOptions"
-          :disabled="!value"
-          item-value="src"
-        />
+    <v-container class="px-1 pt-1 pb-0">
+      <VcsRadioGrid
+        v-model="selectedImage"
+        :items="currentItems"
+        :disabled="!value"
+        item-value="src"
+      >
+        <template #label="{ src }" v-if="selectedType === ImageType.SHAPE">
+          <v-icon size="24">{{ src }}</v-icon>
+        </template>
+      </VcsRadioGrid>
+      <div v-if="selectedType === ImageType.ICON">
         <v-row no-gutters>
           <v-col>
             <VcsLabel html-for="style-icon-opacity">
@@ -51,80 +54,6 @@
         </v-row>
       </div>
       <div v-else-if="selectedType === ImageType.SHAPE">
-        <v-row no-gutters>
-          <v-col>
-            <VcsSelect
-              :placeholder="$t('components.style.presets')"
-              @input="setShape"
-              :value="shapePreset"
-              :items="[
-                {
-                  text: 'components.style.circle',
-                  value: { radius: 10 },
-                },
-                {
-                  text: 'components.style.square',
-                  value: {
-                    points: 4,
-                    radius: 10,
-                    angle: Math.PI / 4,
-                  },
-                },
-                {
-                  text: 'components.style.rectangle',
-                  value: {
-                    radius: 10 / Math.SQRT2,
-                    radius2: 10,
-                    points: 4,
-                    angle: 0,
-                    scale: [1, 0.5],
-                  },
-                },
-                {
-                  text: 'components.style.triangle',
-                  value: {
-                    points: 3,
-                    radius: 10,
-                    rotation: Math.PI / 4,
-                    angle: 0,
-                  },
-                },
-                {
-                  text: 'components.style.star',
-                  value: {
-                    points: 5,
-                    radius: 10,
-                    radius2: 4,
-                    angle: 0,
-                  },
-                },
-                {
-                  text: 'components.style.cross',
-                  value: {
-                    points: 4,
-                    radius: 10,
-                    radius2: 0,
-                    angle: 0,
-                  },
-                },
-                {
-                  text: 'components.style.x',
-                  value: {
-                    points: 4,
-                    radius: 10,
-                    radius2: 0,
-                    angle: Math.PI / 4,
-                  },
-                },
-                {
-                  text: 'components.style.custom',
-                  value: 'custom',
-                  disabled: true,
-                },
-              ]"
-            ></VcsSelect>
-          </v-col>
-        </v-row>
         <v-row
           no-gutters
           v-for="input in shapeSingleValueInputs"
@@ -160,7 +89,7 @@
       </div>
       <v-row
         no-gutters
-        v-if="!limitedShapeSettings || selectedType === ImageType.ICON"
+        v-if="extendedShapeSettings || selectedType === ImageType.ICON"
       >
         <v-col>
           <VcsLabel>{{ $t('components.style.scale') }}</VcsLabel>
@@ -204,7 +133,7 @@
 
 <script>
   import { computed, onMounted, ref, watch } from 'vue';
-  import { VSheet, VDivider, VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VSheet, VDivider, VContainer, VRow, VCol, VIcon } from 'vuetify/lib';
   import {
     VcsLabel,
     VcsTextField,
@@ -212,7 +141,6 @@
     VcsStrokeMenu,
     VcsRadioGrid,
     VcsRadio,
-    VcsSelect,
     VcsSlider,
   } from '@vcmap/ui';
   import { Circle, Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
@@ -318,25 +246,105 @@
     );
   }
 
+  /**
+   * Compares two regular shapes based on points, radius2, angle, rotation and scale.
+   * @param {import('ol/style/RegularShape').Options} shape1 A ol regular shape.
+   * @param {import('ol/style/RegularShape').Options} shape2 Another ol regular shape.
+   * @returns {boolean} If shapes are equal.
+   */
   function isEqualShape(shape1, shape2) {
     return (
-      shape1.points === shape2.points &&
+      ((!shape1.points && !shape2.points) || shape1.points === shape2.points) &&
       shape1.radius2 === shape2.radius2 &&
-      shape1.angle === shape2.angle &&
-      shape1.rotation === shape2.rotation &&
-      (shape1.scale === shape2.scale ||
+      ((!shape1.angle && !shape2.angle) || shape1.angle === shape2.angle) &&
+      ((!shape1.rotation && !shape2.rotation) ||
+        shape1.rotation === shape2.rotation) &&
+      ((!shape1.scale && !shape2.scale) ||
+        shape1.scale === shape2.scale ||
         (Array.isArray(shape1.scale) &&
           Array.isArray(shape2.scale) &&
           shape1.scale.every((value, index) => value === shape2.scale[index])))
     );
   }
 
+  /** Presets for different shapes with a matching mdi icon as src. */
+  export const defaultShapes = [
+    {
+      src: 'mdi-circle-outline',
+      value: { radius: 10 },
+    },
+    {
+      src: 'mdi-square-outline',
+      value: { points: 4, radius: 10, angle: Math.PI / 4 },
+    },
+    {
+      src: 'mdi-rectangle-outline',
+      value: {
+        radius: 10 / Math.SQRT2,
+        radius2: 10,
+        points: 4,
+        angle: 0,
+        scale: [1, 0.5],
+      },
+    },
+    {
+      src: 'mdi-triangle-outline',
+      value: {
+        points: 3,
+        radius: 10,
+        angle: 0,
+      },
+    },
+    {
+      src: 'mdi-star-outline',
+      value: {
+        points: 5,
+        radius: 10,
+        radius2: 4,
+        angle: 0,
+      },
+    },
+    {
+      src: 'mdi-plus',
+      value: {
+        points: 4,
+        radius: 10,
+        radius2: 0,
+        angle: 0,
+      },
+    },
+    {
+      src: 'mdi-close',
+      value: {
+        points: 4,
+        radius: 10,
+        radius2: 0,
+        angle: Math.PI / 4,
+      },
+    },
+  ];
+
+  export const defaultIcons = [
+    { src: '/assets/style/icon-marker.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-blue.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-green.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-red.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-o.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-o-blue.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-o-green.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-marker-o-red.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-pin.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-pin-blue.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-pin-green.png', anchor: [0.5, 1] },
+    { src: '/assets/style/icon-pin-red.png', anchor: [0.5, 1] },
+  ];
+
   /**
    * @description Allows to model a JSON representation of ol/style/Image style. It makes use of VcsStrokeMenu and VcsFillMenu.
    * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} value - The Image options
    * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
    * @vue-prop {Array<import("ol/style/Icon").Options>} [iconOptions] - The icon options too choose from. Scale and opacity are ignored. The defaults are 3 different shapes with 4 different colors.
-   * @vue-prop {boolean} [limitedShapeSettings=false] - If true, the input fields for shapes are limited to 'preset selection', radius, fill and stroke to keep UI clean.
+   * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
    */
   export default {
     name: 'VcsImageSelector',
@@ -346,7 +354,7 @@
       VContainer,
       VRow,
       VCol,
-      VcsSelect,
+      VIcon,
       VcsRadio,
       VcsLabel,
       VcsTextField,
@@ -362,28 +370,15 @@
       },
       valueDefault: {
         type: Object,
-        required: true,
+        default: undefined,
       },
-      limitedShapeSettings: {
+      extendedShapeSettings: {
         type: Boolean,
         default: false,
       },
       iconOptions: {
         type: Array,
-        default: () => [
-          { src: '/assets/style/icon-marker.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-blue.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-green.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-red.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-o.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-o-blue.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-o-green.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-marker-o-red.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-pin.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-pin-blue.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-pin-green.png', anchor: [0.5, 1] },
-          { src: '/assets/style/icon-pin-red.png', anchor: [0.5, 1] },
-        ],
+        default: () => defaultIcons,
       },
     },
     setup(props, { emit }) {
@@ -399,7 +394,7 @@
 
       const selectedType = ref(currentType.value);
 
-      const shapePreset = ref(undefined);
+      const customIcon = 'mdi-dots-horizontal';
 
       const canvas = ref();
 
@@ -407,7 +402,7 @@
         const inputs = [
           { name: 'radius', unit: 'px', range: [1, 100], isRequired: true },
         ];
-        if (!props.limitedShapeSettings) {
+        if (props.extendedShapeSettings) {
           [
             { name: 'points', range: [0, 10] },
             { name: 'radius2', unit: 'px', range: [0, 100] },
@@ -490,20 +485,85 @@
         emit,
       );
 
+      const selectedImage = computed({
+        get() {
+          if (currentType.value !== selectedType.value) {
+            return undefined;
+          } else if (currentType.value === ImageType.SHAPE) {
+            const equalShape = defaultShapes.find((preset) =>
+              isEqualShape(props.value, preset.value),
+            );
+            if (equalShape) {
+              return equalShape.src;
+            } else {
+              return customIcon;
+            }
+          } else if (currentType.value === ImageType.ICON) {
+            return props.value?.src;
+          } else {
+            return undefined;
+          }
+        },
+        set(value) {
+          let newImage = {};
+          if (selectedType.value === ImageType.SHAPE) {
+            const switchFromICON = currentType.value === ImageType.ICON;
+            let newPreset;
+            if (value === customIcon && !switchFromICON) {
+              return;
+            } else if (value === customIcon) {
+              newPreset = defaultShapes[0];
+            } else {
+              newPreset = defaultShapes.find((preset) => preset.src === value);
+            }
+
+            if (newPreset) {
+              let fill;
+              let stroke;
+
+              if (switchFromICON) {
+                fill = props.valueDefault?.fill;
+                stroke = props.valueDefault?.stroke;
+              } else {
+                fill = selectedFill.value;
+                stroke = selectedStroke.value;
+              }
+              newImage = JSON.parse(JSON.stringify(newPreset.value));
+              Object.assign(newImage, {
+                fill,
+                stroke,
+              });
+            }
+          } else if (selectedType.value === ImageType.ICON) {
+            newImage = props.iconOptions.find((option) => option.src === value);
+            Object.assign(newImage, {
+              scale: selectedScale.value || 1,
+              opacity: selectedOpacity.value || 1,
+            });
+          }
+          emit('input', JSON.parse(JSON.stringify(newImage)));
+        },
+      });
+
+      const currentItems = computed(() => {
+        let items = [];
+        if (selectedType.value === ImageType.SHAPE) {
+          items = [...defaultShapes];
+          if (props.extendedShapeSettings) {
+            items.push({ src: customIcon });
+          }
+        } else if (selectedType.value === ImageType.ICON) {
+          items = props.iconOptions;
+        }
+        return items;
+      });
+
       onMounted(() => {
         drawImageStyle(canvas.value, props.value);
         watch(
           () => props.value,
           () => {
             drawImageStyle(canvas.value, props.value);
-
-            if (
-              shapePreset.value &&
-              shapePreset.value !== 'custom' &&
-              !isEqualShape(shapePreset.value, props.value)
-            ) {
-              shapePreset.value = 'custom';
-            }
           },
           { deep: true },
         );
@@ -513,35 +573,15 @@
         ImageType,
         selectedType,
         currentType,
-        shapePreset,
+        selectedImage,
         canvas,
         shapeSingleValueInputs,
         selectedScale,
         selectedOpacity,
         selectedFill,
         selectedStroke,
-        setShape(value) {
-          if (value) {
-            shapePreset.value = value;
-            const newImage = JSON.parse(JSON.stringify(value));
-            Object.assign(newImage, {
-              fill: selectedFill.value,
-              stroke: selectedStroke.value,
-            });
-            emit('input', newImage);
-          }
-        },
-        setIcon(value) {
-          const newImage = props.iconOptions.find(
-            (option) => option.src === value,
-          );
-          Object.assign(newImage, {
-            scale: selectedScale.value || 1,
-            opacity: selectedOpacity.value || 1,
-          });
-          emit('input', JSON.parse(JSON.stringify(newImage)));
-        },
         between,
+        currentItems,
       };
     },
   };

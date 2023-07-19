@@ -14,7 +14,7 @@
     </template>
     <template #content>
       <VcsImageSelector
-        v-bind="{ value, valueDefault, shapeOptions, iconOptions }"
+        v-bind="{ value, valueDefault, iconOptions, extendedShapeSettings }"
         v-on="$listeners"
         class="pb-2"
       />
@@ -32,8 +32,8 @@
    * @description A wrapper for the VcsImageSelector, that has a small shape/icon preview and a menu that pops up when clicking the preview, containing the image selector.
    * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} value - The Image options
    * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options} shapeOptions - The shape options too choose from. Must additionally provide icons as src attr. Radius is ignored.
    * @vue-prop {import("ol/style/Icon").Options} iconOptions - The icon options too choose from. Scale and opacity are ignored.
+   * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
    */
   export default {
     name: 'VcsImageMenu',
@@ -50,13 +50,13 @@
         type: Object,
         default: undefined,
       },
-      shapeOptions: {
-        type: Array,
-        default: undefined,
-      },
       iconOptions: {
         type: Array,
         default: undefined,
+      },
+      extendedShapeSettings: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props) {

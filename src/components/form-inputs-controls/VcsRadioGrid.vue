@@ -69,7 +69,6 @@
    * @vue-prop {{value: string, src: string}[]} items - The items to be displayed in the grid. The src is the path to the raster image.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string} itemValue - The key of the provided item objects that contains the value.
-   * @vue-prop {string} itemKey - The key of the provided item objects that should be used as a key for the v-for loop. Should be a string.
    * @vue-data {slot} [#label] - slot to display labels where the src does not contain a path to an img but e.g. the name of an icon. Then an v-icon can be used in the slot.
    */
   export default {
@@ -94,10 +93,6 @@
       itemValue: {
         type: String,
         default: 'value',
-      },
-      itemKey: {
-        type: String,
-        default: undefined,
       },
     },
     setup(props, { attrs }) {

@@ -239,6 +239,10 @@ export { default as VcsImageSelector } from './src/components/style/VcsImageSele
 export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.vue';
 export { default as VcsTextSelector } from './src/components/style/VcsTextSelector.vue';
 export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.vue';
+export {
+  default as VcsVectorStyleComponent,
+  VectorStyleMenus,
+} from './src/components/style/VcsVectorStyleComponent.vue';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

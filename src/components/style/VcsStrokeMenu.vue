@@ -33,6 +33,7 @@
    * When clicking the reset button, the valueDefault is emitted, when unchecking the checkbox in front of the preview, null is emitted. If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [0, 0, 0, 1], width: 1 } is emitted.
    * @vue-prop {import("ol/style/Stroke").Options} [value] - The Stroke Options
    * @vue-prop {import("ol/style/Stroke").Options} [valueDefault] - The default Stroke Options.
+   * @vue-prop {boolean} [disabled=false] - Disable the input
    */
   export default {
     name: 'VcsStrokeMenu',

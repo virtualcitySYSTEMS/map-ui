@@ -43,7 +43,7 @@
           class="pr-1"
           tooltip="components.style.bold"
         >
-          <span class="text-h5 font-weight-black">T</span>
+          {{ $t('components.style.bold') }}
         </VcsButton>
         <VcsButton
           :active="isItalic"
@@ -51,7 +51,7 @@
           class="px-2"
           tooltip="components.style.italic"
         >
-          <span class="text-h5 font-italic font-weight-regular">T</span>
+          {{ $t('components.style.italic') }}
         </VcsButton>
       </div>
       <VcsStrokeMenu
@@ -121,10 +121,8 @@
 
   /**
    * @description Allows to model a JSON representation of ol/style/Text style. It makes use of VcsStrokeMenu and VcsFillMenu.
-   * @vue-prop {import("ol/style/Text").Options} value - The Text style options
-   * @vue-prop {import("ol/style/Text").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options} shapeOptions - The shape options too choose from. Must additionally provide icons as src attr. Radius is ignored.
-   * @vue-prop {import("ol/style/Icon").Options} iconOptions - The icon options too choose from. Scale and opacity are ignored.
+   * @vue-prop {import("ol/style/Text").Options} value - The ol Text style options
+   * @vue-prop {import("ol/style/Text").Options} valueDefault - The default ol Text style options
    */
   export default {
     name: 'VcsTextSelector',

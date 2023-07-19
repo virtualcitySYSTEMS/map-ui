@@ -26,6 +26,7 @@
    * When clicking the reset button, the valueDefault is emitted, when unchecking the checkbox in front of the preview, null is emitted. If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [255, 255, 255, 1] } is emitted.
    * @vue-prop {import("ol/style/Fill").Options} [value] - The Fill Options
    * @vue-prop {import("ol/style/Fill").Options} [valueDefault] - The default Fill Options
+   * @vue-prop {boolean} [disabled=false] - Disable the input
    */
   export default {
     name: 'VcsFillMenu',
