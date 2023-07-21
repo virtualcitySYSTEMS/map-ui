@@ -2,6 +2,7 @@ import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, ref } from 'vue';
+import { parseNumber } from '@vcsuite/parsers';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
 
@@ -12,6 +13,7 @@ import { sortByWeight } from '../buttonManager.js';
  * @property {boolean} [draggable] - only supported for IndexedCollections
  * @property {boolean} [selectable]
  * @property {boolean} [singleSelect]
+ * @property {number} [limit=10] - limit number of items in rendered list (more items are rendered in extra window)
  */
 
 /**
@@ -53,6 +55,15 @@ class CollectionComponent {
      * @type {import("vue").Ref<string>}
      */
     this.title = ref(options.title);
+    /**
+     * @type {import("vue").Ref<boolean>}
+     */
+    this.open = ref(false);
+    /**
+     *
+     * @type {import("vue").Ref<number>}
+     */
+    this.limit = ref(parseNumber(options.limit, 10));
     /**
      * @type {import("vue").Ref<boolean>}
      * @private

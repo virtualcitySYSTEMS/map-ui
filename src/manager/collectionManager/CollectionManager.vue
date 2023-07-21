@@ -4,6 +4,7 @@
       accordion
       multiple
       v-if="componentIds.length > 0"
+      v-model="panels"
       class="rounded-0"
     >
       <collection-component-provider
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-  import { inject, ref } from 'vue';
+  import { computed, inject, ref } from 'vue';
   import { VExpansionPanels, VContainer } from 'vuetify/lib';
   import CollectionComponentProvider from './CollectionComponentProvider.vue';
 
@@ -35,8 +36,26 @@
       const collectionManager = inject('collectionManager');
       const componentIds = ref(collectionManager.componentIds);
 
+      /**
+       * @type {WritableComputedRef<number[]>}
+       */
+      const panels = computed({
+        get() {
+          return [...Array(componentIds.value.length).keys()].filter(
+            (p, idx) =>
+              !!collectionManager.get(componentIds.value[idx]).open.value,
+          );
+        },
+        set(value) {
+          componentIds.value.forEach((id, idx) => {
+            collectionManager.get(id).open.value = value.includes(idx);
+          });
+        },
+      });
+
       return {
         componentIds,
+        panels,
       };
     },
   };

@@ -108,13 +108,15 @@
       };
 
       /**
-       * Sets all entry panels open
        * @type {import("vue").ComputedRef<number[]>}
        */
-      const panels = computed(() => {
-        return [...Array(props.entries.length).keys()].filter(
-          (p, idx) => !!props.entries[idx].open,
-        );
+      const panels = computed({
+        get() {
+          return [...Array(props.entries.length).keys()].filter(
+            (p, idx) => !!props.entries[idx].open,
+          );
+        },
+        set() {},
       });
 
       return {

@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel @change="active = !active">
+  <v-expansion-panel>
     <v-expansion-panel-header hide-actions class="px-2">
       <template #default="{ open }">
         <div class="d-flex justify-space-between">
@@ -15,7 +15,7 @@
     </v-expansion-panel-header>
     <v-expansion-panel-content class="pb-1">
       <vcs-list
-        :items="items.slice(0, 10)"
+        :items="items.slice(0, limit)"
         :draggable="draggable"
         :selectable="selectable"
         :single-select="singleSelect"
@@ -23,7 +23,7 @@
         :show-title="false"
         @item-moved="move"
       />
-      <v-sheet v-if="items.length > 10" class="ma-2 pl-2">
+      <v-sheet v-if="items.length > limit" class="ma-2 pl-2">
         <VcsButton @click="openCollectionComponentList">
           {{ $t('collectionManager.more') }}
         </VcsButton>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import { inject, ref } from 'vue';
+  import { inject } from 'vue';
   import {
     VIcon,
     VExpansionPanel,
@@ -44,13 +44,14 @@
     VExpansionPanelContent,
     VSheet,
   } from 'vuetify/lib';
-  import { IndexedCollection } from '@vcmap/core';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { WindowSlot } from '../window/windowManager.js';
-  import CollectionComponentList from './CollectionComponentList.vue';
+  import CollectionComponentList, {
+    moveItem,
+  } from './CollectionComponentList.vue';
 
   /**
    * Renders the first ten items of a collectionComponent in a List. Uses CollectionComponentList to render more items.
@@ -76,7 +77,6 @@
        */
       const collectionComponent = inject('collectionComponent');
       const windowId = `${collectionComponent.id}-list`;
-      const active = ref(false);
 
       return {
         title: collectionComponent.title,
@@ -85,19 +85,11 @@
         draggable: collectionComponent.draggable,
         selectable: collectionComponent.selectable,
         singleSelect: collectionComponent.singleSelect,
+        limit: collectionComponent.limit,
         actions: collectionComponent.getActions(),
         move({ item, targetIndex }) {
-          if (collectionComponent.collection instanceof IndexedCollection) {
-            const collectionItem = collectionComponent.collection.getByKey(
-              item.name,
-            );
-            collectionComponent.collection.moveTo(
-              collectionItem,
-              targetIndex, // collectionItemOffset.value for paginated lists?
-            );
-          }
+          moveItem(collectionComponent, item, targetIndex);
         },
-        active,
         openCollectionComponentList() {
           if (app.windowManager.has(windowId)) {
             setTimeout(() => {

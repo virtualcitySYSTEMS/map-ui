@@ -11,6 +11,8 @@ import CollectionManagerExample from './CollectionManagerExample.vue';
  * @returns {VcsPlugin}
  */
 export default async function collectionManagerExample() {
+  let collectionManager;
+
   return {
     get name() {
       return packageJSON.name;
@@ -21,8 +23,11 @@ export default async function collectionManagerExample() {
     get vcMapVersion() {
       return packageJSON.vcMapVersion;
     },
+    get collectionManager() {
+      return collectionManager;
+    },
     initialize(app) {
-      const collectionManager = new CollectionManager(app);
+      collectionManager = new CollectionManager(app);
       const { action, destroy } = createToggleAction(
         {
           name: 'Collection Manager Tester',
