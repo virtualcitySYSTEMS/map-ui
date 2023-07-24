@@ -234,7 +234,12 @@
         </v-container>
       </template>
     </VcsFormSection>
-    <VcsFormSection heading="VcsFormSection Radio & Checkbox">
+    <VcsFormSection
+      heading="VcsFormSection Radio & Checkbox"
+      expandable
+      start-open
+      :disabled="!state.checkboxInput"
+    >
       <template #default>
         <v-container class="py-0 px-1">
           <v-row no-gutters>

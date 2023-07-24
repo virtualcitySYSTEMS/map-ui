@@ -154,6 +154,11 @@
       CesiumMap: '$vcs3d',
       ObliqueMap: '$vcsObliqueView',
     };
+    const mapBtnWeight = {
+      OpenlayersMap: 3,
+      CesiumMap: 2,
+      ObliqueMap: 1,
+    };
 
     const mapButtonActionDestroy = {};
     const setupMap = ({ className, name }) => {
@@ -173,6 +178,7 @@
         {
           id: `mapButton-${name}`,
           action,
+          weight: mapBtnWeight[className],
         },
         vcsAppSymbol,
         ButtonLocation.MAP,
@@ -342,7 +348,7 @@
         provides: {
           collectionManager: app.categoryManager,
         },
-        slot: WindowSlot.STATIC,
+        slot: WindowSlot.DYNAMIC_LEFT,
       },
       app.windowManager,
       vcsAppSymbol,

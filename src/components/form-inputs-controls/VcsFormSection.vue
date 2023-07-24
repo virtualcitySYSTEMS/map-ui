@@ -10,6 +10,8 @@
               plain
               icon
               small
+              text
+              :disabled="disabled"
               elevation="0"
               @click="open = !open"
               v-if="expandable"
@@ -18,7 +20,9 @@
                 open ? 'mdi-chevron-down' : 'mdi-chevron-right'
               }}</v-icon>
             </v-btn>
-            <strong>{{ $t(heading) }}</strong>
+            <strong :class="{ 'text--disabled': disabled }">{{
+              $t(heading)
+            }}</strong>
           </div>
           <VcsActionButtonList
             :actions="actions"
@@ -52,6 +56,7 @@
    * @vue-prop {string} heading - Title of the section to be displayed, will be translated.
    * @vue-prop {boolean} [expandable=false] - If true, section can be toggled.
    * @vue-prop {boolean} [startOpen=false] - If section starts open.
+   * @vue-prop {boolean} [disabled=false] - If expansion is disabled. Title is rendered in disabled style.
    * @vue-prop {Array<VcsAction>}    headerActions - Icons to be displayed on the right side
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items
    * @vue-prop {string} [helpText] - Optional help text. Must be plain string. Use 'help' slot for html based help texts. Help slot has precedence over helpText prop.
@@ -75,6 +80,10 @@
         default: false,
       },
       startOpen: {
+        type: Boolean,
+        default: false,
+      },
+      disabled: {
         type: Boolean,
         default: false,
       },
@@ -130,7 +139,8 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import '../../styles/shades.scss';
   .vcs-form-section-header {
     height: 40px;
   }

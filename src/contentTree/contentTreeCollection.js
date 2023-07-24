@@ -72,6 +72,7 @@ class ContentTreeCollection extends IndexedCollection {
           this._weightListeners.delete(child.name);
         }
       }),
+      this.moved.addEventListener(recreateTree),
     ];
     /**
      * This is the default content tree.

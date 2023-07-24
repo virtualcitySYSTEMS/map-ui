@@ -43,8 +43,9 @@
       label.v-label.error--text {
         animation: none;
       }
-      .v-icon,
-      .v-label {
+
+      .primary--text,
+      .v-label:not(.v-label--is-disabled) {
         &.theme--light {
           color: map-get($shades, 'black') !important;
           &.error--text {
