@@ -9,17 +9,18 @@
     </v-container>
     <v-divider />
     <div class="px-1">
-      <VcsRadio
-        :items="
-          Object.values(ImageType).map((value) => ({
+      <v-tabs v-model="selectedImageTypeTab" height="40" centered>
+        <v-tab
+          v-for="item in Object.values(ImageType).map((value) => ({
             value,
             label: `components.style.${value}`,
-          }))
-        "
-        v-model="selectedType"
-        :disabled="!value"
-        row
-      />
+          }))"
+          :key="item.value"
+          light
+        >
+          {{ $t(item.label) }}
+        </v-tab>
+      </v-tabs>
     </div>
     <v-divider />
     <v-container class="px-1 pt-1 pb-0">
@@ -133,14 +134,22 @@
 
 <script>
   import { computed, onMounted, ref, watch } from 'vue';
-  import { VSheet, VDivider, VContainer, VRow, VCol, VIcon } from 'vuetify/lib';
+  import {
+    VSheet,
+    VDivider,
+    VContainer,
+    VRow,
+    VCol,
+    VIcon,
+    VTabs,
+    VTab,
+  } from 'vuetify/lib';
   import {
     VcsLabel,
     VcsTextField,
     VcsFillMenu,
     VcsStrokeMenu,
     VcsRadioGrid,
-    VcsRadio,
     VcsSlider,
   } from '@vcmap/ui';
   import { Circle, Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
@@ -260,6 +269,8 @@
       ((!shape1.rotation && !shape2.rotation) ||
         shape1.rotation === shape2.rotation) &&
       ((!shape1.scale && !shape2.scale) ||
+        (!shape1.scale && shape2.scale === 1) ||
+        (shape1.scale === 1 && !shape2.scale) ||
         shape1.scale === shape2.scale ||
         (Array.isArray(shape1.scale) &&
           Array.isArray(shape2.scale) &&
@@ -355,7 +366,8 @@
       VRow,
       VCol,
       VIcon,
-      VcsRadio,
+      VTabs,
+      VTab,
       VcsLabel,
       VcsTextField,
       VcsFillMenu,
@@ -392,7 +404,15 @@
         }
       });
 
-      const selectedType = ref(currentType.value);
+      const initialTab = Object.values(ImageType).findIndex(
+        (type) => type === currentType.value,
+      );
+
+      const selectedImageTypeTab = ref(initialTab !== -1 ? initialTab : 0);
+
+      const selectedType = computed(
+        () => Object.values(ImageType)[selectedImageTypeTab.value],
+      );
 
       const customIcon = 'mdi-dots-horizontal';
 
@@ -582,6 +602,7 @@
         selectedStroke,
         between,
         currentItems,
+        selectedImageTypeTab,
       };
     },
   };
