@@ -36,7 +36,8 @@ await tar.c(
 await tar.u(
   {
     file,
-    cwd: joinPath(distDir, 'plugins'),
+    cwd: joinPath(distDir, 'plugins', '@vcmap'),
+    prefix: '@vcmap',
   },
   ['.'],
 );
