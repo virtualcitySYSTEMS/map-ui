@@ -4,7 +4,6 @@ import {
   makeOverrideCollection,
   getObjectFromClassRegistry,
 } from '@vcmap/core';
-import { v4 as uuid } from 'uuid';
 import { computed, ref } from 'vue';
 import ContentTreeItem from './contentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
@@ -71,6 +70,11 @@ class ContentTreeCollection extends IndexedCollection {
           this._weightListeners.get(child.name)();
           this._weightListeners.delete(child.name);
         }
+        if (this._subTreeListeners.has(child.name)) {
+          this._subTreeListeners.get(child.name)();
+          this._subTreeListeners.delete(child.name);
+          this._subTreeViewItems.value.delete(child.name);
+        }
       }),
       this.moved.addEventListener(recreateTree),
     ];
@@ -90,10 +94,10 @@ class ContentTreeCollection extends IndexedCollection {
     this._subTreeViewItems = ref(new Map());
     /**
      * The subtree content action button destroy handlers
-     * @type {Array<function():void>}
+     * @type {Map<string, function():void>}
      * @private
      */
-    this._subTreeListeners = [];
+    this._subTreeListeners = new Map();
     /**
      * @type {boolean}
      * @private
@@ -106,7 +110,7 @@ class ContentTreeCollection extends IndexedCollection {
    */
   _clearSubTrees() {
     this._subTreeViewItems.value.clear();
-    this._subTreeListeners.forEach((cb) => {
+    [...this._subTreeListeners.values()].forEach((cb) => {
       cb();
     });
   }
@@ -119,7 +123,7 @@ class ContentTreeCollection extends IndexedCollection {
    */
   _createSubtreeActionButton(subTreeViewItem, slot = WindowSlot.STATIC) {
     // TODO make configurable?
-    const id = uuid();
+    const id = subTreeViewItem.name;
     const app = this._app;
     const { action, destroy } = createToggleAction(
       // TODO icon & title are not reactive
@@ -158,7 +162,6 @@ class ContentTreeCollection extends IndexedCollection {
    * @private
    */
   _setTreeView() {
-    this._clearSubTrees();
     /** @type {Map<string, ParentTreeViewItem>} */
     const baseTreeMap = new Map();
     [...this._array]
@@ -210,9 +213,14 @@ class ContentTreeCollection extends IndexedCollection {
       ...topLevelItems.filter((i) => i[subTreeSymbol]),
     ];
 
-    this._subTreeListeners = subTrees.map((subTree) =>
-      this._createSubtreeActionButton(subTree),
-    );
+    subTrees.forEach((subTree) => {
+      if (!this._app.navbarManager.has(subTree.name)) {
+        this._subTreeListeners.set(
+          subTree.name,
+          this._createSubtreeActionButton(subTree),
+        );
+      }
+    });
   }
 
   /**
@@ -225,8 +233,8 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
-   * All ids of the currently managed subtrees. Ids are not persisted and will change if
-   * the trees get recalculated. The first ID is always the default tree. Other ids are subtree ids.
+   * All ids of the currently managed subtrees.
+   * The first ID is always the default tree. Other ids are subtree ids.
    * Order of ids is dependent on their position in the collection and weight.
    * @type {Array<string>}
    * @readonly
