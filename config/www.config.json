@@ -697,7 +697,7 @@
       "maxLevel": 18,
       "tileSize": [256, 256],
       "tilingSchema": "mercator",
-      "opacity": 0.9,
+      "opacity": 1,
       "properties": {
         "title": "True Orthophoto 2020",
         "attributions": {
