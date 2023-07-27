@@ -13,6 +13,7 @@ import { sortByWeight } from '../buttonManager.js';
  * @property {boolean} [draggable] - only supported for IndexedCollections
  * @property {boolean} [selectable]
  * @property {boolean} [singleSelect]
+ * @property {number} [overflowCount=2] - number of header action buttons rendered until overflow
  * @property {number} [limit=10] - limit number of items in rendered list (more items are rendered in extra window)
  */
 
@@ -59,6 +60,11 @@ class CollectionComponent {
      * @type {import("vue").Ref<boolean>}
      */
     this.open = ref(false);
+    /**
+     *
+     * @type {import("vue").Ref<number>}
+     */
+    this.overflowCount = ref(parseNumber(options.overflowCount, 2));
     /**
      *
      * @type {import("vue").Ref<number>}

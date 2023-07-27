@@ -9,7 +9,11 @@
             </v-icon>
             {{ $t(title) }}
           </div>
-          <VcsActionButtonList v-if="actions?.length > 0" :actions="actions" />
+          <VcsActionButtonList
+            v-if="actions?.length > 0"
+            :actions="actions"
+            :overflow-count="overflowCount"
+          />
         </div>
       </template>
     </v-expansion-panel-header>
@@ -85,6 +89,7 @@
         draggable: collectionComponent.draggable,
         selectable: collectionComponent.selectable,
         singleSelect: collectionComponent.singleSelect,
+        overflowCount: collectionComponent.overflowCount,
         limit: collectionComponent.limit,
         actions: collectionComponent.getActions(),
         move({ item, targetIndex }) {
