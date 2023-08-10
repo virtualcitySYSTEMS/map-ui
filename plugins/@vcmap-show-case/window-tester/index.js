@@ -25,7 +25,7 @@ export default async function windowTester() {
         {
           id: 'window-tester',
           state: {
-            headerTitle: 'Window Tester',
+            headerTitle: 'windowTester.title',
           },
           component: windowExample,
           position: {
@@ -57,6 +57,18 @@ export default async function windowTester() {
         },
       );
       this._destroyAction = [destroy, destroyToolboxData];
+    },
+    i18n: {
+      de: {
+        windowTester: {
+          title: 'Fenster Tester',
+        },
+      },
+      en: {
+        windowTester: {
+          title: 'Window Tester',
+        },
+      },
     },
     destroy() {
       if (this._destroyActions) {

@@ -14,7 +14,7 @@
             v-on="on"
             class="d-inline-block text-truncate"
             ref="titleElem"
-            >{{ $t(item.title) }}</span
+            >{{ $t(item.title || item.name) }}</span
           >
         </template>
       </VcsTooltip>

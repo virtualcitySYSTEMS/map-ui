@@ -120,7 +120,7 @@ export function isSlotPosition(windowPosition) {
  * @property {string|vcsAppSymbol} owner Owner of the window, set by windowManager on add
  * @property {boolean} [hideHeader] be used to not show the header.
  * @property {boolean} [hidePin] be used to not show the pin button.
- * @property {string} [headerTitle]
+ * @property {string|string[]} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
  * @property {string} [headerIcon]
  * @property {Array<VcsAction>} [headerActions]
  * @property {number} [headerActionsOverflow]

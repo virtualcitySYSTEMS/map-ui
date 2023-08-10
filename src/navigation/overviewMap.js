@@ -228,7 +228,7 @@ class OverviewMap {
           clone.activate();
           const idx = this._map.layerCollection.indexOf(clone);
           if (idx < 0) {
-            this._map.layerCollection.add(clone, 0);
+            this._map.layerCollection.add(clone);
           } else {
             this._map.layerCollection.remove(clone);
             this._map.layerCollection.add(clone, idx);

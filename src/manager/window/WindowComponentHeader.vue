@@ -15,7 +15,7 @@
         class="d-inline-block user-select-none font-weight-bold"
         :class="{ 'text--primary': isOnTop }"
       >
-        {{ $t(windowState.headerTitle) }}
+        {{ translatedHeaderTitle }}
       </span>
     </h3>
     <div class="d-flex justify-space-between align-center">
@@ -65,7 +65,7 @@
 
 <script>
   import { VIcon, VDivider } from 'vuetify/lib';
-  import { computed } from 'vue';
+  import { computed, getCurrentInstance } from 'vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import { createLinkAction } from '../../actions/actionHelper.js';
@@ -75,6 +75,8 @@
    * @vue-prop {WindowState}    windowState - state of the window component.
    * @vue-event {void} pin - raised when pin button is clicked
    * @vue-event {void} close - raised when close button is clicked
+   * @vue-computed {boolean} isDockable
+   * @vue-computed {string} translatedHeaderTitle - translates header title and joins array
    */
   export default {
     name: 'WindowComponentHeader',
@@ -110,6 +112,14 @@
         () => !props.windowState.hidePin && props.windowState.dockable,
       );
 
+      const vm = getCurrentInstance().proxy;
+
+      const translatedHeaderTitle = computed(() =>
+        Array.isArray(props.windowState.headerTitle)
+          ? props.windowState.headerTitle.map((t) => vm.$t(t)).join(' ')
+          : vm.$t(props.windowState.headerTitle),
+      );
+
       const infoAction = props.windowState.infoUrl
         ? createLinkAction(
             {
@@ -125,6 +135,7 @@
         pin,
         close,
         isDockable,
+        translatedHeaderTitle,
         infoAction,
       };
     },

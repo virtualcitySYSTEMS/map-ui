@@ -35,14 +35,16 @@
       const exampleWindows = [
         {
           id: 'dynamicLeft',
-          headerTitle: 'Example dynamicLeft',
+          state: {
+            headerTitle: ['windowTester.title', '-', 'Example dynamicLeft'],
+          },
           component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
         },
         {
           id: 'dynamicLeft2',
           state: {
-            headerTitle: 'Example dynamicLeft2',
+            headerTitle: ['windowTester.title', '-', 'Example dynamicLeft2'],
           },
           component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
@@ -50,7 +52,11 @@
         {
           id: 'dynamicLeft2 large',
           state: {
-            headerTitle: 'Example dynamicLeft2 with 1000px width',
+            headerTitle: [
+              'windowTester.title',
+              '-',
+              'Example dynamicLeft2 with 1000px width',
+            ],
           },
           component: WindowExampleToggleChild,
           slot: WindowSlot.DYNAMIC_LEFT,
@@ -61,7 +67,7 @@
         {
           id: 'dynamicRight',
           state: {
-            headerTitle: 'Example dynamicRight',
+            headerTitle: ['windowTester.title', '-', 'Example dynamicRight'],
           },
           component: WindowExampleContent,
           headerComponent: MyCustomHeader,
@@ -73,7 +79,7 @@
         {
           id: 'dynamicRight2',
           state: {
-            headerTitle: 'Example dynamicRight2',
+            headerTitle: ['windowTester.title', '-', 'Example dynamicRight2'],
           },
           component: WindowExampleContent,
           slot: WindowSlot.DYNAMIC_RIGHT,
@@ -81,7 +87,7 @@
         {
           id: 'static',
           state: {
-            headerTitle: 'Example static',
+            headerTitle: ['windowTester.title', '-', 'Example static'],
             styles: { 'background-color': 'red' },
           },
           component: WindowExampleToggleChild,
@@ -90,7 +96,11 @@
         {
           id: 'static2',
           state: {
-            headerTitle: 'Example static2 With TestClass',
+            headerTitle: [
+              'windowTester.title',
+              '-',
+              'Example static2 With TestClass',
+            ],
             classes: {
               vcsTest: computed(() => {
                 return showTestClass.value;
@@ -103,7 +113,11 @@
         {
           id: 'position1',
           state: {
-            headerTitle: 'Example position1 relative',
+            headerTitle: [
+              'windowTester.title',
+              '-',
+              'Example position1 relative',
+            ],
           },
           component: WindowExampleToggleChild,
           position: {
@@ -117,7 +131,11 @@
           id: 'position2',
           state: {
             hideHeader: false,
-            headerTitle: 'Example position2 absolute',
+            headerTitle: [
+              'windowTester.title',
+              '-',
+              'Example position2 absolute',
+            ],
           },
           component: WindowExampleToggleChild,
           position: {
