@@ -113,6 +113,10 @@ const messages = {
       light: 'Light',
     },
   },
+  help: {
+    title: 'Help',
+    tooltip: 'Open external help page in new browser tab',
+  },
   featureInfo: {
     activateToolTitle: 'Enable Info Tool',
     deactivateToolTitle: 'Disable Info Tool',

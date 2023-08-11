@@ -284,7 +284,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
 /**
  * Creates an action which opens a given link in a new tab
  * @param {ActionOptions} actionOptions
- * @param {string} url
+ * @param {string|function():string} url
  * @returns {VcsAction}
  */
 export function createLinkAction(actionOptions, url) {
@@ -293,13 +293,17 @@ export function createLinkAction(actionOptions, url) {
     icon: [undefined, String],
     title: [undefined, String],
   });
-  check(url, String);
+  check(url, [String, Function]);
 
   return {
     ...actionOptions,
     callback() {
       const link = document.createElement('a');
-      link.href = url;
+      if (typeof url === 'string') {
+        link.href = url;
+      } else {
+        link.href = url();
+      }
       link.target = '_blank';
       link.click();
     },

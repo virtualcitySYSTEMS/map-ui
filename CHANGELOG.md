@@ -10,6 +10,8 @@
 - I18n Text review
 - Add new WindowSlot `dynamicChild`, which binds a window to a parent window.
 - Add `expandable` property to VcsFormSection
+- Add `getHelpUrlCallback` method to VcsUiApp, which returns a callback function providing a URL to help page. The URL is based on a new `UiConfigObject` property `helpBaseUrl`, version and current app locale.
+- Add new optional property `infoUrlCallback` to WindowState, which enables the usage of `getHelpUrlCallback`.
 
 # 5.0.0-rc.26
 

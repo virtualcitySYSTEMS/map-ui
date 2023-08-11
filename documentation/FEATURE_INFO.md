@@ -77,11 +77,12 @@ class MyNewViewClass extends BalloonFeatureInfoView {
 
   /**
    * @param {FeatureInfoEvent} featureInfo
+   * @param {VcsUiApp} app
    * @param {import("@vcmap/core").Layer} layer
    * @returns {WindowComponentOptions}
    */
-  getWindowComponentOptions(featureInfo, layer) {
-    const options = super.getWindowComponentOptions(featureInfo, layer);
+  getWindowComponentOptions(app, featureInfo, layer) {
+    const options = super.getWindowComponentOptions(app, featureInfo, layer);
     // Change options of the window, e.g. manipulate window position, ...
     // You may not need to define a new component to customize a view, though.
     // Checkout the FeatureInfoViewOptions for configuration options.

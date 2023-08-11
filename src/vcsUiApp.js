@@ -1,23 +1,23 @@
 import {
-  VcsApp,
-  moduleIdSymbol,
   Collection,
-  makeOverrideCollection,
-  destroyCollection,
-  OverrideClassRegistry,
   defaultDynamicModuleId,
+  destroyCollection,
+  getObjectFromClassRegistry,
+  makeOverrideCollection,
+  moduleIdSymbol,
   ObliqueMap,
+  OverrideClassRegistry,
+  VcsApp,
+  VcsEvent,
   Viewpoint,
   volatileModuleId,
-  VcsEvent,
-  getObjectFromClassRegistry,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
+  deserializePlugin,
   isValidPackageName,
   loadPlugin,
   serializePlugin,
-  deserializePlugin,
 } from './pluginHelper.js';
 import ToolboxManager, {
   setupDefaultGroups,
@@ -441,6 +441,26 @@ class VcsUiApp extends VcsApp {
    */
   get notifier() {
     return this._notifier;
+  }
+
+  /**
+   * Returns a callback function providing a URL to help page.
+   * The default helpBaseUrl can be changed by adding an 'helpBaseUrl' item to the UiConfig Collection.
+   * The callback derives the url from the VC Map mayor and minor version, the current app locale and a provided path pointing to a specific help section.
+   * This function can be used for the WindowState infoUrlCallback property.
+   * @param {string} [path]
+   * @returns {function():string}
+   */
+  getHelpUrlCallback(path = '') {
+    const mayorMinorVersion = /\d+\.\d+/.exec(VcsUiApp.getVersion())[0];
+    return () => {
+      const base =
+        this.uiConfig.config.value.helpBaseUrl || 'https://help.vc.systems/';
+      const url = `vc-map-${this.locale}/v${mayorMinorVersion}/${path}`;
+      // const url = `${this.locale}/vc-map/v${mayorMinorVersion}/${path}`;
+      const { href } = new URL(url, base);
+      return href.replace(/\/+/g, '/');
+    };
   }
 
   /**

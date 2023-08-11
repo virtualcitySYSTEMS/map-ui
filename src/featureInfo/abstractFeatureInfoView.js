@@ -303,15 +303,17 @@ class AbstractFeatureInfoView extends VcsObject {
   /**
    * This method is being called by featureInfo, whenever a new window is created (added to the windowManager).
    * May be overwritten by classes extending AbstractFeatureInfoView.
+   * @param {VcsUiApp} app
    * @param {FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {WindowComponentOptions}
    */
-  getWindowComponentOptions(featureInfo, layer) {
+  getWindowComponentOptions(app, featureInfo, layer) {
     return {
       state: this.window.state ?? {
         headerTitle: layer.properties?.title || layer.name,
         headerIcon: '$vcsInfo',
+        infoUrl: app.getHelpUrlCallback('/tools/infoTool.html'),
       },
       slot: this.window.slot ?? WindowSlot.DYNAMIC_LEFT,
       component: this.component,

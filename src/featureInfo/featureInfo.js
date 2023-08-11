@@ -442,6 +442,7 @@ class FeatureInfo extends Collection {
         {
           id: this._windowId,
           ...usedFeatureInfoView.getWindowComponentOptions(
+            this._app,
             { feature, position, windowPosition },
             layer,
           ),

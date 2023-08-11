@@ -139,6 +139,9 @@ class ContentTreeCollection extends IndexedCollection {
         state: {
           headerIcon: subTreeViewItem.icon,
           headerTitle: subTreeViewItem.title,
+          infoUrlCallback: app.getHelpUrlCallback(
+            '/components/contentspace.html#id_content',
+          ),
         },
       },
       app.windowManager,

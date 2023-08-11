@@ -127,12 +127,13 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {VcsUiApp} app
    * @param {FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {WindowComponentOptions}
    */
-  getWindowComponentOptions(featureInfo, layer) {
-    const options = super.getWindowComponentOptions(featureInfo, layer);
+  getWindowComponentOptions(app, featureInfo, layer) {
+    const options = super.getWindowComponentOptions(app, featureInfo, layer);
     options.state.hideHeader = true;
     options.state.classes = ['balloon'];
     options.slot = WindowSlot.DETACHED;

@@ -27,7 +27,7 @@
         <v-divider vertical inset class="mx-1" />
       </template>
       <VcsButton
-        v-if="windowState.infoUrl"
+        v-if="infoAction"
         @click.stop="infoAction.callback()"
         :icon="infoAction.icon"
         :tooltip="infoAction.title"
@@ -120,16 +120,17 @@
           : vm.$t(props.windowState.headerTitle),
       );
 
-      const infoAction = props.windowState.infoUrl
-        ? createLinkAction(
-            {
-              name: 'info',
-              title: 'content.infoAction.title',
-              icon: '$vcsInfo',
-            },
-            props.windowState.infoUrl,
-          )
-        : {};
+      const infoAction =
+        props.windowState.infoUrl || props.windowState.infoUrlCallback
+          ? createLinkAction(
+              {
+                name: 'info',
+                title: 'content.infoAction.title',
+                icon: '$vcsHelp',
+              },
+              props.windowState.infoUrl || props.windowState.infoUrlCallback,
+            )
+          : undefined;
 
       return {
         pin,

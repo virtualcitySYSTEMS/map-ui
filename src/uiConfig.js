@@ -14,6 +14,7 @@ import { ref } from 'vue';
  * @property {string} [appTitle] - an optional title to display next to the company logo
  * @property {string} [primaryColor] - an optional primary color to use in all themes
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
+ * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
  */
 
 /**

@@ -125,6 +125,7 @@ export function isSlotPosition(windowPosition) {
  * @property {Array<VcsAction>} [headerActions]
  * @property {number} [headerActionsOverflow]
  * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
+ * @property {function():string} [infoUrlCallback] An optional function returning an url referencing help or further information. Can be used for urls depending on the app's locale, e.g. app.getHelpUrl()
  * @property {boolean} [dockable] Auto derived from hidePin, current slot, current position and initial position.
  * @property {Object<string, string>} [styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
  * @property {Array<string>|Object<string,string>} [classes] Can be used to add additional classes to the root WindowComponent. Use Vue Class Bindings Syntax https://vuejs.org/v2/guide/class-and-style.html
@@ -504,6 +505,7 @@ class WindowManager {
         windowComponentOptions?.state?.headerActionsOverflow,
       dockable: false,
       infoUrl: windowComponentOptions?.state?.infoUrl,
+      infoUrlCallback: windowComponentOptions?.state?.infoUrlCallback,
       classes,
       styles,
     });

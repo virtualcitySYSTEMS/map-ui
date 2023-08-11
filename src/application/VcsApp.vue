@@ -94,6 +94,7 @@
   import VcsMap from './VcsMap.vue';
   import VcsNavbar from './VcsNavbar.vue';
   import {
+    createLinkAction,
     createMapButtonAction,
     createToggleAction,
   } from '../actions/actionHelper.js';
@@ -226,6 +227,9 @@
         state: {
           headerTitle: 'legend.title',
           headerIcon: '$vcsLegend',
+          infoUrl: app.getHelpUrlCallback(
+            '/components/contentspace.html#id_legend',
+          ),
         },
         slot: WindowSlot.DYNAMIC_RIGHT,
         props: { entries },
@@ -325,6 +329,29 @@
   }
 
   /**
+   * This helper function will add a help action button referencing VC Map help page to the apps NavbarManager MENU location.
+   * @param {VcsUiApp} app
+   */
+  export function setupHelpButton(app) {
+    const helpAction = createLinkAction(
+      {
+        name: 'help.title',
+        title: 'help.tooltip',
+        icon: '$vcsHelp',
+      },
+      app.getHelpUrlCallback(),
+    );
+    app.navbarManager.add(
+      {
+        id: 'helpButton',
+        action: helpAction,
+      },
+      vcsAppSymbol,
+      ButtonLocation.MENU,
+    );
+  }
+
+  /**
    * This helper function will add a category manager button to the navbar. The category Manager
    * will only be shown if there is at least one category under management in the categoryManager.
    * @param {VcsUiApp} app
@@ -343,6 +370,9 @@
         state: {
           headerTitle: 'categoryManager.title',
           headerIcon: '$vcsComponents',
+          infoUrl: app.getHelpUrlCallback(
+            '/components/contentspace.html#id_myWorkspace',
+          ),
         },
         component: CollectionManager,
         provides: {
@@ -517,6 +547,7 @@
       const mapNavbarListener = setupMapNavbar(app);
       const legendDestroy = setupLegendWindow(app);
       const settingsDestroy = setupSettingsWindow(app);
+      setupHelpButton(app);
       const destroyComponentsWindow = setupCategoryManagerWindow(app);
       const destroyThemingListener = setupUiConfigTheming(
         app,

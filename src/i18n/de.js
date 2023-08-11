@@ -113,6 +113,10 @@ const messages = {
       light: 'Hell',
     },
   },
+  help: {
+    title: 'Hilfe',
+    tooltip: 'Externe Hilfeseite in neuem Browser Tab öffnen',
+  },
   featureInfo: {
     activateToolTitle: 'Informationswerkzeug aktivieren',
     deactivateToolTitle: 'Informationswerkzeug deaktivieren',
