@@ -63,7 +63,7 @@ import PlayCircleIcon from './PlayCircleIcon.vue';
 import PlusIcon from './PlusIcon.vue';
 import PoiIcon from './PoiIcon.vue';
 import PointSelectIcon from './PointSelectIcon.vue';
-import PolygonIcon from './PolygonIcon.vue';
+import PointIcon from './PointIcon.vue';
 import QueryIcon from './QueryIcon.vue';
 import PresentationModeIcon from './PresentationModeIcon.vue';
 import RectangleIcon from './RectangleIcon.vue';
@@ -328,8 +328,8 @@ const IconMap = {
   pointSelect: {
     component: PointSelectIcon,
   },
-  polygon: {
-    component: PolygonIcon,
+  point: {
+    component: PointIcon,
   },
   query: {
     component: QueryIcon,
