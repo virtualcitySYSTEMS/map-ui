@@ -19,6 +19,16 @@
       const app = inject('vcsApp');
       const parentId = attrs['window-state'].id;
       const childId = `dynamicChild-${parentId}`;
+      const childComponent = {
+        id: childId,
+        parentId,
+        state: {
+          headerTitle: 'Example dynamicChild',
+          headerIcon: 'mdi-human-child',
+        },
+        component: WindowExampleContent,
+        slot: WindowSlot.DYNAMIC_CHILD,
+      };
 
       return {
         toggle(e) {
@@ -26,16 +36,7 @@
             app.windowManager.remove(childId);
           } else {
             e.stopPropagation();
-            app.windowManager.add(
-              {
-                id: childId,
-                parentId,
-                headerTitle: 'Example dynamicChild',
-                component: WindowExampleContent,
-                slot: WindowSlot.DYNAMIC_CHILD,
-              },
-              owner,
-            );
+            app.windowManager.add(childComponent, owner);
           }
         },
       };

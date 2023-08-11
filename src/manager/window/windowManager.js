@@ -466,6 +466,7 @@ class WindowManager {
       );
     }
     const id = windowComponentOptions.id || uuidv4();
+    const parentId = windowComponentOptions?.parentId;
     const slotOption =
       windowComponentOptions.slot?.value || windowComponentOptions.slot;
     const slot = parseEnumValue(slotOption, WindowSlot, WindowSlot.DETACHED);
@@ -492,6 +493,7 @@ class WindowManager {
 
     const state = reactive({
       id,
+      parentId,
       owner,
       hideHeader: !!windowComponentOptions?.state?.hideHeader,
       hidePin: !!windowComponentOptions?.state?.hidePin,
@@ -520,7 +522,7 @@ class WindowManager {
         return id;
       },
       get parentId() {
-        return windowComponentOptions?.parentId;
+        return parentId;
       },
       get state() {
         return state;

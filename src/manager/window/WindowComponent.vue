@@ -8,7 +8,7 @@
     :draggable="isDraggable"
     :class="{
       rounded: !isDocked,
-      marginToTop: isDocked,
+      marginToTop: isDocked || !isChild,
       'rounded-br': isDynamicLeft,
       'rounded-bl': isDynamicRight,
     }"
@@ -20,6 +20,7 @@
       class="pa-2"
       :class="{
         'cursor-grab': isDynamic,
+        child: isChild,
       }"
     >
       <slot name="headerComponent" :props="$attrs" />
@@ -86,6 +87,7 @@
         provide(key, value);
       });
 
+      const isChild = computed(() => !!props.windowState.parentId);
       const isDynamic = computed(() => props.slotWindow !== WindowSlot.STATIC);
       const isDocked = computed(() => props.slotWindow !== WindowSlot.DETACHED);
       const isDockedLeft = computed(() => {
@@ -144,6 +146,7 @@
 
       return {
         isDynamic,
+        isChild,
         isDocked,
         isDynamicLeft: isDockedLeft,
         isDynamicRight: isDockedRight,
