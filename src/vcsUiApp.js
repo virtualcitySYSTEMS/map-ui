@@ -448,16 +448,17 @@ class VcsUiApp extends VcsApp {
    * The default helpBaseUrl can be changed by adding an 'helpBaseUrl' item to the UiConfig Collection.
    * The callback derives the url from the VC Map mayor and minor version, the current app locale and a provided path pointing to a specific help section.
    * This function can be used for the WindowState infoUrlCallback property.
-   * @param {string} [path]
+   * @param {string} [path] - the path to a help section
+   * @param {string} [subpage='vc-map'] - path to a subpage. Default is 'vc-map'.
    * @returns {function():string}
    */
-  getHelpUrlCallback(path = '') {
+  getHelpUrlCallback(path = '', subpage = 'vc-map') {
     const mayorMinorVersion = /\d+\.\d+/.exec(VcsUiApp.getVersion())[0];
     return () => {
       const base =
         this.uiConfig.config.value.helpBaseUrl || 'https://help.vc.systems/';
-      const url = `vc-map-${this.locale}/v${mayorMinorVersion}/${path}`;
-      // const url = `${this.locale}/vc-map/v${mayorMinorVersion}/${path}`;
+      const url = `${subpage}-${this.locale}/v${mayorMinorVersion}/${path}`;
+      // const url = `${this.locale}/${subpage}/v${mayorMinorVersion}/${path}`;
       const { href } = new URL(url, base);
       return href.replace(/\/+/g, '/');
     };
