@@ -4,7 +4,18 @@
       v-if="showSearchbar"
       :placeholder="$t(searchbarPlaceholder)"
       v-model="search"
-    />
+      @input="handleSearch"
+    >
+      <template #prepend="scope">
+        <slot name="prepend" v-bind="scope" />
+      </template>
+      <template #default="scope">
+        <slot v-bind="scope" />
+      </template>
+      <template #append="scope">
+        <slot name="append" v-bind="scope" />
+      </template>
+    </VcsTreeviewSearchbar>
     <v-data-table
       dense
       :headers="translatedHeaders"
@@ -22,14 +33,20 @@
         $t('components.vcsDataTable.noResultsPlaceholder')
       "
       :single-select="singleSelect"
+      :server-items-length="serverItemsLength"
       hide-default-footer
       v-bind="$attrs"
       v-on="$listeners"
       class="vcs-table rounded-0"
+      @update:options="(o) => $emit('update:items', { ...o, search })"
     >
       <!-- eslint-disable-next-line -->
       <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
-        <slot :name="slot" v-bind="scope" />
+        <slot
+          v-if="!['prepend', 'default', 'append'].includes(slot)"
+          :name="slot"
+          v-bind="scope"
+        />
       </template>
       <!-- eslint-disable-next-line -->
       <template v-slot:header.data-table-select="{ props, on }">
@@ -54,10 +71,11 @@
         </div>
       </template>
       <!-- eslint-disable-next-line -->
-      <template v-slot:item.data-table-select="{ isSelected, select, index }">
+      <template #item.data-table-select="{ isSelected, select, item, index }">
         <div @mouseover="hovering = index" @mouseout="hovering = null">
           <v-icon
             v-if="isSelected"
+            :disabled="item.disabled"
             @click="select(!isSelected)"
             class="vcs-select-icon"
           >
@@ -67,17 +85,23 @@
             v-else-if="
               hovering === index || (!singleSelect && value.length > 0)
             "
+            :disabled="item.disabled"
             @click="select(!isSelected)"
             class="vcs-select-icon"
           >
             mdi-circle-outline
           </v-icon>
-          <v-icon v-else @click="select(!isSelected)" class="vcs-select-icon">
+          <v-icon
+            v-else
+            :disabled="item.disabled"
+            @click="select(!isSelected)"
+            class="vcs-select-icon"
+          >
             mdi-circle-small
           </v-icon>
         </div>
       </template>
-      <template #footer v-if="items.length > itemsPerPageRef">
+      <template #footer v-if="showFooter">
         <v-divider />
         <v-container class="pa-2 vcs-pagination-bar">
           <v-row dense no-gutters justify="center" class="align-center">
@@ -144,13 +168,30 @@
   import VcsButton from '../buttons/VcsButton.vue';
 
   /**
+   * @typedef {Object} UpdateItemsEvent
+   * @property {number} page
+   * @property {number} itemsPerPage
+   * @property {string[]} sortBy
+   * @property {boolean[]} sortDesc
+   * @property {string[]} groupBy
+   * @property {boolean[]} groupDesc
+   * @property {boolean} multiSort
+   * @property {boolean} mustSort
+   * @property {string} search
+   */
+
+  /**
    * @description A wrapper around {@link https://vuetifyjs.com/en/api/v-data-table/#props v-data-table } with custom pagination
+   * Passes all slots to v-data-table and 'prepend', 'default' and 'append' slots to VcsSearchbar
    * @vue-prop {Array<Object>} items - array of items, where each item must provide a unique key
    * @vue-prop {string} itemKey - the key property, which is unique on all items.
+   * @vue-prop {number} serverItemsLength - number of total items on a backend. Used for server-side pagination.
+   * @vue-prop {number} serverPagesLength - number of total pages on a backend. Used for server-side pagination.
    * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names. Text will be translated
    * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
    * @vue-prop {string} [searchbarPlaceholder] - placeholder for searchbar
    * @vue-prop {boolean} [singleSelect=false]
+   * @vue-event {UpdateItemsEvent} update:items - Emits when one of the options properties is updated or on search input. Can be used to update items via API call to a server.
    * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
    * @vue-computed {Array<import("vuetify").DataTableHeader>} translatedHeaders - array of translated header items.
    * @vue-computed {number} numberOfItems - number of filtered items (depending on search).
@@ -187,6 +228,14 @@
         type: String,
         required: true,
       },
+      serverItemsLength: {
+        type: Number,
+        default: -1,
+      },
+      serverPagesLength: {
+        type: Number,
+        default: -1,
+      },
       itemsPerPage: {
         type: Number,
         default: 10,
@@ -212,7 +261,7 @@
         default: () => [],
       },
     },
-    setup(props) {
+    setup(props, { attrs, emit }) {
       const vm = getCurrentInstance().proxy;
       const hovering = ref(null);
       /**
@@ -230,12 +279,15 @@
         if (filter) {
           const q = filter.toLocaleLowerCase();
           return Object.values(item).some((i) => {
-            const content = i.toString();
-            const translated = vm.$t(content);
-            return (
-              translated.toLowerCase().includes(q) ||
-              content.toLowerCase().includes(q)
-            );
+            if (i) {
+              const content = i.toString();
+              const translated = vm.$t(content);
+              return (
+                translated.toLowerCase().includes(q) ||
+                content.toLowerCase().includes(q)
+              );
+            }
+            return false;
           });
         }
         return true;
@@ -249,7 +301,12 @@
           handleFilter(item.value, search.value, item),
         ),
       );
-      const numberOfItems = computed(() => filteredItems.value.length);
+      const numberOfItems = computed(() => {
+        if (props.serverItemsLength > -1) {
+          return props.serverItemsLength;
+        }
+        return filteredItems.value.length;
+      });
       const totalNumber = computed(() => props.items.length);
 
       /**
@@ -267,6 +324,9 @@
        */
       const itemsPerPageRef = ref(props.itemsPerPage);
       const numberOfPages = computed(() => {
+        if (props.serverPagesLength > -1) {
+          return props.serverPagesLength;
+        }
         return Math.ceil(numberOfItems.value / itemsPerPageRef.value);
       });
       /**
@@ -280,6 +340,31 @@
         const last = page.value * itemsPerPageRef.value;
         return last < numberOfItems.value ? last : numberOfItems.value;
       });
+
+      const handleSearch = () => {
+        page.value = 1;
+        const { sortBy, sortDesc, groupBy, groupDesc, multiSort, mustSort } =
+          attrs;
+        // attrs of v-data-table cannot be accessed outside this component but are necessary for server-side pagination and search
+        // hence all relevant variables are emitted
+        emit('update:items', {
+          page: page.value,
+          itemsPerPage: itemsPerPageRef.value,
+          sortBy,
+          sortDesc,
+          groupBy,
+          groupDesc,
+          multiSort,
+          mustSort,
+          search: search.value,
+        });
+      };
+
+      const showFooter = computed(
+        () =>
+          props.items.length > itemsPerPageRef.value ||
+          props.serverItemsLength > itemsPerPageRef.value,
+      );
 
       return {
         hovering,
@@ -306,7 +391,9 @@
           itemsPerPageRef.value = number;
         },
         handleFilter,
+        handleSearch,
         translatedHeaders,
+        showFooter,
       };
     },
   };

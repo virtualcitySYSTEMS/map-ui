@@ -6,7 +6,7 @@
       <v-icon class="search-icon my-0 ml-1" size="12"> $vcsSearch </v-icon>
     </slot>
 
-    <slot>
+    <slot v-bind="{ ...$props, on: $listeners }">
       <v-text-field
         solo
         dense
@@ -19,7 +19,7 @@
       />
     </slot>
 
-    <slot name="append">
+    <slot name="append" :has-filter="hasFilter">
       <v-icon v-if="hasFilter" class="ml-2" size="16">$vcsFilter</v-icon>
     </slot>
   </div>
@@ -111,9 +111,14 @@
   import { VIcon, VTextField } from 'vuetify/lib';
 
   /**
-   * @description Stylized wrapper around vuetify divider
-   * @vue-prop {number} height - Height of the component.
+   * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
    * @vue-prop {string} [placeholder='search.title'] - Placeholder will be displayed in the search field, and will be translated.
+   * @vue-prop {string[]} [customClasses] - CSS classes to customize style
+   * @vue-prop {string} [value] - The search value
+   * @vue-prop {boolean} [hasFilter=false] - Appends a filter icon
+   * @vue-data {slot} [prepend] - prepend slot overwriting search icon
+   * @vue-data {slot} [default] - default slot overwriting search input text field. binds all props
+   * @vue-data {slot} [append] - append slot overwriting filter icon. binds hasFilter prop
    */
   export default {
     name: 'VcsTreeviewSearchbar',
