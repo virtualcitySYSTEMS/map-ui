@@ -233,8 +233,9 @@
             return attrs.value ?? '';
           }
         },
-        set(event) {
-          emit('input', event);
+        set() {
+          // emit is not needed, the vuetify component already emits an @input event. (forwarded listeners)
+          // emit('input', event);
         },
       });
       const type = computed(() => {
