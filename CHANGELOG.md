@@ -1,5 +1,25 @@
 # 5.0.0-rc.next
 
+# 5.0.0-rc.29
+
+- Fixed a Bug where the VcsInputField emitted a `input` event twice
+- Fixed Overviewmap layer order
+- Changes WindowState.headerTitle in the windowManager to optionally set an array of strings, which will all be translated individually
+- Fixes rendering of child windows in the windowManager
+- Add `getHelpUrlCallback` method to VcsUiApp, which returns a callback function providing a URL to help page. The URL is based on a new `UiConfigObject` property `helpBaseUrl`, version and current app locale.
+- Add new optional property `infoUrlCallback` to WindowState, which enables the usage of `getHelpUrlCallback`.
+- Changed `PolygonIcon` to `PointIcon` the icon was already a Point
+- Changes VcsDataTable to forward necessary Properties for Serverside rendering to the vuetify Component
+- The `i18nPluginSymbol` is now beeing exported
+
+# 5.0.0-rc.28
+
+- ContentTree: uses static subtree ids, which allows updating content tree with open reactive window
+- Adds `overflowCount` option to collectionComponent
+- Updated @vcmap/core
+
+# 5.0.0-rc.27
+
 - Add a required prop to `VcsLabel` marking input fields as required using an asterisk.
 - Adds `VcsFillSelector`, `VcsStrokeSelector`, `VcsFillMenu` and `VcsStrokeMenu` components to model fill and stroke of style objects and integrates them into then new `@vcmap-show-case\style-input-example` plugin.
 - Adds `VcsImageSelector` and `VcsImageMenu` components to model ol/style/Image JSON representation and integrates them into then new `@vcmap-show-case\style-input-example` plugin.
@@ -10,8 +30,6 @@
 - I18n Text review
 - Add new WindowSlot `dynamicChild`, which binds a window to a parent window.
 - Add `expandable` property to VcsFormSection
-- Add `getHelpUrlCallback` method to VcsUiApp, which returns a callback function providing a URL to help page. The URL is based on a new `UiConfigObject` property `helpBaseUrl`, version and current app locale.
-- Add new optional property `infoUrlCallback` to WindowState, which enables the usage of `getHelpUrlCallback`.
 
 # 5.0.0-rc.26
 

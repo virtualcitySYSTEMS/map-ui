@@ -538,6 +538,23 @@
   ],
   "layers": [
     {
+      "projection": {
+        "epsg": 4326
+      },
+      "type": "WFSLayer",
+      "name": "WFSLayer",
+      "url": "https://service.pdok.nl/lv/bag/wfs/v2_0",
+      "featureNS": "http://bag.geonovum.nl",
+      "featurePrefix": "bag",
+      "featureType": "pand",
+      "activeOnStartup": true,
+      "allowPicking": false,
+      "properties": {
+        "title": "WFS Layer (next to Groningen)",
+        "featureInfo": "tableAll"
+      }
+    },
+    {
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
       "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2020/",
@@ -842,6 +859,11 @@
     {
       "name": "building.osmBuildingFootprints",
       "layerName": "osmBuildingFootprints",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.wfsLayer",
+      "layerName": "WFSLayer",
       "type": "LayerContentTreeItem"
     },
     {
