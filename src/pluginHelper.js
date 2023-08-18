@@ -121,6 +121,11 @@ export async function loadPlugin(name, config) {
       }
       return null;
     }
+    if (!isValidPackageName(pluginInstance.name)) {
+      getLogger().warning(
+        `plugin ${pluginInstance.name} has no valid package name!`,
+      );
+    }
     pluginInstance[pluginFactorySymbol] = plugin.default;
     pluginInstance[pluginBaseUrlSymbol] = baseUrl.toString();
     return pluginInstance;
@@ -165,13 +170,16 @@ export function serializePlugin(plugin) {
 
 /**
  * @param {Object} serializedPlugin
- * @returns {Promise<VcsPlugin>}
+ * @returns {Promise<VcsPlugin|null>}
  */
 export async function deserializePlugin(serializedPlugin) {
-  const reincarnation = await serializedPlugin[pluginFactorySymbol](
-    serializedPlugin,
-  );
-  reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
-  reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
-  return reincarnation;
+  if (serializedPlugin[pluginFactorySymbol]) {
+    const reincarnation = await serializedPlugin[pluginFactorySymbol](
+      serializedPlugin,
+    );
+    reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
+    reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
+    return reincarnation;
+  }
+  return loadPlugin(serializedPlugin.name, serializedPlugin);
 }

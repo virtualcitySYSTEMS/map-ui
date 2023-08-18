@@ -13,12 +13,7 @@ import {
   volatileModuleId,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
-import {
-  deserializePlugin,
-  isValidPackageName,
-  loadPlugin,
-  serializePlugin,
-} from './pluginHelper.js';
+import { deserializePlugin, serializePlugin } from './pluginHelper.js';
 import ToolboxManager, {
   setupDefaultGroups,
 } from './manager/toolbox/toolboxManager.js';
@@ -59,6 +54,13 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  */
 
 /**
+ * @typedef {Object} PluginConfigEditor
+ * @property {import("vue").Component} component - A editor component to configure a plugin or item
+ * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
+ * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
+ */
+
+/**
  * @callback createPlugin
  * @template {Object} P
  * @param {P} config
@@ -67,6 +69,8 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  */
 
 /**
+ * Interface for VcsPlugins.
+ * The function implementing the interface should not throw!
  * @interface VcsPlugin
  * @template {Object} P
  * @template {Object} S
@@ -75,9 +79,11 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
  * @property {function(VcsUiApp, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
- * @property {function():P} [toJSON] - serialization
+ * @property {function():P} [toJSON] - should return the plugin's serialization excluding all default values
+ * @property {function():P} [getDefaultOptions] - should return the plugin's default options
+ * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
+ * @property {Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
  * @property {function():Promise<void>} destroy
- * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugins state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
  * @api
  */
 
@@ -545,23 +551,7 @@ class VcsUiApp extends VcsApp {
   async _parseModule(module) {
     const { config } = module;
     if (Array.isArray(config.plugins)) {
-      const plugins = await Promise.all(
-        config.plugins.map(async (pluginConfig) => {
-          const plugin = await loadPlugin(pluginConfig.name, pluginConfig);
-          if (!plugin) {
-            return null;
-          }
-          if (!isValidPackageName(plugin.name)) {
-            getLogger().warning(
-              `plugin ${plugin.name} has no valid package name!`,
-            );
-          }
-          plugin[moduleIdSymbol] = module._id;
-          return plugin;
-        }),
-      );
-
-      plugins.filter((p) => p).map((p) => this._plugins.override(p));
+      await this._plugins.parseItems(config.plugins, module._id);
     }
     if (Array.isArray(config.i18n)) {
       await this.i18n.parseItems(config.i18n, module._id);
