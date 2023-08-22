@@ -1,9 +1,9 @@
 const messages = {
   navbar: {
     maps: {
-      CesiumMap: '3D Karte aktivieren',
-      OpenlayersMap: '2D Karte aktivieren',
-      ObliqueMap: 'Schrägluftbilder aktivieren',
+      CesiumMap: '3D-Karte aktivieren',
+      OpenlayersMap: '2D-Karte aktivieren',
+      ObliqueMap: 'Schrägluftbildkarte aktivieren',
     },
     menu: {
       tooltip: 'Menü',
@@ -69,8 +69,8 @@ const messages = {
       noResultsPlaceholder: 'Keine übereinstimmenden Einträge gefunden',
     },
     style: {
-      fill: 'Füll Stil',
-      stroke: 'Linien Stil',
+      fill: 'Füllung',
+      stroke: 'Linie',
       reset: 'Zurücksetzen',
       lineWidth: 'Linienbreite',
       type: 'Typ',
@@ -81,7 +81,7 @@ const messages = {
       rotation: 'Rotation',
       scale: 'Skalierung',
       opacity: 'Deckkraft',
-      image: 'Punkt Stil',
+      image: 'Symbol',
       icon: 'Icon',
       presets: 'Vorlagen',
       shape: 'Form',

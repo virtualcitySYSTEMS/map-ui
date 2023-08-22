@@ -1,9 +1,9 @@
 const messages = {
   navbar: {
     maps: {
-      CesiumMap: 'Enable 3D view',
-      OpenlayersMap: 'Enable 2D view',
-      ObliqueMap: 'Enable oblique view',
+      CesiumMap: 'Enable 3D map',
+      OpenlayersMap: 'Enable 2D map',
+      ObliqueMap: 'Enable oblique imagery map',
     },
     menu: {
       tooltip: 'Menu',
@@ -81,7 +81,7 @@ const messages = {
       rotation: 'Rotation',
       scale: 'Scale',
       opacity: 'Opacity',
-      image: 'Point style',
+      image: 'Symbol',
       icon: 'Icon',
       shape: 'Shape',
       presets: 'Presets',
