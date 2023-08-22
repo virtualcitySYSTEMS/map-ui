@@ -243,7 +243,7 @@ class CollectionComponent {
    * @private
    */
   _insertListItem(listItem) {
-    if (!this._listItems.value.includes(listItem)) {
+    if (!this._listItems.value.some((i) => i.name === listItem.name)) {
       if (this._collection instanceof IndexedCollection) {
         const newItemIndex = this._collection.indexOfKey(listItem.name);
         if (newItemIndex === this._collection.size - 1) {

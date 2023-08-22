@@ -247,3 +247,5 @@ export {
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';
+
+export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
