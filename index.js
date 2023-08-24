@@ -246,6 +246,8 @@ export {
   VectorStyleMenus,
 } from './src/components/style/VcsVectorStyleComponent.vue';
 
+export { default as VcsVectorPropertiesComponent } from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
+
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';
 

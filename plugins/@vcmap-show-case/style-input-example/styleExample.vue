@@ -135,7 +135,6 @@
               color: parseColor(image.getStroke().getColor()),
               width: image.getStroke().getWidth(),
             },
-            src: 'mdi-circle-outline',
           };
         } else if (image instanceof Icon) {
           styleOptions.value.image = {

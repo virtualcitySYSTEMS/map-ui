@@ -32,7 +32,7 @@
             type="number"
             unit="px"
             v-model="fontSize"
-            :rules="[(v) => (!!v && v > 0) || 'components.style.notValid']"
+            :rules="[(v) => (!!v && v > 0) || 'components.validation.notValid']"
           />
         </v-col>
       </v-row>

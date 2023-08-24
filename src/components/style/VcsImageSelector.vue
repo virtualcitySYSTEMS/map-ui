@@ -74,14 +74,15 @@
               :min="input.range?.[0] || 0"
               :max="input.range?.[1] || undefined"
               :rules="[
-                (v) => !input.isRequired || !!v || 'components.style.required',
+                (v) =>
+                  !input.isRequired || !!v || 'components.validation.required',
                 (v) =>
                   !input.range ||
                   (!input.isRequired && !v) ||
                   between(v, input.range) ||
-                  `${$t('components.style.allowedRange')}: ${input.range.join(
-                    ' - ',
-                  )}`,
+                  `${$t(
+                    'components.validation.allowedRange',
+                  )}: ${input.range.join(' - ')}`,
               ]"
               :show-spin-buttons="true"
             />
@@ -458,7 +459,7 @@
                 if (Array.isArray(props.value?.scale)) {
                   return props.value.scale[index];
                 } else {
-                  return props.value.scale;
+                  return props.value?.scale;
                 }
               },
               set(value) {

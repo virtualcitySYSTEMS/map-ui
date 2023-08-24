@@ -1,6 +1,7 @@
 # 5.0.0-rc.next
 
 - Add new input component `VcsChipArrayInput` for arrays
+- Adds `VcsVectorPropertiesComponent` to model VectorPropertyOptions and integrates the component into then new `@vcmap-show-case\vector-properties-example` plugin.
 
 # 5.0.0-rc.29
 

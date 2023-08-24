@@ -223,7 +223,7 @@
         get() {
           if (
             attrs.type === 'number' &&
-            attrs.value &&
+            Number.isFinite(attrs.value) &&
             props.unit &&
             !focus.value &&
             !hover.value

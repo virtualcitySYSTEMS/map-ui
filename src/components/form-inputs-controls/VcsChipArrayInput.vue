@@ -172,6 +172,8 @@
    * - show error messages on focus
    * - show tooltips, if supplied, when hovered over append-icon
    * When clicking esc key, previous input is restored.
+   *
+   * Limitation: Only supports unique values.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {Array<*>}                               [items] - Optional input options for dropdown
    * @vue-prop {string}                                 [type] - The input type (string or number)
