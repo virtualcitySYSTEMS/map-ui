@@ -21,6 +21,17 @@ export function conditionalTest(value, condition) {
 }
 
 /**
+ * @param {number[]} value
+ * @returns {boolean|string}
+ */
+export function arrayTest(value) {
+  if (value.some((v) => v > 10)) {
+    return 'Input must be lower 10';
+  }
+  return true;
+}
+
+/**
  * @param {string} value
  * @returns {boolean|string}
  */

@@ -204,6 +204,7 @@ export { default as VcsFormSection } from './src/components/form-inputs-controls
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
+export { default as VcsChipArrayInput } from './src/components/form-inputs-controls/VcsChipArrayInput.vue';
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
 export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';

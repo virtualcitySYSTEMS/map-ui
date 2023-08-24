@@ -1,5 +1,7 @@
 # 5.0.0-rc.next
 
+- Add new input component `VcsChipArrayInput` for arrays
+
 # 5.0.0-rc.29
 
 - Fixed a Bug where the VcsInputField emitted a `input` event twice

@@ -26,6 +26,7 @@ function getLogger() {
  * @typedef FormInputsExampleState
  * @property {string} selected
  * @property {Array<string>} selectedMultiple
+ * @property {Array<number>} arrayInput
  * @property {string} conditionalInput
  * @property {string} initialTextInput
  * @property {number} numberInput
@@ -83,6 +84,8 @@ export default function formInputsExample(config) {
   const pluginState = {
     selected: pluginConfig.selectOptions.value[0],
     selectedMultiple: [],
+    arrayInput: [1, 2, 3],
+    arrayInputString: ['a', 'b', 'c'],
     conditionalInput: '',
     initialTextInput: pluginConfig.initialTextInput.value,
     numberInput: 100.156,

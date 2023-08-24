@@ -55,6 +55,33 @@
             </v-col>
           </v-row>
           <v-row no-gutters>
+            <v-col class="w-max-half">
+              <VcsLabel html-for="arrayInput" :dense="dense">
+                Array Input
+              </VcsLabel>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <VcsChipArrayInput
+                id="arrayInput"
+                type="number"
+                :dense="dense"
+                v-model="state.arrayInput"
+                :rules="[arrayTest]"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <VcsChipArrayInput
+                id="arrayInput"
+                :dense="dense"
+                v-model="state.arrayInputString"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
             <v-col>
               <VcsTextField
                 :dense="dense"
@@ -394,6 +421,7 @@
     VcsRadio,
     VcsFormButton,
     VcsTextField,
+    VcsChipArrayInput,
     VcsFormattedNumber,
     VcsFormSection,
     VcsLabel,
@@ -404,7 +432,12 @@
   } from '@vcmap/ui';
   import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/lib';
   import packageJSON from './package.json';
-  import { isValidText, conditionalTest, isValidEmail } from './validation.js';
+  import {
+    isValidText,
+    conditionalTest,
+    arrayTest,
+    isValidEmail,
+  } from './validation.js';
 
   export default {
     name: 'FormInputsExample',
@@ -418,6 +451,7 @@
       VcsFormSection,
       VcsLabel,
       VcsTextArea,
+      VcsChipArrayInput,
       VForm,
       VRow,
       VCol,
@@ -455,6 +489,7 @@
         isValid: ref(true),
         isValidText,
         conditionalTest,
+        arrayTest,
         isValidEmail,
         newUpdate,
         resetState() {
