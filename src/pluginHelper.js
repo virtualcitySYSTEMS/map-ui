@@ -26,8 +26,20 @@ export const pluginFactorySymbol = Symbol('pluginFactory');
 export const pluginBaseUrlSymbol = Symbol('pluginBaseUrl');
 
 /**
+ * A symbol added to each plugin which describes the module URL from which the plugin was loaded (with the filename and including searchParams)
+ * @type {symbol}
+ */
+export const pluginModuleUrlSymbol = Symbol('pluginModuleUrl');
+/**
+ * A symbol added to each plugin which describes the configured version range
+ * @type {symbol}
+ */
+export const pluginVersionRangeSymbol = Symbol('pluginVersionRange');
+
+/**
  * A helper function to create an absolute URL from a relative plugin asset URL. For example, when
  * shipping your plugin with a "plugin-asset/icon.png", you can always retrieve said icon with getPluginAssetUrl(app, name, 'pluing-assets/icon.png')
+ * Sets the plugin version as searchParam.
  * Returns null, if the plugin does not exist.
  * @param {VcsUiApp} app
  * @param {string} pluginName
@@ -47,6 +59,7 @@ export function getPluginAssetUrl(app, pluginName, asset) {
         assetUrl.searchParams.set(key, value);
       }
     });
+    assetUrl.searchParams.set('version', plugin.version);
     return assetUrl.toString();
   }
   return null;
@@ -114,8 +127,10 @@ export async function loadPlugin(name, config) {
     baseUrl.pathname = baseUrl.pathname.replace(/\/[^/]+$/, '/');
     const pluginInstance = await plugin.default(config, baseUrl.toString());
 
-    if (!pluginInstance.name) {
-      getLogger().error(`plugin ${name} does not expose a name`);
+    if (!(pluginInstance.name || pluginInstance.version)) {
+      getLogger().error(
+        `plugin ${name} does not conform to the VcsPlugin interface, which requires a name and version`,
+      );
       if (pluginInstance.destroy) {
         pluginInstance.destroy();
       }
@@ -128,6 +143,8 @@ export async function loadPlugin(name, config) {
     }
     pluginInstance[pluginFactorySymbol] = plugin.default;
     pluginInstance[pluginBaseUrlSymbol] = baseUrl.toString();
+    pluginInstance[pluginModuleUrlSymbol] = module;
+    pluginInstance[pluginVersionRangeSymbol] = config.version;
     return pluginInstance;
   } catch (err) {
     getLogger().error(`failed to load plugin ${name}`);
@@ -137,19 +154,25 @@ export async function loadPlugin(name, config) {
 }
 
 /**
+ * Returns relative url, if base is same, otherwise absolute url
+ * Removes version from searchParams, since version is serialized itself
  * @param {string} base
- * @param {string} pluginBase
+ * @param {string} pluginUrl
  * @returns {string}
  */
-export function getPluginEntry(base, pluginBase) {
+export function getPluginEntry(base, pluginUrl) {
   const baseUrl = new URL(base);
-  const pluginBaseUrl = new URL(pluginBase);
-  if (baseUrl.origin !== pluginBaseUrl.origin) {
-    return pluginBase;
+  const pluginModuleUrl = new URL(pluginUrl);
+  pluginModuleUrl.searchParams.delete('version'); // semver is part of config
+  if (baseUrl.origin !== pluginModuleUrl.origin) {
+    return pluginModuleUrl.toString();
   }
   const baseSubs = baseUrl.pathname.split('/');
-  const pluginSubs = pluginBaseUrl.pathname.split('/');
-  return pluginSubs.filter((sub, idx) => sub !== baseSubs[idx]).join('/');
+  const pluginSubs = pluginModuleUrl.pathname.split('/');
+  pluginModuleUrl.pathname = pluginSubs
+    .filter((sub, idx) => sub !== baseSubs[idx])
+    .join('/');
+  return `${pluginModuleUrl.pathname}${pluginModuleUrl.search}`.substring(1);
 }
 
 /**
@@ -159,12 +182,17 @@ export function getPluginEntry(base, pluginBase) {
 export function serializePlugin(plugin) {
   const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
   serializedPlugin.name = plugin.name;
+  if (serializedPlugin[pluginVersionRangeSymbol]) {
+    serializedPlugin.version = serializedPlugin[pluginVersionRangeSymbol];
+  }
   serializedPlugin.entry = getPluginEntry(
     window.location.href,
-    plugin[pluginBaseUrlSymbol],
+    plugin[pluginModuleUrlSymbol],
   );
   serializedPlugin[pluginFactorySymbol] = plugin[pluginFactorySymbol];
   serializedPlugin[pluginBaseUrlSymbol] = plugin[pluginBaseUrlSymbol];
+  serializedPlugin[pluginModuleUrlSymbol] = plugin[pluginModuleUrlSymbol];
+  serializedPlugin[pluginVersionRangeSymbol] = plugin[pluginVersionRangeSymbol];
   return serializedPlugin;
 }
 
@@ -179,6 +207,10 @@ export async function deserializePlugin(serializedPlugin) {
     );
     reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
     reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
+    reincarnation[pluginModuleUrlSymbol] =
+      serializedPlugin[pluginModuleUrlSymbol];
+    reincarnation[pluginVersionRangeSymbol] =
+      serializedPlugin[pluginVersionRangeSymbol];
     return reincarnation;
   }
   return loadPlugin(serializedPlugin.name, serializedPlugin);

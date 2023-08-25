@@ -19,7 +19,7 @@ import {
 } from '@vcmap/core';
 import { setObliqueMap } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
-import { pluginBaseUrlSymbol } from '../../src/pluginHelper.js';
+import { pluginModuleUrlSymbol } from '../../src/pluginHelper.js';
 
 /**
  * @param {VcsUiApp} app
@@ -83,7 +83,7 @@ async function setupApp(app) {
       return 'foo';
     },
   };
-  pluginInDefaultModule[pluginBaseUrlSymbol] = 'http://localhost/_test';
+  pluginInDefaultModule[pluginModuleUrlSymbol] = 'http://localhost/_test';
   app.plugins.add(pluginInDefaultModule);
   await app.setDynamicModule(module);
 
@@ -131,7 +131,7 @@ async function setupApp(app) {
       return 'foo';
     },
   };
-  pluginWithGetState[pluginBaseUrlSymbol] = 'http://localhost/_test';
+  pluginWithGetState[pluginModuleUrlSymbol] = 'http://localhost/_test';
   app.plugins.add(pluginWithGetState);
 
   const volatilePlugin = {
@@ -140,7 +140,7 @@ async function setupApp(app) {
       return 'foo';
     },
   };
-  volatilePlugin[pluginBaseUrlSymbol] = 'http://localhost/_test';
+  volatilePlugin[pluginModuleUrlSymbol] = 'http://localhost/_test';
   markVolatile(volatilePlugin);
   app.plugins.add(volatilePlugin);
 
@@ -150,13 +150,13 @@ async function setupApp(app) {
       return Promise.resolve('bar');
     },
   };
-  pluginWithAsyncGetState[pluginBaseUrlSymbol] = 'http://localhost/_test';
+  pluginWithAsyncGetState[pluginModuleUrlSymbol] = 'http://localhost/_test';
   app.plugins.add(pluginWithAsyncGetState);
 
   const pluginWithoutGetState = {
     name: 'pluginWithoutGetState',
   };
-  pluginWithoutGetState[pluginBaseUrlSymbol] = 'http://localhost/_test';
+  pluginWithoutGetState[pluginModuleUrlSymbol] = 'http://localhost/_test';
   app.plugins.add(pluginWithoutGetState);
 
   const activeMap = new OpenlayersMap({ name: 'activeMap' });

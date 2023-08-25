@@ -49,8 +49,8 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
 /**
  * @typedef {Object} PluginConfig
  * @property {string} name
- * @property {string|undefined} entry
- * @property {string|undefined} version
+ * @property {string|undefined} entry - path to the plugin's index.js
+ * @property {string|undefined} version - version or version range
  */
 
 /**

@@ -162,6 +162,7 @@ export {
   vcsAppSymbol,
   pluginFactorySymbol,
   pluginBaseUrlSymbol,
+  pluginModuleUrlSymbol,
   getPluginAssetUrl,
   isValidPackageName,
   loadPlugin,

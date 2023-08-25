@@ -12,7 +12,7 @@ describe('getPluginAssetUrl', () => {
 
   beforeAll(() => {
     app = new VcsUiApp();
-    plugin = { name: 'foo' };
+    plugin = { name: 'foo', version: '1.0.0' };
     app.plugins.add(plugin);
   });
 
@@ -20,45 +20,45 @@ describe('getPluginAssetUrl', () => {
     app.destroy();
   });
 
-  it('should return the asset url on a pathless base', () => {
+  it('should return the asset url on a pathless base including plugin version', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json')).to.equal(
-      'http://localhost/foo/bar.json',
+      'http://localhost/foo/bar.json?version=1.0.0',
     );
   });
 
   it('should return the asset url on a pathed base', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/baz/';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json')).to.equal(
-      'http://localhost/baz/foo/bar.json',
+      'http://localhost/baz/foo/bar.json?version=1.0.0',
     );
   });
 
   it('should return the asset url with base query intact', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/?foo=true';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json')).to.equal(
-      'http://localhost/foo/bar.json?foo=true',
+      'http://localhost/foo/bar.json?foo=true&version=1.0.0',
     );
   });
 
   it('should return the asset url with asset query intact', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json?foo=true')).to.equal(
-      'http://localhost/foo/bar.json?foo=true',
+      'http://localhost/foo/bar.json?foo=true&version=1.0.0',
     );
   });
 
   it('should return the asset url merging asset & base query intact', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/?bar=true';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json?foo=true')).to.equal(
-      'http://localhost/foo/bar.json?foo=true&bar=true',
+      'http://localhost/foo/bar.json?foo=true&bar=true&version=1.0.0',
     );
   });
 
   it('should return the asset url preferring asset query', () => {
     plugin[pluginBaseUrlSymbol] = 'http://localhost/?bar=true&foo=true';
     expect(getPluginAssetUrl(app, 'foo', 'foo/bar.json?bar=false')).to.equal(
-      'http://localhost/foo/bar.json?bar=false&foo=true',
+      'http://localhost/foo/bar.json?bar=false&foo=true&version=1.0.0',
     );
   });
 });
