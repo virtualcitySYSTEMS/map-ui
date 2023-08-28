@@ -78,6 +78,7 @@
                 id="arrayInput"
                 :dense="dense"
                 v-model="state.arrayInputString"
+                column
               />
             </v-col>
           </v-row>

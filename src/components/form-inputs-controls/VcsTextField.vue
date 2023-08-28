@@ -25,8 +25,9 @@
           v-on="{ ...$listeners, ...on }"
           :height="isDense ? 24 : 32"
           :rules="rules"
-          class="py-1 primary--placeholder align-center"
+          class="primary--placeholder align-center"
           :class="{
+            'py-1': !noPadding,
             'remove-outline': !isOutlined,
             'outline--current': focus,
             'outline--error': !!errorMessage,
@@ -134,7 +135,7 @@
       .v-icon {
         font-size: 16px;
       }
-      fieldset {
+      .v-text-field--rounded fieldset {
         border-radius: 2px;
         border-color: var(--v-base-base);
       }
@@ -160,6 +161,7 @@
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string}                                 unit - Unit for number input fields. Is displayed behind the number.
    * @vue-prop {boolean}                                showSpinButtons - If true, spin buttons are displayed in number input fields. Overrides Vuetify hide-spin-buttons.
+   * @vue-prop {boolean}                                noPadding - Padding is required for usage within rows. For standalone usage this prop removes class py-1.
    * @vue-computed {boolean}                            isClearable - Whether textfield is isClearable. Makes sure icon is only shown on focus, hover or error.
    * @vue-computed {boolean}                            isDense - Whether size of textfield is dense.
    * @vue-computed {boolean}                            isOutlined - Textfield is outlined on either hover, focus or error, if not disabled.
@@ -183,6 +185,10 @@
         default: '',
       },
       showSpinButtons: {
+        type: Boolean,
+        default: false,
+      },
+      noPadding: {
         type: Boolean,
         default: false,
       },

@@ -1,301 +1,281 @@
 <template>
-  <div @mouseover="hover = true" @mouseleave="hover = false">
-    <VcsTooltip
-      :tooltip-position="tooltipPosition"
-      :tooltip="errorMessage"
-      color="error"
-      :max-width="200"
+  <div id="vcs-chip-array-input" class="d-flex d-inline-block align-center">
+    <v-btn
+      v-if="hasScrollbar"
+      :dense="isDense"
+      x-small
+      icon
+      :ripple="false"
+      elevation="0"
+      @click="vcsChipArrayInput.scrollLeft -= scrollDx"
     >
-      <template #activator="{ attrs, on }">
-        <v-combobox
-          ref="comboBoxRef"
-          :items="items"
-          v-model="localValue"
-          multiple
-          outlined
-          hide-details
-          single-line
-          :dense="isDense"
-          :clearable="isClearable"
-          @focus="onFocus"
-          @blur="onBlur"
-          @keydown.esc="onEscape"
-          @keydown="$emit('keydown', $event)"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...on }"
-          append-icon="mdi-chevron-down"
-          class="py-1 primary--placeholder align-center"
-          :class="{
-            'remove-outline': !isOutlined,
-            'outline--current': focus,
-            'outline--error': !!errorMessage,
-            'input--dense': isDense,
-            'input--not-dense': !isDense,
-          }"
+      <v-icon>mdi-chevron-left</v-icon>
+    </v-btn>
+    <div
+      id="vcs-chip-array-input"
+      ref="vcsChipArrayInput"
+      class="d-flex d-inline-block"
+      :class="{
+        'overflow-x-auto': !column,
+        'hide-scrollbar': !column,
+        row: column,
+        'ma-1': !hasScrollbar,
+      }"
+    >
+      <div v-for="(item, index) in value" :key="index" class="py-1 pr-1">
+        <v-chip
+          v-if="selected !== index"
+          v-bind="{ ...$attrs }"
+          :small="isDense"
+          :disabled="disabled"
+          :close="deletableChips"
+          @click="select(index)"
+          @click:close="remove(index)"
+          class="pa-2"
         >
-          <template #append v-if="items.length === 0"><p /></template>
-          <template #selection="{ item, index, parent }" v-if="!noChips">
-            <v-chip
-              v-bind="{ ...$attrs, ...attrs }"
-              :small="smallChips !== false"
-              :close="deletableChips !== false"
-              @click="select(item, index, parent)"
-              @click:close="remove(index)"
-              class="pa-2"
-            >
-              <span class="text-truncate d-inline-block">{{ item }}</span>
-            </v-chip>
-          </template>
-        </v-combobox>
-      </template>
-    </VcsTooltip>
+          <span class="text-truncate d-inline-block">{{ item }}</span>
+        </v-chip>
+        <VcsTextField
+          v-else
+          hide-details
+          :dense="isDense"
+          rounded
+          filled
+          autofocus
+          no-padding
+          :height="24"
+          v-bind="{ ...$attrs }"
+          v-model="editValue"
+          @keydown.esc="selected = -1"
+          @blur="selected = -1"
+          @keydown.enter="submitChange"
+          @click:append="submitChange"
+          @update:error="(err) => (isEditValid = !err)"
+          append-icon="mdi-check"
+          :style="{ width: `${inputWidth}px` }"
+        />
+      </div>
+      <div class="py-1">
+        <v-chip
+          v-if="adding === false"
+          v-bind="{ ...$attrs }"
+          :small="isDense"
+          :disabled="disabled"
+          @click="adding = true"
+          class="pa-2"
+        >
+          <v-icon>$vcsPlus</v-icon>
+        </v-chip>
+        <VcsTextField
+          v-else
+          hide-details
+          :dense="isDense"
+          rounded
+          filled
+          autofocus
+          no-padding
+          :height="24"
+          class="vcs-inside-chip"
+          v-model="newValue"
+          v-bind="{ ...$attrs }"
+          @keydown.enter="add(newValue)"
+          @keydown.esc="cancel"
+          @blur="cancel"
+          @click:append="add(newValue)"
+          @update:error="(err) => (isNewValid = !err)"
+          append-icon="mdi-check"
+          :style="{ width: `${inputWidth}px` }"
+        />
+      </div>
+    </div>
+    <v-btn
+      v-if="hasScrollbar"
+      :dense="isDense"
+      x-small
+      icon
+      :ripple="false"
+      elevation="0"
+      @click="vcsChipArrayInput.scrollLeft += scrollDx"
+    >
+      <v-icon>mdi-chevron-right</v-icon>
+    </v-btn>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .primary--placeholder {
-    ::v-deep {
-      input::placeholder {
-        color: var(--v-primary-base);
-        font-style: italic;
-        opacity: 1;
-      }
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .v-chip {
+    display: flex;
+    max-width: 260px;
+    padding: 0 8px;
+    .v-chip__content {
+      display: flex;
     }
   }
-  .remove-outline {
-    ::v-deep {
-      fieldset {
-        border-width: 0;
-        border-radius: 0;
-      }
-    }
-  }
-  .outline--current {
-    ::v-deep {
-      .v-input__slot fieldset {
-        border-color: currentColor;
-        transition: border-color 0.5s ease;
-      }
-      .v-text-field__slot input {
-        border-color: transparent;
-      }
-    }
-  }
-  .outline--error {
-    ::v-deep {
-      .v-input__slot fieldset,
-      .v-text-field__slot input {
-        border-color: var(--v-error-base);
-      }
-    }
-  }
-  .input--dense {
-    ::v-deep {
-      .v-text-field__slot input {
-        height: 24px;
-      }
-      .v-input__slot {
-        padding: 0 4px !important;
-      }
-      fieldset {
-        padding-left: 2px;
-      }
-      .v-select__selections {
-        row-gap: 4px;
-        padding-top: 4px;
-      }
-    }
-  }
-  .input--not-dense {
+  .vcs-inside-chip {
     ::v-deep {
       .v-input__slot {
-        padding: 0 8px !important;
+        .v-input__append-inner {
+          margin-top: 5px;
+        }
       }
-      fieldset {
-        padding-left: 6px;
+      .v-text-field--filled > .v-input__control > .v-input__slot,
+      .v-text-field--outlined > .v-input__control > .v-input__slot {
+        min-height: unset;
       }
-    }
-  }
-  .file-border-bottom {
-    ::v-deep {
-      .v-file-input__text {
-        border-bottom: 1px solid var(--v-base-base);
-        border-radius: 0;
-      }
-    }
-  }
-  .v-input {
-    ::v-deep {
-      input {
-        height: 32px;
-        border-bottom: 1px solid var(--v-base-base);
-        border-radius: 0;
-      }
-      input::selection {
-        background-color: var(--v-primary-base);
-      }
-      .v-text-field__prefix {
-        padding-right: 8px;
-      }
-      .v-text-field__suffix {
-        padding-left: 4px;
-      }
-      .v-input__prepend-outer {
-        margin-right: 4px;
-      }
-      .v-icon {
-        font-size: 16px;
-      }
-      fieldset {
-        border-radius: 2px;
-        border-color: var(--v-base-base);
-      }
-    }
-  }
-  ::v-deep {
-    .v-autocomplete:not(.v-input--is-focused).v-select--chips input {
-      max-height: unset;
     }
   }
 </style>
 
 <script>
-  import { computed, onMounted, ref } from 'vue';
-  import { VCombobox, VChip } from 'vuetify/lib';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
-  import { useErrorSync } from './composables.js';
+  import { computed, nextTick, onMounted, ref } from 'vue';
+  import { VBtn, VChip, VIcon } from 'vuetify/lib';
+  import VcsTextField from './VcsTextField.vue';
 
   /**
-   * @description extends API of {@link https://vuetifyjs.com/en/api/v-combobox v-combobox}.
-   * Renders elements of an array as chips with an input field to edit or add new elements.
-   * Provides VcsTooltip to
-   * - show error messages on focus
-   * - show tooltips, if supplied, when hovered over append-icon
+   * @description Renders elements of an array as chips with an input field to edit or add new elements.
+   * Provides two height options depending on "dense" property
+   * Provides VcsTooltip to show error messages on focus
    * When clicking esc key, previous input is restored.
-   *
-   * Limitation: Only supports unique values.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
-   * @vue-prop {Array<*>}                               [items] - Optional input options for dropdown
    * @vue-prop {string}                                 [type] - The input type (string or number)
-   * @vue-prop {boolean}                                [smallChips=true]
+   * @vue-prop {boolean}                                [disabled] - Disables adding or removing new elements
+   * @vue-prop {boolean}                                [column] - Remove horizontal pagination and wrap items as needed
+   * @vue-prop {boolean}                                [scrollDx=20] - scroll amount in px
    * @vue-prop {boolean}                                [deletableChips=true] - Adds a delete button to elements to remove them from array
-   * @vue-prop {boolean}                                [noChips=false] - Removes chips for a more compact variant
-   * @vue-computed {boolean}                            isClearable - Whether input field is isClearable. Makes sure icon is only shown on focus, hover or error.
-   * @vue-computed {boolean}                            isDense - Whether size of input field is dense.
-   * @vue-computed {boolean}                            isOutlined - Input field is outlined on either hover, focus or error, if not disabled.
-   * @vue-computed {Array<string|number>}               localValue - Returns the number input as string with unit, in case unit is provided.
+   * @vue-prop {number}                                 [inputWidth=50] - Width of the text fields in px.
    */
   export default {
     name: 'VcsChipArrayInput',
     components: {
-      VcsTooltip,
-      VCombobox,
+      VBtn,
+      VcsTextField,
       VChip,
+      VIcon,
     },
     props: {
+      value: {
+        type: Array,
+        required: true,
+      },
       tooltipPosition: {
         type: String,
         default: 'right',
-      },
-      items: {
-        type: Array,
-        default: () => [],
-      },
-      smallChips: {
-        type: Boolean,
-        default: true,
       },
       deletableChips: {
         type: Boolean,
         default: true,
       },
-      noChips: {
+      inputWidth: {
+        type: Number,
+        default: 50,
+      },
+      disabled: {
         type: Boolean,
         default: false,
       },
+      column: {
+        type: Boolean,
+        default: false,
+      },
+      scrollDx: {
+        type: Number,
+        default: 20,
+      },
     },
     setup(props, { attrs, emit }) {
-      const hover = ref(false);
-      const focus = ref(false);
-      const comboBoxRef = ref();
-
-      onMounted(() => {
-        // fix for autofocus
-        focus.value = attrs.autofocus != null;
-      });
-
-      const errorMessage = useErrorSync(comboBoxRef);
-      const isClearable = computed(() => {
-        return (
-          attrs.clearable !== undefined &&
-          attrs.clearable !== false &&
-          (hover.value || focus.value || !!errorMessage.value)
-        );
-      });
+      const selected = ref(-1);
+      const adding = ref(false);
+      const isEditValid = ref(true);
+      const editValue = ref(undefined);
+      const isNewValid = ref(true);
+      const newValue = ref(undefined);
+      const vcsChipArrayInput = ref();
+      const hasScrollbar = ref();
       const isDense = computed(() => attrs.dense !== false);
-      const isOutlined = computed(() => {
-        return (
-          (hover.value || focus.value || !!errorMessage.value) &&
-          !(attrs.disabled || attrs.disabled === '')
-        );
-      });
-      const localValue = computed({
-        get() {
-          return attrs.value;
-        },
-        set(value) {
-          if (attrs.type === 'number') {
-            emit(
-              'input',
-              value.map((v) => parseFloat(v)),
-            );
-          } else {
-            emit('input', value);
-          }
-          // emit is not needed, the vuetify component already emits an @input event. (forwarded listeners)
-          // emit('input', event);
-        },
-      });
 
-      function onEscape(event) {
-        comboBoxRef.value.blur();
-        emit('input', comboBoxRef.value.initialValue);
-        emit('keydown', event);
+      function emitValue(value) {
+        if (attrs.type === 'number') {
+          emit(
+            'input',
+            value.map((v) => parseFloat(v)),
+          );
+        } else {
+          emit('input', value);
+        }
       }
 
-      function onBlur(event) {
-        focus.value = false;
-        emit('blur', event);
-      }
-      function onFocus(event) {
-        focus.value = true;
-        emit('focus', event);
+      function updateHasScrollbar() {
+        if (!props.column) {
+          hasScrollbar.value =
+            vcsChipArrayInput.value.scrollWidth -
+              vcsChipArrayInput.value.clientWidth >
+            36; // size of the scroll buttons
+        }
       }
 
-      function select(item, index, parent) {
-        parent.editingIndex = index;
-        parent.internalSearch = parent.getText(item);
-        parent.selectedIndex = -1;
-      }
+      onMounted(() => updateHasScrollbar());
 
       function remove(index) {
-        localValue.value.splice(index, 1);
+        emitValue(props.value.toSpliced(index, 1));
+        updateHasScrollbar();
+      }
+
+      function select(index) {
+        if (!props.disabled) {
+          selected.value = index;
+          editValue.value = props.value[index];
+        }
+      }
+
+      function submitChange() {
+        if (isEditValid.value) {
+          emitValue(props.value.toSpliced(selected.value, 1, editValue.value));
+          selected.value = -1;
+        }
+      }
+
+      function cancel() {
+        newValue.value = undefined;
+        adding.value = false;
+      }
+
+      async function add(value) {
+        if (isNewValid.value) {
+          if (value) {
+            emitValue([...props.value, value]);
+            await nextTick();
+            updateHasScrollbar();
+            await nextTick();
+            vcsChipArrayInput.value.scrollLeft =
+              vcsChipArrayInput.value.scrollWidth;
+          }
+          newValue.value = undefined;
+          adding.value = true;
+        }
       }
 
       return {
-        hover,
-        focus,
-        isClearable,
+        selected,
+        adding,
+        editValue,
+        isEditValid,
+        newValue,
+        isNewValid,
         isDense,
-        isOutlined,
-        localValue,
-        onEscape,
-        comboBoxRef,
-        errorMessage,
-        onBlur,
-        onFocus,
-        select,
+        vcsChipArrayInput,
+        hasScrollbar,
         remove,
+        select,
+        submitChange,
+        add,
+        cancel,
       };
     },
   };

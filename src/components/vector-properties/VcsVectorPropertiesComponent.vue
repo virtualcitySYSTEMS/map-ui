@@ -252,11 +252,13 @@
           }}</VcsLabel>
         </v-col>
         <v-col>
-          <VcsTextField
+          <VcsChipArrayInput
             id="vp-storey-heights-above"
             dense
+            column
+            type="number"
             v-model="storeyHeights.storeyHeightsAboveGround.value"
-            :placeholder="'storeyHeightsAboveGround' in value ? '1, 3, 2' : ''"
+            placeholder="3"
           />
         </v-col>
       </v-row>
@@ -323,11 +325,13 @@
           }}</VcsLabel>
         </v-col>
         <v-col>
-          <VcsTextField
+          <VcsChipArrayInput
             :id="'vp-storey-heights-below'"
             dense
+            column
+            type="number"
             v-model="storeyHeights.storeyHeightsBelowGround.value"
-            :placeholder="'storeyHeightsBelowGround' in value ? '1, 3, 2' : ''"
+            placeholder="3"
           />
         </v-col>
       </v-row>
@@ -447,7 +451,7 @@
 </template>
 
 <script>
-  import { computed, watch } from 'vue';
+  import { computed } from 'vue';
   import { VContainer, VRow, VCol, VDivider } from 'vuetify/lib';
   import {
     VcsFormSection,
@@ -461,6 +465,7 @@
     useArrayProperty,
     useHasProperty,
   } from './composables.js';
+  import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
 
   export const vectorProperties = [
     'altitudeMode',
@@ -507,6 +512,7 @@
       VcsSelect,
       VcsTextField,
       VcsCheckbox,
+      VcsChipArrayInput,
       VContainer,
       VRow,
       VCol,
@@ -634,18 +640,15 @@
               [key]: computed({
                 get() {
                   if (Array.isArray(props.value?.[key])) {
-                    return props.value[key].join(', ');
-                  } else {
                     return props.value?.[key];
+                  } else {
+                    return [props.value?.[key]];
                   }
                 },
                 set(value) {
                   const newParams = structuredClone(props.value);
                   const changedParams = {
-                    [key]: value
-                      .split(',')
-                      .map((n) => Number.parseInt(n, 10))
-                      .filter((n) => Number.isInteger(n)),
+                    [key]: value,
                   };
                   emit('input', Object.assign(newParams, changedParams));
                   emit('propertyChange', changedParams);
@@ -694,15 +697,6 @@
         emit,
       );
       const baseUrl = usePrimitiveProperty(() => props.value, 'baseUrl', emit);
-
-      watch(
-        () => props.show3DProperties,
-        (curr) => {
-          if (curr) {
-            altitudeMode.value = 'clampToGround';
-          }
-        },
-      );
 
       function reset() {
         const newParams = structuredClone(props.valueDefault);
