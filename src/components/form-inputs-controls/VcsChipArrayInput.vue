@@ -1,5 +1,8 @@
 <template>
-  <div id="vcs-chip-array-input" class="d-flex d-inline-block align-center">
+  <div
+    class="d-flex d-inline-block align-center mb-1"
+    :class="{ 'mt-1': !column }"
+  >
     <v-btn
       v-if="hasScrollbar"
       :dense="isDense"
@@ -12,17 +15,20 @@
       <v-icon>mdi-chevron-left</v-icon>
     </v-btn>
     <div
-      id="vcs-chip-array-input"
       ref="vcsChipArrayInput"
-      class="d-flex d-inline-block"
+      class="d-flex d-inline-block mx-1 my-0"
       :class="{
         'overflow-x-auto': !column,
         'hide-scrollbar': !column,
         row: column,
-        'ma-1': !hasScrollbar,
       }"
     >
-      <div v-for="(item, index) in value" :key="index" class="py-1 pr-1">
+      <div
+        v-for="(item, index) in value"
+        :key="index"
+        class="pr-1"
+        :class="{ 'pt-1': column }"
+      >
         <v-chip
           v-if="selected !== index"
           v-bind="{ ...$attrs }"
@@ -31,7 +37,6 @@
           :close="deletableChips"
           @click="select(index)"
           @click:close="remove(index)"
-          class="pa-2"
         >
           <span class="text-truncate d-inline-block">{{ item }}</span>
         </v-chip>
@@ -48,21 +53,20 @@
           v-model="editValue"
           @keydown.esc="selected = -1"
           @blur="selected = -1"
-          @keydown.enter="submitChange"
-          @click:append="submitChange"
+          @keydown.enter="submitChange($event)"
+          @click:append="submitChange($event)"
           @update:error="(err) => (isEditValid = !err)"
           append-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
         />
       </div>
-      <div class="py-1">
+      <div :class="{ 'pt-1': column }">
         <v-chip
           v-if="adding === false"
           v-bind="{ ...$attrs }"
           :small="isDense"
           :disabled="disabled"
           @click="adding = true"
-          class="pa-2"
         >
           <v-icon>$vcsPlus</v-icon>
         </v-chip>
@@ -78,10 +82,10 @@
           class="vcs-inside-chip"
           v-model="newValue"
           v-bind="{ ...$attrs }"
-          @keydown.enter="add(newValue)"
+          @keydown.enter="add($event, newValue)"
           @keydown.esc="cancel"
           @blur="cancel"
-          @click:append="add(newValue)"
+          @click:append="add($event, newValue)"
           @update:error="(err) => (isNewValid = !err)"
           append-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
@@ -234,7 +238,9 @@
         }
       }
 
-      function submitChange() {
+      function submitChange(e) {
+        e.stopPropagation();
+        e.preventDefault();
         if (isEditValid.value) {
           emitValue(props.value.toSpliced(selected.value, 1, editValue.value));
           selected.value = -1;
@@ -246,7 +252,9 @@
         adding.value = false;
       }
 
-      async function add(value) {
+      async function add(e, value) {
+        e.stopPropagation();
+        e.preventDefault();
         if (isNewValid.value) {
           if (value) {
             emitValue([...props.value, value]);
