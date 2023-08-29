@@ -182,8 +182,8 @@ export function getPluginEntry(base, pluginUrl) {
 export function serializePlugin(plugin) {
   const serializedPlugin = plugin.toJSON ? plugin.toJSON() : {};
   serializedPlugin.name = plugin.name;
-  if (serializedPlugin[pluginVersionRangeSymbol]) {
-    serializedPlugin.version = serializedPlugin[pluginVersionRangeSymbol];
+  if (plugin[pluginVersionRangeSymbol]) {
+    serializedPlugin.version = plugin[pluginVersionRangeSymbol];
   }
   serializedPlugin.entry = getPluginEntry(
     window.location.href,
