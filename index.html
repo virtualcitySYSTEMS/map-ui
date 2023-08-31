@@ -1,48 +1,38 @@
 <!DOCTYPE html>
 <html class="vcs-ui" lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>VC Map</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link
       rel="icon"
       type="image/png"
       href="./assets/favicon-32.png"
       sizes="32x32"
-    />
+    >
     <link
       rel="icon"
       type="image/png"
       href="./assets/favicon-128.png"
       sizes="128x128"
-    />
+    >
     <link
       rel="icon"
       type="image/png"
       href="./assets/favicon-180.png"
       sizes="180x180"
-    />
+    >
     <link
       rel="icon"
       type="image/png"
       href="./assets/favicon-192.png"
       sizes="192x192"
-    />
-    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    >
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <link
       rel="stylesheet"
       href="./assets/@mdi/font/css/materialdesignicons.min.css"
-    />
-  </head>
-  <body style="height: 100vh">
-    <noscript>
-      <strong>...</strong>
-    </noscript>
-    <div id="app">
-      <div id="loading-wrapper">
-        <div id="loading-text">LOADING</div>
-        <div id="loading-content"></div>
-      </div>
-    </div>
+    >
     <style>
       #loading-wrapper {
         position: fixed;
@@ -57,7 +47,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        color: #409d76;
+        color: grey;
         width: 100px;
         height: 30px;
         margin: -7px 0 0 -45px;
@@ -78,8 +68,8 @@
 
       #loading-content {
         border: 3px solid transparent;
-        border-top-color: #409d76;
-        border-bottom-color: #409d76;
+        border-top-color: grey;
+        border-bottom-color: grey;
         border-radius: 50%;
         -webkit-animation: loader 2s linear infinite;
         -moz-animation: loader 2s linear infinite;
@@ -101,6 +91,17 @@
         }
       }
     </style>
+  </head>
+  <body style="height: 100vh">
+    <noscript>
+      <strong>...</strong>
+    </noscript>
+    <div id="app">
+      <div id="loading-wrapper">
+        <div id="loading-text">LOADING</div>
+        <div id="loading-content"></div>
+      </div>
+    </div>
     <script type="module">
       import { initAppFromAppConfig } from '@vcmap/ui';
 

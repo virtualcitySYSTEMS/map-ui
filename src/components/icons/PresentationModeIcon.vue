@@ -9,7 +9,6 @@
   >
     <path
       id="Path_594"
-      data-name="Path 594"
       d="M1316,630h-4a1,1,0,0,1-1-1v-4a1,1,0,0,1,2,0v3h3a1,1,0,0,1,0,2Zm9-5v-8a1,1,0,0,0-1-1h-8a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1h8A1,1,0,0,0,1325,625Zm-8-7h6v6h-6Z"
       transform="translate(-1311 -616)"
       fill="currentColor"

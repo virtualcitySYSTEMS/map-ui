@@ -1,7 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg id="icon-loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
     <path
       d="M8.05,14.1c-3.31,0-6-2.69-6-6S4.73,2.1,8.05,2.1s6,2.69,6,6c0,.99-.24,1.93-.67,2.75"
       style="

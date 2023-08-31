@@ -463,10 +463,11 @@ class VcsUiApp extends VcsApp {
     return () => {
       const base =
         this.uiConfig.config.value.helpBaseUrl || 'https://help.vc.systems/';
-      const url = `${subpage}-${this.locale}/v${mayorMinorVersion}/${path}`;
-      // const url = `${this.locale}/${subpage}/v${mayorMinorVersion}/${path}`;
+      const url = `${
+        this.locale
+      }/${subpage}/v${mayorMinorVersion}/${path.replace(/^\//, '')}`;
       const { href } = new URL(url, base);
-      return href.replace(/\/+/g, '/');
+      return href;
     };
   }
 

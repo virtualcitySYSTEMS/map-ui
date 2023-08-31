@@ -7,7 +7,6 @@
   >
     <g
       id="Rectangle_751"
-      data-name="Rectangle 751"
       fill="currentColor"
       stroke="currentColor"
       stroke-width="1"

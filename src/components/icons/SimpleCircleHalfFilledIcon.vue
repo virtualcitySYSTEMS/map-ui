@@ -7,7 +7,6 @@
   >
     <rect
       id="Rectangle_708"
-      data-name="Rectangle 708"
       width="10"
       height="10"
       rx="5"

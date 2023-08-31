@@ -2,7 +2,6 @@
 
 <template>
   <svg
-    id="icon_24_components"
     xmlns="http://www.w3.org/2000/svg"
     width="24.503"
     height="24"

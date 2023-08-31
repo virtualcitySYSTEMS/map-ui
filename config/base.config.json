@@ -547,7 +547,7 @@
       "featureNS": "http://bag.geonovum.nl",
       "featurePrefix": "bag",
       "featureType": "pand",
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "allowPicking": false,
       "properties": {
         "title": "WFS Layer (next to Groningen)",

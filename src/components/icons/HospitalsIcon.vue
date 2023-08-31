@@ -5,10 +5,9 @@
     height="24"
     viewBox="0 0 24 24"
   >
-    <g id="Group_846" data-name="Group 846" transform="translate(0.5 0.5)">
+    <g id="Group_846" transform="translate(0.5 0.5)">
       <circle
         id="Ellipse_87"
-        data-name="Ellipse 87"
         cx="4"
         cy="4"
         r="4"
@@ -22,7 +21,6 @@
       />
       <path
         id="Path_436"
-        data-name="Path 436"
         d="M14.5,15.5v-4a1,1,0,0,0-1-1H1.5a1,1,0,0,0-1,1v12"
         transform="translate(-0.5 -0.5)"
         fill="none"
@@ -34,7 +32,6 @@
       />
       <path
         id="Path_437"
-        data-name="Path 437"
         d="M23.5,23.5v-7a1,1,0,0,0-1-1h-12a1,1,0,0,0-1,1v7"
         transform="translate(-0.5 -0.5)"
         fill="none"
@@ -46,7 +43,6 @@
       />
       <line
         id="Line_135"
-        data-name="Line 135"
         x2="8"
         transform="translate(3 13)"
         fill="none"
@@ -58,7 +54,6 @@
       />
       <line
         id="Line_136"
-        data-name="Line 136"
         x2="6"
         transform="translate(3 16)"
         fill="none"
@@ -70,7 +65,6 @@
       />
       <line
         id="Line_137"
-        data-name="Line 137"
         x2="6"
         transform="translate(3 19)"
         fill="none"
@@ -82,7 +76,6 @@
       />
       <line
         id="Line_138"
-        data-name="Line 138"
         y2="4"
         transform="translate(7 2)"
         fill="none"
@@ -94,7 +87,6 @@
       />
       <line
         id="Line_139"
-        data-name="Line 139"
         x1="4"
         transform="translate(5 4)"
         fill="none"
@@ -106,7 +98,6 @@
       />
       <line
         id="Line_140"
-        data-name="Line 140"
         y2="2"
         transform="translate(7 8)"
         fill="none"
@@ -118,7 +109,6 @@
       />
       <line
         id="Line_141"
-        data-name="Line 141"
         x2="23"
         transform="translate(0 23)"
         fill="none"
@@ -130,7 +120,6 @@
       />
       <rect
         id="Rectangle_732"
-        data-name="Rectangle 732"
         width="2"
         height="2"
         transform="translate(15 21)"
@@ -143,7 +132,6 @@
       />
       <line
         id="Line_142"
-        data-name="Line 142"
         x2="1"
         transform="translate(11 19)"
         fill="none"
@@ -155,7 +143,6 @@
       />
       <line
         id="Line_143"
-        data-name="Line 143"
         x1="1"
         transform="translate(11 17)"
         fill="none"
@@ -167,7 +154,6 @@
       />
       <line
         id="Line_144"
-        data-name="Line 144"
         x2="1"
         transform="translate(14 19)"
         fill="none"
@@ -179,7 +165,6 @@
       />
       <line
         id="Line_145"
-        data-name="Line 145"
         x1="1"
         transform="translate(14 17)"
         fill="none"
@@ -191,7 +176,6 @@
       />
       <line
         id="Line_146"
-        data-name="Line 146"
         x2="1"
         transform="translate(17 19)"
         fill="none"
@@ -203,7 +187,6 @@
       />
       <line
         id="Line_147"
-        data-name="Line 147"
         x1="1"
         transform="translate(17 17)"
         fill="none"
@@ -215,7 +198,6 @@
       />
       <line
         id="Line_148"
-        data-name="Line 148"
         x2="1"
         transform="translate(20 19)"
         fill="none"
@@ -227,7 +209,6 @@
       />
       <line
         id="Line_149"
-        data-name="Line 149"
         x1="1"
         transform="translate(20 17)"
         fill="none"

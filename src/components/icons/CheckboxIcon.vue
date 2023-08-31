@@ -1,6 +1,5 @@
 <template>
   <svg
-    id="icon-checkbox-uncheck"
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
@@ -8,7 +7,6 @@
   >
     <g
       id="Rectangle_749"
-      data-name="Rectangle 749"
       transform="translate(2 2)"
       fill="none"
       stroke="currentColor"

@@ -2,17 +2,12 @@
 
 <template>
   <svg
-    id="icon-screenshot"
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
     viewBox="0 0 16 16"
   >
-    <g
-      id="Gruppe_1967"
-      data-name="Gruppe 1967"
-      transform="translate(-944 -580)"
-    >
+    <g id="Gruppe_1967" transform="translate(-944 -580)">
       <path
         id="Pfad_765"
         d="M951.625,592h-1.25a1,1,0,0,0,0,2h1.25a1,1,0,0,0,0-2Z"

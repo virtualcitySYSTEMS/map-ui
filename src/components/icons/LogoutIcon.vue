@@ -2,7 +2,6 @@
 
 <template>
   <svg
-    id="icon-logout"
     xmlns="http://www.w3.org/2000/svg"
     width="16.007"
     height="16"
