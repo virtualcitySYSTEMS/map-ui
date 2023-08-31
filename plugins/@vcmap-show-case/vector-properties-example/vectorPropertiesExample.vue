@@ -11,12 +11,24 @@
           />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <VcsCheckbox v-model="hideDividers" label="Hide dividers" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <VcsCheckbox v-model="expandable" label="Expandable" />
+        </v-col>
+      </v-row>
     </v-container>
     <VcsVectorPropertiesComponent
       v-model="featureProperties"
       :value-default="defaultOptions"
       :show3-d-properties="is3D"
       :properties="propertiesToDisplay.map((item) => item.name)"
+      :hide-dividers="hideDividers"
+      :expandable="expandable"
     />
   </v-sheet>
 </template>
@@ -24,7 +36,11 @@
 <script>
   import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
   import { CesiumMap, VectorLayer, VectorProperties } from '@vcmap/core';
-  import { VcsVectorPropertiesComponent, VcsList } from '@vcmap/ui';
+  import {
+    VcsVectorPropertiesComponent,
+    VcsList,
+    VcsCheckbox,
+  } from '@vcmap/ui';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
   import { Feature } from 'ol';
   import { Polygon } from 'ol/geom.js';
@@ -43,6 +59,7 @@
     components: {
       VcsVectorPropertiesComponent,
       VcsList,
+      VcsCheckbox,
       VSheet,
       VContainer,
       VRow,
@@ -103,6 +120,8 @@
         is3D,
         propertiesToSelectFrom,
         propertiesToDisplay: ref([...propertiesToSelectFrom]),
+        hideDividers: ref(false),
+        expandable: ref(false),
       };
     },
   };

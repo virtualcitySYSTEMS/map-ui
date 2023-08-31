@@ -1,6 +1,8 @@
 <template>
   <VcsFormSection
-    heading="components.vectorProperties.header"
+    :heading="$attrs.heading || 'components.vectorProperties.header'"
+    :expandable="$attrs.expandable"
+    :start-open="$attrs.startOpen"
     :header-actions="[
       {
         name: 'reset',
@@ -81,6 +83,7 @@
             type="number"
             unit="m"
             :placeholder="'groundLevel' in value ? '0 m' : ''"
+            clearable
           />
         </v-col>
       </v-row>
@@ -110,7 +113,12 @@
                       : `${scaleByDistanceDefault[index]}`
                     : ''
                 "
-                :rules="[(v) => !isNaN(v) || 'components.validation.required']"
+                :rules="[
+                  (v) =>
+                    !hasScaleByDistance ||
+                    !isNaN(v) ||
+                    'components.validation.required',
+                ]"
               />
             </v-col>
           </v-row>
@@ -134,7 +142,10 @@
             type="number"
             :disabled="!hasEyeOffset"
             :prefix="dimensionsUpperCase[index]"
-            :rules="[(v) => !isNaN(v) || 'components.validation.required']"
+            :rules="[
+              (v) =>
+                !hasEyeOffset || !isNaN(v) || 'components.validation.required',
+            ]"
             :placeholder="
               'eyeOffset' in value ? `${eyeOffsetDefault[index]} m` : ''
             "
@@ -178,6 +189,8 @@
     </v-container>
     <v-divider
       v-if="
+        !hideDividers &&
+        show3DProperties &&
         [
           'extrudedHeight',
           'skirt',
@@ -185,13 +198,12 @@
           'storeysBelowGround',
           'storeyHeightsAboveGround',
           'storeyHeightsBelowGround',
-        ].some((prop) => visibleProperties.has(prop)) && show3DProperties
+        ].some((prop) => visibleProperties.has(prop))
       "
     />
     <v-container class="px-1 py-0" v-if="show3DProperties">
       <v-row
         v-if="
-          visibleProperties.has('extrudedHeight') ||
           visibleProperties.has('storeysAboveGround') ||
           visibleProperties.has('storeyHeightsAboveGround')
         "
@@ -205,9 +217,15 @@
       </v-row>
       <v-row v-if="visibleProperties.has('extrudedHeight')" no-gutters>
         <v-col>
-          <VcsLabel html-for="vp-extruded-height" class="px-4">{{
-            $t('components.vectorProperties.extrudedHeight')
-          }}</VcsLabel>
+          <VcsLabel
+            html-for="vp-extruded-height"
+            :class="{
+              'px-4':
+                visibleProperties.has('storeysAboveGround') ||
+                visibleProperties.has('storeyHeightsAboveGround'),
+            }"
+            >{{ $t('components.vectorProperties.extrudedHeight') }}</VcsLabel
+          >
         </v-col>
         <v-col>
           <VcsTextField
@@ -217,6 +235,7 @@
             type="number"
             unit="m"
             :placeholder="'extrudedHeight' in value ? '0 m' : ''"
+            clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
             ]"
@@ -236,6 +255,7 @@
             v-model.number="storeysAboveGround"
             type="number"
             :placeholder="'storeysAboveGround' in value ? '0' : ''"
+            clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
             ]"
@@ -259,12 +279,12 @@
             type="number"
             v-model="storeyHeights.storeyHeightsAboveGround.value"
             placeholder="3"
+            :rules="[(v) => !(v <= 0) || 'components.validation.notValid']"
           />
         </v-col>
       </v-row>
       <v-row
         v-if="
-          visibleProperties.has('skirt') ||
           visibleProperties.has('storeysBelowGround') ||
           visibleProperties.has('storeyHeightsBelowGround')
         "
@@ -278,9 +298,15 @@
       </v-row>
       <v-row v-if="visibleProperties.has('skirt')" no-gutters>
         <v-col>
-          <VcsLabel html-for="vp-skirt" class="px-4">{{
-            $t('components.vectorProperties.skirt')
-          }}</VcsLabel>
+          <VcsLabel
+            html-for="vp-skirt"
+            :class="{
+              'px-4':
+                visibleProperties.has('storeysBelowGround') ||
+                visibleProperties.has('storeyHeightsBelowGround'),
+            }"
+            >{{ $t('components.vectorProperties.skirt') }}</VcsLabel
+          >
         </v-col>
         <v-col>
           <VcsTextField
@@ -290,6 +316,7 @@
             type="number"
             unit="m"
             :placeholder="'skirt' in value ? '0 m' : ''"
+            clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
             ]"
@@ -309,6 +336,7 @@
             v-model.number="storeysBelowGround"
             type="number"
             :placeholder="'storeysBelowGround' in value ? '0' : ''"
+            clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
             ]"
@@ -338,6 +366,8 @@
     </v-container>
     <v-divider
       v-if="
+        !hideDividers &&
+        show3DProperties &&
         [
           'modelUrl',
           'modelScaleX',
@@ -347,7 +377,7 @@
           'modelPitch',
           'modelRoll',
           'baseUrl',
-        ].some((prop) => visibleProperties.has(prop)) && show3DProperties
+        ].some((prop) => visibleProperties.has(prop))
       "
     />
     <v-container class="px-1 py-0" v-if="show3DProperties">
@@ -397,6 +427,7 @@
             type="number"
             :placeholder="'modelHeading' in value ? '0 °' : ''"
             unit="°"
+            clearable
           />
         </v-col>
       </v-row>
@@ -413,6 +444,7 @@
             type="number"
             :placeholder="'modelPitch' in value ? '0 °' : ''"
             unit="°"
+            clearable
           />
         </v-col>
       </v-row>
@@ -427,6 +459,7 @@
             type="number"
             :placeholder="'modelRoll' in value ? '0 °' : ''"
             unit="°"
+            clearable
           />
         </v-col>
       </v-row>
@@ -501,6 +534,10 @@
    * @vue-prop {import("@vcmap/core").VectorPropertiesOptions} valueDefault - The default VectorPropertiesOptions that are applied when clicking the "Reset" button.
    * @vue-prop {Array<string>} properties - The keys of the VectorPropertiesOptions that should be editable. If a key is not within this array, the corresponding input field is not shown.
    * @vue-prop {boolean} show3DProperties - Whether the 3D related properties should be shown or not.
+   * @vue-prop {boolean} hideDividers - Wether the dividers, which group similar properties, should be hidden.
+   * @vue-prop {string} [heading='Vector properties'] - Title of the form section, will be translated.
+   * @vue-prop {boolean} [expandable=false] - If true, form section can be toggled.
+   * @vue-prop {boolean} [startOpen=false] - If form section starts open.
    * @vue-event {import("@vcmap/core").VectorPropertiesOptions} input - Emits the updated VectorPropertiesOptions each time a property is changed.
    * @vue-event {import("@vcmap/core").VectorPropertiesOptions} propertyChange - Emits the updated VectorPropertiesOptions, containing only the keys that changed, each time a property is changed.
    */
@@ -534,6 +571,10 @@
       show3DProperties: {
         type: Boolean,
         default: true,
+      },
+      hideDividers: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props, { emit }) {
@@ -641,8 +682,10 @@
                 get() {
                   if (Array.isArray(props.value?.[key])) {
                     return props.value?.[key];
-                  } else {
+                  } else if (props.value?.[key] > 0) {
                     return [props.value?.[key]];
+                  } else {
+                    return [];
                   }
                 },
                 set(value) {
