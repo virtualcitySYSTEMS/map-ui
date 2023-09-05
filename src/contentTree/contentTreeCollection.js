@@ -17,6 +17,7 @@ import { ButtonLocation } from '../manager/navbarManager.js';
  * @type {symbol}
  */
 const subTreeOpenStateSymbol = Symbol('SubTreeOpenState');
+const subTreeItemWeight = Symbol('SubTreeItemWeight');
 
 /**
  * @typedef {Object} ParentTreeViewItem
@@ -39,9 +40,9 @@ class ContentTreeCollection extends IndexedCollection {
      */
     this._app = app;
 
-    const recreateTree = () => {
+    const recreateTree = (resetSubTreeButtons) => {
       if (!this._suspendListeners) {
-        this._setTreeView();
+        this._setTreeView(resetSubTreeButtons);
       }
     };
 
@@ -76,7 +77,7 @@ class ContentTreeCollection extends IndexedCollection {
           this._subTreeViewItems.value.delete(child.name);
         }
       }),
-      this.moved.addEventListener(recreateTree),
+      this.moved.addEventListener(() => recreateTree(true)),
     ];
     /**
      * This is the default content tree.
@@ -128,9 +129,9 @@ class ContentTreeCollection extends IndexedCollection {
     const { action, destroy } = createToggleAction(
       // TODO icon & title are not reactive
       {
-        name: subTreeViewItem.name,
+        name: subTreeViewItem.title ?? subTreeViewItem.name,
         icon: subTreeViewItem.icon,
-        title: subTreeViewItem.title,
+        title: subTreeViewItem.tooltip,
       },
       {
         component: LayerTree,
@@ -149,7 +150,7 @@ class ContentTreeCollection extends IndexedCollection {
     );
 
     this._app.navbarManager.add(
-      { id, action, weight: 100 },
+      { id, action, weight: subTreeViewItem[subTreeItemWeight] },
       vcsAppSymbol,
       ButtonLocation.CONTENT,
     );
@@ -162,11 +163,13 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
+   * @param {boolean} [resetSubtreeButtons=false]
    * @private
    */
-  _setTreeView() {
+  _setTreeView(resetSubtreeButtons = false) {
     /** @type {Map<string, ParentTreeViewItem>} */
     const baseTreeMap = new Map();
+    let maxWeight = 0;
     [...this._array]
       .sort((a, b) => {
         const depthA = a.name.split('.').length;
@@ -183,6 +186,10 @@ class ContentTreeCollection extends IndexedCollection {
         const treeViewItem = item.getTreeViewItem();
         const namespace = treeViewItem.name.split('.');
         const name = namespace.pop();
+        maxWeight = item.weight > maxWeight ? item.weight : maxWeight;
+        if (namespace.length === 0) {
+          treeViewItem[subTreeItemWeight] = item.weight;
+        }
         /** @type {ParentTreeViewItem} */
         let parentItem = { children: baseTreeMap };
         namespace.forEach((parentName) => {
@@ -208,6 +215,7 @@ class ContentTreeCollection extends IndexedCollection {
     const topLevelItems = [...baseTreeMap.values()].map(setChildren);
     const defaultSubTreeViewItem = this._defaultSubtreeItem.getTreeViewItem();
     defaultSubTreeViewItem.children.splice(0);
+    defaultSubTreeViewItem[subTreeItemWeight] = maxWeight + 1;
     defaultSubTreeViewItem.children.push(
       ...topLevelItems.filter((i) => !i[subTreeSymbol]),
     );
@@ -217,11 +225,17 @@ class ContentTreeCollection extends IndexedCollection {
     ];
 
     subTrees.forEach((subTree) => {
-      if (!this._app.navbarManager.has(subTree.name)) {
+      if (!this._app.navbarManager.has(subTree.name) || resetSubtreeButtons) {
+        this._subTreeListeners.get(subTree.name)?.();
         this._subTreeListeners.set(
           subTree.name,
           this._createSubtreeActionButton(subTree),
         );
+      } else {
+        const buttonComponent = this._app.navbarManager.get(subTree.name);
+        if (buttonComponent.weight !== subTree[subTreeItemWeight]) {
+          buttonComponent.weight = subTree[subTreeItemWeight];
+        }
       }
     });
   }
@@ -243,7 +257,14 @@ class ContentTreeCollection extends IndexedCollection {
    * @readonly
    */
   get subTreeIds() {
-    return [...this._subTreeViewItems.value.keys()];
+    const [defaultItem, ...rest] = [...this._subTreeViewItems.value.entries()];
+    rest.sort(([, a], [, b]) => {
+      if (a[subTreeItemWeight] === b[subTreeItemWeight]) {
+        return 0;
+      }
+      return a[subTreeItemWeight] > b[subTreeItemWeight] ? -1 : 1;
+    });
+    return [defaultItem, ...rest].map(([id]) => id);
   }
 
   /**

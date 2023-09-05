@@ -124,6 +124,10 @@ class ButtonManager {
       get weight() {
         return buttonComponentOptions.weight || 0;
       },
+      set weight(value) {
+        check(value, Number);
+        buttonComponentOptions.weight = value;
+      },
     };
 
     this._buttonComponents.set(id, buttonComponent);

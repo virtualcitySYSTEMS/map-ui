@@ -5,6 +5,7 @@
 - Changed Plugin Version handling
 - Added AbstractConfigEditor Interface to plugin Interface, to enable configuring plugin configs in the app-configurator
 - Added getDefaultOptions/getConfigEditors to Plugin Interface
+- Fix subtree action and weight of subtrees
 
 # 5.0.0-rc.29
 

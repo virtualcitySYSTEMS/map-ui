@@ -88,9 +88,11 @@ describe('ContentTreeCollection', () => {
     let app;
     let collection;
     let tree;
-    let subTree;
+    let subTree1;
+    let subTree2;
     let id;
-    let subTreeId;
+    let subTreeId1;
+    let subTreeId2;
 
     beforeAll(() => {
       app = new VcsUiApp();
@@ -117,9 +119,16 @@ describe('ContentTreeCollection', () => {
       collection.add(
         createVisibleContentTreeItem({ name: 'sub.base.bar' }, app),
       );
-      [id, subTreeId] = collection.subTreeIds;
+      collection.add(
+        new SubContentTreeItem({ name: 'otherSub', weight: 1 }, app),
+      );
+      collection.add(
+        createVisibleContentTreeItem({ name: 'otherSub.base' }, app),
+      );
+      [id, subTreeId1, subTreeId2] = collection.subTreeIds;
       tree = collection.getComputedVisibleTree(id).value;
-      subTree = collection.getComputedVisibleTree(subTreeId).value;
+      subTree1 = collection.getComputedVisibleTree(subTreeId1).value;
+      subTree2 = collection.getComputedVisibleTree(subTreeId2).value;
     });
 
     afterAll(() => {
@@ -128,13 +137,14 @@ describe('ContentTreeCollection', () => {
 
     it('should create an array of top level items', () => {
       expect(tree).to.have.lengthOf(2);
-      expect(subTree).to.have.lengthOf(2);
+      expect(subTree1).to.have.lengthOf(1);
+      expect(subTree2).to.have.lengthOf(2);
     });
 
     it('should create children of items with a parent', () => {
       const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem).to.have.property('children').and.to.have.lengthOf(3);
-      const subBaseItem = subTree.find((i) => i.name === 'sub.base');
+      const subBaseItem = subTree2.find((i) => i.name === 'sub.base');
       expect(subBaseItem).to.have.property('children').and.to.have.lengthOf(2);
     });
 
@@ -148,19 +158,19 @@ describe('ContentTreeCollection', () => {
       const baseItem = tree.find((i) => i.name === 'base');
       expect(baseItem.children[0]).to.have.property('name', 'base.baz');
       expect(baseItem.children[2]).to.have.property('name', 'base.bar');
-      expect(subTree[0]).to.have.property('name', 'sub.bar');
-      expect(subTree[1]).to.have.property('name', 'sub.base');
+      expect(subTree2[0]).to.have.property('name', 'sub.bar');
+      expect(subTree2[1]).to.have.property('name', 'sub.base');
     });
 
     it('should return the children of a subTree', () => {
       const children = collection.getChildrenForSubTree(id);
       expect(children).to.have.lengthOf(7);
-      const subChildren = collection.getChildrenForSubTree(subTreeId);
+      const subChildren = collection.getChildrenForSubTree(subTreeId2);
       expect(subChildren).to.have.lengthOf(5);
     });
 
     it('should add a navbar action', () => {
-      expect(app.navbarManager.componentIds).to.have.ordered.members(
+      expect(app.navbarManager.componentIds).to.have.members(
         collection.subTreeIds,
       );
     });
