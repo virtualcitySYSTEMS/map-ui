@@ -1,6 +1,0 @@
-{
-  "name": "@vcmap/create-link",
-  "version": "1.0.0",
-  "vcMapVersion": "~5.0.0",
-  "main": "index.js"
-}

@@ -50,9 +50,10 @@ export function getPluginDirectory() {
 
 /**
  * Gets the names of the plugins defined in the plugins/package.json
+ * @param {boolean} [noOptional=false]
  * @returns {Promise<Array<string>>}
  */
-export async function getPluginNames() {
+export async function getPluginNames(noOptional) {
   const pluginsDir = getPluginDirectory();
   const packageJsonContent = await fs.promises.readFile(
     path.join(pluginsDir, 'package.json'),
@@ -60,7 +61,7 @@ export async function getPluginNames() {
   const { dependencies: plugins, optionalDependencies: internalPlugins } =
     JSON.parse(packageJsonContent.toString());
   const pluginNames = plugins ? Object.keys(plugins) : [];
-  if (internalPlugins) {
+  if (!noOptional && internalPlugins) {
     // internal plugins are mapped as optional dependencies only add them, if they exist
     Object.keys(internalPlugins).forEach((internalPlugin) => {
       if (
@@ -389,7 +390,7 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
 
 export async function buildPluginsForBundle(baseConfig = {}) {
   const inlinePlugins = await getInlinePlugins();
-  const dependentPlugins = await getPluginNames();
+  const dependentPlugins = await getPluginNames(true);
   const promises = inlinePlugins
     .filter((plugin) => plugin.startsWith('@vcmap/'))
     .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));

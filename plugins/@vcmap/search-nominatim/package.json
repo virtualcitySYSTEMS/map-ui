@@ -1,9 +1,0 @@
-{
-  "name": "@vcmap/search-nominatim",
-  "version": "1.0.0",
-  "description": "A search plugin for OSM Nominatim",
-  "peerDependencies": {
-    "@vcmap/core": "^5.0.0-rc.30",
-    "@vcmap/ui": "^5.0.0-rc.23"
-  }
-}

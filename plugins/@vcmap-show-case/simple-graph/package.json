@@ -1,11 +1,11 @@
 {
-  "name": "@vcmap/theme-changer",
+  "name": "@vcmap-show-case/simple-graph",
   "version": "1.0.0",
   "vcMapVersion": "~5.0.0",
   "dependencies": {
-    "@vcsuite/check": "^1.1.2"
+    "@vcsuite/parsers": "^1.0.1"
   },
   "peerDependencies": {
-    "@vcmap/ui": "^5.0.0-rc.2"
+    "@vcmap/ui": "5.0.0-rc.2"
   }
 }

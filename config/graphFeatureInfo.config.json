@@ -135,7 +135,7 @@
   "plugins": [
     {
       "name": "simple-graph",
-      "entry": "plugins/@vcmap/simple-graph/index.js"
+      "entry": "plugins/@vcmap-show-case/simple-graph/index.js"
     }
   ]
 }

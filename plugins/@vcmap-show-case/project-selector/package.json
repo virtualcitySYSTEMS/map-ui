@@ -1,5 +1,5 @@
 {
-  "name": "@vcmap/project-selector",
+  "name": "@vcmap-show-case/project-selector",
   "version": "1.0.0",
   "vcMapVersion": "~5.0.0",
   "dependencies": {

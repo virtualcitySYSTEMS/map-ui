@@ -1,6 +1,6 @@
 {
-  "name": "projectSelector",
-  "entry": "plugins/@vcmap/project-selector/index.js",
+  "name": "@vcmap-show-case/project-selector",
+  "entry": "plugins/@vcmap-show-case/project-selector/index.js",
   "selected": "VC Map Base",
   "selectedModules": [],
   "open": false,

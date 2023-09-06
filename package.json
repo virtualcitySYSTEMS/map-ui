@@ -17,7 +17,7 @@
     "lint": "npm run lint:js && npm run lint:prettier",
     "format": "prettier --write --list-different . && npm run lint:js -- --fix",
     "prepack": "node build/build.js",
-    "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force"
+    "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force --include optional"
   },
   "repository": {
     "type": "git",

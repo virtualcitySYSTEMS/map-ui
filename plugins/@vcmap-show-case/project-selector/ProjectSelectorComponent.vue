@@ -75,7 +75,7 @@
     },
     setup() {
       const app = inject('vcsApp');
-      const plugin = app.plugins.getByKey('@vcmap/project-selector');
+      const plugin = app.plugins.getByKey('@vcmap-show-case/project-selector');
       async function selectProject(project) {
         this.loading = project.name;
         await plugin.selectProject(app, project);

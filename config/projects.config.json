@@ -3,8 +3,8 @@
   "_id": "projectsConfig",
   "plugins": [
     {
-      "name": "@vcmap/project-selector",
-      "entry": "plugins/@vcmap/project-selector/index.js",
+      "name": "@vcmap-show-case/project-selector",
+      "entry": "plugins/@vcmap-show-case/project-selector/index.js",
       "selected": "",
       "selectedModules": ["config/dev.config.json", "config/codes.config.json"],
       "open": true,

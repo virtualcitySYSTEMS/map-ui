@@ -98,7 +98,7 @@
     },
     setup() {
       const app = inject('vcsApp');
-      const plugin = app.plugins.getByKey('@vcmap/theme-changer');
+      const plugin = app.plugins.getByKey('@vcmap-show-case/theme-changer');
 
       function setTheme(theme) {
         const { name, dark, light } = theme;

@@ -1,10 +1,14 @@
 {
   "dependencies": {
-    "@vcmap/hello-world": "^1.0.7",
     "@vcmap/print": "^1.0.2",
     "@vcmap/swipe-tool": "^1.0.3",
     "@vcmap/export": "^1.0.1",
     "@vcmap/shadow": "^1.0.1",
-    "@vcmap/draw": "^1.0.0"
+    "@vcmap/draw": "^1.0.0",
+    "@vcmap/create-link": "^1.0.1",
+    "@vcmap/search-nominatim": "^1.0.1"
+  },
+  "optionalDependencies": {
+    "@vcmap/hello-world": "^1.0.7"
   }
 }

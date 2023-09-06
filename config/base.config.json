@@ -996,8 +996,8 @@
   ],
   "plugins": [
     {
-      "name": "@vcmap/theme-changer",
-      "entry": "plugins/@vcmap/theme-changer/index.js"
+      "name": "@vcmap-show-case/theme-changer",
+      "entry": "plugins/@vcmap-show-case/theme-changer/index.js"
     },
     {
       "name": "@vcmap/create-link",
