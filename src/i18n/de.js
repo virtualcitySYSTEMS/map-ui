@@ -128,6 +128,11 @@ const messages = {
       skirt: 'Skirts',
       modelScale: 'Modell Skalierung',
     },
+    validation: {
+      allowedRange: 'Erlaubter Wertebereich',
+      notValid: 'Eingabe nicht gültig',
+      required: 'Eingabe ist erforderlich',
+    },
   },
   settings: {
     title: 'Einstellungen',
@@ -142,11 +147,6 @@ const messages = {
   help: {
     title: 'Hilfe',
     tooltip: 'Externe Hilfeseite in neuem Browser Tab öffnen',
-  },
-  validation: {
-    allowedRange: 'Erlaubter Wertebereich',
-    notValid: 'Eingabe nicht gültig',
-    required: 'Eingabe ist erforderlich',
   },
   featureInfo: {
     activateToolTitle: 'Informationswerkzeug aktivieren',
@@ -176,6 +176,7 @@ const messages = {
     attributions: {
       title: 'Attributionen',
       tooltip: 'Öffne Attributionsfenster',
+      empty: 'Aktuell sind keine Attributionseinträge verfügbar.',
     },
   },
   notification: {

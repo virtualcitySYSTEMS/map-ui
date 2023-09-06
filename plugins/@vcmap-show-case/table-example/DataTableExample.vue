@@ -134,7 +134,6 @@
       const items = ref(defaultItems);
       const headers = ref(defaultHeaders);
       const newItem = ref({
-        id: items.value.length,
         name: 'foo',
         type: 'foo',
         date: new Date(),
@@ -159,6 +158,7 @@
             name: newItem.value.name,
             type: newItem.value.type,
             date: newItem.value.date,
+            id: items.value.length,
           };
 
           items.value.push(item);

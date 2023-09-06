@@ -1,24 +1,29 @@
 <template>
-  <v-list class="px-2">
-    <v-list-item
-      v-for="{ key, title, attributions } in entries"
-      :key="key"
-      class="px-0"
-    >
-      <v-list-item-content>
-        <v-list-item-title>{{ $t(title) }}</v-list-item-title>
-        <v-list-item-subtitle
-          v-for="attribution in attributions"
-          :key="attribution.provider"
-          :title="`${$t(attribution.provider)} ${attribution.year}`"
-        >
-          <a :href="attribution.url" target="_blank">
-            {{ $t(attribution.provider) }} {{ attribution.year }}
-          </a>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+  <v-sheet>
+    <v-list v-if="entries.length" class="px-2">
+      <v-list-item
+        v-for="{ key, title, attributions } in entries"
+        :key="key"
+        class="px-0"
+      >
+        <v-list-item-content>
+          <v-list-item-title>{{ $t(title) }}</v-list-item-title>
+          <v-list-item-subtitle
+            v-for="attribution in attributions"
+            :key="attribution.provider"
+            :title="`${$t(attribution.provider)} ${attribution.year}`"
+          >
+            <a :href="attribution.url" target="_blank">
+              {{ $t(attribution.provider) }} {{ attribution.year }}
+            </a>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-sheet v-else class="ma-2">
+      {{ $t('footer.attributions.empty') }}
+    </v-sheet>
+  </v-sheet>
 </template>
 
 <style lang="scss" scoped>
@@ -51,6 +56,7 @@
     VListItemContent,
     VListItemTitle,
     VListItemSubtitle,
+    VSheet,
   } from 'vuetify/lib';
 
   /**
@@ -65,6 +71,7 @@
       VListItemContent,
       VListItemTitle,
       VListItemSubtitle,
+      VSheet,
     },
     props: {
       entries: {

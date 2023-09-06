@@ -52,7 +52,7 @@
       <template v-slot:header.data-table-select="{ props, on }">
         <div v-if="on">
           <v-icon
-            v-if="value.length === totalNumber"
+            v-if="props.value"
             @click="on.input(false)"
             class="vcs-select-icon"
           >

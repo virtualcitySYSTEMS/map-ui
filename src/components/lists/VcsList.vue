@@ -324,17 +324,23 @@
        */
       let draggedItem = null;
 
+      const isDraggable = computed(() => {
+        return query.value === '' && props.draggable;
+      });
+
       /**
        * @param {MouseEvent} e
        * @param {number} targetIndex
        */
       function drop(e, targetIndex) {
-        if (draggedItem !== null && targetIndex !== undefined) {
-          emit('item-moved', { item: draggedItem, targetIndex });
+        if (isDraggable.value) {
+          if (draggedItem !== null && targetIndex !== undefined) {
+            emit('item-moved', { item: draggedItem, targetIndex });
+          }
+          draggedItem = null;
+          dragging.value = undefined;
+          document.removeEventListener('mouseup', drop);
         }
-        draggedItem = null;
-        dragging.value = undefined;
-        document.removeEventListener('mouseup', drop);
       }
 
       /**
@@ -343,19 +349,19 @@
        * @param {number} index
        */
       function drag(e, item, index) {
-        dragging.value = index;
-        draggedItem = item;
-        e.dataTransfer.effectAllowed = 'move';
-        document.addEventListener('mouseup', drop);
+        if (isDraggable.value) {
+          dragging.value = index;
+          draggedItem = item;
+          e.dataTransfer.effectAllowed = 'move';
+          document.addEventListener('mouseup', drop);
+        }
       }
 
       return {
         query,
         hovering,
         dragging,
-        isDraggable: computed(() => {
-          return query.value === '' && props.draggable;
-        }),
+        isDraggable,
         borderBottom,
         borderTop,
         lightenEven,
