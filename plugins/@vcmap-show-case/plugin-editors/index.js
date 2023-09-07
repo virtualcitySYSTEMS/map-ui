@@ -35,7 +35,7 @@ export default function pluginEditors() {
       return {};
     },
     destroy() {
-      this._destroy();
+      this._destroyAction();
     },
   };
 }
