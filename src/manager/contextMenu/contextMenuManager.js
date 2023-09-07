@@ -126,6 +126,8 @@ class ContextMenuManager {
       } else {
         position.right += 1;
       }
+      position.maxWidth = 320;
+      position.width = -1; // unset width magic. dont touch.
 
       this._app.windowManager.add(
         {

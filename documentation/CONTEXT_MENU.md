@@ -12,6 +12,11 @@ for as long as:
 - No interactions are made on the map.
 - No action in the context menu has been executed.
 
+The context menu is rendered with a dynamic width, with a max width of 320px.
+Ensure that the title of your action is as short as possible. And double
+check the result. Otherwise you must provide a tooltip for the ellipsis via the
+actions title.
+
 ## Usage
 
 The `ContextMenuManager` provides an API to add handlers based

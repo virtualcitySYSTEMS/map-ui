@@ -55,7 +55,7 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
 
 /**
  * @typedef {Object} PluginConfigEditor
- * @property {import("vue").Component} component - A editor component to configure a plugin or item
+ * @property {import("vue").Component & { title: string | undefined}} component - A editor component to configure a plugin or item
  * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
  * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
  */

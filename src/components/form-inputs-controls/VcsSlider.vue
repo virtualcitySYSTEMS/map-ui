@@ -15,6 +15,7 @@
   .vcs-slider {
     ::v-deep {
       .v-slider {
+        cursor: pointer;
         .v-slider__thumb {
           border: 2px solid;
           &:before {

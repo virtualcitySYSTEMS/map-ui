@@ -466,6 +466,10 @@
     {
       "name": "switch-map-callback-example",
       "entry": "plugins/@vcmap-show-case/switch-map-callback-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/plugin-editors",
+      "entry": "plugins/@vcmap-show-case/plugin-editors/index.js"
     }
   ],
   "uiConfig": [

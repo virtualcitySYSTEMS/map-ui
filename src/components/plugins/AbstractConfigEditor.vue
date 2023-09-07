@@ -8,10 +8,10 @@
         </div>
         <div class="d-flex gap-2 w-full justify-end">
           <VcsFormButton type="submit" variant="filled" :disabled="!isValid">
-            {{ $t('appConfigurator.apply') }}
+            {{ $t('components.apply') }}
           </VcsFormButton>
           <VcsFormButton @click.stop="cancel">
-            {{ $t('appConfigurator.cancel') }}
+            {{ $t('components.cancel') }}
           </VcsFormButton>
           <VcsActionButtonList :actions="actions" button="VcsFormButton" />
         </div>
