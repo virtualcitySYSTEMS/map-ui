@@ -4,6 +4,7 @@
 - Updated @vcmap/core
 - Updated @vcmap-cesium/engine to 4.0.x
 - Updated openlayers to 7.5.2
+- I18nCollection is now an OverrideCollection, and will handle pluginMessages separatly
 
 # 5.0.0-rc.30
 

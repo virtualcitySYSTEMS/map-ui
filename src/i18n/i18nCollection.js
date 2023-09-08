@@ -1,12 +1,7 @@
-// eslint-disable-next-line max-classes-per-file
-import { v5 as uuidv5 } from 'uuid';
 import { IndexedCollection, moduleIdSymbol } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
-
-/**
- * @type {string}
- */
-const uniqueNamespace = '9c27cc2d-552f-4637-9194-09329ed4c1dc';
+import en from './en.js';
+import de from './de.js';
 
 /**
  * returns true if the given value is of type object and not an array.
@@ -70,64 +65,20 @@ export function mergeDeep(...sources) {
  * @extends {IndexedCollection<I18nConfigurationItem>}
  */
 class I18nCollection extends IndexedCollection {
-  /**
-   * @param {function():string} getDynamicModuleId - function to get the current dynamic module id
-   */
-  constructor(getDynamicModuleId) {
+  constructor() {
     super();
     /**
-     * @type {function(): string}
+     * VC Map default I18n Messages
+     * @type {Object}
      * @private
      */
-    this._getDynamicModuleId = getDynamicModuleId;
-  }
+    this._defaultMessages = { name: 'default', en, de };
 
-  /**
-   * @inheritDoc
-   */
-  add(item) {
-    if (!item[moduleIdSymbol]) {
-      item[moduleIdSymbol] = this._getDynamicModuleId();
-    }
-    if (!item.name) {
-      item.name = uuidv5(JSON.stringify(item), uniqueNamespace);
-    }
-    super.add(item);
-  }
-
-  /**
-   * @param {Array<I18nConfigurationItem>} configArray
-   * @param {string} moduleId
-   * @returns {Promise<void>}
-   */
-  async parseItems(configArray, moduleId) {
-    if (Array.isArray(configArray)) {
-      configArray.forEach((item) => {
-        this.add({ ...item, [moduleIdSymbol]: moduleId });
-      });
-    }
-  }
-
-  /**
-   * @param {string} moduleId
-   */
-  async removeModule(moduleId) {
-    [...this]
-      .filter((item) => item[moduleIdSymbol] === moduleId)
-      .forEach((item) => {
-        this.remove(item);
-      });
-  }
-
-  /**
-   * @param {string} moduleId
-   * @returns {Array<I18nConfigurationItem>}
-   */
-  serializeModule(moduleId) {
-    return [...this]
-      .filter((item) => item[moduleIdSymbol] === moduleId)
-      .filter((item) => !item[i18nPluginSymbol])
-      .map((item) => JSON.parse(JSON.stringify(item)));
+    /**
+     * @type {IndexedCollection<Object>}
+     * @private
+     */
+    this._pluginMessages = new IndexedCollection(false);
   }
 
   /**
@@ -138,10 +89,11 @@ class I18nCollection extends IndexedCollection {
    * @param {Object} messages
    */
   addPluginMessages(plugin, moduleId, messages) {
-    messages[i18nPluginSymbol] = plugin;
     messages[moduleIdSymbol] = moduleId;
+    messages[i18nPluginSymbol] = plugin;
     messages.name = plugin;
-    this.add(messages);
+    this._pluginMessages.add(messages);
+    this.added.raiseEvent(messages);
   }
 
   /**
@@ -151,14 +103,15 @@ class I18nCollection extends IndexedCollection {
    * @param {string} moduleId
    */
   removePluginMessages(pluginName, moduleId) {
-    [...this]
+    [...this._pluginMessages]
       .filter(
         (item) =>
           item[i18nPluginSymbol] === pluginName &&
           item[moduleIdSymbol] === moduleId,
       )
       .forEach((item) => {
-        this.remove(item);
+        this._pluginMessages.remove(item);
+        this.removed.raiseEvent(item);
       });
   }
 
@@ -167,13 +120,14 @@ class I18nCollection extends IndexedCollection {
    * @returns {Object}
    */
   getMergedMessages() {
-    return mergeDeep(...this);
+    return mergeDeep(this._defaultMessages, ...this._pluginMessages, ...this);
   }
 
   /**
    * @inheritDoc
    */
   destroy() {
+    this._pluginMessages.destroy();
     this._getDynamicModuleId = null;
     super.destroy();
   }

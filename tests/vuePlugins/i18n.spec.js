@@ -12,10 +12,6 @@ describe('setupI18n', () => {
     app.destroy();
   });
 
-  it('should add the default messages to the i18n Collection', () => {
-    expect(app.i18n.getMergedMessages()).to.have.keys(['de', 'en']);
-  });
-
   it('should set the merged messages to the vue i18n Plugin', () => {
     expect(app.vueI18n.availableLocales).to.have.members(['de', 'en']);
   });
@@ -27,12 +23,12 @@ describe('setupI18n', () => {
   });
 
   it('should add newly added i18n Keys to the vueI18n plugin', () => {
-    app.i18n.add({ pl: 'test' });
+    app.i18n.add({ name: 'plTest', pl: 'test' });
     expect(app.vueI18n.availableLocales).to.have.members(['de', 'en', 'pl']);
   });
 
   it('should remove i18n Keys from the vueI18n plugin if they are removed from the app', () => {
-    const item = { pl: 'test' };
+    const item = { name: 'plTest', pl: 'test' };
     app.i18n.add(item);
     expect(app.vueI18n.availableLocales).to.have.members(['de', 'en', 'pl']);
     app.i18n.remove(item);

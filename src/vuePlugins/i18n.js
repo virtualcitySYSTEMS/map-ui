@@ -1,9 +1,5 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import { i18nPluginSymbol } from '../i18n/i18nCollection.js';
-import { vcsAppSymbol } from '../pluginHelper.js';
-import de from '../i18n/de.js';
-import en from '../i18n/en.js';
 
 Vue.use(VueI18n);
 
@@ -44,10 +40,6 @@ function setI18nMessages(app) {
  * @returns {function():void} returns a destroy function
  */
 export function setupI18n(app) {
-  const defaultMessages = { name: 'default', en, de };
-  defaultMessages[i18nPluginSymbol] = vcsAppSymbol;
-  app.i18n.add(defaultMessages);
-
   setI18nMessages(app);
   app.vueI18n.locale = app.locale;
   const destroyFunctions = [

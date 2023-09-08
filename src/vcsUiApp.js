@@ -262,6 +262,10 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._i18n = new I18nCollection(() => this.dynamicModuleId);
+    this._i18n = makeOverrideCollection(
+      new I18nCollection(),
+      () => this.dynamicModuleId,
+    );
 
     /**
      *
