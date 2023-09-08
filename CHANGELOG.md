@@ -1,3 +1,10 @@
+# 5.0.0-rc.31
+
+- Several Bugfixes
+- Updated @vcmap/core
+- Updated @vcmap-cesium/engine to 4.0.x
+- Updated openlayers to 7.5.2
+
 # 5.0.0-rc.30
 
 - Add new input component `VcsChipArrayInput` for arrays

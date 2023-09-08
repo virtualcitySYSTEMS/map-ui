@@ -526,7 +526,8 @@
       "fogDensity": 0.0002,
       "fogDensityMobile": 0.0004,
       "fogScreenSpaceError": 2,
-      "fogScreenSpaceErrorMobile": 4
+      "fogScreenSpaceErrorMobile": 4,
+      "useOriginalCesiumShader": false
     },
     {
       "name": "Oblique Map",
