@@ -152,13 +152,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
-        if (plugin.i18n) {
-          this.i18n.addPluginMessages(
-            plugin.name,
-            plugin[moduleIdSymbol],
-            plugin.i18n,
-          );
-        }
+        // i18n messages of the plugin are added by the i18n collection
         if (plugin.initialize) {
           let state;
           if (this._cachedAppState.moduleIds.includes(plugin[moduleIdSymbol])) {
@@ -183,7 +177,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
-        this.i18n.removePluginMessages(plugin.name, plugin[moduleIdSymbol]);
+        // i18n messages of the plugin are removed by the i18n collection
       }),
     ];
 
@@ -261,9 +255,8 @@ class VcsUiApp extends VcsApp {
      * @type {I18nCollection<Object>}
      * @private
      */
-    this._i18n = new I18nCollection(() => this.dynamicModuleId);
     this._i18n = makeOverrideCollection(
-      new I18nCollection(),
+      new I18nCollection(this._plugins),
       () => this.dynamicModuleId,
     );
 
@@ -559,7 +552,7 @@ class VcsUiApp extends VcsApp {
       await this._plugins.parseItems(config.plugins, module._id);
     }
     if (Array.isArray(config.i18n)) {
-      await this.i18n.parseItems(config.i18n, module._id);
+      await this._i18n.parseItems(config.i18n, module._id);
     }
     await super._parseModule(module);
     await this._contentTree.parseItems(config.contentTree, module._id);

@@ -1,4 +1,4 @@
-import { IndexedCollection, moduleIdSymbol } from '@vcmap/core';
+import { IndexedCollection, VcsEvent } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import en from './en.js';
 import de from './de.js';
@@ -65,7 +65,10 @@ export function mergeDeep(...sources) {
  * @extends {IndexedCollection<I18nConfigurationItem>}
  */
 class I18nCollection extends IndexedCollection {
-  constructor() {
+  /**
+   * @param {import("@vcmap/core").OverrideCollection<VcsPlugin>} pluginCollection
+   */
+  constructor(pluginCollection) {
     super();
     /**
      * VC Map default I18n Messages
@@ -73,62 +76,60 @@ class I18nCollection extends IndexedCollection {
      * @private
      */
     this._defaultMessages = { name: 'default', en, de };
-
     /**
-     * @type {IndexedCollection<Object>}
+     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
      * @private
      */
-    this._pluginMessages = new IndexedCollection(false);
+    this._pluginCollection = pluginCollection;
+
+    this._pluginI18nListeners = [
+      this._pluginCollection.added.addEventListener((plugin) => {
+        if (plugin.i18n) {
+          this.changed.raiseEvent({ name: plugin.name, ...plugin.i18n });
+        }
+      }),
+      this._pluginCollection.removed.addEventListener((plugin) => {
+        if (plugin.i18n) {
+          this.changed.raiseEvent({ name: plugin.name, ...plugin.i18n });
+        }
+      }),
+    ];
+
+    this._i18nListener = [
+      this.added.addEventListener((added) => this.changed.raiseEvent(added)),
+      this.removed.addEventListener((removed) =>
+        this.changed.raiseEvent(removed),
+      ),
+      this.moved.addEventListener((moved) => this.changed.raiseEvent(moved)),
+    ];
+
+    /**
+     * Event raised, whenever a I18nConfigurationItem is added or removed or when a plugin with i18n keys is added or removed
+     * @type {VcsEvent<I18nConfigurationItem>}
+     */
+    this.changed = new VcsEvent();
   }
 
   /**
-   * This method adds plugin messages to the collection. It is no necessary to call this function
-   * from within a plugin. Use the i18n property on your plugin.
-   * @param {string} plugin Name of the plugin
-   * @param {string} moduleId
-   * @param {Object} messages
-   */
-  addPluginMessages(plugin, moduleId, messages) {
-    messages[moduleIdSymbol] = moduleId;
-    messages[i18nPluginSymbol] = plugin;
-    messages.name = plugin;
-    this._pluginMessages.add(messages);
-    this.added.raiseEvent(messages);
-  }
-
-  /**
-   * This method removes plugin messages from the collection. It is no necessary to call this function
-   * from within a plugin. Once your plugin is removed, the VcsUiApp will call this for you.
-   * @param {string} pluginName
-   * @param {string} moduleId
-   */
-  removePluginMessages(pluginName, moduleId) {
-    [...this._pluginMessages]
-      .filter(
-        (item) =>
-          item[i18nPluginSymbol] === pluginName &&
-          item[moduleIdSymbol] === moduleId,
-      )
-      .forEach((item) => {
-        this._pluginMessages.remove(item);
-        this.removed.raiseEvent(item);
-      });
-  }
-
-  /**
-   * returns a merged Message Object with the locale as a key and an Object with all the translated keys
+   * Returns a merged Message Object with the locale as a key and an Object with all the translated keys.
+   * Includes all available plugin messages.
    * @returns {Object}
    */
   getMergedMessages() {
-    return mergeDeep(this._defaultMessages, ...this._pluginMessages, ...this);
+    const pluginMessages = [...this._pluginCollection]
+      .map((p) => p.i18n)
+      .filter((i) => i);
+    return mergeDeep(this._defaultMessages, ...pluginMessages, ...this);
   }
 
   /**
    * @inheritDoc
    */
   destroy() {
-    this._pluginMessages.destroy();
-    this._getDynamicModuleId = null;
+    this._i18nListener.forEach((cb) => cb());
+    this._pluginI18nListeners.forEach((cb) => cb());
+    this._pluginCollection = null;
+    this.changed.destroy();
     super.destroy();
   }
 }

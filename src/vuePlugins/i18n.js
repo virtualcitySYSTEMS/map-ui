@@ -43,10 +43,7 @@ export function setupI18n(app) {
   setI18nMessages(app);
   app.vueI18n.locale = app.locale;
   const destroyFunctions = [
-    app.i18n.added.addEventListener(() => {
-      setI18nMessages(app);
-    }),
-    app.i18n.removed.addEventListener(() => {
+    app.i18n.changed.addEventListener(() => {
       setI18nMessages(app);
     }),
     app.localeChanged.addEventListener((locale) => {

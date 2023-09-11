@@ -1,4 +1,5 @@
-import { describe, expect, it, beforeEach, afterEach } from 'vitest';
+import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
+import { Collection } from '@vcmap/core';
 import I18nCollection, {
   mergeDeep,
   isObject,
@@ -78,9 +79,20 @@ describe('i18nCollection', () => {
 
   describe('i18n', () => {
     let i18n;
+    let plugins;
+    let testItem;
+    let plugin;
 
     beforeEach(() => {
-      i18n = new I18nCollection();
+      plugins = new Collection();
+      i18n = new I18nCollection(plugins);
+      testItem = { name: 'test', de: { test: 'Test' }, en: { test: 'test' } };
+      plugin = {
+        name: 'plugin',
+        version: '1.0.0',
+        initialize() {},
+        i18n: { de: { plugin: 'Plugin' }, en: { plugin: 'plugin' } },
+      };
     });
 
     afterEach(() => {
@@ -93,18 +105,80 @@ describe('i18nCollection', () => {
       });
     });
 
-    describe('plugin handling', () => {
-      it('should add plugins Items to the mergedMessages', () => {
-        i18n.addPluginMessages('myPlugin', 'newmoduleId', { key: 'message' });
-        const mergedMessages = i18n.getMergedMessages();
-        expect(mergedMessages.key).to.be.equal('message');
+    describe('changed event', () => {
+      let changedSpy;
+      beforeEach(() => {
+        changedSpy = vi.fn();
       });
 
-      it('should remove plugin items from the MergedMessages', () => {
-        i18n.addPluginMessages('myPlugin', 'newmoduleId', { key: 'message' });
-        i18n.removePluginMessages('myPlugin', 'newmoduleId');
+      it('should raise changed on item added', () => {
+        i18n.changed.addEventListener(changedSpy);
+        i18n.add(testItem);
+        expect(changedSpy).toHaveBeenCalledTimes(1);
+        expect(changedSpy).toHaveBeenLastCalledWith(testItem);
+      });
+      it('should raise changed on item moved', () => {
+        i18n.add(testItem);
+        i18n.add({ name: 'otherItem' });
+        i18n.changed.addEventListener(changedSpy);
+        i18n.moveTo(testItem, 1);
+        expect(changedSpy).toHaveBeenCalledTimes(1);
+        expect(changedSpy).toHaveBeenLastCalledWith(testItem);
+      });
+      it('should raise changed on item removed', () => {
+        i18n.add(testItem);
+        i18n.changed.addEventListener(changedSpy);
+        i18n.remove(testItem);
+        expect(changedSpy).toHaveBeenCalledTimes(1);
+        expect(changedSpy).toHaveBeenLastCalledWith(testItem);
+      });
+      it('should raise changed on plugin added', () => {
+        i18n.changed.addEventListener(changedSpy);
+        plugins.add(plugin);
+        expect(changedSpy).toHaveBeenCalledTimes(1);
+        expect(changedSpy).toHaveBeenLastCalledWith({
+          name: plugin.name,
+          ...plugin.i18n,
+        });
+      });
+      it('should raise changed on plugin removed', () => {
+        plugins.add(plugin);
+        i18n.changed.addEventListener(changedSpy);
+        plugins.remove(plugin);
+        expect(changedSpy).toHaveBeenCalledTimes(1);
+        expect(changedSpy).toHaveBeenLastCalledWith({
+          name: plugin.name,
+          ...plugin.i18n,
+        });
+      });
+      it('should NOT raise changed, if item add failed', () => {
+        i18n.add(testItem);
+        i18n.changed.addEventListener(changedSpy);
+        const idx = i18n.add(testItem);
+        expect(idx).to.be.null;
+        expect(changedSpy).toHaveBeenCalledTimes(0);
+      });
+      it('should NOT raise changed, if item remove failed', () => {
+        i18n.changed.addEventListener(changedSpy);
+        i18n.remove({ name: 'otherItem' });
+        expect(changedSpy).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    describe('plugin handling', () => {
+      it('should add plugins Items to the mergedMessages', () => {
+        plugins.add(plugin);
         const mergedMessages = i18n.getMergedMessages();
-        expect(mergedMessages.key).to.not.exist;
+        expect(mergedMessages.de).to.have.property('plugin', 'Plugin');
+        expect(mergedMessages.en).to.have.property('plugin', 'plugin');
+      });
+
+      it('should remove plugin items from the MergedMessages', async () => {
+        plugins.remove(plugin);
+        const mergedMessages = i18n.getMergedMessages();
+        expect(plugins.size).to.equal(0);
+        expect(mergedMessages.de).to.not.have.property('plugin', 'Plugin');
+        expect(mergedMessages.en).to.not.have.property('plugin', 'plugin');
       });
     });
   });
