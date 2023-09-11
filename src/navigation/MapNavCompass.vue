@@ -140,7 +140,7 @@
 
 <script>
   /**
-   * The compass with ticks along the border
+   * @description The compass with ticks along the border
    * @vue-prop {boolean} [canEmit=true] - whether to emit click events on cardinal direction arrows or not
    * @vue-prop {boolean} [hideTicks=false] - hide ticks on navigation rose
    * @vue-event {HTMLEvent} direction-click - raised when a cardinal direction arrow is clicked

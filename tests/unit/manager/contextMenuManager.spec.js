@@ -18,7 +18,7 @@ import {
   afterEach,
 } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import { contextMenuWindowId } from '../../../src/manager/contextMenu/contextMenuComponent.vue';
+import { contextMenuWindowId } from '../../../src/manager/contextMenu/ContextMenuComponent.vue';
 
 async function setupAppForEvents(app) {
   const map = new OpenlayersMap({});

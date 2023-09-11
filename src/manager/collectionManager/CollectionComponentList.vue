@@ -37,8 +37,10 @@
   }
 
   /**
+   * @description
    * Renders the items of a CollectionComponent in a List.
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
+   * @vue-prop {string} windowId
    */
   export default {
     name: 'CollectionComponentList',

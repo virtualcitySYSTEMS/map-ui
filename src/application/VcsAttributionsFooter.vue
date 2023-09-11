@@ -51,7 +51,7 @@
   import VcsButton from '../components/buttons/VcsButton.vue';
 
   /**
-   * Lists attributions of maps, layers and oblique collections within the footer
+   * @description Lists attributions of maps, layers and oblique collections within the footer
    * @vue-prop {import("vue").Ref<Array<AttributionEntry>} entries - array with one entry per active VcsObject
    * @vue-prop {VcsAction} attributionAction - action to open attribution window
    * @vue-computed {Array<{provider: string, years: string, url: URL}>} mergedAttributions - array with one entry per provider

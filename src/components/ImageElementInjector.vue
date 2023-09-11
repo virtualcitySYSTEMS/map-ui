@@ -3,6 +3,10 @@
 </template>
 
 <script>
+  /**
+   * @description A component injecting an HTMLCanvasElement or HTMLImageElement in a div.
+   * @vue-prop {HTMLCanvasElement|HTMLImageElement} element
+   */
   export default {
     name: 'ImageElementInjector',
     props: {

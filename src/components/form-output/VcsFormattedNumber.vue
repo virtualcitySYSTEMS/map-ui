@@ -28,7 +28,7 @@
   import { computed } from 'vue';
 
   /**
-   * Converts a number (e.g. 12345678,9) to a locale-aware and
+   * @description Converts a number (e.g. 12345678,9) to a locale-aware and
    * dot-seperated string with given amount of fractional digits (e.g. 12.345.678,90)
    * @param {string|number} value
    * @param {number} fractionDigits

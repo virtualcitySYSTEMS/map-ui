@@ -66,7 +66,7 @@
   } from './windowHelper.js';
 
   /**
-   * WindowManager rendering all registered WindowComponents
+   * @description WindowManager rendering all registered WindowComponents
    */
   export default {
     name: 'VcsWindowManager',

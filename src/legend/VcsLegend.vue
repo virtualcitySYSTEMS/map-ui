@@ -32,6 +32,7 @@
               <div v-if="item.type === LegendType.Image">
                 <img
                   :src="$t(item.src)"
+                  :alt="item.src"
                   class="legend-image"
                   :title="item.tooltip"
                 />
@@ -70,7 +71,7 @@
   } from 'vuetify/lib';
   import { computed } from 'vue';
   import { LegendType } from './legendHelper.js';
-  import StyleLegendItem from './styleLegendItem.vue';
+  import StyleLegendItem from './StyleLegendItem.vue';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
 
   /**

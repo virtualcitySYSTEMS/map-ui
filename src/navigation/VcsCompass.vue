@@ -22,7 +22,7 @@
   import { computed, ref } from 'vue';
 
   import { VSheet } from 'vuetify/lib';
-  import MapNavCompass from './mapNavCompass.vue';
+  import MapNavCompass from './MapNavCompass.vue';
 
   /**
    * @description Compass component to be shown on the map.

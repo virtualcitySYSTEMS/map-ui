@@ -8,7 +8,7 @@ import { WindowSlot } from '../window/windowManager.js';
 import { getFittedWindowPositionOptionsFromMapEvent } from '../window/windowHelper.js';
 import ContextMenuComponent, {
   contextMenuWindowId,
-} from './contextMenuComponent.vue';
+} from './ContextMenuComponent.vue';
 import { sortByOwner } from '../navbarManager.js';
 
 /**

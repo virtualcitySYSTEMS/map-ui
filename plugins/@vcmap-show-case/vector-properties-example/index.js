@@ -1,6 +1,6 @@
 import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from './package.json';
-import component from './vectorPropertiesExample.vue';
+import component from './VectorPropertiesExample.vue';
 
 export default function createVectorPropertiesExamplePlugin() {
   return {

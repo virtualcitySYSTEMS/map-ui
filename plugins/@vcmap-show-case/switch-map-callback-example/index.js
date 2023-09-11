@@ -1,5 +1,5 @@
 import { version, name } from './package.json';
-import SwitchMapCallback from './SwitchMapCallback.js';
+import SwitchMapCallback from './switchMapCallback.js';
 
 /**
  * @returns {import("@vcmap/ui/src/vcsUiApp").VcsPlugin<T>}

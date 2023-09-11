@@ -13,6 +13,10 @@
    */
   export const contextMenuWindowId = 'contextMenuWindow';
 
+  /**
+   * @description Renders a list of actions as modal window.
+   * @vue-prop {Array<VcsAction>} actions
+   */
   export default {
     name: 'ContextMenuComponent',
     components: { VcsActionList },

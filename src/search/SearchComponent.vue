@@ -48,9 +48,13 @@
   import { getLogger } from '@vcsuite/logger';
   import { VSheet, VDivider, VIcon } from 'vuetify/lib';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
-  import ResultsComponent from './resultsComponent.vue';
+  import ResultsComponent from './ResultsComponent.vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
 
+  /**
+   * @description Stylized search component providing an input field for search inputs.
+   * Renders a list of results using {@link ResultsComponent }
+   */
   export default {
     components: {
       VcsFormButton,

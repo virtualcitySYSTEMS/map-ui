@@ -48,14 +48,14 @@
     getWindowComponentOptions,
     overviewMapLayerSymbol,
   } from './overviewMap.js';
-  import VcsCompass from './vcsCompass.vue';
-  import VcsZoomButton from './vcsZoomButton.vue';
-  import TiltSlider from './tiltSlider.vue';
-  import ObliqueRotation from './obliqueRotation.vue';
-  import OrientationToolsButton from './orientationToolsButton.vue';
+  import VcsCompass from './VcsCompass.vue';
+  import VcsZoomButton from './VcsZoomButton.vue';
+  import TiltSlider from './TiltSlider.vue';
+  import ObliqueRotation from './ObliqueRotation.vue';
+  import OrientationToolsButton from './OrientationToolsButton.vue';
 
   /**
-   * Creates a go-to viewpoint action from a startingViewpointName defined in a module
+   * @description Creates a go-to viewpoint action from a startingViewpointName defined in a module
    * @param {VcsUiApp} app
    * @returns {{action: import("vue").Reactive<{}>, destroy: function():void}}
    */

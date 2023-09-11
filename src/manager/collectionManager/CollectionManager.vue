@@ -22,7 +22,7 @@
   import CollectionComponentProvider from './CollectionComponentProvider.vue';
 
   /**
-   * Renders the all managed CollectionComponents of a CollectionManager.
+   * @description Renders the all managed CollectionComponents of a CollectionManager.
    * The collectionManager must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    */
   export default {

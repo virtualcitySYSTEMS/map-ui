@@ -42,6 +42,9 @@
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
   import VcsRadio from '../components/form-inputs-controls/VcsRadio.vue';
 
+  /**
+   * @description The settings window of a VcsMap application
+   */
   export default {
     name: 'VcsSettings',
     components: {

@@ -151,6 +151,7 @@
    */
 
   /**
+   * @description
    * The VCS list is intended to render items. Items can be selectable (by default, more than one) or only a single item can
    * be selected. If items are disabled they cannot be selected. Items which are not visible are not rendered. These items can
    * no longer be selected or deselected either. Making a selected item invisible can lead to undefined behavior

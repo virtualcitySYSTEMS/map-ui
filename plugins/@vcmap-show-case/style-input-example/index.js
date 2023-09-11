@@ -1,6 +1,6 @@
 import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from './package.json';
-import component from './styleExample.vue';
+import component from './StyleExample.vue';
 
 export default function createStyleExamplePlugin() {
   return {

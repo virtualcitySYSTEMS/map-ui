@@ -35,7 +35,7 @@
   import { computed, ref } from 'vue';
   import { VIcon } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
-  import ImageElementInjector from '../imageElementInjector.vue';
+  import ImageElementInjector from '../ImageElementInjector.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**

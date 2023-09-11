@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import OrientationToolsButton from './orientationToolsButton.vue';
+  import OrientationToolsButton from './OrientationToolsButton.vue';
 
   /**
    * @vue-prop {number} value - the current heading

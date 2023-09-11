@@ -1,6 +1,6 @@
 import { ToolboxType } from '@vcmap/ui';
 import { reactive } from 'vue';
-import WindowExampleContent from './windowExampleContent.vue';
+import WindowExampleContent from './WindowExampleContent.vue';
 import packageJSON from './package.json';
 
 const dummySelectAction = {

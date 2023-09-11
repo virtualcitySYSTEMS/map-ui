@@ -58,6 +58,7 @@
   } from './CollectionComponentList.vue';
 
   /**
+   * @description
    * Renders the first ten items of a collectionComponent in a List. Uses CollectionComponentList to render more items.
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    */

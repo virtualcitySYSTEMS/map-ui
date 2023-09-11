@@ -1,6 +1,6 @@
 import { createToggleAction, ButtonLocation, WindowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
-import WizardExample from './wizardExample.vue';
+import WizardExample from './WizardExample.vue';
 
 /**
  * @returns {VcsPlugin}

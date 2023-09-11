@@ -98,18 +98,18 @@
     createMapButtonAction,
     createToggleAction,
   } from '../actions/actionHelper.js';
-  import MapNavigation from '../navigation/mapNavigation.vue';
+  import MapNavigation from '../navigation/MapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
   import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
-  import VcsLegend from '../legend/vcsLegend.vue';
+  import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
-  import NotifierComponent from '../notifier/notifierComponent.vue';
+  import NotifierComponent from '../notifier/NotifierComponent.vue';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
 
   /**
@@ -514,7 +514,7 @@
   }
 
   /**
-   * The base component to setup the entire application. To embed the VcsApp, use this component.
+   * @description The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
    * @vue-provide
    */

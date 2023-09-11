@@ -75,7 +75,7 @@
   import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
-   * A vertical slider from 0 to -90. pass value with v-model
+   * @description A vertical slider from 0 to -90. pass value with v-model
    * @vue-prop {number} value
    * @vue-event {number} input
    */

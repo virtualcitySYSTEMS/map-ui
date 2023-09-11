@@ -45,7 +45,7 @@
   }
 
   /**
-   * ResultItem with optional icon or image, title and optional actions
+   * @description ResultItem with optional icon or image, title and optional actions
    * @vue-prop {string} query - The query string to mark results
    * @vue-prop {ResultItem} resultItem
    * @vue-computed {boolean} hasActions - Whether result item has actions or not

@@ -20,10 +20,10 @@
   import { getLogger } from '@vcsuite/logger';
 
   import { WindowSlot, VcsFormButton } from '@vcmap/ui';
-  import WindowExampleToggleChild from './windowExampleToggleChild.vue';
-  import WindowExampleContent from './windowExampleContent.vue';
-  import MyCustomHeader from './myCustomHeader.vue';
-  import EmptyComponent from './emptyComponent.vue';
+  import WindowExampleToggleChild from './WindowExampleToggleChild.vue';
+  import WindowExampleContent from './WindowExampleContent.vue';
+  import MyCustomHeader from './MyCustomHeader.vue';
+  import EmptyComponent from './EmptyComponent.vue';
   import { name as owner } from './package.json';
 
   const showTestClass = ref(false);

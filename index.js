@@ -1,7 +1,7 @@
 import './src/setup.js';
 import './src/styles/main.scss';
 
-export { default as StyleSelector } from './src/actions/styleSelector.vue';
+export { default as StyleSelector } from './src/actions/StyleSelector.vue';
 export {
   createMapButtonAction,
   createToggleAction,
@@ -32,7 +32,7 @@ export {
   setupPluginMountedListeners,
   setupCategoryManagerWindow,
 } from './src/application/VcsApp.vue';
-export { default as VcsAppWrapper } from './src/application/vcsAppWrapper.vue';
+export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
 
 export {
@@ -98,7 +98,7 @@ export { default as CollectionComponentProvider } from './src/manager/collection
 export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.vue';
 export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
-export { default as ContextMenuComponent } from './src/manager/contextMenu/contextMenuComponent.vue';
+export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
 
 export {
@@ -125,18 +125,18 @@ export {
   featureInfoViewSymbol,
 } from './src/featureInfo/featureInfo.js';
 
-export { default as MapNavCompass } from './src/navigation/mapNavCompass.vue';
-export { default as MapNavigation } from './src/navigation/mapNavigation.vue';
-export { default as ObliqueRotation } from './src/navigation/obliqueRotation.vue';
-export { default as OrientationToolsButton } from './src/navigation/orientationToolsButton.vue';
+export { default as MapNavCompass } from './src/navigation/MapNavCompass.vue';
+export { default as MapNavigation } from './src/navigation/MapNavigation.vue';
+export { default as ObliqueRotation } from './src/navigation/ObliqueRotation.vue';
+export { default as OrientationToolsButton } from './src/navigation/OrientationToolsButton.vue';
 export {
   getWindowComponentOptions,
   default as OverviewMap,
 } from './src/navigation/overviewMap.js';
 export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.js';
-export { default as TiltSlider } from './src/navigation/tiltSlider.vue';
-export { default as VcsCompass } from './src/navigation/vcsCompass.vue';
-export { default as VcsZoomButton } from './src/navigation/vcsZoomButton.vue';
+export { default as TiltSlider } from './src/navigation/TiltSlider.vue';
+export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
+export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.vue';
 
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
 export { i18nPluginSymbol } from './src/i18n/i18nCollection.js';

@@ -155,6 +155,11 @@
   import { createSearchButtonAction } from '../actions/actionHelper.js';
   import VcsDefaultLogo from '../logo.svg';
 
+  /**
+   * @description The menu bar of a VcsMap application.
+   * Consists of six sections, where buttons can be placed at.
+   * Renders a centered logo and or title.
+   */
   export default {
     name: 'VcsNavbar',
     components: {

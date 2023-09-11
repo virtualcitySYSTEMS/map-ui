@@ -18,10 +18,10 @@
 </template>
 
 <script>
-  import OrientationToolsButton from './orientationToolsButton.vue';
+  import OrientationToolsButton from './OrientationToolsButton.vue';
 
   /**
-   * Zoom buttons rendered above each other.
+   * @description Zoom buttons rendered above each other.
    * @vue-event {void} zoom-in - raised when zoom in is called
    * @vue-event {void} zoom-out - raised when zoom out is called
    */

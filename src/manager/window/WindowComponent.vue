@@ -49,7 +49,7 @@
   import { WindowSlot } from './windowManager.js';
 
   /**
-   * WindowComponent defining the structure and style of VC Map windows
+   * @description WindowComponent defining the structure and style of VC Map windows
    * @vue-prop {WindowState} windowState
    * @vue-prop {boolean} isOnTop - Whether the component is focused
    * @vue-prop {Object} slotWindow - slot ref of the window

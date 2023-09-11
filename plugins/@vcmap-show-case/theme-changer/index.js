@@ -37,7 +37,7 @@ export default async function themeChanger(config) {
   const availableThemes = [vcsTheme, ...customThemes];
 
   const pluginConfig = {
-    themes: ref(/** @type {Array<VcMapTheme> */ []),
+    themes: ref(/** @type {Array<VcMapTheme>} */ []),
   };
 
   const pluginState = {

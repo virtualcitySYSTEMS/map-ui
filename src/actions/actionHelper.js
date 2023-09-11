@@ -12,7 +12,7 @@ import { reactive, ref } from 'vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { getWindowPositionOptions } from '../manager/window/windowHelper.js';
-import SearchComponent from '../search/searchComponent.vue';
+import SearchComponent from '../search/SearchComponent.vue';
 
 /**
  * @typedef {Object} ActionOptions
@@ -24,7 +24,7 @@ import SearchComponent from '../search/searchComponent.vue';
 /**
  * @param {ActionOptions} actionOptions
  * @param {string} mapName
- * @param {OverrideMapCollection} maps
+ * @param {import("@vcmap/core").OverrideMapCollection} maps
  * @returns {{action: VcsAction, destroy: Function}}
  */
 export function createMapButtonAction(actionOptions, mapName, maps) {

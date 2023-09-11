@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { check, checkMaybe, is } from '@vcsuite/check';
 import { VcsModule } from '@vcmap/core';
-import VcsAppComponentWrapper from './application/vcsAppWrapper.vue';
+import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
 import { vuetify } from './vuePlugins/vuetify.js';
 import VcsUiApp from './vcsUiApp.js';
 
@@ -90,7 +90,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
 
   const app = await initApp(mountTarget);
   /**
-   * @type {{modules: Array<string|VcsUiAppConfig>}}
+   * @type {{modules: Array<string|import("@vcmap/core").VcsModuleConfig>}}
    */
   const appConfig = await fetch(appUrl).then((response) => response.json());
 
@@ -100,7 +100,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
     appConfig.modules.map(async (c) => {
       if (is(c, VcsUiAppConfigPattern)) {
         return new VcsModule(
-          /** @type{import("@vcmap/core").VcsAppConfig} */ c,
+          /** @type{import("@vcmap/core").VcsModuleConfig} */ c,
         );
       } else if (is(c, String)) {
         const response = await fetch(c);

@@ -23,7 +23,7 @@
   import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**
-   * A v-card with h & w 8. Requires an icon and binds all attributes & listeners to the v-card
+   * @description v-card with h & w 8. Requires an icon and binds all attributes & listeners to the v-card
    * @vue-prop {string} icon
    * @vue-prop {string} tooltip
    * @vue-prop {string} [tooltip-position='left']

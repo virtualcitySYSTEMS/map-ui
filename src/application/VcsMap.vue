@@ -39,6 +39,10 @@
 </style>
 
 <script>
+  /**
+   * @description Wrapper component for a VcsMap providing the map element.
+   * @vue-prop {string} mapId - The id of the map, which is rendered in the map element's canvas
+   */
   export default {
     name: 'VcsMap',
     props: {

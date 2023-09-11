@@ -42,6 +42,12 @@
     VSheet,
   } from 'vuetify/lib';
 
+  /**
+   * @description Modal listing available styles.
+   * On selection style is set to provided layer.
+   * @vue-prop {Array<string>} availableStyles - Name of available styles
+   * @vue-prop {string} layerName              - Name of a layer, the style shall be applied to on selection
+   */
   export default {
     name: 'StyleSelector',
     components: {

@@ -1,6 +1,6 @@
 import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import packageJSON from './package.json';
-import AllIconsComponent from './allIconsComponent.vue';
+import AllIconsComponent from './AllIconsComponent.vue';
 
 /**
  * @returns {VcsPlugin}

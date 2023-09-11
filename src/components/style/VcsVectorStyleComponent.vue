@@ -6,7 +6,7 @@
       :is="componentMap[key]"
       :value-default="valueDefault[key]"
       v-model="selectedKeys[key].value"
-      @input="(value) => $emit(`update:${key}`, value)"
+      @input="(v) => $emit(`update:${key}`, v)"
       v-bind="specificProps[key]"
     />
   </v-sheet>
@@ -37,9 +37,6 @@
     TEXT: 'text',
   };
 
-  /**
-   * @enum{string}
-   */
   const componentMap = {
     fill: 'VcsFillMenu',
     stroke: 'VcsStrokeMenu',

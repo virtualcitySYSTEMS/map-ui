@@ -60,7 +60,7 @@
   } from 'vuetify/lib';
 
   /**
-   * Lists attributions of maps, layers and oblique collections
+   * @description Lists attributions of maps, layers and oblique collections
    * @vue-prop {import("vue").Ref<Array<AttributionEntry>} entries - array with one entry per active VcsObject
    */
   export default {

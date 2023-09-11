@@ -1,6 +1,6 @@
 import { ButtonLocation, createToggleAction, ToolboxType } from '@vcmap/ui';
 import packageJSON from './package.json';
-import { getToolboxData } from './toolbox-data.js';
+import { getToolboxData } from './toolboxData.js';
 import windowExample from './WindowExample.vue';
 
 /**

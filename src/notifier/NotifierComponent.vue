@@ -31,6 +31,9 @@
   import VcsButton from '../components/buttons/VcsButton.vue';
   import { NotificationType } from './notifier.js';
 
+  /**
+   * @description Renders notifications of different types
+   */
   export default {
     components: {
       VSnackbar,

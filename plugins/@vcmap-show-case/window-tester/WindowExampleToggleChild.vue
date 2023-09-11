@@ -9,7 +9,7 @@
   import { VContainer } from 'vuetify/lib';
   import { VcsFormButton, WindowSlot } from '@vcmap/ui';
   import { inject } from 'vue';
-  import WindowExampleContent from './windowExampleContent.vue';
+  import WindowExampleContent from './WindowExampleContent.vue';
   import { name as owner } from './package.json';
 
   export default {

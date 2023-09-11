@@ -1,6 +1,6 @@
 import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from './package.json';
-import component from './notifierTester.vue';
+import component from './NotifierTester.vue';
 
 export default function createNotifierPlugin() {
   return {

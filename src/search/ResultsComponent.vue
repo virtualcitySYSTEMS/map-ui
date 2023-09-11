@@ -24,10 +24,10 @@
     VListItemContent,
     VListItemGroup,
   } from 'vuetify/lib';
-  import ResultItem from './resultItem.vue';
+  import ResultItem from './ResultItem.vue';
 
   /**
-   * ResultsComponent listing all available result items in a scrollable list
+   * @description ResultsComponent listing all available result items in a scrollable list
    * @vue-prop {string} query - The query string forwarded to mark results within resultItem component.
    * @vue-prop {Array<ResultItem>} results - Array of results.
    * @vue-computed {import("vue").Ref<string>} highlighted - The highlighted result item. Updates also on feature select.

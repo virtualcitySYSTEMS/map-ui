@@ -28,7 +28,7 @@ import { sortByWeight } from '../buttonManager.js';
  * Listens to all collection events and synchronizes changes to the items array.
  * The Collection Items will be transformed and filtered with the given itemMappings and itemFilter functions
  * @class
- * @template {Object|VcsObject} T
+ * @template {Object|import("@vcmap/core").VcsObject} T
  */
 class CollectionComponent {
   /**
@@ -43,7 +43,7 @@ class CollectionComponent {
     }
 
     /**
-     * @type {Collection<T>}
+     * @type {import("@vcmap/core").Collection<T>}
      * @private
      */
     this._collection = options.collection;
@@ -150,7 +150,7 @@ class CollectionComponent {
   }
 
   /**
-   * @type {Collection<*>}
+   * @type {import("@vcmap/core").Collection<*>}
    * @readonly
    */
   get collection() {

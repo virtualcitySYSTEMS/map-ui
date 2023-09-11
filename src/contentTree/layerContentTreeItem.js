@@ -5,7 +5,7 @@ import {
   createGoToViewpointAction,
   createModalAction,
 } from '../actions/actionHelper.js';
-import component from '../actions/styleSelector.vue';
+import component from '../actions/StyleSelector.vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';

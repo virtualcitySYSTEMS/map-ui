@@ -71,7 +71,7 @@
   import { createLinkAction } from '../../actions/actionHelper.js';
 
   /**
-   * Default window component header with drag functionality close action and further optional window actions.
+   * @description Default window component header with drag functionality close action and further optional window actions.
    * @vue-prop {WindowState}    windowState - state of the window component.
    * @vue-event {void} pin - raised when pin button is clicked
    * @vue-event {void} close - raised when close button is clicked

@@ -182,7 +182,7 @@ class VcsUiApp extends VcsApp {
     ];
 
     /**
-     * @type {OverrideClassRegistry<VcsCallbackItem>}
+     * @type {OverrideClassRegistry<VcsCallback>}
      * @private
      */
     this._callbackClassRegistry = new OverrideClassRegistry(

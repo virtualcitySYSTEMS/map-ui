@@ -13,8 +13,8 @@
         <v-col>
           <VcsSelect
             :items="
-              Object.keys(fonts).map((font) => ({
-                text: font,
+              Object.keys(fonts).map((text) => ({
+                text,
                 value: fonts[font],
               }))
             "
