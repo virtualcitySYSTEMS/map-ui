@@ -1,5 +1,7 @@
 import { check } from '@vcsuite/check';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
+import { satisfies } from 'semver';
+import { version } from '../package.json';
 
 /**
  * @returns {Logger}
@@ -103,7 +105,6 @@ export async function loadPlugin(name, config) {
     moduleUrl.searchParams.set('version', config.version);
     module = moduleUrl.toString();
   }
-
   // if (!context.security.isTrustedUrl(module)) { XXX missing pipeline security
   //   getLogger().warning(`suppressed loading of insecure plugin ${module}`);
   //   return Promise.resolve();
@@ -141,6 +142,18 @@ export async function loadPlugin(name, config) {
         `plugin ${pluginInstance.name} has no valid package name!`,
       );
     }
+    if (pluginInstance.mapVersion) {
+      if (!satisfies(version, pluginInstance.mapVersion)) {
+        getLogger().warning(
+          `plugin ${pluginInstance.name} of version ${pluginInstance.version} with map version range ${pluginInstance.mapVersion} does not satisfy version ${version} of this VC Map!`,
+        );
+      }
+    } else {
+      getLogger().warning(
+        `plugin ${pluginInstance.name} of version ${pluginInstance.version} does not provide a mapVersion!`,
+      );
+    }
+
     pluginInstance[pluginFactorySymbol] = plugin.default;
     pluginInstance[pluginBaseUrlSymbol] = baseUrl.toString();
     pluginInstance[pluginModuleUrlSymbol] = module;

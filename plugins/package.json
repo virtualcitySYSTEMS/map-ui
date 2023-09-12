@@ -8,7 +8,5 @@
     "@vcmap/create-link": "^1.0.1",
     "@vcmap/search-nominatim": "^1.0.1"
   },
-  "optionalDependencies": {
-    "@vcmap/hello-world": "^1.0.7"
-  }
+  "optionalDependencies": {}
 }

@@ -7,7 +7,6 @@
       "entry": "plugins/@vcmap-show-case/project-selector/index.js",
       "selected": "",
       "selectedModules": ["config/dev.config.json", "config/codes.config.json"],
-      "open": true,
       "projects": [
         {
           "name": "VC Map HOSTING",

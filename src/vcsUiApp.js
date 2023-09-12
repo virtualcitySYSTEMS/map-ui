@@ -74,8 +74,9 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @interface VcsPlugin
  * @template {Object} P
  * @template {Object} S
- * @property {string} version
  * @property {string} name
+ * @property {string} version
+ * @property {string} mapVersion - version range of the VC Map, which this plugin supports
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
  * @property {function(VcsUiApp, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue

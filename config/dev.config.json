@@ -452,10 +452,6 @@
       "entry": "plugins/@vcmap-show-case/vector-properties-example/index.js"
     },
     {
-      "name": "@vcmap/hello-world",
-      "entry": "plugins/@vcmap/hello-world/index.js"
-    },
-    {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js"
     },
