@@ -20,6 +20,34 @@ const configMain = defineConfig(async ({ mode }) => {
       target: host,
       rewrite: (path) => path.replace(/Build/, 'Source'),
     };
+  } else {
+    const pluginRegistryIndex = process.argv.indexOf('--plugin-registry');
+    if (pluginRegistryIndex > -1 && process.argv[pluginRegistryIndex + 1]) {
+      proxy['/plugins'] = {
+        target: process.argv[pluginRegistryIndex + 1],
+        rewrite: (path) => path.replace(/plugins/, 'map-plugin'),
+      };
+    }
+  }
+
+  const modules = [];
+  process.argv.forEach((arg, index, args) => {
+    if (arg === '--module' && index < args.length) {
+      modules.push(args[index + 1]);
+    }
+  });
+
+  if (modules.length) {
+    proxy['/app.config.json'] = {
+      target: 'vc.systems',
+      selfHandleResponse: true,
+      configure(server) {
+        server.on('proxyReq', (proxyRes, req, res) => {
+          res.write(JSON.stringify({ modules }));
+          res.end();
+        });
+      },
+    };
   }
 
   const config = {

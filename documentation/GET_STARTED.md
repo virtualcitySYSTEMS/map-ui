@@ -9,12 +9,18 @@
 
 Run the following scripts using `npm run` to setup your development environment.
 
-- `start` serves a development server at http://localhost:8080.
+- `start` serves a development server at http://localhost:8080. By default, the `app.config.json` is used to start the
+  map. You can provide alternative `--module`s if you wish. `npm start -- --host -- --module "config/www.config.json" --module "config/dev.config.json"`
+  will load the map with the above two modules loaded.
 - `lint` runs _eslint_ for linting.
 - `build` runs a build script, builds all javascript libraries to the `dist` folder. This is done for publishing the
   @vcmap/ui npm package.
 - `build-preview` builds all javascript libraries including all plugins to the dist folder.
 - `preview` serves the content of the `dist` folder at http://localhost:4173. Can be used to check the `build` application.
+  Don't forget to run `build` and `build-preview` before using the preview command!
+  You can provide a `plugin-regsitry` (e.g. a VC Publisher) from which to pull plugins instead
+  of using the currently built ones. `npm run preview -- --host -- --plugin-registry http://localhost:3000` will
+  pull plugins from a publisher running locally.
 - `install-plugins` to integrate externally managed and developed plugins, use the `plugins/package.json` and this script to
   install them.
 
