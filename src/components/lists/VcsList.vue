@@ -69,15 +69,10 @@
             mdi-check-circle
           </v-icon>
           <v-icon
-            v-else-if="
-              hovering === index || (!singleSelect && selected.length > 0)
-            "
+            v-else
             @click="singleSelect ? select(item, $event) : add(item)"
           >
             mdi-circle-outline
-          </v-icon>
-          <v-icon v-else @click="select(item, $event)">
-            mdi-circle-small
           </v-icon>
         </v-list-item-action>
         <v-list-item-content

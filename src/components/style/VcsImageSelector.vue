@@ -98,22 +98,12 @@
         </v-col>
         <v-col cols="3">
           <VcsTextField
-            id="style-shape-scaleX"
+            id="style-shape-scale"
             type="number"
-            v-model.number="selectedScale.x.value"
-            prefix="X"
+            v-model.number="selectedScale"
             placeholder="1"
             :disabled="currentType !== selectedType"
-          />
-        </v-col>
-        <v-col cols="3">
-          <VcsTextField
-            id="style-shape-scaleY"
-            type="number"
-            v-model.number="selectedScale.y.value"
-            prefix="Y"
-            placeholder="1"
-            :disabled="currentType !== selectedType"
+            :rules="[(v) => v > 0 || 'components.validation.notValid']"
           />
         </v-col>
       </v-row>
@@ -447,42 +437,21 @@
         });
       });
 
-      // reduces the array to an object with x and y as keys and computed properties with a getter and setter as values.
-      const selectedScale = ['x', 'y'].reduce(
-        (acc, dimension, index, array) => {
-          return {
-            ...acc,
-            [dimension]: computed({
-              get() {
-                if (Array.isArray(props.value?.scale)) {
-                  return props.value.scale[index];
-                } else {
-                  return props.value?.scale;
-                }
-              },
-              set(value) {
-                let newValue = value;
-                if (!value || value < 0) {
-                  newValue = 1;
-                }
-                const otherDimension = array[1 - index];
-                let newScale;
-                if (newValue !== selectedScale[otherDimension]) {
-                  newScale = [];
-                  newScale[index] = newValue;
-                  newScale[1 - index] =
-                    selectedScale[otherDimension].value || 1;
-                } else {
-                  newScale = newValue;
-                }
-                const newImage = JSON.parse(JSON.stringify(props.value));
-                emit('input', Object.assign(newImage, { scale: newScale }));
-              },
-            }),
-          };
+      const selectedScale = computed({
+        get() {
+          if (Array.isArray(props.value?.scale)) {
+            return props.value.scale[0];
+          } else {
+            return props.value?.scale;
+          }
         },
-        {},
-      );
+        set(value) {
+          if (value > 0) {
+            const newImage = structuredClone(props.value);
+            emit('input', Object.assign(newImage, { scale: value }));
+          }
+        },
+      });
 
       const selectedOpacity = useSelectedKey(
         () => props.value,

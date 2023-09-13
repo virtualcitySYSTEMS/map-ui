@@ -82,22 +82,12 @@
             mdi-check-circle
           </v-icon>
           <v-icon
-            v-else-if="
-              hovering === index || (!singleSelect && value.length > 0)
-            "
-            :disabled="item.disabled"
-            @click="select(!isSelected)"
-            class="vcs-select-icon"
-          >
-            mdi-circle-outline
-          </v-icon>
-          <v-icon
             v-else
             :disabled="item.disabled"
             @click="select(!isSelected)"
             class="vcs-select-icon"
           >
-            mdi-circle-small
+            mdi-circle-outline
           </v-icon>
         </div>
       </template>
