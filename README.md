@@ -77,127 +77,81 @@ Example demo Application based on the @vcmap/core, shows how to implement a diff
 
 ![A schema on component interactions](./documentation/VC_Map_Diagram.png)
 
-# Project and Component Status
+# Project and Components
 
-The Project is currently in Alpha status. Different components have different states. For development check here
-how safe it is to start developing with these components.
+- contentTree API [CONTENT_TREE](documentation/CONTENT_TREE.md)
+- windowManager API [WINDOWS](documentation/WINDOWS.md)
+- Navbar/ButtonManager/ToolboxManager [BUTTONS](documentation/BUTTONS.md)/[TOOLBOX](documentation/TOOLBOX.md)
+- OrientationTools
+- ActionConcept [ACTIONS](documentation/ACTIONS.md)
+- PluginConcept [Plugin API](https://github.com/virtualcitySYSTEMS/map-plugin-cli)
+- SEARCH API [SEARCH](documentation/SEARCH.md)
+- I18n API [INTERNATIONALIZATION](documentation/INTERNATIONALIZATION.md).
+- CATEGORIES API [CATEGORIES](documentation/CATEGORIES.md).
+- Context Menu API [CONTEXT_MENU](documentation/CONTEXT_MENU.md)
+- FeatureInfo [FEATURE_INFO](documentation/FEATURE_INFO.md)
+- [State & Application Link](documentation/STATE.md)
+- [Help Concept](documentation/HELP.md)
+- Copyright [ATTRIBUTIONS](documentation/ATTRIBUTIONS.md)
 
-#### States:
+# Project Release Cycle and Version Management
 
-- TODO: not yet usable
-- ALPHA: 1. version, style and API will probably change
-- BETA: Style and API may change, we will provide a changelog from here on.
-- RC: Styles and API are most likely stable for the release / Featurecomplete.
-- STABLE: conforms to SemVer concept.
+### Major Version Releases:
 
-### @vcmap/core
+We plan to release new major versions on an annual basis, and these releases may include breaking changes.
+Additionally, each major release will incorporate the latest versions of Cesium and Openlayers.
 
-- Module Concept RC
-- Categories Concept BETA
-- Layers/Maps RC
-- Styles: BETA
-- Interactions: BETA
-- oblique RC
-- FeatureProvider BETA
-- ClassRegistry BETA
-- Editor BETA
+### Patches and Minor Releases:
 
-### @vcmap/ui
+Patches and minor releases will be issued approximately every two months. This may involve releasing minor versions of
+OpenLayers and introducing new Cesium versions, provided there are no breaking changes in the Cesium version.
+Plugins designed for a major version should seamlessly function with any new minor or patch version of VC Map.
 
-- contentTree API BETA [CONTENT_TREE](documentation/CONTENT_TREE.md) // TODO doc
-- windowManager API BETA [WINDOWS](documentation/WINDOWS.md) // TODO doc
-- Navbar/ButtonManager/ToolboxManager ALPHA [BUTTONS](documentation/BUTTONS.md)/[TOOLBOX](documentation/TOOLBOX.md)
-- OrientationTools BETA
-- ActionConcept BETA [ACTIONS](documentation/ACTIONS.md)
-- PluginConcept RC [Plugin API](https://github.com/virtualcitySYSTEMS/map-plugin-cli)
-- SEARCH API BETA [SEARCH](documentation/SEARCH.md)
-- I18n API RC [INTERNATIONALIZATION](documentation/INTERNATIONALIZATION.md).
-- CATEGORIES API RC [CATEGORIES](documentation/CATEGORIES.md).
-- Context Menu API RC [CONTEXT_MENU](documentation/CONTEXT_MENU.md)
-- FeatureInfo RC [FEATURE_INFO](documentation/FEATURE_INFO.md)
-- [State & Application Link](documentation/STATE.md) RC
-- [Help Concept](documentation/HELP.md) RC
-- Copyright RC [ATTRIBUTIONS](documentation/ATTRIBUTIONS.md)
+### Bugfix Support:
 
-##### components
-
-- VcsTextField BETA
-- VcsCheckbox BETA
-- VcsSelect BETA
-- VcsButton ALPHA
-- VcsFormattedNumber BETA
-- VcsLabel BETA
-- VcsRadio BETA
-- VcsTooltip ALPHA
-- VcsActionButtonList ALPHA
-- VcsActionList ALPHA
-- VcsFormSection ALPHA
-- VcsTreeView ALPHA
-- VcsTreeViewItem ALPHA
-- VcsList ALPHA
-- VcsListItem TODO
-- VcsBadge ALPHA
-- VcsColorPicker TODO
-- VcsDatePicker TODO
+We will offer bugfix support for the current major version and the one preceding it.
 
 # Roadmap / Future Development
 
-- Phase 1 Currently worked on
-- Phase 2 Beta Version stable feature complete Plugin API
-- Phase 3 Integration in VC Publisher for next major release
-- Phase 4 Feature Complete with v4.x with all Plugins...
-
 ### Core
 
-- Editor (WIP) Prio 1
 - Clustering Prio 4
 - Style Refactoring Prio 4
 
 ### Ui
 
-- Responsive View / mobile view DONE
-- Toolbar DONE
-- Search API + UI DONE
-- Overlay API Support Prio 3
-- i18n DONE.
-- FeatureInfo Concept/API (Balloon) DONE
-  - Context API DONE
-  - Hierachy B3dm
-- Legend Concept/API DONE
-- Copyright/Attributions Concept / API DONE
-- Ui Configuration (title/themes, usw, projectInfo/Impressum/usw. ) / API DONE
-- Help Concept / Beispielhaft implementieren DONE
-- Components Concept/Categories / API DONE.
-- Notification Concept DONE
+- Overlay API Support
 
-### Plugins
+# Plugins
 
-|            Plugin            | Dev Prio | Proj Prio |
-| :--------------------------: | :------: | :-------: |
-|        Drawing (WIP)         |    1     |     1     |
-|         Measurement          |    1     |     1     |
-|      PDF Export (DONE)       |    1     |     1     |
-|   Search Nominatim (DONE)    |    2     |     1     |
-|       SwipeTool (DONE)       |    2     |     1     |
-|            Shadow            |    4     |     1     |
-|           Planning           |    4     |     1     |
-|          MultiView           |    4     |     1     |
-|      Create Link (DONE)      |    1     |     1     |
-|        HeightProfile         |    4     |     2     |
-|            Flight            |    4     |     2     |
-|         Export (WIP)         |    4     |     2     |
-|           ViewShed           |    4     |     2     |
-|      TransparentTerrain      |    4     |     3     |
-|           Walkmode           |    4     |     3     |
-| Publisher Integration Plugin |    3     |     3     |
-|         ClippingTool         |    4     |     3     |
-|       AttributeEditor        |    4     |     3     |
-|            Query             |    4     |     3     |
-|       Positiondisplay        |    2     |     4     |
-|          Locator ?           |    4     |     4     |
-|        DisplayQuality        |    4     |     4     |
-|         Search esri          |    4     |     4     |
-|          Search WFS          |    4     |     4     |
+[Drawing](https://github.com/virtualcitySYSTEMS/map-draw)
+[Print](https://github.com/virtualcitySYSTEMS/map-print)
+[Export](https://github.com/virtualcitySYSTEMS/map-export)
+[Swipe Tool](https://github.com/virtualcitySYSTEMS/map-swipe-tool)
+[Shadow](https://github.com/virtualcitySYSTEMS/map-shadow)
+[Create Link](https://github.com/virtualcitySYSTEMS/map-createLink)
+[Search Nominatim](https://github.com/virtualcitySYSTEMS/map-search-nominatim)
+
+### Plugins in Development
+
+|       Plugin       | Dev Prio | Proj Prio |
+| :----------------: | :------: | :-------: |
+|    Measurement     |    1     |     1     |
+|      Planning      |    1     |     1     |
+|     MultiView      |    4     |     1     |
+|   HeightProfile    |    4     |     2     |
+|       Flight       |    4     |     2     |
+|      ViewShed      |    4     |     2     |
+| TransparentTerrain |    4     |     3     |
+|      Walkmode      |    4     |     3     |
+|    ClippingTool    |    4     |     3     |
+|  AttributeEditor   |    4     |     3     |
+|       Query        |    4     |     3     |
+|  Positiondisplay   |    2     |     4     |
+|      Locator       |    4     |     4     |
+|   DisplayQuality   |    4     |     4     |
+|    Search esri     |    4     |     4     |
+|     Search WFS     |    4     |     4     |
 
 # Getting started
 

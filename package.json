@@ -46,7 +46,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^4.0.0",
-    "@vcmap/core": "^5.0.0-rc.38",
+    "@vcmap/core": "^5.0.0",
     "ol": "^7.5.2",
     "vue": "~2.7.3",
     "vuetify": "~2.6.7"
@@ -69,7 +69,7 @@
     "sass": "1.32.13",
     "tar": "^6.1.14",
     "typescript": "^4.2.4",
-    "vite": "^4.3.9",
+    "vite": "^4.4.9",
     "vitest": "^0.31.0"
   },
   "stylelint": {
@@ -131,8 +131,8 @@
     "not Edge < 97"
   ],
   "engines": {
-    "node": "^16.14.0",
-    "npm": "^8.3.1"
+    "node": "^18.12.0",
+    "npm": "^9.0.0"
   },
   "type": "module",
   "exports": {

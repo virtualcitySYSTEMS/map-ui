@@ -1,3 +1,13 @@
+# 5.0.0
+
+- Updated @vcmap/core to version 5.0.0
+- Updated minimum Node Version to 18
+- Changed I18n behaviour for Plugins
+- More consistent Code styling (filenames)
+- If started in preview mode, `--plugin-registry` can be used to load build Plugins from a plugin-registry (e.g. VC Publisher)
+- Added debug warning if the mapVersion range of a loaded Plugin does not satisfy the @vcmap/ui version
+- Reorganized inline plugins in /plugins/@vcmap-show-cases/ folder, (now also have a `src` folder)
+
 # 5.0.0-rc.31
 
 - Several Bugfixes

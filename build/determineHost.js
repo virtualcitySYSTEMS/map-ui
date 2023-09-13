@@ -27,7 +27,7 @@ export function determineHostIpFromInterfaces() {
 export function determineHostFromArgv(
   defaultPort = 8080,
   defaultHttps = false,
-  defaultHost = '127.0.0.1',
+  defaultHost = 'localhost',
 ) {
   let port = defaultPort;
   const portIndex = process.argv.indexOf('--port');
