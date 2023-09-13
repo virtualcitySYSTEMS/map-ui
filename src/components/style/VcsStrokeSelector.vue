@@ -31,7 +31,8 @@
 <script>
   import { computed } from 'vue';
   import { VSheet, VColorPicker, VContainer, VRow, VCol } from 'vuetify/lib';
-  import { VcsLabel, VcsTextField } from '@vcmap/ui';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { useColorObject } from './composables.js';
 
   /**

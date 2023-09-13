@@ -61,7 +61,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VContainer, VRow, VCol, VRadioGroup, VRadio } from 'vuetify/lib';
-  import { VcsTooltip } from '@vcmap/ui';
+  import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
 
   /**

@@ -24,7 +24,7 @@
 <script>
   import { computed } from 'vue';
   import { VSheet } from 'vuetify/lib';
-  import { VcsStrokeSelector } from '@vcmap/ui';
+  import VcsStrokeSelector from './VcsStrokeSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
 

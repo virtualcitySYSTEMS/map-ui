@@ -17,7 +17,7 @@
 <script>
   import { computed } from 'vue';
   import { VSheet } from 'vuetify/lib';
-  import { VcsFillSelector } from '@vcmap/ui';
+  import VcsFillSelector from './VcsFillSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
 

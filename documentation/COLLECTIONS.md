@@ -175,7 +175,7 @@ It sets the correct mapping/filter functions and actions on the managed collecti
 It provides an API to add and remove CollectionsComponents, MappingFunctions, FilterFunctions and actions.
 For mappings, filters and actions the collection manager has a cache concept.
 
-> For usage examples also see [collection-manager-example](../plugins/@vcmap-show-case/collection-manager-example/CollectionManagerExample.vue).
+> For usage examples also see [collection-manager-example](../plugins/@vcmap-show-case/collection-manager-example/src/CollectionManagerExample.vue).
 
 To add a collectionComponent, provide `CollectionComponentOptions`, plus the owner.
 

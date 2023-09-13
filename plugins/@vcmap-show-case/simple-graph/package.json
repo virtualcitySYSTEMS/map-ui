@@ -1,7 +1,7 @@
 {
   "name": "@vcmap-show-case/simple-graph",
   "version": "1.0.0",
-  "vcMapVersion": "~5.0.0",
+  "mapVersion": "^5.0.0",
   "dependencies": {
     "@vcsuite/parsers": "^1.0.1"
   },

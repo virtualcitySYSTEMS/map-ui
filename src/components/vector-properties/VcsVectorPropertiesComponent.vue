@@ -486,13 +486,11 @@
 <script>
   import { computed } from 'vue';
   import { VContainer, VRow, VCol, VDivider } from 'vuetify/lib';
-  import {
-    VcsFormSection,
-    VcsSelect,
-    VcsTextField,
-    VcsCheckbox,
-    VcsLabel,
-  } from '@vcmap/ui';
+  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import {
     usePrimitiveProperty,
     useArrayProperty,

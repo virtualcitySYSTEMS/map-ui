@@ -1,0 +1,6 @@
+{
+  "name": "@vcmap/hello-world",
+  "description": "A small hello world plugin",
+  "version": "1.0.8",
+  "mapVersion": "^5.0.0"
+}

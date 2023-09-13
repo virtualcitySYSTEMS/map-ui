@@ -1,5 +1,5 @@
 {
   "name": "@vcmap-show-case/vector-properties-example",
   "version": "1.0.0",
-  "vcMapVersion": "~5.0.0"
+  "mapVersion": "^5.0.0"
 }

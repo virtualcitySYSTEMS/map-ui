@@ -143,7 +143,11 @@ export async function loadPlugin(name, config) {
       );
     }
     if (pluginInstance.mapVersion) {
-      if (!satisfies(version, pluginInstance.mapVersion)) {
+      if (
+        !satisfies(version, pluginInstance.mapVersion, {
+          includePrerelease: true,
+        })
+      ) {
         getLogger().warning(
           `plugin ${pluginInstance.name} of version ${pluginInstance.version} with map version range ${pluginInstance.mapVersion} does not satisfy version ${version} of this VC Map!`,
         );

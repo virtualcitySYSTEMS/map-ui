@@ -1,7 +1,7 @@
 {
   "name": "@vcmap-show-case/theme-changer",
   "version": "1.0.0",
-  "vcMapVersion": "~5.0.0",
+  "mapVersion": "^5.0.0",
   "dependencies": {
     "@vcsuite/check": "^1.1.2"
   },

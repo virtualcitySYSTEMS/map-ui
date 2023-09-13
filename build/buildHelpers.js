@@ -304,7 +304,7 @@ async function buildInlinePlugin(plugin, baseConfig, minify) {
       emptyOutDir: false,
       outDir: `dist/plugins/${plugin}/`,
       lib: {
-        entry: path.join(pluginDir, 'index.js'),
+        entry: path.join(pluginDir, 'src', 'index.js'),
         formats: ['es'],
         fileName: 'index',
       },

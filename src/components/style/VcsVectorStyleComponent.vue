@@ -14,13 +14,11 @@
 
 <script>
   import { computed } from 'vue';
-  import {
-    VcsFillMenu,
-    VcsImageMenu,
-    VcsStrokeMenu,
-    VcsTextMenu,
-  } from '@vcmap/ui';
   import { VSheet } from 'vuetify/lib';
+  import VcsFillMenu from './VcsFillMenu.vue';
+  import VcsImageMenu from './VcsImageMenu.vue';
+  import VcsStrokeMenu from './VcsStrokeMenu.vue';
+  import VcsTextMenu from './VcsTextMenu.vue';
   import { useSelectedKey } from './composables.js';
 
   /**

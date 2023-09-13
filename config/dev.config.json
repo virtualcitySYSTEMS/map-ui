@@ -466,6 +466,11 @@
     {
       "name": "@vcmap-show-case/plugin-editors",
       "entry": "plugins/@vcmap-show-case/plugin-editors/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/hello-world",
+      "entry": "plugins/@vcmap-show-case/hello-world/index.js",
+      "showComponent": false
     }
   ],
   "uiConfig": [

@@ -2,9 +2,9 @@
 
 This is a plugin adding a new Feature Info View using {@link https://vuetifyjs.com/en/api/v-sparkline/#props|vuetify v-sparkline }.
 
-| View class                            | VueComponent                                     | description                                              |
-| ------------------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| [SimpleGraphView](simpleGraphView.js) | [SimpleGraphComponent](SimpleGraphComponent.vue) | A simple graph view including trend lines and bar graph. |
+| View class                                | VueComponent                                         | description                                              |
+| ----------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- |
+| [SimpleGraphView](src/simpleGraphView.js) | [SimpleGraphComponent](src/SimpleGraphComponent.vue) | A simple graph view including trend lines and bar graph. |
 
 ## configuration
 

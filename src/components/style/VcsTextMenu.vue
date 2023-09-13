@@ -18,7 +18,7 @@
 
 <script>
   import { computed } from 'vue';
-  import { VcsTextSelector } from '@vcmap/ui';
+  import VcsTextSelector from './VcsTextSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { rgbaObjectToString, useColorObject } from './composables.js';
 

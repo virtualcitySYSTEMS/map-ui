@@ -63,7 +63,9 @@
 <script>
   import { ref } from 'vue';
   import { VSheet, VMenu, VCard } from 'vuetify/lib';
-  import { VcsFormSection, VcsTooltip, VcsCheckbox } from '@vcmap/ui';
+  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
+  import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
    * @description A wrapper for style components, that provides:

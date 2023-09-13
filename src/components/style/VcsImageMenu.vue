@@ -24,9 +24,8 @@
 
 <script>
   import { onMounted, ref, watch } from 'vue';
-  import { VcsImageSelector } from '@vcmap/ui';
   import MenuWrapper from './MenuWrapper.vue';
-  import { drawImageStyle } from './VcsImageSelector.vue';
+  import VcsImageSelector, { drawImageStyle } from './VcsImageSelector.vue';
 
   /**
    * @description A wrapper for the VcsImageSelector, that has a small shape/icon preview and a menu that pops up when clicking the preview, containing the image selector.

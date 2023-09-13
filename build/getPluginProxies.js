@@ -1,6 +1,10 @@
 /* eslint import/no-extraneous-dependencies: ["error", { "devDependencies": false }] */
 import path from 'path';
-import { getPluginDirectory, getPluginNames } from './buildHelpers.js';
+import {
+  getInlinePlugins,
+  getPluginDirectory,
+  getPluginNames,
+} from './buildHelpers.js';
 
 /**
  * Determines the proxy setting to serve plugins referrenced in the package.json in the plugins directory
@@ -38,6 +42,17 @@ export default async function getPluginProxies(
           production ? 'dist' : 'src',
           file,
         );
+      },
+    };
+  });
+
+  const inlinePlugins = await getInlinePlugins();
+
+  inlinePlugins.forEach((inlinePlugin) => {
+    proxies[`/plugins/${inlinePlugin}/index.js`] = {
+      target,
+      rewrite: (route) => {
+        return route.replace('index.js', 'src/index.js');
       },
     };
   });

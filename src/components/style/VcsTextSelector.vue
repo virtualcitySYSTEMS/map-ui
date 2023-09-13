@@ -96,14 +96,12 @@
 <script>
   import { computed } from 'vue';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
-  import {
-    VcsSelect,
-    VcsTextField,
-    VcsButton,
-    VcsStrokeMenu,
-    VcsFillMenu,
-    VcsLabel,
-  } from '@vcmap/ui';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
+  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsFillMenu from './VcsFillMenu.vue';
+  import VcsStrokeMenu from './VcsStrokeMenu.vue';
   import { useSelectedKey } from './composables.js';
 
   export const fonts = {

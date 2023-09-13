@@ -145,17 +145,15 @@
     VTabs,
     VTab,
   } from 'vuetify/lib';
-  import {
-    VcsLabel,
-    VcsTextField,
-    VcsFillMenu,
-    VcsStrokeMenu,
-    VcsRadioGrid,
-    VcsSlider,
-  } from '@vcmap/ui';
   import { Circle, Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
   import { toContext } from 'ol/render.js';
   import { Point } from 'ol/geom.js';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
+  import VcsRadioGrid from '../form-inputs-controls/VcsRadioGrid.vue';
+  import VcsFillMenu from './VcsFillMenu.vue';
+  import VcsStrokeMenu from './VcsStrokeMenu.vue';
   import { useSelectedKey, between } from './composables.js';
 
   /**
