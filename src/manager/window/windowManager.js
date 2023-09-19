@@ -338,7 +338,10 @@ class WindowManager {
    * @private
    */
   _handleSlotsChanged(changedSlot) {
-    if (changedSlot === WindowSlot.STATIC) {
+    if (
+      changedSlot === WindowSlot.STATIC ||
+      changedSlot === WindowSlot.DYNAMIC_LEFT
+    ) {
       const staticWindow = this._findWindowBySlot(WindowSlot.STATIC);
       const dynamicWindowLeft = this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT);
       if (staticWindow && dynamicWindowLeft) {

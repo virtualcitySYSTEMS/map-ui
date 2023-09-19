@@ -1,3 +1,7 @@
+# 5.0.1
+
+- Fix home button and add default starting viewpoint
+
 # 5.0.0
 
 - Updated @vcmap/core to version 5.0.0
