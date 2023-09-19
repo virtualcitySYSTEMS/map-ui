@@ -35,12 +35,12 @@
       > .v-treeview-node:not(:last-child) {
         border-bottom: 1px solid var(--v-base-lighten2);
       }
-      // Only Root Entries have a bold font
-      > .v-treeview-node
-        > .v-treeview-node__root
-        > .v-treeview-node__content
-        > .v-treeview-node__label {
-        font-weight: 700;
+      // Only Group Entries have a bold font
+      .v-treeview-node__root
+        button
+        + .v-treeview-node__content
+        .v-treeview-node__label {
+        font-weight: 700 !important;
       }
       // remove ripple effect from expand icon
       .v-icon.v-icon {
