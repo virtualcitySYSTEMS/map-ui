@@ -19,7 +19,7 @@
     <v-data-table
       dense
       :headers="translatedHeaders"
-      :items="items"
+      :items="internalItems"
       :item-key="itemKey"
       :items-per-page.sync="itemsPerPageRef"
       :page.sync="page"
@@ -33,6 +33,7 @@
         $t('components.vcsDataTable.noResultsPlaceholder')
       "
       :single-select="singleSelect"
+      :selectable-key="selectableKey"
       :server-items-length="serverItemsLength"
       hide-default-footer
       v-bind="$attrs"
@@ -181,6 +182,7 @@
    * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
    * @vue-prop {string} [searchbarPlaceholder] - placeholder for searchbar
    * @vue-prop {boolean} [singleSelect=false]
+   * @vue-prop {string} [selectableKey='isSelectable'] - The property on each item that is used to determine if it is selectable or not. Non-selectable items are automatically disabled.
    * @vue-event {UpdateItemsEvent} update:items - Emits when one of the options properties is updated or on search input. Can be used to update items via API call to a server.
    * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
    * @vue-computed {Array<import("vuetify").DataTableHeader>} translatedHeaders - array of translated header items.
@@ -246,6 +248,10 @@
         type: Boolean,
         default: false,
       },
+      selectableKey: {
+        type: String,
+        default: 'isSelectable',
+      },
       value: {
         type: Array,
         default: () => [],
@@ -282,6 +288,27 @@
         }
         return true;
       };
+
+      /**
+       * Syncs disabled and isSelectable (or custom selectable-key) on items
+       * @type {ComputedRef<Array<Object>>}
+       */
+      const internalItems = computed(() =>
+        props.items.map((item) => {
+          if (
+            item.disabled !== undefined &&
+            item[props.selectableKey] === undefined
+          ) {
+            item[props.selectableKey] = !item.disabled;
+          } else if (
+            item.disabled === undefined &&
+            item[props.selectableKey] !== undefined
+          ) {
+            item.disabled = item[props.selectableKey];
+          }
+          return item;
+        }),
+      );
 
       /**
        * @type {ComputedRef<Array<Object>>}
@@ -360,6 +387,7 @@
         hovering,
         search,
         page,
+        internalItems,
         filteredItems,
         itemsPerPageRef,
         itemsFrom,

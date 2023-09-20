@@ -26,6 +26,7 @@
               :rules="required"
             />
             <vcs-text-field v-model="newItem.date" type="date" label="date" />
+            <vcs-checkbox label="disabled" v-model="newItem.disabled" />
             <vcs-form-button type="submit" variant="filled">
               Add
             </vcs-form-button>
@@ -61,6 +62,7 @@
     VcsDataTable,
     VcsFormButton,
     VcsTextField,
+    VcsCheckbox,
     VcsActionButtonList,
   } from '@vcmap/ui';
   import { VSwitch, VSheet, VDialog, VCard, VForm } from 'vuetify/lib';
@@ -119,6 +121,7 @@
       VcsDataTable,
       VcsFormButton,
       VcsTextField,
+      VcsCheckbox,
       VcsActionButtonList,
       VSwitch,
       VSheet,
@@ -137,6 +140,7 @@
         name: 'foo',
         type: 'foo',
         date: new Date(),
+        disabled: false,
       });
       const dialog = ref(false);
 
@@ -158,6 +162,7 @@
             name: newItem.value.name,
             type: newItem.value.type,
             date: newItem.value.date,
+            disabled: newItem.value.disabled,
             id: items.value.length,
           };
 
