@@ -103,7 +103,7 @@
             v-model.number="selectedScale"
             placeholder="1"
             :disabled="currentType !== selectedType"
-            :rules="[(v) => v > 0 || 'components.validation.notValid']"
+            :rules="[(v) => !v || v > 0 || 'components.validation.notValid']"
           />
         </v-col>
       </v-row>
@@ -851,7 +851,11 @@
           }
         },
         set(value) {
-          if (value > 0) {
+          if (!value) {
+            const newImage = structuredClone(props.value);
+            delete newImage.scale;
+            emit('input', newImage);
+          } else if (value > 0) {
             const newImage = structuredClone(props.value);
             emit('input', Object.assign(newImage, { scale: value }));
           }
