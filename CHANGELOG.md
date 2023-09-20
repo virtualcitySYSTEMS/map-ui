@@ -1,6 +1,7 @@
 # 5.0.1
 
 - Fix home button and add default starting viewpoint
+- Fix VcsImageStyleSelector Default Icons, using dataUris now
 
 # 5.0.0
 
