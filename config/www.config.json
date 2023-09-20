@@ -431,6 +431,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Bayern - LOD2",
         "featureInfo": "tableBuildings"
@@ -443,6 +446,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Sachsen - LOD2",
         "featureInfo": "tableBuildings"
@@ -455,6 +461,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Sachsen-Anhalt - LOD2",
         "featureInfo": "tableBuildings"
@@ -479,6 +488,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Thüringen - LOD2",
         "featureInfo": "tableBuildings"
@@ -491,6 +503,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Niedersachsen - LOD2",
         "featureInfo": "tableBuildings"
@@ -503,6 +518,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "NRW - LOD2",
         "featureInfo": "tableBuildings"
@@ -515,6 +533,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Hessen - LOD2",
         "featureInfo": "tableBuildings"
@@ -527,6 +548,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Hamburg - LOD2",
         "featureInfo": "tableBuildings"
@@ -540,6 +564,9 @@
       "activeOnStartup": true,
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Brandenburg - LOD2",
         "featureInfo": "tableBuildings"
@@ -550,9 +577,12 @@
       "name": "Berlin untexturiert openData (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/f892f6af-180a-4eef-917f-5ff03c260b32/tileset.json",
       "activeOnStartup": true,
-      "screenSpaceError": 16,
+      "screenSpaceError": 12,
       "screenSpaceErrorMobile": 32,
       "exclusiveGroups": ["3D", "classified"],
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
       "properties": {
         "title": "Berlin - LOD2",
         "featureInfo": "tableBuildings",
@@ -602,7 +632,8 @@
         }
       },
       "tilesetOptions": {
-        "skipLevelOfDetail": false
+        "skipLevelOfDetail": false,
+        "useSRGBColorFactors": true
       },
       "properties": {
         "title": "Planwerk Innere Stadt",
@@ -647,34 +678,23 @@
       }
     },
     {
-      "type": "WMTSLayer",
+      "type": "OpenStreetMapLayer",
       "name": "Openstreetmap layer",
-      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
       "activeOnStartup": true,
       "exclusive": "base",
-      "layer": "osm",
-      "wmtsStyle": "default",
-      "format": "image/png",
-      "tileMatrixSetID": "osm_grid",
-      "maxLevel": 19,
       "extent": {
         "coordinates": [-180, -85, 180, 85],
         "projection": {
           "epsg": "EPSG:4326"
         }
       },
-      "tilingSchema": "mercator",
-      "hiddenObjectIds": [],
-      "tileMatrixPrefix": "",
-      "numberOfLevelZeroTilesX": 1,
-      "numberOfLevelZeroTilesY": 1,
       "properties": {
         "title": "Openstreetmap",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "OpenStreetMap contributors",
           "url": "https://www.openstreetmap.org/",
-          "year": "2018"
+          "year": "2023"
         }
       }
     },
