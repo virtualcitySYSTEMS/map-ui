@@ -10,7 +10,10 @@
         <v-list-item-action v-if="selectable">
           <v-spacer v-if="singleSelect" />
           <v-icon
-            v-else-if="selected.length === renderingItems.length"
+            v-else-if="
+              selected.length ===
+              renderingItems.filter((item) => !item.disabled).length
+            "
             @click="clear"
           >
             mdi-check-circle
@@ -489,7 +492,7 @@
         },
         selectAll() {
           const currentSelection = [...selected.value];
-          selected.value = this.renderingItems.slice(0);
+          selected.value = this.renderingItems.filter((item) => !item.disabled);
           selected.value.forEach((item) => {
             if (item.selectionChanged && !currentSelection.includes(item)) {
               item.selectionChanged(true);
