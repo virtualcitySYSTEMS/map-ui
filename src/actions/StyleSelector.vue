@@ -9,7 +9,7 @@
         <v-list-item-title
           :class="{ 'primary--text': item.value === currentStyleName }"
         >
-          {{ item.text }}
+          {{ $t(item.text) }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -23,7 +23,7 @@
           <v-chip :color="entry.color" />
         </v-list-item-icon>
         <v-list-item-content>
-          {{ entry.title }}
+          {{ $t(entry.title) }}
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -74,7 +74,7 @@
       const app = inject('vcsApp');
       /** @type {import("@vcmap/core").FeatureLayer} */
       const layer = app.layers.getByKey(props.layerName);
-      const currentStyleName = ref(layer.style.name);
+      const currentStyleName = ref(layer.style.name || layer.defaultStyle.name);
       const currentStyleLegend = ref([]);
       const defaultStyle = layer.defaultStyle.name;
 
@@ -93,17 +93,32 @@
       });
 
       const items = computed(() => {
+        const styles = props.availableStyles
+          .filter((name) => app.styles.hasKey(name))
+          .map((name) => ({
+            text: app.styles.getByKey(name)?.properties?.title || name,
+            value: name,
+          }));
+        if (props.availableStyles.indexOf(defaultStyle) < 0) {
+          return [
+            {
+              text: 'Default',
+              value: defaultStyle,
+            },
+            ...styles,
+          ];
+        }
+        const firstStyle = styles.find(({ value }) => value === defaultStyle);
         return [
-          { text: 'Default', value: defaultStyle },
-          ...props.availableStyles.map((s) => ({ text: s, value: s })),
+          firstStyle,
+          ...styles.filter(({ value }) => value !== defaultStyle),
         ];
       });
 
       function select(styleName) {
-        const style =
-          styleName === defaultStyle
-            ? layer.defaultStyle
-            : app.styles.getByKey(styleName);
+        const style = app.styles.hasKey(styleName)
+          ? app.styles.getByKey(styleName)
+          : layer.defaultStyle;
         layer.setStyle(style);
         app.windowManager.remove(attrs['window-state'].id);
       }

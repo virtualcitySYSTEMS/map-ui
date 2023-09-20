@@ -20,6 +20,10 @@
             "title": "OSM Gebäude Grundflächen"
           }
         },
+        "style": {
+          "buildingFunction": "Gebäudefunktion",
+          "transparentBuildings": "Transparente Gebäude"
+        },
         "contentTree": {
           "building": {
             "title": "3D Gebäude"
@@ -34,6 +38,10 @@
           "osmBuildingFootprints": {
             "title": "OSM Building Footprints"
           }
+        },
+        "style": {
+          "buildingFunction": "Building function",
+          "transparentBuildings": "Transparent Buildings"
         },
         "contentTree": {
           "building": {
@@ -407,6 +415,7 @@
         }
       },
       "properties": {
+        "title": "style.buildingFunction",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -463,6 +472,7 @@
         }
       },
       "properties": {
+        "title": "style.transparentBuildings",
         "legend": [
           {
             "type": "StyleLegendItem",

@@ -24,6 +24,14 @@
           "footprints": "OSM Gebäudegrundrisse",
           "GermanyBaseTerrain": "Gelände"
         },
+        "style": {
+          "MeasuredHeightGreen": "Measured Height Grün",
+          "MeasuredHeightBrown": "Measured Height Rot",
+          "MeasuredHeightBlue": "Measured Height Blau",
+          "ClassifiedbyRoofType": "Dachform",
+          "BuildingFunction": "Gebäudefunktion",
+          "Transparentbuildings": "Transparente Gebäude"
+        },
         "featureInfo": {
           "waterSpeed": "Geschwindigkeit [m/s]",
           "waterHeight": "Wasserhöhe [m]"
@@ -366,6 +374,14 @@
           "footprints": "OSM building footprints",
           "GermanyBaseTerrain": "Terrain"
         },
+        "style": {
+          "MeasuredHeightGreen": "Measured height green",
+          "MeasuredHeightBrown": "Measured height red",
+          "MeasuredHeightBlue": "Measured height blue",
+          "ClassifiedbyRoofType": "Rooftype",
+          "BuildingFunction": "Building function",
+          "Transparentbuildings": "Transparent Buildings"
+        },
         "featureInfo": {
           "waterSpeed": "Velocity [m/s]",
           "waterHeight": "Water height [m]"
@@ -577,7 +593,7 @@
       "name": "Berlin untexturiert openData (pbr recalculation)",
       "url": "https://www.virtualcitymap.de/datasource-data/f892f6af-180a-4eef-917f-5ff03c260b32/tileset.json",
       "activeOnStartup": true,
-      "screenSpaceError": 12,
+      "screenSpaceError": 8,
       "screenSpaceErrorMobile": 32,
       "exclusiveGroups": ["3D", "classified"],
       "tilesetOptions": {
@@ -1022,6 +1038,7 @@
         }
       },
       "properties": {
+        "title": "style.MeasuredHeightGreen",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -1085,6 +1102,7 @@
         }
       },
       "properties": {
+        "title": "style.MeasuredHeightBrown",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -1148,6 +1166,7 @@
         }
       },
       "properties": {
+        "title": "style.MeasuredHeightBlue",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -1221,6 +1240,7 @@
         }
       },
       "properties": {
+        "title": "style.ClassifiedbyRoofType",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -1353,6 +1373,7 @@
         }
       },
       "properties": {
+        "title": "style.BuildingFunction",
         "legend": [
           {
             "type": "StyleLegendItem",
@@ -1409,6 +1430,7 @@
         }
       },
       "properties": {
+        "title": "style.Transparentbuildings",
         "legend": [
           {
             "type": "StyleLegendItem",
