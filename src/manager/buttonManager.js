@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { check, checkMaybe } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { ActionPattern } from '../components/lists/VcsActionList.vue';
+import { getActionFromOptions } from '../actions/actionHelper.js';
 
 /**
  * @param {number} weightA
@@ -107,6 +108,7 @@ class ButtonManager {
       );
     }
     const id = buttonComponentOptions.id || uuidv4();
+    const action = getActionFromOptions(buttonComponentOptions.action);
 
     /**
      * @type {ButtonComponent}
@@ -119,7 +121,7 @@ class ButtonManager {
         return owner;
       },
       get action() {
-        return reactive(buttonComponentOptions.action);
+        return reactive(action);
       },
       get weight() {
         return buttonComponentOptions.weight || 0;

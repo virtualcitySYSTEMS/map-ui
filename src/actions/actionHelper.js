@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { check } from '@vcsuite/check';
+import { check, checkMaybe } from '@vcsuite/check';
 import {
   Collection,
   Extent,
@@ -9,6 +9,7 @@ import {
 } from '@vcmap/core';
 import { Feature } from 'ol';
 import { reactive, ref } from 'vue';
+import { parseBoolean } from '@vcsuite/parsers';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { getWindowPositionOptions } from '../manager/window/windowHelper.js';
@@ -20,6 +21,23 @@ import SearchComponent from '../search/SearchComponent.vue';
  * @property {string} [title]
  * @property {string} [icon]
  */
+
+/**
+ * merges action options with defaults
+ * @param {VcsAction|ActionOptions & { callback: Function}} options
+ * @returns {VcsAction}
+ */
+export function getActionFromOptions(options) {
+  check(options.name, String);
+  checkMaybe(options.title, String);
+  checkMaybe(options.icon, String);
+  check(options.callback, Function);
+  options.active = parseBoolean(options.active, false);
+  options.hasUpdate = parseBoolean(options.hasUpdate, false);
+  options.background = parseBoolean(options.background, false);
+  options.disabled = parseBoolean(options.disabled, false);
+  return options;
+}
 
 /**
  * @param {ActionOptions} actionOptions

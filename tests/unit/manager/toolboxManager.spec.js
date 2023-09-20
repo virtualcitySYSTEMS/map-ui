@@ -15,6 +15,7 @@ import ToolboxManager, {
 } from '../../../src/manager/toolbox/toolboxManager.js';
 import ButtonManager from '../../../src/manager/buttonManager.js';
 import { vcsAppSymbol } from '../../../src/pluginHelper.js';
+import { getActionFromOptions } from '../../../src/actions/actionHelper.js';
 
 const components = {
   single: {
@@ -332,7 +333,8 @@ describe('toolboxManager', () => {
       const comp = toolboxManager.get(components.single.id);
       expect(comp.id).to.equal(components.single.id);
       expect(comp.type).to.equal(components.single.type);
-      expect(comp.action).to.equal(components.single.action);
+      expect(comp.action.name).to.equal(components.single.action.name);
+      expect(comp.action.callback).to.equal(components.single.action.callback);
     });
 
     describe('getComponentsByOrder', () => {
@@ -392,7 +394,10 @@ describe('toolboxManager', () => {
       toolboxManager.remove(components.single.id);
       expect(removedSpy).toHaveBeenCalledTimes(1);
       expect(removedSpy).toHaveBeenLastCalledWith({
-        ...components.single,
+        ...{
+          ...components.single,
+          action: getActionFromOptions(components.single.action),
+        },
         owner: 'plugin',
       });
     });

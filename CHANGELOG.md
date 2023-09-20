@@ -2,6 +2,7 @@
 
 - Fix home button and add default starting viewpoint
 - Fix VcsImageStyleSelector Default Icons, using dataUris now
+- Add helper `getActionFromOptions` which enforces defaults of VcsAction interface
 
 # 5.0.0
 
