@@ -12,7 +12,10 @@ import { reactive, ref } from 'vue';
 import { parseBoolean } from '@vcsuite/parsers';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
-import { getWindowPositionOptions } from '../manager/window/windowHelper.js';
+import {
+  getFittedWindowPositionOptionsFromMapEvent,
+  getTargetSize,
+} from '../manager/window/windowHelper.js';
 import SearchComponent from '../search/SearchComponent.vue';
 
 /**
@@ -268,9 +271,16 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
           event.currentTarget.getBoundingClientRect();
         modalActivator = event.currentTarget;
         const position = {
-          ...getWindowPositionOptions(left + width, top, app.maps.target),
+          ...getFittedWindowPositionOptionsFromMapEvent(
+            { x: left + width, y: top - getTargetSize(app.maps.target).top },
+            windowPositionOptions?.width || 320,
+            windowPositionOptions?.height || 0,
+            app.maps.target,
+          ),
           ...windowPositionOptions,
         };
+        position.maxWidth = 320;
+        position.width = windowPositionOptions?.width || -1; // unset width magic. dont touch.
         const state = { ...modalComponent?.state, hideHeader: true };
         app.windowManager.add({ position, ...component, id, state }, owner);
         document.addEventListener('mousedown', handleMouseDown);
