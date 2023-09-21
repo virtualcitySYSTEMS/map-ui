@@ -4,6 +4,7 @@
   "_id": "VcsBaseConfig",
   "startingViewpointName": "berlin",
   "startingMapName": "cesium",
+  "startingObliqueCollectionName": "obliques",
   "projection": {
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
@@ -543,8 +544,7 @@
       "name": "Oblique Map",
       "showObliqueImageName": true,
       "obliqueImageNameTemplate": "Oblique Image Name : {0}",
-      "type": "ObliqueMap",
-      "defaultCollectionName": "Schrägluftbilder WAB"
+      "type": "ObliqueMap"
     }
   ],
   "layers": [

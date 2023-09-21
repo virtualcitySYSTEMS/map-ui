@@ -4,6 +4,7 @@
   "description": "VC Map Demo www.virtualcitymap.de",
   "startingViewpointName": "startview",
   "startingMapName": "cesium",
+  "startingObliqueCollectionName": "obliques",
   "projection": {
     "epsg": "25832",
     "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
@@ -424,7 +425,6 @@
     {
       "type": "ObliqueMap",
       "name": "Oblique Map",
-      "defaultCollectionName": "Schrägluftbilder 2020",
       "properties": {
         "attributions": [
           {
