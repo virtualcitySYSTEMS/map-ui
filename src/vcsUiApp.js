@@ -83,7 +83,7 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @property {function():P} [toJSON] - should return the plugin's serialization excluding all default values
  * @property {function():P} [getDefaultOptions] - should return the plugin's default options
  * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
- * @property {Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
+ * @property {function():Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
  * @property {function():Promise<void>} destroy
  * @api
  */

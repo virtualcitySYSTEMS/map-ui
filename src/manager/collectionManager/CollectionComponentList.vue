@@ -1,19 +1,34 @@
 <template>
-  <vcs-list
-    :items="items"
-    :draggable="draggable"
-    :selectable="selectable"
-    :single-select="singleSelect"
-    v-model="selection"
-    :title="title"
-    @item-moved="move"
-  />
+  <div>
+    <div class="v-expansion-panel-header px-2 v-expansion-panel-header--active">
+      <div class="d-flex justify-space-between">
+        <div class="d-flex align-center">
+          {{ $t(title) }}
+        </div>
+        <VcsActionButtonList
+          v-if="actions?.length > 0"
+          :actions="actions"
+          :overflow-count="overflowCount"
+        />
+      </div>
+    </div>
+    <vcs-list
+      :items="items"
+      :draggable="draggable"
+      :selectable="selectable"
+      :single-select="singleSelect"
+      v-model="selection"
+      :show-title="false"
+      @item-moved="move"
+    />
+  </div>
 </template>
 
 <script>
   import { inject } from 'vue';
   import { IndexedCollection } from '@vcmap/core';
   import VcsList from '../../components/lists/VcsList.vue';
+  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
 
   /**
    * Moves an item to a new position.
@@ -45,6 +60,7 @@
   export default {
     name: 'CollectionComponentList',
     components: {
+      VcsActionButtonList,
       VcsList,
     },
     props: {
@@ -66,6 +82,9 @@
         draggable: collectionComponent.draggable,
         selectable: collectionComponent.selectable,
         singleSelect: collectionComponent.singleSelect,
+        overflowCount: collectionComponent.overflowCount,
+        limit: collectionComponent.limit,
+        actions: collectionComponent.getActions(),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
         },

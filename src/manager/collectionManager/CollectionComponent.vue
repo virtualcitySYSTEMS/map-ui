@@ -109,6 +109,10 @@
                 props: {
                   windowId,
                 },
+                state: {
+                  headerTitle: 'collectionManager.more',
+                  headerIcon: '$vcsComponents',
+                },
                 provides: {
                   collectionComponent,
                 },
