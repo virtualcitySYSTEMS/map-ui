@@ -49,13 +49,13 @@
       VRow,
       VImg,
     },
-    setup() {
+    setup(props, { emit }) {
       const app = inject('vcsApp');
       const { helloWorld, showHelloWorldBtn } = app.plugins.getByKey(name);
 
       return {
         closeSelf() {
-          app.windowManager.remove(windowId);
+          emit('close');
         },
         helloWorld() {
           // eslint-disable-next-line no-console

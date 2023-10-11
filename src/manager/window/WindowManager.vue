@@ -16,6 +16,7 @@
         :is="getComponent(id)"
         :window-state="getState(id)"
         v-bind="getProps(id)"
+        @close="close(id)"
       />
       <template v-if="!getState(id).hideHeader" #headerComponent>
         <component

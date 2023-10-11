@@ -1,3 +1,7 @@
+# 5.1
+
+- WindowManager now handles `close` events emitted by vue components for closing itself
+
 # 5.0.0
 
 - Updated @vcmap/core to version 5.0.0
