@@ -53,6 +53,7 @@ import ProgressIcon from './ProgressIcon.vue';
 import MapIcon from './MapIcon.vue';
 import MenuIcon from './MenuIcon.vue';
 import MinusIcon from './MinusIcon.vue';
+import MultiViewIcon from './MultiViewIcon.vue';
 import ObjectAttributeIcon from './ObjectAttributeIcon.vue';
 import ObjectSelectIcon from './ObjectSelectIcon.vue';
 import ObliqueViewIcon from './ObliqueViewIcon.vue';
@@ -297,6 +298,9 @@ const IconMap = {
   },
   minus: {
     component: MinusIcon,
+  },
+  multiView: {
+    component: MultiViewIcon,
   },
   objectAttribute: {
     component: ObjectAttributeIcon,

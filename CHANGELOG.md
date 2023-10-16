@@ -1,6 +1,7 @@
 # 5.1
 
 - WindowManager now handles `close` events emitted by vue components for closing itself
+- add new icon for multiview button
 
 # 5.0.0
 
