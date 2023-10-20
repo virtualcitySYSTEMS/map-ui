@@ -1,3 +1,7 @@
+# 5.0.3
+
+- Fix translation of VcsDataTable header
+
 # 5.0.1
 
 - Fix home button and add default starting viewpoint
