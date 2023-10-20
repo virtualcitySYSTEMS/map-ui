@@ -26,6 +26,7 @@
         v-model="selection"
         :show-title="false"
         @item-moved="move"
+        @item-renamed="rename"
       />
       <v-sheet v-if="items.length > limit" class="ma-2 pl-2">
         <VcsButton @click="openCollectionComponentList">
@@ -55,6 +56,7 @@
   import { WindowSlot } from '../window/windowManager.js';
   import CollectionComponentList, {
     moveItem,
+    renameItem,
   } from './CollectionComponentList.vue';
 
   /**
@@ -95,6 +97,9 @@
         actions: collectionComponent.getActions(),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
+        },
+        rename({ item, newTitle }) {
+          renameItem(collectionComponent, item, newTitle);
         },
         openCollectionComponentList() {
           if (app.windowManager.has(windowId)) {

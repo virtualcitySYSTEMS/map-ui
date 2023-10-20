@@ -152,6 +152,7 @@
               id: selected.value,
               title: selected.value,
               collection: app[selected.value],
+              renameable: true,
             },
             owner,
           );

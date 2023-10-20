@@ -2,6 +2,7 @@
 
 - WindowManager now handles `close` events emitted by vue components for closing itself
 - add new icon for multiview button
+- add rename functionality to VcsList and CollectionComponent
 
 # 5.0.0
 

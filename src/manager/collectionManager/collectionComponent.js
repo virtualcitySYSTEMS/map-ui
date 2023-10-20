@@ -2,17 +2,19 @@ import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, ref } from 'vue';
-import { parseNumber } from '@vcsuite/parsers';
+import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
+import { createRenameAction } from '../../actions/actionHelper.js';
 
 /**
  * @typedef {Object} CollectionComponentUiOptions
  * @property {string} [id]
  * @property {string} [title]
- * @property {boolean} [draggable] - only supported for IndexedCollections
- * @property {boolean} [selectable]
- * @property {boolean} [singleSelect]
+ * @property {boolean} [draggable=false] - only supported for IndexedCollections
+ * @property {boolean} [renameable=false] - whether title of items can be edited
+ * @property {boolean} [selectable=false]
+ * @property {boolean} [singleSelect=false]
  * @property {number} [overflowCount=2] - number of header action buttons rendered until overflow
  * @property {number} [limit=10] - limit number of items in rendered list (more items are rendered in extra window)
  */
@@ -79,12 +81,17 @@ class CollectionComponent {
     );
     /**
      * @type {import("vue").Ref<boolean>}
+     * @private
      */
-    this.selectable = ref(options.selectable);
+    this._renameable = ref(parseBoolean(options.renameable, false));
     /**
      * @type {import("vue").Ref<boolean>}
      */
-    this.singleSelect = ref(options.singleSelect);
+    this.selectable = ref(parseBoolean(options.selectable));
+    /**
+     * @type {import("vue").Ref<boolean>}
+     */
+    this.singleSelect = ref(parseBoolean(options.singleSelect));
     /**
      * @type {string|vcsAppSymbol}
      * @private
@@ -187,6 +194,24 @@ class CollectionComponent {
   }
 
   /**
+   * @type {import("vue").Ref<boolean>}
+   * @readonly
+   */
+  get renameable() {
+    return this._renameable;
+  }
+
+  /**
+   * @param {boolean} value
+   */
+  set renameable(value) {
+    if (value !== this._renameable) {
+      this._renameable.value = value;
+      this.reset();
+    }
+  }
+
+  /**
    * @type {string|vcsAppSymbol}
    * @readonly
    */
@@ -220,8 +245,12 @@ class CollectionComponent {
       tooltip: item?.properties?.tooltip,
       icon: item?.properties?.icon,
       hasUpdate: item?.properties?.hasUpdate,
+      rename: false,
       actions: [],
     };
+    if (this._renameable.value) {
+      listItem.actions.push(createRenameAction(listItem));
+    }
     this._itemMappings.forEach((itemMapping) => {
       if (
         itemMapping.predicate === undefined ||

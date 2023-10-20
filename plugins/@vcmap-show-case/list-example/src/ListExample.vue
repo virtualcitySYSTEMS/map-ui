@@ -125,6 +125,12 @@
                 />
                 <v-switch
                   dense
+                  label="rename action"
+                  v-model="newItem.renameAction"
+                  class="ma-0"
+                />
+                <v-switch
+                  dense
                   label="console.log action"
                   v-model="newItem.action"
                   class="ma-0"
@@ -186,6 +192,7 @@
       :title="title"
       v-model="selected"
       @item-moved="move"
+      @item-renamed="({ item, newTitle }) => (item.title = newTitle)"
     />
   </v-sheet>
 </template>
@@ -197,6 +204,7 @@
     VcsTextField,
     Icons,
     VcsFormSection,
+    createRenameAction,
   } from '@vcmap/ui';
   import {
     VSwitch,
@@ -279,6 +287,7 @@
         disabled: false,
         visible: true,
         icon: false,
+        renameAction: false,
         action: false,
         clicked: false,
         selected: false,
@@ -316,15 +325,20 @@
             item.icon = getRandomIcon();
           }
 
+          item.actions = [];
+
+          if (newItem.value.renameAction) {
+            item.rename = false;
+            item.actions.push(createRenameAction(item));
+          }
+
           if (newItem.value.action) {
-            item.actions = [
-              {
-                name: 'console.log',
-                callback() {
-                  console.log("hi, i'm: ", item.name);
-                },
+            item.actions.push({
+              name: 'console.log',
+              callback() {
+                console.log("hi, i'm: ", item.name);
               },
-            ];
+            });
           }
 
           if (newItem.value.clicked) {
@@ -349,6 +363,7 @@
             disabled: false,
             visible: true,
             icon: false,
+            renameAction: false,
             action: false,
             clicked: false,
             selected: false,

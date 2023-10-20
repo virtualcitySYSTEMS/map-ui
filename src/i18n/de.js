@@ -190,6 +190,11 @@ const messages = {
   datePicker: {
     today: 'Heute',
   },
+  list: {
+    renameAction: {
+      title: 'Element umbenennen',
+    },
+  },
 };
 
 export default messages;

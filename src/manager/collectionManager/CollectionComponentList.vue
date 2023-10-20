@@ -7,6 +7,7 @@
     v-model="selection"
     :title="title"
     @item-moved="move"
+    @item-renamed="rename"
   />
 </template>
 
@@ -30,10 +31,28 @@
       const keyProperty = collection.uniqueKey;
       const targetItem = collectionComponent.items.value[targetIndex];
       const targetIndexCol = [...collection].findIndex(
-        (i) => i[keyProperty] === targetItem[keyProperty],
+        (i) => i[keyProperty] === targetItem.name,
       );
       collection.moveTo(collectionItem, targetIndexCol);
     }
+  }
+
+  /**
+   * Renames the title of an item.
+   * @param {CollectionComponent} collectionComponent
+   * @param {VcsListItem} item
+   * @param {string} newTitle
+   */
+  export function renameItem(collectionComponent, item, newTitle) {
+    const { collection } = collectionComponent;
+    const collectionItem = collection.getByKey(item.name);
+
+    if (!collectionItem.properties) {
+      collectionItem.properties = {};
+    }
+
+    collectionItem.properties.title = newTitle;
+    item.title = newTitle;
   }
 
   /**
@@ -68,6 +87,9 @@
         singleSelect: collectionComponent.singleSelect,
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
+        },
+        rename({ item, newTitle }) {
+          renameItem(collectionComponent, item, newTitle);
         },
       };
     },

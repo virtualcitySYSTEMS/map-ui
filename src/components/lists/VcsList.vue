@@ -94,7 +94,20 @@
           >
             <template #activator="{ on, attrs }">
               <v-list-item-title v-bind="attrs" v-on="on" ref="titles">
-                {{ $t(item.title) }}
+                <VcsTextField
+                  v-if="item.rename"
+                  :value="item.title"
+                  autofocus
+                  :no-padding="true"
+                  @input="(value) => rename(item, value)"
+                  @click.stop
+                  @keydown.enter="item.rename = false"
+                  @blur="item.rename = false"
+                  :rules="[(v) => !!v || 'components.validation.required']"
+                />
+                <span v-else>
+                  {{ $t(item.title) }}
+                </span>
               </v-list-item-title>
             </template>
           </VcsTooltip>
@@ -128,12 +141,14 @@
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsBadge from '../notification/VcsBadge.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
 
   /**
    * @typedef {Object} VcsListItem
    * @property {string} name
    * @property {boolean} [visible] - Whether to display this item or not.
    * @property {boolean} [disabled] - Whether this item should be displayed as disabled.
+   * @property {boolean} [rename] - Whether the title of this item is currently in edit mode.
    * @property {string} title - The title to be displayed
    * @property {string} [tooltip]
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
@@ -146,6 +161,12 @@
    * @typedef {Object} ItemMovedEvent
    * @property {VcsListItem} item
    * @property {number} targetIndex
+   */
+
+  /**
+   * @typedef {Object} ItemRenamedEvent
+   * @property {VcsListItem} item
+   * @property {string} newTitle
    */
 
   /**
@@ -174,6 +195,7 @@
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
    * @vue-prop {Array<VcsAction>} [actions] - actions to render in the list title
    * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
+   * @vue-event {ItemRenamedEvent} item-renamed - event triggered after item was renamed
    */
   export default {
     name: 'VcsList',
@@ -189,6 +211,7 @@
       VIcon,
       VListItemTitle,
       VSpacer,
+      VcsTextField,
     },
     props: {
       items: {
@@ -521,6 +544,11 @@
           }
           return '';
         }),
+        rename(item, newTitle) {
+          if (newTitle) {
+            emit('item-renamed', { item, newTitle });
+          }
+        },
       };
     },
   };

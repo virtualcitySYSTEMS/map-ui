@@ -10,6 +10,7 @@ export {
   createLinkAction,
   createGoToViewpointAction,
   createZoomToFeatureAction,
+  createRenameAction,
 } from './src/actions/actionHelper.js';
 export {
   createStateRefAction,
