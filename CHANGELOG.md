@@ -3,6 +3,7 @@
 - WindowManager now handles `close` events emitted by vue components for closing itself
 - add new icon for multiview button
 - add rename functionality to VcsList and CollectionComponent
+- Add property `customClasses` to all vcs buttons for custom styling using css classes
 
 # 5.0.0
 

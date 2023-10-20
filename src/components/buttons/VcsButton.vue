@@ -6,6 +6,7 @@
       :color="appliedColor"
       :disabled="disabled"
       class="vcs-button pa-0"
+      :class="customClasses.join(' ')"
       :ripple="false"
       elevation="0"
       v-bind="{ ...$attrs }"
@@ -28,6 +29,7 @@
           :color="appliedColor"
           :disabled="disabled"
           class="vcs-button pa-0"
+          :class="customClasses.join(' ')"
           :ripple="false"
           elevation="0"
           v-bind="{ ...$attrs, ...attrs }"
@@ -88,6 +90,7 @@
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
    * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to VcsTooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
+   * @vue-prop {string[]}                               [customClasses] - CSS classes to customize style
    * @vue-computed {string}                             appliedColor - color applied to button, depending on active state
    * @vue-computed {boolean}                            hasDefaultSlot
    * @vue-event {MouseEvent}                            click - Emits click event when the button is clicked.
@@ -133,6 +136,10 @@
       tooltipProps: {
         type: Object,
         default: () => ({}),
+      },
+      customClasses: {
+        type: Array,
+        default: () => [],
       },
     },
     computed: {

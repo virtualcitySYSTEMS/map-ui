@@ -87,6 +87,7 @@
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
    * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to VcsTooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
+   * @vue-prop {string[]}                               [customClasses] - CSS classes to customize style
    * @vue-computed {string}                             appliedColor - color applied to button, depending on size and state
    * @vue-computed {Object<string, string>}             classes - css classes applied to button, depending on size and state
    * @vue-computed {boolean}                            hasDefaultSlot
@@ -135,6 +136,10 @@
         type: Object,
         default: () => ({}),
       },
+      customClasses: {
+        type: Array,
+        default: () => [],
+      },
     },
     computed: {
       appliedColor() {
@@ -146,6 +151,10 @@
       },
       classes() {
         return {
+          ...this.customClasses.reduce(
+            (acc, cur) => ({ ...acc, [cur]: true }),
+            {},
+          ),
           'vcs-tool-button--active-background':
             this.active && this.background && !this.$attrs.disabled,
         };
