@@ -5,6 +5,7 @@ import { reactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
 import { ActionPattern } from '../../components/lists/VcsActionList.vue';
+import { getActionFromOptions } from '../../actions/actionHelper.js';
 
 /**
  * Possible group types. Define behaviour of group:
@@ -266,13 +267,14 @@ class ToolboxManager {
 
     if (type === ToolboxType.SINGLE) {
       check(toolboxComponentOptions.action, ActionPattern);
+      const action = getActionFromOptions(toolboxComponentOptions.action);
       /**
        * @type {SingleToolboxComponent}
        */
       toolboxComponent = {
         ...toolboxComponent,
         get action() {
-          return reactive(toolboxComponentOptions.action);
+          return reactive(action);
         },
       };
     } else if (type === ToolboxType.SELECT) {
@@ -290,13 +292,14 @@ class ToolboxManager {
           },
         ],
       });
+      const action = getActionFromOptions(toolboxComponentOptions.action);
       /**
        * @type {SelectToolboxComponent}
        */
       toolboxComponent = {
         ...toolboxComponent,
         get action() {
-          return reactive(toolboxComponentOptions.action);
+          return reactive(action);
         },
       };
     } else {

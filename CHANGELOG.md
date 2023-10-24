@@ -5,6 +5,16 @@
 - add rename functionality to VcsList and CollectionComponent
 - Add property `customClasses` to all vcs buttons for custom styling using css classes
 
+# 5.0.3
+
+- Fix translation of VcsDataTable header
+
+# 5.0.1
+
+- Fix home button and add default starting viewpoint
+- Fix VcsImageStyleSelector Default Icons, using dataUris now
+- Add helper `getActionFromOptions` which enforces defaults of VcsAction interface
+
 # 5.0.0
 
 - Updated @vcmap/core to version 5.0.0

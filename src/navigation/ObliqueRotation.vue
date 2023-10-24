@@ -56,12 +56,16 @@
     ::v-deep {
       .btn-orientation-tools {
         &:first-child {
-          box-shadow: rgba(0, 0, 0, 0.25) 2px 2px 1px -2px,
-            rgba(0, 0, 0, 0.02) -3px 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 1px 0 !important;
+          box-shadow:
+            rgba(0, 0, 0, 0.25) 2px 2px 1px -2px,
+            rgba(0, 0, 0, 0.02) -3px 2px 2px 0,
+            rgba(0, 0, 0, 0.12) 0 1px 1px 0 !important;
         }
         &:last-child {
-          box-shadow: rgba(0, 0, 0, 0.02) 1px 4px 1px -2px,
-            rgba(0, 0, 0, 0.02) 1px 2px 1px 0, rgba(0, 0, 0, 0.1) 1px 1px 1px 0 !important;
+          box-shadow:
+            rgba(0, 0, 0, 0.02) 1px 4px 1px -2px,
+            rgba(0, 0, 0, 0.02) 1px 2px 1px 0,
+            rgba(0, 0, 0, 0.1) 1px 1px 1px 0 !important;
         }
       }
     }

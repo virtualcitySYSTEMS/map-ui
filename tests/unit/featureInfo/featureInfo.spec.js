@@ -884,7 +884,7 @@ describe('FeatureInfo', () => {
   describe('feature info tool button', () => {
     describe('setting up the toolbox', () => {
       let app;
-      let action;
+      let toolboxComponent;
 
       beforeEach(() => {
         app = new VcsUiApp();
@@ -893,7 +893,7 @@ describe('FeatureInfo', () => {
         });
         layer.properties.featureInfo = 'foo';
         app.layers.add(layer);
-        ({ action } = app.toolboxManager.get('featureInfo'));
+        toolboxComponent = app.toolboxManager.get('featureInfo');
       });
 
       afterEach(() => {
@@ -906,7 +906,7 @@ describe('FeatureInfo', () => {
 
       it('should activate the tool on startup, if startingFeatureInfo is not false', () => {
         expect(app.uiConfig.getByKey('startingFeatureInfo')).to.be.undefined;
-        expect(action).to.have.property('active', true);
+        expect(toolboxComponent.action).to.have.property('active', true);
       });
 
       it('should NOT activate the tool on startup, if startingFeatureInfo is false', () => {
@@ -914,7 +914,7 @@ describe('FeatureInfo', () => {
         expect(app.uiConfig.getByKey('startingFeatureInfo')?.value).to.be.false;
         app.featureInfo.destroy();
         const featureInfo = new FeatureInfo(app);
-        expect(action).to.have.property('active', false);
+        expect(toolboxComponent.action).to.have.property('active', false);
         featureInfo.destroy();
       });
     });
@@ -952,7 +952,7 @@ describe('FeatureInfo', () => {
 
     describe('stopping the session', () => {
       let app;
-      let action;
+      let toolboxComponent;
 
       beforeAll(async () => {
         app = new VcsUiApp();
@@ -966,8 +966,8 @@ describe('FeatureInfo', () => {
         const feature = new Feature({});
         layer.addFeatures([feature]);
         await app.featureInfo.selectFeature(feature);
-        ({ action } = app.toolboxManager.get('featureInfo'));
-        action.callback();
+        toolboxComponent = app.toolboxManager.get('featureInfo');
+        toolboxComponent.action.callback();
       });
 
       afterAll(() => {
@@ -975,7 +975,7 @@ describe('FeatureInfo', () => {
       });
 
       it('should set the action as inactive', () => {
-        expect(action).to.have.property('active', false);
+        expect(toolboxComponent.action).to.have.property('active', false);
       });
 
       it('should remove any interactions', () => {
@@ -993,7 +993,7 @@ describe('FeatureInfo', () => {
 
     describe('if the exclusive interaction is removed', () => {
       let app;
-      let action;
+      let toolboxComponent;
 
       beforeAll(async () => {
         app = new VcsUiApp();
@@ -1007,7 +1007,7 @@ describe('FeatureInfo', () => {
         const feature = new Feature({});
         layer.addFeatures([feature]);
         await app.featureInfo.selectFeature(feature);
-        ({ action } = app.toolboxManager.get('featureInfo'));
+        toolboxComponent = app.toolboxManager.get('featureInfo');
         app.maps.eventHandler.removeExclusive();
       });
 
@@ -1016,7 +1016,7 @@ describe('FeatureInfo', () => {
       });
 
       it('should set the action as inactive', () => {
-        expect(action).to.have.property('active', false);
+        expect(toolboxComponent.action).to.have.property('active', false);
       });
 
       it('should remove any interactions', () => {

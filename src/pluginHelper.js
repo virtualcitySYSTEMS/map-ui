@@ -219,9 +219,8 @@ export function serializePlugin(plugin) {
  */
 export async function deserializePlugin(serializedPlugin) {
   if (serializedPlugin[pluginFactorySymbol]) {
-    const reincarnation = await serializedPlugin[pluginFactorySymbol](
-      serializedPlugin,
-    );
+    const reincarnation =
+      await serializedPlugin[pluginFactorySymbol](serializedPlugin);
     reincarnation[pluginFactorySymbol] = serializedPlugin[pluginFactorySymbol];
     reincarnation[pluginBaseUrlSymbol] = serializedPlugin[pluginBaseUrlSymbol];
     reincarnation[pluginModuleUrlSymbol] =

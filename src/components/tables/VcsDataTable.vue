@@ -331,8 +331,10 @@
        */
       const translatedHeaders = computed(() => {
         return props.headers.map((hd) => {
-          hd.text = vm.$t(hd.text);
-          return hd;
+          return {
+            ...hd,
+            text: vm.$t(hd.text),
+          };
         });
       });
 

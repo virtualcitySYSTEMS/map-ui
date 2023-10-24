@@ -40,10 +40,7 @@
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/lib';
-  import {
-    createGoToViewpointAction,
-    createOverviewMapAction,
-  } from '../actions/actionHelper.js';
+  import { createOverviewMapAction } from '../actions/actionHelper.js';
   import {
     getWindowComponentOptions,
     overviewMapLayerSymbol,
@@ -55,24 +52,24 @@
   import OrientationToolsButton from './OrientationToolsButton.vue';
 
   /**
-   * @description Creates a go-to viewpoint action from a startingViewpointName defined in a module
+   * @description Creates a go-to viewpoint action from a startingViewpointName defined in a module. If no startingViewpointName is defined, uses default map view as fallback.
    * @param {VcsUiApp} app
-   * @returns {{action: import("vue").Reactive<{}>, destroy: function():void}}
+   * @returns {{ action: import("vue").Reactive<VcsAction>, destroy: function():void }}
    */
   function setupHomeButton(app) {
-    const initialAction = {
-      icon: undefined,
-      title: undefined,
-      active: undefined,
-      callback: undefined,
-    };
-    const action = reactive({ ...initialAction });
-    /**
-     * Gets the starting viewpoint of the last added module, where a startingViewpointName was defined
-     * and sets it on the home button action.
-     */
-    const updateStartingViewpoint = () => {
-      let viewpoint = null;
+    let defaultViewpoint;
+    let listener;
+    if (app.maps.activeMap) {
+      defaultViewpoint = app.maps.activeMap?.getViewpointSync();
+    } else {
+      listener = app.maps.mapActivated.addEventListener((map) => {
+        defaultViewpoint = map.getViewpointSync();
+        listener();
+      });
+    }
+
+    const getStartingViewpoint = () => {
+      let viewpoint;
       for (let idx = app.modules.length - 1; idx >= 0; idx--) {
         const { startingViewpointName } = app.modules[idx].config;
         if (
@@ -83,35 +80,21 @@
           break;
         }
       }
-      if (!viewpoint) {
-        Object.assign(action, { ...initialAction });
-      } else {
-        Object.assign(
-          action,
-          createGoToViewpointAction(
-            {
-              name: 'home-action',
-              title: 'navigation.homeButton',
-              icon: '$vcsHomePoint',
-            },
-            viewpoint,
-            app.viewpoints,
-            app.maps,
-          ),
+      return viewpoint;
+    };
+
+    const action = reactive({
+      name: 'home-action',
+      title: 'navigation.homeButton',
+      icon: '$vcsHomePoint',
+      async callback() {
+        await app.maps.activeMap?.gotoViewpoint(
+          getStartingViewpoint() || defaultViewpoint,
         );
-      }
-    };
+      },
+    });
 
-    const listener = [
-      app.moduleAdded.addEventListener(updateStartingViewpoint),
-      app.moduleRemoved.addEventListener(updateStartingViewpoint),
-    ];
-
-    const destroy = () => {
-      listener.forEach((cb) => cb());
-    };
-
-    return { action, destroy };
+    return { action, destroy: () => listener?.() };
   }
 
   /**
@@ -241,9 +224,11 @@
         if (overviewDestroy) {
           overviewDestroy();
         }
+        if (homeDestroy) {
+          homeDestroy();
+        }
         postRenderHandler();
         overviewMapListeners.forEach((cb) => cb());
-        homeDestroy();
       });
 
       return {

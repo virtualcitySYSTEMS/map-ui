@@ -66,17 +66,45 @@ optimize `@vcmap/core`.
 NO_OPTIMIZED_CORE=true npm start
 ```
 
-## Setting up Webstorm
+## Setting up IDE
 
-Make sure ESlint is activated
+Make sure ESlint and prettier are activated
+
+### Webstorm
+
+- eslint
 
 ```
 Settings: Languages & Frameworks/JavaScript/CodeQuality Tools/ESLint
 - set Eslint configuration: Automatic EsLint Configuration
 ```
 
-In Webstorm: select the `node_modules/@vcmap/core` package, right click and check `Include JavaScript Files` to jump
-to code instead of index.d.ts.
+- prettier
+
+```
+Settings: Languages & Frameworks/JavaScript/Prettier
+- set Prettier configuration: Automatic Prettier Configuration
+```
+
+- select the `node_modules/@vcmap/core` package, right click and check `Include JavaScript Files` to jump
+  to code instead of index.d.ts.
+
+### VS Code
+
+- eslint:
+
+```
+Side Panel: Extensions > Search for EsLint > Install
+```
+
+- prettier
+
+```
+Side Panel: Extensions > Search for Prettier > Install
+Settings: Default Formatter: Prettier
+```
+
+> FormatOnSave does not work for Vue files in VS Code. Use shortcut "shift-alt-f" instead.
 
 ## Testing
 
