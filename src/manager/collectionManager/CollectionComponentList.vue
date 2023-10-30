@@ -12,16 +12,16 @@
         />
       </div>
     </div>
-  <vcs-list
-    :items="items"
-    :draggable="draggable"
-    :selectable="selectable"
-    :single-select="singleSelect"
-    v-model="selection"
+    <vcs-list
+      :items="items"
+      :draggable="draggable"
+      :selectable="selectable"
+      :single-select="singleSelect"
+      v-model="selection"
       :show-title="false"
-    @item-moved="move"
-    @item-renamed="rename"
-  />
+      @item-moved="move"
+      @item-renamed="rename"
+    />
   </div>
 </template>
 
