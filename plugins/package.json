@@ -6,7 +6,8 @@
     "@vcmap/shadow": "^1.0.1",
     "@vcmap/draw": "^1.0.0",
     "@vcmap/create-link": "^1.0.1",
-    "@vcmap/search-nominatim": "^1.0.1"
+    "@vcmap/search-nominatim": "^1.0.1",
+    "@vcmap/multi-view": "^1.0.1"
   },
   "optionalDependencies": {}
 }

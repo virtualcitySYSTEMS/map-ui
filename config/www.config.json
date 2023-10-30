@@ -1815,6 +1815,10 @@
       "entry": "plugins/@vcmap/search-nominatim/index.js"
     },
     {
+      "name": "@vcmap/multi-view",
+      "entry": "plugins/@vcmap/multi-view/index.js"
+    },
+    {
       "name": "@vcmap/export",
       "entry": "plugins/@vcmap/export/index.js",
       "crs": ["EPSG:25832", "EPSG:4326"],

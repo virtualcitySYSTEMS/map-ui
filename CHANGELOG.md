@@ -4,6 +4,7 @@
 - add new icon for multiview button
 - add rename functionality to VcsList and CollectionComponent
 - Add property `customClasses` to all vcs buttons for custom styling using css classes
+- Add multi-view plugin to external plugins and demo application
 
 # 5.0.3
 
