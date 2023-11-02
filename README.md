@@ -147,7 +147,6 @@ We will offer bugfix support for the current major version and the one preceding
 |    ClippingTool    |    4     |     3     |
 |  AttributeEditor   |    4     |     3     |
 |       Query        |    4     |     3     |
-|  Positiondisplay   |    2     |     4     |
 |      Locator       |    4     |     4     |
 |   DisplayQuality   |    4     |     4     |
 |    Search esri     |    4     |     4     |

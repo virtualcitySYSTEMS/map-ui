@@ -31,7 +31,13 @@
       <WindowManagerComponent />
       <NotifierComponent />
     </v-container>
-    <v-footer absolute v-if="$vuetify.breakpoint.smAndUp" min-height="22px">
+    <v-footer
+      absolute
+      v-if="$vuetify.breakpoint.smAndUp"
+      min-height="22px"
+      class="d-flex gap-1 pa-0"
+    >
+      <VcsPositionDisplay />
       <VcsAttributionsFooter
         :entries="attributionEntries"
         :attribution-action="attributionAction"
@@ -111,6 +117,7 @@
   import { getAttributions } from './attributionsHelper.js';
   import NotifierComponent from '../notifier/NotifierComponent.vue';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
+  import VcsPositionDisplay from './VcsPositionDisplay.vue';
 
   /**
    * You should call this function in the component providing the vcsUiApp to your
@@ -521,6 +528,7 @@
   export default {
     components: {
       VcsButton,
+      VcsPositionDisplay,
       VcsAttributionsFooter,
       MapNavigation,
       VcsNavbar,

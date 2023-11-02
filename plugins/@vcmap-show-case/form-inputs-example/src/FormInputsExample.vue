@@ -224,7 +224,39 @@
               />
             </v-col>
           </v-row>
-          <v-row no-gutters>
+          <v-row no-gutters class="gap-2">
+            <v-col>
+              <VcsFormattedNumber
+                id="formattedNumber"
+                :value="state.numberInput"
+                prefix="X"
+                unit="cm"
+                :fraction-digits="1"
+                :dense="dense"
+              />
+            </v-col>
+            <v-col>
+              <VcsFormattedNumber
+                id="formattedNumber"
+                :value="state.numberInput"
+                prefix="Y"
+                unit="cm"
+                :fraction-digits="1"
+                :dense="dense"
+              />
+            </v-col>
+            <v-col>
+              <VcsFormattedNumber
+                id="formattedNumber"
+                :value="state.numberInput"
+                prefix="Z"
+                unit="cm"
+                :fraction-digits="1"
+                :dense="dense"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="gap-2">
             <v-col>
               <VcsTextField
                 id="coordinateX"
@@ -232,18 +264,18 @@
                 type="number"
                 step="10"
                 prefix="X"
-                unit="m"
+                unit="cm"
                 v-model.number="state.numberInput"
               />
             </v-col>
-            <v-col class="px-2">
+            <v-col>
               <VcsTextField
                 id="coordinateY"
                 :dense="dense"
                 type="number"
                 step="10"
                 prefix="Y"
-                unit="m"
+                unit="cm"
                 v-model.number="state.numberInput"
               />
             </v-col>
@@ -253,7 +285,7 @@
                 :dense="dense"
                 type="number"
                 step="10"
-                unit="m"
+                unit="cm"
                 prefix="Z"
                 v-model.number="state.numberInput"
               />

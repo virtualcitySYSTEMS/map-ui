@@ -180,6 +180,10 @@ const messages = {
       tooltip: 'Öffne Attributionsfenster',
       empty: 'Aktuell sind keine Attributionseinträge verfügbar.',
     },
+    positionDisplay: {
+      title: 'Positionsanzeige',
+      projection: 'Projektionsauswahl',
+    },
   },
   notification: {
     error: 'Fehler',

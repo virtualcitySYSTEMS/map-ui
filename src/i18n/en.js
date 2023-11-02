@@ -180,6 +180,10 @@ const messages = {
       tooltip: 'Open attributions window',
       empty: 'Currently there are no attribution entries available.',
     },
+    positionDisplay: {
+      title: 'Position display',
+      projection: 'Select projection',
+    },
   },
   notification: {
     error: 'Error',

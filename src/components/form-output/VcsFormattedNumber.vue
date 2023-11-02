@@ -1,8 +1,9 @@
 <template>
   <span
-    class="vcs-formatted-number pr-2 pl-1"
-    :class="{ 'vcs-formatted-number-dense': dense }"
+    class="vcs-formatted-number"
+    :class="{ 'vcs-formatted-number-dense': dense, 'px-2': !noPadding }"
   >
+    <span v-if="prefix" class="pr-1">{{ prefix }}</span>
     {{ formatted }}
     <span v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
     <span v-else-if="unit === SpecialUnits.CBM"> m<sup>3</sup> </span>
@@ -67,7 +68,9 @@
    * @vue-prop {string|SpecialUnits} [unit=undefined]
    * @vue-prop {number} [fractionDigits=undefined]
    * @vue-prop {number} value
+   * @vue-prop {string|number} prefix
    * @vue-prop {boolean} [dense=true] - default line height is 32px (dense). If set false, height is 40px.
+   * @vue-prop {boolean} noPadding    - Padding is required for usage within rows. For standalone usage this prop removes class.
    * @vue-computed {string} formatted - value formatted to locale string
    */
   export default {
@@ -85,9 +88,17 @@
         type: Number,
         default: 0,
       },
+      prefix: {
+        type: [String, Number],
+        default: undefined,
+      },
       dense: {
         type: Boolean,
         default: true,
+      },
+      noPadding: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props) {
