@@ -20,14 +20,16 @@
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
         :style="{ 'max-width': headers[1].width }"
       >
-        <span
+        <component
+          :is="getTag(tags, item.key)"
+          v-bind="getTagOptions(tags, item.key)"
           :class="{
             'single-line': !/\s/.test(item.value),
             'multi-line': /\s/.test(item.value),
           }"
         >
           {{ $t(item.value) }}
-        </span>
+        </component>
       </td>
     </template>
   </VcsDataTable>
@@ -69,9 +71,70 @@
   }
 
   /**
+   * Defines which HTML tags can be used within the VcsTable value column and provides default options
+   * @type {Object<string,Object<string,*>>}
+   */
+  export const defaultTagOptions = {
+    a: {
+      href: undefined,
+      target: '_blank',
+    },
+    audio: {
+      controls: '',
+      src: undefined,
+    },
+    b: {},
+    i: {},
+    iframe: {
+      src: undefined,
+      width: undefined,
+      height: undefined,
+    },
+    img: {
+      src: undefined,
+      width: undefined,
+    },
+    meter: {
+      value: undefined,
+    },
+    progress: {
+      value: undefined,
+    },
+    s: {},
+    strong: {},
+    video: {
+      controls: '',
+      src: undefined,
+      width: 175,
+    },
+  };
+
+  /**
+   * @param {Object} tags
+   * @param {string} key
+   * @returns {HTMLTagOptions|{}}
+   */
+  export function getTag(tags, key) {
+    return tags?.[key]?.tag ?? 'div';
+  }
+
+  /**
+   * @param {Object} tags
+   * @param {string} key
+   * @returns {HTMLTagOptions|{}}
+   */
+  export function getTagOptions(tags, key) {
+    if (tags?.[key]) {
+      return { ...defaultTagOptions[tags[key].tag], ...tags[key] };
+    }
+    return {};
+  }
+
+  /**
    * @description A table view for feature attributes using VcsDataTable
    * @vue-prop {string} featureId - feature's id
    * @vue-prop {Object} attributes - feature's attributes
+   * @vue-prop {Object} tags - Allows to render the value column for specific attribute keys with special html elements. See 'defaultTagOptions' for supported html tags.
    * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names
    * @vue-computed {Array<TableItem>} items - from attributes derived table items
    */
@@ -88,6 +151,10 @@
       attributes: {
         type: Object,
         required: true,
+      },
+      tags: {
+        type: Object,
+        default: undefined,
       },
       headers: {
         type: Array,
@@ -110,6 +177,8 @@
 
       return {
         items,
+        getTag,
+        getTagOptions,
       };
     },
   };

@@ -6,6 +6,7 @@
 - Add property `customClasses` to all vcs buttons for custom styling using css classes
 - Add multi-view plugin to external plugins and demo application
 - Add position display to footer
+- Add `tags` option to `FeatureInfoViewOptions` to render values of specific attribute keys using special html elements
 
 # 5.0.3
 

@@ -270,6 +270,48 @@ describe('AbstractFeatureInfoView', () => {
     });
   });
 
+  describe('getTags', () => {
+    it('should return tags for available feature attributes', () => {
+      abstractFeatureInfoView.tags = {
+        name: { tag: 'b' },
+        description: { tag: 's' },
+      };
+      expect(abstractFeatureInfoView.getTags(feature)).to.be.deep.equal({
+        name: { tag: 'b' },
+      });
+    });
+
+    it('should return supported tags only', () => {
+      abstractFeatureInfoView.tags = {
+        function: { tag: 'script' },
+      };
+      expect(abstractFeatureInfoView.getTags(feature)).to.be.deep.equal({});
+    });
+
+    it('should map tags key', () => {
+      abstractFeatureInfoView.keyMapping = {
+        name: 'mappedName',
+      };
+      abstractFeatureInfoView.tags = {
+        name: { tag: 'b' },
+      };
+      expect(abstractFeatureInfoView.getTags(feature)).to.be.deep.equal({
+        mappedName: { tag: 'b' },
+      });
+      abstractFeatureInfoView.keyMapping = undefined;
+    });
+
+    it('should map tags option values', () => {
+      abstractFeatureInfoView.tags = {
+        // eslint-disable-next-line no-template-curly-in-string
+        name: { tag: 'a', href: 'https://de.wikipedia.org/wiki/${value}' },
+      };
+      expect(abstractFeatureInfoView.getTags(feature)).to.be.deep.equal({
+        name: { tag: 'a', href: 'https://de.wikipedia.org/wiki/testFeature' },
+      });
+    });
+  });
+
   describe('getting config', () => {
     describe('of a default abstractFeatureInfoView', () => {
       it('should return the type and name', () => {

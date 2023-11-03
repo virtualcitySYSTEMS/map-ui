@@ -1,5 +1,6 @@
 import { VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
+import { defaultTagOptions } from '../components/tables/VcsTable.vue';
 
 /**
  * @typedef {Object} FeatureInfoProps
@@ -7,6 +8,13 @@ import { WindowSlot } from '../manager/window/windowManager.js';
  * @property {string} layerName
  * @property {Object} layerProperties
  * @property {Object} attributes
+ * @property {Object} tags
+ */
+
+/**
+ * @typedef {Object} HTMLTagOptions
+ * @property {string} tag - the html element type
+ * ... further html options, which can contain template string $value for reusing the attribute's value
  */
 
 /**
@@ -14,6 +22,7 @@ import { WindowSlot } from '../manager/window/windowManager.js';
  * @property {Array<string>} [attributeKeys] - list of keys to filter attributes of selected feature
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values
+ * @property {Object<string,HTMLTagOptions>} [tags] - object with keys rendered as special html element. Value contains html options
  * @property {WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined.
  */
 
@@ -131,6 +140,22 @@ export function applyKeyMapping(attributes, mapping) {
 }
 
 /**
+ * Applies value mapping on tag options
+ * @param {Object<string, *>} attributes
+ * @param {Object<string,HTMLTagOptions>} tags
+ */
+function applyTagMapping(attributes, tags) {
+  Object.keys(tags).forEach((key) => {
+    Object.keys(tags[key]).forEach((option) => {
+      const mappedValue = tags[key][option];
+      if (typeof mappedValue === 'string') {
+        tags[key][option] = getMappedValue(tags[key][option], attributes[key]);
+      }
+    });
+  });
+}
+
+/**
  * Applies an attribute filtering. Nested attributes are represented by a ".".
  * @example
  * const attrs = { foo: { bar: true, baz: false }, bar: true, baz: true, foobar: { foo: true, bar: true } };
@@ -208,6 +233,7 @@ class AbstractFeatureInfoView extends VcsObject {
       attributeKeys: [],
       keyMapping: undefined,
       valueMapping: undefined,
+      tags: undefined,
       window: {},
     };
   }
@@ -231,6 +257,10 @@ class AbstractFeatureInfoView extends VcsObject {
      * @type {null|Object<string, string|Object<string,string>>}
      */
     this.valueMapping = options.valueMapping || defaultOptions.valueMapping;
+    /**
+     * @type {null|Object<string,HTMLTagOptions>}
+     */
+    this.tags = options.tags || defaultOptions.tags;
     /**
      * @type {WindowComponentOptions|Object}
      * @private
@@ -284,6 +314,35 @@ class AbstractFeatureInfoView extends VcsObject {
   }
 
   /**
+   * This method returns an object with keys rendered as special html elements.
+   * Applies value mapping, when using $value html option.
+   * Ensures key mapping on defined anchor keys.
+   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @returns {Object|undefined}
+   */
+  getTags(feature) {
+    if (this.tags) {
+      const attributes = feature.getProperty('attributes') || {};
+      const tags = Object.keys(this.tags)
+        .filter(
+          (key) =>
+            Object.keys(attributes).includes(key) &&
+            Object.keys(defaultTagOptions).includes(this.tags[key].tag),
+        )
+        .reduce((obj, key) => {
+          obj[key] = { ...this.tags[key] };
+          return obj;
+        }, {});
+      applyTagMapping(attributes, tags);
+      if (this.keyMapping) {
+        applyKeyMapping(tags, this.keyMapping);
+      }
+      return tags;
+    }
+    return undefined;
+  }
+
+  /**
    * This method returns all relevant properties passed to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
    * Called by `getWindowComponentOptions()`.
@@ -297,6 +356,7 @@ class AbstractFeatureInfoView extends VcsObject {
       layerName: layer.name,
       layerProperties: layer.properties,
       attributes: this.getAttributes(feature),
+      tags: this.getTags(feature),
     };
   }
 

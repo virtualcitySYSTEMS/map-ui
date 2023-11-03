@@ -33,16 +33,20 @@
     >
       <slot :attrs="{ ...$props, ...$attrs }">
         <v-list
-          v-for="(value, name, index) in attributes"
+          v-for="(value, key, index) in attributes"
           :key="`attribute-${index}`"
           color="transparent"
         >
           <v-list-item class="px-2">
             <v-list-item-content>
               <v-list-item-title>
-                {{ $t(name) }}
+                {{ $t(key) }}
               </v-list-item-title>
-              <v-list-item-subtitle>{{ $t(value) }}</v-list-item-subtitle>
+              <v-list-item-subtitle
+                :tag="getTag(tags, key)"
+                v-bind="getTagOptions(tags, key)"
+                >{{ $t(value) }}</v-list-item-subtitle
+              >
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -65,6 +69,7 @@
   } from 'vuetify/lib';
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.vue';
+  import { getTag, getTagOptions } from '../components/tables/VcsTable.vue';
 
   /**
    * @description A balloon viewing feature attributes. Size dynamic dependent on number of attributes.
@@ -73,6 +78,7 @@
    * @vue-prop {string} balloonTitle - balloon title
    * @vue-prop {string} balloonSubtitle - balloon subtitle
    * @vue-prop {Object} attributes - feature's attributes
+   * @vue-prop {Object} tags - optional object containing keys rendered as tags
    * @vue-prop {Array<import("ol/coordinate").Coordinate>} position - clicked position balloon is rendered at
    * @vue-data {slot} [#balloon-header] - slot to override balloon header, $props and $attrs are passed to `attrs`
    * @vue-data {slot} [#default] - slot to override balloon content, $props and $attrs are passed to `attrs`
@@ -107,6 +113,10 @@
       attributes: {
         type: Object,
         required: true,
+      },
+      tags: {
+        type: Object,
+        default: undefined,
       },
       position: {
         type: Array,
@@ -155,6 +165,8 @@
 
       return {
         close,
+        getTag,
+        getTagOptions,
       };
     },
   };

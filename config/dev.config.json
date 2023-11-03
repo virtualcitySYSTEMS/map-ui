@@ -32,14 +32,47 @@
         "olcs_storeyNumber": "Storey Number",
         "olcs_storeyHeight": "Storey Height",
         "olcs_altitudeMode": "Altitude Mode"
+      },
+      "tags": {
+        "olcs_altitudeMode": {
+          "tag": "a",
+          "href": "https://github.com/virtualcitySYSTEMS/map-core/blob/release-v5.0/src/layer/vectorProperties.ts#L77"
+        }
       }
     },
     {
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloonLaerm",
       "title": "Lärmkarte Bayern",
-      "subtitle": "WMS Feature Info",
-      "attributeKeys": ["Pixel Value"]
+      "subtitle": "WMS Feature Info"
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableLink",
+      "keyMapping": {
+        "gemeinde": "GemeindeWiki"
+      },
+      "tags": {
+        "gemeinde": {
+          "tag": "a",
+          "href": "https://de.wikipedia.org/wiki/${value}"
+        },
+        "typ": {
+          "tag": "audio",
+          "src": "https://www.w3schools.com/TAgs/horse.mp3"
+        },
+        "typ2": {
+          "tag": "img",
+          "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=heliports"
+        },
+        "code": {
+          "tag": "b"
+        },
+        "betreiber": {
+          "tag": "video",
+          "src": "https://www.w3schools.com/TAgs/movie.mp4"
+        }
+      }
     }
   ],
   "layers": [
@@ -230,11 +263,11 @@
     {
       "name": "wmsLayerLaerm",
       "type": "WMSLayer",
-      "url": "http://www.lfu.bayern.de/gdi/wms/laerm/hauptverkehrsstrassen",
+      "url": "https://www.lfu.bayern.de/gdi/wms/laerm/hauptverkehrsstrassen",
       "datasourceId": "P7xfmLJ5zkFmT7hNQ",
       "activeOnStartup": false,
       "version": "1.3.0",
-      "layers": "mroadbylden,mroadbyln,isophonelden67,isophoneln57,lsemroadby",
+      "layers": "mroadbylden2022,lsemroadby2022",
       "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
       "extent": {
         "coordinates": [8.7992, 47.156072, 14.055682, 50.670961],
@@ -295,7 +328,7 @@
       "zIndex": 13,
       "properties": {
         "title": "WMS POI Open",
-        "featureInfo": "tableAll",
+        "featureInfo": "tableLink",
         "legend": [
           {
             "type": "StyleLegendItem",

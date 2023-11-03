@@ -257,3 +257,55 @@ be taken into account:
 - To map for _top level_ values which contain a `.` in their key, use the key name as a string literal, e.g.
   `foo.bar` will map the `foo.bar` key or the nested `bar` key on the `foo` object
 - Mapping for nested values with a `.` in their key _is not possible_.
+
+### Tags
+
+The [AbstractFeatureInfoView](../src/featureInfo/abstractFeatureInfoView.js) provides another concept to render attribute values within a special HTML element tag.
+The default tag is a `span` element within tables and `div` element for balloons.
+The `tags` object within `FeatureInfoViewOptions` defines a key-value pair, where the value defines the tag type and its HTML options.
+You can still use key and value mapping including template strings.
+
+Supported tags are:
+
+- [a](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a): anchor
+- [audio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio): embed audio
+- [b](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/b): bold text
+- [i](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/i): idiomatic text
+- [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe): embed iframe
+- [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img): embed image
+- [meter](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meter): scalar value within known range
+- [progress](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress): progress indicator
+- [s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/s): strikethrough text
+- [strong](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong): strong text
+- [video](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video): embed video
+
+If you like to render a specific attribute value as a link, you can configure for the corresponding attribute key an HTML anchor tag and its options:
+
+```json
+{
+  "type": "TableFeatureInfoView",
+  "name": "tableLink",
+  "tags": {
+    "gemeinde": {
+      "tag": "a",
+      "href": "https://de.wikipedia.org/wiki/${value}",
+      "target": "_blank"
+    }
+  }
+}
+```
+
+To render an image, simply define:
+
+```json
+{
+  "type": "TableFeatureInfoView",
+  "name": "tableLink",
+  "tags": {
+    "typ2": {
+      "tag": "img",
+      "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=heliports"
+    }
+  }
+}
+```
