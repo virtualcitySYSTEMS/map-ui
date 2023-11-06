@@ -393,6 +393,46 @@
         </v-container>
       </template>
     </VcsFormSection>
+    <VcsFormSection
+      heading="Disabled form section"
+      expandable
+      start-open
+      :disabled="true"
+      :header-actions="actions"
+      :action-button-list-overflow-count="4"
+    >
+      <template #help>
+        <ol>
+          <li>{{ $t('form-inputs-example.help1') }}:</li>
+          <span>{{ $t('form-inputs-example.help1desc') }}</span>
+          <li>{{ $t('form-inputs-example.help2') }}:</li>
+          <span>{{ $t('form-inputs-example.help2desc') }}</span>
+          <li>{{ $t('form-inputs-example.help3') }}:</li>
+          <span>{{ $t('form-inputs-example.help3desc') }}</span>
+        </ol>
+      </template>
+      <template #default>
+        <v-container class="py-0 px-1">
+          <v-row no-gutters>
+            <v-col class="w-max-half">
+              <VcsLabel html-for="selectInput" :dense="dense">
+                {{ $t('form-inputs-example.select') }}
+              </VcsLabel>
+            </v-col>
+            <v-col class="w-max-half">
+              <VcsSelect
+                id="selectInput"
+                :items="selectOptions"
+                :dense="dense"
+                :rules="[(v) => v !== 'D' || 'D is not allowed']"
+                v-model="state.selected"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </VcsFormSection>
+
     <div class="d-flex gap-2 px-2 pt-2 pb-1">
       <div class="d-flex gap-2">
         <VcsFormButton @click="validate()"> Val </VcsFormButton>

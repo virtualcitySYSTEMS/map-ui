@@ -93,6 +93,7 @@
               <v-card-title>OVERFLOW</v-card-title>
               <v-card-actions>
                 <VcsActionButtonList
+                  :disabled="disabled"
                   :actions="[
                     {
                       name: 'Action 1',
@@ -145,6 +146,7 @@
               <v-card-title>OVERFLOW</v-card-title>
               <v-card-actions>
                 <VcsActionButtonList
+                  :disabled="disabled"
                   :actions="[
                     {
                       name: 'Tool 1',
@@ -196,6 +198,7 @@
               <v-card-title>OVERFLOW</v-card-title>
               <v-card-actions>
                 <VcsActionButtonList
+                  :disabled="disabled"
                   :actions="[
                     {
                       name: 'Action 1',

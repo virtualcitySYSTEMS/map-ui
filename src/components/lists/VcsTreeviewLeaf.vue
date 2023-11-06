@@ -25,6 +25,7 @@
       :actions="item.actions"
       :block-overflow="true"
       :overflow-count="3"
+      :disabled="item.disabled"
       right
       class="col-4 pa-0 d-flex align-center"
     />

@@ -10,7 +10,7 @@
       <template #activator="{ on, attrs }">
         <v-list-item
           :class="action.active ? 'primary--text' : ''"
-          :disabled="action.disabled"
+          :disabled="action.disabled || disabled"
           @click="action.callback($event)"
           v-bind="{ ...$attrs, ...attrs }"
           v-on="{ ...$listeners, ...on }"
@@ -97,6 +97,7 @@
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
    * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to VcsTooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
    * @vue-prop {boolean}                                [showIcon=false] - Whether list item icons should be displayed.
+   * @vue-prop {boolean}                                [disabled=false] - disable all actions
    */
   export default {
     name: 'VcsActionList',
@@ -124,6 +125,10 @@
         default: () => ({}),
       },
       showIcon: {
+        type: Boolean,
+        default: false,
+      },
+      disabled: {
         type: Boolean,
         default: false,
       },

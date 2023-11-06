@@ -1,6 +1,8 @@
 # 5.0.3
 
 - Fix translation of VcsDataTable header
+- Fixes a bug where disable was not properly propagated on
+  tree view items and form sections.
 
 # 5.0.1
 

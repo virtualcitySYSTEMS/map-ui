@@ -28,6 +28,7 @@
             :actions="actions"
             :overflow-count="actionButtonListOverflowCount"
             class="pa-2"
+            :disabled="disabled"
           />
         </div>
       </div>
