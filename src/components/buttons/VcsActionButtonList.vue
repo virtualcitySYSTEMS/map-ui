@@ -8,7 +8,7 @@
       :tooltip="btn.title"
       :icon="btn.icon"
       :active="btn.active"
-      :disabled="btn.disabled"
+      :disabled="btn.disabled || disabled"
       :has-update="btn.hasUpdate"
       :background="btn.background"
       @click.stop="btn.callback($event)"
@@ -25,6 +25,7 @@
       <template #activator="{ on, attrs }">
         <component
           :is="button"
+          :disabled="disabled"
           v-bind="{ ...$attrs, ...attrs }"
           v-on="on"
           class="d-flex"
@@ -32,7 +33,7 @@
           <v-icon>{{ overflowIcon }}</v-icon>
         </component>
       </template>
-      <VcsActionList :actions="overflowButtons" />
+      <VcsActionList :actions="overflowButtons" :disabled="disabled" />
     </v-menu>
     <v-spacer
       v-else-if="blockOverflow"
@@ -63,6 +64,7 @@
    * @vue-prop {boolean} [blockOverflow=false] - if space for the overflow should be blocked or not (e.g. when rendering lists in a grid)
    * @vue-computed {Array<VcsAction>} buttons - buttons rendered directly, have to provide an icon
    * @vue-computed {Array<VcsAction>} overflowButtons - rest of buttons rendered in overflow
+   * @vue-prop {boolean} [disabled=false] - disable all actions
    */
   export default {
     name: 'VcsActionButtonList',
@@ -96,6 +98,10 @@
         default: '$vcsKebab',
       },
       blockOverflow: {
+        type: Boolean,
+        default: false,
+      },
+      disabled: {
         type: Boolean,
         default: false,
       },

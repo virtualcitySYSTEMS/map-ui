@@ -18,7 +18,9 @@
         <VcsTreeviewLeaf
           :item="item"
           :class="[item.clickable ? 'cursor-pointer' : '']"
-          @click.native="item.clickable && item.clicked($event)"
+          @click.native="
+            item.clickable && !item.disabled && item.clicked($event)
+          "
         />
       </template>
     </v-treeview>

@@ -117,6 +117,7 @@
           <vcs-action-button-list
             v-if="item.actions?.length > 0"
             :actions="item.actions"
+            :disabled="item.disabled"
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
           />
