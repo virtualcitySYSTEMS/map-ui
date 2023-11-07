@@ -7,6 +7,8 @@
 - Add multi-view plugin to external plugins and demo application
 - Add position display to footer
 - Add `tags` option to `FeatureInfoViewOptions` to render values of specific attribute keys using special html elements
+- The toolbar can now be context senitive. Toolbox components may be given a
+  toolboxNames to only be rendered in certain contexts.
 
 # 5.0.3
 

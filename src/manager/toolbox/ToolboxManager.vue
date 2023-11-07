@@ -4,7 +4,11 @@
       toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp
     "
     class="vcs-toolbox toolbar__secondary mx-auto v-sheet marginToTop"
-    :class="{ 'rounded-b': !open }"
+    :class="{
+      'rounded-b': !open,
+      primary: !isDefaultToolbox,
+      'lighten-5': !isDefaultToolbox,
+    }"
     :height="40"
     width="fit-content"
     dense
@@ -68,7 +72,11 @@
   import { inject, ref, computed, watch, onUnmounted } from 'vue';
   import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
   import { VToolbar, VToolbarItems } from 'vuetify/lib';
-  import { getComponentsByOrder, ToolboxType } from './toolboxManager.js';
+  import {
+    defaultToolboxName,
+    getComponentsByOrder,
+    ToolboxType,
+  } from './toolboxManager.js';
   import ToolboxActionSelect from './SelectToolboxComponent.vue';
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
@@ -113,6 +121,12 @@
         );
       });
 
+      const toolboxName = ref(app.toolboxManager.toolboxName);
+      const nameChangeListener =
+        app.toolboxManager.toolboxNameChanged.addEventListener((name) => {
+          toolboxName.value = name;
+        });
+
       /**
        * To be rendered in Toolbox components must meet certain conditions:
        * - SingleToolboxComponent: no further conditions
@@ -129,7 +143,9 @@
         );
       }
       const orderedGroups = computed(() =>
-        getComponentsByOrder(groups.value).filter(filterFunc),
+        getComponentsByOrder(groups.value)
+          .filter((comp) => comp.toolboxNames.includes(toolboxName.value))
+          .filter(filterFunc),
       );
 
       const toolboxOpen = ref(true);
@@ -166,11 +182,15 @@
 
       onUnmounted(() => {
         stopWatching();
+        nameChangeListener();
       });
 
       return {
         toolboxOpen,
         orderedGroups,
+        isDefaultToolbox: computed(
+          () => toolboxName.value === defaultToolboxName,
+        ),
         ToolboxType,
         open: ref(false),
       };

@@ -1,6 +1,5 @@
-import { ButtonLocation, createToggleAction, ToolboxType } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
-import { getToolboxData } from './toolboxData.js';
 import windowExample from './WindowExample.vue';
 
 /**
@@ -42,21 +41,7 @@ export default async function windowTester() {
         packageJSON.name,
         ButtonLocation.TOOL,
       );
-      const { toolboxData, destroy: destroyToolboxData } = getToolboxData(app);
-      toolboxData.forEach(
-        ([{ buttonComponents, ...toolboxComponentOptions }, owner]) => {
-          let group;
-          if (app.toolboxManager.has(toolboxComponentOptions.id)) {
-            group = app.toolboxManager.get(toolboxComponentOptions.id);
-          } else {
-            group = app.toolboxManager.add(toolboxComponentOptions, owner);
-          }
-          if (group.type === ToolboxType.GROUP && buttonComponents) {
-            buttonComponents.forEach((c) => group.buttonManager.add(c, owner));
-          }
-        },
-      );
-      this._destroyAction = [destroy, destroyToolboxData];
+      this._destroyAction = [destroy];
     },
     i18n: {
       de: {

@@ -52,14 +52,14 @@ function createDummyTriStateAction(app) {
     callback() {
       if (this.active) {
         if (this.background) {
-          return app.windowManager.add(windowComponent, '@vcmap/test');
+          return app.windowManager.add(windowComponent, packageJSON.name);
         } else {
           app.windowManager.remove(windowComponent.id);
           this.active = false;
         }
       } else {
         this.active = true;
-        return app.windowManager.add(windowComponent, '@vcmap/test');
+        return app.windowManager.add(windowComponent, packageJSON.name);
       }
       return null;
     },
@@ -278,6 +278,44 @@ export function getToolboxData(app) {
               icon: '$vcsObjectSelect',
             },
           ],
+        },
+      },
+      packageJSON.name,
+    ],
+    [
+      {
+        id: 'namedSingleSelect',
+        type: ToolboxType.SINGLE,
+        toolboxNames: [packageJSON.name],
+        action: {
+          name: 'select',
+          title: 'single select',
+          icon: '$vcsPointSelect',
+          active: false,
+          callback() {
+            this.active = !this.active;
+          },
+        },
+      },
+      packageJSON.name,
+    ],
+    [
+      {
+        id: 'namedDingleSelect2',
+        type: ToolboxType.SINGLE,
+        toolboxNames: [packageJSON.name],
+        action: {
+          name: 'select',
+          title: 'single select',
+          icon: 'mdi-eye',
+          active: false,
+          disabled: false,
+          callback() {
+            this.disabled = true;
+            setTimeout(() => {
+              this.disabled = false;
+            }, 2000);
+          },
         },
       },
       packageJSON.name,

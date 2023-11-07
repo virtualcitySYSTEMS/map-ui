@@ -91,6 +91,7 @@ export {
 export {
   default as ToolboxManager,
   ToolboxType,
+  defaultToolboxName,
 } from './src/manager/toolbox/toolboxManager.js';
 export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
 export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';

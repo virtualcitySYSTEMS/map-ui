@@ -24,6 +24,7 @@ export const ToolboxType = {
  * @typedef {Object} ToolboxComponentOptions
  * @property {string} [id] - Optional ID, If not provided an uuid will be generated.
  * @property {ToolboxType} type - Group type, defining the behaviour of the group
+ * @property {(string|symbol)[]} [toolboxNames] - optional specific toolboxes to render this component in.
  */
 
 /**
@@ -48,6 +49,7 @@ export const ToolboxType = {
  * @property {string} id
  * @property {ToolboxType} type - Group type, defining the behaviour of the group
  * @property {string|vcsAppSymbol} owner
+ * @property {(string|symbol)[]} toolboxNames
  */
 
 /**
@@ -107,6 +109,12 @@ const defaultGroups = [
  * @type {string[]}
  */
 const defaultOrder = ['featureInfo', 'flight'];
+
+/**
+ * The default toolbox name
+ * @type {symbol}
+ */
+export const defaultToolboxName = Symbol('defaultToolboxName');
 
 /**
  * sorts by owner and optionally plugin order
@@ -193,6 +201,34 @@ class ToolboxManager {
      * @private
      */
     this._toolboxGroups = new Map();
+
+    /**
+     * @type {symbol|string}
+     * @private
+     */
+    this._toolboxName = defaultToolboxName;
+
+    /**
+     * @type {VcsEvent<string>}
+     */
+    this.toolboxNameChanged = new VcsEvent();
+  }
+
+  get toolboxName() {
+    return this._toolboxName;
+  }
+
+  set toolboxName(name) {
+    check(name, [String, defaultToolboxName]);
+
+    if (this._toolboxName !== name) {
+      this._toolboxName = name;
+      this.toolboxNameChanged.raiseEvent(name);
+    }
+  }
+
+  setDefaultToolboxName() {
+    this.toolboxName = defaultToolboxName;
   }
 
   /**
@@ -248,8 +284,11 @@ class ToolboxManager {
       );
     }
     const id = toolboxComponentOptions.id || uuidv4();
-    const { type } = toolboxComponentOptions;
+    const { type, toolboxNames: toolboxNamesOptions } = toolboxComponentOptions;
 
+    const toolboxNames = toolboxNamesOptions
+      ? [...toolboxNamesOptions]
+      : [defaultToolboxName];
     /**
      * @type {ToolboxComponent}
      */
@@ -262,6 +301,9 @@ class ToolboxManager {
       },
       get owner() {
         return owner;
+      },
+      get toolboxNames() {
+        return toolboxNames;
       },
     };
 
@@ -365,6 +407,7 @@ class ToolboxManager {
   destroy() {
     this.added.destroy();
     this.removed.destroy();
+    this.toolboxNameChanged.destroy();
     this.clear();
     this.componentIds.splice(0);
     this._toolboxGroups.clear();

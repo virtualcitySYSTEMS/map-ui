@@ -10,6 +10,7 @@ Each registered `ToolboxComponent` has an id, a type and an owner:
  * @property {string} id
  * @property {ToolboxType} type - Group type, defining the behaviour of the group
  * @property {string|vcsAppSymbol} owner
+ * @property {Array<string>} toolboxNames
  */
 ```
 
@@ -26,6 +27,7 @@ To add a new ToolboxComponent, you have to provide `ToolboxComponentOptions` (ag
  * @typedef {Object} ToolboxComponentOptions
  * @property {string} [id] - Optional ID, If not provided an uuid will be generated.
  * @property {ToolboxType} type - Group type, defining the behaviour of the group
+ * @property {(string|symbol)[]} [toolboxNames] - optional specific toolboxes to render this component in.
  */
 ```
 
@@ -282,3 +284,60 @@ Predefined groups of VcsUiApp are:
 
 - flight (group for flight tools)
 - miscellaneous (container group for miscellaneous tools)
+
+## Toolbox Names
+
+You can render specific toolbox constellation for a specific
+layout or use case. The best use case is the planning plugin,
+where when active, the toolbar reflects the tools required to edit
+the planning scenario and not the default tools.
+
+You can provide components with one or more toolbox names
+for which these components shall be rendered. To render
+a specific toolbox you set said identifier on the toolbox manager
+as the current toolbox name. To revert to the default toolbox,
+you can call `setDefaultToolboxName`.
+
+In the following example, we add two buttons to the toolbox. The
+first will be rendered in the default and `sample` toolbox. The
+second only in the `sample` toolbox. We then change the toolbox
+to `sample` and back, logging the changes by listening to the
+toolboxNameChanged event.
+
+```javascript
+import { defaultToolboxName } from '@vcmap/ui';
+
+app.toolboxManager.add(
+  {
+    id: 'sample1',
+    action: {
+      name: 'sampleToggle',
+      title: 'sample',
+      icon: 'mdi-sample',
+      active: false,
+      callback() {},
+    },
+    toolboxNames: ['sample', defaultToolboxName],
+  },
+  'sample-plugin',
+);
+app.toolboxManager.add(
+  {
+    id: 'sample2',
+    action: {
+      name: 'sampleToggle',
+      title: 'sample',
+      icon: 'mdi-sample',
+      active: false,
+      callback() {},
+    },
+    toolboxNames: ['sample'],
+  },
+  'sample-plugin',
+);
+app.toolboxManager.toolboxNameChanged.addEventListener((name) => {
+  console.log(`changed toolbox to ${name}`);
+});
+app.toolboxManager.toolboxName = 'sample';
+app.toolboxManager.setDefaultToolboxName();
+```
