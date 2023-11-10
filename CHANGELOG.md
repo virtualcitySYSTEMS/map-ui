@@ -9,6 +9,7 @@
 - Add `tags` option to `FeatureInfoViewOptions` to render values of specific attribute keys using special html elements
 - The toolbar can now be context senitive. Toolbox components may be given a
   toolboxNames to only be rendered in certain contexts.
+- add new icons for measurement tool buttons - point measurement and 2d height for oblique view
 
 # 5.0.3
 

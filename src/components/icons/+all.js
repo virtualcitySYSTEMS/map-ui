@@ -1,5 +1,6 @@
 import TwoDAreaIcon from './2DAreaIcon.vue';
 import TwoDDistanceIcon from './2DDistanceIcon.vue';
+import TwoDHeightObliqueIcon from './2DHeightObliqueIcon.vue';
 import ThreeDAreaIcon from './3DAreaIcon.vue';
 import ThreeDDistanceIcon from './3DDistanceIcon.vue';
 import ThreeDHeightIcon from './3DHeightIcon.vue';
@@ -63,6 +64,7 @@ import PenIcon from './PenIcon.vue';
 import PlayCircleIcon from './PlayCircleIcon.vue';
 import PlusIcon from './PlusIcon.vue';
 import PoiIcon from './PoiIcon.vue';
+import PointMeasurementIcon from './PointMeasurementIcon.vue';
 import PointSelectIcon from './PointSelectIcon.vue';
 import PointIcon from './PointIcon.vue';
 import QueryIcon from './QueryIcon.vue';
@@ -136,6 +138,9 @@ const IconMap = {
   },
   '2dDistance': {
     component: TwoDDistanceIcon,
+  },
+  '2dHeightOblique': {
+    component: TwoDHeightObliqueIcon,
   },
   '3d': {
     component: ThreeDimensionsIcon,
@@ -328,6 +333,9 @@ const IconMap = {
   },
   poi: {
     component: PoiIcon,
+  },
+  PointMeasurement: {
+    component: PointMeasurementIcon,
   },
   pointSelect: {
     component: PointSelectIcon,
