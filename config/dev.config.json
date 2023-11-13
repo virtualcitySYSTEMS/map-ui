@@ -379,7 +379,129 @@
       }
     }
   ],
+  "flights": [
+    {
+      "type": "Flight",
+      "name": "FlightExampleBerlin",
+      "anchors": [
+        {
+          "type": "Feature",
+          "id": "Großer Stern",
+          "properties": {
+            "distance": 1484.9766210629282,
+            "heading": 85.13663281180378,
+            "pitch": -23.80350377142778,
+            "roll": 0.20258916046175293,
+            "duration": 12.359533611184698
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.336405993652752, 52.51455229018015, 599.1699567549152
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "Brandenburger Tor",
+          "properties": {
+            "heading": 84.50653421768497,
+            "pitch": -14.40144021163224,
+            "roll": 0.1911682675828907,
+            "duration": 12.359533611184698
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.373968835542765, 52.51619726804361, 128.08001018941596
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "Alexanderplatz",
+          "properties": {
+            "heading": 38.00893220915712,
+            "pitch": -25.973149034877526,
+            "roll": 0.1275668917623299,
+            "duration": 13
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.395021157995563, 52.51030339049845, 1130.670346412213
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "Flight",
+      "name": "FlightExampleBerlin2",
+      "anchors": [
+        {
+          "type": "Feature",
+          "id": "Großer Stern",
+          "properties": {
+            "distance": 1484.9766210629282,
+            "heading": 85.13663281180378,
+            "pitch": -23.80350377142778,
+            "roll": 0.20258916046175293,
+            "duration": 12.359533611184698
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.336405993652752, 52.51455229018015, 599.1699567549152
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "Brandenburger Tor",
+          "properties": {
+            "heading": 84.50653421768497,
+            "pitch": -14.40144021163224,
+            "roll": 0.1911682675828907,
+            "duration": 12.359533611184698
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.373968835542765, 52.51619726804361, 128.08001018941596
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "Alexanderplatz",
+          "properties": {
+            "heading": 38.00893220915712,
+            "pitch": -25.973149034877526,
+            "roll": 0.1275668917623299,
+            "duration": 13
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              13.395021157995563, 52.51030339049845, 1130.670346412213
+            ]
+          }
+        }
+      ]
+    }
+  ],
   "contentTree": [
+    {
+      "name": "flight",
+      "flightName": "FlightExampleBerlin",
+      "type": "FlightContentTreeItem"
+    },
+    {
+      "name": "flight2",
+      "flightName": "FlightExampleBerlin2",
+      "type": "FlightContentTreeItem"
+    },
     {
       "name": "geojson",
       "layerName": "testGeojson",

@@ -199,6 +199,11 @@ const messages = {
       title: 'Rename item',
     },
   },
+  flight: {
+    playTooltip: 'Play this flight',
+    pauseTooltip: 'Pause this flight at the current position',
+    stopTooltip: 'Stop playing this flight',
+  },
 };
 
 export default messages;

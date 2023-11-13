@@ -48,6 +48,7 @@ export {
   getStateFromLayer,
 } from './src/contentTree/layerContentTreeItem.js';
 export { default as LayerGroupContentTreeItem } from './src/contentTree/layerGroupContentTreeItem.js';
+export { default as FlightContentTreeItem } from './src/contentTree/flightContentTreeItem.js';
 export { default as LayerTree } from './src/contentTree/LayerTree.vue';
 export { default as NodeContentTreeItem } from './src/contentTree/nodeContentTreeItem.js';
 export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/obliqueCollectionContentTreeItem.js';

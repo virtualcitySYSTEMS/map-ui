@@ -199,6 +199,11 @@ const messages = {
       title: 'Element umbenennen',
     },
   },
+  flight: {
+    playTooltip: 'Diesen Flug abspielen',
+    pauseTooltip: 'Diesen Flug an dieser Stelle pausieren',
+    stopTooltip: 'Diesen Flug stoppen',
+  },
 };
 
 export default messages;

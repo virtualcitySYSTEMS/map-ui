@@ -10,6 +10,7 @@
 - The toolbar can now be context senitive. Toolbox components may be given a
   toolboxNames to only be rendered in certain contexts.
 - add new icons for measurement tool buttons - point measurement and 2d height for oblique view
+- Adds the `FlightContentTreeItem` to the content tree to control flights from the content tree.
 
 # 5.0.3
 
