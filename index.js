@@ -209,6 +209,7 @@ export { default as VcsSelect } from './src/components/form-inputs-controls/VcsS
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
 export { default as VcsChipArrayInput } from './src/components/form-inputs-controls/VcsChipArrayInput.vue';
+export { default as VcsCoordinate } from './src/components/form-inputs-controls/VcsCoordinate.vue';
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
 export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
@@ -251,6 +252,7 @@ export {
 } from './src/components/style/VcsVectorStyleComponent.vue';
 
 export { default as VcsVectorPropertiesComponent } from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
+export { default as VcsViewpointComponent } from './src/components/VcsViewpointComponent.vue';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

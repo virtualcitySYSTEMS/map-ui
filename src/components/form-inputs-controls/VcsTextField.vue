@@ -160,6 +160,7 @@
    * When clicking esc key, previous input is restored.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string}                                 unit - Unit for number input fields. Is displayed behind the number.
+   * @vue-prop {number|undefined}                       [decimals] - An optional number of decimal places the visible value will be rounded to. Does not affect the input value!
    * @vue-prop {boolean}                                showSpinButtons - If true, spin buttons are displayed in number input fields. Overrides Vuetify hide-spin-buttons.
    * @vue-prop {boolean}                                noPadding - Padding is required for usage within rows. For standalone usage this prop removes class py-1.
    * @vue-computed {boolean}                            isClearable - Whether textfield is isClearable. Makes sure icon is only shown on focus, hover or error.
@@ -183,6 +184,10 @@
       unit: {
         type: String,
         default: '',
+      },
+      decimals: {
+        type: Number,
+        default: undefined,
       },
       showSpinButtons: {
         type: Boolean,
@@ -225,6 +230,16 @@
           !(attrs.disabled || attrs.disabled === '')
         );
       });
+      const roundedValue = computed(() => {
+        if (
+          attrs.type === 'number' &&
+          Number.isFinite(attrs.value) &&
+          props.decimals >= 0
+        ) {
+          return parseFloat(attrs.value.toFixed(props.decimals));
+        }
+        return attrs.value;
+      });
       const visibleValue = computed({
         get() {
           if (
@@ -234,9 +249,9 @@
             !focus.value &&
             !hover.value
           ) {
-            return `${attrs.value} ${props.unit}`;
+            return `${roundedValue.value} ${props.unit}`;
           } else {
-            return attrs.value ?? '';
+            return roundedValue.value ?? '';
           }
         },
         set(value) {

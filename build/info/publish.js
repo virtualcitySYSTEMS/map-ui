@@ -154,8 +154,8 @@ exports.publish = function publish(data) {
         const target = isExterns
           ? externs
           : doc.api || doc.exports
-          ? symbols
-          : base;
+            ? symbols
+            : base;
         const existingSymbol = symbolsByName[symbol.name];
         if (existingSymbol) {
           const idx = target.indexOf(existingSymbol);

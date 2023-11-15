@@ -11,6 +11,8 @@
   toolboxNames to only be rendered in certain contexts.
 - add new icons for measurement tool buttons - point measurement and 2d height for oblique view
 - Adds the `FlightContentTreeItem` to the content tree to control flights from the content tree.
+- Adds `VcsCoordinate.vue`, a component providing a simple coordinate input
+- Adds `VcsViewpointComponent.vue`, a component for editing viewpoint options
 
 # 5.0.3
 
