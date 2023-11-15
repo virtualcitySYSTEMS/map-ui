@@ -239,9 +239,11 @@
             return attrs.value ?? '';
           }
         },
-        set() {
-          // emit is not needed, the vuetify component already emits an @input event. (forwarded listeners)
-          // emit('input', event);
+        set(value) {
+          if (attrs.type === 'file') {
+            emit('input', value);
+          }
+          // emit is not needed for other types, the vuetify component already emits an @input event. (forwarded listeners)
         },
       });
       const type = computed(() => {

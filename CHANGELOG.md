@@ -3,6 +3,7 @@
 - Fix translation of VcsDataTable header
 - Fixes a bug where disable was not properly propagated on
   tree view items and form sections.
+- Fixes a bug where file inputs would not emit input events.
 
 # 5.0.1
 
