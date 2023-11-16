@@ -5,8 +5,8 @@
         :id="`${prefixes[idx]}-coordinate`"
         dense
         type="number"
-        :min="getRangeFromExtent(idx, extent)[0]"
-        :max="getRangeFromExtent(idx, extent)[1]"
+        :min="getRangeFromExtent(idx, extent)?.[0]"
+        :max="getRangeFromExtent(idx, extent)?.[1]"
         :step="$attrs.step || 1"
         :prefix="prefixes[idx]"
         :unit="units[idx]"
@@ -124,10 +124,14 @@
         },
         getRangeFromExtent,
         getRulesForAxis(idx) {
-          const rules = [
-            (v) => isInRange(v, getRangeFromExtent(idx, props.extent)),
-            ...props.axisRules[idx],
-          ];
+          const rules = [];
+          const range = getRangeFromExtent(idx, props.extent);
+          if (range) {
+            rules.push((v) => isInRange(v, range));
+          }
+          if (Array.isArray(props.axisRules[idx])) {
+            rules.push(...props.axisRules[idx]);
+          }
           if (Array.isArray(attrs.rules)) {
             rules.push(...attrs.rules);
           }

@@ -1,9 +1,6 @@
 <template>
   <v-sheet>
-    <VcsViewpointComponent
-      v-model="viewpointOptions"
-      :value-default="defaultViewpointOptions"
-    />
+    <VcsViewpointComponent v-model="viewpointOptions" />
     <div class="d-flex gap-2 px-2 pt-2 pb-1">
       <div class="d-flex gap-2 w-full justify-start">
         <VcsFormButton icon="$vcsReturn" @click="reset" />
@@ -34,7 +31,7 @@
       const app = inject('vcsApp');
       const defaultViewpointOptions =
         app.maps.activeMap?.getViewpointSync()?.toJSON() ||
-        new Viewpoint({}).toJSON();
+        Viewpoint.getDefaultOptions();
 
       const viewpointOptions = ref(structuredClone(defaultViewpointOptions));
 
