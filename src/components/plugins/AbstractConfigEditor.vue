@@ -8,7 +8,7 @@
         </div>
         <div class="d-flex gap-2 w-full justify-end">
           <VcsFormButton type="submit" variant="filled" :disabled="!isValid">
-            {{ $t('components.apply') }}
+            {{ $t(submitButtonTitle) }}
           </VcsFormButton>
           <VcsFormButton @click.stop="cancel">
             {{ $t('components.cancel') }}
@@ -31,6 +31,7 @@
    * Providing a footer with submit, cancel and optionally reset button.
    * @vue-prop {boolean} [showReset=false] - Flag to show a reset button in the footer. You need to handle @reset in a child component.
    * @vue-prop {Array<VcsAction>} [actions] - Optional actions rendered as ActionButtonList in the footer.
+   * @vue-prop {string} [submitButtonTitle='components.apply'] - Option to change the submit button title, e.g. to 'components.add'.
    * @vue-event {Event} submit - Event fired on clicking the submit button.
    * @vue-event {Event} cancel - Event fired on clicking the cancel button.
    * @vue-event {Event} reset - Event fired on clicking the reset button.
@@ -52,6 +53,10 @@
         type: Array,
         default: () => [],
       },
+      submitButtonTitle: {
+        type: String,
+        default: 'components.apply',
+      },
     },
     setup(props, { attrs, emit }) {
       const app = inject('vcsApp');
@@ -70,7 +75,6 @@
         },
         cancel(e) {
           close();
-          attrs.setConfig();
           emit('cancel', e);
         },
         reset(e) {

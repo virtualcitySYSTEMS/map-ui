@@ -13,6 +13,7 @@
 - Adds the `FlightContentTreeItem` to the content tree to control flights from the content tree.
 - Adds `VcsCoordinate.vue`, a component providing a simple coordinate input
 - Adds `VcsViewpointComponent.vue`, a component for editing viewpoint options
+- `AbstractConfigEditor.vue` no longer calls setConfig() on cancel. Added optional property ro rename submit button.
 
 # 5.0.3
 

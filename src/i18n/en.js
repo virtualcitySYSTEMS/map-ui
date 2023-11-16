@@ -52,6 +52,7 @@ const messages = {
   components: {
     pin: 'Dock window',
     close: 'Close window',
+    add: 'Add',
     apply: 'Apply',
     cancel: 'Cancel',
     vcsFormSection: {

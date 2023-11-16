@@ -52,6 +52,7 @@ const messages = {
   components: {
     pin: 'Fenster andocken',
     close: 'Fenster schließen',
+    add: 'Hinzufügen',
     apply: 'Anwenden',
     cancel: 'Abbrechen',
     vcsFormSection: {
