@@ -20,6 +20,7 @@ import ColorSwatchIcon from './ColorSwatchIcon.vue';
 import CommentIcon from './CommentIcon.vue';
 import CompassIcon from './CompassIcon.vue';
 import ComponentsIcon from './ComponentsIcon.vue';
+import ComponentsPlusIcon from './ComponentsPlusIcon.vue';
 import ConeIcon from './ConeIcon.vue';
 import DimensionsHouseIcon from './DimensionsHouseIcon.vue';
 import EditIcon from './EditIcon.vue';
@@ -198,6 +199,9 @@ const IconMap = {
   },
   components: {
     component: ComponentsIcon,
+  },
+  componentsPlus: {
+    component: ComponentsPlusIcon,
   },
   compass: {
     component: CompassIcon,
