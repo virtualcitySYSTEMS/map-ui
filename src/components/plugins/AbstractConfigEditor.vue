@@ -32,6 +32,7 @@
    * @vue-prop {boolean} [showReset=false] - Flag to show a reset button in the footer. You need to handle @reset in a child component.
    * @vue-prop {Array<VcsAction>} [actions] - Optional actions rendered as ActionButtonList in the footer.
    * @vue-prop {string} [submitButtonTitle='components.apply'] - Option to change the submit button title, e.g. to 'components.add'.
+   * @vue-prop {boolean} [setConfigOnCancel=true] - Whether setConfig shall be called on cancel. Ensures compatability with v5.0.x
    * @vue-event {Event} submit - Event fired on clicking the submit button.
    * @vue-event {Event} cancel - Event fired on clicking the cancel button.
    * @vue-event {Event} reset - Event fired on clicking the reset button.
@@ -57,6 +58,10 @@
         type: String,
         default: 'components.apply',
       },
+      setConfigOnCancel: {
+        type: Boolean,
+        default: true,
+      },
     },
     setup(props, { attrs, emit }) {
       const app = inject('vcsApp');
@@ -75,6 +80,9 @@
         },
         cancel(e) {
           close();
+          if (props.setConfigOnCancel) {
+            attrs.setConfig?.();
+          }
           emit('cancel', e);
         },
         reset(e) {
