@@ -17,7 +17,7 @@ class NodeContentTreeItem extends ContentTreeItem {
   }
 
   /**
-   * @param {ContentTreeItemOptions} options
+   * @param {import("./contentTreeItem.js").ContentTreeItemOptions} options
    * @param {VcsUiApp} app
    */
   constructor(options, app) {

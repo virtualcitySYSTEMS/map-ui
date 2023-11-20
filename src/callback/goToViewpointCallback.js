@@ -1,7 +1,7 @@
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
- * @typedef {VcsCallbackOptions} GoToViewpointOptions
+ * @typedef {VcsCallbackOptions & { viewpoint: string }} GoToViewpointOptions
  * @property {string} viewpoint - name of the viewpoint
  */
 

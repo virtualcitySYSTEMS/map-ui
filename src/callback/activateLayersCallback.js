@@ -1,7 +1,7 @@
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
- * @typedef {VcsCallbackOptions} ActivateLayersOptions
+ * @typedef {VcsCallbackOptions & { layerNames: string[] }} ActivateLayersOptions
  * @property {Array<string>} layerNames - layer names to activate
  */
 

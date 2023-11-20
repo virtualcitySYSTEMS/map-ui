@@ -26,8 +26,24 @@ import SearchComponent from '../search/SearchComponent.vue';
  */
 
 /**
+ * @typedef {function(PointerEvent): void | Promise<void>} ActionCallback
+ */
+
+/**
+ * @typedef {Object} VcsAction
+ * @property {string} name - reactive and translatable name rendered in overflow
+ * @property {string} [title] - reactive and translatable title rendered as tooltip
+ * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
+ * @property {ActionCallback} callback - callback function is triggered when the button is clicked
+ * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
+ * @property {boolean} [hasUpdate=false] - optional hasUpdate of button. If true, a yellow notification is rendered next to the button
+ * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
+ * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
+ */
+
+/**
  * merges action options with defaults
- * @param {VcsAction|ActionOptions & { callback: Function}} options
+ * @param {VcsAction|ActionOptions & { callback: ActionCallback}} options
  * @returns {VcsAction}
  */
 export function getActionFromOptions(options) {
@@ -45,8 +61,8 @@ export function getActionFromOptions(options) {
 /**
  * @param {ActionOptions} actionOptions
  * @param {string} mapName
- * @param {import("@vcmap/core").OverrideMapCollection} maps
- * @returns {{action: VcsAction, destroy: Function}}
+ * @param {import("@vcmap/core").OverrideMapCollection<import("@vcmap/core").VcsMap>} maps
+ * @returns {{action: VcsAction, destroy: () => void}}
  */
 export function createMapButtonAction(actionOptions, mapName, maps) {
   check(actionOptions, {
@@ -75,10 +91,10 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
 /**
  * Creates an action which will toggle the given window component (opening & closing the window). The window component must have an id set.
  * @param {ActionOptions} actionOptions
- * @param {WindowComponentOptions} windowComponent
- * @param {WindowManager}  windowManager
+ * @param {import("../manager/window/windowManager.js").WindowComponentOptions} windowComponent
+ * @param {import("../manager/window/windowManager.js").default}  windowManager
  * @param {string|symbol} owner
- * @returns {{action: VcsAction, destroy: Function}}
+ * @returns {{action: VcsAction, destroy: function(): void}}
  */
 export function createToggleAction(
   actionOptions,
@@ -131,7 +147,7 @@ export function createToggleAction(
 
 /**
  * Creates a toggle button for the search tool, which is only available, if at least one search implementation is registered.
- * @param {VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {{ searchAction: import("vue").Ref<import("vue").UnwrapRef<VcsAction>|null>, destroy: function():void }}
  */
 export function createSearchButtonAction(app) {
@@ -185,9 +201,9 @@ export function createSearchButtonAction(app) {
 
 /**
  * Creates an action which will toggle the overview map (opening & closing the window and activating/ deactivating the overview map).
- * @param {OverviewMap} overviewMap
- * @param {WindowComponentOptions} windowComponent
- * @param {WindowManager}  windowManager
+ * @param {import("../navigation/overviewMap.js").default} overviewMap
+ * @param {import("../manager/window/windowManager.js").WindowComponentOptions} windowComponent
+ * @param {import("../manager/window/windowManager.js").default}  windowManager
  * @returns {(function(): void)|*}
  */
 export function createOverviewMapAction(
@@ -232,10 +248,10 @@ export function createOverviewMapAction(
  * Creates a header less window which will close if anything outside of the window is clicked. The window will open
  * at the clicked position (the actions position) by default, unless the window component already has a position set.
  * @param {ActionOptions} actionOptions
- * @param {WindowComponentOptions} modalComponent
- * @param {VcsUiApp}  app
+ * @param {import("../manager/window/windowManager.js").WindowComponentOptions} modalComponent
+ * @param {import("../vcsUiApp.js").default}  app
  * @param {string|symbol} owner
- * @returns {{action: VcsAction, destroy: Function}}
+ * @returns {{action: VcsAction, destroy: function(): void}}
  */
 export function createModalAction(actionOptions, modalComponent, app, owner) {
   check(actionOptions, {
@@ -425,7 +441,7 @@ export function createZoomToFeatureAction(
 
 /**
  * Creates an action for renaming an item in a VcsList.
- * @param {VcsListItem} item
+ * @param {import("../components/lists/VcsList.vue").VcsListItem} item
  * @param {ActionOptions} [actionOptions={}]
  * @returns {VcsAction}
  */

@@ -4,7 +4,14 @@ import BalloonFeatureInfoView, {
 import AddressBalloonComponent from './AddressBalloonComponent.vue';
 
 /**
- * @typedef {FeatureInfoViewOptions} AddressBalloonFeatureInfoViewOptions
+ * @typedef {FeatureInfoViewOptions &{
+ *   addressName?: string|null,
+ *   street?: string|null,
+ *   number?: string|null,
+ *   city?: string|null,
+ *   zip?: string|null,
+ *   country?: string|null,
+ * }} AddressBalloonFeatureInfoViewOptions
  * @property {string|null} [addressName='gml:name'] key to evaluate for name. Use null to suppress
  * @property {string|null} [street='Address.Street'] key to evaluate for street. Use null to suppress
  * @property {string|null} [number='Address.HouseNumber'] key to evaluate for house number. Use null to suppress

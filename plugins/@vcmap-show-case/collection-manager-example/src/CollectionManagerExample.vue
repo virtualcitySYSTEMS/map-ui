@@ -47,7 +47,7 @@
   /**
    * a sample mapping function adding a console log to all list items
    * @param {T} i
-   * @param {CollectionComponent} c
+   * @param {CollectionComponentClass} c
    * @param {VcsListItem} l
    */
   const mappingFunction = (i, c, l) => {

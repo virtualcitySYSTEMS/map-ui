@@ -71,7 +71,7 @@
     props: {
       value: {
         type: String,
-        required: true,
+        default: new Date().toISOString().substring(0, 10),
       },
       icon: {
         type: String,
@@ -99,7 +99,7 @@
 
       const isValid = (date) => !Number.isNaN(new Date(date).getTime());
       const setFromValue = () => {
-        if (isValid(localValue.value)) {
+        if (isValid(props.value)) {
           localValue.value = props.value;
         } else if (localValue.value) {
           // eslint-disable-next-line no-console

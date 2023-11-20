@@ -9,7 +9,7 @@ import { StateActionState } from '../actions/stateRefAction.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {ContentTreeItemOptions} LayerGroupContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], defaultViewpoint?: string }} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */

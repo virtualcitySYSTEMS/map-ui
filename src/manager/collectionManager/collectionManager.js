@@ -1,36 +1,32 @@
 import { VcsEvent, Collection } from '@vcmap/core';
 import { check, checkMaybe } from '@vcsuite/check';
 import { validateActions } from '../../components/lists/VcsActionList.vue';
-import CollectionComponent from './collectionComponent.js';
+import CollectionComponentClass from './collectionComponentClass.js';
 
 /**
- * @callback MappingFunction
- * @param {T} item
- * @param {CollectionComponent<T>} collectionComponent
- * @param {import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }} listItem - you can add a destroy callback for cleanup
+ * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>, import("../../components/lists/VcsList.vue").VcsListItem & { destroy?: (function():void) })} MappingFunction
  * @template {Object} T
  */
 
 /**
- * @callback PredicateFunction
- * @param {T} item
- * @param {CollectionComponent<T>} collectionComponent
- * @returns {boolean}
+ * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>): boolean} PredicateFunction
  * @template {Object} T
  */
 
 /**
- * @typedef {Object} ItemMapping
- * @property {PredicateFunction<T>|undefined} predicate
- * @property {MappingFunction<T>} mappingFunction
- * @property {string | symbol} owner
+ * @typedef {{
+ *   predicate?: PredicateFunction<T>,
+ *   mappingFunction: MappingFunction<T>,
+ *   owner: string | symbol,
+ * }} ItemMapping
  * @template T
  */
 
 /**
- * @typedef {Object} ItemFilter
- * @property {PredicateFunction<T>} filterFunction
- * @property {string | symbol} owner
+ * @typedef {{
+ *   filterFunction: PredicateFunction<T>,
+ *   owner: string | symbol
+ * }} ItemFilter
  * @template T
  */
 
@@ -45,16 +41,16 @@ import CollectionComponent from './collectionComponent.js';
  * Manages a list of collections as collectionComponents.
  * Sets the correct mapping/filter functions and actions on the collectionComponent
  * Provides an API to add/remove collectionsComponents.
- * @implements {VcsComponentManager<CollectionComponent, CollectionComponentOptions>}
+ * @implements {VcsComponentManager<CollectionComponentClass, CollectionComponentOptions>}
  */
 class CollectionManager {
   constructor() {
     /**
-     * @type {VcsEvent<CollectionComponent>}
+     * @type {VcsEvent<CollectionComponentClass>}
      */
     this.added = new VcsEvent();
     /**
-     * @type {VcsEvent<CollectionComponent>}
+     * @type {VcsEvent<CollectionComponentClass>}
      */
     this.removed = new VcsEvent();
     /**
@@ -62,7 +58,7 @@ class CollectionManager {
      */
     this.componentIds = [];
     /**
-     * @type {Map<string, CollectionComponent>}
+     * @type {Map<string, CollectionComponentClass>}
      * @private
      */
     this._collectionComponents = new Map();
@@ -86,7 +82,7 @@ class CollectionManager {
 
   /**
    * @param {string} id
-   * @returns {CollectionComponent|undefined}
+   * @returns {CollectionComponentClass|undefined}
    */
   get(id) {
     return this._collectionComponents.get(id);
@@ -113,7 +109,7 @@ class CollectionManager {
   /**
    * gets all collection components corresponding to provided collection
    * @param {import("@vcmap/core").Collection} collection
-   * @returns {CollectionComponent[]}
+   * @returns {CollectionComponentClass[]}
    */
   getCollection(collection) {
     return [...this._collectionComponents.values()].filter(
@@ -125,7 +121,7 @@ class CollectionManager {
    * adds a collectionComponent
    * @param {CollectionComponentOptions} collectionComponentOptions
    * @param {string|symbol} owner
-   * @returns {CollectionComponent}
+   * @returns {CollectionComponentClass}
    */
   add(collectionComponentOptions, owner) {
     check(collectionComponentOptions, { collection: Collection });
@@ -140,7 +136,7 @@ class CollectionManager {
       );
     }
 
-    const collectionComponent = new CollectionComponent(
+    const collectionComponent = new CollectionComponentClass(
       collectionComponentOptions,
       owner,
     );
@@ -174,7 +170,7 @@ class CollectionManager {
   }
 
   /**
-   * removes a CollectionComponent, Component will not be rendered anymore and will be destroyed. Add CollectionComponent again
+   * removes a CollectionComponentClass, Component will not be rendered anymore and will be destroyed. Add CollectionComponentClass again
    * to show the component again
    * @param {string} id
    */
@@ -206,10 +202,11 @@ class CollectionManager {
   /**
    * adds MappingFunction to the collectionManager. For the given collectionComponents each Item will be transformed by the
    * mappingFunction if the predicate returns true.
-   * @param {PredicateFunction} predicate
-   * @param {MappingFunction} mappingFunction
+   * @param {PredicateFunction<T>} predicate
+   * @param {MappingFunction<T>} mappingFunction
    * @param {string | symbol} owner
    * @param {Array<string>} [collectionComponentIds] list of collectionComponents this mappingFunction should be used on. If empty, mappingFunction is applied to all managed collectionComponents.
+   * @template {Object} T
    */
   addMappingFunction(
     predicate,
@@ -251,8 +248,9 @@ class CollectionManager {
 
   /**
    * removes the given mappingFunction
-   * @param {MappingFunction} mappingFunction
+   * @param {MappingFunction<T>} mappingFunction
    * @param {string | symbol} owner
+   * @template {Object} T
    */
   removeMappingFunction(mappingFunction, owner) {
     check(mappingFunction, Function);
@@ -268,9 +266,10 @@ class CollectionManager {
   }
 
   /**
-   * @param {PredicateFunction} filterFunction
+   * @param {PredicateFunction<T>} filterFunction
    * @param {string | symbol} owner
    * @param {Array<string>} [collectionComponentIds] list of collectionComponents this filterFunction should be used on. If empty, filterFunction is applied to all managed collectionComponents.
+   * @template {Object} T
    */
   addFilterFunction(filterFunction, owner, collectionComponentIds = []) {
     check(filterFunction, Function);
@@ -305,8 +304,9 @@ class CollectionManager {
 
   /**
    * removes the given filterFunction
-   * @param {PredicateFunction} filterFunction
+   * @param {PredicateFunction<T>} filterFunction
    * @param {string | symbol} owner
+   * @template {Object} T
    */
   removeFilterFunction(filterFunction, owner) {
     check(filterFunction, Function);

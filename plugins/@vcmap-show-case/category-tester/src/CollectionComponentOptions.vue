@@ -124,7 +124,7 @@
     setup() {
       const app = inject('vcsApp');
       /**
-       * @type {CollectionComponent}
+       * @type {CollectionComponentClass}
        */
       const collectionComponent = inject('collectionComponent');
       const category = app.categories.getByKey(collectionComponent.id);

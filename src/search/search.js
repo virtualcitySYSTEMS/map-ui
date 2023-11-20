@@ -32,7 +32,7 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  */
 
 /**
- * @interface SearchImpl
+ * @typedef {Object} SearchImpl
  * @property {string} name Name of the implementation. Must be the name of the plugin the SearchImpl is owned by
  * @property {function(q:string):Array<ResultItem>} search
  * @property {function(q:string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state

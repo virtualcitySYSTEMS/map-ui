@@ -19,9 +19,13 @@ import { ref } from 'vue';
  */
 
 /**
+ * @typedef {import("@vcmap/core").OverrideCollectionInterface<UiConfigurationItem>} UiConfigOverrideCollection
+ */
+
+/**
  * @class
- * @extends {Collection<UiConfigurationItem>}
- * @implements {import("@vcmap/core").OverrideCollectionInterface<UiConfigurationItem>}
+ * @extends {import("@vcmap/core").Collection<UiConfigurationItem>}
+ * @implements {UiConfigOverrideCollection}
  */
 class UiConfig extends Collection {
   /**

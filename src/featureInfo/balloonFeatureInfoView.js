@@ -24,16 +24,17 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
 }
 
 /**
- * @typedef {FeatureInfoViewOptions} BalloonFeatureInfoViewOptions
+ * @typedef {FeatureInfoViewOptions & { balloonTitle?: string, balloonSubtitle?: string }} BalloonFeatureInfoViewOptions
  * @property {string} [balloonTitle] - optional title to overwrite default (layerName). Can be attribute key (nested key using '.'), i18n key or text
  * @property {string} [balloonSubtitle] - optional window title to overwrite default (featureId). Can be attribute key (nested key using '.'), i18n key or text
  */
 
 /**
- * @typedef {FeatureInfoProps} BalloonFeatureInfoViewProps
- * @property {string} balloonTitle
- * @property {string} balloonSubtitle
- * @property {import("ol/coordinate").Coordinate} position
+ * @typedef {FeatureInfoProps & {
+ *   balloonTitle: string,
+ *   balloonSubtitle: string,
+ *   position: import("ol/coordinate").Coordinate
+ * }} BalloonFeatureInfoViewProps
  */
 
 /**

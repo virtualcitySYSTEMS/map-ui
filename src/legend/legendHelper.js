@@ -31,20 +31,20 @@ export const StyleRowType = {
  */
 
 /**
- * @typedef {LegendItem} ImageLegendItem
+ * @typedef {LegendItem & { popoutBtn?: boolean, src: string, tooltip?: string }} ImageLegendItem
  * @property {boolean} [popoutBtn=false] - show a button in legend title to open legend in new tab
  * @property {string} src - the source url. Can be an i18n string.
  * @property {string} [tooltip] - Optional further explanation of the legend
  */
 
 /**
- * @typedef {LegendItem} IframeLegendItem
+ * @typedef {LegendItem & { popoutBtn?: boolean, src: string }} IframeLegendItem
  * @property {boolean} [popoutBtn=false] - show a button in legend title to open legend in new tab
  * @property {string} src - the source url. Can be an i18n string.
  */
 
 /**
- * @typedef {LegendItem} StyleLegendItem
+ * @typedef {LegendItem & { colNr?: number, rows: StyleLegendRow[] }} StyleLegendItem
  * @property {number} [colNr=2] Number of columns. Valid values are 1 or 2. Per default 2.
  * @property {Array<StyleLegendRow>} rows - style definitions with description
  */
@@ -57,40 +57,40 @@ export const StyleRowType = {
  */
 
 /**
- * @typedef {StyleLegendRow} StrokeLegendRow
- * @property {import("ol/style/Stroke").Options} stroke
+ * @typedef {StyleLegendRow & { stroke: import("ol/style/Stroke").Options }} StrokeLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow} FillLegendRow
- * @property {import("ol/style/Fill").Options} fill
- * @property {import("ol/style/Stroke").Options} [stroke]
+ * @typedef {StyleLegendRow & {
+ *   fill: import("ol/style/Fill").Options,
+ *   stroke?: import("ol/style/Stroke").Options
+ * }} FillLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow} CircleLegendRow
- * @property {import("ol/style/Circle").Options} image
+ * @typedef {StyleLegendRow & { image: import("ol/style/Circle").Options }} CircleLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow} IconLegendRow
- * @property {import("ol/style/Icon").Options} image
+ * @typedef {StyleLegendRow & { image: import("ol/style/Icon").Options }} IconLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow} RegularShapeLegendRow
- * @property {import("ol/style/RegularShape").Options} image
+ * @typedef {StyleLegendRow & { image: import("ol/style/RegularShape").Options }} RegularShapeLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow} TextLegendRow
+ * @typedef {StyleLegendRow & {
+ *   text: import("ol/style/Text").Options,
+ *   label?: string,
+ * }} TextLegendRow
  * @property {import("ol/style/Text").Options} text
  * @property {string} [label='Text']
  */
 
 /**
  * @type {import("ol/style/Image").Options} image
- * @return {string}
+ * @returns {string}
  */
 export function getImageSrcFromShape(image) {
   if (image.src) {

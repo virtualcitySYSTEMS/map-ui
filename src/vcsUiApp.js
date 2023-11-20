@@ -19,8 +19,14 @@ import ToolboxManager, {
 } from './manager/toolbox/toolboxManager.js';
 import WindowManager from './manager/window/windowManager.js';
 import NavbarManager from './manager/navbarManager.js';
-import { createContentTreeCollection } from './contentTree/contentTreeCollection.js';
-import { contentTreeClassRegistry } from './contentTree/contentTreeItem.js';
+// eslint-disable-next-line no-unused-vars
+import ContentTreeCollection, { // imported for type
+  createContentTreeCollection,
+} from './contentTree/contentTreeCollection.js';
+// eslint-disable-next-line no-unused-vars
+import ContentTreeItem, { // imported for type
+  contentTreeClassRegistry,
+} from './contentTree/contentTreeItem.js';
 import OverviewMap from './navigation/overviewMap.js';
 import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/collectionManager/categoryManager.js';
@@ -38,12 +44,13 @@ import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
 
 /**
- * @typedef {import("@vcmap/core").VcsModuleConfig} VcsUiModuleConfig
- * @property {Array<Object>} [plugins]
- * @property {Array<ContentTreeItemOptions>} [contentTree]
- * @property {Array<UiConfigurationItem>} [uiConfig]
- * @property {Array<FeatureInfoViewOptions>} [featureInfo]
- * @property {Array<Object>} [i18n]
+ * @typedef {import("@vcmap/core").VcsModuleConfig & {
+ *    plugins?: Object[],
+ *    contentTree?: import("./contentTree/contentTreeItem.js").ContentTreeItemOptions[],
+ *    uiConfig?: UiConfigurationItem[],
+ *    featureInfo?: FeatureInfoViewOptions[],
+ *    i18n?: Object[]
+ *  }} VcsUiModuleConfig
  */
 
 /**
@@ -61,39 +68,53 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  */
 
 /**
- * @callback createPlugin
+ * @typedef {function(P, string):VcsPlugin<P>} createPlugin
  * @template {Object} P
- * @param {P} config
- * @param {string} pluginBaseUrl
- * @returns {VcsPlugin<P>}
  */
 
 /**
  * Interface for VcsPlugins.
  * The function implementing the interface should not throw!
- * @interface VcsPlugin
+ * @typedef {{
+ *   name: string,
+ *   version: string,
+ *   mapVersion: string,
+ *   i18n?: Object<string, unknown>,
+ *   initialize?: function(VcsUiApp, S=):void|Promise<void>,
+ *   onVcsAppMounted?: function(VcsUiApp),
+ *   toJSON?: function(): P,
+ *   getDefaultOptions?: function(): P,
+ *   getState?: function(boolean=):S|Promise<S>,
+ *   getConfigEditors?: function():Array<PluginConfigEditor>,
+ *   destroy?: function(): void
+ * }} VcsPlugin
  * @template {Object} P
  * @template {Object} S
- * @property {string} name
- * @property {string} version
- * @property {string} mapVersion - version range of the VC Map, which this plugin supports
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
  * @property {function(VcsUiApp, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
  * @property {function():P} [toJSON] - should return the plugin's serialization excluding all default values
  * @property {function():P} [getDefaultOptions] - should return the plugin's default options
  * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
- * @property {function():Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
- * @property {function():Promise<void>} destroy
+ * @property {Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
  * @api
  */
 
 /**
- * @interface VcsComponentManager
+ * @typedef {{
+ *   added: import("@vcmap/core").VcsEvent<T>,
+ *   removed: import("@vcmap/core").VcsEvent<T>,
+ *   componentIds: Array<string>,
+ *   get: function(string):T,
+ *   has: function(string):boolean,
+ *   remove: function(string),
+ *   add: function(O, string|vcsAppSymbol):T,
+ *   removeOwner: function(string|vcsAppSymbol),
+ *   clear: function():void,
+ *   destroy: function(): void,
+ * }} VcsComponentManager
  * @template {Object} T - the component type
- * @template {Object} O - component options
- * @property {import("@vcmap/core").VcsEvent<T>} added
- * @property {import("@vcmap/core").VcsEvent<T>} removed
+ * @template {Object} O - the component options type
  * @property {string[]} componentIds - all registered component ids as reactive array
  * @property {function(string):T} get - get component by id
  * @property {function(string):boolean} has - has component with id
@@ -101,7 +122,6 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @property {function(O, string|vcsAppSymbol):T} add - add component of owner
  * @property {function(string|vcsAppSymbol)} removeOwner - remove all components of owner
  * @property {function()} clear - remove all registered components
- * @property {function()} destroy
  * @api
  */
 
@@ -199,7 +219,7 @@ class VcsUiApp extends VcsApp {
     );
 
     /**
-     * @type {OverrideContentTreeCollection}
+     * @type {import("@vcmap/core").OverrideCollection<import("./contentTree/contentTreeItem.js").ContentTreeItem, import("./contentTree/contentTreeCollection.js").ContentTreeCollection>}
      * @private
      */
     this._contentTree = createContentTreeCollection(this);
@@ -312,7 +332,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
+   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<unknown, unknown>>}
    * @readonly
    */
   get plugins() {
@@ -320,7 +340,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {OverrideContentTreeCollection}
+   * @type {import("@vcmap/core").OverrideCollection<ContentTreeItem, ContentTreeCollection>}
    * @readonly
    */
   get contentTree() {
@@ -400,7 +420,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @returns {import("vue-i18n").VueI18n}
+   * @returns {import("vue-i18n").IVueI18n}
    * @readonly
    */
   get vueI18n() {

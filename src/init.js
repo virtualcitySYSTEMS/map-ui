@@ -16,7 +16,7 @@ const VcsObjectPattern = {
 
 /**
  * Base pattern to check VcsUiAppConfig
- * @type {import("vcsuite/check").PatternFor<VcsUiAppConfig>}
+ * @type {import("vcsuite/check").PatternFor<VcsUiModuleConfig>}
  */
 export const VcsUiAppConfigPattern = {
   id: [undefined, String],

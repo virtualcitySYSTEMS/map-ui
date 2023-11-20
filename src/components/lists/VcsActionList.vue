@@ -47,18 +47,6 @@
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
-   * @interface VcsAction
-   * @property {string} name - reactive and translatable name rendered in overflow
-   * @property {string} [title] - reactive and translatable title rendered as tooltip
-   * @property {string} [icon] - icon rendered on the button. If no icon provided, item is rendered in overflow
-   * @property {Function} callback - callback function is triggered when the button is clicked
-   * @property {boolean} [active=false] - optional state of button. If active, button is rendered in primary color
-   * @property {boolean} [hasUpdate=false] - optional hasUpdate of button. If true, a yellow notification is rendered next to the button
-   * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
-   * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
-   */
-
-  /**
    * pattern to check actions
    * @type {Object}
    */
@@ -74,7 +62,7 @@
   };
 
   /**
-   * @param {VcsAction} action
+   * @param {import("../../actions/actionHelper.js").VcsAction} action
    * @returns {boolean}
    */
   export function validateAction(action) {
@@ -82,7 +70,7 @@
   }
 
   /**
-   * @param {Array<VcsAction>} actions
+   * @param {Array<import("../../actions/actionHelper.js").VcsAction>} actions
    * @returns {boolean}
    */
   export function validateActions(actions) {

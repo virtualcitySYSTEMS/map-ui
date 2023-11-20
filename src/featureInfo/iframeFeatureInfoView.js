@@ -21,15 +21,13 @@ const IframeComponent = {
 };
 
 /**
- * @typedef {FeatureInfoViewOptions} IframeFeatureInfoViewOptions
+ * @typedef {FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions
  * @property {string} src - Specifies the address of the document to embed in the <iframe>. Variables wrapped in `${}` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
  * @property {string} [title] - optional title for the <iframe>
  */
 
 /**
- * @typedef {FeatureInfoProps} IframeFeatureInfoViewProps
- * @property {string} src
- * @property {string|undefined} title
+ * @typedef {FeatureInfoProps & { src: string, title?: string }} IframeFeatureInfoViewProps
  */
 
 /**

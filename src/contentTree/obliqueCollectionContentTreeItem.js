@@ -6,13 +6,11 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {ContentTreeItemOptions} ObliqueCollectionContentTreeItemOptions
- * @property {string} collectionName
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { collectionName: string }} ObliqueCollectionContentTreeItemOptions
  */
 
 /**
- * @typedef {VcsObjectContentTreeItemProperties} ObliqueCollectionContentTreeItemProperties
- * @property {string|import("@vcmap/core").Viewpoint} defaultViewpoint
+ * @typedef {VcsObjectContentTreeItemProperties & { defaultViewpoint: string }} ObliqueCollectionContentTreeItemProperties
  */
 
 /**

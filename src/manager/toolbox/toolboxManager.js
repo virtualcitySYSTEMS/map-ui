@@ -28,17 +28,21 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponentOptions} SingleToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions & { action: VcsAction }} SingleToolboxComponentOptions
  * @property {VcsAction} action - An action of a single tool
  */
 
 /**
- * @typedef {ToolboxComponentOptions} SelectToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions & { action: ToolboxSelectAction }} SelectToolboxComponentOptions
  * @property {ToolboxSelectAction} action - An action determining the behaviour of the select group
  */
 
 /**
- * @typedef {ToolboxComponentOptions} GroupToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions & {
+ *   icon: string,
+ *   title?: string,
+ *   disabled?: boolean,
+ *  }} GroupToolboxComponentOptions
  * @property {string} icon - Group icon
  * @property {string} [title] - Optional group title, for dropdown
  * @property {boolean} [disabled=false]
@@ -53,25 +57,29 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent} SingleToolboxComponent
- * @property {VcsAction} action
+ * @typedef {ToolboxComponent & { action: VcsAction }} SingleToolboxComponent
  */
 
 /**
- * @typedef {ToolboxComponent} GroupToolboxComponent
- * @property {string|undefined} icon
- * @property {string|undefined} title
- * @property {ButtonManager} buttonManager
- * @property {boolean} [disabled=false]
+ * @typedef {ToolboxComponent & {
+ *   icon?: string,
+ *   title?: string,
+ *   buttonManager: ButtonManager,
+ *   disabled?: boolean
+ * }} GroupToolboxComponent
  */
 
 /**
- * @typedef {ToolboxComponent} SelectToolboxComponent
+ * @typedef {ToolboxComponent & { action: ToolboxSelectAction }} SelectToolboxComponent
  * @property {ToolboxSelectAction} action
  */
 
 /**
- * @typedef {VcsAction} ToolboxSelectAction
+ * @typedef {VcsAction & {
+ *   selected: function(index:number):void,
+ *   tools: ToolboxSelectItem[],
+ *   currentIndex: number
+ * }} ToolboxSelectAction
  * @property {function(index:number):void} selected - A callback determining the select behavior of the group. Should set the currentIndex.
  * @property {Array<ToolboxSelectItem>} tools - A list of exclusive tools belonging to the group
  * @property {number} currentIndex - Index of the current item

@@ -4,8 +4,7 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {ContentTreeItemOptions} FlightContentTreeItemOptions
- * @property {string} flightName
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { flightName: string }} FlightContentTreeItemOptions
  */
 
 /**
@@ -161,6 +160,7 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
     } else {
       this.visible = this._app.maps.activeMap instanceof CesiumMap;
       this._setupPlayer();
+      this.setPropertiesFromObject(this._flight);
 
       this._listeners.push(
         this._app.flights.removed.addEventListener(resetHandler),

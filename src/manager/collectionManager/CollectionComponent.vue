@@ -80,7 +80,7 @@
       /** @type {VcsUiApp} */
       const app = inject('vcsApp');
       /**
-       * @type {CollectionComponent}
+       * @type {CollectionComponentClass}
        */
       const collectionComponent = inject('collectionComponent');
       const windowId = `${collectionComponent.id}-list`;

@@ -6,7 +6,7 @@ Several items of the VcsApp are managed in collections, e.g. map collection, lay
 The ui provides concepts to list items of different collections.
 For a list view items can be filtered or mapped using functions.
 
-For one collection this is handled by the [CollectionComponent](#collectioncomponent).
+For one collection this is handled by the [CollectionComponentClass](#collectioncomponentclass).
 Multiple collections can be handled by a [CollectionManager](#collectionmanager).
 For categories exists a specialised [CategoryManager](#categorymanager).
 
@@ -14,12 +14,12 @@ For rendering the list views, the ui provides several components, which can be r
 
 - [CollectionComponent](../src/manager/collectionManager/CollectionComponent.vue): A list rendering of a specific collection restricted to ten items
 - [CollectionComponentList](../src/manager/collectionManager/CollectionComponentList.vue): A scrollable list rendering all items
-- [CollectionComponentProvider](../src/manager/collectionManager/CollectionComponentProvider.vue): A wrapper component providing a specific CollectionComponent of a CollectionManager
+- [CollectionComponentProvider](../src/manager/collectionManager/CollectionComponentProvider.vue): A wrapper component providing a specific CollectionComponentClass of a CollectionManager
 - [CollectionManager](../src/manager/collectionManager/CollectionManager.vue): A set of CollectionComponents belonging to a CollectionManager rendered in Expansion Panels
 
-## CollectionComponent
+## CollectionComponentClass
 
-An instance of CollectionComponent class manages one provided collection and creates a mirrored items array with `VcsListItem`s.
+An instance of CollectionComponentClass manages one provided collection and creates a mirrored items array with `VcsListItem`s.
 It listens to all collection events and synchronizes changes to the items array.
 The Collection Items will be transformed and filtered with the given itemMappings and itemFilter functions.
 

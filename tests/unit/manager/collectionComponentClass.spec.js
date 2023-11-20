@@ -1,6 +1,6 @@
 import { describe, beforeAll, afterAll, expect, it, vi } from 'vitest';
 import { IndexedCollection } from '@vcmap/core';
-import CollectionComponent from '../../../src/manager/collectionManager/collectionComponent.js';
+import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
 
 describe('CollectionComponent', () => {
   describe('create a new instance', () => {
@@ -20,7 +20,7 @@ describe('CollectionComponent', () => {
         singleSelect: true,
         collection,
       };
-      collectionComponent = new CollectionComponent(
+      collectionComponent = new CollectionComponentClass(
         collectionComponentOptions,
         'test',
       );
@@ -40,12 +40,12 @@ describe('CollectionComponent', () => {
     });
 
     it('should throw, if no collection is provided', () => {
-      expect(CollectionComponent.bind(null, {}, 'test')).to.throw;
+      expect(CollectionComponentClass.bind(null, {}, 'test')).to.throw;
     });
 
     it('should throw, if provided collection has no unique key', () => {
       expect(
-        CollectionComponent.bind(
+        CollectionComponentClass.bind(
           null,
           {
             collection: new IndexedCollection({ uniqueKey: undefined }),
@@ -91,7 +91,10 @@ describe('CollectionComponent', () => {
       collection = new IndexedCollection();
       item = { name: 'testItem' };
       collection.add(item);
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
       addedItem = {
         name: 'addedItem',
         properties: {
@@ -167,7 +170,10 @@ describe('CollectionComponent', () => {
       item2 = { name: 'testItem2' };
       collection.add(item);
       collection.add(item2);
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
     });
 
     afterAll(() => {
@@ -198,7 +204,10 @@ describe('CollectionComponent', () => {
       item2 = { name: 'testItem2' };
       collection.add(item);
       collection.add(item2);
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
     });
 
     afterAll(() => {
@@ -228,7 +237,10 @@ describe('CollectionComponent', () => {
       collection = new IndexedCollection();
       item = { name: 'testItem' };
       collection.add(item);
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
       itemMapping = {
         mappingFunction: (i, c, l) => {
           l.actions = [{ name: 'action', callback: () => {} }];
@@ -288,7 +300,10 @@ describe('CollectionComponent', () => {
       collection = new IndexedCollection();
       item = { name: 'testItem' };
       collection.add(item);
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
       itemFilter = {
         filterFunction: (i) => i.name !== item.name,
         owner: 'test',
@@ -326,7 +341,10 @@ describe('CollectionComponent', () => {
 
     beforeAll(() => {
       collection = new IndexedCollection();
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
       ownedAction = {
         action: { name: 'action', callback: () => {} },
         owner: 'test',
@@ -370,7 +388,10 @@ describe('CollectionComponent', () => {
 
     beforeAll(() => {
       collection = new IndexedCollection();
-      collectionComponent = new CollectionComponent({ collection }, 'test');
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
       item = { name: 'testItem' };
       collection.add(item);
       itemMapping = {

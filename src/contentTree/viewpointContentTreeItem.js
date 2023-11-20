@@ -2,8 +2,7 @@ import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
- * @typedef {VcsObjectContentTreeItem.Options} ViewpointContentTreeItemOptions
- * @property {string} viewpointName
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { viewpointName: string }} ViewpointContentTreeItemOptions
  */
 
 /**

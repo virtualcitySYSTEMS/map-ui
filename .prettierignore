@@ -3,6 +3,7 @@ exampleData/
 lib/
 public/
 test-report.xml
+*.d.ts
 
 # local env files
 .env.local

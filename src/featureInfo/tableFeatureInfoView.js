@@ -2,7 +2,12 @@ import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import VcsTable from '../components/tables/VcsTable.vue';
 
 /**
- * @typedef {FeatureInfoViewOptions} TableFeatureInfoViewOptions
+ * @typedef {FeatureInfoViewOptions & {
+ *   itemsPerPage?: number,
+ *   itemsPerPageArray?: number[],
+ *   showSearchbar?: boolean,
+ *   searchbarPlaceholder?: string
+ * }} TableFeatureInfoViewOptions
  * @property {number} [itemsPerPage=10] - default has to be one of itemsPerPageArray
  * @property {number[]} [itemsPerPageArray=[5, 10, 15]]
  * @property {boolean} [showSearchbar]
@@ -10,12 +15,13 @@ import VcsTable from '../components/tables/VcsTable.vue';
  */
 
 /**
- * @typedef {FeatureInfoProps} TableFeatureInfoViewProps
- * @property {number} [itemsPerPage=10]
- * @property {number[]} [itemsPerPageArray=[5, 10, 15]]
- * @property {boolean} [showGroupBtn]
- * @property {boolean} [showSearchbar]
- * @property {string} [searchbarPlaceholder]
+ * @typedef {FeatureInfoProps & {
+ *   itemsPerPage?: number,
+ *   itemsPerPageArray?: number[],
+ *   showGroupBtn?: boolean,
+ *   showSearchbar?: boolean,
+ *   searchbarPlaceholder?: string
+ * }} TableFeatureInfoViewProps
  */
 
 /**

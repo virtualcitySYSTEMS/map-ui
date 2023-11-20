@@ -46,6 +46,12 @@ lint:
   script:
     - npm run lint
 
+type-check:
+  <<: *after_build_definition
+  stage: test
+  script:
+    - npm run build-types
+
 test:
   <<: *after_build_definition
   stage: test

@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "node16",
+    "incremental": false,
+    "lib": ["esnext", "dom"],
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "rootDir": ".",
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    /* Additional Checks */
+    "noImplicitReturns": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": false,
+
+    /* Module Resolution Options */
+    "baseUrl": ".",
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "preserveSymlinks": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["dist/", "build/", ".tests/", "**/*.d.ts"],
+  "include": ["index.js", "!*.d.ts", "src/"]
+}

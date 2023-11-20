@@ -347,16 +347,8 @@ class ContentTreeCollection extends IndexedCollection {
 export default ContentTreeCollection;
 
 /**
- * Only used for intelisense, unconstructable
- * @implements {import("@vcmap/core").OverrideCollection<ContentTreeItem>}
- * @extends {ContentTreeCollection}
- */
-// eslint-disable-next-line no-unused-vars
-class OverrideContentTreeCollection extends ContentTreeCollection {}
-
-/**
  * @param {VcsUiApp} app
- * @returns {OverrideContentTreeCollection}
+ * @returns {import("@vcmap/core").OverrideCollection<import("./contentTreeItem.js").ContentTreeItem, ContentTreeCollection>}
  */
 export function createContentTreeCollection(app) {
   const collection = new ContentTreeCollection(app);

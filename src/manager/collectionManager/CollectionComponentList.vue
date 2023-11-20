@@ -35,7 +35,7 @@
    * Moves an item to a new position.
    * New position is derived from a target item in the collection.
    * This ensures correct movement, if rendered list is only a subset of the collection.
-   * @param {CollectionComponent} collectionComponent
+   * @param {CollectionComponentClass} collectionComponent
    * @param {VcsListItem} item
    * @param {number} targetIndex
    */
@@ -54,7 +54,7 @@
 
   /**
    * Renames the title of an item.
-   * @param {CollectionComponent} collectionComponent
+   * @param {CollectionComponentClass} collectionComponent
    * @param {VcsListItem} item
    * @param {string} newTitle
    */
@@ -72,7 +72,7 @@
 
   /**
    * @description
-   * Renders the items of a CollectionComponent in a List.
+   * Renders the items of a CollectionComponentClass in a List.
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    * @vue-prop {string} windowId
    */
@@ -90,7 +90,7 @@
     },
     setup() {
       /**
-       * @type {CollectionComponent}
+       * @type {CollectionComponentClass}
        */
       const collectionComponent = inject('collectionComponent');
 

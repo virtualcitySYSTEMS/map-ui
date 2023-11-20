@@ -12,20 +12,18 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
- * @property {string} layerName
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerName: string }} LayerContentTreeItemOptions
  */
 
 /**
- * @typedef {VcsObjectContentTreeItemProperties} LayerContentTreeItemProperties
- * @property {Array<string>} [availableStyles]
+ * @typedef {VcsObjectContentTreeItemProperties & { availableStyles?: string[], defaultViewpoint?: string }} LayerContentTreeItemProperties
  * @property {string} [defaultViewpoint] - the name the default viewpoint
  */
 
 /**
  * @param {ContentTreeItem} item
  * @param {VcsUiApp} app
- * @param {string=} viewpoint
+ * @param {string|import("@vcmap/core").Viewpoint=} viewpoint
  */
 export function setViewpointAction(item, app, viewpoint) {
   const name = 'ViewpointAction';

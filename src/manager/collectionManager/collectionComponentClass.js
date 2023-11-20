@@ -20,8 +20,9 @@ import { createRenameAction } from '../../actions/actionHelper.js';
  */
 
 /**
- * @typedef {CollectionComponentUiOptions} CollectionComponentOptions
- * @property {import("@vcmap/core").Collection<T>} collection
+ * @typedef {CollectionComponentUiOptions & {
+ *   collection: import("@vcmap/core").Collection<T>
+ * }} CollectionComponentOptions
  * @template {Object} T
  */
 
@@ -32,7 +33,7 @@ import { createRenameAction } from '../../actions/actionHelper.js';
  * @class
  * @template {Object|import("@vcmap/core").VcsObject} T
  */
-class CollectionComponent {
+class CollectionComponentClass {
   /**
    * @param {CollectionComponentOptions} options
    * @param {string|vcsAppSymbol} owner
@@ -103,22 +104,22 @@ class CollectionComponent {
      */
     this._actions = ref([]);
     /**
-     * @type {Array<ItemMapping<*>>}
+     * @type {Array<import("./collectionManager.js").ItemMapping<T>>}
      * @private
      */
     this._itemMappings = [];
     /**
-     * @type {Array<ItemFilter<*>>}
+     * @type {Array<import("./collectionManager.js").ItemFilter<T>>}
      * @private
      */
     this._itemFilters = [];
     /**
-     * @type {import("vue").Ref<Array<import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }>>}
+     * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }>>}
      * @private
      */
     this._listItems = ref([]);
     /**
-     * @type {import("vue").Ref<Array<import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }>>}
+     * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }>>}
      */
     this.selection = ref([]);
 
@@ -157,7 +158,7 @@ class CollectionComponent {
   }
 
   /**
-   * @type {import("@vcmap/core").Collection<*>}
+   * @type {import("@vcmap/core").Collection<T>}
    * @readonly
    */
   get collection() {
@@ -165,7 +166,7 @@ class CollectionComponent {
   }
 
   /**
-   * @type {import("vue").Ref<Array<import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }>>}
+   * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue")..VcsListItem & { destroy: (function():void)|undefined }>>}
    * @readonly
    */
   get items() {
@@ -185,7 +186,7 @@ class CollectionComponent {
    */
   set draggable(value) {
     if (this._collection instanceof IndexedCollection) {
-      getLogger('CollectionComponent').warn(
+      getLogger('CollectionComponentClass').warn(
         'draggable can only be set to IndexedCollections!',
       );
       return;
@@ -229,7 +230,7 @@ class CollectionComponent {
   /**
    * uses the itemMappings to transform the given Item to an VcsListItem usable in the VcsList
    * @param {T} item
-   * @returns {import("@vcmap/ui").VcsListItem & { destroy: (function():void)|undefined }}
+   * @returns {import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }}
    * @template T
    * @private
    */
@@ -356,7 +357,7 @@ class CollectionComponent {
 
   /**
    * recreates the items array with the new Mapping Function
-   * @param {ItemMapping} itemMapping
+   * @param {import("./collectionManager.js").ItemMapping<T>} itemMapping
    */
   addItemMapping(itemMapping) {
     if (
@@ -374,7 +375,7 @@ class CollectionComponent {
 
   /**
    * recreates the items array with the new Mapping Function
-   * @param {ItemMapping} itemMapping
+   * @param {import("./collectionManager.js").ItemMapping<T>} itemMapping
    */
   removeItemMapping(itemMapping) {
     const index = this._itemMappings.findIndex(({ mappingFunction, owner }) => {
@@ -391,7 +392,7 @@ class CollectionComponent {
 
   /**
    * recreates the items array with the new Filter Function
-   * @param {ItemFilter} itemFilter
+   * @param {import("./collectionManager.js").ItemFilter<T>} itemFilter
    */
   addItemFilter(itemFilter) {
     if (
@@ -409,7 +410,7 @@ class CollectionComponent {
 
   /**
    * recreates the items array with the new Filter Function
-   * @param {ItemFilter} itemFilter
+   * @param {import("./collectionManager.js").ItemFilter<T>} itemFilter
    */
   removeItemFilter(itemFilter) {
     const index = this._itemFilters.findIndex(({ filterFunction, owner }) => {
@@ -425,7 +426,7 @@ class CollectionComponent {
   }
 
   /**
-   * @param {Array<OwnedAction>} ownedActions
+   * @param {Array<import("./collectionManager.js").OwnedAction>} ownedActions
    */
   addActions(ownedActions) {
     const actions = [...this._actions.value, ...ownedActions];
@@ -437,7 +438,7 @@ class CollectionComponent {
   }
 
   /**
-   * @param {Array<OwnedAction>} ownedActions
+   * @param {Array<import("./collectionManager.js").OwnedAction>} ownedActions
    */
   removeActions(ownedActions) {
     this._actions.value = this._actions.value.filter((ownedAction) => {
@@ -496,4 +497,4 @@ class CollectionComponent {
   }
 }
 
-export default CollectionComponent;
+export default CollectionComponentClass;

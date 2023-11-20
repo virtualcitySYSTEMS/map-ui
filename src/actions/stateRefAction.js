@@ -24,7 +24,7 @@ const stateIconMap = {
  * @param {string} name
  * @param {import("vue").Ref<StateActionState>} stateRef
  * @param {function():void} callback
- * @returns {{ action: VcsAction, destroy: function():void }}
+ * @returns {{ action: import("./actionHelper.js").VcsAction, destroy: function():void }}
  */
 export function createStateRefAction(name, stateRef, callback) {
   check(name, String);

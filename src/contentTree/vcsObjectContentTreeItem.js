@@ -28,7 +28,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
   }
 
   /**
-   * @param {ContentTreeItemOptions} options
+   * @param {import("./contentTreeItem.js").ContentTreeItemOptions} options
    * @param {VcsUiApp} app
    */
   constructor(options, app) {
@@ -84,7 +84,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
   }
 
   /**
-   * @returns {ContentTreeItemOptions}
+   * @returns {import("./contentTreeItem.js").ContentTreeItemOptions}
    */
   toJSON() {
     const config = super.toJSON();

@@ -3,7 +3,7 @@ node_modules
 /dist
 lib/olLib.js
 test-report.xml
-
+*.d.ts
 
 # local env files
 .env.local

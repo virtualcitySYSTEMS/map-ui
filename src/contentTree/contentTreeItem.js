@@ -11,10 +11,11 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
  * @typedef {Object} ContentTreeItemOptions
+ * @property {string} [type]
  * @property {string} name - name of the item defining the structure within the tree using dot notation.
  * @property {string} [title] - may be unset, if set from object properties later on. required otherwise
  * @property {string} [tooltip] - may be unset or set from object properties later on.
- * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} icon - an icon URL or element to display.
+ * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - an icon URL or element to display.
  * @property {number} [weight] - optional weighting of the item. higher weights come first.
  * @property {string} [infoUrl] - optional info url providing link with additional information.
  * @property {boolean} [initOpen=false] - groups being initially open or not.

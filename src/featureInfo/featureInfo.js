@@ -43,6 +43,10 @@ import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
  */
 
 /**
+ * @typedef {import("@vcmap/core").OverrideCollectionInterface<UiConfigurationItem>} FeatureInfoOverrideCollection
+ */
+
+/**
  * @returns {Logger}
  */
 function getLogger() {
@@ -219,7 +223,7 @@ export const featureInfoViewSymbol = Symbol('featureInfoView');
  * @class FeatureInfo
  * @description Provides registration of featureInfoClasses and stores featureInfoView instances.
  * @extends {Collection<AbstractFeatureInfoView>}
- * @implements {import("@vcmap/core").OverrideCollectionInterface<AbstractFeatureInfoView>}
+ * @implements {FeatureInfoOverrideCollection}
  */
 class FeatureInfo extends Collection {
   /**

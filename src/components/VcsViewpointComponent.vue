@@ -197,7 +197,7 @@
    * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
    * @param {import("vue").Ref<boolean>} isCesiumMap
    * @param {boolean} active - whether to set up post render handler on creation
-   * @returns {{action: import("@vcmap/ui").VcsAction, destroy: function():void}}
+   * @returns {{action: import("../actions/actionHelper.js").VcsAction, destroy: function():void}}
    */
   function createEditingAction(app, emit, getModelValue, isCesiumMap, active) {
     let destroyPostRenderListener = () => {};

@@ -18,7 +18,13 @@ import { defaultTagOptions } from '../components/tables/VcsTable.vue';
  */
 
 /**
- * @typedef {import("@vcmap/core").VcsObjectOptions} FeatureInfoViewOptions
+ * @typedef {import("@vcmap/core").VcsObjectOptions & {
+ *   attributeKeys?: string[],
+ *   keyMapping?: Record<string,string>,
+ *   valueMapping?: Record<string, string|Record<string,string>>,
+ *   tags?: Record<string, HTMLTagOptions>,
+ *   window?: WindowComponentOptions
+ * }} FeatureInfoViewOptions
  * @property {Array<string>} [attributeKeys] - list of keys to filter attributes of selected feature
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values

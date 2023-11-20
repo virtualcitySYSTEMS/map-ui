@@ -2,7 +2,7 @@ import { FeatureLayer } from '@vcmap/core';
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
- * @typedef {VcsCallbackOptions} ApplyLayerStyleOptions
+ * @typedef {VcsCallbackOptions & { styleName: string, layerName: string }} ApplyLayerStyleOptions
  * @property {string} styleName - name of the style
  * @property {string} layerName - name of the layer to apply the style
  */
