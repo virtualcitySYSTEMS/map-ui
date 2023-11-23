@@ -1,5 +1,6 @@
 <template>
   <v-row no-gutters v-if="coordinate">
+    <slot name="prepend" v-bind="{ ...$props }" />
     <v-col v-for="(_, idx) in coordinate" :key="`${prefixes[idx]}-coordinate`">
       <VcsTextField
         :id="`${prefixes[idx]}-coordinate`"
@@ -7,7 +8,7 @@
         type="number"
         :min="getRangeFromExtent(idx, extent)?.[0]"
         :max="getRangeFromExtent(idx, extent)?.[1]"
-        :step="$attrs.step || 1"
+        :step="steps[idx]"
         :prefix="prefixes[idx]"
         :unit="units[idx]"
         :decimals="decimals[idx]"
@@ -18,6 +19,7 @@
         v-on="{ ...forwardListener($listeners) }"
       />
     </v-col>
+    <slot name="append" v-bind="{ ...$props }" />
   </v-row>
 </template>
 
@@ -62,8 +64,11 @@
    * @vue-prop {Array<string>}  [prefixes=['X','Y','Z']] - An optional array of length three, with prefixes for each input
    * @vue-prop {Array<string>}  [units=['°','°','m']] - An optional array of length three, with units for each input
    * @vue-prop {Array<number>}  [decimals=[8,8,2]] - An optional array of length three, with number of decimal places for each input
+   * @vue-prop {Array<number>}  [steps=[0.00001,0.00001,1]] - An optional array of length three, with step for each input. Default steps are for WGS84 coordinates.
    * @vue-prop {import("ol/extent").Extent}  [extent=[-180,-90,180,90]] - An optional extent as range for x and y inputs. Default is WGS84 extent.
    * @vue-prop {Array<Array<()=>boolean|string)>>}  [axisRules] - An optional array of length three, with additional rules for corresponding input
+   * @vue-data {slot}  [#prepend] - A slot to prepend column(s) in row
+   * @vue-data {slot}  [#append] - A slot to append column(s) in row
    */
   export default {
     name: 'VcsCoordinate',
@@ -92,6 +97,10 @@
       decimals: {
         type: Array,
         default: () => [8, 8, 2],
+      },
+      steps: {
+        type: Array,
+        default: () => [0.00001, 0.00001, 1],
       },
       extent: {
         type: Array,

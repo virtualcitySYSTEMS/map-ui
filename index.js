@@ -16,6 +16,12 @@ export {
   createStateRefAction,
   StateActionState,
 } from './src/actions/stateRefAction.js';
+export {
+  createLayerToggleAction,
+  createZoomToExtentAction,
+  createExtentFeatureAction,
+  setupExtentComponentActions,
+} from './src/actions/extentActions.js';
 
 export {
   default as VcsCallback,
@@ -247,6 +253,7 @@ export { default as VcsImageSelector } from './src/components/style/VcsImageSele
 export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.vue';
 export { default as VcsTextSelector } from './src/components/style/VcsTextSelector.vue';
 export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.vue';
+export { default as VcsExtent } from './src/components/form-inputs-controls/VcsExtent.vue';
 export {
   default as VcsVectorStyleComponent,
   VectorStyleMenus,

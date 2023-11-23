@@ -125,6 +125,17 @@ const messages = {
     coordinate: {
       outOfRange: 'Wert außerhalb des zulässigen Bereichs!',
     },
+    extent: {
+      title: 'Ausdehnung',
+      projection: 'Projektion',
+      min: 'Min',
+      max: 'Max',
+      show: 'Ausdehnung in Karte anzeigen',
+      hide: 'Ausdehnung in Karte ausblenden',
+      create: 'Neue Ausdehnung in Karte zeichnen',
+      zoom: 'Auf Ausdehnung zoomen',
+      invalid: 'Koordinaten ergeben keine valide Ausdehnung!',
+    },
     vectorProperties: {
       header: 'Vektor Eigenschaften',
       altitudeMode: 'Höhenmodus',

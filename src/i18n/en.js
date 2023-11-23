@@ -125,6 +125,17 @@ const messages = {
     coordinate: {
       outOfRange: 'Value out of valid range!',
     },
+    extent: {
+      title: 'Extent',
+      projection: 'Projection',
+      min: 'Min',
+      max: 'Max',
+      show: 'Show extent in map',
+      hide: 'Hide extent in map',
+      create: 'Draw new extent in map',
+      zoom: 'Zoom to extent',
+      invalid: 'Coordinates do not result in a valid extent!',
+    },
     vectorProperties: {
       header: 'Vector properties',
       altitudeMode: 'Altitude mode',
