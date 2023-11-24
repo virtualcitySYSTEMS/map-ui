@@ -4,6 +4,7 @@
 - Fixes a bug where disable was not properly propagated on
   tree view items and form sections.
 - Fixes a bug where file inputs would not emit input events.
+- Fixes a bug where removed items were not removed from CollectionComponent selection
 
 # 5.0.1
 

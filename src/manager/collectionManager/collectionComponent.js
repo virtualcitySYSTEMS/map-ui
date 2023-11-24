@@ -318,6 +318,10 @@ class CollectionComponent {
     });
     if (index > -1) {
       const listItem = this._listItems.value[index];
+      const selectionIdx = this.selection.value.indexOf(listItem);
+      if (selectionIdx > -1) {
+        this.selection.value.splice(selectionIdx, 1);
+      }
       if (listItem.destroy) {
         listItem.destroy();
       }
