@@ -1,4 +1,13 @@
-import { describe, beforeAll, afterAll, expect, it, vi } from 'vitest';
+import {
+  describe,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { IndexedCollection } from '@vcmap/core';
 import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
 
@@ -198,7 +207,7 @@ describe('CollectionComponent', () => {
     let item;
     let item2;
 
-    beforeAll(() => {
+    beforeEach(() => {
       collection = new IndexedCollection();
       item = { name: 'testItem' };
       item2 = { name: 'testItem2' };
@@ -210,7 +219,7 @@ describe('CollectionComponent', () => {
       );
     });
 
-    afterAll(() => {
+    afterEach(() => {
       collectionComponent.destroy();
       collection.destroy();
     });
@@ -224,6 +233,16 @@ describe('CollectionComponent', () => {
       expect(
         collectionComponent.items.value.map(({ name }) => name),
       ).to.not.include(item2.name);
+    });
+
+    it('should remove removed item from selection', () => {
+      const listItem2 = collectionComponent.items.value.find(
+        (l) => l.name === item2.name,
+      );
+      collectionComponent.selection.value = [listItem2];
+      expect(collectionComponent.selection.value).to.have.length(1);
+      collection.remove(item2);
+      expect(collectionComponent.selection.value).to.be.empty;
     });
   });
 

@@ -368,6 +368,11 @@ class CollectionComponentClass {
       return elem.name === item[this._collection.uniqueKey];
     });
     if (index > -1) {
+      const listItem = this._listItems.value[index];
+      const selectionIdx = this.selection.value.indexOf(listItem);
+      if (selectionIdx > -1) {
+        this.selection.value.splice(selectionIdx, 1);
+      }
       destroyListItem(this._listItems.value[index]);
       this._listItems.value.splice(index, 1);
     }

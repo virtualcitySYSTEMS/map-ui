@@ -569,6 +569,10 @@
       "entry": "plugins/@vcmap-show-case/window-tester/index.js"
     },
     {
+      "name": "toolbox-example",
+      "entry": "plugins/@vcmap-show-case/toolbox-example/index.js"
+    },
+    {
       "name": "buttons-example",
       "entry": "plugins/@vcmap-show-case/buttons-example/index.js"
     },

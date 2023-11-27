@@ -486,6 +486,10 @@ class ContentTreeItem {
       config.title = this.title;
     }
 
+    if (this.tooltip) {
+      config.tooltip = this.tooltip;
+    }
+
     if (this.icon) {
       config.icon = this.icon;
     }
@@ -500,6 +504,18 @@ class ContentTreeItem {
 
     if (this.weight) {
       config.weight = this.weight;
+    }
+
+    if (this._onClick.length > 0) {
+      config.onClick = this._onClick;
+    }
+
+    if (this._onActivate.length > 0) {
+      config.onActivate = this._onActivate;
+    }
+
+    if (this._onDeactivate.length > 0) {
+      config.onDeactivate = this._onDeactivate;
     }
 
     return config;

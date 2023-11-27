@@ -1,7 +1,7 @@
 import { VcsEvent } from '@vcmap/core';
 import { check, checkMaybe } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
-import { reactive } from 'vue';
+import { reactive, shallowReactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
 import { ActionPattern } from '../../components/lists/VcsActionList.vue';
@@ -28,7 +28,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponentOptions & { action: VcsAction }} SingleToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions & { action: import("../../actions/actionHelper.js").VcsAction }} SingleToolboxComponentOptions
  * @property {VcsAction} action - An action of a single tool
  */
 
@@ -57,12 +57,12 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent & { action: VcsAction }} SingleToolboxComponent
+ * @typedef {ToolboxComponent & { action: import("vue").Reactive<import("../../actions/actionHelper.js").VcsAction> }} SingleToolboxComponent
  */
 
 /**
  * @typedef {ToolboxComponent & {
- *   icon?: string,
+ *   icon: string,
  *   title?: string,
  *   buttonManager: ButtonManager,
  *   disabled?: boolean
@@ -70,12 +70,12 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent & { action: ToolboxSelectAction }} SelectToolboxComponent
+ * @typedef {ToolboxComponent & { action: import("vue").Reactive<ToolboxSelectAction> }} SelectToolboxComponent
  * @property {ToolboxSelectAction} action
  */
 
 /**
- * @typedef {VcsAction & {
+ * @typedef {import("../../actions/actionHelper.js").VcsAction & {
  *   selected: function(index:number):void,
  *   tools: ToolboxSelectItem[],
  *   currentIndex: number
@@ -279,7 +279,7 @@ class ToolboxManager {
    * @param {SingleToolboxComponentOptions|SelectToolboxComponentOptions|GroupToolboxComponentOptions} toolboxComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
    * @throws {Error} if a toolboxComponent with the same ID has already been added
-   * @returns {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent}
+   * @returns {SingleToolboxComponent|SelectToolboxComponent|import("vue").ShallowReactive<GroupToolboxComponent>}
    */
   add(toolboxComponentOptions, owner) {
     checkMaybe(toolboxComponentOptions.id, String);
@@ -356,24 +356,24 @@ class ToolboxManager {
       check(toolboxComponentOptions.icon, String);
       checkMaybe(toolboxComponentOptions.title, String);
       checkMaybe(toolboxComponentOptions.disabled, Boolean);
-      const { icon, title = undefined, disabled } = toolboxComponentOptions;
+      const {
+        icon,
+        title = undefined,
+        disabled = false,
+      } = toolboxComponentOptions;
       const buttonManager = new ButtonManager();
       /**
-       * @type {GroupToolboxComponent}
+       * @type {import("vue").ShallowReactive<GroupToolboxComponent>}
        */
-      toolboxComponent = {
+      toolboxComponent = shallowReactive({
         ...toolboxComponent,
         disabled,
-        get icon() {
-          return icon;
-        },
-        get title() {
-          return title;
-        },
+        icon,
+        title,
         get buttonManager() {
           return buttonManager;
         },
-      };
+      });
     }
 
     this._toolboxGroups.set(toolboxComponent.id, toolboxComponent);

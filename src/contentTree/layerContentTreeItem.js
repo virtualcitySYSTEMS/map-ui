@@ -108,7 +108,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
   _setStyleAction(availableStyles) {
     const name = 'StyleSelector';
     this.removeAction(name);
-    if (Array.isArray(availableStyles)) {
+    if (Array.isArray(availableStyles) && availableStyles.length > 0) {
       const { action, destroy } = createModalAction(
         {
           name,

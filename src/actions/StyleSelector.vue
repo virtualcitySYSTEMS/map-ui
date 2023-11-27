@@ -99,7 +99,7 @@
             text: app.styles.getByKey(name)?.properties?.title || name,
             value: name,
           }));
-        if (props.availableStyles.indexOf(defaultStyle) < 0) {
+        if (defaultStyle && props.availableStyles.indexOf(defaultStyle) < 0) {
           return [
             {
               text: 'Default',
@@ -108,11 +108,12 @@
             ...styles,
           ];
         }
-        const firstStyle = styles.find(({ value }) => value === defaultStyle);
-        return [
-          firstStyle,
-          ...styles.filter(({ value }) => value !== defaultStyle),
-        ];
+        return styles.sort((a) => {
+          if (a === defaultStyle) {
+            return -1;
+          }
+          return 0;
+        });
       });
 
       function select(styleName) {

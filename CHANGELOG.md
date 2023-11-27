@@ -26,6 +26,12 @@
 - Fixes a bug where disable was not properly propagated on
   tree view items and form sections.
 - Fixes a bug where file inputs would not emit input events.
+- Fixes a bug where removed items were not removed from CollectionComponent selection
+- Adds new toolbar-example plugin
+- Fixes createZoomToFeatureAction to be aware of feature geometry changes
+- Fixes ContentTreeItem serialization by adding missing properties in toJSON
+- Allow tristate for SelectToolboxComponent by passing background prop and make all toolbox components shallow reactive
+- Fix style selector to handle defaultStyle and an empty style array
 
 # 5.0.1
 
