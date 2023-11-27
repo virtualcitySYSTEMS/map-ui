@@ -20,8 +20,8 @@
   import { getLogger } from '@vcsuite/logger';
 
   import { WindowSlot, VcsFormButton } from '@vcmap/ui';
-  import WindowExampleToggleChild from './WindowExampleToggleChild.vue';
   import WindowExampleContent from './WindowExampleContent.vue';
+  import WindowExampleToggleChild from './WindowExampleToggleChild.vue';
   import MyCustomHeader from './MyCustomHeader.vue';
   import EmptyComponent from './EmptyComponent.vue';
   import { name as owner } from '../package.json';

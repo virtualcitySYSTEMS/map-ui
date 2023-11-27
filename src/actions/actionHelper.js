@@ -412,13 +412,14 @@ export function createZoomToFeatureAction(
   check(feature, Feature);
   check(mapCollection, MapCollection);
 
-  const viewpoint = getViewpointFromFeature(feature);
-
   return {
     title: 'search.zoomToFeatureAction',
     ...actionOptions,
     async callback() {
-      await mapCollection.activeMap.gotoViewpoint(viewpoint);
+      const viewpoint = getViewpointFromFeature(feature);
+      if (viewpoint && viewpoint.isValid()) {
+        await mapCollection.activeMap.gotoViewpoint(viewpoint);
+      }
     },
   };
 }

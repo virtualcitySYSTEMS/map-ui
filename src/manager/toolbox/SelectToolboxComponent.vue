@@ -10,6 +10,7 @@
       :icon="group.action.tools[group.action.currentIndex].icon"
       :active="group.action.active"
       :disabled="group.action.disabled"
+      :background="group.action.background"
       @click.stop="group.action.callback($event)"
       v-bind="{ ...$attrs }"
       class="vcs-toolbox-action-selected"
