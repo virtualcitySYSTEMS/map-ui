@@ -11,7 +11,7 @@ import { getActionFromOptions } from '../actions/actionHelper.js';
  * @param {number} weightB
  * @returns {number}
  */
-export function sortByWeight(weightA, weightB) {
+export function sortByWeight(weightA = 0, weightB = 0) {
   return weightB - weightA;
 }
 

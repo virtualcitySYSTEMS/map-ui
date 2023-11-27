@@ -6,6 +6,7 @@ import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
 import { createRenameAction } from '../../actions/actionHelper.js';
+import { sortByOwner } from '../navbarManager.js';
 
 /**
  * @typedef {Object} CollectionComponentUiOptions
@@ -25,6 +26,22 @@ import { createRenameAction } from '../../actions/actionHelper.js';
  * }} CollectionComponentOptions
  * @template {Object} T
  */
+
+/**
+ * @typedef {import("../../components/lists/VcsList.vue").VcsListItem & {
+ *   actions: Array<VcsAction & { weight?: number }>,
+ *   destroy: function():void|undefined
+ *   destroyFunctions: Array<function():void>
+ * }} CollectionComponentListItem
+ */
+
+/**
+ * @param {CollectionComponentListItem} listItem
+ */
+function destroyListItem(listItem) {
+  listItem.destroyFunctions.forEach((cb) => cb());
+  listItem.destroy?.();
+}
 
 /**
  * Manages one collection and creates a mirrored items array with ListItems.
@@ -114,12 +131,12 @@ class CollectionComponentClass {
      */
     this._itemFilters = [];
     /**
-     * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }>>}
+     * @type {import("vue").Ref<Array<CollectionComponentListItem>>}
      * @private
      */
     this._listItems = ref([]);
     /**
-     * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }>>}
+     * @type {import("vue").Ref<Array<CollectionComponentListItem>>}
      */
     this.selection = ref([]);
 
@@ -166,7 +183,7 @@ class CollectionComponentClass {
   }
 
   /**
-   * @type {import("vue").Ref<Array<import("../../components/lists/VcsList.vue")..VcsListItem & { destroy: (function():void)|undefined }>>}
+   * @type {import("vue").Ref<Array<CollectionComponentListItem>>}
    * @readonly
    */
   get items() {
@@ -228,9 +245,9 @@ class CollectionComponentClass {
   }
 
   /**
-   * uses the itemMappings to transform the given Item to an VcsListItem usable in the VcsList
+   * uses the itemMappings to transform the given Item to an CollectionComponentListItem usable in the VcsList
    * @param {T} item
-   * @returns {import("../../components/lists/VcsList.vue").VcsListItem & { destroy: (function():void)|undefined }}
+   * @returns {CollectionComponentListItem}
    * @template T
    * @private
    */
@@ -248,6 +265,8 @@ class CollectionComponentClass {
       hasUpdate: item?.properties?.hasUpdate,
       rename: false,
       actions: [],
+      destroy: undefined,
+      destroyFunctions: [],
     };
     if (this._renameable.value) {
       listItem.actions.push(createRenameAction(listItem));
@@ -260,16 +279,18 @@ class CollectionComponentClass {
         itemMapping.mappingFunction(item, this, listItem);
       }
     });
-    listItem.actions = listItem.actions.filter((action) => {
-      return validateAction(action);
-    });
+    listItem.actions = listItem.actions
+      .filter((action) => {
+        return validateAction(action);
+      })
+      .sort((a, b) => sortByWeight(a.weight, b.weight));
     return listItem;
   }
 
   /**
    * Inserts the listItem into the list items array at the correct relative position in respect to the position of the listItem
    * in the collection
-   * @param {import("@vcmap/ui").VcsListItem} listItem
+   * @param {CollectionComponentListItem} listItem
    * @private
    */
   _insertListItem(listItem) {
@@ -347,10 +368,7 @@ class CollectionComponentClass {
       return elem.name === item[this._collection.uniqueKey];
     });
     if (index > -1) {
-      const listItem = this._listItems.value[index];
-      if (listItem.destroy) {
-        listItem.destroy();
-      }
+      destroyListItem(this._listItems.value[index]);
       this._listItems.value.splice(index, 1);
     }
   }
@@ -434,7 +452,10 @@ class CollectionComponentClass {
       .filter((item, pos, self) => {
         return self.indexOf(item) === pos;
       })
-      .sort(sortByWeight);
+      .sort(
+        (a, b) =>
+          sortByWeight(a.weight, b.weight) || sortByOwner(a.owner, b.owner),
+      );
   }
 
   /**
@@ -476,7 +497,7 @@ class CollectionComponentClass {
    * re-adding them from the collection applying current filter and mapping functions
    */
   reset() {
-    this._listItems.value.forEach((i) => i.destroy?.());
+    this._listItems.value.forEach(destroyListItem);
     this._listItems.value = [];
     this.selection.value = [];
     [...this._collection]
@@ -491,7 +512,7 @@ class CollectionComponentClass {
 
   destroy() {
     this._listeners.forEach((cb) => cb());
-    this._listItems.value.forEach((i) => i.destroy?.());
+    this._listItems.value.forEach(destroyListItem);
     this._listItems.value = [];
     this.selection.value = [];
   }
