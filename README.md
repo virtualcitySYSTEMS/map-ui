@@ -131,6 +131,8 @@ We will offer bugfix support for the current major version and the one preceding
 [Shadow](https://github.com/virtualcitySYSTEMS/map-shadow)
 [Create Link](https://github.com/virtualcitySYSTEMS/map-createLink)
 [Search Nominatim](https://github.com/virtualcitySYSTEMS/map-search-nominatim)
+[Cesium Filters](https://github.com/virtualcitySYSTEMS/map-cesium-filters)
+[MultiView](https://github.com/virtualcitySYSTEMS/map-multi-view)
 
 ### Plugins in Development
 
@@ -138,7 +140,6 @@ We will offer bugfix support for the current major version and the one preceding
 | :----------------: | :------: | :-------: |
 |    Measurement     |    1     |     1     |
 |      Planning      |    1     |     1     |
-|     MultiView      |    4     |     1     |
 |   HeightProfile    |    4     |     2     |
 |       Flight       |    4     |     2     |
 |      ViewShed      |    4     |     2     |

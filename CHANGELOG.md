@@ -5,6 +5,7 @@
 - `CollectionComponent` class is renamed and exported as `CollectionComponentClass`.
 - Add rename functionality to `VcsList` and `CollectionComponentClass`
 - Add property `customClasses` to all vcs buttons for custom styling using css classes
+- Add cesium-filters plugin to external plugins and demo application
 - Add multi-view plugin to external plugins and demo application
 - Add position display to footer
 - Add `tags` option to `FeatureInfoViewOptions` to render values of specific attribute keys using special html elements

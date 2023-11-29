@@ -58,11 +58,14 @@ const configMain = defineConfig(async ({ mode }) => {
       port,
       proxy,
     },
+    optimizeDeps: {
+      exclude: ['@vcsuite/check'],
+    },
   };
 
   if (process.env.NO_OPTIMIZED_CORE) {
     config.optimizeDeps = {
-      exclude: ['@vcmap/core', 'ol'],
+      exclude: ['@vcmap/core', 'ol', '@vcsuite/check'],
       include: [
         '@vcmap/core > fast-deep-equal',
         '@vcmap/core > rbush-knn',
