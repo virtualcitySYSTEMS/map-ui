@@ -135,6 +135,8 @@ const messages = {
       create: 'Neue Ausdehnung in Karte zeichnen',
       zoom: 'Auf Ausdehnung zoomen',
       invalid: 'Koordinaten ergeben keine valide Ausdehnung!',
+      editVertices: 'Ecken bearbeiten',
+      translate: 'Ausdehnung verschieben',
     },
     vectorProperties: {
       header: 'Vektor Eigenschaften',

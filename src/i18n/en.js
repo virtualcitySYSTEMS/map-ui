@@ -135,6 +135,8 @@ const messages = {
       create: 'Draw new extent in map',
       zoom: 'Zoom to extent',
       invalid: 'Coordinates do not result in a valid extent!',
+      editVertices: 'Edit extent corners',
+      translate: 'Translate extent',
     },
     vectorProperties: {
       header: 'Vector properties',

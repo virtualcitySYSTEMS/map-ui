@@ -4,7 +4,7 @@ import { validateActions } from '../../components/lists/VcsActionList.vue';
 import CollectionComponentClass from './collectionComponentClass.js';
 
 /**
- * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>, import("../../components/lists/VcsList.vue").VcsListItem & { destroy?: (function():void) })} MappingFunction
+ * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>, import("./collectionComponentClass.js").CollectionComponentListItem)} MappingFunction
  * @template {Object} T
  */
 

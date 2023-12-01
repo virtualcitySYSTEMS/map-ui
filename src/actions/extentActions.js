@@ -1,23 +1,29 @@
 import { v4 as uuid } from 'uuid';
 import {
+  Extent,
   GeometryType,
   LayerState,
   markVolatile,
   maxZIndex,
   mercatorProjection,
   startCreateFeatureSession,
+  startEditFeaturesSession,
+  startEditGeometrySession,
   VectorLayer,
   Viewpoint,
 } from '@vcmap/core';
-import { reactive, watch } from 'vue';
+import { reactive, ref, watch, nextTick } from 'vue';
 import { Feature } from 'ol';
 import { transformExtent } from 'ol/proj.js';
 import { fromExtent } from 'ol/geom/Polygon.js';
+import { createOrUpdateFromCoordinates } from 'ol/extent.js';
+import { Polygon } from 'ol/geom.js';
+import { unByKey } from 'ol/Observable.js';
 
 /**
  * @param {VcsUiApp} app
- * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>} extent
- * @returns {{name: string, icon: string, active: boolean, callback(): void}}
+ * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
+ * @returns {import("./actionHelper.js").VcsAction}
  */
 export function createZoomToExtentAction(app, extent) {
   return {
@@ -36,7 +42,7 @@ export function createZoomToExtentAction(app, extent) {
 /**
  * @param {import("@vcmap/core").Layer} layer
  * @param {boolean} disabled
- * @returns {{action: VcsAction, destroy: (function(): void)}}
+ * @returns {{action: import("./actionHelper.js").VcsAction, destroy: (function(): void)}}
  */
 export function createLayerToggleAction(layer, disabled) {
   const action = reactive({
@@ -67,10 +73,10 @@ export function createLayerToggleAction(layer, disabled) {
  *
  * @param {VcsUiApp} app
  * @param {import("@vcmap/core").VectorLayer} layer
- * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
  * @param {string} featureId
  * @param {boolean} disabled
- * @returns {{ action:VcsAction, destroy:()=>void}}
+ * @returns {{ action: import("./actionHelper.js").VcsAction, destroy:()=>void}}
  */
 export function createExtentFeatureAction(
   app,
@@ -130,23 +136,160 @@ export function createExtentFeatureAction(
 }
 
 /**
+ * @param {import("ol").Feature<import("ol/geom").Polygon>} feature
+ * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
+ */
+function updateExtentFromFeature(feature, extent) {
+  const options = extent.value.toJSON();
+  options.coordinates = transformExtent(
+    createOrUpdateFromCoordinates(feature.getGeometry().getCoordinates()[0]),
+    mercatorProjection.proj,
+    extent.value.projection.proj,
+  );
+
+  extent.value = new Extent(options);
+}
+
+/**
+ * @param {import("../vcsUiApp.js").VcsUiApp} app
+ * @param {import("@vcmap/core").VectorLayer} layer
+ * @param {string} featureId
+ * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("vue").Ref<boolean>} suspendFeatureUpdate
+ * @returns {{action: import("./actionHelper.js").VcsAction, destroy(): void}}
+ */
+function setupTranslateAction(
+  app,
+  layer,
+  featureId,
+  extent,
+  suspendFeatureUpdate,
+) {
+  let session;
+  const action = reactive({
+    name: 'components.extent.translate',
+    title: 'components.extent.translate',
+    icon: 'mdi-axis-arrow',
+    active: false,
+    async callback() {
+      if (session) {
+        session.stop();
+      } else {
+        const feature = layer.getFeatureById(featureId);
+        if (feature) {
+          const featureListener = feature.getGeometry().on('change', () => {
+            suspendFeatureUpdate.value = true;
+            updateExtentFromFeature(feature, extent);
+            nextTick(() => {
+              suspendFeatureUpdate.value = false;
+            });
+          });
+          await layer.activate();
+          session = startEditFeaturesSession(app, layer);
+          session.stopped.addEventListener(() => {
+            action.active = false;
+            unByKey(featureListener);
+            session = undefined;
+          });
+          session.setFeatures([feature]);
+          action.active = true;
+        }
+      }
+    },
+  });
+
+  return {
+    action,
+    destroy() {
+      session?.stop();
+    },
+  };
+}
+
+/**
+ * @param {import("../vcsUiApp.js").VcsUiApp} app
+ * @param {import("@vcmap/core").VectorLayer} layer
+ * @param {string} featureId
+ * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("vue").Ref<boolean>} suspendFeatureUpdate
+ * @returns {{action: import("./actionHelper.js").VcsAction, destroy(): void}}
+ */
+function setupVertexAction(
+  app,
+  layer,
+  featureId,
+  extent,
+  suspendFeatureUpdate,
+) {
+  let session;
+  const action = reactive({
+    name: 'components.extent.editVertices',
+    title: 'components.extent.editVertices',
+    icon: '$vcsEditVertices',
+    active: false,
+    disabled: false,
+    async callback() {
+      if (session) {
+        session.stop();
+      } else {
+        const feature = layer.getFeatureById(featureId);
+        if (feature) {
+          const featureListener = feature.getGeometry().on('change', () => {
+            suspendFeatureUpdate.value = true;
+            updateExtentFromFeature(feature, extent);
+            nextTick(() => {
+              suspendFeatureUpdate.value = false;
+            });
+          });
+          await layer.activate();
+          session = startEditGeometrySession(app, layer);
+          session.stopped.addEventListener(() => {
+            action.active = false;
+            unByKey(featureListener);
+            session = undefined;
+          });
+          session.setFeature(feature);
+          action.active = true;
+        }
+      }
+    },
+  });
+
+  return {
+    action,
+    destroy() {
+      session?.stop();
+    },
+  };
+}
+
+/**
  * Synchronizes a feature with an extent
- * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
  * @param {import("@vcmap/core").VectorLayer} layer
  * @param {string} featureId
  */
 function syncExtentFeature(extent, layer, featureId) {
-  const geometry = fromExtent(extent.value.extent);
-  geometry.transform(extent.value.projection.proj, mercatorProjection.proj);
+  const extentGeometry = fromExtent(extent.value.extent);
+  extentGeometry.transform(
+    extent.value.projection.proj,
+    mercatorProjection.proj,
+  );
+  const coordinates = extentGeometry.getCoordinates();
+  coordinates[0].forEach((c) => {
+    c.push(0);
+  });
+  coordinates[0].pop();
+  const geometry = new Polygon(coordinates, 'XYZ');
   geometry.set('_vcsGeomType', GeometryType.BBox);
   layer.getFeatureById(featureId).setGeometry(geometry);
 }
 
 /**
  * @param {VcsUiApp} app
- * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>|import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
  * @param {boolean} disabled
- * @returns {{actions: Array<VcsAction>, destroy: () => void}}
+ * @returns {{ actions: Array<import("./actionHelper.js").VcsAction>, destroy: () => void, layer: import("@vcmap/core").VectorLayer, featureId: string }}
  */
 export function setupExtentComponentActions(app, extent, disabled) {
   const layer = new VectorLayer({
@@ -158,6 +301,7 @@ export function setupExtentComponentActions(app, extent, disabled) {
 
   const feature = new Feature();
   const featureId = uuid();
+  const suspendFeatureUpdate = ref(false);
   feature.setId(featureId);
   layer.addFeatures([feature]);
 
@@ -168,11 +312,8 @@ export function setupExtentComponentActions(app, extent, disabled) {
   const stopWatching = watch(
     extent,
     () => {
-      if (extent.value.isValid()) {
+      if (extent.value.isValid() && !suspendFeatureUpdate.value) {
         syncExtentFeature(extent, layer, featureId);
-        if (layer.projection.epsg !== extent.value.projection.epsg) {
-          layer.projection = extent.value.projection;
-        }
       }
     },
     { deep: true },
@@ -183,16 +324,36 @@ export function setupExtentComponentActions(app, extent, disabled) {
   const { action: createExtentAction, destroy: destroyCreateExtent } =
     createExtentFeatureAction(app, layer, extent, featureId, disabled);
   const zoomToExtentAction = createZoomToExtentAction(app, extent);
+  zoomToExtentAction.title = 'components.extent.zoom';
+  const { action: translateAction, destroy: destroyTranslate } =
+    setupTranslateAction(app, layer, featureId, extent, suspendFeatureUpdate);
+  const { action: vertexAction, destroy: destroyVertex } = setupVertexAction(
+    app,
+    layer,
+    featureId,
+    extent,
+    suspendFeatureUpdate,
+  );
 
   return {
-    actions: [showExtentAction, createExtentAction, zoomToExtentAction],
+    actions: [
+      showExtentAction,
+      createExtentAction,
+      vertexAction,
+      translateAction,
+      zoomToExtentAction,
+    ],
     destroy: () => {
       layer.deactivate();
       app.layers.remove(layer);
       layer.destroy();
       destroyShowExtent();
       destroyCreateExtent();
+      destroyTranslate();
+      destroyVertex();
       stopWatching();
     },
+    layer,
+    featureId,
   };
 }
