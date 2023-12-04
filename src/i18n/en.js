@@ -46,7 +46,8 @@ const messages = {
     tooltip: 'My Workspace',
   },
   collectionManager: {
-    more: 'Show more...',
+    more: 'Show all...',
+    less: 'Show less...',
     empty: 'There are no entries yet.',
   },
   components: {

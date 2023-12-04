@@ -21,6 +21,13 @@
 - Adds `VcsExtent.vue` and `extentActions.js`, extent input component and extent action helper functions
 - Change type of CollectionComponentClass items from `VcsListItem` to `CollectionComponentListItem`. Add sorting of list item actions.
 
+### Ui Behaviour Changes
+
+- `CollectionManager.vue` now opens `show all` list inside its own Component.
+- `CollectionComponent.vue` now emits an `openList` event instead of opening a list view in another window.
+- `CollectionComponentList.vue` now emits a `closeList` event on using the `show less` Button.
+- FeatureInfo Windows now open in DYNAMIC_RIGHT per default.
+
 # 5.0.3
 
 - Fix translation of VcsDataTable header

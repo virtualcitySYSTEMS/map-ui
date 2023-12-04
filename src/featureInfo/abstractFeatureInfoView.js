@@ -381,7 +381,7 @@ class AbstractFeatureInfoView extends VcsObject {
         headerIcon: '$vcsInfo',
         infoUrl: app.getHelpUrlCallback('/tools/infoTool.html'),
       },
-      slot: this.window.slot ?? WindowSlot.DYNAMIC_LEFT,
+      slot: this.window.slot ?? WindowSlot.DYNAMIC_RIGHT,
       component: this.component,
       position: this.window.position,
       props: this.getProperties(featureInfo, layer),

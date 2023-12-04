@@ -12,6 +12,7 @@
 
   /**
    * @description Provides a CollectionComponentClass of a CollectionManager.
+   * Default rendering of the slot is the `CollectionComponent.vue`
    * The collectionManager must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    * @vue-prop {string} componentId - ID of the collectionComponent to be provided
    * @vue-data {slot} [#default] - Slot rendering collection component.
@@ -29,7 +30,7 @@
     },
     setup(props) {
       /**
-       * @type {CollectionManager}
+       * @type {import("./collectionManager.js").CollectionManager}
        */
       const collectionManager = inject('collectionManager');
       const collectionComponent = collectionManager.get(props.componentId);

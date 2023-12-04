@@ -52,12 +52,7 @@
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
-  import { vcsAppSymbol } from '../../pluginHelper.js';
-  import { WindowSlot } from '../window/windowManager.js';
-  import CollectionComponentList, {
-    moveItem,
-    renameItem,
-  } from './CollectionComponentList.vue';
+  import { moveItem, renameItem } from './CollectionComponentList.vue';
 
   /**
    * @description
@@ -76,14 +71,11 @@
       VSheet,
       VIcon,
     },
-    setup() {
-      /** @type {VcsUiApp} */
-      const app = inject('vcsApp');
+    setup(_props, { emit }) {
       /**
        * @type {CollectionComponentClass}
        */
       const collectionComponent = inject('collectionComponent');
-      const windowId = `${collectionComponent.id}-list`;
 
       return {
         title: collectionComponent.title,
@@ -102,30 +94,7 @@
           renameItem(collectionComponent, item, newTitle);
         },
         openCollectionComponentList() {
-          if (app.windowManager.has(windowId)) {
-            setTimeout(() => {
-              app.windowManager.bringWindowToTop(windowId);
-            }, 0);
-          } else {
-            app.windowManager.add(
-              {
-                id: windowId,
-                component: CollectionComponentList,
-                props: {
-                  windowId,
-                },
-                state: {
-                  headerTitle: 'collectionManager.more',
-                  headerIcon: '$vcsComponents',
-                },
-                provides: {
-                  collectionComponent,
-                },
-                slot: WindowSlot.DYNAMIC_LEFT,
-              },
-              vcsAppSymbol,
-            );
-          }
+          emit('openList', collectionComponent.id);
         },
       };
     },

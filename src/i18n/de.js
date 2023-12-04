@@ -46,7 +46,8 @@ const messages = {
     tooltip: 'Mein Arbeitsbereich',
   },
   collectionManager: {
-    more: 'Weitere anzeigen...',
+    more: 'Alle anzeigen...',
+    less: 'Weniger anzeigen...',
     empty: 'Es gibt noch keine Einträge.',
   },
   components: {

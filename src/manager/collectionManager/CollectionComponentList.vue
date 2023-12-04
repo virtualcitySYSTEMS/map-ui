@@ -22,14 +22,21 @@
       @item-moved="move"
       @item-renamed="rename"
     />
+    <v-sheet v-if="showLessButton" class="ma-2 pl-2">
+      <VcsButton @click="closeList">
+        {{ $t('collectionManager.less') }}
+      </VcsButton>
+    </v-sheet>
   </div>
 </template>
 
 <script>
   import { inject } from 'vue';
   import { IndexedCollection } from '@vcmap/core';
+  import { VSheet } from 'vuetify/lib';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
+  import VcsButton from '../../components/buttons/VcsButton.vue';
 
   /**
    * Moves an item to a new position.
@@ -74,23 +81,25 @@
    * @description
    * Renders the items of a CollectionComponentClass in a List.
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
-   * @vue-prop {string} windowId
+   * @vue-prop {string} showLessButton - Show a `show less button` at the end of the list, which will emit a closeList event
    */
   export default {
     name: 'CollectionComponentList',
-    components: {
-      VcsActionButtonList,
-      VcsList,
-    },
     props: {
-      windowId: {
-        type: String,
-        required: true,
+      showLessButton: {
+        type: Boolean,
+        default: true,
       },
     },
-    setup() {
+    components: {
+      VcsButton,
+      VcsActionButtonList,
+      VcsList,
+      VSheet,
+    },
+    setup(_props, { emit }) {
       /**
-       * @type {CollectionComponentClass}
+       * @type {import("./collectionComponentClass.js").CollectionComponentClass}
        */
       const collectionComponent = inject('collectionComponent');
 
@@ -109,6 +118,9 @@
         },
         rename({ item, newTitle }) {
           renameItem(collectionComponent, item, newTitle);
+        },
+        closeList() {
+          emit('closeList', collectionComponent.id);
         },
       };
     },
