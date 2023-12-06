@@ -95,7 +95,7 @@ describe('ContentTreeItem', () => {
       const item = new ContentTreeItem({ name: 'foo' }, app);
       const name = 'foo';
       item.addAction({ name });
-      expect(item.addAction.bind(item, { name })).to.throw;
+      expect(item.addAction.bind(item, { name })).to.throw();
       item.destroy();
     });
   });

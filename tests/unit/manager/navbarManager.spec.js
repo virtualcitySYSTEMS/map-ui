@@ -52,7 +52,9 @@ describe('NavbarManager', () => {
       });
 
       it('should throw if no location is supplied', () => {
-        expect(navbarManager.add.bind(navbarManager, { id: 'test' })).to.throw;
+        expect(
+          navbarManager.add.bind(navbarManager, { id: 'test' }),
+        ).to.throw();
       });
 
       describe('returns a buttonComponent', () => {

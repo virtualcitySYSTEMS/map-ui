@@ -27,6 +27,8 @@
 - `CollectionComponent.vue` now emits an `openList` event instead of opening a list view in another window.
 - `CollectionComponentList.vue` now emits a `closeList` event on using the `show less` Button.
 - FeatureInfo Windows now open in DYNAMIC_RIGHT per default.
+- Child windows can now be opened without having the parent open. In
+  this case, the child window acts as a dynamic left window.
 
 # 5.0.3
 

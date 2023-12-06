@@ -54,7 +54,7 @@ describe('CollectionManager', () => {
           collectionManager,
           collectionComponentOptions,
         ),
-      ).to.throw;
+      ).to.throw();
     });
     it('should throw if same componentId is already managed', () => {
       expect(
@@ -62,7 +62,7 @@ describe('CollectionManager', () => {
           collectionComponentOptions,
           'plugin',
         ]),
-      ).to.throw;
+      ).to.throw();
     });
   });
 

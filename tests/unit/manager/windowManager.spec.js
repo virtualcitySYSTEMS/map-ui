@@ -13,6 +13,7 @@ import WindowManager, {
   WindowPositions,
   WindowSlot,
   windowPositionFromOptions,
+  isSlotPosition,
 } from '../../../src/manager/window/windowManager.js';
 
 describe('windowManager', () => {
@@ -141,44 +142,40 @@ describe('windowManager', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(windowComponent);
       });
+
       it('should throw if now owner is supplied', () => {
-        expect(windowManager.add.bind(windowManager, { id: 'test' })).to.throw;
+        expect(
+          windowManager.add.bind(windowManager, { id: 'test' }),
+        ).to.throw();
       });
+
       it('should throw if same windowId is already managed', () => {
         expect(
           windowManager.add.bind(windowManager, [{ id: 'test' }, 'plugin']),
-        ).to.throw;
+        ).to.throw();
       });
+
       it('should throw if slot DYNAMIC_CHILD is used without parentId or if the parent window is not registered', () => {
         expect(
-          windowManager.add.bind(windowManager, [
+          windowManager.add.bind(
+            windowManager,
             { id: 'testDynamicChild', slot: WindowSlot.DYNAMIC_CHILD },
             'plugin',
-          ]),
-        ).to.throw;
-        expect(
-          windowManager.add.bind(windowManager, [
-            {
-              id: 'testDynamicChild',
-              parentId: 'parent',
-              slot: WindowSlot.DYNAMIC_CHILD,
-            },
-            'plugin',
-          ]),
-        ).to.throw;
+          ),
+        ).to.throw();
       });
 
       describe('returns a windowComponent', () => {
         it('id should be readonly', () => {
           expect(() => {
             windowComponent.id = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('state should be readonly', () => {
           expect(() => {
             windowComponent.state = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('state should be reactive', () => {
@@ -188,19 +185,19 @@ describe('windowManager', () => {
         it('component should be readonly', () => {
           expect(() => {
             windowComponent.component = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('headerComponent should be readonly', () => {
           expect(() => {
             windowComponent.headerComponent = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('slot should be readonly', () => {
           expect(() => {
             windowComponent.slot = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('slot should be reactive', () => {
@@ -210,7 +207,7 @@ describe('windowManager', () => {
         it('position should be readonly', () => {
           expect(() => {
             windowComponent.position = 'new';
-          }).to.throw;
+          }).to.throw();
         });
 
         it('position should be reactive', () => {
@@ -219,11 +216,8 @@ describe('windowManager', () => {
 
         it('zIndex should be readonly', () => {
           expect(() => {
-            windowComponent.zIndex.value = 5;
-          }).to.throw;
-          expect(() => {
             windowComponent.zIndex = computed(() => 5);
-          }).to.throw;
+          }).to.throw();
         });
       });
     });
@@ -300,6 +294,22 @@ describe('windowManager', () => {
       it('should move dynamicLeft Slot to TOP_LEFT2 if a STATIC Slot is added', () => {
         const window1 = windowManager.add(
           { slot: WindowSlot.DYNAMIC_LEFT },
+          'plugin',
+        );
+        expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
+        const window2 = windowManager.add(
+          { slot: WindowSlot.STATIC },
+          'plugin',
+        );
+        expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
+        expect(windowManager.has(window1.id)).to.be.true;
+        expect(windowManager.has(window2.id)).to.be.true;
+        expect(windowManager.componentIds).to.have.lengthOf(2);
+      });
+
+      it('should move parentless child to TOP_LEFT2 if a STATIC Slot is added', () => {
+        const window1 = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_CHILD, parentId: 'foo' },
           'plugin',
         );
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
@@ -653,6 +663,148 @@ describe('windowManager', () => {
       expect(windowComponentLeft.slot.value).to.be.equal(
         WindowSlot.DYNAMIC_LEFT,
       );
+    });
+  });
+
+  describe('handling of child windows', () => {
+    /** @type {WindowManager} */
+    let windowManager;
+    let childOptions;
+    let parentOptions;
+
+    beforeAll(() => {
+      windowManager = new WindowManager();
+      parentOptions = {
+        id: 'test',
+        slot: WindowSlot.DYNAMIC_LEFT,
+      };
+
+      childOptions = {
+        id: 'childTest',
+        parentId: parentOptions.id,
+        slot: WindowSlot.DYNAMIC_CHILD,
+      };
+    });
+
+    afterEach(() => {
+      windowManager.clear();
+    });
+
+    describe('if their parent is not open', () => {
+      it('should open the child top left', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        expect(isSlotPosition(child.position)).to.be.true;
+      });
+
+      it('should override a dynamic left component', () => {
+        const dynamicLeft = windowManager.add(
+          { slot: WindowSlot.DYNAMIC_LEFT },
+          'plugin',
+        );
+        windowManager.add(childOptions, 'plugin');
+        expect(windowManager.has(dynamicLeft.id)).to.be.false;
+      });
+
+      it('should override another parent-less child component', () => {
+        const otherChild = windowManager.add(
+          { parentId: 'foo', slot: WindowSlot.DYNAMIC_CHILD },
+          'plugin',
+        );
+        windowManager.add(childOptions, 'plugin');
+        expect(windowManager.has(otherChild.id)).to.be.false;
+      });
+
+      it('should render as a child, should the parent be opened', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        windowManager.add(parentOptions, 'plugin');
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(parentOptions.id)).to.be.true;
+      });
+
+      it('should not remove itself when pinning', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        windowManager.pinWindow(child.id);
+        expect(windowManager.has(child.id)).to.be.true;
+      });
+
+      it('should overwrite children of the same parent on pin', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        child.slot.value = WindowSlot.DETACHED;
+        child.state.dockable = true;
+        const child2 = windowManager.add(
+          { ...childOptions, id: 'child2' },
+          'plugin',
+        );
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(child2.id)).to.be.true;
+        windowManager.pinWindow(child.id);
+        expect(windowManager.has(child2.id)).to.be.false;
+      });
+    });
+
+    describe('if their parent is open', () => {
+      beforeEach(() => {
+        windowManager.add(parentOptions, 'plugin');
+      });
+
+      it('should render as a child', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(parentOptions.id)).to.be.true;
+      });
+
+      it('should not overwrite other children', () => {
+        windowManager.add(
+          { id: 'otherParent', slot: WindowSlot.DETACHED },
+          'plugin',
+        );
+        const otherChild = windowManager.add(
+          {
+            parentId: 'otherParent',
+            slot: WindowSlot.DYNAMIC_CHILD,
+          },
+          'plugin',
+        );
+        const child = windowManager.add(childOptions, 'plugin');
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(parentOptions.id)).to.be.true;
+        expect(windowManager.has(otherChild.id)).to.be.true;
+      });
+
+      it('should overwrite children of the same parent', () => {
+        const otherChild = windowManager.add(
+          {
+            parentId: parentOptions.id,
+            slot: WindowSlot.DYNAMIC_CHILD,
+          },
+          'plugin',
+        );
+        const child = windowManager.add(childOptions, 'plugin');
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(otherChild.id)).to.be.false;
+      });
+
+      it('should not remove itself when pinning', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        child.slot.value = WindowSlot.DETACHED;
+        child.state.dockable = true;
+        windowManager.pinWindow(child.id);
+        expect(windowManager.has(child.id)).to.be.true;
+      });
+
+      it('should overwrite children of the same parent on pin', () => {
+        const child = windowManager.add(childOptions, 'plugin');
+        child.slot.value = WindowSlot.DETACHED;
+        child.state.dockable = true;
+        const child2 = windowManager.add(
+          { ...childOptions, id: 'child2' },
+          'plugin',
+        );
+        expect(windowManager.has(child.id)).to.be.true;
+        expect(windowManager.has(child2.id)).to.be.true;
+        windowManager.pinWindow(child.id);
+        expect(windowManager.has(child2.id)).to.be.false;
+      });
     });
   });
 });

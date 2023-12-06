@@ -57,12 +57,14 @@ describe('ButtonManager', () => {
         expect(addedSpy).toHaveBeenLastCalledWith(buttonComponent);
       });
       it('should throw if now owner is supplied', () => {
-        expect(buttonManager.add.bind(buttonManager, { id: 'test' })).to.throw;
+        expect(
+          buttonManager.add.bind(buttonManager, { id: 'test' }),
+        ).to.throw();
       });
       it('should throw if same buttonId is already managed', () => {
         expect(
           buttonManager.add.bind(buttonManager, [{ id: 'test' }, 'plugin']),
-        ).to.throw;
+        ).to.throw();
       });
 
       it('should add new Components at the end of the array', () => {
@@ -81,12 +83,12 @@ describe('ButtonManager', () => {
         it('id should be readonly', () => {
           expect(() => {
             buttonComponent.id = 'new';
-          }).to.throw;
+          }).to.throw();
         });
         it('action should be readonly', () => {
           expect(() => {
             buttonComponent.action = 'new';
-          }).to.throw;
+          }).to.throw();
         });
         it('action should be reactive', () => {
           expect(isReactive(buttonComponent.action)).to.be.true;

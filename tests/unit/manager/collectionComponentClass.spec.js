@@ -49,7 +49,7 @@ describe('CollectionComponent', () => {
     });
 
     it('should throw, if no collection is provided', () => {
-      expect(CollectionComponentClass.bind(null, {}, 'test')).to.throw;
+      expect(CollectionComponentClass.bind(null, {}, 'test')).to.throw();
     });
 
     it('should throw, if provided collection has no unique key', () => {
@@ -61,7 +61,7 @@ describe('CollectionComponent', () => {
           },
           'test',
         ),
-      ).to.throw;
+      ).to.throw();
     });
 
     it('should apply provided options', () => {

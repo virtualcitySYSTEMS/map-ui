@@ -147,6 +147,36 @@
             maxWidth: '1000px',
           },
         },
+        {
+          id: 'child-dynamicRight',
+          parentId: 'dynamicRight',
+          state: {
+            headerTitle: 'Example dynamicRight dynamicChild',
+            headerIcon: 'mdi-human-child',
+          },
+          component: WindowExampleContent,
+          slot: WindowSlot.DYNAMIC_CHILD,
+        },
+        {
+          id: 'child-dynamicLeft',
+          parentId: 'dynamicLeft',
+          state: {
+            headerTitle: 'Example dynamicLeft dynamicChild',
+            headerIcon: 'mdi-human-child',
+          },
+          component: WindowExampleContent,
+          slot: WindowSlot.DYNAMIC_CHILD,
+        },
+        {
+          id: 'child-dynamicLeft2',
+          parentId: 'dynamicLeft',
+          state: {
+            headerTitle: 'Example dynamicLeft dynamicChild',
+            headerIcon: 'mdi-human-child',
+          },
+          component: WindowExampleContent,
+          slot: WindowSlot.DYNAMIC_CHILD,
+        },
       ];
 
       onUnmounted(() => {

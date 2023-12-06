@@ -337,13 +337,21 @@ class WindowManager {
    * @param {WindowSlot} changedSlot
    * @private
    */
-  _handleSlotsChanged(changedSlot) {
+  _handleSlotsChanged(changedSlot, parentId) {
     if (
       changedSlot === WindowSlot.STATIC ||
-      changedSlot === WindowSlot.DYNAMIC_LEFT
+      changedSlot === WindowSlot.DYNAMIC_LEFT ||
+      (parentId != null &&
+        changedSlot === WindowSlot.DETACHED &&
+        !this.has(parentId))
     ) {
       const staticWindow = this._findWindowBySlot(WindowSlot.STATIC);
-      const dynamicWindowLeft = this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT);
+      const dynamicWindowLeft =
+        this._findWindowBySlot(WindowSlot.DYNAMIC_LEFT) ??
+        [...this._windowComponents.values()].find(
+          (c) => parentId != null && c.parentId === parentId,
+        );
+
       if (staticWindow && dynamicWindowLeft) {
         this.setWindowPositionOptions(dynamicWindowLeft.id, {
           ...dynamicWindowLeft.position,
@@ -360,26 +368,61 @@ class WindowManager {
 
   /**
    * @param {WindowSlot} slot
+   * @param {string=} parentId
+   * @param {string=} id
    * @returns {WindowComponent}
    * @private
    */
-  _findWindowBySlot(slot) {
-    return Array.from(this._windowComponents.values()).find(
-      (item) => item.slot.value === slot,
+  _findWindowBySlot(slot, parentId, id) {
+    const components = /** @type {WindowComponent[]} */ (
+      Array.from(this._windowComponents.values())
     );
+    let parent;
+    let usedSlot = slot;
+    if (parentId) {
+      parent = components.find((i) => i.id === parentId);
+      usedSlot = parent ? slot : WindowSlot.DYNAMIC_LEFT;
+    }
+
+    return components.find((item) => {
+      if (item.id === id) {
+        return false;
+      }
+      if (parent) {
+        return item.parentId === parentId && item.slot.value === usedSlot;
+      } else if (
+        item.slot.value === WindowSlot.DYNAMIC_CHILD &&
+        !this.has(item.parentId) &&
+        item.parentId !== id &&
+        usedSlot === WindowSlot.DYNAMIC_LEFT
+      ) {
+        return true;
+      }
+
+      if (id != null) {
+        return item.slot.value === usedSlot && item.parentId !== id;
+      }
+      return item.slot.value === usedSlot;
+    });
   }
 
   /**
    * @param {WindowSlot} slot
    * @param {WindowPositionOptions=} position
+   * @param {string=} parentId
    * @returns {WindowPositionOptions}
    * @private
    */
-  _getPositionOptionsForSlot(slot, position) {
+  _getPositionOptionsForSlot(slot, position, parentId) {
     if (slot === WindowSlot.STATIC) {
       return { ...WindowPositions.TOP_LEFT, maxWidth: '320px' };
     }
-    if (slot === WindowSlot.DYNAMIC_LEFT) {
+    if (
+      slot === WindowSlot.DYNAMIC_LEFT ||
+      (parentId != null &&
+        slot === WindowSlot.DYNAMIC_CHILD &&
+        !this.has(parentId))
+    ) {
       const windowAtStatic = this._findWindowBySlot(WindowSlot.STATIC);
       if (windowAtStatic) {
         return { ...position, ...WindowPositions.TOP_LEFT2 };
@@ -399,11 +442,13 @@ class WindowManager {
   /**
    * removes the window at the given slot if it exists (not for DETACHED)
    * @param {WindowSlot} slot
+   * @param {string} parentId
+   * @param {string} id
    * @private
    */
-  _removeWindowAtSlot(slot) {
+  _removeWindowAtSlot(slot, parentId, id) {
     if (slot !== WindowSlot.DETACHED) {
-      const toRemove = this._findWindowBySlot(slot);
+      const toRemove = this._findWindowBySlot(slot, parentId, id);
       if (toRemove) {
         this.remove(toRemove.id);
       }
@@ -469,22 +514,21 @@ class WindowManager {
         `A window with id ${windowComponentOptions.id} has already been registered.`,
       );
     }
+    if (
+      windowComponentOptions.slot === WindowSlot.DYNAMIC_CHILD &&
+      !windowComponentOptions.parentId
+    ) {
+      throw new Error('A child window must have a parent id');
+    }
     const id = windowComponentOptions.id || uuidv4();
     const parentId = windowComponentOptions?.parentId;
     const slotOption =
       windowComponentOptions.slot?.value || windowComponentOptions.slot;
     const slot = parseEnumValue(slotOption, WindowSlot, WindowSlot.DETACHED);
-    if (
-      slot === WindowSlot.DYNAMIC_CHILD &&
-      !this.has(windowComponentOptions.parentId)
-    ) {
-      throw new Error(
-        `The mandatory parent window with id ${windowComponentOptions.parentId} is not registered. Add the parent window or choose another slot than dynamicChild.`,
-      );
-    }
     const windowPositionOptions = this._getPositionOptionsForSlot(
       slot,
       windowComponentOptions.position,
+      parentId,
     );
     const windowPosition = windowPositionFromOptions(windowPositionOptions);
 
@@ -562,7 +606,7 @@ class WindowManager {
     };
     const cached = this._assignCachedPosition(windowComponent);
     if (!cached) {
-      this._removeWindowAtSlot(slot);
+      this._removeWindowAtSlot(slot, state.parentId, state.id);
     }
     this._windowComponents.set(id, windowComponent);
     this.componentIds.push(id);
@@ -597,12 +641,17 @@ class WindowManager {
     if (!component?.state?.dockable) {
       return;
     }
-    this._removeWindowAtSlot(component.initialSlot);
+    this._removeWindowAtSlot(
+      component.initialSlot,
+      component.parentId,
+      component.id,
+    );
     component.slot.value = component.initialSlot;
     component.state.dockable = false;
     const dockedPosition = this._getPositionOptionsForSlot(
       component.initialSlot,
       component.initialPositionOptions,
+      component.parentId,
     );
     windowPositionFromOptions(dockedPosition, component.position);
     this._windowPositionsCache.delete(id);

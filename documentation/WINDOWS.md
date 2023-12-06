@@ -304,14 +304,17 @@ const childWindowComponentOptions = {
 };
 ```
 
-> The parent window's slot must be one of `'STATIC'`, `'DYNAMIC_LEFT'` or `'DETACHED'`.
-
 Behaviour of the child window:
 
 - The child window is always opened top-right of the parent window.
 - The child window can be moved away from and docked to the parent window.
 - The child window is moved with the parent window, if it is docked.
 - The child window is closed, when the parent window is closed.
+- If the parent window is not open, the child window is automatically
+  position like a `DYNAMIC_LEFT` window. This means, it acts as
+  any other `DYNAMIC_LEFT` window: it will be closed, if said slot is
+  used, it will be moved if opening a `STATIC` window and it closes
+  any window already placed at `DYNAMIC_LEFT`.
 
 ## Props & Provide/Inject
 
