@@ -3,11 +3,10 @@
     v-if="
       toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp
     "
-    class="vcs-toolbox toolbar__secondary mx-auto v-sheet marginToTop"
+    class="vcs-toolbox mx-auto v-sheet marginToTop"
     :class="{
       'rounded-b': !open,
-      primary: !isDefaultToolbox,
-      'lighten-5': !isDefaultToolbox,
+      toolbar__secondary: !isDefaultToolbox,
     }"
     :height="40"
     width="fit-content"
@@ -50,7 +49,14 @@
     top: 0;
     left: 0;
     right: 0;
-
+    &.vcs-toolbox.theme {
+      &--light {
+        background-color: var(--v-primary-lighten3) !important;
+      }
+      &--dark {
+        background-color: var(--v-primary-darken4) !important;
+      }
+    }
     &.v-toolbar {
       ::v-deep .v-toolbar__content {
         padding: 0;
