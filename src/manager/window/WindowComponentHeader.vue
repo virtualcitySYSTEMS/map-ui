@@ -13,7 +13,7 @@
       </v-icon>
       <span
         class="d-inline-block user-select-none font-weight-bold"
-        :class="{ 'text--primary': isOnTop }"
+        :class="{ 'primary--text': isOnTop }"
       >
         {{ translatedHeaderTitle }}
       </span>
