@@ -47,82 +47,102 @@
           />
         </v-list-item-content>
       </v-list-item>
-      <v-list-item
-        v-for="(item, index) in renderingItems"
-        :key="`item-${index}`"
-        :input-value="selected.includes(item)"
-        :disabled="item.disabled"
-        @mousedown.shift="$event.preventDefault()"
-        @mouseover="hovering = index"
-        @mouseout="hovering = undefined"
-        :draggable="isDraggable"
-        @dragstart="drag($event, item, index)"
-        @mouseup="drop($event, index)"
-        :class="{
-          'v-list-item__lighten_even': lightenEven,
-          'v-list-item__lighten_odd': !lightenEven,
-          'vcs-draggable-item': isDraggable,
-          'v-list-item__dragged': dragging === index,
-          'border-bottom': borderBottom(index),
-          'border-top': borderTop(index),
-        }"
-      >
-        <v-list-item-action v-if="selectable">
-          <v-icon v-if="selected.includes(item)" @click="remove(item)">
-            mdi-check-circle
-          </v-icon>
-          <v-icon
-            v-else
-            @click="singleSelect ? select(item, $event) : add(item)"
-          >
-            mdi-circle-outline
-          </v-icon>
-        </v-list-item-action>
-        <v-list-item-content
-          :class="[selectable && !isDraggable ? 'cursor-pointer' : '']"
-          @click="select(item, $event)"
+      <template v-for="(item, index) in renderingItems">
+        <v-list-item
+          :key="`item-${index}`"
+          :input-value="selected.includes(item)"
+          :disabled="item.disabled"
+          @mousedown.shift="$event.preventDefault()"
+          @mouseover="hovering = index"
+          @mouseout="hovering = undefined"
+          :draggable="isDraggable"
+          @dragstart="drag($event, item, index)"
+          @mouseup="drop($event, index)"
+          :class="{
+            'v-list-item__lighten_even': lightenEven,
+            'v-list-item__lighten_odd': !lightenEven,
+            'vcs-draggable-item': isDraggable,
+            'v-list-item__dragged': dragging === index,
+            'border-bottom': borderBottom(index),
+            'border-top': borderTop(index),
+          }"
         >
-          <v-icon v-if="item.icon">
-            {{ item.icon }}
-          </v-icon>
-          <VcsTooltip
-            :tooltip="
-              dragging !== undefined
-                ? undefined
-                : $t(item.tooltip || overflowTitle(index, item.title))
-            "
+          <v-list-item-action v-if="selectable">
+            <v-icon v-if="selected.includes(item)" @click="remove(item)">
+              mdi-check-circle
+            </v-icon>
+            <v-icon
+              v-else
+              @click="singleSelect ? select(item, $event) : add(item)"
+            >
+              mdi-circle-outline
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content
+            :class="[selectable && !isDraggable ? 'cursor-pointer' : '']"
+            @click="select(item, $event)"
           >
-            <template #activator="{ on, attrs }">
-              <v-list-item-title v-bind="attrs" v-on="on" ref="titles">
-                <VcsTextField
-                  v-if="item.rename"
-                  :value="item.title"
-                  autofocus
-                  :no-padding="true"
-                  @input="(value) => rename(item, value)"
-                  @click.stop
-                  @keydown.enter="item.rename = false"
-                  @blur="item.rename = false"
-                  :rules="[(v) => !!v || 'components.validation.required']"
-                />
-                <span v-else>
-                  {{ $t(item.title) }}
-                </span>
-              </v-list-item-title>
-            </template>
-          </VcsTooltip>
-        </v-list-item-content>
-        <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
-        <v-list-item-action>
-          <vcs-action-button-list
-            v-if="item.actions?.length > 0"
-            :actions="item.actions"
-            :disabled="item.disabled"
-            :block-overflow="true"
-            :overflow-count="actionButtonListOverflowCount"
-          />
-        </v-list-item-action>
-      </v-list-item>
+            <v-icon v-if="item.icon">
+              {{ item.icon }}
+            </v-icon>
+            <VcsTooltip
+              :tooltip="
+                dragging !== undefined
+                  ? undefined
+                  : $t(item.tooltip || overflowTitle(index, item.title))
+              "
+            >
+              <template #activator="{ on, attrs }">
+                <v-list-item-title
+                  v-bind="attrs"
+                  v-on="on"
+                  ref="titles"
+                  class="d-flex gap-2"
+                >
+                  <slot name="item.prepend-title" :item="item" :index="index" />
+                  <slot name="item.title" :item="item" :index="index">
+                    <VcsTextField
+                      v-if="item.rename"
+                      :value="item.title"
+                      autofocus
+                      :no-padding="true"
+                      @input="(value) => rename(item, value)"
+                      @click.stop
+                      @keydown.enter="item.rename = false"
+                      @blur="item.rename = false"
+                      :rules="[(v) => !!v || 'components.validation.required']"
+                    />
+                    <span v-else>
+                      {{ $t(item.title) }}
+                    </span>
+                  </slot>
+                  <slot
+                    name="item.append-title"
+                    :item="item"
+                    :index="index"
+                    class="ml-auto"
+                  />
+                </v-list-item-title>
+              </template>
+            </VcsTooltip>
+          </v-list-item-content>
+          <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
+          <v-list-item-action>
+            <vcs-action-button-list
+              v-if="item.actions?.length > 0"
+              :actions="item.actions"
+              :disabled="item.disabled"
+              :block-overflow="true"
+              :overflow-count="actionButtonListOverflowCount"
+            />
+          </v-list-item-action>
+        </v-list-item>
+        <slot name="item.intermediate" :item="item" :index="index" />
+        <div
+          v-if="hasIntermediateSlot"
+          :key="`item-intermediate-child-balance-${index}`"
+        />
+      </template>
     </v-list>
   </div>
 </template>
@@ -156,6 +176,7 @@
    * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
    * @property {Array<VcsAction>} [actions]
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
+   * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. called before value update
    */
 
   /**
@@ -197,6 +218,10 @@
    * @vue-prop {Array<VcsAction>} [actions] - actions to render in the list title
    * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
    * @vue-event {ItemRenamedEvent} item-renamed - event triggered after item was renamed
+   * @vue-data {slot} [#item.prepend-title] - A slot to adapt the list item titel, adding content before the title. Binds item and index.
+   * @vue-data {slot} [#item.title] - A slot to adapt the list item titel. Default content is a span or VcsTextField for active rename action. Binds item and index.
+   * @vue-data {slot} [#item.append-title] - A slot to adapt the list item titel, adding content after the title. Binds item and index.
+   * @vue-data {slot} [#item.intermediate] - A slot to introduce content, e.g. buttons between two list items. Binds item and index.
    */
   export default {
     name: 'VcsList',
@@ -273,7 +298,7 @@
         default: undefined,
       },
     },
-    setup(props, { emit }) {
+    setup(props, { emit, slots }) {
       /** @type {import("vue").Ref<Array<VcsListItem>>} */
       const selected = ref(props.value);
       /** @type {import("vue").Ref<string>} */
@@ -548,8 +573,10 @@
         rename(item, newTitle) {
           if (newTitle) {
             emit('item-renamed', { item, newTitle });
+            item.titleChanged?.(newTitle);
           }
         },
+        hasIntermediateSlot: computed(() => !!slots['item.intermediate']),
       };
     },
   };

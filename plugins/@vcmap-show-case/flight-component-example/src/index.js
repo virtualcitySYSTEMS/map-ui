@@ -1,6 +1,6 @@
 import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from '../package.json';
-import component from './ViewpointExample.vue';
+import component from './FlightExample.vue';
 
 export default function viewpointExamplePlugin() {
   return {
@@ -16,13 +16,13 @@ export default function viewpointExamplePlugin() {
     initialize(vcsApp) {
       const { action, destroy } = createToggleAction(
         {
-          name: 'Viewpoint Example',
+          name: 'Flight Example',
           icon: '$vcsPoi',
         },
         {
-          id: 'viewpoint-component-example',
+          id: 'flight-component-example',
           state: {
-            headerTitle: 'Viewpoint Example',
+            headerTitle: 'Flight Example',
             headerIcon: '$vcsPoi',
           },
           component,
@@ -32,7 +32,7 @@ export default function viewpointExamplePlugin() {
         packageJSON.name,
       );
       vcsApp.navbarManager.add(
-        { id: 'viewpoint-component-example', action },
+        { id: 'flight-component-example', action },
         packageJSON.name,
         ButtonLocation.TOOL,
       );

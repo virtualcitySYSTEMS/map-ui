@@ -20,6 +20,9 @@
 - Add a new icon `ComponentPlusIcon.vue` for the 'Add to my Workspace' button inside toolbox component window.
 - Adds `VcsExtent.vue` and `extentActions.js`, extent input component and extent action helper functions
 - Change type of CollectionComponentClass items from `VcsListItem` to `CollectionComponentListItem`. Add sorting of list item actions.
+- Extend VcsList by four slots: `#item.prepend-title`, `#item.title`, `item.append-title` to adapt the list item title and `#item.intermediate` to add content between list items.
+- Add ui components for flights: `VcsFlightComponent.vue`, `VcsFlightAnchorsComponent.vue`, `VcsFlightPlayer.vue` and `VcsFlightEditor.vue`
+- Changed representation of units on `VcsTextField.vue`. Units are now rendered in append slot, the value is not mutated anymore.
 
 ### Ui Behaviour Changes
 

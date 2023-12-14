@@ -2,7 +2,7 @@
   <v-sheet>
     <VcsFormSection
       heading="components.viewpoint.general"
-      expandable
+      :expandable="expandable"
       start-open
       v-if="!(hideGeneral || (hideName && hideTitle && hideAnimate))"
     >
@@ -61,7 +61,7 @@
     </VcsFormSection>
     <VcsFormSection
       heading="components.viewpoint.positionAndOrientation"
-      expandable
+      :expandable="expandable"
       start-open
       :header-actions="[updateFromViewAction, editAction]"
     >
@@ -167,16 +167,24 @@
 </template>
 
 <script>
-  import { computed, inject, onUnmounted, reactive, ref, watch } from 'vue';
+  import {
+    computed,
+    inject,
+    onMounted,
+    onUnmounted,
+    reactive,
+    ref,
+    watch,
+  } from 'vue';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
   import { CesiumMap, ObliqueMap, OpenlayersMap, Viewpoint } from '@vcmap/core';
-  import VcsFormSection from './form-inputs-controls/VcsFormSection.vue';
-  import VcsLabel from './form-inputs-controls/VcsLabel.vue';
-  import VcsTextField from './form-inputs-controls/VcsTextField.vue';
-  import VcsCheckbox from './form-inputs-controls/VcsCheckbox.vue';
-  import VcsCoordinate from './form-inputs-controls/VcsCoordinate.vue';
-  import VcsSlider from './form-inputs-controls/VcsSlider.vue';
-  import { usePrimitiveProperty } from './vector-properties/composables.js';
+  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
+  import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
+  import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
+  import { usePrimitiveProperty } from '../vector-properties/composables.js';
 
   /**
    * @param {import("vue").emit} emit
@@ -197,7 +205,7 @@
    * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
    * @param {import("vue").Ref<boolean>} isCesiumMap
    * @param {boolean} active - whether to set up post render handler on creation
-   * @returns {{action: import("../actions/actionHelper.js").VcsAction, destroy: function():void}}
+   * @returns {{action: import("../../actions/actionHelper.js").VcsAction, destroy: function():void}}
    */
   function createEditingAction(app, emit, getModelValue, isCesiumMap, active) {
     let destroyPostRenderListener = () => {};
@@ -293,9 +301,10 @@
   }
 
   /**
-   * @description A component to model @vcmap/core/ViewpointOptions.
-   * @vue-prop {import("@vcmap/core").VectorStyleItemOptions} value - The ViewpointOptions that should be modelled.
+   * @description A component to model @vcmap/core/ViewpointOptions. Stops playing flights on mounted.
+   * @vue-prop {import("@vcmap/core").ViewpointOptions} value - The ViewpointOptions that should be modelled.
    * @vue-prop {boolean} [startSync=true] - Set false to start in manual edit mode, without camera synchronization.
+   * @vue-prop {boolean} [expandable] - Expandable sections.
    * @vue-prop {boolean} hideName - Hide name input.
    * @vue-prop {boolean} hideTitle - Hide title input.
    * @vue-prop {boolean} hideAnimate - Hide animate & duration input.
@@ -323,6 +332,10 @@
       startSync: {
         type: Boolean,
         default: true,
+      },
+      expandable: {
+        type: Boolean,
+        default: false,
       },
       hideName: {
         type: Boolean,
@@ -438,6 +451,11 @@
           updateFromViewAction.disabled = editAction.active;
         },
       );
+
+      onMounted(() => {
+        app.flights.player?.stop();
+      });
+
       onUnmounted(() => {
         destroy();
         mapWatcher();

@@ -31,6 +31,7 @@
             'remove-outline': !isOutlined,
             'outline--current': focus,
             'outline--error': !!errorMessage,
+            'input--unit': !!unit,
             'input--dense': isDense,
             'input--not-dense': !isDense,
             'file-border-bottom':
@@ -39,7 +40,11 @@
               !hover &&
               !errorMessage,
           }"
-        />
+        >
+          <template #append>
+            <slot name="append">{{ unit }}</slot>
+          </template>
+        </component>
       </template>
     </VcsTooltip>
   </div>
@@ -79,6 +84,17 @@
       .v-input__slot fieldset,
       .v-text-field__slot input {
         border-color: var(--v-error-base);
+      }
+    }
+  }
+  .input--unit {
+    ::v-deep {
+      .v-text-field__slot input {
+        text-align: right;
+        padding-right: 3px;
+      }
+      .v-input__append-inner {
+        margin-top: 6px !important;
       }
     }
   }
@@ -230,29 +246,16 @@
           !(attrs.disabled || attrs.disabled === '')
         );
       });
-      const roundedValue = computed(() => {
-        if (
-          attrs.type === 'number' &&
-          Number.isFinite(attrs.value) &&
-          props.decimals >= 0
-        ) {
-          return parseFloat(attrs.value.toFixed(props.decimals));
-        }
-        return attrs.value;
-      });
       const visibleValue = computed({
         get() {
           if (
             attrs.type === 'number' &&
             Number.isFinite(attrs.value) &&
-            props.unit &&
-            !focus.value &&
-            !hover.value
+            props.decimals >= 0
           ) {
-            return `${roundedValue.value} ${props.unit}`;
-          } else {
-            return roundedValue.value ?? '';
+            return parseFloat(attrs.value.toFixed(props.decimals));
           }
+          return attrs.value ?? '';
         },
         set(value) {
           if (attrs.type === 'file') {

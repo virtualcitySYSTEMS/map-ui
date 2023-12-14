@@ -37,7 +37,6 @@
 
       return {
         viewpointOptions,
-        defaultViewpointOptions,
         reset() {
           viewpointOptions.value = structuredClone(defaultViewpointOptions);
           app.maps.activeMap.gotoViewpoint(

@@ -615,6 +615,10 @@
       "entry": "plugins/@vcmap-show-case/viewpoint-component-example/index.js"
     },
     {
+      "name": "flight-component-example",
+      "entry": "plugins/@vcmap-show-case/flight-component-example/index.js"
+    },
+    {
       "name": "vector-properties-example",
       "entry": "plugins/@vcmap-show-case/vector-properties-example/index.js"
     },

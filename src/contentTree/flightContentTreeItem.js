@@ -1,4 +1,4 @@
-import { CesiumMap, createFlightPlayer } from '@vcmap/core';
+import { CesiumMap } from '@vcmap/core';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
@@ -68,7 +68,7 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
   _setupPlayer() {
     let stateListener = () => {};
     let destroyListener = () => {};
-    /** @type {import("@vcmap/core").FlightPlayer} */
+    /** @type {import("@vcmap/core").FlightPlayer|undefined} */
     let player;
 
     const stopAction = {
@@ -92,33 +92,37 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
             player.play();
           }
         } else {
-          player = await createFlightPlayer(this._flight, this._app);
-          stateListener = player.stateChanged.addEventListener((state) => {
-            if (state === 'stopped') {
-              this.removeAction(stopAction.name);
-              playAction.icon = 'mdi-play';
-              playAction.title = 'flight.playTooltip';
-              executeCallbacks(this._app, this._onDeactivate);
-            } else {
-              if (!this.actions.includes(stopAction)) {
-                this.addAction(stopAction);
-              }
-              if (state === 'paused') {
+          player = await this._app.flights.setPlayerForFlight(this._flight);
+          if (player) {
+            stateListener = player.stateChanged.addEventListener((state) => {
+              if (state === 'stopped') {
+                this.removeAction(stopAction.name);
                 playAction.icon = 'mdi-play';
                 playAction.title = 'flight.playTooltip';
+                executeCallbacks(this._app, this._onDeactivate);
               } else {
-                playAction.icon = 'mdi-pause';
-                playAction.title = 'flight.pauseTooltip';
+                if (!this.actions.includes(stopAction)) {
+                  this.addAction(stopAction);
+                }
+                if (state === 'paused') {
+                  playAction.icon = 'mdi-play';
+                  playAction.title = 'flight.playTooltip';
+                } else {
+                  playAction.icon = 'mdi-pause';
+                  playAction.title = 'flight.pauseTooltip';
+                }
               }
-            }
-          });
-          destroyListener = player.destroyed.addEventListener(() => {
-            player = null;
-            this.removeAction(stopAction.name);
-            playAction.icon = 'mdi-play';
-          });
-          player.play();
-          executeCallbacks(this._app, this._onActivate);
+            });
+            destroyListener = player.destroyed.addEventListener(() => {
+              player = null;
+              this.removeAction(stopAction.name);
+              playAction.icon = 'mdi-play';
+              stateListener();
+              destroyListener();
+            });
+            player.play();
+            executeCallbacks(this._app, this._onActivate);
+          }
         }
       },
     };
@@ -126,8 +130,6 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
     this.addAction(playAction, 12);
 
     this._listeners.push(() => {
-      stateListener();
-      destroyListener();
       if (player) {
         player.stop();
         player.destroy();

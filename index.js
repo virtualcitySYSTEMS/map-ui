@@ -260,7 +260,16 @@ export {
 } from './src/components/style/VcsVectorStyleComponent.vue';
 
 export { default as VcsVectorPropertiesComponent } from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
-export { default as VcsViewpointComponent } from './src/components/VcsViewpointComponent.vue';
+export { default as VcsViewpointComponent } from './src/components/viewpoint/VcsViewpointComponent.vue';
+export { default as VcsViewpointEditor } from './src/components/viewpoint/VcsViewpointEditor.vue';
+export { default as VcsFlightComponent } from './src/components/flight/VcsFlightComponent.vue';
+export { default as VcsFlightAnchorsComponent } from './src/components/flight/VcsFlightAnchorsComponent.vue';
+export { default as VcsFlightPlayer } from './src/components/flight/VcsFlightPlayer.vue';
+export { default as VcsFlightEditor } from './src/components/flight/VcsFlightEditor.vue';
+export {
+  getProvidedFlightInstance,
+  setupFlightAnchorEditingListener,
+} from './src/components/flight/composables.js';
 
 // export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
 // export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';

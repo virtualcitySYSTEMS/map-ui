@@ -1,7 +1,10 @@
 <template>
   <section class="vcs-form-section">
     <slot name="header" :heading="heading" :actions="actions">
-      <div class="vcs-form-section-header d-flex base lighten-3">
+      <div
+        class="vcs-form-section-header d-flex base lighten-3"
+        :aria-expanded="open"
+      >
         <div class="d-flex justify-space-between w-full">
           <div class="d-flex align-center" :class="{ 'px-2': !expandable }">
             <v-btn
@@ -15,6 +18,7 @@
               elevation="0"
               @click="open = !open"
               v-if="expandable"
+              :aria-expanded="open"
             >
               <v-icon>{{
                 open ? 'mdi-chevron-down' : 'mdi-chevron-right'
