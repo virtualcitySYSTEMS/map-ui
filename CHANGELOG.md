@@ -23,8 +23,10 @@
 - Extend VcsList by four slots: `#item.prepend-title`, `#item.title`, `item.append-title` to adapt the list item title and `#item.intermediate` to add content between list items.
 - Add ui components for flights: `VcsFlightComponent.vue`, `VcsFlightAnchorsComponent.vue`, `VcsFlightPlayer.vue` and `VcsFlightEditor.vue`
 - Changed representation of units on `VcsTextField.vue`. Units are now rendered in append slot, the value is not mutated anymore.
+- Adds the functionality to create and display Imprint and Data Protection Information as Link or Markdown Text
+- Adds `markdownHelper.js` to translate markdown into Html
 
-### Ui Behaviour Changes
+### Ui Behaviour ChangesF
 
 - `CollectionManager.vue` now opens `show all` list inside its own Component.
 - `CollectionComponent.vue` now emits an `openList` event instead of opening a list view in another window.

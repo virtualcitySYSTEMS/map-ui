@@ -8,6 +8,13 @@ import { ref } from 'vue';
  */
 
 /**
+ * @typedef {Object} TextPageType
+ * @property {string} title
+ * @property {url} [url]
+ * @property {string} [content]
+ */
+
+/**
  * @typedef {Object} UiConfigObject
  * @property {string} [logo] - the company logo to display. this will override any and all css overrides.
  * @property {string} [mobileLogo] - an alternative logo to display in mobile view
@@ -16,6 +23,8 @@ import { ref } from 'vue';
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
  * @property {string} [positionDisplayEventType] - mouse event, when position display is updated. Either 'click' (default) or 'move'.
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
+ * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer.
+ * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer.
  */
 
 /**

@@ -12,6 +12,7 @@ export {
   createZoomToFeatureAction,
   createRenameAction,
 } from './src/actions/actionHelper.js';
+export { parseAndSanitizeMarkdown } from './src/application/markdownHelper.js';
 export {
   createStateRefAction,
   StateActionState,
@@ -223,6 +224,7 @@ export { default as VcsWizardStep } from './src/components/form-inputs-controls/
 export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.vue';
 
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
+export { default as VcsTextPage } from './src/application/VcsTextPage.vue';
 
 export {
   default as VcsActionList,

@@ -1,5 +1,5 @@
 <template>
-  <span class="d-inline-block text-truncate mr-10 attribution-wrap">
+  <span class="d-inline-block text-truncate mr-10">
     <span
       v-for="attribution in mergedAttributions"
       class="attribution-span"
@@ -10,7 +10,6 @@
       </a>
     </span>
     <VcsButton
-      class="d-flex"
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
       :icon="attributionAction.icon"
@@ -23,8 +22,6 @@
 
 <style lang="scss" scoped>
   .attribution-wrap .vcs-button-wrap {
-    position: absolute;
-    right: 4px;
     bottom: 3px;
   }
 

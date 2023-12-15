@@ -9,6 +9,22 @@
     "epsg": "25833",
     "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
   },
+  "uiConfig": [
+    {
+      "name": "imprint",
+      "value": {
+        "title": "footer.imprint.title",
+        "content": "MyImpressum.content"
+      }
+    },
+    {
+      "name": "dataProtection",
+      "value": {
+        "title": "footer.dataprotection.title",
+        "url": "https://vc.systems/datenschutz/"
+      }
+    }
+  ],
   "i18n": [
     {
       "name": "base",
@@ -29,6 +45,9 @@
           "building": {
             "title": "3D Gebäude"
           }
+        },
+        "MyImpressum": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)<br>**Firmierung:** <br>Musterfirma GmbH<br><br>**Sitz:**<br>Musterstadt<br><br>**Adresse:**<br>Musterstraße 1 a<br>12345 Musterstadt<br>Deutschland<br><br> **Telefon:** +49 (0) 00 . 0000 . 000 . 00<br> **Telefax:** +49 (0) 00 . 0000 . 000 . 00<br> **E-Mail:** [info@musterfirma.de](mailto:info@musterfirma.de)<br><br>**Geschäftsführer:**<br>- Max Mustermann<br><br>**Registergericht:**<br>Musterstadt 1234567<br><br>**Steuernummer:**<br>11/222/33333<br><br>**Umsatzsteuer-ID:**<br>DE1234567890<br><br>**Copyright:**<br>Alle Rechte vorbehalten. Sämtliche Inhalte (Texte, Bilder, Grafiken, Animationen) sind urheberrechtlich geschützt. Sie dürfen ohne Zustimmung der Musterfirma GmbH zu kommerziellen Zwecken weder kopiert, verbreitet noch verändert werden.<br>(Copyright 2023 Musterfirma GmbH)<br><br>**Inhalte:**<br>Trotz sorgfältiger Bearbeitung kann die Musterfirma GmbH für die Fehlerfreiheit und Genauigkeit der angebotenen Informationen auf [www.musterfirma.de](http://www.musterfirma.de) nicht garantieren. Jegliche Haftung für Schäden, die direkt oder indirekt aus der Benutzung von [www.musterfirma.de](http://www.musterfirma.de) entstehen und nicht auf Vorsatz oder grober Fahrlässigkeit der Musterfirma GmbH beruhen, ist ausgeschlossen. Für die Inhalte von mit [www.musterfirma.de](http://www.musterfirma.de) verlinkter Websites ist grundsätzlich jede Haftung ausgeschlossen.<br><br>**Datenschutz:**<br>Die Musterfirma GmbH nimmt den Schutz Ihrer persönlichen Daten sehr ernst. Wir halten uns strikt an die Regeln der Datenschutzgesetze. Personenbezogene Daten werden auf dieser Webseite nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder aus anderen Gründen an Dritte weitergegeben. Unsere vollständige Datenschutzerklärung können Sie [hier](#) nachlesen.<br>"
         }
       },
       "en": {
@@ -48,6 +67,9 @@
           "building": {
             "title": "3D buildings"
           }
+        },
+        "MyImpressum": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)<br>**Company name:** <br>Musterfirma GmbH<br><br>**Company headquarters:**<br>Musterstadt<br><br>**Address:**<br>Musterstraße 1 a<br>12345 Musterstadt<br>Germany<br><br> **Phone:** +49 (0) 00 . 0000 . 000 . 00<br> **Fax:** +49 (0) 00 . 0000 . 000 . 00<br> **E-Mail:** [info@musterfirma.de](mailto:info@musterfirma.de)<br><br>**Managing Director:**<br>- Max Mustermann<br><br>**Registry court:**<br>Musterstadt 1234567<br><br>**Tax number:**<br>11/222/33333<br><br>**VAT ID:**<br>DE1234567890<br><br>**Copyright:**<br>All rights reserved. All contents (texts, images, graphics, animations) are protected by copyright. They may not be copied, distributed or modified for commercial purposes without the consent of Musterfirma GmbH.<br>(Copyright 2023 Musterfirma GmbH)<br><br>**Contents:**<br>Despite careful editing, Musterfirma GmbH cannot guarantee the correctness and accuracy of the information provided on [www.musterfirma.de](http://www.musterfirma.de). Any liability for damages arising directly or indirectly from the use of [www.musterfirma.de](http://www.musterfirma.de) and which are not based on intent or gross negligence on the part of Musterfirma GmbH is excluded. No liability is accepted for the content of websites linked to [www.musterfirma.de](http://www.musterfirma.de).<br><br>**Data protection:**<br>Musterfirma GmbH takes the protection of your personal data very seriously. We adhere strictly to the rules of the data protection laws. Personal data is only collected on this website to the extent that is technically necessary. Under no circumstances will the data collected be sold or passed on to third parties for other reasons. You can read our complete privacy policy [here](#).<br>"
         }
       }
     }

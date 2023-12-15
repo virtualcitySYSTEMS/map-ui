@@ -237,6 +237,14 @@ const messages = {
       tooltip: 'Öffne Attributionsfenster',
       empty: 'Aktuell sind keine Attributionseinträge verfügbar.',
     },
+    imprint: {
+      title: 'Impressum',
+      tooltip: 'Öffne Impressumsfenster',
+    },
+    dataprotection: {
+      title: 'Datenschutz',
+      tooltip: 'Öffne Datenschutzfenster',
+    },
     positionDisplay: {
       title: 'Positionsanzeige',
       projection: 'Projektionsauswahl',

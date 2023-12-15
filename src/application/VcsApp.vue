@@ -38,10 +38,22 @@
       class="d-flex gap-1 pa-0"
     >
       <VcsPositionDisplay />
+
+      <VcsTextPageFooter
+        v-if="imprint"
+        :text-page="imprint"
+        :window-id="'imprintWindow'"
+      />
+      <VcsTextPageFooter
+        v-if="dataProtection"
+        :text-page="dataProtection"
+        :window-id="'dataProtectionWindow'"
+      />
       <VcsAttributionsFooter
+        class="align-wrapper"
         :entries="attributionEntries"
         :attribution-action="attributionAction"
-      />
+      ></VcsAttributionsFooter>
     </v-footer>
   </v-container>
 </template>
@@ -49,6 +61,11 @@
 <style scoped lang="scss">
   ::v-deep .v-application--wrap {
     min-height: fit-content;
+  }
+  .align-wrapper {
+    position: absolute;
+    right: 0;
+    margin-right: 4px !important;
   }
   .vcs-main {
     position: absolute;
@@ -112,6 +129,7 @@
   import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
+  import VcsTextPageFooter from './VcsTextPageFooter.vue';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
@@ -530,6 +548,7 @@
       VcsButton,
       VcsPositionDisplay,
       VcsAttributionsFooter,
+      VcsTextPageFooter,
       MapNavigation,
       VcsNavbar,
       VcsMap,
@@ -593,6 +612,10 @@
             app.uiConfig.config.value.mobileLogo ??
             app.uiConfig.config.value.logo ??
             VcsDefaultLogoMobile,
+        ),
+        imprint: computed(() => app.uiConfig.config.value.imprint),
+        dataProtection: computed(
+          () => app.uiConfig.config.value.dataProtection,
         ),
         attributionEntries,
         attributionAction,

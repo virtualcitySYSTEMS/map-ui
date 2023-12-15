@@ -237,6 +237,14 @@ const messages = {
       tooltip: 'Open attributions window',
       empty: 'Currently there are no attribution entries available.',
     },
+    imprint: {
+      title: 'Imprint',
+      tooltip: 'Open imprint window',
+    },
+    dataprotection: {
+      title: 'Data Protection',
+      tooltip: 'Open data protection window',
+    },
     positionDisplay: {
       title: 'Position display',
       projection: 'Select projection',

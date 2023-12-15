@@ -43,6 +43,8 @@
     "@vcsuite/check": "^1.1.2",
     "@vcsuite/logger": "^1.0.1",
     "@vcsuite/parsers": "^1.0.3",
+    "dompurify": "^3.0.6",
+    "marked": "^11.1.0",
     "semver": "^7.5.4",
     "uuid": "^9.0.0",
     "vue-i18n": "^8.24.1"
