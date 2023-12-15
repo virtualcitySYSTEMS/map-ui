@@ -1,10 +1,35 @@
-import { ToolboxType } from '@vcmap/ui';
-import { ref, watch } from 'vue';
+import { ButtonLocation, ToolboxType } from '@vcmap/ui';
+import { reactive, ref, watch } from 'vue';
 import packageJSON from '../package.json';
 import {
   createDummyTriStateAction,
   dummyToolboxAction,
 } from './dummyToolboxActions.js';
+
+function createToolboxChanger(app) {
+  const action = reactive({
+    name: 'Toolbox Changer',
+    active: false,
+    callback() {
+      if (app.toolboxManager.toolboxName !== packageJSON.name) {
+        app.toolboxManager.toolboxName = packageJSON.name;
+      } else {
+        app.toolboxManager.setDefaultToolboxName();
+      }
+    },
+  });
+
+  const destroy = app.toolboxManager.toolboxNameChanged.addEventListener(
+    (toolboxName) => {
+      action.active = toolboxName === packageJSON.name;
+    },
+  );
+
+  return {
+    action,
+    destroy,
+  };
+}
 
 /**
  * @returns {VcsPlugin}
@@ -19,6 +44,52 @@ export default async function toolboxExample() {
     },
     get mapVersion() {
       return packageJSON.mapVersion;
+    },
+    initialize(app) {
+      const { action, destroy } = createToolboxChanger(app);
+      app.navbarManager.add(
+        { id: 'toolbox-changer', action },
+        packageJSON.name,
+        ButtonLocation.TOOL,
+      );
+      let toolboxListener = () => {};
+      if (app.toolboxManager.has('featureInfo')) {
+        app.toolboxManager
+          .get('featureInfo')
+          ?.toolboxNames.push(packageJSON.name);
+      } else {
+        toolboxListener = app.toolboxManager.added.addEventListener(
+          (component) => {
+            if (component.id === 'featureInfo') {
+              component.toolboxNames.push(packageJSON.name);
+            }
+          },
+        );
+      }
+      this._destroyToolboxChanger = [destroy, toolboxListener];
+
+      const changedToolboxComponentExampleOptions = {
+        id: 'namedDingleSelect',
+        type: ToolboxType.SINGLE,
+        toolboxNames: [packageJSON.name],
+        action: {
+          name: 'select',
+          title: 'single select',
+          icon: 'mdi-eye',
+          active: false,
+          disabled: false,
+          callback() {
+            this.disabled = true;
+            setTimeout(() => {
+              this.disabled = false;
+            }, 2000);
+          },
+        },
+      };
+      app.toolboxManager.add(
+        changedToolboxComponentExampleOptions,
+        packageJSON.name,
+      );
     },
     onVcsAppMounted(app) {
       const disabled = ref(false);
@@ -179,6 +250,7 @@ export default async function toolboxExample() {
     },
     destroy() {
       this._stopWatching();
+      this._destroyToolboxChanger.forEach((cb) => cb());
       if (this._destroyAction) {
         this._destroyAction();
         this._destroyAction = null;
