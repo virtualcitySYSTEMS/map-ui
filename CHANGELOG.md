@@ -49,6 +49,7 @@
 - Fixes ContentTreeItem serialization by adding missing properties in toJSON
 - Allow tristate for SelectToolboxComponent by passing background prop and make all toolbox components shallow reactive
 - Fix style selector to handle defaultStyle and an empty style array
+- Fixes Bug in tableFeatureInfoView where the option `showSearchBar` could not be set to false;
 
 # 5.0.1
 
