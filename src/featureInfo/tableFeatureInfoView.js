@@ -1,3 +1,4 @@
+import { parseBoolean } from '@vcsuite/parsers';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import VcsTable from '../components/tables/VcsTable.vue';
 
@@ -62,7 +63,10 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
     /**
      * @type {boolean}
      */
-    this.showSearchbar = options.showSearchbar || defaultOptions.showSearchbar;
+    this.showSearchbar = parseBoolean(
+      options.showSearchbar,
+      defaultOptions.showSearchbar,
+    );
     /**
      * @type {string}
      */
