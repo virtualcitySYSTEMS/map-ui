@@ -31,10 +31,12 @@
 </template>
 
 <script>
-  import { inject } from 'vue';
+  import { computed, inject } from 'vue';
   import { IndexedCollection } from '@vcmap/core';
   import { VSheet } from 'vuetify/lib';
-  import VcsList from '../../components/lists/VcsList.vue';
+  import VcsList, {
+    createSelectionActions,
+  } from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
 
@@ -103,6 +105,14 @@
        */
       const collectionComponent = inject('collectionComponent');
 
+      const selectionActions = createSelectionActions(
+        collectionComponent.items,
+        collectionComponent.selection,
+        emit,
+      );
+
+      const actions = collectionComponent.getActions();
+
       return {
         title: collectionComponent.title,
         items: collectionComponent.items,
@@ -112,7 +122,15 @@
         singleSelect: collectionComponent.singleSelect,
         overflowCount: collectionComponent.overflowCount,
         limit: collectionComponent.limit,
-        actions: collectionComponent.getActions(),
+        actions: computed(() => {
+          if (
+            collectionComponent.selectable.value &&
+            !collectionComponent.singleSelect.value
+          ) {
+            return [...selectionActions, ...actions.value];
+          }
+          return actions.value;
+        }),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
         },

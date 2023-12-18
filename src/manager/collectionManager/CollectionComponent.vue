@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { inject } from 'vue';
+  import { computed, inject } from 'vue';
   import {
     VIcon,
     VExpansionPanel,
@@ -49,7 +49,9 @@
     VExpansionPanelContent,
     VSheet,
   } from 'vuetify/lib';
-  import VcsList from '../../components/lists/VcsList.vue';
+  import VcsList, {
+    createSelectionActions,
+  } from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { moveItem, renameItem } from './CollectionComponentList.vue';
@@ -77,6 +79,14 @@
        */
       const collectionComponent = inject('collectionComponent');
 
+      const selectionActions = createSelectionActions(
+        collectionComponent.items,
+        collectionComponent.selection,
+        emit,
+      );
+
+      const actions = collectionComponent.getActions();
+
       return {
         title: collectionComponent.title,
         items: collectionComponent.items,
@@ -86,7 +96,15 @@
         singleSelect: collectionComponent.singleSelect,
         overflowCount: collectionComponent.overflowCount,
         limit: collectionComponent.limit,
-        actions: collectionComponent.getActions(),
+        actions: computed(() => {
+          if (
+            collectionComponent.selectable.value &&
+            !collectionComponent.singleSelect.value
+          ) {
+            return [...selectionActions, ...actions.value];
+          }
+          return actions.value;
+        }),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
         },
@@ -112,6 +130,11 @@
     .v-list {
       .v-list-item {
         padding: 4px 8px 4px 28px;
+      }
+      .v-list-item__selected {
+        border-left: solid 4px;
+        border-left-color: var(--v-primary-base);
+        padding-left: 24px !important;
       }
     }
   }

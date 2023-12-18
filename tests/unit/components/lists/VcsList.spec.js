@@ -287,7 +287,7 @@ describe('VcsList', () => {
         ...getMountOptionsWithI18n(),
         propsData: { items, value, selectable: true },
       });
-      component.vm.selectAll();
+      component.vm.renderingActions[0].callback();
     });
 
     afterAll(() => {
@@ -310,6 +310,60 @@ describe('VcsList', () => {
       expect(selectionChangedFoo).not.toHaveBeenCalled();
       expect(selectionChangedBar).toHaveBeenCalledWith(true);
       expect(selectionChangedBaz).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('clear selection', () => {
+    let component;
+    let items;
+    let value;
+    let selectionChangedFoo;
+    let selectionChangedBar;
+    let selectionChangedBaz;
+
+    beforeAll(() => {
+      selectionChangedFoo = vi.fn();
+      selectionChangedBar = vi.fn();
+      selectionChangedBaz = vi.fn();
+      items = [
+        {
+          name: 'foo',
+          selectionChanged: selectionChangedFoo,
+        },
+        {
+          name: 'bar',
+          selectionChanged: selectionChangedBar,
+        },
+        {
+          name: 'baz',
+          selectionChanged: selectionChangedBaz,
+        },
+      ];
+      value = [items[0]];
+      component = shallowMount(VcsList, {
+        ...getMountOptionsWithI18n(),
+        propsData: { items, value, selectable: true },
+      });
+      component.vm.renderingActions[1].callback();
+    });
+
+    afterAll(() => {
+      component.destroy();
+    });
+
+    it('should emit a new value, clearing selection', () => {
+      const { input } = component.emitted();
+      expect(input).to.be.ok;
+      expect(input).have.lengthOf(1);
+      expect(input[0]).to.be.an('array').and.have.lengthOf(1);
+      expect(input[0][0]).to.be.an('array').and.have.lengthOf(0);
+      expect(input[0][0]).not.to.equal(value);
+    });
+
+    it('should call selectionChanged on previously selected items', () => {
+      expect(selectionChangedFoo).toHaveBeenCalledWith(false);
+      expect(selectionChangedBar).not.toHaveBeenCalled();
+      expect(selectionChangedBaz).not.toHaveBeenCalled();
     });
   });
 

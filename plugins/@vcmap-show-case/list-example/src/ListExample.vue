@@ -158,9 +158,6 @@
         <v-row no-gutters>
           <template v-if="selectable">
             <v-col>
-              <vcs-form-button @click="selected = []"> Clear </vcs-form-button>
-            </v-col>
-            <v-col>
               <v-switch
                 v-model="showSelection"
                 label="Show Selection"

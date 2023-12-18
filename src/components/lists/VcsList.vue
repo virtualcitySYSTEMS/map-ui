@@ -7,41 +7,25 @@
     />
     <v-list dense>
       <v-list-item v-if="showTitle" class="font-weight-bold">
-        <v-list-item-action v-if="selectable">
-          <v-spacer v-if="singleSelect" />
-          <v-icon
-            v-else-if="
-              selected.length ===
-              renderingItems.filter((item) => !item.disabled).length
-            "
-            @click="clear"
-          >
-            mdi-check-circle
-          </v-icon>
-          <v-icon
-            v-else-if="
-              selected.length > 0 && selected.length < renderingItems.length
-            "
-            @click="selectAll()"
-          >
-            mdi-minus-circle
-          </v-icon>
-          <v-icon v-else @click="selectAll()"> mdi-circle-outline </v-icon>
-        </v-list-item-action>
         <v-list-item-content>
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
-          <VcsTooltip :tooltip="$t(listHeaderTooltip)">
-            <template #activator="{ on, attrs }">
-              <v-list-item-title v-bind="attrs" v-on="on" ref="listHeader">
-                {{ $t(title) }}
-              </v-list-item-title>
-            </template>
-          </VcsTooltip>
+          <v-list-item-title>
+            <VcsTooltip :tooltip="$t(listHeaderTooltip)">
+              <template #activator="{ on, attrs }">
+                <span v-bind="attrs" v-on="on" ref="listHeader">
+                  {{ $t(title) }}
+                </span>
+              </template>
+            </VcsTooltip>
+            <span v-if="selectable && selected.length > 0">
+              {{ `( ${selected.length} )` }}
+            </span>
+          </v-list-item-title>
           <vcs-action-button-list
-            v-if="actions?.length > 0"
-            :actions="actions"
+            v-if="renderingActions?.length > 0"
+            :actions="renderingActions"
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
           />
@@ -58,7 +42,9 @@
           :draggable="isDraggable"
           @dragstart="drag($event, item, index)"
           @mouseup="drop($event, index)"
+          color="primary"
           :class="{
+            'v-list-item__selected': selected.includes(item),
             'v-list-item__lighten_even': lightenEven,
             'v-list-item__lighten_odd': !lightenEven,
             'vcs-draggable-item': isDraggable,
@@ -67,17 +53,6 @@
             'border-top': borderTop(index),
           }"
         >
-          <v-list-item-action v-if="selectable">
-            <v-icon v-if="selected.includes(item)" @click="remove(item)">
-              mdi-check-circle
-            </v-icon>
-            <v-icon
-              v-else
-              @click="singleSelect ? select(item, $event) : add(item)"
-            >
-              mdi-circle-outline
-            </v-icon>
-          </v-list-item-action>
           <v-list-item-content
             :class="[selectable && !isDraggable ? 'cursor-pointer' : '']"
             @click="select(item, $event)"
@@ -156,13 +131,50 @@
     VListItemAction,
     VIcon,
     VListItemTitle,
-    VSpacer,
   } from 'vuetify/lib';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+
+  /**
+   * @param {import("vue").Ref<VcsListItem[]>} items
+   * @param {import("vue").Ref<VcsListItem[]>} selected
+   * @param {function(event: string, ...args: any[]):void} emit
+   * @returns {Array<import("../../actions/actionHelper.js").VcsAction>}
+   */
+  export function createSelectionActions(items, selected, emit) {
+    return [
+      {
+        name: 'list.selectAll',
+        tooltip: 'list.selectAll',
+        callback() {
+          const currentSelection = [...selected.value];
+          selected.value = items.value.filter((item) => !item.disabled);
+          selected.value.forEach((item) => {
+            if (item.selectionChanged && !currentSelection.includes(item)) {
+              item.selectionChanged(true);
+            }
+          });
+          emit('input', selected.value);
+        },
+      },
+      {
+        name: 'list.clearSelection',
+        tooltip: 'list.clearSelection',
+        callback() {
+          [...selected.value].forEach((item) => {
+            if (item.selectionChanged) {
+              item.selectionChanged(false);
+            }
+          });
+          selected.value = [];
+          emit('input', selected.value);
+        },
+      },
+    ];
+  }
 
   /**
    * @typedef {Object} VcsListItem
@@ -175,6 +187,7 @@
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
    * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
    * @property {Array<VcsAction>} [actions]
+   * @property {function(PointerEvent):void} [clicked] - A callback called on item click. called before selection update
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
    * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. called before value update
    */
@@ -236,7 +249,6 @@
       VListItemAction,
       VIcon,
       VListItemTitle,
-      VSpacer,
       VcsTextField,
     },
     props: {
@@ -295,7 +307,7 @@
       actions: {
         type: Array,
         required: false,
-        default: undefined,
+        default: () => [],
       },
     },
     setup(props, { emit, slots }) {
@@ -405,6 +417,33 @@
         }
       }
 
+      /**
+       * @type {import("vue").ComputedRef<Array<VcsListItem>>}
+       */
+      const renderingItems = computed(() => {
+        let items = props.items.filter((i) => i.visible !== false);
+        if (query.value) {
+          items = items.filter((i) => filterPredicate(i, query.value));
+        }
+        return items;
+      });
+
+      const selectionActions = createSelectionActions(
+        renderingItems,
+        selected,
+        emit,
+      );
+
+      /**
+       * @type {import("vue").ComputedRef<Array<VcsAction>>}
+       */
+      const renderingActions = computed(() => {
+        if (props.selectable && !props.singleSelect) {
+          return [...selectionActions, ...props.actions];
+        }
+        return props.actions;
+      });
+
       return {
         query,
         hovering,
@@ -414,15 +453,13 @@
         borderTop,
         lightenEven,
         /**
+         * @type {import("vue").ComputedRef<Array<VcsAction>>}
+         */
+        renderingActions,
+        /**
          * @type {import("vue").ComputedRef<Array<VcsListItem>>}
          */
-        renderingItems: computed(() => {
-          let items = props.items.filter((i) => i.visible !== false);
-          if (query.value) {
-            items = items.filter((i) => filterPredicate(i, query.value));
-          }
-          return items;
-        }),
+        renderingItems,
         /** @type {import("vue").Ref<Array<VcsListItem>>} */
         selected,
         /**
@@ -430,6 +467,7 @@
          * @param {PointerEvent} event
          */
         select(item, event) {
+          item.clicked?.(event);
           if (!props.selectable || item.disabled) {
             return;
           }
@@ -447,12 +485,12 @@
           } else if (event.shiftKey) {
             let firstIndex = 0;
             if (firstSelected) {
-              firstIndex = this.renderingItems.indexOf(firstSelected);
+              firstIndex = renderingItems.value.indexOf(firstSelected);
             }
-            const currentIndex = this.renderingItems.indexOf(item);
+            const currentIndex = renderingItems.value.indexOf(item);
             if (firstIndex > -1 && currentIndex > -1) {
               const currentSelection = [...selected.value];
-              selected.value = this.renderingItems.slice(
+              selected.value = renderingItems.value.slice(
                 Math.min(firstIndex, currentIndex),
                 Math.max(firstIndex, currentIndex) + 1,
               );
@@ -539,16 +577,6 @@
           firstSelected = null;
           emit('input', selected.value);
         },
-        selectAll() {
-          const currentSelection = [...selected.value];
-          selected.value = this.renderingItems.filter((item) => !item.disabled);
-          selected.value.forEach((item) => {
-            if (item.selectionChanged && !currentSelection.includes(item)) {
-              item.selectionChanged(true);
-            }
-          });
-          emit('input', selected.value);
-        },
         drag,
         drop,
         titles,
@@ -597,6 +625,11 @@
       }
       .v-list-item__dragged {
         background-color: var(--v-base-lighten2) !important;
+      }
+      .v-list-item__selected {
+        border-left: solid 4px;
+        border-left-color: var(--v-primary-base);
+        padding-left: 12px !important;
       }
       .v-list-item {
         padding: 4px 8px 4px 16px;

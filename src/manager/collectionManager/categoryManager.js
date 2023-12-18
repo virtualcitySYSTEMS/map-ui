@@ -52,8 +52,8 @@ class CategoryManager extends CollectionManager {
    * Returns requested category and its corresponding collectionComponent.
    * @param {import("@vcmap/core").CategoryOptions} options
    * @param {string|symbol} owner
-   * @param {CollectionComponentUiOptions} collectionComponentOptions
-   * @returns {{ collectionComponent:CollectionComponent,category:import("@vcmap/core").Category }}
+   * @param {import("./CollectionComponentClass.js").CollectionComponentUiOptions} collectionComponentOptions
+   * @returns {Promise<{ collectionComponent:import("./CollectionComponentClass.js").CollectionComponentClass,category:import("@vcmap/core").Category }>}
    */
   async requestCategory(options, owner, collectionComponentOptions = {}) {
     const category = await this._app.categories.requestCategory(options);

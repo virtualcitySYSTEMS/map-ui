@@ -61,12 +61,16 @@ export default async function collectionManagerExample() {
     },
     i18n: {
       de: {
-        select: 'Collection',
-        addFailed: 'Die gewählte Collection wurde bereits hinzugefügt!',
+        collectionManagerExample: {
+          select: 'Collection',
+          addFailed: 'Die gewählte Collection wurde bereits hinzugefügt!',
+        },
       },
       en: {
-        select: 'Collection',
-        addFailed: 'The selected collection is already added!',
+        collectionManagerExample: {
+          select: 'Collection',
+          addFailed: 'The selected collection is already added!',
+        },
       },
     },
     destroy() {

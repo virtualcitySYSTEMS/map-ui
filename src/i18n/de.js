@@ -260,6 +260,8 @@ const messages = {
     today: 'Heute',
   },
   list: {
+    selectAll: 'Alle selektieren',
+    clearSelection: 'Selektion aufheben',
     renameAction: {
       title: 'Element umbenennen',
     },

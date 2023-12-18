@@ -19,7 +19,7 @@
    * @vue-prop {(instance: import("@vcmap/core).FlightInstance) => Promise<void>} setFlightInstance
    */
   export default {
-    name: 'VcsViewpointEditor',
+    name: 'VcsFlightEditor',
     components: {
       AbstractConfigEditor,
       VcsFlightComponent,
