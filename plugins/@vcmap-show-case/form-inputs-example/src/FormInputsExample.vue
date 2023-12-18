@@ -447,7 +447,7 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col class="w-max-half">
-              <VcsLabel html-for="selectInput" :dense="dense">
+              <VcsLabel html-for="selectInput" :dense="dense" :disabled="true">
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
@@ -458,6 +458,7 @@
                 :dense="dense"
                 :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 v-model="state.selected"
+                :disabled="true"
               />
             </v-col>
           </v-row>

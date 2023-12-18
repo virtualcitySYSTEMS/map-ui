@@ -26,6 +26,7 @@
 - Adds the functionality to create and display Imprint and Data Protection Information as Link or Markdown Text
 - Adds `markdownHelper.js` to translate markdown into Html
 - Change style of `VcsList.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.vue` changes.
+- Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
 
 ### Ui Behaviour ChangesF
 
