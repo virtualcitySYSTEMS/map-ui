@@ -20,7 +20,7 @@
               </template>
             </VcsTooltip>
             <span v-if="selectable && selected.length > 0">
-              {{ `( ${selected.length} )` }}
+              {{ `(${selected.length})` }}
             </span>
           </v-list-item-title>
           <vcs-action-button-list

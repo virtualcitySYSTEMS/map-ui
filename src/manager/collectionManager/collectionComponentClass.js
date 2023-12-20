@@ -1,11 +1,15 @@
 import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
-import { createRenameAction } from '../../actions/actionHelper.js';
+import {
+  createListItemBulkAction,
+  createListItemDeleteAction,
+  createListItemRenameAction,
+} from '../../actions/listActions.js';
 import { sortByOwner } from '../navbarManager.js';
 
 /**
@@ -13,7 +17,8 @@ import { sortByOwner } from '../navbarManager.js';
  * @property {string} [id]
  * @property {string} [title]
  * @property {boolean} [draggable=false] - only supported for IndexedCollections
- * @property {boolean} [renameable=false] - whether title of items can be edited
+ * @property {boolean} [renamable=false] - adds actions to rename items from list. Sets a default titleChanged callback on all list items, which can be overwritten in the mapping function, if necessary.
+ * @property {boolean} [removable=false] - adds actions to remove items from list. Also adds a header action to delete selected, if selectable is set to true.
  * @property {boolean} [selectable=false]
  * @property {boolean} [singleSelect=false]
  * @property {number} [overflowCount=2] - number of header action buttons rendered until overflow
@@ -41,6 +46,20 @@ import { sortByOwner } from '../navbarManager.js';
 function destroyListItem(listItem) {
   listItem.destroyFunctions.forEach((cb) => cb());
   listItem.destroy?.();
+}
+
+/**
+ * Renames the title of an item for VcsObject based items.
+ * @param {import("@vcmap/core").VcsObject} item
+ * @param {import("../../components/lists/VcsList").VcsListItem} listItem
+ * @param {string} newTitle
+ */
+function titleChanged(item, listItem, newTitle) {
+  if (!item.properties) {
+    item.properties = {};
+  }
+  item.properties.title = newTitle;
+  listItem.title = newTitle;
 }
 
 /**
@@ -99,9 +118,12 @@ class CollectionComponentClass {
     );
     /**
      * @type {import("vue").Ref<boolean>}
-     * @private
      */
-    this._renameable = ref(parseBoolean(options.renameable, false));
+    this.renamable = ref(parseBoolean(options.renamable, false));
+    /**
+     * @type {import("vue").Ref<boolean>}
+     */
+    this.removable = ref(parseBoolean(options.removable, false));
     /**
      * @type {import("vue").Ref<boolean>}
      */
@@ -140,6 +162,28 @@ class CollectionComponentClass {
      */
     this.selection = ref([]);
 
+    this._resetWatchers = [
+      watch(this.renamable, () => this.reset()),
+      watch(this.removable, () => {
+        if (this.removable.value) {
+          this._addBulkDeleteAction();
+        } else {
+          this._removeBulkDeleteAction();
+        }
+        this.reset();
+      }),
+      watch(this._draggable, () => {
+        if (!(this._collection instanceof IndexedCollection)) {
+          getLogger('CollectionComponentClass').warning(
+            'draggable can only be set to IndexedCollections!',
+          );
+          this._draggable.value = false;
+        }
+      }),
+    ];
+
+    this._destroyBulkDelete = () => {};
+
     this._listeners = [
       this._collection.added.addEventListener(this._handleItemAdded.bind(this)),
       this._collection.removed.addEventListener(
@@ -162,7 +206,6 @@ class CollectionComponentClass {
         ),
       );
     }
-
     this.reset();
   }
 
@@ -192,7 +235,6 @@ class CollectionComponentClass {
 
   /**
    * @type {import("vue").Ref<boolean>}
-   * @readonly
    */
   get draggable() {
     return this._draggable;
@@ -200,33 +242,11 @@ class CollectionComponentClass {
 
   /**
    * @param {boolean} value
+   * @deprecated
    */
   set draggable(value) {
-    if (this._collection instanceof IndexedCollection) {
-      getLogger('CollectionComponentClass').warn(
-        'draggable can only be set to IndexedCollections!',
-      );
-      return;
-    }
+    getLogger('CollectionComponentClass').deprecate('set draggable');
     this._draggable.value = value;
-  }
-
-  /**
-   * @type {import("vue").Ref<boolean>}
-   * @readonly
-   */
-  get renameable() {
-    return this._renameable;
-  }
-
-  /**
-   * @param {boolean} value
-   */
-  set renameable(value) {
-    if (value !== this._renameable) {
-      this._renameable.value = value;
-      this.reset();
-    }
   }
 
   /**
@@ -242,6 +262,35 @@ class CollectionComponentClass {
    */
   getActions() {
     return computed(() => this._actions.value.map(({ action }) => action));
+  }
+
+  _addBulkDeleteAction() {
+    if (this.selectable) {
+      const { action, destroy } = createListItemBulkAction(this.selection, {
+        name: 'list.delete',
+        callback: () => {
+          [...this.selection.value].forEach((listItem) => {
+            this._collection.remove(this._collection.getByKey(listItem.name));
+          });
+        },
+      });
+      this._destroyBulkDelete = destroy;
+      this.addActions([
+        {
+          action,
+          owner: this._owner,
+          weight: 100,
+        },
+      ]);
+    }
+  }
+
+  _removeBulkDeleteAction() {
+    this._destroyBulkDelete();
+    const action = this._actions.value.find(
+      (a) => a.action.name === 'list.delete',
+    );
+    this.removeActions([action]);
   }
 
   /**
@@ -268,8 +317,13 @@ class CollectionComponentClass {
       destroy: undefined,
       destroyFunctions: [],
     };
-    if (this._renameable.value) {
-      listItem.actions.push(createRenameAction(listItem));
+    if (this.renamable.value) {
+      listItem.actions.push(createListItemRenameAction(listItem));
+      listItem.titleChanged = (newTitle) =>
+        titleChanged(item, listItem, newTitle);
+    }
+    if (this.removable.value) {
+      listItem.actions.push(createListItemDeleteAction(this._collection, item));
     }
     this._itemMappings.forEach((itemMapping) => {
       if (
@@ -517,6 +571,8 @@ class CollectionComponentClass {
 
   destroy() {
     this._listeners.forEach((cb) => cb());
+    this._destroyBulkDelete();
+    this._resetWatchers.forEach((cb) => cb());
     this._listItems.value.forEach(destroyListItem);
     this._listItems.value = [];
     this.selection.value = [];

@@ -1,20 +1,22 @@
 <template>
   <div v-if="actions.length > 0" :class="classes">
-    <component
-      :is="button"
-      class="d-flex"
-      v-for="(btn, index) in buttons"
-      :key="`${btn.name}-${index}`"
-      :tooltip="btn.title"
-      :icon="btn.icon"
-      :active="btn.active"
-      :disabled="btn.disabled || disabled"
-      :has-update="btn.hasUpdate"
-      :background="btn.background"
-      @click.stop="btn.callback($event)"
-      v-bind="{ ...$attrs }"
-      v-on="{ ...$listeners }"
-    />
+    <template v-if="buttons.length > 0">
+      <component
+        :is="button"
+        class="d-flex"
+        v-for="(btn, index) in buttons"
+        :key="`${btn.name}-${index}`"
+        :tooltip="btn.title"
+        :icon="btn.icon"
+        :active="btn.active"
+        :disabled="btn.disabled || disabled"
+        :has-update="btn.hasUpdate"
+        :background="btn.background"
+        @click.stop="btn.callback($event)"
+        v-bind="{ ...$attrs }"
+        v-on="{ ...$listeners }"
+      />
+    </template>
     <v-menu
       v-if="overflowButtons.length > 0"
       content-class="vcs-overflow-menu-wrap"

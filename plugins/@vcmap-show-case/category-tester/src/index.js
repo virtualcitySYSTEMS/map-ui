@@ -52,6 +52,8 @@ export default async function categoryTest() {
           draggable: 'verschiebbar',
           selectable: 'selektierbar',
           singleSelect: 'Einfachauswahl',
+          renamable: 'umbenennbar',
+          removable: 'löschbar',
         },
       },
       en: {
@@ -60,6 +62,8 @@ export default async function categoryTest() {
           draggable: 'draggable',
           selectable: 'selectable',
           singleSelect: 'single select',
+          renamable: 'renamable',
+          removable: 'removable',
         },
       },
     },

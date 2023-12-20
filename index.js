@@ -10,7 +10,6 @@ export {
   createLinkAction,
   createGoToViewpointAction,
   createZoomToFeatureAction,
-  createRenameAction,
 } from './src/actions/actionHelper.js';
 export { parseAndSanitizeMarkdown } from './src/application/markdownHelper.js';
 export {
@@ -23,6 +22,13 @@ export {
   createExtentFeatureAction,
   setupExtentComponentActions,
 } from './src/actions/extentActions.js';
+export {
+  createListItemRenameAction,
+  createListItemDeleteAction,
+  createListItemBulkAction,
+  createListExportAction,
+  createListImportAction,
+} from './src/actions/listActions.js';
 
 export {
   default as VcsCallback,

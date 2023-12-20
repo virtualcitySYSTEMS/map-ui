@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import { inject, provide, ref } from 'vue';
+  import { inject, onUnmounted, provide, ref } from 'vue';
   import {
     VcsFormButton,
     VcsTextField,
@@ -73,7 +73,8 @@
     CollectionComponent,
     CollectionComponentList,
     VcsTextArea,
-    downloadText,
+    createListExportAction,
+    createListImportAction,
   } from '@vcmap/ui';
   import {
     VContainer,
@@ -86,10 +87,14 @@
   import { getObjectFromClassRegistry } from '@vcmap/core';
   import { name as owner } from '../package.json';
   import CollectionComponentOptions from './CollectionComponentOptions.vue';
+  import {
+    exportCategoryCallback,
+    importCategoryCallback,
+  } from './importExportHelper.js';
 
   const foobarMappingFunction = (item, c, listItem) => {
     listItem.title = item.name;
-    listItem.actions = [{ name: 'foobar', callback: () => {} }];
+    listItem.actions.push({ name: 'foobar', callback: () => {} });
   };
 
   export default {
@@ -109,7 +114,7 @@
       VForm,
       VDialog,
     },
-    setup() {
+    setup(props, { attrs }) {
       const app = inject('vcsApp');
       provide('collectionManager', app.categoryManager);
       const componentIds = ref(app.categoryManager.componentIds);
@@ -118,8 +123,13 @@
       const itemDialog = ref(false);
       const itemCategoryName = ref(undefined);
       const categoryName = ref('');
+      const destroyFunctions = [];
 
       async function requestCategory(options) {
+        if (app.categoryManager.has(options.name)) {
+          return app.categoryManager.requestCategory(options, owner);
+        }
+
         const { collectionComponent, category } =
           await app.categoryManager.requestCategory(options, owner);
         collectionComponent.addActions([
@@ -130,21 +140,6 @@
               callback() {
                 itemDialog.value = true;
                 itemCategoryName.value = category.name;
-              },
-            },
-            owner,
-          },
-          {
-            action: {
-              name: 'download',
-              icon: 'mdi-download',
-              callback() {
-                const stringObject = JSON.stringify(
-                  category.serializeModule(app.dynamicModuleId),
-                  null,
-                  2,
-                );
-                downloadText(stringObject, `${category.name}.json`);
               },
             },
             owner,
@@ -184,7 +179,29 @@
             name: `foobar-${i}`,
           });
         }
+
+        const { action: exportAction, destroy: exportDestroy } =
+          createListExportAction(
+            collectionComponent.selection,
+            () => exportCategoryCallback(app, collectionComponent, category),
+            owner,
+          );
+
+        const { action: importAction, destroy: importDestroy } =
+          createListImportAction(
+            (files) => importCategoryCallback(app, files),
+            app.windowManager,
+            owner,
+            attrs['window-state'].id,
+          );
+
+        destroyFunctions.push(exportDestroy, importDestroy);
+        collectionComponent.addActions([exportAction, importAction]);
       }
+
+      onUnmounted(() => {
+        destroyFunctions.forEach((cb) => cb());
+      });
 
       const jsonString = ref(JSON.stringify({ name: 'newItem' }, null, 2));
 

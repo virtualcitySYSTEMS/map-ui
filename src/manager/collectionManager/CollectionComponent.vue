@@ -3,11 +3,14 @@
     <v-expansion-panel-header hide-actions class="px-2">
       <template #default="{ open }">
         <div class="d-flex justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon class="mr-1" :class="{ rotate: !open }">
-              mdi-chevron-down
-            </v-icon>
-            {{ $t(title) }}
+          <div class="d-flex align-center gap-1">
+            <v-icon :class="{ rotate: !open }"> mdi-chevron-down </v-icon>
+            <span>
+              {{ $t(title) }}
+            </span>
+            <span v-if="selectable && selection.length > 0">
+              {{ `(${selection.length})` }}
+            </span>
           </div>
           <VcsActionButtonList
             v-if="actions?.length > 0"
@@ -26,7 +29,6 @@
         v-model="selection"
         :show-title="false"
         @item-moved="move"
-        @item-renamed="rename"
       />
       <v-sheet v-if="items.length > limit" class="ma-2 pl-2">
         <VcsButton @click="openCollectionComponentList">
@@ -54,7 +56,7 @@
   } from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
-  import { moveItem, renameItem } from './CollectionComponentList.vue';
+  import { moveItem } from './CollectionComponentList.vue';
 
   /**
    * @description
@@ -107,9 +109,6 @@
         }),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
-        },
-        rename({ item, newTitle }) {
-          renameItem(collectionComponent, item, newTitle);
         },
         openCollectionComponentList() {
           emit('openList', collectionComponent.id);

@@ -56,6 +56,10 @@ const messages = {
     add: 'Hinzufügen',
     apply: 'Anwenden',
     cancel: 'Abbrechen',
+    import: {
+      submit: 'Dateien importieren',
+      fileDrop: 'Dateien hierher ziehen',
+    },
     vcsFormSection: {
       help: 'Hilfe anzeigen',
     },
@@ -262,9 +266,11 @@ const messages = {
   list: {
     selectAll: 'Alle selektieren',
     clearSelection: 'Selektion aufheben',
-    renameAction: {
-      title: 'Element umbenennen',
-    },
+    renameItem: 'Element umbenennen',
+    deleteItem: 'Element löschen',
+    import: 'Importieren',
+    export: 'Selektion exportieren',
+    delete: 'Selektion löschen',
   },
   flight: {
     player: 'Player',

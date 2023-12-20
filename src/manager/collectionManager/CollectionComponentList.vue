@@ -2,8 +2,13 @@
   <div>
     <div class="v-expansion-panel-header px-2 v-expansion-panel-header--active">
       <div class="d-flex justify-space-between">
-        <div class="d-flex align-center">
-          {{ $t(title) }}
+        <div class="d-flex align-center gap-1 pl-2">
+          <span>
+            {{ $t(title) }}
+          </span>
+          <span v-if="selectable && selection.length > 0">
+            {{ `(${selection.length})` }}
+          </span>
         </div>
         <VcsActionButtonList
           v-if="actions?.length > 0"
@@ -20,7 +25,6 @@
       v-model="selection"
       :show-title="false"
       @item-moved="move"
-      @item-renamed="rename"
     />
     <v-sheet v-if="showLessButton" class="ma-2 pl-2">
       <VcsButton @click="closeList">
@@ -59,24 +63,6 @@
       );
       collection.moveTo(collectionItem, targetIndexCol);
     }
-  }
-
-  /**
-   * Renames the title of an item.
-   * @param {CollectionComponentClass} collectionComponent
-   * @param {VcsListItem} item
-   * @param {string} newTitle
-   */
-  export function renameItem(collectionComponent, item, newTitle) {
-    const { collection } = collectionComponent;
-    const collectionItem = collection.getByKey(item.name);
-
-    if (!collectionItem.properties) {
-      collectionItem.properties = {};
-    }
-
-    collectionItem.properties.title = newTitle;
-    item.title = newTitle;
   }
 
   /**
@@ -133,9 +119,6 @@
         }),
         move({ item, targetIndex }) {
           moveItem(collectionComponent, item, targetIndex);
-        },
-        rename({ item, newTitle }) {
-          renameItem(collectionComponent, item, newTitle);
         },
         closeList() {
           emit('closeList', collectionComponent.id);

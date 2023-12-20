@@ -8,8 +8,9 @@ import {
   it,
   vi,
 } from 'vitest';
-import { IndexedCollection } from '@vcmap/core';
+import { Collection, IndexedCollection } from '@vcmap/core';
 import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
+import { sleep } from '../../helpers.js';
 
 describe('CollectionComponent', () => {
   describe('create a new instance', () => {
@@ -87,6 +88,65 @@ describe('CollectionComponent', () => {
         'title',
         item.name,
       );
+    });
+  });
+
+  describe('handle ui options', () => {
+    let collectionComponent;
+    let collection;
+    let item;
+
+    beforeAll(() => {
+      collection = new Collection();
+      item = { name: 'testItem' };
+      collection.add(item);
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
+    });
+
+    afterAll(() => {
+      collectionComponent.destroy();
+      collection.destroy();
+    });
+
+    it('should only allow draggable for IndexedCollections', async () => {
+      collectionComponent.draggable.value = true;
+      await sleep(0);
+      expect(collectionComponent.draggable.value).to.be.false;
+    });
+
+    it('should add list item rename action, if renamable is true', async () => {
+      collectionComponent.renamable.value = true;
+      await sleep(0);
+      expect(collectionComponent.items.value[0].actions).to.have.length(1);
+      expect(collectionComponent.items.value[0].actions[0]).to.have.property(
+        'name',
+        'list.renameItem',
+      );
+      collectionComponent.renamable.value = false;
+      await sleep(0);
+      expect(collectionComponent.items.value[0].actions).to.have.length(0);
+    });
+
+    it('should add list item remove action and a header action, if removable is true', async () => {
+      collectionComponent.removable.value = true;
+      await sleep(0);
+      expect(collectionComponent.items.value[0].actions).to.have.length(1);
+      expect(collectionComponent.items.value[0].actions[0]).to.have.property(
+        'name',
+        'list.deleteItem',
+      );
+      expect(collectionComponent.getActions().value).to.have.length(1);
+      expect(collectionComponent.getActions().value[0]).to.have.property(
+        'name',
+        'list.delete',
+      );
+      collectionComponent.removable.value = false;
+      await sleep(0);
+      expect(collectionComponent.items.value[0].actions).to.have.length(0);
+      expect(collectionComponent.getActions().value).to.have.length(0);
     });
   });
 

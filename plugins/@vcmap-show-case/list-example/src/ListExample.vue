@@ -201,7 +201,7 @@
     VcsTextField,
     Icons,
     VcsFormSection,
-    createRenameAction,
+    createListItemRenameAction,
   } from '@vcmap/ui';
   import {
     VSwitch,
@@ -326,7 +326,7 @@
 
           if (newItem.value.renameAction) {
             item.rename = false;
-            item.actions.push(createRenameAction(item));
+            item.actions.push(createListItemRenameAction(item));
           }
 
           if (newItem.value.action) {

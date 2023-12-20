@@ -439,19 +439,3 @@ export function createZoomToFeatureAction(
     },
   };
 }
-
-/**
- * Creates an action for renaming an item in a VcsList.
- * @param {import("../components/lists/VcsList.vue").VcsListItem} item
- * @param {ActionOptions} [actionOptions={}]
- * @returns {VcsAction}
- */
-export function createRenameAction(item, actionOptions = {}) {
-  return {
-    name: 'list.renameAction.title',
-    callback: () => {
-      item.rename = true;
-    },
-    ...actionOptions,
-  };
-}
