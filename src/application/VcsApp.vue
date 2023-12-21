@@ -142,7 +142,7 @@
    * application in the components mounted hook. This will call VcsAppMounted on all plugins in the app
    * and add a listener to call. Returns a destroy hook to stop listening to the added event. If you use the VcsApp
    * component, do not call this function, since the component will do this for you.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupPluginMountedListeners(app) {
@@ -171,7 +171,7 @@
   /**
    * This helper function will add a map action button based on the default icons
    * to the apps NavbarManager. Furthermore, all maps on the app are synced for adding and removing.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupMapNavbar(app) {
@@ -234,7 +234,7 @@
   /**
    * This helper function will add a legend action button to the apps NavbarManager TOOL location, if legend entries are available.
    * Watches number of legend entries.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupLegendWindow(app) {
@@ -320,7 +320,7 @@
 
   /**
    * This helper function will add a settings action button to the apps NavbarManager MENU location.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupSettingsWindow(app) {
@@ -355,7 +355,7 @@
 
   /**
    * This helper function will add a help action button referencing VC Map help page to the apps NavbarManager MENU location.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    */
   export function setupHelpButton(app) {
     const helpAction = createLinkAction(
@@ -379,7 +379,7 @@
   /**
    * This helper function will add a category manager button to the navbar. The category Manager
    * will only be shown if there is at least one category under management in the categoryManager.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupCategoryManagerWindow(app) {
@@ -409,30 +409,71 @@
       vcsAppSymbol,
     );
 
-    const setupCategories = () => {
-      if (app.categoryManager.componentIds.length > 0) {
-        if (!app.navbarManager.has(id)) {
-          app.navbarManager.add(
-            { id, action: categoryManagerAction },
-            vcsAppSymbol,
-            ButtonLocation.CONTENT,
-          );
-        }
-      } else {
+    const collectionListeners = new Map();
+
+    /**
+     * Makes sure that the category-manager button is in the navbar.
+     * Adds listener to the collectionComponents collection to display hasUpdate if new item is added to collection AND category-manager window is closed.
+     * @param {import("../manager/collectionManager/collectionComponentClass.js").default} collectionComponent
+     */
+    function handleAdded(collectionComponent) {
+      if (!app.navbarManager.has(id)) {
+        app.navbarManager.add(
+          { id, action: categoryManagerAction },
+          vcsAppSymbol,
+          ButtonLocation.CONTENT,
+        );
+      }
+      collectionListeners.set(
+        collectionComponent.id,
+        collectionComponent.collection.added.addEventListener(() => {
+          if (!app.windowManager.has(id)) {
+            categoryManagerAction.hasUpdate = true;
+          }
+        }),
+      );
+    }
+
+    /**
+     * Removes listener on collection of collectionComponent.
+     * Removes collection-manager button in navbar, if categoryManager has no more collectionComponents.
+     * @param {import("../manager/collectionManager/collectionComponentClass.js").default} collectionComponent
+     */
+    function handleRemoved(collectionComponent) {
+      collectionListeners.get(collectionComponent.id)?.();
+      collectionListeners.delete(collectionComponent.id);
+
+      if (!app.categoryManager.componentIds.length) {
         app.windowManager.remove(id);
         app.navbarManager.remove(id);
+        categoryManagerAction.hasUpdate = false;
       }
-    };
+    }
+
     const addedListener =
-      app.categoryManager.added.addEventListener(setupCategories);
+      app.categoryManager.added.addEventListener(handleAdded);
     const removedListener =
-      app.categoryManager.removed.addEventListener(setupCategories);
-    setupCategories();
+      app.categoryManager.removed.addEventListener(handleRemoved);
+
+    // setup existing collectionComponents
+    app.categoryManager.componentIds.forEach((componentId) =>
+      handleAdded(app.categoryManager.get(componentId)),
+    );
+
+    const windowListener = app.windowManager.added.addEventListener(
+      (windowComponent) => {
+        if (windowComponent.id === id) {
+          categoryManagerAction.hasUpdate = false;
+        }
+      },
+    );
 
     return () => {
       destroy();
       addedListener();
       removedListener();
+      collectionListeners.forEach((value) => value());
+      windowListener();
     };
   }
 
@@ -441,7 +482,7 @@
    * with a given vuetify instance. Use this helper, if you do not use the VcsApp component and wish to evaluate
    * the theming keys. Returns a function to stop syncing.
    * Also adds a watcher to vuetify theme, which triggers themeChanged event on the VcsUiApp.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @param {import("vuetify").Framework} vuetify
    * @returns {function():void} - call to stop syncing
    */
@@ -479,7 +520,7 @@
   /**
    * This helper gets attributions of all active maps, layers and oblique collections and returns an array of entries.
    * It also returns a attributionAction to toggle the attributions window and a destroy function.
-   * @param {VcsUiApp} app
+   * @param {import("../vcsUiApp.js").default} app
    * @returns {{attributionEntries: import("vue").Ref<Array<AttributionEntry>>, attributionAction: VcsAction, destroyAttributions: function():void}}
    */
   export function setupAttributions(app) {
@@ -567,7 +608,7 @@
     setup(props) {
       const id = uuid();
       const mapId = `mapCollection-${id}`;
-      /** @type {VcsUiApp} */
+      /** @type {import("../vcsUiApp.js").default} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
 
