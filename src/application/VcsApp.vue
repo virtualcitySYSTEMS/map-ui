@@ -107,7 +107,7 @@
     ref,
     watch,
   } from 'vue';
-  import { getVcsAppById } from '@vcmap/core';
+  import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
   import { getLogger } from '@vcsuite/logger';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
@@ -426,8 +426,11 @@
       }
       collectionListeners.set(
         collectionComponent.id,
-        collectionComponent.collection.added.addEventListener(() => {
-          if (!app.windowManager.has(id)) {
+        collectionComponent.collection.added.addEventListener((item) => {
+          if (
+            !app.windowManager.has(id) &&
+            item[moduleIdSymbol] === app.dynamicModuleId
+          ) {
             categoryManagerAction.hasUpdate = true;
           }
         }),

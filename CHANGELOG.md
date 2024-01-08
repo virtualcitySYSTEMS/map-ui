@@ -27,7 +27,7 @@
 - Adds `markdownHelper.js` to translate markdown into Html
 - Change style of `VcsList.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.vue` changes.
 - Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
-- Adds hasUpdate to `category-manager` button, in case an item is added to any category while `category-manager` window is closed.
+- Adds hasUpdate to `category-manager` button, in case an item from the dynamic module is added to any category while `category-manager` window is closed.
 
 ### Ui Behaviour ChangesF
 
