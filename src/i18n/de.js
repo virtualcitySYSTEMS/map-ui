@@ -1,3 +1,5 @@
+import { TransformationMode } from '@vcmap/core';
+
 const messages = {
   navbar: {
     maps: {
@@ -91,8 +93,8 @@ const messages = {
       opacity: 'Deckkraft',
       image: 'Symbol',
       icon: 'Icon',
-      presets: 'Vorlagen',
       shape: 'Form',
+      presets: 'Vorlagen',
       circle: 'Kreis',
       square: 'Quadrat',
       rectangle: 'Rechteck',
@@ -161,6 +163,23 @@ const messages = {
       invalid: 'Koordinaten ergeben keine valide Ausdehnung!',
       editVertices: 'Ecken bearbeiten',
       translate: 'Ausdehnung verschieben',
+    },
+    editor: {
+      [TransformationMode.TRANSLATE]: 'Objekt verschieben',
+      [TransformationMode.ROTATE]: 'Objekt rotieren',
+      [TransformationMode.SCALE]: 'Objekt skalieren',
+      [TransformationMode.EXTRUDE]: 'Objekt extrudieren',
+      header: 'Transformieren',
+      placeOnTerrain: 'Auf Gelände plazieren',
+      apply: 'Anwenden',
+      cw: '90° rechtsherum drehen',
+      ccw: '90° linksherum drehen',
+      angle: 'Winkel',
+      edit: 'Geometrie editieren',
+      modifyHeader: 'Editieren',
+      modifyInfo:
+        'Klicke die Symbole in der Überschrift um die selektierten Geometrien zu editieren.',
+      styleHeader: 'Stil',
     },
     vectorProperties: {
       header: 'Vektor Eigenschaften',

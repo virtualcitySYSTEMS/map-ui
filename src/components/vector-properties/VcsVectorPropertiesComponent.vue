@@ -1,18 +1,9 @@
 <template>
   <VcsFormSection
     :heading="$attrs.heading || 'components.vectorProperties.header'"
-    :expandable="$attrs.expandable"
-    :start-open="$attrs.startOpen"
-    :header-actions="[
-      {
-        name: 'reset',
-        title: 'components.style.reset',
-        icon: '$vcsReturn',
-        callback: () => {
-          reset();
-        },
-      },
-    ]"
+    :expandable="expandable"
+    :start-open="startOpen"
+    :header-actions="headerActions"
   >
     <v-container class="px-1 py-0">
       <v-row
@@ -27,27 +18,18 @@
         <v-col>
           <VcsSelect
             id="vp-altitude-mode"
-            :items="[
-              {
-                value: 'clampToGround',
-                text: 'components.vectorProperties.clampToGround',
-              },
-              {
-                value: 'absolute',
-                text: 'components.vectorProperties.absolute',
-              },
-              {
-                value: 'relativeToGround',
-                text: 'components.vectorProperties.relativeToGround',
-              },
-            ]"
+            :items="availableAltitudeModes"
             v-model="altitudeMode"
             dense
           />
         </v-col>
       </v-row>
       <v-row
-        v-if="altitudeMode === 'relativeToGround' && show3DProperties"
+        v-if="
+          visibleProperties.has('heightAboveGround') &&
+          altitudeMode === 'relativeToGround' &&
+          show3DProperties
+        "
         no-gutters
       >
         <v-col>
@@ -62,7 +44,7 @@
             v-model.number="heightAboveGround"
             type="number"
             unit="m"
-            :placeholder="'heightAboveGround' in value ? '0 m' : ''"
+            :placeholder="'heightAboveGround' in value ? '0' : ''"
           />
         </v-col>
       </v-row>
@@ -82,7 +64,7 @@
             v-model.number="groundLevel"
             type="number"
             unit="m"
-            :placeholder="'groundLevel' in value ? '0 m' : ''"
+            :placeholder="'groundLevel' in value ? '0' : ''"
             clearable
           />
         </v-col>
@@ -108,9 +90,7 @@
                 :disabled="!hasScaleByDistance"
                 :placeholder="
                   'scaleByDistance' in value
-                    ? index % 2 === 0
-                      ? `${scaleByDistanceDefault[index]} m`
-                      : `${scaleByDistanceDefault[index]}`
+                    ? `${scaleByDistanceDefault[index]}`
                     : ''
                 "
                 :rules="[
@@ -147,7 +127,7 @@
                 !hasEyeOffset || !isNaN(v) || 'components.validation.required',
             ]"
             :placeholder="
-              'eyeOffset' in value ? `${eyeOffsetDefault[index]} m` : ''
+              'eyeOffset' in value ? `${eyeOffsetDefault[index]}` : ''
             "
           />
         </v-col>
@@ -189,7 +169,7 @@
     </v-container>
     <v-divider
       v-if="
-        !hideDividers &&
+        showDividers &&
         show3DProperties &&
         [
           'extrudedHeight',
@@ -234,7 +214,7 @@
             v-model.number="extrudedHeight"
             type="number"
             unit="m"
-            :placeholder="'extrudedHeight' in value ? '0 m' : ''"
+            :placeholder="'extrudedHeight' in value ? '0' : ''"
             clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
@@ -315,7 +295,7 @@
             v-model.number="skirt"
             type="number"
             unit="m"
-            :placeholder="'skirt' in value ? '0 m' : ''"
+            :placeholder="'skirt' in value ? '0' : ''"
             clearable
             :rules="[
               (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
@@ -366,7 +346,7 @@
     </v-container>
     <v-divider
       v-if="
-        !hideDividers &&
+        showDividers &&
         show3DProperties &&
         [
           'modelUrl',
@@ -425,7 +405,7 @@
             dense
             v-model.number="modelHeading"
             type="number"
-            :placeholder="'modelHeading' in value ? '0 °' : ''"
+            :placeholder="'modelHeading' in value ? '0' : ''"
             unit="°"
             clearable
           />
@@ -442,7 +422,7 @@
             dense
             v-model.number="modelPitch"
             type="number"
-            :placeholder="'modelPitch' in value ? '0 °' : ''"
+            :placeholder="'modelPitch' in value ? '0' : ''"
             unit="°"
             clearable
           />
@@ -457,7 +437,7 @@
             dense
             v-model.number="modelRoll"
             type="number"
-            :placeholder="'modelRoll' in value ? '0 °' : ''"
+            :placeholder="'modelRoll' in value ? '0' : ''"
             unit="°"
             clearable
           />
@@ -498,20 +478,18 @@
   } from './composables.js';
   import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
 
-  export const vectorProperties = [
+  export const genericVectorProperties = [
     'altitudeMode',
     'allowPicking',
-    'classificationType',
-    'scaleByDistance',
+    'groundLevel',
+    'skirt',
+    'extrudedHeight',
+  ];
+
+  export const pointVectorProperties = [
     'eyeOffset',
     'heightAboveGround',
-    'skirt',
-    'groundLevel',
-    'extrudedHeight',
-    'storeysAboveGround',
-    'storeysBelowGround',
-    'storeyHeightsAboveGround',
-    'storeyHeightsBelowGround',
+    'scaleByDistance',
     'modelUrl',
     'modelScaleX',
     'modelScaleY',
@@ -520,6 +498,20 @@
     'modelPitch',
     'modelRoll',
     'baseUrl',
+  ];
+
+  export const nonPointVectorProperties = [
+    'classificationType',
+    'storeysAboveGround',
+    'storeysBelowGround',
+    'storeyHeightsAboveGround',
+    'storeyHeightsBelowGround',
+  ];
+
+  export const vectorProperties = [
+    ...genericVectorProperties,
+    ...nonPointVectorProperties,
+    ...pointVectorProperties,
   ];
 
   export const scaleByDistanceDefault = [0, 1, 1, 1];
@@ -532,10 +524,11 @@
    * @vue-prop {import("@vcmap/core").VectorPropertiesOptions} valueDefault - The default VectorPropertiesOptions that are applied when clicking the "Reset" button.
    * @vue-prop {Array<string>} properties - The keys of the VectorPropertiesOptions that should be editable. If a key is not within this array, the corresponding input field is not shown.
    * @vue-prop {boolean} show3DProperties - Whether the 3D related properties should be shown or not.
-   * @vue-prop {boolean} hideDividers - Wether the dividers, which group similar properties, should be hidden.
+   * @vue-prop {boolean} [showDividers=true] - Wether the dividers, which group similar properties, should be shown.
    * @vue-prop {string} [heading='Vector properties'] - Title of the form section, will be translated.
    * @vue-prop {boolean} [expandable=false] - If true, form section can be toggled.
    * @vue-prop {boolean} [startOpen=false] - If form section starts open.
+   * @vue-prop {boolean} [showReset=true] - If a reset action is added to the form header.
    * @vue-event {import("@vcmap/core").VectorPropertiesOptions} input - Emits the updated VectorPropertiesOptions each time a property is changed.
    * @vue-event {import("@vcmap/core").VectorPropertiesOptions} propertyChange - Emits the updated VectorPropertiesOptions, containing only the keys that changed, each time a property is changed.
    */
@@ -570,9 +563,21 @@
         type: Boolean,
         default: true,
       },
-      hideDividers: {
+      showDividers: {
+        type: Boolean,
+        default: true,
+      },
+      expandable: {
         type: Boolean,
         default: false,
+      },
+      startOpen: {
+        type: Boolean,
+        default: false,
+      },
+      showReset: {
+        type: Boolean,
+        default: true,
       },
     },
     setup(props, { emit }) {
@@ -585,6 +590,29 @@
         'altitudeMode',
         emit,
       );
+
+      const availableAltitudeModes = computed(() => {
+        const altitudeModes = [
+          {
+            value: 'clampToGround',
+            text: 'components.vectorProperties.clampToGround',
+          },
+          {
+            value: 'absolute',
+            text: 'components.vectorProperties.absolute',
+          },
+        ];
+
+        if (visibleProperties.value.has('heightAboveGround')) {
+          altitudeModes.push({
+            value: 'relativeToGround',
+            text: 'components.vectorProperties.relativeToGround',
+          });
+        }
+
+        return altitudeModes;
+      });
+
       const heightAboveGround = usePrimitiveProperty(
         () => props.value,
         'heightAboveGround',
@@ -746,9 +774,26 @@
         emit('propertyChange', newParams);
       }
 
+      const headerActions = computed(() =>
+        props.showReset
+          ? [
+              {
+                name: 'reset',
+                title: 'components.style.reset',
+                icon: '$vcsReturn',
+                callback: () => {
+                  reset();
+                },
+              },
+            ]
+          : [],
+      );
+
       return {
+        headerActions,
         visibleProperties,
         altitudeMode,
+        availableAltitudeModes,
         heightAboveGround,
         allowPicking,
         classificationType,

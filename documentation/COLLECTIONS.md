@@ -36,7 +36,7 @@ To create a new instance, you must at least provide a collection. All other ui r
  */
 
 /**
- * @typedef {CollectionComponentUiOptions} CollectionComponentOptions
+ * @typedef {CollectionComponentUiOptions} CollectionComponentClassOptions
  * @property {import("@vcmap/core").Collection<T>} collection
  * @template {Object} T
  */
@@ -177,7 +177,7 @@ For mappings, filters and actions the collection manager has a cache concept.
 
 > For usage examples also see [collection-manager-example](../plugins/@vcmap-show-case/collection-manager-example/src/CollectionManagerExample.vue).
 
-To add a collectionComponent, provide `CollectionComponentOptions`, plus the owner.
+To add a collectionComponent, provide `CollectionComponentClassOptions`, plus the owner.
 
 ```js
 collectionManager.add({ collection: new IndexedCollection() }, 'pluginName');
@@ -328,6 +328,6 @@ const { category, collectionComponent } =
   await app.categoryManager.requestCategory(
     { name: categoryName.value }, // CategoryOptions
     'pluginName', // owner
-    { draggable: true }, // optional CollectionComponentOptions
+    { draggable: true }, // optional CollectionComponentClassOptions
   );
 ```

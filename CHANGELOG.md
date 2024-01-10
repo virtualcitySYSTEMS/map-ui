@@ -28,6 +28,7 @@
 - Change style of `VcsList.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.vue` changes.
 - Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
 - Adds hasUpdate to `category-manager` button, in case an item from the dynamic module is added to any category while `category-manager` window is closed.
+- Adds some components to help with feature editing, such as `VcsFeatureStyleComponent`, `VcsFeatureTransform` and `VcsFeatureEditingWindow`.
 
 ### Ui Behaviour ChangesF
 

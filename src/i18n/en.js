@@ -1,3 +1,5 @@
+import { TransformationMode } from '@vcmap/core';
+
 const messages = {
   navbar: {
     maps: {
@@ -161,6 +163,23 @@ const messages = {
       invalid: 'Coordinates do not result in a valid extent!',
       editVertices: 'Edit extent corners',
       translate: 'Translate extent',
+    },
+    editor: {
+      [TransformationMode.TRANSLATE]: 'Translate features',
+      [TransformationMode.ROTATE]: 'Rotate features',
+      [TransformationMode.SCALE]: 'Scale features',
+      [TransformationMode.EXTRUDE]: 'Extrude features',
+      header: 'Transform',
+      placeOnTerrain: 'Place on terrain',
+      apply: 'Apply',
+      cw: 'Rotate 90° clockwise',
+      ccw: 'Rotate 90° counter clockwise',
+      angle: 'Angle',
+      edit: 'Edit geometry',
+      modifyHeader: 'Modify',
+      modifyInfo:
+        'For modifying the selected feature(s), click on one of the icons in the header above.',
+      styleHeader: 'Style',
     },
     vectorProperties: {
       header: 'Vector properties',

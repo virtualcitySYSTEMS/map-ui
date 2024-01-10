@@ -76,7 +76,7 @@ export const ToolboxType = {
 
 /**
  * @typedef {import("../../actions/actionHelper.js").VcsAction & {
- *   selected: function(index:number):void,
+ *   selected: function(number):void,
  *   tools: ToolboxSelectItem[],
  *   currentIndex: number
  * }} ToolboxSelectAction

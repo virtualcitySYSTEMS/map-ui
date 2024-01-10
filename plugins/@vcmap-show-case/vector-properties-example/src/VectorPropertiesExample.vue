@@ -11,14 +11,22 @@
           />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col>
           <VcsCheckbox v-model="hideDividers" label="Hide dividers" />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col>
           <VcsCheckbox v-model="expandable" label="Expandable" />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <VcsCheckbox
+            v-model="showReset"
+            label="Show reset vector properties"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -29,6 +37,7 @@
       :properties="propertiesToDisplay.map((item) => item.name)"
       :hide-dividers="hideDividers"
       :expandable="expandable"
+      :show-reset="showReset"
     />
   </v-sheet>
 </template>
@@ -122,6 +131,7 @@
         propertiesToDisplay: ref([...propertiesToSelectFrom]),
         hideDividers: ref(false),
         expandable: ref(false),
+        showReset: ref(true),
       };
     },
   };

@@ -5,7 +5,7 @@ import CollectionManager from './collectionManager.js';
 /**
  * Manages all requested category collections.
  * Provides an API to add/remove collectionsComponents.
- * @implements {VcsComponentManager<CollectionComponent, CollectionComponentOptions>}
+ * @implements {VcsComponentManager<CollectionComponent, import("./collectionComponentClass.js").CollectionComponentClassOptions<Object>>}
  * @extends CollectionManager
  */
 class CategoryManager extends CollectionManager {

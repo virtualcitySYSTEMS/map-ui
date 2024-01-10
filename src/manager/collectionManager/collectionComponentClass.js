@@ -28,7 +28,7 @@ import { sortByOwner } from '../navbarManager.js';
 /**
  * @typedef {CollectionComponentUiOptions & {
  *   collection: import("@vcmap/core").Collection<T>
- * }} CollectionComponentOptions
+ * }} CollectionComponentClassOptions
  * @template {Object} T
  */
 
@@ -71,13 +71,13 @@ function titleChanged(item, listItem, newTitle) {
  */
 class CollectionComponentClass {
   /**
-   * @param {CollectionComponentOptions} options
+   * @param {CollectionComponentClassOptions<T>} options
    * @param {string|vcsAppSymbol} owner
    */
   constructor(options, owner) {
     if (!options?.collection?.uniqueKey) {
       throw new Error(
-        'CollectionComponentOptions requires a collection with mandatory key!',
+        'CollectionComponentClassOptions requires a collection with mandatory key!',
       );
     }
 

@@ -237,17 +237,11 @@ export {
   validateAction,
   validateActions,
 } from './src/components/lists/VcsActionList.vue';
-// export { default as VcsEndlessList } from './src/components/lists/VcsEndlessList.vue';
+
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
 export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
-
-// export { default as VcsMediaControls } from './src/components/media-controls/VcsMediaControls.vue';
-
-// export { default as VcsContextMenu } from './src/components/menus/VcsContextMenu.vue';
-// export { default as VcsMenu } from './src/components/menus/VcsMenu.vue';
-// export { default as VcsOverflowMenu } from './src/components/menus/VcsOverflowMenu.vue';
 
 export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
 export { default as VcsDefaultLogo } from './src/logo.svg';
@@ -267,7 +261,10 @@ export {
   VectorStyleMenus,
 } from './src/components/style/VcsVectorStyleComponent.vue';
 
-export { default as VcsVectorPropertiesComponent } from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
+export {
+  default as VcsVectorPropertiesComponent,
+  vectorProperties,
+} from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
 export { default as VcsViewpointComponent } from './src/components/viewpoint/VcsViewpointComponent.vue';
 export { default as VcsViewpointEditor } from './src/components/viewpoint/VcsViewpointEditor.vue';
 export { default as VcsFlightComponent } from './src/components/flight/VcsFlightComponent.vue';
@@ -278,8 +275,12 @@ export {
   getProvidedFlightInstance,
   setupFlightAnchorEditingListener,
 } from './src/components/flight/composables.js';
-
-// export { default as VcsFileNamePopover } from './src/components/popovers/VcsFileNamePopover.vue';
-// export { default as VcsTexturePopover } from './src/components/popovers/VcsTexturePopover.vue';
+export {
+  default as VcsFeatureEditingWindow,
+  EditorTransformationIcons,
+  getAllowedEditorTransformationModes,
+} from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
+export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
+export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
