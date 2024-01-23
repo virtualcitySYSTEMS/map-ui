@@ -54,6 +54,12 @@ export default async function categoryTest() {
           singleSelect: 'Einfachauswahl',
           renamable: 'umbenennbar',
           removable: 'löschbar',
+          fooEditor: {
+            name: 'Name',
+            title: 'Titel',
+            random: 'Zufallszahl',
+            ambiguous: 'mehrdeutig',
+          },
         },
       },
       en: {
@@ -64,6 +70,12 @@ export default async function categoryTest() {
           singleSelect: 'single select',
           renamable: 'renamable',
           removable: 'removable',
+          fooEditor: {
+            name: 'Name',
+            title: 'Title',
+            random: 'Random Nr',
+            ambiguous: 'ambiguous',
+          },
         },
       },
     },

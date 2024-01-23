@@ -10,16 +10,16 @@ import CollectionManager from './collectionManager.js';
  */
 class CategoryManager extends CollectionManager {
   /**
-   * @param {import("../../vcsUiApp.js").VcsUiApp} app
+   * @param {import("../../vcsUiApp.js").default} app
    */
   /**
-   * @param {import("../../vcsUiApp.js").VcsUiApp} app
+   * @param {import("../../vcsUiApp.js").default} app
    */
   constructor(app) {
     super();
 
     /**
-     * @type {import("../../vcsUiApp.js").VcsUiApp}
+     * @type {import("../../vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -52,8 +52,8 @@ class CategoryManager extends CollectionManager {
    * Returns requested category and its corresponding collectionComponent.
    * @param {import("@vcmap/core").CategoryOptions} options
    * @param {string|symbol} owner
-   * @param {import("./CollectionComponentClass.js").CollectionComponentUiOptions} collectionComponentOptions
-   * @returns {Promise<{ collectionComponent:import("./CollectionComponentClass.js").CollectionComponentClass,category:import("@vcmap/core").Category }>}
+   * @param {import("./collectionComponentClass.js").CollectionComponentUiOptions} collectionComponentOptions
+   * @returns {Promise<{ collectionComponent:import("./collectionComponentClass.js").CollectionComponentClass,category:import("@vcmap/core").Category }>}
    */
   async requestCategory(options, owner, collectionComponentOptions = {}) {
     const category = await this._app.categories.requestCategory(options);

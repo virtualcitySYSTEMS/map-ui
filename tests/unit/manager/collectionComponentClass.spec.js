@@ -8,11 +8,15 @@ import {
   it,
   vi,
 } from 'vitest';
-import { Collection, IndexedCollection } from '@vcmap/core';
+import {
+  Collection,
+  IndexedCollection,
+  makeOverrideCollection,
+} from '@vcmap/core';
 import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
 import { sleep } from '../../helpers.js';
 
-describe('CollectionComponent', () => {
+describe('CollectionComponentClass', () => {
   describe('create a new instance', () => {
     let collectionComponent;
     let collectionComponentOptions;
@@ -130,7 +134,7 @@ describe('CollectionComponent', () => {
       expect(collectionComponent.items.value[0].actions).to.have.length(0);
     });
 
-    it('should add list item remove action and a header action, if removable is true', async () => {
+    it('should add list item remove action, if removable is true', async () => {
       collectionComponent.removable.value = true;
       await sleep(0);
       expect(collectionComponent.items.value[0].actions).to.have.length(1);
@@ -138,14 +142,23 @@ describe('CollectionComponent', () => {
         'name',
         'list.deleteItem',
       );
+      collectionComponent.removable.value = false;
+      await sleep(0);
+      expect(collectionComponent.items.value[0].actions).to.have.length(0);
+    });
+
+    it('should add header action, if removable and selectable are true', async () => {
+      collectionComponent.removable.value = true;
+      collectionComponent.selectable.value = true;
+      await sleep(0);
       expect(collectionComponent.getActions().value).to.have.length(1);
       expect(collectionComponent.getActions().value[0]).to.have.property(
         'name',
         'list.delete',
       );
       collectionComponent.removable.value = false;
+      collectionComponent.selectable.value = false;
       await sleep(0);
-      expect(collectionComponent.items.value[0].actions).to.have.length(0);
       expect(collectionComponent.getActions().value).to.have.length(0);
     });
   });
@@ -224,6 +237,77 @@ describe('CollectionComponent', () => {
       expect(insertedListItem).to.have.property('disabled', true);
       collection.remove(addedItem);
       collectionComponent.addItemMapping(itemMapping);
+    });
+  });
+
+  describe('handle item replaced', () => {
+    let collectionComponent;
+    let collection;
+    let item;
+    let addedItem;
+    let replacedItem;
+
+    beforeAll(() => {
+      collection = makeOverrideCollection(
+        new IndexedCollection(),
+        () => 'dynamicModuleId',
+      );
+      item = { name: 'testItem' };
+      collection.add(item);
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
+      addedItem = {
+        name: 'addedItem',
+        properties: {
+          title: 'addedTitle',
+          icon: 'icon',
+        },
+      };
+      replacedItem = {
+        name: 'addedItem',
+        properties: {
+          title: 'replacedTitle',
+          icon: 'replacedIcon',
+        },
+      };
+    });
+
+    afterAll(() => {
+      collectionComponent.destroy();
+      collection.destroy();
+    });
+
+    it('should update the item and apply replaced properties', () => {
+      collection.add(addedItem);
+      collection.replace(replacedItem);
+      expect(collection).to.have.property('size', 2);
+      expect(collectionComponent.items.value).to.have.length(2);
+      const insertedListItem = collectionComponent.items.value.at(-1);
+      expect(insertedListItem).to.have.property(
+        'title',
+        replacedItem.properties.title,
+      );
+      expect(insertedListItem).to.have.property(
+        'icon',
+        replacedItem.properties.icon,
+      );
+      collection.remove(replacedItem);
+    });
+
+    it('should preserve selection', () => {
+      collection.add(addedItem);
+      collectionComponent.selection.value = [
+        ...collectionComponent.items.value,
+      ];
+      expect(
+        collectionComponent.selection.value.map(({ name }) => name),
+      ).to.have.ordered.members([item.name, addedItem.name]);
+      collection.replace(replacedItem);
+      expect(
+        collectionComponent.selection.value.map(({ name }) => name),
+      ).to.have.ordered.members([item.name, addedItem.name]);
     });
   });
 

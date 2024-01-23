@@ -112,6 +112,10 @@ export { default as CollectionManager } from './src/manager/collectionManager/co
 export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
 export { default as CollectionComponentProvider } from './src/manager/collectionManager/CollectionComponentProvider.vue';
 export { default as CollectionComponentClass } from './src/manager/collectionManager/collectionComponentClass.js';
+export {
+  makeEditorCollectionComponentClass,
+  isEditorCollectionComponentClass,
+} from './src/manager/collectionManager/editorCollectionComponentClass.js';
 export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.vue';
 export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
@@ -284,3 +288,5 @@ export { default as VcsFeatureTransforms } from './src/components/vector-propert
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
+export { default as FileDrop } from './src/components/import/FileDrop.vue';
+export { default as ImportComponent } from './src/components/import/ImportComponent.vue';

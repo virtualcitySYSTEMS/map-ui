@@ -187,7 +187,7 @@
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
    * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
    * @property {Array<VcsAction>} [actions]
-   * @property {function(PointerEvent):void} [clicked] - A callback called on item click. called before selection update
+   * @property {Array<function(PointerEvent):void>|undefined} [clickedCallbacks] - An array of callbacks called on item click. called before selection update
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
    * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. called before value update
    */
@@ -467,7 +467,9 @@
          * @param {PointerEvent} event
          */
         select(item, event) {
-          item.clicked?.(event);
+          if (Array.isArray(item.clickedCallbacks)) {
+            item.clickedCallbacks.forEach((cb) => cb(event));
+          }
           if (!props.selectable || item.disabled) {
             return;
           }

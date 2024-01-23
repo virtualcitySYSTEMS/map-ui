@@ -4,7 +4,7 @@
     <vcs-text-field
       type="file"
       v-model="files"
-      multiple
+      :multiple="multiple"
       :accept="fileTypes.join(',')"
     />
     <div class="d-flex justify-end gap-1 mx-3 pt-2 pb-1">
@@ -29,6 +29,11 @@
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { NotificationType } from '../../notifier/notifier.js';
 
+  /**
+   * @vue-prop {function(Array<File>):boolean} importFiles - the callback to
+   * @vue-prop {string[]} [fileTypes=[]]
+   * @vue-prop {boolean} [multiple=false]
+   */
   export default {
     name: 'ImportComponent',
     components: { VcsFormButton, VcsTextField, VCard, FileDrop },
@@ -41,6 +46,10 @@
         type: Array,
         default: () => [],
       },
+      multiple: {
+        type: Boolean,
+        default: true,
+      },
     },
     setup(props, { emit }) {
       const app = inject('vcsApp');
@@ -50,8 +59,10 @@
         files,
         async doImport() {
           try {
-            await props.importFiles(files.value);
-            emit('close');
+            const close = await props.importFiles(files.value);
+            if (close) {
+              emit('close');
+            }
           } catch (e) {
             app.notifier.add({
               type: NotificationType.ERROR,

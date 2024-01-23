@@ -151,7 +151,7 @@ function updateExtentFromFeature(feature, extent) {
 }
 
 /**
- * @param {import("../vcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").VectorLayer} layer
  * @param {string} featureId
  * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
@@ -207,7 +207,7 @@ function setupTranslateAction(
 }
 
 /**
- * @param {import("../vcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").VectorLayer} layer
  * @param {string} featureId
  * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent

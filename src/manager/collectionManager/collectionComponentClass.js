@@ -35,6 +35,7 @@ import { sortByOwner } from '../navbarManager.js';
 /**
  * @typedef {import("../../components/lists/VcsList.vue").VcsListItem & {
  *   actions: Array<VcsAction & { weight?: number }>,
+ *   clickedCallbacks: Array<function(PointerEvent):void>,
  *   destroy: function():void|undefined
  *   destroyFunctions: Array<function():void>
  * }} CollectionComponentListItem
@@ -164,8 +165,8 @@ class CollectionComponentClass {
 
     this._resetWatchers = [
       watch(this.renamable, () => this.reset()),
-      watch(this.removable, () => {
-        if (this.removable.value) {
+      watch([this.removable, this.selectable], () => {
+        if (this.removable.value && this.selectable.value) {
           this._addBulkDeleteAction();
         } else {
           this._removeBulkDeleteAction();
@@ -181,8 +182,10 @@ class CollectionComponentClass {
         }
       }),
     ];
-
     this._destroyBulkDelete = () => {};
+    if (this.removable.value && this.selectable.value) {
+      this._addBulkDeleteAction();
+    }
 
     this._listeners = [
       this._collection.added.addEventListener(this._handleItemAdded.bind(this)),
@@ -193,9 +196,9 @@ class CollectionComponentClass {
 
     if (this._collection[isOverrideCollection]) {
       this._listeners.push(
-        this._collection.replaced.addEventListener((replacedEvent) => {
-          this._handleItemRemoved(replacedEvent.old);
-        }),
+        this._collection.replaced.addEventListener(
+          this._handleItemReplaced.bind(this),
+        ),
       );
     }
 
@@ -264,33 +267,39 @@ class CollectionComponentClass {
     return computed(() => this._actions.value.map(({ action }) => action));
   }
 
+  /**
+   * @private
+   */
   _addBulkDeleteAction() {
-    if (this.selectable) {
-      const { action, destroy } = createListItemBulkAction(this.selection, {
-        name: 'list.delete',
-        callback: () => {
-          [...this.selection.value].forEach((listItem) => {
-            this._collection.remove(this._collection.getByKey(listItem.name));
-          });
-        },
-      });
-      this._destroyBulkDelete = destroy;
-      this.addActions([
-        {
-          action,
-          owner: this._owner,
-          weight: 100,
-        },
-      ]);
-    }
+    const { action, destroy } = createListItemBulkAction(this.selection, {
+      name: 'list.delete',
+      callback: () => {
+        [...this.selection.value].forEach((listItem) => {
+          this._collection.remove(this._collection.getByKey(listItem.name));
+        });
+      },
+    });
+    this._destroyBulkDelete = destroy;
+    this.addActions([
+      {
+        action,
+        owner: this._owner,
+        weight: 100,
+      },
+    ]);
   }
 
+  /**
+   * @private
+   */
   _removeBulkDeleteAction() {
     this._destroyBulkDelete();
     const action = this._actions.value.find(
       (a) => a.action.name === 'list.delete',
     );
-    this.removeActions([action]);
+    if (action) {
+      this.removeActions([action]);
+    }
   }
 
   /**
@@ -314,6 +323,7 @@ class CollectionComponentClass {
       hasUpdate: item?.properties?.hasUpdate,
       rename: false,
       actions: [],
+      clickedCallbacks: [],
       destroy: undefined,
       destroyFunctions: [],
     };
@@ -371,7 +381,7 @@ class CollectionComponentClass {
   }
 
   /**
-   * synchronizes the category items with the internal items list.
+   * synchronizes the collection items with the internal items list.
    * @param {T} item
    * @template T
    * @private
@@ -384,6 +394,31 @@ class CollectionComponentClass {
     ) {
       const listItem = this._transformItem(item);
       this._insertListItem(listItem);
+    }
+  }
+
+  /**
+   * synchronizes the collection items with the internal items list by preserving previous selection
+   * @param {import("@vcmap/core").ReplacedEvent<T>} replaced
+   * @private
+   */
+  _handleItemReplaced(replaced) {
+    const selectedIdx = this.selection.value.findIndex(
+      (l) => l.name === replaced.old[this.collection.uniqueKey],
+    );
+    this._handleItemRemoved(replaced.old);
+    if (selectedIdx > -1) {
+      const addedListener = this._collection.added.addEventListener((added) => {
+        if (added === replaced.new) {
+          const newListItem = this.items.value.find(
+            (l) => l.name === added[this.collection.uniqueKey],
+          );
+          if (newListItem) {
+            this.selection.value.splice(selectedIdx, 0, newListItem);
+          }
+          addedListener();
+        }
+      });
     }
   }
 

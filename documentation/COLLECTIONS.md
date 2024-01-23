@@ -30,9 +30,13 @@ To create a new instance, you must at least provide a collection. All other ui r
  * @typedef {Object} CollectionComponentUiOptions
  * @property {string} [id]
  * @property {string} [title]
- * @property {boolean} [draggable] - only supported for IndexedCollections
- * @property {boolean} [selectable]
- * @property {boolean} [singleSelect]
+ * @property {boolean} [draggable=false] - only supported for IndexedCollections
+ * @property {boolean} [renamable=false] - adds actions to rename items from list. Sets a default titleChanged callback on all list items, which can be overwritten in the mapping function, if necessary.
+ * @property {boolean} [removable=false] - adds actions to remove items from list. Also adds a header action to delete selected, if selectable is set to true.
+ * @property {boolean} [selectable=false]
+ * @property {boolean} [singleSelect=false]
+ * @property {number} [overflowCount=2] - number of header action buttons rendered until overflow
+ * @property {number} [limit=10] - limit number of items in rendered list (more items are rendered in extra window)
  */
 
 /**
@@ -56,6 +60,7 @@ const listItems = collectionComponent.items;
 ```
 
 > Do not manipulate this list items array directly! To add or remove items manipulate the collection or make use of itemMappings and itemFilters.
+> If your collection is an OverrideCollection use replace to update items in place. The CollectionComponentClass will preserve selection for replaced items.
 
 ### Item Mapping
 
@@ -89,9 +94,9 @@ const mappingFunction = (item, category, listItem) => {
       category.collection.remove(item);
     },
   });
-  listItem.destroy = () => {
+  listItem.destroyFunctions.push(() => {
     console.log('custom tear down');
-  };
+  });
 };
 const itemMapping = {
   predicateFunction,
@@ -167,6 +172,85 @@ collectionCompnent.addActions([ownedAction]);
 ```
 
 > Actions are rendered in the order they were added or by provided weight.
+
+## EditorCollectionComponentClass
+
+An EditorCollectionComponentClass is a specialisation of the CollectionComponentClass.
+It additionally defines the behaviour of editor windows linked to list items.
+
+There are two different behaviours defined:
+
+- Selection based:
+  - Editor windows are directly linked to the current selection
+  - Whenever the selection changes the linked editor window changes
+  - Linkage to selection is one-directional, so window changes do not automatically alter the selection!
+  - All editor windows of a collection are exclusive
+
+> **Important**: For linking feature selection in the map with a list selection, always try to update the list selection on feature change, instead of manually opening editor windows.
+> For selection based behaviour the window handling is done by the EditorCollectionComponentClass depending on the current selection!
+
+- Clicked based:
+  - Editor windows are _not_ linked to the current selection
+  - Editor windows are opened via click on the list item or overflow action
+  - Editor windows can be open, even if the corresponding item is not selected
+  - Multiple editor windows may be opened at the same time (by detaching)
+
+Additionally multi editors can be provided (for both behaviours):
+A multi editor can be opened for the current selection via header overflow action.
+Multi editor windows are exclusive to single editor windows and vice versa.
+
+The editing behaviour is defined in the EditingOptions type:
+
+```js
+/**
+ * @typedef {Object} EditingOptions
+ * @property {EditorWindowComponentOptions|function(T):EditorWindowComponentOptions} editor
+ * @property {EditorWindowComponentOptions} [multiEditor]
+ * @property {boolean} [selectionBased=true] - If true, editor windows are coupled to selection and editor windows are exclusive
+ * @template {Object} T
+ */
+```
+
+To create an EditorCollectionClass use the helper `makeEditorCollectionComponentClass`, and provide your editor window options:
+
+```js
+import { makeEditorCollectionComponentClass } from '@vcmap/ui';
+
+const collectionComponent = new CollectionComponentClass({
+  collection: new Collection(),
+});
+
+makeEditorCollectionComponentClass(
+  app,
+  collectionComponent,
+  {
+    editor: myEditorWindowOptions,
+    multiEditor: myMultiEditorWindowOptions,
+    selectionBased: false, // default is true
+  },
+  'my-parent-window-id',
+);
+```
+
+An EditorCollectionComponentClass provides additionally API:
+
+```js
+/**
+ * @typedef {import("./collectionComponentClass.js").CollectionComponentClass<T> & {
+ *     getEditorWindowId: function(item:T):string,
+ *     getMultiEditorWindowId: function():string,
+ *     closeEditorWindow: function(item:T):void,
+ *     closeEditorWindows: function():void,
+ *     closeMultiEditorWindow: function():void,
+ *     openEditorWindow: function(item:T):void,
+ *     openMultiEditorWindow: function():void,
+ * }} EditorCollectionComponentClass
+ * @template {Object} T
+ */
+```
+
+> EditorCollectionComponentClass can be used for categories. Simply request a category and make a EditorCollectionComponentClass of the collectionComponent returned.
+> See [CategoryManager](#categorymanager) for more information.
 
 ## CollectionManager
 
@@ -331,3 +415,5 @@ const { category, collectionComponent } =
     { draggable: true }, // optional CollectionComponentClassOptions
   );
 ```
+
+> With the returned collectionComponent you can create an [EditorCollectionComponentClass](#editorcollectioncomponentclass) to make category items editable via editor windows.

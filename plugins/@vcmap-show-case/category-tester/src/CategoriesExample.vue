@@ -34,30 +34,57 @@
     </v-container>
     <div class="d-flex gap-2 px-2 pt-2 pb-1">
       <div class="d-flex gap-2 w-full justify-end">
-        <VcsFormButton @click="newDialog = true" variant="filled"
+        <VcsFormButton @click="newCategory.dialog = true" variant="filled"
           >Request Category</VcsFormButton
         >
-        <VcsFormButton @click="requestFoobar">Request Foobar</VcsFormButton>
         <VcsFormButton @click="clear">Clear</VcsFormButton>
       </div>
     </div>
-    <v-dialog v-model="itemDialog" width="300">
+    <v-dialog v-model="newItem.dialog" width="300">
       <v-card class="pa-2">
-        <v-card-title>{{ itemCategoryName }}</v-card-title>
+        <v-card-title>{{ newItem.categoryName }}</v-card-title>
         <v-form @submit.prevent="addItem">
-          <vcs-text-area v-model="jsonString" />
+          <vcs-text-area v-model="newItem.config" />
           <vcs-form-button type="submit"> Add Item </vcs-form-button>
         </v-form>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="newDialog" width="200">
+    <v-dialog v-model="newCategory.dialog" width="200">
       <v-card class="pa-2">
-        <v-form @submit.prevent="requestCategory({ name: categoryName })">
+        <v-form @submit.prevent="requestCategory">
           <VcsTextField
-            v-model="categoryName"
-            :rules="[(value) => value !== '' || 'Please provide a name!']"
+            v-model="newCategory.name"
+            placeholder="category name"
+            :rules="[
+              (value) => value !== '' || 'Please provide a name!',
+              hasCategory,
+            ]"
           />
-          <VcsFormButton type="submit"> Request </VcsFormButton>
+          <VcsCheckbox
+            label="add Foobar items"
+            v-model="newCategory.addItems"
+          />
+          <VcsCheckbox
+            label="Add & UI Option actions"
+            v-model="newCategory.addActions"
+          />
+          <VcsCheckbox
+            label="Import & Export actions"
+            v-model="newCategory.addImportExport"
+          />
+          <VcsCheckbox
+            label="add Foobar Editor"
+            v-model="newCategory.addEditors"
+          />
+          <VcsCheckbox
+            label="selection based editors"
+            class="mx-2"
+            v-if="newCategory.addEditors"
+            v-model="newCategory.selectionBased"
+          />
+          <VcsFormButton type="submit" :disabled="!newCategory.name">
+            Request
+          </VcsFormButton>
         </v-form>
       </v-card>
     </v-dialog>
@@ -69,12 +96,15 @@
   import {
     VcsFormButton,
     VcsTextField,
+    VcsCheckbox,
     CollectionComponentProvider,
     CollectionComponent,
     CollectionComponentList,
     VcsTextArea,
     createListExportAction,
     createListImportAction,
+    makeEditorCollectionComponentClass,
+    isEditorCollectionComponentClass,
   } from '@vcmap/ui';
   import {
     VContainer,
@@ -91,6 +121,7 @@
     exportCategoryCallback,
     importCategoryCallback,
   } from './importExportHelper.js';
+  import FoobarEditor from './FoobarEditor.vue';
 
   const foobarMappingFunction = (item, c, listItem) => {
     listItem.title = item.name;
@@ -107,6 +138,7 @@
       CollectionComponentOptions,
       VcsFormButton,
       VcsTextField,
+      VcsCheckbox,
       VContainer,
       VExpansionPanels,
       VCard,
@@ -117,29 +149,52 @@
     setup(props, { attrs }) {
       const app = inject('vcsApp');
       provide('collectionManager', app.categoryManager);
-      const componentIds = ref(app.categoryManager.componentIds);
-      const newDialog = ref(false);
-      const optionsDialog = ref(false);
-      const itemDialog = ref(false);
-      const itemCategoryName = ref(undefined);
-      const categoryName = ref('');
+      const componentIds = ref([]);
       const destroyFunctions = [];
 
-      async function requestCategory(options) {
-        if (app.categoryManager.has(options.name)) {
-          return app.categoryManager.requestCategory(options, owner);
-        }
+      const newCategory = ref({
+        dialog: false,
+        name: '',
+        addItems: false,
+        addActions: false,
+        addImportExport: false,
+        addEditors: false,
+        selectionBased: false,
+      });
 
-        const { collectionComponent, category } =
-          await app.categoryManager.requestCategory(options, owner);
+      const newItem = ref({
+        dialog: false,
+        categoryName: undefined,
+        config: JSON.stringify({ name: 'newItem' }, null, 2),
+      });
+
+      const optionsDialog = ref(false);
+
+      function addItems(collectionComponent, category) {
+        app.categoryManager.addMappingFunction(
+          () => true,
+          foobarMappingFunction,
+          owner,
+          [collectionComponent.id],
+        );
+        for (let i = 0; i <= 12; i++) {
+          collectionComponent.collection.add({
+            name: `${category.name}-${i}`,
+            title: `${category.name}-${i}-title`,
+            random: Math.random(),
+          });
+        }
+      }
+
+      function addActions(collectionComponent, category) {
         collectionComponent.addActions([
           {
             action: {
               name: 'add',
               icon: '$vcsPlus',
               callback() {
-                itemDialog.value = true;
-                itemCategoryName.value = category.name;
+                newItem.value.dialog = true;
+                newItem.value.categoryName = category.name;
               },
             },
             owner,
@@ -154,32 +209,9 @@
             owner,
           },
         ]);
-        newDialog.value = false;
-        return { collectionComponent, category };
       }
 
-      function clear() {
-        app.categoryManager.clear();
-      }
-
-      async function requestFoobar() {
-        const { collectionComponent, category } = await requestCategory({
-          name: 'foobar',
-          title: 'Foobar',
-        });
-
-        app.categoryManager.addMappingFunction(
-          () => true,
-          foobarMappingFunction,
-          owner,
-          [collectionComponent.id],
-        );
-        for (let i = 0; i <= 12; i++) {
-          category.collection.add({
-            name: `foobar-${i}`,
-          });
-        }
-
+      function addImportExportActions(collectionComponent, category) {
         const { action: exportAction, destroy: exportDestroy } =
           createListExportAction(
             collectionComponent.selection,
@@ -199,19 +231,103 @@
         collectionComponent.addActions([exportAction, importAction]);
       }
 
+      function addEditors(collectionComponent, category, selectionBased) {
+        collectionComponent.selectable.value = true;
+
+        function getItemForListItem(listItem) {
+          return collectionComponent.collection.getByKey(listItem.name);
+        }
+
+        makeEditorCollectionComponentClass(
+          app,
+          collectionComponent,
+          {
+            editor: (item) => ({
+              component: FoobarEditor,
+              state: {
+                headerTitle: `${category.name} Editor`,
+                headerIcon: '$vcsEdit',
+              },
+              position: {
+                width: 300,
+              },
+              props: {
+                async getConfig() {
+                  return (
+                    collectionComponent.collection.getSerializedByKey?.(
+                      item.name,
+                    ) ?? collectionComponent.collection.getByKey(item.name)
+                  );
+                },
+                setConfig(config) {
+                  item.name = config.name ?? item.name;
+                  item.title = config.title ?? item.title;
+                  item.random = config.random ?? item.random;
+                },
+              },
+            }),
+            multiEditor: {
+              component: FoobarEditor,
+              state: {
+                headerTitle: `${category.name} Multi Editor`,
+                headerIcon: '$vcsPen',
+              },
+              position: {
+                width: 300,
+              },
+              props: {
+                multi: true,
+                selection: collectionComponent.selection,
+                getConfig() {
+                  const selection =
+                    collectionComponent.selection.value.map(getItemForListItem);
+                  if (
+                    selection.every((i) => i.random === selection[0].random)
+                  ) {
+                    return selection[0];
+                  }
+                  return { random: undefined };
+                },
+                setConfig(config) {
+                  collectionComponent.selection.value
+                    .map(getItemForListItem)
+                    .forEach((i) => {
+                      i.random = config.random ?? i.random;
+                    });
+                },
+              },
+            },
+            selectionBased,
+          },
+          attrs['window-state'].id,
+        );
+      }
+
+      function clear() {
+        componentIds.value
+          .map((id) => app.categoryManager.get(id))
+          .forEach((c) => {
+            if (c[isEditorCollectionComponentClass]) {
+              c.closeEditorWindows();
+              c.closeMultiEditorWindow();
+            }
+            app.categoryManager.remove(c.id);
+          });
+        componentIds.value.splice(0);
+      }
+
       onUnmounted(() => {
         destroyFunctions.forEach((cb) => cb());
+        clear();
       });
 
-      const jsonString = ref(JSON.stringify({ name: 'newItem' }, null, 2));
-
       async function addItem() {
-        if (itemCategoryName.value) {
+        if (newItem.value.categoryName) {
           const { category } = await app.categoryManager.requestCategory({
-            name: itemCategoryName.value,
+            name: newItem.value.categoryName,
           });
           try {
-            const config = JSON.parse(jsonString.value);
+            const config = JSON.parse(newItem.value.config);
             if (category.classRegistryName) {
               category.collection.add(
                 getObjectFromClassRegistry(
@@ -222,13 +338,13 @@
             } else {
               category.collection.add(config);
             }
-            jsonString.value = JSON.stringify({ name: 'newItem' }, null, 2);
           } catch (e) {
             // eslint-disable-next-line no-console
             console.error('invalid JSON');
           }
-          itemDialog.value = false;
-          itemCategoryName.value = undefined;
+          newItem.value.dialog = false;
+          newItem.value.categoryName = undefined;
+          newItem.value.config = JSON.stringify({ name: 'newItem' }, null, 2);
         }
       }
 
@@ -239,16 +355,40 @@
 
       return {
         componentIds,
-        categoryName,
-        newDialog,
+        newCategory,
+        newItem,
         optionsDialog,
-        itemDialog,
-        itemCategoryName,
-        jsonString,
         addItem,
-        requestCategory,
-        requestFoobar,
+        async requestCategory() {
+          const { collectionComponent, category } =
+            await app.categoryManager.requestCategory(
+              { name: newCategory.value.name },
+              owner,
+            );
+          componentIds.value.push(collectionComponent.id);
+          if (newCategory.value.addItems) {
+            addItems(collectionComponent, category);
+          }
+          if (newCategory.value.addActions) {
+            addActions(collectionComponent, category);
+          }
+          if (newCategory.value.addImportExport) {
+            addImportExportActions(collectionComponent, category);
+          }
+          if (newCategory.value.addEditors) {
+            addEditors(
+              collectionComponent,
+              category,
+              newCategory.value.selectionBased,
+            );
+          }
+          newCategory.value.name = '';
+          newCategory.value.dialog = false;
+        },
         clear,
+        hasCategory(value) {
+          return !app.categoryManager.has(value) || 'Category already existing';
+        },
         componentView,
         openList(id) {
           componentView.value = id;

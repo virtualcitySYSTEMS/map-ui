@@ -3,7 +3,7 @@ import { check } from '@vcsuite/check';
 import { createFlightVisualization } from '@vcmap/core';
 
 /**
- * @param {import("../VcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @returns {{action: import("./actionHelper.js").VcsAction, destroy: () => void}}
  */
@@ -72,7 +72,7 @@ export const PlayerDirection = {
 };
 
 /**
- * @param {import("../VcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @param {PlayerDirection} direction
  * @returns {{action: import("./actionHelper.js").VcsAction, destroy: () => void}}
@@ -108,7 +108,7 @@ export function createStepAction(app, instance, direction) {
 }
 
 /**
- * @param {import("../VcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @param {PlayerDirection} direction
  * @returns {{ action: import("./actionHelper.js").VcsAction & { listeners:Object<string,()=>void>, destroy: () => void }}}
@@ -167,7 +167,7 @@ export function createFastAction(app, instance, direction) {
 
 /**
  *
- * @param {import("../VcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @returns {{destroy: (() => void), actions: Array<import("./actionHelper.js").VcsAction> }}
  */
@@ -188,7 +188,7 @@ export function createFlightPlayerActions(app, instance) {
 
 /**
  *
- * @param {import("../VcsUiApp.js").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} flightInstance
  * @param {boolean} [active=true]
  * @returns {Promise<{action:import("../../actions/actionHelper.js").VcsAction, destroy:()=>void}>}

@@ -141,3 +141,44 @@ export function createListImportAction(
     destroy,
   };
 }
+
+/**
+ * @param {import("vue").Ref<Array<import("../manager/collectionManager/collectionComponentClass.js").CollectionComponentListItem>>} selection
+ * @param {function(item:T):void} editCallback
+ * @param {import("../manager/window/windowManager.js").WindowManager} windowManager
+ * @param {string|symbol} owner
+ * @param {string} multiEditorId
+ * @returns {(function(): void)|*}
+ */
+export function createListEditAction(
+  selection,
+  editCallback,
+  windowManager,
+  owner,
+  multiEditorId,
+) {
+  const { action, destroy: destroyEditSelected } = createListItemBulkAction(
+    selection,
+    {
+      name: 'list.edit',
+      callback: editCallback,
+    },
+  );
+
+  function handleWindowChanged() {
+    action.active = windowManager.has(multiEditorId);
+  }
+
+  const editorStateListener = [
+    windowManager.added.addEventListener(handleWindowChanged),
+    windowManager.removed.addEventListener(handleWindowChanged),
+  ];
+
+  return {
+    action,
+    destroy: () => {
+      destroyEditSelected();
+      editorStateListener.forEach((cb) => cb());
+    },
+  };
+}
