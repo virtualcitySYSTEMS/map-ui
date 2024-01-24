@@ -57,6 +57,10 @@
         color: var(--v-primary-base);
         font-style: italic;
         opacity: 1;
+        padding: 0 3px 0 0;
+      }
+      input::-moz-placeholder {
+        font-style: initial;
       }
     }
   }
@@ -87,6 +91,13 @@
       }
     }
   }
+  div[type='number'] {
+    ::v-deep {
+      .v-text-field__slot input {
+        text-align: right;
+      }
+    }
+  }
   .input--unit {
     ::v-deep {
       .v-text-field__slot input {
@@ -95,6 +106,22 @@
       }
       .v-input__append-inner {
         margin-top: 6px !important;
+        &:last-child {
+          border-bottom: 1px solid var(--v-base-base);
+          height: 24px;
+          margin-top: 0 !important;
+          align-items: center;
+        }
+      }
+    }
+  }
+  .input--unit.input--not-dense {
+    ::v-deep {
+      .v-input__append-inner {
+        &:last-child {
+          height: 32px;
+          padding-top: 2px;
+        }
       }
     }
   }

@@ -39,6 +39,8 @@
 - Fixes VcsSlider to also accept number 0 inputs
 - Fixes BalloonFeatureInfoView to also be able to deal with array of numbers as a value
 - Change apply button to icon in `VcsFeatureTransforms.vue`
+- Fixes layout issue where input placeholder text had been cut of
+- Changed input layout, so that the bottom border is extended for append items
 
 ### Ui Behaviour ChangesF
 
