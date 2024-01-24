@@ -33,17 +33,13 @@ import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
-/** @typedef {import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
+/** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
 /**
  * @typedef {Object} FeatureInfoEvent
  * @property {FeatureType} feature
- * @property {import("ol/coordinate").Coordinate} [position] - potential position to place the balloon at
- * @property {import("ol/coordinate").Coordinate} [windowPosition] - potential window position to initially place the balloon at
- */
-
-/**
- * @typedef {import("@vcmap/core").OverrideCollectionInterface<UiConfigurationItem>} FeatureInfoOverrideCollection
+ * @property {import("ol/coordinate.js").Coordinate} [position] - potential position to place the balloon at
+ * @property {import("ol/coordinate.js").Coordinate} [windowPosition] - potential window position to initially place the balloon at
  */
 
 /**
@@ -57,7 +53,7 @@ function getLogger() {
  * @param {FeatureType} feature
  * @param {import("@vcmap/core").Layer} layer
  * @param {string} defaultFillColor
- * @returns {import("ol/style/Style").default|import("@vcmap/core").VectorStyleItem}
+ * @returns {import("ol/style/Style.js").default|import("@vcmap/core").VectorStyleItem}
  */
 export function getHighlightStyle(feature, layer, defaultFillColor) {
   if (layer && layer.highlightStyle) {
@@ -97,7 +93,7 @@ export function getHighlightStyle(feature, layer, defaultFillColor) {
 }
 
 /**
- * @param {VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {FeatureInfoSession}
  */
 export function createFeatureInfoSession(app) {
@@ -127,7 +123,7 @@ export function createFeatureInfoSession(app) {
 }
 
 /**
- * @param {VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {function():void}
  */
 function setupFeatureInfoTool(app) {
@@ -209,7 +205,7 @@ function setupFeatureInfoTool(app) {
  */
 
 /**
- * @type {ClassRegistry<AbstractFeatureInfoView>}
+ * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
  */
 export const featureInfoClassRegistry = new ClassRegistry();
 
@@ -223,17 +219,16 @@ export const featureInfoViewSymbol = Symbol('featureInfoView');
  * @class FeatureInfo
  * @description Provides registration of featureInfoClasses and stores featureInfoView instances.
  * @extends {Collection<AbstractFeatureInfoView>}
- * @implements {FeatureInfoOverrideCollection}
  */
 class FeatureInfo extends Collection {
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
     super();
 
     /**
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -315,7 +310,6 @@ class FeatureInfo extends Collection {
 
   /**
    * @type {VcsEvent<null|FeatureType>}
-   * @readonly
    */
   get featureChanged() {
     return this._featureChanged;
@@ -323,7 +317,6 @@ class FeatureInfo extends Collection {
 
   /**
    * @type {null|FeatureType}
-   * @readonly
    */
   get selectedFeature() {
     return this._selectedFeature;
@@ -331,7 +324,6 @@ class FeatureInfo extends Collection {
 
   /**
    * @type {null|string}
-   * @readonly
    */
   get selectedFeatureId() {
     return this._selectedFeatureId;
@@ -340,7 +332,6 @@ class FeatureInfo extends Collection {
   /**
    * The window id of the current features FeatureInfoView window
    * @type {string|null}
-   * @readonly
    */
   get windowId() {
     return this._windowId;
@@ -390,8 +381,8 @@ class FeatureInfo extends Collection {
    * collection.
    * If passing a feature create by a FeatureProvider, the feature will be highlighted on an internal scratch layer.
    * @param {FeatureType} feature
-   * @param {import("ol/coordinate").Coordinate=} [position] - optional clicked position. If not given feature's center point is used to place balloons
-   * @param {import("ol/coordinate").Coordinate=} [windowPosition] - optional clicked window position. If not given derived from position for balloons
+   * @param {import("ol/coordinate.js").Coordinate=} [position] - optional clicked position. If not given feature's center point is used to place balloons
+   * @param {import("ol/coordinate.js").Coordinate=} [windowPosition] - optional clicked window position. If not given derived from position for balloons
    * @param {AbstractFeatureInfoView=} featureInfoView
    * @returns {Promise<void>}
    */

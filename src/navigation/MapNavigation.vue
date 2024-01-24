@@ -53,7 +53,7 @@
 
   /**
    * @description Creates a go-to viewpoint action from a startingViewpointName defined in a module. If no startingViewpointName is defined, uses default map view as fallback.
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    * @returns {{ action: import("vue").Reactive<VcsAction>, destroy: function():void }}
    */
   function setupHomeButton(app) {
@@ -145,7 +145,7 @@
       VRow,
     },
     setup() {
-      /** @type {VcsUiApp} */
+      /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const viewMode = ref(OrientationToolsViewMode.TWO_D);
       const headingRef = ref(0);

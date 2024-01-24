@@ -2,7 +2,7 @@ import { computed } from 'vue';
 
 /**
  * Syncs the error and validation state with the underlying vuetify component.
- * @param {import("vue").Ref<any>} elementRef The template ref to the base vuetify component.
+ * @param {import("vue").Ref<unknown>} elementRef The template ref to the base vuetify component.
  * @returns {import("vue").Ref<string>} Error message to display. Is empty string if either there are no error messages or if the validation errors are not displayed because
  * no interaction with the component or validation was reset by form. Validation errors have precedence over custom error messages.
  */

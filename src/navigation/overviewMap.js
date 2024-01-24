@@ -30,7 +30,7 @@ import VcsMap from '../application/VcsMap.vue';
 export const overviewMapLayerSymbol = Symbol('overviewMapLayerSymbol');
 
 /**
- * @returns {WindowComponentOptions}
+ * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
  */
 export function getWindowComponentOptions() {
   return {
@@ -89,11 +89,11 @@ function getCameraIcon(color) {
  */
 class OverviewMap {
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
     /**
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -249,7 +249,6 @@ class OverviewMap {
 
   /**
    * @type {boolean}
-   * @readonly
    */
   get active() {
     return this._active;
@@ -257,7 +256,6 @@ class OverviewMap {
 
   /**
    * @type {import("@vcmap/core").OpenlayersMap|null}
-   * @readonly
    */
   get map() {
     return this._map;
@@ -265,7 +263,6 @@ class OverviewMap {
 
   /**
    * @type {EventHandler|null}
-   * @readonly
    */
   get eventHandler() {
     return this._eventHandler;
@@ -273,7 +270,6 @@ class OverviewMap {
 
   /**
    * @type {import("@vcmap/core").VcsEvent<import("@vcmap/core").InteractionEvent>|null}
-   * @readonly
    */
   get mapClicked() {
     return this._mapClicked;

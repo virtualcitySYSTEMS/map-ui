@@ -141,7 +141,7 @@
   /**
    * @param {import("vue").Ref<VcsListItem[]>} items
    * @param {import("vue").Ref<VcsListItem[]>} selected
-   * @param {function(event: string, ...args: any[]):void} emit
+   * @param {function(string, ...any[]):void} emit
    * @returns {Array<import("../../actions/actionHelper.js").VcsAction>}
    */
   export function createSelectionActions(items, selected, emit) {
@@ -186,7 +186,7 @@
    * @property {string} [tooltip]
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
    * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
-   * @property {Array<VcsAction>} [actions]
+   * @property {Array<import("../../actions/actionHelper.js").VcsAction>} [actions]
    * @property {Array<function(PointerEvent):void>|undefined} [clickedCallbacks] - An array of callbacks called on item click. called before selection update
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
    * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. called before value update
@@ -228,7 +228,7 @@
    * @vue-prop {string} [title] - the lists title
    * @vue-prop {string} [icon] - icon to prepend to the list title
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
-   * @vue-prop {Array<VcsAction>} [actions] - actions to render in the list title
+   * @vue-prop {Array<import("../../actions/actionHelper.js").VcsAction>} [actions] - actions to render in the list title
    * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
    * @vue-event {ItemRenamedEvent} item-renamed - event triggered after item was renamed
    * @vue-data {slot} [#item.prepend-title] - A slot to adapt the list item titel, adding content before the title. Binds item and index.
@@ -435,7 +435,7 @@
       );
 
       /**
-       * @type {import("vue").ComputedRef<Array<VcsAction>>}
+       * @type {import("vue").ComputedRef<Array<import("../../actions/actionHelper.js").VcsAction>>}
        */
       const renderingActions = computed(() => {
         if (props.selectable && !props.singleSelect) {
@@ -453,7 +453,7 @@
         borderTop,
         lightenEven,
         /**
-         * @type {import("vue").ComputedRef<Array<VcsAction>>}
+         * @type {import("vue").ComputedRef<Array<import("../../actions/actionHelper.js").VcsAction>>}
          */
         renderingActions,
         /**

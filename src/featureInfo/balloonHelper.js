@@ -33,7 +33,7 @@ function getBalloonPositionCesium(scene, cartesian) {
 
 /**
  * @param {import("@vcmap/core").OpenlayersMap} olMap
- * @param {import("ol/coordinate").Coordinate} position
+ * @param {import("ol/coordinate.js").Coordinate} position
  * @returns {undefined|import("@vcmap-cesium/engine").Cartesian2}
  */
 function getBalloonPositionOL(olMap, position) {
@@ -46,8 +46,8 @@ function getBalloonPositionOL(olMap, position) {
 
 /**
  * returns the windowPosition of a balloon from a map position
- * @param {VcsApp} app
- * @param {import("ol/coordinate").Coordinate} position - position in mercator
+ * @param {import("@vcmap/core").VcsApp} app
+ * @param {import("ol/coordinate.js").Coordinate} position - position in mercator
  * @returns {Promise<undefined|Cartesian2>}
  */
 export async function getBalloonPosition(app, position) {
@@ -69,7 +69,7 @@ export async function getBalloonPosition(app, position) {
 
 /**
  * sets the windowPosition of a balloon
- * @param {WindowManager} windowManager
+ * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string} id - windowId of balloon
  * @param {import("@vcmap-cesium/engine").Cartesian2|undefined} windowPosition
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
@@ -92,9 +92,9 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
 }
 
 /**
- * @param {VcsApp} vcsApp
+ * @param {import("@vcmap/core").VcsApp} vcsApp
  * @param {string} windowId
- * @param {import("ol/coordinate").Coordinate} clickedPosition - position in mercator
+ * @param {import("ol/coordinate.js").Coordinate} clickedPosition - position in mercator
  * @returns {Promise<(() => void)>}
  */
 export async function setupBalloonPositionListener(

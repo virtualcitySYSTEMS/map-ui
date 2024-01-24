@@ -24,22 +24,22 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
 }
 
 /**
- * @typedef {FeatureInfoViewOptions & { balloonTitle?: string, balloonSubtitle?: string }} BalloonFeatureInfoViewOptions
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { balloonTitle?: string, balloonSubtitle?: string }} BalloonFeatureInfoViewOptions
  * @property {string} [balloonTitle] - optional title to overwrite default (layerName). Can be attribute key (nested key using '.'), i18n key or text
  * @property {string} [balloonSubtitle] - optional window title to overwrite default (featureId). Can be attribute key (nested key using '.'), i18n key or text
  */
 
 /**
- * @typedef {FeatureInfoProps & {
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoProps & {
  *   balloonTitle: string,
  *   balloonSubtitle: string,
- *   position: import("ol/coordinate").Coordinate
+ *   position: import("ol/coordinate.js").Coordinate
  * }} BalloonFeatureInfoViewProps
  */
 
 /**
  * @param {import("@vcmap/core").Cartesian3} cartesian
- * @returns {import("ol/coordinate").Coordinate}
+ * @returns {import("ol/coordinate.js").Coordinate}
  */
 function cartesian3ToCoordinate(cartesian) {
   const cartographic = Cartographic.fromCartesian(cartesian);
@@ -53,7 +53,7 @@ function cartesian3ToCoordinate(cartesian) {
 
 /**
  * @param {FeatureType} feature
- * @returns {import("ol/coordinate").Coordinate|null}
+ * @returns {import("ol/coordinate.js").Coordinate|null}
  */
 function getPositionFromFeature(feature) {
   if (feature instanceof Feature && feature.getGeometry()) {
@@ -98,7 +98,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {BalloonFeatureInfoViewProps}
    */
@@ -128,10 +128,10 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
-   * @param {VcsUiApp} app
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("@src/vcsUiApp.js").default} app
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
-   * @returns {WindowComponentOptions}
+   * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
    */
   getWindowComponentOptions(app, featureInfo, layer) {
     const options = super.getWindowComponentOptions(app, featureInfo, layer);

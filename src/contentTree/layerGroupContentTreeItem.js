@@ -41,7 +41,6 @@ function getStateFromLayers(layers) {
  */
 class LayerGroupContentTreeItem extends ContentTreeItem {
   /**
-   * @readonly
    * @type {string}
    */
   static get className() {
@@ -50,7 +49,7 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
 
   /**
    * @param {LayerGroupContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

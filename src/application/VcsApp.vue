@@ -148,7 +148,7 @@
   export function setupPluginMountedListeners(app) {
     /**
      * wrapped execution of onVcsAppMounted hook
-     * @param {VcsPlugin} plugin
+     * @param {import("@src/vcsUiApp.js").VcsPlugin} plugin
      */
     function onVcsAppMounted(plugin) {
       if (plugin.onVcsAppMounted) {
@@ -524,7 +524,7 @@
    * This helper gets attributions of all active maps, layers and oblique collections and returns an array of entries.
    * It also returns a attributionAction to toggle the attributions window and a destroy function.
    * @param {import("../vcsUiApp.js").default} app
-   * @returns {{attributionEntries: import("vue").Ref<Array<AttributionEntry>>, attributionAction: VcsAction, destroyAttributions: function():void}}
+   * @returns {{ attributionEntries: import("vue").Ref<Array<import("./attributionsHelper.js").AttributionEntry>>, attributionAction: import("../actions/actionHelper.js").VcsAction, destroyAttributions: function():void }}
    */
   export function setupAttributions(app) {
     const { entries, destroy } = getAttributions(app);

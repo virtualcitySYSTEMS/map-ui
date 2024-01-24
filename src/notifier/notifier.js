@@ -90,7 +90,6 @@ class Notifier {
 
   /**
    * @type {import("vue").Ref<Array<Notification>>}
-   * @readonly
    */
   get notifications() {
     return this._notifications;

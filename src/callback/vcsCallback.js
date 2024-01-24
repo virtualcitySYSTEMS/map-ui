@@ -1,13 +1,13 @@
 import { ClassRegistry } from '@vcmap/core';
 
 /**
- * @type {ClassRegistry<VcsCallback>}
+ * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof VcsCallback>>}
  */
 export const callbackClassRegistry = new ClassRegistry();
 
 /**
  * creates instances of VcsCallback classes and executes its callback function
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {Array<VcsCallbackOptions>} vcsCallbackOptions
  */
 export function executeCallbacks(app, vcsCallbackOptions) {
@@ -19,11 +19,6 @@ export function executeCallbacks(app, vcsCallbackOptions) {
 /**
  * @typedef {Object} VcsCallbackOptions
  * @property {string} type
- */
-
-/**
- * @typedef {Object} VcsCallback
- * @property {function():void} callback
  */
 
 /**
@@ -40,12 +35,12 @@ class VcsCallback {
 
   /**
    * @param {VcsCallbackOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     /**
      * @protected
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      */
     this._app = app;
   }

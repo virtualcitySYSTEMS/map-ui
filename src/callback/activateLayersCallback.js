@@ -1,7 +1,7 @@
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
- * @typedef {VcsCallbackOptions & { layerNames: string[] }} ActivateLayersOptions
+ * @typedef {import("./vcsCallback.js").VcsCallbackOptions & { layerNames: string[] }} ActivateLayersOptions
  * @property {Array<string>} layerNames - layer names to activate
  */
 
@@ -19,7 +19,7 @@ class ActivateLayersCallback extends VcsCallback {
 
   /**
    * @param {ActivateLayersOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

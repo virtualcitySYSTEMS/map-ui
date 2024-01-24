@@ -14,7 +14,7 @@ import { sortByOwner } from '../navbarManager.js';
 /**
  * @typedef {Object} ContextMenuEventHandler
  * @property {string|symbol} owner
- * @property {function(import("@vcmap/core").InteractionEvent):Promise<Array<VcsAction>>|Array<VcsAction>} handler
+ * @property {function(import("@vcmap/core").InteractionEvent):Promise<Array<import("../../actions/actionHelper.js").VcsAction>>|Array<import("../../actions/actionHelper.js").VcsAction>} handler
  */
 
 /**
@@ -48,11 +48,11 @@ function setupViewpointChanged(map, clear) {
  */
 class ContextMenuManager {
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
     /**
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -153,7 +153,7 @@ class ContextMenuManager {
   /**
    * Adds a handler to the context menu. A handler is called with the interaction event on each right click.
    * If the handler returns an array of valid actions, said actions will be displayed in the context menu
-   * @param {function(import("@vcmap/core").InteractionEvent):Promise<Array<VcsAction>>|Array<VcsAction>} handler
+   * @param {function(import("@vcmap/core").InteractionEvent):Promise<Array<import("../../actions/actionHelper.js").VcsAction>>|Array<import("../../actions/actionHelper.js").VcsAction>} handler
    * @param {string|symbol} owner
    */
   addEventHandler(handler, owner) {
@@ -170,7 +170,7 @@ class ContextMenuManager {
 
   /**
    * Remove a single handler
-   * @param {function(import("@vcmap/core").InteractionEvent):Promise<Array<VcsAction>>|Array<VcsAction>} handler
+   * @param {function(import("@vcmap/core").InteractionEvent):Promise<Array<import("../../actions/actionHelper.js").VcsAction>>|Array<import("../../actions/actionHelper.js").VcsAction>} handler
    */
   removeHandler(handler) {
     this._eventHandlers = this._eventHandlers.filter(

@@ -57,39 +57,39 @@ export const StyleRowType = {
  */
 
 /**
- * @typedef {StyleLegendRow & { stroke: import("ol/style/Stroke").Options }} StrokeLegendRow
+ * @typedef {StyleLegendRow & { stroke: import("ol/style/Stroke.js").Options }} StrokeLegendRow
  */
 
 /**
  * @typedef {StyleLegendRow & {
- *   fill: import("ol/style/Fill").Options,
- *   stroke?: import("ol/style/Stroke").Options
+ *   fill: import("ol/style/Fill.js").Options,
+ *   stroke?: import("ol/style/Stroke.js").Options
  * }} FillLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow & { image: import("ol/style/Circle").Options }} CircleLegendRow
+ * @typedef {StyleLegendRow & { image: import("ol/style/Circle.js").Options }} CircleLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow & { image: import("ol/style/Icon").Options }} IconLegendRow
+ * @typedef {StyleLegendRow & { image: import("ol/style/Icon.js").Options }} IconLegendRow
  */
 
 /**
- * @typedef {StyleLegendRow & { image: import("ol/style/RegularShape").Options }} RegularShapeLegendRow
+ * @typedef {StyleLegendRow & { image: import("ol/style/RegularShape.js").Options }} RegularShapeLegendRow
  */
 
 /**
  * @typedef {StyleLegendRow & {
- *   text: import("ol/style/Text").Options,
+ *   text: import("ol/style/Text.js").Options,
  *   label?: string,
  * }} TextLegendRow
- * @property {import("ol/style/Text").Options} text
+ * @property {import("ol/style/Text.js").Options} text
  * @property {string} [label='Text']
  */
 
 /**
- * @type {import("ol/style/Image").Options} image
+ * @param {import("ol/style/Image.js").Options} image
  * @returns {string}
  */
 export function getImageSrcFromShape(image) {
@@ -107,7 +107,7 @@ export function getImageSrcFromShape(image) {
  * @property {string} title - layer or entry name
  * @property {boolean} [open=true] - panel state of entry
  * @property {Array<LegendItem>} legend - legend properties
- * @property {Array<VcsAction>} actions - popout actions
+ * @property {Array<import("../actions/actionHelper.js").VcsAction>} actions - popout actions
  */
 
 /**
@@ -135,8 +135,8 @@ export function createLayerLegendEntry(key, title, legend) {
 
 /**
  *
- * @param {VcsUiApp} app
- * @returns {{entries: import("vue").Ref<Array<LegendEntry>>, destroy: (function():void)}}
+ * @param {import("../vcsUiApp.js").default} app
+ * @returns {{entries: import("vue").Ref<Array<LegendEntry>>, destroy: function():void }}
  */
 export function getLegendEntries(app) {
   /**

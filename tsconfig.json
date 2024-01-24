@@ -26,8 +26,11 @@
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "paths": {
+      "@src/*": ["./src/*"]
+    },
+    "maxNodeModuleJsDepth": 0
   },
-  "exclude": ["dist/", "build/", ".tests/", "**/*.d.ts"],
-  "include": ["index.js", "!*.d.ts", "src/"]
+  "exclude": ["dist/", "build/", ".tests/", "node_modules/"],
+  "include": ["index.js", "*.d.ts", "src/"]
 }

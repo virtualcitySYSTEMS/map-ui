@@ -21,7 +21,7 @@ const subTreeItemWeight = Symbol('SubTreeItemWeight');
 
 /**
  * @typedef {Object} ParentTreeViewItem
- * @property {TreeViewItem} [treeViewItem]
+ * @property {import("./contentTreeItem.js").TreeViewItem} [treeViewItem]
  * @property {Map<string, ParentTreeViewItem>} children
  */
 
@@ -30,12 +30,12 @@ const subTreeItemWeight = Symbol('SubTreeItemWeight');
  */
 class ContentTreeCollection extends IndexedCollection {
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
     super();
     /**
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -89,7 +89,7 @@ class ContentTreeCollection extends IndexedCollection {
       app,
     );
     /**
-     * @type {import("vue").Ref<Map<string, TreeViewItem>>}
+     * @type {import("vue").Ref<Map<string, import("./contentTreeItem.js").TreeViewItem>>}
      * @private
      */
     this._subTreeViewItems = ref(new Map());
@@ -117,7 +117,7 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
-   * @param {TreeViewItem} subTreeViewItem
+   * @param {import("./contentTreeItem.js").TreeViewItem} subTreeViewItem
    * @param {WindowSlot} [slot]
    * @returns {function():void}
    * @private
@@ -242,8 +242,7 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * Returns all managed subtrees. Entries are not persisted and will change, if the trees get recalculated.
-   * @type {import("vue").Ref<Map<string, TreeViewItem>>}
-   * @readonly
+   * @type {import("vue").Ref<Map<string, import("./contentTreeItem.js").TreeViewItem>>}
    */
   get subTreeViewItems() {
     return this._subTreeViewItems;
@@ -254,7 +253,6 @@ class ContentTreeCollection extends IndexedCollection {
    * The first ID is always the default tree. Other ids are subtree ids.
    * Order of ids is dependent on their position in the collection and weight.
    * @type {Array<string>}
-   * @readonly
    */
   get subTreeIds() {
     const [defaultItem, ...rest] = [...this._subTreeViewItems.value.entries()];
@@ -269,7 +267,7 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {string} id
-   * @returns {import("vue").ComputedRef<Array<TreeViewItem>>}
+   * @returns {import("vue").ComputedRef<Array<import("./contentTreeItem.js").TreeViewItem>>}
    */
   getComputedVisibleTree(id) {
     return computed(() => {
@@ -283,7 +281,7 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {string} id
-   * @returns {TreeViewItem}
+   * @returns {import("./contentTreeItem.js").TreeViewItem}
    * @private
    */
   _getSubTree(id) {
@@ -347,8 +345,8 @@ class ContentTreeCollection extends IndexedCollection {
 export default ContentTreeCollection;
 
 /**
- * @param {VcsUiApp} app
- * @returns {import("@vcmap/core").OverrideCollection<import("./contentTreeItem.js").ContentTreeItem, ContentTreeCollection>}
+ * @param {import("@src/vcsUiApp.js").default} app
+ * @returns {import("@vcmap/core").OverrideCollection<ContentTreeItem, ContentTreeCollection>}
  */
 export function createContentTreeCollection(app) {
   const collection = new ContentTreeCollection(app);

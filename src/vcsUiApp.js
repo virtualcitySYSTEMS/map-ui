@@ -47,8 +47,8 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
  *    plugins?: Object[],
  *    contentTree?: import("./contentTree/contentTreeItem.js").ContentTreeItemOptions[],
- *    uiConfig?: UiConfigurationItem[],
- *    featureInfo?: FeatureInfoViewOptions[],
+ *    uiConfig?: import("./uiConfig.js").UiConfigurationItem<unknown>[],
+ *    featureInfo?: import("./featureInfo/abstractFeatureInfoView.js").FeatureInfoViewOptions[],
  *    i18n?: Object[]
  *  }} VcsUiModuleConfig
  */
@@ -68,8 +68,9 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  */
 
 /**
- * @typedef {function(P, string):VcsPlugin<P>} createPlugin
+ * @typedef {function(P, string):VcsPlugin<P, S>} createPlugin
  * @template {Object} P
+ * @template {Object} S
  */
 
 /**
@@ -80,8 +81,8 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  *   version: string,
  *   mapVersion: string,
  *   i18n?: Object<string, unknown>,
- *   initialize?: function(VcsUiApp, S=):void|Promise<void>,
- *   onVcsAppMounted?: function(VcsUiApp),
+ *   initialize?: function(import("@src/vcsUiApp.js").default, S=):void|Promise<void>,
+ *   onVcsAppMounted?: function(import("@src/vcsUiApp.js").default):void,
  *   toJSON?: function(): P,
  *   getDefaultOptions?: function(): P,
  *   getState?: function(boolean=):S|Promise<S>,
@@ -91,8 +92,8 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  * @template {Object} P
  * @template {Object} S
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
- * @property {function(VcsUiApp, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
- * @property {function(VcsUiApp)} onVcsAppMounted - called on mounted of VcsApp.vue
+ * @property {function(import("@src/vcsUiApp.js").default, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
+ * @property {function(import("@src/vcsUiApp.js").default)} onVcsAppMounted - called on mounted of VcsApp.vue
  * @property {function():P} [toJSON] - should return the plugin's serialization excluding all default values
  * @property {function():P} [getDefaultOptions] - should return the plugin's default options
  * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
@@ -105,11 +106,11 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
  *   added: import("@vcmap/core").VcsEvent<T>,
  *   removed: import("@vcmap/core").VcsEvent<T>,
  *   componentIds: Array<string>,
- *   get: function(string):T,
+ *   get: function(string):T|undefined,
  *   has: function(string):boolean,
- *   remove: function(string),
- *   add: function(O, string|vcsAppSymbol):T,
- *   removeOwner: function(string|vcsAppSymbol),
+ *   remove: function(string):void,
+ *   add: function(O, string|import("./pluginHelper.js").vcsAppSymbol):T,
+ *   removeOwner: function(string|import("./pluginHelper.js").vcsAppSymbol):void,
  *   clear: function():void,
  *   destroy: function(): void,
  * }} VcsComponentManager
@@ -203,7 +204,7 @@ class VcsUiApp extends VcsApp {
     ];
 
     /**
-     * @type {OverrideClassRegistry<VcsCallback>}
+     * @type {OverrideClassRegistry<import("./callback/vcsCallback.js").default>}
      * @private
      */
     this._callbackClassRegistry = new OverrideClassRegistry(
@@ -211,7 +212,7 @@ class VcsUiApp extends VcsApp {
     );
 
     /**
-     * @type {import("@vcmap/core").OverrideClassRegistry<ContentTreeItem>}
+     * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<ContentTreeItem>>}
      * @private
      */
     this._contentTreeClassRegistry = new OverrideClassRegistry(
@@ -242,7 +243,7 @@ class VcsUiApp extends VcsApp {
      */
     this._navbarManager = new NavbarManager();
     /**
-     * @type {UiConfig}
+     * @type {import("@vcmap/core").OverrideCollection<import("./uiConfig.js").UiConfigurationItem<unknown>, UiConfig>}
      * @private
      */
     this._uiConfig = new UiConfig(() => this.dynamicModuleId);
@@ -332,8 +333,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<unknown, unknown>>}
-   * @readonly
+   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<Object, Object>>}
    */
   get plugins() {
     return this._plugins;
@@ -341,31 +341,27 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {import("@vcmap/core").OverrideCollection<ContentTreeItem, ContentTreeCollection>}
-   * @readonly
    */
   get contentTree() {
     return this._contentTree;
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<VcsCallback>}
-   * @readonly
+   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof import("./callback/vcsCallback.js").default>>}
    */
   get callbackClassRegistry() {
     return this._callbackClassRegistry;
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<ContentTreeItem>}
-   * @readonly
+   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof ContentTreeItem>>}
    */
   get contentTreeClassRegistry() {
     return this._contentTreeClassRegistry;
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<AbstractFeatureInfoView>}
-   * @readonly
+   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
    */
   get featureInfoClassRegistry() {
     return this._featureInfoClassRegistry;
@@ -373,7 +369,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {ToolboxManager}
-   * @readonly
    */
   get toolboxManager() {
     return this._toolboxManager;
@@ -381,7 +376,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {WindowManager}
-   * @readonly
    */
   get windowManager() {
     return this._windowManager;
@@ -389,7 +383,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {NavbarManager}
-   * @readonly
    */
   get navbarManager() {
     return this._navbarManager;
@@ -397,7 +390,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {FeatureInfo}
-   * @readonly
    */
   get featureInfo() {
     return this._featureInfo;
@@ -405,7 +397,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {OverviewMap}
-   * @readonly
    */
   get overviewMap() {
     return this._overviewMap;
@@ -413,7 +404,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {I18nCollection}
-   * @readonly
    */
   get i18n() {
     return this._i18n;
@@ -421,7 +411,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {import("vue-i18n").IVueI18n}
-   * @readonly
    */
   get vueI18n() {
     return this._vueI18n;
@@ -429,7 +418,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @returns {CategoryManager}
-   * @readonly
    */
   get categoryManager() {
     return this._categoryManager;
@@ -437,7 +425,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {ContextMenuManager}
-   * @readonly
    */
   get contextMenuManager() {
     return this._contextMenuManager;
@@ -445,15 +432,13 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {Search}
-   * @readonly
    */
   get search() {
     return this._search;
   }
 
   /**
-   * @type {UiConfig}
-   * @readonly
+   * @type {import("@vcmap/core").OverrideCollection<import("./uiConfig.js").UiConfigurationItem<unknown>, UiConfig>}
    */
   get uiConfig() {
     return this._uiConfig;
@@ -461,7 +446,6 @@ class VcsUiApp extends VcsApp {
 
   /**
    * @type {Notifier}
-   * @readonly
    */
   get notifier() {
     return this._notifier;
@@ -494,7 +478,7 @@ class VcsUiApp extends VcsApp {
    * the maximum URL length is not exceeded). This includes: layer active state & styling, active map, active viewpoint,
    * currently selected feature info & any state deemed required for a sharable URL by the currently loaded plugins.
    * @param {boolean=} forUrl
-   * @returns {Promise<AppState>}
+   * @returns {Promise<import("./state.js").AppState>}
    */
   async getState(forUrl) {
     const state = createEmptyState();

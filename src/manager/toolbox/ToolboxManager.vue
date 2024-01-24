@@ -93,9 +93,9 @@
    * @property {string} type
    * @property {string} icon
    * @property {string} title
-   * @property {Array<ButtonComponent>} buttons
+   * @property {Array<import("../buttonManager.js").ButtonComponent>} buttons
    * @property {string} [selected]
-   * @property {function(index:number):void} [selectCb]
+   * @property {function(number):void} [selectCb]
    */
 
   /**

@@ -10,7 +10,7 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
  */
 
 /**
- * @typedef {VcsObjectContentTreeItemProperties & { defaultViewpoint: string }} ObliqueCollectionContentTreeItemProperties
+ * @typedef {import("./vcsObjectContentTreeItem.js").VcsObjectContentTreeItemProperties & { defaultViewpoint: string }} ObliqueCollectionContentTreeItemProperties
  */
 
 /**
@@ -32,7 +32,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
 
   /**
    * @param {ObliqueCollectionContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

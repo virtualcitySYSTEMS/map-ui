@@ -16,13 +16,13 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
  */
 
 /**
- * @typedef {VcsObjectContentTreeItemProperties & { availableStyles?: string[], defaultViewpoint?: string }} LayerContentTreeItemProperties
+ * @typedef {import("./vcsObjectContentTreeItem.js").VcsObjectContentTreeItemProperties & { availableStyles?: string[], defaultViewpoint?: string }} LayerContentTreeItemProperties
  * @property {string} [defaultViewpoint] - the name the default viewpoint
  */
 
 /**
- * @param {ContentTreeItem} item
- * @param {VcsUiApp} app
+ * @param {import("./contentTreeItem.js").default} item
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {string|import("@vcmap/core").Viewpoint=} viewpoint
  */
 export function setViewpointAction(item, app, viewpoint) {
@@ -72,7 +72,7 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
 
   /**
    * @param {LayerContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

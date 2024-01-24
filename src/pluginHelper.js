@@ -32,6 +32,7 @@ export const pluginBaseUrlSymbol = Symbol('pluginBaseUrl');
  * @type {symbol}
  */
 export const pluginModuleUrlSymbol = Symbol('pluginModuleUrl');
+
 /**
  * A symbol added to each plugin which describes the configured version range
  * @type {symbol}
@@ -43,7 +44,7 @@ export const pluginVersionRangeSymbol = Symbol('pluginVersionRange');
  * shipping your plugin with a "plugin-asset/icon.png", you can always retrieve said icon with getPluginAssetUrl(app, name, 'pluing-assets/icon.png')
  * Sets the plugin version as searchParam.
  * Returns null, if the plugin does not exist.
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {string} pluginName
  * @param {string} asset
  * @returns {string|null}
@@ -83,8 +84,10 @@ export function isValidPackageName(name) {
 
 /**
  * @param {string} name
- * @param {PluginConfig} config
- * @returns {Promise<VcsPlugin|null>}
+ * @param {T} config
+ * @returns {Promise<import("@src/vcsUiApp.js").VcsPlugin<T, S>|null>}
+ * @template {Object} T
+ * @template {Object} S
  */
 export async function loadPlugin(name, config) {
   let module = config.entry;
@@ -97,7 +100,7 @@ export async function loadPlugin(name, config) {
   } else if (module === '_dev') {
     module = `/${name}.js`;
   } else if (module === 'http://localhost/_test') {
-    // early escape to bypass module loading for testing, see VcsUiApp.spec.js
+    // early escape to bypass module loading for testing, see import("@src/vcsUiApp.js").default.spec.js
     return null;
   }
   if (config.version) {
@@ -193,7 +196,7 @@ export function getPluginEntry(base, pluginUrl) {
 }
 
 /**
- * @param {VcsPlugin} plugin
+ * @param {import("@src/vcsUiApp.js").VcsPlugin<Object, Object>} plugin
  * @returns {Object}
  */
 export function serializePlugin(plugin) {
@@ -215,7 +218,7 @@ export function serializePlugin(plugin) {
 
 /**
  * @param {Object} serializedPlugin
- * @returns {Promise<VcsPlugin|null>}
+ * @returns {Promise<import("@src/vcsUiApp.js").VcsPlugin<Object, Object>|null>}
  */
 export async function deserializePlugin(serializedPlugin) {
   if (serializedPlugin[pluginFactorySymbol]) {

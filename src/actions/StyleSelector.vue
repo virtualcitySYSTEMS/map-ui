@@ -70,7 +70,7 @@
       },
     },
     setup(props, { attrs }) {
-      /** @type {VcsUiApp} */
+      /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       /** @type {import("@vcmap/core").FeatureLayer} */
       const layer = app.layers.getByKey(props.layerName);

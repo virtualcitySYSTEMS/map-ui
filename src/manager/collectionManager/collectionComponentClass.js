@@ -34,7 +34,7 @@ import { sortByOwner } from '../navbarManager.js';
 
 /**
  * @typedef {import("../../components/lists/VcsList.vue").VcsListItem & {
- *   actions: Array<VcsAction & { weight?: number }>,
+ *   actions: Array<import("../../actions/actionHelper.js").VcsAction & { weight?: number }>,
  *   clickedCallbacks: Array<function(PointerEvent):void>,
  *   destroy: function():void|undefined
  *   destroyFunctions: Array<function():void>
@@ -73,7 +73,7 @@ function titleChanged(item, listItem, newTitle) {
 class CollectionComponentClass {
   /**
    * @param {CollectionComponentClassOptions<T>} options
-   * @param {string|vcsAppSymbol} owner
+   * @param {string|import("../../pluginHelper.js").vcsAppSymbol} owner
    */
   constructor(options, owner) {
     if (!options?.collection?.uniqueKey) {
@@ -140,7 +140,7 @@ class CollectionComponentClass {
     this._owner = owner;
 
     /**
-     * @type {import("vue").Ref<Array<OwnedAction>>}
+     * @type {import("vue").Ref<Array<import("./collectionManager.js").OwnedAction>>}
      */
     this._actions = ref([]);
     /**
@@ -214,7 +214,6 @@ class CollectionComponentClass {
 
   /**
    * @type {string}
-   * @readonly
    */
   get id() {
     return this._id;
@@ -222,7 +221,6 @@ class CollectionComponentClass {
 
   /**
    * @type {import("@vcmap/core").Collection<T>}
-   * @readonly
    */
   get collection() {
     return this._collection;
@@ -230,7 +228,6 @@ class CollectionComponentClass {
 
   /**
    * @type {import("vue").Ref<Array<CollectionComponentListItem>>}
-   * @readonly
    */
   get items() {
     return this._listItems;
@@ -253,15 +250,14 @@ class CollectionComponentClass {
   }
 
   /**
-   * @type {string|vcsAppSymbol}
-   * @readonly
+   * @type {string|import("../../pluginHelper.js").vcsAppSymbol}
    */
   get owner() {
     return this._owner;
   }
 
   /**
-   * @returns {import("vue").ComputedRef<VcsAction[]>}
+   * @returns {import("vue").ComputedRef<import("../../actions/actionHelper.js").VcsAction[]>}
    */
   getActions() {
     return computed(() => this._actions.value.map(({ action }) => action));

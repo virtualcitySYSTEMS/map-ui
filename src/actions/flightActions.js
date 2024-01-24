@@ -191,7 +191,7 @@ export function createFlightPlayerActions(app, instance) {
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} flightInstance
  * @param {boolean} [active=true]
- * @returns {Promise<{action:import("../../actions/actionHelper.js").VcsAction, destroy:()=>void}>}
+ * @returns {Promise<{action: import("./actionHelper.js").VcsAction, destroy:()=>void}>}
  */
 export async function createFlightVisualizationAction(
   app,

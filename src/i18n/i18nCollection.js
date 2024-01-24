@@ -7,7 +7,7 @@ import de from './de.js';
  * returns true if the given value is of type object and not an array.
  * This function does not handle Maps and Sets and also returns true for these.
  * This helper function is mainly used for the i18nCollection mergeDeep function
- * @param {*} item
+ * @param {unknown} item
  * @returns {boolean}
  */
 export function isObject(item) {
@@ -66,7 +66,7 @@ export function mergeDeep(...sources) {
  */
 class I18nCollection extends IndexedCollection {
   /**
-   * @param {import("@vcmap/core").OverrideCollection<VcsPlugin>} pluginCollection
+   * @param {import("@vcmap/core").OverrideCollection<import("@src/vcsUiApp.js").VcsPlugin<Object, Object>>} pluginCollection
    */
   constructor(pluginCollection) {
     super();
@@ -77,7 +77,7 @@ class I18nCollection extends IndexedCollection {
      */
     this._defaultMessages = { name: 'default', en, de };
     /**
-     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
+     * @type {import("@vcmap/core").OverrideCollection<import("@src/vcsUiApp.js").VcsPlugin>}
      * @private
      */
     this._pluginCollection = pluginCollection;

@@ -1,8 +1,9 @@
 /**
  * validates rules and returns error messages
- * @param {Array} rules - validation functions or string messages
- * @param {*} value
+ * @param {Array<string|function(T):string>} rules - validation functions or string messages
+ * @param {T} value
  * @returns {string[]}
+ * @template T
  */
 export default function validate(rules, value) {
   if (Array.isArray(rules)) {

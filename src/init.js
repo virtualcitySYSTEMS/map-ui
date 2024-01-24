@@ -7,7 +7,6 @@ import VcsUiApp from './vcsUiApp.js';
 
 /**
  * Base pattern to check VcsObjects
- * @type {import("vcsuite/check").PatternFor<import("@vcmap/core").VcsObject>}
  */
 const VcsObjectPattern = {
   type: String,
@@ -16,7 +15,6 @@ const VcsObjectPattern = {
 
 /**
  * Base pattern to check VcsUiAppConfig
- * @type {import("vcsuite/check").PatternFor<VcsUiModuleConfig>}
  */
 export const VcsUiAppConfigPattern = {
   id: [undefined, String],
@@ -39,7 +37,7 @@ export const VcsUiAppConfigPattern = {
 /**
  * creates and mounts a vcsApp
  * @param {string} mountTarget
- * @returns {Promise<VcsUiApp>}
+ * @returns {Promise<import("@src/vcsUiApp.js").default>}
  */
 export default async function initApp(mountTarget) {
   check(mountTarget, String);
@@ -62,7 +60,7 @@ export default async function initApp(mountTarget) {
  * Initializes app with an optional single config
  * @param {string} mountTarget
  * @param {string=} configUrl optional config
- * @returns {Promise<VcsUiApp>}
+ * @returns {Promise<import("@src/vcsUiApp.js").default>}
  */
 export async function initAppFromModule(mountTarget, configUrl) {
   check(mountTarget, String);
@@ -82,7 +80,7 @@ export async function initAppFromModule(mountTarget, configUrl) {
  * Initializes app with a map config containing a set of config urls
  * @param {string} mountTarget
  * @param {string} appUrl app config containing further modules to be loaded
- * @returns {Promise<VcsUiApp>}
+ * @returns {Promise<import("@src/vcsUiApp.js").default>}
  */
 export async function initAppFromAppConfig(mountTarget, appUrl) {
   check(mountTarget, String);

@@ -61,7 +61,7 @@ export function getActionFromOptions(options) {
 /**
  * @param {ActionOptions} actionOptions
  * @param {string} mapName
- * @param {import("@vcmap/core").OverrideMapCollection<import("@vcmap/core").VcsMap>} maps
+ * @param {import("@vcmap/core").OverrideCollection<import("@vcmap/core").VcsMap, import("@vcmap/core").MapCollection>} maps
  * @returns {{action: VcsAction, destroy: () => void}}
  */
 export function createMapButtonAction(actionOptions, mapName, maps) {
@@ -204,7 +204,7 @@ export function createSearchButtonAction(app) {
  * @param {import("../navigation/overviewMap.js").default} overviewMap
  * @param {import("../manager/window/windowManager.js").WindowComponentOptions} windowComponent
  * @param {import("../manager/window/windowManager.js").default}  windowManager
- * @returns {(function(): void)|*}
+ * @returns {{action: VcsAction, destroy: function(): void}}
  */
 export function createOverviewMapAction(
   overviewMap,
@@ -393,7 +393,7 @@ export function createGoToViewpointAction(
 
 /**
  * calculates and returns a viewpoint using feature's extent
- * @param {import("ol").Feature<import("ol/geom/Geometry").default>} feature
+ * @param {import("ol").Feature} feature
  * @returns {Viewpoint|null}
  */
 export function getViewpointFromFeature(feature) {
@@ -411,7 +411,7 @@ export function getViewpointFromFeature(feature) {
 /**
  * Creates an action, which when clicked, zooms to the provided feature
  * @param {ActionOptions} actionOptions
- * @param {import("ol").Feature<import("ol/geom/Geometry").default>} feature
+ * @param {import("ol").Feature} feature
  * @param {import("@vcmap/core").MapCollection} mapCollection
  * @returns {VcsAction|null} returns null if the feature does not have a geometry with a valid extent
  */

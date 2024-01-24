@@ -110,9 +110,9 @@
   };
 
   /**
-   * @param {Object} tags
+   * @param {import("../../featureInfo/abstractFeatureInfoView.js").HTMLTagOptions} tags
    * @param {string} key
-   * @returns {HTMLTagOptions|{}}
+   * @returns {string}
    */
   export function getTag(tags, key) {
     return tags?.[key]?.tag ?? 'div';
@@ -121,7 +121,7 @@
   /**
    * @param {Object} tags
    * @param {string} key
-   * @returns {HTMLTagOptions|{}}
+   * @returns {import("../../featureInfo/abstractFeatureInfoView.js").HTMLTagOptions|Record<never, never>}
    */
   export function getTagOptions(tags, key) {
     if (tags?.[key]) {

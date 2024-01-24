@@ -3,7 +3,7 @@ import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import VcsTable from '../components/tables/VcsTable.vue';
 
 /**
- * @typedef {FeatureInfoViewOptions & {
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & {
  *   itemsPerPage?: number,
  *   itemsPerPageArray?: number[],
  *   showSearchbar?: boolean,
@@ -16,7 +16,7 @@ import VcsTable from '../components/tables/VcsTable.vue';
  */
 
 /**
- * @typedef {FeatureInfoProps & {
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoProps & {
  *   itemsPerPage?: number,
  *   itemsPerPageArray?: number[],
  *   showGroupBtn?: boolean,
@@ -80,7 +80,7 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {TableFeatureInfoViewProps}
    */

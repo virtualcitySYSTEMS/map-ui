@@ -10,12 +10,12 @@ import {
  */
 class FeatureInfoInteraction extends AbstractInteraction {
   /**
-   * @param {FeatureInfo} featureInfo
+   * @param {import("./featureInfo.js").default} featureInfo
    */
   constructor(featureInfo) {
     super(EventType.CLICK, ModificationKeyType.NONE);
     /**
-     * @type {FeatureInfo}
+     * @type {import("./featureInfo.js").default}
      * @private
      */
     this._featureInfo = featureInfo;

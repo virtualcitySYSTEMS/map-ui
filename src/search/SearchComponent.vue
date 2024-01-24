@@ -65,7 +65,7 @@
       VDivider,
     },
     setup() {
-      /** @type {VcsUiApp} */
+      /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const searching = ref(false);
       const query = ref(null);

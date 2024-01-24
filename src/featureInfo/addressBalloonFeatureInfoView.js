@@ -4,7 +4,7 @@ import BalloonFeatureInfoView, {
 import AddressBalloonComponent from './AddressBalloonComponent.vue';
 
 /**
- * @typedef {FeatureInfoViewOptions &{
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions &{
  *   addressName?: string|null,
  *   street?: string|null,
  *   number?: string|null,
@@ -86,7 +86,7 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
 
   /**
    * derives address attributes from addressKeys
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
    * @returns {Object}
    */
   getAttributes(feature) {

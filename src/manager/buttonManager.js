@@ -18,7 +18,7 @@ export function sortByWeight(weightA = 0, weightB = 0) {
 /**
  * @typedef ButtonComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
- * @property {VcsAction} action Action performed by button.
+ * @property {import("../actions/actionHelper.js").VcsAction} action Action performed by button.
  * @property {number} [weight=0] Optional weight affecting the displaying order
  */
 
@@ -26,14 +26,18 @@ export function sortByWeight(weightA = 0, weightB = 0) {
  * @typedef ButtonComponent
  * @property {string} id
  * @property {string|vcsAppSymbol} owner
- * @property {VcsAction} action
+ * @property {import("../actions/actionHelper.js").VcsAction} action
  * @property {number} weight
+ */
+
+/**
+ * @typedef {import("../vcsUiApp.js").VcsComponentManager<ButtonComponent,ButtonComponentOptions>} IButtonManager
  */
 
 /**
  * @class ButtonManager
  * @description Manages a set of Map Buttons
- * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
+ * @implements {IButtonManager}
  */
 class ButtonManager {
   constructor() {

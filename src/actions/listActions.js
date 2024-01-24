@@ -48,8 +48,8 @@ export function createListItemDeleteAction(
 /**
  * Creates an action based on a provided selection
  * @param {import("vue").Ref<Array<import("../components/lists/VcsList.vue").VcsListItem>>} selection
- * @param {ActionOptions & {callback:import("./actionHelper.js").ActionCallback}} [actionOptions]
- * @returns {{action: import("vue").UnwrapedRef<import("actionHelper.js").VcsAction>, destroy: import("vue").WatchStopHandle}}
+ * @param {import("./actionHelper.js").ActionOptions & {callback:import("./actionHelper.js").ActionCallback}} [actionOptions]
+ * @returns {{action: import("vue").UnwrapRef<import("./actionHelper.js").VcsAction>, destroy: import("vue").WatchStopHandle}}
  */
 export function createListItemBulkAction(selection, actionOptions) {
   check(actionOptions, {
@@ -95,8 +95,8 @@ export function createListExportAction(selection, exportCallback, owner) {
 
 /**
  *
- * @param {function(files: File[]):void|Promise<void>} importCallback
- * @param {import("../manager/window/windowManager.js").WindowManager} windowManager
+ * @param {function(File[]):void|Promise<void>} importCallback
+ * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
  * @param {string} parentId
  * @returns {{ownedAction: import("../manager/collectionManager/collectionManager.js").OwnedAction, destroy: (function(): void)}}
@@ -144,11 +144,12 @@ export function createListImportAction(
 
 /**
  * @param {import("vue").Ref<Array<import("../manager/collectionManager/collectionComponentClass.js").CollectionComponentListItem>>} selection
- * @param {function(item:T):void} editCallback
- * @param {import("../manager/window/windowManager.js").WindowManager} windowManager
+ * @param {function(T):void} editCallback
+ * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
  * @param {string} multiEditorId
- * @returns {(function(): void)|*}
+ * @template {Object} T
+ * @returns {{action: import("./actionHelper.js").VcsAction, destroy: function(): void}}
  */
 export function createListEditAction(
   selection,

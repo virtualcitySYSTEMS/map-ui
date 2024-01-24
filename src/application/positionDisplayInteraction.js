@@ -4,7 +4,7 @@ import { check } from '@vcsuite/check';
 
 /**
  * @typedef {Object} PositionDisplayInteractionOptions
- * @property {import("vue").Ref<import("ol").Coordinate>} position
+ * @property {import("vue").Ref<import("ol/coordinate.js").Coordinate>} position
  * @property {?boolean} move - whether to be active on move or not
  */
 
@@ -19,7 +19,7 @@ class PositionDisplayInteraction extends AbstractInteraction {
   constructor(options) {
     super();
     /**
-     * @type {import("vue").Ref<import("ol").Coordinate>}
+     * @type {import("vue").Ref<import("ol/coordinate.js").Coordinate>}
      */
     this.position = options.position;
     /**
@@ -50,6 +50,10 @@ class PositionDisplayInteraction extends AbstractInteraction {
     this.setActive();
   }
 
+  /**
+   * @param {import("@vcmap/core").InteractionEvent} event
+   * @returns {Promise<import("@vcmap/core").InteractionEvent>}
+   */
   pipe(event) {
     if (!event.position.every((pos) => pos === 0)) {
       this.position.value = [...event.position];

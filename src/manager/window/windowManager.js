@@ -24,16 +24,16 @@ export const WindowSlot = {
 
 /**
  * @typedef {Object} WindowPositionOptions
- * @property {string|number|undefined} left Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} top Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} right Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} bottom Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} width Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} height Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} maxHeight Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} maxWidth Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} minHeight Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
- * @property {string|number|undefined} minWidth Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [left] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [top] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [right] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [bottom] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [width] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [height] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [maxHeight] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [maxWidth] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [minHeight] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
+ * @property {string|number|undefined} [minWidth] Can be a css position string (e.g. '320px' or '50%') number values are treated as `px` values
  */
 
 /**
@@ -102,7 +102,7 @@ export function isSlotPosition(windowPosition) {
 }
 
 /**
- * @typedef WindowComponentOptions
+ * @typedef {Object} WindowComponentOptions
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
  * @property {import("vue").Component} component Main Component which is shown below the header.
@@ -115,14 +115,14 @@ export function isSlotPosition(windowPosition) {
  */
 
 /**
- * @typedef WindowState
+ * @typedef {Object} WindowState
  * @property {string} id
  * @property {string|vcsAppSymbol} owner Owner of the window, set by windowManager on add
  * @property {boolean} [hideHeader] be used to not show the header.
  * @property {boolean} [hidePin] be used to not show the pin button.
  * @property {string|string[]} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
  * @property {string} [headerIcon]
- * @property {Array<VcsAction>} [headerActions]
+ * @property {Array<import("../../actions/actionHelper.js").VcsAction>} [headerActions]
  * @property {number} [headerActionsOverflow]
  * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
  * @property {function():string} [infoUrlCallback] An optional function returning an url referencing help or further information. Can be used for urls depending on the app's locale, e.g. app.getHelpUrl()
@@ -132,7 +132,7 @@ export function isSlotPosition(windowPosition) {
  */
 
 /**
- * @typedef WindowComponent
+ * @typedef {Object} WindowComponent
  * @property {string} id
  * @property {string} [parentId]
  * @property {import("vue").Component} component
@@ -243,9 +243,13 @@ function setWindowPosition(windowComponent, windowPositionOptions) {
 }
 
 /**
+ * @typedef {import("../../vcsUiApp.js").VcsComponentManager<WindowComponent,WindowComponentOptions>} IWindowManager
+ */
+
+/**
  * @class WindowManager
  * @description Manages a set of Draggable Windows
- * @implements VcsComponentManager<WindowComponent,WindowComponentOptions>
+ * @implements {IWindowManager}
  */
 class WindowManager {
   constructor() {

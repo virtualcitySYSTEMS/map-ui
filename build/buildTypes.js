@@ -50,6 +50,80 @@ async function addTypeExports() {
   await writeFile(indexDTs, newContent);
 }
 
+/**
+ * TS is way more picky with extension than JS. These classes do not properly extend their parents, the below defined
+ * methods are not compatible in TS, so we ignore them to not break.
+ * @type {Array<{ file:string, replacement: Array<{ regex: RegExp, replace: string }> }>}
+ */
+const knownExtensionErrors = [
+  {
+    file: './src/search/search.d.ts',
+    replacements: [
+      {
+        regex: /(add\(item)/,
+        replace: '// @ts-ignore\n$1',
+      },
+    ],
+  },
+  {
+    file: './src/manager/navbarManager.d.ts',
+    replacements: [
+      {
+        regex: /(add\(buttonComponentOptions)/,
+        replace: '// @ts-ignore\n$1',
+      },
+    ],
+  },
+  {
+    file: './src/manager/toolbox/toolboxManager.d.ts',
+    replacements: [
+      {
+        regex: /(add\(toolboxComponentOptions)/,
+        replace: '// @ts-ignore\n$1',
+      },
+    ],
+  },
+];
+
+/**
+ * @returns {Promise<void>}
+ */
+async function fixTemplateFunctions() {
+  await Promise.all(
+    knownExtensionErrors.map(async ({ file, replacements }) => {
+      let content = await readFile(file, 'utf8');
+      replacements.forEach(({ regex, replace }) => {
+        content = content.replace(regex, replace);
+      });
+      await writeFile(file, content);
+    }),
+  );
+}
+
+function printTypeErrors(stdout) {
+  let withinNodeModule = false;
+  const lines = stdout.split(EOL).filter((line) => {
+    if (!line) {
+      return false;
+    }
+    if (line.startsWith('node_modules')) {
+      withinNodeModule = true;
+      return false;
+    }
+    if (line.startsWith(' ')) {
+      return !withinNodeModule;
+    }
+    withinNodeModule = false;
+    return true;
+  });
+
+  lines.forEach((line) => {
+    console.error(line);
+  });
+
+  return lines.length > 0;
+}
+
 async function run() {
   if (existsSync(indexDTs)) {
     await unlink(indexDTs);
@@ -62,20 +136,35 @@ async function run() {
   }
   console.log('building vue-tsc declarations');
   const { stderr: vueTscError } = await execPromisify(
-    'npx vue-tsc --emitDeclarationOnly',
+    'npx vue-tsc --emitDeclarationOnly --skipLibCheck',
   );
   if (vueTscError) {
     console.error(vueTscError);
     process.exitCode = 1;
     return;
   }
+  console.log('fixing template functions');
+  await fixTemplateFunctions();
   console.log('exporting types');
   await addTypeExports();
-  const { stdErr: validError } = await execPromisify('npx tsc --noEmit');
-  if (validError) {
-    console.error(validError);
-    process.exitCode = 1;
-  } else {
+  let validationFailed = false;
+  try {
+    await execPromisify('npx vue-tsc --noEmit');
+  } catch (e) {
+    let hasErrors = e.code !== 2;
+    if (e.code === 2) {
+      hasErrors = printTypeErrors(e.stdout);
+    } else {
+      validationFailed = true;
+      console.error(e.stderr);
+    }
+    if (hasErrors) {
+      validationFailed = true;
+      process.exitCode = 1;
+    }
+  }
+
+  if (!validationFailed) {
     console.log('all declarations valid');
   }
 }

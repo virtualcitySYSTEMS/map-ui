@@ -24,7 +24,7 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
 
   /**
    * @param {FlightContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

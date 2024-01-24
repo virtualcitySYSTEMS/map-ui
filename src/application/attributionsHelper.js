@@ -58,7 +58,7 @@ export function mergeAttributions(entries) {
  * Each entry is defined by a key derived from the object's className and name, and it's associated attributions.
  * Listens to state changes of maps, layers and oblique collections and synchronizes the entries array correspondingly.
  * Returns a destroy function to clear listeners.
- * @param {import("ui").VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {{entries: import("vue").Ref<Array<AttributionEntry>>, destroy: function():void}}
  */
 export function getAttributions(app) {

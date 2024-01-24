@@ -49,7 +49,7 @@ export function getTargetSize(target) {
  * @param {number} y - client pixel position
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
- * @returns {WindowPositionOptions}
+ * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function getWindowPositionOptions(
   x,
@@ -78,7 +78,7 @@ export function getWindowPositionOptions(
  * @param {import("@vcmap-cesium/engine").Cartesian2} windowPosition - the window position, as retrieved from an InteractionEvent
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  * @param {WindowAlignment} [alignment]
- * @returns {WindowPositionOptions}
+ * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function getWindowPositionOptionsFromMapEvent(
   windowPosition,
@@ -107,7 +107,7 @@ export function getWindowPositionOptionsFromMapEvent(
  * @param {number} width - window width to fit
  * @param {number} height - window height to fit
  *  @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
- * @returns {WindowPositionOptions}
+ * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function getFittedWindowPositionOptions(x, y, width, height, target) {
   const targetSize = getTargetSize(target);
@@ -138,7 +138,7 @@ export function getFittedWindowPositionOptions(x, y, width, height, target) {
  * @param {number} width
  * @param {number} height
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
- * @returns {WindowPositionOptions}
+ * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function getFittedWindowPositionOptionsFromMapEvent(
   windowPosition,
@@ -200,9 +200,9 @@ export function posToPercent(pos, key, targetSize) {
 
 /**
  * Parses CSS position string properties to absolute numeric position properties
- * @param {WindowPosition} windowPosition
+ * @param {import("./windowManager.js").WindowPosition} windowPosition
  * @param {DOMRect} targetSize - the map's target size
- * @returns {WindowPositionOptions|null}
+ * @returns {import("./windowManager.js").WindowPositionOptions|null}
  */
 export function optionsFromWindowPosition(windowPosition, targetSize) {
   const options = {};
@@ -218,17 +218,17 @@ export function optionsFromWindowPosition(windowPosition, targetSize) {
  * Returns an updated WindowPosition by applying new options keeping the original object unchanged.
  * Ensures units are maintained.
  * Previous values 'auto' and 'unset' will not be touched.
- * @param {WindowPosition} previous
- * @param {WindowPositionOptions} update
+ * @param {import("./windowManager.js").WindowPosition} previous
+ * @param {import("./windowManager.js").WindowPositionOptions} update
  * @param {DOMRect} targetSize - the map's target size
- * @returns {WindowPosition}
+ * @returns {import("./windowManager.js").WindowPosition}
  */
 export function updateWindowPosition(previous, update, targetSize) {
   /**
    * returns the position of a key in the same unit 'px' or '%' as previously
    * @param {string} key
-   * @param {WindowPosition} prev
-   * @param {WindowPositionOptions} updated
+   * @param {import("./windowManager.js").WindowPosition} prev
+   * @param {import("./windowManager.js").WindowPositionOptions} updated
    * @returns {string}
    */
   const toString = (key, prev, updated) => {
@@ -261,9 +261,9 @@ export function updateWindowPosition(previous, update, targetSize) {
  * Rightward and downward movements are positive.
  * @param {string} id - the window id
  * @param {{dx: number, dy: number}} translation - translation in px
- * @param {WindowManager} windowManager
+ * @param {import("./windowManager.js").default} windowManager
  * @param {DOMRect} targetSize - the map's target size
- * @param {WindowPosition|null} windowPosition - Optional position to be preferred over windowComponent's position as start.
+ * @param {import("./windowManager.js").WindowPosition|null} windowPosition - Optional position to be preferred over windowComponent's position as start.
  */
 export function moveWindow(
   id,
@@ -302,9 +302,9 @@ export function moveWindow(
 
 /**
  * Clips a provided WindowPosition corresponding to the size of its target
- * @param {WindowPositionOptions} windowPositionOptions - numerical WindowPositionOptions
+ * @param {import("./windowManager.js").WindowPositionOptions} windowPositionOptions - numerical WindowPositionOptions
  * @param {DOMRect} targetSize - the map's target size
- * @returns {WindowPositionOptions}
+ * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function clipToTargetSize(windowPositionOptions, targetSize) {
   const { width: targetWidth, height: targetHeight } = targetSize;
@@ -384,9 +384,9 @@ export function clipToTargetSize(windowPositionOptions, targetSize) {
 
 /**
  * Derives a child window position from a parent window, placing the child top-right of the parent.
- * @param {WindowPositionOptions} windowPositionOptions - numerical WindowPositionOptions
+ * @param {import("./windowManager.js").WindowPositionOptions} windowPositionOptions - numerical WindowPositionOptions
  * @param {DOMRect} targetSize - the map's target size
- * @param {WindowPositionOptions} parentPosition - numerical WindowPositionOptions
+ * @param {import("./windowManager.js").WindowPositionOptions} parentPosition - numerical WindowPositionOptions
  */
 export function applyParentPosition(
   windowPositionOptions,
@@ -438,10 +438,10 @@ export function applyParentPosition(
  * Returns the position applied on the target by clipping the position to the target's size.
  * Maintains units of the input position.
  * If parent position is provided, returned position is placed top-right of its parent
- * @param {WindowPosition} position
+ * @param {import("./windowManager.js").WindowPosition} position
  * @param {DOMRect} targetSize
- * @param {WindowPosition|null} parentPosition
- * @returns {WindowPosition}
+ * @param {import("./windowManager.js").WindowPosition|null} parentPosition
+ * @returns {import("./windowManager.js").WindowPosition}
  */
 export function getPositionAppliedOnTarget(
   position,

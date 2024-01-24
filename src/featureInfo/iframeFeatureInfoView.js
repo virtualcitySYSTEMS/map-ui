@@ -21,13 +21,13 @@ const IframeComponent = {
 };
 
 /**
- * @typedef {FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions
  * @property {string} src - Specifies the address of the document to embed in the <iframe>. Variables wrapped in `${}` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
  * @property {string} [title] - optional title for the <iframe>
  */
 
 /**
- * @typedef {FeatureInfoProps & { src: string, title?: string }} IframeFeatureInfoViewProps
+ * @typedef {import("./abstractFeatureInfoView.js.js").FeatureInfoProps & { src: string, title?: string }} IframeFeatureInfoViewProps
  */
 
 /**
@@ -61,7 +61,7 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
 
   /**
    * Variables wrapped in `${}` within `src` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {IframeFeatureInfoViewProps}
    */

@@ -54,7 +54,7 @@
     },
     setup(props) {
       const highlightedRef = ref(-1);
-      /** @type {VcsUiApp} */
+      /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const selectedListener = app.featureInfo.featureChanged.addEventListener(
         (feature) => {

@@ -91,7 +91,7 @@
   }
 
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    * @param {import("@vcmap/core").IndexedCollection<import("@vcmap/core").FlightAnchor>} collection
    * @returns {import("../../actions/actionHelper.js").VcsAction}
    */
@@ -118,7 +118,7 @@
   }
 
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    * @param {import("@vcmap/core").FlightAnchor} item
    * @param {import("@vcmap/core").IndexedCollection<import("@vcmap/core").FlightAnchor>} collection
    * @param {string} parentId
@@ -165,7 +165,7 @@
   }
 
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    * @param {import("@vcmap/core").FlightAnchor} item
    * @returns {import("../../actions/actionHelper.js").VcsAction}
    */

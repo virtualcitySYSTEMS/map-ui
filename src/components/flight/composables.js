@@ -14,7 +14,7 @@ export function getProvidedFlightInstance() {
 }
 
 /**
- * @param {import("../../manager/window/windowManager.js").WindowManager} windowManager
+ * @param {import("../../manager/window/windowManager.js").default} windowManager
  * @param {import("vue").Ref<boolean>} disabled
  * @returns {(function(): void)}
  */

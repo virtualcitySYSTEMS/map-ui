@@ -17,15 +17,17 @@ import { Viewpoint } from '@vcmap/core';
  */
 
 /**
- * @typedef {Object} PluginState
- * @property {string} name
- * @property {*} state
+ * @typedef {{
+ *   name: string,
+ *   state: T
+ * }} PluginState
+ * @template T
  */
 
 /**
  * The URL state of a plugin is an array. The first entry is the plugin name, the second entry is
  * an encoded object, which is the plugins state.
- * @typedef {[string, *]} UrlPluginState
+ * @typedef {[string, unknown]} UrlPluginState
  */
 
 /**
@@ -41,7 +43,7 @@ import { Viewpoint } from '@vcmap/core';
  * @property {string} [activeMap]
  * @property {Array<string>} moduleIds
  * @property {Array<LayerState>} layers
- * @property {Array<PluginState>} plugins
+ * @property {Array<PluginState<unknown>>} plugins
  * @property {string} [activeObliqueCollection]
  */
 

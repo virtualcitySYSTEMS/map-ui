@@ -4,12 +4,12 @@ import { validateActions } from '../../components/lists/VcsActionList.vue';
 import CollectionComponentClass from './collectionComponentClass.js';
 
 /**
- * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>, import("./collectionComponentClass.js").CollectionComponentListItem)} MappingFunction
+ * @typedef {function(T, import("./collectionComponentClass.js").default<T>, import("./collectionComponentClass.js").CollectionComponentListItem): void} MappingFunction
  * @template {Object} T
  */
 
 /**
- * @typedef {function(T, import("./collectionComponentClass.js").CollectionComponentClass<T>): boolean} PredicateFunction
+ * @typedef {function(T, import("./collectionComponentClass.js").default<T>): boolean} PredicateFunction
  * @template {Object} T
  */
 
@@ -19,7 +19,7 @@ import CollectionComponentClass from './collectionComponentClass.js';
  *   mappingFunction: MappingFunction<T>,
  *   owner: string | symbol,
  * }} ItemMapping
- * @template T
+ * @template {Object} T
  */
 
 /**
@@ -27,7 +27,7 @@ import CollectionComponentClass from './collectionComponentClass.js';
  *   filterFunction: PredicateFunction<T>,
  *   owner: string | symbol
  * }} ItemFilter
- * @template T
+ * @template {Object} T
  */
 
 /**
@@ -38,19 +38,23 @@ import CollectionComponentClass from './collectionComponentClass.js';
  */
 
 /**
+ * @typedef {import("../../vcsUiApp.js").VcsComponentManager<CollectionComponentClass, import("./collectionComponentClass.js").CollectionComponentClassOptions<Object>>} ICollectionManager
+ */
+
+/**
  * Manages a list of collections as collectionComponents.
  * Sets the correct mapping/filter functions and actions on the collectionComponent
  * Provides an API to add/remove collectionsComponents.
- * @implements {VcsComponentManager<CollectionComponentClass, import("./collectionComponentClass.js").CollectionComponentClassOptions<Object>>}
+ * @implements {ICollectionManager}
  */
 class CollectionManager {
   constructor() {
     /**
-     * @type {VcsEvent<CollectionComponentClass>}
+     * @type {VcsEvent<CollectionComponentClass<Object>>}
      */
     this.added = new VcsEvent();
     /**
-     * @type {VcsEvent<CollectionComponentClass>}
+     * @type {VcsEvent<CollectionComponentClass<Object>>}
      */
     this.removed = new VcsEvent();
     /**
@@ -58,7 +62,7 @@ class CollectionManager {
      */
     this.componentIds = [];
     /**
-     * @type {Map<string, CollectionComponentClass>}
+     * @type {Map<string, CollectionComponentClass<Object>>}
      * @private
      */
     this._collectionComponents = new Map();
@@ -82,7 +86,7 @@ class CollectionManager {
 
   /**
    * @param {string} id
-   * @returns {CollectionComponentClass|undefined}
+   * @returns {CollectionComponentClass<Object>|undefined}
    */
   get(id) {
     return this._collectionComponents.get(id);
@@ -97,7 +101,7 @@ class CollectionManager {
   }
 
   /**
-   * @param {import("@vcmap/core").Collection} collection
+   * @param {import("@vcmap/core").Collection<Object>} collection
    * @returns {boolean}
    */
   hasCollection(collection) {
@@ -108,8 +112,9 @@ class CollectionManager {
 
   /**
    * gets all collection components corresponding to provided collection
-   * @param {import("@vcmap/core").Collection} collection
-   * @returns {CollectionComponentClass[]}
+   * @param {import("@vcmap/core").Collection<T>} collection
+   * @returns {CollectionComponentClass<T>[]}
+   * @template {Object|import("@vcmap/core").VcsObject} T
    */
   getCollection(collection) {
     return [...this._collectionComponents.values()].filter(

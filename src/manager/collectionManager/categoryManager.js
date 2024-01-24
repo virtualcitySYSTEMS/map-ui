@@ -3,9 +3,13 @@ import { vcsAppSymbol } from '../../pluginHelper.js';
 import CollectionManager from './collectionManager.js';
 
 /**
+ * @typedef {import("../../vcsUiApp.js").VcsComponentManager<import("./collectionComponentClass.js").default<Object>, import("./collectionComponentClass.js").CollectionComponentClassOptions<Object>>} ICategoryManager
+ */
+
+/**
  * Manages all requested category collections.
  * Provides an API to add/remove collectionsComponents.
- * @implements {VcsComponentManager<CollectionComponent, import("./collectionComponentClass.js").CollectionComponentClassOptions<Object>>}
+ * @implements {ICategoryManager}
  * @extends CollectionManager
  */
 class CategoryManager extends CollectionManager {
@@ -29,11 +33,20 @@ class CategoryManager extends CollectionManager {
      */
     this._dynamicModuleId = this._app.dynamicModuleId;
 
+    /**
+     * @param {Object} item
+     * @return {boolean}
+     * @private
+     */
     this._dynamicModuleIdFilter = (item) =>
       item[moduleIdSymbol] === this._dynamicModuleId;
 
     this.addFilterFunction(this._dynamicModuleIdFilter, vcsAppSymbol);
 
+    /**
+     * @type {(() => void)[]}
+     * @private
+     */
     this._categoryListeners = [
       this._app.dynamicModuleIdChanged.addEventListener((id) => {
         this._dynamicModuleId = id;
@@ -50,10 +63,11 @@ class CategoryManager extends CollectionManager {
    * Requests a new or existing category and adds its collection to this manager.
    * The collectionComponent's id is always the category's name.
    * Returns requested category and its corresponding collectionComponent.
-   * @param {import("@vcmap/core").CategoryOptions} options
+   * @param {import("@vcmap/core").CategoryOptions<T>} options
    * @param {string|symbol} owner
    * @param {import("./collectionComponentClass.js").CollectionComponentUiOptions} collectionComponentOptions
-   * @returns {Promise<{ collectionComponent:import("./collectionComponentClass.js").CollectionComponentClass,category:import("@vcmap/core").Category }>}
+   * @returns {Promise<{ collectionComponent: import("./collectionComponentClass.js").default<T>, category: import("@vcmap/core").Category<T> }>}
+   * @template {Object|import("@vcmap/core").VcsObject} T
    */
   async requestCategory(options, owner, collectionComponentOptions = {}) {
     const category = await this._app.categories.requestCategory(options);

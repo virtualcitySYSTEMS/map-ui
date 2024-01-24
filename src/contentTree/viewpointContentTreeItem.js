@@ -7,7 +7,7 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 
 /**
  * A viewpoint item. Sets the viewpoint on the currently active map when clicked.
- * @extends {VcsObjectContentTreeItem<VcsObjectContentTreeItemProperties>}
+ * @extends {VcsObjectContentTreeItem<import("./vcsObjectContentTreeItem.js").VcsObjectContentTreeItemProperties>}
  * @class
  */
 class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
@@ -17,7 +17,7 @@ class ViewpointContentTreeItem extends VcsObjectContentTreeItem {
 
   /**
    * @param {ViewpointContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     options.icon = options.icon || '$vcsPoi'; // XXX _should_ this be the default?

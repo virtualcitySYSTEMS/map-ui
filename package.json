@@ -15,7 +15,8 @@
     "bundle": "node build/bundle.js",
     "lint:js": "eslint . --ext .vue,.js,.cjs,.mjs,.ts,.cts,.mts",
     "lint:prettier": "prettier --check .",
-    "lint": "npm run lint:js && npm run lint:prettier",
+    "lint:types": "node build/lintTypes.js",
+    "lint": "npm run lint:js && npm run lint:prettier && npm run lint:types",
     "format": "prettier --write --list-different . && npm run lint:js -- --fix",
     "prepack": "node build/build.js && node build/buildTypes.js",
     "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force --include optional"

@@ -48,8 +48,8 @@
    * Moves an item to a new position.
    * New position is derived from a target item in the collection.
    * This ensures correct movement, if rendered list is only a subset of the collection.
-   * @param {CollectionComponentClass} collectionComponent
-   * @param {VcsListItem} item
+   * @param {import("./collectionComponentClass.js").default<Object>} collectionComponent
+   * @param {import("../../components/lists/VcsList.vue").VcsListItem} item
    * @param {number} targetIndex
    */
   export function moveItem(collectionComponent, item, targetIndex) {

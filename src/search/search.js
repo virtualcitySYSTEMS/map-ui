@@ -26,7 +26,7 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  * @typedef {Object} ResultItem
  * @property {string} title
  * @property {string} [icon] An optional icon
- * @property {Array<VcsAction>} [actions]
+ * @property {Array<import("../actions/actionHelper.js").VcsAction>} [actions]
  * @property {function():Promise<void>} [clicked] Obligatory, if no feature is provided. Can overwrite default zoom to feature behaviour.
  * @property {import("ol").Feature|undefined} [feature] If a feature is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
  */
@@ -34,8 +34,8 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
 /**
  * @typedef {Object} SearchImpl
  * @property {string} name Name of the implementation. Must be the name of the plugin the SearchImpl is owned by
- * @property {function(q:string):Array<ResultItem>} search
- * @property {function(q:string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state
+ * @property {function(string):Array<ResultItem>} search
+ * @property {function(string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state
  * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
  * @property {function():void} destroy
  */
@@ -56,7 +56,7 @@ function getPointResultIcon(color) {
 
 /**
  * sets up result layer for displaying search results
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @returns {{ resultLayer: import("@vcmap/core").VectorLayer, destroy: (function(): void)}}
  */
 function setupSearchResultLayer(app) {
@@ -111,17 +111,17 @@ const searchImplOwnerSymbol = Symbol('featureInfoView');
 
 /**
  * Collection of SearchImpl
- * @extends {IndexedCollection<SearchImpl<ResultItem>>}
+ * @extends {IndexedCollection<SearchImpl>}
  */
 class Search extends IndexedCollection {
   /**
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
     super();
 
     /**
-     * @type {VcsUiApp}
+     * @type {import("@src/vcsUiApp.js").default}
      * @private
      */
     this._app = app;
@@ -158,7 +158,6 @@ class Search extends IndexedCollection {
    * either by a new search providing the new results or
    * on clearing, if the results array has not been empty already.
    * @type {import("@vcmap/core").VcsEvent<Array<ResultItem>>}
-   * @readonly
    */
   get resultsChanged() {
     return this._resultsChanged;
@@ -166,7 +165,6 @@ class Search extends IndexedCollection {
 
   /**
    * @type {import("vue").Ref<Array<ResultItem>>}
-   * @readonly
    */
   get currentResults() {
     return this._currentResults;
@@ -174,7 +172,6 @@ class Search extends IndexedCollection {
 
   /**
    * @type {VectorLayer}
-   * @readonly
    */
   get resultLayer() {
     return this._resultLayer;

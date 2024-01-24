@@ -57,7 +57,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent & { action: import("vue").Reactive<import("../../actions/actionHelper.js").VcsAction> }} SingleToolboxComponent
+ * @typedef {ToolboxComponent & { action: import("vue").UnwrapRef<import("../../actions/actionHelper.js").VcsAction> }} SingleToolboxComponent
  */
 
 /**
@@ -70,7 +70,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent & { action: import("vue").Reactive<ToolboxSelectAction> }} SelectToolboxComponent
+ * @typedef {ToolboxComponent & { action: import("vue").UnwrapRef<ToolboxSelectAction> }} SelectToolboxComponent
  * @property {ToolboxSelectAction} action
  */
 
@@ -127,12 +127,12 @@ export const defaultToolboxName = Symbol('defaultToolboxName');
 /**
  * sorts by owner and optionally plugin order
  * If both components are owned by vcsApp, defaultOrder is used to compare
- * @param {ToolboxComponent|ButtonComponent} compA
- * @param {ToolboxComponent|ButtonComponent} compB
+ * @param {ToolboxComponent|import("../buttonManager.js").ButtonComponent} compA
+ * @param {ToolboxComponent|import("../buttonManager.js").ButtonComponent} compB
  * @param {string[]} [order] order of owners to sort by
  * @returns {number}
  */
-export function sortByOwner(compA, compB, order = []) {
+function sortByOwner(compA, compB, order = []) {
   const sorted = [vcsAppSymbol, ...order];
   let indexA = sorted.indexOf(compA.owner);
   let indexB = sorted.indexOf(compB.owner);
@@ -158,10 +158,10 @@ export function sortByOwner(compA, compB, order = []) {
 
 /**
  * returns ToolboxComponents sorted by owner (or other sort function)
- * @param {Array<ToolboxComponent|ButtonComponent>} components
+ * @param {Array<ToolboxComponent|import("../buttonManager.js").ButtonComponent>} components
  * @param {string[]} [order] optional order to sort by (plugin names)
  * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
- * @returns {Array<ToolboxComponent|ButtonComponent>}
+ * @returns {Array<ToolboxComponent|import("../buttonManager.js").ButtonComponent>}
  */
 export function getComponentsByOrder(
   components,
@@ -184,9 +184,13 @@ export function setupDefaultGroups(toolboxManager, groups = defaultGroups) {
 }
 
 /**
+ * @typedef {import("../../vcsUiApp.js").VcsComponentManager<ToolboxComponent,ToolboxComponentOptions>} IToolboxManager
+ */
+
+/**
  * @class ToolboxManager
  * @description Manages a set of Toolbox Components
- * @implements VcsComponentManager<ToolboxComponent,ToolboxComponentOptions>
+ * @implements {IToolboxManager}
  */
 class ToolboxManager {
   constructor() {

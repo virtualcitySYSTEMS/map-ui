@@ -32,11 +32,11 @@ export function sortByOwner(ownerA, ownerB, order = []) {
 
 /**
  * filters actions by button location and returns actions (optionally sorted)
- * @param {Array<ButtonComponent>} buttonComponents
+ * @param {Array<import("./buttonManager.js").ButtonComponent>} buttonComponents
  * @param {ButtonLocation} location Button render position
  * @param {string[]} [order] optional order to sort by (plugin names)
- * @param {function(buttonA:ButtonComponent, buttonB:ButtonComponent):number} [compareFn=sortByOwner] Per default components are sorted by weight (highest first) and owner (app first, then plugins)
- * @returns {Array<VcsAction>}
+ * @param {function(import("./buttonManager.js").ButtonComponent, import("./buttonManager.js").ButtonComponent):number} [compareFn=sortByOwner] Per default components are sorted by weight (highest first) and owner (app first, then plugins)
+ * @returns {Array<import("../actions/actionHelper.js").VcsAction>}
  */
 export function getActionsByLocation(
   buttonComponents,
@@ -71,18 +71,22 @@ export const ButtonLocation = {
 };
 
 /**
+ * @typedef {import("../vcsUiApp.js").VcsComponentManager<import("./buttonManager.js").ButtonComponent,import("./buttonManager.js").ButtonComponentOptions>} INavbarManager
+ */
+
+/**
  * @class NavbarManager
  * @description Manages a set of Map Buttons in the Navbar
- * @implements VcsComponentManager<ButtonComponent,ButtonComponentOptions>
+ * @implements {INavbarManager}
  */
 class NavbarManager extends ButtonManager {
   /**
    * adds a buttonComponent
-   * @param {ButtonComponentOptions} buttonComponentOptions
+   * @param {import("./buttonManager.js").ButtonComponentOptions} buttonComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
    * @param {ButtonLocation} location Button render position
    * @throws {Error} if a buttonComponent with the same ID has already been added
-   * @returns {ButtonComponent}
+   * @returns {import("./buttonManager.js").ButtonComponent}
    */
   add(buttonComponentOptions, owner, location) {
     check(location, Object.values(ButtonLocation));

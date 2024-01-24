@@ -23,13 +23,13 @@ import { defaultTagOptions } from '../components/tables/VcsTable.vue';
  *   keyMapping?: Record<string,string>,
  *   valueMapping?: Record<string, string|Record<string,string>>,
  *   tags?: Record<string, HTMLTagOptions>,
- *   window?: WindowComponentOptions
+ *   window?: import("../manager/window/windowManager.js").WindowComponentOptions
  * }} FeatureInfoViewOptions
  * @property {Array<string>} [attributeKeys] - list of keys to filter attributes of selected feature
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values
  * @property {Object<string,HTMLTagOptions>} [tags] - object with keys rendered as special html element. Value contains html options
- * @property {WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined.
+ * @property {import("../manager/window/windowManager.js").WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined.
  */
 
 /**
@@ -46,7 +46,7 @@ function getMappedValue(mappedValue, value) {
 
 /**
  * Replaces values by new values according to mapping table. Nested keys are represented by a "."
- * @param {Object<string, *>} attributes
+ * @param {Record<string, unknown>} attributes
  * @param {Object<string, string|Object<string,string>>} mapping - value mapping
  */
 export function applyValueMapping(attributes, mapping) {
@@ -108,7 +108,7 @@ export function applyValueMapping(attributes, mapping) {
  * // apply flat mapping of a key with a period. this will overwrite an existing _other_ key
  * const periodAttrs = applyKeyMapping(getAttrs(), periodMapping);
  * assert(periodAttrs.foo === true);
- * @param {Object<string, *>} attributes
+ * @param {Object<string, unknown>} attributes
  * @param {Object<string,string>} mapping - key mapping
  */
 export function applyKeyMapping(attributes, mapping) {
@@ -147,7 +147,7 @@ export function applyKeyMapping(attributes, mapping) {
 
 /**
  * Applies value mapping on tag options
- * @param {Object<string, *>} attributes
+ * @param {Object<string, unknown>} attributes
  * @param {Object<string,HTMLTagOptions>} tags
  */
 function applyTagMapping(attributes, tags) {
@@ -175,10 +175,10 @@ function applyTagMapping(attributes, tags) {
  * assert(filtered.baz === true);
  * // if filtering parent top level keys, will pass on a reference of the actual value and its children.
  * assert(deepEquals(filtered.foobar, attrs.foobar));
- * @param {Object<string, *>} attributes
+ * @param {Object<string, unknown>} attributes
  * @param {Array<string>} keys
- * @param {Object<string, *>=} result
- * @returns {Object<string, *>}
+ * @param {Object<string, unknown>=} result
+ * @returns {Object<string, unknown>}
  */
 export function applyAttributeFilter(attributes, keys, result = {}) {
   const nestedKeys = {};
@@ -205,7 +205,7 @@ export function applyAttributeFilter(attributes, keys, result = {}) {
 
 /**
  * Filters all olcs attributes, not provided as keys
- * @param {Object<string, *>} attributes
+ * @param {Object<string, unknown>} attributes
  * @param {Array<string>} keys
  * @returns {Object}
  */
@@ -268,7 +268,7 @@ class AbstractFeatureInfoView extends VcsObject {
      */
     this.tags = options.tags || defaultOptions.tags;
     /**
-     * @type {WindowComponentOptions|Object}
+     * @type {import("../manager/window/windowManager.js").WindowComponentOptions|Object}
      * @private
      */
     this._window = options.window || defaultOptions.window;
@@ -281,8 +281,7 @@ class AbstractFeatureInfoView extends VcsObject {
 
   /**
    * window options, configured in a module, used only internally by AbstractFeatureInfoView or subclass
-   * @type {WindowComponentOptions|Object}
-   * @readonly
+   * @type {import("../manager/window/windowManager.js").WindowComponentOptions|Object}
    */
   get window() {
     return this._window;
@@ -291,7 +290,6 @@ class AbstractFeatureInfoView extends VcsObject {
   /**
    * component provided by a FeatureInfoView class, passed to featureInfo via `getWindowComponentOptions()`
    * @type {import("vue").Component|undefined}
-   * @readonly
    */
   get component() {
     return this._component;
@@ -302,7 +300,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * Called by `getProperties()` to pass attributes as props object to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
    * It filters attributes of the feature by keys, performs value and key mapping, if provided.
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
    * @returns {Object}
    */
   getAttributes(feature) {
@@ -323,7 +321,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * This method returns an object with keys rendered as special html elements.
    * Applies value mapping, when using $value html option.
    * Ensures key mapping on defined anchor keys.
-   * @param {undefined|import("ol").Feature<import("ol/geom/Geometry").default>|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
    * @returns {Object|undefined}
    */
   getTags(feature) {
@@ -352,7 +350,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * This method returns all relevant properties passed to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
    * Called by `getWindowComponentOptions()`.
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {FeatureInfoProps}
    */
@@ -369,10 +367,10 @@ class AbstractFeatureInfoView extends VcsObject {
   /**
    * This method is being called by featureInfo, whenever a new window is created (added to the windowManager).
    * May be overwritten by classes extending AbstractFeatureInfoView.
-   * @param {VcsUiApp} app
-   * @param {FeatureInfoEvent} featureInfo
+   * @param {import("../vcsUiApp.js").default} app
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
-   * @returns {WindowComponentOptions}
+   * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
    */
   getWindowComponentOptions(app, featureInfo, layer) {
     return {

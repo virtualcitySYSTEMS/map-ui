@@ -21,7 +21,6 @@ import ContentTreeItem, {
 class VcsObjectContentTreeItem extends ContentTreeItem {
   /**
    * @type {string}
-   * @readonly
    */
   static get className() {
     return 'VcsObjectContentTreeItem';
@@ -29,7 +28,7 @@ class VcsObjectContentTreeItem extends ContentTreeItem {
 
   /**
    * @param {import("./contentTreeItem.js").ContentTreeItemOptions} options
-   * @param {VcsUiApp} app
+   * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
     super(options, app);

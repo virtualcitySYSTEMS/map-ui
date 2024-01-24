@@ -5,7 +5,7 @@ Vue.use(VueI18n);
 
 /**
  * creates a new VueI18n Instance.
- * @returns {import("vue-i18n").VueI18n}
+ * @returns {import("vue-i18n").IVueI18n}
  */
 export function createVueI18n() {
   return new VueI18n({
@@ -22,7 +22,7 @@ export function createVueI18n() {
 
 /**
  * sets the messages to the app's I18n Instance;
- * @param {VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  */
 function setI18nMessages(app) {
   app.vueI18n.availableLocales.forEach((locale) => {
@@ -36,7 +36,7 @@ function setI18nMessages(app) {
 }
 
 /**
- * @param {VcsUiApp} app
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {function():void} returns a destroy function
  */
 export function setupI18n(app) {

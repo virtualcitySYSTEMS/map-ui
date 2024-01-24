@@ -2,15 +2,17 @@ import { Collection, makeOverrideCollection } from '@vcmap/core';
 import { ref } from 'vue';
 
 /**
- * @typedef {Object} UiConfigurationItem
- * @property {string} name
- * @property {*} value
+ * @typedef {{
+ *   name: string,
+ *   value: T
+ * }} UiConfigurationItem
+ * @template T
  */
 
 /**
  * @typedef {Object} TextPageType
  * @property {string} title
- * @property {url} [url]
+ * @property {URL|string} [url]
  * @property {string} [content]
  */
 
@@ -28,13 +30,7 @@ import { ref } from 'vue';
  */
 
 /**
- * @typedef {import("@vcmap/core").OverrideCollectionInterface<UiConfigurationItem>} UiConfigOverrideCollection
- */
-
-/**
- * @class
- * @extends {import("@vcmap/core").Collection<UiConfigurationItem>}
- * @implements {UiConfigOverrideCollection}
+ * @extends {Collection<UiConfigurationItem<unknown>>}
  */
 class UiConfig extends Collection {
   /**
@@ -76,7 +72,7 @@ class UiConfig extends Collection {
   }
 
   /**
-   * @returns {import("vue").Ref<Object<string, *>|UiConfigObject>}
+   * @type {import("vue").Ref<Object<string, unknown>|UiConfigObject>}
    */
   get config() {
     return this._config;

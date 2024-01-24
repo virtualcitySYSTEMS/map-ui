@@ -21,7 +21,7 @@ import { Polygon } from 'ol/geom.js';
 import { unByKey } from 'ol/Observable.js';
 
 /**
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
  * @returns {import("./actionHelper.js").VcsAction}
  */
@@ -71,7 +71,7 @@ export function createLayerToggleAction(layer, disabled) {
 
 /**
  *
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {import("@vcmap/core").VectorLayer} layer
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
  * @param {string} featureId
@@ -286,7 +286,7 @@ function syncExtentFeature(extent, layer, featureId) {
 }
 
 /**
- * @param {VcsUiApp} app
+ * @param {import("@src/vcsUiApp.js").default} app
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>|import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
  * @param {boolean} disabled
  * @returns {{ actions: Array<import("./actionHelper.js").VcsAction>, destroy: () => void, layer: import("@vcmap/core").VectorLayer, featureId: string }}
