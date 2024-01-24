@@ -315,11 +315,13 @@ class WindowManager {
       this._windowComponents.delete(id);
       this._handleSlotsChanged(windowComponent.slot.value);
       this.removed.raiseEvent(windowComponent);
-      const child = Array.from(this._windowComponents.values()).find(
+      const childs = Array.from(this._windowComponents.values()).filter(
         ({ parentId }) => id === parentId,
       );
-      if (child) {
-        this.remove(child.id);
+      if (childs.length) {
+        childs.forEach((child) => {
+          this.remove(child.id);
+        });
       }
     }
   }

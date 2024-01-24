@@ -482,13 +482,13 @@
     'altitudeMode',
     'allowPicking',
     'groundLevel',
+    'heightAboveGround',
     'skirt',
     'extrudedHeight',
   ];
 
   export const pointVectorProperties = [
     'eyeOffset',
-    'heightAboveGround',
     'scaleByDistance',
     'modelUrl',
     'modelScaleX',

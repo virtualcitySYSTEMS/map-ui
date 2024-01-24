@@ -171,7 +171,6 @@ const messages = {
       [TransformationMode.EXTRUDE]: 'Objekt extrudieren',
       header: 'Transformieren',
       placeOnTerrain: 'Auf Gelände plazieren',
-      apply: 'Anwenden',
       cw: '90° rechtsherum drehen',
       ccw: '90° linksherum drehen',
       angle: 'Winkel',

@@ -17,7 +17,7 @@ export function usePrimitiveProperty(modelObject, key, emit) {
     set(value) {
       if (modelObject()[key] !== value) {
         const newParams = structuredClone(modelObject());
-        const changedParams = { [key]: value || undefined }; // XXX boolean values need to be handled differently
+        const changedParams = { [key]: value ?? undefined };
         emit('input', Object.assign(newParams, changedParams));
         emit('propertyChange', changedParams);
       }

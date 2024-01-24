@@ -35,6 +35,10 @@
 - Adds `autoClose` property to `AbstractConfigEditor.vue`. This allows custom handling of window closing, e.g. only close window, if submit or cancel action was successful.
 - Change VcsDataTable Behaviour, so that if the items change, the current page will be reset to page 1
 - Fixes initial transformation mode in `VcsFeatureEditingWindow.vue`
+- Fixes bug where windowManager closes only one child window
+- Fixes VcsSlider to also accept number 0 inputs
+- Fixes BalloonFeatureInfoView to also be able to deal with array of numbers as a value
+- Change apply button to icon in `VcsFeatureTransforms.vue`
 
 ### Ui Behaviour ChangesF
 

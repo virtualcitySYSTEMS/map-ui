@@ -40,7 +40,7 @@
         </v-col>
         <v-col class="d-flex justify-end align-center">
           <VcsButton @click="translate">
-            {{ $t('components.editor.apply') }}
+            <v-icon>mdi-check</v-icon>
           </VcsButton>
         </v-col>
         <v-col cols="1" class="d-flex justify-end align-center">
@@ -67,7 +67,7 @@
         </v-col>
         <v-col class="d-flex justify-end align-center">
           <VcsButton @click="rotate">
-            {{ $t('components.editor.apply') }}
+            <v-icon>mdi-check</v-icon>
           </VcsButton>
         </v-col>
         <v-col cols="1" class="d-flex justify-end align-center">
@@ -100,7 +100,7 @@
         </v-col>
         <v-col class="d-flex justify-end align-center">
           <VcsButton @click="scale">
-            {{ $t('components.editor.apply') }}
+            <v-icon>mdi-check</v-icon>
           </VcsButton>
         </v-col>
       </v-row>

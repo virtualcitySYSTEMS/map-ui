@@ -45,8 +45,9 @@
               <v-list-item-subtitle
                 :tag="getTag(tags, key)"
                 v-bind="getTagOptions(tags, key)"
-                >{{ $t(value) }}</v-list-item-subtitle
               >
+                {{ typeof value === 'string' ? $t(value) : value }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>

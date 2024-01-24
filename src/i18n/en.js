@@ -171,7 +171,6 @@ const messages = {
       [TransformationMode.EXTRUDE]: 'Extrude features',
       header: 'Transform',
       placeOnTerrain: 'Place on terrain',
-      apply: 'Apply',
       cw: 'Rotate 90° clockwise',
       ccw: 'Rotate 90° counter clockwise',
       angle: 'Angle',
