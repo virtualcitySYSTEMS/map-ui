@@ -223,7 +223,6 @@
           layer.value.vectorProperties.getValuesForFeatures(features.value);
       }
 
-      const currentTransformationMode = ref();
       const is3D = ref(false);
 
       function updateIs3D() {
@@ -237,18 +236,23 @@
         () => editSession.value?.type === SessionType.EDIT_GEOMETRY,
       );
 
+      const currentTransformationMode = ref();
       let editModeListener = () => {};
-      watch(editSession, () => {
-        editModeListener();
-        currentTransformationMode.value = editSession.value?.mode || null;
-        if (currentTransformationMode.value) {
-          editModeListener = editSession.value.modeChanged.addEventListener(
-            (mode) => {
-              currentTransformationMode.value = mode;
-            },
-          );
-        }
-      });
+      watch(
+        editSession,
+        () => {
+          editModeListener();
+          currentTransformationMode.value = editSession.value?.mode || null;
+          if (currentTransformationMode.value) {
+            editModeListener = editSession.value.modeChanged.addEventListener(
+              (mode) => {
+                currentTransformationMode.value = mode;
+              },
+            );
+          }
+        },
+        { immediate: true },
+      );
 
       function toggleTransformationSession(mode) {
         if (
