@@ -142,7 +142,7 @@
   </v-card>
 </template>
 <script>
-  import { getCurrentInstance, ref, computed } from 'vue';
+  import { getCurrentInstance, ref, computed, watch } from 'vue';
   import {
     VCard,
     VDivider,
@@ -359,6 +359,12 @@
         const last = page.value * itemsPerPageRef.value;
         return last < numberOfItems.value ? last : numberOfItems.value;
       });
+      watch(
+        () => props.items,
+        () => {
+          page.value = 1;
+        },
+      );
 
       const handleSearch = () => {
         page.value = 1;

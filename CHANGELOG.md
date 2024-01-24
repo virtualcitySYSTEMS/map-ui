@@ -33,6 +33,7 @@
 - Add `listActions.js` with action helpers for list item and list bulk actions, e.g. rename, delete, import and export actions
 - Add `editorCollectionComponentClass.js`, which defines select and editor window behaviour for list items of collections or category collections.
 - Adds `autoClose` property to `AbstractConfigEditor.vue`. This allows custom handling of window closing, e.g. only close window, if submit or cancel action was successful.
+- Change VcsDataTable Behaviour, so that if the items change, the current page will be reset to page 1
 
 ### Ui Behaviour ChangesF
 
