@@ -42,6 +42,7 @@
 - Changed input layout, so that the bottom border is extended for append items
 - Add `getListItemForItem` API to `CollectionComponentClass.js`.
 - Updated to @vcmap/core 5.1
+- Added viewshed plugin to demo application and external plugins
 
 ### Ui Behaviour ChangesF
 

@@ -1862,6 +1862,10 @@
           "title": "Mesh model"
         }
       ]
+    },
+    {
+      "name": "@vcmap/viewshed",
+      "entry": "plugins/@vcmap/viewshed/index.js"
     }
   ]
 }
