@@ -1866,6 +1866,10 @@
     {
       "name": "@vcmap/viewshed",
       "entry": "plugins/@vcmap/viewshed/index.js"
+    },
+    {
+      "name": "@vcmap/measurement",
+      "entry": "plugins/@vcmap/measurement/index.js"
     }
   ]
 }

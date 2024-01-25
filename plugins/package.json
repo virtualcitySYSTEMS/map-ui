@@ -4,12 +4,13 @@
     "@vcmap/swipe-tool": "^1.0.3",
     "@vcmap/export": "^1.0.1",
     "@vcmap/shadow": "^1.0.1",
-    "@vcmap/draw": "^1.0.0",
+    "@vcmap/draw": "^2.0.0",
     "@vcmap/create-link": "^1.0.1",
     "@vcmap/search-nominatim": "^1.0.1",
     "@vcmap/multi-view": "^1.0.1",
     "@vcmap/cesium-filters": "^1.0.1",
-    "@vcmap/viewshed": "^2.0.1"
+    "@vcmap/viewshed": "^2.0.1",
+    "@vcmap/measurement": "^1.0.2"
   },
   "optionalDependencies": {}
 }

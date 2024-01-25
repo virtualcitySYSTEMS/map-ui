@@ -99,7 +99,7 @@ export function createListExportAction(selection, exportCallback, owner) {
  * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
  * @param {string} parentId
- * @returns {{ownedAction: import("../manager/collectionManager/collectionManager.js").OwnedAction, destroy: (function(): void)}}
+ * @returns {{action: import("../manager/collectionManager/collectionManager.js").OwnedAction, destroy: (function(): void)}}
  */
 export function createListImportAction(
   importCallback,
