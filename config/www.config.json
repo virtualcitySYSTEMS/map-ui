@@ -14,7 +14,7 @@
       "name": "imprint",
       "value": {
         "title": "footer.imprint.title",
-        "content": "https://vc.systems/impressum/"
+        "url": "https://vc.systems/impressum/"
       }
     },
     {
