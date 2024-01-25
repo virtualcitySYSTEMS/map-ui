@@ -41,6 +41,7 @@
 - Fixes layout issue where input placeholder text had been cut of
 - Changed input layout, so that the bottom border is extended for append items
 - Add `getListItemForItem` API to `CollectionComponentClass.js`.
+- Updated to @vcmap/core 5.1
 
 ### Ui Behaviour ChangesF
 

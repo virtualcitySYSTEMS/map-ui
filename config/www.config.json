@@ -9,6 +9,22 @@
     "epsg": "25832",
     "proj4": "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs"
   },
+  "uiConfig": [
+    {
+      "name": "imprint",
+      "value": {
+        "title": "footer.imprint.title",
+        "content": "https://vc.systems/impressum/"
+      }
+    },
+    {
+      "name": "dataProtection",
+      "value": {
+        "title": "footer.dataprotection.title",
+        "url": "https://vc.systems/datenschutz/"
+      }
+    }
+  ],
   "i18n": [
     {
       "name": "Demo",
