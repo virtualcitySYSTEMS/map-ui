@@ -219,7 +219,7 @@
           if (
             !viewpoint ||
             !viewpoint.isValid() ||
-            viewpoint.equals(cachedViewpoint)
+            viewpoint.equals(cachedViewpoint, 0.000001)
           ) {
             return;
           }
@@ -298,6 +298,20 @@
       (Number.isFinite(number) && number > 0) ||
       'components.viewpoint.positiveNumber'
     );
+  }
+
+  /**
+   * @param {import("@vcmap/ui").VcsUiApp} app
+   * @param {import("@vcmap/core").ViewpointOptions} options
+   * @returns {Promise<void>}
+   */
+  export async function gotoViewpointOptions(app, options) {
+    const clone = structuredClone(options);
+    clone.animate = false;
+    const viewpoint = new Viewpoint(clone);
+    if (app.maps.activeMap && viewpoint.isValid()) {
+      await app.maps.activeMap.gotoViewpoint(viewpoint);
+    }
   }
 
   /**
@@ -463,12 +477,7 @@
       });
 
       async function gotoViewpoint() {
-        const clone = structuredClone(props.value);
-        clone.animate = false;
-        const viewpoint = new Viewpoint(clone);
-        if (app.maps.activeMap && viewpoint.isValid()) {
-          await app.maps.activeMap.gotoViewpoint(viewpoint);
-        }
+        await gotoViewpointOptions(app, props.value);
       }
 
       async function handleInput(key) {

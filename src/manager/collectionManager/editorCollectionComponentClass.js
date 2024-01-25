@@ -10,11 +10,11 @@ import { createListEditAction } from '../../actions/listActions.js';
 
 /**
  * @typedef {{
- *   editor: EditorWindowComponentOptions|function(T,import("./collectionComponentClass.js").CollectionComponentListItem):EditorWindowComponentOptions|undefined,
+ *   editor: EditorWindowComponentOptions|function(T):EditorWindowComponentOptions|undefined,
  *   multiEditor?: EditorWindowComponentOptions,
  *   selectionBased?: boolean
  * }} EditingOptions
- * @property {EditorWindowComponentOptions|function(T,import("./collectionComponentClass.js").CollectionComponentListItem)|undefined} editor
+ * @property {EditorWindowComponentOptions|function(T)|undefined} editor
  * @property {EditorWindowComponentOptions} [multiEditor]
  * @property {boolean} [selectionBased=true] - If true, editor windows are coupled to selection and editor windows are exclusive
  * @template {Object} T
@@ -119,10 +119,7 @@ export function makeEditorCollectionComponentClass(
    * @returns {EditorWindowComponentOptions}
    */
   function getEditorWindowOptions(item) {
-    const listItem = collectionComponent.items.value.find(
-      (i) => i.name === item?.[collectionComponent.keyProperty],
-    );
-    return typeof editor === 'function' ? editor(item, listItem) : editor;
+    return typeof editor === 'function' ? editor(item) : editor;
   }
 
   /**

@@ -29,7 +29,6 @@
 - Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
 - Adds hasUpdate to `category-manager` button, in case an item from the dynamic module is added to any category while `category-manager` window is closed.
 - Adds some components to help with feature editing, such as `VcsFeatureStyleComponent`, `VcsFeatureTransform` and `VcsFeatureEditingWindow`.
-- Add resetFlightInstance prop to `VcsFlightEditor.vue`
 - Add `listActions.js` with action helpers for list item and list bulk actions, e.g. rename, delete, import and export actions
 - Add `editorCollectionComponentClass.js`, which defines select and editor window behaviour for list items of collections or category collections.
 - Adds `autoClose` property to `AbstractConfigEditor.vue`. This allows custom handling of window closing, e.g. only close window, if submit or cancel action was successful.
@@ -41,6 +40,7 @@
 - Change apply button to icon in `VcsFeatureTransforms.vue`
 - Fixes layout issue where input placeholder text had been cut of
 - Changed input layout, so that the bottom border is extended for append items
+- Add `getListItemForItem` API to `CollectionComponentClass.js`.
 
 ### Ui Behaviour ChangesF
 

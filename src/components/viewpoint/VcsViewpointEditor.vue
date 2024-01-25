@@ -1,25 +1,28 @@
 <template>
   <AbstractConfigEditor
     @submit="apply"
+    @cancel="cancel"
     @reset="reset"
-    show-reset
+    :auto-close="false"
     v-bind="{ ...$attrs, ...$props }"
   >
-    <VcsViewpointComponent v-model="localConfig" v-bind="{ ...$attrs }" />
+    <VcsViewpointComponent v-model="localConfig" hide-name />
   </AbstractConfigEditor>
 </template>
 
 <script>
-  import { inject, ref } from 'vue';
-  import { Viewpoint } from '@vcmap/core';
+  import { inject, onUnmounted, ref } from 'vue';
   import { getLogger } from '@vcsuite/logger';
+  import deepEqual from 'fast-deep-equal';
   import AbstractConfigEditor from '../plugins/AbstractConfigEditor.vue';
-  import VcsViewpointComponent from './VcsViewpointComponent.vue';
+  import VcsViewpointComponent, {
+    gotoViewpointOptions,
+  } from './VcsViewpointComponent.vue';
 
   /**
    * An editor component for viewpoints using AbstractConfigEditor and VcsViewpointComponent
    * @vue-prop {() => import("@vcmap/core").ViewpointOptions} getConfig
-   * @vue-prop {(options: import("@vcmap/core").ViewpointOptions) => Promise<void>} setConfig
+   * @vue-prop {(import("@vcmap/core").ViewpointOptions) => Promise<void>} setConfig
    */
   export default {
     name: 'VcsViewpointEditor',
@@ -37,33 +40,44 @@
         required: true,
       },
     },
-    setup(props) {
+    setup(props, { emit }) {
       const app = inject('vcsApp');
-      const localConfig = ref({});
+      const localConfig = ref(props.getConfig());
+      const originalConfig = structuredClone(props.getConfig());
+      let cancel = false;
 
       async function gotoViewpoint() {
-        const clone = structuredClone(localConfig.value);
-        clone.animate = false;
-        const viewpoint = new Viewpoint(clone);
-        if (app?.maps.activeMap && viewpoint.isValid()) {
-          await app.maps.activeMap.gotoViewpoint(viewpoint);
-        }
-      }
-
-      async function apply() {
-        await props.setConfig(localConfig.value);
+        await gotoViewpointOptions(app, localConfig.value);
       }
 
       async function reset() {
-        localConfig.value = await props.getConfig();
+        localConfig.value = props.getConfig();
         await gotoViewpoint();
       }
 
-      reset().catch((err) => getLogger('VcsViewpointEditor.vue').error(err));
+      gotoViewpoint().catch((err) =>
+        getLogger('ViewpointEditor.vue').error(err),
+      );
+
+      onUnmounted(() => {
+        if (
+          !cancel &&
+          !deepEqual(originalConfig, structuredClone(localConfig.value))
+        ) {
+          props.setConfig(localConfig.value);
+        }
+      });
 
       return {
         localConfig,
-        apply,
+        apply() {
+          emit('close');
+        },
+        async cancel() {
+          await reset();
+          cancel = true;
+          emit('close');
+        },
         reset,
       };
     },

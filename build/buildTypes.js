@@ -147,6 +147,10 @@ async function run() {
   await fixTemplateFunctions();
   console.log('exporting types');
   await addTypeExports();
+  if (process.argv.includes('--skipValidation')) {
+    return;
+  }
+  console.log('validating library');
   let validationFailed = false;
   try {
     await execPromisify('npx vue-tsc --noEmit');

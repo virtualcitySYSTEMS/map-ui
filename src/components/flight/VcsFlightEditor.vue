@@ -1,10 +1,9 @@
 <template>
   <AbstractConfigEditor
     @submit="apply"
-    @cancel="reset"
+    @cancel="cancel"
     @reset="reset"
     v-bind="{ ...$attrs, ...$props }"
-    :set-config-on-cancel="false"
   >
     <VcsFlightComponent
       :parent-id="$attrs['window-state'].id"
@@ -14,8 +13,9 @@
 </template>
 
 <script>
-  import { provide } from 'vue';
+  import { onUnmounted, provide } from 'vue';
   import { FlightInstance } from '@vcmap/core';
+  import deepEqual from 'fast-deep-equal';
   import AbstractConfigEditor from '../plugins/AbstractConfigEditor.vue';
   import VcsFlightComponent from './VcsFlightComponent.vue';
 
@@ -44,15 +44,27 @@
         default: () => {},
       },
     },
-    setup(props) {
+    setup(props, { emit }) {
       const flightInstance = props.getFlightInstance();
+      let cancel = false;
 
       const originalConfig = flightInstance.toJSON();
       provide('flightInstance', flightInstance);
 
+      onUnmounted(() => {
+        if (!cancel && !deepEqual(originalConfig, flightInstance.toJSON())) {
+          props.setFlightInstance(flightInstance);
+        }
+      });
+
       return {
         async apply() {
-          await props.setFlightInstance(flightInstance);
+          emit('close');
+        },
+        async cancel() {
+          await props.resetFlightInstance(new FlightInstance(originalConfig));
+          cancel = true;
+          emit('close');
         },
         async reset() {
           await props.resetFlightInstance(new FlightInstance(originalConfig));

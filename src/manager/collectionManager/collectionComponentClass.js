@@ -316,7 +316,7 @@ class CollectionComponentClass {
       disabled: item?.properties?.disabled,
       tooltip: item?.properties?.tooltip,
       icon: item?.properties?.icon,
-      hasUpdate: item?.properties?.hasUpdate,
+      hasUpdate: false,
       rename: false,
       actions: [],
       clickedCallbacks: [],
@@ -461,6 +461,16 @@ class CollectionComponentClass {
       destroyListItem(this._listItems.value[index]);
       this._listItems.value.splice(index, 1);
     }
+  }
+
+  /**
+   * @param {T} item
+   * @template T
+   * @returns {CollectionComponentListItem|undefined}
+   */
+  getListItemForItem(item) {
+    const itemKey = item[this._collection.uniqueKey];
+    return this.items.value.find((i) => i.name === itemKey);
   }
 
   /**
