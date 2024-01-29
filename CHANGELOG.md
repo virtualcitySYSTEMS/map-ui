@@ -44,6 +44,7 @@
 - Updated to @vcmap/core 5.1
 - Added viewshed plugin to demo application and external plugins
 - Added measurement plugin to demo application and external plugins
+- Added flight plugin to demo application and external plugins
 
 ### Ui Behaviour ChangesF
 

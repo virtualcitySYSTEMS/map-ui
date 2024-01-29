@@ -1870,6 +1870,10 @@
     {
       "name": "@vcmap/measurement",
       "entry": "plugins/@vcmap/measurement/index.js"
+    },
+    {
+      "name": "@vcmap/flight",
+      "entry": "plugins/@vcmap/flight/index.js"
     }
   ]
 }

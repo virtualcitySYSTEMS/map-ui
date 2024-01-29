@@ -10,7 +10,8 @@
     "@vcmap/multi-view": "^1.0.1",
     "@vcmap/cesium-filters": "^1.0.1",
     "@vcmap/viewshed": "^2.0.1",
-    "@vcmap/measurement": "^1.0.2"
+    "@vcmap/measurement": "^1.0.2",
+    "@vcmap/flight": "^1.0.1"
   },
   "optionalDependencies": {}
 }
