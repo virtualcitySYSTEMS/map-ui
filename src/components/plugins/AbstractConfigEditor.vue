@@ -34,6 +34,9 @@
    * @vue-prop {string} [submitButtonTitle='components.apply'] - Option to change the submit button title, e.g. to 'components.add'.
    * @vue-prop {boolean} [setConfigOnCancel=true] - Whether setConfig shall be called on cancel. Ensures compatability with v5.0.x
    * @vue-prop {boolean} [autoClose=true] - Whether window component shall be close on submit or cancel.
+   * @vue-prop {function():void} [onSubmit] - Callback function called on submit.
+   * @vue-prop {function():void} [onReset] - Callback function called on reset.
+   * @vue-prop {function():void} [onCancel] - Callback function called on cancel.
    * @vue-event {Event} submit - Event fired on clicking the submit button.
    * @vue-event {Event} cancel - Event fired on clicking the cancel button.
    * @vue-event {Event} reset - Event fired on clicking the reset button.
@@ -67,6 +70,18 @@
         type: Boolean,
         default: true,
       },
+      onSubmit: {
+        type: Function,
+        default: () => {},
+      },
+      onReset: {
+        type: Function,
+        default: () => {},
+      },
+      onCancel: {
+        type: Function,
+        default: () => {},
+      },
     },
     setup(props, { attrs, emit }) {
       const app = inject('vcsApp');
@@ -80,12 +95,14 @@
       return {
         isValid: ref(true),
         submit(e) {
+          props.onSubmit();
           emit('submit', e);
           if (props.autoClose) {
             close();
           }
         },
         cancel(e) {
+          props.onCancel();
           if (props.setConfigOnCancel) {
             attrs.setConfig?.();
           }
@@ -95,6 +112,7 @@
           }
         },
         reset(e) {
+          props.onReset();
           emit('reset', e);
         },
       };

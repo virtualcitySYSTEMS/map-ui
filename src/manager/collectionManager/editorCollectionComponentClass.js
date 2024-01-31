@@ -12,10 +12,12 @@ import { createListEditAction } from '../../actions/listActions.js';
  * @typedef {{
  *   editor: EditorWindowComponentOptions|function(T):EditorWindowComponentOptions|undefined,
  *   multiEditor?: EditorWindowComponentOptions,
+ *   predicate?: import("./collectionManager.js").PredicateFunction<T>,
  *   selectionBased?: boolean
  * }} EditingOptions
  * @property {EditorWindowComponentOptions|function(T)|undefined} editor
  * @property {EditorWindowComponentOptions} [multiEditor]
+ * @property {import("./collectionManager.js").PredicateFunction<T>} [predicate=()=>true] - Optional predicate function for editor
  * @property {boolean} [selectionBased=true] - If true, editor windows are coupled to selection and editor windows are exclusive
  * @template {Object} T
  */
@@ -61,6 +63,7 @@ export function makeEditorCollectionComponentClass(
   check(collectionComponent, CollectionComponentClass);
   check(editingOptions.editor, [Object, Function]);
   checkMaybe(editingOptions.multiEditor, Object);
+  checkMaybe(editingOptions.predicate, Function);
 
   const editorCollectionComponent =
     /** @type {EditorCollectionComponentClass} */ collectionComponent;
@@ -79,6 +82,7 @@ export function makeEditorCollectionComponentClass(
   const {
     editor,
     multiEditor = undefined,
+    predicate = () => true,
     selectionBased = true,
   } = editingOptions;
   const keyProperty = editorCollectionComponent.collection.uniqueKey;
@@ -214,7 +218,7 @@ export function makeEditorCollectionComponentClass(
     );
 
   editorCollectionComponent.addItemMapping({
-    predicate: (item) => !!getEditorWindowOptions(item),
+    predicate,
     mappingFunction: (item, c, listItem) => {
       listItem.clickedCallbacks.push((event) => {
         if (!(event.shiftKey || event.ctrlKey)) {

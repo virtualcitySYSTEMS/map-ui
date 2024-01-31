@@ -45,6 +45,7 @@
 - Added viewshed plugin to demo application and external plugins
 - Added measurement plugin to demo application and external plugins
 - Added flight plugin to demo application and external plugins
+- Added callback functions `onSubmit`, `onReset` and `onCancel` as props to `AbstractConfigEditor.vue`.
 
 ### Ui Behaviour ChangesF
 

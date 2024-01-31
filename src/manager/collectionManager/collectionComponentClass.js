@@ -399,18 +399,24 @@ class CollectionComponentClass {
    * @private
    */
   _handleItemReplaced(replaced) {
+    const listItemHasUpdate = this.getListItemForItem(replaced.old)?.hasUpdate;
     const selectedIdx = this.selection.value.findIndex(
       (l) => l.name === replaced.old[this.collection.uniqueKey],
     );
     this._handleItemRemoved(replaced.old);
-    if (selectedIdx > -1) {
+    if (selectedIdx > -1 || listItemHasUpdate !== undefined) {
       const addedListener = this._collection.added.addEventListener((added) => {
         if (added === replaced.new) {
           const newListItem = this.items.value.find(
             (l) => l.name === added[this.collection.uniqueKey],
           );
           if (newListItem) {
-            this.selection.value.splice(selectedIdx, 0, newListItem);
+            if (listItemHasUpdate !== undefined) {
+              newListItem.hasUpdate = listItemHasUpdate;
+            }
+            if (selectedIdx > -1) {
+              this.selection.value.splice(selectedIdx, 0, newListItem);
+            }
           }
           addedListener();
         }
@@ -419,8 +425,9 @@ class CollectionComponentClass {
   }
 
   /**
-   * synchronizes the order of the list items with respect to the order of the items in the collection.
-   * removes and reinserts the moved item.
+   * Synchronizes the order of the list items with respect to the order of the items in the collection.
+   * Removes and reinserts the moved item.
+   * Ensures selection and hasUpdate.
    * @param {T} item
    * @template T
    * @private
