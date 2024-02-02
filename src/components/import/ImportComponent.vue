@@ -23,7 +23,7 @@
 
 <script>
   import { VCard } from 'vuetify/lib';
-  import { inject, ref } from 'vue';
+  import { computed, inject, ref } from 'vue';
   import FileDrop from './FileDrop.vue';
   import VcsFormButton from '../buttons/VcsFormButton.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
@@ -53,7 +53,18 @@
     },
     setup(props, { emit }) {
       const app = inject('vcsApp');
-      const files = ref([]);
+      const localFiles = ref([]);
+      /**
+       * @type {WritableComputedRef<Array<File>>}
+       */
+      const files = computed({
+        get() {
+          return localFiles.value;
+        },
+        set(value) {
+          localFiles.value = Array.isArray(value) ? value : [value];
+        },
+      });
 
       return {
         files,

@@ -400,6 +400,9 @@ class CollectionComponentClass {
    */
   _handleItemReplaced(replaced) {
     const listItemHasUpdate = this.getListItemForItem(replaced.old)?.hasUpdate;
+    const idx = this._listItems.value.findIndex(
+      (l) => l.name === replaced.old[this.collection.uniqueKey],
+    );
     const selectedIdx = this.selection.value.findIndex(
       (l) => l.name === replaced.old[this.collection.uniqueKey],
     );
@@ -407,12 +410,17 @@ class CollectionComponentClass {
     if (selectedIdx > -1 || listItemHasUpdate !== undefined) {
       const addedListener = this._collection.added.addEventListener((added) => {
         if (added === replaced.new) {
-          const newListItem = this.items.value.find(
+          const newIdx = this.items.value.findIndex(
             (l) => l.name === added[this.collection.uniqueKey],
           );
+          const newListItem = this._listItems.value[newIdx];
           if (newListItem) {
             if (listItemHasUpdate !== undefined) {
               newListItem.hasUpdate = listItemHasUpdate;
+            }
+            if (newIdx !== idx) {
+              this._listItems.value.splice(newIdx, 1);
+              this._listItems.value.splice(idx, 0, newListItem);
             }
             if (selectedIdx > -1) {
               this.selection.value.splice(selectedIdx, 0, newListItem);

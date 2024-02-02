@@ -13,7 +13,6 @@ import ToolboxManager, {
   getComponentsByOrder,
   ToolboxType,
 } from '../../../src/manager/toolbox/toolboxManager.js';
-import ButtonManager from '../../../src/manager/buttonManager.js';
 import { vcsAppSymbol } from '../../../src/pluginHelper.js';
 
 const components = {
@@ -115,28 +114,13 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      // eslint-disable-next-line mocha/no-skipped-tests
-      describe.skip('returns a SingleToolboxComponent', () => {
-        it('id should be readonly', () => {
-          expect(() => {
-            toolboxComponent.id = 'new';
-          }).to.throw();
+      describe('returns a SingleToolboxComponent', () => {
+        it('id should have an id, type and owner', () => {
+          expect(toolboxComponent).to.have.property('id');
+          expect(toolboxComponent).to.have.property('type', ToolboxType.SINGLE);
+          expect(toolboxComponent).to.have.property('owner', 'plugin');
         });
-        it('type should be readonly', () => {
-          expect(() => {
-            toolboxComponent.type = 'new';
-          }).to.throw();
-        });
-        it('owner should be readonly', () => {
-          expect(() => {
-            toolboxComponent.owner = 'new';
-          }).to.throw();
-        });
-        it('action should be readonly', () => {
-          expect(() => {
-            toolboxComponent.action = { name: 'new' };
-          }).to.throw();
-        });
+
         it('action should be reactive', () => {
           expect(isReactive(toolboxComponent.action)).to.be.true;
         });
@@ -196,30 +180,19 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      // eslint-disable-next-line mocha/no-skipped-tests
-      describe.skip('returns a SelectToolboxComponent', () => {
-        it('id should be readonly', () => {
-          expect(() => {
-            toolboxComponent.id = 'new';
-          }).to.throw();
+      describe('returns a SelectToolboxComponent', () => {
+        it('id should have an id, type and owner', () => {
+          expect(toolboxComponent).to.have.property('id');
+          expect(toolboxComponent).to.have.property('type', ToolboxType.SELECT);
+          expect(toolboxComponent).to.have.property('owner', 'plugin');
         });
-        it('type should be readonly', () => {
-          expect(() => {
-            toolboxComponent.type = 'new';
-          }).to.throw();
-        });
-        it('owner should be readonly', () => {
-          expect(() => {
-            toolboxComponent.owner = 'new';
-          }).to.throw();
-        });
-        it('action should be readonly', () => {
-          expect(() => {
-            toolboxComponent.action = { name: 'new' };
-          }).to.throw();
-        });
+
         it('action should be reactive', () => {
           expect(isReactive(toolboxComponent.action)).to.be.true;
+        });
+
+        it('action should have tools', () => {
+          expect(toolboxComponent.action).to.have.property('tools');
         });
       });
     });
@@ -277,37 +250,15 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      // eslint-disable-next-line mocha/no-skipped-tests
-      describe.skip('returns a GroupToolboxComponent', () => {
-        it('id should be readonly', () => {
-          expect(() => {
-            toolboxComponent.id = 'new';
-          }).to.throw();
-        });
-        it('type should be readonly', () => {
-          expect(() => {
-            toolboxComponent.type = 'new';
-          }).to.throw();
-        });
-        it('owner should be readonly', () => {
-          expect(() => {
-            toolboxComponent.owner = 'new';
-          }).to.throw();
-        });
-        it('icon should be readonly', () => {
-          expect(() => {
-            toolboxComponent.icon = 'new';
-          }).to.throw();
-        });
-        it('title should be readonly', () => {
-          expect(() => {
-            toolboxComponent.title = 'new';
-          }).to.throw();
-        });
-        it('buttonManager should be readonly', () => {
-          expect(() => {
-            toolboxComponent.buttonManager = new ButtonManager();
-          }).to.throw();
+      describe('returns a GroupToolboxComponent', () => {
+        it('id should have an id, type, owner, icon, title, buttonManager and disabled', () => {
+          expect(toolboxComponent).to.have.property('id');
+          expect(toolboxComponent).to.have.property('type', ToolboxType.GROUP);
+          expect(toolboxComponent).to.have.property('owner', 'plugin');
+          expect(toolboxComponent).to.have.property('icon');
+          expect(toolboxComponent).to.have.property('title');
+          expect(toolboxComponent).to.have.property('buttonManager');
+          expect(toolboxComponent).to.have.property('disabled');
         });
       });
     });

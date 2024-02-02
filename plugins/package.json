@@ -13,5 +13,7 @@
     "@vcmap/measurement": "^1.0.2",
     "@vcmap/flight": "^1.0.1"
   },
-  "optionalDependencies": {}
+  "optionalDependencies": {
+    "@vcmap/planning": "^1.0.1"
+  }
 }

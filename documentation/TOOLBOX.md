@@ -86,6 +86,7 @@ To add a SingleToolboxComponent, use `add()` method of ToolboxManager providing 
 app.toolboxManager.add(
   {
     id: 'sample',
+    type: ToolboxType.SINGLE,
     action: {
       name: 'sampleToggle',
       title: 'sample',
@@ -310,6 +311,7 @@ import { defaultToolboxName } from '@vcmap/ui';
 app.toolboxManager.add(
   {
     id: 'sample1',
+    type: ToolboxType.SINGLE,
     action: {
       name: 'sampleToggle',
       title: 'sample',
@@ -324,6 +326,7 @@ app.toolboxManager.add(
 app.toolboxManager.add(
   {
     id: 'sample2',
+    type: ToolboxType.SINGLE,
     action: {
       name: 'sampleToggle',
       title: 'sample',

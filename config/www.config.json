@@ -1874,6 +1874,13 @@
     {
       "name": "@vcmap/flight",
       "entry": "plugins/@vcmap/flight/index.js"
+    },
+    {
+      "name": "@vcmap/planning",
+      "entry": "plugins/@vcmap/planning/index.js",
+      "serviceUrl": "https://demo.virtualcityplanner.de/",
+      "projectId": "rBW58EJz5RwCz75Q3",
+      "mapId": "csunCGqmQE8Py4KCe"
     }
   ]
 }

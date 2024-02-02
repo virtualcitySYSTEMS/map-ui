@@ -85,7 +85,12 @@ class ContentTreeCollection extends IndexedCollection {
      * @private
      */
     this._defaultSubtreeItem = new SubContentTreeItem(
-      { name: 'Content', icon: '$vcsLayers', title: 'content.title' },
+      {
+        name: 'Content',
+        icon: '$vcsLayers',
+        title: 'content.title',
+        tooltip: 'content.title',
+      },
       app,
     );
     /**

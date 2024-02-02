@@ -73,7 +73,9 @@ bundle:
   stage: bundle
   script:
     - npm set registry 'http://npmregistry:4873'
-    - npm run install-plugins
+    - cd plugins
+    - npm i --omit peer --no-package-lock --force
+    - cd ..
     - npm run build
     - npm run build-preview
 

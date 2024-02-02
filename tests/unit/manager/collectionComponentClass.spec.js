@@ -296,6 +296,37 @@ describe('CollectionComponentClass', () => {
       collection.remove(replacedItem);
     });
 
+    it('should preserve order for all underlying types of collections', () => {
+      const collection2 = makeOverrideCollection(
+        new Collection(),
+        () => 'dynamicModuleId',
+      );
+      const collectionComponent2 = new CollectionComponentClass(
+        { collection: collection2 },
+        'test',
+      );
+      const firstItem = { name: 'first' };
+      const lastItem = { name: 'last' };
+      collection2.add(firstItem);
+      collection2.add(addedItem);
+      collection2.add(lastItem);
+      expect(
+        collectionComponent2.items.value.map(({ name }) => name),
+      ).to.have.ordered.members([
+        firstItem.name,
+        addedItem.name,
+        lastItem.name,
+      ]);
+      collection2.replace(replacedItem);
+      expect(
+        collectionComponent2.items.value.map(({ name }) => name),
+      ).to.have.ordered.members([
+        firstItem.name,
+        addedItem.name,
+        lastItem.name,
+      ]);
+    });
+
     it('should preserve selection', () => {
       collection.add(addedItem);
       collectionComponent.selection.value = [
