@@ -458,10 +458,17 @@ class VcsUiApp extends VcsApp {
    * This function can be used for the WindowState infoUrlCallback property.
    * @param {string} [path] - the path to a help section
    * @param {string} [subpage='vc-map'] - path to a subpage. Default is 'vc-map'.
+   * @param {string=} [subpageVersion=undefined] - default version is the mapVersion, can be provided to use a plugin specific version
    * @returns {function():string}
    */
-  getHelpUrlCallback(path = '', subpage = 'vc-map') {
-    const mayorMinorVersion = /\d+\.\d+/.exec(VcsUiApp.getVersion())[0];
+  getHelpUrlCallback(
+    path = '',
+    subpage = 'vc-map',
+    subpageVersion = undefined,
+  ) {
+    const mayorMinorVersion = /\d+\.\d+/.exec(
+      subpageVersion || VcsUiApp.getVersion(),
+    )[0];
     return () => {
       const base =
         this.uiConfig.config.value.helpBaseUrl || 'https://help.vc.systems/';

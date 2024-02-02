@@ -46,6 +46,7 @@
 - Added measurement plugin to demo application and external plugins
 - Added flight plugin to demo application and external plugins
 - Added callback functions `onSubmit`, `onReset` and `onCancel` as props to `AbstractConfigEditor.vue`.
+- Added `version` option to `getHelpUrlCallback` function to allow for mapVersion independend Help.
 
 ### Ui Behaviour ChangesF
 
