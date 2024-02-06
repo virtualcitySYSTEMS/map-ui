@@ -1,10 +1,19 @@
 /* eslint import/no-extraneous-dependencies: ["error", { "devDependencies": false }] */
-import path from 'path';
+import path from 'node:path';
+import { existsSync } from 'node:fs';
 import {
   getInlinePlugins,
   getPluginDirectory,
   getPluginNames,
 } from './buildHelpers.js';
+
+async function getTsPlugins(pluginsDir, plugins) {
+  return plugins.filter((plugin) =>
+    existsSync(
+      path.join(pluginsDir, 'node_modules', plugin, 'src', 'index.ts'),
+    ),
+  );
+}
 
 /**
  * Determines the proxy setting to serve plugins referrenced in the package.json in the plugins directory
@@ -19,14 +28,19 @@ export default async function getPluginProxies(
   const root = process.cwd();
   const pluginsDir = getPluginDirectory();
   const plugins = await getPluginNames();
+  const tsPlugins = await getTsPlugins(pluginsDir, plugins);
   const proxies = {};
 
   plugins.forEach((plugin) => {
+    const indexJs = tsPlugins.includes(plugin) ? 'index.ts' : 'index.js';
     proxies[`^/plugins/${plugin}/.*`] = {
       target,
       rewrite: (route) => {
         const rest = route.replace(new RegExp(`^/plugins/${plugin}/`), '');
-        const file = rest || 'index.js';
+        let file = rest || indexJs;
+        if (file === 'index.js' && tsPlugins.includes(plugin)) {
+          file = indexJs;
+        }
         const pluginDir = path.posix.join(
           path.relative(root, pluginsDir),
           'node_modules',
