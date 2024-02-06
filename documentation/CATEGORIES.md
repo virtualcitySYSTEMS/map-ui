@@ -3,7 +3,8 @@
 Categories is a concept to store and manage arbitrary items with the ability to serialize and deserialize to modules.
 
 In the map ui categories are listed in the "My Workspace" window.
-Items of Categories from the VcsApp dynamic module are rendered in list views.
+Items of Categories from the VcsApp default dynamic module are rendered in list views.
+To support and show items of further modules, an `addModuleId(id: string)` API is provided by the CategoryManager.
 
 Prerequisite is that a category has to be added to the VcsApp and a plugin or the VcsApp has
 to add the Category to the `categoryManager`.

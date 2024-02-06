@@ -46,7 +46,9 @@
 - Added measurement plugin to demo application and external plugins
 - Added flight plugin to demo application and external plugins
 - Added callback functions `onSubmit`, `onReset` and `onCancel` as props to `AbstractConfigEditor.vue`.
-- Added `version` option to `getHelpUrlCallback` function to allow for mapVersion independend Help.
+- Added `version` option to `getHelpUrlCallback` function to allow for mapVersion independent Help.
+- Added `createSupportedMapMappingFunction` helper to handle supported maps on list items in CollectionComponentClass
+- Changed behaviour of `CategoryManager` to per default only include items of the defaultDynamicModuleId. Additional moduleIds can be added via newly introduced `addModuleId` API.
 
 ### Ui Behaviour ChangesF
 

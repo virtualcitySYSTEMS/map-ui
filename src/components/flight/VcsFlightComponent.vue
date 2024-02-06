@@ -74,6 +74,7 @@
               unit="s"
               step="1"
               :decimals="2"
+              :disabled="disablePlayer"
               :rules="[durationRule]"
             />
           </v-col>

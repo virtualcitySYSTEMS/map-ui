@@ -1,4 +1,5 @@
-import { moduleIdSymbol } from '@vcmap/core';
+import { defaultDynamicModuleId, moduleIdSymbol } from '@vcmap/core';
+import { check } from '@vcsuite/check';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import CollectionManager from './collectionManager.js';
 
@@ -9,6 +10,8 @@ import CollectionManager from './collectionManager.js';
 /**
  * Manages all requested category collections.
  * Provides an API to add/remove collectionsComponents.
+ * Per default only items of the defaultDynamicModuleId are shown in the CategoryManager.
+ * Further modules can be supported using the addModuleId API.
  * @implements {ICategoryManager}
  * @extends CollectionManager
  */
@@ -31,7 +34,12 @@ class CategoryManager extends CollectionManager {
      * @type {string}
      * @private
      */
-    this._dynamicModuleId = this._app.dynamicModuleId;
+    this._dynamicModuleId = defaultDynamicModuleId;
+    /**
+     * @type {string[]}
+     * @private
+     */
+    this._moduleIds = [];
 
     /**
      * @param {Object} item
@@ -49,7 +57,9 @@ class CategoryManager extends CollectionManager {
      */
     this._categoryListeners = [
       this._app.dynamicModuleIdChanged.addEventListener((id) => {
-        this._dynamicModuleId = id;
+        if (id === defaultDynamicModuleId || this._moduleIds.includes(id)) {
+          this._dynamicModuleId = id;
+        }
         this.reset();
       }),
       this._app.categories.removed.addEventListener((category) => {
@@ -86,6 +96,34 @@ class CategoryManager extends CollectionManager {
       owner,
     );
     return { collectionComponent, category };
+  }
+
+  /**
+   * Updates the filterFunction for added moduleIds.
+   * Items of added moduleIds, are shown in the CategoryManager
+   * @param {string} id
+   */
+  addModuleId(id) {
+    check(id, String);
+    if (!this._moduleIds.includes(id)) {
+      this._moduleIds.push(id);
+    }
+    if (id === this._app.dynamicModuleId) {
+      this.reset();
+    }
+  }
+
+  /**
+   * @param {string} id
+   */
+  removeModuleId(id) {
+    const idx = this._moduleIds.indexOf(id);
+    if (idx > -1) {
+      this._moduleIds.splice(idx, 1);
+    }
+    if (id === this._app.dynamicModuleId) {
+      this.reset();
+    }
   }
 
   destroy() {

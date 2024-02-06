@@ -111,7 +111,10 @@ export { default as CategoryManager } from './src/manager/collectionManager/cate
 export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
 export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
 export { default as CollectionComponentProvider } from './src/manager/collectionManager/CollectionComponentProvider.vue';
-export { default as CollectionComponentClass } from './src/manager/collectionManager/collectionComponentClass.js';
+export {
+  default as CollectionComponentClass,
+  createSupportedMapMappingFunction,
+} from './src/manager/collectionManager/collectionComponentClass.js';
 export {
   makeEditorCollectionComponentClass,
   isEditorCollectionComponentClass,

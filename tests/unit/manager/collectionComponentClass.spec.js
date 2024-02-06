@@ -9,11 +9,17 @@ import {
   vi,
 } from 'vitest';
 import {
+  CesiumMap,
   Collection,
   IndexedCollection,
   makeOverrideCollection,
+  MapCollection,
+  ObliqueMap,
+  OpenlayersMap,
 } from '@vcmap/core';
-import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
+import CollectionComponentClass, {
+  createSupportedMapMappingFunction,
+} from '../../../src/manager/collectionManager/collectionComponentClass.js';
 import { sleep } from '../../helpers.js';
 
 describe('CollectionComponentClass', () => {
@@ -629,6 +635,106 @@ describe('CollectionComponentClass', () => {
       const resetSpy2 = vi.spyOn(collectionComponent, 'reset');
       collectionComponent.removeOwner('removedOwner');
       expect(resetSpy2).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('createSupportedMapMappingFunction', () => {
+    let mapCollection;
+    let collectionComponent;
+    let collection;
+    let item;
+    let item2;
+
+    beforeAll(() => {
+      mapCollection = new MapCollection();
+      mapCollection.add(new OpenlayersMap({ name: 'ol' }));
+      mapCollection.add(new ObliqueMap({ name: 'oblique' }));
+      mapCollection.setActiveMap('ol');
+      collection = new IndexedCollection();
+      item = { name: 'item' };
+      item2 = { name: 'item2' };
+      collection.add(item);
+      collection.add(item2);
+      collectionComponent = new CollectionComponentClass(
+        { collection },
+        'test',
+      );
+    });
+
+    afterAll(() => {
+      collection.destroy();
+      [...mapCollection].forEach((map) => map.destroy());
+      mapCollection.destroy();
+      collectionComponent.destroy();
+    });
+
+    it('should disable list items for unsupported maps, when providing a string array', () => {
+      collectionComponent.addItemMapping({
+        mappingFunction: createSupportedMapMappingFunction(
+          [CesiumMap.className],
+          mapCollection,
+        ),
+        owner: 'test',
+      });
+      expect(collectionComponent.getListItemForItem(item)).to.have.property(
+        'disabled',
+        true,
+      );
+      expect(collectionComponent.getListItemForItem(item2)).to.have.property(
+        'disabled',
+        true,
+      );
+    });
+
+    it('should disable list items for unsupported maps, when providing supportedMaps function', () => {
+      collectionComponent.addItemMapping({
+        mappingFunction: createSupportedMapMappingFunction((i) => {
+          if (i.name === item.name) {
+            return [OpenlayersMap.className];
+          } else {
+            return [ObliqueMap.className];
+          }
+        }, mapCollection),
+        owner: 'test',
+      });
+      expect(collectionComponent.getListItemForItem(item)).to.have.property(
+        'disabled',
+        false,
+      );
+      expect(collectionComponent.getListItemForItem(item2)).to.have.property(
+        'disabled',
+        true,
+      );
+    });
+
+    it('should update list items disabled state on map change', async () => {
+      collectionComponent.addItemMapping({
+        mappingFunction: createSupportedMapMappingFunction((i) => {
+          if (i.name === item.name) {
+            return [OpenlayersMap.className];
+          } else {
+            return [ObliqueMap.className];
+          }
+        }, mapCollection),
+        owner: 'test',
+      });
+      expect(collectionComponent.getListItemForItem(item)).to.have.property(
+        'disabled',
+        false,
+      );
+      expect(collectionComponent.getListItemForItem(item2)).to.have.property(
+        'disabled',
+        true,
+      );
+      await mapCollection.setActiveMap('oblique');
+      expect(collectionComponent.getListItemForItem(item)).to.have.property(
+        'disabled',
+        true,
+      );
+      expect(collectionComponent.getListItemForItem(item2)).to.have.property(
+        'disabled',
+        false,
+      );
     });
   });
 });

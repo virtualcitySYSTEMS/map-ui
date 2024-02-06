@@ -108,18 +108,20 @@ describe('categoryManager', () => {
       categoryManager.destroy();
     });
 
-    describe('should filter ', () => {
+    describe('should filter, if module is part of moduleIds', () => {
       let module;
 
       beforeEach(async () => {
         module = new VcsModule({});
         await app.addModule(module);
+        categoryManager.addModuleId(module._id);
         app.setDynamicModule(module);
       });
 
       afterEach(async () => {
         app.resetDynamicModule();
         await app.removeModule(module._id);
+        categoryManager.removeModuleId(module._id);
       });
 
       it('should synchronize the category items in the managed category list', () => {
@@ -142,6 +144,33 @@ describe('categoryManager', () => {
         const item6 = { name: 'item6' };
         category.collection.add(item6);
         app.resetDynamicModule();
+        category.collection.remove(item6);
+        expect(collectionComponent.items.value).to.have.lengthOf(2);
+      });
+    });
+
+    describe('should ignore dynamicModuleChanged, if module is not part of moduleIds', () => {
+      let module;
+
+      beforeEach(async () => {
+        module = new VcsModule({});
+        await app.addModule(module);
+        app.setDynamicModule(module);
+      });
+
+      afterEach(async () => {
+        app.resetDynamicModule();
+        categoryManager.removeModuleId(module._id);
+      });
+
+      it('should ignore items of untracked moduleIds', () => {
+        expect(collectionComponent.items.value).to.have.lengthOf(2);
+      });
+
+      it('should ignore adding or removing category items of untracked moduleIds', () => {
+        const item6 = { name: 'item6' };
+        category.collection.add(item6);
+        expect(collectionComponent.items.value).to.have.lengthOf(2);
         category.collection.remove(item6);
         expect(collectionComponent.items.value).to.have.lengthOf(2);
       });

@@ -333,6 +333,20 @@ To remove a mapping function:
 collectionManager.removeMappingFunction(mappingFunction, 'pluginName');
 ```
 
+For supportedMap handling of list items exists a helper function `createSupportedMapMappingFunction(supportedMaps: string[]|function(T):string[], mapCollection: import("@vcmap/core").MapCollection)`.
+The returned mapping function ensures, that all listItems according to the provided supportedMaps parameter and the active map are disabled.
+
+You can define any supported maps handling for arbitrary items. Here an example, where items are disabled, if any other map than the CesiumMap is active:
+
+```js
+collectionManager.addMappingFunction(
+  () => true,
+  (item) => createSupportedMapMappingFunction([CesiumMap.className], app.maps)),
+  'pluginName',
+  ['myCollectionComponentId'],
+);
+```
+
 ### Filter Functions
 
 Filter functions influence which collection items are transformed and viewed as `VcsListItem`s.
@@ -402,8 +416,10 @@ The CategoryManager is a specialisation of the CollectionManager to handle colle
 It is part of the VcsUiApp and can be accessed via `app.categoryManager`.
 The category items are shown in the "My Workspace" window of the map.
 
-It sets a filter function applied to all managed collection components, to only show items belonging to the dynamic module.
-Whenever the dynamic module is changed, the category manager updates its list view.
+It sets a filter function applied to all managed collection components, to only show items belonging to the default dynamic module.
+To support and show items of further modules, an `addModuleId(id: string)` API is provided by the CategoryManager.
+Whenever the dynamic module is changed, the category manager updates its list view according to the internal list of moduleIds.
+The support of an added module can be withdrawn using the `removeModuleId(id: string)`.
 
 It provides a convenience method to request a category and its corresponding collection component:
 

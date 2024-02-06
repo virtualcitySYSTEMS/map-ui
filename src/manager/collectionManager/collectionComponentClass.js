@@ -3,6 +3,7 @@ import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, ref, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
+import { check } from '@vcsuite/check';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
 import {
@@ -61,6 +62,30 @@ function titleChanged(item, listItem, newTitle) {
   }
   item.properties.title = newTitle;
   listItem.title = newTitle;
+}
+
+/**
+ * @param {string[]|function(T):string[]} supportedMaps
+ * @param {import("@vcmap/core").MapCollection} mapCollection
+ * @template {Object|import("@vcmap/core").VcsObject} T
+ * @returns {import("./collectionManager.js").MappingFunction<T>}
+ */
+export function createSupportedMapMappingFunction(
+  supportedMaps,
+  mapCollection,
+) {
+  check(supportedMaps, [[String], Function]);
+
+  return (item, _c, listItem) => {
+    const mapNames =
+      typeof supportedMaps === 'function' ? supportedMaps(item) : supportedMaps;
+    listItem.disabled = !mapNames.includes(mapCollection.activeMap.className);
+    listItem.destroyFunctions.push(
+      mapCollection.mapActivated.addEventListener((map) => {
+        listItem.disabled = !mapNames.includes(map.className);
+      }),
+    );
+  };
 }
 
 /**
