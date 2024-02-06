@@ -390,7 +390,7 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
 
 export async function buildPluginsForBundle(baseConfig = {}) {
   const inlinePlugins = await getInlinePlugins();
-  const dependentPlugins = await getPluginNames(true);
+  const dependentPlugins = await getPluginNames(false);
   const promises = inlinePlugins
     .filter((plugin) => plugin.startsWith('@vcmap/'))
     .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));
