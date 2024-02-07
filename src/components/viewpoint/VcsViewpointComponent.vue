@@ -47,13 +47,12 @@
               v-if="animate"
               id="duration"
               dense
+              clearable
               type="number"
-              :min="0"
+              :min="1"
               unit="s"
               :title="$t('components.viewpoint.duration')"
-              placeholder="0 s"
               v-model.number="duration"
-              :rules="[isPositiveNumber]"
             />
           </v-col>
         </v-row>

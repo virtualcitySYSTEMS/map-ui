@@ -1,6 +1,7 @@
 # 5.1.1
 
 - loading plugins will now add the mapVersion to the plugin request.
+- fix duration input of `VcsViewpointComponent.vue`
 
 # 5.1.0
 
