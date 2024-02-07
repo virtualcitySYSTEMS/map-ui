@@ -1,4 +1,8 @@
-# 5.1
+# 5.1.1
+
+- loading plugins will now add the mapVersion to the plugin request.
+
+# 5.1.0
 
 - WindowManager now handles `close` events emitted by vue components for closing itself
 - Add new icon for multiview button
