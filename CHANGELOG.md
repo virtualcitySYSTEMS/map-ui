@@ -1,6 +1,7 @@
 # 5.1.2
 
 - Fixed a bug where VcsDataTable would reset the page, if a server-side pagination changes the items.
+- Updated @vcmap/core to 5.1.1
 
 # 5.1.1
 
