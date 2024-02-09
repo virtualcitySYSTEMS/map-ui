@@ -359,10 +359,16 @@
         const last = page.value * itemsPerPageRef.value;
         return last < numberOfItems.value ? last : numberOfItems.value;
       });
+
       watch(
         () => props.items,
         () => {
-          page.value = 1;
+          if (
+            props.serverPagesLength === -1 &&
+            props.serverItemsLength === -1
+          ) {
+            page.value = 1;
+          }
         },
       );
 

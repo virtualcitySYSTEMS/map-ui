@@ -1,3 +1,7 @@
+# 5.1.2
+
+- Fixed a bug where VcsDataTable would reset the page, if a server-side pagination changes the items.
+
 # 5.1.1
 
 - loading plugins will now add the mapVersion to the plugin request.
