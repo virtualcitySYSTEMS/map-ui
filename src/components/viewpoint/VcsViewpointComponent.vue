@@ -226,7 +226,7 @@
           cachedViewpoint = viewpoint;
         },
       );
-      if (app.maps.activeMap.className === OpenlayersMap.className) {
+      if (app.maps.activeMap?.className === OpenlayersMap.className) {
         app.maps.activeMap.requestRender();
       }
     }
@@ -235,7 +235,7 @@
       name: 'edit-viewpoint-action',
       icon: active ? 'mdi-sync' : 'mdi-sync-off',
       title: 'components.viewpoint.syncOff',
-      disabled: app.maps.activeMap.className === ObliqueMap.className,
+      disabled: app.maps.activeMap?.className === ObliqueMap.className,
       active,
       callback() {
         this.active = !this.active;
@@ -369,7 +369,7 @@
     },
     setup(props, { emit }) {
       const app = inject('vcsApp');
-      const isCesiumMap = ref(app.maps.activeMap.className === 'CesiumMap');
+      const isCesiumMap = ref(app.maps.activeMap?.className === 'CesiumMap');
 
       const name = usePrimitiveProperty(() => props.value, 'name', emit);
       const title = computed({
@@ -435,8 +435,10 @@
         icon: 'mdi-camera',
         title: 'components.viewpoint.updateFromView',
         async callback() {
-          const viewpoint = await app.maps.activeMap.getViewpoint();
-          emitInput(emit, viewpoint, () => props.value);
+          if (app.maps.activeMap) {
+            const viewpoint = await app.maps.activeMap.getViewpoint();
+            emitInput(emit, viewpoint, () => props.value);
+          }
         },
       };
 
@@ -480,14 +482,16 @@
       }
 
       async function handleInput(key) {
-        if (key === 'groundPosition') {
-          cameraPosition.value = undefined;
-        } else if (key === 'cameraPosition') {
-          groundPosition.value = (
-            await app.maps.activeMap.getViewpoint()
-          ).groundPosition;
+        if (app.maps.activeMap) {
+          if (key === 'groundPosition') {
+            cameraPosition.value = undefined;
+          } else if (key === 'cameraPosition') {
+            groundPosition.value = (
+              await app.maps.activeMap.getViewpoint()
+            ).groundPosition;
+          }
+          await gotoViewpoint();
         }
-        await gotoViewpoint();
       }
 
       return {
