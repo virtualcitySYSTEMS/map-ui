@@ -36,8 +36,11 @@ export default async function getPluginProxies(
     proxies[`^/plugins/${plugin}/.*`] = {
       target,
       rewrite: (route) => {
-        const rest = route.replace(new RegExp(`^/plugins/${plugin}/`), '');
+        const [rest] = route
+          .replace(new RegExp(`^/plugins/${plugin}/`), '')
+          .split('?');
         let file = rest || indexJs;
+
         if (file === 'index.js' && tsPlugins.includes(plugin)) {
           file = indexJs;
         }
