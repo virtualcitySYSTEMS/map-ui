@@ -1,3 +1,8 @@
+# 5.1.3
+
+- Fix FeatureInfo tooltip
+- Add importing state to `ImportComponent.vue`
+
 # 5.1.2
 
 - Fixed a bug where VcsDataTable would reset the page, if a server-side pagination changes the items.

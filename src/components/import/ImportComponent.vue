@@ -4,6 +4,7 @@
     <vcs-text-field
       type="file"
       v-model="files"
+      :loading="loading"
       :multiple="multiple"
       :accept="fileTypes.join(',')"
     />
@@ -54,6 +55,7 @@
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const localFiles = ref([]);
+      const loading = ref(false);
       /**
        * @type {WritableComputedRef<Array<File>>}
        */
@@ -68,7 +70,9 @@
 
       return {
         files,
+        loading,
         async doImport() {
+          loading.value = true;
           try {
             const close = await props.importFiles(files.value);
             if (close) {
@@ -79,6 +83,8 @@
               type: NotificationType.ERROR,
               message: String(e.message),
             });
+          } finally {
+            loading.value = false;
           }
         },
       };
