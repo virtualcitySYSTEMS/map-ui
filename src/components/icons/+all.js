@@ -91,6 +91,7 @@ import TextStyleIcon from './TextStyleIcon.vue';
 import ThreeDimensionsIcon from './ThreeDimensionsIcon.vue';
 import ToolsIcon from './ToolsIcon.vue';
 import TouchIcon from './TouchIcon.vue';
+import TransparentTerrainIcon from './TransparentTerrainIcon.vue';
 import TrashCanIcon from './TrashCanIcon.vue';
 import TriangleIcon from './TriangleIcon.vue';
 import TwoDimensionsIcon from './TwoDimensionsIcon.vue';
@@ -412,6 +413,9 @@ const IconMap = {
   },
   touch: {
     component: TouchIcon,
+  },
+  transparentTerrain: {
+    component: TransparentTerrainIcon,
   },
   trashCan: {
     component: TrashCanIcon,

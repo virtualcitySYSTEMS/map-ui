@@ -2,6 +2,7 @@
 
 - Fix FeatureInfo tooltip
 - Add importing state to `ImportComponent.vue`
+- Added new icon for transparent terrain
 
 # 5.1.2
 
