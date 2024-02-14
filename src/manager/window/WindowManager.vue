@@ -97,7 +97,7 @@
        * @returns {boolean}
        */
       const isOnTop = (id) => {
-        return windowManager.get(id)?.zIndex.value === componentIds.length - 1;
+        return windowManager.get(id)?.zIndex.value === windowManager.maxZIndex;
       };
       /**
        * @param {WindowComponent} windowComponent

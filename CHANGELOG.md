@@ -5,6 +5,9 @@
 - Added new icon for transparent terrain
 - Fix title computed in `VcsViewpointComponent.vue`
 - Fix position display to listen to uiConfig changes of current module
+- Added an `externalZIndex` API to the window manager. This allows for non window
+  DOM elements to use the window z ordering.
+- The toolbar now respects z ordering of windows and can be brought to the top.
 
 # 5.1.2
 

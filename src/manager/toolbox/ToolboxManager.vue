@@ -9,6 +9,8 @@
       toolbar__secondary: !isDefaultToolbox,
     }"
     :height="40"
+    :style="{ zIndex }"
+    @click.stop="bringToTop"
     width="fit-content"
     dense
   >
@@ -21,12 +23,12 @@
         <ToolboxActionGroup
           v-if="group.type === ToolboxType.GROUP"
           :group="group"
-          @toggle="(groupOpen) => (open = groupOpen)"
+          @toggle="openGroup"
         />
         <ToolboxActionSelect
           v-else-if="group.type === ToolboxType.SELECT"
           :group="group"
-          @toggle="(selectOpen) => (open = selectOpen)"
+          @toggle="openGroup"
         />
         <VcsToolButton
           v-else
@@ -35,7 +37,7 @@
           :active="group.action.active"
           :background="group.action.background"
           :disabled="group.action.disabled"
-          @click.stop="group.action.callback($event)"
+          @click="group.action.callback($event)"
           v-bind="{ ...$attrs }"
         />
       </div>
@@ -133,6 +135,11 @@
           toolboxName.value = name;
         });
 
+      const zIndex = app.windowManager.addExternalIdToZIndex(
+        'toolbox',
+        vcsAppSymbol,
+      );
+
       /**
        * To be rendered in Toolbox components must meet certain conditions:
        * - SingleToolboxComponent: no further conditions
@@ -189,16 +196,36 @@
       onUnmounted(() => {
         stopWatching();
         nameChangeListener();
+        app.windowManager.removeExternalIdFromZIndex('toolbox');
       });
+
+      watch(toolboxOpen, () => {
+        if (toolboxOpen.value) {
+          app.windowManager.bringWindowToTop('toolbox');
+        }
+      });
+
+      const open = ref(false);
+      const bringToTop = () => {
+        app.windowManager.bringWindowToTop('toolbox');
+      };
 
       return {
         toolboxOpen,
         orderedGroups,
+        zIndex,
         isDefaultToolbox: computed(
           () => toolboxName.value === defaultToolboxName,
         ),
         ToolboxType,
-        open: ref(false),
+        open,
+        bringToTop,
+        openGroup(group) {
+          open.value = group;
+          if (open.value) {
+            bringToTop();
+          }
+        },
       };
     },
   };
