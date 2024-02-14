@@ -4,6 +4,7 @@
 - Add importing state to `ImportComponent.vue`
 - Added new icon for transparent terrain
 - Fix title computed in `VcsViewpointComponent.vue`
+- Fix position display to listen to uiConfig changes of current module
 
 # 5.1.2
 

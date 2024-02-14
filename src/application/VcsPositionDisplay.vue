@@ -152,6 +152,16 @@
       }
 
       const listener = [
+        app.uiConfig.added.addEventListener((added) => {
+          if (added.name === 'positionDisplayEventType') {
+            setMove();
+          }
+        }),
+        app.uiConfig.removed.addEventListener((added) => {
+          if (added.name === 'positionDisplayEventType') {
+            setMove();
+          }
+        }),
         app.moduleAdded.addEventListener(() => {
           const newDefaultProjection = getDefaultProjection();
           projections[newDefaultProjection.epsg] = newDefaultProjection;
