@@ -30,6 +30,7 @@
       "name": "Demo",
       "de": {
         "layer": {
+          "meshClassified": "Mesh 2020 (Klickbar)",
           "buildings": "LOD2 Gebäude - Open Data 2022",
           "summerTrees": "Sommerbäume",
           "berlinLOD2Textured": "Gebäude texturiert 2013",
@@ -380,6 +381,7 @@
       },
       "en": {
         "layer": {
+          "meshClassified": "Mesh 2020 (Clickable)",
           "buildings": "LOD2 Buildings - Open Data 2022",
           "summerTrees": "Summer Trees",
           "berlinLOD2Textured": "Buildings textured 2013",
@@ -682,15 +684,15 @@
       "name": "Mesh Classification Layer",
       "url": "https://www.virtualcitymap.de/datasource-data/DEMO-Lindau/berlin_2D/tileset.json",
       "activeOnStartup": false,
-      "screenSpaceError": 16,
+      "screenSpaceError": 24,
       "screenSpaceErrorMobile": 32,
       "style": "dummyClassificationStyle",
       "tilesetOptions": {
-        "classificationType": 2
+        "classificationType": 1
       },
       "exclusiveGroups": ["classified"],
       "properties": {
-        "title": "3D-Mesh 2020",
+        "title": "layer.meshClassified",
         "featureInfo": "balloonGebInfo"
       }
     },
@@ -1688,9 +1690,9 @@
       "initOpen": true
     },
     {
-      "type": "LayerGroupContentTreeItem",
+      "type": "LayerContentTreeItem",
       "name": "berlin.mesh",
-      "layerNames": ["Mesh Classification Layer", "mesh_surface"],
+      "layerName": "mesh_surface",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
@@ -1709,7 +1711,39 @@
           ]
         }
       ],
-      "title": "3D-Mesh 2020"
+      "onDeactivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["Mesh Classification Layer"]
+        }
+      ]
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.classifiedmesh",
+      "layerName": "Mesh Classification Layer",
+      "onActivate": [
+        {
+          "type": "ActivateLayersCallback",
+          "layerNames": ["mesh_surface"]
+        },
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": [
+            "Bayern - LOD2 (pbr)",
+            "Berlin untexturiert openData (pbr recalculation)",
+            "Brandenburg - LOD2 (pbr recalculation)",
+            "Hamburg - LOD2 (pbr recalculation)",
+            "Hessen - LOD2 (pbr recalculation)",
+            "NRW - LOD2 (pbr recalculation)",
+            "Niedersachsen (pbr recalculation)",
+            "Sachsen - LOD2 (pbr recalculation)",
+            "Sachsen-Anhalt - LOD2 (pbr recalculation)",
+            "Thüringen - LOD2 (pbr recalculation)",
+            "GermanyBaseTerrain"
+          ]
+        }
+      ]
     },
     {
       "type": "LayerContentTreeItem",
