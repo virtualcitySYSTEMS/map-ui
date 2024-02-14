@@ -3,6 +3,7 @@
 - Fix FeatureInfo tooltip
 - Add importing state to `ImportComponent.vue`
 - Added new icon for transparent terrain
+- Fix title computed in `VcsViewpointComponent.vue`
 
 # 5.1.2
 

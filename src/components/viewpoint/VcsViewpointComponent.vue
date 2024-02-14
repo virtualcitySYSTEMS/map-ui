@@ -377,13 +377,15 @@
           return props.value?.properties?.title;
         },
         set(value) {
-          const clone = props.value ? structuredClone(props.value) : {};
-          if (clone.properties) {
-            clone.properties.title = value;
-          } else {
-            clone.properties = { title };
+          if (props.value?.properties?.title !== value) {
+            const clone = props.value ? structuredClone(props.value) : {};
+            if (clone.properties) {
+              clone.properties.title = value;
+            } else {
+              clone.properties = { title: value };
+            }
+            emit('input', clone);
           }
-          emit('input', clone);
         },
       });
       const animate = usePrimitiveProperty(() => props.value, 'animate', emit);
