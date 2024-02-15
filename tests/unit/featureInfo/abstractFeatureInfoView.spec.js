@@ -3,6 +3,7 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import AbstractFeatureInfoView, {
   applyAttributeFilter,
+  applyEmptyAttributesFilter,
   applyKeyMapping,
   applyOlcsAttributeFilter,
   applyValueMapping,
@@ -233,6 +234,26 @@ describe('AbstractFeatureInfoView', () => {
       const filteredOlcs = applyOlcsAttributeFilter(attributes);
       expect(filteredOlcs).to.not.have.property('olcs_altitudeMode');
       expect(filteredOlcs).to.have.property('Storey Height', 5);
+    });
+  });
+
+  describe('filter attributes having empty objects as value', () => {
+    let attributes;
+
+    beforeAll(() => {
+      attributes = {
+        foo: { bar: true, baz: false },
+        bar: true,
+        baz: true,
+        'foo.bar': { foo: true, bar: true },
+        emptyObject: {},
+      };
+    });
+
+    it('should filter empty object values', () => {
+      const filtered = applyEmptyAttributesFilter(attributes);
+      expect(filtered).to.not.have.property('emptyObject');
+      expect(Object.keys(filtered)).to.have.length(4);
     });
   });
 

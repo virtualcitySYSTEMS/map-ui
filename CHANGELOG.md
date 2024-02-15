@@ -1,3 +1,9 @@
+# 5.1.4
+
+- Fix FeatureInfo showing empty attribute value objects
+- Fix bug when defaultViewpoint is null
+- Fix bug for overview map in oblique
+
 # 5.1.3
 
 - Fix FeatureInfo tooltip

@@ -219,6 +219,24 @@ export function applyOlcsAttributeFilter(attributes, keys = []) {
 }
 
 /**
+ * Filters attributes having an empty object as value
+ * @param {Object<string, unknown>} attributes
+ * @returns {Object}
+ */
+export function applyEmptyAttributesFilter(attributes) {
+  return Object.keys(attributes).reduce((obj, key) => {
+    if (
+      typeof attributes[key] === 'object' &&
+      Object.keys(attributes[key]).length === 0
+    ) {
+      return obj;
+    }
+    obj[key] = attributes[key];
+    return obj;
+  }, {});
+}
+
+/**
  * Abstract class to be extended by FeatureInfoView classes
  * Subclasses must always provide a component and may overwrite class methods.
  * @abstract
@@ -314,7 +332,8 @@ class AbstractFeatureInfoView extends VcsObject {
     if (this.keyMapping) {
       applyKeyMapping(attributes, this.keyMapping);
     }
-    return applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    return applyEmptyAttributesFilter(attributes);
   }
 
   /**

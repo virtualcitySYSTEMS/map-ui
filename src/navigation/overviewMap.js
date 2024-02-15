@@ -454,23 +454,25 @@ class OverviewMap {
    * @private
    */
   _obliqueImageChange(image) {
-    const { source } = this._obliqueImageLayer;
-    if (this._obliqueViewDirection !== image.viewDirection) {
-      this._obliqueViewDirection = image.viewDirection;
-      source.changed();
-    }
-    const activeFeature = source.getFeatureById(image.name);
-    if (activeFeature) {
-      this._obliqueSelectedImageLayer.removeAllFeatures();
-      this._obliqueSelectedImageLayer.addFeatures([activeFeature]);
-      const extent = new Extent({
-        coordinates: activeFeature.getGeometry().getExtent(),
-        projection: mercatorProjection.toJSON(),
-      });
+    if (image) {
+      const { source } = this._obliqueImageLayer;
+      if (this._obliqueViewDirection !== image.viewDirection) {
+        this._obliqueViewDirection = image.viewDirection;
+        source.changed();
+      }
+      const activeFeature = source.getFeatureById(image.name);
+      if (activeFeature) {
+        this._obliqueSelectedImageLayer.removeAllFeatures();
+        this._obliqueSelectedImageLayer.addFeatures([activeFeature]);
+        const extent = new Extent({
+          coordinates: activeFeature.getGeometry().getExtent(),
+          projection: mercatorProjection.toJSON(),
+        });
 
-      const vp = Viewpoint.createViewpointFromExtent(extent);
-      vp.distance /= this._obliqueResolutionFactor;
-      this._map.gotoViewpoint(vp);
+        const vp = Viewpoint.createViewpointFromExtent(extent);
+        vp.distance /= this._obliqueResolutionFactor;
+        this._map.gotoViewpoint(vp);
+      }
     }
   }
 
