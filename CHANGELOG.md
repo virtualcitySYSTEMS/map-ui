@@ -3,6 +3,8 @@
 - Fix FeatureInfo showing empty attribute value objects
 - Fix bug when defaultViewpoint is null
 - Fix bug for overview map in oblique
+- Added two new icons for point measurement in 2D `2DPointIcon.vue` and 3D `3DPointIcon.vue`
+- Changed layout for icon `AxisIcon.vue` and `PointMeasurementIcon.vue`, switched labels of Z and Y axis
 
 # 5.1.3
 

@@ -1,9 +1,11 @@
 import TwoDAreaIcon from './2DAreaIcon.vue';
 import TwoDDistanceIcon from './2DDistanceIcon.vue';
 import TwoDHeightObliqueIcon from './2DHeightObliqueIcon.vue';
+import TwoDPointIcon from './2DPointIcon.vue';
 import ThreeDAreaIcon from './3DAreaIcon.vue';
 import ThreeDDistanceIcon from './3DDistanceIcon.vue';
 import ThreeDHeightIcon from './3DHeightIcon.vue';
+import ThreeDPointIcon from './3DPointIcon.vue';
 import AngleIcon from './AngleIcon.vue';
 import AssociationsIcon from './AssociationsIcon.vue';
 import AxisIcon from './AxisIcon.vue';
@@ -144,6 +146,9 @@ const IconMap = {
   '2dHeightOblique': {
     component: TwoDHeightObliqueIcon,
   },
+  '2dPoint': {
+    component: TwoDPointIcon,
+  },
   '3d': {
     component: ThreeDimensionsIcon,
   },
@@ -155,6 +160,9 @@ const IconMap = {
   },
   '3dHeight': {
     component: ThreeDHeightIcon,
+  },
+  '3dPoint': {
+    component: ThreeDPointIcon,
   },
   angle: {
     component: AngleIcon,
