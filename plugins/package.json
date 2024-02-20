@@ -4,7 +4,7 @@
     "@vcmap/swipe-tool": "^1.0.3",
     "@vcmap/export": "^1.0.1",
     "@vcmap/shadow": "^2.0.0",
-    "@vcmap/draw": "2.0.3",
+    "@vcmap/draw": "^2.0.0",
     "@vcmap/create-link": "^1.0.1",
     "@vcmap/search-nominatim": "^1.0.1",
     "@vcmap/multi-view": "^1.0.1",
@@ -14,6 +14,6 @@
     "@vcmap/flight": "^1.0.1"
   },
   "optionalDependencies": {
-    "@vcmap/planning": "5.0.4"
+    "@vcmap/planning": "^5.0.1"
   }
 }
