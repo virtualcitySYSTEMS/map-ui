@@ -13,12 +13,16 @@ import { createListEditAction } from '../../actions/listActions.js';
  *   editor: EditorWindowComponentOptions|function(T):EditorWindowComponentOptions|undefined,
  *   multiEditor?: EditorWindowComponentOptions,
  *   predicate?: import("./collectionManager.js").PredicateFunction<T>,
- *   selectionBased?: boolean
+ *   selectionBased?: boolean,
+ *   editTitle?: string,
+ *   bulkEditTitle?: string
  * }} EditingOptions
  * @property {EditorWindowComponentOptions|function(T)|undefined} editor
  * @property {EditorWindowComponentOptions} [multiEditor]
  * @property {import("./collectionManager.js").PredicateFunction<T>} [predicate=()=>true] - Optional predicate function for editor
  * @property {boolean} [selectionBased=true] - If true, editor windows are coupled to selection and editor windows are exclusive
+ * @property {string} [editTitle="list.editItem"]
+ * @property {string} [bulkEditTitle="list.edit"]
  * @template {Object} T
  */
 
@@ -236,7 +240,7 @@ export function makeEditorCollectionComponentClass(
       });
 
       const editItemAction = {
-        name: 'list.editItem',
+        name: editingOptions.editTitle ?? 'list.editItem',
         async callback() {
           if (selectionBased) {
             closeEditorWindows();
@@ -263,6 +267,7 @@ export function makeEditorCollectionComponentClass(
       app.windowManager,
       editorCollectionComponent.owner,
       getMultiEditorWindowId(),
+      editingOptions.bulkEditTitle,
     );
 
     editorCollectionComponent.addActions([

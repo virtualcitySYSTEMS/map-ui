@@ -148,6 +148,7 @@ export function createListImportAction(
  * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
  * @param {string} multiEditorId
+ * @param {string} [name="list.edit"]
  * @template {Object} T
  * @returns {{action: import("./actionHelper.js").VcsAction, destroy: function(): void}}
  */
@@ -157,11 +158,12 @@ export function createListEditAction(
   windowManager,
   owner,
   multiEditorId,
+  name = 'list.edit',
 ) {
   const { action, destroy: destroyEditSelected } = createListItemBulkAction(
     selection,
     {
-      name: 'list.edit',
+      name,
       callback: editCallback,
     },
   );
