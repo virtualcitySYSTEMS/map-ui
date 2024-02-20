@@ -11,6 +11,7 @@ import {
   Extent,
   Viewpoint,
   deserializeLayer,
+  maxZIndex,
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
 import Feature from 'ol/Feature.js';
@@ -494,7 +495,7 @@ class OverviewMap {
     this._obliqueTileLayer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
       style: obliqueTileStyle,
-      zIndex: 1,
+      zIndex: maxZIndex - 3,
     });
     this._obliqueTileLayer[overviewMapLayerSymbol] = true;
 
@@ -509,11 +510,13 @@ class OverviewMap {
     this._obliqueImageLayer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
       style: obliqueImageStyle,
+      zIndex: maxZIndex - 2,
     });
     this._obliqueImageLayer[overviewMapLayerSymbol] = true;
     this._obliqueSelectedImageLayer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
       style: this.obliqueSelectedStyle,
+      zIndex: maxZIndex - 1,
     });
     this._obliqueSelectedImageLayer[overviewMapLayerSymbol] = true;
     this._map.layerCollection.add(this._obliqueImageLayer);
@@ -541,7 +544,7 @@ class OverviewMap {
     if (!this._cameraIconLayer) {
       this._cameraIconLayer = new VectorLayer({
         projection: mercatorProjection.toJSON(),
-        zIndex: 50,
+        zIndex: maxZIndex,
       });
       this._cameraIconLayer[overviewMapLayerSymbol] = true;
       this._map.layerCollection.add(this._cameraIconLayer);

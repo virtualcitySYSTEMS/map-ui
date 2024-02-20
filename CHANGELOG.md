@@ -7,7 +7,9 @@
 - Changed layout for icon `AxisIcon.vue` and `PointMeasurementIcon.vue`, switched labels of Z and Y axis
 - Adds a `closed` event to the `ContextMenuManager` to listen to context menu closed for cleanup.
 - Adds action titles to the `CollectionComponentClass`: `removeTitle` `bulkRemoveTitle` and `renameTitle`.
-  Addtionally adds `editTitle` & `bulkEditTitle` to the `EditorCollectionComponentClass` interface creation.
+  Additionally, adds `editTitle` & `bulkEditTitle` to the `EditorCollectionComponentClass` interface creation.
+- updated @vcmap/core to 5.1.3
+- fixed a bug where the overviewmap did not specifiy the zIndex of oblique layer correctly.
 
 # 5.1.3
 
