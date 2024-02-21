@@ -27,6 +27,8 @@ import { ref } from 'vue';
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
  * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer.
  * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer.
+ * @property {string} [favicon] - the favicon to set
+ * @property {string} [headerTitle] - the title to display in the tab of the browser
  */
 
 /**

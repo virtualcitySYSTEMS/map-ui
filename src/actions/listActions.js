@@ -94,8 +94,7 @@ export function createListExportAction(selection, exportCallback, owner) {
 }
 
 /**
- *
- * @param {function(File[]):void|Promise<void>} importCallback
+ * @param {function(File[]):boolean|Promise<boolean>} importCallback
  * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
  * @param {string} parentId
