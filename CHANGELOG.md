@@ -6,6 +6,7 @@
 - Adds new UI configs: `headerTitle` & `favicon` to set the sites behavior.
 - Adds a consistent way to import features from a set of geojson files `importToLayer`,
   which can be used in the `createListImportAction` callbacks.
+- Changed map title font size and weight
 
 # 5.1.4
 

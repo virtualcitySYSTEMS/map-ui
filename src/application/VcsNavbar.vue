@@ -52,7 +52,7 @@
             </template>
             <div
               v-if="$vuetify.breakpoint.mdAndUp && config.appTitle"
-              class="ml-4"
+              class="ml-4 text-h6 font-weight-bold"
             >
               {{ $t(config.appTitle) }}
             </div>
