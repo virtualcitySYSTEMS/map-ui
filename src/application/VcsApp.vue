@@ -657,10 +657,26 @@
             app.uiConfig.config.value.logo ??
             VcsDefaultLogoMobile,
         ),
-        imprint: computed(() => app.uiConfig.config.value.imprint),
-        dataProtection: computed(
-          () => app.uiConfig.config.value.dataProtection,
-        ),
+        imprint: computed(() => {
+          if (app.uiConfig.config.value.imprint) {
+            return {
+              title: 'footer.imprint.title',
+              tooltip: 'footer.imprint.tooltip',
+              ...app.uiConfig.config.value.imprint,
+            };
+          }
+          return undefined;
+        }),
+        dataProtection: computed(() => {
+          if (app.uiConfig.config.value.dataProtection) {
+            return {
+              title: 'footer.dataProtection.title',
+              tooltip: 'footer.dataProtection.tooltip',
+              ...app.uiConfig.config.value.dataProtection,
+            };
+          }
+          return undefined;
+        }),
         attributionEntries,
         attributionAction,
         showMapNavigation,

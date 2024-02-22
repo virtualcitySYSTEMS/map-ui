@@ -263,7 +263,7 @@ const messages = {
       title: 'Imprint',
       tooltip: 'Open imprint window',
     },
-    dataprotection: {
+    dataProtection: {
       title: 'Data Protection',
       tooltip: 'Open data protection window',
     },

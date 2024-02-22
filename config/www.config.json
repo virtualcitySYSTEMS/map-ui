@@ -13,14 +13,12 @@
     {
       "name": "imprint",
       "value": {
-        "title": "footer.imprint.title",
         "url": "https://vc.systems/impressum/"
       }
     },
     {
       "name": "dataProtection",
       "value": {
-        "title": "footer.dataprotection.title",
         "url": "https://vc.systems/datenschutz/"
       }
     }

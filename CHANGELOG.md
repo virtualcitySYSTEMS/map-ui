@@ -1,3 +1,9 @@
+# 5.1.5
+
+- Fixes `VcsViewpointComponent.vue` opened in ObliqueMap
+- Set default title for imprint and data protection
+- Fix emitting focus and blur event in `VcsTextArea.vue`
+
 # 5.1.4
 
 - Fix FeatureInfo showing empty attribute value objects

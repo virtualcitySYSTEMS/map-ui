@@ -263,7 +263,7 @@ const messages = {
       title: 'Impressum',
       tooltip: 'Öffne Impressumsfenster',
     },
-    dataprotection: {
+    dataProtection: {
       title: 'Datenschutz',
       tooltip: 'Öffne Datenschutzfenster',
     },

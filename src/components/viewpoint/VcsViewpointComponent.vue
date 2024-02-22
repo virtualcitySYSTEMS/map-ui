@@ -14,7 +14,13 @@
             </VcsLabel>
           </v-col>
           <v-col>
-            <VcsTextField id="name" dense clearable v-model="name" />
+            <VcsTextField
+              id="name"
+              dense
+              clearable
+              v-model="name"
+              :rules="nameRules"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
@@ -203,10 +209,16 @@
    * @param {import("vue").emit} emit
    * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
    * @param {import("vue").Ref<boolean>} isCesiumMap
-   * @param {boolean} active - whether to set up post render handler on creation
+   * @param {boolean} startSync - whether to set up post render handler on creation
    * @returns {{action: import("../../actions/actionHelper.js").VcsAction, destroy: function():void}}
    */
-  function createEditingAction(app, emit, getModelValue, isCesiumMap, active) {
+  function createEditingAction(
+    app,
+    emit,
+    getModelValue,
+    isCesiumMap,
+    startSync,
+  ) {
     let destroyPostRenderListener = () => {};
     let cachedViewpoint = new Viewpoint(getModelValue());
 
@@ -231,11 +243,14 @@
       }
     }
 
+    const isObliqueMap = app.maps.activeMap?.className === ObliqueMap.className;
+    const active = isObliqueMap ? false : startSync;
+
     const action = reactive({
       name: 'edit-viewpoint-action',
       icon: active ? 'mdi-sync' : 'mdi-sync-off',
       title: 'components.viewpoint.syncOff',
-      disabled: app.maps.activeMap?.className === ObliqueMap.className,
+      disabled: isObliqueMap,
       active,
       callback() {
         this.active = !this.active;
@@ -322,6 +337,7 @@
    * @vue-prop {boolean} hideTitle - Hide title input.
    * @vue-prop {boolean} hideAnimate - Hide animate & duration input.
    * @vue-prop {boolean} hideGeneral - Hide all general settings (name, title, animate).
+   * @vue-prop {Array<(v:string)=>(boolean|string)>} nameRules - Optional rules for name input.
    */
   export default {
     name: 'VcsViewpointComponent',
@@ -366,10 +382,16 @@
         type: Boolean,
         default: false,
       },
+      nameRules: {
+        type: Array,
+        default: () => [],
+      },
     },
     setup(props, { emit }) {
       const app = inject('vcsApp');
-      const isCesiumMap = ref(app.maps.activeMap?.className === 'CesiumMap');
+      const isCesiumMap = ref(
+        app.maps.activeMap?.className === CesiumMap.className,
+      );
 
       const name = usePrimitiveProperty(() => props.value, 'name', emit);
       const title = computed({

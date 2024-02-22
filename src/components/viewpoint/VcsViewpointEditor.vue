@@ -6,7 +6,11 @@
     :auto-close="false"
     v-bind="{ ...$attrs, ...$props }"
   >
-    <VcsViewpointComponent v-model="localConfig" hide-name />
+    <VcsViewpointComponent
+      v-model="localConfig"
+      hide-name
+      :name-rules="nameRules"
+    />
   </AbstractConfigEditor>
 </template>
 
@@ -23,6 +27,7 @@
    * An editor component for viewpoints using AbstractConfigEditor and VcsViewpointComponent
    * @vue-prop {() => import("@vcmap/core").ViewpointOptions} getConfig
    * @vue-prop {(import("@vcmap/core").ViewpointOptions) => Promise<void>} setConfig
+   * @vue-prop {Array<(v:string)=>(boolean|string)>} nameRules - Optional rules for name input.
    */
   export default {
     name: 'VcsViewpointEditor',
@@ -38,6 +43,10 @@
       setConfig: {
         type: Function,
         required: true,
+      },
+      nameRules: {
+        type: Array,
+        default: () => [],
       },
     },
     setup(props, { emit }) {
