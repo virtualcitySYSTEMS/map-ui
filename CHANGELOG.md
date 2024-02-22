@@ -7,6 +7,7 @@
 - Adds a consistent way to import features from a set of geojson files `importToLayer`,
   which can be used in the `createListImportAction` callbacks.
 - Changed map title font size and weight
+- Fixes a bug in content tree, where init open was not applied correctly
 
 # 5.1.4
 
