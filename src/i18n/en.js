@@ -61,6 +61,11 @@ const messages = {
     import: {
       submit: 'Import',
       fileDrop: 'Drop files here',
+      failure: 'File {fileName} could not be parsed.',
+      predicateFailure: '{0} features to not fullfill requirements.',
+      addFailure: '{0} feature are already exist.',
+      featuresAdded: '{0} feature imported.',
+      nothingAdded: 'No features could be imported.',
     },
     vcsFormSection: {
       help: 'Show help',

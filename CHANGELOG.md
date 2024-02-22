@@ -3,6 +3,9 @@
 - Fixes `VcsViewpointComponent.vue` opened in ObliqueMap
 - Set default title for imprint and data protection
 - Fix emitting focus and blur event in `VcsTextArea.vue`
+- Adds new UI configs: `headerTitle` & `favicon` to set the sites behavior.
+- Adds a consistent way to import features from a set of geojson files `importToLayer`,
+  which can be used in the `createListImportAction` callbacks.
 
 # 5.1.4
 

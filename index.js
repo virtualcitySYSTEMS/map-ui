@@ -28,6 +28,7 @@ export {
   createListItemBulkAction,
   createListExportAction,
   createListImportAction,
+  importIntoLayer,
 } from './src/actions/listActions.js';
 
 export {

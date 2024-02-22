@@ -1,9 +1,12 @@
 import { reactive, watch } from 'vue';
 import { check } from '@vcsuite/check';
+import { getLogger } from '@vcsuite/logger';
+import { parseGeoJSON } from '@vcmap/core';
 import { createToggleAction } from './actionHelper.js';
 import ImportComponent from '../components/import/ImportComponent.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
+import { NotificationType } from '../notifier/notifier.js';
 
 /**
  * Creates an action for renaming an item in a VcsList. Sho VcsTextfield in VcsList.
@@ -94,6 +97,114 @@ export function createListExportAction(selection, exportCallback, owner) {
 }
 
 /**
+ * @typedef {Object} ImportIntoLayerOptions
+ * @property {import("@vcmap/core").GeoJSONreadOptions} [readOptions]
+ * @property {function(import("ol").Feature):boolean} [predicate] - predicate to filter features by
+ * @property {string} [predicateFailureMessage='components.import.predicateFailure'] - message to be displayed on predicate failures
+ * @property {string} [addFailureMessage='components.import.addFailure'] - message to be displayed if feature could not be added to layer (same id)
+ * @property {string} [featuresAddedMessage='components.import.featuresAdded'] - message to be displayed if features where imported
+ * @property {string} [nothingAddedMessage='components.import.nothingAdded'] - message to be displayed if no features where imported
+ * @property {boolean} [setStyle] - set the style from the last imported file on the provided layer
+ * @property {boolean} [setVcsMeta] - set vcs meta from the last imported file on the provided layer
+ * @property {boolean} [returnValue] - by default true is returned to close the window, this can be overriden.
+ */
+
+/**
+ * @param {File[]} files
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("@vcmap/core").VectorLayer} layer
+ * @param {ImportIntoLayerOptions} [options={}]
+ * @returns {Promise<boolean>}
+ */
+export async function importIntoLayer(files, app, layer, options = {}) {
+  const { vueI18n } = app;
+  const results = await Promise.all(
+    files.map(async (file) => {
+      const text = await file.text();
+      try {
+        return parseGeoJSON(text, options.readOptions);
+      } catch (e) {
+        app.notifier.add({
+          type: NotificationType.ERROR,
+          message: vueI18n.t('components.import.failure', {
+            fileName: file.name,
+          }),
+        });
+        getLogger('import').error(e);
+      }
+      return {
+        features: [],
+      };
+    }),
+  );
+
+  const features = results.flatMap((r) => r.features);
+  const featureToImport = options.predicate
+    ? features.filter((f) => options.predicate(f))
+    : features;
+
+  const predicateDelta = features.length - featureToImport.length;
+  if (predicateDelta > 0) {
+    app.notifier.add({
+      type: NotificationType.WARNING,
+      message: vueI18n.t(
+        options.predicateFailureMessage ?? 'components.import.predicateFailure',
+        [predicateDelta],
+      ),
+    });
+  }
+
+  const imported = layer
+    .addFeatures(featureToImport)
+    .filter((id) => id != null);
+
+  const importedDelta = featureToImport.length - imported.length;
+  if (importedDelta > 0) {
+    app.notifier.add({
+      type: NotificationType.WARNING,
+      message: vueI18n.t(
+        options.addFailureMessage ?? 'components.import.addFailure',
+        [importedDelta],
+      ),
+    });
+  }
+
+  if (imported.length > 0) {
+    app.notifier.add({
+      type: NotificationType.SUCCESS,
+      message: vueI18n.t(
+        options.featuresAddedMessage ?? 'components.import.featuresAdded',
+        [imported.length],
+      ),
+    });
+  } else {
+    app.notifier.add({
+      type: NotificationType.ERROR,
+      message: vueI18n.t(
+        options.nothingAddedMessage ?? 'components.import.nothingAdded',
+      ),
+    });
+  }
+
+  if (options.setStyle) {
+    const lastStyle = results.findLast((r) => !!r.style)?.style;
+    if (lastStyle) {
+      layer.setStyle(lastStyle);
+    }
+  }
+
+  if (options.setVcsMeta) {
+    const lastVcsMeta = results.findLast((r) => !!r.vcsMeta)?.vcsMeta;
+    if (lastVcsMeta) {
+      layer.setVcsMeta(lastVcsMeta);
+    }
+  }
+
+  return options.returnValue ?? true;
+}
+
+/**
+ *
  * @param {function(File[]):boolean|Promise<boolean>} importCallback
  * @param {import("../manager/window/windowManager.js").default} windowManager
  * @param {string|symbol} owner
