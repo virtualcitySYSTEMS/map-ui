@@ -1,3 +1,8 @@
+# 5.1.7
+
+- Fixes a bug where changing the activemap to `null` did not work.
+- updated @vcmap/core to 5.1.
+
 # 5.1.5
 
 - Fixes `VcsViewpointComponent.vue` opened in ObliqueMap
