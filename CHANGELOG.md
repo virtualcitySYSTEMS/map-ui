@@ -1,6 +1,7 @@
 # 5.1.8
 
 - Fixes a bug in FeatureInfo, when attribute values are null
+- fixes an issue where collection components could not be rendered without collection manager by adding CollectionComponentStandalone.vue to render the content of one single CollectionComponentClass in a VcsFormSection.
 
 # 5.1.7
 

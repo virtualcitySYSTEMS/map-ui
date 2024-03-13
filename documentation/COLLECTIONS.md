@@ -12,10 +12,12 @@ For categories exists a specialised [CategoryManager](#categorymanager).
 
 For rendering the list views, the ui provides several components, which can be reused:
 
-- [CollectionComponent](../src/manager/collectionManager/CollectionComponent.vue): A list rendering of a specific collection restricted to ten items
+- [CollectionComponentContent](../src/manager/collectionManager/CollectionComponentContent.vue): A list rendering of a specific collection restricted to ten items
 - [CollectionComponentList](../src/manager/collectionManager/CollectionComponentList.vue): A scrollable list rendering all items
+- [CollectionComponentStandalone](../src/manager/collectionManager/CollectionComponentStandalone.vue): A wrapper component using CollectionComponentContent and CollectionComponentList within a VcsFormSection
+- [CollectionComponent](../src/manager/collectionManager/CollectionComponent.vue): A wrapper component using CollectionComponentContent and CollectionComponentList within an expansion panel. Used by CollectionManagerComponent
 - [CollectionComponentProvider](../src/manager/collectionManager/CollectionComponentProvider.vue): A wrapper component providing a specific CollectionComponentClass of a CollectionManager
-- [CollectionManager](../src/manager/collectionManager/CollectionManager.vue): A set of CollectionComponents belonging to a CollectionManager rendered in Expansion Panels
+- [CollectionManagerComponent](../src/manager/collectionManager/CollectionManager.vue): A set of CollectionComponents belonging to a CollectionManager rendered in Expansion Panels
 
 ## CollectionComponentClass
 

@@ -21,23 +21,7 @@
       </template>
     </v-expansion-panel-header>
     <v-expansion-panel-content class="pb-1">
-      <vcs-list
-        :items="items.slice(0, limit)"
-        :draggable="draggable"
-        :selectable="selectable"
-        :single-select="singleSelect"
-        v-model="selection"
-        :show-title="false"
-        @item-moved="move"
-      />
-      <v-sheet v-if="items.length > limit" class="ma-2 pl-2">
-        <VcsButton @click="openCollectionComponentList">
-          {{ $t('collectionManager.more') }}
-        </VcsButton>
-      </v-sheet>
-      <v-sheet v-else-if="items.length === 0" class="ma-2 pl-2">
-        {{ $t('collectionManager.empty') }}
-      </v-sheet>
+      <CollectionComponentContent @openList="(id) => $emit('openList', id)" />
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -49,30 +33,31 @@
     VExpansionPanel,
     VExpansionPanelHeader,
     VExpansionPanelContent,
-    VSheet,
   } from 'vuetify/lib';
-  import VcsList, {
-    createSelectionActions,
-  } from '../../components/lists/VcsList.vue';
+  import { createSelectionActions } from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
-  import { moveItem } from './CollectionComponentList.vue';
+  import CollectionComponentContent from './CollectionComponentContent.vue';
+
+  /**
+   * @typedef {Object} FormSectionOptions
+   * @property {boolean} [expandable]
+   * @property {boolean} [startOpen]
+   * @property {boolean} [disabled]
+   */
 
   /**
    * @description
-   * Renders the first ten items of a collectionComponent in a List. Uses CollectionComponentList to render more items.
+   * Renders content of CollectionComponentClass in an expansion panel using CollectionComponentContent.vue
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    */
   export default {
     name: 'CollectionComponent',
     components: {
+      CollectionComponentContent,
       VcsActionButtonList,
-      VcsButton,
-      VcsList,
       VExpansionPanel,
       VExpansionPanelHeader,
       VExpansionPanelContent,
-      VSheet,
       VIcon,
     },
     setup(_props, { emit }) {
@@ -91,13 +76,9 @@
 
       return {
         title: collectionComponent.title,
-        items: collectionComponent.items,
         selection: collectionComponent.selection,
-        draggable: collectionComponent.draggable,
         selectable: collectionComponent.selectable,
-        singleSelect: collectionComponent.singleSelect,
         overflowCount: collectionComponent.overflowCount,
-        limit: collectionComponent.limit,
         actions: computed(() => {
           if (
             collectionComponent.selectable.value &&
@@ -107,12 +88,6 @@
           }
           return actions.value;
         }),
-        move({ item, targetIndex }) {
-          moveItem(collectionComponent, item, targetIndex);
-        },
-        openCollectionComponentList() {
-          emit('openList', collectionComponent.id);
-        },
       };
     },
   };
@@ -124,17 +99,5 @@
   }
   .v-icon {
     font-size: 16px;
-  }
-  ::v-deep {
-    .v-list {
-      .v-list-item {
-        padding: 4px 8px 4px 28px;
-      }
-      .v-list-item__selected {
-        border-left: solid 4px;
-        border-left-color: var(--v-primary-base);
-        padding-left: 24px !important;
-      }
-    }
   }
 </style>

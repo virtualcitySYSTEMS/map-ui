@@ -1,54 +1,62 @@
 <template>
   <div>
-    <VcsFormSection heading="Collection Manager" v-if="componentIds.length > 0">
+    <CollectionComponentStandalone />
+    <VcsFormSection heading="Collection Manager" :header-actions="actions">
       <CollectionManagerComponent />
-    </VcsFormSection>
-    <VcsFormSection heading="Tester Settings">
-      <v-container class="py-0 px-1">
-        <v-row no-gutters>
-          <v-col>
-            <VcsLabel html-for="selectInput" dense>
-              {{ $t('collectionManagerExample.select') }}
-            </VcsLabel>
-          </v-col>
-          <v-col>
-            <VcsSelect
-              id="selectInput"
-              :items="appCollections"
-              dense
-              v-model="selected"
-            />
-          </v-col>
-        </v-row>
-        <div class="d-flex gap-2 w-full justify-end">
-          <VcsFormButton @click="addCollection" variant="filled"
-            >Add Collection</VcsFormButton
-          >
-          <VcsFormButton @click="clear">Clear</VcsFormButton>
-        </div>
-      </v-container>
+      <p v-if="componentIds.length < 1" class="pa-1">
+        Add a collection by clicking +
+      </p>
+      <v-dialog v-model="addDialog" width="400">
+        <v-card>
+          <v-container>
+            <v-row no-gutters>
+              <v-col>
+                <VcsLabel html-for="selectInput" dense>
+                  {{ $t('collectionManagerExample.select') }}
+                </VcsLabel>
+              </v-col>
+              <v-col>
+                <VcsSelect
+                  id="selectInput"
+                  :items="appCollections"
+                  dense
+                  v-model="selected"
+                />
+              </v-col>
+            </v-row>
+            <div class="d-flex gap-2 w-full justify-end">
+              <VcsFormButton @click="addCollection" variant="filled"
+                >Add Collection</VcsFormButton
+              >
+            </div>
+          </v-container>
+        </v-card>
+      </v-dialog>
     </VcsFormSection>
   </div>
 </template>
 
 <script>
-  import { inject, onMounted, onUnmounted, ref } from 'vue';
+  import { inject, onMounted, onUnmounted, provide, ref } from 'vue';
   import {
-    VcsFormSection,
+    CollectionComponentClass,
+    CollectionComponentStandalone,
     CollectionManagerComponent,
-    VcsFormButton,
-    VcsSelect,
-    VcsLabel,
     NotificationType,
+    VcsFormButton,
+    VcsFormSection,
+    VcsLabel,
+    VcsSelect,
   } from '@vcmap/ui';
-  import { VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VCol, VContainer, VRow, VCard, VDialog } from 'vuetify/lib';
+  import { Collection } from '@vcmap/core';
   import { name as owner } from '../package.json';
 
   /**
    * a sample mapping function adding a console log to all list items
    * @param {T} i
-   * @param {CollectionComponentClass} c
-   * @param {VcsListItem} l
+   * @param {import("@vcmap/ui").CollectionComponentClass} c
+   * @param {import("@vcmap/ui").VcsListItem} l
    */
   const mappingFunction = (i, c, l) => {
     l.actions = [
@@ -62,17 +70,61 @@
     ];
   };
 
+  function setupCollectionComponentStandalone() {
+    const collectionComponent = new CollectionComponentClass({
+      id: 'standalone',
+      title: 'Collection Component Standalone',
+      collection: new Collection(),
+      renamable: true,
+    });
+
+    for (let i = 0; i <= 12; i++) {
+      collectionComponent.collection.add({
+        name: `item-${i}`,
+        properties: {
+          title: `item-${i}-title`,
+        },
+        random: Math.random(),
+      });
+    }
+
+    collectionComponent.addActions([
+      {
+        action: {
+          name: 'add',
+          icon: '$vcsPlus',
+          callback() {
+            const i = collectionComponent.collection.size;
+            collectionComponent.collection.add({
+              name: `item-${i}`,
+              properties: {
+                title: `item-${i}-title`,
+              },
+              random: Math.random(),
+            });
+          },
+        },
+        owner,
+      },
+    ]);
+
+    return collectionComponent;
+  }
+
   export default {
     name: 'CollectionManagerExample',
     components: {
       VcsFormSection,
       CollectionManagerComponent,
+      CollectionComponentStandalone,
       VcsFormButton,
       VcsLabel,
       VcsSelect,
       VContainer,
       VRow,
       VCol,
+      VCard,
+      VDialog,
     },
     setup() {
       const app = inject('vcsApp');
@@ -88,6 +140,12 @@
         'viewpoints',
       ];
       const selected = ref(appCollections[0]);
+      const addDialog = ref(false);
+
+      const collectionComponentStandalone =
+        setupCollectionComponentStandalone();
+      // provide for <CollectionComponentStandalone>
+      provide('collectionComponent', collectionComponentStandalone);
 
       onMounted(() => {
         /**
@@ -165,16 +223,31 @@
         }
       }
 
-      function clear() {
-        collectionManager.clear();
-      }
+      const actions = [
+        {
+          name: 'collectionManagerExample.addAction',
+          title: 'collectionManagerExample.addAction',
+          icon: '$vcsPlus',
+          callback() {
+            addDialog.value = true;
+          },
+        },
+        {
+          name: 'collectionManagerExample.clearAction',
+          title: 'collectionManagerExample.clearAction',
+          callback() {
+            collectionManager.clear();
+          },
+        },
+      ];
 
       return {
         componentIds,
         appCollections,
         selected,
         addCollection,
-        clear,
+        addDialog,
+        actions,
       };
     },
   };
