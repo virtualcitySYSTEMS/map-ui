@@ -125,22 +125,24 @@ export function applyKeyMapping(attributes, mapping) {
       return 0;
     })
     .forEach((mappingKey) => {
-      if (Object.hasOwn(attributes, mappingKey)) {
-        attributes[mapping[mappingKey]] = attributes[mappingKey];
-        delete attributes[mappingKey];
-      } else {
-        const mappingKeys = mappingKey.split('.');
-        mappingKeys.reduce((obj, key, index) => {
-          if (
-            obj &&
-            Object.hasOwn(obj, key) &&
-            index === mappingKeys.length - 1
-          ) {
-            attributes[mapping[mappingKey]] = obj[key];
-            delete obj[key];
-          }
-          return obj?.[key];
-        }, attributes);
+      if (mappingKey !== mapping[mappingKey]) {
+        if (Object.hasOwn(attributes, mappingKey)) {
+          attributes[mapping[mappingKey]] = attributes[mappingKey];
+          delete attributes[mappingKey];
+        } else {
+          const mappingKeys = mappingKey.split('.');
+          mappingKeys.reduce((obj, key, index) => {
+            if (
+              obj &&
+              Object.hasOwn(obj, key) &&
+              index === mappingKeys.length - 1
+            ) {
+              attributes[mapping[mappingKey]] = obj[key];
+              delete obj[key];
+            }
+            return obj?.[key];
+          }, attributes);
+        }
       }
     });
 }
@@ -226,6 +228,7 @@ export function applyOlcsAttributeFilter(attributes, keys = []) {
 export function applyEmptyAttributesFilter(attributes) {
   return Object.keys(attributes).reduce((obj, key) => {
     if (
+      attributes[key] !== null &&
       typeof attributes[key] === 'object' &&
       Object.keys(attributes[key]).length === 0
     ) {

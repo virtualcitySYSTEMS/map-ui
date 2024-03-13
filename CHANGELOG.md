@@ -1,3 +1,7 @@
+# 5.1.8
+
+- Fixes a bug in FeatureInfo, when attribute values are null
+
 # 5.1.7
 
 - Fixes a bug where changing the activemap to `null` did not work.
