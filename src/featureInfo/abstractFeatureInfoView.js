@@ -125,22 +125,24 @@ export function applyKeyMapping(attributes, mapping) {
       return 0;
     })
     .forEach((mappingKey) => {
-      if (Object.hasOwn(attributes, mappingKey)) {
-        attributes[mapping[mappingKey]] = attributes[mappingKey];
-        delete attributes[mappingKey];
-      } else {
-        const mappingKeys = mappingKey.split('.');
-        mappingKeys.reduce((obj, key, index) => {
-          if (
-            obj &&
-            Object.hasOwn(obj, key) &&
-            index === mappingKeys.length - 1
-          ) {
-            attributes[mapping[mappingKey]] = obj[key];
-            delete obj[key];
-          }
-          return obj?.[key];
-        }, attributes);
+      if (mappingKey !== mapping[mappingKey]) {
+        if (Object.hasOwn(attributes, mappingKey)) {
+          attributes[mapping[mappingKey]] = attributes[mappingKey];
+          delete attributes[mappingKey];
+        } else {
+          const mappingKeys = mappingKey.split('.');
+          mappingKeys.reduce((obj, key, index) => {
+            if (
+              obj &&
+              Object.hasOwn(obj, key) &&
+              index === mappingKeys.length - 1
+            ) {
+              attributes[mapping[mappingKey]] = obj[key];
+              delete obj[key];
+            }
+            return obj?.[key];
+          }, attributes);
+        }
       }
     });
 }
@@ -216,6 +218,25 @@ export function applyOlcsAttributeFilter(attributes, keys = []) {
       obj[key] = attributes[key];
       return obj;
     }, {});
+}
+
+/**
+ * Filters attributes having an empty object as value
+ * @param {Object<string, unknown>} attributes
+ * @returns {Object}
+ */
+export function applyEmptyAttributesFilter(attributes) {
+  return Object.keys(attributes).reduce((obj, key) => {
+    if (
+      attributes[key] !== null &&
+      typeof attributes[key] === 'object' &&
+      Object.keys(attributes[key]).length === 0
+    ) {
+      return obj;
+    }
+    obj[key] = attributes[key];
+    return obj;
+  }, {});
 }
 
 /**
@@ -314,7 +335,8 @@ class AbstractFeatureInfoView extends VcsObject {
     if (this.keyMapping) {
       applyKeyMapping(attributes, this.keyMapping);
     }
-    return applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    return applyEmptyAttributesFilter(attributes);
   }
 
   /**
@@ -399,6 +421,9 @@ class AbstractFeatureInfoView extends VcsObject {
     }
     if (this.valueMapping) {
       config.valueMapping = JSON.parse(JSON.stringify(this.valueMapping));
+    }
+    if (this.tags) {
+      config.tags = JSON.parse(JSON.stringify(this.tags));
     }
     if (Object.keys(this._window).length > 0) {
       config.window = { ...this._window };

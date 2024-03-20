@@ -1,4 +1,4 @@
-import { CesiumMap, BaseOLMap } from '@vcmap/core';
+import { CesiumMap, BaseOLMap, VcsEvent } from '@vcmap/core';
 import { unByKey } from 'ol/Observable.js';
 import { check } from '@vcsuite/check';
 import ContextMenuInteraction from './contextMenuInteraction.js';
@@ -81,6 +81,24 @@ class ContextMenuManager {
      * @private
      */
     this._listeners = [];
+
+    /**
+     * An event called when the context menu is closed
+     * @type {VcsEvent<void>}
+     */
+    this.closed = new VcsEvent();
+
+    /**
+     * @type {() => void}
+     * @private
+     */
+    this._closedListener = this._app.windowManager.removed.addEventListener(
+      (window) => {
+        if (window.id === contextMenuWindowId) {
+          this.closed.raiseEvent();
+        }
+      },
+    );
   }
 
   _ensureInteraction() {
@@ -208,12 +226,15 @@ class ContextMenuManager {
   }
 
   destroy() {
+    this.clear();
     this._interaction.destroy();
     if (this._interactionListener) {
       this._interactionListener();
       this._interactionListener = null;
     }
     this._eventHandlers = [];
+    this._closedListener();
+    this.closed.destroy();
   }
 }
 

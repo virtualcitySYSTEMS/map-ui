@@ -180,6 +180,17 @@ describe('ContextMenuManager', () => {
       await app.maps.setActiveMap(map.name);
       expect(app.windowManager.has(contextMenuWindowId)).to.be.false;
     });
+
+    it('should raise the closed event', async () => {
+      expect(app.windowManager.has(contextMenuWindowId)).to.be.true;
+      const map = new OpenlayersMap({});
+      const spy = vi.fn();
+      app.contextMenuManager.closed.addEventListener(spy);
+      app.maps.add(map);
+      await app.maps.setActiveMap(map.name);
+      expect(app.windowManager.has(contextMenuWindowId)).to.be.false;
+      expect(spy).toHaveBeenCalled();
+    });
   });
 
   describe('adding/removing event handlers', () => {

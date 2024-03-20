@@ -61,6 +61,11 @@ const messages = {
     import: {
       submit: 'Importieren',
       fileDrop: 'Dateien hierher ziehen',
+      failure: 'Datei {fileName} konnte nicht gelesen werden.',
+      predicateFailure: '{0} Feature entsprechen nicht den Anforderungen.',
+      addFailure: '{0} Feature existieren bereits.',
+      featuresAdded: '{0} Feature importiert.',
+      nothingAdded: 'Es konnten keine Feature importiert werden.',
     },
     vcsFormSection: {
       help: 'Hilfe anzeigen',
@@ -263,7 +268,7 @@ const messages = {
       title: 'Impressum',
       tooltip: 'Öffne Impressumsfenster',
     },
-    dataprotection: {
+    dataProtection: {
       title: 'Datenschutz',
       tooltip: 'Öffne Datenschutzfenster',
     },

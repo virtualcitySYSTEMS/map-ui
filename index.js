@@ -28,6 +28,7 @@ export {
   createListItemBulkAction,
   createListExportAction,
   createListImportAction,
+  importIntoLayer,
 } from './src/actions/listActions.js';
 
 export {
@@ -120,7 +121,9 @@ export {
   isEditorCollectionComponentClass,
 } from './src/manager/collectionManager/editorCollectionComponentClass.js';
 export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.vue';
+export { default as CollectionComponentStandalone } from './src/manager/collectionManager/CollectionComponentStandalone.vue';
 export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
+export { default as CollectionComponentContent } from './src/manager/collectionManager/CollectionComponentContent.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';

@@ -64,7 +64,9 @@
     } else {
       listener = app.maps.mapActivated.addEventListener((map) => {
         defaultViewpoint = map.getViewpointSync();
-        listener();
+        if (defaultViewpoint?.isValid()) {
+          listener();
+        }
       });
     }
 
@@ -88,9 +90,10 @@
       title: 'navigation.homeButton',
       icon: '$vcsHomePoint',
       async callback() {
-        await app.maps.activeMap?.gotoViewpoint(
-          getStartingViewpoint() || defaultViewpoint,
-        );
+        const vp = getStartingViewpoint() || defaultViewpoint;
+        if (app.maps.activeMap && vp?.isValid()) {
+          await app.maps.activeMap.gotoViewpoint(vp);
+        }
       },
     });
 

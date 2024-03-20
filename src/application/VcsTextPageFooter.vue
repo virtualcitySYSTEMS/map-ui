@@ -1,18 +1,25 @@
-<template>
-  <span class="d-inline-block text-truncate mr-10 setmargin">
-    <span v-if="textPage.url" class="imprint-span imprint button">
-      <a :href="textPage.url" class="link" target="_blank"
-        >{{ $t(textPage.title) }} <span></span>
-      </a>
-    </span>
+<template v-if="textPage.title">
+  <VcsTooltip :tooltip="textPage.tooltip">
+    <template #activator="{ on }">
+      <span
+        class="d-inline-block text-truncate mr-10 setmargin"
+        v-on="{ ...$listeners, ...on }"
+      >
+        <span v-if="textPage.url" class="imprint-span imprint button">
+          <a :href="textPage.url" class="link" target="_blank"
+            >{{ $t(textPage.title) }} <span></span>
+          </a>
+        </span>
 
-    <span
-      v-else
-      class="imprint-span imprint button link"
-      @click="addTextPage()"
-      >{{ $t(textPage.title) }}</span
-    >
-  </span>
+        <span
+          v-else
+          class="imprint-span imprint button link"
+          @click="addTextPage()"
+          >{{ $t(textPage.title) }}</span
+        >
+      </span>
+    </template>
+  </VcsTooltip>
 </template>
 
 <style lang="scss" scoped>
@@ -42,17 +49,23 @@
 
 <script>
   import { inject } from 'vue';
+  import VcsTooltip from '../components/notification/VcsTooltip.vue';
   import VcsTextPage from './VcsTextPage.vue';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import { WindowSlot } from '../manager/window/windowManager.js';
 
+  /**
+   * A Footer element opening either an URL in a new tab or a WindowComponent with provided content
+   * @vue-prop {import("../uiConfig.js").TextPageType} [textPage]
+   * @vue-prop {string} windowId
+   */
   export default {
     name: 'VcsTextPageFooter',
-    components: {},
+    components: { VcsTooltip },
     props: {
       textPage: {
         type: Object,
-        required: true,
+        default: () => {},
       },
       windowId: {
         type: String,
@@ -64,21 +77,25 @@
       const { content } = props.textPage;
 
       function addTextPage() {
-        app.windowManager.add(
-          {
-            id: props.windowId,
-            component: VcsTextPage,
-            state: {
-              headerTitle: props.textPage.title,
+        if (!app.windowManager.has(props.windowId)) {
+          app.windowManager.add(
+            {
+              id: props.windowId,
+              component: VcsTextPage,
+              state: {
+                headerTitle: props.textPage.title,
+              },
+              slot: WindowSlot.DYNAMIC_RIGHT,
+              position: {
+                width: 600,
+              },
+              props: { content },
             },
-            slot: WindowSlot.DYNAMIC_RIGHT,
-            position: {
-              width: 600,
-            },
-            props: { content },
-          },
-          vcsAppSymbol,
-        );
+            vcsAppSymbol,
+          );
+        } else {
+          app.windowManager.remove(props.windowId);
+        }
       }
 
       return {

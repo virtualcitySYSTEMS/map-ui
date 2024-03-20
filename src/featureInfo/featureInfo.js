@@ -138,13 +138,13 @@ function setupFeatureInfoTool(app) {
     callback() {
       if (session) {
         session.stop();
-        this.title = 'featureInfo.activateToolTitle';
       } else {
         session = createFeatureInfoSession(app);
         session.stopped.addEventListener(() => {
           this.active = false;
           session = null;
           app.featureInfo.clear();
+          this.title = 'featureInfo.activateToolTitle';
         });
         this.active = true;
         this.title = 'featureInfo.deactivateToolTitle';

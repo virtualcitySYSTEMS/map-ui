@@ -24,6 +24,9 @@ import { sortByOwner } from '../navbarManager.js';
  * @property {boolean} [singleSelect=false]
  * @property {number} [overflowCount=2] - number of header action buttons rendered until overflow
  * @property {number} [limit=10] - limit number of items in rendered list (more items are rendered in extra window)
+ * @property {string} [removeTitle="list.deleteItem"]
+ * @property {string} [bulkRemoveTitle="list.delete"]
+ * @property {string} [renameTitle="list.renameItem"]
  */
 
 /**
@@ -188,6 +191,23 @@ class CollectionComponentClass {
      */
     this.selection = ref([]);
 
+    /**
+     *
+     * @type {{ removeTitle: string, bulkRemoveTitle: string, renameTitle: string }}
+     * @private
+     */
+    this._actionTitles = {
+      removeTitle: options.removeTitle ?? 'list.deleteItem',
+      bulkRemoveTitle: options.bulkRemoveTitle ?? 'list.delete',
+      renameTitle: options.renameTitle ?? 'list.renameItem',
+    };
+
+    /**
+     * @tyep {() => void}
+     * @private
+     */
+    this._removeBulkDeleteAction = () => {};
+
     this._resetWatchers = [
       watch(this.renamable, () => this.reset()),
       watch([this.removable, this.selectable], () => {
@@ -293,7 +313,7 @@ class CollectionComponentClass {
    */
   _addBulkDeleteAction() {
     const { action, destroy } = createListItemBulkAction(this.selection, {
-      name: 'list.delete',
+      name: this._actionTitles.bulkRemoveTitle,
       callback: () => {
         [...this.selection.value].forEach((listItem) => {
           this._collection.remove(this._collection.getByKey(listItem.name));
@@ -301,26 +321,16 @@ class CollectionComponentClass {
       },
     });
     this._destroyBulkDelete = destroy;
-    this.addActions([
-      {
-        action,
-        owner: this._owner,
-        weight: 100,
-      },
-    ]);
-  }
+    const ownedAction = {
+      action,
+      owner: this._owner,
+      weight: 100,
+    };
+    this.addActions([ownedAction]);
 
-  /**
-   * @private
-   */
-  _removeBulkDeleteAction() {
-    this._destroyBulkDelete();
-    const action = this._actions.value.find(
-      (a) => a.action.name === 'list.delete',
-    );
-    if (action) {
-      this.removeActions([action]);
-    }
+    this._removeBulkDeleteAction = () => {
+      this.removeActions([ownedAction]);
+    };
   }
 
   /**
@@ -349,12 +359,20 @@ class CollectionComponentClass {
       destroyFunctions: [],
     };
     if (this.renamable.value) {
-      listItem.actions.push(createListItemRenameAction(listItem));
+      listItem.actions.push(
+        createListItemRenameAction(listItem, {
+          name: this._actionTitles.renameTitle,
+        }),
+      );
       listItem.titleChanged = (newTitle) =>
         titleChanged(item, listItem, newTitle);
     }
     if (this.removable.value) {
-      listItem.actions.push(createListItemDeleteAction(this._collection, item));
+      listItem.actions.push(
+        createListItemDeleteAction(this._collection, item, {
+          name: this._actionTitles.removeTitle,
+        }),
+      );
     }
     this._itemMappings.forEach((itemMapping) => {
       if (

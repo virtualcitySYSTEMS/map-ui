@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="v-expansion-panel-header px-2 v-expansion-panel-header--active">
+    <div
+      v-if="!hideHeader"
+      class="v-expansion-panel-header px-2 v-expansion-panel-header--active"
+    >
       <div class="d-flex justify-space-between">
         <div class="d-flex align-center gap-1 pl-2">
           <span>
@@ -69,7 +72,8 @@
    * @description
    * Renders the items of a CollectionComponentClass in a List.
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
-   * @vue-prop {string} showLessButton - Show a `show less button` at the end of the list, which will emit a closeList event
+   * @vue-prop {boolean} showLessButton - Show a `show less button` at the end of the list, which will emit a closeList event
+   * @vue-prop {boolean} hideHeader - Whether to hide the header or not
    */
   export default {
     name: 'CollectionComponentList',
@@ -77,6 +81,10 @@
       showLessButton: {
         type: Boolean,
         default: true,
+      },
+      hideHeader: {
+        type: Boolean,
+        default: false,
       },
     },
     components: {

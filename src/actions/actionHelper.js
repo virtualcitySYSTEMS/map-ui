@@ -82,7 +82,7 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
     },
   };
   const destroyListener = maps.mapActivated.addEventListener((map) => {
-    action.active = map.name === mapName;
+    action.active = map?.name === mapName;
   });
 
   return { action, destroy: destroyListener };

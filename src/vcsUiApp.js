@@ -42,6 +42,7 @@ import Notifier from './notifier/notifier.js';
 import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
+import createSiteConfig from './siteConfig.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
@@ -330,6 +331,8 @@ class VcsUiApp extends VcsApp {
      * @type {import("@vcmap/core").VcsEvent<string>}
      */
     this.mounted = new VcsEvent();
+
+    this._destroySiteConfig = createSiteConfig(this._uiConfig);
   }
 
   /**
@@ -682,6 +685,7 @@ class VcsUiApp extends VcsApp {
     this._featureInfoClassRegistry.destroy();
     this._featureInfo.destroy();
     this._uiConfig.destroy();
+    this._destroySiteConfig();
     super.destroy();
   }
 }

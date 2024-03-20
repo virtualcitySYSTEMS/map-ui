@@ -14,7 +14,13 @@
             </VcsLabel>
           </v-col>
           <v-col>
-            <VcsTextField id="name" dense clearable v-model="name" />
+            <VcsTextField
+              id="name"
+              dense
+              clearable
+              v-model="name"
+              :rules="nameRules"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
@@ -47,13 +53,12 @@
               v-if="animate"
               id="duration"
               dense
+              clearable
               type="number"
-              :min="0"
+              :min="1"
               unit="s"
               :title="$t('components.viewpoint.duration')"
-              placeholder="0 s"
               v-model.number="duration"
-              :rules="[isPositiveNumber]"
             />
           </v-col>
         </v-row>
@@ -204,10 +209,16 @@
    * @param {import("vue").emit} emit
    * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
    * @param {import("vue").Ref<boolean>} isCesiumMap
-   * @param {boolean} active - whether to set up post render handler on creation
+   * @param {boolean} startSync - whether to set up post render handler on creation
    * @returns {{action: import("../../actions/actionHelper.js").VcsAction, destroy: function():void}}
    */
-  function createEditingAction(app, emit, getModelValue, isCesiumMap, active) {
+  function createEditingAction(
+    app,
+    emit,
+    getModelValue,
+    isCesiumMap,
+    startSync,
+  ) {
     let destroyPostRenderListener = () => {};
     let cachedViewpoint = new Viewpoint(getModelValue());
 
@@ -227,16 +238,19 @@
           cachedViewpoint = viewpoint;
         },
       );
-      if (app.maps.activeMap.className === OpenlayersMap.className) {
+      if (app.maps.activeMap?.className === OpenlayersMap.className) {
         app.maps.activeMap.requestRender();
       }
     }
+
+    const isObliqueMap = app.maps.activeMap?.className === ObliqueMap.className;
+    const active = isObliqueMap ? false : startSync;
 
     const action = reactive({
       name: 'edit-viewpoint-action',
       icon: active ? 'mdi-sync' : 'mdi-sync-off',
       title: 'components.viewpoint.syncOff',
-      disabled: app.maps.activeMap.className === ObliqueMap.className,
+      disabled: isObliqueMap,
       active,
       callback() {
         this.active = !this.active;
@@ -323,6 +337,7 @@
    * @vue-prop {boolean} hideTitle - Hide title input.
    * @vue-prop {boolean} hideAnimate - Hide animate & duration input.
    * @vue-prop {boolean} hideGeneral - Hide all general settings (name, title, animate).
+   * @vue-prop {Array<(v:string)=>(boolean|string)>} nameRules - Optional rules for name input.
    */
   export default {
     name: 'VcsViewpointComponent',
@@ -367,10 +382,16 @@
         type: Boolean,
         default: false,
       },
+      nameRules: {
+        type: Array,
+        default: () => [],
+      },
     },
     setup(props, { emit }) {
       const app = inject('vcsApp');
-      const isCesiumMap = ref(app.maps.activeMap.className === 'CesiumMap');
+      const isCesiumMap = ref(
+        app.maps.activeMap?.className === CesiumMap.className,
+      );
 
       const name = usePrimitiveProperty(() => props.value, 'name', emit);
       const title = computed({
@@ -378,13 +399,15 @@
           return props.value?.properties?.title;
         },
         set(value) {
-          const clone = props.value ? structuredClone(props.value) : {};
-          if (clone.properties) {
-            clone.properties.title = value;
-          } else {
-            clone.properties = { title };
+          if (props.value?.properties?.title !== value) {
+            const clone = props.value ? structuredClone(props.value) : {};
+            if (clone.properties) {
+              clone.properties.title = value;
+            } else {
+              clone.properties = { title: value };
+            }
+            emit('input', clone);
           }
-          emit('input', clone);
         },
       });
       const animate = usePrimitiveProperty(() => props.value, 'animate', emit);
@@ -436,8 +459,10 @@
         icon: 'mdi-camera',
         title: 'components.viewpoint.updateFromView',
         async callback() {
-          const viewpoint = await app.maps.activeMap.getViewpoint();
-          emitInput(emit, viewpoint, () => props.value);
+          if (app.maps.activeMap) {
+            const viewpoint = await app.maps.activeMap.getViewpoint();
+            emitInput(emit, viewpoint, () => props.value);
+          }
         },
       };
 
@@ -481,14 +506,16 @@
       }
 
       async function handleInput(key) {
-        if (key === 'groundPosition') {
-          cameraPosition.value = undefined;
-        } else if (key === 'cameraPosition') {
-          groundPosition.value = (
-            await app.maps.activeMap.getViewpoint()
-          ).groundPosition;
+        if (app.maps.activeMap) {
+          if (key === 'groundPosition') {
+            cameraPosition.value = undefined;
+          } else if (key === 'cameraPosition') {
+            groundPosition.value = (
+              await app.maps.activeMap.getViewpoint()
+            ).groundPosition;
+          }
+          await gotoViewpoint();
         }
-        await gotoViewpoint();
       }
 
       return {

@@ -407,7 +407,7 @@
               <VcsRadioGrid
                 v-model="state.selected"
                 :items="[
-                  { value: 'A', src: 'mdi-circle-outline' },
+                  { value: 'AAAAAAAA', src: 'mdi-circle-outline' },
                   { value: 'B', src: 'mdi-close' },
                   { value: 'C', src: 'mdi-triangle-outline' },
                   { value: 'D', src: 'mdi-square-outline' },
@@ -416,8 +416,15 @@
                 :rules="[(v) => v !== 'D' || 'Square is not allowed']"
               >
                 <!-- if label slot is not used, src is forwarded to img src -->
-                <template #label="{ src }">
-                  <v-icon size="24">{{ src }}</v-icon>
+                <template #label="{ src, value }">
+                  <figure>
+                    <v-icon size="24" class="d-flex justify-center">{{
+                      src
+                    }}</v-icon>
+                    <figcaption class="d-flex justify-center">
+                      {{ value }}
+                    </figcaption>
+                  </figure>
                 </template>
               </VcsRadioGrid>
             </v-col>

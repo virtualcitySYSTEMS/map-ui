@@ -1,4 +1,64 @@
-# 5.1
+# 5.1.9
+
+- Fixes a bug in FeatureInfo, where tags were not serialized
+
+# 5.1.8
+
+- Fixes a bug in FeatureInfo, when attribute values are null
+- fixes an issue where collection components could not be rendered without collection manager by adding CollectionComponentStandalone.vue to render the content of one single CollectionComponentClass in a VcsFormSection.
+- Fixes an issue, where radio button labels could not have different width
+
+# 5.1.7
+
+- Fixes a bug where changing the activemap to `null` did not work.
+- updated @vcmap/core to 5.1.
+
+# 5.1.5
+
+- Fixes `VcsViewpointComponent.vue` opened in ObliqueMap
+- Set default title for imprint and data protection
+- Fix emitting focus and blur event in `VcsTextArea.vue`
+- Adds new UI configs: `headerTitle` & `favicon` to set the sites behavior.
+- Adds a consistent way to import features from a set of geojson files `importToLayer`,
+  which can be used in the `createListImportAction` callbacks.
+- Changed map title font size and weight
+- Fixes a bug in content tree, where init open was not applied correctly
+
+# 5.1.4
+
+- Fix FeatureInfo showing empty attribute value objects
+- Fix bug when defaultViewpoint is null
+- Fix bug for overview map in oblique
+- Added two new icons for point measurement in 2D `2DPointIcon.vue` and 3D `3DPointIcon.vue`
+- Changed layout for icon `AxisIcon.vue` and `PointMeasurementIcon.vue`, switched labels of Z and Y axis
+- Adds a `closed` event to the `ContextMenuManager` to listen to context menu closed for cleanup.
+- Adds action titles to the `CollectionComponentClass`: `removeTitle` `bulkRemoveTitle` and `renameTitle`.
+  Additionally, adds `editTitle` & `bulkEditTitle` to the `EditorCollectionComponentClass` interface creation.
+- updated @vcmap/core to 5.1.3
+- fixed a bug where the overviewmap did not specifiy the zIndex of oblique layer correctly.
+
+# 5.1.3
+
+- Fix FeatureInfo tooltip
+- Add importing state to `ImportComponent.vue`
+- Added new icon for transparent terrain
+- Fix title computed in `VcsViewpointComponent.vue`
+- Fix position display to listen to uiConfig changes of current module
+- Added an `externalZIndex` API to the window manager. This allows for non window
+  DOM elements to use the window z ordering.
+- The toolbar now respects z ordering of windows and can be brought to the top.
+
+# 5.1.2
+
+- Fixed a bug where VcsDataTable would reset the page, if a server-side pagination changes the items.
+- Updated @vcmap/core to 5.1.1
+
+# 5.1.1
+
+- loading plugins will now add the mapVersion to the plugin request.
+- fix duration input of `VcsViewpointComponent.vue`
+
+# 5.1.0
 
 - WindowManager now handles `close` events emitted by vue components for closing itself
 - Add new icon for multiview button

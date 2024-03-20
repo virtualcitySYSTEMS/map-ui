@@ -12,8 +12,8 @@
           hide-details
           :dense="isDense"
           :clearable="isClearable"
-          @focus="focus = true"
-          @blur="focus = false"
+          @focus="onFocus"
+          @blur="onBlur"
           @mouseover="hover = true"
           @mouseleave="hover = false"
           outlined
@@ -145,7 +145,7 @@
         default: 'right',
       },
     },
-    setup(props, { attrs }) {
+    setup(props, { attrs, emit }) {
       const hover = ref(false);
       const focus = ref(false);
       const textAreaRef = ref();
@@ -174,6 +174,14 @@
         isClearable,
         isDense,
         isOutlined,
+        onFocus(e) {
+          focus.value = true;
+          emit('focus', e);
+        },
+        onBlur(e) {
+          focus.value = false;
+          emit('blur', e);
+        },
       };
     },
   };

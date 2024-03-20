@@ -11,7 +11,7 @@ import { ref } from 'vue';
 
 /**
  * @typedef {Object} TextPageType
- * @property {string} title
+ * @property {string} [title]
  * @property {URL|string} [url]
  * @property {string} [content]
  */
@@ -25,8 +25,10 @@ import { ref } from 'vue';
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
  * @property {string} [positionDisplayEventType] - mouse event, when position display is updated. Either 'click' (default) or 'move'.
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
- * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer.
- * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer.
+ * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer. Default title is 'footer.imprint.title'.
+ * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer. Default title is 'footer.dataProtection.title'.
+ * @property {string} [favicon] - the favicon to set
+ * @property {string} [headerTitle] - the title to display in the tab of the browser
  */
 
 /**

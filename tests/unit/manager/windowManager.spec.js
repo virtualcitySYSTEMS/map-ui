@@ -155,6 +155,13 @@ describe('windowManager', () => {
         ).to.throw();
       });
 
+      it('should throw if same windowId is already provided as an external id', () => {
+        windowManager.addExternalIdToZIndex('test2', 'plugin');
+        expect(
+          windowManager.add.bind(windowManager, [{ id: 'test2' }, 'plugin']),
+        ).to.throw();
+      });
+
       it('should throw if slot DYNAMIC_CHILD is used without parentId or if the parent window is not registered', () => {
         expect(
           windowManager.add.bind(
@@ -549,6 +556,7 @@ describe('windowManager', () => {
     beforeEach(() => {
       window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
       window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'app');
+      windowManager.addExternalIdToZIndex('external', 'plugin');
     });
 
     afterEach(() => {
@@ -559,11 +567,12 @@ describe('windowManager', () => {
       windowManager.destroy();
     });
 
-    it('should remove all windows of supplied owner from the windowManager', () => {
+    it('should remove all windows & external ids of supplied owner from the windowManager', () => {
       expect(windowManager.has(window1.id)).to.be.true;
       windowManager.removeOwner('plugin');
       expect(windowManager.has(window1.id)).to.be.false;
       expect(windowManager.has(window2.id)).to.be.true;
+      expect(windowManager.externalZIndexIds).to.not.include('external');
     });
   });
 
@@ -804,6 +813,119 @@ describe('windowManager', () => {
         expect(windowManager.has(child2.id)).to.be.true;
         windowManager.pinWindow(child.id);
         expect(windowManager.has(child2.id)).to.be.false;
+      });
+    });
+  });
+
+  describe('external zIndex handling', () => {
+    let windowComponentOptions;
+    beforeAll(() => {
+      windowComponentOptions = {
+        id: 'test',
+        slot: WindowSlot.DYNAMIC_LEFT,
+        state: {
+          hideHeader: true,
+          headerTitle: 'test',
+          headerIcon: 'icon',
+          classes: {
+            test: true,
+          },
+          styles: { 'background-color': 'red' },
+        },
+      };
+    });
+
+    describe('adding an external id', () => {
+      /** @type {WindowManager} */
+      let windowManager;
+
+      beforeEach(() => {
+        windowManager = new WindowManager();
+      });
+
+      afterEach(() => {
+        windowManager.destroy();
+      });
+
+      it('should add an external id', () => {
+        const zIndex = windowManager.addExternalIdToZIndex('test', 'test');
+        expect(zIndex.value).to.equal(0);
+        expect(windowManager.externalZIndexIds).to.include('test');
+      });
+
+      it('should not add an external id, if there is already a window id with said id', () => {
+        windowManager.add(windowComponentOptions, 'test');
+        expect(
+          windowManager.addExternalIdToZIndex.bind(
+            windowManager,
+            'test',
+            'test',
+          ),
+        ).to.throw;
+      });
+
+      it('should not add an external id, if there is already an external id', () => {
+        windowManager.addExternalIdToZIndex('test', 'test');
+        expect(
+          windowManager.addExternalIdToZIndex.bind(
+            windowManager,
+            'test',
+            'test',
+          ),
+        ).to.throw;
+      });
+
+      it('should push the zIndex', () => {
+        windowManager.add(windowComponentOptions, 'test');
+        const zIndex = windowManager.addExternalIdToZIndex('test2', 'test');
+        expect(zIndex.value).to.equal(1);
+      });
+    });
+
+    describe('bringing an external id to the top', () => {
+      let windowManager;
+
+      beforeAll(() => {
+        windowManager = new WindowManager();
+      });
+
+      afterAll(() => {
+        windowManager.destroy();
+      });
+
+      it('should bring the id to the top', () => {
+        const testZIndex = windowManager.addExternalIdToZIndex('test', 'test');
+        windowManager.addExternalIdToZIndex('test2', 'test');
+        windowManager.bringWindowToTop('test');
+        expect(testZIndex.value).to.equal(windowManager.maxZIndex);
+      });
+    });
+
+    describe('removeing an external id', () => {
+      /** @type {WindowManager} */
+      let windowManager;
+      let zIndex;
+
+      beforeAll(() => {
+        windowManager = new WindowManager();
+        zIndex = windowManager.addExternalIdToZIndex('test', 'plugin');
+        windowManager.removeExternalIdFromZIndex('test');
+      });
+
+      afterAll(() => {
+        windowManager.destroy();
+      });
+
+      it('should set the zIndex to -1', () => {
+        expect(zIndex.value).to.equal(-1);
+      });
+
+      it('should reduce the max zIndex', () => {
+        expect(windowManager.maxZIndex).to.equal(-1);
+      });
+
+      it('should no longer contain the id', () => {
+        expect(windowManager.externalZIndexIds).to.not.include('test');
       });
     });
   });

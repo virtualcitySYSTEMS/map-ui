@@ -269,19 +269,42 @@ class WindowManager {
     /**
      * reactive ordered array of ids, defining the zIndex of a component
      * @type {import("vue").Ref<Array<string>>}
+     * @private
      */
     this._zIndices = ref([]);
+
+    /**
+     * Map of <id, owner> for external zIndexIds
+     * @type {Map<string, string>}
+     * @private
+     */
+    this._externalZIndexIds = new Map();
 
     /**
      * @type {Map<string, WindowComponent>}
      * @private
      */
     this._windowComponents = new Map();
+
     /**
      * @type {Map<string, WindowPosition>}
      * @private
      */
     this._windowPositionsCache = new Map();
+  }
+
+  /**
+   * @type {number}
+   */
+  get maxZIndex() {
+    return this._zIndices.value.length - 1;
+  }
+
+  /**
+   * @return {string[]}
+   */
+  get externalZIndexIds() {
+    return [...this._externalZIndexIds.keys()];
   }
 
   /**
@@ -515,7 +538,11 @@ class WindowManager {
   add(windowComponentOptions, owner) {
     check(owner, [String, vcsAppSymbol]);
 
-    if (windowComponentOptions.id && this.has(windowComponentOptions.id)) {
+    if (
+      windowComponentOptions.id &&
+      (this.has(windowComponentOptions.id) ||
+        this._externalZIndexIds.has(windowComponentOptions.id))
+    ) {
       throw new Error(
         `A window with id ${windowComponentOptions.id} has already been registered.`,
       );
@@ -569,6 +596,7 @@ class WindowManager {
     const position = reactive(windowPosition);
     const initialPosition = { ...windowPositionOptions };
     const zIndex = computed(() => this._zIndices.value.indexOf(id));
+
     /**
      * @type {WindowComponent}
      */
@@ -627,7 +655,7 @@ class WindowManager {
    * @param {string} id
    */
   bringWindowToTop(id) {
-    if (this.has(id)) {
+    if (this.has(id) || this._externalZIndexIds.has(id)) {
       const index = this._zIndices.value.indexOf(id);
       if (index >= 0 && index !== this._zIndices.value.length - 1) {
         this._zIndices.value.push(id);
@@ -675,6 +703,47 @@ class WindowManager {
         this.remove(id);
       }
     });
+    this._externalZIndexIds.forEach((externalOwner, id) => {
+      if (externalOwner === owner) {
+        this.removeExternalIdFromZIndex(id);
+      }
+    });
+  }
+
+  /**
+   * Adds a string id to the z index handling of windows. The returned computed
+   * will give you the current z index of the id. Use bringToTop with the id to bring it
+   * to the top, just like a window.
+   * @param {string} id
+   * @param {string|vcsAppSymbol} owner
+   * @return {import("vue").ComputedRef<number>}
+   */
+  addExternalIdToZIndex(id, owner) {
+    check(id, String);
+    check(owner, [String, vcsAppSymbol]);
+
+    if (this.has(id)) {
+      throw new Error(`Id ${id} already belongs to a window id`);
+    }
+
+    if (this._externalZIndexIds.has(id)) {
+      throw new Error(`Id ${id} is already added`);
+    }
+    this._externalZIndexIds.set(id, owner);
+    this._zIndices.value.push(id);
+    return computed(() => this._zIndices.value.indexOf(id));
+  }
+
+  /**
+   * Removes an external z index id
+   * @param {string} id
+   */
+  removeExternalIdFromZIndex(id) {
+    this._externalZIndexIds.delete(id);
+    const index = this._zIndices.value.indexOf(id);
+    if (index > -1) {
+      this._zIndices.value.splice(index, 1);
+    }
   }
 
   /**

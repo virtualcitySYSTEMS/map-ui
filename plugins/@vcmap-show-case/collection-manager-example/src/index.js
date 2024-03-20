@@ -64,12 +64,16 @@ export default async function collectionManagerExample() {
         collectionManagerExample: {
           select: 'Collection',
           addFailed: 'Die gewählte Collection wurde bereits hinzugefügt!',
+          addAction: 'Collection hinzufügen',
+          clearAction: 'Manager leeren',
         },
       },
       en: {
         collectionManagerExample: {
           select: 'Collection',
           addFailed: 'The selected collection is already added!',
+          addAction: 'Add collection to manager',
+          clearAction: 'Clear Manager',
         },
       },
     },
