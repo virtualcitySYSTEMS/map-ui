@@ -422,6 +422,9 @@ class AbstractFeatureInfoView extends VcsObject {
     if (this.valueMapping) {
       config.valueMapping = JSON.parse(JSON.stringify(this.valueMapping));
     }
+    if (this.tags) {
+      config.tags = JSON.parse(JSON.stringify(this.tags));
+    }
     if (Object.keys(this._window).length > 0) {
       config.window = { ...this._window };
     }

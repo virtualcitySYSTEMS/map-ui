@@ -1,3 +1,7 @@
+# 5.1.9
+
+- Fixes a bug in FeatureInfo, where tags were not serialized
+
 # 5.1.8
 
 - Fixes a bug in FeatureInfo, when attribute values are null
