@@ -16,42 +16,22 @@
           v-bind="{ ...$attrs, ...attrs }"
           v-on="{ ...$listeners, ...on }"
         >
-          <v-row no-gutters class="justify-center">
-            <v-col
-              v-for="(item, idx) in items"
-              :key="idx"
-              cols="1"
-              class="mx-2"
-            >
-              <v-row no-gutters>
-                <v-col>
-                  <div
-                    class="d-flex justify-center label-wrapper pt-1"
-                    :class="$attrs.disabled ? 'disabled' : ''"
-                  >
-                    <slot name="label" :value="item[itemValue]" :src="item.src">
-                      <img
-                        :src="item.src"
-                        :alt="item[itemValue]"
-                        class="image"
-                      />
-                    </slot>
-                  </div>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col>
-                  <v-radio
-                    :value="item[itemValue]"
-                    :ripple="false"
-                    class="ma-0"
-                    :class="isDense ? 'vcs-radio-dense' : 'vcs-radio'"
-                    :dense="isDense"
-                  />
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
+          <div class="d-flex gap-1 px-2 pt-2 pb-1 justify-center">
+            <div v-for="(item, idx) in items" :key="idx">
+              <div class="pt-1 pb-0" :class="$attrs.disabled ? 'disabled' : ''">
+                <slot name="label" :value="item[itemValue]" :src="item.src">
+                  <img :src="item.src" :alt="item[itemValue]" class="image" />
+                </slot>
+              </div>
+              <v-radio
+                :value="item[itemValue]"
+                :ripple="false"
+                class="ma-0 justify-center"
+                :class="isDense ? 'vcs-radio-dense' : 'vcs-radio'"
+                :dense="isDense"
+              />
+            </div>
+          </div>
         </v-radio-group>
       </v-container>
     </template>
@@ -60,12 +40,22 @@
 
 <script>
   import { computed, ref } from 'vue';
-  import { VContainer, VRow, VCol, VRadioGroup, VRadio } from 'vuetify/lib';
+  import { VContainer, VRadioGroup, VRadio } from 'vuetify/lib';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-radio-group/ |vuetify radio group} which places icons or raster src files above the radio buttons as labels and arranges them in a grid.
+   * Use figure and figcaption for labeled radio icons:
+   * @example
+   * <VcsRadioGrid v-model="model" items="items" >
+   *    <template #label="{ src, value }">
+   *       <figure>
+   *          <v-icon size="24" class="d-flex justify-center">{{src}}</v-icon>
+   *          <figcaption class="d-flex justify-center">{{ value }}</figcaption>
+   *       </figure>
+   *    </template>
+   * </VcsRadioGrid>
    * @vue-prop {{value: string, src: string}[]} items - The items to be displayed in the grid. The src is the path to the raster image.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string} itemValue - The key of the provided item objects that contains the value.
@@ -75,8 +65,6 @@
     name: 'VcsRadioGrid',
     components: {
       VContainer,
-      VRow,
-      VCol,
       VRadioGroup,
       VRadio,
       VcsTooltip,
@@ -165,9 +153,6 @@
     max-width: 24px;
     height: auto;
     width: auto;
-  }
-  .label-wrapper {
-    width: 24px;
   }
   .disabled {
     opacity: 0.3;
