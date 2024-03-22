@@ -1,6 +1,8 @@
 # 5.1.9
 
 - Fixes a bug in FeatureInfo, where tags were not serialized
+- Fixes a bug in the search Button, where adding a second searchImpl removed the Button.
+- Fixes a bug where the `type` of `search` and `suggest` in a SearchImpl was not async.
 
 # 5.1.8
 
