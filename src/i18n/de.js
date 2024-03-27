@@ -132,6 +132,9 @@ const messages = {
       zoomToAnchor: 'Auf Stützpunkt zoomen',
       noAnchor: 'Es sind noch keine Stützpunkte definiert.',
       invalidDuration: 'Die Gesamtflugzeit muss größer als Null sein!',
+      zoom: 'Auf Ausdehnung zoomen',
+      export: 'Flug exportieren',
+      exportPath: 'Flugpfad exportieren',
     },
     viewpoint: {
       name: 'Name (ID)',

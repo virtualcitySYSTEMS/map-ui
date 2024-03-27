@@ -132,6 +132,9 @@ const messages = {
       zoomToAnchor: 'Zoom to anchor',
       noAnchor: 'No flight anchor available yet.',
       invalidDuration: 'The total flight duration must be greater zero!',
+      zoom: 'Zoom to extent',
+      export: 'Export flight',
+      exportPath: 'Export flight path',
     },
     viewpoint: {
       name: 'Name (ID)',

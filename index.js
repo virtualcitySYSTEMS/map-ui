@@ -23,6 +23,18 @@ export {
   setupExtentComponentActions,
 } from './src/actions/extentActions.js';
 export {
+  createPlayAction,
+  PlayerDirection,
+  createStepAction,
+  createFastAction,
+  createFlightPlayerActions,
+  setupFlightListItemPlayer,
+  createZoomToFlightAction,
+  createFlightVisualizationAction,
+  createExportFlightAction,
+  importFlights,
+} from './src/actions/flightActions.js';
+export {
   createListItemRenameAction,
   createListItemDeleteAction,
   createListItemBulkAction,

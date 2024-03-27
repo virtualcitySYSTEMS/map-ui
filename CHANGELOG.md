@@ -1,3 +1,7 @@
+# 5.2
+
+- Add flight actions for import, export, zoom and list item player
+
 # 5.1.9
 
 - Fixes a bug in FeatureInfo, where tags were not serialized
