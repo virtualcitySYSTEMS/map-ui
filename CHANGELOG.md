@@ -1,6 +1,7 @@
 # 5.2
 
 - Add flight actions for import, export, zoom and list item player
+- Adds the `MarkdownFeatureInfoView` to render simple markdown feature info views.
 
 # 5.1.9
 

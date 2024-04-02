@@ -30,6 +30,7 @@ import TableFeatureInfoView from './tableFeatureInfoView.js';
 import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
+import MarkdownFeatureInfoView from './markdowFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
@@ -517,4 +518,8 @@ featureInfoClassRegistry.registerClass(
 featureInfoClassRegistry.registerClass(
   AddressBalloonFeatureInfoView.className,
   AddressBalloonFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  MarkdownFeatureInfoView.className,
+  MarkdownFeatureInfoView,
 );

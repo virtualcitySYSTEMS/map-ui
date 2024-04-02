@@ -110,12 +110,13 @@ app.featureInfoClassRegistry.registerClass(
 By passing a Vue Component to your view class constructor, you actually register a pair containing the API within the view class and the user interface within the vue component.
 A couple of default views are already registered on the VcsApp:
 
-| View class                                                                           | VueComponent                                                              | description                                                          |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                   | [TableComponent](../src/components/tables/VcsTable.vue)                   | A sortable table view showing key value pairs of feature properties. |
-| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                 | Inline Iframe Component                                                   | An iframe view with templatable url.                                 |
-| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)               | [BalloonComponent](../src/featureInfo/BalloonComponent.vue)               | A balloon view rendering feature properties.                         |
-| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js) | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.vue) | A balloon view rendering address information of a feature.           |
+| View class                                                                           | VueComponent                                                              | description                                                                |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                   | [TableComponent](../src/components/tables/VcsTable.vue)                   | A sortable table view showing key value pairs of feature properties.       |
+| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                 | Inline Iframe Component                                                   | An iframe view with templatable url.                                       |
+| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)               | [BalloonComponent](../src/featureInfo/BalloonComponent.vue)               | A balloon view rendering feature properties.                               |
+| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js) | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.vue) | A balloon view rendering address information of a feature.                 |
+| [MarkdownFeatureInfoView](../src/featureInfo/markdownFeatureInfoView.js)             | Inline rendered markdown template                                         | A markdown based view, see [this section](#Markdown-Rendering) for details |
 
 > **Balloon** Views are a special type of view. In contrast to the other view classes, the balloon is rendered at a certain position in the map. The balloon position is updated on scene render.
 > To write a custom balloon view, simply extend [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js).
@@ -309,3 +310,30 @@ To render an image, simply define:
   }
 }
 ```
+
+### Markdown Rendering
+
+Markdown feature info views can render most markdown text, without special flavoring.
+You can expand feature properties by wrapping them in two braces: `{{foo}}` would expand the
+feature property `foo`. This also works for array accessors and nested properties, simply use
+java script dot notation: `foo.bar` to access an object `{ foo: { bar: 'bar' } }` or bracktes: `foo[0]` to access
+an array `{ foo: ['bar'] }` where `foo["bar"]` is equivalent to `foo.bar`. Currently
+only string and number properties are rendered correctly. Missing keys are rendered as an empty string `''`.
+
+The following example can illustrate this:
+
+```markdown
+# Title
+
+- this is a listing
+- with the {{ property }} "property"
+- and the {{ missing }} missing property
+```
+
+would render to something like this:
+
+# Title
+
+- this is a listing
+- with the property "property"
+- and the missing property

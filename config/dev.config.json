@@ -41,6 +41,16 @@
       }
     },
     {
+      "type": "MarkdownFeatureInfoView",
+      "name": "markdownBalloon",
+      "template": "# {{featureId}}\n- Altitude Mode: {{Altitude Mode}}\n",
+      "keyMapping": {
+        "olcs_storeyNumber": "Storey Number",
+        "olcs_storeyHeight": "Storey Height",
+        "olcs_altitudeMode": "Altitude Mode"
+      }
+    },
+    {
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloonLaerm",
       "title": "Lärmkarte Bayern",
@@ -90,7 +100,7 @@
       "zIndex": 11,
       "properties": {
         "title": "Test GeoJSON",
-        "featureInfo": "genericBalloon",
+        "featureInfo": "markdownBalloon",
         "legend": [
           {
             "type": "StyleLegendItem",
