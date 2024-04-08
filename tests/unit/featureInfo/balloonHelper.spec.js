@@ -10,12 +10,19 @@ import {
   setupBalloonPositionListener,
 } from '../../../src/featureInfo/balloonHelper.js';
 import BalloonComponent from '../../../src/featureInfo/BalloonComponent.vue';
-import { sleep } from '../../helpers.js';
+import { setupMapTarget, sleep } from '../../helpers.js';
 
 const clickedPosition = [
   1489140.34538515, 6894774.914271692, 59.57478554330297,
 ];
-const rect = { left: 0, top: 0, height: 500, width: 500 };
+const rect = {
+  top: 0,
+  left: 0,
+  width: 500,
+  height: 500,
+  bottom: 0,
+  right: 0,
+};
 
 /**
  * @param {VcsUiApp} app
@@ -25,9 +32,8 @@ const rect = { left: 0, top: 0, height: 500, width: 500 };
 async function setupAppForEvents(app, map) {
   app.maps.add(map);
   await app.maps.setActiveMap(map.name);
-  const target = document.createElement('div');
+  const { target, destroy } = setupMapTarget(rect);
   target.classList.add('mapElement');
-  document.body.append(target);
   app.maps.setTarget(target);
 
   app.windowManager.add(
@@ -44,6 +50,7 @@ async function setupAppForEvents(app, map) {
   return () => {
     app.maps.setTarget(null);
     app.destroy();
+    destroy();
   };
 }
 
@@ -69,7 +76,7 @@ describe('BalloonHelper', () => {
       vi.spyOn(
         SceneTransforms,
         'wgs84ToWindowCoordinates',
-      ).mockImplementationOnce(() => new Cartesian2());
+      ).mockImplementationOnce(() => new Cartesian2(rect.left, rect.height));
       activeMap.getScene().postRender.raiseEvent(activeMap.getScene());
       expect(app.windowManager.get('balloon').position.left).to.equal(
         `${rect.left - balloonOffset.x}px`,
@@ -99,7 +106,7 @@ describe('BalloonHelper', () => {
       vi.spyOn(
         activeMap.olMap,
         'getPixelFromCoordinate',
-      ).mockImplementationOnce(() => [0, 0]);
+      ).mockImplementationOnce(() => [rect.left, rect.height]);
       activeMap.olMap.renderSync();
       await sleep();
       expect(app.windowManager.get('balloon').position.left).to.equal(
@@ -134,7 +141,7 @@ describe('BalloonHelper', () => {
       vi.spyOn(
         activeMap.olMap,
         'getPixelFromCoordinate',
-      ).mockImplementationOnce(() => [0, 0]);
+      ).mockImplementationOnce(() => [rect.left, rect.height]);
       activeMap.olMap.renderSync();
       await sleep();
       expect(app.windowManager.get('balloon').position.left).to.equal(
@@ -152,7 +159,7 @@ describe('BalloonHelper', () => {
       vi.spyOn(
         activeMap.olMap,
         'getPixelFromCoordinate',
-      ).mockImplementationOnce(() => [0, 0]);
+      ).mockImplementationOnce(() => [rect.left, rect.height]);
       await activeMap.setImageByName('otherImage');
       activeMap.olMap.renderSync();
       await sleep();

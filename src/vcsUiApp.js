@@ -18,6 +18,7 @@ import ToolboxManager, {
   setupDefaultGroups,
 } from './manager/toolbox/toolboxManager.js';
 import WindowManager from './manager/window/windowManager.js';
+import PanelManager from './manager/panel/panelManager.js';
 import NavbarManager from './manager/navbarManager.js';
 // eslint-disable-next-line no-unused-vars
 import ContentTreeCollection, { // imported for type
@@ -170,6 +171,7 @@ class VcsUiApp extends VcsApp {
     this._pluginListeners = [
       this._plugins.added.addEventListener((plugin) => {
         this._windowManager.removeOwner(plugin.name);
+        this._panelManager.removeOwner(plugin.name);
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
@@ -195,6 +197,7 @@ class VcsUiApp extends VcsApp {
       }),
       this._plugins.removed.addEventListener(async (plugin) => {
         this._windowManager.removeOwner(plugin.name);
+        this._panelManager.removeOwner(plugin.name);
         this._navbarManager.removeOwner(plugin.name);
         this._toolboxManager.removeOwner(plugin.name);
         this._categoryManager.removeOwner(plugin.name);
@@ -238,6 +241,12 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._windowManager = new WindowManager();
+    /**
+     * @type {PanelManager}
+     * @private
+     */
+    this._panelManager = new PanelManager();
+
     /**
      * @type {NavbarManager}
      * @private
@@ -382,6 +391,13 @@ class VcsUiApp extends VcsApp {
    */
   get windowManager() {
     return this._windowManager;
+  }
+
+  /**
+   * @returns {PanelManager}
+   */
+  get panelManager() {
+    return this._panelManager;
   }
 
   /**
@@ -667,6 +683,7 @@ class VcsUiApp extends VcsApp {
    */
   destroy() {
     this.windowManager.destroy();
+    this.panelManager.destroy();
     this.navbarManager.destroy();
     this.toolboxManager.destroy();
     this.categoryManager.destroy();

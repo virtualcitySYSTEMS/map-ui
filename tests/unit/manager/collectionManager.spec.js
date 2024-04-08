@@ -48,7 +48,7 @@ describe('CollectionManager', () => {
       expect(addedSpy).toHaveBeenCalledTimes(1);
       expect(addedSpy).toHaveBeenLastCalledWith(collectionComponent);
     });
-    it('should throw if now owner is supplied', () => {
+    it('should throw if no owner is supplied', () => {
       expect(
         collectionManager.add.bind(
           collectionManager,

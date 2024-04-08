@@ -109,6 +109,13 @@ export {
   getPositionAppliedOnTarget,
 } from './src/manager/window/windowHelper.js';
 
+export {
+  default as PanelManager,
+  PanelLocation,
+} from './src/manager/panel/panelManager.js';
+export { default as PanelManagerComponent } from './src/manager/panel/PanelManagerComponent.vue';
+export { default as PanelComponent } from './src/manager/panel/PanelComponent.vue';
+
 export { default as ButtonManager } from './src/manager/buttonManager.js';
 export {
   default as NavbarManager,

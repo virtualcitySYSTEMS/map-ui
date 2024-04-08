@@ -1,4 +1,12 @@
-import { beforeAll, beforeEach, afterEach, describe, expect, it } from 'vitest';
+import {
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+  describe,
+  expect,
+  it,
+} from 'vitest';
 import {
   applyParentPosition,
   getPositionAppliedOnTarget,
@@ -19,6 +27,7 @@ import WindowManager, {
   WindowPositions,
   WindowSlot,
 } from '../../../src/manager/window/windowManager.js';
+import { setupMapTarget } from '../../helpers.js';
 
 const targetRect = {
   top: 20,
@@ -32,14 +41,14 @@ const targetRect = {
 describe('windowHelper', () => {
   let target;
   let targetSize;
+  let destroy;
 
   beforeAll(async () => {
-    const parentElement = document.createElement('div');
-    target = document.createElement('div');
-    parentElement.appendChild(target);
-    parentElement.getBoundingClientRect = () => targetRect;
+    ({ target, destroy } = setupMapTarget(targetRect));
     targetSize = getTargetSize(target);
   });
+
+  afterAll(() => destroy());
 
   describe('window position calculation', () => {
     it('should calculate the position for TOP_LEFT', () => {

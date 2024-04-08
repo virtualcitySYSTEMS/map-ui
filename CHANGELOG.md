@@ -2,6 +2,7 @@
 
 - Add flight actions for import, export, zoom and list item player
 - Adds the `MarkdownFeatureInfoView` to render simple markdown feature info views.
+- Add new PanelManager to add and remove panels. See [PanelManager](documentation/PANELS.md)
 
 # 5.1.9
 

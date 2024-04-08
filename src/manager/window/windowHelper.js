@@ -40,7 +40,7 @@ export function getTargetSize(target) {
   if (!target) {
     return null;
   }
-  return target.parentElement.getBoundingClientRect();
+  return target.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
 }
 
 /**

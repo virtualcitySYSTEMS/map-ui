@@ -19,13 +19,13 @@ import {
 } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import { contextMenuWindowId } from '../../../src/manager/contextMenu/ContextMenuComponent.vue';
+import { setupMapTarget } from '../../helpers.js';
 
 async function setupAppForEvents(app) {
   const map = new OpenlayersMap({});
   app.maps.add(map);
   await app.maps.setActiveMap(map.name);
-  const target = document.createElement('div');
-  document.body.append(target);
+  const { target, destroy } = setupMapTarget();
   app.maps.setTarget(target);
 
   const getBaseEvent = () => ({
@@ -58,7 +58,7 @@ async function setupAppForEvents(app) {
       });
     },
     destroy() {
-      document.body.removeChild(target);
+      destroy();
     },
   };
 }

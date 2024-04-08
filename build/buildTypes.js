@@ -75,6 +75,15 @@ const knownExtensionErrors = [
     ],
   },
   {
+    file: './src/manager/panel/panelManager.d.ts',
+    replacements: [
+      {
+        regex: /(add\(panelComponentOptions)/,
+        replace: '// @ts-ignore\n$1',
+      },
+    ],
+  },
+  {
     file: './src/manager/toolbox/toolboxManager.d.ts',
     replacements: [
       {

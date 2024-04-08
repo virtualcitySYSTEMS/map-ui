@@ -143,7 +143,7 @@ describe('windowManager', () => {
         expect(addedSpy).toHaveBeenLastCalledWith(windowComponent);
       });
 
-      it('should throw if now owner is supplied', () => {
+      it('should throw if no owner is supplied', () => {
         expect(
           windowManager.add.bind(windowManager, { id: 'test' }),
         ).to.throw();

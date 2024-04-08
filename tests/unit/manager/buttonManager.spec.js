@@ -56,7 +56,7 @@ describe('ButtonManager', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(buttonComponent);
       });
-      it('should throw if now owner is supplied', () => {
+      it('should throw if no owner is supplied', () => {
         expect(
           buttonManager.add.bind(buttonManager, { id: 'test' }),
         ).to.throw();

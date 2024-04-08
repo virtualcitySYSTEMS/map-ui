@@ -1,36 +1,7 @@
 <template>
   <v-container class="fill-height pa-0" absolute fluid>
     <VcsNavbar />
-    <v-container
-      class="vcs-main pa-0"
-      :class="{ 'vcs-main-xs': $vuetify.breakpoint.xs }"
-      fluid
-      absolute
-    >
-      <template v-if="$vuetify.breakpoint.xs">
-        <img
-          v-if="mobileLogo"
-          :src="mobileLogo"
-          alt="Logo"
-          draggable="false"
-          class="mobile-logo"
-        />
-      </template>
-      <VcsButton
-        v-if="!$vuetify.breakpoint.smAndUp && $vuetify.breakpoint.mobile"
-        :key="attributionAction.name"
-        :tooltip="attributionAction.title"
-        :icon="attributionAction.icon"
-        :active="attributionAction.active"
-        @click.stop="attributionAction.callback($event)"
-        class="z-index-1 mobile-attribution-btn"
-      />
-      <VcsMap :map-id="mapId" />
-      <MapNavigation v-if="showMapNavigation" />
-      <ToolboxManagerComponent />
-      <WindowManagerComponent />
-      <NotifierComponent />
-    </v-container>
+    <VcsContainer :attribution-action="attributionAction" />
     <v-footer
       absolute
       v-if="$vuetify.breakpoint.smAndUp"
@@ -38,7 +9,6 @@
       class="d-flex gap-1 pa-0"
     >
       <VcsPositionDisplay />
-
       <VcsTextPageFooter
         v-if="imprint"
         :text-page="imprint"
@@ -53,7 +23,7 @@
         class="align-wrapper"
         :entries="attributionEntries"
         :attribution-action="attributionAction"
-      ></VcsAttributionsFooter>
+      />
     </v-footer>
   </v-container>
 </template>
@@ -67,61 +37,29 @@
     right: 0;
     margin-right: 4px !important;
   }
-  .vcs-main {
-    position: absolute;
-    top: 48px;
-    left: 0;
-    right: 0;
-    bottom: 22px;
-  }
-
-  .vcs-main-xs {
-    top: 0;
-    bottom: 56px;
-  }
-
-  .mobile-logo {
-    max-height: 40px;
-    max-width: 70px;
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1;
-  }
-
-  .mobile-attribution-btn {
-    position: fixed;
-    right: 2px;
-    bottom: 36px;
-  }
 </style>
 
 <script>
-  import { v4 as uuid } from 'uuid';
   import {
     computed,
     getCurrentInstance,
     onMounted,
     onUnmounted,
     provide,
-    ref,
     watch,
   } from 'vue';
   import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
   import { VContainer, VFooter } from 'vuetify/lib';
   import { getLogger } from '@vcsuite/logger';
-  import WindowManagerComponent from '../manager/window/WindowManager.vue';
-  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
+  import VcsContainer from './VcsContainer.vue';
   import { ButtonLocation } from '../manager/navbarManager.js';
   import { vcsAppSymbol } from '../pluginHelper.js';
-  import VcsMap from './VcsMap.vue';
   import VcsNavbar from './VcsNavbar.vue';
   import {
     createLinkAction,
     createMapButtonAction,
     createToggleAction,
   } from '../actions/actionHelper.js';
-  import MapNavigation from '../navigation/MapNavigation.vue';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
@@ -130,10 +68,8 @@
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
-  import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
-  import NotifierComponent from '../notifier/NotifierComponent.vue';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
 
@@ -560,28 +496,6 @@
     };
   }
 
-  export function setupMapNavigation(app) {
-    const showMapNavigation = ref(false);
-
-    const listeners = [
-      app.maps.added.addEventListener(() => {
-        showMapNavigation.value = true;
-      }),
-      app.maps.removed.addEventListener(() => {
-        if (app.maps.size < 1) {
-          showMapNavigation.value = false;
-        }
-      }),
-    ];
-
-    return {
-      showMapNavigation,
-      destroy: () => {
-        listeners.forEach((cb) => cb());
-      },
-    };
-  }
-
   /**
    * @description The base component to setup the entire application. To embed the VcsApp, use this component.
    * @vue-prop {string} appId - the id of the app to inject. this will setup listeners on the app to call vcsAppMounted on plugins
@@ -589,18 +503,13 @@
    */
   export default {
     components: {
-      VcsButton,
+      VcsContainer,
       VcsPositionDisplay,
       VcsAttributionsFooter,
       VcsTextPageFooter,
-      MapNavigation,
       VcsNavbar,
-      VcsMap,
-      WindowManagerComponent,
-      ToolboxManagerComponent,
       VContainer,
       VFooter,
-      NotifierComponent,
     },
     props: {
       appId: {
@@ -609,8 +518,6 @@
       },
     },
     setup(props) {
-      const id = uuid();
-      const mapId = `mapCollection-${id}`;
       /** @type {import("../vcsUiApp.js").default} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
@@ -626,14 +533,10 @@
       );
       const { attributionEntries, attributionAction, destroyAttributions } =
         setupAttributions(app);
-      const { showMapNavigation, destroy: destroyMapNavigationListener } =
-        setupMapNavigation(app);
 
       let pluginMountedListener;
       onMounted(() => {
         pluginMountedListener = setupPluginMountedListeners(app);
-        app.maps.setTarget(mapId);
-        app.mounted.raiseEvent(mapId);
       });
 
       onUnmounted(() => {
@@ -646,11 +549,9 @@
         destroyComponentsWindow();
         destroyThemingListener();
         destroyAttributions();
-        destroyMapNavigationListener();
       });
 
       return {
-        mapId,
         mobileLogo: computed(
           () =>
             app.uiConfig.config.value.mobileLogo ??
@@ -679,7 +580,6 @@
         }),
         attributionEntries,
         attributionAction,
-        showMapNavigation,
       };
     },
   };
