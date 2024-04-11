@@ -37,7 +37,7 @@
       partials.forEach((partial) => {
         replacement = replacement.replaceAll(
           new RegExp(`(^|[^>])(${partial})`, 'ig'),
-          '<span class="primary--text">$2</span>',
+          '<span>$1<span class="primary--text">$2</span></span>',
         );
       });
     }
