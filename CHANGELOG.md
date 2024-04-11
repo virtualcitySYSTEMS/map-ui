@@ -9,6 +9,8 @@
 - Fixes a bug in FeatureInfo, where tags were not serialized
 - Fixes a bug in the search Button, where adding a second searchImpl removed the Button.
 - Fixes a bug where the `type` of `search` and `suggest` in a SearchImpl was not async.
+- Fixes a bug in search result highlighting where spaces were removed
+- Replaces deprecated core function `hasSameOrigin` with `isSameOrigin`
 
 # 5.1.8
 

@@ -1,17 +1,15 @@
-import { hasSameOrigin } from '@vcmap/core';
+import { isSameOrigin } from '@vcmap/core';
 
 /**
  * Download a blob
  * @param {string} uri
  * @param {string} fileName
- * @api
- * @export
  */
 export function downloadURI(uri, fileName) {
   const link = document.createElement('a');
   link.download = fileName;
   link.href = uri;
-  if (!hasSameOrigin(uri)) {
+  if (!isSameOrigin(uri)) {
     link.target = '_blank';
   }
   link.click();
