@@ -178,7 +178,7 @@ export function createSearchButtonAction(app) {
       );
       destroyAction = action.destroy;
       searchAction.value = reactive(action.action);
-    } else if (searchAction.value !== null) {
+    } else if (app.search.size === 0 && searchAction.value !== null) {
       destroyAction();
       destroyAction = () => {};
       searchAction.value = null;

@@ -34,8 +34,8 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
 /**
  * @typedef {Object} SearchImpl
  * @property {string} name Name of the implementation. Must be the name of the plugin the SearchImpl is owned by
- * @property {function(string):Array<ResultItem>} search
- * @property {function(string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state
+ * @property {function(string):Promise<Array<ResultItem>>} search
+ * @property {function(string):Promise<Array<string>>} [suggest] // XXX currently not implemented in UI at Beta state
  * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
  * @property {function():void} destroy
  */
