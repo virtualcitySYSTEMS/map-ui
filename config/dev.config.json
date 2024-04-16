@@ -41,9 +41,9 @@
       }
     },
     {
-      "type": "MarkdownFeatureInfoView",
-      "name": "markdownBalloon",
-      "template": "# {{featureId}}\n- Altitude Mode: {{Altitude Mode}}\n",
+      "type": "MarkdownBalloonFeatureInfoView",
+      "name": "markdownFeatureInfo",
+      "template": "# {{featureId}}\n- Altitude Mode: {{Altitude Mode}}\n [Link text Here](https://vc.systems/?id={{id}})",
       "keyMapping": {
         "olcs_storeyNumber": "Storey Number",
         "olcs_storeyHeight": "Storey Height",
@@ -54,7 +54,13 @@
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloonLaerm",
       "title": "Lärmkarte Bayern",
-      "subtitle": "WMS Feature Info"
+      "subtitle": "WMS Feature Info",
+      "window": {
+        "position": {
+          "width": "200px",
+          "maxHeight": "100px"
+        }
+      }
     },
     {
       "type": "TableFeatureInfoView",
@@ -100,7 +106,7 @@
       "zIndex": 11,
       "properties": {
         "title": "Test GeoJSON",
-        "featureInfo": "markdownBalloon",
+        "featureInfo": "markdownFeatureInfo",
         "legend": [
           {
             "type": "StyleLegendItem",

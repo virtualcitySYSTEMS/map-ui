@@ -1,6 +1,8 @@
 import { describe, beforeAll, expect, it } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
+import { VectorLayer } from '@vcmap/core';
+import VcsUiApp from '../../../src/vcsUiApp.js';
 import AbstractFeatureInfoView, {
   applyAttributeFilter,
   applyEmptyAttributesFilter,
@@ -274,6 +276,7 @@ describe('AbstractFeatureInfoView', () => {
         ...filteredAttributes,
         function: `codeLists.values.function.${filteredAttributes.function}`,
       });
+      abstractFeatureInfoView.valueMapping = undefined;
     });
 
     it('should apply key mapping and delete replaced keys', () => {
@@ -283,7 +286,7 @@ describe('AbstractFeatureInfoView', () => {
       const { name } = filteredAttributes;
       expect(abstractFeatureInfoView.getAttributes(feature)).to.be.deep.equal({
         name,
-        'codeLists.keys.function': `codeLists.values.function.${filteredAttributes.function}`,
+        'codeLists.keys.function': filteredAttributes.function,
       });
       expect(
         abstractFeatureInfoView.getAttributes(feature),
@@ -330,6 +333,60 @@ describe('AbstractFeatureInfoView', () => {
       expect(abstractFeatureInfoView.getTags(feature)).to.be.deep.equal({
         name: { tag: 'a', href: 'https://de.wikipedia.org/wiki/testFeature' },
       });
+    });
+  });
+
+  describe('getWindowComponentOptions', () => {
+    let app;
+    let layer;
+
+    beforeAll(() => {
+      app = new VcsUiApp();
+      layer = new VectorLayer({});
+    });
+
+    it('should evaluate a template string in window headerTitle', () => {
+      abstractFeatureInfoView.window.state = { headerTitle: '{{function}}' };
+      expect(
+        abstractFeatureInfoView.getWindowComponentOptions(
+          app,
+          { feature },
+          layer,
+        ).state,
+      ).to.have.property('headerTitle', `${feature.getProperty('function')}`);
+    });
+
+    it('should evaluate a template string in window headerTitle with multiple variables', () => {
+      abstractFeatureInfoView.window.state = {
+        headerTitle: '{{layerName}} - {{function}}',
+      };
+      expect(
+        abstractFeatureInfoView.getWindowComponentOptions(
+          app,
+          { feature },
+          layer,
+        ).state,
+      ).to.have.property(
+        'headerTitle',
+        `${layer.name} - ${feature.getProperty('function')}`,
+      );
+    });
+
+    it('should evaluate a concatenated template string in window headerTitle', () => {
+      abstractFeatureInfoView.window.state = {
+        headerTitle: ['{{layerName}}', ' - ', '{{function}}'],
+      };
+      expect(
+        abstractFeatureInfoView.getWindowComponentOptions(
+          app,
+          { feature },
+          layer,
+        ).state,
+      ).to.have.deep.property('headerTitle', [
+        layer.name,
+        ' - ',
+        `${feature.getProperty('function')}`,
+      ]);
     });
   });
 

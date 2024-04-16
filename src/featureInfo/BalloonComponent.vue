@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto elevation-0" max-width="400" v-if="position">
+  <v-card class="mx-auto elevation-0" v-if="position">
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-2 align-center">
         <v-list-item-avatar tile size="16" class="mr-2">
@@ -28,7 +28,7 @@
 
     <v-card
       class="overflow-y-auto py-2 elevation-0"
-      max-height="250"
+      :max-height="maxHeight"
       color="transparent"
     >
       <slot :attrs="{ ...$props, ...$attrs }">
@@ -56,7 +56,7 @@
   </v-card>
 </template>
 <script>
-  import { inject, onMounted, onUnmounted, watch } from 'vue';
+  import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
   import {
     VCard,
     VDivider,
@@ -68,6 +68,10 @@
     VListItemSubtitle,
     VListItemTitle,
   } from 'vuetify/lib';
+  import {
+    getTargetSize,
+    posToNumber,
+  } from '../manager/window/windowHelper.js';
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import { getTag, getTagOptions } from '../components/tables/VcsTable.vue';
@@ -127,6 +131,28 @@
     setup(props, { attrs }) {
       const app = inject('vcsApp');
       const windowId = attrs['window-state'].id;
+      function getMaxHeight() {
+        if (app.windowManager.get(windowId)?.position?.maxHeight) {
+          return (
+            posToNumber(
+              app.windowManager.get(windowId).position.maxHeight,
+              'maxHeight',
+              getTargetSize(app.maps.target),
+            ) - 49 // 44px header offset with padding 5px
+          );
+        }
+        if (app.windowManager.get(windowId)?.position?.height) {
+          return (
+            posToNumber(
+              app.windowManager.get(windowId).position.height,
+              'height',
+              getTargetSize(app.maps.target),
+            ) - 49 // 44px header offset with padding 5px
+          );
+        }
+        return 250;
+      }
+      const maxHeight = ref(getMaxHeight());
 
       let balloonPositionListener = null;
       const destroyListener = () => {
@@ -152,6 +178,7 @@
             windowId,
             props.position,
           );
+          maxHeight.value = getMaxHeight();
         },
       );
 
@@ -168,6 +195,7 @@
         close,
         getTag,
         getTagOptions,
+        maxHeight,
       };
     },
   };

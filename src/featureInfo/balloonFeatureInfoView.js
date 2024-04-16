@@ -115,7 +115,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
               properties.attributes,
               this.balloonTitle,
             )
-          : properties.layerProperties.title,
+          : properties.layerProperties.title || layer.name,
       balloonSubtitle:
         this.balloonSubtitle != null
           ? extractNestedKey(

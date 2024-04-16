@@ -1,6 +1,7 @@
 import { VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { defaultTagOptions } from '../components/tables/VcsTable.vue';
+import { replaceAttributes } from '../application/markdownHelper.js';
 
 /**
  * @typedef {Object} FeatureInfoProps
@@ -29,7 +30,7 @@ import { defaultTagOptions } from '../components/tables/VcsTable.vue';
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values
  * @property {Object<string,HTMLTagOptions>} [tags] - object with keys rendered as special html element. Value contains html options
- * @property {import("../manager/window/windowManager.js").WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined.
+ * @property {import("../manager/window/windowManager.js").WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined. headerTitle of window state can be a template string, e.g. "{{myAttribute}}" or ["{{layerName}}", " - ", "{{myAttribute}}"]
  */
 
 /**
@@ -240,6 +241,32 @@ export function applyEmptyAttributesFilter(attributes) {
 }
 
 /**
+ *
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("../manager/window/windowManager.js").WindowState} state
+ * @param {Object} attributes
+ * @returns {import("../manager/window/windowManager.js").WindowState}
+ */
+function getWindowState(app, state, attributes) {
+  let headerTitle = state?.headerTitle;
+  if (headerTitle) {
+    if (Array.isArray(headerTitle)) {
+      headerTitle = headerTitle.map((item) =>
+        replaceAttributes(item, attributes),
+      );
+    } else {
+      headerTitle = replaceAttributes(headerTitle, attributes);
+    }
+  }
+  return {
+    headerIcon: '$vcsInfo',
+    infoUrl: app.getHelpUrlCallback('/tools/infoTool.html'),
+    ...state,
+    headerTitle: headerTitle || attributes.layerName,
+  };
+}
+
+/**
  * Abstract class to be extended by FeatureInfoView classes
  * Subclasses must always provide a component and may overwrite class methods.
  * @abstract
@@ -396,11 +423,10 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   getWindowComponentOptions(app, featureInfo, layer) {
     return {
-      state: this.window.state ?? {
-        headerTitle: layer.properties?.title || layer.name,
-        headerIcon: '$vcsInfo',
-        infoUrl: app.getHelpUrlCallback('/tools/infoTool.html'),
-      },
+      state: getWindowState(app, this.window.state, {
+        ...this.getAttributes(featureInfo.feature),
+        layerName: layer.properties?.title || layer.name,
+      }),
       slot: this.window.slot ?? WindowSlot.DYNAMIC_RIGHT,
       component: this.component,
       position: this.window.position,

@@ -514,6 +514,26 @@
   "featureInfo": [
     {
       "type": "TableFeatureInfoView",
+      "name": "tableAllWithTemplateHeader",
+      "keyMapping": {
+        "roofType": "codeLists.keys.roofType",
+        "function": "codeLists.keys.function"
+      },
+      "valueMapping": {
+        "roofType": "codeLists.values.roofType.${value}",
+        "function": {
+          "1000": "codeLists.values.function.1000",
+          "1111": "myOwnMapping1111"
+        }
+      },
+      "window": {
+        "state": {
+          "headerTitle": ["{{layerName}}", ": ", "{{gml:name}}"]
+        }
+      }
+    },
+    {
+      "type": "TableFeatureInfoView",
       "name": "tableAll",
       "keyMapping": {
         "roofType": "codeLists.keys.roofType",
@@ -524,6 +544,11 @@
         "function": {
           "1000": "codeLists.values.function.1000",
           "1111": "myOwnMapping1111"
+        }
+      },
+      "window": {
+        "state": {
+          "headerTitle": ["{{layerName}}", ": ", "{{gml:name}}"]
         }
       }
     },
@@ -537,6 +562,12 @@
       "valueMapping": {
         "function": "codeLists.values.function.${value}"
       }
+    },
+    {
+      "type": "AddressBalloonFeatureInfoView",
+      "name": "addressBalloon",
+      "balloonSubtitle": "",
+      "addressName": "name"
     }
   ],
   "maps": [
@@ -637,7 +668,7 @@
           "Transparentbuildings"
         ],
         "title": "Berlin - LOD2",
-        "featureInfo": "tableAll"
+        "featureInfo": "tableAllWithTemplateHeader"
       }
     },
     {
@@ -655,7 +686,7 @@
       },
       "activeOnStartup": false,
       "properties": {
-        "featureInfo": "tableAll",
+        "featureInfo": "addressBalloon",
         "title": "layers.osmBuildingFootprints.title",
         "tooltip": "OpenStreetMap Building Polygons"
       }

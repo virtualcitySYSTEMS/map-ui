@@ -4,7 +4,7 @@ import BalloonFeatureInfoView, {
 import AddressBalloonComponent from './AddressBalloonComponent.vue';
 
 /**
- * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions &{
+ * @typedef {import("./balloonFeatureInfoView.js").BalloonFeatureInfoViewOptions & {
  *   addressName?: string|null,
  *   street?: string|null,
  *   number?: string|null,

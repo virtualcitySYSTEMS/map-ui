@@ -110,13 +110,14 @@ app.featureInfoClassRegistry.registerClass(
 By passing a Vue Component to your view class constructor, you actually register a pair containing the API within the view class and the user interface within the vue component.
 A couple of default views are already registered on the VcsApp:
 
-| View class                                                                           | VueComponent                                                              | description                                                                |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                   | [TableComponent](../src/components/tables/VcsTable.vue)                   | A sortable table view showing key value pairs of feature properties.       |
-| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                 | Inline Iframe Component                                                   | An iframe view with templatable url.                                       |
-| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)               | [BalloonComponent](../src/featureInfo/BalloonComponent.vue)               | A balloon view rendering feature properties.                               |
-| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js) | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.vue) | A balloon view rendering address information of a feature.                 |
-| [MarkdownFeatureInfoView](../src/featureInfo/markdownFeatureInfoView.js)             | Inline rendered markdown template                                         | A markdown based view, see [this section](#Markdown-Rendering) for details |
+| View class                                                                             | VueComponent                                                              | description                                                                |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                     | [TableComponent](../src/components/tables/VcsTable.vue)                   | A sortable table view showing key value pairs of feature properties.       |
+| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                   | Inline Iframe Component                                                   | An iframe view with templatable url.                                       |
+| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)                 | [BalloonComponent](../src/featureInfo/BalloonComponent.vue)               | A balloon view rendering feature properties.                               |
+| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js)   | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.vue) | A balloon view rendering address information of a feature.                 |
+| [MarkdownBalloonFeatureInfoView](../src/featureInfo/markdownBalloonFeatureInfoView.js) | Inline rendered markdown template as a balloon                            | A markdown based view, see [this section](#Markdown-Rendering) for details |
+| [MarkdownFeatureInfoView](../src/featureInfo/markdownFeatureInfoView.js)               | Inline rendered markdown template                                         | A markdown based view, see [this section](#Markdown-Rendering) for details |
 
 > **Balloon** Views are a special type of view. In contrast to the other view classes, the balloon is rendered at a certain position in the map. The balloon position is updated on scene render.
 > To write a custom balloon view, simply extend [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js).
@@ -164,6 +165,107 @@ On a layer properties bag, this FeatureInfo definition can be assigned referenci
 ```
 
 If a feature of this layer is clicked by a user or selected via FeatureInfo's API, the property is evaluated and the corresponding FeatureInfo view window is opened.
+
+## Feature Info Title
+
+The default title of a feature info window is the name of the clicked layer.
+For balloons there is additionally a subtitle, which is set to the clicked feature's id.
+
+Both, window and balloon title can be configured, though.
+
+### Window Title
+
+The window title can be configured via the window state. It supports strings, i18n keys or template strings using feature properties.
+Here some examples:
+
+- simple string
+
+```json
+{
+  "type": "TitleFeatureInfoView",
+  "name": "stringTitle",
+  "window": {
+    "state": {
+      "headerTitle": "My Feature Info Title"
+    }
+  }
+}
+```
+
+- i18n key
+
+```json
+{
+  "type": "TitleFeatureInfoView",
+  "name": "i18nTitle",
+  "window": {
+    "state": {
+      "headerTitle": "myI18nEntry.featureInfo.title"
+    }
+  }
+}
+```
+
+- template string
+
+```json
+{
+  "type": "TitleFeatureInfoView",
+  "name": "stringTitle",
+  "window": {
+    "state": {
+      "headerTitle": "{{gml:name}}"
+    }
+  }
+}
+```
+
+or multiple templates
+
+```json
+{
+  "type": "TitleFeatureInfoView",
+  "name": "stringTitle",
+  "window": {
+    "state": {
+      "headerTitle": "{{layerName}}: {{gml:name}}"
+    }
+  }
+}
+```
+
+- concatenated title using i18n and template
+
+```json
+{
+  "type": "TitleFeatureInfoView",
+  "name": "stringTitle",
+  "window": {
+    "state": {
+      "headerTitle": ["myI18n.key", ": ", "{{gml:name}}"]
+    }
+  }
+}
+```
+
+> For concatenating a title all kind of combinations (string, i18n, template) are possible. Be aware, that the window header space is limited!
+
+### Balloon Title & Subtitle
+
+The balloon title and subtitle are options of the [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js).
+It supports again strings and, i18n keys. Feature properties are also evaluated. In contrary to window title they must not be wrapped in template brackets!
+A balloon with a string title and a feature property as subtitle would look like:
+
+```json
+{
+  "type": "BalloonFeatureInfoView",
+  "name": "genericBalloon",
+  "title": "This is a Balloon Title",
+  "subtitle": "olcs_altitudeMode"
+}
+```
+
+> Do not use template brackets for balloon title or subtitle!
 
 ## Attribute Key Value Mapping & Filtering
 
@@ -328,12 +430,7 @@ The following example can illustrate this:
 - this is a listing
 - with the {{ property }} "property"
 - and the {{ missing }} missing property
+- with image ![](https://vc.systems/images/{{logo}}.png)
+- with video <video src=\"path/to/video.mp4\" width=\"320\" height=\"240\" controls></video>
+- with link [Link text Here](https://vc.systems/?id={{id}})
 ```
-
-would render to something like this:
-
-# Title
-
-- this is a listing
-- with the property "property"
-- and the missing property

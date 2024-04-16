@@ -30,9 +30,10 @@ import TableFeatureInfoView from './tableFeatureInfoView.js';
 import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
-import MarkdownFeatureInfoView from './markdowFeatureInfoView.js';
+import MarkdownFeatureInfoView from './markdownFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
+import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
 
 /** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
@@ -518,6 +519,10 @@ featureInfoClassRegistry.registerClass(
 featureInfoClassRegistry.registerClass(
   AddressBalloonFeatureInfoView.className,
   AddressBalloonFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  MarkdownBalloonFeatureInfoView.className,
+  MarkdownBalloonFeatureInfoView,
 );
 featureInfoClassRegistry.registerClass(
   MarkdownFeatureInfoView.className,

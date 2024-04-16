@@ -2,7 +2,7 @@ import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { VectorLayer } from '@vcmap/core';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom.js';
-import MarkdownFeatureInfoView from '../../../src/featureInfo/markdowFeatureInfoView.js';
+import MarkdownFeatureInfoView from '../../../src/featureInfo/markdownFeatureInfoView.js';
 
 describe('MarkdownFeatureInfoView', () => {
   describe('getting config', () => {

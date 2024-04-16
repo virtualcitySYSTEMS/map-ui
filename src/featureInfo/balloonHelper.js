@@ -78,17 +78,24 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
   if (!windowPosition) {
     return;
   }
-  windowManager.setWindowPositionOptions(
-    id,
-    getWindowPositionOptionsFromMapEvent(
-      new Cartesian2(
-        windowPosition.x - balloonOffset.x,
-        windowPosition.y - balloonOffset.y,
-      ),
-      target,
-      WindowAlignment.BOTTOM_LEFT,
+
+  const { width, height, maxWidth, maxHeight } = windowManager.get(id).position;
+  const mapWindowPosition = getWindowPositionOptionsFromMapEvent(
+    new Cartesian2(
+      windowPosition.x - balloonOffset.x,
+      windowPosition.y - balloonOffset.y,
     ),
+    target,
+    WindowAlignment.BOTTOM_LEFT,
   );
+
+  windowManager.setWindowPositionOptions(id, {
+    width,
+    height,
+    maxWidth,
+    maxHeight,
+    ...mapWindowPosition,
+  });
 }
 
 /**

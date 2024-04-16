@@ -2,7 +2,11 @@
 
 - Add flight actions for import, export, zoom and list item player
 - Adds the `MarkdownFeatureInfoView` to render simple markdown feature info views.
+- Adds the `MarkdownBalloonFeatureInfoView` to render simple markdown balloon feature info views.
 - Add new PanelManager to add and remove panels. See [PanelManager](documentation/PANELS.md)
+- Add possibility to define width and height options for BalloonFeatureInfo
+- Add support for template strings in window state headerTitle. See [FeatureInfo](documentation/FEATURE_INFO.md#window-title)
+- Fix bug, where balloons were clipped to target
 
 # 5.1.9
 

@@ -60,6 +60,7 @@
 
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
+  import BalloonComponent from '../../featureInfo/BalloonComponent.vue';
   import {
     getPositionAppliedOnTarget,
     getTargetSize,
@@ -110,6 +111,19 @@
         const parentComponent =
           !windowComponent?.state?.dockable &&
           windowManager.get(windowComponent.parentId);
+
+        if (
+          windowComponent.component.name === BalloonComponent.name ||
+          (windowComponent.component.components &&
+            Object.hasOwn(
+              windowComponent.component.components,
+              BalloonComponent.name,
+            ))
+        ) {
+          // do not clip balloons to target
+          return windowComponent?.position;
+        }
+
         return getPositionAppliedOnTarget(
           windowComponent?.position,
           targetSize.value,
