@@ -138,7 +138,7 @@ const messages = {
     },
     viewpoint: {
       name: 'Name (ID)',
-      viewpointTitle: 'Title',
+      title: 'Title',
       titlePlaceholder: 'Title of viewpoint',
       groundPosition: 'Ground position',
       cameraPosition: 'Camera position',

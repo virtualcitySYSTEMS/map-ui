@@ -78,10 +78,10 @@ class CollectionManager {
      */
     this._itemFilters = [];
     /**
-     * @type {Array<{actions:Array<import("../../actions/actionHelper.js").VcsAction>,owner:string|symbol,collectionComponentIds:Array<string>}>}
+     * @type {Array<{ownedActions:Array<OwnedAction>,actions:Array<import("../../actions/actionHelper.js").VcsAction>,owner:string|symbol,collectionComponentIds:Array<string>}>}
      * @private
      */
-    this._actions = [];
+    this._itemActions = [];
   }
 
   /**
@@ -163,12 +163,10 @@ class CollectionManager {
       .forEach(({ collectionComponentIds, ...itemFilter }) =>
         collectionComponent.addItemFilter(itemFilter),
       );
-    this._actions
+    this._itemActions
       .filter(filterIds)
-      .forEach(({ actions, owner: actionOwner }) =>
-        collectionComponent.addActions(
-          actions.map(({ action }) => ({ action, actionOwner })),
-        ),
+      .forEach(({ ownedActions }) =>
+        collectionComponent.addActions(ownedActions),
       );
 
     this.added.raiseEvent(collectionComponent);
@@ -342,7 +340,7 @@ class CollectionManager {
     }
 
     if (
-      !this._actions.find(
+      !this._itemActions.find(
         (cached) => cached.actions === actions && cached.owner === owner,
       )
     ) {
@@ -353,8 +351,9 @@ class CollectionManager {
           component.addActions(ownedActions);
         }
       });
-      this._actions.push({
+      this._itemActions.push({
         actions,
+        ownedActions,
         owner,
         collectionComponentIds,
       });
@@ -368,13 +367,16 @@ class CollectionManager {
   removeActions(actions, owner) {
     check(owner, [String, Symbol]);
 
-    const ownedActions = actions.map((action) => ({ action, owner }));
-    [...this._collectionComponents.values()].forEach((collectionComponent) => {
-      collectionComponent.removeActions(ownedActions);
-    });
-    this._actions = this._actions.filter(
-      (cached) => !(cached.actions === actions && cached.owner === owner),
-    );
+    const idx = this._itemActions.findIndex((a) => a.actions === actions);
+    if (idx > -1) {
+      const { collectionComponentIds, ownedActions } = this._itemActions[idx];
+      collectionComponentIds
+        .map((id) => this.get(id))
+        .forEach((collectionComponent) => {
+          collectionComponent.removeActions(ownedActions);
+        });
+      this._itemActions.splice(idx, 1);
+    }
   }
 
   /**
@@ -399,8 +401,8 @@ class CollectionManager {
     this._itemFilters = this._itemFilters.filter((itemFilter) => {
       return itemFilter.owner !== owner;
     });
-    this._actions = this._actions.filter(
-      (ownedAction) => ownedAction.owner !== owner,
+    this._itemActions = this._itemActions.filter(
+      (itemAction) => itemAction.owner !== owner,
     );
   }
 
@@ -422,7 +424,7 @@ class CollectionManager {
     });
     this._itemMappings = [];
     this._itemFilters = [];
-    this._actions = [];
+    this._itemActions = [];
   }
 
   /**

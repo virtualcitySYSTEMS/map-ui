@@ -281,14 +281,14 @@ describe('CollectionManager', () => {
         'test',
       );
       collectionManager.addActions(actions, 'test', [collectionComponent1.id]);
-      expect(collectionManager._actions).to.have.length(1);
+      expect(collectionManager._itemActions).to.have.length(1);
       expect(collectionComponent1._actions.value).to.have.length(1);
       expect(collectionComponent2._actions.value).to.have.length(0);
     });
 
     it('should add cached actions on collectionComponent added', () => {
       collectionManager.addActions(actions, 'test', ['collectionComponent1']);
-      expect(collectionManager._actions).to.have.length(1);
+      expect(collectionManager._itemActions).to.have.length(1);
       collectionComponent1 = collectionManager.add(
         { ...collectionComponentOptions, id: 'collectionComponent1' },
         'test',
@@ -299,7 +299,43 @@ describe('CollectionManager', () => {
     it('should not add the same actions twice', () => {
       collectionManager.addActions(actions, 'test', ['collectionComponent1']);
       collectionManager.addActions(actions, 'test', ['collectionComponent1']);
-      expect(collectionManager._actions).to.have.length(1);
+      expect(collectionManager._itemActions).to.have.length(1);
+    });
+  });
+
+  describe('remove actions', () => {
+    let collectionManager;
+    let collectionComponentOptions;
+    let collectionComponent1;
+    let actions;
+
+    beforeAll(() => {
+      collectionManager = new CollectionManager();
+      collectionComponentOptions = {
+        collection: new IndexedCollection(),
+      };
+      actions = [{ name: 'action', callback: () => {} }];
+    });
+
+    afterAll(() => {
+      collectionManager.destroy();
+    });
+
+    afterEach(() => {
+      collectionManager.clear();
+    });
+
+    it('should remove actions from collectionComponents of provided ids', () => {
+      collectionComponent1 = collectionManager.add(
+        collectionComponentOptions,
+        'test',
+      );
+      collectionManager.addActions(actions, 'test', [collectionComponent1.id]);
+      expect(collectionManager._itemActions).to.have.length(1);
+      expect(collectionComponent1._actions.value).to.have.length(1);
+      collectionManager.removeActions(actions, 'test');
+      expect(collectionManager._itemActions).to.have.length(0);
+      expect(collectionComponent1._actions.value).to.have.length(0);
     });
   });
 
