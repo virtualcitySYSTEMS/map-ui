@@ -8,6 +8,8 @@
 - Add support for template strings in window state headerTitle. See [FeatureInfo](documentation/FEATURE_INFO.md#window-title)
 - Fix bug, where balloons were clipped to target
 - Fixes a bug where CollectionManager `removeActions` was not working as expected
+- Fixes content tree state, when switching map view
+- Updates @vcmap/core to version 5.2.0
 
 # 5.1.9
 

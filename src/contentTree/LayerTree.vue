@@ -19,6 +19,7 @@
   import { VSheet } from 'vuetify/lib';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
+  const openStateMapSymbol = Symbol('openStateMap');
   /**
    * @description
    * Implements Treeview and shows content tree
@@ -35,23 +36,48 @@
     setup(props) {
       const app = inject('vcsApp');
       const open = app.contentTree.getTreeOpenStateRef(props.windowState.id);
-
-      const initOpen = app.contentTree
-        .getChildrenForSubTree(props.windowState.id)
-        .filter((i) => i.initOpen)
-        .map((i) => i.name);
-
       const tree = app.contentTree.getComputedVisibleTree(props.windowState.id);
 
+      function getWithVisibleChildren(item) {
+        return [
+          item.name,
+          ...item.visibleChildren.map((c) => getWithVisibleChildren(c)).flat(),
+        ];
+      }
+
+      if (!app.contentTree[openStateMapSymbol]) {
+        app.contentTree[openStateMapSymbol] = new Map();
+      }
+      /**
+       * @type {Map<string, string[]>}
+       */
+      const openStateMap = app.contentTree[openStateMapSymbol];
       // watch for new visible children, which should start init open
-      watch(tree, (value, oldValue) => {
-        const changed = value
-          .filter(
-            ({ name }) =>
-              !oldValue.find((o) => o.name === name) && initOpen.includes(name),
-          )
-          .map(({ name }) => name);
-        open.value.push(...changed);
+      watch(
+        tree,
+        (value, oldValue) => {
+          if (openStateMap.has(app.maps.activeMap?.name)) {
+            open.value = openStateMap.get(app.maps.activeMap?.name);
+          } else {
+            const items = [...app.contentTree]
+              .filter((i) => i.initOpen && i.getTreeViewItem().visible)
+              .map(({ name }) => name);
+            const oldValues = oldValue
+              ? oldValue.map(getWithVisibleChildren).flat()
+              : [];
+            const changed = items.filter(
+              (name) => !oldValues.includes(name) && !open.value.includes(name),
+            );
+            open.value.push(...changed);
+          }
+        },
+        { immediate: true },
+      );
+
+      watch(open, () => {
+        if (app.maps.activeMap) {
+          openStateMap.set(app.maps.activeMap.name, [...open.value]);
+        }
       });
 
       return {

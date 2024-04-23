@@ -67,6 +67,7 @@ import createSiteConfig from './siteConfig.js';
  * @property {import("vue").Component & { title: string | undefined}} component - A editor component to configure a plugin or item
  * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
  * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
+ * @property {function():string} [infoUrlCallback] - An optional function returning an url referencing help or further information regarding the config editor.
  */
 
 /**
