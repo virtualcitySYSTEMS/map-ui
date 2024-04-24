@@ -7,13 +7,17 @@
     "@vcmap/draw": "^2.0.0",
     "@vcmap/create-link": "^1.0.1",
     "@vcmap/search-nominatim": "^1.0.1",
-    "@vcmap/multi-view": "^1.0.1",
+    "@vcmap/multi-view": "^1.1.0",
     "@vcmap/cesium-filters": "^1.0.1",
     "@vcmap/viewshed": "^2.0.1",
     "@vcmap/measurement": "^1.0.2",
-    "@vcmap/flight": "^1.0.1"
+    "@vcmap/flight": "^1.1.0",
+    "@vcmap/transparent-terrain": "^1.0.1",
+    "@vcmap/search-coordinate": "^1.0.0",
+    "@vcmap/clipping-tool": "^1.0.0",
+    "@vcmap/height-profile": "^1.0.0"
   },
   "optionalDependencies": {
-    "@vcmap/planning": "^5.0.1"
+    "@vcmap/planning": "^5.1.0"
   }
 }
