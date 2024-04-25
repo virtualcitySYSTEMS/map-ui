@@ -1,6 +1,7 @@
 # 5.2.1
 
 - Fixes a bug in the windowManager where positions could not be given as a number string
+- Add export of `replaceAttributes` which inserts attributes into a template string.
 
 # 5.2
 

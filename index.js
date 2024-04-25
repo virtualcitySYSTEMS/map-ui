@@ -11,7 +11,10 @@ export {
   createGoToViewpointAction,
   createZoomToFeatureAction,
 } from './src/actions/actionHelper.js';
-export { parseAndSanitizeMarkdown } from './src/application/markdownHelper.js';
+export {
+  parseAndSanitizeMarkdown,
+  replaceAttributes,
+} from './src/application/markdownHelper.js';
 export {
   createStateRefAction,
   StateActionState,
