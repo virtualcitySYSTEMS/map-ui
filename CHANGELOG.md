@@ -1,3 +1,7 @@
+# 5.2.1
+
+- Fixes a bug in the windowManager where positions could not be given as a number string
+
 # 5.2
 
 - Add flight actions for import, export, zoom and list item player

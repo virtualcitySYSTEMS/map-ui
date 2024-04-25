@@ -155,6 +155,10 @@ export function posToPixel(pos) {
   if (typeof pos === 'number') {
     return `${pos}px`;
   }
+  // if a string with just a number, add a px example: "220"
+  if (/^\d+$/.test(pos)) {
+    return `${pos}px`;
+  }
   return pos;
 }
 
