@@ -159,6 +159,12 @@ async function setupApp(app) {
   pluginWithoutGetState[pluginModuleUrlSymbol] = 'http://localhost/_test';
   app.plugins.add(pluginWithoutGetState);
 
+  const pluginWithEmptyState = {
+    name: 'pluginWithEmptyState',
+  };
+  pluginWithEmptyState[pluginModuleUrlSymbol] = 'http://localhost/_test';
+  app.plugins.add(pluginWithEmptyState);
+
   const activeMap = new OpenlayersMap({ name: 'activeMap' });
   app.maps.add(activeMap);
   await app.maps.setActiveMap(activeMap.name);
@@ -270,6 +276,11 @@ describe('VcsUiApp', () => {
 
         it('should not add plugins without a getState function', () => {
           expect(state.plugins.find((s) => s.name === 'pluginWithoutGetState'))
+            .to.be.undefined;
+        });
+
+        it('should not add plugins with empty state object', () => {
+          expect(state.plugins.find((s) => s.name === 'pluginWithEmptyState'))
             .to.be.undefined;
         });
 
