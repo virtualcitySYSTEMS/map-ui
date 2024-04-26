@@ -3,6 +3,7 @@
 - Fixes a bug in the windowManager where positions could not be given as a number string
 - Add export of `replaceAttributes` which inserts attributes into a template string.
 - Fixes a bug in app `getState` where empty plugin state objects where added to the app state
+- Adds `IframeWmsFeatureInfoView` to render text/html featureInfo responses of WMS layers
 
 # 5.2
 

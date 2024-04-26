@@ -1,24 +1,5 @@
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-
-/**
- * @description An iframe component
- * @vue-prop {string} src - Specifies the address of the document to embed in the <iframe>
- * @vue-prop {string} [title] - optional title for the <iframe>
- */
-const IframeComponent = {
-  name: 'IframeComponent',
-  props: {
-    src: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      default: undefined,
-    },
-  },
-  template: '<iframe :src="src" :title="title" />',
-};
+import IframeComponent from './IframeComponent.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions

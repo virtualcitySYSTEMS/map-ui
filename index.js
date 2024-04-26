@@ -167,7 +167,9 @@ export {
 } from './src/featureInfo/balloonHelper.js';
 export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
 export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';
+export { default as IframeComponent } from './src/featureInfo/IframeComponent.vue';
 export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.js';
+export { default as IframeWmsFeatureInfoView } from './src/featureInfo/iframeWmsFeatureInfoView.js';
 export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.js';
 export { default as MarkdownFeatureInfoView } from './src/featureInfo/markdownFeatureInfoView.js';
 export { default as MarkdownBalloonFeatureInfoView } from './src/featureInfo/markdownBalloonFeatureInfoView.js';
