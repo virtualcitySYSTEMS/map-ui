@@ -1,3 +1,7 @@
+# 5.2.2
+
+- Fixes a bug, where panel resizing was not stopped on mouse leave
+
 # 5.2.1
 
 - Fixes a bug in the windowManager where positions could not be given as a number string

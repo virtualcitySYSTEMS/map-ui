@@ -2,6 +2,7 @@
   <div
     class="vcs-panel-frame"
     @mouseup="setResizing(undefined)"
+    @mouseleave="setResizing(undefined)"
     ref="panelFrameRef"
   >
     <PanelComponent
