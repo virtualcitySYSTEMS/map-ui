@@ -1,6 +1,8 @@
 # 5.2.2
 
 - Fixes a bug, where panel resizing was not stopped on mouse leave
+- Updated @vcmap/core
+- Added search-esri, search-wfs and link-button Plugins to MapBundle
 
 # 5.2.1
 
