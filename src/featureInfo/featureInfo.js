@@ -34,6 +34,7 @@ import MarkdownFeatureInfoView from './markdownFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
+import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
 
 /** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
@@ -511,6 +512,10 @@ featureInfoClassRegistry.registerClass(
 featureInfoClassRegistry.registerClass(
   IframeFeatureInfoView.className,
   IframeFeatureInfoView,
+);
+featureInfoClassRegistry.registerClass(
+  IframeWmsFeatureInfoView.className,
+  IframeWmsFeatureInfoView,
 );
 featureInfoClassRegistry.registerClass(
   BalloonFeatureInfoView.className,

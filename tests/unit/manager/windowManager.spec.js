@@ -28,7 +28,7 @@ describe('windowManager', () => {
         bottom: '15%',
       });
       expect(windowPosition.left).to.equal('15px');
-      expect(windowPosition.right).to.equal('15');
+      expect(windowPosition.right).to.equal('15px');
       expect(windowPosition.top).to.equal('20px');
       expect(windowPosition.bottom).to.equal('15%');
     });

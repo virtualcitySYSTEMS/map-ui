@@ -1,3 +1,16 @@
+# 5.2.2
+
+- Fixes a bug, where panel resizing was not stopped on mouse leave
+- Updated @vcmap/core
+- Added search-esri, search-wfs and link-button Plugins to MapBundle
+
+# 5.2.1
+
+- Fixes a bug in the windowManager where positions could not be given as a number string
+- Add export of `replaceAttributes` which inserts attributes into a template string.
+- Fixes a bug in app `getState` where empty plugin state objects where added to the app state
+- Adds `IframeWmsFeatureInfoView` to render text/html featureInfo responses of WMS layers
+
 # 5.2
 
 - Add flight actions for import, export, zoom and list item player

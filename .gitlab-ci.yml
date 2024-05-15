@@ -182,11 +182,6 @@ publish:
   script:
     - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
     - npm publish --registry https://registry.npmjs.org --access public
-    - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
-    - mkdir ./dist/config
-    - cp ./config/www.config.json ./dist/config/www.config.json
-    - echo "{\"modules\":[\"config/www.config.json\"]}" > ./dist/app.config.json
-    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
     - VERSION=$(node -pe "require('./package.json').version")
     - npm pack
     - npm run bundle

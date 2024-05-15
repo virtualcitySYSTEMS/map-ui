@@ -557,7 +557,11 @@ class VcsUiApp extends VcsApp {
         )
         .map(async (p) => {
           try {
-            return { name: p.name, state: await p.getState(forUrl) };
+            const pluginState = await p.getState(forUrl);
+            if (Object.keys(pluginState).length > 0) {
+              return { name: p.name, state: pluginState };
+            }
+            return null;
           } catch (e) {
             getLogger().error(e);
             return null;

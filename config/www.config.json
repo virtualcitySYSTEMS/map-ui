@@ -1829,6 +1829,24 @@
   ],
   "plugins": [
     {
+      "name": "@vcmap/link-button",
+      "entry": "plugins/@vcmap/link-button/index.js",
+      "buttons": [
+        {
+          "buttonLocation": 5,
+          "templateUrl": "https://new.virtualcitymap.de/?state=[[[{{cameraPosition}}],[{{groundPosition}}],{{distance}},{{heading}},{{pitch}},{{roll}}],\"cesium\",[\"VC Map Demo\"]]",
+          "title": "Zweites Fenster öffnen",
+          "projection": {}
+        },
+        {
+          "buttonLocation": 5,
+          "templateUrl": "https://www.virtualcitymap.de/?cameraPosition={{cameraPosition}}&groundPosition={{groundPosition}}&distance={{distance}}&pitch={{pitch}}&heading={{heading}}&roll={{roll}}#/",
+          "title": "Alte 4.3 Map öffnen",
+          "projection": {}
+        }
+      ]
+    },
+    {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
     },
@@ -1913,6 +1931,22 @@
       "serviceUrl": "https://demo.virtualcityplanner.de/",
       "projectId": "rBW58EJz5RwCz75Q3",
       "mapId": "csunCGqmQE8Py4KCe"
+    },
+    {
+      "name": "@vcmap/transparent-terrain",
+      "entry": "plugins/@vcmap/transparent-terrain/index.js"
+    },
+    {
+      "name": "@vcmap/search-coordinate",
+      "entry": "plugins/@vcmap/search-coordinate/index.js"
+    },
+    {
+      "name": "@vcmap/clipping-tool",
+      "entry": "plugins/@vcmap/clipping-tool/index.js"
+    },
+    {
+      "name": "@vcmap/height-profile",
+      "entry": "plugins/@vcmap/height-profile/index.js"
     }
   ]
 }
