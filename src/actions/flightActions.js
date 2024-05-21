@@ -326,7 +326,7 @@ export function createZoomToFlightAction(app, instance) {
     action,
     destroy: () => {
       listener();
-      flightVis.destroy();
+      flightVis?.destroy();
     },
   };
 }

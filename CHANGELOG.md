@@ -1,3 +1,7 @@
+# 5.2.4
+
+- Fixes bug in createZoomToFlightAction
+
 # 5.2.2
 
 - Fixes a bug, where panel resizing was not stopped on mouse leave
