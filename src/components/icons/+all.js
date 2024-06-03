@@ -24,6 +24,7 @@ import CompassIcon from './CompassIcon.vue';
 import ComponentsIcon from './ComponentsIcon.vue';
 import ComponentsPlusIcon from './ComponentsPlusIcon.vue';
 import ConeIcon from './ConeIcon.vue';
+import CrosshairIcon from './CrosshairIcon.vue';
 import DimensionsHouseIcon from './DimensionsHouseIcon.vue';
 import EditIcon from './EditIcon.vue';
 import EditVerticesIcon from './EditVerticesIcon.vue';
@@ -217,6 +218,9 @@ const IconMap = {
   },
   cone: {
     component: ConeIcon,
+  },
+  crosshair: {
+    component: CrosshairIcon,
   },
   dimensionsHouse: {
     component: DimensionsHouseIcon,

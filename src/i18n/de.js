@@ -42,6 +42,14 @@ const messages = {
     pitchTooltip: 'Kameraneigung: {0}°',
     overviewMapTooltip: 'Übersichtskarte',
     homeButton: 'Zur Startansicht springen',
+    locator: {
+      errorAccess: 'Der Zugriff auf Ihre Position wurde verweigert.',
+      errorCurrentPosition:
+        'Ihre momentane Position konnte leider nicht erfasst werden.',
+      errorConnection:
+        'Während dem ermitteln Ihrer Position wurde die Verbindung verloren',
+      errorPosition: 'Ihre Position kann leider nicht erfasst werden',
+    },
   },
   categoryManager: {
     title: 'Mein Arbeitsbereich',

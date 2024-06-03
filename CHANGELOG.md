@@ -1,3 +1,7 @@
+# 5.3
+
+- Added locator for mobile
+
 # 5.2.4
 
 - Fixes bug in createZoomToFlightAction
@@ -7,6 +11,7 @@
 - Fixes a bug, where panel resizing was not stopped on mouse leave
 - Updated @vcmap/core
 - Added search-esri, search-wfs and link-button Plugins to MapBundle
+- Added locator for mobile
 
 # 5.2.1
 

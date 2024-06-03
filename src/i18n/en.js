@@ -42,6 +42,14 @@ const messages = {
     pitchTooltip: 'Camera pitch: {0}°',
     overviewMapTooltip: 'Show overview map',
     homeButton: 'Go to home view',
+    locator: {
+      errorAccess: 'Access to your location has been denied',
+      errorCurrentPosition:
+        'Unfortunately, your current position could not be recorded',
+      errorConnection:
+        'The connection was lost while your position was being determined',
+      errorPosition: 'Unfortunately, your position cannot be recorded',
+    },
   },
   categoryManager: {
     title: 'My Workspace',

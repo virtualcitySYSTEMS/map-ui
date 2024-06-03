@@ -8,6 +8,17 @@
     <v-row v-if="isOblique">
       <ObliqueRotation v-model="heading" />
     </v-row>
+    <template v-if="$vuetify.breakpoint.mobile">
+      <v-row justify="center">
+        <OrientationToolsButton
+          v-if="showLocatorButton"
+          :icon="locatorAction.icon"
+          :tooltip="locatorAction.title"
+          :color="locatorAction.active ? 'primary' : undefined"
+          @click.stop="locatorAction.callback($event)"
+        ></OrientationToolsButton>
+      </v-row>
+    </template>
     <template v-if="$vuetify.breakpoint.mdAndUp">
       <v-row justify="center">
         <VcsZoomButton @zoom-out="zoomOut()" @zoom-in="zoomIn()" />
@@ -41,6 +52,7 @@
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/lib';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
+  import { createLocatorAction } from './locatorHelper.js';
   import {
     getWindowComponentOptions,
     overviewMapLayerSymbol,
@@ -204,6 +216,15 @@
       const showOverviewButton = ref(
         app.overviewMap.map.layerCollection.size > 0,
       );
+      // Locator
+      const { action: locatorAction, destroy: destroyLocator } =
+        createLocatorAction(app);
+
+      const showLocatorButton = ref(true);
+      if (app.uiConfig.getByKey('showLocator')?.value === false) {
+        showLocatorButton.value = false;
+      }
+
       const overviewMapListeners = [
         app.overviewMap.map.layerCollection.added.addEventListener(() => {
           showOverviewButton.value = true;
@@ -226,6 +247,9 @@
       onUnmounted(() => {
         if (overviewDestroy) {
           overviewDestroy();
+        }
+        if (destroyLocator) {
+          destroyLocator();
         }
         if (homeDestroy) {
           homeDestroy();
@@ -251,7 +275,9 @@
           zoom(app.maps.activeMap, true);
         },
         overviewAction: reactive(overviewAction),
+        locatorAction: reactive(locatorAction),
         showOverviewButton,
+        showLocatorButton,
         homeAction,
       };
     },
