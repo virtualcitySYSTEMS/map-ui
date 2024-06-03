@@ -10,6 +10,7 @@
 - `ContentTreeCollection.getTreeOpenStateRef` now returns `string[]` instead of `Ref<string[]>` and was renamed to `getTreeOpenState`
 - Changed the `Notification.open` type, it is now a boolean. To get the ref, there is a readonly `openRef` property.
 - access to color scss variables changed, `var(--v-primary-base)` becomes `rgb(var(--v-theme-primary))` see:https://vuetifyjs.com/en/getting-started/upgrade-guide/#theme
+- `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
 
 # Typical Migrations
 

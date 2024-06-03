@@ -76,6 +76,7 @@
       title: 'Collection Component Standalone',
       collection: new Collection(),
       renamable: true,
+      selectable: true,
     });
 
     for (let i = 0; i <= 12; i++) {
@@ -111,6 +112,8 @@
     return collectionComponent;
   }
 
+  let collectionComponentStandalone;
+
   export default {
     name: 'CollectionManagerExample',
     components: {
@@ -141,8 +144,10 @@
       const selected = ref(appCollections[0]);
       const addDialog = ref(false);
 
-      const collectionComponentStandalone =
-        setupCollectionComponentStandalone();
+      if (!collectionComponentStandalone) {
+        collectionComponentStandalone = setupCollectionComponentStandalone();
+      }
+
       // provide for <CollectionComponentStandalone>
       provide('collectionComponent', collectionComponentStandalone);
 

@@ -126,9 +126,9 @@
     computed,
     getCurrentInstance,
     inject,
+    isReactive,
     ref,
     shallowRef,
-    toRaw,
     watch,
   } from 'vue';
   import { VList, VListItem, VIcon, VListItemTitle } from 'vuetify/components';
@@ -151,9 +151,8 @@
         tooltip: 'list.selectAll',
         callback() {
           const currentSelection = [...selected.value];
-          selected.value = items.value
-            .filter((item) => !item.disabled)
-            .map(toRaw);
+          selected.value = items.value.filter((item) => !item.disabled);
+
           selected.value.forEach((item) => {
             if (item.selectionChanged && !currentSelection.includes(item)) {
               item.selectionChanged(true);
@@ -311,7 +310,7 @@
       },
     },
     setup(props, { emit, slots }) {
-      /** @type {import("vue").Ref<Array<VcsListItem>>} */
+      /** @type {import("vue").ShallowRef<Array<VcsListItem>>} */
       const selected = shallowRef([]);
       /** @type {import("vue").Ref<string>} */
       const query = ref('');
@@ -343,14 +342,8 @@
       watch(
         props,
         () => {
-          const rawSelected = props.modelValue.map(toRaw);
-          if (
-            selected.value.length !== rawSelected.length ||
-            !selected.value.every((item, index) => {
-              return item === rawSelected[index];
-            })
-          ) {
-            selected.value = rawSelected;
+          if (selected.value !== props.modelValue) {
+            selected.value = props.modelValue;
           }
           if (props.singleSelect && selected.value.length > 1) {
             selected.value
@@ -466,14 +459,16 @@
          * @type {import("vue").ComputedRef<Array<VcsListItem>>}
          */
         renderingItems,
-        /** @type {import("vue").Ref<Array<VcsListItem>>} */
+        /** @type {import("vue").ShallowRef<Array<VcsListItem>>} */
         selected,
         /**
-         * @param {VcsListItem} itemOrProxy
+         * @param {import("vue").UnwrapNestedRef<VcsListItem>} item
          * @param {PointerEvent} event
          */
-        select(itemOrProxy, event) {
-          const item = toRaw(itemOrProxy);
+        select(item, event) {
+          if (!isReactive(item)) {
+            throw new Error('Trying to select an unreactive item');
+          }
           if (Array.isArray(item.clickedCallbacks)) {
             item.clickedCallbacks.forEach((cb) => cb(event));
           }
@@ -492,15 +487,14 @@
               firstSelected = item;
             }
           } else if (event.shiftKey) {
-            const rawRenderingItems = renderingItems.value.map(toRaw);
             let firstIndex = 0;
             if (firstSelected) {
-              firstIndex = rawRenderingItems.indexOf(firstSelected);
+              firstIndex = renderingItems.value.indexOf(firstSelected);
             }
-            const currentIndex = rawRenderingItems.indexOf(item);
+            const currentIndex = renderingItems.value.indexOf(item);
             if (firstIndex > -1 && currentIndex > -1) {
               const currentSelection = [...selected.value];
-              selected.value = rawRenderingItems.slice(
+              selected.value = renderingItems.value.slice(
                 Math.min(firstIndex, currentIndex),
                 Math.max(firstIndex, currentIndex) + 1,
               );
@@ -562,10 +556,12 @@
           emit('update:modelValue', selected.value);
         },
         /**
-         * @param {VcsListItem} itemOrProxy
+         * @param {import("vue").UnwrapNestedRefs<VcsListItem>} item
          */
-        add(itemOrProxy) {
-          const item = toRaw(itemOrProxy);
+        add(item) {
+          if (!isReactive(item)) {
+            throw new Error('Trying to select an unreactive item');
+          }
           if (!selected.value.includes(item) && !item.disabled) {
             item.selectionChanged?.(true);
             selected.value = [...selected.value, item];
@@ -573,10 +569,9 @@
           }
         },
         /**
-         * @param {VcsListItem} itemOrProxy
+         * @param {import("vue").UnwrapNestedRefs<VcsListItem>} item
          */
-        remove(itemOrProxy) {
-          const item = toRaw(itemOrProxy);
+        remove(item) {
           if (selected.value.includes(item) && !item.disabled) {
             item.selectionChanged?.(false);
             selected.value = selected.value.filter((i) => i !== item);

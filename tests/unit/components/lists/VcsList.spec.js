@@ -9,7 +9,7 @@ import {
   afterEach,
 } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
-import { toRaw } from 'vue';
+import { reactive } from 'vue';
 import {
   createSafeI18n,
   createVueI18n,
@@ -21,12 +21,12 @@ describe('VcsList', () => {
     describe('selecting an item', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -37,10 +37,10 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        value = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
-          props: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[1], {});
       });
@@ -49,13 +49,13 @@ describe('VcsList', () => {
         component.unmount();
       });
 
-      it('should emit a new value, selecting the item', () => {
+      it('should emit a new modelValue, selecting the item', () => {
         const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
       });
 
@@ -67,12 +67,12 @@ describe('VcsList', () => {
     describe('selecting an item a unselectable list', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -83,10 +83,10 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        value = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
-          props: { items, value, selectable: false },
+          props: { items, modelValue, selectable: false },
         });
         component.vm.select(items[1], {});
       });
@@ -95,7 +95,7 @@ describe('VcsList', () => {
         component.unmount();
       });
 
-      it('should not emit a new value', () => {
+      it('should not emit a new modelValue', () => {
         expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
@@ -107,14 +107,14 @@ describe('VcsList', () => {
     describe('selecting an item, with another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -126,10 +126,10 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        value = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
-          props: { items, modelValue: value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], {});
       });
@@ -144,7 +144,7 @@ describe('VcsList', () => {
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[2].name);
       });
 
@@ -165,7 +165,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -176,8 +176,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -211,7 +211,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -223,8 +223,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1], items[2]];
+        ]);
+        modelValue = reactive([items[1], items[2]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -267,7 +267,7 @@ describe('VcsList', () => {
       selectionChangedFoo = vi.fn();
       selectionChangedBar = vi.fn();
       selectionChangedBaz = vi.fn();
-      items = [
+      items = reactive([
         {
           name: 'foo',
           selectionChanged: selectionChangedFoo,
@@ -280,8 +280,8 @@ describe('VcsList', () => {
           name: 'baz',
           selectionChanged: selectionChangedBaz,
         },
-      ];
-      modelValue = [items[0]];
+      ]);
+      modelValue = reactive([items[0]]);
       component = shallowMount(VcsList, {
         props: { items, modelValue, selectable: true },
       });
@@ -324,7 +324,7 @@ describe('VcsList', () => {
       selectionChangedFoo = vi.fn();
       selectionChangedBar = vi.fn();
       selectionChangedBaz = vi.fn();
-      items = [
+      items = reactive([
         {
           name: 'foo',
           selectionChanged: selectionChangedFoo,
@@ -337,8 +337,8 @@ describe('VcsList', () => {
           name: 'baz',
           selectionChanged: selectionChangedBaz,
         },
-      ];
-      modelValue = [items[0]];
+      ]);
+      modelValue = reactive([items[0]]);
       component = shallowMount(VcsList, {
         props: { items, modelValue, selectable: true },
       });
@@ -375,7 +375,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -386,8 +386,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -421,7 +421,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -432,8 +432,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: false },
         });
@@ -463,7 +463,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -475,8 +475,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -517,7 +517,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -529,8 +529,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: {
             items,
@@ -573,7 +573,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -584,8 +584,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -619,7 +619,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -631,8 +631,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1], items[2]];
+        ]);
+        modelValue = reactive([items[1], items[2]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -670,7 +670,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -691,8 +691,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -728,7 +728,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -749,8 +749,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: false },
         });
@@ -778,7 +778,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -799,8 +799,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -841,7 +841,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -862,8 +862,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true, singleSelect: true },
         });
@@ -900,7 +900,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -921,8 +921,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -969,7 +969,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -990,8 +990,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1037,7 +1037,7 @@ describe('VcsList', () => {
       let modelValue;
 
       beforeAll(() => {
-        items = [
+        items = reactive([
           {
             name: 'foo',
             selectionChanged: vi.fn(),
@@ -1059,8 +1059,8 @@ describe('VcsList', () => {
             name: 'foobaz',
             selectionChanged: vi.fn(),
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1101,7 +1101,7 @@ describe('VcsList', () => {
       selectionChangedFoo = vi.fn();
       selectionChangedBar = vi.fn();
       selectionChangedBaz = vi.fn();
-      items = [
+      items = reactive([
         {
           name: 'foo',
           selectionChanged: selectionChangedFoo,
@@ -1114,7 +1114,7 @@ describe('VcsList', () => {
           name: 'baz',
           selectionChanged: selectionChangedBaz,
         },
-      ];
+      ]);
       modelValue = items;
       component = shallowMount(VcsList, {
         props: { items, modelValue, selectable: true },
@@ -1151,7 +1151,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1162,8 +1162,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1191,7 +1191,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1202,8 +1202,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1239,7 +1239,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1251,8 +1251,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1288,12 +1288,12 @@ describe('VcsList', () => {
     describe('if the item is not part of the selection', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1304,10 +1304,10 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        value = [];
+        ]);
+        modelValue = reactive([]);
         component = shallowMount(VcsList, {
-          props: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.remove(items[1]);
       });
@@ -1316,7 +1316,7 @@ describe('VcsList', () => {
         component.unmount();
       });
 
-      it('should not emit a new value', () => {
+      it('should not emit a new modelValue', () => {
         expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
@@ -1333,7 +1333,7 @@ describe('VcsList', () => {
 
       beforeAll(() => {
         selectionChanged = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1344,8 +1344,8 @@ describe('VcsList', () => {
           {
             name: 'baz',
           },
-        ];
-        modelValue = [items[1]];
+        ]);
+        modelValue = reactive([items[1]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1379,7 +1379,7 @@ describe('VcsList', () => {
       beforeAll(() => {
         selectionChanged1 = vi.fn();
         selectionChanged2 = vi.fn();
-        items = [
+        items = reactive([
           {
             name: 'foo',
           },
@@ -1391,8 +1391,8 @@ describe('VcsList', () => {
             name: 'baz',
             selectionChanged: selectionChanged2,
           },
-        ];
-        modelValue = [items[1], items[2]];
+        ]);
+        modelValue = reactive([items[1], items[2]]);
         component = shallowMount(VcsList, {
           props: { items, modelValue, selectable: true },
         });
@@ -1428,7 +1428,7 @@ describe('VcsList', () => {
     let component;
 
     beforeEach(() => {
-      items = [
+      items = reactive([
         {
           name: 'foo',
           title: 'foo',
@@ -1450,7 +1450,7 @@ describe('VcsList', () => {
           name: 'foobaz',
           title: 'foobaz',
         },
-      ];
+      ]);
       const vueI18n = createVueI18n();
       const safeI18n = createSafeI18n();
       component = shallowMount(VcsList, {
@@ -1468,12 +1468,12 @@ describe('VcsList', () => {
     it('should not render invisible items', () => {
       items[2].visible = false;
       component.setProps({ items: items.map((i) => ({ ...i })) });
-      expect(component.vm.renderingItems.map(toRaw)).to.not.include(items[2]);
+      expect(component.vm.renderingItems).to.not.include(items[2]);
     });
 
     it('should only rendered queried items', () => {
       component.vm.query = 'foo';
-      expect(component.vm.renderingItems.map(toRaw)).to.have.members([
+      expect(component.vm.renderingItems).to.have.members([
         items[0],
         items[3],
         items[4],
