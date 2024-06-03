@@ -205,11 +205,12 @@ export function createLocatorAction(app) {
   const mapChangedListener = app.maps.mapActivated.addEventListener(
     async (map) => {
       if (map instanceof CesiumMap) {
-        await ensureFeatureAbsolute(
-          vectorLayer.getFeatureById('_tooltipLocationPoint'),
-          vectorLayer,
-          map,
+        const locatorFeature = vectorLayer.getFeatureById(
+          '_tooltipLocationPoint',
         );
+        if (locatorFeature) {
+          await ensureFeatureAbsolute(locatorFeature, vectorLayer, map);
+        }
       }
     },
   );
