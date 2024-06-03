@@ -6,43 +6,42 @@
       color="error"
       :max-width="200"
     >
-      <template #activator="{ attrs, on }">
+      <template #activator="{ props }">
         <component
           :is="inputComponent"
           ref="textFieldRef"
           hide-details
           :hide-spin-buttons="!showSpinButtons"
-          :dense="isDense"
+          :density="density"
+          variant="outlined"
           :clearable="isClearable"
+          clear-icon="$close"
           @focus="onFocus"
           @blur="onBlur"
           @keydown.esc="onEscape"
-          @keydown="$emit('keydown', $event)"
           :type="type"
-          outlined
           v-model="visibleValue"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
-          :height="isDense ? 24 : 32"
+          v-bind="{ ...$attrs, ...props }"
           :rules="rules"
-          class="primary--placeholder align-center"
+          class="primary--placeholder"
           :class="{
             'py-1': !noPadding,
             'remove-outline': !isOutlined,
-            'outline--current': focus,
-            'outline--error': !!errorMessage,
-            'input--unit': !!unit,
-            'input--dense': isDense,
-            'input--not-dense': !isDense,
-            'file-border-bottom':
+            'CCCoutline--current': focus,
+            'CCCoutline--error': !!errorMessage,
+            'CCCinput--unit': !!unit,
+            'CCCinput--dense': isDense,
+            'CCCinput--not-dense': !isDense,
+            'CCCfile-border-bottom':
               inputComponent === 'VFileInput' &&
               !focus &&
               !hover &&
               !errorMessage,
           }"
         >
-          <template #append>
-            <slot name="append">{{ unit }}</slot>
+          <!--          XXX we have suffix now-->
+          <template #append-inner v-if="unit">
+            <slot name="append-inner">{{ unit }}</slot>
           </template>
         </component>
       </template>
@@ -51,144 +50,168 @@
 </template>
 
 <style lang="scss" scoped>
+  .v-field__input {
+    //min-height: 22px;
+  }
+  :deep(.v-field) {
+    --v-field-padding-start: 8px;
+    --v-field-padding-end: 8px;
+  }
+  .v-input--density-compact :deep(.v-field) {
+    --v-input-control-height: 16px;
+    --v-field-padding-bottom: 0px;
+    --v-field-input-padding-top: 0px;
+    --v-input-padding-top: 0px;
+  }
+  .v-input--density-comfortable :deep(.v-field) {
+    --v-input-control-height: 24px;
+    --v-field-padding-bottom: 4px; // default 8
+    --v-field-input-padding-top: 4px; // default 8
+    --v-input-padding-top: 4px;
+  }
+  :deep(.v-field--focused .v-field__outline *) {
+    --v-field-border-width: 1px;
+    border-color: rgb(var(--v-theme-primary));
+  }
+  // Not color, just used if label is given
+  :deep(.v-field--focused .v-field__outline *::after) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+  .remove-outline :deep(.v-field .v-field__outline) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .remove-outline :deep(.v-field .v-field__outline *) {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+  }
+  // used to remove border from label
+  .remove-outline :deep(.v-field .v-field__outline *::before) {
+    border-width: 0;
+    border-radius: 0;
+  }
+  // used to remove border from notch
+  .remove-outline :deep(.v-field .v-field__outline * label) {
+    color: rgb(var(--v-theme-primary));
+    margin-left: -4px;
+  }
   .primary--placeholder {
-    ::v-deep {
-      input::placeholder {
-        color: var(--v-primary-base);
-        font-style: italic;
-        opacity: 1;
-        padding: 0 3px 0 0;
-      }
-      input::-moz-placeholder {
-        font-style: initial;
-      }
+    :deep(input::placeholder) {
+      color: rgb(var(--v-theme-primary));
+      font-style: italic;
+      opacity: 1;
+      padding: 0 3px 0 0;
+    }
+    :deep(input::-moz-placeholder) {
+      font-style: initial;
     }
   }
+  /*
   .remove-outline {
-    ::v-deep {
-      fieldset {
-        border-width: 0;
-        border-radius: 0;
-      }
+    :deep(fieldset) {
+      border-width: 0;
+      border-radius: 0;
     }
   }
   .outline--current {
-    ::v-deep {
-      .v-input__slot fieldset {
-        border-color: currentColor;
-        transition: border-color 0.5s ease;
-      }
-      .v-text-field__slot input {
-        border-color: transparent;
-      }
+    :deep(.v-input__slot fieldset) {
+      border-color: currentColor;
+      transition: border-color 0.5s ease;
+    }
+    :deep(.v-text-field__slot input) {
+      border-color: transparent;
     }
   }
   .outline--error {
-    ::v-deep {
-      .v-input__slot fieldset,
-      .v-text-field__slot input {
-        border-color: var(--v-error-base);
-      }
+    :deep(.v-input__slot fieldset),
+    :deep(.v-text-field__slot input) {
+      border-color: var(--v-error-base);
     }
   }
   div[type='number'] {
-    ::v-deep {
-      .v-text-field__slot input {
-        text-align: right;
-      }
+    :deep(.v-text-field__slot input) {
+      text-align: right;
     }
   }
   .input--unit {
-    ::v-deep {
-      .v-text-field__slot input {
-        text-align: right;
-        padding-right: 3px;
-      }
-      .v-input__append-inner {
-        margin-top: 6px !important;
-        &:last-child {
-          border-bottom: 1px solid var(--v-base-base);
-          height: 24px;
-          margin-top: 0 !important;
-          align-items: center;
-        }
+    :deep(.v-text-field__slot input) {
+      text-align: right;
+      padding-right: 3px;
+    }
+    :deep(.v-input__append-inner) {
+      margin-top: 6px !important;
+      &:last-child {
+        border-bottom: 1px solid var(--v-base-base);
+        height: 24px;
+        margin-top: 0 !important;
+        align-items: center;
       }
     }
   }
   .input--unit.input--not-dense {
-    ::v-deep {
-      .v-input__append-inner {
-        &:last-child {
-          height: 32px;
-          padding-top: 2px;
-        }
+    :deep(.v-input__append-inner) {
+      &:last-child {
+        height: 32px;
+        padding-top: 2px;
       }
     }
   }
   .input--dense {
-    ::v-deep {
-      .v-text-field__slot input {
-        height: 24px;
-      }
-      .v-input__slot {
-        padding: 0 4px !important;
-      }
-      fieldset {
-        padding-left: 2px;
-      }
+    :deep(.v-text-field__slot input) {
+      height: 24px;
+    }
+    :deep(.v-input__slot) {
+      padding: 0 4px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 2px;
     }
   }
   .input--not-dense {
-    ::v-deep {
-      .v-input__slot {
-        padding: 0 8px !important;
-      }
-      fieldset {
-        padding-left: 6px;
-      }
+    :deep(.v-input__slot) {
+      padding: 0 8px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 6px;
     }
   }
   .file-border-bottom {
-    ::v-deep {
-      .v-file-input__text {
-        border-bottom: 1px solid var(--v-base-base);
-        border-radius: 0;
-      }
+    :deep(.v-file-input__text) {
+      border-bottom: 1px solid var(--v-base-base);
+      border-radius: 0;
     }
   }
   .v-input {
-    ::v-deep {
-      input {
-        height: 32px;
-        border-bottom: 1px solid var(--v-base-base);
-        border-radius: 0;
-      }
-      input::selection {
-        background-color: var(--v-primary-base);
-      }
-      .v-text-field__prefix {
-        padding-right: 8px;
-      }
-      .v-text-field__suffix {
-        padding-left: 4px;
-      }
-      .v-input__prepend-outer {
-        margin-right: 4px;
-      }
-      .v-icon {
-        font-size: 16px;
-      }
-      .v-text-field--rounded fieldset {
-        border-radius: 2px;
-        border-color: var(--v-base-base);
-      }
+    :deep(input) {
+      height: 32px;
+      border-bottom: 1px solid var(--v-base-base);
+      border-radius: 0;
     }
-  }
+    :deep(input::selection) {
+      background-color: var(--v-primary-base);
+    }
+    :deep(.v-text-field__prefix) {
+      padding-right: 8px;
+    }
+    :deep(v-text-field__suffix) {
+      padding-left: 4px;
+    }
+    :deep(.v-input__prepend-outer) {
+      margin-right: 4px;
+    }
+    :deep(.v-icon) {
+      font-size: 16px;
+    }
+    :deep(.v-text-field--rounded fieldset) {
+      border-radius: 2px;
+      border-color: var(--v-base-base);
+    }
+  }*/
 </style>
 
 <script>
   import { computed, onMounted, ref } from 'vue';
-  import { VTextField, VFileInput } from 'vuetify/lib';
+  import { VTextField, VFileInput } from 'vuetify/components';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
 
@@ -214,6 +237,7 @@
    */
   export default {
     name: 'VcsTextField',
+    inheritAttrs: false,
     components: {
       VcsTooltip,
       VTextField,
@@ -277,16 +301,16 @@
         get() {
           if (
             attrs.type === 'number' &&
-            Number.isFinite(attrs.value) &&
+            Number.isFinite(attrs.modelValue) &&
             props.decimals >= 0
           ) {
-            return parseFloat(attrs.value.toFixed(props.decimals));
+            return parseFloat(attrs.modelValue.toFixed(props.decimals));
           }
-          return attrs.value ?? '';
+          return attrs.modelValue ?? '';
         },
         set(value) {
           if (attrs.type === 'file') {
-            emit('input', value);
+            emit('update:modelValue', value);
           }
           // emit is not needed for other types, the vuetify component already emits an @input event. (forwarded listeners)
         },
@@ -309,20 +333,24 @@
         }
       });
 
-      function onEscape(event) {
+      function onEscape() {
         textFieldRef.value.blur();
-        emit('input', textFieldRef.value.initialValue);
-        emit('keydown', event);
+        emit('update:modelValue', textFieldRef.value.initialValue);
       }
 
-      function onBlur(event) {
+      function onBlur() {
         focus.value = false;
-        emit('blur', event);
       }
-      function onFocus(event) {
+      function onFocus() {
         focus.value = true;
-        emit('focus', event);
       }
+
+      const density = computed(() => {
+        if (isDense.value) {
+          return 'compact';
+        }
+        return 'comfortable';
+      });
 
       return {
         hover,
@@ -330,6 +358,7 @@
         inputComponent,
         isClearable,
         isDense,
+        density,
         isOutlined,
         visibleValue,
         type,

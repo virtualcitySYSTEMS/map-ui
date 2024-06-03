@@ -81,7 +81,7 @@ export default function formInputsExample(config) {
   /**
    * @type {FormInputsExampleState}
    */
-  const pluginState = {
+  const defaultState = {
     selected: pluginConfig.selectOptions.value[0],
     selectedMultiple: [],
     arrayInput: [1, 2, 3],
@@ -93,11 +93,11 @@ export default function formInputsExample(config) {
     email: '',
     prependedInput: '',
     files: [],
-    dateInput: '',
+    dateInput: undefined,
   };
 
   /** @type {FormInputsExampleState} */
-  const defaultState = JSON.parse(JSON.stringify(pluginState));
+  const pluginState = reactive(structuredClone(defaultState));
 
   /**
    * watcher to update state, when specific config properties are changed
@@ -173,9 +173,8 @@ export default function formInputsExample(config) {
       return packageJSON.mapVersion;
     },
     config: pluginConfig,
-    state: reactive(pluginState),
-    resetState: () =>
-      Object.assign(pluginState, JSON.parse(JSON.stringify(defaultState))),
+    state: pluginState,
+    resetState: () => Object.assign(pluginState, structuredClone(defaultState)),
     getSerializedState,
     setSerializedState,
     onVcsAppMounted(app) {
@@ -198,10 +197,10 @@ export default function formInputsExample(config) {
             headerActionsOverflow: 2,
             infoUrl: 'https://vc.systems',
           },
-          props: {
+          props: reactive({
             actions,
             dense,
-          },
+          }),
         },
         app.windowManager,
         packageJSON.name,

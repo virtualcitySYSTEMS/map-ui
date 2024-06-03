@@ -1,0 +1,6 @@
+// @use 'vuetify';
+@use 'vuetify/settings' with (
+  // $font-size-root: 13px,
+  // $icon-size: 20px,
+  /** Footer **/ // $footer-padding: 0px 0px, // 6px 16px !default;
+);

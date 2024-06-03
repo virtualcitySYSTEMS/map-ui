@@ -93,8 +93,8 @@ describe('createAttributionEntries', () => {
     });
 
     it('should create an attribution entry for each active map, layer or oblique collection with configured attribution', () => {
-      expect(entries.value).to.have.length(3);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(3);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(olMap),
         getKey(activeLayer),
         getKey(activeLayer2),
@@ -108,8 +108,8 @@ describe('createAttributionEntries', () => {
       });
       app.layers.add(layer);
       await layer.activate();
-      expect(entries.value).to.have.length(4);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(4);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(olMap),
         getKey(activeLayer),
         getKey(activeLayer2),
@@ -120,17 +120,17 @@ describe('createAttributionEntries', () => {
     });
 
     it('should NOT create an attribution entry for inactive layers', () => {
-      const entry = entries.value.find((e) => e.key === getKey(inactiveLayer));
+      const entry = entries.find((e) => e.key === getKey(inactiveLayer));
       expect(entry).to.be.undefined;
     });
 
     it('should NOT create an attribution entry for inactive maps', () => {
-      const entry = entries.value.find((e) => e.key === getKey(obliqueMap));
+      const entry = entries.find((e) => e.key === getKey(obliqueMap));
       expect(entry).to.be.undefined;
     });
 
     it('should NOT create an attribution entry for not supported layers of current map', () => {
-      const entry = entries.value.find((e) => e.key === getKey(cesiumLayer));
+      const entry = entries.find((e) => e.key === getKey(cesiumLayer));
       expect(entry).to.be.undefined;
     });
   });
@@ -162,10 +162,10 @@ describe('createAttributionEntries', () => {
 
     it('should update a attribution entry for layers with configured attribution on activation', async () => {
       const key = getKey(inactiveLayer);
-      let entry = entries.value.find((e) => e.key === key);
+      let entry = entries.find((e) => e.key === key);
       expect(entry).to.be.undefined;
       await inactiveLayer.activate();
-      entry = entries.value.find((e) => e.key === key);
+      entry = entries.find((e) => e.key === key);
       expect(entry).to.deep.equal({
         key,
         title: `${inactiveLayer.className}: ${inactiveLayer.name}`,
@@ -176,7 +176,7 @@ describe('createAttributionEntries', () => {
 
     it('should update all attributions on map change', async () => {
       await app.maps.setActiveMap('oblique');
-      expect(entries.value).to.have.length(0);
+      expect(entries).to.have.length(0);
       await app.maps.setActiveMap('ol');
     });
   });
@@ -214,28 +214,28 @@ describe('createAttributionEntries', () => {
     });
 
     it('should remove a attribution entry for layers with configured attribution on deactivation', async () => {
-      expect(entries.value).to.have.length(2);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(2);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(activeLayer),
         getKey(activeLayer2),
       ]);
       activeLayer.deactivate();
-      expect(entries.value).to.have.length(1);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(1);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(activeLayer2),
       ]);
       await activeLayer.activate();
     });
 
     it('should remove a attribution entry when a layer is removed from the layerCollection of the activeMap', () => {
-      expect(entries.value).to.have.length(2);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(2);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(activeLayer),
         getKey(activeLayer2),
       ]);
       app.maps.activeMap.layerCollection.remove(activeLayer);
-      expect(entries.value).to.have.length(1);
-      expect(entries.value.map(({ key }) => key)).to.have.members([
+      expect(entries).to.have.length(1);
+      expect(entries.map(({ key }) => key)).to.have.members([
         getKey(activeLayer2),
       ]);
       app.maps.activeMap.layerCollection.add(activeLayer);

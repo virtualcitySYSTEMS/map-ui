@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { VApp } from 'vuetify/lib';
+  import { VApp } from 'vuetify/components';
   import VcsApp from './VcsApp.vue';
 
   /**

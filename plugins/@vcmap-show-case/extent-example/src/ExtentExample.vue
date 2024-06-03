@@ -26,7 +26,7 @@
       VcsExtent,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         required: true,
       },
@@ -35,10 +35,10 @@
       const app = inject('vcsApp');
       const localConfig = computed({
         get() {
-          return props.value;
+          return props.modelValue;
         },
         set(value) {
-          emit('input', value);
+          emit('update:modelValue', value);
         },
       });
 

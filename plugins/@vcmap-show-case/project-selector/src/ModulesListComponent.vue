@@ -14,12 +14,8 @@
           v-if="module.description && toggleable"
           :tooltip="module.description"
         >
-          <template #activator="{ on, attrs }">
-            <v-icon
-              right
-              v-bind="{ ...$attrs, ...attrs }"
-              v-on="{ ...$listeners, ...on }"
-            >
+          <template #activator="{ props }">
+            <v-icon right v-bind="{ ...$attrs, ...props }">
               mdi-help-circle
             </v-icon>
           </template>
@@ -31,7 +27,7 @@
 
 <script>
   import { VcsTooltip } from '@vcmap/ui';
-  import { VChip, VContainer, VIcon, VList } from 'vuetify/lib';
+  import { VChip, VContainer, VIcon, VList } from 'vuetify/components';
 
   export default {
     name: 'ModulesListComponent',

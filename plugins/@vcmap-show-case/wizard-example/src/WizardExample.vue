@@ -72,7 +72,7 @@
     VcsFormButton,
     VcsSelect,
   } from '@vcmap/ui';
-  import { VForm, VContainer } from 'vuetify/lib';
+  import { VForm, VContainer } from 'vuetify/components';
   import { ref } from 'vue';
 
   /** Component to showcase the VcsWizard and VcsWizardStep. */

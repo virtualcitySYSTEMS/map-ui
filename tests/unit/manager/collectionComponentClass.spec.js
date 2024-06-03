@@ -17,6 +17,7 @@ import {
   ObliqueMap,
   OpenlayersMap,
 } from '@vcmap/core';
+import { toRaw } from 'vue';
 import CollectionComponentClass, {
   createSupportedMapMappingFunction,
 } from '../../../src/manager/collectionManager/collectionComponentClass.js';
@@ -558,16 +559,17 @@ describe('CollectionComponentClass', () => {
 
     it('should add actions sorted by weight', () => {
       collectionComponent.addActions([ownedAction]);
-      expect(collectionComponent.getActions().value).to.include(
-        ownedAction.action,
-      );
+      expect(
+        collectionComponent.getActions().value.map((a) => toRaw(a)),
+      ).to.include(ownedAction.action);
     });
 
     it('should remove actions', () => {
+      collectionComponent.addActions([ownedAction]);
       collectionComponent.removeActions([ownedAction]);
-      expect(collectionComponent.getActions().value).to.not.include(
-        ownedAction.action,
-      );
+      expect(
+        collectionComponent.getActions().value.map((a) => toRaw(a)),
+      ).to.not.include(ownedAction.action);
     });
 
     it('should not add the same actions twice', () => {

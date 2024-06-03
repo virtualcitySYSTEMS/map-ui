@@ -21,9 +21,7 @@ export function useErrorSync(elementRef) {
         !!customErrorMessages.length
       ) {
         // custom errorMessages are displayed when all validation error are solved.
-        return (
-          [...elementRef.value.errorBucket, ...customErrorMessages][0] || ''
-        );
+        return [...elementRef.value.messages, ...customErrorMessages][0] || '';
       }
     }
     return '';

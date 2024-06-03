@@ -6,7 +6,7 @@
       :is="componentMap[key]"
       :value-default="valueDefault[key]"
       v-model="selectedKeys[key].value"
-      @input="(v) => $emit(`update:${key}`, v)"
+      @update:model-value="(v) => $emit(`update:${key}`, v)"
       v-bind="specificProps[key]"
     />
   </v-sheet>
@@ -14,7 +14,7 @@
 
 <script>
   import { computed } from 'vue';
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import VcsFillMenu from './VcsFillMenu.vue';
   import VcsImageMenu from './VcsImageMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
@@ -60,7 +60,7 @@
       VSheet,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -90,7 +90,7 @@
         // convert to Object with style prop names as keys and computed props as value to allow v-model.
         props.styleComponents.reduce((acc, key) => {
           acc[key] = useSelectedKey(
-            () => props.value,
+            () => props.modelValue,
             key,
             props.valueDefault[key],
             emit,

@@ -3,15 +3,15 @@
     :style="{
       transform: `rotate(${compassRotation}deg)`,
     }"
-    @click="$emit('input', 0)"
+    @click="$emit('update:modelValue', 0)"
     class="h-16 w-16 d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease"
     elevation="1"
   >
     <span>N</span>
     <MapNavCompass
-      class="position-absolute pos-a-0 primary--text"
+      class="position-absolute pos-a-0 text-primary"
       @click="$event.stopPropagation()"
-      @direction-click="$emit('input', $event)"
+      @direction-click="$emit('update:modelValue', $event)"
       :can-emit="!disabled && (viewMode === '3d' || viewMode === 'oblique')"
       :hide-ticks="viewMode === 'oblique'"
     />
@@ -21,7 +21,7 @@
 <script>
   import { computed, ref } from 'vue';
 
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import MapNavCompass from './MapNavCompass.vue';
 
   /**
@@ -42,7 +42,7 @@
         type: String,
         required: true,
       },
-      value: {
+      modelValue: {
         type: Number,
         default: 0,
       },
@@ -53,7 +53,7 @@
       },
     },
     setup(props) {
-      const rotationValue = ref(props.value);
+      const rotationValue = ref(props.modelValue);
 
       return {
         rotationValue,
@@ -61,7 +61,7 @@
       };
     },
     watch: {
-      value(newValue, oldValue) {
+      modelValue(newValue, oldValue) {
         let diff = newValue - oldValue;
         if (diff > 180) {
           diff -= 360;

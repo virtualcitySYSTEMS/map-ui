@@ -1,6 +1,14 @@
 import { TransformationMode } from '@vcmap/core';
+import { de } from 'vuetify/locale';
 
 const messages = {
+  $vuetify: {
+    ...de,
+    dataIterator: {
+      rowsPerPageText: 'Elemente pro Seite:',
+      pageText: '{0}-{1} von {2}',
+    },
+  },
   navbar: {
     maps: {
       CesiumMap: '3D-Karte aktivieren',

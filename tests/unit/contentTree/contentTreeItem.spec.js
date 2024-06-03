@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { toRaw } from 'vue';
 import { VectorLayer } from '@vcmap/core';
 import ActivateLayersCallback from '../../../src/callback/activateLayersCallback.js';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
@@ -67,7 +68,9 @@ describe('ContentTreeItem', () => {
       actions.forEach((a) => {
         item.addAction(a);
       });
-      expect(item.actions).to.have.ordered.members(actions);
+      expect(item.actions.map((a) => toRaw(a))).to.have.ordered.members(
+        actions,
+      );
       item.destroy();
     });
 
@@ -82,7 +85,7 @@ describe('ContentTreeItem', () => {
       actions.forEach(([a, weight]) => {
         item.addAction(a, weight);
       });
-      expect(item.actions).to.have.ordered.members([
+      expect(item.actions.map((a) => toRaw(a))).to.have.ordered.members([
         actions[2][0],
         actions[3][0],
         actions[0][0],

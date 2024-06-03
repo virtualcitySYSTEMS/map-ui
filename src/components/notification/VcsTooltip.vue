@@ -2,17 +2,13 @@
   <v-tooltip
     :disabled="!tooltip"
     :content-class="`tooltip ${arrowClass}`"
-    :bottom="tooltipPosition === 'bottom'"
-    :top="tooltipPosition === 'top'"
-    :left="tooltipPosition === 'left'"
-    :right="tooltipPosition === 'right'"
     transition="expand-x-transition"
     v-bind="{ ...$props, ...$attrs }"
   >
-    <template #activator="{ on, attrs }">
-      <slot name="activator" :on="on" :attrs="attrs" />
+    <template #activator="{ props }">
+      <slot name="activator" v-bind="props" />
     </template>
-    <span>{{ $t(tooltip) }}</span>
+    <span v-if="tooltip">{{ $st(tooltip) }}</span>
   </v-tooltip>
 </template>
 <style lang="scss" scoped>
@@ -109,7 +105,7 @@
   //}
 </style>
 <script>
-  import { VTooltip } from 'vuetify/lib';
+  import { VTooltip } from 'vuetify/components';
 
   /**
    * @enum {string} TooltipPositions

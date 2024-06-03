@@ -1142,7 +1142,9 @@
     {
       "name": "@vcmap-show-case/theme-changer",
       "entry": "plugins/@vcmap-show-case/theme-changer/index.js"
-    },
+    }
+  ],
+  "plugins2": [
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"

@@ -1,8 +1,10 @@
 <template>
   <div class="vcs-button-wrap">
     <v-btn
+      size="16px"
+      min-width="auto"
       v-if="!tooltip"
-      text
+      variant="text"
       :color="appliedColor"
       :disabled="disabled"
       class="vcs-button pa-0"
@@ -10,9 +12,8 @@
       :ripple="false"
       elevation="0"
       v-bind="{ ...$attrs }"
-      v-on="{ ...$listeners }"
     >
-      <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+      <v-icon size="16" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
       </v-icon>
       <slot />
@@ -23,26 +24,31 @@
       :tooltip-position="tooltipPosition"
       v-bind="{ ...tooltipProps }"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-btn
-          text
+          size="16px"
+          min-width="auto"
+          variant="text"
           :color="appliedColor"
           :disabled="disabled"
           class="vcs-button pa-0"
           :class="customClasses.join(' ')"
           :ripple="false"
           elevation="0"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs, ...props }"
         >
-          <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+          <v-icon size="16" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
             {{ icon }}
           </v-icon>
           <slot />
         </v-btn>
       </template>
     </VcsTooltip>
-    <VcsBadge v-if="hasUpdate" :color="'warning'" class="position-absolute" />
+    <VcsBadge
+      v-if="hasUpdate"
+      :color="'bg-warning'"
+      class="position-absolute"
+    />
   </div>
 </template>
 
@@ -57,26 +63,15 @@
   }
   .v-btn {
     &.vcs-button {
-      height: 16px;
-      min-width: auto;
       &:hover {
-        color: var(--v-primary-lighten1) !important;
-      }
-      ::v-deep {
-        .v-icon {
-          font-size: 16px;
-        }
-        .v-icon__component {
-          height: 16px;
-          width: 16px;
-        }
+        color: rgb(var(--v-theme-primary-lighten-1)) !important;
       }
     }
   }
 </style>
 
 <script>
-  import { VBtn, VIcon } from 'vuetify/lib';
+  import { VBtn, VIcon } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 

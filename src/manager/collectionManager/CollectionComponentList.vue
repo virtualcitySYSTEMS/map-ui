@@ -7,7 +7,7 @@
       <div class="d-flex justify-space-between">
         <div class="d-flex align-center gap-1 pl-2">
           <span>
-            {{ $t(title) }}
+            {{ $st(title) }}
           </span>
           <span v-if="selectable && selection.length > 0">
             {{ `(${selection.length})` }}
@@ -40,7 +40,7 @@
 <script>
   import { computed, inject } from 'vue';
   import { IndexedCollection } from '@vcmap/core';
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import VcsList, {
     createSelectionActions,
   } from '../../components/lists/VcsList.vue';

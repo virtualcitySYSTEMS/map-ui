@@ -111,7 +111,7 @@
 <script>
   import { Math as CesiumMath } from '@vcmap-cesium/engine';
   import { TransformationMode } from '@vcmap/core';
-  import { VSheet, VContainer, VRow, VCol, VIcon } from 'vuetify/lib';
+  import { VSheet, VContainer, VRow, VCol, VIcon } from 'vuetify/components';
   import { inject, ref, watch } from 'vue';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';

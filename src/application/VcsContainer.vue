@@ -1,11 +1,12 @@
 <template>
   <v-container
     class="vcs-container pa-0"
-    :class="{ 'vcs-container-xs': $vuetify.breakpoint.xs }"
+    :class="{ 'vcs-container-xs': xs }"
     fluid
     absolute
+    style="background: #1b5e20"
   >
-    <template v-if="$vuetify.breakpoint.xs">
+    <template v-if="xs">
       <img
         v-if="mobileLogo"
         :src="mobileLogo"
@@ -14,7 +15,7 @@
         class="mobile-logo"
       />
     </template>
-    <VcsButton
+    <!--VcsButton
       v-if="!$vuetify.breakpoint.smAndUp && $vuetify.breakpoint.mobile"
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
@@ -22,7 +23,7 @@
       :active="attributionAction.active"
       @click.stop="attributionAction.callback($event)"
       class="z-index-1 mobile-attribution-btn"
-    />
+    /-->
     <PanelManagerComponent />
     <ToolboxManagerComponent />
     <WindowManagerComponent />
@@ -62,11 +63,11 @@
 
 <script>
   import { computed, inject } from 'vue';
-  import { VContainer } from 'vuetify/lib';
+  import { useDisplay } from 'vuetify';
+  import { VContainer } from 'vuetify/components';
   import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
-  import VcsButton from '../components/buttons/VcsButton.vue';
   import NotifierComponent from '../notifier/NotifierComponent.vue';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
 
@@ -76,7 +77,6 @@
    */
   export default {
     components: {
-      VcsButton,
       PanelManagerComponent,
       WindowManagerComponent,
       ToolboxManagerComponent,
@@ -92,7 +92,10 @@
     setup() {
       const app = inject('vcsApp');
 
+      const { xs } = useDisplay();
+
       return {
+        xs,
         mobileLogo: computed(
           () =>
             app.uiConfig.config.value.mobileLogo ??

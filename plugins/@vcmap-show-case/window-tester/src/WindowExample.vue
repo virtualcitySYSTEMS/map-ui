@@ -25,6 +25,7 @@
   import MyCustomHeader from './MyCustomHeader.vue';
   import EmptyComponent from './EmptyComponent.vue';
   import { name as owner } from '../package.json';
+  import Broken from './BrokenWindow.vue';
 
   const showTestClass = ref(false);
 
@@ -176,6 +177,15 @@
           },
           component: WindowExampleContent,
           slot: WindowSlot.DYNAMIC_CHILD,
+        },
+        {
+          id: 'broken',
+          state: {
+            headerTitle: 'This window is broken',
+            headerIcon: 'mdi-human-child',
+          },
+          component: Broken,
+          slot: WindowSlot.DETACHED,
         },
       ];
 

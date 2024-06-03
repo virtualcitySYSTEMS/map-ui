@@ -56,8 +56,8 @@
 </style>
 
 <script>
-  import { computed, getCurrentInstance, inject, onUnmounted, ref } from 'vue';
-
+  import { computed, inject, onUnmounted, ref } from 'vue';
+  import { useDisplay } from 'vuetify';
   import WindowComponent from './WindowComponent.vue';
   import WindowComponentHeader from './WindowComponentHeader.vue';
   import BalloonComponent from '../../featureInfo/BalloonComponent.vue';
@@ -161,13 +161,8 @@
         moveWindow(id, translation, windowManager, targetSize.value, position);
       };
 
-      const componentIdRef = ref(componentIds);
-
       const addMobileClass = computed(() => {
-        return (
-          getCurrentInstance().proxy.$vuetify.breakpoint.xs &&
-          componentIdRef.value.length > 0
-        );
+        return useDisplay().xs.value && componentIds.length > 0;
       });
 
       const setTargetSize = () => {
@@ -183,7 +178,7 @@
       });
 
       return {
-        componentIds: componentIdRef,
+        componentIds,
         getComponent: (id) => windowManager.get(id).component,
         getHeaderComponent: (id) =>
           windowManager.get(id).headerComponent || WindowComponentHeader,

@@ -1,6 +1,6 @@
 <template>
   <div class="step-border">
-    <v-stepper-step
+    <v-stepper-vertical-item
       :step="step"
       :editable="editable"
       :complete="complete"
@@ -10,7 +10,7 @@
       <div class="d-flex justify-space-between align-center">
         <slot name="header" />
         <div v-if="!$slots.header" class="step-label-wrap">
-          <span>{{ $t(heading) }}</span>
+          <span>{{ $st(heading) }}</span>
         </div>
         <VcsActionButtonList
           v-if="Number(step) === Number(value)"
@@ -21,7 +21,7 @@
           @keydown.stop
         />
       </div>
-    </v-stepper-step>
+    </v-stepper-vertical-item>
     <v-stepper-content v-if="$slots.content" class="pr-4" :step="step">
       <VcsHelp :text="helpText" :show="showHelp">
         <slot name="help" />
@@ -33,7 +33,7 @@
 
 <script>
   import { computed, reactive, watch } from 'vue';
-  import { VStepperStep, VStepperContent } from 'vuetify/lib';
+  import { VStepperVerticalItem } from 'vuetify/labs/VStepperVertical';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 
@@ -56,8 +56,7 @@
   export default {
     name: 'VcsWizardStep',
     components: {
-      VStepperStep,
-      VStepperContent,
+      VStepperVerticalItem,
       VcsActionButtonList,
       VcsHelp,
     },
@@ -95,7 +94,7 @@
         type: String,
         default: undefined,
       },
-      value: {
+      modelValue: {
         type: [String, Number],
         required: true,
       },
@@ -108,15 +107,18 @@
         icon: 'mdi-help-circle',
         callback() {
           this.active = !this.active;
-          if (Number(props.value) !== Number(props.step) && props.editable) {
-            emit('input', props.step);
+          if (
+            Number(props.modelValue) !== Number(props.step) &&
+            props.editable
+          ) {
+            emit('update:modelValue', props.step);
           }
         },
       });
       const showHelp = computed(() => helpAction.active);
       // deactivate help when leaving a step
       watch(
-        () => props.value,
+        () => props.modelValue,
         (currentStep, previousStep) => {
           if (Number(previousStep) === Number(props.step)) {
             helpAction.active = false;
@@ -145,10 +147,8 @@
     background-color: transparent;
   }
   .v-stepper__step {
-    ::v-deep {
-      .v-ripple__container {
-        display: none !important;
-      }
+    :deep(.v-ripple__container) {
+      display: none !important;
     }
   }
   .v-stepper__content {

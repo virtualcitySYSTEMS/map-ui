@@ -6,7 +6,7 @@
     <v-btn
       v-if="hasScrollbar"
       :dense="isDense"
-      x-small
+      size="x-small"
       icon
       :ripple="false"
       elevation="0"
@@ -24,17 +24,17 @@
       }"
     >
       <div
-        v-for="(item, index) in value"
+        v-for="(item, index) in modelValue"
         :key="index"
         class="pr-1"
         :class="{ 'pt-1': column }"
       >
         <v-chip
           v-if="selected !== index"
-          v-bind="{ ...$attrs }"
-          :small="isDense"
+          v-bind="{ ...noListenerAttrs }"
+          :size="isDense ? 'small' : undefined"
           :disabled="disabled"
-          :close="deletableChips"
+          :closable="deletableChips"
           @click="select(index)"
           @click:close="remove(index)"
         >
@@ -49,7 +49,7 @@
           autofocus
           no-padding
           :height="24"
-          v-bind="{ ...$attrs }"
+          v-bind="{ ...noListenerAttrs }"
           v-model="editValue"
           @keydown.esc="selected = -1"
           @blur="selected = -1"
@@ -63,8 +63,8 @@
       <div :class="{ 'pt-1': column }">
         <v-chip
           v-if="adding === false"
-          v-bind="{ ...$attrs }"
-          :small="isDense"
+          v-bind="{ ...noListenerAttrs }"
+          :size="isDense ? 'small' : undefined"
           :disabled="disabled"
           @click="adding = true"
         >
@@ -81,7 +81,7 @@
           :height="24"
           class="vcs-inside-chip"
           v-model="newValue"
-          v-bind="{ ...$attrs }"
+          v-bind="{ ...noListenerAttrs }"
           @keydown.enter="add($event, newValue)"
           @keydown.esc="cancel"
           @blur="cancel"
@@ -95,7 +95,7 @@
     <v-btn
       v-if="hasScrollbar"
       :dense="isDense"
-      x-small
+      size="x-small"
       icon
       :ripple="false"
       elevation="0"
@@ -123,30 +123,30 @@
     }
   }
   .vcs-inside-chip {
-    ::v-deep {
-      .v-input__slot {
-        .v-input__append-inner {
-          margin-top: 5px;
-        }
+    :deep(.v-input__slot) {
+      .v-input__append-inner {
+        margin-top: 5px;
       }
-      .v-text-field--filled > .v-input__control > .v-input__slot,
-      .v-text-field--outlined > .v-input__control > .v-input__slot {
-        min-height: unset;
-      }
+    }
+    :deep(.v-text-field--filled > .v-input__control > .v-input__slot),
+    :deep(.v-text-field--outlined > .v-input__control > .v-input__slot) {
+      min-height: unset;
     }
   }
 </style>
 
 <script>
   import { computed, nextTick, onMounted, ref } from 'vue';
-  import { VBtn, VChip, VIcon } from 'vuetify/lib';
+  import { VBtn, VChip, VIcon } from 'vuetify/components';
   import VcsTextField from './VcsTextField.vue';
+  import { removeListenersFromAttrs } from '../attrsHelpers.js';
 
   /**
    * @description Renders elements of an array as chips with an input field to edit or add new elements.
    * Provides two height options depending on "dense" property
    * Provides VcsTooltip to show error messages on focus
    * When clicking esc key, previous input is restored.
+   * @vue-prop {T[]} modelValue
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
    * @vue-prop {string}                                 [type] - The input type (string or number)
    * @vue-prop {boolean}                                [disabled] - Disables adding or removing new elements
@@ -164,7 +164,7 @@
       VIcon,
     },
     props: {
-      value: {
+      modelValue: {
         type: Array,
         required: true,
       },
@@ -207,11 +207,11 @@
       function emitValue(value) {
         if (attrs.type === 'number') {
           emit(
-            'input',
+            'update:modelValue',
             value.map((v) => parseFloat(v)),
           );
         } else {
-          emit('input', value);
+          emit('update:modelValue', value);
         }
       }
 
@@ -227,14 +227,14 @@
       onMounted(() => updateHasScrollbar());
 
       function remove(index) {
-        emitValue(props.value.toSpliced(index, 1));
+        emitValue(props.modelValue.toSpliced(index, 1));
         updateHasScrollbar();
       }
 
       function select(index) {
         if (!props.disabled) {
           selected.value = index;
-          editValue.value = props.value[index];
+          editValue.value = props.modelValue[index];
         }
       }
 
@@ -242,7 +242,9 @@
         e.stopPropagation();
         e.preventDefault();
         if (isEditValid.value) {
-          emitValue(props.value.toSpliced(selected.value, 1, editValue.value));
+          emitValue(
+            props.modelValue.toSpliced(selected.value, 1, editValue.value),
+          );
           selected.value = -1;
         }
       }
@@ -257,7 +259,7 @@
         e.preventDefault();
         if (isNewValid.value) {
           if (value) {
-            emitValue([...props.value, value]);
+            emitValue([...props.modelValue, value]);
             await nextTick();
             updateHasScrollbar();
             await nextTick();
@@ -269,7 +271,10 @@
         }
       }
 
+      const noListenerAttrs = removeListenersFromAttrs(attrs);
+
       return {
+        noListenerAttrs,
         selected,
         adding,
         editValue,

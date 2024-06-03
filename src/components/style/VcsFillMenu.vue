@@ -1,22 +1,21 @@
 <template>
   <MenuWrapper
-    v-bind="{ value, valueDefault, disabled }"
+    v-bind="{ ...$attrs, modelValue, valueDefault, disabled }"
     :value-fallback="{ color: [255, 255, 255, 1] }"
-    v-on="$listeners"
     name="components.style.fill"
   >
     <template #preview>
       <v-sheet :color="rgbaString" width="100%" height="100%" />
     </template>
     <template #content>
-      <VcsFillSelector :value="value" v-on="$listeners" />
+      <VcsFillSelector :model-value="modelValue" v-bind="$attrs" />
     </template>
   </MenuWrapper>
 </template>
 
 <script>
   import { computed } from 'vue';
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import VcsFillSelector from './VcsFillSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
@@ -36,7 +35,7 @@
       MenuWrapper,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -50,7 +49,7 @@
       },
     },
     setup(props) {
-      const rgbaObject = useColorObject(() => props.value?.color);
+      const rgbaObject = useColorObject(() => props.modelValue?.color);
       return {
         rgbaString: computed(() => rgbaObjectToString(rgbaObject.value)),
       };

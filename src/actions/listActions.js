@@ -9,7 +9,7 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 import { NotificationType } from '../notifier/notifier.js';
 
 /**
- * Creates an action for renaming an item in a VcsList. Sho VcsTextfield in VcsList.
+ * Creates an action for renaming an item in a VcsList. Shows VcsTextfield in VcsList.
  * @param {import("../components/lists/VcsList.vue").VcsListItem} item
  * @param {Partial<import("./actionHelper.js").ActionOptions>} [actionOptions={}]
  * @returns {import("./actionHelper.js").VcsAction}

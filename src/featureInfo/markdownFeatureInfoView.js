@@ -3,21 +3,7 @@ import {
   parseAndSanitizeMarkdown,
   replaceAttributes,
 } from '../application/markdownHelper.js';
-
-/**
- * @description A component to render markdown html
- * @vue-prop {string} html - the html to render
- */
-const MarkdownComponent = {
-  name: 'MarkdownComponent',
-  props: {
-    html: {
-      type: String,
-      required: true,
-    },
-  },
-  template: '<div class="pa-2" v-html="html" />',
-};
+import MarkdownComponent from './MarkdownComponent.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { template: string | string[] }} MarkdownFeatureInfoViewOptions

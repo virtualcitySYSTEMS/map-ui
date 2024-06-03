@@ -57,7 +57,7 @@
           collectionComponent.selectable &&
           collectionComponent.selection.length > 0
         ) {
-          return `${vm.$t(collectionComponent.title.value)} (${
+          return `${vm.$st(collectionComponent.title.value)} (${
             collectionComponent.selection.value.length
           })`;
         }

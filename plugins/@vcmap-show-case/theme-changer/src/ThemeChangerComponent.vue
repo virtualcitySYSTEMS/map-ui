@@ -72,14 +72,14 @@
     VCardText,
     VChip,
     VListItem,
-    VListItemContent,
+    // VListItemContent,
     VListItemTitle,
     VListItemAction,
     VAvatar,
     VIcon,
     VDivider,
     VSwitch,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
 
   export default {
     name: 'ThemeChanger',
@@ -88,7 +88,7 @@
       VCardText,
       VChip,
       VListItem,
-      VListItemContent,
+      // VListItemContent,
       VListItemTitle,
       VListItemAction,
       VAvatar,

@@ -13,7 +13,7 @@
   />
 </template>
 <script>
-  import { VSparkline } from 'vuetify/lib';
+  import { VSparkline } from 'vuetify/components';
 
   export default {
     name: 'SimpleGraphComponent',

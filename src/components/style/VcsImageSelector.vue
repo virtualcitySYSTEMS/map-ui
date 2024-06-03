@@ -9,7 +9,7 @@
     </v-container>
     <v-divider />
     <div class="px-1">
-      <v-tabs v-model="selectedImageTypeTab" height="40" centered>
+      <v-tabs v-model="selectedImageTypeTab" height="40" align-tabs="center">
         <v-tab
           v-for="item in Object.values(ImageType).map((value) => ({
             value,
@@ -18,7 +18,7 @@
           :key="item.value"
           light
         >
-          {{ $t(item.label) }}
+          {{ $st(item.label) }}
         </v-tab>
       </v-tabs>
     </div>
@@ -61,7 +61,7 @@
           :key="input.name"
         >
           <v-col>
-            <VcsLabel>{{ $t(`components.style.${input.text}`) }}</VcsLabel>
+            <VcsLabel>{{ $st(`components.style.${input.text}`) }}</VcsLabel>
           </v-col>
           <v-col cols="3">
             <VcsTextField
@@ -80,7 +80,7 @@
                   !input.range ||
                   (!input.isRequired && !v) ||
                   between(v, input.range) ||
-                  `${$t(
+                  `${$st(
                     'components.validation.allowedRange',
                   )}: ${input.range.join(' - ')}`,
               ]"
@@ -134,7 +134,7 @@
     VIcon,
     VTabs,
     VTab,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { Circle, Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
   import { toContext } from 'ol/render.js';
   import { Point } from 'ol/geom.js';
@@ -770,7 +770,7 @@
       VcsSlider,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -789,9 +789,9 @@
     },
     setup(props, { emit }) {
       const currentType = computed(() => {
-        if (props.value?.radius) {
+        if (props.modelValue?.radius) {
           return ImageType.SHAPE;
-        } else if (props.value?.src) {
+        } else if (props.modelValue?.src) {
           return ImageType.ICON;
         } else {
           return undefined;
@@ -828,7 +828,7 @@
           return {
             text: input.name,
             value: useSelectedKey(
-              () => props.value,
+              () => props.modelValue,
               input.name,
               props.valueDefault[input.name],
               emit,
@@ -844,39 +844,42 @@
 
       const selectedScale = computed({
         get() {
-          if (Array.isArray(props.value?.scale)) {
-            return props.value.scale[0];
+          if (Array.isArray(props.modelValue?.scale)) {
+            return props.modelValue.scale[0];
           } else {
-            return props.value?.scale;
+            return props.modelValue?.scale;
           }
         },
         set(value) {
           if (!value) {
-            const newImage = structuredClone(props.value);
+            const newImage = structuredClone(props.modelValue);
             delete newImage.scale;
-            emit('input', newImage);
+            emit('update:modelValue', newImage);
           } else if (value > 0) {
-            const newImage = structuredClone(props.value);
-            emit('input', Object.assign(newImage, { scale: value }));
+            const newImage = structuredClone(props.modelValue);
+            emit(
+              'update:modelValue',
+              Object.assign(newImage, { scale: value }),
+            );
           }
         },
       });
 
       const selectedOpacity = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'opacity',
         props.valueDefault.opacity,
         emit,
       );
 
       const selectedFill = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'fill',
         props.valueDefault.fill,
         emit,
       );
       const selectedStroke = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'stroke',
         props.valueDefault.stroke,
         emit,
@@ -888,7 +891,7 @@
             return undefined;
           } else if (currentType.value === ImageType.SHAPE) {
             const equalShape = defaultShapes.find((preset) =>
-              isEqualShape(props.value, preset.value),
+              isEqualShape(props.modelValue, preset.value),
             );
             if (equalShape) {
               return equalShape.src;
@@ -896,7 +899,7 @@
               return customIcon;
             }
           } else if (currentType.value === ImageType.ICON) {
-            return props.value?.src;
+            return props.modelValue?.src;
           } else {
             return undefined;
           }
@@ -938,7 +941,7 @@
               opacity: selectedOpacity.value || 1,
             });
           }
-          emit('input', JSON.parse(JSON.stringify(newImage)));
+          emit('update:modelValue', JSON.parse(JSON.stringify(newImage)));
         },
       });
 
@@ -956,11 +959,11 @@
       });
 
       onMounted(() => {
-        drawImageStyle(canvas.value, props.value);
+        drawImageStyle(canvas.value, props.modelValue);
         watch(
-          () => props.value,
+          () => props.modelValue,
           () => {
-            drawImageStyle(canvas.value, props.value);
+            drawImageStyle(canvas.value, props.modelValue);
           },
           { deep: true },
         );

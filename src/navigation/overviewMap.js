@@ -140,7 +140,7 @@ class OverviewMap {
     this._obliqueSelectedImageLayer = null;
 
     const primary =
-      app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor();
+      app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(app);
     const fillColor = Color.fromCssColorString('#EDEDED');
 
     /**
@@ -180,7 +180,7 @@ class OverviewMap {
      * @type {import("@vcmap/core").VectorStyleItem}
      */
     this.cameraIconStyle = new VectorStyleItem({
-      image: getCameraIcon(getDefaultPrimaryColor()),
+      image: getCameraIcon(getDefaultPrimaryColor(this._app)),
     });
 
     /**
@@ -289,7 +289,7 @@ class OverviewMap {
    * @private
    */
   _updatePrimaryColor() {
-    const color = getColorByKey('primary');
+    const color = getColorByKey(this._app, 'primary');
     this.obliqueSelectedStyle?.stroke?.setColor(color);
     this._obliqueSelectedImageLayer?.forceRedraw?.();
     const rotation = this.cameraIconStyle.image.getRotation();

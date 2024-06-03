@@ -2,9 +2,9 @@
   <v-card>
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
-      :placeholder="$t(searchbarPlaceholder)"
+      :placeholder="$st(searchbarPlaceholder)"
       v-model="search"
-      @input="handleSearch"
+      @update:model-value="handleSearch"
     >
       <template #prepend="scope">
         <slot name="prepend" v-bind="scope" />
@@ -34,15 +34,13 @@
       "
       :single-select="singleSelect"
       :selectable-key="selectableKey"
-      :server-items-length="serverItemsLength"
       hide-default-footer
       v-bind="$attrs"
-      v-on="$listeners"
       class="vcs-table rounded-0"
       @update:options="(o) => $emit('update:items', { ...o, search })"
     >
       <!-- eslint-disable-next-line -->
-      <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
+      <template v-for="slot of Object.keys($slots)" #[slot]="scope">
         <slot
           v-if="!['prepend', 'default', 'append'].includes(slot)"
           :name="slot"
@@ -52,6 +50,7 @@
       <!-- eslint-disable-next-line -->
       <template v-slot:header.data-table-select="{ props, on }">
         <div v-if="on">
+          <!--          TODO unsure of props.value here-->
           <v-icon
             v-if="props.value"
             @click="on.input(false)"
@@ -96,9 +95,9 @@
         <v-divider />
         <v-container class="pa-2 vcs-pagination-bar">
           <v-row dense no-gutters justify="center" class="align-center">
-            <v-menu offset-y dense>
-              <template #activator="{ on, attrs }">
-                <VcsButton color="primary" v-bind="attrs" v-on="on">
+            <v-menu dense>
+              <template #activator="{ props }">
+                <VcsButton color="primary" v-bind="props">
                   {{ itemsPerPageRef }}
                   <v-icon>mdi-chevron-down</v-icon>
                 </VcsButton>
@@ -154,7 +153,7 @@
     VMenu,
     VIcon,
     VRow,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
 
@@ -277,7 +276,7 @@
           return Object.values(item).some((i) => {
             if (i) {
               const content = i.toString();
-              const translated = vm.$t(content);
+              const translated = vm.$st(content);
               return (
                 translated.toLowerCase().includes(q) ||
                 content.toLowerCase().includes(q)
@@ -333,7 +332,7 @@
         return props.headers.map((hd) => {
           return {
             ...hd,
-            text: vm.$t(hd.text),
+            text: vm.$st(hd.text),
           };
         });
       });
@@ -445,71 +444,69 @@
       }
     }
   }
-  ::v-deep {
-    .vcs-table {
-      tbody tr {
-        &:hover {
-          background-color: transparent !important;
-        }
+  :deep(.vcs-table) {
+    tbody tr {
+      &:hover {
+        background-color: transparent !important;
+      }
 
-        &:nth-child(odd) {
-          background-color: var(--v-base-lighten4) !important;
-        }
+      &:nth-child(odd) {
+        background-color: var(--v-base-lighten4) !important;
+      }
 
-        td {
-          padding: 0 8px !important;
+      td {
+        padding: 0 8px !important;
 
-          &.v-data-table__mobile-row {
-            justify-content: left;
-            min-height: auto;
-            .v-data-table__mobile-row__header {
-              min-width: 50px;
-            }
+        &.v-data-table__mobile-row {
+          justify-content: left;
+          min-height: auto;
+          .v-data-table__mobile-row__header {
+            min-width: 50px;
           }
         }
       }
     }
+  }
 
-    th {
-      padding: 0 8px !important;
+  :deep(th) {
+    padding: 0 8px !important;
 
-      &.sortable {
-        overflow: hidden;
-        white-space: nowrap;
+    &.sortable {
+      overflow: hidden;
+      white-space: nowrap;
 
-        span {
-          vertical-align: middle;
-          padding: 0 4px 0 0;
+      span {
+        vertical-align: middle;
+        padding: 0 4px 0 0;
 
-          &.theme--light {
-            thead tr th {
-              color: map-get($shades, 'black') !important;
-            }
-          }
-
-          &.theme--dark {
-            thead tr th {
-              color: map-get($shades, 'white') !important;
-            }
+        &.theme--light {
+          thead tr th {
+            color: map-get($shades, 'black') !important;
           }
         }
 
-        .v-btn.vcs-button {
-          height: 100% !important;
-          display: block;
+        &.theme--dark {
+          thead tr th {
+            color: map-get($shades, 'white') !important;
+          }
         }
       }
 
-      .vcs-pagination-bar {
-        .vcs-button-wrap {
-          height: 25px;
-          border: 1px solid;
-          padding: 0 4px;
-          border-radius: 4px;
+      .v-btn.vcs-button {
+        height: 100% !important;
+        display: block;
+      }
+    }
 
-          &:hover {
-            border: 1px solid var(--v-primary-base);
-          }
+    .vcs-pagination-bar {
+      .vcs-button-wrap {
+        height: 25px;
+        border: 1px solid;
+        padding: 0 4px;
+        border-radius: 4px;
+
+        &:hover {
+          border: 1px solid var(--v-primary-base);
         }
       }
     }

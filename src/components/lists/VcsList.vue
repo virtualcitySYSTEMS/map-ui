@@ -5,36 +5,37 @@
       :placeholder="searchbarPlaceholder"
       v-model="query"
     />
-    <v-list dense>
+    <v-list density="compact">
       <v-list-item v-if="showTitle" class="font-weight-bold">
-        <v-list-item-content>
+        <template #prepend>
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
-          <v-list-item-title>
-            <VcsTooltip :tooltip="$t(listHeaderTooltip)">
-              <template #activator="{ on, attrs }">
-                <span v-bind="attrs" v-on="on" ref="listHeader">
-                  {{ $t(title) }}
-                </span>
-              </template>
-            </VcsTooltip>
-            <span v-if="selectable && selected.length > 0">
-              {{ `(${selected.length})` }}
-            </span>
-          </v-list-item-title>
+        </template>
+        <v-list-item-title>
+          <VcsTooltip :tooltip="$st(listHeaderTooltip)">
+            <template #activator="{ props }">
+              <span v-bind="props" ref="listHeader">
+                {{ $st(title) }}
+              </span>
+            </template>
+          </VcsTooltip>
+          <span v-if="selectable && selected.length > 0">
+            {{ `(${selected.length})` }}
+          </span>
+        </v-list-item-title>
+        <template #append>
           <vcs-action-button-list
             v-if="renderingActions?.length > 0"
             :actions="renderingActions"
             :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
           />
-        </v-list-item-content>
+        </template>
       </v-list-item>
-      <template v-for="(item, index) in renderingItems">
+      <div v-for="(item, index) in renderingItems" :key="`item-${index}`">
         <v-list-item
-          :key="`item-${index}`"
-          :input-value="selected.includes(item)"
+          :active="selected.includes(item)"
           :disabled="item.disabled"
           @mousedown.shift="$event.preventDefault()"
           @mouseover="hovering = index"
@@ -51,58 +52,56 @@
             'v-list-item__dragged': dragging === index,
             'border-bottom': borderBottom(index),
             'border-top': borderTop(index),
+            'cursor-pointer': selectable && !isDraggable,
           }"
+          @click="select(item, $event)"
         >
-          <v-list-item-content
-            :class="[selectable && !isDraggable ? 'cursor-pointer' : '']"
-            @click="select(item, $event)"
-          >
+          <template #prepend>
             <v-icon v-if="item.icon">
               {{ item.icon }}
             </v-icon>
-            <VcsTooltip
-              :tooltip="
-                dragging !== undefined
-                  ? undefined
-                  : $t(item.tooltip || overflowTitle(index, item.title))
-              "
-            >
-              <template #activator="{ on, attrs }">
-                <v-list-item-title
-                  v-bind="attrs"
-                  v-on="on"
-                  ref="titles"
-                  class="d-flex gap-2"
-                >
-                  <slot name="item.prepend-title" :item="item" :index="index" />
-                  <slot name="item.title" :item="item" :index="index">
-                    <VcsTextField
-                      v-if="item.rename"
-                      :value="item.title"
-                      autofocus
-                      :no-padding="true"
-                      @input="(value) => rename(item, value)"
-                      @click.stop
-                      @keydown.enter="item.rename = false"
-                      @blur="item.rename = false"
-                      :rules="[(v) => !!v || 'components.validation.required']"
-                    />
-                    <span v-else>
-                      {{ $t(item.title) }}
-                    </span>
-                  </slot>
-                  <slot
-                    name="item.append-title"
-                    :item="item"
-                    :index="index"
-                    class="ml-auto"
+          </template>
+          <VcsTooltip
+            :tooltip="
+              dragging !== undefined
+                ? undefined
+                : $st(item.tooltip || overflowTitle(index, item.title))
+            "
+          >
+            <template #activator="{ props }">
+              <v-list-item-title
+                v-bind="props"
+                ref="titles"
+                class="d-flex gap-2"
+              >
+                <slot name="item.prepend-title" :item="item" :index="index" />
+                <slot name="item.title" :item="item" :index="index">
+                  <VcsTextField
+                    v-if="item.rename"
+                    :model-value="item.title"
+                    autofocus
+                    :no-padding="true"
+                    @update:model-value="(value) => rename(item, value)"
+                    @click.stop
+                    @keydown.enter="item.rename = false"
+                    @blur="item.rename = false"
+                    :rules="[(v) => !!v || 'components.validation.required']"
                   />
-                </v-list-item-title>
-              </template>
-            </VcsTooltip>
-          </v-list-item-content>
-          <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
-          <v-list-item-action>
+                  <span v-else>
+                    {{ $st(item.title) }}
+                  </span>
+                </slot>
+                <slot
+                  name="item.append-title"
+                  :item="item"
+                  :index="index"
+                  class="ml-auto"
+                />
+              </v-list-item-title>
+            </template>
+          </VcsTooltip>
+          <template #append>
+            <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
             <vcs-action-button-list
               v-if="item.actions?.length > 0"
               :actions="item.actions"
@@ -110,28 +109,29 @@
               :block-overflow="true"
               :overflow-count="actionButtonListOverflowCount"
             />
-          </v-list-item-action>
+          </template>
         </v-list-item>
         <slot name="item.intermediate" :item="item" :index="index" />
         <div
           v-if="hasIntermediateSlot"
           :key="`item-intermediate-child-balance-${index}`"
         />
-      </template>
+      </div>
     </v-list>
   </div>
 </template>
 
 <script>
-  import { computed, getCurrentInstance, inject, ref, watch } from 'vue';
   import {
-    VList,
-    VListItem,
-    VListItemContent,
-    VListItemAction,
-    VIcon,
-    VListItemTitle,
-  } from 'vuetify/lib';
+    computed,
+    getCurrentInstance,
+    inject,
+    ref,
+    shallowRef,
+    toRaw,
+    watch,
+  } from 'vue';
+  import { VList, VListItem, VIcon, VListItemTitle } from 'vuetify/components';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
@@ -140,7 +140,7 @@
 
   /**
    * @param {import("vue").Ref<VcsListItem[]>} items
-   * @param {import("vue").Ref<VcsListItem[]>} selected
+   * @param {import("vue").ShallowRef<VcsListItem[]>} selected
    * @param {function(string, ...any[]):void} emit
    * @returns {Array<import("../../actions/actionHelper.js").VcsAction>}
    */
@@ -151,13 +151,15 @@
         tooltip: 'list.selectAll',
         callback() {
           const currentSelection = [...selected.value];
-          selected.value = items.value.filter((item) => !item.disabled);
+          selected.value = items.value
+            .filter((item) => !item.disabled)
+            .map(toRaw);
           selected.value.forEach((item) => {
             if (item.selectionChanged && !currentSelection.includes(item)) {
               item.selectionChanged(true);
             }
           });
-          emit('input', selected.value);
+          emit('update:modelValue', selected.value);
         },
       },
       {
@@ -170,7 +172,7 @@
             }
           });
           selected.value = [];
-          emit('input', selected.value);
+          emit('update:modelValue', selected.value);
         },
       },
     ];
@@ -245,8 +247,6 @@
       VcsTooltip,
       VList,
       VListItem,
-      VListItemContent,
-      VListItemAction,
       VIcon,
       VListItemTitle,
       VcsTextField,
@@ -268,7 +268,7 @@
         type: Boolean,
         default: false,
       },
-      value: {
+      modelValue: {
         type: Array,
         default: () => [],
       },
@@ -312,7 +312,7 @@
     },
     setup(props, { emit, slots }) {
       /** @type {import("vue").Ref<Array<VcsListItem>>} */
-      const selected = ref(props.value);
+      const selected = shallowRef([]);
       /** @type {import("vue").Ref<string>} */
       const query = ref('');
       /** @type {import("vue").Ref<number|undefined>} */
@@ -343,22 +343,28 @@
       watch(
         props,
         () => {
-          if (selected.value !== props.value) {
-            selected.value = props.value;
+          const rawSelected = props.modelValue.map(toRaw);
+          if (
+            selected.value.length !== rawSelected.length ||
+            !selected.value.every((item, index) => {
+              return item === rawSelected[index];
+            })
+          ) {
+            selected.value = rawSelected;
           }
           if (props.singleSelect && selected.value.length > 1) {
             selected.value
               .filter((i, index) => index && i.selectionChanged)
               .forEach((i) => i.selectionChanged(false));
             selected.value = [selected.value[0]];
-            emit('input', selected);
+            emit('update:modelValue', selected);
           }
           if (!props.selectable && selected.value.length > 0) {
             selected.value
               .filter((i) => i.selectionChanged)
               .forEach((i) => i.selectionChanged(false));
             selected.value = [];
-            emit('input', selected);
+            emit('update:modelValue', selected);
           }
           if (!props.searchable) {
             query.value = '';
@@ -372,7 +378,7 @@
       const filterPredicate = inject(
         'filterPredicate',
         (item, queryString = '') => {
-          const translatedTitle = vm.$t(item.title);
+          const translatedTitle = vm.$st(item.title);
           return translatedTitle
             .toLocaleLowerCase()
             .includes(queryString.toLocaleLowerCase());
@@ -463,10 +469,11 @@
         /** @type {import("vue").Ref<Array<VcsListItem>>} */
         selected,
         /**
-         * @param {VcsListItem} item
+         * @param {VcsListItem} itemOrProxy
          * @param {PointerEvent} event
          */
-        select(item, event) {
+        select(itemOrProxy, event) {
+          const item = toRaw(itemOrProxy);
           if (Array.isArray(item.clickedCallbacks)) {
             item.clickedCallbacks.forEach((cb) => cb(event));
           }
@@ -485,14 +492,15 @@
               firstSelected = item;
             }
           } else if (event.shiftKey) {
+            const rawRenderingItems = renderingItems.value.map(toRaw);
             let firstIndex = 0;
             if (firstSelected) {
-              firstIndex = renderingItems.value.indexOf(firstSelected);
+              firstIndex = rawRenderingItems.indexOf(firstSelected);
             }
-            const currentIndex = renderingItems.value.indexOf(item);
+            const currentIndex = rawRenderingItems.indexOf(item);
             if (firstIndex > -1 && currentIndex > -1) {
               const currentSelection = [...selected.value];
-              selected.value = renderingItems.value.slice(
+              selected.value = rawRenderingItems.slice(
                 Math.min(firstIndex, currentIndex),
                 Math.max(firstIndex, currentIndex) + 1,
               );
@@ -526,7 +534,9 @@
             } else if (selected.value.length > 1) {
               selected.value
                 .filter((i) => i !== item && i.selectionChanged)
-                .forEach((i) => i.selectionChanged(false));
+                .forEach((i) => {
+                  i.selectionChanged(false);
+                });
               selected.value = [item];
               firstSelected = item;
             } else {
@@ -549,26 +559,28 @@
             firstSelected = item;
           }
 
-          emit('input', selected.value);
+          emit('update:modelValue', selected.value);
         },
         /**
-         * @param {VcsListItem} item
+         * @param {VcsListItem} itemOrProxy
          */
-        add(item) {
+        add(itemOrProxy) {
+          const item = toRaw(itemOrProxy);
           if (!selected.value.includes(item) && !item.disabled) {
             item.selectionChanged?.(true);
             selected.value = [...selected.value, item];
-            emit('input', selected.value);
+            emit('update:modelValue', selected.value);
           }
         },
         /**
-         * @param {VcsListItem} item
+         * @param {VcsListItem} itemOrProxy
          */
-        remove(item) {
+        remove(itemOrProxy) {
+          const item = toRaw(itemOrProxy);
           if (selected.value.includes(item) && !item.disabled) {
             item.selectionChanged?.(false);
             selected.value = selected.value.filter((i) => i !== item);
-            emit('input', selected.value);
+            emit('update:modelValue', selected.value);
           }
         },
         clear() {
@@ -577,7 +589,7 @@
             .forEach((i) => i.selectionChanged(false));
           selected.value = [];
           firstSelected = null;
-          emit('input', selected.value);
+          emit('update:modelValue', selected.value);
         },
         drag,
         drop,
@@ -613,69 +625,67 @@
 </script>
 
 <style lang="scss" scoped>
-  ::v-deep {
-    .v-list {
-      .v-list-item__lighten_even {
-        &:nth-child(even) {
-          background-color: var(--v-base-lighten4);
+  :deep(.v-list) {
+    .v-list-item__lighten_even {
+      &:nth-child(even) {
+        background-color: var(--v-base-lighten4);
+      }
+    }
+    .v-list-item__lighten_odd {
+      &:nth-child(odd) {
+        background-color: var(--v-base-lighten4);
+      }
+    }
+    .v-list-item__dragged {
+      background-color: var(--v-base-lighten2) !important;
+    }
+    .v-list-item__selected {
+      border-left: solid 4px;
+      border-left-color: var(--v-primary-base);
+      padding-left: 12px !important;
+    }
+    .v-list-item {
+      padding: 4px 8px 4px 16px;
+      &.vcs-draggable-item:hover {
+        cursor: grab;
+        user-select: none;
+      }
+      &.border-bottom {
+        border-bottom: solid;
+        border-bottom-color: var(--v-base-lighten2);
+      }
+      &.border-top {
+        border-top: solid;
+        border-top-color: var(--v-base-lighten2);
+      }
+      &:after {
+        display: none;
+      }
+      &.font-weight-bold {
+        .v-list-item__title {
+          font-weight: 700;
         }
       }
-      .v-list-item__lighten_odd {
-        &:nth-child(odd) {
-          background-color: var(--v-base-lighten4);
+      .v-list-item__action {
+        .v-icon {
+          font-size: 16px;
+        }
+        &:last-child {
+          min-width: auto;
         }
       }
-      .v-list-item__dragged {
-        background-color: var(--v-base-lighten2) !important;
-      }
-      .v-list-item__selected {
-        border-left: solid 4px;
-        border-left-color: var(--v-primary-base);
-        padding-left: 12px !important;
-      }
-      .v-list-item {
-        padding: 4px 8px 4px 16px;
-        &.vcs-draggable-item:hover {
-          cursor: grab;
-          user-select: none;
+      .v-list-item__content {
+        flex-wrap: nowrap;
+        column-gap: 4px;
+        .v-icon,
+        .action-btn-wrap {
+          flex: 1 1 auto;
         }
-        &.border-bottom {
-          border-bottom: solid;
-          border-bottom-color: var(--v-base-lighten2);
-        }
-        &.border-top {
-          border-top: solid;
-          border-top-color: var(--v-base-lighten2);
-        }
-        &:after {
-          display: none;
-        }
-        &.font-weight-bold {
-          .v-list-item__title {
-            font-weight: 700;
-          }
-        }
-        .v-list-item__action {
-          .v-icon {
-            font-size: 16px;
-          }
-          &:last-child {
-            min-width: auto;
-          }
-        }
-        .v-list-item__content {
-          flex-wrap: nowrap;
-          column-gap: 4px;
-          .v-icon,
-          .action-btn-wrap {
-            flex: 1 1 auto;
-          }
-          .v-icon {
-            font-size: 16px;
-            .v-icon__component {
-              width: 16px;
-              height: 16px;
-            }
+        .v-icon {
+          font-size: 16px;
+          .v-icon__component {
+            width: 16px;
+            height: 16px;
           }
         }
       }

@@ -48,7 +48,7 @@
             { label: 'settings.theme.light', value: false },
             { label: 'settings.theme.dark', value: true },
           ]"
-          v-model="$vuetify.theme.dark"
+          v-model="themeMode"
           row
         />
       </v-col>
@@ -57,9 +57,10 @@
 </template>
 
 <script>
-  import { ref, inject, onUnmounted, getCurrentInstance, computed } from 'vue';
-  import { VCol, VContainer, VRow } from 'vuetify/lib';
   import { CesiumMap, DisplayQualityLevel } from '@vcmap/core';
+  import { ref, inject, onUnmounted, computed } from 'vue';
+  import { useTheme } from 'vuetify';
+  import { VCol, VContainer, VRow } from 'vuetify/components';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
   import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
   import VcsRadio from '../components/form-inputs-controls/VcsRadio.vue';
@@ -91,9 +92,10 @@
           app.locale = value;
         },
       });
-      const vm = getCurrentInstance().proxy;
       const setupI18n = () => {
-        languages.value = [...vm.$i18n.availableLocales];
+        languages.value = [...app.vueI18n.availableLocales].filter((lang) => {
+          return Object.keys(app.vueI18n.getLocaleMessage(lang)).length > 0;
+        });
         if (!languages.value.includes(localLanguage.value)) {
           localLanguage.value = languages.value[0];
         }
@@ -141,6 +143,16 @@
         app.maps.mapActivated.addEventListener(updateIs3D);
       updateIs3D();
 
+      const theme = useTheme();
+      const themeMode = computed({
+        get() {
+          return theme.global.current.value.dark;
+        },
+        set(value) {
+          theme.global.name.value = value ? 'dark' : 'light';
+        },
+      });
+
       onUnmounted(() => {
         localeChangedListener();
         addedListener();
@@ -150,6 +162,7 @@
       });
 
       return {
+        themeMode,
         language,
         languages,
         displaySettings,

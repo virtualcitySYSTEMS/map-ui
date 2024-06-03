@@ -1827,7 +1827,7 @@
       "layerName": "festgesetzte Überschwemmungsgebiete"
     }
   ],
-  "plugins": [
+  "plugins2": [
     {
       "name": "@vcmap/link-button",
       "entry": "plugins/@vcmap/link-button/index.js",

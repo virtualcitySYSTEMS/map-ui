@@ -1,7 +1,7 @@
 import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { check } from '@vcsuite/check';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
@@ -168,9 +168,9 @@ class CollectionComponentClass {
     this._owner = owner;
 
     /**
-     * @type {import("vue").Ref<Array<import("./collectionManager.js").OwnedAction>>}
+     * @type {import("vue").ShallowRef<Array<import("./collectionManager.js").OwnedAction>>}
      */
-    this._actions = ref([]);
+    this._actions = shallowRef([]);
     /**
      * @type {Array<import("./collectionManager.js").ItemMapping<T>>}
      * @private

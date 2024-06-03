@@ -1,7 +1,5 @@
 <template>
-  <v-container
-    :class="$vuetify.breakpoint.xs ? 'nav-container mobile' : 'nav-container'"
-  >
+  <v-container :class="xs ? 'nav-container mobile' : 'nav-container'">
     <v-row>
       <VcsCompass
         :view-mode="viewMode"
@@ -12,7 +10,7 @@
     <v-row v-if="isOblique">
       <ObliqueRotation v-model="heading" :disabled="movementApiCallsDisabled" />
     </v-row>
-    <template v-if="$vuetify.breakpoint.mobile">
+    <template v-if="mobile">
       <v-row justify="center">
         <OrientationToolsButton
           v-if="showLocatorButton"
@@ -24,7 +22,7 @@
         ></OrientationToolsButton>
       </v-row>
     </template>
-    <template v-if="$vuetify.breakpoint.mdAndUp">
+    <template v-if="mdAndUp">
       <v-row justify="center">
         <VcsZoomButton
           @zoom-out="zoomOut()"
@@ -32,7 +30,7 @@
           :disabled="movementApiCallsDisabled"
         />
       </v-row>
-      <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
+      <v-row justify="center" v-if="is3D && mdAndUp">
         <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
       </v-row>
       <v-row justify="center">
@@ -60,7 +58,8 @@
 <script>
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
   import { ObliqueMap, CesiumMap } from '@vcmap/core';
-  import { VContainer, VRow } from 'vuetify/lib';
+  import { VContainer, VRow } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
   import { createLocatorAction } from './locatorHelper.js';
   import {
@@ -301,7 +300,12 @@
         removeMovementDisabledListener();
       });
 
+      const { xs, mdAndUp, mobile } = useDisplay();
+
       return {
+        xs,
+        mdAndUp,
+        mobile,
         viewMode,
         heading,
         tilt,

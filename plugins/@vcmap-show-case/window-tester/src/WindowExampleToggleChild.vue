@@ -8,7 +8,7 @@
 
 <style scoped></style>
 <script>
-  import { VContainer } from 'vuetify/lib';
+  import { VContainer } from 'vuetify/components';
   import { VcsFormButton, WindowSlot } from '@vcmap/ui';
   import { inject } from 'vue';
   import WindowExampleContent from './WindowExampleContent.vue';

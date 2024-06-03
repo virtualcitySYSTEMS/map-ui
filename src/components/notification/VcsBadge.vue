@@ -3,12 +3,8 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '../../styles/shades.scss';
-  .v-application .theme--light .badge {
-    border: 1px solid map-get($shades, 'white') !important;
-  }
-  .v-application .theme--dark .badge {
-    border: 1px solid map-get($shades, 'black') !important;
+  .badge {
+    border: 1px solid rgb(var(--v-theme-surface)) !important;
   }
 </style>
 
@@ -22,7 +18,7 @@
     props: {
       color: {
         type: String,
-        default: 'warning',
+        default: 'bg-warning',
       },
     },
   };

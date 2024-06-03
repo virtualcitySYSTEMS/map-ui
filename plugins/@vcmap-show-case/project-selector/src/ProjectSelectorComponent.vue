@@ -11,19 +11,15 @@
         :loading="loading === project.name"
       >
         <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="font-weight-bold">
-              {{ project.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              project.description
-            }}</v-list-item-subtitle>
-            <ModulesListComponent
-              :modules="project.modules"
-              @toggle-module="toggleModule"
-              :toggleable="false"
-            />
-          </v-list-item-content>
+          <v-list-item-title class="font-weight-bold">
+            {{ project.name }}
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
+          <ModulesListComponent
+            :modules="project.modules"
+            @toggle-module="toggleModule"
+            :toggleable="false"
+          />
           <v-list-item-action>
             <v-avatar color="success" size="30" v-if="project.active">
               <v-icon>mdi-check</v-icon>
@@ -48,13 +44,12 @@
     VCard,
     VIcon,
     VListItem,
-    VListItemContent,
     VListItemTitle,
     VListItemSubtitle,
     VListItemAction,
     VAvatar,
     VDivider,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import ModulesListComponent from './ModulesListComponent.vue';
 
   export default {
@@ -66,7 +61,6 @@
       VCard,
       VIcon,
       VListItem,
-      VListItemContent,
       VListItemTitle,
       VListItemSubtitle,
       VListItemAction,

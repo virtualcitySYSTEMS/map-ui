@@ -9,7 +9,7 @@
         <v-list-item-title
           :class="{ 'primary--text': item.value === currentStyleName }"
         >
-          {{ $t(item.text) }}
+          {{ $st(item.text) }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -17,14 +17,12 @@
       <v-list-item
         v-for="(entry, index) in currentStyleLegend"
         :key="`style-legend-${index}`"
-        dense
+        density="compact"
       >
-        <v-list-item-icon>
+        <template #prepend>
           <v-chip :color="entry.color" />
-        </v-list-item-icon>
-        <v-list-item-content>
-          {{ $t(entry.title) }}
-        </v-list-item-content>
+        </template>
+        {{ $st(entry.title) }}
       </v-list-item>
     </v-list>
   </v-sheet>
@@ -36,11 +34,9 @@
     VChip,
     VList,
     VListItem,
-    VListItemContent,
-    VListItemIcon,
     VListItemTitle,
     VSheet,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
 
   /**
    * @description Modal listing available styles.
@@ -54,10 +50,8 @@
       VSheet,
       VList,
       VListItem,
-      VListItemIcon,
       VListItemTitle,
       VChip,
-      VListItemContent,
     },
     props: {
       availableStyles: {

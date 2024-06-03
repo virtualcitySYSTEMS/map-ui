@@ -5,21 +5,28 @@
     color="error"
     :max-width="200"
   >
-    <template #activator="{ on, attrs }">
-      <v-container v-on="on" class="py-0" :class="isDense ? 'px-1' : 'px-2'">
+    <template #activator="{ props }">
+      <v-container
+        v-bind="props"
+        class="py-0"
+        :class="isDense ? 'px-1' : 'px-2'"
+      >
         <v-radio-group
           ref="radioGroup"
           hide-details
           class="vcs-radio-group"
           :ripple="false"
-          :dense="isDense"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          :density="isDense ? 'compact' : undefined"
+          v-bind="{ ...$attrs }"
         >
           <div class="d-flex gap-1 px-2 pt-2 pb-1 justify-center">
             <div v-for="(item, idx) in items" :key="idx">
               <div class="pt-1 pb-0" :class="$attrs.disabled ? 'disabled' : ''">
-                <slot name="label" :value="item[itemValue]" :src="item.src">
+                <slot
+                  name="label"
+                  :model-value="item[itemValue]"
+                  :src="item.src"
+                >
                   <img :src="item.src" :alt="item[itemValue]" class="image" />
                 </slot>
               </div>
@@ -40,7 +47,7 @@
 
 <script>
   import { computed, ref } from 'vue';
-  import { VContainer, VRadioGroup, VRadio } from 'vuetify/lib';
+  import { VContainer, VRadioGroup, VRadio } from 'vuetify/components';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
 
@@ -63,6 +70,7 @@
    */
   export default {
     name: 'VcsRadioGrid',
+    inheritAttrs: false,
     components: {
       VContainer,
       VRadioGroup,
@@ -108,35 +116,35 @@
   }
   .v-input {
     &.vcs-radio-group {
-      ::v-deep {
+      :deep(*) {
         margin-top: 0;
         padding-top: 0;
-        label.v-label,
-        .v-icon.v-icon {
-          font-size: $vcs-font-size;
-          color: inherit;
-          &.theme--light {
-            color: map-get($shades, 'black') !important;
-            &.error--text {
-              color: var(--v-error-base) !important;
-            }
-          }
-          &.theme--dark {
-            color: map-get($shades, 'white') !important;
-            &.error--text {
-              color: var(--v-error-base) !important;
-            }
+      }
+      :deep(label.v-label),
+      :deep(.v-icon.v-icon) {
+        font-size: $vcs-font-size;
+        color: inherit;
+        &.theme--light {
+          color: map-get($shades, 'black') !important;
+          &.error--text {
+            color: var(--v-error-base) !important;
           }
         }
-        .v-radio:not(:last-child):not(:only-child) {
-          margin-bottom: 0;
+        &.theme--dark {
+          color: map-get($shades, 'white') !important;
+          &.error--text {
+            color: var(--v-error-base) !important;
+          }
         }
-        .v-input--selection-controls__input {
-          margin: 0;
-        }
-        label.v-label.error--text {
-          animation: none;
-        }
+      }
+      :deep(.v-radio:not(:last-child):not(:only-child)) {
+        margin-bottom: 0;
+      }
+      :deep(.v-input--selection-controls__input) {
+        margin: 0;
+      }
+      :deep(label.v-label.error--text) {
+        animation: none;
       }
     }
   }

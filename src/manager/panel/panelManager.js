@@ -79,7 +79,7 @@ export const DefaultPanelPositions = {
 /**
  * @typedef {Object} PanelComponentOptions
  * @property {string} [id] - Optional id, which will be set as HTML container ID. If not provided an uuid will be generated.
- * @property {import("vue").Component} [component] Optional component to be rendered in the panel.
+ * @property {import("vue").Component<unknown, unknown, unknown>} [component] Optional component to be rendered in the panel.
  * @property {Partial<PanelState>} [state]
  * @property {Partial<VerticalPanelPositionOptions|HorizontalPanelPositionOptions>} [position] Will be merged with default position for panel
  * @property {Object} [props]
@@ -99,7 +99,7 @@ export const DefaultPanelPositions = {
 /**
  * @typedef {Object} PanelComponent
  * @property {string} id
- * @property {import("vue").Component} component
+ * @property {import("vue").Component<unknown, unknown, unknown>} component
  * @property {Partial<PanelState>} state
  * @property {Object} props
  * @property {Object} provides
@@ -151,9 +151,9 @@ class PanelManager {
     this.removed = new VcsEvent();
     /**
      * reactive ordered array of ids,
-     * @type {Array<string>}
+     * @type {import("vue").UnwrapRef<string[]>}
      */
-    this.componentIds = [];
+    this.componentIds = reactive([]);
     /**
      * @type {Map<PanelLocation, string>}
      * @private

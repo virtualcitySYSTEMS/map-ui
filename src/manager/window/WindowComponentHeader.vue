@@ -64,7 +64,7 @@
 </style>
 
 <script>
-  import { VIcon, VDivider } from 'vuetify/lib';
+  import { VIcon, VDivider } from 'vuetify/components';
   import { computed, getCurrentInstance } from 'vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
@@ -86,6 +86,7 @@
       VIcon,
       VDivider,
     },
+    inheritAttrs: false,
     props: {
       windowState: {
         type: Object,
@@ -116,8 +117,8 @@
 
       const translatedHeaderTitle = computed(() =>
         Array.isArray(props.windowState.headerTitle)
-          ? props.windowState.headerTitle.map((t) => vm.$t(t)).join(' ')
-          : vm.$t(props.windowState.headerTitle),
+          ? props.windowState.headerTitle.map((t) => vm.$st(t)).join(' ')
+          : vm.$st(props.windowState.headerTitle),
       );
 
       const infoAction =

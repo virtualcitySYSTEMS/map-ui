@@ -18,7 +18,7 @@ export function usePrimitiveProperty(modelObject, key, emit) {
       if (modelObject()[key] !== value) {
         const newParams = structuredClone(modelObject());
         const changedParams = { [key]: value ?? undefined };
-        emit('input', Object.assign(newParams, changedParams));
+        emit('update:modelValue', Object.assign(newParams, changedParams));
         emit('propertyChange', changedParams);
       }
     },
@@ -61,7 +61,7 @@ export function useArrayProperty(modelObject, key, emit, arrayLength) {
           }
 
           if (changedParams) {
-            emit('input', Object.assign(newParams, changedParams));
+            emit('update:modelValue', Object.assign(newParams, changedParams));
             emit('propertyChange', changedParams);
           }
         },
@@ -93,7 +93,7 @@ export function useHasProperty(modelObject, key, emit, valueDefault) {
       } else {
         changedParams = { [key]: undefined };
       }
-      emit('input', Object.assign(newParams, changedParams));
+      emit('update:modelValue', Object.assign(newParams, changedParams));
       emit('propertyChange', changedParams);
     },
   });

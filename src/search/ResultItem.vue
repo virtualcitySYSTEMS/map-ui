@@ -1,26 +1,28 @@
 <template>
-  <div class="ma-2 d-flex flex-row align-center" v-if="item">
-    <v-list-item-icon v-if="item.icon" class="px-1">
+  <v-list-item class="ma-2 d-flex flex-row align-center" v-if="item">
+    <template #prepend v-if="item.icon">
       <v-icon>
         {{ item.icon }}
       </v-icon>
-    </v-list-item-icon>
+    </template>
     <div class="px-2 d-flex align-center" :title="$t('search.select')">
       <span v-html="marked" />
     </div>
-    <VcsActionButtonList
-      v-if="hasActions"
-      :actions="item.actions"
-      :block-overflow="true"
-      :overflow-count="2"
-      right
-    />
-  </div>
+    <template #append>
+      <VcsActionButtonList
+        v-if="hasActions"
+        :actions="item.actions"
+        :block-overflow="true"
+        :overflow-count="2"
+        right
+      />
+    </template>
+  </v-list-item>
 </template>
 
 <script>
   import { computed } from 'vue';
-  import { VIcon, VListItemIcon } from 'vuetify/lib';
+  import { VIcon, VListItem } from 'vuetify/components';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
 
   /**
@@ -55,8 +57,8 @@
     name: 'ResultItem',
     components: {
       VcsActionButtonList,
-      VListItemIcon,
       VIcon,
+      VListItem,
     },
     props: {
       query: {

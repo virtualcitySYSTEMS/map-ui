@@ -13,7 +13,7 @@
     <v-row no-gutters v-for="key in keys" :key="key">
       <v-col>
         <VcsLabel :html-for="key" dense>
-          {{ $t(`categoryTester.${key}`) }}
+          {{ $st(`categoryTester.${key}`) }}
         </VcsLabel>
       </v-col>
       <v-col>
@@ -25,7 +25,7 @@
 
 <script>
   import { computed, inject, isRef } from 'vue';
-  import { VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VContainer, VRow, VCol } from 'vuetify/components';
   import { VcsCheckbox, VcsLabel, VcsTextField } from '@vcmap/ui';
 
   /**

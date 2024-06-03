@@ -6,18 +6,16 @@
         :key="key"
         class="px-0"
       >
-        <v-list-item-content>
-          <v-list-item-title>{{ $t(title) }}</v-list-item-title>
-          <v-list-item-subtitle
-            v-for="attribution in attributions"
-            :key="attribution.provider"
-            :title="`${$t(attribution.provider)} ${attribution.year}`"
-          >
-            <a :href="attribution.url" target="_blank">
-              {{ $t(attribution.provider) }} {{ attribution.year }}
-            </a>
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <v-list-item-title>{{ $st(title) }}</v-list-item-title>
+        <v-list-item-subtitle
+          v-for="attribution in attributions"
+          :key="attribution.provider"
+          :title="`${$st(attribution.provider)} ${attribution.year}`"
+        >
+          <a :href="attribution.url" target="_blank">
+            {{ $st(attribution.provider) }} {{ attribution.year }}
+          </a>
+        </v-list-item-subtitle>
       </v-list-item>
     </v-list>
     <v-sheet v-else class="ma-2">
@@ -53,30 +51,28 @@
   import {
     VList,
     VListItem,
-    VListItemContent,
     VListItemTitle,
     VListItemSubtitle,
     VSheet,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
 
   /**
    * @description Lists attributions of maps, layers and oblique collections
-   * @vue-prop {import("vue").Ref<Array<AttributionEntry>} entries - array with one entry per active VcsObject
+   * @vue-prop {import("vue").UnwrapRef<Array<AttributionEntry>} entries - array with one entry per active VcsObject
    */
   export default {
     name: 'VcsAttributions',
     components: {
       VList,
       VListItem,
-      VListItemContent,
       VListItemTitle,
       VListItemSubtitle,
       VSheet,
     },
     props: {
       entries: {
-        type: Object,
-        default: () => {},
+        type: Array,
+        default: () => [],
       },
     },
   };

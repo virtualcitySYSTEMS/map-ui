@@ -6,9 +6,9 @@
     <v-list>
       <v-list-item v-for="type in types" :key="type">
         {{ type }}
-        <v-list-item-action @click="notify(type)">
-          <v-icon>mdi-plus</v-icon>
-        </v-list-item-action>
+        <template #append>
+          <v-icon @click="notify(type)">mdi-plus</v-icon>
+        </template>
       </v-list-item>
     </v-list>
     <v-divider />
@@ -23,12 +23,11 @@
     VSheet,
     VList,
     VListItem,
-    VListItemAction,
     VTextField,
     VIcon,
     VCard,
     VDivider,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { NotificationType, VcsCheckbox } from '@vcmap/ui';
   import { computed, inject, ref } from 'vue';
 
@@ -38,7 +37,6 @@
       VSheet,
       VList,
       VListItem,
-      VListItemAction,
       VTextField,
       VIcon,
       VCard,

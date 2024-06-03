@@ -83,7 +83,7 @@
             v-model="groundPosition"
             :disabled="editAction.active"
             @blur="handleInput('groundPosition')"
-            @input="handleInput('groundPosition')"
+            @update:model-value="handleInput('groundPosition')"
             hide-z
           />
         </template>
@@ -99,7 +99,7 @@
             v-model="cameraPosition"
             :disabled="editAction.active"
             @blur="handleInput('cameraPosition')"
-            @input="handleInput('cameraPosition')"
+            @update:model-value="handleInput('cameraPosition')"
           />
         </template>
         <template v-if="!isCesiumMap">
@@ -121,7 +121,7 @@
                 v-model.number="distance"
                 :disabled="editAction.active"
                 @blur="gotoViewpoint"
-                @input="gotoViewpoint"
+                @update:model-value="gotoViewpoint"
                 :rules="[isPositiveNumber]"
               />
             </v-col>
@@ -132,7 +132,7 @@
             <v-row no-gutters>
               <v-col cols="9">
                 <VcsLabel :html-for="key" dense>
-                  {{ $t(`components.viewpoint.${key}`) }}
+                  {{ $st(`components.viewpoint.${key}`) }}
                 </VcsLabel>
               </v-col>
               <v-col cols="3">
@@ -144,7 +144,7 @@
                   v-model.number="hpr[key].value"
                   :disabled="editAction.active"
                   @blur="gotoViewpoint"
-                  @input="gotoViewpoint"
+                  @update:model-value="gotoViewpoint"
                   :rules="[isFiniteNumber]"
                   class="pr-0 ml-6"
                 />
@@ -160,7 +160,7 @@
                   v-model="hpr[key].value"
                   v-bind="hprSliderOptions[key]"
                   :disabled="editAction.active"
-                  @input="gotoViewpoint"
+                  @update:model-value="gotoViewpoint"
                 />
               </v-col>
             </v-row>
@@ -181,7 +181,7 @@
     ref,
     watch,
   } from 'vue';
-  import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
   import { CesiumMap, ObliqueMap, OpenlayersMap, Viewpoint } from '@vcmap/core';
   import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
@@ -199,7 +199,7 @@
   function emitInput(emit, viewpoint, getModelValue) {
     const clone = structuredClone(getModelValue());
     const { name, animate, duration, ...options } = viewpoint.toJSON();
-    emit('input', Object.assign(clone, options));
+    emit('update:modelValue', Object.assign(clone, options));
   }
 
   /**
@@ -354,7 +354,7 @@
       VcsSlider,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -393,48 +393,54 @@
         app.maps.activeMap?.className === CesiumMap.className,
       );
 
-      const name = usePrimitiveProperty(() => props.value, 'name', emit);
+      const name = usePrimitiveProperty(() => props.modelValue, 'name', emit);
       const title = computed({
         get() {
-          return props.value?.properties?.title;
+          return props.modelValue?.properties?.title;
         },
         set(value) {
-          if (props.value?.properties?.title !== value) {
-            const clone = props.value ? structuredClone(props.value) : {};
+          if (props.modelValue?.properties?.title !== value) {
+            const clone = props.modelValue
+              ? structuredClone(props.modelValue)
+              : {};
             if (clone.properties) {
               clone.properties.title = value;
             } else {
               clone.properties = { title: value };
             }
-            emit('input', clone);
+            emit('update:modelValue', clone);
           }
         },
       });
-      const animate = usePrimitiveProperty(() => props.value, 'animate', emit);
+      const animate = usePrimitiveProperty(
+        () => props.modelValue,
+        'animate',
+        emit,
+      );
       const duration = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'duration',
         emit,
       );
       const groundPosition = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'groundPosition',
         emit,
       );
       const cameraPosition = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'cameraPosition',
         emit,
       );
       const distance = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'distance',
         emit,
       );
       const hpr = {
-        heading: usePrimitiveProperty(() => props.value, 'heading', emit),
-        pitch: usePrimitiveProperty(() => props.value, 'pitch', emit),
-        roll: usePrimitiveProperty(() => props.value, 'roll', emit),
+        heading: usePrimitiveProperty(() => props.modelValue, 'heading', emit),
+        pitch: usePrimitiveProperty(() => props.modelValue, 'pitch', emit),
+        roll: usePrimitiveProperty(() => props.modelValue, 'roll', emit),
       };
       const hprSliderOptions = {
         heading: {
@@ -461,7 +467,7 @@
         async callback() {
           if (app.maps.activeMap) {
             const viewpoint = await app.maps.activeMap.getViewpoint();
-            emitInput(emit, viewpoint, () => props.value);
+            emitInput(emit, viewpoint, () => props.modelValue);
           }
         },
       };
@@ -469,7 +475,7 @@
       const { action: editAction, destroy } = createEditingAction(
         app,
         emit,
-        () => props.value,
+        () => props.modelValue,
         isCesiumMap,
         props.startSync,
       );
@@ -502,7 +508,7 @@
       });
 
       async function gotoViewpoint() {
-        await gotoViewpointOptions(app, props.value);
+        await gotoViewpointOptions(app, props.modelValue);
       }
 
       async function handleInput(key) {

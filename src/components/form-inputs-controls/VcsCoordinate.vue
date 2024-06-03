@@ -14,9 +14,8 @@
         :decimals="decimals[idx]"
         v-model.number="coordinate[idx]"
         v-bind="{ ...$attrs }"
-        @input="emitInput(coordinate, idx)"
+        @update:model-value="emitInput(coordinate, idx)"
         :rules="getRulesForAxis(idx)"
-        v-on="{ ...forwardListener($listeners) }"
       />
     </v-col>
     <slot name="append" v-bind="{ ...$props }" />
@@ -27,7 +26,7 @@
 
 <script>
   import { computed } from 'vue';
-  import { VRow, VCol } from 'vuetify/lib';
+  import { VRow, VCol } from 'vuetify/components';
   import { Extent } from '@vcmap/core';
   import VcsTextField from './VcsTextField.vue';
   import { between } from '../style/composables.js';
@@ -59,7 +58,7 @@
   /**
    * @description An input for a coordinate providing a VcsTextField for each dimension.
    * All attrs and listeners are forwarded to the input fields.
-   * @vue-prop {import("ol").Coordinate}  value - A coordinate, with x, y and optionally z value.
+   * @vue-prop {import("ol").Coordinate}  modelValue - A coordinate, with x, y and optionally z value.
    * @vue-prop {boolean}  [hideZ=false] - Hide z input field.
    * @vue-prop {Array<string>}  [prefixes=['X','Y','Z']] - An optional array of length three, with prefixes for each input
    * @vue-prop {Array<string>}  [units=['°','°','m']] - An optional array of length three, with units for each input
@@ -78,7 +77,7 @@
       VcsTextField,
     },
     props: {
-      value: {
+      modelValue: {
         type: Array,
         default: () => [0, 0, 0],
       },
@@ -113,11 +112,11 @@
     },
     setup(props, { attrs, emit }) {
       function emitInput(value) {
-        emit('input', structuredClone(value));
+        emit('update:modelValue', structuredClone(value));
       }
       const coordinate = computed({
         get() {
-          return props.value?.slice(0, props.hideZ ? 2 : 3);
+          return props.modelValue?.slice(0, props.hideZ ? 2 : 3);
         },
         set(value) {
           emitInput(value);
@@ -127,10 +126,10 @@
       return {
         coordinate,
         emitInput,
-        forwardListener(listener) {
-          const { input, ...rest } = listener;
-          return rest;
-        },
+        // forwardListener(listener) {
+        //   const { input, ...rest } = listener;
+        //   return rest;
+        // },
         getRangeFromExtent,
         getRulesForAxis(idx) {
           const rules = [];

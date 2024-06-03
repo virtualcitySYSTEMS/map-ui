@@ -2,7 +2,7 @@
   <v-sheet
     :id="`window-component--${windowState.id}`"
     class="elevation-3 position-absolute d-flex flex-column"
-    v-on="{ ...$listeners }"
+    v-bind="$attrs"
     @dragstart="dragStart"
     @dragend="dragEnd"
     :draggable="isDraggable"
@@ -45,7 +45,7 @@
 
 <script>
   import { computed, inject, provide, ref } from 'vue';
-  import { VDivider, VSheet } from 'vuetify/lib';
+  import { VDivider, VSheet } from 'vuetify/components';
   import { WindowSlot } from './windowManager.js';
 
   /**
@@ -61,6 +61,7 @@
    */
   export default {
     name: 'WindowComponent',
+    inheritAttrs: false,
     components: {
       VSheet,
       VDivider,

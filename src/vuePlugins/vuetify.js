@@ -1,10 +1,8 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
-import { genVariations } from 'vuetify/lib/services/theme/utils.js';
-import { colorToInt } from 'vuetify/lib/util/colorUtils.js';
+import { createVuetify } from 'vuetify';
+import { useI18n } from 'vue-i18n';
+import 'vuetify/styles';
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import Icons from '../components/icons/+all.js';
-
-Vue.use(Vuetify);
 
 /**
  * @type {{light:string,dark:string}}
@@ -14,86 +12,128 @@ export const defaultPrimaryColor = {
   dark: '#27B97C',
 };
 
+export function createVcsThemes() {
+  return {
+    light: {
+      colors: {
+        base: '#9E9E9E',
+        'base-lighten-5': '#FFFFFF',
+        'base-lighten-4': '#F8F8F8',
+        'base-lighten-3': '#EBEBEB',
+        'base-lighten-2': '#D0D0D0',
+        'base-lighten-1': '#B8B8B8',
+        'base-darken-1': '#858585',
+        'base-darken-2': '#6B6B6B',
+        'base-darken-3': '#525252',
+        'base-darken-4': '#383838',
+        primary: defaultPrimaryColor.light,
+        warning: '#FFCE00',
+        error: '#AA0000',
+        info: '#2196F3',
+        success: '#4CAF50',
+        'surface-light': '#ffffff',
+      },
+      variables: {
+        'hover-opacity': 0.16,
+        'high-emphasis-opacity': 1,
+        'medium-emphasis-opacity': 1,
+      },
+    },
+    dark: {
+      colors: {
+        base: '#9E9E9E',
+        'base-lighten-5': '#FFFFFF',
+        'base-lighten-4': '#383838',
+        'base-lighten-3': '#525252',
+        'base-lighten-2': '#6B6B6B',
+        'base-lighten-1': '#858585',
+        'base-darken-1': '#B8B8B8',
+        'base-darken-2': '#D0D0D0',
+        'base-darken-3': '#EBEBEB',
+        'base-darken-4': '#F8F8F8',
+        primary: defaultPrimaryColor.dark,
+        warning: '#FFCE00',
+        error: '#FF5252',
+        info: '#2196F3',
+        success: '#4CAF50',
+        'surface-light': '#222222',
+      },
+      variables: {
+        'hover-opacity': 0.16,
+      },
+    },
+  };
+}
+
 /**
- * @returns {import("vuetify").default}
+ * @param {import("vue-i18n").I18n} i18n
+ * @returns {ReturnType<typeof import("vuetify").createVuetify>}
  */
-export function createVuetify() {
+export function createVcsVuetify(i18n) {
   const dark =
     window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
 
-  return new Vuetify({
+  const theme = {
+    options: {
+      customProperties: true,
+    },
+    themes: createVcsThemes(),
+    variations: {
+      colors: ['primary'],
+      lighten: 5,
+      darken: 5,
+    },
+  };
+  if (dark) {
+    theme.defaultTheme = 'dark';
+  }
+
+  return createVuetify({
     treeShake: false,
+    defaults: {
+      VIcon: {
+        size: 16,
+      },
+      VList: {
+        class: 'pa-0',
+      },
+      VListItem: {
+        density: 'compact',
+        minHeight: 32,
+      },
+    },
     defaultAssets: {
       font: {
         family: 'titillium-web',
       },
     },
-    theme: {
-      dark,
-      options: {
-        customProperties: true,
-      },
-      themes: {
-        light: {
-          base: {
-            base: '#9E9E9E',
-            lighten5: '#FFFFFF',
-            lighten4: '#F8F8F8',
-            lighten3: '#EBEBEB',
-            lighten2: '#D0D0D0',
-            lighten1: '#B8B8B8',
-            darken1: '#858585',
-            darken2: '#6B6B6B',
-            darken3: '#525252',
-            darken4: '#383838',
-          },
-          primary: defaultPrimaryColor.light,
-          warning: '#FFCE00',
-          error: '#AA0000',
-          info: '#2196F3',
-          success: '#4CAF50',
-        },
-        dark: {
-          base: {
-            base: '#9E9E9E',
-            lighten5: '#FFFFFF',
-            lighten4: '#383838',
-            lighten3: '#525252',
-            lighten2: '#6B6B6B',
-            lighten1: '#858585',
-            darken1: '#B8B8B8',
-            darken2: '#D0D0D0',
-            darken3: '#EBEBEB',
-            darken4: '#F8F8F8',
-          },
-          primary: defaultPrimaryColor.dark,
-          warning: '#FFCE00',
-          error: '#FF5252',
-          info: '#2196F3',
-          success: '#4CAF50',
-        },
-      },
-    },
+    theme,
     icons: {
-      iconfont: 'mdi',
-      values: {
+      aliases: {
         ...Icons,
       },
+    },
+    locale: {
+      adapter: createVueI18nAdapter({ i18n, useI18n }),
     },
   });
 }
 
 /**
- * @type {import("vuetify").default}
+ * @param {import("../vcsUiApp.js").default} app
+ * @returns {boolean}
  */
-export const vuetify = createVuetify();
+export function isDark(app) {
+  return app.vuetify.theme.current.value.dark;
+}
 
 /**
  * Returns the default primary color depending on the selected theme mode
+ * @param {import("../vcsUiApp.js").default} app
  * @returns {string}
  */
-export function getDefaultPrimaryColor() {
-  if (vuetify.framework.theme.isDark) {
+export function getDefaultPrimaryColor(app) {
+  if (isDark(app)) {
     return defaultPrimaryColor.dark;
   }
   return defaultPrimaryColor.light;
@@ -101,15 +141,15 @@ export function getDefaultPrimaryColor() {
 
 /**
  * Returns the color depending on the current theme mode
+ * @param {import("../vcsUiApp.js").default} app
  * @param {string} value - color key, e.g. 'primary'
- * @param {string=} variant - color variant, e.g. 'lighten1', 'darken4', ...
+ * @param {string=} variant - color variant, e.g. 'lighten-1', 'darken-4', ...
  * @returns {string}
  */
-export function getColorByKey(value, variant) {
-  const mode = vuetify.framework.theme.isDark ? 'dark' : 'light';
-  const color = vuetify.framework.theme.themes[mode][value];
-  if (color && variant) {
-    return color[variant] ?? genVariations(value, colorToInt(color))[variant];
+export function getColorByKey(app, value, variant) {
+  let key = value;
+  if (variant) {
+    key = `${value}-${variant}`;
   }
-  return color?.base ?? color;
+  return app.vuetify.theme.current.value.colors[key];
 }

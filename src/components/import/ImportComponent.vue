@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { VCard } from 'vuetify/lib';
+  import { VCard } from 'vuetify/components';
   import { computed, inject, ref } from 'vue';
   import FileDrop from './FileDrop.vue';
   import VcsFormButton from '../buttons/VcsFormButton.vue';

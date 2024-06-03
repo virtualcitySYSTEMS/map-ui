@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24.009"
-    viewBox="0 0 24 24.009"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24.009">
     <g id="icon_24_boundingbox" transform="translate(0 0.001)">
       <g id="Group_270" transform="translate(8438 22444)">
         <g

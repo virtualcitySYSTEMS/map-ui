@@ -1,12 +1,11 @@
 <template>
   <MenuWrapper
-    v-bind="{ value, valueDefault }"
+    v-bind="{ ...$attrs, modelValue, valueDefault }"
     :value-fallback="{
       radius: 10,
       fill: { color: [255, 255, 255, 1] },
       stroke: { color: [0, 0, 0, 1], width: 2 },
     }"
-    v-on="$listeners"
     name="components.style.image"
   >
     <template #preview>
@@ -14,8 +13,13 @@
     </template>
     <template #content>
       <VcsImageSelector
-        v-bind="{ value, valueDefault, iconOptions, extendedShapeSettings }"
-        v-on="$listeners"
+        v-bind="{
+          ...$attrs,
+          modelValue,
+          valueDefault,
+          iconOptions,
+          extendedShapeSettings,
+        }"
         class="pb-2"
       />
     </template>
@@ -29,7 +33,7 @@
 
   /**
    * @description A wrapper for the VcsImageSelector, that has a small shape/icon preview and a menu that pops up when clicking the preview, containing the image selector.
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} value - The Image options
+   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} modelValue - The Image options
    * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
    * @vue-prop {import("ol/style/Icon").Options} iconOptions - The icon options too choose from. Scale and opacity are ignored.
    * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
@@ -41,7 +45,7 @@
       VcsImageSelector,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -62,12 +66,12 @@
       const canvas = ref(null);
 
       onMounted(() => {
-        drawImageStyle(canvas.value, props.value, true);
+        drawImageStyle(canvas.value, props.modelValue, true);
         watch(
-          () => props.value,
+          () => props.modelValue,
           () => {
             // XXX Maybe add some sort of timeout funciton, so it draws only once when user stops using the slider
-            drawImageStyle(canvas.value, props.value, true);
+            drawImageStyle(canvas.value, props.modelValue, true);
           },
           { deep: true },
         );

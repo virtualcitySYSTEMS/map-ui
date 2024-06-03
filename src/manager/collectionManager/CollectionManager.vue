@@ -1,18 +1,21 @@
 <template>
   <v-container class="pa-0">
     <v-expansion-panels
-      accordion
+      variant="accordion"
       multiple
       v-if="!componentView && componentIds.length > 0"
       v-model="panels"
       class="rounded-0"
     >
       <collection-component-provider
-        v-for="componentId in componentIds"
+        v-for="(componentId, index) in componentIds"
         :component-id="componentId"
         :key="componentId"
       >
-        <collection-component @openList="openList" />
+        <collection-component
+          @openList="openList"
+          :open="panels.includes(index)"
+        />
       </collection-component-provider>
     </v-expansion-panels>
     <collection-component-provider
@@ -26,7 +29,7 @@
 
 <script>
   import { computed, inject, ref } from 'vue';
-  import { VExpansionPanels, VContainer } from 'vuetify/lib';
+  import { VExpansionPanels, VContainer } from 'vuetify/components';
   import CollectionComponentProvider from './CollectionComponentProvider.vue';
   import CollectionComponentList from './CollectionComponentList.vue';
   import CollectionComponent from './CollectionComponent.vue';
@@ -49,7 +52,7 @@
        * @type {import("./collectionManager.js").CollectionManager}
        */
       const collectionManager = inject('collectionManager');
-      const componentIds = ref(collectionManager.componentIds);
+      const { componentIds } = collectionManager;
       /**
        * @type {import("vue").Ref<string|null>}
        */
@@ -59,13 +62,12 @@
        */
       const panels = computed({
         get() {
-          return [...Array(componentIds.value.length).keys()].filter(
-            (p, idx) =>
-              !!collectionManager.get(componentIds.value[idx]).open.value,
+          return [...Array(componentIds.length).keys()].filter(
+            (p, idx) => !!collectionManager.get(componentIds[idx]).open.value,
           );
         },
         set(value) {
-          componentIds.value.forEach((id, idx) => {
+          componentIds.forEach((id, idx) => {
             collectionManager.get(id).open.value = value.includes(idx);
           });
         },

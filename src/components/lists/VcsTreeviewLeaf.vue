@@ -8,13 +8,12 @@
         <ImageElementInjector :element="item.icon" v-else />
       </span>
       <VcsTooltip :tooltip="tooltip">
-        <template #activator="{ on, attrs }">
+        <template #activator="{ props }">
           <span
-            v-bind="attrs"
-            v-on="on"
+            v-bind="props"
             class="d-inline-block text-truncate"
             ref="titleElem"
-            >{{ $t(item.title || item.name) }}</span
+            >{{ $st(item.title || item.name) }}</span
           >
         </template>
       </VcsTooltip>
@@ -34,7 +33,7 @@
 
 <script>
   import { computed, ref } from 'vue';
-  import { VIcon } from 'vuetify/lib';
+  import { VIcon } from 'vuetify/components';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import ImageElementInjector from '../ImageElementInjector.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';

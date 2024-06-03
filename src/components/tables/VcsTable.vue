@@ -11,7 +11,7 @@
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
         :style="{ 'max-width': headers[0].width }"
       >
-        {{ $t(item.key) }}
+        {{ $st(item.key) }}
       </td>
     </template>
     <!-- eslint-disable-next-line -->
@@ -28,7 +28,7 @@
             'multi-line': /\s/.test(item.value),
           }"
         >
-          {{ $t(item.value) }}
+          {{ $st(item.value) }}
         </component>
       </td>
     </template>
@@ -204,11 +204,9 @@
     border-bottom: none !important;
   }
 
-  ::v-deep {
-    .v-data-table__mobile-row__cell {
-      td.vcs-table.overflow-max-width {
-        max-width: 100% !important;
-      }
+  :deep(.v-data-table__mobile-row__cell) {
+    td.vcs-table.overflow-max-width {
+      max-width: 100% !important;
     }
   }
 </style>

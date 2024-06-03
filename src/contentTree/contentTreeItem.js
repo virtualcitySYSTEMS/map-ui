@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, shallowRef } from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
@@ -75,10 +75,10 @@ class ContentTreeItem {
     this._app = app;
 
     /**
-     * @type {import("vue").Ref<Array<import("../actions/actionHelper.js").VcsAction>>}
+     * @type {import("vue").ShallowRef<Array<import("../actions/actionHelper.js").VcsAction>>}
      * @private
      */
-    this._actions = ref([]);
+    this._actions = shallowRef([]);
 
     /**
      * @type {string}

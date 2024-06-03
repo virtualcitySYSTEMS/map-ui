@@ -67,7 +67,7 @@
    * @description Formatted number display, optionally with unit
    * @vue-prop {string|SpecialUnits} [unit=undefined]
    * @vue-prop {number} [fractionDigits=undefined]
-   * @vue-prop {number} value
+   * @vue-prop {number} modelValue
    * @vue-prop {string|number} prefix
    * @vue-prop {boolean} [dense=true] - default line height is 32px (dense). If set false, height is 40px.
    * @vue-prop {boolean} noPadding    - Padding is required for usage within rows. For standalone usage this prop removes class.
@@ -84,7 +84,7 @@
         type: Number,
         default: 2,
       },
-      value: {
+      modelValue: {
         type: Number,
         default: 0,
       },
@@ -103,7 +103,7 @@
     },
     setup(props) {
       const formatted = computed(() =>
-        numberToLocaleString(props.value, props.fractionDigits),
+        numberToLocaleString(props.modelValue, props.fractionDigits),
       );
       return {
         SpecialUnits,

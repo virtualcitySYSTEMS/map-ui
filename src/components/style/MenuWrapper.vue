@@ -2,28 +2,27 @@
   <v-sheet>
     <div class="d-flex align-center py-1">
       <VcsCheckbox
-        :value="!!value"
+        :model-value="!!modelValue"
         @change="handleCheckbox"
         :disabled="disabled"
       />
       <v-menu
         :close-on-content-click="false"
-        :close-on-click="false"
+        persistent
         v-model="isMenuOpen"
         :absolute="true"
         :disabled="!value || disabled"
         min-width="300"
         max-width="300"
       >
-        <template #activator="{ on, attrs }">
+        <template #activator="{ props }">
           <VcsTooltip :tooltip="name">
-            <template #activator="{ on: tooltipOn, attrs: tooltipAttrs }">
+            <template #activator>
               <v-card
                 rounded
                 height="24px"
                 width="32px"
-                v-bind="{ ...attrs, ...tooltipAttrs }"
-                v-on="{ ...on, ...tooltipOn }"
+                v-bind="props"
                 class="tiled-background"
               >
                 <slot name="preview" />
@@ -55,14 +54,14 @@
           <slot name="content" />
         </VcsFormSection>
       </v-menu>
-      <span class="ml-2">{{ $t(name) }}</span>
+      <span class="ml-2">{{ $st(name) }}</span>
     </div>
   </v-sheet>
 </template>
 
 <script>
   import { ref } from 'vue';
-  import { VSheet, VMenu, VCard } from 'vuetify/lib';
+  import { VSheet, VMenu, VCard } from 'vuetify/components';
   import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
@@ -88,7 +87,7 @@
       VcsCheckbox,
     },
     props: {
-      value: {
+      modelValue: {
         default: undefined,
         required: false,
         type: Object,
@@ -116,14 +115,14 @@
       return {
         isMenuOpen,
         reset() {
-          emit('input', props.valueDefault);
+          emit('update:modelValue', props.valueDefault);
         },
         close() {
           isMenuOpen.value = false;
         },
         handleCheckbox(value) {
           emit(
-            'input',
+            'update:modelValue',
             value ? props.valueDefault || props.valueFallback : null,
           );
         },

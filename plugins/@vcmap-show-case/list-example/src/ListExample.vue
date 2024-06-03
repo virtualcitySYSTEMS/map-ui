@@ -39,6 +39,24 @@
             />
           </v-col>
         </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-switch
+              dense
+              v-model="prependIndex"
+              label="Prepend Index"
+              class="ma-0"
+            />
+          </v-col>
+          <v-col>
+            <v-switch
+              dense
+              v-model="appendIndex"
+              label="Append Index"
+              class="ma-0"
+            />
+          </v-col>
+        </v-row>
       </v-container>
     </VcsFormSection>
     <VcsFormSection heading="Title">
@@ -84,8 +102,8 @@
       <v-container class="py-1 px-1">
         <v-row no-gutters>
           <v-dialog v-model="dialog" width="400">
-            <template #activator="{ on }">
-              <vcs-form-button v-on="on"> Add An item </vcs-form-button>
+            <template #activator="{ props }">
+              <vcs-form-button v-bind="props"> Add An item </vcs-form-button>
             </template>
             <v-card class="pa-2">
               <v-form @submit.prevent="add">
@@ -190,7 +208,14 @@
       v-model="selected"
       @item-moved="move"
       @item-renamed="({ item, newTitle }) => (item.title = newTitle)"
-    />
+    >
+      <template #[`item.prepend-title`]="{ index }" v-if="prependIndex">
+        {{ index }}
+      </template>
+      <template #[`item.append-title`]="{ index }" v-if="appendIndex">
+        {{ index }}
+      </template>
+    </vcs-list>
   </v-sheet>
 </template>
 
@@ -212,7 +237,7 @@
     VContainer,
     VRow,
     VCol,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { computed, ref } from 'vue';
 
   function getRandomIcon() {
@@ -272,6 +297,8 @@
       const searchable = ref(true);
       const selectSingle = ref(false);
       const showSelection = ref(false);
+      const prependIndex = ref(false);
+      const appendIndex = ref(false);
       const showTitle = ref(true);
       const title = ref('Title');
       const titleActionsArray = ref([]);
@@ -298,6 +325,8 @@
         selectSingle,
         selected,
         showSelection,
+        prependIndex,
+        appendIndex,
         showTitle,
         title,
         titleActionsArray,

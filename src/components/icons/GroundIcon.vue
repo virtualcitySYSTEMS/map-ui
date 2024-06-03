@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
     <g id="Gruppe_1401" transform="translate(1 1)">
       <g id="Gruppe_1400" transform="translate(0 -0.001)">
         <path

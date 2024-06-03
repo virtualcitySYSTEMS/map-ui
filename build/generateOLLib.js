@@ -67,7 +67,11 @@ function spawnJSDoc() {
   return new Promise((resolve, reject) => {
     let output = '';
     let errors = '';
-    const child = spawn(getBinaryPath('jsdoc'), ['-c', jsdocConfig, sourceDir]);
+    const child = spawn(
+      getBinaryPath('jsdoc'),
+      ['-c', jsdocConfig, sourceDir],
+      { shell: true },
+    );
 
     child.stdout.on('data', (data) => {
       output += String(data);

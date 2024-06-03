@@ -1,22 +1,18 @@
 <template>
   <v-toolbar
-    v-if="
-      toolboxOpen && orderedGroups.length > 0 && $vuetify.breakpoint.mdAndUp
-    "
-    class="vcs-toolbox mx-auto v-sheet marginToTop"
+    v-if="toolboxOpen && orderedGroups.length > 0 && mdAndUp"
+    class="vcs-toolbox mx-auto marginToTop opacity-80"
     :class="{
       'rounded-b': !open,
-      toolbar__secondary: !isDefaultToolbox,
     }"
     :height="40"
     :style="{ zIndex }"
     @click.stop="bringToTop"
-    width="fit-content"
-    dense
+    style="width: fit-content"
   >
-    <v-toolbar-items class="w-full">
+    <v-toolbar-items class="w-full px-4 gc-1">
       <div
-        class="d-flex align-center justify-space-between w-full mx-1"
+        class="d-flex align-center justify-space-between w-full"
         v-for="group in orderedGroups"
         :key="group.id"
       >
@@ -46,40 +42,15 @@
 </template>
 
 <style lang="scss" scoped>
-  .toolbar__secondary {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    &.vcs-toolbox.theme {
-      &--light {
-        background-color: var(--v-primary-lighten3) !important;
-      }
-      &--dark {
-        background-color: var(--v-primary-darken4) !important;
-      }
-    }
-    &.v-toolbar {
-      ::v-deep .v-toolbar__content {
-        padding: 0;
-      }
-    }
-  }
-
   .marginToTop {
     margin-top: 2px;
-  }
-
-  .v-toolbar__items > div {
-    gap: 8px;
-    width: fit-content;
   }
 </style>
 
 <script>
   import { inject, ref, computed, watch, onUnmounted } from 'vue';
-  import { ButtonLocation, vcsAppSymbol } from '@vcmap/ui';
-  import { VToolbar, VToolbarItems } from 'vuetify/lib';
+  import { useDisplay } from 'vuetify';
+  import { VToolbar, VToolbarItems } from 'vuetify/components';
   import {
     defaultToolboxName,
     getComponentsByOrder,
@@ -88,6 +59,8 @@
   import ToolboxActionSelect from './SelectToolboxComponent.vue';
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
+  import { vcsAppSymbol } from '../../pluginHelper.js';
+  import { ButtonLocation } from '../navbarManager.js';
 
   /**
    * @typedef {Object} ToolboxButtonGroup
@@ -122,9 +95,8 @@
     setup() {
       const app = inject('vcsApp');
 
-      const toolboxComponentIds = ref(app.toolboxManager.componentIds);
       const groups = computed(() => {
-        return toolboxComponentIds.value.map((id) =>
+        return app.toolboxManager.componentIds.map((id) =>
           app.toolboxManager.get(id),
         );
       });
@@ -210,7 +182,9 @@
         app.windowManager.bringWindowToTop('toolbox');
       };
 
+      const { mdAndUp } = useDisplay();
       return {
+        mdAndUp,
         toolboxOpen,
         orderedGroups,
         zIndex,

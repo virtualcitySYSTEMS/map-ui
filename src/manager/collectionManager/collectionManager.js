@@ -1,4 +1,5 @@
 import { VcsEvent, Collection } from '@vcmap/core';
+import { reactive } from 'vue';
 import { check, checkMaybe } from '@vcsuite/check';
 import { validateActions } from '../../components/lists/VcsActionList.vue';
 import CollectionComponentClass from './collectionComponentClass.js';
@@ -58,9 +59,10 @@ class CollectionManager {
      */
     this.removed = new VcsEvent();
     /**
-     * @type {Array<string>}
+     * reactive ordered array of ids,
+     * @type {import("vue").UnwrapRef<string[]>}
      */
-    this.componentIds = [];
+    this.componentIds = reactive([]);
     /**
      * @type {Map<string, CollectionComponentClass<Object>>}
      * @private

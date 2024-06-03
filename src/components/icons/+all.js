@@ -481,7 +481,7 @@ const prefixed = (iconMap) => {
   return Object.entries(iconMap).reduce(
     (previousValue, [key, value]) => ({
       ...previousValue,
-      [`vcs${nameCapitalized(key)}`]: value,
+      [`vcs${nameCapitalized(key)}`]: value.component,
     }),
     {},
   );

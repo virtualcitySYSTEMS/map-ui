@@ -464,7 +464,7 @@
 </template>
 <script>
   import { computed } from 'vue';
-  import { VContainer, VRow, VCol, VDivider } from 'vuetify/lib';
+  import { VContainer, VRow, VCol, VDivider } from 'vuetify/components';
   import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
@@ -546,7 +546,7 @@
       VDivider,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: () => {},
       },
@@ -585,7 +585,7 @@
       });
 
       const altitudeMode = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'altitudeMode',
         emit,
       );
@@ -613,86 +613,86 @@
       });
 
       const heightAboveGround = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'heightAboveGround',
         emit,
       );
       const allowPicking = computed({
         get() {
-          return props.value.allowPicking;
+          return props.modelValue.allowPicking;
         },
         set(value) {
-          if (props.value.allowPicking !== value) {
-            const newParams = structuredClone(props.value);
+          if (props.modelValue.allowPicking !== value) {
+            const newParams = structuredClone(props.modelValue);
             const changedParams = { allowPicking: value || false };
-            emit('input', Object.assign(newParams, changedParams));
+            emit('update:modelValue', Object.assign(newParams, changedParams));
             emit('propertyChange', changedParams);
           }
         },
       });
       const classificationType = computed({
         get() {
-          if ('classificationType' in props.value) {
-            return props.value.classificationType || 'none';
+          if ('classificationType' in props.modelValue) {
+            return props.modelValue.classificationType || 'none';
           } else {
             return undefined;
           }
         },
         set(value) {
-          if (props.value.classificationType !== value) {
-            const newParams = structuredClone(props.value);
+          if (props.modelValue.classificationType !== value) {
+            const newParams = structuredClone(props.modelValue);
             const changedParams = {
               classificationType: value === 'none' ? undefined : value,
             };
-            emit('input', Object.assign(newParams, changedParams));
+            emit('update:modelValue', Object.assign(newParams, changedParams));
             emit('propertyChange', changedParams);
           }
         },
       });
       const scaleByDistance = useArrayProperty(
-        () => props.value,
+        () => props.modelValue,
         'scaleByDistance',
         emit,
         4,
       );
       const hasScaleByDistance = useHasProperty(
-        () => props.value,
+        () => props.modelValue,
         'scaleByDistance',
         emit,
         scaleByDistanceDefault,
       );
 
       const eyeOffset = useArrayProperty(
-        () => props.value,
+        () => props.modelValue,
         'eyeOffset',
         emit,
         3,
       );
       const hasEyeOffset = useHasProperty(
-        () => props.value,
+        () => props.modelValue,
         'eyeOffset',
         emit,
         eyeOffsetDefault,
       );
 
       const groundLevel = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'groundLevel',
         emit,
       );
       const extrudedHeight = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'extrudedHeight',
         emit,
       );
-      const skirt = usePrimitiveProperty(() => props.value, 'skirt', emit);
+      const skirt = usePrimitiveProperty(() => props.modelValue, 'skirt', emit);
       const storeysAboveGround = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'storeysAboveGround',
         emit,
       );
       const storeysBelowGround = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'storeysBelowGround',
         emit,
       );
@@ -705,20 +705,23 @@
               ...acc,
               [key]: computed({
                 get() {
-                  if (Array.isArray(props.value?.[key])) {
-                    return props.value?.[key];
-                  } else if (props.value?.[key] > 0) {
-                    return [props.value?.[key]];
+                  if (Array.isArray(props.modelValue?.[key])) {
+                    return props.modelValue?.[key];
+                  } else if (props.modelValue?.[key] > 0) {
+                    return [props.modelValue?.[key]];
                   } else {
                     return [];
                   }
                 },
                 set(value) {
-                  const newParams = structuredClone(props.value);
+                  const newParams = structuredClone(props.modelValue);
                   const changedParams = {
                     [key]: value,
                   };
-                  emit('input', Object.assign(newParams, changedParams));
+                  emit(
+                    'update:modelValue',
+                    Object.assign(newParams, changedParams),
+                  );
                   emit('propertyChange', changedParams);
                 },
               }),
@@ -727,7 +730,7 @@
       });
 
       const modelUrl = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'modelUrl',
         emit,
       );
@@ -741,7 +744,7 @@
             return {
               ...acc,
               [dimension]: usePrimitiveProperty(
-                () => props.value,
+                () => props.modelValue,
                 `modelScale${dimension}`,
                 emit,
               ),
@@ -750,26 +753,30 @@
       });
 
       const modelHeading = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'modelHeading',
         emit,
       );
       const modelPitch = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'modelPitch',
         emit,
       );
       const modelRoll = usePrimitiveProperty(
-        () => props.value,
+        () => props.modelValue,
         'modelRoll',
         emit,
       );
-      const baseUrl = usePrimitiveProperty(() => props.value, 'baseUrl', emit);
+      const baseUrl = usePrimitiveProperty(
+        () => props.modelValue,
+        'baseUrl',
+        emit,
+      );
 
       function reset() {
         const newParams = structuredClone(props.valueDefault);
 
-        emit('input', newParams);
+        emit('update:modelValue', newParams);
         emit('propertyChange', newParams);
       }
 

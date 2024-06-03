@@ -2,17 +2,21 @@
   <div>
     <v-container class="pa-0">
       <v-expansion-panels
-        accordion
+        variant="accordion"
         multiple
         v-if="!componentView && componentIds.length > 0"
         class="rounded-0"
+        v-model="panels"
       >
         <collection-component-provider
-          v-for="componentId in componentIds"
+          v-for="(componentId, index) in componentIds"
           :component-id="componentId"
           :key="componentId"
         >
-          <collection-component @openList="openList" />
+          <collection-component
+            @openList="openList"
+            :open="panels.includes(index)"
+          />
           <v-dialog v-model="optionsDialog" width="300">
             <v-card class="pa-2">
               <CollectionComponentOptions />
@@ -113,7 +117,7 @@
     VCardTitle,
     VForm,
     VDialog,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { getObjectFromClassRegistry } from '@vcmap/core';
   import { name as owner } from '../package.json';
   import CollectionComponentOptions from './CollectionComponentOptions.vue';
@@ -151,6 +155,7 @@
       provide('collectionManager', app.categoryManager);
       const componentIds = ref([]);
       const destroyFunctions = [];
+      const panels = ref([]);
 
       const newCategory = ref({
         dialog: false,
@@ -358,6 +363,7 @@
         newCategory,
         newItem,
         optionsDialog,
+        panels,
         addItem,
         async requestCategory() {
           const { collectionComponent, category } =

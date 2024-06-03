@@ -1,17 +1,16 @@
 <template>
   <v-sheet>
     <v-color-picker
-      :value="rgbaObject"
-      @input="updateColor"
+      :model-value="rgbaObject"
+      @update:model-value="updateColor"
       mode="rgba"
-      :hide-mode-switch="true"
       :disabled="!value"
     />
   </v-sheet>
 </template>
 
 <script>
-  import { VSheet, VColorPicker } from 'vuetify/lib';
+  import { VSheet, VColorPicker } from 'vuetify/components';
   import { useColorObject } from './composables.js';
 
   /**
@@ -25,19 +24,19 @@
       VColorPicker,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
     },
     setup(props, { emit }) {
       return {
-        rgbaObject: useColorObject(() => props.value?.color),
+        rgbaObject: useColorObject(() => props.modelValue?.color),
         updateColor(rgba) {
           const fill = {
             color: [rgba.r, rgba.g, rgba.b, rgba.a],
           };
-          emit('input', fill);
+          emit('update:modelValue', fill);
         },
       };
     },

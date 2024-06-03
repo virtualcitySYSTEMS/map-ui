@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import { onMounted, ref, watchEffect } from 'vue';
   import {
     VcsFormSection,

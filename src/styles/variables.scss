@@ -14,10 +14,11 @@ $material-dark: (
   ),
   'input-bottom-line': var(--v-base-base),
   'dividers': var(--v-base-lighten2),
-  'toolbar': rgba(map-get($shades, 'black'), 0.8),
-  'table': (
-    'hover': var(--v-base-lighten4),
-  ),
+  //'toolbar': rgba(map-get($shades, 'black'), 0.8),
+  'table':
+    (
+      'hover': var(--v-base-lighten4),
+    ),
 );
 $material-light: (
   'text-fields': (
@@ -33,10 +34,11 @@ $material-light: (
     'disabled': rgba(map-get($shades, 'black'), 0.5),
   ),
   'dividers': var(--v-base-lighten2),
-  'toolbar': rgba(map-get($shades, 'white'), 0.8),
-  'table': (
-    'hover': var(--v-base-lighten4),
-  ),
+  //'toolbar': rgba(map-get($shades, 'white'), 0.8),
+  'table':
+    (
+      'hover': var(--v-base-lighten4),
+    ),
 );
 
 // input font and icon

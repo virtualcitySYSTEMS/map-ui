@@ -1,29 +1,22 @@
 <template>
-  <v-list dense class="ma-0 overflow-y-auto vcs-search-results">
-    <v-list-item-group v-model="highlighted">
-      <v-list-item v-for="(item, index) in results" :key="index" class="px-0">
-        <v-list-item-content>
-          <ResultItem :item="item" :query="query" class="cursor-pointer" />
-          <v-divider
-            v-if="index < results.length - 1"
-            :key="index"
-            class="base lighten-3"
-          />
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-item-group>
+  <v-list
+    density="compact"
+    class="ma-0 overflow-y-auto vcs-search-results"
+    v-model="highlighted"
+  >
+    <ResultItem
+      :item="item"
+      :query="query"
+      class="cursor-pointer px-0"
+      v-for="(item, index) in results"
+      :key="index"
+    />
   </v-list>
 </template>
 
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
-  import {
-    VDivider,
-    VList,
-    VListItem,
-    VListItemContent,
-    VListItemGroup,
-  } from 'vuetify/lib';
+  import { VList } from 'vuetify/components';
   import ResultItem from './ResultItem.vue';
 
   /**
@@ -37,10 +30,6 @@
     components: {
       ResultItem,
       VList,
-      VListItemGroup,
-      VListItem,
-      VListItemContent,
-      VDivider,
     },
     props: {
       query: {

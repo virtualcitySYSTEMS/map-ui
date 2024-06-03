@@ -1,37 +1,36 @@
 <template>
   <v-sheet class="overflow-y-auto">
     <v-expansion-panels
-      accordion
+      variant="accordion"
       multiple
       v-if="entries.length > 0"
-      v-model="panels"
       class="rounded-0"
     >
       <v-expansion-panel
         v-for="(entry, i) in entries"
         :key="i"
         class="px-2"
-        @change="entry.open = !entry.open"
+        @group:selected="entry.open = !entry.open"
       >
-        <v-expansion-panel-header hide-actions>
+        <v-expansion-panel-title hide-actions>
           <template #default="{ open }">
             <div class="d-flex justify-space-between">
               <div class="d-flex align-center">
                 <v-icon class="mr-1" :class="{ rotate: !open }">
                   mdi-chevron-down
                 </v-icon>
-                {{ $t(entry.title) }}
+                {{ $st(entry.title) }}
               </div>
               <VcsActionButtonList :actions="entry.actions" />
             </div>
           </template>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="pl-6 pb-2">
-          <v-list dense>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text class="pl-6 pb-2">
+          <v-list density="compact">
             <div v-for="(item, idx) in entry.legend" :key="idx">
               <div v-if="item.type === LegendType.Image">
                 <img
-                  :src="$t(item.src)"
+                  :src="$st(item.src)"
                   :alt="item.src"
                   class="legend-image"
                   :title="item.tooltip"
@@ -40,7 +39,7 @@
               <div v-else-if="item.type === LegendType.Iframe">
                 <iframe
                   :id="`legendIframe${idx}`"
-                  :src="$t(item.src)"
+                  :src="$st(item.src)"
                   scrolling="no"
                   style="width: 100%; height: 100%"
                   frameBorder="0"
@@ -50,7 +49,7 @@
               <style-legend-item v-else :item="item" />
             </div>
           </v-list>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
     <v-sheet v-else class="ma-2">
@@ -63,12 +62,12 @@
   import {
     VExpansionPanels,
     VExpansionPanel,
-    VExpansionPanelHeader,
-    VExpansionPanelContent,
+    VExpansionPanelText,
+    VExpansionPanelTitle,
     VIcon,
     VList,
     VSheet,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { computed } from 'vue';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
@@ -76,7 +75,7 @@
 
   /**
    * @description A component rendering configured legend information for active layers.
-   * @vue-prop {import("vue").Ref<Array<LegendEntry>>} entries - legend entries to be displayed
+   * @vue-prop {import("vue").UnwrapRef<Array<LegendEntry>>} entries - legend entries to be displayed
    * @vue-computed {import("vue").ComputedRef<number[]>} panels - derives indices from entries array to define all panels as open
    */
   export default {
@@ -86,16 +85,16 @@
       StyleLegendItem,
       VExpansionPanels,
       VExpansionPanel,
-      VExpansionPanelHeader,
-      VExpansionPanelContent,
+      VExpansionPanelText,
+      VExpansionPanelTitle,
       VIcon,
       VList,
       VSheet,
     },
     props: {
       entries: {
-        type: Object,
-        required: true,
+        type: Array,
+        default: () => [],
       },
     },
     setup(props) {
@@ -123,7 +122,7 @@
       return {
         LegendType,
         setIframeHeight,
-        panels,
+        panels, // TODO
       };
     },
   };

@@ -5,26 +5,24 @@
     color="error"
     :max-width="200"
   >
-    <template #activator="{ on, attrs }">
-      <span v-on="on">
+    <template #activator="{ props }">
+      <span v-bind="props">
         <v-checkbox
           ref="checkbox"
-          :input-value="$attrs.value"
-          on-icon="$vcsCheckboxChecked"
-          off-icon="$vcsCheckbox"
+          :model-value="$attrs.value"
+          true-icon="$vcsCheckboxChecked"
+          false-icon="$vcsCheckbox"
           class="vcs-checkbox"
           :class="{ 'pl-1': !isDense }"
           hide-details
           indeterminate-icon="$vcsCheckboxIndeterminate"
-          :dense="isDense"
           :ripple="false"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs }"
         >
           <template #label>
             <VcsLabel :html-for="$attrs.id" :dense="isDense">
               <slot name="label" />
-              <span v-if="!$slots.label">{{ $t($attrs.label) }}</span>
+              <span v-if="!$slots.label">{{ $st($attrs.label) }}</span>
             </VcsLabel>
           </template>
         </v-checkbox>
@@ -35,28 +33,26 @@
 <style lang="scss" scoped>
   @import '../../styles/shades.scss';
   .vcs-checkbox {
-    ::v-deep {
-      .v-input--selection-controls__input {
-        margin: 0;
-        padding: 0;
-      }
-      label.v-label.error--text {
-        animation: none;
-      }
+    :deep(.v-input--selection-controls__input) {
+      margin: 0;
+      padding: 0;
+    }
+    :deep(label.v-label.error--text) {
+      animation: none;
+    }
 
-      .primary--text,
-      .v-label:not(.v-label--is-disabled) {
-        &.theme--light {
-          color: map-get($shades, 'black') !important;
-          &.error--text {
-            color: var(--v-error-base) !important;
-          }
+    :deep(.primary--text),
+    :deep(.v-label:not(.v-label--is-disabled)) {
+      &.theme--light {
+        color: map-get($shades, 'black') !important;
+        &.error--text {
+          color: var(--v-error-base) !important;
         }
-        &.theme--dark {
-          color: map-get($shades, 'white') !important;
-          &.error--text {
-            color: var(--v-error-base) !important;
-          }
+      }
+      &.theme--dark {
+        color: map-get($shades, 'white') !important;
+        &.error--text {
+          color: var(--v-error-base) !important;
         }
       }
     }
@@ -68,7 +64,7 @@
 </style>
 <script>
   import { computed, ref } from 'vue';
-  import { VCheckbox } from 'vuetify/lib';
+  import { VCheckbox } from 'vuetify/components';
   import VcsLabel from './VcsLabel.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
@@ -85,6 +81,7 @@
    */
   export default {
     name: 'VcsCheckbox',
+    inheritAttrs: false,
     components: {
       VcsTooltip,
       VcsLabel,

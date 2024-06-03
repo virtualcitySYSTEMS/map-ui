@@ -109,6 +109,22 @@ async function fixTemplateFunctions() {
   );
 }
 
+async function vueAugmentations() {
+  let content = await readFile('./index.d.ts', 'utf-8');
+  content = `${content}
+declare module 'vue' {
+  type ReplaceFirstParam<TParams extends readonly any[], TReplace> = {
+    [K in keyof TParams]: K extends "0" ? TReplace : TParams[K]
+  }
+
+  interface ComponentCustomProperties {
+    $st: (...params: ReplaceFirstParam<Parameters<import("vue-i18n").ComposerTranslation>, string | null | undefined>) => ReturnType<import("vue-i18n").ComposerTranslation>
+  }
+}
+`;
+  await writeFile('./index.d.ts', content);
+}
+
 function printTypeErrors(stdout) {
   let withinNodeModule = false;
   const lines = stdout.split(EOL).filter((line) => {
@@ -156,6 +172,8 @@ async function run() {
   await fixTemplateFunctions();
   console.log('exporting types');
   await addTypeExports();
+  console.log('augmenting vue');
+  await vueAugmentations();
   if (process.argv.includes('--skipValidation')) {
     return;
   }

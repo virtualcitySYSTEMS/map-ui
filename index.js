@@ -45,7 +45,6 @@ export {
   createListImportAction,
   importIntoLayer,
 } from './src/actions/listActions.js';
-
 export {
   default as VcsCallback,
   executeCallbacks,
@@ -54,7 +53,6 @@ export { default as ActivateLayersCallback } from './src/callback/activateLayers
 export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.js';
 export { default as GoToViewpointCallback } from './src/callback/goToViewpointCallback.js';
 export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.js';
-
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
@@ -64,7 +62,6 @@ export {
 } from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
-
 export {
   default as ContentTreeCollection,
   createContentTreeCollection,
@@ -84,7 +81,6 @@ export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/o
 export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.js';
 export { default as VcsObjectContentTreeItem } from './src/contentTree/vcsObjectContentTreeItem.js';
 export { default as ViewpointContentTreeItem } from './src/contentTree/viewpointContentTreeItem.js';
-
 export { default as WindowComponent } from './src/manager/window/WindowComponent.vue';
 export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.vue';
 export { default as VcsWindowManager } from './src/manager/window/WindowManager.vue';
@@ -111,14 +107,12 @@ export {
   applyParentPosition,
   getPositionAppliedOnTarget,
 } from './src/manager/window/windowHelper.js';
-
 export {
   default as PanelManager,
   PanelLocation,
 } from './src/manager/panel/panelManager.js';
 export { default as PanelManagerComponent } from './src/manager/panel/PanelManagerComponent.vue';
 export { default as PanelComponent } from './src/manager/panel/PanelComponent.vue';
-
 export { default as ButtonManager } from './src/manager/buttonManager.js';
 export {
   default as NavbarManager,
@@ -149,7 +143,6 @@ export { default as CollectionComponentContent } from './src/manager/collectionM
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
-
 export {
   applyKeyMapping,
   applyValueMapping,
@@ -190,12 +183,12 @@ export { default as OverviewMapClickedInteraction } from './src/navigation/overv
 export { default as TiltSlider } from './src/navigation/TiltSlider.vue';
 export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
 export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.vue';
-
+//
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
 export { i18nPluginSymbol } from './src/i18n/i18nCollection.js';
 export {
-  createVuetify,
-  vuetify,
+  createVcsThemes,
+  createVcsVuetify,
   getColorByKey,
   getDefaultPrimaryColor,
 } from './src/vuePlugins/vuetify.js';
@@ -240,21 +233,13 @@ export { default as VcsFormButton } from './src/components/buttons/VcsFormButton
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
 export { default as VcsTooltip } from './src/components/notification/VcsTooltip.vue';
 export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';
-
 export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vue';
-
-// export { default as VcsConfirmationDialog } from './src/components/dialogs/VcsConfirmationDialog.vue';
-
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
 export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
 export { default as VcsRadioGrid } from './src/components/form-inputs-controls/VcsRadioGrid.vue';
-// export { default as VcsColorPicker } from './src/components/form-inputs-controls/VcsColorPicker.vue';
 export { default as VcsFormSection } from './src/components/form-inputs-controls/VcsFormSection.vue';
-// export { default as VcsInputColumnCoordinates } from './src/components/form-inputs-controls/VcsInputColumnCoordinates.vue';
-// export { default as VcsInputColumnDimensions } from './src/components/form-inputs-controls/VcsInputColumnDimensions.vue';
-// export { default as VcsMinimalCheckbox } from './src/components/form-inputs-controls/VcsMinimalCheckbox.vue';
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
@@ -264,25 +249,20 @@ export { default as VcsTextArea } from './src/components/form-inputs-controls/Vc
 export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
 export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
 export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.vue';
-
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
 export { default as VcsTextPage } from './src/application/VcsTextPage.vue';
-
 export {
   default as VcsActionList,
   validateAction,
   validateActions,
 } from './src/components/lists/VcsActionList.vue';
-
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
 export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
-
 export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
 export { default as VcsDefaultLogo } from './src/logo.svg';
 export { default as VcsDefaultMobileLogo } from './src/logo-mobile.svg';
-
 export { default as VcsFillSelector } from './src/components/style/VcsFillSelector.vue';
 export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.vue';
 export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.vue';
@@ -296,7 +276,6 @@ export {
   default as VcsVectorStyleComponent,
   VectorStyleMenus,
 } from './src/components/style/VcsVectorStyleComponent.vue';
-
 export {
   default as VcsVectorPropertiesComponent,
   vectorProperties,
@@ -318,7 +297,6 @@ export {
 } from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
-
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as FileDrop } from './src/components/import/FileDrop.vue';
 export { default as ImportComponent } from './src/components/import/ImportComponent.vue';

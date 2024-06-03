@@ -1,5 +1,5 @@
 <template>
-  <div v-if="actions.length > 0" :class="classes">
+  <div v-if="actions.length > 0" :class="classes" class="gc-2">
     <template v-if="buttons.length > 0">
       <component
         :is="button"
@@ -14,22 +14,20 @@
         :background="btn.background"
         @click.stop="btn.callback($event)"
         v-bind="{ ...$attrs }"
-        v-on="{ ...$listeners }"
       />
     </template>
     <v-menu
       v-if="overflowButtons.length > 0"
       content-class="vcs-overflow-menu-wrap"
       max-width="none"
-      :nudge-right="13"
-      offset-x
+      location="right"
+      :offset="[13, 0]"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <component
           :is="button"
           :disabled="disabled"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="on"
+          v-bind="props"
           class="d-flex"
         >
           <v-icon>{{ overflowIcon }}</v-icon>
@@ -43,13 +41,8 @@
     />
   </div>
 </template>
-<style lang="scss">
-  .action-btn-wrap {
-    gap: 8px;
-  }
-</style>
 <script>
-  import { VIcon, VMenu, VSpacer } from 'vuetify/lib';
+  import { VIcon, VMenu, VSpacer } from 'vuetify/components';
   import VcsButton from './VcsButton.vue';
   import VcsToolButton from './VcsToolButton.vue';
   import VcsFormButton from './VcsFormButton.vue';

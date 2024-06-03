@@ -50,7 +50,7 @@
     VcsList,
     VcsCheckbox,
   } from '@vcmap/ui';
-  import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
   import { Feature } from 'ol';
   import { Polygon } from 'ol/geom.js';
 

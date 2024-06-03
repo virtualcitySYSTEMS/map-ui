@@ -72,7 +72,10 @@ export function useSelectedKey(
       const newModelObject = structuredClone(modelObject());
       // is needed to get e.g. from square shape to x by setting radius2 from 0 to undefined
       const newValue = value === '' ? undefined : value;
-      emit('input', Object.assign(newModelObject, { [key]: newValue }));
+      emit(
+        'update:modelValue',
+        Object.assign(newModelObject, { [key]: newValue }),
+      );
     },
   });
 }

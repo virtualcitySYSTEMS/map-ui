@@ -7,12 +7,7 @@
     ></VcsSplashScreen>
     <VcsNavbar />
     <VcsContainer :attribution-action="attributionAction" />
-    <v-footer
-      absolute
-      v-if="$vuetify.breakpoint.smAndUp"
-      min-height="22px"
-      class="d-flex gap-1 pa-0"
-    >
+    <v-footer v-if="smAndUp" app absolute height="22" class="d-flex gap-1 pa-0">
       <VcsPositionDisplay />
       <VcsTextPageFooter
         v-if="imprint"
@@ -34,7 +29,7 @@
 </template>
 
 <style scoped lang="scss">
-  ::v-deep .v-application--wrap {
+  :deep(.v-application--wrap) {
     min-height: fit-content;
   }
   .align-wrapper {
@@ -45,16 +40,10 @@
 </style>
 
 <script>
-  import {
-    computed,
-    getCurrentInstance,
-    onMounted,
-    onUnmounted,
-    provide,
-    watch,
-  } from 'vue';
+  import { computed, onMounted, onUnmounted, provide, watch } from 'vue';
+  import { useDisplay } from 'vuetify';
   import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
-  import { VContainer, VFooter } from 'vuetify/lib';
+  import { VContainer, VFooter } from 'vuetify/components';
   import { getLogger } from '@vcsuite/logger';
   import VcsContainer from './VcsContainer.vue';
   import { ButtonLocation } from '../manager/navbarManager.js';
@@ -528,28 +517,31 @@
    * the theming keys. Returns a function to stop syncing.
    * Also adds a watcher to vuetify theme, which triggers themeChanged event on the VcsUiApp.
    * @param {import("../vcsUiApp.js").default} app
-   * @param {import("vuetify").Framework} vuetify
    * @returns {function():void} - call to stop syncing
    */
-  export function setupUiConfigTheming(app, vuetify) {
+  export function setupUiConfigTheming(app) {
     const listeners = [
       app.uiConfig.added.addEventListener((item) => {
         if (item.name === 'primaryColor') {
-          vuetify.theme.themes.dark.primary = item.value?.dark || item.value;
-          vuetify.theme.themes.light.primary = item.value?.light || item.value;
+          app.vuetify.theme.themes.value.dark.colors.primary =
+            item.value?.dark || item.value;
+          app.vuetify.theme.themes.value.light.colors.primary =
+            item.value?.light || item.value;
           app.themeChanged.raiseEvent();
         }
       }),
       app.uiConfig.removed.addEventListener((item) => {
         if (item.name === 'primaryColor') {
-          vuetify.theme.themes.dark.primary = defaultPrimaryColor.dark;
-          vuetify.theme.themes.light.primary = defaultPrimaryColor.light;
+          app.vuetify.theme.themes.value.dark.colors.primary =
+            defaultPrimaryColor.dark;
+          app.vuetify.theme.themes.value.light.colors.primary =
+            defaultPrimaryColor.light;
           app.themeChanged.raiseEvent();
         }
       }),
     ];
     const stopWatching = watch(
-      () => vuetify.theme.dark,
+      () => app.vuetify.theme.current.value.dark,
       () => app.themeChanged.raiseEvent(),
     );
 
@@ -662,10 +654,7 @@
       const stopSplashScreen = setupSplashScreen(app);
       setupHelpButton(app);
       const destroyComponentsWindow = setupCategoryManagerWindow(app);
-      const destroyThemingListener = setupUiConfigTheming(
-        app,
-        getCurrentInstance().proxy.$vuetify,
-      );
+      const destroyThemingListener = setupUiConfigTheming(app);
       const destroyDisplayQualityListener = setupUiConfigDisplayQuality(app);
       const { attributionEntries, attributionAction, destroyAttributions } =
         setupAttributions(app);
@@ -690,7 +679,10 @@
         destroyDisplayQualityListener();
       });
 
+      const { smAndUp } = useDisplay();
+
       return {
+        smAndUp,
         mobileLogo: computed(
           () =>
             app.uiConfig.config.value.mobileLogo ??

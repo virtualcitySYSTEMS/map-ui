@@ -2,7 +2,7 @@
   <section class="vcs-form-section">
     <slot name="header" :heading="heading" :actions="actions">
       <div
-        class="vcs-form-section-header d-flex base lighten-3"
+        class="vcs-form-section-header d-flex base-lighten-3"
         :aria-expanded="open"
       >
         <div class="d-flex justify-space-between w-full">
@@ -10,10 +10,9 @@
             <v-btn
               :ripple="false"
               dense
-              plain
+              variant="plain"
               icon
-              small
-              text
+              size="small"
               :disabled="disabled"
               elevation="0"
               @click="open = !open"
@@ -25,7 +24,7 @@
               }}</v-icon>
             </v-btn>
             <strong :class="{ 'text--disabled': disabled }">{{
-              $t(heading)
+              $st(heading)
             }}</strong>
           </div>
           <VcsActionButtonList
@@ -37,7 +36,7 @@
         </div>
       </div>
     </slot>
-    <VcsHelp :text="helpText" :show="showHelp" class="base lighten-4">
+    <VcsHelp :text="helpText" :show="showHelp" class="base-lighten-4">
       <slot name="help" />
     </VcsHelp>
     <article class="section-content" v-if="showContent">
@@ -48,7 +47,7 @@
 
 <script>
   import { computed, reactive, ref } from 'vue';
-  import { VBtn, VIcon } from 'vuetify/lib';
+  import { VBtn, VIcon } from 'vuetify/components';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 

@@ -643,14 +643,6 @@
       "entry": "plugins/@vcmap-show-case/vector-properties-example/index.js"
     },
     {
-      "name": "@vcmap/print",
-      "entry": "plugins/@vcmap/print/index.js"
-    },
-    {
-      "name": "@vcmap/search-nominatim",
-      "entry": "plugins/@vcmap/search-nominatim/index.js"
-    },
-    {
       "name": "switch-map-callback-example",
       "entry": "plugins/@vcmap-show-case/switch-map-callback-example/index.js"
     },
@@ -662,6 +654,16 @@
       "name": "@vcmap-show-case/hello-world",
       "entry": "plugins/@vcmap-show-case/hello-world/index.js",
       "showComponent": false
+    }
+  ],
+  "plugins2": [
+    {
+      "name": "@vcmap/print",
+      "entry": "plugins/@vcmap/print/index.js"
+    },
+    {
+      "name": "@vcmap/search-nominatim",
+      "entry": "plugins/@vcmap/search-nominatim/index.js"
     }
   ],
   "uiConfig": [

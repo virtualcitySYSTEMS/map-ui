@@ -34,7 +34,7 @@
 <script>
   import { inject } from 'vue';
   import { VcsButton, getPluginAssetUrl } from '@vcmap/ui';
-  import { VSheet, VCard, VContainer, VRow, VImg } from 'vuetify/lib';
+  import { VSheet, VCard, VContainer, VRow, VImg } from 'vuetify/components';
   import { name } from '../package.json';
 
   export const windowId = 'hello_world_window_id';

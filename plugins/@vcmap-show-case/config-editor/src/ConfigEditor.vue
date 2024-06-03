@@ -16,7 +16,7 @@
   import { ref, inject } from 'vue';
   import { VcsTextArea, VcsFormButton } from '@vcmap/ui';
   import { VcsModule } from '@vcmap/core';
-  import { VContainer, VProgressCircular } from 'vuetify/lib';
+  import { VContainer, VProgressCircular } from 'vuetify/components';
 
   const moduleId = 'foo';
 

@@ -1,6 +1,7 @@
 @import 'vcsFont.scss';
 
-.v-application {
+.v-application,
+.v-overlay-container {
   h1,
   h2,
   h3,
@@ -13,13 +14,13 @@
   input,
   .caption,
   .tooltip,
+  label,
   p {
     font-size: $vcs-font-size;
     &:not(.v-icon) {
       font-family: 'Titillium Web', sans-serif !important;
     }
   }
-
   h1 {
     font-size: 16px;
   }

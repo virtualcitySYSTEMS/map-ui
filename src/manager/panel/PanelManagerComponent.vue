@@ -86,7 +86,10 @@
    */
   export default {
     name: 'VcsPanelManager',
-    components: { VcsMainMap, PanelComponent },
+    components: {
+      VcsMainMap,
+      PanelComponent,
+    },
     setup() {
       const app = inject('vcsApp');
       /** @type {PanelManager} */
@@ -185,9 +188,8 @@
         }
       };
 
-      const componentIdRef = ref(componentIds);
       watch(
-        () => [...componentIdRef.value],
+        () => [...componentIds],
         () => {
           updatePanelSizes(
             panelManager,
@@ -200,13 +202,13 @@
       const addMobileClass = computed(() => {
         return (
           getCurrentInstance().proxy.$vuetify.breakpoint.xs &&
-          componentIdRef.value.length > 0
+          componentIds.length > 0
         );
       });
 
       return {
         mainPanel,
-        componentIds: componentIdRef,
+        componentIds,
         getComponent: (id) => panelManager.get(id).component,
         getPosition,
         getStyles,

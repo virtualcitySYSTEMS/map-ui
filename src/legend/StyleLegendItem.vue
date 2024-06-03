@@ -1,13 +1,18 @@
 <template>
-  <v-list dense>
-    <v-layout wrap :column="item.colNr === 1">
-      <v-flex
+  <v-list density="compact">
+    <v-row>
+      <v-col
         v-for="(row, idx) in item.rows"
         :key="idx"
+        :cols="cols"
         :class="{ 'w-full': item.colNr === 1, 'w-half': item.colNr !== 1 }"
       >
-        <v-list-item dense class="pa-0" :class="determineInnerPadding(idx)">
-          <v-list-item-icon class="pr-2">
+        <v-list-item
+          density="compact"
+          class="pa-0"
+          :class="determineInnerPadding(idx)"
+        >
+          <template #prepend>
             <v-img
               v-if="
                 row.type === StyleRowType.Icon ||
@@ -15,7 +20,7 @@
               "
               width="32"
               height="24"
-              contain
+              cover
               :src="getImageSrcFromShape(row.image)"
             />
             <svg
@@ -39,7 +44,7 @@
                 :stroke-width="row.text?.stroke?.width"
                 :fill="getColor(row.text?.fill?.color) || 'rgba(255,255,255,0)'"
               >
-                {{ $t(row.label || 'legend.defaultLabelText') }}
+                {{ $st(row.label || 'legend.defaultLabelText') }}
               </text>
               <line
                 v-else-if="row.type === StyleRowType.Stroke"
@@ -85,33 +90,31 @@
                 "
               />
             </svg>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title
-              class="pt-2"
-              :title="$t(row.tooltip || row.title)"
-            >
-              {{ $t(row.title) }}
-            </v-list-item-title>
-          </v-list-item-content>
+          </template>
+
+          <v-list-item-title
+            class="pt-2"
+            :title="$st(row.tooltip || row.title)"
+          >
+            {{ $st(row.title) }}
+          </v-list-item-title>
         </v-list-item>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-list>
 </template>
 
 <script>
   import { getStringColor } from '@vcmap/core';
   import {
-    VFlex,
+    VRow,
     VImg,
-    VLayout,
+    VCol,
     VList,
     VListItem,
-    VListItemContent,
-    VListItemIcon,
     VListItemTitle,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
+  import { computed } from 'vue';
   import { StyleRowType, getImageSrcFromShape } from './legendHelper.js';
 
   /**
@@ -122,12 +125,10 @@
     name: 'StyleLegendItem',
     components: {
       VList,
-      VLayout,
-      VFlex,
+      VRow,
+      VCol,
       VListItem,
-      VListItemIcon,
       VImg,
-      VListItemContent,
       VListItemTitle,
     },
     props: {
@@ -164,6 +165,9 @@
           return null;
         },
         determineInnerPadding,
+        cols: computed(() => {
+          return props.item.colNr === 1 ? 12 : 6;
+        }),
       };
     },
   };

@@ -1,8 +1,7 @@
 <template>
   <MenuWrapper
-    v-bind="{ value, valueDefault, disabled }"
+    v-bind="{ ...$attrs, value, valueDefault, disabled }"
     :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
-    v-on="$listeners"
     name="components.style.stroke"
   >
     <template #preview>
@@ -16,14 +15,14 @@
       />
     </template>
     <template #content>
-      <VcsStrokeSelector :value="value" v-on="$listeners" />
+      <VcsStrokeSelector :model-value="modelValue" v-bind="$attrs" />
     </template>
   </MenuWrapper>
 </template>
 
 <script>
   import { computed } from 'vue';
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import VcsStrokeSelector from './VcsStrokeSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
@@ -31,7 +30,7 @@
   /**
    * @description A wrapper for the VcsStrokeSelector, that has a small color preview and a menu that pops up when clicking the preview, containing the stroke selector.
    * When clicking the reset button, the valueDefault is emitted, when unchecking the checkbox in front of the preview, null is emitted. If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [0, 0, 0, 1], width: 1 } is emitted.
-   * @vue-prop {import("ol/style/Stroke").Options} [value] - The Stroke Options
+   * @vue-prop {import("ol/style/Stroke").Options} [modelValue] - The Stroke Options
    * @vue-prop {import("ol/style/Stroke").Options} [valueDefault] - The default Stroke Options.
    * @vue-prop {boolean} [disabled=false] - Disable the input
    */
@@ -43,7 +42,7 @@
       MenuWrapper,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -57,7 +56,7 @@
       },
     },
     setup(props) {
-      const rgbaObject = useColorObject(() => props.value?.color);
+      const rgbaObject = useColorObject(() => props.modelValue?.color);
       return {
         rgbaString: computed(() => rgbaObjectToString(rgbaObject.value)),
       };

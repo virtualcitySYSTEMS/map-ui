@@ -3,15 +3,16 @@
     <v-btn
       v-if="!tooltip"
       :color="appliedColor"
-      :text="isTextButton"
-      class="vcs-tool-button"
+      :variant="variant"
+      height="34"
+      min-width="42"
+      class="vcs-tool-button pa-0"
       :class="classes"
       :ripple="{ class: 'primary--text text--darken-4' }"
       elevation="0"
       v-bind="{ ...$attrs }"
-      v-on="{ ...$listeners }"
     >
-      <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+      <v-icon size="20" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
       </v-icon>
       <slot />
@@ -22,25 +23,30 @@
       :tooltip-position="tooltipPosition"
       v-bind="{ ...tooltipProps }"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-btn
           :color="appliedColor"
-          :text="isTextButton"
-          class="vcs-tool-button"
+          :variant="variant"
+          height="34"
+          min-width="42"
+          class="vcs-tool-button pa-0"
           :class="classes"
           :ripple="{ class: 'primary--text text--darken-4' }"
           elevation="0"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs, ...props }"
         >
-          <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+          <v-icon size="20" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
             {{ icon }}
           </v-icon>
           <slot />
         </v-btn>
       </template>
     </VcsTooltip>
-    <VcsBadge v-if="hasUpdate" :color="'warning'" class="position-absolute" />
+    <VcsBadge
+      v-if="hasUpdate"
+      :color="'bg-warning'"
+      class="position-absolute"
+    />
   </div>
 </template>
 
@@ -55,16 +61,10 @@
   }
   .v-btn {
     &.vcs-tool-button {
-      min-width: 42px;
-      height: 34px;
-      padding: 0;
-      position: relative;
-
       &.vcs-tool-button--active-background {
-        border: 2px solid var(--v-primary-base);
-        background-color: var(--v-base-lighten2) !important;
+        border: 2px solid rgb(var(--v-theme-primary));
+        background-color: rgb(var(--v-theme-base-lighten2)) !important;
       }
-
       &.v-btn--disabled {
         background-color: transparent !important;
       }
@@ -73,7 +73,7 @@
 </style>
 
 <script>
-  import { VBtn, VIcon } from 'vuetify/lib';
+  import { VBtn, VIcon } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
@@ -162,8 +162,8 @@
       hasDefaultSlot() {
         return !!this.$slots?.default?.[0]?.text?.trim();
       },
-      isTextButton() {
-        return !this.active ? true : null;
+      variant() {
+        return !this.active ? 'text' : 'flat';
       },
     },
   };

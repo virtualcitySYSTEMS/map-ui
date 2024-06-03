@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <defs>
       <clipPath id="clip-path">
         <rect id="Rectangle_844" width="6" height="6" fill="currentColor" />

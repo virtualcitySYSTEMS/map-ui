@@ -5,16 +5,15 @@
     color="error"
     :max-width="200"
   >
-    <template #activator="{ on, attrs }">
-      <span v-on="on">
+    <template #activator="{ props }">
+      <span v-bind="props">
         <v-radio-group
           ref="radioGroup"
           hide-details
           class="w-full vcs-radio-group"
-          :dense="isDense"
+          :density="isDense ? 'compact' : undefined"
           :ripple="false"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs }"
         >
           <v-radio
             v-for="(item, idx) in items"
@@ -28,7 +27,7 @@
           >
             <template #label>
               <VcsLabel :html-for="`radio-${idx}`" :dense="isDense">
-                {{ $t(item.label ?? item) }}
+                {{ $st(item.label ?? item) }}
               </VcsLabel>
             </template>
           </v-radio>
@@ -45,35 +44,35 @@
   }
   .v-input {
     &.vcs-radio-group {
-      ::v-deep {
+      :deep(*) {
         margin-top: 0;
         padding-top: 0;
-        label.v-label,
-        .v-icon.v-icon {
-          font-size: $vcs-font-size;
-          color: inherit;
-          &.theme--light {
-            color: map-get($shades, 'black') !important;
-            &.error--text {
-              color: var(--v-error-base) !important;
-            }
-          }
-          &.theme--dark {
-            color: map-get($shades, 'white') !important;
-            &.error--text {
-              color: var(--v-error-base) !important;
-            }
+      }
+      :deep(label.v-label),
+      :deep(.v-icon.v-icon) {
+        font-size: $vcs-font-size;
+        color: inherit;
+        &.theme--light {
+          color: map-get($shades, 'black') !important;
+          &.error--text {
+            color: var(--v-error-base) !important;
           }
         }
-        .v-radio:not(:last-child):not(:only-child) {
-          margin-bottom: 0;
+        &.theme--dark {
+          color: map-get($shades, 'white') !important;
+          &.error--text {
+            color: var(--v-error-base) !important;
+          }
         }
-        .v-input--selection-controls__input {
-          margin: 0;
-        }
-        label.v-label.error--text {
-          animation: none;
-        }
+      }
+      :deep(.v-radio:not(:last-child):not(:only-child)) {
+        margin-bottom: 0;
+      }
+      :deep(.v-input--selection-controls__input) {
+        margin: 0;
+      }
+      :deep(label.v-label.error--text) {
+        animation: none;
       }
     }
   }
@@ -89,7 +88,7 @@
 </style>
 <script>
   import { computed, ref } from 'vue';
-  import { VRadio, VRadioGroup } from 'vuetify/lib';
+  import { VRadio, VRadioGroup } from 'vuetify/components';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsLabel from './VcsLabel.vue';
   import { useErrorSync } from './composables.js';
@@ -114,6 +113,7 @@
    */
   export default {
     name: 'VcsRadio',
+    inheritAttrs: false,
     components: {
       VcsTooltip,
       VcsLabel,

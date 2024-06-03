@@ -1,10 +1,9 @@
 <template>
   <VcsTooltip :tooltip-position="tooltipPosition" :tooltip="tooltip">
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-card
         class="h-8 w-8 d-flex align-center justify-center text-center btn-orientation-tools"
-        v-bind="{ ...$attrs, ...attrs }"
-        v-on="{ ...$listeners, ...on }"
+        v-bind="{ ...$attrs, ...props }"
       >
         <v-icon size="16">{{ icon }}</v-icon>
       </v-card>
@@ -19,7 +18,7 @@
   }
 </style>
 <script>
-  import { VCard, VIcon } from 'vuetify/lib';
+  import { VCard, VIcon } from 'vuetify/components';
   import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
   /**

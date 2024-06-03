@@ -268,7 +268,12 @@ export const libraries = {
   ol: 'ol',
   '@vcmap/core': 'core',
   '@vcmap/ui': 'ui',
-  'vuetify/lib': 'vuetify',
+  vuetify: 'vuetify',
+  'vuetify/components': 'vuetify',
+  'vuetify/styles': 'vuetify',
+  'vuetify/directives': 'vuetify',
+  'vuetify/blueprints': 'vuetify',
+  'vuetify/labs/components': 'vuetify',
 };
 
 const toCopy = [

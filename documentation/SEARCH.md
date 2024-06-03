@@ -17,7 +17,7 @@ Search plugins must obey the interface defined as:
 ```js
 /**
  * @interface SearchImpl
- * @property {string} name - Name of the implementation. Must be the name of the plugin the SearchImpl is owned by.
+ * @property {string} name - Name of the implementation. Must be unique, best practice is to prefix with your plugin name to ensure uniqueness or use a uuid.
  * @property {function(q:string):Array<ResultItem>} search
  * @property {function(q:string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state
  * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
@@ -29,7 +29,7 @@ Each implementation must provide a search function. The suggest function for aut
 On adding an implementation to the app, an owner is required.
 By providing an owner (name of the plugin) the app can remove implementations, if a plugin is unloaded.
 
-> Name and owner of SearchImpl's must be equal. This enforces uniqueness inside the search IndexedCollection, since SearchImpl's only exist for the lifetime of the plugin they are owned by.
+> Name of SearchImpl's must be unique _to the application_. Best practice is to prefix with your plugin name to ensure uniqueness or use a uuid.
 
 Example for adding a search implementation within an `index.js` of a plugin:
 
@@ -78,11 +78,12 @@ Each search plugin can define its own result item, which must comply with the fo
  * @property {string} [icon] An optional icon
  * @property {Array<VcsAction>} [actions]
  * @property {function():Promise<void>} [clicked] Obligatory, if no feature is provided. Can overwrite default zoom to feature behaviour.
- * @property {import("ol").Feature|undefined} [feature] If a feature is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
+ * @property {import("ol").Feature|undefined} [feature] If a feature (in web mercator) is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
  */
 ```
 
 If a feature is provided, the Search API adds a default click handler.
+Features must provide geometry in EPSG:3857 (web mercator).
 This default click handler zooms to the feature.
 If the feature has a FeatureInfoView (see [FeatureInfo](FEATURE_INFO.md)), the feature is selected and the corresponding FeatureInfoView is opened.
 

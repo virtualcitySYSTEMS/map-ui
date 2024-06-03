@@ -204,10 +204,9 @@ class ToolboxManager {
     this.removed = new VcsEvent();
     /**
      * reactive ordered array of ids,
-     * @type {Array<string>}
+     * @type {import("vue").UnwrapRef<string[]>}
      */
-    this.componentIds = [];
-
+    this.componentIds = reactive([]);
     /**
      * @type {Map<string, ToolboxComponent>}
      * @private

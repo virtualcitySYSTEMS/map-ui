@@ -19,10 +19,9 @@
       </v-row>
     </v-container>
     <v-color-picker
-      :value="rgbaObject"
-      @input="updateColor"
+      :model-value="rgbaObject"
+      @update:model-value="updateColor"
       mode="rgba"
-      :hide-mode-switch="true"
       :disabled="!value"
     />
   </v-sheet>
@@ -30,7 +29,13 @@
 
 <script>
   import { computed } from 'vue';
-  import { VSheet, VColorPicker, VContainer, VRow, VCol } from 'vuetify/lib';
+  import {
+    VSheet,
+    VColorPicker,
+    VContainer,
+    VRow,
+    VCol,
+  } from 'vuetify/components';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { useColorObject } from './composables.js';
@@ -51,36 +56,36 @@
       VcsTextField,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
     },
     setup(props, { emit }) {
       return {
-        rgbaObject: useColorObject(() => props.value?.color),
+        rgbaObject: useColorObject(() => props.modelValue?.color),
         width: computed({
           get() {
-            return props.value?.width;
+            return props.modelValue?.width;
           },
           set(value) {
-            if (value > 0 && value !== props.value?.width) {
+            if (value > 0 && value !== props.modelValue?.width) {
               const stroke = {
                 width: value,
               };
-              if (props.value?.color) {
-                stroke.color = [...props.value.color];
+              if (props.modelValue?.color) {
+                stroke.color = [...props.modelValue.color];
               }
-              emit('input', stroke);
+              emit('update:modelValue', stroke);
             }
           },
         }),
         updateColor(rgba) {
           const stroke = {
             color: [rgba.r, rgba.g, rgba.b, rgba.a],
-            width: props.value?.width,
+            width: props.modelValue?.width,
           };
-          emit('input', stroke);
+          emit('update:modelValue', stroke);
         },
       };
     },

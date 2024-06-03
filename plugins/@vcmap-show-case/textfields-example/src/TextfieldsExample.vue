@@ -85,7 +85,13 @@
   </v-sheet>
 </template>
 <script>
-  import { VSheet, VContainer, VRow, VCol, VTextField } from 'vuetify/lib';
+  import {
+    VSheet,
+    VContainer,
+    VRow,
+    VCol,
+    VTextField,
+  } from 'vuetify/components';
 
   export default {
     name: 'TextfieldsExample',

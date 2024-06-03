@@ -1,9 +1,9 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import { check, checkMaybe, is } from '@vcsuite/check';
 import { VcsModule } from '@vcmap/core';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
-import { vuetify } from './vuePlugins/vuetify.js';
 import VcsUiApp from './vcsUiApp.js';
+import { createSafeI18n } from './vuePlugins/i18n.js';
 
 /**
  * Base pattern to check VcsObjects
@@ -42,16 +42,14 @@ export const VcsUiAppConfigPattern = {
 export default async function initApp(mountTarget) {
   check(mountTarget, String);
   const app = new VcsUiApp();
-  new Vue({
-    vuetify,
-    i18n: app.vueI18n,
-    render: (h) =>
-      h(VcsAppComponentWrapper, {
-        props: {
-          appId: app.id,
-        },
-      }),
-  }).$mount(mountTarget);
+  const vueApp = createApp(VcsAppComponentWrapper, {
+    appId: app.id,
+  });
+  vueApp.use(app.vueI18nPlugin);
+  const safeI18nPlugin = createSafeI18n();
+  vueApp.use(safeI18nPlugin);
+  vueApp.use(app.vuetify);
+  vueApp.mount(mountTarget);
 
   return app;
 }

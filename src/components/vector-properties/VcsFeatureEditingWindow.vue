@@ -22,7 +22,7 @@
       <VcsFeatureStyleComponent :feature-properties="featureProperties" />
     </VcsFormSection>
     <VcsVectorPropertiesComponent
-      :value="featureProperties"
+      :model-value="featureProperties"
       :show3-d-properties="is3D"
       @propertyChange="updateFeatureProperties"
       :value-default="defaultVectorProperties"
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import { inject, ref, watch, onUnmounted, provide, computed } from 'vue';
   import {
     CesiumMap,

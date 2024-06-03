@@ -25,8 +25,7 @@
         :has-update="btn.hasUpdate"
         :background="btn.background"
         @click.stop="btn.callback($event)"
-        v-bind="{ ...$attrs }"
-        v-on="{ ...$listeners, ...btn.listeners }"
+        v-bind="{ ...$attrs, ...btn.listeners }"
       />
       <span>{{ clockTime(clock.endTime) }}</span>
     </div>
@@ -34,7 +33,7 @@
 </template>
 <script>
   import { inject, onMounted, onUnmounted, ref } from 'vue';
-  import { VContainer } from 'vuetify/lib';
+  import { VContainer } from 'vuetify/components';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsButton from '../buttons/VcsButton.vue';

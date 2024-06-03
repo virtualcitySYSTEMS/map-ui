@@ -1,11 +1,10 @@
 <template>
   <v-toolbar
     absolute
-    dense
+    :density="density"
     elevation="0"
-    :height="$vuetify.breakpoint.xs ? '56px' : '48px'"
-    :bottom="$vuetify.breakpoint.xs ? 'bottom' : undefined"
-    width="100%"
+    class="px-4"
+    :style="xs ? { bottom: 0 } : { top: 0 }"
   >
     <v-container fluid class="pa-0">
       <v-row no-gutters class="align-center">
@@ -28,18 +27,18 @@
               />
               <VcsActionButtonList
                 :actions="contentActions"
-                :overflow-count="$vuetify.breakpoint.xs ? 3 : 4"
+                :overflow-count="xs ? 3 : 4"
                 button="VcsToolButton"
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
-                class="mx-2 base lighten-2"
+                class="mx-2"
                 vertical
                 inset
               />
               <VcsActionButtonList
                 :actions="toolActions"
-                v-if="$vuetify.breakpoint.mdAndUp"
+                v-if="mdAndUp"
                 button="VcsToolButton"
               />
             </div>
@@ -47,19 +46,19 @@
         </v-col>
         <v-col class="d-flex justify-center">
           <div class="d-flex align-center">
-            <template v-if="!$vuetify.breakpoint.xs">
+            <template v-if="!xs">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
             <div
-              v-if="$vuetify.breakpoint.mdAndUp && config.appTitle"
+              v-if="mdAndUp && config.appTitle"
               class="ml-4 text-h6 font-weight-bold"
             >
-              {{ $t(config.appTitle) }}
+              {{ $st(config.appTitle) }}
             </div>
           </div>
         </v-col>
         <v-col class="align-content-end d-flex justify-end">
-          <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp">
+          <v-toolbar-items v-if="mdAndUp">
             <div class="d-flex">
               <VcsActionButtonList
                 :actions="projectActions"
@@ -71,47 +70,46 @@
                 inset
                 class="mx-2"
               />
-
-              <v-menu offset-y v-if="shareActions.length > 0">
-                <template #activator="{ on, attrs }">
-                  <VcsToolButton
-                    v-bind="attrs"
-                    v-on="on"
-                    tooltip="navbar.share.tooltip"
-                    icon="$vcsShare"
+              <div class="d-flex gc-2">
+                <v-menu v-if="shareActions.length > 0">
+                  <template #activator="{ props }">
+                    <VcsToolButton
+                      v-bind="props"
+                      tooltip="navbar.share.tooltip"
+                      icon="$vcsShare"
+                    />
+                  </template>
+                  <VcsActionList
+                    :actions="shareActions"
+                    tooltip-position="left"
+                    :show-icon="true"
                   />
-                </template>
-                <VcsActionList
-                  :actions="shareActions"
-                  tooltip-position="left"
-                  :show-icon="true"
+                </v-menu>
+                <VcsToolButton
+                  class="d-flex"
+                  v-if="searchAction"
+                  :key="searchAction.name"
+                  :tooltip="searchAction.title"
+                  :icon="searchAction.icon"
+                  :active="searchAction.active"
+                  @click.stop="searchAction.callback($event)"
+                  v-bind="{ ...$attrs }"
                 />
-              </v-menu>
-              <VcsToolButton
-                class="d-flex"
-                v-if="searchAction"
-                :key="searchAction.name"
-                :tooltip="searchAction.title"
-                :icon="searchAction.icon"
-                :active="searchAction.active"
-                @click.stop="searchAction.callback($event)"
-                v-bind="{ ...$attrs }"
-              />
-              <v-menu offset-y v-if="menuActions.length > 0">
-                <template #activator="{ on, attrs }">
-                  <VcsToolButton
-                    v-bind="attrs"
-                    v-on="on"
-                    tooltip="navbar.menu.tooltip"
-                    icon="$vcsMenu"
+                <v-menu v-if="menuActions.length > 0">
+                  <template #activator="{ props }">
+                    <VcsToolButton
+                      v-bind="props"
+                      tooltip="navbar.menu.tooltip"
+                      icon="$vcsMenu"
+                    />
+                  </template>
+                  <VcsActionList
+                    :actions="menuActions"
+                    tooltip-position="left"
+                    :show-icon="true"
                   />
-                </template>
-                <VcsActionList
-                  :actions="menuActions"
-                  tooltip-position="left"
-                  :show-icon="true"
-                />
-              </v-menu>
+                </v-menu>
+              </div>
             </div>
           </v-toolbar-items>
         </v-col>
@@ -121,9 +119,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .v-toolbar__items > div {
-    gap: 8px;
-  }
   .logo {
     max-height: 36px;
     margin: 0 auto;
@@ -135,7 +130,8 @@
 </style>
 
 <script>
-  import { inject, ref, computed, onUnmounted } from 'vue';
+  import { inject, computed, onUnmounted } from 'vue';
+  import { useDisplay } from 'vuetify';
   import {
     VCol,
     VContainer,
@@ -144,7 +140,7 @@
     VRow,
     VToolbar,
     VToolbarItems,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import {
     ButtonLocation,
     getActionsByLocation,
@@ -177,9 +173,8 @@
     setup() {
       const app = inject('vcsApp');
 
-      const navbarButtonIds = ref(app.navbarManager.componentIds);
       const buttonComponents = computed(() =>
-        navbarButtonIds.value.map((id) => app.navbarManager.get(id)),
+        app.navbarManager.componentIds.map((id) => app.navbarManager.get(id)),
       );
       const getActions = (location) =>
         computed(() =>
@@ -201,6 +196,12 @@
         destroySearchAction();
       });
 
+      const { xs, mdAndUp } = useDisplay();
+
+      const density = computed(() => {
+        return xs.value ? 'comfortable' : 'compact';
+      });
+
       return {
         mapActions: getActions(ButtonLocation.MAP),
         contentActions: getActions(ButtonLocation.CONTENT),
@@ -211,6 +212,9 @@
         menuActions: getActions(ButtonLocation.MENU),
         config: app.uiConfig.config,
         logo,
+        xs,
+        density,
+        mdAndUp,
       };
     },
   };

@@ -81,7 +81,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
 
   /**
    * @param {BalloonFeatureInfoViewOptions} options
-   * @param {import("vue").Component} [component=BalloonComponent]
+   * @param {import("vue").Component<BalloonFeatureInfoViewProps, unknown, unknown>} [component=BalloonComponent]
    */
   constructor(options, component) {
     super(options, component || BalloonComponent);

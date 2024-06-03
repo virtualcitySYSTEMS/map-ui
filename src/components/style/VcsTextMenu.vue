@@ -1,17 +1,16 @@
 <template>
   <MenuWrapper
-    v-bind="{ value, valueDefault }"
+    v-bind="{ ...$attrs, modelValue, valueDefault }"
     :value-fallback="fallbackStyle"
-    v-on="$listeners"
     name="components.style.text"
   >
     <template #preview>
-      <div v-if="value" class="d-flex justify-center align-center">
+      <div v-if="modelValue" class="d-flex justify-center align-center">
         <span id="text-preview">T</span>
       </div>
     </template>
     <template #content>
-      <VcsTextSelector v-bind="{ value, valueDefault }" v-on="$listeners" />
+      <VcsTextSelector v-bind="{ ...$attrs, modelValue, valueDefault }" />
     </template>
   </MenuWrapper>
 </template>
@@ -42,7 +41,7 @@
       VcsTextSelector,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -52,9 +51,11 @@
       },
     },
     setup(props) {
-      const fillColorObject = useColorObject(() => props.value?.fill?.color);
+      const fillColorObject = useColorObject(
+        () => props.modelValue?.fill?.color,
+      );
       const strokeColorObject = useColorObject(
-        () => props.value?.stroke?.color,
+        () => props.modelValue?.stroke?.color,
       );
 
       return {
@@ -62,7 +63,7 @@
           rgbaObjectToString(strokeColorObject.value),
         ),
         fillColor: computed(() => rgbaObjectToString(fillColorObject.value)),
-        fontStyle: computed(() => props.value?.font),
+        fontStyle: computed(() => props.modelValue?.font),
         fallbackStyle,
       };
     },

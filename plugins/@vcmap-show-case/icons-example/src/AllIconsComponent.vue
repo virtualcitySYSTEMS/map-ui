@@ -6,7 +6,7 @@
 
 <script>
   import { Icons, VcsList } from '@vcmap/ui';
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import { computed } from 'vue';
 
   export default {

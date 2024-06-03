@@ -1,28 +1,26 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header hide-actions class="px-2">
-      <template #default="{ open }">
-        <div class="d-flex justify-space-between">
-          <div class="d-flex align-center gap-1">
-            <v-icon :class="{ rotate: !open }"> mdi-chevron-down </v-icon>
-            <span>
-              {{ $t(title) }}
-            </span>
-            <span v-if="selectable && selection.length > 0">
-              {{ `(${selection.length})` }}
-            </span>
-          </div>
-          <VcsActionButtonList
-            v-if="actions?.length > 0"
-            :actions="actions"
-            :overflow-count="overflowCount"
-          />
+    <v-expansion-panel-title hide-actions class="px-2">
+      <div class="d-flex justify-space-between">
+        <div class="d-flex align-center gap-1">
+          <v-icon :class="{ rotate: !open }"> mdi-chevron-down </v-icon>
+          <span>
+            {{ $st(title) }}
+          </span>
+          <span v-if="selectable && selection.length > 0">
+            {{ `(${selection.length})` }}
+          </span>
         </div>
-      </template>
-    </v-expansion-panel-header>
-    <v-expansion-panel-content class="pb-1">
+        <VcsActionButtonList
+          v-if="actions?.length > 0"
+          :actions="actions"
+          :overflow-count="overflowCount"
+        />
+      </div>
+    </v-expansion-panel-title>
+    <v-expansion-panel-text class="pb-1">
       <CollectionComponentContent @openList="(id) => $emit('openList', id)" />
-    </v-expansion-panel-content>
+    </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 
@@ -31,9 +29,9 @@
   import {
     VIcon,
     VExpansionPanel,
-    VExpansionPanelHeader,
-    VExpansionPanelContent,
-  } from 'vuetify/lib';
+    VExpansionPanelTitle,
+    VExpansionPanelText,
+  } from 'vuetify/components';
   import { createSelectionActions } from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import CollectionComponentContent from './CollectionComponentContent.vue';
@@ -56,9 +54,15 @@
       CollectionComponentContent,
       VcsActionButtonList,
       VExpansionPanel,
-      VExpansionPanelHeader,
-      VExpansionPanelContent,
+      VExpansionPanelTitle,
+      VExpansionPanelText,
       VIcon,
+    },
+    props: {
+      open: {
+        type: Boolean,
+        default: false,
+      },
     },
     setup(_props, { emit }) {
       /**

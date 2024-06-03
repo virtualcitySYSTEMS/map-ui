@@ -2,16 +2,18 @@
   <div class="vcs-button-wrap">
     <v-btn
       v-if="!tooltip"
-      :outlined="variant === 'outlined'"
+      :variant="buttonVariant"
       :disabled="disabled"
       :loading="loading"
       :ripple="false"
       elevation="0"
       color="primary"
+      min-width="48px"
+      height="32px"
       class="vcs-form-button"
+      :slim="false"
       :class="classes"
       v-bind="{ ...$attrs }"
-      v-on="{ ...$listeners }"
     >
       <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
@@ -24,18 +26,20 @@
       :tooltip-position="tooltipPosition"
       v-bind="{ ...tooltipProps }"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-btn
-          :outlined="variant === 'outlined'"
+          :variant="buttonVariant"
           :disabled="disabled"
           :loading="loading"
           :ripple="false"
+          min-width="48px"
+          height="32px"
           elevation="0"
           color="primary"
           class="vcs-form-button"
+          :slim="false"
           :class="classes"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs, ...props }"
         >
           <v-icon v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
             {{ icon }}
@@ -44,7 +48,11 @@
         </v-btn>
       </template>
     </VcsTooltip>
-    <VcsBadge v-if="hasUpdate" :color="'warning'" class="position-absolute" />
+    <VcsBadge
+      v-if="hasUpdate"
+      :color="'bg-warning'"
+      class="position-absolute"
+    />
   </div>
 </template>
 
@@ -64,36 +72,24 @@
       border: thin solid currentColor;
     }
     &--disabled {
-      // TODO text color primary
-      border-color: var(--v-primary-lighten1);
+      border-color: rgb(var(--v-theme-primary-lighten-1));
       background-color: transparent !important;
     }
   }
   .vcs-button-wrap {
     .vcs-form-button {
-      min-width: 48px;
-      height: 32px;
-      font-size: 12px;
       border: 1px solid transparent;
 
       &--outlined {
         border: thin solid currentColor;
         &:hover {
-          border-color: var(--v-primary-lighten1) !important;
-        }
-        &.theme--light:hover::before {
-          opacity: 0.16;
-        }
-        &.theme--dark:hover::before {
-          opacity: 0.32;
+          border-color: rgb(var(--v-theme-primary-lighten-1)) !important;
         }
       }
-
       &--filled {
         &:hover {
-          color: map-get($shades, 'white') !important;
-          border-color: var(--v-primary-lighten1) !important;
-          background-color: var(--v-primary-lighten1) !important;
+          border-color: rgb(var(--v-theme-primary-lighten-1)) !important;
+          background-color: rgb(var(--v-theme-primary-lighten-1)) !important;
         }
       }
     }
@@ -101,7 +97,7 @@
 </style>
 
 <script>
-  import { VBtn, VIcon } from 'vuetify/lib';
+  import { VBtn, VIcon } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
@@ -178,6 +174,12 @@
           'vcs-form-button--outlined': this.variant === 'outlined',
           'vcs-form-button--filled': this.variant === 'filled',
         };
+      },
+      buttonVariant() {
+        if (this.variant === 'filled') {
+          return 'flat';
+        }
+        return this.variant;
       },
       hasDefaultSlot() {
         return !!this.$slots?.default?.[0]?.text?.trim();

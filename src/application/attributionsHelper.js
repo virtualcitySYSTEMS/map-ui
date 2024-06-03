@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import { ObliqueMap } from '@vcmap/core';
 
 /**
@@ -59,13 +59,13 @@ export function mergeAttributions(entries) {
  * Listens to state changes of maps, layers and oblique collections and synchronizes the entries array correspondingly.
  * Returns a destroy function to clear listeners.
  * @param {import("../vcsUiApp.js").default} app
- * @returns {{entries: import("vue").Ref<Array<AttributionEntry>>, destroy: function():void}}
+ * @returns {{entries: import("vue").UnwrapRef<Array<AttributionEntry>>, destroy: function():void}}
  */
 export function getAttributions(app) {
   /**
-   * @type {import("vue").Ref<Array<AttributionEntry>>}
+   * @type {import("vue").UnwrapRef<Array<AttributionEntry>>}
    */
-  const entries = ref([]);
+  const entries = reactive([]);
   /**
    * @type {function():void}
    */
@@ -81,9 +81,9 @@ export function getAttributions(app) {
       return;
     }
     const key = `${object.className}_${object.name}`;
-    const idx = entries.value.findIndex((e) => e.key === key);
+    const idx = entries.findIndex((e) => e.key === key);
     if (idx < 0) {
-      entries.value.push({
+      entries.push({
         key,
         title:
           object.properties?.title ?? `${object.className}: ${object.name}`,
@@ -98,11 +98,11 @@ export function getAttributions(app) {
    * @param {import("@vcmap/core").VcsMap|import("@vcmap/core").Layer|import("@vcmap/core").ObliqueCollection} object
    */
   function removeAttributions(object) {
-    const idx = entries.value.findIndex(
+    const idx = entries.findIndex(
       (e) => e.key === `${object.className}_${object.name}`,
     );
     if (idx >= 0) {
-      entries.value.splice(idx, 1);
+      entries.splice(idx, 1);
     }
   }
 
@@ -130,7 +130,7 @@ export function getAttributions(app) {
       return;
     }
     obliqueListener();
-    entries.value.splice(0);
+    entries.splice(0);
     syncAttributions(map);
     [...map.layerCollection].forEach((layer) => {
       if (layer.isSupported(map)) {

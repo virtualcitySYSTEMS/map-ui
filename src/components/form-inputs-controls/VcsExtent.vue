@@ -1,6 +1,6 @@
 <template>
   <v-container class="py-0 px-1">
-    <v-row no-gutters v-if="value.projection">
+    <v-row no-gutters v-if="modelValue.projection">
       <v-col :cols="firstCols">
         <VcsLabel html-for="projection" dense>
           {{ $t('components.extent.projection') }}
@@ -11,7 +11,7 @@
           id="projection"
           disabled
           dense
-          :value="value.projection.epsg"
+          :model-value="modelValue.projection.epsg"
         />
       </v-col>
     </v-row>
@@ -54,7 +54,7 @@
 
 <script>
   import { computed } from 'vue';
-  import { VCol, VContainer, VRow } from 'vuetify/lib';
+  import { VCol, VContainer, VRow } from 'vuetify/components';
   import { Extent } from '@vcmap/core';
   import VcsLabel from './VcsLabel.vue';
   import VcsTextField from './VcsTextField.vue';
@@ -66,7 +66,7 @@
 
   /**
    * An input for modelling @vcmap/core ExtentOptions
-   * @vue-prop {import("@vcmap/core").ExtentOptions} value - the extent options to be modeled.
+   * @vue-prop {import("@vcmap/core").ExtentOptions} modelValue - the extent options to be modeled.
    * @vue-prop {boolean} disabled - Disable coordinate input.
    * @vue-prop {number} [firstCols=4] - Property to set the column distribution. Default is 4 (one-third/two-third). Use 6 for half-half.
    */
@@ -81,7 +81,7 @@
       VcsTextField,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         required: true,
       },
@@ -98,14 +98,14 @@
       const getCoordinate = (start, end = 4) =>
         computed({
           get() {
-            return props.value.coordinates.slice(start, end);
+            return props.modelValue.coordinates.slice(start, end);
           },
           set(value) {
-            const clone = structuredClone(props.value);
+            const clone = structuredClone(props.modelValue);
             clone.coordinates[start] = value[0];
             clone.coordinates[end - 1] = value[1];
             if (Extent.validateOptions(clone)) {
-              emit('input', clone);
+              emit('update:modelValue', clone);
             }
           },
         });

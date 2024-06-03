@@ -417,7 +417,7 @@ class FeatureInfo extends Collection {
             feature,
             layer,
             this._app.uiConfig.config.value.primaryColor ??
-              getDefaultPrimaryColor(),
+              getDefaultPrimaryColor(this._app),
           ),
         });
         this._clearHighlightingCb = () =>
@@ -429,7 +429,7 @@ class FeatureInfo extends Collection {
             feature,
             layer,
             this._app.uiConfig.config.value.primaryColor ??
-              getDefaultPrimaryColor(),
+              getDefaultPrimaryColor(this._app),
           ),
         });
         this._clearHighlightingCb = () =>

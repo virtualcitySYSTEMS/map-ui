@@ -1,17 +1,16 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-
-Vue.use(VueI18n);
+import { createI18n } from 'vue-i18n';
+import { is } from '@vcsuite/check';
 
 /**
  * creates a new VueI18n Instance.
- * @returns {import("vue-i18n").IVueI18n}
+ * @returns {import("vue-i18n").I18n}
  */
 export function createVueI18n() {
-  return new VueI18n({
+  return createI18n({
+    legacy: false,
     locale: 'en',
-    silentFallbackWarn: true,
-    silentTranslationWarn: true,
+    missingWarn: false,
+    fallbackWarn: false,
     fallbackLocale: ['en', 'de'],
     messages: {
       en: {},
@@ -21,12 +20,30 @@ export function createVueI18n() {
 }
 
 /**
+ * creates a Vue Plugin with a new $st template helper which can handle undefined. Will just redirect to vueI18n,
+ * if key is a string
+ * @returns {import("vue").Plugin}
+ */
+export function createSafeI18n() {
+  return {
+    install: (vApp) => {
+      vApp.config.globalProperties.$st = (key, ...args) => {
+        if (!is(key, String)) {
+          return '';
+        }
+        return vApp.config.globalProperties.$t(key, ...args);
+      };
+    },
+  };
+}
+
+/**
  * sets the messages to the app's I18n Instance;
  * @param {import("../vcsUiApp.js").default} app
  */
 function setI18nMessages(app) {
   app.vueI18n.availableLocales.forEach((locale) => {
-    app.vueI18n.setLocaleMessage(locale, undefined);
+    app.vueI18n.setLocaleMessage(locale, {});
   });
   Object.entries(app.i18n.getMergedMessages()).forEach(
     ([locale, localeMessages]) => {
@@ -41,18 +58,19 @@ function setI18nMessages(app) {
  */
 export function setupI18n(app) {
   setI18nMessages(app);
-  app.vueI18n.locale = app.locale;
+  app.vueI18n.locale.value = app.locale;
   const destroyFunctions = [
     app.i18n.changed.addEventListener(() => {
       setI18nMessages(app);
     }),
     app.localeChanged.addEventListener((locale) => {
-      app.vueI18n.locale = locale;
+      app.vueI18n.locale.value = locale;
     }),
   ];
   return function tearDownI18nSetup() {
     destroyFunctions.forEach((destroy) => {
       destroy();
     });
+    app.vueI18nPlugin.dispose();
   };
 }

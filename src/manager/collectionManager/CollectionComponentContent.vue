@@ -22,7 +22,7 @@
 
 <script>
   import { computed, inject } from 'vue';
-  import { VSheet, VContainer } from 'vuetify/lib';
+  import { VSheet, VContainer } from 'vuetify/components';
   import VcsList, {
     createSelectionActions,
   } from '../../components/lists/VcsList.vue';
@@ -87,16 +87,14 @@
 </script>
 
 <style lang="scss" scoped>
-  ::v-deep {
-    .v-list {
-      .v-list-item {
-        padding: 4px 8px 4px 28px;
-      }
-      .v-list-item__selected {
-        border-left: solid 4px;
-        border-left-color: var(--v-primary-base);
-        padding-left: 24px !important;
-      }
+  :deep(.v-list) {
+    .v-list-item {
+      padding: 4px 8px 4px 28px;
+    }
+    .v-list-item__selected {
+      border-left: solid 4px;
+      border-left-color: var(--v-primary-base);
+      padding-left: 24px !important;
     }
   }
 </style>

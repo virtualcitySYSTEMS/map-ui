@@ -6,18 +6,19 @@
       color="error"
       :max-width="200"
     >
-      <template #activator="{ on, attrs }">
-        <span v-on="on">
+      <template #activator="{ props }">
+        <span v-bind="props">
           <v-select
             ref="selectField"
-            append-icon="mdi-chevron-down"
+            menu-icon="mdi-chevron-down"
             hide-details
             flat
-            outlined
-            :dense="isDense"
-            :height="isDense ? 24 : 32"
-            :item-text="(item) => $t(getText(item))"
-            class="py-1 primary--placeholder"
+            variant="outlined"
+            :density="density"
+            close-on-select
+            :menu-props="{ origin: 'overlap' }"
+            :item-title="(item) => $st(getTitle(item))"
+            class="primary--placeholder CCCalign-center"
             :class="{
               'remove-outline': !isOutlined,
               'input--dense': isDense,
@@ -25,22 +26,22 @@
               'outline--current': focus,
               'outline--error': !!errorMessage,
             }"
-            v-bind="{ ...$attrs, ...attrs }"
-            v-on="{ ...$listeners, ...on }"
+            v-bind="{ ...$attrs, ...props }"
             @focus="focus = true"
             @blur="focus = false"
             @mouseover="hover = true"
             @mouseleave="hover = false"
           >
             <template #selection="{ item, index }">
-              <span v-if="index === 0" class="text-truncate w-full">
-                {{ $t(getText(item)) }}
-              </span>
-              <span v-if="index === 1" class="text-no-wrap text-caption">
-                (+{{ $attrs.value.length - 1 }})
-              </span>
+              <!-- XXX text-truncate seems not to be working: text is rendered on two lines when too long -->
+              <span v-if="index === 0" class="text-truncate w-100">{{
+                $st(getTitle(item.raw))
+              }}</span>
+              <span v-if="index === 1" class="text-no-wrap text-caption"
+                >(+{{ $attrs['modelValue'].length - 1 }})</span
+              >
             </template>
-            <template v-for="(_, slot) of $scopedSlots" #[slot]="scope">
+            <template v-for="slot of Object.keys($slots)" #[slot]="scope">
               <slot :name="slot" v-bind="scope" />
             </template>
           </v-select>
@@ -50,97 +51,134 @@
   </div>
 </template>
 <style lang="scss" scoped>
+  :deep(.v-field) {
+    --v-field-padding-start: 8px;
+    --v-field-padding-end: 8px;
+  }
+  .v-input--density-compact :deep(.v-field) {
+    --v-input-control-height: 16px;
+    --v-field-padding-bottom: 0px;
+    --v-field-input-padding-top: 0px;
+    --v-input-padding-top: 0px;
+  }
+  .v-input--density-comfortable :deep(.v-field) {
+    --v-input-control-height: 24px;
+    --v-field-padding-bottom: 4px; // default 8
+    --v-field-input-padding-top: 4px; // default 8
+    --v-input-padding-top: 4px;
+  }
+  :deep(.v-field--focused .v-field__outline *) {
+    --v-field-border-width: 1px;
+    border-color: rgb(var(--v-theme-primary));
+  }
+  // Not color, just used if label is given
+  :deep(.v-field--focused .v-field__outline *::after) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+  .remove-outline :deep(.v-field .v-field__outline) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .remove-outline :deep(.v-field .v-field__outline *) {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+  }
+  // used to remove border from label
+  .remove-outline :deep(.v-field .v-field__outline *::before) {
+    border-width: 0;
+    border-radius: 0;
+  }
+  // used to remove border from notch
+  .remove-outline :deep(.v-field .v-field__outline * label) {
+    color: rgb(var(--v-theme-primary));
+    margin-left: -4px;
+  }
   .primary--placeholder {
-    ::v-deep {
-      input::placeholder {
-        color: var(--v-primary-base);
-        font-style: italic;
-        opacity: 1;
-      }
+    :deep(input::placeholder) {
+      color: rgb(var(--v-theme-primary));
+      font-style: italic;
+      opacity: 1;
+      padding: 0 3px 0 0;
+    }
+    :deep(input::-moz-placeholder) {
+      font-style: italic;
+      padding: -5px 3px 0 0;
+    }
+  }
+  /*
+  .primary--placeholder {
+    :deep(input::placeholder) {
+      color: var(--v-primary-base);
+      font-style: italic;
+      opacity: 1;
     }
   }
   .v-select {
     &.v-select--is-multi {
-      ::v-deep {
-        .v-select__selections {
-          flex-wrap: nowrap;
-        }
+      :deep(.v-select__selections) {
+        flex-wrap: nowrap;
       }
     }
   }
   .remove-outline {
-    ::v-deep {
-      fieldset {
-        border-width: 0;
-        border-radius: 0;
-      }
+    :deep(fieldset) {
+      border-width: 0;
+      border-radius: 0;
     }
   }
   .outline--current {
-    ::v-deep {
-      .v-input__slot fieldset,
-      .v-input__slot .v-select__slot {
-        border-color: currentColor;
-        transition: border-color 0.5s ease;
-      }
+    :deep(.v-input__slot fieldset),
+    :deep(.v-input__slot .v-select__slot) {
+      border-color: currentColor;
+      transition: border-color 0.5s ease;
     }
   }
   .outline--error {
-    ::v-deep {
-      .v-input__slot fieldset,
-      .v-input__slot .v-select__slot {
-        border-color: var(--v-error-base);
-      }
+    :deep(.v-input__slot fieldset),
+    :deep(.v-input__slot .v-select__slot) {
+      border-color: var(--v-error-base);
     }
   }
   .input--dense {
-    ::v-deep {
-      .v-input__slot {
-        padding: 0 4px !important;
-      }
-      fieldset {
-        padding-left: 2px;
-      }
+    :deep(.v-input__slot) {
+      padding: 0 4px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 2px;
     }
   }
+
   .input--not-dense {
-    ::v-deep {
-      .v-input__slot {
-        padding: 0 8px !important;
-      }
-      fieldset {
-        padding-left: 6px;
-      }
+    :deep(.v-input__slot) {
+      padding: 0 8px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 6px;
     }
   }
   .v-input {
-    ::v-deep {
-      fieldset {
-        border-radius: 2px;
-      }
-      .v-select__slot {
-        border-bottom: 1px solid var(--v-base-base);
-      }
+    :deep(fieldset) {
+      border-radius: 2px;
+    }
+    :deep(.v-select__slot) {
+      border-bottom: 1px solid var(--v-base-base);
     }
     &.v-text-field--outlined:hover {
-      ::v-deep {
-        fieldset {
-          border: 1px solid currentColor;
-        }
+      :deep(fieldset) {
+        border: 1px solid currentColor;
       }
     }
     &.v-input--is-focused:hover,
     &.v-input--is-focused {
-      ::v-deep {
-        .v-select__slot {
-          border-bottom: 1px solid var(--v-primary-base);
-        }
+      :deep(.v-select__slot) {
+        border-bottom: 1px solid var(--v-primary-base);
       }
     }
   }
+  */
 </style>
 <script>
-  import { VSelect } from 'vuetify/lib';
+  import { VSelect } from 'vuetify/components';
   import { computed, ref } from 'vue';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
@@ -189,21 +227,37 @@
         );
       });
 
-      function getText(item) {
+      // function getText(item) {
+      //   if (props.itemText) {
+      //     return props.itemText(item);
+      //   } else {
+      //     return item?.text ?? item;
+      //   }
+      // }
+      function getTitle(item) {
         if (props.itemText) {
           return props.itemText(item);
         } else {
-          return item?.text ?? item;
+          return item?.title ?? item;
         }
       }
+
+      const density = computed(() => {
+        if (isDense.value) {
+          return 'compact';
+        }
+        return 'comfortable';
+      });
 
       return {
         hover,
         focus,
         errorMessage,
         isDense,
+        density,
         isOutlined,
-        getText,
+        // getText,
+        getTitle,
         selectField,
       };
     },

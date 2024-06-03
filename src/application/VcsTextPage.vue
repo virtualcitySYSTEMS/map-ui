@@ -31,7 +31,7 @@
 
 <script>
   import { computed, getCurrentInstance } from 'vue';
-  import { VContainer, VSheet } from 'vuetify/lib';
+  import { VContainer, VSheet } from 'vuetify/components';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
 
   /**
@@ -53,7 +53,7 @@
     setup(props) {
       const vm = getCurrentInstance().proxy;
       const markedHtml = computed(() => {
-        const translatedContent = vm.$t(props.content);
+        const translatedContent = vm.$st(props.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
 

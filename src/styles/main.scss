@@ -1,6 +1,6 @@
 @import './utils/all';
 
-@import './theming';
+// @import './theming';
 @import './typography';
 @import './shades';
 @import './variables';
@@ -18,4 +18,9 @@
 html.vcs-ui {
   overflow-x: hidden !important;
   overflow-y: hidden !important;
+}
+
+svg {
+  height: inherit;
+  width: inherit;
 }

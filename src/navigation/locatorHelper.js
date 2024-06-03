@@ -24,7 +24,7 @@ import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
  */
 function getColor(opacity, app) {
   return Color.fromCssColorString(
-    app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(),
+    app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(app),
   )
     .withAlpha(opacity)
     .toCssColorString();

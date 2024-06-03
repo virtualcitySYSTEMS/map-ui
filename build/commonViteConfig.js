@@ -1,7 +1,8 @@
 /* eslint-disable import/extensions */
 import path from 'path';
 import { defineConfig } from 'vite';
-import vue2 from '@vitejs/plugin-vue2';
+import vue3 from '@vitejs/plugin-vue';
+import { transformAssetUrls } from 'vite-plugin-vuetify';
 import { libraries } from './buildHelpers.js';
 
 const configMain = defineConfig({
@@ -9,7 +10,6 @@ const configMain = defineConfig({
     alias: {
       '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
       '@cesium/engine': '@vcmap-cesium/engine',
-      vue: 'vue/dist/vue.esm.js',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
     dedupe: Object.keys(libraries),
@@ -17,14 +17,11 @@ const configMain = defineConfig({
   define: {
     'process.env.NODE_ENV': '"development"',
   },
-  plugins: [vue2()],
-  css: {
-    preprocessorOptions: {
-      sass: {
-        additionalData: "\n@import './src/styles/variables.scss'\n",
-      },
-    },
-  },
+  plugins: [
+    vue3({
+      template: { transformAssetUrls },
+    }),
+  ],
 });
 
 export default configMain;

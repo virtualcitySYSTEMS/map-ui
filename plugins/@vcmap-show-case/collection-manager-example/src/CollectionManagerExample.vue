@@ -48,7 +48,7 @@
     VcsLabel,
     VcsSelect,
   } from '@vcmap/ui';
-  import { VCol, VContainer, VRow, VCard, VDialog } from 'vuetify/lib';
+  import { VCol, VContainer, VRow, VCard, VDialog } from 'vuetify/components';
   import { Collection } from '@vcmap/core';
   import { name as owner } from '../package.json';
 
@@ -129,7 +129,6 @@
     setup() {
       const app = inject('vcsApp');
       const collectionManager = inject('collectionManager');
-      const componentIds = ref(collectionManager.componentIds);
       const appCollections = [
         'maps',
         'layers',
@@ -242,7 +241,7 @@
       ];
 
       return {
-        componentIds,
+        componentIds: collectionManager.componentIds,
         appCollections,
         selected,
         addCollection,

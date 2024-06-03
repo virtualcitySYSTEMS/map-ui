@@ -15,43 +15,34 @@
     >
       <VcsFormattedNumber
         prefix="x:"
-        :value="transformedPosition[0]"
+        :model-value="transformedPosition[0]"
         :fraction-digits="fractionDigits"
       />
       <VcsFormattedNumber
         no-padding
         prefix="y:"
-        :value="transformedPosition[1]"
+        :model-value="transformedPosition[1]"
         :fraction-digits="fractionDigits"
       />
       <VcsFormattedNumber
         v-if="transformedPosition[2]"
         prefix="z:"
-        :value="transformedPosition[2]"
+        :model-value="transformedPosition[2]"
       />
     </template>
-    <v-menu
-      :nudge-top="46"
-      :nudge-left="80"
-      v-if="positionDisplayAction.active"
-    >
-      <template #activator="{ on, attrs }">
+    <v-menu v-if="positionDisplayAction.active">
+      <template #activator="{ props }">
         <VcsButton
-          v-bind="attrs"
-          v-on="on"
+          v-bind="props"
           tooltip="footer.positionDisplay.projection"
           icon="mdi-chevron-down"
           :custom-classes="customClasses"
         />
       </template>
-      <v-list dense>
-        <v-list-item-group v-model="selectedEPSG" color="primary" mandatory>
-          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value">
-            <v-list-item-content>
-              <v-list-item-title>{{ $t(item.text) }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
+      <v-list selectable density="compact" v-model:selected="selectedEPSG">
+        <v-list-item v-for="(item, i) in items" :key="i" :value="item.value">
+          <v-list-item-title>{{ $st(item.text) }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
   </span>
@@ -62,38 +53,36 @@
 
   .vcs-position-display {
     height: 22px;
-    background-color: var(--v-primary-base);
+    background-color: rgb(var(--v-theme-primary));
     span {
       color: map-get($shades, 'white');
     }
 
-    ::v-deep {
-      .vcs-formatted-number,
-      .vcs-formatted-number span {
-        font-size: unset;
-        line-height: unset;
-      }
-      .vcs-formatted-number-dense {
-        line-height: unset;
-      }
+    :deep(.vcs-formatted-number),
+    :deep(.vcs-formatted-number span) {
+      font-size: unset;
+      line-height: unset;
+    }
+    :deep(.vcs-formatted-number-dense) {
+      line-height: unset;
     }
   }
 </style>
 <script>
-  import { computed, inject, onUnmounted, reactive, ref } from 'vue';
+  import {
+    computed,
+    inject,
+    onUnmounted,
+    reactive,
+    ref,
+    shallowRef,
+  } from 'vue';
   import {
     getDefaultProjection,
     mercatorProjection,
     wgs84Projection,
   } from '@vcmap/core';
-  import {
-    VMenu,
-    VList,
-    VListItemGroup,
-    VListItem,
-    VListItemContent,
-    VListItemTitle,
-  } from 'vuetify/lib';
+  import { VMenu, VList, VListItem, VListItemTitle } from 'vuetify/components';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsFormattedNumber from '../components/form-output/VcsFormattedNumber.vue';
   import PositionDisplayInteraction from './positionDisplayInteraction.js';
@@ -111,9 +100,7 @@
       VcsButton,
       VMenu,
       VList,
-      VListItemGroup,
       VListItem,
-      VListItemContent,
       VListItemTitle,
     },
     setup() {
@@ -121,7 +108,7 @@
       const move =
         app.uiConfig.getByKey('positionDisplayEventType')?.value === 'move';
 
-      const position = ref([]);
+      const position = shallowRef([]);
 
       const interaction = new PositionDisplayInteraction({ position, move });
       app.maps.eventHandler.addPersistentInteraction(interaction);
@@ -132,7 +119,7 @@
         [defaultProjection.epsg]: defaultProjection,
         [wgs84Projection.epsg]: wgs84Projection,
       };
-      const selectedEPSG = ref(defaultProjection.epsg);
+      const selectedEPSG = ref([]);
 
       function getProjectionItems() {
         return Object.keys(projections).map((epsg) => {
@@ -165,7 +152,7 @@
         app.moduleAdded.addEventListener(() => {
           const newDefaultProjection = getDefaultProjection();
           projections[newDefaultProjection.epsg] = newDefaultProjection;
-          selectedEPSG.value = newDefaultProjection.epsg;
+          selectedEPSG.value.splice(0, Infinity, newDefaultProjection.epsg);
           items.value = getProjectionItems();
           setMove();
         }),
@@ -194,7 +181,7 @@
       const transformedPosition = computed(() => {
         if (position.value.length > 0) {
           return mercatorProjection.transformTo(
-            projections[selectedEPSG.value],
+            projections[selectedEPSG.value[0]],
             position.value,
           );
         }
@@ -202,7 +189,7 @@
       });
 
       const fractionDigits = computed(() => {
-        return selectedEPSG.value === wgs84Projection.epsg ? 6 : 2;
+        return selectedEPSG.value[0] === wgs84Projection.epsg ? 6 : 2;
       });
 
       return {

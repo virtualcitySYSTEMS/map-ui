@@ -6,7 +6,7 @@
 
 <style scoped></style>
 <script>
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
 
   export default {
     name: 'WindowExampleContent',

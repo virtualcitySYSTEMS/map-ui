@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import { provide, ref, shallowRef, nextTick } from 'vue';
   import { VcsFlightComponent, VcsFormButton } from '@vcmap/ui';
   import { FlightInstance } from '@vcmap/core';

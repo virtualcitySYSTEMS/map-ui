@@ -16,7 +16,8 @@ import { v4 as uuidv4 } from 'uuid';
  * @property {NotificationType} type
  * @property {string} [title]
  * @property {number} timeout
- * @property {import("vue").Ref<boolean>} open
+ * @property {import("vue").Ref<boolean>} openRef
+ * @property {open} open
  * @property {function():void} close
  */
 
@@ -57,13 +58,16 @@ function createNotification(options, notifier) {
       return timeout ?? 5000;
     },
     get open() {
-      return open;
+      return open.value;
     },
     set open(value) {
       open.value = value?.value ?? value; // when used as a v-model, this is set as a boolean
       if (!open.value) {
         this.close();
       }
+    },
+    get openRef() {
+      return open;
     },
     close() {
       open.value = false;

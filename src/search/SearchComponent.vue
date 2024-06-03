@@ -14,7 +14,7 @@
         @input="reset"
       />
     </span>
-    <v-divider class="mt-1 base darken-1" v-if="!!results.length" />
+    <v-divider class="mt-1 base-darken-1" v-if="!!results.length" />
     <ResultsComponent :query="query" :results="results" />
     <v-divider v-if="!!results.length" />
     <div v-if="!!results.length" class="d-flex px-2 pt-2 pb-1 justify-end">
@@ -26,27 +26,25 @@
 </template>
 
 <style lang="scss" scoped>
-  ::v-deep {
-    .v-input {
-      fieldset {
-        padding: 0 !important;
-      }
-      fieldset,
-      input {
-        border-color: transparent !important;
-      }
+  :deep(.v-input) {
+    fieldset {
+      padding: 0 !important;
     }
-    .v-icon .v-icon__component {
-      width: 16px;
-      height: 16px;
+    fieldset,
+    input {
+      border-color: transparent !important;
     }
+  }
+  :deep(.v-icon .v-icon__component) {
+    width: 16px;
+    height: 16px;
   }
 </style>
 
 <script>
   import { inject, onUnmounted, ref } from 'vue';
   import { getLogger } from '@vcsuite/logger';
-  import { VSheet, VDivider, VIcon } from 'vuetify/lib';
+  import { VSheet, VDivider, VIcon } from 'vuetify/components';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './ResultsComponent.vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';

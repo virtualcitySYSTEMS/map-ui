@@ -1,11 +1,6 @@
 <!-- eslint-disable max-len -->
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <g id="Gruppe_1962" transform="translate(-694 -537.56)">
       <path
         id="Pfad_745"

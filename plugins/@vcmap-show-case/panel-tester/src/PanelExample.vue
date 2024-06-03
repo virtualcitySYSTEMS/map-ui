@@ -20,8 +20,8 @@
 </template>
 <style></style>
 <script>
-  import { computed, inject, ref } from 'vue';
-  import { VDivider } from 'vuetify/lib';
+  import { computed, inject } from 'vue';
+  import { VDivider } from 'vuetify/components';
   import { VcsToolButton, PanelLocation } from '@vcmap/ui';
   import { name as owner } from '../package.json';
   import IframePanelExample from './IframePanelExample.vue';
@@ -34,7 +34,6 @@
     setup() {
       const app = inject('vcsApp');
       const panelLocations = Object.values(PanelLocation);
-      const componentIds = ref(app.panelManager.componentIds);
 
       const sampleIds = {
         [PanelLocation.LEFT]: 'panel-1',
@@ -117,7 +116,7 @@
         panelLocations,
         isActive(location) {
           return computed(() =>
-            componentIds.value.includes(
+            app.panelManager.componentIds.includes(
               app.panelManager.getLocation(location)?.id,
             ),
           );

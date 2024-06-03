@@ -1,5 +1,5 @@
 import { getShapeFromOptions } from '@vcmap/core';
-import { shallowRef } from 'vue';
+import { reactive } from 'vue';
 
 /**
  * @enum {string}
@@ -136,13 +136,13 @@ export function createLayerLegendEntry(key, title, legend) {
 /**
  *
  * @param {import("../vcsUiApp.js").default} app
- * @returns {{entries: import("vue").Ref<Array<LegendEntry>>, destroy: function():void }}
+ * @returns {{entries: import("vue").UnwrapRef<Array<LegendEntry>>, destroy: function():void }}
  */
 export function getLegendEntries(app) {
   /**
-   * @type {import("vue").Ref<Array<LegendEntry>>}>}
+   * @type {import("vue").UnwrapRef<Array<LegendEntry>>}>}
    */
-  const entries = shallowRef([]);
+  const entries = reactive([]);
   /**
    * @type {Object<string,function():void>}
    */
@@ -153,8 +153,10 @@ export function getLegendEntries(app) {
    */
   function removeEntryForLayer(layer) {
     const layerName = layer.name;
-    // reassign to trigger update
-    entries.value = entries.value.filter(({ key }) => key !== layerName);
+    const entryIndex = entries.findIndex(({ key }) => key === layerName);
+    if (entryIndex >= 0) {
+      entries.splice(entryIndex, 1);
+    }
     if (styleChangedListener[layerName]) {
       styleChangedListener[layerName]();
       delete styleChangedListener[layerName];
@@ -175,8 +177,7 @@ export function getLegendEntries(app) {
         layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
         const legendEntry = createLayerLegendEntry(key, title, legend);
-        // use spread since push won't trigger updates. Put new entries at the start
-        entries.value = [legendEntry, ...entries.value];
+        entries.unshift(legendEntry);
       }
       if (layer.styleChanged) {
         styleChangedListener[layer.name] = layer.styleChanged.addEventListener(

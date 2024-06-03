@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
     <g id="external-link" transform="translate(-3 -3)">
       <path
         id="Path_423"

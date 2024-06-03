@@ -95,7 +95,7 @@
 
 <script>
   import { computed } from 'vue';
-  import { VSheet, VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
@@ -137,7 +137,7 @@
       VcsLabel,
     },
     props: {
-      value: {
+      modelValue: {
         type: Object,
         default: undefined,
       },
@@ -153,9 +153,9 @@
             // fontStyle: 'normal',
             // fontWeight: 'normal',
           };
-          if (props.value) {
+          if (props.modelValue) {
             const el = document.createElement('span');
-            el.setAttribute('style', `font: ${props.value.font}`);
+            el.setAttribute('style', `font: ${props.modelValue.font}`);
             fontStyle = el.style;
             el.remove();
           }
@@ -165,7 +165,7 @@
 
       function emitNewFont(key, value) {
         font.value[key] = value;
-        const newModelObject = JSON.parse(JSON.stringify(props.value));
+        const newModelObject = JSON.parse(JSON.stringify(props.modelValue));
         const fontPropertyArray = [
           font.value.fontStyle,
           font.value.fontWeight,
@@ -173,7 +173,7 @@
           font.value.fontFamily,
         ];
         emit(
-          'input',
+          'update:modelValue',
           Object.assign(newModelObject, {
             font: fontPropertyArray
               .filter((prop) => prop && prop !== 'normal')
@@ -221,31 +221,31 @@
       });
 
       const selectedFill = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'fill',
         props.valueDefault.fill,
         emit,
       );
       const selectedStroke = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'stroke',
         props.valueDefault.stroke,
         emit,
       );
       const selectedOffsetX = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'offsetX',
         props.valueDefault.offsetX,
         emit,
       );
       const selectedOffsetY = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'offsetY',
         props.valueDefault.offsetY,
         emit,
       );
       const selectedText = useSelectedKey(
-        () => props.value,
+        () => props.modelValue,
         'text',
         props.valueDefault.text,
         emit,

@@ -6,7 +6,7 @@
       :key="attribution.provider"
     >
       <a :href="attribution.url" target="_blank"
-        >{{ $t(attribution.provider) }} <span>{{ attribution.years }}</span>
+        >{{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
       </a>
     </span>
     <VcsButton

@@ -316,21 +316,19 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @param {string} id
-   * @returns {import("vue").Ref<Array<string>>}
+   * @returns {Array<string>}
    */
-  getTreeOpenStateRef(id) {
+  getTreeOpenState(id) {
     const subTree = this._getSubTree(id);
     if (subTree) {
       if (!subTree[subTreeOpenStateSymbol]) {
-        subTree[subTreeOpenStateSymbol] = ref(
-          this.getChildrenForSubTree(id)
-            .filter((i) => i.initOpen)
-            .map((i) => i.name),
-        );
+        subTree[subTreeOpenStateSymbol] = this.getChildrenForSubTree(id)
+          .filter((i) => i.initOpen)
+          .map((i) => i.name);
       }
       return subTree[subTreeOpenStateSymbol];
     }
-    return ref([]);
+    return [];
   }
 
   destroy() {

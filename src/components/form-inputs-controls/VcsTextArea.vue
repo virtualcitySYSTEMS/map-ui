@@ -6,19 +6,18 @@
       color="error"
       :max-width="200"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-textarea
           ref="textAreaRef"
           hide-details
-          :dense="isDense"
+          :density="isDense ? 'compact' : undefined"
           :clearable="isClearable"
           @focus="onFocus"
           @blur="onBlur"
           @mouseover="hover = true"
           @mouseleave="hover = false"
-          outlined
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          variant="outlined"
+          v-bind="{ ...$attrs, ...props }"
           :rows="$attrs.rows || (isDense ? 3 : 5)"
           class="ma-0 py-1 primary--placeholder"
           :class="{
@@ -36,84 +35,70 @@
 
 <style lang="scss" scoped>
   .primary--placeholder {
-    ::v-deep {
-      textarea::placeholder {
-        color: var(--v-primary-base);
-        font-style: italic;
-        opacity: 1;
-      }
+    :deep(textarea::placeholder) {
+      color: var(--v-primary-base);
+      font-style: italic;
+      opacity: 1;
     }
   }
   .remove-outline {
-    ::v-deep {
-      fieldset {
-        border-width: 0;
-        border-radius: 0;
-      }
+    :deep(fieldset) {
+      border-width: 0;
+      border-radius: 0;
     }
   }
   .outline--current {
-    ::v-deep {
-      .v-input__slot fieldset {
-        border-color: currentColor;
-        transition: border-color 0.5s ease;
-      }
-      .v-text-field__slot textarea {
-        border-color: transparent;
-      }
+    :deep(.v-input__slot fieldset) {
+      border-color: currentColor;
+      transition: border-color 0.5s ease;
+    }
+    :deep(.v-text-field__slot textarea) {
+      border-color: transparent;
     }
   }
   .outline--error {
-    ::v-deep {
-      .v-input__slot fieldset,
-      .v-text-field__slot textarea {
-        border-color: var(--v-error-base);
-      }
+    :deep(.v-input__slot fieldset),
+    :deep(.v-text-field__slot textarea) {
+      border-color: var(--v-error-base);
     }
   }
   .input--dense {
-    ::v-deep {
-      .v-input__slot {
-        padding: 0 4px !important;
-      }
-      fieldset {
-        padding-left: 2px;
-      }
+    :deep(.v-input__slot) {
+      padding: 0 4px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 2px;
     }
   }
   .input--not-dense {
-    ::v-deep {
-      .v-input__slot {
-        padding: 0 8px !important;
-      }
-      fieldset {
-        padding-left: 6px;
-      }
+    :deep(.v-input__slot) {
+      padding: 0 8px !important;
+    }
+    :deep(fieldset) {
+      padding-left: 6px;
     }
   }
   .v-input {
-    ::v-deep {
-      textarea {
-        border-bottom: 1px solid var(--v-base-base);
-        border-radius: 0;
-      }
-      textarea::selection {
-        background-color: var(--v-primary-base);
-      }
-      fieldset {
-        border-radius: 2px;
-        border-color: var(--v-base-base);
-      }
-      .v-text-field__slot {
-        margin-right: 0 !important;
-      }
+    :deep(textarea) {
+      border-bottom: 1px solid var(--v-base-base);
+      border-radius: 0;
+    }
+    :deep(textarea::selection) {
+      background-color: var(--v-primary-base);
+    }
+    :deep(fieldset) {
+      border-radius: 2px;
+      border-color: var(--v-base-base);
+    }
+    :deep(.v-text-field__slot) {
+      margin-right: 0 !important;
     }
   }
 </style>
 
 <script>
   import { computed, ref } from 'vue';
-  import { VTextarea } from 'vuetify/lib';
+  import { VTextarea } from 'vuetify/components';
   import VcsTooltip from '../notification/VcsTooltip.vue';
   import { useErrorSync } from './composables.js';
 

@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24.008"
-    viewBox="0 0 24 24.008"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24.008">
     <g id="streamline-icon-vectors-anchor-circle_24x24">
       <path
         id="Path_24"

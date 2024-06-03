@@ -28,12 +28,12 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  * @property {string} [icon] An optional icon
  * @property {Array<import("../actions/actionHelper.js").VcsAction>} [actions]
  * @property {function():Promise<void>} [clicked] Obligatory, if no feature is provided. Can overwrite default zoom to feature behaviour.
- * @property {import("ol").Feature|undefined} [feature] If a feature is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
+ * @property {import("ol").Feature|undefined} [feature] If a feature (in web mercator) is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to feature, highlight feature and select feature, if feature has a FeatureInfoView.
  */
 
 /**
  * @typedef {Object} SearchImpl
- * @property {string} name Name of the implementation. Must be the name of the plugin the SearchImpl is owned by
+ * @property {string} name Name of the implementation. Must be unique, best practice is to prefix with your plugin name to ensure uniqueness or use a uuid.
  * @property {function(string):Promise<Array<ResultItem>>} search
  * @property {function(string):Promise<Array<string>>} [suggest] // XXX currently not implemented in UI at Beta state
  * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
@@ -75,19 +75,19 @@ function setupSearchResultLayer(app) {
   app.layers.add(resultLayer);
 
   const style = new VectorStyleItem({
-    image: getPointResultIcon(getDefaultPrimaryColor()),
+    image: getPointResultIcon(getDefaultPrimaryColor(app)),
     fill: {
       color: 'rgba(237, 237, 237, 0.1)',
     },
     stroke: {
-      color: getDefaultPrimaryColor(),
+      color: getDefaultPrimaryColor(app),
       width: 5,
     },
   });
   resultLayer.setStyle(style);
 
   function setResultColor() {
-    const color = getColorByKey('primary');
+    const color = getColorByKey(app, 'primary');
     style.stroke?.setColor(color);
     style.image = new Icon(getPointResultIcon(color));
     resultLayer.forceRedraw();
@@ -185,11 +185,7 @@ class Search extends IndexedCollection {
   add(item, owner, index) {
     check(owner, [String, vcsAppSymbol]);
     check(item.search, Function);
-    if (item.name !== owner) {
-      getLogger('Search').warning(
-        'SearchImplementations must be named as the plugin they are owned by.',
-      );
-    }
+
     item[searchImplOwnerSymbol] = owner;
     super.add(item, index);
   }

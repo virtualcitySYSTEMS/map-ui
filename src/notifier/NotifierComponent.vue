@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-snackbar
-      dark
       v-for="notification in notifications"
       :key="notification.id"
       v-model="notification.open"
@@ -11,22 +10,22 @@
         {{ icon[notification.type] }}
       </v-icon>
       <span class="snack-title">{{
-        $t(notification.title || defaultTitle[notification.type])
+        $st(notification.title || defaultTitle[notification.type])
       }}</span>
-      <template #action="{ attrs }">
+      <template #actions="{ props }">
         <VcsButton
           icon="mdi-close"
-          v-bind="attrs"
+          v-bind="props"
           @click="notification.open = false"
         />
       </template>
-      <span>{{ $t(notification.message) }}</span>
+      <span>{{ $st(notification.message) }}</span>
     </v-snackbar>
   </div>
 </template>
 
 <script>
-  import { VSnackbar, VIcon } from 'vuetify/lib';
+  import { VSnackbar, VIcon } from 'vuetify/components';
   import { inject } from 'vue';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import { NotificationType } from './notifier.js';
@@ -65,22 +64,20 @@
 
 <style lang="scss" scoped>
   .v-snack {
-    ::v-deep {
-      .v-snack__content {
-        display: grid;
-        gap: 8px 4px;
-        grid-template-columns: 20px auto;
-        .v-icon {
-          grid-row-start: 1;
-          grid-row-end: 3;
-          align-self: start;
-          font-size: 17px;
-        }
+    :deep(.v-snack__content) {
+      display: grid;
+      gap: 8px 4px;
+      grid-template-columns: 20px auto;
+      .v-icon {
+        grid-row-start: 1;
+        grid-row-end: 3;
+        align-self: start;
+        font-size: 17px;
       }
-      .v-snack__action {
-        align-self: flex-start;
-        margin-top: 4px;
-      }
+    }
+    :deep(.v-snack__action) {
+      align-self: flex-start;
+      margin-top: 4px;
     }
   }
 </style>

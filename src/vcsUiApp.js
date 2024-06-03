@@ -44,6 +44,7 @@ import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
 import createSiteConfig from './siteConfig.js';
+import { createVcsVuetify } from './vuePlugins/vuetify.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
@@ -108,7 +109,7 @@ import createSiteConfig from './siteConfig.js';
  * @typedef {{
  *   added: import("@vcmap/core").VcsEvent<T>,
  *   removed: import("@vcmap/core").VcsEvent<T>,
- *   componentIds: Array<string>,
+ *   componentIds: import("vue").UnwrapRef<Array<string>>,
  *   get: function(string):T|undefined,
  *   has: function(string):boolean,
  *   remove: function(string):void,
@@ -209,6 +210,41 @@ class VcsUiApp extends VcsApp {
     ];
 
     /**
+     * @type {I18nCollection<Object>}
+     * @private
+     */
+    this._i18n = makeOverrideCollection(
+      new I18nCollection(this._plugins),
+      () => this.dynamicModuleId,
+    );
+
+    /**
+     *
+     * @type {import("vue-i18n").I18n}
+     * @private
+     */
+    this._vueI18nPlugin = createVueI18n();
+
+    /**
+     * @type {ReturnType<typeof import("vuetify").createVuetify>}
+     * @private
+     */
+    this._vuetify = createVcsVuetify(this._vueI18nPlugin);
+
+    /**
+     *
+     * @type {import("vue-i18n").Composer}
+     * @private
+     */
+    this._vueI18n = this._vueI18nPlugin.global;
+    /**
+     *
+     * @type {function(): void}
+     * @private
+     */
+    this._vueI18nDestroy = setupI18n(this);
+
+    /**
      * @type {OverrideClassRegistry<import("./callback/vcsCallback.js").default>}
      * @private
      */
@@ -253,6 +289,7 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._navbarManager = new NavbarManager();
+
     /**
      * @type {import("@vcmap/core").OverrideCollection<import("./uiConfig.js").UiConfigurationItem<unknown>, UiConfig>}
      * @private
@@ -283,28 +320,6 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._overviewMap = new OverviewMap(this);
-
-    /**
-     * @type {I18nCollection<Object>}
-     * @private
-     */
-    this._i18n = makeOverrideCollection(
-      new I18nCollection(this._plugins),
-      () => this.dynamicModuleId,
-    );
-
-    /**
-     *
-     * @type {import("vue-i18n").VueI18n}
-     * @private
-     */
-    this._vueI18n = createVueI18n();
-    /**
-     *
-     * @type {function(): void}
-     * @private
-     */
-    this._vueI18nDestroy = setupI18n(this);
 
     /**
      * @type {CategoryManager}
@@ -430,7 +445,21 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @returns {import("vue-i18n").IVueI18n}
+   * @returns {import("vue-i18n").I18n}
+   */
+  get vueI18nPlugin() {
+    return this._vueI18nPlugin;
+  }
+
+  /**
+   * @returns {ReturnType<typeof import("vuetify").createVuetify>}
+   */
+  get vuetify() {
+    return this._vuetify;
+  }
+
+  /**
+   * @returns {import("vue-i18n").VueI18n}
    */
   get vueI18n() {
     return this._vueI18n;

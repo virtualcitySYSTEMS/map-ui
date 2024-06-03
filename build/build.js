@@ -77,8 +77,17 @@ function hashLibraries() {
       },
       entry: path.join('lib', 'ui.js'),
     },
-    'vuetify/lib': {
-      entry: path.join('lib', 'vuetify.js'),
+    vuetify: {
+      entry: path.join('lib', 'vuetifyLib.js'),
+      // vuetify special case, the entry to compile is the vuetifyLib, but the public entry must be vuetify.js
+      // vuetifyLib will reexport the nested vuetify namespace as a flat namespace, so we can easily point all
+      // nested namespaces to the vuetify entry file.
+      libraryEntry: path.join('lib', 'vuetify.js'),
+      rollupOptions: {
+        output: {
+          manualChunks: () => 'vuetify.js', // this is needed, otherwise vitejs will create multiple chunks.
+        },
+      },
     },
   };
 
@@ -91,6 +100,18 @@ function hashLibraries() {
     value.hash = `${uuid().substring(0, 6)}`;
     libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
     value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
+  });
+
+  // Handle extended Vuetify libraries
+  Object.keys(libraries).forEach((key) => {
+    if (!libraryPaths[key]) {
+      if (key.startsWith('vuetify')) {
+        libraryPaths[key] = libraryPaths.vuetify;
+      }
+      if (key.startsWith('@cesium')) {
+        libraryPaths[key] = libraryPaths['@vcmap-cesium/engine'];
+      }
+    }
   });
 
   return { libraryBuildOptions, libraryPaths };
@@ -231,9 +252,10 @@ console.log('Building Libraries');
 await Promise.all(
   Object.entries(libraryBuildOptions).map(async ([key, value]) => {
     console.log('Building Library: ', key);
-    const external = Object.keys(libraryBuildOptions).filter((library) => {
-      return key !== library;
+    const external = Object.keys(libraries).filter((library) => {
+      return key !== library && !library.startsWith(key);
     });
+
     const output = {
       ...value.rollupOptions?.output,
       paths: libraryPaths,

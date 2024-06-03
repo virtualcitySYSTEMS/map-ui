@@ -8,7 +8,7 @@
         </div>
         <div class="d-flex gap-2 w-full justify-end">
           <VcsFormButton type="submit" variant="filled" :disabled="!isValid">
-            {{ $t(submitButtonTitle) }}
+            {{ $st(submitButtonTitle) }}
           </VcsFormButton>
           <VcsFormButton @click.stop="cancel">
             {{ $t('components.cancel') }}
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { VContainer, VForm } from 'vuetify/lib';
+  import { VContainer, VForm } from 'vuetify/components';
   import { ref, inject } from 'vue';
   import VcsFormButton from '../buttons/VcsFormButton.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';

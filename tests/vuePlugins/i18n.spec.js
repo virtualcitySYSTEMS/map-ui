@@ -17,9 +17,9 @@ describe('setupI18n', () => {
   });
 
   it('should synchronize the application locale with the plugin locale', () => {
-    expect(app.vueI18n.locale).to.be.equal(app.locale);
+    expect(app.vueI18n.locale.value).to.be.equal(app.locale);
     app.locale = 'de';
-    expect(app.vueI18n.locale).to.be.equal('de');
+    expect(app.vueI18n.locale.value).to.be.equal('de');
   });
 
   it('should add newly added i18n Keys to the vueI18n plugin', () => {
@@ -28,11 +28,11 @@ describe('setupI18n', () => {
   });
 
   it('should remove i18n Keys from the vueI18n plugin if they are removed from the app', () => {
-    const item = { name: 'plTest', pl: 'test' };
+    const item = { name: 'plTest', pl: { test: 'test' } };
     app.i18n.add(item);
     expect(app.vueI18n.availableLocales).to.have.members(['de', 'en', 'pl']);
     app.i18n.remove(item);
-    expect(app.vueI18n.availableLocales).to.not.include.members(['pl']);
+    expect(app.vueI18n.getLocaleMessage('pl')).to.be.empty;
   });
 
   describe('translating', () => {

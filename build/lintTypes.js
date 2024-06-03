@@ -10,6 +10,11 @@ async function lintTypes() {
   for await (const path of getFilesInDirectory('./src')) {
     if (path.endsWith('.d.ts') && !path.endsWith('vue.d.ts')) {
       const content = await readFile(path, 'utf8');
+      if (path.endsWith('vcsUiApp.d.ts')) {
+        // we do not check the vcsUiApp.d.ts, because the vuetify return Type has several occurances of any
+        // eslint-disable-next-line no-continue
+        continue;
+      }
       // eslint-disable-next-line no-loop-func
       content.split(EOL).forEach((line, index) => {
         const matches = line.match(anyRegex);

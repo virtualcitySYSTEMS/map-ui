@@ -9,8 +9,12 @@ import {
   afterEach,
 } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
+import { toRaw } from 'vue';
+import {
+  createSafeI18n,
+  createVueI18n,
+} from '../../../../src/vuePlugins/i18n.js';
 import VcsList from '../../../../src/components/lists/VcsList.vue';
-import { getMountOptionsWithI18n } from '../../../helpers.js';
 
 describe('VcsList', () => {
   describe('selecting a single item', () => {
@@ -36,18 +40,17 @@ describe('VcsList', () => {
         ];
         value = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, value, selectable: true },
         });
         component.vm.select(items[1], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the item', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
@@ -83,18 +86,17 @@ describe('VcsList', () => {
         ];
         value = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: false },
+          props: { items, value, selectable: false },
         });
         component.vm.select(items[1], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should not emit a new value', () => {
-        expect(component.emitted()).to.not.have.property('input');
+        expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
       it('should not call selectionChanged on the item', () => {
@@ -127,18 +129,17 @@ describe('VcsList', () => {
         ];
         value = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue: value, selectable: true },
         });
         component.vm.select(items[2], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
@@ -159,7 +160,7 @@ describe('VcsList', () => {
     describe('selecting an item, with the same item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -176,20 +177,19 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[1], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should deselect the item, emitting a new value with no selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
@@ -204,7 +204,7 @@ describe('VcsList', () => {
     describe('selecting an item, with the same item & another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -224,25 +224,24 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1], items[2]];
+        modelValue = [items[1], items[2]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[2].name);
       });
 
@@ -259,7 +258,7 @@ describe('VcsList', () => {
   describe('selecting all items', () => {
     let component;
     let items;
-    let value;
+    let modelValue;
     let selectionChangedFoo;
     let selectionChangedBar;
     let selectionChangedBaz;
@@ -282,25 +281,25 @@ describe('VcsList', () => {
           selectionChanged: selectionChangedBaz,
         },
       ];
-      value = [items[0]];
+      modelValue = [items[0]];
       component = shallowMount(VcsList, {
-        ...getMountOptionsWithI18n(),
-        propsData: { items, value, selectable: true },
+        props: { items, modelValue, selectable: true },
       });
+      // Select All Action
       component.vm.renderingActions[0].callback();
     });
 
     afterAll(() => {
-      component.destroy();
+      component.unmount();
     });
 
     it('should emit a new value, selecting all items', () => {
-      const { input } = component.emitted();
+      const { 'update:modelValue': input } = component.emitted();
       expect(input).to.be.ok;
       expect(input).have.lengthOf(1);
       expect(input[0]).to.be.an('array').and.have.lengthOf(1);
       expect(input[0][0]).to.be.an('array').and.have.lengthOf(items.length);
-      expect(input[0][0]).not.to.equal(value);
+      expect(input[0][0]).not.to.equal(modelValue);
       input[0][0].forEach((selected, idx) =>
         expect(selected).to.have.property('name', items[idx].name),
       );
@@ -316,7 +315,7 @@ describe('VcsList', () => {
   describe('clear selection', () => {
     let component;
     let items;
-    let value;
+    let modelValue;
     let selectionChangedFoo;
     let selectionChangedBar;
     let selectionChangedBaz;
@@ -339,25 +338,25 @@ describe('VcsList', () => {
           selectionChanged: selectionChangedBaz,
         },
       ];
-      value = [items[0]];
+      modelValue = [items[0]];
       component = shallowMount(VcsList, {
-        ...getMountOptionsWithI18n(),
-        propsData: { items, value, selectable: true },
+        props: { items, modelValue, selectable: true },
       });
+      // clearAll Action
       component.vm.renderingActions[1].callback();
     });
 
     afterAll(() => {
-      component.destroy();
+      component.unmount();
     });
 
     it('should emit a new value, clearing selection', () => {
-      const { input } = component.emitted();
+      const { 'update:modelValue': input } = component.emitted();
       expect(input).to.be.ok;
       expect(input).have.lengthOf(1);
       expect(input[0]).to.be.an('array').and.have.lengthOf(1);
       expect(input[0][0]).to.be.an('array').and.have.lengthOf(0);
-      expect(input[0][0]).not.to.equal(value);
+      expect(input[0][0]).not.to.equal(modelValue);
     });
 
     it('should call selectionChanged on previously selected items', () => {
@@ -371,7 +370,7 @@ describe('VcsList', () => {
     describe('selecting an item', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -388,25 +387,24 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[1], { ctrlKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
       });
 
@@ -418,7 +416,7 @@ describe('VcsList', () => {
     describe('selecting an item a unselectable list', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -435,20 +433,19 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: false },
+          props: { items, modelValue, selectable: false },
         });
         component.vm.select(items[1], { ctrlKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should not emit a new value', () => {
-        expect(component.emitted()).to.not.have.property('input');
+        expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
       it('should not call selectionChanged on the item', () => {
@@ -459,7 +456,7 @@ describe('VcsList', () => {
     describe('selecting an item, with another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -479,25 +476,24 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], { ctrlKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with both items selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(2);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
         expect(input[0][0][1]).to.have.property('name', items[2].name);
       });
@@ -514,7 +510,7 @@ describe('VcsList', () => {
     describe('selecting an item, with another item selected and a single select list', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -534,25 +530,29 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true, singleSelect: true },
+          props: {
+            items,
+            modelValue,
+            selectable: true,
+            singleSelect: true,
+          },
         });
         component.vm.select(items[2], { ctrlKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[2].name);
       });
 
@@ -568,7 +568,7 @@ describe('VcsList', () => {
     describe('selecting an item, with the same item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -585,20 +585,19 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[1], {});
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, without a selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
@@ -613,7 +612,7 @@ describe('VcsList', () => {
     describe('selecting an item, with the same item & another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -633,25 +632,24 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1], items[2]];
+        modelValue = [items[1], items[2]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], { ctrlKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, without the new value', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
       });
 
@@ -669,7 +667,7 @@ describe('VcsList', () => {
     describe('with no other item previously selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -694,25 +692,24 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], { shiftKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from 0', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(3);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[0].name);
         expect(input[0][0][1]).to.have.property('name', items[1].name);
         expect(input[0][0][2]).to.have.property('name', items[2].name);
@@ -728,7 +725,7 @@ describe('VcsList', () => {
     describe('with no other item previously selected and an unselectable list', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -753,20 +750,19 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: false },
+          props: { items, modelValue, selectable: false },
         });
         component.vm.select(items[2], { shiftKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should not emit a new value', () => {
-        expect(component.emitted()).to.not.have.property('input');
+        expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
       it('should not call selectionChanged on the new range', () => {
@@ -779,7 +775,7 @@ describe('VcsList', () => {
     describe('with another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -804,26 +800,25 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[4], {});
         component.vm.select(items[2], { shiftKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from the first selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(2);
         expect(input[1]).to.be.an('array').and.have.lengthOf(1);
         expect(input[1][0]).to.be.an('array').and.have.lengthOf(3);
-        expect(input[1][0]).not.to.equal(value);
+        expect(input[1][0]).not.to.equal(modelValue);
         expect(input[1][0][0]).to.have.property('name', items[2].name);
         expect(input[1][0][1]).to.have.property('name', items[3].name);
         expect(input[1][0][2]).to.have.property('name', items[4].name);
@@ -843,7 +838,7 @@ describe('VcsList', () => {
     describe('with another item selected and a single select list', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -868,26 +863,25 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true, singleSelect: true },
+          props: { items, modelValue, selectable: true, singleSelect: true },
         });
         component.vm.select(items[4], {});
         component.vm.select(items[2], { shiftKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from the first selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(2);
         expect(input[1]).to.be.an('array').and.have.lengthOf(1);
         expect(input[1][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[1][0]).not.to.equal(value);
+        expect(input[1][0]).not.to.equal(modelValue);
         expect(input[1][0][0]).to.have.property('name', items[2].name);
       });
 
@@ -903,7 +897,7 @@ describe('VcsList', () => {
     describe('with another range selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -928,10 +922,9 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], {});
         component.vm.select(items[0], { shiftKey: true });
@@ -939,16 +932,16 @@ describe('VcsList', () => {
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from the first selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(3);
         expect(input[2]).to.be.an('array').and.have.lengthOf(1);
         expect(input[2][0]).to.be.an('array').and.have.lengthOf(3);
-        expect(input[2][0]).not.to.equal(value);
+        expect(input[2][0]).not.to.equal(modelValue);
         expect(input[2][0][0]).to.have.property('name', items[2].name);
         expect(input[2][0][1]).to.have.property('name', items[3].name);
         expect(input[2][0][2]).to.have.property('name', items[4].name);
@@ -973,7 +966,7 @@ describe('VcsList', () => {
     describe('with another selection set selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -998,10 +991,9 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], {});
         component.vm.select(items[0], { ctrlKey: true });
@@ -1009,16 +1001,16 @@ describe('VcsList', () => {
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from the first selection', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(3);
         expect(input[2]).to.be.an('array').and.have.lengthOf(1);
         expect(input[2][0]).to.be.an('array').and.have.lengthOf(3);
-        expect(input[2][0]).not.to.equal(value);
+        expect(input[2][0]).not.to.equal(modelValue);
         expect(input[2][0][0]).to.have.property('name', items[2].name);
         expect(input[2][0][1]).to.have.property('name', items[3].name);
         expect(input[2][0][2]).to.have.property('name', items[4].name);
@@ -1042,7 +1034,7 @@ describe('VcsList', () => {
     describe('with an in range invisible item', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
 
       beforeAll(() => {
         items = [
@@ -1068,25 +1060,24 @@ describe('VcsList', () => {
             selectionChanged: vi.fn(),
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.select(items[2], { shiftKey: true });
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, selecting the range from 0', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(2);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[0].name);
         expect(input[0][0][1]).to.have.property('name', items[2].name);
       });
@@ -1101,7 +1092,7 @@ describe('VcsList', () => {
   describe('clear selection', () => {
     let component;
     let items;
-    let value;
+    let modelValue;
     let selectionChangedFoo;
     let selectionChangedBar;
     let selectionChangedBaz;
@@ -1124,25 +1115,24 @@ describe('VcsList', () => {
           selectionChanged: selectionChangedBaz,
         },
       ];
-      value = items;
+      modelValue = items;
       component = shallowMount(VcsList, {
-        ...getMountOptionsWithI18n(),
-        propsData: { items, value, selectable: true },
+        props: { items, modelValue, selectable: true },
       });
       component.vm.clear();
     });
 
     afterAll(() => {
-      component.destroy();
+      component.unmount();
     });
 
     it('should emit a new value with empty selection', () => {
-      const { input } = component.emitted();
+      const { 'update:modelValue': input } = component.emitted();
       expect(input).to.be.ok;
       expect(input).have.lengthOf(1);
       expect(input[0]).to.be.an('array').and.have.lengthOf(1);
       expect(input[0][0]).to.be.an('array').and.have.lengthOf(0);
-      expect(input[0][0]).not.to.equal(value);
+      expect(input[0][0]).not.to.equal(modelValue);
     });
 
     it('should call selectionChanged on all items', () => {
@@ -1156,7 +1146,7 @@ describe('VcsList', () => {
     describe('if the item already is part of the selection', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -1173,20 +1163,19 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.add(items[1]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should not emit a new value', () => {
-        expect(component.emitted()).to.not.have.property('input');
+        expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
       it('should not call selectionChanged on the item', () => {
@@ -1197,7 +1186,7 @@ describe('VcsList', () => {
     describe('without a current selection', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -1214,25 +1203,24 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [];
+        modelValue = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.add(items[1]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
       });
 
@@ -1244,7 +1232,7 @@ describe('VcsList', () => {
     describe('with another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -1264,25 +1252,24 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.add(items[2]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with both items selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(2);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
         expect(input[0][0][1]).to.have.property('name', items[2].name);
       });
@@ -1320,18 +1307,17 @@ describe('VcsList', () => {
         ];
         value = [];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, value, selectable: true },
         });
         component.vm.remove(items[1]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should not emit a new value', () => {
-        expect(component.emitted()).to.not.have.property('input');
+        expect(component.emitted()).to.not.have.property('update:modelValue');
       });
 
       it('should not call selectionChanged on the item', () => {
@@ -1342,7 +1328,7 @@ describe('VcsList', () => {
     describe('with the item as part of the current selection', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged;
 
       beforeAll(() => {
@@ -1359,20 +1345,19 @@ describe('VcsList', () => {
             name: 'baz',
           },
         ];
-        value = [items[1]];
+        modelValue = [items[1]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.remove(items[1]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with the new item selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
@@ -1387,7 +1372,7 @@ describe('VcsList', () => {
     describe('with the item as part of the current selection and another item selected', () => {
       let component;
       let items;
-      let value;
+      let modelValue;
       let selectionChanged1;
       let selectionChanged2;
 
@@ -1407,25 +1392,24 @@ describe('VcsList', () => {
             selectionChanged: selectionChanged2,
           },
         ];
-        value = [items[1], items[2]];
+        modelValue = [items[1], items[2]];
         component = shallowMount(VcsList, {
-          ...getMountOptionsWithI18n(),
-          propsData: { items, value, selectable: true },
+          props: { items, modelValue, selectable: true },
         });
         component.vm.remove(items[2]);
       });
 
       afterAll(() => {
-        component.destroy();
+        component.unmount();
       });
 
       it('should emit a new value, with both items selected', () => {
-        const { input } = component.emitted();
+        const { 'update:modelValue': input } = component.emitted();
         expect(input).to.be.ok;
         expect(input).have.lengthOf(1);
         expect(input[0]).to.be.an('array').and.have.lengthOf(1);
         expect(input[0][0]).to.be.an('array').and.have.lengthOf(1);
-        expect(input[0][0]).not.to.equal(value);
+        expect(input[0][0]).not.to.equal(modelValue);
         expect(input[0][0][0]).to.have.property('name', items[1].name);
       });
 
@@ -1467,25 +1451,29 @@ describe('VcsList', () => {
           title: 'foobaz',
         },
       ];
+      const vueI18n = createVueI18n();
+      const safeI18n = createSafeI18n();
       component = shallowMount(VcsList, {
-        ...getMountOptionsWithI18n(),
-        propsData: { items },
+        props: { items },
+        global: {
+          plugins: [vueI18n, safeI18n],
+        },
       });
     });
 
     afterEach(() => {
-      component.destroy();
+      component.unmount();
     });
 
     it('should not render invisible items', () => {
       items[2].visible = false;
       component.setProps({ items: items.map((i) => ({ ...i })) });
-      expect(component.vm.renderingItems).to.not.include(items[2]);
+      expect(component.vm.renderingItems.map(toRaw)).to.not.include(items[2]);
     });
 
     it('should only rendered queried items', () => {
       component.vm.query = 'foo';
-      expect(component.vm.renderingItems).to.have.members([
+      expect(component.vm.renderingItems.map(toRaw)).to.have.members([
         items[0],
         items[3],
         items[4],

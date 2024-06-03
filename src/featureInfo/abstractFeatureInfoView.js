@@ -294,7 +294,7 @@ class AbstractFeatureInfoView extends VcsObject {
 
   /**
    * @param {FeatureInfoViewOptions} options
-   * @param {import("vue").Component} component
+   * @param {import("vue").Component<FeatureInfoProps, unknown, unknown>} component
    */
   constructor(options, component) {
     super(options);
@@ -337,7 +337,7 @@ class AbstractFeatureInfoView extends VcsObject {
 
   /**
    * component provided by a FeatureInfoView class, passed to featureInfo via `getWindowComponentOptions()`
-   * @type {import("vue").Component|undefined}
+   * @type {import("vue").Component<FeatureInfoProps, unknown, unknown>|undefined}
    */
   get component() {
     return this._component;

@@ -10,8 +10,8 @@
       />
       <v-switch v-model="searchable" label="Searchable" class="ma-0" />
       <v-dialog v-model="dialog" width="400">
-        <template #activator="{ on }">
-          <vcs-form-button v-on="on"> Add An item </vcs-form-button>
+        <template #activator="{ props }">
+          <vcs-form-button v-bind="props"> Add An item </vcs-form-button>
         </template>
         <v-card class="pa-2">
           <v-form @submit.prevent="add">
@@ -65,7 +65,7 @@
     VcsCheckbox,
     VcsActionButtonList,
   } from '@vcmap/ui';
-  import { VSwitch, VSheet, VDialog, VCard, VForm } from 'vuetify/lib';
+  import { VSwitch, VSheet, VDialog, VCard, VForm } from 'vuetify/components';
   import { ref } from 'vue';
 
   const defaultHeaders = [

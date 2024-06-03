@@ -53,7 +53,7 @@
 
 <script>
   import { onMounted, onUnmounted, ref, watch } from 'vue';
-  import { VContainer, VRow, VCol } from 'vuetify/lib';
+  import { VContainer, VRow, VCol } from 'vuetify/components';
   import { AbstractConfigEditor, VcsLabel, VcsTextField } from '@vcmap/ui';
 
   export default {

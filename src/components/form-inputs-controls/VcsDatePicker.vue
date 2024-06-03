@@ -3,18 +3,16 @@
     v-model="menuOpen"
     :close-on-content-click="false"
     transition="scale-transition"
-    offset-y
     max-width="290px"
     min-width="290px"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-text-field
         v-model="formattedDate"
         :placeholder="formatDate(new Date().toISOString())"
-        v-bind="{ ...$attrs, ...attrs }"
-        v-on="{ ...$listeners, ...on }"
+        v-bind="props"
         :prepend-icon="icon"
-        :dense="isDense"
+        :density="isDense ? 'compact' : undefined"
         readonly
         hide-details
         class="ma-0 py-1"
@@ -27,27 +25,26 @@
     <v-date-picker
       v-model="date"
       no-title
-      @input="menuOpen = false"
-      :locale="locale"
+      @update:model-value="menuOpen = false"
       color="primary"
     >
-      <v-btn color="primary" @click="goToToday">
-        {{ $t('datePicker.today') }}
-      </v-btn>
+      <template #actions>
+        <v-btn color="primary" @click="goToToday">
+          {{ $t('datePicker.today') }}
+        </v-btn>
+      </template>
     </v-date-picker>
   </v-menu>
 </template>
 <style lang="scss" scoped>
-  ::v-deep {
-    .v-input__control {
-      padding: 0 4px;
-    }
-    .v-input__prepend-outer {
-      margin-right: 4px;
-    }
-    .v-icon {
-      font-size: 16px;
-    }
+  :deep(.v-input__control) {
+    padding: 0 4px;
+  }
+  :deep(.v-input__prepend-outer) {
+    margin-right: 4px;
+  }
+  :deep(.v-icon) {
+    font-size: 16px;
   }
 </style>
 <script>
@@ -59,19 +56,19 @@
     onUnmounted,
     onBeforeMount,
   } from 'vue';
-  import { VMenu, VTextField, VDatePicker, VBtn } from 'vuetify/lib';
+  import { VMenu, VTextField, VDatePicker, VBtn } from 'vuetify/components';
   /**
    * @description stylized wrapper around {@link https://v15.vuetifyjs.com/en/components/date-pickers/#month-pickers-in-dialog-and-menu}.
-   * @vue-prop {string} value - value of the date picker in {@link https://tc39.es/ecma262/#sec-date-time-string-format | Date Time String Format}
+   * @vue-prop {string} modelValue - value of the date picker in {@link https://tc39.es/ecma262/#sec-date-time-string-format | Date Time String Format}
    * @vue-prop {string} icon - specify optional prepend icon, defaults to mdi-calendar
    * @vue-event {string} input - raised when calendar date is selected
    */
   export default {
     name: 'VcsDatePicker',
     props: {
-      value: {
-        type: String,
-        default: new Date().toISOString().substring(0, 10),
+      modelValue: {
+        type: Date,
+        default: new Date(),
       },
       icon: {
         type: String,
@@ -91,19 +88,19 @@
       const app = /** @type {import("@vcmap/ui").VcsUiApp} */ (
         inject('vcsApp')
       );
-      const localValue = ref(props.value);
+      const localValue = ref(props.modelValue);
       const menuOpen = ref(false);
       const locale = ref(app.locale);
 
       const isDense = computed(() => attrs.dense !== false);
 
-      const isValid = (date) => !Number.isNaN(new Date(date).getTime());
+      const isValid = (date) => !Number.isNaN(date.getTime());
       const setFromValue = () => {
-        if (isValid(props.value)) {
-          localValue.value = props.value;
+        if (isValid(props.modelValue)) {
+          localValue.value = props.modelValue;
         } else if (localValue.value) {
           // eslint-disable-next-line no-console
-          console.error('Invalid date provided: ', props.value);
+          console.error('Invalid date provided: ', props.modelValue);
         }
       };
       onBeforeMount(() => setFromValue());
@@ -121,11 +118,11 @@
         return '';
       };
       const goToToday = () => {
-        localValue.value = new Date(Date.now()).toISOString().substring(0, 10);
+        localValue.value = new Date();
         menuOpen.value = false;
       };
       watch(
-        () => props.value,
+        () => props.modelValue,
         () => setFromValue(),
       );
       const formattedDate = computed({
@@ -138,7 +135,7 @@
         get: () => localValue.value,
         set: (nv) => {
           localValue.value = nv;
-          emit('input', localValue.value);
+          emit('update:modelValue', localValue.value);
         },
       });
 

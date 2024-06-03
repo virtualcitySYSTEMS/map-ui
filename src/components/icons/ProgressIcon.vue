@@ -21,6 +21,5 @@
         repeatCount="indefinite"
       />
     </path>
-    <rect id="spacer" width="16" height="16" style="fill: none" />
   </svg>
 </template>

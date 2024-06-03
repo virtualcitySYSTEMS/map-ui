@@ -1,11 +1,6 @@
 <!-- eslint-disable max-len -->
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24.008"
-    viewBox="0 0 24 24.008"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24.008">
     <g id="streamline-icon-vectors-anchor-square-1-alternate_24x24">
       <path
         id="Path_23"
@@ -13,12 +8,5 @@
         fill="currentColor"
       />
     </g>
-    <rect
-      id="size"
-      width="24"
-      height="24"
-      transform="translate(0 0.008)"
-      fill="none"
-    />
   </svg>
 </template>

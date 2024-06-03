@@ -8,9 +8,8 @@
     <v-treeview
       class="vcs-treeview"
       v-bind="{ ...$props, ...$attrs }"
-      v-on="$listeners"
       expand-icon="mdi-chevron-down"
-      item-key="name"
+      item-value="name"
       :search="search"
       :filter="handleFilter"
     >
@@ -27,40 +26,38 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  .vcs-treeview {
-    ::v-deep {
-      // Root Level Entries should be 40px high
-      > .v-treeview-node > .v-treeview-node__root {
-        min-height: 40px;
+  :deep(.vcs-treeview) {
+    // Root Level Entries should be 40px high
+    > .v-treeview-node > .v-treeview-node__root {
+      min-height: 40px;
+    }
+    // Border around root nodes with children included
+    > .v-treeview-node:not(:last-child) {
+      border-bottom: 1px solid var(--v-base-lighten2);
+    }
+    // Only Group Entries have a bold font
+    .v-treeview-node__root
+      button
+      + .v-treeview-node__content
+      .v-treeview-node__label {
+      font-weight: 700 !important;
+    }
+    // remove ripple effect from expand icon
+    .v-icon.v-icon {
+      &::after {
+        background-color: transparent;
       }
-      // Border around root nodes with children included
-      > .v-treeview-node:not(:last-child) {
-        border-bottom: 1px solid var(--v-base-lighten2);
-      }
-      // Only Group Entries have a bold font
-      .v-treeview-node__root
-        button
-        + .v-treeview-node__content
-        .v-treeview-node__label {
-        font-weight: 700 !important;
-      }
-      // remove ripple effect from expand icon
-      .v-icon.v-icon {
-        &::after {
-          background-color: transparent;
-        }
-      }
-      // Toggle Item Chevron with should be 16px
-      .v-treeview-node__toggle {
-        width: 16px;
-      }
+    }
+    // Toggle Item Chevron with should be 16px
+    .v-treeview-node__toggle {
+      width: 16px;
     }
   }
 </style>
 
 <script>
   import { getCurrentInstance, ref } from 'vue';
-  import { VTreeview } from 'vuetify/lib';
+  import { VTreeview } from 'vuetify/labs/VTreeview';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
 
@@ -99,7 +96,7 @@
        * @returns {boolean}
        */
       const handleFilter = (treeNode, q = '') => {
-        const translatedTitle = vm.$t(treeNode.title);
+        const translatedTitle = vm.$st(treeNode.title);
         return translatedTitle
           .toLocaleLowerCase()
           .includes(q.toLocaleLowerCase());

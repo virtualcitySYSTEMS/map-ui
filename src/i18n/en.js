@@ -1,6 +1,14 @@
 import { TransformationMode } from '@vcmap/core';
+import { en } from 'vuetify/locale';
 
 const messages = {
+  $vuetify: {
+    ...en,
+    dataIterator: {
+      rowsPerPageText: 'Items per page:',
+      pageText: '{0}-{1} of {2}',
+    },
+  },
   navbar: {
     maps: {
       CesiumMap: 'Enable 3D map',

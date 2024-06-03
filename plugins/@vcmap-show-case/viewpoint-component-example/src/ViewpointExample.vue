@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import { VSheet } from 'vuetify/lib';
+  import { VSheet } from 'vuetify/components';
   import { inject, ref } from 'vue';
   import { VcsViewpointComponent, VcsFormButton } from '@vcmap/ui';
   import { Viewpoint } from '@vcmap/core';

@@ -102,15 +102,26 @@ export function isSlotPosition(windowPosition) {
 }
 
 /**
- * @typedef {Object} WindowComponentOptions
+ * @typedef {{
+ *   id?: string,
+ *   parendId?: string,
+ *   component: import("vue").Component<T, unknown, unknown>,
+ *   headerComponent?: import("vue").Component<T, unknown, unknown>,
+ *   state? : Partial<WindowState>,
+ *   position? : Partial<WindowPositionOptions>,
+ *   slot: WindowSlot,
+ *   props?: T,
+ *   provides?: Record<string, unknown>
+ * }} WindowComponentOptions
+ * @template {Object} [T=Object]
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
- * @property {import("vue").Component} component Main Component which is shown below the header.
- * @property {import("vue").Component} [headerComponent] Replaces the Header Component.
+ * @property {import("vue").Component<T, unknown, unknown>} component Main Component which is shown below the header.
+ * @property {import("vue").Component<T, unknown, unknown>} [headerComponent] Replaces the Header Component.
  * @property {Partial<WindowState>} [state]
  * @property {Partial<WindowPositionOptions>} [position] Will be merged with default position for slot
  * @property {WindowSlot} [slot]
- * @property {Object} [props]
+ * @property {T} [props]
  * @property {Object} [provides]
  */
 
@@ -132,17 +143,29 @@ export function isSlotPosition(windowPosition) {
  */
 
 /**
- * @typedef {Object} WindowComponent
+ * @typedef {{
+ *   id: string,
+ *   parendId?: string,
+ *   component: import("vue").Component<T, unknown, unknown>,
+ *   headerComponent?: import("vue").Component<T, unknown, unknown>,
+ *   state : Partial<WindowState>,
+ *   position : Partial<WindowPositionOptions>,
+ *   slot: WindowSlot,
+ *   props: T,
+ *   provides: Record<string, unknown>,
+ *   zIndex: import("vue").ComputedGetter<number>
+ * }} WindowComponent
+ * @template {Object} [T=Object]
  * @property {string} id
  * @property {string} [parentId]
- * @property {import("vue").Component} component
- * @property {import("vue").Component} [headerComponent]
+ * @property {import("vue").Component<T, unknown, unknown>} component
+ * @property {import("vue").Component<T, unknown, unknown>} [headerComponent]
  * @property {WindowState} state
  * @property {WindowPosition} [position]
  * @property {WindowPositionOptions} initialPositionOptions
  * @property {import("vue").Ref<WindowSlot>} slot
  * @property {WindowSlot} initialSlot
- * @property {Object} props
+ * @property {T} props
  * @property {Object} provides
  * @property {import("vue").ComputedGetter<number>} zIndex
  */
@@ -267,9 +290,9 @@ class WindowManager {
     this.removed = new VcsEvent();
     /**
      * reactive ordered array of ids,
-     * @type {Array<string>}
+     * @type {import("vue").UnwrapRef<string[]>}
      */
-    this.componentIds = [];
+    this.componentIds = reactive([]);
     /**
      * reactive ordered array of ids, defining the zIndex of a component
      * @type {import("vue").Ref<Array<string>>}

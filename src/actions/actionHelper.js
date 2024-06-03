@@ -74,13 +74,13 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
   check(maps, MapCollection);
 
   const active = maps.activeMap?.name === mapName;
-  const action = {
+  const action = reactive({
     ...actionOptions,
     active,
     callback() {
       maps.setActiveMap(mapName);
     },
-  };
+  });
   const destroyListener = maps.mapActivated.addEventListener((map) => {
     action.active = map?.name === mapName;
   });
@@ -111,7 +111,7 @@ export function createToggleAction(
   check(windowComponent, { id: String });
   check(owner, [String, vcsAppSymbol]);
 
-  const action = {
+  const action = reactive({
     ...actionOptions,
     active: windowManager.has(windowComponent.id),
     callback() {
@@ -122,7 +122,7 @@ export function createToggleAction(
       }
       return null;
     },
-  };
+  });
 
   const listeners = [
     windowManager.added.addEventListener(({ id }) => {
@@ -277,7 +277,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
     }
   };
 
-  const action = {
+  const action = reactive({
     ...actionOptions,
     active: false,
     callback(event) {
@@ -306,7 +306,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
       }
       return null;
     },
-  };
+  });
 
   const listeners = [
     app.windowManager.removed.addEventListener(({ id: windowId }) => {

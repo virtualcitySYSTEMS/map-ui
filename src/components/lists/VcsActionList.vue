@@ -1,5 +1,5 @@
 <template>
-  <v-list v-if="actions.length > 0">
+  <v-list v-if="actions.length > 0" rounded>
     <VcsTooltip
       v-for="(action, index) in actions"
       :key="`${action.name}-${index}`"
@@ -7,43 +7,33 @@
       :tooltip-position="tooltipPosition"
       v-bind="{ ...tooltipProps }"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-list-item
-          :class="action.active ? 'primary--text' : ''"
+          :class="action.active ? 'text-primary' : ''"
           :disabled="action.disabled || disabled"
           @click="action.callback($event)"
-          v-bind="{ ...$attrs, ...attrs }"
-          v-on="{ ...$listeners, ...on }"
+          v-bind="{ ...$attrs, ...props }"
         >
-          <v-list-item-icon v-if="showIcon && action.icon">
-            <v-icon small>{{ action.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content class="vcs-action-list">
-            <v-list-item-title>{{ $t(action.name) }}</v-list-item-title>
-          </v-list-item-content>
+          <template #prepend v-if="showIcon && action.icon">
+            <v-icon>{{ action.icon }}</v-icon>
+          </template>
+          <v-list-item-title>{{ $st(action.name) }}</v-list-item-title>
         </v-list-item>
       </template>
     </VcsTooltip>
   </v-list>
 </template>
-<style lang="scss">
-  .vcs-action-list {
-    width: 100%;
-    &:hover {
-      color: var(--v-primary-base);
-    }
+<style lang="scss" scoped>
+  :deep(.v-list-item-title:hover) {
+    color: rgb(var(--v-theme-primary));
+  }
+  :deep(.v-list-item .v-list-item__prepend .v-list-item__spacer) {
+    width: 8px;
   }
 </style>
 <script>
   import { is } from '@vcsuite/check';
-  import {
-    VIcon,
-    VList,
-    VListItem,
-    VListItemContent,
-    VListItemIcon,
-    VListItemTitle,
-  } from 'vuetify/lib';
+  import { VIcon, VList, VListItem, VListItemTitle } from 'vuetify/components';
   import VcsTooltip from '../notification/VcsTooltip.vue';
 
   /**
@@ -93,10 +83,8 @@
       VcsTooltip,
       VList,
       VListItem,
-      VListItemIcon,
       VIcon,
       VListItemTitle,
-      VListItemContent,
     },
     props: {
       actions: {

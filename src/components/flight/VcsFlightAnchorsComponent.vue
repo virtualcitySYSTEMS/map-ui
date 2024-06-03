@@ -54,7 +54,7 @@
 </template>
 <script>
   import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-  import { VContainer, VSheet } from 'vuetify/lib';
+  import { VContainer, VSheet } from 'vuetify/components';
   import {
     anchorFromViewpoint,
     anchorToViewpoint,

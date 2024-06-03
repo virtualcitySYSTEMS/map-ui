@@ -256,7 +256,8 @@
               />
             </v-col>
           </v-row>
-          <v-row no-gutters class="gap-2">
+          <!--          TODO prefix fails-->
+          <v-row no-gutters class="gc-2">
             <v-col>
               <VcsTextField
                 id="coordinateX"
@@ -300,59 +301,57 @@
       start-open
       :disabled="!state.checkboxInput"
     >
-      <template #default>
-        <v-container class="py-0 px-1">
-          <v-row no-gutters>
-            <v-col>
-              <VcsRadio
-                :dense="dense"
-                :items="[
-                  ...selectOptions,
-                  {
-                    label: 'Radio Option E colored',
-                    color: 'primary',
-                    value: 'E',
-                  },
-                ]"
-                v-model="state.selected"
-                :rules="[(v) => v !== 'D' || 'D is not allowed']"
-                row
-              />
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col>
-              <VcsLabel :dense="dense"> Text </VcsLabel>
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col>
-              <VcsCheckbox
-                id="checkboxInput"
-                label="CheckboxInput"
-                :dense="dense"
-                :rules="[
-                  () => state.checkboxInput || 'Please accept our terms of use',
-                ]"
-                v-model="state.checkboxInput"
-              />
-            </v-col>
-            <v-col>
-              <VcsFormButton
-                :is-active="state.checkboxInput"
-                @click="state.checkboxInput = !state.checkboxInput"
-                tooltip="toggle button"
-                color="warning"
-                tooltip-position="right"
-                class="pt-1"
-              >
-                <span v-if="state.checkboxInput">Active-true</span>
-                <span v-else>Active-false</span>
-              </VcsFormButton>
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
+      <v-container class="py-0 px-1">
+        <v-row no-gutters>
+          <v-col>
+            <VcsRadio
+              :dense="dense"
+              :items="[
+                ...selectOptions,
+                {
+                  label: 'Radio Option E colored',
+                  color: 'primary',
+                  value: 'E',
+                },
+              ]"
+              v-model="state.selected"
+              :rules="[(v) => v !== 'D' || 'D is not allowed']"
+              row
+            />
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <VcsLabel :dense="dense"> Text </VcsLabel>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <VcsCheckbox
+              id="checkboxInput"
+              label="CheckboxInput"
+              :dense="dense"
+              :rules="[
+                () => state.checkboxInput || 'Please accept our terms of use',
+              ]"
+              v-model="state.checkboxInput"
+            />
+          </v-col>
+          <v-col>
+            <VcsFormButton
+              :is-active="state.checkboxInput"
+              @click="state.checkboxInput = !state.checkboxInput"
+              tooltip="toggle button"
+              color="warning"
+              tooltip-position="right"
+              class="pt-1"
+            >
+              <span v-if="state.checkboxInput">Active-true</span>
+              <span v-else>Active-false</span>
+            </VcsFormButton>
+          </v-col>
+        </v-row>
+      </v-container>
     </VcsFormSection>
     <VcsFormSection heading="VcsFormSection Mixed Inputs">
       <template #header="{ heading }">
@@ -454,13 +453,13 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col class="w-max-half">
-              <VcsLabel html-for="selectInput" :dense="dense" :disabled="true">
+              <VcsLabel html-for="selectInput2" :dense="dense" :disabled="true">
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
             <v-col class="w-max-half">
               <VcsSelect
-                id="selectInput"
+                id="selectInput2"
                 :items="selectOptions"
                 :dense="dense"
                 :rules="[(v) => v !== 'D' || 'D is not allowed']"
@@ -472,7 +471,6 @@
         </v-container>
       </template>
     </VcsFormSection>
-
     <div class="d-flex gap-2 px-2 pt-2 pb-1">
       <div class="d-flex gap-2">
         <VcsFormButton @click="validate()"> Val </VcsFormButton>
@@ -511,7 +509,7 @@
     VcsSlider,
     VcsRadioGrid,
   } from '@vcmap/ui';
-  import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/lib';
+  import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/components';
   import packageJSON from '../package.json';
   import {
     isValidText,
@@ -548,7 +546,7 @@
         required: true,
       },
       dense: {
-        type: Object,
+        type: Boolean,
         required: true,
       },
     },

@@ -1,13 +1,13 @@
 <template v-if="textPage.title">
   <VcsTooltip :tooltip="textPage.tooltip">
-    <template #activator="{ on }">
+    <template #activator="{ props }">
       <span
         class="d-inline-block text-truncate mr-10 setmargin"
-        v-on="{ ...$listeners, ...on }"
+        v-bind="{ ...$attrs, ...props }"
       >
         <span v-if="textPage.url" class="imprint-span imprint button">
           <a :href="textPage.url" class="link" target="_blank"
-            >{{ $t(textPage.title) }} <span></span>
+            >{{ $st(textPage.title) }} <span></span>
           </a>
         </span>
 
@@ -15,7 +15,7 @@
           v-else
           class="imprint-span imprint button link"
           @click="addTextPage()"
-          >{{ $t(textPage.title) }}</span
+          >{{ $st(textPage.title) }}</span
         >
       </span>
     </template>

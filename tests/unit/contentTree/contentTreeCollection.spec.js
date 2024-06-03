@@ -217,21 +217,18 @@ describe('ContentTreeCollection', () => {
     });
 
     it('should return the default trees open state', () => {
-      expect(collection.getTreeOpenStateRef(id).value).to.have.members([
-        'base',
-        'foo',
-      ]);
+      expect(collection.getTreeOpenState(id)).to.have.members(['base', 'foo']);
     });
 
     it('should return the sub trees open state', () => {
-      expect(collection.getTreeOpenStateRef(subTreeId).value).to.have.members([
+      expect(collection.getTreeOpenState(subTreeId)).to.have.members([
         'sub.base',
       ]);
     });
 
     it('should always return the same reference', () => {
-      const first = collection.getTreeOpenStateRef(id);
-      const second = collection.getTreeOpenStateRef(id);
+      const first = collection.getTreeOpenState(id);
+      const second = collection.getTreeOpenState(id);
       expect(first).to.equal(second);
     });
   });

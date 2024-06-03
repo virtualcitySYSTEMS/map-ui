@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { check } from '@vcsuite/check';
-import { ButtonLocation, createToggleAction, vuetify } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction, createVcsThemes } from '@vcmap/ui';
 import ThemeChangerComponent from './ThemeChangerComponent.vue';
 import packageJSON from '../package.json';
 import defaultConfig from '../config.json';
@@ -31,7 +31,7 @@ export default async function themeChanger(config) {
   /** @type {VcMapTheme} */
   const vcsTheme = {
     name: 'VCS Theme',
-    ...vuetify.userPreset.theme.themes,
+    ...createVcsThemes(),
   };
   const customThemes = config.themes || defaultConfig.themes;
   const availableThemes = [vcsTheme, ...customThemes];

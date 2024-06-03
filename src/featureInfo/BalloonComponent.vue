@@ -2,19 +2,17 @@
   <v-card class="mx-auto elevation-0" v-if="position">
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-2 align-center">
-        <v-list-item-avatar tile size="16" class="mr-2">
-          <v-icon color="primary"> $vcsInfo </v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content class="pr-1">
-          <v-list-item-title>
-            <h3 class="font-weight-bold">
-              {{ $t(balloonTitle) }}
-            </h3>
-          </v-list-item-title>
-          <v-list-item-subtitle v-if="balloonSubtitle">
-            {{ $t(balloonSubtitle) }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <template #prepend>
+          <v-icon color="primary" size="16" class="mr-2"> $vcsInfo </v-icon>
+        </template>
+        <v-list-item-title>
+          <h3 class="font-weight-bold">
+            {{ $st(balloonTitle) }}
+          </h3>
+        </v-list-item-title>
+        <v-list-item-subtitle v-if="balloonSubtitle">
+          {{ $st(balloonSubtitle) }}
+        </v-list-item-subtitle>
         <VcsButton
           @click.stop="close"
           icon="mdi-close-thick"
@@ -38,17 +36,15 @@
           color="transparent"
         >
           <v-list-item class="px-2">
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ $t(key) }}
-              </v-list-item-title>
-              <v-list-item-subtitle
-                :tag="getTag(tags, key)"
-                v-bind="getTagOptions(tags, key)"
-              >
-                {{ typeof value === 'string' ? $t(value) : value }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
+            <v-list-item-title>
+              {{ $st(key) }}
+            </v-list-item-title>
+            <v-list-item-subtitle
+              :tag="getTag(tags, key)"
+              v-bind="getTagOptions(tags, key)"
+            >
+              {{ typeof value === 'string' ? $st(value) : value }}
+            </v-list-item-subtitle>
           </v-list-item>
         </v-list>
       </slot>
@@ -63,11 +59,9 @@
     VIcon,
     VList,
     VListItem,
-    VListItemAvatar,
-    VListItemContent,
     VListItemSubtitle,
     VListItemTitle,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import {
     getTargetSize,
     posToNumber,
@@ -95,9 +89,7 @@
       VCard,
       VList,
       VListItem,
-      VListItemAvatar,
       VIcon,
-      VListItemContent,
       VListItemTitle,
       VListItemSubtitle,
       VDivider,

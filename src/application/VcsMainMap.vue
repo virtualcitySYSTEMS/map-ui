@@ -41,7 +41,10 @@
    */
   export default {
     name: 'VcsMainMap',
-    components: { MapNavigation, VcsMap },
+    components: {
+      MapNavigation,
+      VcsMap,
+    },
     setup() {
       const app = inject('vcsApp');
       const id = uuid();

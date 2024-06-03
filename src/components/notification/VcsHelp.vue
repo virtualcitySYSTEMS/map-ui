@@ -1,18 +1,18 @@
 <template>
   <v-alert
-    :value="show"
-    dense
+    :model-value="show"
+    density="compact"
     text
     class="mb-0 font-weight-regular rounded-0 px-2 pt-2"
   >
     <slot>
-      <span>{{ $t(text) }}</span>
+      <span>{{ $st(text) }}</span>
     </slot>
   </v-alert>
 </template>
 
 <script>
-  import { VAlert } from 'vuetify/lib';
+  import { VAlert } from 'vuetify/components';
 
   /**
    * @description Wraps Vuetify VAlert for displaying help.

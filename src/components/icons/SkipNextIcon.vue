@@ -1,12 +1,7 @@
 <!-- eslint-disable max-len -->
 
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="10"
-    height="10"
-    viewBox="0 0 10 10"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
     <g id="streamline-icon-button-previous_24x24" transform="translate(-7 -7)">
       <path
         id="Pfad_92"

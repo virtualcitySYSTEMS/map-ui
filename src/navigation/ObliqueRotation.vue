@@ -31,7 +31,7 @@
     name: 'ObliqueRotation',
     components: { OrientationToolsButton },
     props: {
-      value: {
+      modelValue: {
         type: Number,
         required: true,
       },
@@ -43,13 +43,13 @@
     },
     methods: {
       input(rotation) {
-        let currentValue = this.value + rotation;
+        let currentValue = this.modelValue + rotation;
         if (currentValue > 360) {
           currentValue -= 360;
         } else if (currentValue < 0) {
           currentValue += 360;
         }
-        this.$emit('input', currentValue);
+        this.$emit('update:modelValue', currentValue);
       },
     },
   };
@@ -61,20 +61,18 @@
     .inner {
       box-shadow: rgba(0, 0, 0, 0.25) 0 -2px 2px 0 inset;
     }
-    ::v-deep {
-      .btn-orientation-tools {
-        &:first-child {
-          box-shadow:
-            rgba(0, 0, 0, 0.25) 2px 2px 1px -2px,
-            rgba(0, 0, 0, 0.02) -3px 2px 2px 0,
-            rgba(0, 0, 0, 0.12) 0 1px 1px 0 !important;
-        }
-        &:last-child {
-          box-shadow:
-            rgba(0, 0, 0, 0.02) 1px 4px 1px -2px,
-            rgba(0, 0, 0, 0.02) 1px 2px 1px 0,
-            rgba(0, 0, 0, 0.1) 1px 1px 1px 0 !important;
-        }
+    :deep(.btn-orientation-tools) {
+      &:first-child {
+        box-shadow:
+          rgba(0, 0, 0, 0.25) 2px 2px 1px -2px,
+          rgba(0, 0, 0, 0.02) -3px 2px 2px 0,
+          rgba(0, 0, 0, 0.12) 0 1px 1px 0 !important;
+      }
+      &:last-child {
+        box-shadow:
+          rgba(0, 0, 0, 0.02) 1px 4px 1px -2px,
+          rgba(0, 0, 0, 0.02) 1px 2px 1px 0,
+          rgba(0, 0, 0, 0.1) 1px 1px 1px 0 !important;
       }
     }
   }

@@ -10,13 +10,13 @@
     v-bind="$attrs"
   >
     <slot>
-      <v-card-title>{{ $t(title) }}</v-card-title>
+      <v-card-title>{{ $st(title) }}</v-card-title>
     </slot>
   </v-card>
 </template>
 
 <script>
-  import { VCard, VCardTitle } from 'vuetify/lib';
+  import { VCard, VCardTitle } from 'vuetify/components';
   import { ref } from 'vue';
 
   export default {
@@ -26,7 +26,7 @@
       VCardTitle,
     },
     props: {
-      value: {
+      modelValue: {
         type: Array,
         default: () => [],
       },
@@ -47,7 +47,7 @@
             for (let i = 0; i < event.dataTransfer.files.length; i++) {
               files.push(event.dataTransfer.files[i]);
             }
-            emit('input', files);
+            emit('update:modelValue', files);
           }
         },
       };
