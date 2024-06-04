@@ -63,6 +63,9 @@
       }
     }
   }
+  .w-8 {
+    width: 32px;
+  }
 </style>
 <script>
   import { clamp } from 'ol/math.js';

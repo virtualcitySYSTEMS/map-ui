@@ -72,7 +72,7 @@
               <v-list-item-title
                 v-bind="props"
                 ref="titles"
-                class="d-flex gap-2"
+                class="d-flex gc-2"
               >
                 <slot name="item.prepend-title" :item="item" :index="index" />
                 <slot name="item.title" :item="item" :index="index">
@@ -685,5 +685,8 @@
         }
       }
     }
+  }
+  .d-contents {
+    display: contents;
   }
 </style>

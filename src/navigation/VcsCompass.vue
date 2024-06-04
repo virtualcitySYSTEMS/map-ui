@@ -9,7 +9,7 @@
   >
     <span>N</span>
     <MapNavCompass
-      class="position-absolute pos-a-0 text-primary"
+      class="position-absolute top-0 bottom-0 right-0 left-0 text-primary"
       @click="$event.stopPropagation()"
       @direction-click="$emit('update:modelValue', $event)"
       :can-emit="!disabled && (viewMode === '3d' || viewMode === 'oblique')"
@@ -17,7 +17,14 @@
     />
   </v-sheet>
 </template>
-
+<style lang="scss" scoped>
+  .h-16 {
+    height: 64px;
+  }
+  .w-16 {
+    width: 64px;
+  }
+</style>
 <script>
   import { computed, ref } from 'vue';
 

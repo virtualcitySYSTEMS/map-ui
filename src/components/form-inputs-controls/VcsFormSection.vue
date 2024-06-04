@@ -5,7 +5,7 @@
         class="vcs-form-section-header d-flex base-lighten-3"
         :aria-expanded="open"
       >
-        <div class="d-flex justify-space-between w-full">
+        <div class="d-flex justify-space-between w-100">
           <div class="d-flex align-center" :class="{ 'px-2': !expandable }">
             <v-btn
               :ripple="false"

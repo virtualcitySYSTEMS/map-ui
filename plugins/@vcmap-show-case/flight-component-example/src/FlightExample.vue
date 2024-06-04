@@ -4,8 +4,8 @@
       v-if="hasFlightInstance"
       :parent-id="$attrs['window-state'].id"
     />
-    <div class="d-flex gap-2 px-2 pt-2 pb-1">
-      <div class="d-flex gap-2 w-full justify-end">
+    <div class="d-flex gc-2 px-2 pt-2 pb-1">
+      <div class="d-flex gc-2 w-full justify-end">
         <VcsFormButton type="submit" variant="filled" @click="log">
           Log FlightOptions
         </VcsFormButton>

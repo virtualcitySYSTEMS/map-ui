@@ -10,9 +10,9 @@
     @click.stop="bringToTop"
     style="width: fit-content"
   >
-    <v-toolbar-items class="w-full px-4 gc-1">
+    <v-toolbar-items class="w-100 px-4 gc-1">
       <div
-        class="d-flex align-center justify-space-between w-full"
+        class="d-flex align-center justify-space-between w-100"
         v-for="group in orderedGroups"
         :key="group.id"
       >

@@ -16,6 +16,12 @@
       background-color: transparent !important;
     }
   }
+  .h-8 {
+    height: 32px;
+  }
+  .w-8 {
+    width: 32px;
+  }
 </style>
 <script>
   import { VCard, VIcon } from 'vuetify/components';

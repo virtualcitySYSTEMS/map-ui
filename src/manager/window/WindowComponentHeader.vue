@@ -61,6 +61,9 @@
       margin-top: 2px;
     }
   }
+  .user-select-none {
+    user-select: none;
+  }
 </style>
 
 <script>

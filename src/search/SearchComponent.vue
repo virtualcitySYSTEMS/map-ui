@@ -3,7 +3,7 @@
     <span class="d-flex justify-space-between align-center mt-1 ml-2">
       <v-icon class="pa-1"> $vcsSearch </v-icon>
       <VcsTextField
-        class="d-inline-block user-select-none w-full mx-1"
+        class="d-inline-block user-select-none w-100 mx-1"
         autofocus
         :loading="searching"
         clearable
@@ -38,6 +38,9 @@
   :deep(.v-icon .v-icon__component) {
     width: 16px;
     height: 16px;
+  }
+  .user-select-none {
+    user-select: none;
   }
 </style>
 

@@ -2,7 +2,7 @@
   <v-expansion-panel>
     <v-expansion-panel-title hide-actions class="px-2">
       <div class="d-flex justify-space-between">
-        <div class="d-flex align-center gap-1">
+        <div class="d-flex align-center gc-1">
           <v-icon :class="{ rotate: !open }"> mdi-chevron-down </v-icon>
           <span>
             {{ $st(title) }}

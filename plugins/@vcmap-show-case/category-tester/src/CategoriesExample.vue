@@ -36,8 +36,8 @@
         </v-dialog>
       </collection-component-provider>
     </v-container>
-    <div class="d-flex gap-2 px-2 pt-2 pb-1">
-      <div class="d-flex gap-2 w-full justify-end">
+    <div class="d-flex gc-2 px-2 pt-2 pb-1">
+      <div class="d-flex gc-2 w-full justify-end">
         <VcsFormButton @click="newCategory.dialog = true" variant="filled"
           >Request Category</VcsFormButton
         >

@@ -26,8 +26,8 @@
         class="mx-auto marginToTop px-1 rounded-b opacity-80 px-1"
         :height="40"
       >
-        <v-toolbar-items class="w-full">
-          <div class="d-flex align-center justify-space-between w-full">
+        <v-toolbar-items class="w-100">
+          <div class="d-flex align-center justify-space-between w-100">
             <VcsToolButton
               v-for="{ id, action } in orderedButtons"
               :key="id"

@@ -7,7 +7,7 @@
     ></VcsSplashScreen>
     <VcsNavbar />
     <VcsContainer :attribution-action="attributionAction" />
-    <v-footer v-if="smAndUp" app absolute height="22" class="d-flex gap-1 pa-0">
+    <v-footer v-if="smAndUp" app absolute height="22" class="d-flex gc-1 pa-0">
       <VcsPositionDisplay />
       <VcsTextPageFooter
         v-if="imprint"

@@ -326,4 +326,8 @@
     },
   };
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .z-index-99 {
+    z-index: 99;
+  }
+</style>

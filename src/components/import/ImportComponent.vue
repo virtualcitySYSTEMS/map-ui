@@ -8,7 +8,7 @@
       :multiple="multiple"
       :accept="fileTypes.join(',')"
     />
-    <div class="d-flex justify-end gap-1 mx-3 pt-2 pb-1">
+    <div class="d-flex justify-end gc-1 mx-3 pt-2 pb-1">
       <vcs-form-button @click="$emit('close')">
         {{ $t('components.cancel') }}
       </vcs-form-button>

@@ -5,7 +5,7 @@
         v-for="(row, idx) in item.rows"
         :key="idx"
         :cols="cols"
-        :class="{ 'w-full': item.colNr === 1, 'w-half': item.colNr !== 1 }"
+        :class="{ 'w-100': item.colNr === 1, 'w-50': item.colNr !== 1 }"
       >
         <v-list-item
           density="compact"

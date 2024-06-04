@@ -1,6 +1,6 @@
 <template>
   <span
-    class="d-flex gap-1 px-1"
+    class="d-flex gc-1 px-1"
     :class="{ 'vcs-position-display': positionDisplayAction.active }"
   >
     <VcsButton

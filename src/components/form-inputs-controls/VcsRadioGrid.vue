@@ -19,7 +19,7 @@
           :density="isDense ? 'compact' : undefined"
           v-bind="{ ...$attrs }"
         >
-          <div class="d-flex gap-1 px-2 pt-2 pb-1 justify-center">
+          <div class="d-flex gc-1 px-2 pt-2 pb-1 justify-center">
             <div v-for="(item, idx) in items" :key="idx">
               <div class="pt-1 pb-0" :class="$attrs.disabled ? 'disabled' : ''">
                 <slot

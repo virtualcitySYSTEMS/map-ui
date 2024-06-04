@@ -59,6 +59,9 @@
     right: 2px;
     bottom: 36px;
   }
+  .z-index-1 {
+    z-index: 1;
+  }
 </style>
 
 <script>

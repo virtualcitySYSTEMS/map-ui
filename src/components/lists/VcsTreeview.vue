@@ -53,6 +53,9 @@
       width: 16px;
     }
   }
+  .d-contents {
+    display: contents;
+  }
 </style>
 
 <script>

@@ -5,7 +5,7 @@
       class="v-expansion-panel-header px-2 v-expansion-panel-header--active"
     >
       <div class="d-flex justify-space-between">
-        <div class="d-flex align-center gap-1 pl-2">
+        <div class="d-flex align-center gc-1 pl-2">
           <span>
             {{ $st(title) }}
           </span>

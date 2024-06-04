@@ -24,7 +24,7 @@
                 />
               </v-col>
             </v-row>
-            <div class="d-flex gap-2 w-full justify-end">
+            <div class="d-flex gc-2 w-full justify-end">
               <VcsFormButton @click="addCollection" variant="filled"
                 >Add Collection</VcsFormButton
               >

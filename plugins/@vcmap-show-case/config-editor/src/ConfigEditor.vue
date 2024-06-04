@@ -3,7 +3,7 @@
     <VcsTextArea v-model="configString" v-if="!loading" />
     <v-progress-circular v-else />
 
-    <div class="d-flex gap-2 px-1 pt-2 pb-1 justify-end">
+    <div class="d-flex gc-2 px-1 pt-2 pb-1 justify-end">
       <VcsFormButton variant="filled" @click="replaceModule">
         Apply
       </VcsFormButton>

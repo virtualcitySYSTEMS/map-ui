@@ -224,7 +224,7 @@
               />
             </v-col>
           </v-row>
-          <v-row no-gutters class="gap-2">
+          <v-row no-gutters class="gc-2">
             <v-col>
               <VcsFormattedNumber
                 id="formattedNumber"
@@ -471,14 +471,14 @@
         </v-container>
       </template>
     </VcsFormSection>
-    <div class="d-flex gap-2 px-2 pt-2 pb-1">
-      <div class="d-flex gap-2">
+    <div class="d-flex gc-2 px-2 pt-2 pb-1">
+      <div class="d-flex gc-2">
         <VcsFormButton @click="validate()"> Val </VcsFormButton>
         <VcsFormButton @click="resetState()" icon="$vcsReturn">
           Reset
         </VcsFormButton>
       </div>
-      <div class="d-flex gap-2 w-full justify-end">
+      <div class="d-flex gc-2 w-full justify-end">
         <VcsFormButton
           variant="filled"
           @click="logState(state)"

@@ -1,11 +1,11 @@
 <template>
   <v-sheet>
     <VcsViewpointComponent v-model="viewpointOptions" />
-    <div class="d-flex gap-2 px-2 pt-2 pb-1">
-      <div class="d-flex gap-2 w-full justify-start">
+    <div class="d-flex gc-2 px-2 pt-2 pb-1">
+      <div class="d-flex gc-2 w-full justify-start">
         <VcsFormButton icon="$vcsReturn" @click="reset" />
       </div>
-      <div class="d-flex gap-2 w-full justify-end">
+      <div class="d-flex gc-2 w-full justify-end">
         <VcsFormButton type="submit" variant="filled" @click="log">
           Log ViewpointOptions
         </VcsFormButton>

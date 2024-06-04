@@ -41,8 +41,8 @@
         :height="40"
         dense
       >
-        <v-toolbar-items class="w-full">
-          <div class="d-flex align-center justify-space-between w-full">
+        <v-toolbar-items class="w-100">
+          <div class="d-flex align-center justify-space-between w-100">
             <VcsToolButton
               v-for="(item, index) in group.action.tools"
               :key="`${item.name}-${index}`"

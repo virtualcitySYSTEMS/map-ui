@@ -49,7 +49,7 @@
           <v-card>
             <v-card-title>Form fields</v-card-title>
             <v-card-actions>
-              <div class="d-flex gap-2">
+              <div class="d-flex gc-2">
                 <VcsFormButton
                   @click="toggle"
                   :disabled="disabled"

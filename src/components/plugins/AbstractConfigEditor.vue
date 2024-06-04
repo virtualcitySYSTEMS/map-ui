@@ -2,11 +2,11 @@
   <v-container class="pa-0">
     <v-form v-model="isValid" @submit.prevent="submit">
       <slot />
-      <div class="d-flex gap-2 px-2 pt-2 pb-1">
-        <div class="d-flex gap-2 w-full justify-start">
+      <div class="d-flex gc-2 px-2 pt-2 pb-1">
+        <div class="d-flex gc-2 w-100 justify-start">
           <VcsFormButton v-if="showReset" icon="$vcsReturn" @click="reset" />
         </div>
-        <div class="d-flex gap-2 w-full justify-end">
+        <div class="d-flex gc-2 w-100 justify-end">
           <VcsFormButton type="submit" variant="filled" :disabled="!isValid">
             {{ $st(submitButtonTitle) }}
           </VcsFormButton>

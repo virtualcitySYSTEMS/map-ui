@@ -10,7 +10,7 @@
         <v-radio-group
           ref="radioGroup"
           hide-details
-          class="w-full vcs-radio-group"
+          class="w-100 vcs-radio-group"
           :density="isDense ? 'compact' : undefined"
           :ripple="false"
           v-bind="{ ...$attrs }"
