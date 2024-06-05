@@ -12,7 +12,6 @@
           ref="textFieldRef"
           hide-details
           :hide-spin-buttons="!showSpinButtons"
-          :density="density"
           variant="outlined"
           :clearable="isClearable"
           clear-icon="$close"
@@ -27,19 +26,8 @@
           :class="{
             'py-1': !noPadding,
             'remove-outline': !isOutlined,
-            'CCCoutline--current': focus,
-            'CCCoutline--error': !!errorMessage,
-            'CCCinput--unit': !!unit,
-            'CCCinput--dense': isDense,
-            'CCCinput--not-dense': !isDense,
-            'CCCfile-border-bottom':
-              inputComponent === 'VFileInput' &&
-              !focus &&
-              !hover &&
-              !errorMessage,
           }"
         >
-          <!--          XXX we have suffix now-->
           <template #append-inner v-if="unit">
             <slot name="append-inner">{{ unit }}</slot>
           </template>
@@ -50,24 +38,15 @@
 </template>
 
 <style lang="scss" scoped>
-  .v-field__input {
-    //min-height: 22px;
-  }
   :deep(.v-field) {
     --v-field-padding-start: 8px;
     --v-field-padding-end: 8px;
   }
   .v-input--density-compact :deep(.v-field) {
-    --v-input-control-height: 16px;
+    --v-input-control-height: calc(var(--v-vcs-item-height) - 8px);
     --v-field-padding-bottom: 0px;
     --v-field-input-padding-top: 0px;
     --v-input-padding-top: 0px;
-  }
-  .v-input--density-comfortable :deep(.v-field) {
-    --v-input-control-height: 24px;
-    --v-field-padding-bottom: 4px; // default 8
-    --v-field-input-padding-top: 4px; // default 8
-    --v-input-padding-top: 4px;
   }
   :deep(.v-field--focused .v-field__outline *) {
     --v-field-border-width: 1px;
@@ -95,6 +74,10 @@
     color: rgb(var(--v-theme-primary));
     margin-left: -4px;
   }
+  // remove margin from prepended Icon
+  :deep(.v-input--horizontal .v-input__prepend) {
+    margin-inline-end: 4px;
+  }
   .primary--placeholder {
     :deep(input::placeholder) {
       color: rgb(var(--v-theme-primary));
@@ -106,107 +89,6 @@
       font-style: initial;
     }
   }
-  /*
-  .remove-outline {
-    :deep(fieldset) {
-      border-width: 0;
-      border-radius: 0;
-    }
-  }
-  .outline--current {
-    :deep(.v-input__slot fieldset) {
-      border-color: currentColor;
-      transition: border-color 0.5s ease;
-    }
-    :deep(.v-text-field__slot input) {
-      border-color: transparent;
-    }
-  }
-  .outline--error {
-    :deep(.v-input__slot fieldset),
-    :deep(.v-text-field__slot input) {
-      border-color: var(--v-error-base);
-    }
-  }
-  div[type='number'] {
-    :deep(.v-text-field__slot input) {
-      text-align: right;
-    }
-  }
-  .input--unit {
-    :deep(.v-text-field__slot input) {
-      text-align: right;
-      padding-right: 3px;
-    }
-    :deep(.v-input__append-inner) {
-      margin-top: 6px !important;
-      &:last-child {
-        border-bottom: 1px solid var(--v-base-base);
-        height: 24px;
-        margin-top: 0 !important;
-        align-items: center;
-      }
-    }
-  }
-  .input--unit.input--not-dense {
-    :deep(.v-input__append-inner) {
-      &:last-child {
-        height: 32px;
-        padding-top: 2px;
-      }
-    }
-  }
-  .input--dense {
-    :deep(.v-text-field__slot input) {
-      height: 24px;
-    }
-    :deep(.v-input__slot) {
-      padding: 0 4px !important;
-    }
-    :deep(fieldset) {
-      padding-left: 2px;
-    }
-  }
-  .input--not-dense {
-    :deep(.v-input__slot) {
-      padding: 0 8px !important;
-    }
-    :deep(fieldset) {
-      padding-left: 6px;
-    }
-  }
-  .file-border-bottom {
-    :deep(.v-file-input__text) {
-      border-bottom: 1px solid var(--v-base-base);
-      border-radius: 0;
-    }
-  }
-  .v-input {
-    :deep(input) {
-      height: 32px;
-      border-bottom: 1px solid var(--v-base-base);
-      border-radius: 0;
-    }
-    :deep(input::selection) {
-      background-color: var(--v-primary-base);
-    }
-    :deep(.v-text-field__prefix) {
-      padding-right: 8px;
-    }
-    :deep(v-text-field__suffix) {
-      padding-left: 4px;
-    }
-    :deep(.v-input__prepend-outer) {
-      margin-right: 4px;
-    }
-    :deep(.v-icon) {
-      font-size: 16px;
-    }
-    :deep(.v-text-field--rounded fieldset) {
-      border-radius: 2px;
-      border-color: var(--v-base-base);
-    }
-  }*/
 </style>
 
 <script>
@@ -217,9 +99,6 @@
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
-   * Provides two height options depending on "dense" property:
-   * - if dense is set true (default), height is 24 px
-   * - if dense is set false, height is 32 px
    * Provides VcsTooltip to
    * - show error messages on focus
    * - show tooltips, if supplied, when hovered over append-icon
@@ -230,7 +109,6 @@
    * @vue-prop {boolean}                                showSpinButtons - If true, spin buttons are displayed in number input fields. Overrides Vuetify hide-spin-buttons.
    * @vue-prop {boolean}                                noPadding - Padding is required for usage within rows. For standalone usage this prop removes class py-1.
    * @vue-computed {boolean}                            isClearable - Whether textfield is isClearable. Makes sure icon is only shown on focus, hover or error.
-   * @vue-computed {boolean}                            isDense - Whether size of textfield is dense.
    * @vue-computed {boolean}                            isOutlined - Textfield is outlined on either hover, focus or error, if not disabled.
    * @vue-computed {string | number}                    visibleValue - Returns the number input as string with unit, in case unit is provided.
    * @vue-computed {string}                             type - The input field type. If number input field is blurred and unit is provided, type changes to text field, so unit can be displayed in input field.
@@ -345,20 +223,12 @@
         focus.value = true;
       }
 
-      const density = computed(() => {
-        if (isDense.value) {
-          return 'compact';
-        }
-        return 'comfortable';
-      });
-
       return {
         hover,
         focus,
         inputComponent,
         isClearable,
         isDense,
-        density,
         isOutlined,
         visibleValue,
         type,

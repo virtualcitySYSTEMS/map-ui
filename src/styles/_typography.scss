@@ -16,17 +16,17 @@
   .tooltip,
   label,
   p {
-    font-size: $vcs-font-size;
+    font-size: var(--v-vcs-font-size);
     &:not(.v-icon) {
-      font-family: 'Titillium Web', sans-serif !important;
+      font-family: var(--v-vcs-font-family), sans-serif !important;
     }
   }
   h1 {
-    font-size: 16px;
+    font-size: calc(var(--v-vcs-font-size) + 3px);
   }
 
   h2 {
-    font-size: 14px;
+    font-size: calc(var(--v-vcs-font-size) + 1px);
   }
 
   h3 {
@@ -34,7 +34,7 @@
   }
 
   h4 {
-    font-size: 12px;
+    font-size: calc(var(--v-vcs-font-size) - 1px);
     font-weight: normal;
   }
 }

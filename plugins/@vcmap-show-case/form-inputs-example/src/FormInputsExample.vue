@@ -45,7 +45,6 @@
               <VcsTextField
                 id="conditionalInput"
                 clearable
-                :dense="dense"
                 :rules="[
                   conditionalTest(state.conditionalInput, state.selected),
                 ]"
@@ -85,7 +84,6 @@
           <v-row no-gutters>
             <v-col>
               <VcsTextField
-                :dense="dense"
                 v-model="state.initialTextInput"
                 :rules="[isValidText]"
                 :loading="state.initialTextInput === 'myInitialText'"
@@ -116,11 +114,9 @@
             <v-col>
               <VcsTextField
                 id="emailInput"
-                :dense="dense"
                 type="email"
                 :rules="[isValidEmail]"
                 v-model="state.email"
-                color="blue"
                 placeholder="Email address"
               />
             </v-col>
@@ -134,7 +130,6 @@
             <v-col>
               <VcsTextField
                 id="prependedInput"
-                :dense="dense"
                 prepend-icon="mdi-map-marker"
                 v-model="state.prependedInput"
                 label="text"
@@ -150,7 +145,6 @@
             <v-col>
               <VcsTextField
                 id="fileInput"
-                :dense="dense"
                 type="file"
                 multiple
                 v-model="state.files"
@@ -183,7 +177,6 @@
             <v-col>
               <VcsTextField
                 id="numberInput"
-                :dense="dense"
                 type="number"
                 step="1"
                 unit="cm"
@@ -261,7 +254,6 @@
             <v-col>
               <VcsTextField
                 id="coordinateX"
-                :dense="dense"
                 type="number"
                 step="10"
                 prefix="X"
@@ -272,7 +264,6 @@
             <v-col>
               <VcsTextField
                 id="coordinateY"
-                :dense="dense"
                 type="number"
                 step="10"
                 prefix="Y"
@@ -283,7 +274,6 @@
             <v-col>
               <VcsTextField
                 id="coordinateZ"
-                :dense="dense"
                 type="number"
                 step="10"
                 unit="cm"

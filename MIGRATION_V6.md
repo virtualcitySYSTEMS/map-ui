@@ -12,6 +12,26 @@
 - access to color scss variables changed, `var(--v-primary-base)` becomes `rgb(var(--v-theme-primary))` see:https://vuetifyjs.com/en/getting-started/upgrade-guide/#theme
 - `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
+- Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
+
+# Extended Theming
+
+Vuetify Theming can now be used to create custom css variables, see `vuetify.js` we will use this to configure the following
+themes
+
+- `vcs-font-size` To globally set the default fontsize. Allows customers to configure a map with larger fonts.
+- `vcs-font-family` Sets font Family
+- `vcs-item-height` Sets the root ItemHeight for our VcsComponents. The height of InputFields, Rows, ... is at 32px. This can be used to change that default Height
+
+To use these Variables they can be used in CSS with `var(--v-vcs-font-size)`
+Also CSS can be used to calculate Values `calc(var(--v-vcs-font-size) - 1px)`;
+For Development the darkTheme has a larger FontSize and a large ItemHeight;
+
+Todo:
+
+- Add Theming Support to `uiConfig`
+- Write documentation for Theming Support
+- Change DarkTheme `ItemHeight` and `FontSize` to default values before Merge into main
 
 # Typical Migrations
 
@@ -19,6 +39,7 @@
 - replace `::v-deep` with `:deep()` in `scss`.
 - replace old vcs utility css classes `border-1--primary`, `border-2--primary`, `user-select-none`, `d-contents`, `fade-in-100...`, `pos-...`, `w-full` --> `w-100`, `w-half` --> `w-50`,
   `h-...`, `w-...`, `slide-from...`, `-m...`, `z-index...`, `transition...`, `flip-vertical`, `rotate`, `gap...` --> `gc-`
+- check css, use provided css variables to calculate values for fonts and heights.
 
 # Troubleshooting & Solutions
 
@@ -39,7 +60,6 @@
 - fix crash if loading a window which has a child element which fails property validation
 - fix chip array input remove visualizations (remove something from the middle to see)
 - fix search result component.
-- change gap-2 to gc-2, see https://vuetifyjs.com/en/styles/spacing/#how-it-works
 
 - fix `ThemeChangerComponent.vue`
 - fix `VcsFormButtons` disabled color
@@ -47,7 +67,6 @@
 - fix `VcsButton` disabled State
 - refactor Specs using `spec helpers which mount vue` needed to switch to vue3 setup
 
-- cleanup `VcsTextField.vue`
 - cleanup styles, remove all styles not needed from `styles` folder
 
 ## Vue 3 Reactivity

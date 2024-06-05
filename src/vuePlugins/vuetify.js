@@ -37,6 +37,9 @@ export function createVcsThemes() {
         'hover-opacity': 0.16,
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
+        'vcs-item-height': '32px',
+        'vcs-font-size': '13px',
+        'vcs-font-family': 'Titillium Web',
       },
     },
     dark: {
@@ -60,6 +63,9 @@ export function createVcsThemes() {
       },
       variables: {
         'hover-opacity': 0.16,
+        'vcs-item-height': '40px',
+        'vcs-font-size': '15px',
+        'vcs-font-family': 'Titillium Web',
       },
     },
   };
@@ -100,6 +106,12 @@ export function createVcsVuetify(i18n) {
       VListItem: {
         density: 'compact',
         minHeight: 32,
+      },
+      VTextField: {
+        density: 'compact',
+      },
+      VFileInput: {
+        density: 'compact',
       },
     },
     defaultAssets: {
