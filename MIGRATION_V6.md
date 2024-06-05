@@ -33,6 +33,14 @@ Todo:
 - Write documentation for Theming Support
 - Change DarkTheme `ItemHeight` and `FontSize` to default values before Merge into main
 
+# Component Stories
+
+We now provide a Story framework to test and document components. See: https://histoire.dev/
+For each `dumb` component which do not have any interaction with the `vcsApp` or the `map` we need to write a story.
+For an example see: `story/components/button/VcsButton.story.vue`
+
+Story development can be done by calling `npm run story:dev`. This will start a development server at http://localhost:6006
+
 # Typical Migrations
 
 - update all `@input` `:value` and custom `emit('input')` in `v-model` components update to the [new syntax](https://v3-migration.vuejs.org/breaking-changes/v-model.html).
@@ -40,6 +48,7 @@ Todo:
 - replace old vcs utility css classes `border-1--primary`, `border-2--primary`, `user-select-none`, `d-contents`, `fade-in-100...`, `pos-...`, `w-full` --> `w-100`, `w-half` --> `w-50`,
   `h-...`, `w-...`, `slide-from...`, `-m...`, `z-index...`, `transition...`, `flip-vertical`, `rotate`, `gap...` --> `gc-`
 - check css, use provided css variables to calculate values for fonts and heights.
+- Write new story for the component.
 
 # Troubleshooting & Solutions
 

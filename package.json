@@ -19,7 +19,10 @@
     "lint": "npm run lint:js && npm run lint:prettier && npm run lint:types",
     "format": "prettier --write --list-different . && npm run lint:js -- --fix",
     "prepack": "node build/build.js && node build/buildTypes.js",
-    "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force"
+    "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
   },
   "repository": {
     "type": "git",
@@ -59,6 +62,7 @@
     "vuetify": "^3.6.8"
   },
   "devDependencies": {
+    "@histoire/plugin-vue": "^0.17.17",
     "@vcmap/rollup-plugin-vcs-ol": "^1.0.2",
     "@vcsuite/eslint-config": "^3.0.5",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -66,6 +70,7 @@
     "@vue/test-utils": "^2.4.6",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-vuetify": "^2.4.0",
+    "histoire": "^0.17.17",
     "jest-canvas-mock": "^2.5.2",
     "jsdoc": "^3.6.7",
     "jsdoc-plugin-intersection": "^1.0.4",
@@ -77,9 +82,9 @@
     "tar": "^6.1.14",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
+    "vite-plugin-vuetify": "^2.0.3",
     "vitest": "^1.6.0",
-    "vue-tsc": "^2.0.17",
-    "vite-plugin-vuetify": "^2.0.3"
+    "vue-tsc": "^2.0.17"
   },
   "stylelint": {
     "extends": "stylelint-config-standard",

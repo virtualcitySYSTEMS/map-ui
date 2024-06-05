@@ -87,6 +87,7 @@ bundle:
     - cd ..
     - npm run build
     - npm run build-preview
+    - npm run story:build
 
 version:
   <<: *after_build_definition
@@ -123,6 +124,7 @@ deployStaging:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: ['']
   script:
+    - mv .histoire/dist dist/story
     - /kaniko/executor --context dist/ --dockerfile build/staging/Dockerfile --destination $CI_REGISTRY_IMAGE/staging:$CI_COMMIT_REF_SLUG
   before_script:
     - mkdir -p /kaniko/.docker

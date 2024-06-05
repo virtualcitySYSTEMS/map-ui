@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite';
+import { HstVue } from '@histoire/plugin-vue';
 import commonViteConfig from './build/commonViteConfig.js';
 import getPluginProxies from './build/getPluginProxies.js';
 import { determineHostFromArgv } from './build/determineHost.js';
@@ -59,7 +60,20 @@ const configMain = defineConfig(async ({ mode }) => {
       proxy,
     },
     optimizeDeps: {
+      include: ['vuetify'],
       exclude: ['@vcsuite/check'],
+    },
+    histoire: {
+      plugins: [HstVue()],
+      setupFile: {
+        browser: './story/setup.js',
+      },
+      vite: {
+        base: './',
+        server: {
+          host: process.argv.includes('--host'),
+        },
+      },
     },
   };
 
