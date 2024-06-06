@@ -13,6 +13,7 @@
 - `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
 - Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
+- `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
 
 # Extended Theming
 
@@ -38,6 +39,7 @@ Todo:
 We now provide a Story framework to test and document components. See: https://histoire.dev/
 For each `dumb` component which do not have any interaction with the `vcsApp` or the `map` we need to write a story.
 For an example see: `story/components/button/VcsButton.story.vue`
+You can use story meta to wrap your component either in a `v-row`, `v-card` or `v-sheet`. See [StoryWrapper](./story/StoryWrapper.vue) and [checkbox story](./story/components/form-inputs-controls/VcsCheckbox.story.vue).
 
 Story development can be done by calling `npm run story:dev`. This will start a development server at http://localhost:6006
 
@@ -49,6 +51,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
   `h-...`, `w-...`, `slide-from...`, `-m...`, `z-index...`, `transition...`, `flip-vertical`, `rotate`, `gap...` --> `gc-`
 - check css, use provided css variables to calculate values for fonts and heights.
 - Write new story for the component.
+- replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
 
 # Troubleshooting & Solutions
 
@@ -62,6 +65,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | my action is not reactive anymore                                                                                              | actions need to be reactive, for changes to the action object to be tracked reactive(action) before                                                                                                                       |
 | ...                                                                                                                            | changing the state, action.active = true                                                                                                                                                                                  |
 | my component options are no longer part of lists                                                                               | with the change to Proxy objects, adding stuff to reactive arrays will add a _proxy_. You must use `toRaw` when checking if a value is included (typically with actions or other places where we dont check using `name`) |
+| my component used VcsTooltip to display error messages                                                                         | See [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.                                                                                      |
 
 # ToDos & Issues
 
@@ -77,6 +81,8 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - refactor Specs using `spec helpers which mount vue` needed to switch to vue3 setup
 
 - cleanup styles, remove all styles not needed from `styles` folder
+
+- remove `VcsTooltip.vue` and `form-inputs-controls/composables.js` (useErrorSync)
 
 ## Vue 3 Reactivity
 

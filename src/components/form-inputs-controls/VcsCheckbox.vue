@@ -1,112 +1,85 @@
 <template>
-  <VcsTooltip
-    :tooltip-position="tooltipPosition"
-    :tooltip="errorMessage"
-    color="error"
-    :max-width="200"
+  <v-checkbox
+    ref="checkbox"
+    :model-value="$attrs.value"
+    true-icon="$vcsCheckboxChecked"
+    false-icon="$vcsCheckbox"
+    indeterminate-icon="$vcsCheckboxIndeterminate"
+    v-bind="{ ...$attrs }"
   >
-    <template #activator="{ props }">
-      <span v-bind="props">
-        <v-checkbox
-          ref="checkbox"
-          :model-value="$attrs.value"
-          true-icon="$vcsCheckboxChecked"
-          false-icon="$vcsCheckbox"
-          class="vcs-checkbox"
-          :class="{ 'pl-1': !isDense }"
-          hide-details
-          indeterminate-icon="$vcsCheckboxIndeterminate"
-          :ripple="false"
-          v-bind="{ ...$attrs }"
-        >
-          <template #label>
-            <VcsLabel :html-for="$attrs.id" :dense="isDense">
-              <slot name="label" />
-              <span v-if="!$slots.label">{{ $st($attrs.label) }}</span>
-            </VcsLabel>
-          </template>
-        </v-checkbox>
-      </span>
+    <template #label>
+      <slot name="label" />
+      <template v-if="!$slots.label">{{ $st($attrs.label) }}</template>
     </template>
-  </VcsTooltip>
+    <template #message="{ message }">
+      <v-tooltip
+        ref="errorTooltip"
+        :activator="checkbox"
+        v-if="message"
+        :text="message"
+        content-class="bg-error"
+        :location="tooltipPosition"
+      />
+    </template>
+    <v-tooltip
+      v-if="tooltip && !errorTooltip"
+      :activator="checkbox"
+      :location="tooltipPosition"
+      :text="tooltip"
+    ></v-tooltip>
+  </v-checkbox>
 </template>
 <style lang="scss" scoped>
-  @import '../../styles/shades.scss';
-  .vcs-checkbox {
-    :deep(.v-input--selection-controls__input) {
-      margin: 0;
-      padding: 0;
-    }
-    :deep(label.v-label.error--text) {
-      animation: none;
-    }
-
-    :deep(.primary--text),
-    :deep(.v-label:not(.v-label--is-disabled)) {
-      &.theme--light {
-        color: map-get($shades, 'black') !important;
-        &.error--text {
-          color: var(--v-error-base) !important;
-        }
-      }
-      &.theme--dark {
-        color: map-get($shades, 'white') !important;
-        &.error--text {
-          color: var(--v-error-base) !important;
-        }
-      }
-    }
+  .v-input--density-compact :deep(.v-selection-control) {
+    --v-selection-control-size: calc(var(--v-vcs-item-height) - 8px);
+    --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
+    padding: 4px 0;
   }
-  .v-input--selection-controls {
-    margin: 0;
-    padding: 0;
+  // remove ripple effect
+  :deep(.v-selection-control__input::before) {
+    background-color: transparent;
+  }
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
   }
 </style>
 <script>
-  import { computed, ref } from 'vue';
-  import { VCheckbox } from 'vuetify/components';
-  import VcsLabel from './VcsLabel.vue';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
-  import { useErrorSync } from './composables.js';
+  import { ref } from 'vue';
+  import { VCheckbox, VTooltip } from 'vuetify/components';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
-   * Provides two height options depending on "dense" property:
-   * - if dense is set true (default), height is 24 px
-   * - if dense is set false, height is 32 px
-   * Provides VcsTooltip to show error messages
-   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * Provides VTooltip to show error messages
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip, see {@link https://vuetifyjs.com/en/api/v-tooltip/#props-location | vuetify tooltip}.
    * @vue-prop {string} label - Label to be displayed, will be translated.
    * @vue-data {slot} [#label] - slot to pass html for Checkbox label. Overrides label passed as prop.
    */
   export default {
     name: 'VcsCheckbox',
-    inheritAttrs: false,
+    inheritAttrs: true,
     components: {
-      VcsTooltip,
-      VcsLabel,
+      VTooltip,
       VCheckbox,
     },
     props: {
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
       tooltipPosition: {
         type: String,
         default: 'right',
       },
     },
-    setup(props, { attrs }) {
+    setup() {
       const checkbox = ref();
-
-      const errorMessage = useErrorSync(checkbox);
-      const isDense = computed(() => attrs.dense !== false);
+      const errorTooltip = ref();
 
       return {
         checkbox,
-        errorMessage,
-        isDense,
+        errorTooltip,
       };
-    },
-    model: {
-      event: 'change',
     },
   };
 </script>

@@ -113,6 +113,10 @@ export function createVcsVuetify(i18n) {
       VFileInput: {
         density: 'compact',
       },
+      VCheckbox: {
+        density: 'compact',
+        ripple: false,
+      },
     },
     defaultAssets: {
       font: {

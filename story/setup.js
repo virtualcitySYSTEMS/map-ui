@@ -5,6 +5,7 @@ import StoryWrapper from './StoryWrapper.vue';
 import { createVcsVuetify } from '../src/vuePlugins/vuetify.js';
 import { createSafeI18n, createVueI18n } from '../src/vuePlugins/i18n.js';
 import '../src/styles/main.scss';
+import '../public/assets/@mdi/font/css/materialdesignicons.min.css';
 
 let i18nInstance;
 function getI18n() {

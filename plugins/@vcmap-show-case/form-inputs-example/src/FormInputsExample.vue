@@ -320,7 +320,7 @@
             <VcsCheckbox
               id="checkboxInput"
               label="CheckboxInput"
-              :dense="dense"
+              tooltip="This is a checkbox for terms of usage"
               :rules="[
                 () => state.checkboxInput || 'Please accept our terms of use',
               ]"

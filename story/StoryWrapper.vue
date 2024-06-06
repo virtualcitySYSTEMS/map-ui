@@ -1,6 +1,41 @@
 <script setup>
-  import { VApp } from 'vuetify/components';
+  import {
+    VApp,
+    VContainer,
+    VRow,
+    VCol,
+    VCard,
+    VSheet,
+  } from 'vuetify/components';
   import { computed } from 'vue';
+
+  /**
+   * @typedef {Object} SizeProps
+   * @property {number|string} [width=320]
+   * @property {number|string} height
+   */
+
+  /**
+   * @typedef {Object & SizeProps} RowWrapper
+   * @property {'row'} type
+   * @property {number} [cols=6] - number of columns
+   */
+
+  /**
+   * @typedef {Object & SizeProps} CardWrapper
+   * @property {'card'} type
+   * @property {string} title - card title
+   * @property {string} subtitle - card subtitle
+   */
+
+  /**
+   * @typedef {Object & SizeProps} SheetWrapper
+   * @property {'sheet'} type
+   */
+
+  /**
+   * @type {RowWrapper|CardWrapper|SheetWrapper|boolean} Wrapper
+   */
 
   const props = defineProps({
     story: {
@@ -22,11 +57,41 @@
     }
     return 'div';
   });
+
+  const style = computed(() => ({
+    'border-style': 'dotted',
+    'border-width': '2px',
+    ...(props.story.meta?.wrapper.style & {}),
+    width: props.story.meta?.wrapper?.width || '320px',
+    height: props.story.meta?.wrapper?.height,
+  }));
 </script>
 
 <template>
   <component :is="wrapperComponent" class="custom-wrapper">
-    <slot />
+    <v-container v-if="story.meta?.wrapper?.type === 'row'" :style="style">
+      <v-row>
+        <v-col :cols="story.meta?.wrapper?.cols || 6">
+          <slot />
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-card
+      v-else-if="story.meta?.wrapper?.type === 'card'"
+      :title="story.meta?.wrapper?.title"
+      :subtitle="story.meta?.wrapper?.subtitle"
+      :style="style"
+    >
+      <slot />
+    </v-card>
+    <v-sheet v-else-if="story.meta?.wrapper?.type === 'sheet'" :style="style">
+      <div class="overflow-x-hidden">
+        <slot />
+      </div>
+    </v-sheet>
+    <template v-else>
+      <slot />
+    </template>
   </component>
 </template>
 
