@@ -283,7 +283,6 @@
         <v-row no-gutters>
           <v-col>
             <VcsRadio
-              :dense="dense"
               :items="[
                 ...selectOptions,
                 {
@@ -294,7 +293,7 @@
               ]"
               v-model="state.selected"
               :rules="[(v) => v !== 'D' || 'D is not allowed']"
-              row
+              inline
             />
           </v-col>
         </v-row>

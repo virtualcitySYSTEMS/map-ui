@@ -107,6 +107,14 @@ export function createVcsVuetify(i18n) {
         density: 'compact',
         minHeight: 32,
       },
+      VRadio: {
+        density: 'compact',
+        ripple: false,
+      },
+      VRadioGroup: {
+        density: 'compact',
+        ripple: false,
+      },
       VTextField: {
         density: 'compact',
       },

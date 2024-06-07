@@ -79,6 +79,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - fix `VcsToolButton` disabled state
 - fix `VcsButton` disabled State
 - refactor Specs using `spec helpers which mount vue` needed to switch to vue3 setup
+- VRadioGroup: `row` prop has been changed to `inline`. Should edit all occurrences.
 
 - cleanup styles, remove all styles not needed from `styles` folder
 

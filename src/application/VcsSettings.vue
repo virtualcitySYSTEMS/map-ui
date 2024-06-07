@@ -43,13 +43,12 @@
       </v-col>
       <v-col>
         <VcsRadio
-          dense
           :items="[
             { label: 'settings.theme.light', value: false },
             { label: 'settings.theme.dark', value: true },
           ]"
           v-model="themeMode"
-          row
+          inline
         />
       </v-col>
     </v-row>

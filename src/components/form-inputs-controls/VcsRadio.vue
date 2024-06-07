@@ -1,97 +1,57 @@
 <template>
-  <VcsTooltip
-    :tooltip-position="tooltipPosition"
-    :tooltip="errorMessage"
-    color="error"
-    :max-width="200"
+  <v-radio-group
+    ref="radioGroup"
+    :model-value="$attrs.value"
+    v-bind="{ ...$attrs }"
   >
-    <template #activator="{ props }">
-      <span v-bind="props">
-        <v-radio-group
-          ref="radioGroup"
-          hide-details
-          class="w-100 vcs-radio-group"
-          :density="isDense ? 'compact' : undefined"
-          :ripple="false"
-          v-bind="{ ...$attrs }"
-        >
-          <v-radio
-            v-for="(item, idx) in items"
-            :id="`radio-${idx}`"
-            :key="`radio-${idx}`"
-            :ripple="false"
-            :value="item.value ?? item"
-            :disabled="item.disabled ?? false"
-            class="ma-0"
-            :class="isDense ? 'vcs-radio-dense' : 'vcs-radio'"
-          >
-            <template #label>
-              <VcsLabel :html-for="`radio-${idx}`" :dense="isDense">
-                {{ $st(item.label ?? item) }}
-              </VcsLabel>
-            </template>
-          </v-radio>
-        </v-radio-group>
-      </span>
+    <v-radio
+      v-for="(item, idx) in items"
+      :id="`radio-${idx}`"
+      :key="`radio-${idx}`"
+      :value="item.value ?? item"
+      :disabled="item.disabled ?? false"
+      :color="item?.color ?? undefined"
+      :error="!!errorTooltip"
+    >
+      <template #label>{{ $st(item.label ?? item) }}</template>
+    </v-radio>
+    <template #message="{ message }">
+      <v-tooltip
+        ref="errorTooltip"
+        :activator="radioGroup"
+        :model-value="true"
+        v-if="message"
+        :text="message"
+        content-class="bg-error"
+        :location="tooltipPosition"
+      />
     </template>
-  </VcsTooltip>
+    <v-tooltip
+      v-if="tooltip && !errorTooltip"
+      :activator="radioGroup"
+      :location="tooltipPosition"
+      :text="tooltip"
+    ></v-tooltip>
+  </v-radio-group>
 </template>
 <style lang="scss" scoped>
-  @import '../../styles/vcsFont.scss';
-  @import '../../styles/shades.scss';
-  .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child) {
-    margin-bottom: 0;
+  .v-input--density-compact :deep(.v-selection-control) {
+    --v-selection-control-size: calc(var(--v-vcs-item-height) - 8px);
+    --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
+    padding: 4px;
   }
-  .v-input {
-    &.vcs-radio-group {
-      :deep(*) {
-        margin-top: 0;
-        padding-top: 0;
-      }
-      :deep(label.v-label),
-      :deep(.v-icon.v-icon) {
-        font-size: $vcs-font-size;
-        color: inherit;
-        &.theme--light {
-          color: map-get($shades, 'black') !important;
-          &.error--text {
-            color: var(--v-error-base) !important;
-          }
-        }
-        &.theme--dark {
-          color: map-get($shades, 'white') !important;
-          &.error--text {
-            color: var(--v-error-base) !important;
-          }
-        }
-      }
-      :deep(.v-radio:not(:last-child):not(:only-child)) {
-        margin-bottom: 0;
-      }
-      :deep(.v-input--selection-controls__input) {
-        margin: 0;
-      }
-      :deep(label.v-label.error--text) {
-        animation: none;
-      }
-    }
+  // remove ripple effect
+  :deep(.v-selection-control__input::before) {
+    background-color: transparent;
   }
-  .vcs-radio {
-    height: 40px;
-    align-items: center;
-    padding-left: 4px;
-  }
-  .vcs-radio-dense {
-    height: 32px;
-    align-items: center;
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
   }
 </style>
 <script>
-  import { computed, ref } from 'vue';
-  import { VRadio, VRadioGroup } from 'vuetify/components';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
-  import VcsLabel from './VcsLabel.vue';
-  import { useErrorSync } from './composables.js';
+  import { ref } from 'vue';
+  import { VRadio, VRadioGroup, VTooltip } from 'vuetify/components';
 
   /**
    * @typedef {Object} VcsRadioItem
@@ -104,46 +64,41 @@
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-radio-group/ |vuetify v-radio-group} using
    * {@link https://vuetifyjs.com/en/api/v-radio/ |vuetify v-radio}.
-   * Provides two height options depending on "dense" property:
-   * - if dense is set true (default), height is 24 px
-   * - if dense is set false, height is 32 px
-   * Provides VcsTooltip to show error messages
-   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * Provides VTooltip to show passed messages and error messages.
    * @vue-prop {Array<string|VcsRadioItem>} items - A list of options. If strings are provided, the string is used as label and value.
+   * @vue-prop {string} tooltip - A message to be displayed when there is no error.
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip, see {@link https://vuetifyjs.com/en/api/v-tooltip/#props-location | vuetify tooltip}.
    */
   export default {
     name: 'VcsRadio',
     inheritAttrs: false,
     components: {
-      VcsTooltip,
-      VcsLabel,
+      VTooltip,
       VRadioGroup,
       VRadio,
     },
     props: {
-      tooltipPosition: {
-        type: String,
-        default: 'right',
-      },
       items: {
         type: Array,
         required: true,
       },
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
+      tooltipPosition: {
+        type: String,
+        default: 'right',
+      },
     },
-    setup(props, { attrs }) {
+    setup() {
       const radioGroup = ref();
-
-      const errorMessage = useErrorSync(radioGroup);
-      const isDense = computed(() => attrs.dense !== false);
+      const errorTooltip = ref();
 
       return {
         radioGroup,
-        errorMessage,
-        isDense,
+        errorTooltip,
       };
-    },
-    model: {
-      event: 'change',
     },
   };
 </script>
