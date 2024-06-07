@@ -21,7 +21,7 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col class="w-max-half">
-              <VcsLabel html-for="selectInput" :dense="dense">
+              <VcsLabel html-for="selectInput">
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
@@ -37,7 +37,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="conditionalInput" :dense="dense">
+              <VcsLabel html-for="conditionalInput">
                 ConditionalInput
               </VcsLabel>
             </v-col>
@@ -55,9 +55,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col class="w-max-half">
-              <VcsLabel html-for="arrayInput" :dense="dense">
-                Array Input
-              </VcsLabel>
+              <VcsLabel html-for="arrayInput"> Array Input </VcsLabel>
             </v-col>
           </v-row>
           <v-row no-gutters>
@@ -107,9 +105,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="emailInput" :dense="dense" required>
-                Email
-              </VcsLabel>
+              <VcsLabel html-for="emailInput" required> Email </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
@@ -123,9 +119,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="prependedInput" :dense="dense">
-                String With Icon
-              </VcsLabel>
+              <VcsLabel html-for="prependedInput"> String With Icon </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
@@ -138,9 +132,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="fileInput" :dense="dense">
-                File input
-              </VcsLabel>
+              <VcsLabel html-for="fileInput"> File input </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
@@ -153,7 +145,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="dateInput" :dense="dense"> Date </VcsLabel>
+              <VcsLabel html-for="dateInput"> Date </VcsLabel>
             </v-col>
             <v-col>
               <VcsDatePicker id="dateInput" v-model="state.dateInput" />
@@ -170,9 +162,7 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="numberInput" :dense="dense">
-                NumberInput
-              </VcsLabel>
+              <VcsLabel html-for="numberInput"> NumberInput </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
@@ -187,9 +177,7 @@
           </v-row>
           <v-row no-gutters class="align-center">
             <v-col>
-              <VcsLabel html-for="sliderInput" :dense="dense">
-                Slider
-              </VcsLabel>
+              <VcsLabel html-for="sliderInput"> Slider </VcsLabel>
             </v-col>
             <v-col>
               <VcsSlider
@@ -203,7 +191,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="formattedNumber" :dense="dense">
+              <VcsLabel html-for="formattedNumber">
                 VcsFormattedNumber
               </VcsLabel>
             </v-col>
@@ -312,7 +300,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <VcsLabel :dense="dense"> Text </VcsLabel>
+            <VcsLabel> Text </VcsLabel>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -354,13 +342,7 @@
         <v-container class="py-0 px-1">
           <v-row>
             <v-col cols="1">
-              <VcsLabel
-                html-for="textInput"
-                :dense="dense"
-                class="text-caption"
-              >
-                1
-              </VcsLabel>
+              <VcsLabel html-for="textInput" class="text-caption"> 1 </VcsLabel>
             </v-col>
             <v-col>
               <VcsSelect
@@ -443,7 +425,7 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col class="w-max-half">
-              <VcsLabel html-for="selectInput2" :dense="dense" :disabled="true">
+              <VcsLabel html-for="selectInput2" disabled>
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>

@@ -7,7 +7,7 @@
     <v-container class="py-0 px-2">
       <v-row no-gutters v-if="!multi">
         <v-col>
-          <VcsLabel html-for="name" required dense>
+          <VcsLabel html-for="name" required>
             {{ $t('categoryTester.fooEditor.name') }}
           </VcsLabel>
         </v-col>
@@ -17,7 +17,7 @@
       </v-row>
       <v-row no-gutters v-if="!multi">
         <v-col>
-          <VcsLabel html-for="title" dense>
+          <VcsLabel html-for="title">
             {{ $t('categoryTester.fooEditor.title') }}
           </VcsLabel>
         </v-col>
@@ -32,7 +32,7 @@
       </v-row>
       <v-row no-gutters>
         <v-col>
-          <VcsLabel html-for="random" dense>
+          <VcsLabel html-for="random">
             {{ $t('categoryTester.fooEditor.random') }}
           </VcsLabel>
         </v-col>

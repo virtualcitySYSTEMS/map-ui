@@ -11,7 +11,7 @@
           <v-container>
             <v-row no-gutters>
               <v-col>
-                <VcsLabel html-for="selectInput" dense>
+                <VcsLabel html-for="selectInput">
                   {{ $t('collectionManagerExample.select') }}
                 </VcsLabel>
               </v-col>

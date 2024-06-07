@@ -2,7 +2,7 @@
   <v-container class="py-0 px-2">
     <v-row no-gutters>
       <v-col>
-        <VcsLabel html-for="title" dense>
+        <VcsLabel html-for="title">
           {{ $t('categoryTester.title') }}
         </VcsLabel>
       </v-col>
@@ -12,7 +12,7 @@
     </v-row>
     <v-row no-gutters v-for="key in keys" :key="key">
       <v-col>
-        <VcsLabel :html-for="key" dense>
+        <VcsLabel :html-for="key">
           {{ $st(`categoryTester.${key}`) }}
         </VcsLabel>
       </v-col>
