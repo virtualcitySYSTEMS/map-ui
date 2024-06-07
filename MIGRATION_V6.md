@@ -26,6 +26,12 @@ themes
 
 To use these Variables they can be used in CSS with `var(--v-vcs-font-size)`
 Also CSS can be used to calculate Values `calc(var(--v-vcs-font-size) - 1px)`;
+For the item height a helper function is exported, which can be used to set size properties in html:
+
+```vue
+<v-btn :size="useItemHeight().value - 4"></v-btn>
+```
+
 For Development the darkTheme has a larger FontSize and a large ItemHeight;
 
 Todo:
@@ -48,7 +54,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - update all `@input` `:value` and custom `emit('input')` in `v-model` components update to the [new syntax](https://v3-migration.vuejs.org/breaking-changes/v-model.html).
 - replace `::v-deep` with `:deep()` in `scss`.
 - replace old vcs utility css classes `border-1--primary`, `border-2--primary`, `user-select-none`, `d-contents`, `fade-in-100...`, `pos-...`, `w-full` --> `w-100`, `w-half` --> `w-50`,
-  `h-...`, `w-...`, `slide-from...`, `-m...`, `z-index...`, `transition...`, `flip-vertical`, `rotate`, `gap...` --> `gc-`
+  `h-...`, `w-...`, `slide-from...`, `-m...`, `z-index...`, `transition...`, `flip-vertical`, `rotate`, `gap...` --> `gc-`, `text--disabled` --> `text-disabled`
 - check css, use provided css variables to calculate values for fonts and heights.
 - Write new story for the component.
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.

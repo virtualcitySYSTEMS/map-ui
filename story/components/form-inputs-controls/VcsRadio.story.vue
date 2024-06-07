@@ -1,13 +1,13 @@
 <script setup>
   import { getStoryState } from '../../setup.js';
-  import GlobalControls from '../../GlobalControls.vue';
+  import GlobalControls from '../../controls/GlobalControls.vue';
   import VcsRadio from '../../../src/components/form-inputs-controls/VcsRadio.vue';
 
   const state = getStoryState();
 </script>
 
 <template>
-  <Story title="VcsRadio" :meta="{ wrapper: { type: 'row' } }">
+  <Story title="VcsRadio" :meta="{ wrapper: { ...state.wrapper } }">
     <VcsRadio
       :items="[
         { label: 'Option 1 (string)', value: '1' },

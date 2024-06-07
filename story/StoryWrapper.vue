@@ -5,37 +5,10 @@
     VRow,
     VCol,
     VCard,
+    VCardText,
     VSheet,
   } from 'vuetify/components';
-  import { computed } from 'vue';
-
-  /**
-   * @typedef {Object} SizeProps
-   * @property {number|string} [width=320]
-   * @property {number|string} height
-   */
-
-  /**
-   * @typedef {Object & SizeProps} RowWrapper
-   * @property {'row'} type
-   * @property {number} [cols=6] - number of columns
-   */
-
-  /**
-   * @typedef {Object & SizeProps} CardWrapper
-   * @property {'card'} type
-   * @property {string} title - card title
-   * @property {string} subtitle - card subtitle
-   */
-
-  /**
-   * @typedef {Object & SizeProps} SheetWrapper
-   * @property {'sheet'} type
-   */
-
-  /**
-   * @type {RowWrapper|CardWrapper|SheetWrapper|boolean} Wrapper
-   */
+  import { computed, onMounted, ref } from 'vue';
 
   const props = defineProps({
     story: {
@@ -58,37 +31,53 @@
     return 'div';
   });
 
-  const style = computed(() => ({
-    'border-style': 'dotted',
-    'border-width': '2px',
-    ...(props.story.meta?.wrapper.style & {}),
-    width: props.story.meta?.wrapper?.width || '320px',
-    height: props.story.meta?.wrapper?.height,
-  }));
+  const storyWrapper = ref();
+  const isStory = ref(false);
+  onMounted(() => {
+    isStory.value =
+      storyWrapper.value.$el.parentElement?.parentElement?.parentElement
+        ?.className === 'histoire-generic-render-story __histoire-render-story';
+  });
 </script>
 
 <template>
-  <component :is="wrapperComponent" class="custom-wrapper">
-    <v-container v-if="story.meta?.wrapper?.type === 'row'" :style="style">
-      <v-row>
-        <v-col :cols="story.meta?.wrapper?.cols || 6">
+  <component :is="wrapperComponent" class="custom-wrapper" ref="storyWrapper">
+    <template v-if="isStory && story.meta?.wrapper">
+      <v-sheet
+        v-if="story.meta?.wrapper?.type === 'window'"
+        :width="story.meta?.wrapper?.width || 320"
+        :height="story.meta?.wrapper?.height || 200"
+        :style="story.meta?.wrapper?.style"
+        class="wrapper-border elevation-3 d-flex flex-column"
+      >
+        <div class="overflow-x-hidden h-100">
           <slot />
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-card
-      v-else-if="story.meta?.wrapper?.type === 'card'"
-      :title="story.meta?.wrapper?.title"
-      :subtitle="story.meta?.wrapper?.subtitle"
-      :style="style"
-    >
-      <slot />
-    </v-card>
-    <v-sheet v-else-if="story.meta?.wrapper?.type === 'sheet'" :style="style">
-      <div class="overflow-x-hidden">
-        <slot />
-      </div>
-    </v-sheet>
+        </div>
+      </v-sheet>
+      <v-container
+        v-else-if="story.meta?.wrapper?.type === 'row'"
+        class="wrapper-border"
+        :style="story.meta?.wrapper?.style"
+      >
+        <v-row>
+          <v-col :cols="story.meta?.wrapper?.cols || 6">
+            <slot />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-card
+        v-else-if="story.meta?.wrapper?.type === 'card'"
+        :title="story.meta?.wrapper?.title"
+        :subtitle="story.meta?.wrapper?.subtitle"
+        :width="story.meta?.wrapper?.width"
+        :height="story.meta?.wrapper?.height"
+        :style="story.meta?.wrapper?.style"
+      >
+        <v-card-text>
+          <slot />
+        </v-card-text>
+      </v-card>
+    </template>
     <template v-else>
       <slot />
     </template>
@@ -96,13 +85,17 @@
 </template>
 
 <style scoped lang="scss">
-  :deep(.v-application--wrap) {
+  :deep(.v-application__wrap) {
     min-height: fit-content;
   }
   .align-wrapper {
     position: absolute;
     right: 0;
     margin-right: 4px !important;
+  }
+  .wrapper-border {
+    border-style: dotted;
+    border-width: 2px;
   }
 
   // XXX very ugly hack due to: https://github.com/histoire-dev/histoire/issues/585

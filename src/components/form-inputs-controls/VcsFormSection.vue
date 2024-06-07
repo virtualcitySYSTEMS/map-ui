@@ -2,7 +2,7 @@
   <section class="vcs-form-section">
     <slot name="header" :heading="heading" :actions="actions">
       <div
-        class="vcs-form-section-header d-flex base-lighten-3"
+        class="vcs-form-section-header d-flex bg-base-lighten-3"
         :aria-expanded="open"
       >
         <div class="d-flex justify-space-between w-100">
@@ -12,18 +12,18 @@
               dense
               variant="plain"
               icon
-              size="small"
+              :size="useItemHeight().value - 4"
               :disabled="disabled"
               elevation="0"
               @click="open = !open"
               v-if="expandable"
               :aria-expanded="open"
             >
-              <v-icon>{{
+              <v-icon :size="useItemHeight().value - 8">{{
                 open ? 'mdi-chevron-down' : 'mdi-chevron-right'
               }}</v-icon>
             </v-btn>
-            <strong :class="{ 'text--disabled': disabled }">{{
+            <strong :class="{ 'text-disabled': disabled }">{{
               $st(heading)
             }}</strong>
           </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </slot>
-    <VcsHelp :text="helpText" :show="showHelp" class="base-lighten-4">
+    <VcsHelp :text="helpText" :show="showHelp" class="bg-base-lighten-4">
       <slot name="help" />
     </VcsHelp>
     <article class="section-content" v-if="showContent">
@@ -48,6 +48,7 @@
 <script>
   import { computed, reactive, ref } from 'vue';
   import { VBtn, VIcon } from 'vuetify/components';
+  import { useItemHeight } from '../../vuePlugins/vuetify.js';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 
@@ -138,15 +139,15 @@
         showContent,
         showHelp,
         actions,
+        useItemHeight,
       };
     },
   };
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/shades.scss';
   .vcs-form-section-header {
-    height: 40px;
+    height: calc(var(--v-vcs-item-height) + 8px);
   }
   .v-alert--text:before {
     background-color: transparent;

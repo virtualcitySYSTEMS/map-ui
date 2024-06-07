@@ -1,6 +1,7 @@
 <script setup>
   import { computed } from 'vue';
-  import Icons from '../src/components/icons/+all.js';
+  import Icons from '../../src/components/icons/+all.js';
+  import WrapperControls from './WrapperControls.vue';
 
   const model = defineModel({ type: Object, default: () => ({}) });
 
@@ -32,6 +33,7 @@
 </script>
 <template>
   <div>
+    <h1 class="ma-2">Global App Controls</h1>
     <HstSelect
       v-model="model.icon"
       :options="iconValues"
@@ -57,5 +59,8 @@
         { label: 'Courier New', value: 'Courier New' },
       ]"
     />
+    <WrapperControls v-if="model.wrapper" v-model="model.wrapper" />
+    <h1 class="ma-2">Attrs Controls</h1>
+    <slot><span class="ma-2">No controls defined</span></slot>
   </div>
 </template>

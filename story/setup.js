@@ -39,7 +39,7 @@ function createVariableComputed(vuetify, variable) {
   });
 }
 
-export function getStoryState(defaultIcon = '') {
+export function getStoryState(defaultIcon = '', wrapperType = 'window') {
   const vuetify = getVuetify();
   const darkMode = computed({
     get() {
@@ -67,6 +67,14 @@ export function getStoryState(defaultIcon = '') {
 
   return reactive({
     icon: defaultIcon,
+    wrapper: {
+      type: wrapperType,
+      cols: 6,
+      title: 'Card Title',
+      subtitle: 'Card Subtitle',
+      height: 200,
+      width: 320,
+    },
     darkMode,
     primaryColor,
     itemHeight,
@@ -75,11 +83,9 @@ export function getStoryState(defaultIcon = '') {
   });
 }
 
-export const setupVue3 = defineSetupVue3(({ app, story, addWrapper }) => {
+export const setupVue3 = defineSetupVue3(({ app, addWrapper }) => {
   const i18n = getI18n();
   const vuetify = getVuetify();
-  story.layout.type = 'single';
-  story.layout.iframe = true;
   app.use(i18n);
   app.use(createSafeI18n());
   app.use(vuetify);

@@ -191,6 +191,7 @@ export {
   createVcsVuetify,
   getColorByKey,
   getDefaultPrimaryColor,
+  useItemHeight,
 } from './src/vuePlugins/vuetify.js';
 export {
   downloadURI,

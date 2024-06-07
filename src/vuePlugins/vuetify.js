@@ -1,7 +1,8 @@
-import { createVuetify } from 'vuetify';
+import { createVuetify, useTheme } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import 'vuetify/styles';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
+import { computed } from 'vue';
 import Icons from '../components/icons/+all.js';
 
 /**
@@ -176,4 +177,17 @@ export function getColorByKey(app, value, variant) {
     key = `${value}-${variant}`;
   }
   return app.vuetify.theme.current.value.colors[key];
+}
+
+/**
+ * returns the itemHeight as a number
+ * @returns {import("vue").ComputedRef<number>}
+ */
+export function useItemHeight() {
+  const theme = useTheme();
+  return computed(() => {
+    const itemHeight = theme.current.value.variables['vcs-item-height'] ?? 32;
+    // get rid of `px`
+    return Number.parseFloat(itemHeight);
+  });
 }

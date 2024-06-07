@@ -1,21 +1,20 @@
 <script setup>
   import { ref } from 'vue';
   import { getStoryState } from '../../setup.js';
-  import GlobalControls from '../../GlobalControls.vue';
   import VcsCheckbox from '../../../src/components/form-inputs-controls/VcsCheckbox.vue';
+  import GlobalControls from '../../controls/GlobalControls.vue';
 
   const state = getStoryState();
   const label = ref('Some Label');
 </script>
 
 <template>
-  <Story title="VcsCheckbox" :meta="{ wrapper: { type: 'row' } }">
+  <Story title="VcsCheckbox" :meta="{ wrapper: { ...state.wrapper } }">
     <VcsCheckbox :label="label" />
     <template #controls>
-      <GlobalControls v-model="state"></GlobalControls>
-      <HstText v-model="label" title="Label">
-        <template #actions></template>
-      </HstText>
+      <GlobalControls v-model="state">
+        <HstText v-model="label" title="Label"></HstText>
+      </GlobalControls>
     </template>
   </Story>
 </template>
