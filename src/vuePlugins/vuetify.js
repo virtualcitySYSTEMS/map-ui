@@ -126,6 +126,9 @@ export function createVcsVuetify(i18n) {
         density: 'compact',
         ripple: false,
       },
+      VSelect: {
+        density: 'compact',
+      },
     },
     defaultAssets: {
       font: {

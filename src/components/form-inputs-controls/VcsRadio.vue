@@ -6,14 +6,18 @@
   >
     <v-radio
       v-for="(item, idx) in items"
-      :id="`radio-${idx}`"
-      :key="`radio-${idx}`"
+      :id="`${$.uid}-${idx}`"
+      :key="`${$.uid}-${idx}`"
       :value="item.value ?? item"
       :disabled="item.disabled ?? false"
       :color="item?.color ?? undefined"
       :error="!!errorTooltip"
     >
-      <template #label>{{ $st(item.label ?? item) }}</template>
+      <template #label>
+        <span :html-for="`${$.uid}-${idx}`">{{
+          $st(item.label ?? item)
+        }}</span></template
+      >
     </v-radio>
     <template #message="{ message }">
       <v-tooltip
