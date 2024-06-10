@@ -37,7 +37,7 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
  * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be an URL or HTMLElement.
  * @property {Array<import("../actions/actionHelper.js").VcsAction>} actions
  * @property {Array<TreeViewItem>} children
- * @property {Array<TreeViewItem>} visibleChildren - computed property
+ * @property {Array<TreeViewItem>} [visibleChildren] - computed property
  * @property {function(PointerEvent):Promise<void>} clicked - A callback called once the item is clicked.
  */
 
@@ -463,9 +463,10 @@ class ContentTreeItem {
       icon: this._icon,
       actions: this._actions,
       children: this._children,
-      visibleChildren: computed(() =>
-        this._children.value.filter((c) => c.visible),
-      ),
+      visibleChildren: computed(() => {
+        const visibleChildren = this._children.value.filter((c) => c.visible);
+        return visibleChildren.length > 0 ? visibleChildren : undefined;
+      }),
       clicked,
     });
   }

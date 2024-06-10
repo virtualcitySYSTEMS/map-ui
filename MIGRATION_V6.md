@@ -14,6 +14,7 @@
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
 - Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
 - `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
+- Legacy style `legend` handling was completely removed. Use the new `properties.legend`.
 
 # Extended Theming
 
@@ -72,6 +73,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | ...                                                                                                                            | changing the state, action.active = true                                                                                                                                                                                  |
 | my component options are no longer part of lists                                                                               | with the change to Proxy objects, adding stuff to reactive arrays will add a _proxy_. You must use `toRaw` when checking if a value is included (typically with actions or other places where we dont check using `name`) |
 | my component used VcsTooltip to display error messages                                                                         | See [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.                                                                                      |
+| what happened to `var(--v-base-xxx)`                                                                                           | you must use `rgb(var(--v-theme-base-lighten-2))` or similar. prefix with theme                                                                                                                                           |
 
 # ToDos & Issues
 

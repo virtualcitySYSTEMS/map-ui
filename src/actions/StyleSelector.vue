@@ -13,30 +13,12 @@
         </v-list-item-title>
       </v-list-item>
     </v-list>
-    <v-list v-if="currentStyleLegend.length > 0">
-      <v-list-item
-        v-for="(entry, index) in currentStyleLegend"
-        :key="`style-legend-${index}`"
-        density="compact"
-      >
-        <template #prepend>
-          <v-chip :color="entry.color" />
-        </template>
-        {{ $st(entry.title) }}
-      </v-list-item>
-    </v-list>
   </v-sheet>
 </template>
 
 <script>
   import { computed, inject, onUnmounted, ref } from 'vue';
-  import {
-    VChip,
-    VList,
-    VListItem,
-    VListItemTitle,
-    VSheet,
-  } from 'vuetify/components';
+  import { VList, VListItem, VListItemTitle, VSheet } from 'vuetify/components';
 
   /**
    * @description Modal listing available styles.
@@ -51,7 +33,6 @@
       VList,
       VListItem,
       VListItemTitle,
-      VChip,
     },
     props: {
       availableStyles: {
@@ -69,16 +50,12 @@
       /** @type {import("@vcmap/core").FeatureLayer} */
       const layer = app.layers.getByKey(props.layerName);
       const currentStyleName = ref(layer.style.name || layer.defaultStyle.name);
-      const currentStyleLegend = ref([]);
       const defaultStyle = layer.defaultStyle.name;
 
-      function setStyle(styleItem) {
+      function setStyle() {
         currentStyleName.value = layer.style.name;
-        if (styleItem.legend) {
-          currentStyleLegend.value = styleItem.legend;
-        }
       }
-      setStyle(layer.style);
+      setStyle();
       // TODO error handling if layer is missing or not a feature layer
       const styleChangedListener =
         layer.styleChanged.addEventListener(setStyle);
@@ -120,7 +97,6 @@
 
       return {
         currentStyleName,
-        currentStyleLegend,
         items,
         select,
       };

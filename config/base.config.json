@@ -694,7 +694,7 @@
       "activeOnStartup": false,
       "allowPicking": false,
       "properties": {
-        "title": "WFS Layer (next to Groningen)",
+        "title": "WFS Layer (next to Groningen in the Netherlands)",
         "featureInfo": "tableAll"
       }
     },
@@ -966,6 +966,7 @@
       "name": "building.texturedBuildings",
       "layerName": "buildings",
       "type": "LayerContentTreeItem",
+      "tooltip": "Textured buildings",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",

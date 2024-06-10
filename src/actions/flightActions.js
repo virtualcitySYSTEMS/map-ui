@@ -141,7 +141,7 @@ export function createFastAction(app, instance, direction) {
     player?.pause();
   }
 
-  const action = {
+  const action = reactive({
     name: `fast-${direction}`,
     icon,
     title: `flight.${direction}FastTooltip`,
@@ -158,7 +158,7 @@ export function createFastAction(app, instance, direction) {
         }
       },
     },
-  };
+  });
 
   const playerChangedListener = app.flights.playerChanged.addEventListener(
     (activePlayer) => {
@@ -245,14 +245,14 @@ export function setupFlightListItemPlayer(app, instance, actions) {
     );
   }
 
-  const stopAction = {
+  const stopAction = reactive({
     name: 'stop',
     icon: 'mdi-square',
     title: 'flight.stopTooltip',
     callback: () => {
       player?.stop();
     },
-  };
+  });
 
   const playAction = reactive({
     name: 'play',
@@ -308,7 +308,7 @@ export function setupFlightListItemPlayer(app, instance, actions) {
 export function createZoomToFlightAction(app, instance) {
   let flightVis;
 
-  const action = {
+  const action = reactive({
     name: 'components.flight.zoom',
     title: 'components.flight.zoom',
     disabled: !instance.isValid(),
@@ -318,7 +318,7 @@ export function createZoomToFlightAction(app, instance) {
       }
       await flightVis.zoomToExtent();
     },
-  };
+  });
   const listener = instance.anchorsChanged.addEventListener(() => {
     action.disabled = !instance.isValid();
   });
@@ -390,7 +390,7 @@ export function createExportFlightAction(instance, isPathExport = false) {
     ? 'components.flight.exportPath'
     : 'components.flight.export';
 
-  const action = {
+  const action = reactive({
     name,
     title: name,
     disabled: !instance.isValid(),
@@ -403,7 +403,7 @@ export function createExportFlightAction(instance, isPathExport = false) {
         }.json`,
       );
     },
-  };
+  });
 
   const destroy = instance.anchorsChanged.addEventListener(() => {
     action.disabled = !instance.isValid();

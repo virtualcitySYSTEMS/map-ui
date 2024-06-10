@@ -41,7 +41,9 @@
       function getWithVisibleChildren(item) {
         return [
           item.name,
-          ...item.visibleChildren.map((c) => getWithVisibleChildren(c)).flat(),
+          ...(item.visibleChildren
+            ?.map((c) => getWithVisibleChildren(c))
+            ?.flat() ?? []),
         ];
       }
 

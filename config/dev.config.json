@@ -511,12 +511,14 @@
     {
       "name": "flight",
       "flightName": "FlightExampleBerlin",
-      "type": "FlightContentTreeItem"
+      "type": "FlightContentTreeItem",
+      "title": "this flight has a very long name. You can find the rest in the tooltip"
     },
     {
       "name": "flight2",
       "flightName": "FlightExampleBerlin2",
-      "type": "FlightContentTreeItem"
+      "type": "FlightContentTreeItem",
+      "tooltip": "This is a flight. Its flight 2, actually."
     },
     {
       "name": "geojson",

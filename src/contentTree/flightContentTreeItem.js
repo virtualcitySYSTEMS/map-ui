@@ -1,4 +1,5 @@
 import { CesiumMap } from '@vcmap/core';
+import { reactive } from 'vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
@@ -71,16 +72,16 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
     /** @type {import("@vcmap/core").FlightPlayer|undefined} */
     let player;
 
-    const stopAction = {
+    const stopAction = reactive({
       name: 'stop',
       icon: 'mdi-square',
       title: 'flight.stopTooltip',
       callback: () => {
         player?.stop();
       },
-    };
+    });
 
-    const playAction = {
+    const playAction = reactive({
       name: 'play',
       icon: 'mdi-play',
       title: 'flight.playTooltip',
@@ -125,7 +126,7 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
           }
         }
       },
-    };
+    });
 
     this.addAction(playAction, 12);
 

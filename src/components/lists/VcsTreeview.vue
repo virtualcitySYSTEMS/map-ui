@@ -8,19 +8,21 @@
     <v-treeview
       class="vcs-treeview"
       v-bind="{ ...$props, ...$attrs }"
-      expand-icon="mdi-chevron-down"
       item-value="name"
+      :item-props="true"
       :search="search"
       :filter="handleFilter"
+      :selectable="false"
+      :activatable="false"
     >
-      <template #label="{ item }">
+      <template #item="{ props: item }">
         <VcsTreeviewLeaf
+          @click.stop="item.clicked && !item.disabled && item.clicked($event)"
           :item="item"
-          :class="[item.clickable ? 'cursor-pointer' : '']"
-          @click.native="
-            item.clickable && !item.disabled && item.clicked($event)
-          "
         />
+      </template>
+      <template #title="{ item }">
+        {{ $st(item.title || item.name) }}
       </template>
     </v-treeview>
   </div>
@@ -28,18 +30,20 @@
 <style lang="scss" scoped>
   :deep(.vcs-treeview) {
     // Root Level Entries should be 40px high
-    > .v-treeview-node > .v-treeview-node__root {
-      min-height: 40px;
+    > .v-list-item,
+    > .v-list-group > .v-list-item {
+      min-height: calc(var(--v-vcs-item-height) + 8px) !important;
     }
     // Border around root nodes with children included
-    > .v-treeview-node:not(:last-child) {
-      border-bottom: 1px solid var(--v-base-lighten2);
+    > .v-list-item:not(:last-child),
+    > .v-list-group:not(:last-child) {
+      border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
     }
     // Only Group Entries have a bold font
-    .v-treeview-node__root
-      button
-      + .v-treeview-node__content
-      .v-treeview-node__label {
+    > .v-list-group
+      > .v-list-item
+      > .v-list-item__content
+      > .v-list-item-title {
       font-weight: 700 !important;
     }
     // remove ripple effect from expand icon
@@ -53,6 +57,11 @@
       width: 16px;
     }
   }
+  // hide active class
+  :deep(.v-list-item__overlay) {
+    display: none;
+  }
+
   .d-contents {
     display: contents;
   }
@@ -61,8 +70,8 @@
 <script>
   import { getCurrentInstance, ref } from 'vue';
   import { VTreeview } from 'vuetify/labs/VTreeview';
-  import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
+  import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
@@ -74,8 +83,8 @@
   export default {
     name: 'VcsTreeview',
     components: {
-      VcsTreeviewSearchbar,
       VcsTreeviewLeaf,
+      VcsTreeviewSearchbar,
       VTreeview,
     },
     props: {

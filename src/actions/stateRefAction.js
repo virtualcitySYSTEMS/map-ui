@@ -1,4 +1,4 @@
-import { watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { check } from '@vcsuite/check';
 
 /**
@@ -32,11 +32,11 @@ export function createStateRefAction(name, stateRef, callback) {
   check(callback, Function);
 
   const currentState = stateRef.value;
-  const action = {
+  const action = reactive({
     name,
     icon: stateIconMap[currentState],
     callback,
-  };
+  });
 
   const destroy = watch(stateRef, () => {
     action.icon = stateIconMap[stateRef.value];
