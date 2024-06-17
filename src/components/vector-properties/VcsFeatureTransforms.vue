@@ -7,6 +7,7 @@
       >
         <v-col>
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             placeholder="0"
             prefix="X"
@@ -17,6 +18,7 @@
         </v-col>
         <v-col>
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             placeholder="0"
             prefix="Y"
@@ -27,6 +29,7 @@
         </v-col>
         <v-col>
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             placeholder="0"
             prefix="Z"
@@ -58,6 +61,7 @@
       <v-row no-gutters v-if="transformationMode === TransformationMode.ROTATE">
         <v-col cols="3">
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             v-model.number="xValue"
             placeholder="0"

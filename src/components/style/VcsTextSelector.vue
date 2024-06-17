@@ -29,6 +29,7 @@
         </v-col>
         <v-col cols="2">
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             unit="px"
             v-model="fontSize"
@@ -70,6 +71,7 @@
         </v-col>
         <v-col cols="3">
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             v-model.number="selectedOffsetX"
             tooltip-position="top"
@@ -80,6 +82,7 @@
         </v-col>
         <v-col cols="3">
           <VcsTextField
+            :hide-spin-buttons="true"
             type="number"
             v-model.number="selectedOffsetY"
             tooltip-position="top"

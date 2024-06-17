@@ -52,8 +52,8 @@
             <VcsTextField
               v-if="animate"
               id="duration"
-              dense
               clearable
+              :hide-spin-buttons="true"
               type="number"
               :min="1"
               unit="s"
@@ -111,12 +111,12 @@
             </v-col>
             <v-col>
               <VcsTextField
-                dense
                 :min="0"
                 :step="100"
                 prefix="d"
                 unit="m"
                 :decimals="2"
+                :hide-spin-buttons="true"
                 type="number"
                 v-model.number="distance"
                 :disabled="editAction.active"
@@ -138,7 +138,7 @@
               <v-col cols="3">
                 <VcsTextField
                   :id="key"
-                  dense
+                  :hide-spin-buttons="true"
                   type="number"
                   unit="°"
                   v-model.number="hpr[key].value"

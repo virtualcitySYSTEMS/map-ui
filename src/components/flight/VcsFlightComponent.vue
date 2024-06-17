@@ -70,6 +70,7 @@
             <VcsTextField
               id="duration"
               v-model.number="duration"
+              :hide-spin-buttons="true"
               type="number"
               unit="s"
               step="1"

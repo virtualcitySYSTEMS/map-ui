@@ -66,6 +66,7 @@
           <v-col cols="3">
             <VcsTextField
               :id="`style-shape-${input.text}`"
+              :hide-spin-buttons="true"
               type="number"
               :unit="input.unit || ''"
               v-model.number="input.value.value"
@@ -84,7 +85,6 @@
                     'components.validation.allowedRange',
                   )}: ${input.range.join(' - ')}`,
               ]"
-              :show-spin-buttons="true"
             />
           </v-col>
         </v-row>
@@ -99,6 +99,7 @@
         <v-col cols="3">
           <VcsTextField
             id="style-shape-scale"
+            :hide-spin-buttons="true"
             type="number"
             v-model.number="selectedScale"
             placeholder="1"

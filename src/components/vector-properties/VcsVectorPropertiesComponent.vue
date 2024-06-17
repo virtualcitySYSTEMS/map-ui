@@ -40,8 +40,8 @@
         <v-col>
           <VcsTextField
             id="vp-height-above-ground"
-            dense
             v-model.number="heightAboveGround"
+            :hide-spin-buttons="true"
             type="number"
             unit="m"
             :placeholder="'heightAboveGround' in value ? '0' : ''"
@@ -60,8 +60,8 @@
         <v-col>
           <VcsTextField
             id="vp-ground-level"
-            dense
             v-model.number="groundLevel"
+            :hide-spin-buttons="true"
             type="number"
             unit="m"
             :placeholder="'groundLevel' in value ? '0' : ''"
@@ -83,8 +83,8 @@
           <v-row no-gutters>
             <v-col v-for="(nearFar, index) in scaleByDistance" :key="index">
               <VcsTextField
-                dense
                 v-model.number="nearFar.value"
+                :hide-spin-buttons="true"
                 type="number"
                 :unit="index % 2 === 0 ? 'm' : ''"
                 :disabled="!hasScaleByDistance"
@@ -116,9 +116,9 @@
         </v-col>
         <v-col v-for="(distance, index) in eyeOffset" :key="index" cols="2">
           <VcsTextField
-            dense
             v-model.number="distance.value"
             unit="m"
+            :hide-spin-buttons="true"
             type="number"
             :disabled="!hasEyeOffset"
             :prefix="dimensionsUpperCase[index]"
@@ -210,8 +210,8 @@
         <v-col>
           <VcsTextField
             id="vp-extruded-height"
-            dense
             v-model.number="extrudedHeight"
+            :hide-spin-buttons="true"
             type="number"
             unit="m"
             :placeholder="'extrudedHeight' in value ? '0' : ''"
@@ -231,8 +231,8 @@
         <v-col>
           <VcsTextField
             id="vp-storeys-above"
-            dense
             v-model.number="storeysAboveGround"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="'storeysAboveGround' in value ? '0' : ''"
             clearable
@@ -291,8 +291,8 @@
         <v-col>
           <VcsTextField
             id="vp-skirt"
-            dense
             v-model.number="skirt"
+            :hide-spin-buttons="true"
             type="number"
             unit="m"
             :placeholder="'skirt' in value ? '0' : ''"
@@ -312,8 +312,8 @@
         <v-col>
           <VcsTextField
             id="vp-storeys-below"
-            dense
             v-model.number="storeysBelowGround"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="'storeysBelowGround' in value ? '0' : ''"
             clearable
@@ -385,8 +385,8 @@
         </v-col>
         <v-col v-for="(dimension, key) in modelScale" :key="key">
           <VcsTextField
-            dense
             v-model.number="dimension.value"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="`modelScale${key}` in value ? '1' : ''"
             :prefix="key"
@@ -402,8 +402,8 @@
         </v-col>
         <v-col>
           <VcsTextField
-            dense
             v-model.number="modelHeading"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="'modelHeading' in value ? '0' : ''"
             unit="°"
@@ -419,8 +419,8 @@
         </v-col>
         <v-col>
           <VcsTextField
-            dense
             v-model.number="modelPitch"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="'modelPitch' in value ? '0' : ''"
             unit="°"
@@ -434,8 +434,8 @@
         </v-col>
         <v-col>
           <VcsTextField
-            dense
             v-model.number="modelRoll"
+            :hide-spin-buttons="true"
             type="number"
             :placeholder="'modelRoll' in value ? '0' : ''"
             unit="°"

@@ -15,6 +15,9 @@
 - Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
 - `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
 - Legacy style `legend` handling was completely removed. Use the new `properties.legend`.
+- VcsTextField
+  - `showSpinButtons` has been removed, this is now the default behaviour, can be changed with the vuetify `hideSpinButtons` api
+  - added `tooltip` to show a tooltip on hover over the element
 
 # Extended Theming
 
@@ -59,6 +62,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - check css, use provided css variables to calculate values for fonts and heights.
 - Write new story for the component.
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
+- Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
 
 # Troubleshooting & Solutions
 

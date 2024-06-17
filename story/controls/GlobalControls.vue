@@ -59,6 +59,7 @@
         { label: 'Courier New', value: 'Courier New' },
       ]"
     />
+    <HstJson title="v-bind" v-model="model.bind" />
     <WrapperControls v-if="model.wrapper" v-model="model.wrapper" />
     <h1 class="ma-2">Attrs Controls</h1>
     <slot><span class="ma-2">No controls defined</span></slot>

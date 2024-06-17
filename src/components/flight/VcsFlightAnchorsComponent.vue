@@ -27,6 +27,7 @@
           <VcsTextField
             v-if="showDuration(index)"
             v-model.number="item.duration"
+            :hide-spin-buttons="true"
             type="number"
             unit="s"
             step="1"

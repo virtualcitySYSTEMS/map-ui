@@ -4,7 +4,7 @@
     <v-col v-for="(_, idx) in coordinate" :key="`${prefixes[idx]}-coordinate`">
       <VcsTextField
         :id="`${prefixes[idx]}-coordinate`"
-        dense
+        :hide-spin-buttons="true"
         type="number"
         :min="getRangeFromExtent(idx, extent)?.[0]"
         :max="getRangeFromExtent(idx, extent)?.[1]"

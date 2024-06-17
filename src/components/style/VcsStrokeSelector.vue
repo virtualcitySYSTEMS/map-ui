@@ -11,6 +11,7 @@
           <VcsTextField
             id="draw-stroke-width"
             v-model.number="width"
+            :hide-spin-buttons="true"
             type="number"
             unit="px"
             :disabled="!value"

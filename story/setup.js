@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { toggleDark } from 'histoire/client';
 import { defineSetupVue3 } from '@histoire/plugin-vue';
 import StoryWrapper from './StoryWrapper.vue';
@@ -65,6 +65,17 @@ export function getStoryState(defaultIcon = '', wrapperType = 'window') {
   const fontSize = createVariableComputed(vuetify, 'vcs-font-size');
   const fontFamily = createVariableComputed(vuetify, 'vcs-font-family');
 
+  const bindRef = ref({});
+
+  const bind = computed({
+    get() {
+      return bindRef.value;
+    },
+    set(value) {
+      bindRef.value = value;
+    },
+  });
+
   return reactive({
     icon: defaultIcon,
     wrapper: {
@@ -80,6 +91,7 @@ export function getStoryState(defaultIcon = '', wrapperType = 'window') {
     itemHeight,
     fontSize,
     fontFamily,
+    bind,
   });
 }
 
