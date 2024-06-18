@@ -8,7 +8,7 @@ import { is } from '@vcsuite/check';
 export function removeListenersFromAttrs(attrs) {
   return Object.fromEntries(
     Object.entries(attrs).filter(
-      ([key, value]) => !key.startsWith('on') && is(value, Function),
+      ([key, value]) => !(key.startsWith('on') && is(value, Function)),
     ),
   );
 }

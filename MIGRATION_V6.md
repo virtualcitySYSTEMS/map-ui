@@ -62,6 +62,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - check css, use provided css variables to calculate values for fonts and heights.
 - Write new story for the component.
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
+- Make sure you set `:hide-details=false` when using `VcsTooltip` inside your component. This will ensure that the message slot is available and can be used for displaying the error tooltip.
 - Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
 
 # Troubleshooting & Solutions

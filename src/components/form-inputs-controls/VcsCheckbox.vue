@@ -5,6 +5,7 @@
     true-icon="$vcsCheckboxChecked"
     false-icon="$vcsCheckbox"
     indeterminate-icon="$vcsCheckboxIndeterminate"
+    :hide-details="false"
     v-bind="{ ...$attrs }"
   >
     <template #label>

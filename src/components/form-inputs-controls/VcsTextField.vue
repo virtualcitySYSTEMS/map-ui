@@ -6,6 +6,7 @@
     variant="outlined"
     clear-icon="$close"
     v-model="visibleValue"
+    :hide-details="false"
     :rules="rules"
     class="primary--placeholder"
     :class="{

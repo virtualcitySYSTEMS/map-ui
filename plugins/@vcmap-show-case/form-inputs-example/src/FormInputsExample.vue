@@ -63,7 +63,6 @@
               <VcsChipArrayInput
                 id="arrayInput"
                 type="number"
-                :dense="dense"
                 v-model="state.arrayInput"
                 :rules="[arrayTest]"
               />
@@ -73,7 +72,6 @@
             <v-col>
               <VcsChipArrayInput
                 id="arrayInput"
-                :dense="dense"
                 v-model="state.arrayInputString"
                 column
               />
