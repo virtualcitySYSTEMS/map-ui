@@ -144,6 +144,12 @@ const messages = {
       export: 'Flug exportieren',
       exportPath: 'Flugpfad exportieren',
     },
+    splashScreen: {
+      name: 'Splash Screen',
+    },
+    customScreen: {
+      name: 'Benutzerdefinierter Screen',
+    },
     viewpoint: {
       name: 'Name (ID)',
       title: 'Titel',

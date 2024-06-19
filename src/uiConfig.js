@@ -17,6 +17,32 @@ import { ref } from 'vue';
  */
 
 /**
+ * @typedef {Object} SplashScreen
+ * @property {string|undefined} [title]
+ * @property {string} [icon]
+ * @property {string} [content]
+ * @property {string} [name]
+ * @property {string} [checkBoxText]
+ * @property {string} [buttonTitle]
+ * @property {boolean} [menuEntry]
+ * @property {boolean} [acceptInput]
+ * @property {Object} [position]
+ * @property {string} [position.width]
+ * @property {string} [position.height]
+ * @property {string} [position.maxHeight]
+ * @property {string} [position.maxWidth]
+ */
+
+/**
+ * @typedef {Object} CustomScreen
+ * @property {string|undefined} [title]
+ * @property {string} [icon]
+ * @property {string} [content]
+ * @property {string} [name]
+ * @property {import("./manager/window/windowManager.js").WindowPositionOptions} [windowPosition]
+ */
+
+/**
  * @typedef {Object} UiConfigObject
  * @property {string} [logo] - the company logo to display. this will override any and all css overrides.
  * @property {string} [mobileLogo] - an alternative logo to display in mobile view
@@ -27,6 +53,8 @@ import { ref } from 'vue';
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
  * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer. Default title is 'footer.imprint.title'.
  * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer. Default title is 'footer.dataProtection.title'.
+ * @property {SplashScreen} [splashScreen] - an option splashScreen, will show a splash Screen on Map Load.
+ * @property {CustomScreen} [customScreen] - an option customScreen, will show a Custom Menu Point that opens a window with custom content.
  * @property {string} [favicon] - the favicon to set
  * @property {string} [headerTitle] - the title to display in the tab of the browser
  * @property {boolean} [showLocator] - an optional flag whether to show the Locator in the map.

@@ -1,5 +1,10 @@
 <template>
   <v-container class="fill-height pa-0" absolute fluid>
+    <VcsSplashScreen
+      v-if="splashScreen"
+      :text-page="splashScreen"
+      :window-id="'splashScreen'"
+    ></VcsSplashScreen>
     <VcsNavbar />
     <VcsContainer :attribution-action="attributionAction" />
     <v-footer
@@ -68,6 +73,10 @@
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
+  import VcsSplashScreen, {
+    createSplashScreenAction,
+  } from './VcsSplashScreen.vue';
+  import VcsCustomScreen from './VcsCustomScreen.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
@@ -254,6 +263,103 @@
     };
   }
 
+  /**
+   * This helper function will add a customScreen action button to the apps NavbarManager MENU location.
+   * @param {import("../vcsUiApp.js").default} app
+   * @returns {function():void}
+   */
+  function setupCustomScreen(app) {
+    function setupCustomScreenAction() {
+      const { customScreen } = app.uiConfig.config.value;
+      const { action: customScreenAction, destroy: customScreenDestroy } =
+        createToggleAction(
+          {
+            name: customScreen.name || 'components.customScreen.name',
+            icon: customScreen.icon || 'mdi-information',
+            title: customScreen.title,
+          },
+          {
+            id: 'customScreenId',
+            component: VcsCustomScreen,
+            state: {
+              headerIcon: customScreen.icon,
+              headerTitle: customScreen.name,
+            },
+            slot: WindowSlot.DETACHED,
+            position: customScreen.windowPosition,
+            props: customScreen,
+          },
+          app.windowManager,
+          vcsAppSymbol,
+        );
+      if (app.navbarManager.has('customScreenToggle')) {
+        app.navbarManager.remove('customScreenToggle');
+      }
+      app.navbarManager.add(
+        {
+          id: 'customScreenToggle',
+          action: customScreenAction,
+        },
+        vcsAppSymbol,
+        ButtonLocation.MENU,
+      );
+      return () => {
+        customScreenDestroy();
+      };
+    }
+    let customScreen;
+    const stopCustomScreenWatcher = watch(
+      () => app.uiConfig.config.value.customScreen,
+      (newCustomScreen) => {
+        if (newCustomScreen) {
+          customScreen = setupCustomScreenAction();
+        }
+      },
+      { immediate: true },
+    );
+    return () => {
+      if (customScreen) {
+        customScreen();
+      }
+      stopCustomScreenWatcher();
+    };
+  }
+  /**
+   * This helper function will add a Splash Screen action button to the apps NavbarManager MENU location.
+   * @param {import("../vcsUiApp.js").default} app
+   */
+
+  function setupSplashScreen(app) {
+    function setupSplashScreenAction() {
+      const { splashScreen } = app.uiConfig.config.value;
+      const splashScreenAction = createSplashScreenAction({
+        name: splashScreen.name || 'components.splashScreen.name',
+        icon: splashScreen.icon || 'mdi-alert-box',
+        title: splashScreen.title,
+      });
+      if (app.navbarManager.has('splashScreenToggle')) {
+        app.navbarManager.remove('splashScreenToggle');
+      }
+      app.navbarManager.add(
+        {
+          id: 'splashScreenToggle',
+          action: splashScreenAction,
+        },
+        vcsAppSymbol,
+        ButtonLocation.MENU,
+      );
+    }
+
+    return watch(
+      () => app.uiConfig.config.value.splashScreen,
+      (newSplashScreen) => {
+        if (newSplashScreen) {
+          setupSplashScreenAction();
+        }
+      },
+      { immediate: true },
+    );
+  }
   /**
    * This helper function will add a settings action button to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
@@ -507,6 +613,7 @@
       VcsPositionDisplay,
       VcsAttributionsFooter,
       VcsTextPageFooter,
+      VcsSplashScreen,
       VcsNavbar,
       VContainer,
       VFooter,
@@ -521,10 +628,11 @@
       /** @type {import("../vcsUiApp.js").default} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
-
       const mapNavbarListener = setupMapNavbar(app);
       const legendDestroy = setupLegendWindow(app);
       const settingsDestroy = setupSettingsWindow(app);
+      const stopCustomScreen = setupCustomScreen(app);
+      const stopSplashScreen = setupSplashScreen(app);
       setupHelpButton(app);
       const destroyComponentsWindow = setupCategoryManagerWindow(app);
       const destroyThemingListener = setupUiConfigTheming(
@@ -546,6 +654,8 @@
         mapNavbarListener();
         legendDestroy();
         settingsDestroy();
+        stopCustomScreen();
+        stopSplashScreen();
         destroyComponentsWindow();
         destroyThemingListener();
         destroyAttributions();
@@ -574,6 +684,20 @@
               title: 'footer.dataProtection.title',
               tooltip: 'footer.dataProtection.tooltip',
               ...app.uiConfig.config.value.dataProtection,
+            };
+          }
+          return undefined;
+        }),
+        splashScreen: computed(() => {
+          if (app.uiConfig.config.value.splashScreen) {
+            return {
+              title: 'components.splashScreen.name',
+              tooltip: 'components.splashScreen.tooltip',
+              position: {
+                width: '800px',
+                height: '400px',
+              },
+              ...app.uiConfig.config.value.splashScreen,
             };
           }
           return undefined;
