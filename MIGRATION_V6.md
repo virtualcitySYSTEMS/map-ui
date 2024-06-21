@@ -18,6 +18,7 @@
 - VcsTextField
   - `showSpinButtons` has been removed, this is now the default behaviour, can be changed with the vuetify `hideSpinButtons` api
   - added `tooltip` to show a tooltip on hover over the element
+- `VcsRadioGrid.vue` is removed. Use `VcsRadio` with properties `inline`, `labelPosition="top"` and `class="d-flex justify-center"` instead.
 
 # Extended Theming
 
@@ -64,6 +65,8 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
 - Make sure you set `:hide-details=false` when using `VcsTooltip` inside your component. This will ensure that the message slot is available and can be used for displaying the error tooltip.
 - Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
+- Remove `customClasses`. In vue3 class can be passed to a child element by `:class="$attrs.class"`
+- replace `<VcsRadioGrid>` with `<VcsRadio inline labelPosition="top" class="d-flex justify-center">`
 
 # Troubleshooting & Solutions
 
@@ -97,6 +100,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - cleanup styles, remove all styles not needed from `styles` folder
 
 - remove `VcsTooltip.vue` and `form-inputs-controls/composables.js` (useErrorSync)
+- remove all customClasses props and replace with `:class="$attrs.class"` on child elements
 
 ## Vue 3 Reactivity
 

@@ -24,16 +24,16 @@
     </div>
     <v-divider />
     <v-container class="px-1 pt-1 pb-0">
-      <VcsRadioGrid
+      <VcsRadio
         v-model="selectedImage"
         :items="currentItems"
         :disabled="!value"
         item-value="src"
       >
-        <template #label="{ src }" v-if="selectedType === ImageType.SHAPE">
-          <v-icon size="24">{{ src }}</v-icon>
+        <template #top-label="{ item }" v-if="selectedType === ImageType.SHAPE">
+          <v-icon size="24">{{ item.src }}</v-icon>
         </template>
-      </VcsRadioGrid>
+      </VcsRadio>
       <div v-if="selectedType === ImageType.ICON">
         <v-row no-gutters>
           <v-col>
@@ -142,7 +142,7 @@
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
-  import VcsRadioGrid from '../form-inputs-controls/VcsRadioGrid.vue';
+  import VcsRadio from '../form-inputs-controls/VcsRadio.vue';
   import VcsFillMenu from './VcsFillMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
   import { useSelectedKey, between } from './composables.js';
@@ -767,7 +767,7 @@
       VcsTextField,
       VcsFillMenu,
       VcsStrokeMenu,
-      VcsRadioGrid,
+      VcsRadio,
       VcsSlider,
     },
     props: {

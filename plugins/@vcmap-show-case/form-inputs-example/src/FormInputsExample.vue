@@ -297,7 +297,44 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <VcsLabel> Text </VcsLabel>
+            <VcsLabel> Radio with img label </VcsLabel>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <VcsRadio
+              v-model="state.selected"
+              :items="[
+                { value: 'AAAAAAAA', src: 'mdi-circle-outline' },
+                { value: 'B', src: 'mdi-close' },
+                { value: 'C', src: 'mdi-triangle-outline' },
+                { value: 'D', src: 'mdi-square-outline' },
+              ]"
+              :dense="dense"
+              :rules="[(v) => v !== 'D' || 'Square is not allowed']"
+              tooltip="This is a radio grid"
+              inline
+              label-position="top"
+              class="d-flex justify-center"
+            >
+              <template #label="{ item, error }">
+                <figure>
+                  <v-icon
+                    size="24"
+                    class="d-flex justify-center mx-auto"
+                    :class="{ 'text-error': error }"
+                  >
+                    {{ item.src }}
+                  </v-icon>
+                  <figcaption
+                    class="d-flex justify-center"
+                    :class="{ 'text-error': error }"
+                  >
+                    {{ item.value }}
+                  </figcaption>
+                </figure>
+              </template>
+            </VcsRadio>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -368,33 +405,6 @@
                   (v) => !!v.length || 'Please select at least one option.',
                 ]"
               />
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col>
-              <VcsRadioGrid
-                v-model="state.selected"
-                :items="[
-                  { value: 'AAAAAAAA', src: 'mdi-circle-outline' },
-                  { value: 'B', src: 'mdi-close' },
-                  { value: 'C', src: 'mdi-triangle-outline' },
-                  { value: 'D', src: 'mdi-square-outline' },
-                ]"
-                :dense="dense"
-                :rules="[(v) => v !== 'D' || 'Square is not allowed']"
-              >
-                <!-- if label slot is not used, src is forwarded to img src -->
-                <template #label="{ src, value }">
-                  <figure>
-                    <v-icon size="24" class="d-flex justify-center">{{
-                      src
-                    }}</v-icon>
-                    <figcaption class="d-flex justify-center">
-                      {{ value }}
-                    </figcaption>
-                  </figure>
-                </template>
-              </VcsRadioGrid>
             </v-col>
           </v-row>
         </v-container>
@@ -476,7 +486,6 @@
     VcsTextArea,
     VcsDatePicker,
     VcsSlider,
-    VcsRadioGrid,
   } from '@vcmap/ui';
   import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/components';
   import packageJSON from '../package.json';
@@ -506,7 +515,6 @@
       VContainer,
       VcsDatePicker,
       VcsSlider,
-      VcsRadioGrid,
       VIcon,
     },
     props: {

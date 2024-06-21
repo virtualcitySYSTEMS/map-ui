@@ -239,7 +239,6 @@ export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vu
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
 export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
-export { default as VcsRadioGrid } from './src/components/form-inputs-controls/VcsRadioGrid.vue';
 export { default as VcsFormSection } from './src/components/form-inputs-controls/VcsFormSection.vue';
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';

@@ -52,6 +52,7 @@
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
    * Provides VTooltip to show error messages
+   * @vue-prop {string} [tooltip] - A message to be displayed when there is no error.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip, see {@link https://vuetifyjs.com/en/api/v-tooltip/#props-location | vuetify tooltip}.
    * @vue-prop {string} label - Label to be displayed, will be translated.
    * @vue-data {slot} [#label] - slot to pass html for Checkbox label. Overrides label passed as prop.
