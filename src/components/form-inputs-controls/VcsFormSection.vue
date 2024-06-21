@@ -36,7 +36,7 @@
         </div>
       </div>
     </slot>
-    <VcsHelp :text="helpText" :show="showHelp" class="bg-base-lighten-4">
+    <VcsHelp :text="helpText" :show="showHelp">
       <slot name="help" />
     </VcsHelp>
     <article class="section-content" v-if="showContent">
