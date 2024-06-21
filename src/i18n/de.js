@@ -1,10 +1,10 @@
-import { TransformationMode } from '@vcmap/core';
 import { de } from 'vuetify/locale';
 
 const messages = {
   $vuetify: {
     ...de,
     dataIterator: {
+      ...de.dataIterator,
       rowsPerPageText: 'Elemente pro Seite:',
       pageText: '{0}-{1} von {2}',
     },
@@ -195,10 +195,10 @@ const messages = {
       translate: 'Ausdehnung verschieben',
     },
     editor: {
-      [TransformationMode.TRANSLATE]: 'Objekt verschieben',
-      [TransformationMode.ROTATE]: 'Objekt rotieren',
-      [TransformationMode.SCALE]: 'Objekt skalieren',
-      [TransformationMode.EXTRUDE]: 'Objekt extrudieren',
+      translate: 'Objekt verschieben',
+      rotate: 'Objekt rotieren',
+      scale: 'Objekt skalieren',
+      extrude: 'Objekt extrudieren',
       header: 'Transformieren',
       placeOnTerrain: 'Auf Gelände plazieren',
       cw: '90° rechtsherum drehen',

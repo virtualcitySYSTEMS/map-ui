@@ -1,11 +1,5 @@
 <template>
-  <VcsDataTable
-    :items="items"
-    :headers="headers"
-    item-key="key"
-    v-bind="$attrs"
-  >
-    <!-- eslint-disable-next-line -->
+  <VcsDataTable :items="items" :headers="headers" v-bind="$attrs">
     <template #item.key="{ item }">
       <td
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
@@ -14,7 +8,6 @@
         {{ $st(item.key) }}
       </td>
     </template>
-    <!-- eslint-disable-next-line -->
     <template #item.value="{ item }">
       <td
         class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
@@ -135,7 +128,7 @@
    * @vue-prop {string} featureId - feature's id
    * @vue-prop {Object} attributes - feature's attributes
    * @vue-prop {Object} tags - Allows to render the value column for specific attribute keys with special html elements. See 'defaultTagOptions' for supported html tags.
-   * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names
+   * @vue-prop {Array<{title: string, value: string}>} [headers] - optional array defining column names
    * @vue-computed {Array<TableItem>} items - from attributes derived table items
    */
   export default {
@@ -159,8 +152,12 @@
       headers: {
         type: Array,
         default: () => [
-          { text: 'components.vcsTable.key', value: 'key', width: '160px' },
-          { text: 'components.vcsTable.value', value: 'value', width: '160px' },
+          { title: 'components.vcsTable.key', value: 'key', width: '160px' },
+          {
+            title: 'components.vcsTable.value',
+            value: 'value',
+            width: '160px',
+          },
         ],
       },
     },

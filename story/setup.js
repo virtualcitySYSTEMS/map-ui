@@ -4,6 +4,7 @@ import { defineSetupVue3 } from '@histoire/plugin-vue';
 import StoryWrapper from './StoryWrapper.vue';
 import { createVcsVuetify } from '../src/vuePlugins/vuetify.js';
 import { createSafeI18n, createVueI18n } from '../src/vuePlugins/i18n.js';
+import en from '../src/i18n/en.js';
 import '../src/styles/main.scss';
 import '../public/assets/@mdi/font/css/materialdesignicons.min.css';
 
@@ -11,6 +12,7 @@ let i18nInstance;
 function getI18n() {
   if (!i18nInstance) {
     i18nInstance = createVueI18n();
+    i18nInstance.global.setLocaleMessage('en', en);
   }
   return i18nInstance;
 }

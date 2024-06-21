@@ -10,7 +10,7 @@
 
 <template>
   <Story title="VcsCheckbox" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsCheckbox :label="label" />
+    <VcsCheckbox v-bind="{ ...state.bind }" :label="label" />
     <template #controls>
       <GlobalControls v-model="state">
         <HstText v-model="label" title="Label"></HstText>

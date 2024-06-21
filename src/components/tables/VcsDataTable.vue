@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
       :placeholder="$st(searchbarPlaceholder)"
@@ -17,12 +17,9 @@
       </template>
     </VcsTreeviewSearchbar>
     <v-data-table
-      dense
       :headers="translatedHeaders"
       :items="internalItems"
-      :item-key="itemKey"
-      :items-per-page.sync="itemsPerPageRef"
-      :page.sync="page"
+      :items-per-page="itemsPerPageRef"
       :search="search"
       :custom-filter="handleFilter"
       :no-data-text="
@@ -32,14 +29,15 @@
         $attrs.noResultsText ??
         $t('components.vcsDataTable.noResultsPlaceholder')
       "
-      :single-select="singleSelect"
-      :selectable-key="selectableKey"
+      :item-selectable="itemSelectable"
       hide-default-footer
+      class="vcs-table"
+      :class="{ 'vcs-table-select': $attrs.showSelect }"
       v-bind="$attrs"
-      class="vcs-table rounded-0"
+      v-model:page="page"
+      v-model:items-per-page="itemsPerPageRef"
       @update:options="(o) => $emit('update:items', { ...o, search })"
     >
-      <!-- eslint-disable-next-line -->
       <template v-for="slot of Object.keys($slots)" #[slot]="scope">
         <slot
           v-if="!['prepend', 'default', 'append'].includes(slot)"
@@ -47,115 +45,96 @@
           v-bind="scope"
         />
       </template>
-      <!-- eslint-disable-next-line -->
-      <template v-slot:header.data-table-select="{ props, on }">
-        <div v-if="on">
-          <!--          TODO unsure of props.value here-->
-          <v-icon
-            v-if="props.value"
-            @click="on.input(false)"
-            class="vcs-select-icon"
-          >
-            mdi-check-circle
-          </v-icon>
-          <v-icon
-            v-else-if="props.indeterminate"
-            @click="on.input(true)"
-            class="vcs-select-icon"
-          >
-            mdi-minus-circle
-          </v-icon>
-          <v-icon v-else @click="on.input(true)" class="vcs-select-icon">
-            mdi-circle-outline
-          </v-icon>
-        </div>
+      <template
+        #header.data-table-select="{ allSelected, selectAll, someSelected }"
+      >
+        <VcsCheckbox
+          :indeterminate="someSelected && !allSelected"
+          indeterminate-icon="mdi-minus-circle"
+          false-icon="mdi-circle-outline"
+          true-icon="mdi-check-circle"
+          :model-value="allSelected"
+          @update:model-value="selectAll(!allSelected)"
+        />
       </template>
-      <!-- eslint-disable-next-line -->
-      <template #item.data-table-select="{ isSelected, select, item, index }">
-        <div @mouseover="hovering = index" @mouseout="hovering = null">
-          <v-icon
-            v-if="isSelected"
-            :disabled="item.disabled"
-            @click="select(!isSelected)"
-            class="vcs-select-icon"
-          >
-            mdi-check-circle
-          </v-icon>
-          <v-icon
-            v-else
-            :disabled="item.disabled"
-            @click="select(!isSelected)"
-            class="vcs-select-icon"
-          >
-            mdi-circle-outline
-          </v-icon>
-        </div>
+      <template
+        #item.data-table-select="{ internalItem, isSelected, toggleSelect }"
+      >
+        <VcsCheckbox
+          :model-value="isSelected(internalItem)"
+          :disabled="!internalItem.selectable"
+          false-icon="mdi-circle-outline"
+          true-icon="mdi-check-circle"
+          @update:model-value="toggleSelect(internalItem)"
+        />
       </template>
-      <template #footer v-if="showFooter">
-        <v-divider />
-        <v-container class="pa-2 vcs-pagination-bar">
-          <v-row dense no-gutters justify="center" class="align-center">
-            <v-menu dense>
-              <template #activator="{ props }">
-                <VcsButton color="primary" v-bind="props">
-                  {{ itemsPerPageRef }}
-                  <v-icon>mdi-chevron-down</v-icon>
-                </VcsButton>
-              </template>
-              <v-list>
-                <v-list-item
-                  v-for="(number, index) in itemsPerPageArray"
-                  :key="index"
-                  @click="updateItemsPerPage(number)"
-                  style="min-height: auto; height: 24px; text-align: right"
-                >
-                  <v-list-item-title>{{ number }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <span class="mx-2">{{
-              $t('components.vcsDataTable.itemsPerPage')
-            }}</span>
-            <span class="mx-2">
-              {{ itemsFrom }} - {{ itemsTo }}
-              {{ $t('components.vcsDataTable.ofItems') }} {{ numberOfItems }}
-            </span>
-            <VcsButton
-              icon="mdi-chevron-left"
-              @click="formerPage"
-              tooltip="components.vcsDataTable.formerPage"
-              :disabled="page < 2"
-              class="ml-1"
-            />
-            <VcsButton
-              icon="mdi-chevron-right"
-              @click="nextPage"
-              tooltip="components.vcsDataTable.nextPage"
-              :disabled="page > numberOfPages - 1"
-              class="ml-1"
-            />
-          </v-row>
-        </v-container>
+      <template #tfoot v-if="showFooter">
+        <tfoot>
+          <tr class="v-data-table__tr">
+            <td colspan="100" class="text-center pa-1">
+              <v-menu dense>
+                <template #activator="{ props }">
+                  <VcsButton
+                    color="primary"
+                    v-bind="props"
+                    class="v-btn--variant-plain mx-2 d-flex flex-wrap"
+                  >
+                    {{ itemsPerPageRef }}
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </VcsButton>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(number, index) in itemsPerPageArray"
+                    :key="index"
+                    @click="updateItemsPerPage(number)"
+                    style="min-height: auto; height: 24px; text-align: right"
+                  >
+                    <v-list-item-title>{{ number }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <span class="mx-2">{{
+                $t('components.vcsDataTable.itemsPerPage')
+              }}</span>
+              <span class="mx-2">
+                {{ itemsFrom }} - {{ itemsTo }}
+                {{ $t('components.vcsDataTable.ofItems') }} {{ numberOfItems }}
+              </span>
+              <VcsButton
+                icon="mdi-chevron-left"
+                @click="formerPage"
+                tooltip="components.vcsDataTable.formerPage"
+                :disabled="page < 2"
+                class="v-btn--variant-plain ml-1"
+              />
+              <VcsButton
+                icon="mdi-chevron-right"
+                @click="nextPage"
+                tooltip="components.vcsDataTable.nextPage"
+                :disabled="page > numberOfPages - 1"
+                class="v-btn--variant-plain ml-1"
+              />
+            </td>
+          </tr>
+        </tfoot>
       </template>
     </v-data-table>
-  </v-card>
+  </div>
 </template>
 <script>
   import { getCurrentInstance, ref, computed, watch } from 'vue';
   import {
-    VCard,
-    VDivider,
-    VContainer,
     VDataTable,
     VList,
     VListItem,
     VListItemTitle,
     VMenu,
     VIcon,
-    VRow,
   } from 'vuetify/components';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
 
   /**
    * @typedef {Object} UpdateItemsEvent
@@ -174,14 +153,12 @@
    * @description A wrapper around {@link https://vuetifyjs.com/en/api/v-data-table/#props v-data-table } with custom pagination
    * Passes all slots to v-data-table and 'prepend', 'default' and 'append' slots to VcsSearchbar
    * @vue-prop {Array<Object>} items - array of items, where each item must provide a unique key
-   * @vue-prop {string} itemKey - the key property, which is unique on all items.
    * @vue-prop {number} serverItemsLength - number of total items on a backend. Used for server-side pagination.
    * @vue-prop {number} serverPagesLength - number of total pages on a backend. Used for server-side pagination.
-   * @vue-prop {Array<{text: string, value: string}>} [headers] - optional array defining column names. Text will be translated
+   * @vue-prop {Array<{title: string, value: string}>} [headers] - optional array defining column names. Text will be translated
    * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
    * @vue-prop {string} [searchbarPlaceholder] - placeholder for searchbar
-   * @vue-prop {boolean} [singleSelect=false]
-   * @vue-prop {string} [selectableKey='isSelectable'] - The property on each item that is used to determine if it is selectable or not. Non-selectable items are automatically disabled.
+   * @vue-prop {string} [itemSelectable='isSelectable'] - The property on each item that is used to determine if it is selectable or not. Non-selectable items are automatically disabled.
    * @vue-event {UpdateItemsEvent} update:items - Emits when one of the options properties is updated or on search input. Can be used to update items via API call to a server.
    * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
    * @vue-computed {Array<import("vuetify").DataTableHeader>} translatedHeaders - array of translated header items.
@@ -193,13 +170,10 @@
   export default {
     name: 'VcsDataTable',
     components: {
+      VcsCheckbox,
       VcsButton,
       VcsTreeviewSearchbar,
-      VCard,
       VDataTable,
-      VContainer,
-      VDivider,
-      VRow,
       VMenu,
       VIcon,
       VList,
@@ -214,10 +188,6 @@
       items: {
         type: Array,
         default: () => [],
-      },
-      itemKey: {
-        type: String,
-        required: true,
       },
       serverItemsLength: {
         type: Number,
@@ -243,17 +213,9 @@
         type: String,
         default: 'components.vcsDataTable.searchbarPlaceholder',
       },
-      singleSelect: {
-        type: Boolean,
-        default: false,
-      },
-      selectableKey: {
+      itemSelectable: {
         type: String,
         default: 'isSelectable',
-      },
-      value: {
-        type: Array,
-        default: () => [],
       },
     },
     setup(props, { attrs, emit }) {
@@ -273,7 +235,7 @@
       const handleFilter = (value, filter, item) => {
         if (filter) {
           const q = filter.toLocaleLowerCase();
-          return Object.values(item).some((i) => {
+          return Object.values(item.raw).some((i) => {
             if (i) {
               const content = i.toString();
               const translated = vm.$st(content);
@@ -289,21 +251,21 @@
       };
 
       /**
-       * Syncs disabled and isSelectable (or custom selectable-key) on items
+       * Syncs disabled and isSelectable (or custom item-selectable key) on items
        * @type {ComputedRef<Array<Object>>}
        */
       const internalItems = computed(() =>
         props.items.map((item) => {
           if (
             item.disabled !== undefined &&
-            item[props.selectableKey] === undefined
+            item[props.itemSelectable] === undefined
           ) {
-            item[props.selectableKey] = !item.disabled;
+            item[props.itemSelectable] = !item.disabled;
           } else if (
             item.disabled === undefined &&
-            item[props.selectableKey] !== undefined
+            item[props.itemSelectable] !== undefined
           ) {
-            item.disabled = item[props.selectableKey];
+            item.disabled = !item[props.itemSelectable];
           }
           return item;
         }),
@@ -332,7 +294,7 @@
         return props.headers.map((hd) => {
           return {
             ...hd,
-            text: vm.$st(hd.text),
+            title: vm.$st(hd.title),
           };
         });
       });
@@ -358,6 +320,12 @@
         const last = page.value * itemsPerPageRef.value;
         return last < numberOfItems.value ? last : numberOfItems.value;
       });
+
+      const updateItemsPerPage = (number) => {
+        itemsPerPageRef.value = number;
+      };
+
+      watch(() => props.itemsPerPage, updateItemsPerPage);
 
       watch(
         () => props.items,
@@ -418,9 +386,7 @@
             page.value -= 1;
           }
         },
-        updateItemsPerPage(number) {
-          itemsPerPageRef.value = number;
-        },
+        updateItemsPerPage,
         handleFilter,
         handleSearch,
         translatedHeaders,
@@ -431,84 +397,66 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/shades.scss';
-  @import '../../styles/variables.scss';
-
-  .vcs-select-icon {
-    &.v-icon {
-      font-size: $input-icon-font-size;
-
-      .v-icon__component {
-        width: $input-icon-width;
-        height: $input-icon-height;
+  :deep(.vcs-table-select > .v-table__wrapper) {
+    table tbody tr {
+      td {
+        padding: 0 8px !important;
+        &:first-child {
+          width: 32px !important;
+          padding: 0 0 !important;
+        }
+      }
+    }
+    table thead tr {
+      th {
+        padding: 0 8px !important;
+        &:first-child {
+          width: 32px !important;
+          padding: 0 0 !important;
+        }
       }
     }
   }
-  :deep(.vcs-table) {
-    tbody tr {
+
+  :deep(.vcs-table > .v-table__wrapper) {
+    table tbody tr {
       &:hover {
         background-color: transparent !important;
       }
 
       &:nth-child(odd) {
-        background-color: var(--v-base-lighten4) !important;
+        background-color: rgb(var(--v-theme-base-lighten-4)) !important;
       }
 
       td {
-        padding: 0 8px !important;
-
-        &.v-data-table__mobile-row {
-          justify-content: left;
-          min-height: auto;
-          .v-data-table__mobile-row__header {
-            min-width: 50px;
-          }
-        }
+        padding: 0 8px;
+      }
+    }
+    table thead tr {
+      th {
+        padding: 0 8px;
       }
     }
   }
 
-  :deep(th) {
-    padding: 0 8px !important;
-
-    &.sortable {
-      overflow: hidden;
-      white-space: nowrap;
-
-      span {
-        vertical-align: middle;
-        padding: 0 4px 0 0;
-
-        &.theme--light {
-          thead tr th {
-            color: map-get($shades, 'black') !important;
-          }
-        }
-
-        &.theme--dark {
-          thead tr th {
-            color: map-get($shades, 'white') !important;
-          }
-        }
-      }
-
-      .v-btn.vcs-button {
-        height: 100% !important;
-        display: block;
-      }
+  .v-table--density-compact {
+    --v-table-header-height: var(--v-vcs-item-height);
+    --v-table-row-height: var(--v-vcs-item-height);
+    & :deep(.v-selection-control--density-default) {
+      --v-selection-control-size: var(--v-vcs-item-height);
     }
+  }
 
-    .vcs-pagination-bar {
-      .vcs-button-wrap {
-        height: 25px;
-        border: 1px solid;
-        padding: 0 4px;
-        border-radius: 4px;
+  :deep(.v-table > .v-table__wrapper > table > thead > tr > th) {
+    font-weight: bold;
+  }
 
-        &:hover {
-          border: 1px solid var(--v-primary-base);
-        }
-      }
-    }
+  .vcs-footer {
+    vertical-align: middle !important;
+  }
+
+  // remove ripple effect for hover
+  :deep(.v-selection-control__input::before) {
+    background-color: transparent;
   }
 </style>

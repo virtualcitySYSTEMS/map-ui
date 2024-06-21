@@ -1,14 +1,25 @@
 <template>
   <v-sheet>
     <v-sheet class="px-2 d-grid">
-      <v-switch v-model="selectable" label="Selectable" class="ma-0" />
+      <v-switch
+        v-model="selectable"
+        label="Selectable"
+        density="compact"
+        class="mx-1"
+      />
       <v-switch
         :disabled="!selectable"
         v-model="selectSingle"
         label=" Single Select"
-        class="ma-0"
+        density="compact"
+        class="mx-1"
       />
-      <v-switch v-model="searchable" label="Searchable" class="ma-0" />
+      <v-switch
+        v-model="searchable"
+        label="Searchable"
+        density="compact"
+        class="mx-1"
+      />
       <v-dialog v-model="dialog" width="400">
         <template #activator="{ props }">
           <vcs-form-button v-bind="props"> Add An item </vcs-form-button>
@@ -37,10 +48,10 @@
 
     <vcs-data-table
       :items="items"
-      item-key="id"
       :headers="headers"
       :show-select="selectable"
-      :single-select="selectSingle"
+      :select-strategy="selectSingle ? 'single' : 'page'"
+      :items-per-page="2"
       :show-searchbar="searchable"
       v-model="selected"
     >
@@ -70,19 +81,19 @@
 
   const defaultHeaders = [
     {
-      text: 'Name',
-      value: 'name',
+      title: 'Name',
+      key: 'name',
     },
     {
-      text: 'Type',
-      value: 'type',
+      title: 'Type',
+      key: 'type',
     },
     {
-      text: 'Datum',
-      value: 'date',
+      title: 'Datum',
+      key: 'date',
       sort: (a, b) => new Date(b) - new Date(a),
     },
-    { text: 'Actions', value: 'actions', sortable: false },
+    { title: 'Actions', key: 'actions', sortable: false },
   ];
 
   const defaultItems = [
@@ -112,6 +123,12 @@
       name: 'baz',
       type: 'Baz',
       date: '11/2/2012 14:03',
+    },
+    {
+      id: 3,
+      name: 'foo-bar',
+      type: 'Foo Bar',
+      date: '18/4/1992 21:53',
     },
   ];
 

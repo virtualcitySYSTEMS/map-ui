@@ -129,6 +129,9 @@ export function createVcsVuetify(i18n) {
       VSelect: {
         density: 'compact',
       },
+      VDataTable: {
+        density: 'compact',
+      },
     },
     defaultAssets: {
       font: {

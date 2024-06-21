@@ -67,6 +67,11 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
 - Remove `customClasses`. In vue3 class can be passed to a child element by `:class="$attrs.class"`
 - replace `<VcsRadioGrid>` with `<VcsRadio inline labelPosition="top" class="d-flex justify-center">`
+- Update headers array of tables. Change header items `text` key to `title`.
+- Check table properties:
+  - `item-key` is removed
+  - `single-select` is removed, use `select-strategy` with value 'single' instead.
+  - `selectable-key` is renamed to `item-selectable`.
 
 # Troubleshooting & Solutions
 
@@ -82,6 +87,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | my component options are no longer part of lists                                                                               | with the change to Proxy objects, adding stuff to reactive arrays will add a _proxy_. You must use `toRaw` when checking if a value is included (typically with actions or other places where we dont check using `name`) |
 | my component used VcsTooltip to display error messages                                                                         | See [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.                                                                                      |
 | what happened to `var(--v-base-xxx)`                                                                                           | you must use `rgb(var(--v-theme-base-lighten-2))` or similar. prefix with theme                                                                                                                                           |
+| my headers for a `VcsTable` or `VcsDataTable` are not rendered any more                                                        | the type of a header item changed. you must rename `text` to `title` for all items of the headers array.                                                                                                                  |
 
 # ToDos & Issues
 

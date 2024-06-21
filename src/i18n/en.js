@@ -1,10 +1,10 @@
-import { TransformationMode } from '@vcmap/core';
 import { en } from 'vuetify/locale';
 
 const messages = {
   $vuetify: {
     ...en,
     dataIterator: {
+      ...en.dataIterator,
       rowsPerPageText: 'Items per page:',
       pageText: '{0}-{1} of {2}',
     },
@@ -195,10 +195,10 @@ const messages = {
       translate: 'Translate extent',
     },
     editor: {
-      [TransformationMode.TRANSLATE]: 'Translate features',
-      [TransformationMode.ROTATE]: 'Rotate features',
-      [TransformationMode.SCALE]: 'Scale features',
-      [TransformationMode.EXTRUDE]: 'Extrude features',
+      translate: 'Translate features',
+      rotate: 'Rotate features',
+      scale: 'Scale features',
+      extrude: 'Extrude features',
       header: 'Transform',
       placeOnTerrain: 'Place on terrain',
       cw: 'Rotate 90° clockwise',

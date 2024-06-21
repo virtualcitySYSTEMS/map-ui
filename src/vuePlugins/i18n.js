@@ -29,6 +29,9 @@ export function createSafeI18n() {
     install: (vApp) => {
       vApp.config.globalProperties.$st = (key, ...args) => {
         if (!is(key, String)) {
+          if (key !== null && key !== undefined) {
+            return String(key);
+          }
           return '';
         }
         return vApp.config.globalProperties.$t(key, ...args);
