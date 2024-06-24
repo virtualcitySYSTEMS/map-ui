@@ -58,6 +58,7 @@ import { ref } from 'vue';
  * @property {string} [favicon] - the favicon to set
  * @property {string} [headerTitle] - the title to display in the tab of the browser
  * @property {boolean} [showLocator] - an optional flag whether to show the Locator in the map.
+ * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  */
 
 /**

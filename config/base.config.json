@@ -54,6 +54,35 @@
           "bottom": "20%"
         }
       }
+    },
+    {
+      "name": "displayQuality",
+      "value": {
+        "startingQualityLevel": "medium",
+        "low": {
+          "sse": 4,
+          "fxaa": false,
+          "fogEnabled": true,
+          "resolutionScale": 0.9,
+          "layerSSEFactor": 2
+        },
+        "medium": {
+          "sse": 2,
+          "fxaa": false,
+          "fogEnabled": true,
+          "resolutionScale": 1,
+          "layerSSEFactor": 1
+        },
+        "high": {
+          "sse": 1.3333333333333333,
+          "fxaa": true,
+          "fogEnabled": true,
+          "fogDensity": 0,
+          "fogScreenSpaceErrorFactor": 0,
+          "resolutionScale": 1,
+          "layerSSEFactor": 0.5
+        }
+      }
     }
   ],
   "i18n": [

@@ -563,6 +563,33 @@
   }
 
   /**
+   * This helper sets up a listener to sync the display quality settings from the {@see UiConfigObject}
+   * @param {import("../vcsUiApp.js").default} app
+   * @returns {function():void} - call to stop syncing
+   */
+  export function setupUiConfigDisplayQuality(app) {
+    const listeners = [
+      app.uiConfig.added.addEventListener((item) => {
+        if (item.name === 'displayQuality') {
+          app.displayQuality.updateOptions(item.value);
+        }
+      }),
+      app.uiConfig.removed.addEventListener((item) => {
+        if (item.name === 'displayQuality') {
+          app.displayQuality.updateOptions({});
+        }
+      }),
+    ];
+
+    return () => {
+      listeners.forEach((cb) => {
+        cb();
+      });
+      listeners.splice(0);
+    };
+  }
+
+  /**
    * This helper gets attributions of all active maps, layers and oblique collections and returns an array of entries.
    * It also returns a attributionAction to toggle the attributions window and a destroy function.
    * @param {import("../vcsUiApp.js").default} app
@@ -639,6 +666,7 @@
         app,
         getCurrentInstance().proxy.$vuetify,
       );
+      const destroyDisplayQualityListener = setupUiConfigDisplayQuality(app);
       const { attributionEntries, attributionAction, destroyAttributions } =
         setupAttributions(app);
 
@@ -659,6 +687,7 @@
         destroyComponentsWindow();
         destroyThemingListener();
         destroyAttributions();
+        destroyDisplayQualityListener();
       });
 
       return {

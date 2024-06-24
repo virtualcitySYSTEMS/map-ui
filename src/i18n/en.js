@@ -241,6 +241,14 @@ const messages = {
     title: 'Settings',
     tooltip: 'Configure settings',
     languageSelector: 'Language',
+    displayQuality: {
+      title: 'Display Settings',
+      level: {
+        low: 'Low',
+        medium: 'Medium',
+        high: 'High',
+      },
+    },
     theme: {
       title: 'Color theme',
       dark: 'Dark',

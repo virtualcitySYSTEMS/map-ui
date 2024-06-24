@@ -241,6 +241,14 @@ const messages = {
     title: 'Einstellungen',
     tooltip: 'Einstellungen',
     languageSelector: 'Sprache',
+    displayQuality: {
+      title: 'Anzeigequalität',
+      level: {
+        low: 'Niedrige',
+        medium: 'Mittlere',
+        high: 'Hohe',
+      },
+    },
     theme: {
       title: 'Farbschema',
       dark: 'Dunkel',

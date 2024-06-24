@@ -1,6 +1,7 @@
 # 5.3
 
 - Added locator for mobile
+- Added support for setting display quality
 
 # 5.2.4
 
