@@ -12,8 +12,8 @@
         :prefix="prefixes[idx]"
         :unit="units[idx]"
         :decimals="decimals[idx]"
+        v-bind="$attrs"
         v-model.number="coordinate[idx]"
-        v-bind="{ ...$attrs }"
         @update:model-value="emitInput(coordinate, idx)"
         :rules="getRulesForAxis(idx)"
       />
@@ -27,7 +27,6 @@
 <script>
   import { computed } from 'vue';
   import { VRow, VCol } from 'vuetify/components';
-  import { Extent } from '@vcmap/core';
   import VcsTextField from './VcsTextField.vue';
   import { between } from '../style/composables.js';
 
@@ -103,7 +102,7 @@
       },
       extent: {
         type: Array,
-        default: () => Extent.WGS_84_EXTENT,
+        default: () => [-180, -90, 180, 90],
       },
       axisRules: {
         type: Array,
