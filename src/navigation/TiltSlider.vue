@@ -4,7 +4,7 @@
     tooltip-position="left"
   >
     <template #activator="{ on, attrs }">
-      <v-card class="w-8" v-on="on" v-bind="attrs">
+      <v-card class="w-8" v-on="on" v-bind="attrs" :disabled="disabled">
         <v-slider
           track-color="base lighten-3"
           v-model="tilt"
@@ -13,6 +13,7 @@
           vertical
           hide-details
           class="vcs-slider"
+          v-bind="{ ...$attrs }"
         />
       </v-card>
     </template>
@@ -77,6 +78,7 @@
   /**
    * @description A vertical slider from 0 to -90. pass value with v-model
    * @vue-prop {number} value
+   * @vue-prop {boolean} disabled - whether tilt slider should be disabled
    * @vue-event {number} input
    */
   export default {
@@ -90,6 +92,11 @@
       value: {
         type: Number,
         required: true,
+      },
+      disabled: {
+        type: Boolean,
+        required: false,
+        default: false,
       },
     },
     data() {

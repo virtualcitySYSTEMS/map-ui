@@ -2,6 +2,10 @@
 
 - Added locator for mobile
 - Added support for setting display quality
+- Fixes a bug in overviewMap, where an error was thrown when in 3D viewpoint had no groundPosition
+- Fixes anchor of overviewMap position image
+- Changes initialization of `mapClicked` event of overviewMap to happen on creation.
+- Adds disabling MapNavigation components when for the active map `movementApiCallsDisabled` is true
 
 # 5.2.4
 

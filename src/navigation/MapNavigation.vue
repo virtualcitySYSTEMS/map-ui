@@ -3,10 +3,14 @@
     :class="$vuetify.breakpoint.xs ? 'nav-container mobile' : 'nav-container'"
   >
     <v-row>
-      <VcsCompass :view-mode="viewMode" v-model="heading" />
+      <VcsCompass
+        :view-mode="viewMode"
+        v-model="heading"
+        :disabled="movementApiCallsDisabled"
+      />
     </v-row>
     <v-row v-if="isOblique">
-      <ObliqueRotation v-model="heading" />
+      <ObliqueRotation v-model="heading" :disabled="movementApiCallsDisabled" />
     </v-row>
     <template v-if="$vuetify.breakpoint.mobile">
       <v-row justify="center">
@@ -16,15 +20,20 @@
           :tooltip="locatorAction.title"
           :color="locatorAction.active ? 'primary' : undefined"
           @click.stop="locatorAction.callback($event)"
+          :disabled="movementApiCallsDisabled"
         ></OrientationToolsButton>
       </v-row>
     </template>
     <template v-if="$vuetify.breakpoint.mdAndUp">
       <v-row justify="center">
-        <VcsZoomButton @zoom-out="zoomOut()" @zoom-in="zoomIn()" />
+        <VcsZoomButton
+          @zoom-out="zoomOut()"
+          @zoom-in="zoomIn()"
+          :disabled="movementApiCallsDisabled"
+        />
       </v-row>
       <v-row justify="center" v-if="is3D && $vuetify.breakpoint.mdAndUp">
-        <TiltSlider v-model="tilt" />
+        <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
       </v-row>
       <v-row justify="center">
         <OrientationToolsButton
@@ -32,6 +41,7 @@
           :icon="homeAction.icon"
           :tooltip="homeAction.title"
           @click.stop="homeAction.callback($event)"
+          :disabled="movementApiCallsDisabled"
         />
       </v-row>
       <v-row justify="center">
@@ -149,6 +159,30 @@
     await map.gotoViewpoint(viewpoint);
   }
 
+  /**
+   * @param {import("@src/vcsUiApp.js").default} app
+   * @param {import("vue").Ref} isDisabled
+   * @returns {() => void}
+   */
+  function setupMovementDisabledListener(app, isDisabled) {
+    let movementDisabledListener = () => {};
+    const mapActivatedListener = app.maps.mapActivated.addEventListener(
+      (map) => {
+        movementDisabledListener();
+        isDisabled.value = map.movementApiCallsDisabled;
+        movementDisabledListener = map.movementDisabledChanged.addEventListener(
+          (mapControlOptions) => {
+            isDisabled.value = mapControlOptions.apiCalls;
+          },
+        );
+      },
+    );
+    return () => {
+      movementDisabledListener();
+      mapActivatedListener();
+    };
+  }
+
   export default {
     components: {
       OrientationToolsButton,
@@ -242,6 +276,14 @@
         }),
       ];
 
+      const movementApiCallsDisabled = ref(
+        !!app.maps.activeMap?.movementApiCallsDisabled,
+      );
+      const removeMovementDisabledListener = setupMovementDisabledListener(
+        app,
+        movementApiCallsDisabled,
+      );
+
       const { action: homeAction, destroy: homeDestroy } = setupHomeButton(app);
 
       onUnmounted(() => {
@@ -256,6 +298,7 @@
         }
         postRenderHandler();
         overviewMapListeners.forEach((cb) => cb());
+        removeMovementDisabledListener();
       });
 
       return {
@@ -279,6 +322,7 @@
         showOverviewButton,
         showLocatorButton,
         homeAction,
+        movementApiCallsDisabled,
       };
     },
   };

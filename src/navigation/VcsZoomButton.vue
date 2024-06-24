@@ -6,12 +6,14 @@
         icon="$vcsPlus"
         tooltip="navigation.zoomInTooltip"
         elevation="0"
+        :disabled="disabled"
       />
       <OrientationToolsButton
         @click="$emit('zoom-out')"
         icon="$vcsMinus"
         tooltip="navigation.zoomOutTooltip"
         elevation="0"
+        :disabled="disabled"
       />
     </div>
   </div>
@@ -24,9 +26,17 @@
    * @description Zoom buttons rendered above each other.
    * @vue-event {void} zoom-in - raised when zoom in is called
    * @vue-event {void} zoom-out - raised when zoom out is called
+   * @vue-prop {boolean} disabled - whether zoom buttons should be disabled
    */
   export default {
     components: { OrientationToolsButton },
+    props: {
+      disabled: {
+        required: false,
+        type: Boolean,
+        default: false,
+      },
+    },
   };
 </script>
 <style lang="scss" scoped>

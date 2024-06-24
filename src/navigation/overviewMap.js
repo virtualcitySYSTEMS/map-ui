@@ -12,10 +12,11 @@ import {
   Viewpoint,
   deserializeLayer,
   maxZIndex,
+  CesiumMap,
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
 import Feature from 'ol/Feature.js';
-import { Math as CesiumMath, Color } from '@vcmap-cesium/engine';
+import { Math as CesiumMath, Color, Cartographic } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
@@ -80,6 +81,7 @@ function getCameraIcon(color) {
       color,
     )}%22%20stroke%3D%22%23ffffff%22%20stroke-miterlimit%3D%2210%22%20id%3D%22circle427%22%20style%3D%22stroke-width%3A0.396874%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E`,
     color,
+    anchor: [0.5, 0.87],
   };
 }
 
@@ -120,19 +122,19 @@ class OverviewMap {
     this._cachedViewpoint = null;
 
     /**
-     * @type {import("@vcmap/core").VectorLayer}
+     * @type {import("@vcmap/core").VectorLayer | null}
      * @private
      */
     this._obliqueTileLayer = null;
 
     /**
-     * @type {import("@vcmap/core").VectorLayer}
+     * @type {import("@vcmap/core").VectorLayer | null}
      * @private
      */
     this._obliqueImageLayer = null;
 
     /**
-     * @type {import("@vcmap/core").VectorLayer}
+     * @type {import("@vcmap/core").VectorLayer | null}
      * @private
      */
     this._obliqueSelectedImageLayer = null;
@@ -162,13 +164,13 @@ class OverviewMap {
     this._obliqueResolutionFactor = 2;
 
     /**
-     * @type {import("@vcmap/core").ObliqueViewDirection}
+     * @type {import("@vcmap/core").ObliqueViewDirection | null}
      * @private
      */
     this._obliqueViewDirection = null;
 
     /**
-     * @type {import("@vcmap/core").VectorLayer}
+     * @type {import("@vcmap/core").VectorLayer | null}
      * @private
      */
     this._cameraIconLayer = null;
@@ -188,24 +190,29 @@ class OverviewMap {
     this.minimumHeight = 150;
 
     /**
-     * Handles the events from the overview map. Available after first activation.
-     * @type {EventHandler|null}
+     * Handles the events from the overview map.
+     * @type {EventHandler}
      * @private
      */
-    this._eventHandler = null;
+    this._eventHandler = new EventHandler();
+    const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
+    this._eventHandler.addPersistentInteraction(overviewMapClickedInteraction);
 
     /**
-     * An event, available after first activation, which is triggered whenever the overview map is clicked.
-     * Is passed a {@link InteractionEvent} as its only argument
-     * @type {import("@vcmap/core").VcsEvent<import("@vcmap/core").InteractionEvent>|null}
+     *
+     * @type {import("@vcmap/core").VcsEvent<import("@vcmap/core").InteractionEvent>}
      * @private
      */
-    this._mapClicked = null;
+    this._mapClicked = overviewMapClickedInteraction.mapClicked;
 
     /**
-     * @type {Function}
+     * @type {function():void}
+     * @private
      */
-    this._mapPointerListener = null;
+    this._mapPointerListener =
+      this._map.pointerInteractionEvent.addEventListener((e) => {
+        this._eventHandler.handleMapEvent(e);
+      });
 
     /**
      * @type {Array<function():void>}
@@ -213,7 +220,7 @@ class OverviewMap {
      */
     this._listeners = [];
     /**
-     * @type {function():void}
+     * @type {null | function():void}
      * @private
      */
     this._mapActivatedListener = null;
@@ -270,7 +277,9 @@ class OverviewMap {
   }
 
   /**
-   * @type {import("@vcmap/core").VcsEvent<import("@vcmap/core").InteractionEvent>|null}
+   * An event which is triggered whenever the overview map is clicked.
+   * Is passed a {@link InteractionEvent} as its only argument
+   * @type {import("@vcmap/core").VcsEvent<import("@vcmap/core").InteractionEvent>}
    */
   get mapClicked() {
     return this._mapClicked;
@@ -292,28 +301,11 @@ class OverviewMap {
   }
 
   /**
-   * @private
-   */
-  _setupMapInteraction() {
-    this._eventHandler = new EventHandler();
-    const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
-    this._mapClicked = overviewMapClickedInteraction.mapClicked;
-    this._eventHandler.addPersistentInteraction(overviewMapClickedInteraction);
-    this._mapPointerListener =
-      this._map.pointerInteractionEvent.addEventListener((e) => {
-        this._eventHandler.handleMapEvent(e);
-      });
-  }
-
-  /**
    * activates the overview map and initializes handlers for current active map
    * @private
    * @returns {Promise<void>}
    */
   async _activate() {
-    if (!this._mapClicked) {
-      this._setupMapInteraction();
-    }
     await this._map.activate();
     this._map.setTarget('overview-map-container');
     this._map.target?.firstChild?.classList?.add('overviewMapElement');
@@ -532,14 +524,35 @@ class OverviewMap {
   _addNavigationListener(activeMap) {
     return this._mapClicked.addEventListener((e) => {
       const vp = activeMap.getViewpointSync();
-      const height = vp.groundPosition[2] ? vp.groundPosition[2] : 0.0;
-      vp.groundPosition = Projection.mercatorToWgs84(e.positionOrPixel);
-      vp.groundPosition[2] = height;
-      vp.cameraPosition = null;
+      const newPosition = Projection.mercatorToWgs84(e.positionOrPixel);
+      if (activeMap instanceof CesiumMap) {
+        const globe = activeMap.getScene()?.globe;
+        const newGroundLevel =
+          globe?.getHeight(
+            Cartographic.fromDegrees(newPosition[0], newPosition[1]),
+          ) || 0;
+        const oldGroundLevel =
+          globe?.getHeight(
+            Cartographic.fromDegrees(
+              vp.cameraPosition[0],
+              vp.cameraPosition[1],
+            ),
+          ) || 0;
+
+        newPosition[2] =
+          newGroundLevel + Math.abs(vp.cameraPosition[2] - oldGroundLevel);
+        vp.cameraPosition = newPosition;
+      } else {
+        vp.groundPosition = newPosition;
+        vp.cameraPosition = null;
+      }
       activeMap.gotoViewpoint(vp);
     });
   }
 
+  /**
+   * @private
+   */
   _setupCameraIconLayer() {
     if (!this._cameraIconLayer) {
       this._cameraIconLayer = new VectorLayer({
@@ -648,7 +661,6 @@ class OverviewMap {
     this.cameraIconStyle.destroy();
     this.obliqueSelectedStyle.destroy();
     this._cachedViewpoint = null;
-    this._mapClicked = null;
   }
 }
 

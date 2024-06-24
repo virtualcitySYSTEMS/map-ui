@@ -6,12 +6,14 @@
         icon="$vcsRotateLeft"
         tooltip="navigation.obliqueLeftTooltip"
         elevation="0"
+        :disabled="disabled"
       />
       <OrientationToolsButton
         @click="input(90)"
         icon="$vcsRotateRight"
         tooltip="navigation.obliqueRightTooltip"
         elevation="0"
+        :disabled="disabled"
       />
     </div>
   </div>
@@ -22,6 +24,7 @@
 
   /**
    * @vue-prop {number} value - the current heading
+   * @vue-prop {boolean} disabled - whether ObliqueRotation should be disabled
    * @vue-event {number} input
    */
   export default {
@@ -31,6 +34,11 @@
       value: {
         type: Number,
         required: true,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+        required: false,
       },
     },
     methods: {

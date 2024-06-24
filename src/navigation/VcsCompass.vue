@@ -12,7 +12,7 @@
       class="position-absolute pos-a-0 primary--text"
       @click="$event.stopPropagation()"
       @direction-click="$emit('input', $event)"
-      :can-emit="viewMode === '3d' || viewMode === 'oblique'"
+      :can-emit="!disabled && (viewMode === '3d' || viewMode === 'oblique')"
       :hide-ticks="viewMode === 'oblique'"
     />
   </v-sheet>
@@ -29,6 +29,7 @@
    * @vue-prop {OrientationToolsViewMode}  viewMode  - Mode of the map. Defines the behaviour of the compass.
    * @vue-prop {number}                     value     - Number of degrees of the compass rotation.
    * @vue-event {number} input
+   * @vue-prop {boolean} disabled - whether compass should be disabled
    */
   export default {
     name: 'VcsCompass',
@@ -44,6 +45,11 @@
       value: {
         type: Number,
         default: 0,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+        required: false,
       },
     },
     setup(props) {
