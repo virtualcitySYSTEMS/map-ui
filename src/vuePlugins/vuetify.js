@@ -133,8 +133,9 @@ export function createVcsVuetify(i18n) {
       VSelect: {
         density: 'compact',
       },
-      VDataTable: {
+      VSlider: {
         density: 'compact',
+        ripple: false,
       },
     },
     defaultAssets: {
