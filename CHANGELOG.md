@@ -11,6 +11,7 @@
 # 5.2.4
 
 - Fixes bug in createZoomToFlightAction
+- Updated Planning Plugin Version to 5.2 in VCMap Bundle
 
 # 5.2.2
 

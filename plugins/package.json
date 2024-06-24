@@ -21,6 +21,6 @@
     "@vcmap/link-button": "^1.0.0"
   },
   "optionalDependencies": {
-    "@vcmap/planning": "^5.1.0"
+    "@vcmap/planning": "^5.2.0"
   }
 }
