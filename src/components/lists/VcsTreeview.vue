@@ -11,7 +11,7 @@
       item-value="name"
       :item-props="true"
       :search="search"
-      :filter="handleFilter"
+      :custom-filter="handleFilter"
       :selectable="false"
       :activatable="false"
     >
@@ -103,15 +103,19 @@
 
       const vm = getCurrentInstance().proxy;
       /**
-       * @param {{ title: string }} treeNode
+       * @param {string} value
        * @param {string} q
-       * @returns {boolean}
+       * @param {Object} item
+       * @returns {number}
        */
-      const handleFilter = (treeNode, q = '') => {
-        const translatedTitle = vm.$st(treeNode.title);
+      const handleFilter = (value, q, item) => {
+        if (value == null || q == null) {
+          return -1;
+        }
+        const translatedTitle = item.title ? vm.$st(item.title) : item.value;
         return translatedTitle
           .toLocaleLowerCase()
-          .includes(q.toLocaleLowerCase());
+          .indexOf(q.toLocaleLowerCase());
       };
 
       return {

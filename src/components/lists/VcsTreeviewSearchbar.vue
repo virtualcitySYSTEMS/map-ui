@@ -1,19 +1,15 @@
 <template>
   <div
-    class="pa-2 base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0"
+    class="pa-2 bg-base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0"
   >
     <slot name="prepend">
       <v-icon class="search-icon my-0 ml-1" size="12"> $vcsSearch </v-icon>
     </slot>
 
     <slot v-bind="{ ...$props, attrs: $attrs }">
-      <v-text-field
-        variant="solo"
-        density="compact"
-        hide-details
-        class="searchbar outlined rounded-xl align-center d-flex justify-center base-lighten-4 pa-1 pl-6"
+      <VcsTextField
+        class="searchbar outlined rounded-xl align-center justify-center base-lighten-4 pa-1 pl-6"
         :placeholder="$st(placeholder)"
-        :model-value="modelValue"
         v-bind="$attrs"
         clearable
       />
@@ -26,10 +22,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .input-container {
-    position: relative;
-  }
-
   .search-icon {
     position: absolute;
     top: 50%;
@@ -37,87 +29,55 @@
     left: 12px;
   }
 
-  input {
-    border-radius: 9999rem;
-    outline-style: none;
-    font-size: 12px;
-    box-shadow: 0 0 0 1px var(--v-base-lighten2);
-
-    &:focus {
-      box-shadow: 0 0 0 1px var(--v-primary-base);
-    }
-  }
-
-  :deep(.v-input__slot) {
-    background-color: transparent !important;
-  }
-
-  :deep(.v-input__append-inner) {
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .v-icon {
-      width: 20px;
-      height: 20px;
-      font-size: 16px;
-    }
-  }
-
-  :deep(.v-text-field.v-text-field--solo.v-input--dense > .v-input__control) {
-    min-height: unset;
-  }
-
-  :deep(
-      .v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
-        > .v-input__control
-        > .v-input__slot,
-      .v-text-field.v-text-field--enclosed .v-text-field__details
-    ) {
-    padding: 0 8px;
-  }
-
+  // set rounded outline
   :deep(.v-input.outlined) {
     outline-style: none;
     font-size: 12px;
-    box-shadow: 0 0 0 1px var(--v-base-lighten2);
+    box-shadow: 0 0 0 1px rgb(var(--v-theme-base-lighten-2));
 
-    &:focus,
-    &.v-input--is-focused {
-      box-shadow: 0 0 0 1px var(--v-primary-base);
+    &:has(.v-field--focused) {
+      box-shadow: 0 0 0 1px rgb(var(--v-theme-primary)) !important;
     }
   }
 
+  // override item height
   :deep(
-      .v-text-field.v-input--dense:not(
-          .v-text-field--outlined
-        ).v-text-field__prefix,
-      .v-text-field.v-input--dense:not(
-          .v-text-field--outlined
-        ).v-text-field__suffix,
-      .v-text-field.v-input--dense:not(.v-text-field--outlined) input
+      .v-input--density-compact
+        > .v-input__control
+        > .v-field
+        > .v-field__field
+        > .v-field__input
     ) {
-    padding: 0;
+    --v-input-control-height: calc(var(--v-vcs-item-height) - 20px) !important;
+    min-height: var(--v-input-control-height);
   }
 
-  :deep(
-      .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
-        > .v-input__control
-        > .v-input__slot
-    ) {
-    box-shadow: none;
-    border-radius: 0;
+  // override background color of VcsTextField
+  :deep(.v-input) {
+    background: rgb(var(--v-theme-base-lighten-4));
+  }
+
+  // remove outline of VcsTextField
+  :deep(.v-field *) {
+    border-width: 0;
+    border-bottom: 0;
+  }
+
+  // override primary--placeholder of VcsTextField
+  :deep(input::placeholder) {
+    color: rgb(var(--v-theme-base-lighten-1)) !important;
+    font-style: initial !important;
+    opacity: 0.75 !important;
   }
 </style>
 
 <script>
-  import { VIcon, VTextField } from 'vuetify/components';
+  import { VIcon } from 'vuetify/components';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
 
   /**
    * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
    * @vue-prop {string} [placeholder='search.title'] - Placeholder will be displayed in the search field, and will be translated.
-   * @vue-prop {string[]} [customClasses] - CSS classes to customize style
    * @vue-prop {string} [value] - The search value
    * @vue-prop {boolean} [hasFilter=false] - Appends a filter icon
    * @vue-data {slot} [prepend] - prepend slot overwriting search icon
@@ -128,20 +88,12 @@
     name: 'VcsTreeviewSearchbar',
     components: {
       VIcon,
-      VTextField,
+      VcsTextField,
     },
     props: {
       placeholder: {
         type: String,
         default: 'search.title',
-      },
-      customClasses: {
-        type: Array,
-        default: () => [],
-      },
-      modelValue: {
-        type: String,
-        default: '',
       },
       hasFilter: {
         type: Boolean,
