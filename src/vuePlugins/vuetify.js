@@ -122,6 +122,9 @@ export function createVcsVuetify(i18n) {
       VFileInput: {
         density: 'compact',
       },
+      VTextarea: {
+        density: 'compact',
+      },
       VCheckbox: {
         density: 'compact',
         ripple: false,

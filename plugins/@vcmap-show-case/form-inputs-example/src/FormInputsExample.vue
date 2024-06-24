@@ -97,6 +97,7 @@
                 :dense="dense"
                 :rules="[(v) => !!v || 'text area must not be empty']"
                 placeholder="This is a text area"
+                tooltip="This is a tooltip"
                 rows="2"
               />
             </v-col>

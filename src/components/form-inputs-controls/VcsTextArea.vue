@@ -1,106 +1,132 @@
 <template>
-  <div>
-    <VcsTooltip
-      :tooltip-position="tooltipPosition"
-      :tooltip="errorMessage"
-      color="error"
-      :max-width="200"
-    >
-      <template #activator="{ props }">
-        <v-textarea
-          ref="textAreaRef"
-          hide-details
-          :density="isDense ? 'compact' : undefined"
-          :clearable="isClearable"
-          @focus="onFocus"
-          @blur="onBlur"
-          @mouseover="hover = true"
-          @mouseleave="hover = false"
-          variant="outlined"
-          v-bind="{ ...$attrs, ...props }"
-          :rows="$attrs.rows || (isDense ? 3 : 5)"
-          class="ma-0 py-1 primary--placeholder"
-          :class="{
-            'remove-outline': !isOutlined,
-            'outline--current': focus,
-            'outline--error': errorMessage,
-            'input--dense': isDense,
-            'input--not-dense': !isDense,
-          }"
-        />
-      </template>
-    </VcsTooltip>
-  </div>
+  <v-textarea
+    ref="textAreaRef"
+    variant="outlined"
+    clear-icon="$close"
+    :rows="$attrs.rows"
+    class="ma-0 py-1 primary--placeholder"
+    :class="{
+      'py-1': !noPadding,
+    }"
+    v-bind="{ ...$attrs }"
+  >
+    <template v-for="slot of Object.keys($slots)" #[slot]="scope">
+      <slot :name="slot" v-bind="scope" />
+    </template>
+    <template #message="{ message }">
+      <v-tooltip
+        ref="errorTooltipRef"
+        :activator="textAreaRef"
+        v-if="message"
+        :text="message"
+        content-class="bg-error"
+        :location="tooltipPosition"
+      />
+    </template>
+    <template #append-inner>
+      <slot name="append-inner"></slot>
+      <v-tooltip
+        v-if="tooltip && !errorTooltipRef"
+        :activator="textAreaRef"
+        :location="tooltipPosition"
+        :text="tooltip"
+      ></v-tooltip>
+    </template>
+  </v-textarea>
 </template>
 
 <style lang="scss" scoped>
-  .primary--placeholder {
-    :deep(textarea::placeholder) {
-      color: var(--v-primary-base);
-      font-style: italic;
-      opacity: 1;
-    }
+  .v-input--density-compact :deep(.v-field) {
+    --v-input-control-height: calc(var(--v-vcs-item-height) - 8px);
+    --v-field-padding-bottom: 0px;
+    --v-field-input-padding-top: 0px;
+    --v-input-padding-top: 0px;
   }
-  .remove-outline {
-    :deep(fieldset) {
+
+  .remove-outline :deep(fieldset) {
+    border-width: 0;
+    border-radius: 0;
+  }
+  :deep(.v-field) {
+    --v-field-padding-start: 8px;
+    --v-field-padding-end: 8px;
+  }
+
+  //:deep(.v-field__input) {
+  //  padding: 0 0 6px 0;
+  //}
+  :deep(.v-field--focused .v-field__outline *) {
+    --v-field-border-width: 1px;
+  }
+
+  // set the border color on focused to primary, but not on error
+  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+
+  // remove outline, if not focused, hovered or an error
+  :deep(.v-field:not(.v-field--focused):not(.v-field--error):not(:hover)) {
+    .v-field__outline * {
+      border-width: 0 0 1px 0;
+      border-radius: 0;
+    }
+    .v-field__outline {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .v-field__outline *::before {
       border-width: 0;
       border-radius: 0;
     }
-  }
-  .outline--current {
-    :deep(.v-input__slot fieldset) {
-      border-color: currentColor;
-      transition: border-color 0.5s ease;
-    }
-    :deep(.v-text-field__slot textarea) {
-      border-color: transparent;
+    .v-field__outline * label {
+      color: rgb(var(--v-theme-primary));
+      margin-left: -4px;
     }
   }
-  .outline--error {
-    :deep(.v-input__slot fieldset),
-    :deep(.v-text-field__slot textarea) {
-      border-color: var(--v-error-base);
+
+  // Not color, just used if label is given
+  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *::after) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+
+  // remove margin from prepended Icon
+  .v-input--horizontal :deep(.v-input__prepend) {
+    margin-inline-end: 4px;
+  }
+
+  .primary--placeholder {
+    :deep(textarea::placeholder) {
+      color: rgb(var(--v-theme-primary));
+      font-style: italic;
+      opacity: 1;
+      padding: 0 3px 0 0;
+    }
+    :deep(textarea::-moz-placeholder) {
+      font-style: initial;
     }
   }
-  .input--dense {
-    :deep(.v-input__slot) {
-      padding: 0 4px !important;
-    }
-    :deep(fieldset) {
-      padding-left: 2px;
-    }
+
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
   }
-  .input--not-dense {
-    :deep(.v-input__slot) {
-      padding: 0 8px !important;
-    }
-    :deep(fieldset) {
-      padding-left: 6px;
-    }
+
+  // Progress Bar
+  :deep(.v-progress-linear) {
+    color: rgb(var(--v-theme-primary));
   }
-  .v-input {
-    :deep(textarea) {
-      border-bottom: 1px solid var(--v-base-base);
-      border-radius: 0;
-    }
-    :deep(textarea::selection) {
-      background-color: var(--v-primary-base);
-    }
-    :deep(fieldset) {
-      border-radius: 2px;
-      border-color: var(--v-base-base);
-    }
-    :deep(.v-text-field__slot) {
-      margin-right: 0 !important;
-    }
+  :deep(.v-field__loader) {
+    top: calc(100% - 2px);
+  }
+
+  :deep(.v-field--appended) {
+    padding-inline-end: 8px;
   }
 </style>
 
 <script>
-  import { computed, ref } from 'vue';
-  import { VTextarea } from 'vuetify/components';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
-  import { useErrorSync } from './composables.js';
+  import { ref } from 'vue';
+  import { VTextarea, VTooltip } from 'vuetify/components';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
@@ -121,52 +147,30 @@
   export default {
     name: 'VcsTextArea',
     components: {
-      VcsTooltip,
+      VTooltip,
       VTextarea,
     },
     props: {
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
       tooltipPosition: {
         type: String,
         default: 'right',
       },
+      noPadding: {
+        type: Boolean,
+        default: false,
+      },
     },
-    setup(props, { attrs, emit }) {
-      const hover = ref(false);
-      const focus = ref(false);
+    setup() {
       const textAreaRef = ref();
+      const errorTooltipRef = ref();
 
-      const errorMessage = useErrorSync(textAreaRef);
-
-      const isClearable = computed(() => {
-        return (
-          attrs.clearable !== undefined &&
-          attrs.clearable !== false &&
-          (hover.value || focus.value || errorMessage.value)
-        );
-      });
-      const isDense = computed(() => attrs.dense !== false);
-      const isOutlined = computed(() => {
-        return (
-          (hover.value || focus.value || errorMessage.value) &&
-          !(attrs.disabled || attrs.disabled === '')
-        );
-      });
       return {
-        hover,
-        focus,
         textAreaRef,
-        errorMessage,
-        isClearable,
-        isDense,
-        isOutlined,
-        onFocus(e) {
-          focus.value = true;
-          emit('focus', e);
-        },
-        onBlur(e) {
-          focus.value = false;
-          emit('blur', e);
-        },
+        errorTooltipRef,
       };
     },
   };
