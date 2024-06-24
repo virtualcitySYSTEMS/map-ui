@@ -54,7 +54,7 @@
     VCardActions,
     VRow,
     VCol,
-  } from 'vuetify/lib';
+  } from 'vuetify/components';
   import { computed, getCurrentInstance, ref } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
@@ -97,13 +97,13 @@
     setup(props) {
       const vm = getCurrentInstance().proxy;
       const splashScreenText = computed(() => {
-        const translatedContent = vm.$t(props.textPage.content);
+        const translatedContent = vm.$st(props.textPage.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
-      const buttonTitle = vm.$t(props.textPage.buttonTitle);
+      const buttonTitle = vm.$st(props.textPage.buttonTitle);
 
       const splashScreenCheckboxText = computed(() => {
-        const translatedContent = vm.$t(props.textPage.checkBoxText);
+        const translatedContent = vm.$st(props.textPage.checkBoxText);
         return parseAndSanitizeMarkdown(translatedContent);
       });
 

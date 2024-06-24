@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import { VCard, VCardText } from 'vuetify/lib';
+  import { VCard, VCardText } from 'vuetify/components';
 
   import { computed, getCurrentInstance } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
