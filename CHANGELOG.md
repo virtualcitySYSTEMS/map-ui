@@ -1,5 +1,6 @@
 # 5.3
 
+- Added new uiConfig options `splashScreen` and `customScreen` to allow showing splashscreens or additional help screens
 - Added locator for mobile
 - Added support for setting display quality
 - Fixes a bug in overviewMap, where an error was thrown when in 3D viewpoint had no groundPosition
