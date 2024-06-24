@@ -1,7 +1,9 @@
 <template>
   <div
-    class="d-flex d-inline-block align-center mb-1"
-    :class="{ 'mt-1': !column }"
+    class="d-flex d-inline-block align-center"
+    :class="{
+      'py-1': !paddingProvided,
+    }"
   >
     <VcsButton
       v-if="hasScrollbar"
@@ -10,19 +12,15 @@
     />
     <div
       ref="vcsChipArrayInput"
-      class="d-flex d-inline-block mx-1 my-0"
+      class="d-flex d-inline-block mx-1 my-0 ga-1"
       :class="{
         'overflow-x-auto': !column,
         'hide-scrollbar': !column,
         'v-row': column,
+        'row-gap': column,
       }"
     >
-      <div
-        v-for="({ key, value }, index) in localValue"
-        :key="key"
-        class="pr-1"
-        :class="{ 'pt-1': column }"
-      >
+      <div v-for="({ key, value }, index) in localValue" :key="key">
         <v-chip
           v-if="selected !== index"
           v-bind="{ ...noListenerAttrs }"
@@ -40,7 +38,6 @@
           rounded
           filled
           autofocus
-          no-padding
           hide-spin-buttons
           :height="useItemHeight().value - 8"
           v-model="editValue"
@@ -50,9 +47,10 @@
           @click:append-inner="submitChange($event)"
           append-inner-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
+          class="py-0"
         />
       </div>
-      <div :class="{ 'pt-1': column }">
+      <div>
         <v-chip
           v-if="adding === false"
           v-bind="{ ...noListenerAttrs }"
@@ -68,7 +66,6 @@
           rounded
           filled
           autofocus
-          no-padding
           hide-spin-buttons
           :height="useItemHeight().value - 8"
           v-model="newValue"
@@ -78,6 +75,7 @@
           @blur="cancel"
           append-inner-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
+          class="py-0"
         />
       </div>
     </div>
@@ -103,6 +101,9 @@
   :deep(.v-icon--size-x-small) {
     font-size: 18px;
   }
+  .row-gap {
+    row-gap: 8px !important;
+  }
 </style>
 
 <script>
@@ -113,6 +114,7 @@
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsTextField from './VcsTextField.vue';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
+  import { usePadding } from './composables.js';
 
   /**
    * @description Renders elements of an array as chips with an input field to edit or add new elements.
@@ -275,7 +277,10 @@
 
       const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
 
+      const paddingProvided = usePadding(attrs);
+
       return {
+        paddingProvided,
         localValue,
         noListenerAttrs,
         selected,

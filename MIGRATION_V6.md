@@ -13,11 +13,13 @@
 - `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
 - Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
+- Globally removed `noPadding` property of all Components, which supported `noPadding`, default component padding can be deactivated by adding py-0 to the component
 - `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
 - Legacy style `legend` handling was completely removed. Use the new `properties.legend`.
 - VcsTextField
   - `showSpinButtons` has been removed, this is now the default behaviour, can be changed with the vuetify `hideSpinButtons` api
   - added `tooltip` to show a tooltip on hover over the element
+  - progress bar changes: loading="primary" can now be used to get a progress bar in the primary color
 - `VcsRadioGrid.vue` is removed. Use `VcsRadio` with properties `inline`, `labelPosition="top"` and `class="d-flex justify-center"` instead.
 
 # Extended Theming
@@ -65,13 +67,6 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
 - Make sure you set `:hide-details=false` when using `VcsTooltip` inside your component. This will ensure that the message slot is available and can be used for displaying the error tooltip.
 - Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
-- Remove `customClasses`. In vue3 class can be passed to a child element by `:class="$attrs.class"`
-- replace `<VcsRadioGrid>` with `<VcsRadio inline labelPosition="top" class="d-flex justify-center">`
-- Update headers array of tables. Change header items `text` key to `title`.
-- Check table properties:
-  - `item-key` is removed
-  - `single-select` is removed, use `select-strategy` with value 'single' instead.
-  - `selectable-key` is renamed to `item-selectable`.
 
 # Troubleshooting & Solutions
 
@@ -87,7 +82,6 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | my component options are no longer part of lists                                                                               | with the change to Proxy objects, adding stuff to reactive arrays will add a _proxy_. You must use `toRaw` when checking if a value is included (typically with actions or other places where we dont check using `name`) |
 | my component used VcsTooltip to display error messages                                                                         | See [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.                                                                                      |
 | what happened to `var(--v-base-xxx)`                                                                                           | you must use `rgb(var(--v-theme-base-lighten-2))` or similar. prefix with theme                                                                                                                                           |
-| my headers for a `VcsTable` or `VcsDataTable` are not rendered any more                                                        | the type of a header item changed. you must rename `text` to `title` for all items of the headers array.                                                                                                                  |
 
 # ToDos & Issues
 
@@ -106,7 +100,6 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - cleanup styles, remove all styles not needed from `styles` folder
 
 - remove `VcsTooltip.vue` and `form-inputs-controls/composables.js` (useErrorSync)
-- remove all customClasses props and replace with `:class="$attrs.class"` on child elements
 
 ## Vue 3 Reactivity
 

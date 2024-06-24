@@ -102,11 +102,12 @@ export function createVcsVuetify(i18n) {
         size: 16,
       },
       VList: {
-        class: 'pa-0',
+        density: 'compact',
+        class: 'pa-0 vcsList',
       },
       VListItem: {
         density: 'compact',
-        minHeight: 32,
+        ripple: false,
       },
       VRadio: {
         density: 'compact',

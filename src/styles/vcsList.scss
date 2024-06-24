@@ -1,0 +1,8 @@
+// Default global List overrides
+// `vcsList` class is set per default to VList Elements
+
+.vcsList {
+  .v-list-item--density-compact.v-list-item--one-line {
+    min-height: var(--v-vcs-item-height);
+  }
+}

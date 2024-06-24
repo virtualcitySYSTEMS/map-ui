@@ -37,4 +37,7 @@
     font-size: calc(var(--v-vcs-font-size) - 1px);
     font-weight: normal;
   }
+  .v-tooltip > .v-overlay__content {
+    font-size: var(--v-vcs-font-size);
+  }
 }

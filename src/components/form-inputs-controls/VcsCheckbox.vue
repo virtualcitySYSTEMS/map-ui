@@ -1,11 +1,13 @@
 <template>
   <v-checkbox
     ref="checkbox"
-    :model-value="$attrs.value"
     true-icon="$vcsCheckboxChecked"
     false-icon="$vcsCheckbox"
     indeterminate-icon="$vcsCheckboxIndeterminate"
     :hide-details="false"
+    :class="{
+      'py-1': !paddingProvided,
+    }"
     v-bind="$attrs"
   >
     <template #label>
@@ -34,7 +36,6 @@
   .v-input--density-compact :deep(.v-selection-control) {
     --v-selection-control-size: calc(var(--v-vcs-item-height) - 8px);
     --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
-    padding: 4px 0;
   }
   // remove ripple effect
   :deep(.v-selection-control__input::before) {
@@ -48,6 +49,7 @@
 <script>
   import { ref } from 'vue';
   import { VCheckbox, VTooltip } from 'vuetify/components';
+  import { usePadding } from './composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
@@ -74,11 +76,13 @@
         default: 'right',
       },
     },
-    setup() {
+    setup(props, { attrs }) {
       const checkbox = ref();
       const errorTooltip = ref();
+      const paddingProvided = usePadding(attrs);
 
       return {
+        paddingProvided,
         checkbox,
         errorTooltip,
       };

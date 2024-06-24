@@ -1,17 +1,17 @@
 <template>
   <component
-    v-bind="{ ...$attrs }"
-    :is="inputComponent"
     ref="textFieldRef"
     variant="outlined"
     clear-icon="$close"
-    v-model="visibleValue"
     :hide-details="false"
     :rules="rules"
     class="primary--placeholder"
     :class="{
-      'py-1': !noPadding,
+      'py-1': !paddingProvided,
     }"
+    v-bind="$attrs"
+    :is="inputComponent"
+    v-model="visibleValue"
   >
     <template #append-inner v-if="unit">
       <slot name="append-inner">{{ unit }}</slot>
@@ -72,6 +72,10 @@
       padding-left: 8px;
       padding-right: 8px;
     }
+    .v-field__loader {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
     .v-field__outline *::before {
       border-width: 0;
       border-radius: 0;
@@ -103,9 +107,6 @@
   }
 
   // Progress Bar
-  :deep(.v-progress-linear) {
-    color: rgb(var(--v-theme-primary));
-  }
   :deep(.v-field__loader) {
     top: calc(100% - 2px);
   }
@@ -114,6 +115,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VTextField, VFileInput, VTooltip } from 'vuetify/components';
+  import { usePadding } from './composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
@@ -125,7 +127,6 @@
    * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
    * @vue-prop {string}                                 unit - Unit for number input fields. Is displayed behind the number.
    * @vue-prop {number|undefined}                       [decimals] - An optional number of decimal places the visible value will be rounded to. Does not affect the input value!
-   * @vue-prop {boolean}                                noPadding - Padding is required for usage within rows. For standalone usage this prop removes class py-1.
    */
   export default {
     name: 'VcsTextField',
@@ -151,10 +152,6 @@
       decimals: {
         type: Number,
         default: undefined,
-      },
-      noPadding: {
-        type: Boolean,
-        default: false,
       },
     },
     setup(props, { attrs, emit }) {
@@ -196,7 +193,10 @@
         }
       });
 
+      const paddingProvided = usePadding(attrs);
+
       return {
+        paddingProvided,
         inputComponent,
         visibleValue,
         rules,

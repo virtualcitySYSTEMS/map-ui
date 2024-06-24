@@ -27,3 +27,21 @@ export function useErrorSync(elementRef) {
     return '';
   });
 }
+
+/**
+ * returns a computed which is true, if the provided attributes contain one or more
+ * padding classes
+ * @param {Object} attrs all the Attributes of the component
+ * @returns {import("vue").ComputedRef<boolean>}
+ */
+export function usePadding(attrs) {
+  return computed(() => {
+    if (attrs.class) {
+      const classes = attrs.class.split(' ');
+      return classes.some((c) => {
+        return /^p[tblrsexyac]-.*/.test(c);
+      });
+    }
+    return false;
+  });
+}

@@ -28,8 +28,8 @@
             <v-col class="w-max-half">
               <VcsSelect
                 id="selectInput"
+                loading="primary"
                 :items="selectOptions"
-                :dense="dense"
                 :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 v-model="state.selected"
               />
@@ -82,7 +82,11 @@
               <VcsTextField
                 v-model="state.initialTextInput"
                 :rules="[isValidText]"
-                :loading="state.initialTextInput === 'myInitialText'"
+                :loading="
+                  state.initialTextInput === 'myInitialText'
+                    ? 'primary'
+                    : undefined
+                "
                 :error-messages="
                   !state.checkboxInput
                     ? ['manual error message depending on checkbox']
