@@ -10,7 +10,7 @@
     v-bind="$attrs"
   >
     <slot>
-      <v-card-title>{{ $st(title) }}</v-card-title>
+      <v-card-title class="d-flex align-center">{{ $st(title) }}</v-card-title>
     </slot>
   </v-card>
 </template>
@@ -19,8 +19,14 @@
   import { VCard, VCardTitle } from 'vuetify/components';
   import { ref } from 'vue';
 
+  /**
+   * A component providing a file drop area based on  {@link https://vuetifyjs.com/en/api/v-card/|vuetify v-card}
+   * @vue-props {Array<File>} [modelValue=[]] - The model containing dropped files
+   * @vue-props {string} [title] - Option to override the drop areas default title
+   * @vue-prop {boolean} [multiple=true] - allows or disallows importing multiple files at once
+   */
   export default {
-    name: 'FileDrop',
+    name: 'VcsFileDrop',
     components: {
       VCard,
       VCardTitle,
@@ -34,8 +40,13 @@
         type: String,
         default: 'components.import.fileDrop',
       },
+      multiple: {
+        type: Boolean,
+        default: true,
+      },
     },
-    setup(_p, { emit }) {
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
       const isDragging = ref(false);
 
       return {
@@ -47,7 +58,7 @@
             for (let i = 0; i < event.dataTransfer.files.length; i++) {
               files.push(event.dataTransfer.files[i]);
             }
-            emit('update:modelValue', files);
+            emit('update:modelValue', props.multiple ? files : files[0]);
           }
         },
       };
@@ -57,13 +68,13 @@
 
 <style scoped lang="scss">
   .drop-field {
-    outline: 4px dashed var(--v-base-base);
+    outline: 4px dashed rgb(var(--v-theme-base));
     outline-offset: -8px;
-    background-color: var(--v-base-lighten4);
+    background-color: rgb(var(--v-theme-base-lighten-4));
   }
 
   .dragging {
-    outline-color: var(--v-primary-base);
-    background-color: var(--v-base-lighten1);
+    outline-color: rgb(var(--v-theme-primary));
+    background-color: rgb(var(--v-theme-base-lighten-1));
   }
 </style>

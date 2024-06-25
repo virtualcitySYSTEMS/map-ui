@@ -1,5 +1,5 @@
 <template>
-  <component
+  <v-text-field
     ref="textFieldRef"
     variant="outlined"
     clear-icon="$close"
@@ -10,7 +10,6 @@
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
-    :is="inputComponent"
     v-model="visibleValue"
   >
     <template #append-inner v-if="unit">
@@ -35,93 +34,22 @@
       :location="tooltipPosition"
       :text="tooltip"
     ></v-tooltip>
-  </component>
+  </v-text-field>
 </template>
 
 <style lang="scss" scoped>
-  :deep(.v-field) {
-    --v-field-padding-start: 8px;
-    --v-field-padding-end: 8px;
-  }
-  .v-input--density-compact :deep(.v-field) {
-    --v-input-control-height: calc(var(--v-vcs-item-height) - 8px);
-    --v-field-padding-bottom: 0px;
-    --v-field-input-padding-top: 0px;
-    --v-input-padding-top: 0px;
-  }
-
-  :deep(.v-field--focused .v-field__outline *) {
-    --v-field-border-width: 1px;
-  }
-  // set the border color on focused to primary, but not on error
-  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *) {
-    border-color: rgb(var(--v-theme-primary));
-  }
-  // Not color, just used if label is given
-  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *::after) {
-    border-color: rgb(var(--v-theme-primary));
-  }
-
-  // remove outline, if not focused, hovered or an error
-  :deep(.v-field:not(.v-field--focused):not(.v-field--error):not(:hover)) {
-    .v-field__outline * {
-      border-width: 0 0 1px 0;
-      border-radius: 0;
-    }
-    .v-field__outline {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-    .v-field__loader {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-    .v-field__outline *::before {
-      border-width: 0;
-      border-radius: 0;
-    }
-    .v-field__outline * label {
-      color: rgb(var(--v-theme-primary));
-      margin-left: -4px;
-    }
-  }
-
-  // remove margin from prepended Icon
-  .v-input--horizontal :deep(.v-input__prepend) {
-    margin-inline-end: 4px;
-  }
-  .primary--placeholder {
-    :deep(input::placeholder) {
-      color: rgb(var(--v-theme-primary));
-      font-style: italic;
-      opacity: 1;
-      padding: 0 3px 0 0;
-    }
-    :deep(input::-moz-placeholder) {
-      font-style: initial;
-    }
-  }
-  // remove details
-  :deep(.v-input__details) {
-    display: none;
-  }
-
-  // Progress Bar
-  :deep(.v-field__loader) {
-    top: calc(100% - 2px);
-  }
+  @import './vcsTextField.scss';
 </style>
-
 <script>
   import { computed, ref } from 'vue';
-  import { VTextField, VFileInput, VTooltip } from 'vuetify/components';
+  import { VTextField, VTooltip } from 'vuetify/components';
   import { usePadding } from './composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
    * Provides VcsTooltip to
    * - show error messages on focus
-   * - show tooltips, if supplied, when hovered over append-icon
+   * - show tooltips, if no error messages are available
    * When clicking esc key, previous input is restored.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the tooltip.
    * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
@@ -134,7 +62,6 @@
     components: {
       VTooltip,
       VTextField,
-      VFileInput,
     },
     props: {
       tooltip: {
@@ -158,12 +85,6 @@
       const textFieldRef = ref();
       const errorTooltipRef = ref();
 
-      const inputComponent = computed(() => {
-        if (attrs.type === 'file') {
-          return 'VFileInput';
-        }
-        return 'VTextField';
-      });
       const visibleValue = computed({
         get() {
           if (
@@ -197,7 +118,6 @@
 
       return {
         paddingProvided,
-        inputComponent,
         visibleValue,
         rules,
         textFieldRef,

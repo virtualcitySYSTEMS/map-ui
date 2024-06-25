@@ -138,10 +138,10 @@
               <VcsLabel html-for="fileInput"> File input </VcsLabel>
             </v-col>
             <v-col>
-              <VcsTextField
+              <VcsFileInput
                 id="fileInput"
-                type="file"
                 multiple
+                tooltip="Click to select a file."
                 v-model="state.files"
               />
             </v-col>
@@ -484,6 +484,7 @@
     VcsRadio,
     VcsFormButton,
     VcsTextField,
+    VcsFileInput,
     VcsChipArrayInput,
     VcsFormattedNumber,
     VcsFormSection,
@@ -507,6 +508,7 @@
       VcsFormButton,
       VcsSelect,
       VcsTextField,
+      VcsFileInput,
       VcsCheckbox,
       VcsRadio,
       VcsFormattedNumber,

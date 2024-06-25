@@ -243,6 +243,7 @@ export { default as VcsFormSection } from './src/components/form-inputs-controls
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
+export { default as VcsFileInput } from './src/components/form-inputs-controls/VcsFileInput.vue';
 export { default as VcsChipArrayInput } from './src/components/form-inputs-controls/VcsChipArrayInput.vue';
 export { default as VcsCoordinate } from './src/components/form-inputs-controls/VcsCoordinate.vue';
 export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
@@ -298,5 +299,5 @@ export {
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
-export { default as FileDrop } from './src/components/import/FileDrop.vue';
-export { default as ImportComponent } from './src/components/import/ImportComponent.vue';
+export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
+export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';

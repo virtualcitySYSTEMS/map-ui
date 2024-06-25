@@ -1,12 +1,17 @@
 <template>
   <v-card flat class="pa-2">
-    <file-drop elevation="4" height="60px" v-model="files" />
-    <vcs-text-field
-      type="file"
+    <vcs-file-drop
+      elevation="4"
+      :height="2 * useItemHeight().value"
+      :multiple="multiple"
       v-model="files"
+    />
+    <vcs-file-input
       :loading="loading"
       :multiple="multiple"
       :accept="fileTypes.join(',')"
+      v-bind="noListenerAttrs"
+      v-model="files"
     />
     <div class="d-flex justify-end gc-1 mx-3 pt-2 pb-1">
       <vcs-form-button @click="$emit('close')">
@@ -25,19 +30,22 @@
 <script>
   import { VCard } from 'vuetify/components';
   import { computed, inject, ref } from 'vue';
-  import FileDrop from './FileDrop.vue';
+  import { removeListenersFromAttrs } from '../attrsHelpers.js';
+  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import VcsFileDrop from './VcsFileDrop.vue';
   import VcsFormButton from '../buttons/VcsFormButton.vue';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsFileInput from '../form-inputs-controls/VcsFileInput.vue';
   import { NotificationType } from '../../notifier/notifier.js';
 
   /**
+   * A component providing an import functionality for files
    * @vue-prop {function(Array<File>):boolean} importFiles - the callback to
-   * @vue-prop {string[]} [fileTypes=[]]
-   * @vue-prop {boolean} [multiple=false]
+   * @vue-prop {string[]} [fileTypes=[]] - accepted file types, see https://html.spec.whatwg.org/multipage/input.html#attr-input-accept
+   * @vue-prop {boolean} [multiple=true] - allows or disallows importing multiple files at once
    */
   export default {
-    name: 'ImportComponent',
-    components: { VcsFormButton, VcsTextField, VCard, FileDrop },
+    name: 'VcsImportComponent',
+    components: { VcsFormButton, VcsFileInput, VCard, VcsFileDrop },
     props: {
       importFiles: {
         type: Function,
@@ -52,7 +60,7 @@
         default: true,
       },
     },
-    setup(props, { emit }) {
+    setup(props, { attrs, emit }) {
       const app = inject('vcsApp');
       const localFiles = ref([]);
       const loading = ref(false);
@@ -68,9 +76,13 @@
         },
       });
 
+      const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
+
       return {
         files,
         loading,
+        noListenerAttrs,
+        useItemHeight,
         async doImport() {
           loading.value = true;
           try {

@@ -2,8 +2,8 @@ import { reactive, watch } from 'vue';
 import { check } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import { parseGeoJSON } from '@vcmap/core';
+import VcsImportComponent from '../components/import/VcsImportComponent.vue';
 import { createToggleAction } from './actionHelper.js';
-import ImportComponent from '../components/import/ImportComponent.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { NotificationType } from '../notifier/notifier.js';
@@ -228,7 +228,7 @@ export function createListImportAction(
     {
       id: `list-import`,
       parentId,
-      component: ImportComponent,
+      component: VcsImportComponent,
       slot: WindowSlot.DYNAMIC_CHILD,
       state: {
         headerTitle: `list.import`,

@@ -4,9 +4,9 @@
     variant="outlined"
     clear-icon="$close"
     :rows="$attrs.rows"
-    class="ma-0 py-1 primary--placeholder"
+    class="primary--placeholder"
     :class="{
-      'py-1': !noPadding,
+      'py-1': !paddingProvided,
     }"
     v-bind="{ ...$attrs }"
   >
@@ -127,22 +127,16 @@
 <script>
   import { ref } from 'vue';
   import { VTextarea, VTooltip } from 'vuetify/components';
+  import { usePadding } from './composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
-   * Provides two default height options depending on "dense" property:
-   * - if dense is set true (default), height is 72 px (3 rows each 24 px)
-   * - if dense is set false, height is 120 px (5 rows each 24 px)
    * Default for number of rows can be overwritten using the vuetify API.
    * Provides VcsTooltip to
    * - show error messages on focus
-   * - show tooltips, if supplied, when hovered over append-icon
+   * - show tooltips, if no error messages are available
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
-   * @vue-computed {boolean}                            isClearable - Whether textarea is isClearable. Makes sure icon is only shown on focus, hover or error.
-   * @vue-computed {boolean}                            isDense - Whether size of textarea is dense.
-   * @vue-computed {boolean}                            isError - Whether errorBucket is not empty and textarea was focused at least once.
-   * @vue-computed {boolean}                            isOutlined - Textarea is outlined on either hover, focus or error, if not disabled.
-   * @vue-computed {Array<string>}                      joinedErrorBucket - errorBucket + errorMessages of child v-text-field.
+   * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
    */
   export default {
     name: 'VcsTextArea',
@@ -159,18 +153,17 @@
         type: String,
         default: 'right',
       },
-      noPadding: {
-        type: Boolean,
-        default: false,
-      },
     },
-    setup() {
+    setup(_p, { attrs }) {
       const textAreaRef = ref();
       const errorTooltipRef = ref();
+
+      const paddingProvided = usePadding(attrs);
 
       return {
         textAreaRef,
         errorTooltipRef,
+        paddingProvided,
       };
     },
   };

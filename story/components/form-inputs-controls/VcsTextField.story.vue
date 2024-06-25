@@ -8,7 +8,6 @@
   const textValue = ref('short Text');
   const numberValue = ref(2.555);
   const clearable = ref(true);
-  const fileValue = ref([]);
 </script>
 
 <template>
@@ -21,8 +20,6 @@
       <VcsTextField
         v-bind="{ ...state.bind }"
         type="text"
-        prepend-icon="mdi-map-marker"
-        label="Label"
         v-model="textValue"
         :clearable="clearable"
         :rules="[(v) => v.length > 10 || 'Input length is wrong']"
@@ -46,24 +43,6 @@
       <template #controls>
         <GlobalControls v-model="state">
           <HstNumber title="modelValue" v-model="numberValue"></HstNumber>
-          <HstCheckbox title="clearable" v-model="clearable"></HstCheckbox>
-        </GlobalControls>
-      </template>
-    </Variant>
-    <Variant title="FileInput">
-      <VcsTextField
-        v-bind="{ ...state.bind }"
-        type="file"
-        multiple
-        counter
-        v-model="fileValue"
-        :clearable="clearable"
-        :rules="[(v) => v.length > 8 || 'Input length is small than 8']"
-      >
-        <template #append> "TEST" </template>
-      </VcsTextField>
-      <template #controls>
-        <GlobalControls v-model="state">
           <HstCheckbox title="clearable" v-model="clearable"></HstCheckbox>
         </GlobalControls>
       </template>

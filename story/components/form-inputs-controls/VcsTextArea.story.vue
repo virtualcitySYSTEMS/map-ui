@@ -10,18 +10,12 @@
 </script>
 
 <template>
-  <Story
-    title="VcsTextArea"
-    :meta="{ wrapper: { ...state.wrapper } }"
-    :layout="{ type: 'grid', width: '100%' }"
-  >
+  <Story title="VcsTextArea" :meta="{ wrapper: { ...state.wrapper } }">
     <Variant title="Text">
       <VcsTextArea
-        prepend-icon="mdi-map-marker"
-        label="Label"
-        :clearable="clearable"
         v-bind="{ ...state.bind }"
         v-model="textValue"
+        :clearable="clearable"
       />
       <template #controls>
         <GlobalControls v-model="state">
