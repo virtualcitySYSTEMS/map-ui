@@ -7,24 +7,19 @@
     min-width="290px"
   >
     <template #activator="{ props }">
-      <v-text-field
-        v-model="formattedDate"
+      <VcsTextField
         :placeholder="formatDate(new Date().toISOString())"
-        v-bind="props"
         :prepend-icon="icon"
-        :density="isDense ? 'compact' : undefined"
         readonly
         hide-details
         class="ma-0 py-1"
-        :class="{
-          'input--dense': isDense,
-          'input--not-dense': !isDense,
-        }"
+        v-bind="props"
+        v-model="formattedDate"
       />
     </template>
     <v-date-picker
       v-model="date"
-      no-title
+      hide-header
       @update:model-value="menuOpen = false"
       color="primary"
     >
@@ -36,32 +31,18 @@
     </v-date-picker>
   </v-menu>
 </template>
-<style lang="scss" scoped>
-  :deep(.v-input__control) {
-    padding: 0 4px;
-  }
-  :deep(.v-input__prepend-outer) {
-    margin-right: 4px;
-  }
-  :deep(.v-icon) {
-    font-size: 16px;
-  }
-</style>
+<style lang="scss" scoped></style>
 <script>
-  import {
-    computed,
-    ref,
-    watch,
-    inject,
-    onUnmounted,
-    onBeforeMount,
-  } from 'vue';
-  import { VMenu, VTextField, VDatePicker, VBtn } from 'vuetify/components';
+  import { computed, ref, watch, onBeforeMount } from 'vue';
+  import { VMenu, VDatePicker, VBtn } from 'vuetify/components';
+  import { useI18n } from 'vue-i18n';
+  import { getLogger } from '@vcsuite/logger';
+  import VcsTextField from './VcsTextField.vue';
+
   /**
    * @description stylized wrapper around {@link https://v15.vuetifyjs.com/en/components/date-pickers/#month-pickers-in-dialog-and-menu}.
    * @vue-prop {string} modelValue - value of the date picker in {@link https://tc39.es/ecma262/#sec-date-time-string-format | Date Time String Format}
-   * @vue-prop {string} icon - specify optional prepend icon, defaults to mdi-calendar
-   * @vue-event {string} input - raised when calendar date is selected
+   * @vue-prop {string} [icon] - specify optional prepend icon, defaults to mdi-calendar
    */
   export default {
     name: 'VcsDatePicker',
@@ -77,41 +58,32 @@
     },
     components: {
       VMenu,
-      VTextField,
+      VcsTextField,
       VDatePicker,
       VBtn,
     },
-    setup(props, { emit, attrs }) {
-      /**
-       * @type {import("@vcmap/ui").VcsUiApp}
-       */
-      const app = /** @type {import("@vcmap/ui").VcsUiApp} */ (
-        inject('vcsApp')
-      );
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+      const i18n = useI18n();
       const localValue = ref(props.modelValue);
       const menuOpen = ref(false);
-      const locale = ref(app.locale);
-
-      const isDense = computed(() => attrs.dense !== false);
 
       const isValid = (date) => !Number.isNaN(date.getTime());
       const setFromValue = () => {
         if (isValid(props.modelValue)) {
           localValue.value = props.modelValue;
         } else if (localValue.value) {
-          // eslint-disable-next-line no-console
-          console.error('Invalid date provided: ', props.modelValue);
+          getLogger('VcsDatePicker').error(
+            'Invalid date provided: ',
+            props.modelValue,
+          );
         }
       };
       onBeforeMount(() => setFromValue());
-      const destroyLocaleChanged = app.localeChanged.addEventListener(() => {
-        locale.value = app.locale;
-      });
-      onUnmounted(() => destroyLocaleChanged());
 
       const formatDate = (date) => {
         if (date) {
-          return new Intl.DateTimeFormat(locale.value, {
+          return new Intl.DateTimeFormat(i18n.locale.value, {
             dateStyle: 'short',
           }).format(Date.parse(date));
         }
@@ -142,10 +114,8 @@
       return {
         formattedDate,
         date,
-        isDense,
         menuOpen,
         formatDate,
-        locale,
         goToToday,
       };
     },
