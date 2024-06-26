@@ -2,7 +2,8 @@
   <v-container class="fill-height pa-0" absolute fluid>
     <VcsSplashScreen
       v-if="splashScreen"
-      :text-page="splashScreen"
+      v-model="splashScreenRef"
+      :options="splashScreen"
       :window-id="'splashScreen'"
     ></VcsSplashScreen>
     <VcsNavbar />
@@ -51,6 +52,7 @@
     onMounted,
     onUnmounted,
     provide,
+    ref,
     watch,
   } from 'vue';
   import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
@@ -73,9 +75,7 @@
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
-  import VcsSplashScreen, {
-    createSplashScreenAction,
-  } from './VcsSplashScreen.vue';
+  import VcsSplashScreen from './VcsSplashScreen.vue';
   import VcsCustomScreen from './VcsCustomScreen.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
@@ -287,7 +287,9 @@
             },
             slot: WindowSlot.DETACHED,
             position: customScreen.windowPosition,
-            props: customScreen,
+            props: {
+              content: customScreen.content,
+            },
           },
           app.windowManager,
           vcsAppSymbol,
@@ -327,16 +329,20 @@
   /**
    * This helper function will add a Splash Screen action button to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
+   * @param {import("vue").Ref} splashScreenRef
+   * @returns {WatchStopHandle}
    */
-
-  function setupSplashScreen(app) {
+  function setupSplashScreen(app, splashScreenRef) {
     function setupSplashScreenAction() {
       const { splashScreen } = app.uiConfig.config.value;
-      const splashScreenAction = createSplashScreenAction({
+      const splashScreenAction = {
         name: splashScreen.name || 'components.splashScreen.name',
         icon: splashScreen.icon || 'mdi-alert-box',
         title: splashScreen.title,
-      });
+        callback() {
+          splashScreenRef.value = !splashScreenRef.value;
+        },
+      };
       app.navbarManager.add(
         {
           id: 'splashScreenToggle',
@@ -659,7 +665,8 @@
       const legendDestroy = setupLegendWindow(app);
       const settingsDestroy = setupSettingsWindow(app);
       const stopCustomScreen = setupCustomScreen(app);
-      const stopSplashScreen = setupSplashScreen(app);
+      const splashScreenRef = ref(true);
+      const stopSplashScreen = setupSplashScreen(app, splashScreenRef);
       setupHelpButton(app);
       const destroyComponentsWindow = setupCategoryManagerWindow(app);
       const destroyThemingListener = setupUiConfigTheming(
@@ -717,6 +724,7 @@
           }
           return undefined;
         }),
+        splashScreenRef,
         splashScreen: computed(() => {
           if (app.uiConfig.config.value.splashScreen) {
             return {

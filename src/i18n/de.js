@@ -146,6 +146,9 @@ const messages = {
     },
     splashScreen: {
       name: 'Splash Screen',
+      checkBoxText:
+        'Bitte akzeptieren sie die [Bedingungen](https://vc.systems/) um Fortzufahren',
+      buttonTitle: 'Weiter',
     },
     customScreen: {
       name: 'Benutzerdefinierter Screen',

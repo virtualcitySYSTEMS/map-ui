@@ -1,10 +1,11 @@
 <template>
   <v-dialog
-    v-model="dialog"
-    :width="textPage.position.width"
-    :height="textPage.position.height"
-    :max-width="textPage.position.maxWidth"
-    :max-height="textPage.position.maxHeight"
+    v-if="options"
+    v-model="localValue"
+    :width="position.width"
+    :height="position.height"
+    :max-width="position.maxWidth"
+    :max-height="position.maxHeight"
     persistent
   >
     <v-card>
@@ -55,21 +56,11 @@
     VRow,
     VCol,
   } from 'vuetify/lib';
-  import { computed, getCurrentInstance, ref } from 'vue';
+  import { computed, getCurrentInstance, ref, watch } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
-
-  const dialog = ref(true);
-  export function createSplashScreenAction(options) {
-    return {
-      ...options,
-      callback() {
-        dialog.value = true;
-      },
-    };
-  }
 
   export default {
     name: 'VcsSplashScreen',
@@ -85,42 +76,58 @@
       VCol,
     },
     props: {
-      textPage: {
-        type: Object,
-        default: () => {},
+      value: {
+        type: Boolean,
+        default: false,
       },
-      windowId: {
-        type: String,
+      options: {
+        type: Object,
         required: true,
       },
     },
-    setup(props) {
+    setup(props, { emit }) {
+      const localValue = ref(props.value);
+      watch(
+        () => props.value,
+        (newValue) => {
+          localValue.value = newValue;
+        },
+      );
       const vm = getCurrentInstance().proxy;
       const splashScreenText = computed(() => {
-        const translatedContent = vm.$t(props.textPage.content);
+        const translatedContent = vm.$t(props.options.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
-      const buttonTitle = vm.$t(props.textPage.buttonTitle);
+      const buttonTitle = vm.$t(props.options.buttonTitle);
 
       const splashScreenCheckboxText = computed(() => {
-        const translatedContent = vm.$t(props.textPage.checkBoxText);
+        const translatedContent = vm.$t(props.options.checkBoxText);
         return parseAndSanitizeMarkdown(translatedContent);
       });
 
-      const acceptInput = ref(props.textPage.acceptInput);
+      const acceptInput = ref(props.options.acceptInput);
       const checkBox = ref(!acceptInput.value);
       const exitScreen = () => {
-        dialog.value = false;
+        localValue.value = false;
+        emit('input', localValue.value);
       };
 
+      const position = computed(() => ({
+        width: props.options.position?.width || 800,
+        height: props.options.position?.width || 500,
+        maxWidth: props.options.position?.maxWidth,
+        maxHeight: props.options.position?.maxHeight,
+      }));
+
       return {
-        dialog,
+        localValue,
         exitScreen,
         splashScreenText,
         splashScreenCheckboxText,
         checkBox,
         acceptInput,
         buttonTitle,
+        position,
       };
     },
   };
