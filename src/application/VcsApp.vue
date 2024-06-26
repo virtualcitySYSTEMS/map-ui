@@ -292,9 +292,6 @@
           app.windowManager,
           vcsAppSymbol,
         );
-      if (app.navbarManager.has('customScreenToggle')) {
-        app.navbarManager.remove('customScreenToggle');
-      }
       app.navbarManager.add(
         {
           id: 'customScreenToggle',
@@ -311,6 +308,9 @@
     const stopCustomScreenWatcher = watch(
       () => app.uiConfig.config.value.customScreen,
       (newCustomScreen) => {
+        if (app.navbarManager.has('customScreenToggle')) {
+          app.navbarManager.remove('customScreenToggle');
+        }
         if (newCustomScreen) {
           customScreen = setupCustomScreenAction();
         }
@@ -337,9 +337,6 @@
         icon: splashScreen.icon || 'mdi-alert-box',
         title: splashScreen.title,
       });
-      if (app.navbarManager.has('splashScreenToggle')) {
-        app.navbarManager.remove('splashScreenToggle');
-      }
       app.navbarManager.add(
         {
           id: 'splashScreenToggle',
@@ -353,7 +350,10 @@
     return watch(
       () => app.uiConfig.config.value.splashScreen,
       (newSplashScreen) => {
-        if (newSplashScreen) {
+        if (app.navbarManager.has('splashScreenToggle')) {
+          app.navbarManager.remove('splashScreenToggle');
+        }
+        if (newSplashScreen && newSplashScreen.menuEntry) {
           setupSplashScreenAction();
         }
       },

@@ -23,24 +23,6 @@
       }
     },
     {
-      "name": "splashScreen",
-      "value": {
-        "content": "MySplashScreen.content",
-        "icon": "mdi-alert-box",
-        "name": "MyCustomScreen.name",
-        "acceptInput": true,
-        "menuEntry": true,
-        "checkBoxText": "MySplashScreen.checkBoxText",
-        "buttonTitle": "MySplashScreen.buttonTitle",
-        "position": {
-          "width": "800px",
-          "height": "500px",
-          "maxWidth": "800px",
-          "maxHeight": "500px"
-        }
-      }
-    },
-    {
       "name": "customScreen",
       "value": {
         "content": "MyCustomScreen.content",
