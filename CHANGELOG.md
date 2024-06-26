@@ -1,3 +1,8 @@
+# 5.3.1
+
+- Fixes Bug in `splashScreen`
+- Added @vcmap/walk plugin
+
 # 5.3
 
 - Added new uiConfig options `splashScreen` and `customScreen` to allow showing splashscreens or additional help screens
