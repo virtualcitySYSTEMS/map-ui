@@ -1,14 +1,18 @@
 <script setup>
   import { getStoryState } from '../../setup.js';
-  import VcsButton from '../../../src/components/buttons/VcsButton.vue';
+  import VcsToolButton from '../../../src/components/buttons/VcsToolButton.vue';
   import GlobalControls from '../../controls/GlobalControls.vue';
 
   const state = getStoryState('$vcs3d', 'row');
 </script>
 
 <template>
-  <Story title="Buttons/VcsButton" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsButton v-bind="{ ...state.bind }" :icon="state.icon"></VcsButton>
+  <Story
+    title="Buttons/VcsToolButton"
+    :meta="{ wrapper: { ...state.wrapper } }"
+  >
+    <VcsToolButton :icon="state.icon" v-bind="{ ...state.bind }">
+    </VcsToolButton>
     <template #controls>
       <GlobalControls v-model="state" with-icon></GlobalControls>
     </template>

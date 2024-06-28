@@ -1,99 +1,86 @@
 <template>
-  <div class="vcs-button-wrap">
-    <v-btn
-      size="16px"
-      min-width="auto"
-      v-if="!tooltip"
-      variant="text"
-      :color="appliedColor"
-      :disabled="disabled"
-      class="vcs-button pa-0"
-      :class="customClasses.join(' ')"
-      :ripple="false"
-      elevation="0"
-      v-bind="{ ...$attrs }"
-    >
-      <v-icon size="16" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+  <v-btn
+    :min-height="minHeight"
+    min-width="auto"
+    variant="text"
+    :color="appliedColor"
+    :disabled="disabled"
+    class="vcsButton"
+    elevation="0"
+    density="compact"
+    size="small"
+    v-bind="{ ...$attrs }"
+  >
+    <template #default="scope">
+      <v-tooltip
+        activator="parent"
+        v-if="tooltip"
+        :text="tooltip"
+        :location="tooltipPosition"
+      />
+      <v-icon :size="iconSize" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
       </v-icon>
-      <slot />
-    </v-btn>
-    <VcsTooltip
-      v-else
-      :tooltip="tooltip"
-      :tooltip-position="tooltipPosition"
-      v-bind="{ ...tooltipProps }"
-    >
-      <template #activator="{ props }">
-        <v-btn
-          size="16px"
-          min-width="auto"
-          variant="text"
-          :color="appliedColor"
-          :disabled="disabled"
-          class="vcs-button pa-0"
-          :class="customClasses.join(' ')"
-          :ripple="false"
-          elevation="0"
-          v-bind="{ ...$attrs, ...props }"
-        >
-          <v-icon size="16" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
-            {{ icon }}
-          </v-icon>
-          <slot />
-        </v-btn>
-      </template>
-    </VcsTooltip>
-    <VcsBadge
-      v-if="hasUpdate"
-      :color="'bg-warning'"
-      class="position-absolute"
-    />
-  </div>
+      <VcsBadge
+        v-if="hasUpdate"
+        :color="'bg-warning'"
+        class="position-absolute"
+      />
+      <slot name="default" v-bind="scope ?? {}" />
+    </template>
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+  </v-btn>
 </template>
 
 <style lang="scss" scoped>
-  .vcs-button-wrap {
-    position: relative;
-    display: inline-block;
-  }
   .badge {
     top: -3px;
     right: -3px;
   }
   .v-btn {
-    &.vcs-button {
+    padding: 0px;
+    &.vcsButton {
       &:hover {
         color: rgb(var(--v-theme-primary-lighten-1)) !important;
       }
     }
+    &.v-btn--disabled {
+      opacity: var(--v-disabled-opacity);
+    }
+    :deep(.v-btn__loader > .v-progress-circular) {
+      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+    }
+  }
+  // remove hover shadow over button
+  :deep(.v-btn__overlay) {
+    --v-hover-opacity: 0;
   }
 </style>
 
 <script>
-  import { VBtn, VIcon } from 'vuetify/components';
+  import { computed } from 'vue';
+  import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
+  import { useForwardSlots } from '../form-inputs-controls/composables.js';
 
   /**
-   * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn} using {@link VcsTooltip}.
+   * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn}.
    * @vue-prop {boolean}                                active - State of the button. Applies set color or vuetify primary color in active state.
+   * @vue-prop {boolean}                                disabled - Whether button is disabled.
    * @vue-prop {string}                                 color - Passes property to v-btn in case prop active is true.
-   * @vue-prop {boolean}                                disabled
    * @vue-prop {boolean}                                hasUpdate - Whether the button shows a badge in the top right.
    * @vue-prop {string}                                 icon - When given, will display an icon in the button. Replaces vuetify icon property.
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
-   * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to VcsTooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
-   * @vue-prop {string[]}                               [customClasses] - CSS classes to customize style
-   * @vue-computed {string}                             appliedColor - color applied to button, depending on active state
-   * @vue-computed {boolean}                            hasDefaultSlot
-   * @vue-event {MouseEvent}                            click - Emits click event when the button is clicked.
    */
   export default {
     name: 'VcsButton',
     components: {
-      VcsTooltip,
+      VTooltip,
       VcsBadge,
       VBtn,
       VIcon,
@@ -104,13 +91,13 @@
         type: Boolean,
         default: false,
       },
-      color: {
-        type: String,
-        default: undefined,
-      },
       disabled: {
         type: Boolean,
         default: false,
+      },
+      color: {
+        type: String,
+        default: undefined,
       },
       hasUpdate: {
         type: Boolean,
@@ -128,26 +115,33 @@
         type: String,
         default: 'bottom',
       },
-      tooltipProps: {
-        type: Object,
-        default: () => ({}),
-      },
-      customClasses: {
-        type: Array,
-        default: () => [],
-      },
     },
-    computed: {
-      appliedColor() {
-        if (this.active) {
-          return this.color ? this.color : 'primary';
+    setup(props, { slots }) {
+      const appliedColor = computed(() => {
+        if (props.active && !props.disabled) {
+          return props.color ? props.color : 'primary';
         } else {
           return null;
         }
-      },
-      hasDefaultSlot() {
-        return !!this.$slots?.default?.[0]?.text?.trim();
-      },
+      });
+      const forwardSlots = useForwardSlots(slots, ['default']);
+      const hasDefaultSlot = computed(() => {
+        return !!slots?.default;
+      });
+      const fontSize = useFontSize();
+      const minHeight = computed(() => {
+        return fontSize.value * 1.5;
+      });
+      const iconSize = computed(() => {
+        return fontSize.value * (1.2 + 0.1 / 3);
+      });
+      return {
+        forwardSlots,
+        hasDefaultSlot,
+        appliedColor,
+        iconSize,
+        minHeight,
+      };
     },
   };
 </script>

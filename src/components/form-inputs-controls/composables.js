@@ -45,3 +45,15 @@ export function usePadding(attrs) {
     return false;
   });
 }
+
+/**
+ * returns only the slotNames which are not excluded as a computed.
+ * @param {import("vue").Slots} slots
+ * @param {Array<string>} exclude
+ * @returns {import("vue").ComputedRef<Array<string>>}
+ */
+export function useForwardSlots(slots, exclude = []) {
+  return computed(() => {
+    return Object.keys(slots).filter((slotName) => !exclude.includes(slotName));
+  });
+}

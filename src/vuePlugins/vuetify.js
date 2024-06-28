@@ -98,6 +98,9 @@ export function createVcsVuetify(i18n) {
   return createVuetify({
     treeShake: false,
     defaults: {
+      VBtn: {
+        ripple: false,
+      },
       VIcon: {
         size: 16,
       },
@@ -200,5 +203,18 @@ export function useItemHeight() {
     const itemHeight = theme.current.value.variables['vcs-item-height'] ?? 32;
     // get rid of `px`
     return Number.parseFloat(itemHeight);
+  });
+}
+
+/**
+ * returns the fontSize as a number
+ * @returns {import("vue").ComputedRef<number>}
+ */
+export function useFontSize() {
+  const theme = useTheme();
+  return computed(() => {
+    const fontSize = theme.current.value.variables['vcs-font-size'] ?? 13;
+    // get rid of `px`
+    return Number.parseFloat(fontSize);
   });
 }

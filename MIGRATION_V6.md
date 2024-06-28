@@ -36,10 +36,13 @@ themes
 
 To use these Variables they can be used in CSS with `var(--v-vcs-font-size)`
 Also CSS can be used to calculate Values `calc(var(--v-vcs-font-size) - 1px)`;
-For the item height a helper function is exported, which can be used to set size properties in html:
+For the item height and fontSize a helper function is exported, which can be used to set size properties in html:
+
+The ItemHeight should at minimum be `fontSize * 1.5 + 4px`
 
 ```vue
 <v-btn :size="useItemHeight().value - 4"></v-btn>
+<v-btn :size="useFontSize().value - 4"></v-btn>
 ```
 
 For Development the darkTheme has a larger FontSize and a large ItemHeight;
@@ -204,3 +207,37 @@ Story development can be done by calling `npm run story:dev`. This will start a 
   > // true since the proxy is added as is
   > assert(list.has(reactiveAction));
   > ```
+
+## Wrapping Vuetify Components
+
+### Slots
+
+For Wrapper Components we should forward all Slots. This can be done by using the `useForwardSlots` composable
+
+```vue
+<template>
+  <v-component>
+    // If we want to use a slot in the wrapper, we normally should forward the same slot to vuetify, this can be done in two ways.
+    <template #default="scope">
+      Custom Content which cannot be overwritten.
+      <slot name="default" v-bind="scope ?? {}" > Custom Content which will be overwritten if default content is provided </slot>
+    </template>
+    // forward all other slots which are not `default`
+    // we need to bind the scope.
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+  <v-component>
+</template>
+
+<script>
+export default {
+  setup(props, { slots }){
+    const forwardSlots = useForwardSlots(slots, ['default']);
+    return {
+      forwardSlots
+    }
+  }
+}
+</script>
+```

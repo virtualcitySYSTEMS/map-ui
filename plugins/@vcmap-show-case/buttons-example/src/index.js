@@ -24,7 +24,7 @@ export default async function buttonsExample() {
           icon: '$vcsTouch',
         },
         {
-          id: 'buttons-textfields-example',
+          id: 'buttons-buttons-example',
           component: ButtonsExample,
           slot: WindowSlot.DETACHED,
           state: {
