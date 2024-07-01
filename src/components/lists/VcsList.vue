@@ -28,7 +28,6 @@
           <vcs-action-button-list
             v-if="renderingActions?.length > 0"
             :actions="renderingActions"
-            :block-overflow="true"
             :overflow-count="actionButtonListOverflowCount"
           />
         </template>

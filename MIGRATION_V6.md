@@ -25,6 +25,8 @@
 - `ImportComponent.vue` has been renamed to `VcsImportComponent.vue` and is now exported as `VcsImportComponent`
 - `FileDrop.vue` has been renamed to `VcsFileDrop.vue` and is now exported as `VcsFileDrop`
 - `setupExtentComponentActions()` has no longer a param `disabled`. Change the disabled state on the returned actions instead.
+- VcsActionButtonList
+  - removed `blockOverflow` property
 
 # Extended Theming
 

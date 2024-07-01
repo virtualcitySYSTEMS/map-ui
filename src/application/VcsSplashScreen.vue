@@ -98,7 +98,6 @@
         const translatedContent = vm.$st(props.options.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
-      const buttonTitle = vm.$st(props.textPage.buttonTitle);
 
       const splashScreenCheckboxText = computed(() => {
         const translatedContent = vm.$st(props.options.checkBoxText);

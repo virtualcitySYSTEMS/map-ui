@@ -73,7 +73,6 @@
       <VcsActionButtonList
         v-if="item.actions?.length > 0"
         :actions="item.actions"
-        :block-overflow="true"
         :overflow-count="3"
         :disabled="item.disabled"
         right

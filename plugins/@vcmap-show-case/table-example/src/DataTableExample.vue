@@ -60,7 +60,6 @@
         <VcsActionButtonList
           v-if="item.actions"
           :actions="item.actions"
-          :block-overflow="true"
           :overflow-count="2"
         />
       </template>

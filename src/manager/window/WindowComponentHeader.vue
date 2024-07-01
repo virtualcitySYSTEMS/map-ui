@@ -24,7 +24,7 @@
           :actions="windowState.headerActions"
           :overflow-count="windowState.headerActionsOverflow ?? 3"
         />
-        <v-divider vertical inset class="mx-1" />
+        <v-divider vertical inset class="mx-1 my-1" />
       </template>
       <VcsButton
         v-if="infoAction"
