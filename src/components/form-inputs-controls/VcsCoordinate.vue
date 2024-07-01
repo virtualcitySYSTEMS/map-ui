@@ -1,23 +1,25 @@
 <template>
-  <v-row no-gutters v-if="coordinate">
+  <v-row no-gutters v-if="localValue">
     <slot name="prepend" v-bind="{ ...$props }" />
-    <v-col v-for="(_, idx) in coordinate" :key="`${prefixes[idx]}-coordinate`">
-      <VcsTextField
-        :id="`${prefixes[idx]}-coordinate`"
-        :hide-spin-buttons="true"
-        type="number"
-        :min="getRangeFromExtent(idx, extent)?.[0]"
-        :max="getRangeFromExtent(idx, extent)?.[1]"
-        :step="steps[idx]"
-        :prefix="prefixes[idx]"
-        :unit="units[idx]"
-        :decimals="decimals[idx]"
-        v-bind="$attrs"
-        v-model.number="coordinate[idx]"
-        @update:model-value="emitInput(coordinate, idx)"
-        :rules="getRulesForAxis(idx)"
-      />
-    </v-col>
+    <template v-for="(_, idx) in localValue">
+      <v-col :key="`${prefixes[idx]}-coordinate`" v-if="!hideZ || idx < 2">
+        <VcsTextField
+          :id="`${prefixes[idx]}-coordinate`"
+          :hide-spin-buttons="true"
+          type="number"
+          :min="getRangeFromExtent(idx, extent)?.[0]"
+          :max="getRangeFromExtent(idx, extent)?.[1]"
+          :step="steps[idx]"
+          :prefix="prefixes[idx]"
+          :unit="units[idx]"
+          :decimals="decimals[idx]"
+          v-bind="noListenerAttrs"
+          v-model="localValue[idx]"
+          :rules="getRulesForAxis(idx)"
+        />
+      </v-col>
+    </template>
+
     <slot name="append" v-bind="{ ...$props }" />
   </v-row>
 </template>
@@ -29,6 +31,8 @@
   import { VRow, VCol } from 'vuetify/components';
   import VcsTextField from './VcsTextField.vue';
   import { between } from '../style/composables.js';
+  import { useProxiedComplexModel } from '../modelHelper.js';
+  import { removeListenersFromAttrs } from '../attrsHelpers.js';
 
   /**
    *
@@ -70,6 +74,7 @@
    */
   export default {
     name: 'VcsCoordinate',
+    inheritAttrs: false,
     components: {
       VRow,
       VCol,
@@ -110,25 +115,12 @@
       },
     },
     setup(props, { attrs, emit }) {
-      function emitInput(value) {
-        emit('update:modelValue', structuredClone(value));
-      }
-      const coordinate = computed({
-        get() {
-          return props.modelValue?.slice(0, props.hideZ ? 2 : 3);
-        },
-        set(value) {
-          emitInput(value);
-        },
-      });
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+      const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
 
       return {
-        coordinate,
-        emitInput,
-        // forwardListener(listener) {
-        //   const { input, ...rest } = listener;
-        //   return rest;
-        // },
+        localValue,
+        noListenerAttrs,
         getRangeFromExtent,
         getRulesForAxis(idx) {
           const rules = [];

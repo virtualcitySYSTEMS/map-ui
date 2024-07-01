@@ -11,6 +11,7 @@ import {
   startEditGeometrySession,
   VectorLayer,
   Viewpoint,
+  wgs84Projection,
 } from '@vcmap/core';
 import { reactive, ref, watch, nextTick } from 'vue';
 import { Feature } from 'ol';
@@ -270,7 +271,14 @@ function setupVertexAction(
  * @param {string} featureId
  */
 function syncExtentFeature(extent, layer, featureId) {
-  const extentGeometry = fromExtent(extent.value.extent);
+  const extentCoords = [...extent.value.extent];
+  // clamp coords for visualization, because at the pole Cesium has issues
+  if (extent.value.projection.epsg === wgs84Projection.epsg) {
+    extentCoords[1] = Math.max(-89, extentCoords[1]);
+    extentCoords[3] = Math.min(89, extentCoords[3]);
+  }
+
+  const extentGeometry = fromExtent(extentCoords);
   extentGeometry.transform(
     extent.value.projection.proj,
     mercatorProjection.proj,
@@ -280,18 +288,21 @@ function syncExtentFeature(extent, layer, featureId) {
     c.push(0);
   });
   coordinates[0].pop();
-  const geometry = new Polygon(coordinates, 'XYZ');
-  geometry.set('_vcsGeomType', GeometryType.BBox);
-  layer.getFeatureById(featureId).setGeometry(geometry);
+  if (layer.getFeatureById(featureId).getGeometry()) {
+    layer.getFeatureById(featureId).getGeometry().setCoordinates(coordinates);
+  } else {
+    const geometry = new Polygon(coordinates, 'XYZ');
+    geometry.set('_vcsGeomType', GeometryType.BBox);
+    layer.getFeatureById(featureId).setGeometry(geometry);
+  }
 }
 
 /**
  * @param {import("@src/vcsUiApp.js").default} app
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>|import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
- * @param {boolean} disabled
  * @returns {{ actions: Array<import("./actionHelper.js").VcsAction>, destroy: () => void, layer: import("@vcmap/core").VectorLayer, featureId: string }}
  */
-export function setupExtentComponentActions(app, extent, disabled) {
+export function setupExtentComponentActions(app, extent) {
   const layer = new VectorLayer({
     projection: mercatorProjection.toJSON(),
     zIndex: maxZIndex - 1,
@@ -320,9 +331,9 @@ export function setupExtentComponentActions(app, extent, disabled) {
   );
 
   const { action: showExtentAction, destroy: destroyShowExtent } =
-    createLayerToggleAction(layer, disabled);
+    createLayerToggleAction(layer, false);
   const { action: createExtentAction, destroy: destroyCreateExtent } =
-    createExtentFeatureAction(app, layer, extent, featureId, disabled);
+    createExtentFeatureAction(app, layer, extent, featureId, false);
   const zoomToExtentAction = createZoomToExtentAction(app, extent);
   zoomToExtentAction.title = 'components.extent.zoom';
   const { action: translateAction, destroy: destroyTranslate } =

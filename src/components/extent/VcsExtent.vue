@@ -2,7 +2,7 @@
   <v-container class="py-0 px-1">
     <v-row no-gutters v-if="modelValue.projection">
       <v-col :cols="firstCols">
-        <VcsLabel html-for="projection" dense>
+        <VcsLabel html-for="projection">
           {{ $t('components.extent.projection') }}
         </VcsLabel>
       </v-col>
@@ -10,7 +10,6 @@
         <VcsTextField
           id="projection"
           disabled
-          dense
           :model-value="modelValue.projection.epsg"
         />
       </v-col>
@@ -26,7 +25,7 @@
     >
       <template #prepend="{ prefixes }">
         <v-col :cols="firstCols">
-          <VcsLabel :html-for="`${prefixes[0]}-coordinate`" dense>
+          <VcsLabel :html-for="`${prefixes[0]}-coordinate`">
             {{ $t('components.extent.min') }}
           </VcsLabel>
         </v-col>
@@ -43,7 +42,7 @@
     >
       <template #prepend="{ prefixes }">
         <v-col :cols="firstCols">
-          <VcsLabel :html-for="`${prefixes[0]}-coordinate`" dense>
+          <VcsLabel :html-for="`${prefixes[0]}-coordinate`">
             {{ $t('components.extent.max') }}
           </VcsLabel>
         </v-col>
@@ -53,12 +52,13 @@
 </template>
 
 <script>
-  import { computed } from 'vue';
+  import { computed, toRaw } from 'vue';
   import { VCol, VContainer, VRow } from 'vuetify/components';
   import { Extent } from '@vcmap/core';
-  import VcsLabel from './VcsLabel.vue';
-  import VcsTextField from './VcsTextField.vue';
-  import VcsCoordinate from './VcsCoordinate.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   function checkInput(min, max) {
     return min < max || 'components.extent.invalid';
@@ -66,12 +66,13 @@
 
   /**
    * An input for modelling @vcmap/core ExtentOptions
-   * @vue-prop {import("@vcmap/core").ExtentOptions} modelValue - the extent options to be modeled.
-   * @vue-prop {boolean} disabled - Disable coordinate input.
+   * @vue-prop {import("@vcmap/core").ExtentOptions} [modelValue] - the extent options to be modeled.
+   * @vue-prop {boolean} [disabled=false] - Disable coordinate input.
    * @vue-prop {number} [firstCols=4] - Property to set the column distribution. Default is 4 (one-third/two-third). Use 6 for half-half.
    */
   export default {
     name: 'VcsExtent',
+    inheritAttrs: false,
     components: {
       VcsCoordinate,
       VContainer,
@@ -83,7 +84,7 @@
     props: {
       modelValue: {
         type: Object,
-        required: true,
+        default: () => new Extent().toJSON(),
       },
       disabled: {
         type: Boolean,
@@ -94,18 +95,21 @@
         default: 4,
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+
       const getCoordinate = (start, end = 4) =>
         computed({
           get() {
-            return props.modelValue.coordinates.slice(start, end);
+            return localValue.value.coordinates.slice(start, end);
           },
           set(value) {
-            const clone = structuredClone(props.modelValue);
+            const clone = structuredClone(toRaw(localValue.value));
             clone.coordinates[start] = value[0];
             clone.coordinates[end - 1] = value[1];
             if (Extent.validateOptions(clone)) {
-              emit('update:modelValue', clone);
+              localValue.value = clone;
             }
           },
         });

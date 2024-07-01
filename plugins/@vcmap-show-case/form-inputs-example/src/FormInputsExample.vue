@@ -63,7 +63,7 @@
               <VcsChipArrayInput
                 id="arrayInput"
                 type="number"
-                v-model="state.arrayInput"
+                v-model="array"
                 :rules="[arrayTest]"
               />
             </v-col>
@@ -240,39 +240,7 @@
               />
             </v-col>
           </v-row>
-          <!--          TODO prefix fails-->
-          <v-row no-gutters class="gc-2">
-            <v-col>
-              <VcsTextField
-                id="coordinateX"
-                type="number"
-                step="10"
-                prefix="X"
-                unit="cm"
-                v-model.number="state.numberInput"
-              />
-            </v-col>
-            <v-col>
-              <VcsTextField
-                id="coordinateY"
-                type="number"
-                step="10"
-                prefix="Y"
-                unit="cm"
-                v-model.number="state.numberInput"
-              />
-            </v-col>
-            <v-col>
-              <VcsTextField
-                id="coordinateZ"
-                type="number"
-                step="10"
-                unit="cm"
-                prefix="Z"
-                v-model.number="state.numberInput"
-              />
-            </v-col>
-          </v-row>
+          <VcsCoordinate v-model="array" />
         </v-container>
       </template>
     </VcsFormSection>
@@ -492,6 +460,7 @@
     VcsTextArea,
     VcsDatePicker,
     VcsSlider,
+    VcsCoordinate,
   } from '@vcmap/ui';
   import { VCol, VContainer, VForm, VRow, VIcon } from 'vuetify/components';
   import packageJSON from '../package.json';
@@ -516,6 +485,7 @@
       VcsLabel,
       VcsTextArea,
       VcsChipArrayInput,
+      VcsCoordinate,
       VForm,
       VRow,
       VCol,
@@ -546,6 +516,7 @@
       return {
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,
+        array: ref([1, 2, 3]),
         // do not put the whole config here, since it would become reactive
         selectOptions: plugin.config.selectOptions,
         form,

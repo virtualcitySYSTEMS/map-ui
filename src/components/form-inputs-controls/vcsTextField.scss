@@ -12,6 +12,7 @@
 :deep(.v-field--focused .v-field__outline *) {
   --v-field-border-width: 1px;
 }
+
 // set the border color on focused to primary, but not on error
 :deep(.v-field--focused:not(.v-field--error) .v-field__outline *) {
   border-color: rgb(var(--v-theme-primary));
@@ -43,6 +44,11 @@
     color: rgb(var(--v-theme-primary));
     margin-left: -4px;
   }
+}
+
+// move unit to the right
+:deep(.v-field--appended) {
+  padding-inline-end: 8px;
 }
 
 // remove margin from prepended Icon

@@ -110,11 +110,11 @@
   import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue';
   import { VChip, VIcon } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
+  import { usePadding } from '../composables.js';
   import { useItemHeight } from '../../vuePlugins/vuetify.js';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsTextField from './VcsTextField.vue';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
-  import { usePadding } from './composables.js';
 
   /**
    * @description Renders elements of an array as chips with an input field to edit or add new elements.

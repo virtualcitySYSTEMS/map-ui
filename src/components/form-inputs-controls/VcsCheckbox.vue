@@ -49,7 +49,7 @@
 <script>
   import { ref } from 'vue';
   import { VCheckbox, VTooltip } from 'vuetify/components';
-  import { usePadding } from './composables.js';
+  import { usePadding } from '../composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.

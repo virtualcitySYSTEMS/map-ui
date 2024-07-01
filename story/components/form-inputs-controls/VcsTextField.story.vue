@@ -8,6 +8,7 @@
   const textValue = ref('short Text');
   const numberValue = ref(2.555);
   const clearable = ref(true);
+  const applyRules = ref(true);
 </script>
 
 <template>
@@ -19,15 +20,21 @@
     <Variant title="Text">
       <VcsTextField
         v-bind="{ ...state.bind }"
-        type="text"
         v-model="textValue"
+        @update:model-value="(v) => console.log(v)"
+        type="text"
         :clearable="clearable"
-        :rules="[(v) => v.length > 10 || 'Input length is wrong']"
+        :rules="
+          applyRules
+            ? [(v) => v.length > 10 || 'Input length is wrong']
+            : undefined
+        "
       />
       <template #controls>
         <GlobalControls v-model="state">
           <HstText title="modelValue" v-model="textValue"></HstText>
           <HstCheckbox title="clearable" v-model="clearable"></HstCheckbox>
+          <HstCheckbox title="apply rules" v-model="applyRules"></HstCheckbox>
         </GlobalControls>
       </template>
     </Variant>
@@ -37,13 +44,14 @@
         type="number"
         v-model="numberValue"
         :clearable="clearable"
+        :rules="applyRules ? [(v) => v === 2 || 'input is not 2'] : undefined"
         :decimals="2"
-        :rules="[(v) => v === 2 || 'input is not 2']"
       />
       <template #controls>
         <GlobalControls v-model="state">
           <HstNumber title="modelValue" v-model="numberValue"></HstNumber>
           <HstCheckbox title="clearable" v-model="clearable"></HstCheckbox>
+          <HstCheckbox title="apply rules" v-model="applyRules"></HstCheckbox>
         </GlobalControls>
       </template>
     </Variant>

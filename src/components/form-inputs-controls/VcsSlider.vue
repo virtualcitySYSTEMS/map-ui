@@ -56,7 +56,7 @@
 <script>
   import { computed } from 'vue';
   import { VSlider } from 'vuetify/components';
-  import { usePadding } from './composables.js';
+  import { usePadding } from '../composables.js';
   import { useItemHeight } from '../../vuePlugins/vuetify.js';
 
   /**

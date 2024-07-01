@@ -135,8 +135,8 @@
 <script>
   import { VSelect, VTooltip, VListItem } from 'vuetify/components';
   import { computed, ref } from 'vue';
+  import { usePadding } from '../composables.js';
   import VcsCheckbox from './VcsCheckbox.vue';
-  import { usePadding } from './composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-select/ |vuetify select}.

@@ -193,6 +193,7 @@ const messages = {
       invalid: 'Coordinates do not result in a valid extent!',
       editVertices: 'Edit extent corners',
       translate: 'Translate extent',
+      toggle: 'Toggle extent',
     },
     editor: {
       translate: 'Translate features',

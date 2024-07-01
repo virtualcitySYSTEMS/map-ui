@@ -193,6 +193,7 @@ const messages = {
       invalid: 'Koordinaten ergeben keine valide Ausdehnung!',
       editVertices: 'Ecken bearbeiten',
       translate: 'Ausdehnung verschieben',
+      toggle: 'Extent an-/ausschalten',
     },
     editor: {
       translate: 'Objekt verschieben',

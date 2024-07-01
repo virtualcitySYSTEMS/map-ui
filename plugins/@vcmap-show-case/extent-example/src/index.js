@@ -1,15 +1,18 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
-import { Extent, VectorLayer } from '@vcmap/core';
-import { ref } from 'vue';
+import {
+  ButtonLocation,
+  createToggleAction,
+  WindowSlot,
+  VcsExtentEditor,
+} from '@vcmap/ui';
+import { Extent } from '@vcmap/core';
+import { reactive } from 'vue';
 import packageJSON from '../package.json';
-import ExtentExample from './ExtentExample.vue';
 
 /**
  * @returns {VcsPlugin}
  */
 export default async function extentExample() {
-  const sampleLayerOptions = VectorLayer.getDefaultOptions();
-  sampleLayerOptions.extent = new Extent().toJSON();
+  const modelValue = reactive(new Extent().toJSON());
 
   return {
     get name() {
@@ -30,14 +33,14 @@ export default async function extentExample() {
         },
         {
           id: 'extent-example',
-          component: ExtentExample,
+          component: VcsExtentEditor,
           slot: WindowSlot.DYNAMIC_LEFT,
           state: {
             headerTitle: 'Extent Example',
             headerIcon: '$vcsBoundingBox',
           },
           props: {
-            value: ref(sampleLayerOptions),
+            modelValue,
           },
         },
         app.windowManager,
@@ -45,18 +48,6 @@ export default async function extentExample() {
       );
       app.navbarManager.add({ action }, packageJSON.name, ButtonLocation.TOOL);
       this._destroyAction = destroy;
-    },
-    i18n: {
-      de: {
-        extentExample: {
-          title: 'Ausdehnung',
-        },
-      },
-      en: {
-        extentExample: {
-          title: 'Extent',
-        },
-      },
     },
     destroy() {
       if (this._destroyAction) {

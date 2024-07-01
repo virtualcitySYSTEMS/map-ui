@@ -56,7 +56,7 @@
 <script>
   import { ref } from 'vue';
   import { VFileInput, VTooltip } from 'vuetify/components';
-  import { usePadding } from './composables.js';
+  import { usePadding } from '../composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-file-input v-text-field}.

@@ -24,6 +24,7 @@
 - `VcsRadioGrid.vue` is removed. Use `VcsRadio` with properties `inline`, `labelPosition="top"` and `class="d-flex justify-center"` instead.
 - `ImportComponent.vue` has been renamed to `VcsImportComponent.vue` and is now exported as `VcsImportComponent`
 - `FileDrop.vue` has been renamed to `VcsFileDrop.vue` and is now exported as `VcsFileDrop`
+- `setupExtentComponentActions()` has no longer a param `disabled`. Change the disabled state on the returned actions instead.
 
 # Extended Theming
 
@@ -73,6 +74,11 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 - replace `VcsTooltip` with `v-tooltip`, see [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.
 - Make sure you set `:hide-details=false` when using `VcsTooltip` inside your component. This will ensure that the message slot is available and can be used for displaying the error tooltip.
 - Check order of `v-bind="{ ...$attrs }"`, see https://v3-migration.vuejs.org/breaking-changes/v-bind.html#_3-x-syntax the behaviour to Vue2 has changed.
+- A new `VcsExtentEditor.vue` component is exported.
+- use new helper for components:
+  - `useProxiedAtomicModel` when creating a component with an atomic model value
+  - `useProxiedComplexModel` when creating a component with an array or object model value
+  - `removeListenersFromAttrs` when binding attrs without listener
 
 # Troubleshooting & Solutions
 

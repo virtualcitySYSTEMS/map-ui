@@ -69,7 +69,7 @@
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
-  import { useForwardSlots } from '../form-inputs-controls/composables.js';
+  import { useForwardSlots } from '../composables.js';
   import { useItemHeight, useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**

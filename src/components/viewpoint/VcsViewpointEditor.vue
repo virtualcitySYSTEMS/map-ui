@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import { inject, onUnmounted, ref } from 'vue';
+  import { inject, onUnmounted, ref, toRaw } from 'vue';
   import { getLogger } from '@vcsuite/logger';
   import deepEqual from 'fast-deep-equal';
   import AbstractConfigEditor from '../plugins/AbstractConfigEditor.vue';
@@ -69,10 +69,7 @@
       );
 
       onUnmounted(() => {
-        if (
-          !cancel &&
-          !deepEqual(originalConfig, structuredClone(localConfig.value))
-        ) {
+        if (!cancel && !deepEqual(originalConfig, toRaw(localConfig.value))) {
           props.setConfig(localConfig.value);
         }
       });

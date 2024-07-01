@@ -5,12 +5,14 @@
     clear-icon="$close"
     :hide-details="false"
     :rules="rules"
+    :type="type"
     class="primary--placeholder"
     :class="{
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
     v-model="visibleValue"
+    v-model:focused="focused"
   >
     <template #append-inner v-if="unit">
       <slot name="append-inner">{{ unit }}</slot>
@@ -43,7 +45,19 @@
 <script>
   import { computed, ref } from 'vue';
   import { VTextField, VTooltip } from 'vuetify/components';
-  import { usePadding } from './composables.js';
+  import { usePadding } from '../composables.js';
+  import { useProxiedAtomicModel } from '../modelHelper.js';
+
+  function countDecimalPlaces(value) {
+    if (value) {
+      const str = value.toString();
+      const decimalIndex = str.indexOf('.');
+      if (decimalIndex > 0) {
+        return str.length - decimalIndex - 1;
+      }
+    }
+    return 0;
+  }
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-text-field v-text-field}.
@@ -64,6 +78,19 @@
       VTextField,
     },
     props: {
+      type: {
+        type: String,
+        default: 'text',
+      },
+      modelValue: {
+        type: [String, Number],
+        default(rawProps) {
+          if (rawProps.type === 'number') {
+            return 0;
+          }
+          return '';
+        },
+      },
       tooltip: {
         type: String,
         default: undefined,
@@ -81,26 +108,32 @@
         default: undefined,
       },
     },
-    setup(props, { attrs, emit }) {
+    setup(props, { attrs }) {
       const textFieldRef = ref();
       const errorTooltipRef = ref();
+      const focused = ref(attrs.autofocus);
+
+      // local value without emitting new value
+      const localValue = useProxiedAtomicModel(props, 'modelValue', () => {});
 
       const visibleValue = computed({
         get() {
           if (
-            attrs.type === 'number' &&
-            Number.isFinite(attrs.modelValue) &&
-            props.decimals >= 0
+            !focused.value &&
+            props.type === 'number' &&
+            props.decimals &&
+            countDecimalPlaces(localValue.value) > props.decimals
           ) {
-            return parseFloat(attrs.modelValue.toFixed(props.decimals));
+            const v = parseFloat(localValue.value);
+            if (Number.isFinite(v)) {
+              return v.toFixed(props.decimals);
+            }
           }
-          return attrs.modelValue ?? '';
+          return localValue.value ?? '';
         },
         set(value) {
-          if (attrs.type === 'file') {
-            emit('update:modelValue', value);
-          }
-          // emit is not needed for other types, the vuetify component already emits an @input event. (forwarded listeners)
+          localValue.value = value;
+          // emit is not needed since the vuetify component already emits an @input event. (forwarded listeners)
         },
       });
 
@@ -122,6 +155,7 @@
         rules,
         textFieldRef,
         errorTooltipRef,
+        focused,
       };
     },
   };

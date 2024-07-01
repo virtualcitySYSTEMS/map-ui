@@ -16,9 +16,8 @@
           <v-col>
             <VcsTextField
               id="name"
-              dense
               clearable
-              v-model="name"
+              v-model="localValue.name"
               :rules="nameRules"
             />
           </v-col>
@@ -32,7 +31,6 @@
           <v-col>
             <VcsTextField
               id="title"
-              dense
               clearable
               :placeholder="$t('components.viewpoint.titlePlaceholder')"
               v-model="title"
@@ -44,13 +42,12 @@
             <VcsCheckbox
               id="animate"
               label="components.viewpoint.animate"
-              dense
-              v-model="animate"
+              v-model="localValue.animate"
             />
           </v-col>
           <v-col>
             <VcsTextField
-              v-if="animate"
+              v-if="localValue.animate"
               id="duration"
               clearable
               :hide-spin-buttons="true"
@@ -58,7 +55,7 @@
               :min="1"
               unit="s"
               :title="$t('components.viewpoint.duration')"
-              v-model.number="duration"
+              v-model.number="localValue.duration"
             />
           </v-col>
         </v-row>
@@ -80,9 +77,9 @@
             </v-col>
           </v-row>
           <VcsCoordinate
-            v-model="groundPosition"
+            :model-value="localValue.groundPosition"
             :disabled="editAction.active"
-            @blur="handleInput('groundPosition')"
+            @blur="gotoViewpoint"
             @update:model-value="handleInput('groundPosition')"
             hide-z
           />
@@ -96,10 +93,10 @@
             </v-col>
           </v-row>
           <VcsCoordinate
-            v-model="cameraPosition"
+            :model-value="localValue.cameraPosition"
             :disabled="editAction.active"
-            @blur="handleInput('cameraPosition')"
-            @update:model-value="handleInput('cameraPosition')"
+            @blur="gotoViewpoint"
+            @update:model-value="(v) => handleInput('cameraPosition', v)"
           />
         </template>
         <template v-if="!isCesiumMap">
@@ -118,7 +115,7 @@
                 :decimals="2"
                 :hide-spin-buttons="true"
                 type="number"
-                v-model.number="distance"
+                v-model.number="localValue.distance"
                 :disabled="editAction.active"
                 @blur="gotoViewpoint"
                 @update:model-value="gotoViewpoint"
@@ -141,8 +138,9 @@
                   :hide-spin-buttons="true"
                   type="number"
                   unit="°"
-                  v-model.number="hpr[key].value"
                   :disabled="editAction.active"
+                  :decimals="0"
+                  v-model.number="localValue[key]"
                   @blur="gotoViewpoint"
                   @update:model-value="gotoViewpoint"
                   :rules="[isFiniteNumber]"
@@ -153,11 +151,10 @@
             <v-row no-gutters>
               <v-col cols="12">
                 <VcsSlider
-                  dense
                   height="32"
                   hide-details
                   :step="0.1"
-                  v-model="hpr[key].value"
+                  v-model="localValue[key]"
                   v-bind="hprSliderOptions[key]"
                   :disabled="editAction.active"
                   @update:model-value="gotoViewpoint"
@@ -189,38 +186,20 @@
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
-  import { usePrimitiveProperty } from '../vector-properties/composables.js';
-
-  /**
-   * @param {import("vue").emit} emit
-   * @param {import("@vcmap/core").Viewpoint} viewpoint
-   * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
-   */
-  function emitInput(emit, viewpoint, getModelValue) {
-    const clone = structuredClone(getModelValue());
-    const { name, animate, duration, ...options } = viewpoint.toJSON();
-    emit('update:modelValue', Object.assign(clone, options));
-  }
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   /**
    * Set up post render handler, if action is active.
    * If action is inactive, destroy post render handler to allow manual editing.
    * @param {import("@vcmap/ui").VcsUiApp} app
-   * @param {import("vue").emit} emit
-   * @param {() => import("@vcmap/core").ViewpointOptions} getModelValue
+   * @param {import("vue").Ref<import("vue").UnwrapRef<import("@vcmap/core").ViewpointOptions>>} localValue
    * @param {import("vue").Ref<boolean>} isCesiumMap
    * @param {boolean} startSync - whether to set up post render handler on creation
    * @returns {{action: import("../../actions/actionHelper.js").VcsAction, destroy: function():void}}
    */
-  function createEditingAction(
-    app,
-    emit,
-    getModelValue,
-    isCesiumMap,
-    startSync,
-  ) {
+  function createEditingAction(app, localValue, isCesiumMap, startSync) {
     let destroyPostRenderListener = () => {};
-    let cachedViewpoint = new Viewpoint(getModelValue());
+    let cachedViewpoint = new Viewpoint(localValue.value);
 
     function setupPostRenderListener() {
       destroyPostRenderListener();
@@ -234,7 +213,9 @@
           ) {
             return;
           }
-          emitInput(emit, viewpoint, getModelValue);
+          const options = viewpoint.toJSON();
+          options.name = localValue.value.name;
+          localValue.value = options;
           cachedViewpoint = viewpoint;
         },
       );
@@ -320,9 +301,10 @@
    * @returns {Promise<void>}
    */
   export async function gotoViewpointOptions(app, options) {
-    const clone = structuredClone(options);
-    clone.animate = false;
-    const viewpoint = new Viewpoint(clone);
+    const viewpoint = new Viewpoint({
+      ...options,
+      animate: false,
+    });
     if (app.maps.activeMap && viewpoint.isValid()) {
       await app.maps.activeMap.gotoViewpoint(viewpoint);
     }
@@ -356,7 +338,7 @@
     props: {
       modelValue: {
         type: Object,
-        default: undefined,
+        default: Viewpoint.getDefaultOptions(),
       },
       startSync: {
         type: Boolean,
@@ -387,61 +369,29 @@
         default: () => [],
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const isCesiumMap = ref(
         app.maps.activeMap?.className === CesiumMap.className,
       );
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
 
-      const name = usePrimitiveProperty(() => props.modelValue, 'name', emit);
       const title = computed({
         get() {
-          return props.modelValue?.properties?.title;
+          return localValue.value.properties?.title;
         },
         set(value) {
-          if (props.modelValue?.properties?.title !== value) {
-            const clone = props.modelValue
-              ? structuredClone(props.modelValue)
-              : {};
-            if (clone.properties) {
-              clone.properties.title = value;
+          if (localValue.value.properties?.title !== value) {
+            if (localValue.value.properties) {
+              localValue.value.properties.title = value;
             } else {
-              clone.properties = { title: value };
+              localValue.value.properties = { title: value };
             }
-            emit('update:modelValue', clone);
           }
         },
       });
-      const animate = usePrimitiveProperty(
-        () => props.modelValue,
-        'animate',
-        emit,
-      );
-      const duration = usePrimitiveProperty(
-        () => props.modelValue,
-        'duration',
-        emit,
-      );
-      const groundPosition = usePrimitiveProperty(
-        () => props.modelValue,
-        'groundPosition',
-        emit,
-      );
-      const cameraPosition = usePrimitiveProperty(
-        () => props.modelValue,
-        'cameraPosition',
-        emit,
-      );
-      const distance = usePrimitiveProperty(
-        () => props.modelValue,
-        'distance',
-        emit,
-      );
-      const hpr = {
-        heading: usePrimitiveProperty(() => props.modelValue, 'heading', emit),
-        pitch: usePrimitiveProperty(() => props.modelValue, 'pitch', emit),
-        roll: usePrimitiveProperty(() => props.modelValue, 'roll', emit),
-      };
+
       const hprSliderOptions = {
         heading: {
           min: 0,
@@ -467,15 +417,16 @@
         async callback() {
           if (app.maps.activeMap) {
             const viewpoint = await app.maps.activeMap.getViewpoint();
-            emitInput(emit, viewpoint, () => props.modelValue);
+            const options = viewpoint.toJSON();
+            options.name = localValue.value.name;
+            localValue.value = options;
           }
         },
       };
 
       const { action: editAction, destroy } = createEditingAction(
         app,
-        emit,
-        () => props.modelValue,
+        localValue,
         isCesiumMap,
         props.startSync,
       );
@@ -484,8 +435,8 @@
        * set cameraPosition for 3D if unset
        */
       const mapWatcher = watch(isCesiumMap, () => {
-        if (isCesiumMap.value && !cameraPosition.value) {
-          cameraPosition.value =
+        if (isCesiumMap.value && !localValue.value.cameraPosition) {
+          localValue.value.cameraPosition =
             app.maps.activeMap?.getViewpointSync()?.cameraPosition;
         }
       });
@@ -508,15 +459,16 @@
       });
 
       async function gotoViewpoint() {
-        await gotoViewpointOptions(app, props.modelValue);
+        await gotoViewpointOptions(app, localValue.value);
       }
 
-      async function handleInput(key) {
+      async function handleInput(key, value) {
+        localValue.value[key] = value;
         if (app.maps.activeMap) {
           if (key === 'groundPosition') {
-            cameraPosition.value = undefined;
+            localValue.value.cameraPosition = undefined;
           } else if (key === 'cameraPosition') {
-            groundPosition.value = (
+            localValue.value.groundPosition = (
               await app.maps.activeMap.getViewpoint()
             ).groundPosition;
           }
@@ -526,18 +478,12 @@
 
       return {
         isCesiumMap,
+        localValue,
+        title,
         gotoViewpoint,
         handleInput,
         updateFromViewAction,
         editAction,
-        name,
-        title,
-        animate,
-        duration,
-        groundPosition,
-        cameraPosition,
-        distance,
-        hpr,
         hprSliderOptions,
         isFiniteNumber,
         isPositiveNumber,

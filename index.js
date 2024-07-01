@@ -272,7 +272,8 @@ export { default as VcsImageSelector } from './src/components/style/VcsImageSele
 export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.vue';
 export { default as VcsTextSelector } from './src/components/style/VcsTextSelector.vue';
 export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.vue';
-export { default as VcsExtent } from './src/components/form-inputs-controls/VcsExtent.vue';
+export { default as VcsExtent } from './src/components/extent/VcsExtent.vue';
+export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.vue';
 export {
   default as VcsVectorStyleComponent,
   VectorStyleMenus,
@@ -301,3 +302,5 @@ export { default as VcsFeatureStyleComponent } from './src/components/style/VcsF
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
+export * from './src/components/attrsHelpers.js';
+export * from './src/components/modelHelper.js';
