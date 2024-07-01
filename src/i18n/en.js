@@ -154,6 +154,9 @@ const messages = {
     },
     splashScreen: {
       name: 'Splash Screen',
+      checkBoxText:
+        'Please accept the [Conditions](https://vc.systems/) to continue',
+      buttonTitle: 'Continue',
     },
     customScreen: {
       name: 'Custom Screen',

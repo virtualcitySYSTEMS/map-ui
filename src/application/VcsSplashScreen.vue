@@ -1,10 +1,11 @@
 <template>
   <v-dialog
-    v-model="dialog"
-    :width="textPage.position.width"
-    :height="textPage.position.height"
-    :max-width="textPage.position.maxWidth"
-    :max-height="textPage.position.maxHeight"
+    v-if="options"
+    v-model="localValue"
+    :width="position.width"
+    :height="position.height"
+    :max-width="position.maxWidth"
+    :max-height="position.maxHeight"
     persistent
   >
     <v-card>
@@ -12,7 +13,7 @@
         <v-card-text>
           <div v-html="splashScreenText"></div>
 
-          <v-row class="mt-2" v-if="acceptInput" no-gutters>
+          <v-row class="mt-2" v-if="options.acceptInput" no-gutters>
             <v-col class="align-center d-flex">
               <VcsCheckbox
                 id="checkbox_splashScreen"
@@ -37,7 +38,7 @@
               color="primary"
               @click="exitScreen"
               :disabled="!checkBox"
-              >{{ buttonTitle }}</VcsFormButton
+              >{{ $t(options.buttonTitle) }}</VcsFormButton
             >
           </v-col>
         </v-card-actions>
@@ -55,21 +56,11 @@
     VRow,
     VCol,
   } from 'vuetify/components';
-  import { computed, getCurrentInstance, ref } from 'vue';
+  import { computed, getCurrentInstance, ref, watch } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
-
-  const dialog = ref(true);
-  export function createSplashScreenAction(options) {
-    return {
-      ...options,
-      callback() {
-        dialog.value = true;
-      },
-    };
-  }
 
   export default {
     name: 'VcsSplashScreen',
@@ -85,42 +76,55 @@
       VCol,
     },
     props: {
-      textPage: {
-        type: Object,
-        default: () => {},
+      value: {
+        type: Boolean,
+        default: false,
       },
-      windowId: {
-        type: String,
+      options: {
+        type: Object,
         required: true,
       },
     },
-    setup(props) {
+    setup(props, { emit }) {
+      const localValue = ref(props.value);
+      watch(
+        () => props.value,
+        (newValue) => {
+          localValue.value = newValue;
+        },
+      );
       const vm = getCurrentInstance().proxy;
       const splashScreenText = computed(() => {
-        const translatedContent = vm.$st(props.textPage.content);
+        const translatedContent = vm.$st(props.options.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
       const buttonTitle = vm.$st(props.textPage.buttonTitle);
 
       const splashScreenCheckboxText = computed(() => {
-        const translatedContent = vm.$st(props.textPage.checkBoxText);
+        const translatedContent = vm.$st(props.options.checkBoxText);
         return parseAndSanitizeMarkdown(translatedContent);
       });
 
-      const acceptInput = ref(props.textPage.acceptInput);
-      const checkBox = ref(!acceptInput.value);
+      const checkBox = ref(!props.options.acceptInput);
       const exitScreen = () => {
-        dialog.value = false;
+        localValue.value = false;
+        emit('input', localValue.value);
       };
 
+      const position = computed(() => ({
+        width: props.options.position?.width || 800,
+        height: props.options.position?.width || 500,
+        maxWidth: props.options.position?.maxWidth,
+        maxHeight: props.options.position?.maxHeight,
+      }));
+
       return {
-        dialog,
+        localValue,
         exitScreen,
         splashScreenText,
         splashScreenCheckboxText,
         checkBox,
-        acceptInput,
-        buttonTitle,
+        position,
       };
     },
   };

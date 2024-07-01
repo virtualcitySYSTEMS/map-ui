@@ -1847,6 +1847,10 @@
       ]
     },
     {
+      "name": "@vcmap/walk",
+      "entry": "plugins/@vcmap/walk/index.js"
+    },
+    {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
     },

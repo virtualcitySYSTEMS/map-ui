@@ -302,5 +302,7 @@ export { default as VcsFeatureStyleComponent } from './src/components/style/VcsF
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
+export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
+export { default as VcsCustomScreen } from './src/application/VcsCustomScreen.vue';
 export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';
