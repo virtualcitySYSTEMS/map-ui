@@ -13,7 +13,7 @@
         <v-card-text>
           <div v-html="splashScreenText"></div>
 
-          <v-row class="mt-2" v-if="acceptInput" no-gutters>
+          <v-row class="mt-2" v-if="options.acceptInput" no-gutters>
             <v-col class="align-center d-flex">
               <VcsCheckbox
                 id="checkbox_splashScreen"
@@ -38,7 +38,7 @@
               color="primary"
               @click="exitScreen"
               :disabled="!checkBox"
-              >{{ buttonTitle }}</VcsFormButton
+              >{{ $t(options.buttonTitle) }}</VcsFormButton
             >
           </v-col>
         </v-card-actions>
@@ -98,15 +98,13 @@
         const translatedContent = vm.$t(props.options.content);
         return parseAndSanitizeMarkdown(translatedContent);
       });
-      const buttonTitle = vm.$t(props.options.buttonTitle);
 
       const splashScreenCheckboxText = computed(() => {
         const translatedContent = vm.$t(props.options.checkBoxText);
         return parseAndSanitizeMarkdown(translatedContent);
       });
 
-      const acceptInput = ref(props.options.acceptInput);
-      const checkBox = ref(!acceptInput.value);
+      const checkBox = ref(!props.options.acceptInput);
       const exitScreen = () => {
         localValue.value = false;
         emit('input', localValue.value);
@@ -125,8 +123,6 @@
         splashScreenText,
         splashScreenCheckboxText,
         checkBox,
-        acceptInput,
-        buttonTitle,
         position,
       };
     },

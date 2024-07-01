@@ -1,3 +1,7 @@
+# 5.3.2
+
+- Fixes Bug in `splashScreen`
+
 # 5.3.1
 
 - Fixes Bug in `splashScreen`
