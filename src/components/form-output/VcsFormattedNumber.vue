@@ -1,16 +1,17 @@
 <template>
-  <span
-    class="vcs-formatted-number"
-    :class="{ 'vcs-formatted-number-dense': dense, 'px-2': !noPadding }"
-  >
-    <span v-if="prefix" class="pr-1">{{ prefix }}</span>
+  <span class="vcs-formatted-number" :class="{ 'py-1': !paddingProvided }">
+    <slot name="prepend">
+      <span v-if="prefix" class="pr-1">{{ prefix }}</span>
+    </slot>
     {{ formatted }}
-    <span v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
-    <span v-else-if="unit === SpecialUnits.CBM"> m<sup>3</sup> </span>
-    <span v-else-if="unit === SpecialUnits.DEG"> ° </span>
-    <span v-else>
-      {{ unit }}
-    </span>
+    <slot name="append">
+      <span v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
+      <span v-else-if="unit === SpecialUnits.CBM"> m<sup>3</sup> </span>
+      <span v-else-if="unit === SpecialUnits.DEG"> ° </span>
+      <span v-else>
+        {{ unit }}
+      </span>
+    </slot>
   </span>
 </template>
 <style lang="scss" scoped>
@@ -18,15 +19,13 @@
   @import '../../styles/vcsFont';
   .vcs-formatted-number,
   .vcs-formatted-number span {
-    font-size: $vcs-font-size;
-    line-height: $line-height-base;
-  }
-  .vcs-formatted-number-dense {
+    font-size: var(--v-vcs-font-size);
     line-height: $line-height-dense;
   }
 </style>
 <script>
   import { computed } from 'vue';
+  import { usePadding } from '../composables.js';
 
   /**
    * @description Converts a number (e.g. 12345678,9) to a locale-aware and
@@ -92,22 +91,16 @@
         type: [String, Number],
         default: undefined,
       },
-      dense: {
-        type: Boolean,
-        default: true,
-      },
-      noPadding: {
-        type: Boolean,
-        default: false,
-      },
     },
-    setup(props) {
+    setup(props, { attrs }) {
       const formatted = computed(() =>
         numberToLocaleString(props.modelValue, props.fractionDigits),
       );
+      const paddingProvided = usePadding(attrs);
       return {
         SpecialUnits,
         formatted,
+        paddingProvided,
       };
     },
   };
