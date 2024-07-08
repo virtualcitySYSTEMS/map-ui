@@ -2,6 +2,7 @@
 
 - Updates `splashScreen` to use the filled variant of the button.
 - Fixes bug in `createSupportedMapMappingFunction` where `mapCollection.activeMap === null` caused an error
+- Update @vcmap/core to 5.3.1 to fix a Declarative Style Icon rendering Problem in 2D
 
 # 5.3.2
 
