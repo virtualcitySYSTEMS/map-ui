@@ -65,8 +65,8 @@
     </div>
     <v-tooltip
       activator="parent"
-      :text="tooltip"
       v-if="tooltip"
+      :text="$st(tooltip)"
       location="bottom"
     />
     <template #append>

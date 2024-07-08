@@ -25,7 +25,7 @@
         ref="errorTooltipRef"
         :activator="textFieldRef"
         v-if="message"
-        :text="message"
+        :text="$st(message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
@@ -34,7 +34,7 @@
       v-if="tooltip && !errorTooltipRef"
       :activator="textFieldRef"
       :location="tooltipPosition"
-      :text="tooltip"
+      :text="$st(tooltip)"
     ></v-tooltip>
   </v-text-field>
 </template>

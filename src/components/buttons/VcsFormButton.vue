@@ -13,7 +13,7 @@
       <v-tooltip
         activator="parent"
         v-if="tooltip"
-        :text="tooltip"
+        :text="$st(tooltip)"
         :location="tooltipPosition"
       />
       <v-icon :size="iconSize" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">

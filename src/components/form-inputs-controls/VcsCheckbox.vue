@@ -19,7 +19,7 @@
         ref="errorTooltip"
         :activator="checkbox"
         v-if="message"
-        :text="message"
+        :text="$st(message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
@@ -28,7 +28,7 @@
       v-if="tooltip && !errorTooltip"
       :activator="checkbox"
       :location="tooltipPosition"
-      :text="tooltip"
+      :text="$st(tooltip)"
     ></v-tooltip>
   </v-checkbox>
 </template>

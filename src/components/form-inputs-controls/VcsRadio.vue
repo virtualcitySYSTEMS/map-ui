@@ -27,7 +27,7 @@
         :activator="radioGroup"
         :model-value="true"
         v-if="message"
-        :text="message"
+        :text="$st(message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
@@ -36,7 +36,7 @@
       v-if="tooltip && !errorTooltip"
       :activator="radioGroup"
       :location="tooltipPosition"
-      :text="tooltip"
+      :text="$st(tooltip)"
     ></v-tooltip>
   </v-radio-group>
 </template>

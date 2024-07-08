@@ -15,7 +15,7 @@
         ref="errorTooltipRef"
         :activator="fileInputRef"
         v-if="message"
-        :text="message"
+        :text="$st(message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
@@ -25,7 +25,7 @@
       <v-tooltip
         :activator="fileInputRef"
         v-if="tooltip && !errorTooltipRef"
-        :text="tooltip"
+        :text="$st(tooltip)"
         :location="tooltipPosition"
       />
     </template>
