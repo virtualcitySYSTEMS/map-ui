@@ -1,6 +1,7 @@
 # 5.3.3
 
 - Updates `splashScreen` to use the filled variant of the button.
+- Fixes bug in `createSupportedMapMappingFunction` where `mapCollection.activeMap === null` caused an error
 
 # 5.3.2
 
