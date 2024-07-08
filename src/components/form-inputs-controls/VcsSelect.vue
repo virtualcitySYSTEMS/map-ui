@@ -12,7 +12,7 @@
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
-    v-model="forwardedModelValue"
+    v-model="localModelValue"
   >
     <template #selection="{ item, index }">
       <span v-if="index === 0" class="text-truncate w-100">
@@ -137,6 +137,7 @@
   import { computed, ref } from 'vue';
   import { usePadding } from '../composables.js';
   import VcsCheckbox from './VcsCheckbox.vue';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-select/ |vuetify select}.
@@ -182,20 +183,10 @@
         default: undefined,
       },
     },
-    setup(props, { attrs }) {
-      // $ref to v-select element
+    setup(props, { attrs, emit }) {
       const selectFieldRef = ref();
       const errorTooltipRef = ref();
-      const localModelValue = ref(props.modelValue);
-
-      const forwardedModelValue = computed({
-        get() {
-          return localModelValue.value;
-        },
-        set(value) {
-          localModelValue.value = value;
-        },
-      });
+      const localModelValue = useProxiedComplexModel(props, 'modelValue', emit);
 
       const additionalItems = computed(() => {
         if (Array.isArray(localModelValue.value)) {
@@ -217,7 +208,7 @@
       const paddingProvided = usePadding(attrs);
 
       return {
-        forwardedModelValue,
+        localModelValue,
         additionalItems,
         isMultiple,
         paddingProvided,
