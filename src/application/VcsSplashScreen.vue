@@ -36,6 +36,7 @@
           <v-col class="text-right">
             <VcsFormButton
               color="primary"
+              variant="filled"
               @click="exitScreen"
               :disabled="!checkBox"
               >{{ $t(options.buttonTitle) }}</VcsFormButton

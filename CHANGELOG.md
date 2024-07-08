@@ -1,3 +1,7 @@
+# 5.3.3
+
+- Updates `splashScreen` to use the filled variant of the button.
+
 # 5.3.2
 
 - Fixes Bug in `splashScreen`
