@@ -27,6 +27,7 @@
 - `setupExtentComponentActions()` has no longer a param `disabled`. Change the disabled state on the returned actions instead.
 - VcsActionButtonList
   - removed `blockOverflow` property
+- `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
 
 # Extended Theming
 
@@ -97,6 +98,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | my component used VcsTooltip to display error messages                                                                         | See [VcsCheckbox](./src/components/form-inputs-controls/VcsCheckbox.vue) for an example how to implement tooltip and error tooltips.                                                                                      |
 | what happened to `var(--v-base-xxx)`                                                                                           | you must use `rgb(var(--v-theme-base-lighten-2))` or similar. prefix with theme                                                                                                                                           |
 | my VcsTextField component doesn't work any more for input type file                                                            | use new component [VcsFileInput](./src/components/form-inputs-controls/VcsFileInput.vue) instead.                                                                                                                         |
+| my `PluginEditorComponent` has type errors now                                                                                 | you must ensure you actually adhere to the interface and use `PropType` for the functions so it conforms with the interface                                                                                               |
 
 # ToDos & Issues
 

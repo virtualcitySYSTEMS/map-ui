@@ -104,7 +104,7 @@ export function isSlotPosition(windowPosition) {
 /**
  * @typedef {{
  *   id?: string,
- *   parendId?: string,
+ *   parentId?: string,
  *   component: import("vue").Component<T, unknown, unknown>,
  *   headerComponent?: import("vue").Component<T, unknown, unknown>,
  *   state? : Partial<WindowState>,
@@ -145,7 +145,7 @@ export function isSlotPosition(windowPosition) {
 /**
  * @typedef {{
  *   id: string,
- *   parendId?: string,
+ *   parentId?: string,
  *   component: import("vue").Component<T, unknown, unknown>,
  *   headerComponent?: import("vue").Component<T, unknown, unknown>,
  *   state : Partial<WindowState>,

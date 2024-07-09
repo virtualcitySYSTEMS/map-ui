@@ -59,13 +59,20 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
 /**
  * @typedef {Object} PluginConfig
  * @property {string} name
- * @property {string|undefined} entry - path to the plugin's index.js
- * @property {string|undefined} version - version or version range
+ * @property {string|undefined} [entry] - path to the plugin's index.js
+ * @property {string|undefined} [version] - version or version range
+ */
+
+/**
+ * @typedef {import("vue").Component<{ getConfig(): Promise<Config>, setConfig(config: Config): Promise<void> }> & {
+ *  title?: string
+ * }} PluginConfigEditorComponent
+ * @template {Object} Config
  */
 
 /**
  * @typedef {Object} PluginConfigEditor
- * @property {import("vue").Component & { title: string | undefined}} component - A editor component to configure a plugin or item
+ * @property {PluginConfigEditorComponent<object>} component - A editor component to configure a plugin or item
  * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
  * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
  * @property {function():string} [infoUrlCallback] - An optional function returning an url referencing help or further information regarding the config editor.
