@@ -82,6 +82,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
   - `useProxiedAtomicModel` when creating a component with an atomic model value
   - `useProxiedComplexModel` when creating a component with an array or object model value
   - `removeListenersFromAttrs` when binding attrs without listener
+- Update Wizard steps beginning from 0 instead of 1
 
 # Troubleshooting & Solutions
 
@@ -99,6 +100,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 | what happened to `var(--v-base-xxx)`                                                                                           | you must use `rgb(var(--v-theme-base-lighten-2))` or similar. prefix with theme                                                                                                                                           |
 | my VcsTextField component doesn't work any more for input type file                                                            | use new component [VcsFileInput](./src/components/form-inputs-controls/VcsFileInput.vue) instead.                                                                                                                         |
 | my `PluginEditorComponent` has type errors now                                                                                 | you must ensure you actually adhere to the interface and use `PropType` for the functions so it conforms with the interface                                                                                               |
+| my VcsWizard actions are not shown for the active step                                                                         | Check the step counting. It has to start with 0, not with 1!                                                                                                                                                              |
 
 # ToDos & Issues
 

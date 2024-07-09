@@ -1,45 +1,64 @@
 <template>
-  <div class="step-border">
-    <v-stepper-vertical-item
-      :step="step"
-      :editable="editable"
-      :complete="complete"
-      :rules="rules"
-      class="pr-2"
-    >
-      <div class="d-flex justify-space-between align-center">
-        <slot name="header" />
-        <div v-if="!$slots.header" class="step-label-wrap">
-          <span>{{ $st(heading) }}</span>
+  <v-stepper-vertical-item
+    :value="step"
+    :editable="isActiveStep || editable"
+    :complete="complete"
+    :rules="rules"
+    :multiple="multiple"
+    :hide-actions="true"
+    icon="mdi-circle"
+    complete-icon="mdi-circle"
+    edit-icon="mdi-circle"
+    error-icon="mdi-circle"
+    v-bind="$attrs"
+  >
+    <template #title>
+      <slot name="title">
+        <div class="d-flex align-center justify-space-between">
+          <div v-if="!$slots.title">
+            <span>{{ $st(heading) }}</span>
+          </div>
+          <v-spacer />
+          <VcsActionButtonList
+            v-if="isActiveStep"
+            :actions="actions"
+            :overflow-count="actionButtonListOverflowCount"
+            @mousedown.stop
+            @touchstart.stop
+            @keydown.stop
+            class="justify-end"
+          />
         </div>
-        <VcsActionButtonList
-          v-if="Number(step) === Number(value)"
-          :actions="actions"
-          :overflow-count="actionButtonListOverflowCount"
-          @mousedown.stop
-          @touchstart.stop
-          @keydown.stop
-        />
+      </slot>
+    </template>
+    <template #default>
+      <div class="pr-4">
+        <VcsHelp :text="helpText" :show="showHelp">
+          <slot name="help" />
+        </VcsHelp>
+        <slot />
       </div>
-    </v-stepper-vertical-item>
-    <v-stepper-content v-if="$slots.content" class="pr-4" :step="step">
-      <VcsHelp :text="helpText" :show="showHelp">
-        <slot name="help" />
-      </VcsHelp>
-      <slot name="content" />
-    </v-stepper-content>
-  </div>
+    </template>
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+  </v-stepper-vertical-item>
 </template>
 
 <script>
   import { computed, reactive, watch } from 'vue';
   import { VStepperVerticalItem } from 'vuetify/labs/VStepperVertical';
+  import { VSpacer } from 'vuetify/components';
+  import { useProxiedComplexModel } from '../modelHelper.js';
+  import { useForwardSlots } from '../composables.js';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper-step/ |vuetify VStepperStep} and
    * {@link https://vuetifyjs.com/en/api/v-stepper-content/ |vuetify VStepperContent}.
+   * @vue-prop {boolean} multiple - Whether multiple steps can be active at the same time.
+   * @vue-prop {string | number} modelValue - The current step of the VcsWizard.
    * @vue-prop {number | string} step - Declares which step of the VcsWizard this VcsWizardStep is.
    * @vue-prop {boolean} [editable=false] - If this step is editable. If so, user can jump to that step by clicking on the v-stepper-step.
    * @vue-prop {boolean} [complete=false] - If this step is completed. Has effect on the look of the v-stepper-step.
@@ -48,7 +67,6 @@
    * @vue-prop {Array<VcsAction>} [headerActions] - Action buttons to be displayed on the right side of the v-stepper-step.
    * @vue-prop {number} [actionButtonListOverflowCount] - Overflow count to use for the headerActions.
    * @vue-prop {string} [helpText] - Optional help text. Must be plain string. Use 'help' slot for html based help texts. Help slot has precedence over helpText prop.
-   * @vue-prop {string | number} value - The current step of the VcsWizard.
    * @vue-data {slot} [#header] - Slot to override the heading prop. Allows to pass html as v-stepper-step content.
    * @vue-data {slot} [#content] - Slot to add content to the step. Is rendered in v-stepper-content.
    * @vue-data {slot} [#help] - Slot to add html to the help section. Overrides content of helpText prop.
@@ -56,14 +74,28 @@
   export default {
     name: 'VcsWizardStep',
     components: {
+      VSpacer,
       VStepperVerticalItem,
       VcsActionButtonList,
       VcsHelp,
     },
     props: {
+      multiple: {
+        type: Boolean,
+        default: false,
+      },
+      modelValue: {
+        type: [Array, String, Boolean, Number],
+        default(rawProps) {
+          if (rawProps.multiple) {
+            return [];
+          }
+          return 0;
+        },
+      },
       step: {
         type: [String, Number],
-        required: true,
+        default: 0,
       },
       editable: {
         type: Boolean,
@@ -94,12 +126,13 @@
         type: String,
         default: undefined,
       },
-      modelValue: {
-        type: [String, Number],
-        required: true,
-      },
     },
     setup(props, { slots, emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+      const isActiveStep = computed(
+        () => Number(props.step) === Number(localValue.value),
+      );
+
       const helpAction = reactive({
         name: 'help',
         title: 'components.vcsFormSection.help',
@@ -107,18 +140,15 @@
         icon: 'mdi-help-circle',
         callback() {
           this.active = !this.active;
-          if (
-            Number(props.modelValue) !== Number(props.step) &&
-            props.editable
-          ) {
-            emit('update:modelValue', props.step);
+          if (!isActiveStep.value && props.editable) {
+            localValue.value = props.step;
           }
         },
       });
       const showHelp = computed(() => helpAction.active);
       // deactivate help when leaving a step
       watch(
-        () => props.modelValue,
+        () => localValue,
         (currentStep, previousStep) => {
           if (Number(previousStep) === Number(props.step)) {
             helpAction.active = false;
@@ -135,27 +165,15 @@
         return props.headerActions;
       });
 
+      const forwardSlots = useForwardSlots(slots, ['title', 'default']);
+
       return {
         showHelp,
         actions,
+        isActiveStep,
+        forwardSlots,
       };
     },
   };
 </script>
-<style scoped lang="scss">
-  .v-alert--text:before {
-    background-color: transparent;
-  }
-  .v-stepper__step {
-    :deep(.v-ripple__container) {
-      display: none !important;
-    }
-  }
-  .v-stepper__content {
-    padding-left: 2px !important;
-  }
-  .step-label-wrap {
-    padding-top: 13px !important;
-    padding-bottom: 13px !important;
-  }
-</style>
+<style scoped lang="scss"></style>

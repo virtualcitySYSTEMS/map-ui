@@ -1,131 +1,108 @@
 <template>
-  <v-stepper
-    vertical
-    :model-value="modelValue"
-    @change="(newValue) => $emit('update:modelValue', newValue)"
-    class="rounded-0 pb-1"
-  >
-    <slot />
-  </v-stepper>
+  <v-stepper-vertical v-bind="$attrs">
+    <template #icon>
+      <slot name="icon"><v-icon>mdi-circle</v-icon></slot>
+    </template>
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+  </v-stepper-vertical>
 </template>
 
 <script>
-  import { VStepper } from 'vuetify/components';
+  import { VStepperVertical } from 'vuetify/labs/VStepperVertical';
+  import { VIcon } from 'vuetify/components';
+  import { useForwardSlots } from '../composables.js';
 
   /**
-   * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper/ |vuetify stepper}
-   * Is always vertical.
-   * Only passes the step property, all other props are ignored.
-   * @vue-prop {number} value - The current step of the stepper.
+   * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper-vertical/ |vuetify stepper vertical}per.
    * @vue-data {slot} [#default] - Slot to add VcsWizardSteps.
    */
   export default {
     name: 'VcsWizard',
     components: {
-      VStepper,
+      VStepperVertical,
+      VIcon,
     },
-    props: {
-      modelValue: {
-        type: Number,
-        default: undefined,
-      },
+    setup(_p, { slots }) {
+      const forwardSlots = useForwardSlots(slots, ['icon']);
+
+      return {
+        forwardSlots,
+      };
     },
   };
 </script>
 <style scoped lang="scss">
-  /*@import '../../styles/shades.scss';
-  .v-stepper {
-    &.theme--light {
-      :deep(.v-stepper__step) {
-        .v-stepper__label {
-          color: map-get($shades, 'black');
-        }
-        &--complete {
-          .v-stepper__label {
-            color: map-get($shades, 'black');
-          }
-        }
-        &--active {
-          background-color: rgba(34, 34, 34, 0.1);
-          .v-stepper__label {
-            color: var(--v-primary-base);
-          }
-        }
-        .v-stepper__step__step::before {
-          color: map-get($shades, 'white');
-        }
-      }
-      :deep(.step-border:not(:last-child) > .v-stepper__content) {
-        border-left: 2px solid rgba(0, 0, 0, 0.12);
-      }
+  :deep(.v-expansion-panel-title) {
+    height: var(--v-vcs-item-height);
+    min-height: var(--v-vcs-item-height);
+    padding: 0 8px;
+  }
+  :deep(.v-expansion-panel-title.v-expansion-panel-title--active) {
+    background-color: rgba(
+      var(--v-theme-base-darken-4),
+      var(--v-selected-opacity)
+    );
+
+    color: rgb(var(--v-theme-primary));
+
+    .action-btn-wrap {
+      color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
     }
-    &.theme--dark {
-      background: map-get($shades, 'black');
-      :deep(.v-stepper__step) {
-        .v-stepper__label {
-          color: map-get($shades, 'white');
-        }
-        &--complete {
-          .v-stepper__label {
-            color: map-get($shades, 'white');
-          }
-        }
-        &--active {
-          background-color: rgba(255, 255, 255, 0.17);
-          .v-stepper__label {
-            color: var(--v-primary-base);
-          }
-        }
-        .v-stepper__step__step {
-          .v-icon {
-            color: transparent;
-          }
-          &:before {
-            color: map-get($shades, 'black');
-          }
-        }
-        &.v-stepper__step--error {
-          .v-stepper__label {
-            color: var(--v-error-darken2);
-          }
-          .v-stepper__step__step {
-            background-color: var(--v-error-darken1);
-          }
-        }
-      }
-      :deep(.step-border:not(:last-child) > .v-stepper__content) {
-        border-left: 2px solid rgba(255, 255, 255, 0.8);
-      }
+
+    .v-expansion-panel-title__overlay:hover,
+    .v-expansion-panel-title__overlay {
+      background-color: rgb(var(--v-theme-base));
     }
-    :deep(.v-stepper__step) {
-      padding-top: 0;
-      padding-bottom: 0;
-      .v-stepper__label {
-        font-weight: 700;
-        text-shadow: none !important;
-      }
-      .v-stepper__step__step {
-        color: transparent;
-        position: relative;
-        margin-top: 1px;
-        &:before {
-          content: '\25cf';
-          font-size: 18px;
-          position: absolute;
-          top: -9px;
-        }
-      }
-      &.v-stepper__step--error {
-        .v-stepper__step__step {
-          background-color: var(--v-error-base);
-        }
-        .v-stepper__label {
-          color: var(--v-error-base);
-        }
-      }
-    }
-    :deep(.v-stepper__content .v-stepper__wrapper) {
-      margin: 4px 0 4px 4px;
-    }
-  }*/
+  }
+  :deep(.v-stepper-vertical-item:not(:last-child):before) {
+    height: 100%;
+    top: calc(var(--v-vcs-item-height) * 0.5);
+    left: calc(14px + var(--v-vcs-font-size) * 0.42);
+    width: calc(var(--v-vcs-font-size) * 0.1);
+  }
+  :deep(.v-stepper-vertical-item__avatar.v-avatar) {
+    background: rgb(var(--v-theme-base-darken-2));
+    color: rgb(var(--v-theme-background)) !important;
+    width: calc(var(--v-vcs-font-size) - 1px) !important;
+    height: calc(var(--v-vcs-font-size) - 1px) !important;
+    z-index: 2;
+  }
+  :deep(
+      .v-expansion-panel-title--active .v-stepper-vertical-item__avatar.v-avatar
+    ) {
+    background: rgb(var(--v-theme-primary));
+  }
+  :deep(
+      .v-stepper-vertical-item--error .v-stepper-vertical-item__avatar.v-avatar
+    ) {
+    background: rgb(var(--v-theme-error));
+  }
+  /* alignment of heading */
+  :deep(.v-stepper-vertical-item__avatar.v-avatar) + div {
+    width: 100%;
+  }
+  /* Removes padding right at header actions */
+  :deep(.v-expansion-panel-title__icon) {
+    display: none;
+  }
+  :deep(.v-stepper-vertical-item__avatar.v-avatar .v-icon) {
+    font-size: calc(var(--v-vcs-font-size) - 3px) !important;
+    height: calc(var(--v-vcs-font-size) - 3px) !important;
+    width: calc(var(--v-vcs-font-size) - 3px) !important;
+  }
+  :deep(.v-avatar--start) {
+    margin-inline-start: 6px;
+  }
+  /* button on disabled shouldn't still contain the .bg-primary class! */
+  :deep(.v-btn--disabled.v-btn--variant-flat.bg-primary) {
+    color: rgba(var(--v-theme-on-surface), 0.26) !important;
+  }
+  :deep(.v-expansion-panel__shadow) {
+    box-shadow: unset;
+  }
+  :deep(.v-expansion-panel-text) {
+    padding-left: 12px;
+  }
 </style>
