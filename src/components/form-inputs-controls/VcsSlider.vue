@@ -72,7 +72,6 @@
       const thumbSize = computed(() => {
         return Math.floor(itemHeight.value / 4);
       });
-
       const trackSize = computed(() => {
         return Math.floor(itemHeight.value / 12);
       });

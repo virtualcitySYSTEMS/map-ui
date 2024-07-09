@@ -1,31 +1,24 @@
 <template>
-  <VcsTooltip :tooltip-position="tooltipPosition" :tooltip="tooltip">
-    <template #activator="{ props }">
-      <v-card
-        class="h-8 w-8 d-flex align-center justify-center text-center btn-orientation-tools"
-        v-bind="{ ...$attrs, ...props }"
-      >
-        <v-icon size="16">{{ icon }}</v-icon>
-      </v-card>
-    </template>
-  </VcsTooltip>
+  <v-card
+    class="d-flex align-center justify-center text-center btn-orientation-tools"
+    v-bind="{ ...$attrs }"
+    :height="height"
+    :width="width"
+  >
+    <v-icon :size="iconSize">{{ icon }}</v-icon>
+    <v-tooltip
+      v-if="tooltip"
+      activator="parent"
+      :location="tooltipPosition"
+      :text="$st(tooltip)"
+    ></v-tooltip>
+  </v-card>
 </template>
-<style lang="scss" scoped>
-  .btn-orientation-tools {
-    &:before {
-      background-color: transparent !important;
-    }
-  }
-  .h-8 {
-    height: 32px;
-  }
-  .w-8 {
-    width: 32px;
-  }
-</style>
+<style lang="scss" scoped></style>
 <script>
-  import { VCard, VIcon } from 'vuetify/components';
-  import VcsTooltip from '../components/notification/VcsTooltip.vue';
+  import { VCard, VIcon, VTooltip } from 'vuetify/components';
+  import { computed } from 'vue';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description v-card with h & w 8. Requires an icon and binds all attributes & listeners to the v-card
@@ -36,9 +29,9 @@
   export default {
     name: 'OrientationToolsButton',
     components: {
-      VcsTooltip,
       VCard,
       VIcon,
+      VTooltip,
     },
     props: {
       icon: {
@@ -53,6 +46,26 @@
         type: String,
         default: 'left',
       },
+    },
+    setup() {
+      const fontSize = useFontSize();
+
+      const iconSize = computed(() => {
+        return fontSize.value * (1.2 + 0.1 / 3);
+      });
+      const height = computed(() => {
+        return fontSize.value * 2.5;
+      });
+      // 32px
+      const width = computed(() => {
+        return fontSize.value * 2.5;
+      });
+
+      return {
+        iconSize,
+        height,
+        width,
+      };
     },
   };
 </script>

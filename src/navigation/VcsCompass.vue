@@ -4,8 +4,10 @@
       transform: `rotate(${compassRotation}deg)`,
     }"
     @click="$emit('update:modelValue', 0)"
-    class="h-16 w-16 d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease"
+    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease"
     elevation="1"
+    :height="height"
+    :width="width"
   >
     <span>N</span>
     <MapNavCompass
@@ -17,25 +19,18 @@
     />
   </v-sheet>
 </template>
-<style lang="scss" scoped>
-  .h-16 {
-    height: 64px;
-  }
-  .w-16 {
-    width: 64px;
-  }
-</style>
+<style lang="scss" scoped></style>
 <script>
   import { computed, ref } from 'vue';
 
   import { VSheet } from 'vuetify/components';
   import MapNavCompass from './MapNavCompass.vue';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description Compass component to be shown on the map.
    * @vue-prop {OrientationToolsViewMode}  viewMode  - Mode of the map. Defines the behaviour of the compass.
-   * @vue-prop {number}                     value     - Number of degrees of the compass rotation.
-   * @vue-event {number} input
+   * @vue-prop {number}                     modelValue     - Number of degrees of the compass rotation.
    * @vue-prop {boolean} disabled - whether compass should be disabled
    */
   export default {
@@ -62,9 +57,20 @@
     setup(props) {
       const rotationValue = ref(props.modelValue);
 
+      const fontSize = useFontSize();
+      const height = computed(() => {
+        return fontSize.value * 5;
+      });
+
+      const width = computed(() => {
+        return fontSize.value * 5;
+      });
+
       return {
         rotationValue,
         compassRotation: computed(() => -1 * rotationValue.value),
+        height,
+        width,
       };
     },
     watch: {

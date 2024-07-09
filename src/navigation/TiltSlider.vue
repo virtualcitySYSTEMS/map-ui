@@ -1,89 +1,79 @@
 <template>
-  <VcsTooltip
-    :tooltip="$t('navigation.pitchTooltip', [Math.round(modelValue)])"
-    tooltip-position="left"
+  <v-card
+    :width="minWidth"
+    :height="minHeight"
+    v-bind="props"
+    :disabled="disabled"
   >
-    <template #activator="{ props }">
-      <v-card class="w-8" v-bind="props" :disabled="disabled">
-        <v-slider
-          track-color="base lighten-3"
-          v-model="tilt"
-          :max="0"
-          :min="-90"
-          direction="vertical"
-          hide-details
-          class="vcs-slider"
-          v-bind="{ ...$attrs }"
-        />
-      </v-card>
-    </template>
-  </VcsTooltip>
+    <v-slider
+      :track-size="trackSize"
+      :tick-size="tickSize"
+      :track-color="'base-lighten-3'"
+      thumb-color="base-darken-4"
+      track-fill-color="'base-darken-4'"
+      :max="0"
+      :min="-90"
+      direction="vertical"
+      hide-details
+      class="vcs-tilt-slider"
+      v-bind="{ ...$attrs }"
+      v-model="localValue"
+    ></v-slider>
+    <v-tooltip
+      activator="parent"
+      location="left"
+      :text="$st('navigation.pitchTooltip', [Math.round(localValue)])"
+    ></v-tooltip>
+  </v-card>
 </template>
+
 <style lang="scss" scoped>
-  @import '../styles/shades.scss';
-  .vcs-slider {
-    :deep(.v-slider) {
-      min-height: 48px;
-      margin-top: 8px;
-      margin-bottom: 8px;
+  .v-slider.v-input--vertical {
+    :deep(.v-slider-track__fill) {
+      width: 2px;
     }
-    :deep(.v-slider__thumb) {
-      cursor: pointer;
+    :deep(.v-slider-track__tick--first) {
+      bottom: 0;
+    }
+    :deep(.v-slider-track__tick--last) {
+      bottom: 100%;
+    }
+  }
+
+  .vcs-tilt-slider {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    :deep(.v-slider-thumb__surface) {
       border-radius: 3px;
       width: 16px;
       height: 4px;
-      border: 0;
-      left: -8px;
-      &:before {
-        background-color: transparent;
-      }
+      margin-top: 10px;
+      box-shadow: none !important;
     }
   }
-  .v-application .theme--light.vcs-slider {
-    :deep(.v-slider) {
-      .v-slider__track-container {
-        .v-slider__track-fill {
-          background-color: map-get($shades, 'black') !important;
-        }
-      }
-      .v-slider__thumb {
-        background-color: map-get($shades, 'black') !important;
-      }
-    }
+  :deep(.v-slider-thumb__surface::before) {
+    --v-focus-opacity: 0;
+    --v-hover-opacity: 0;
+    --v-pressed-opacity: 0;
   }
-  .v-application .theme--dark.vcs-slider {
-    :deep(.v-slider) {
-      .v-slider__track-container {
-        .v-slider__track-fill {
-          background-color: map-get($shades, 'white') !important;
-        }
-      }
-      .v-slider__thumb {
-        background-color: map-get($shades, 'white') !important;
-      }
-    }
-  }
-  .w-8 {
-    width: 32px;
+
+  .v-input--vertical :deep(.v-input__control) {
+    min-height: calc(var(--v-vcs-font-size) * 4);
   }
 </style>
-<script>
-  import { clamp } from 'ol/math.js';
-  import { VCard, VSlider } from 'vuetify/components';
-  import VcsTooltip from '../components/notification/VcsTooltip.vue';
 
-  /**
-   * @description A vertical slider from 0 to -90. pass value with v-model
-   * @vue-prop {number} value
-   * @vue-prop {boolean} disabled - whether tilt slider should be disabled
-   * @vue-event {number} input
-   */
-  export default {
+<script>
+  import { computed, defineComponent } from 'vue';
+  import { VCard, VSlider, VTooltip } from 'vuetify/components';
+  import { useFontSize, useItemHeight } from '../vuePlugins/vuetify.js';
+  import { useProxiedAtomicModel } from '../components/modelHelper.js';
+
+  export default defineComponent({
     name: 'TiltSlider',
     components: {
-      VcsTooltip,
       VCard,
       VSlider,
+      VTooltip,
     },
     props: {
       modelValue: {
@@ -96,28 +86,33 @@
         default: false,
       },
     },
-    data() {
+    setup(props, { emit }) {
+      const itemHeight = useItemHeight();
+
+      const trackSize = computed(() => {
+        return Math.floor(itemHeight.value / 12);
+      });
+      const tickSize = computed(() => {
+        return trackSize.value * 2;
+      });
+      const fontSize = useFontSize();
+      const minWidth = computed(() => {
+        return fontSize.value * 2.5;
+      });
+      const minHeight = computed(() => {
+        return fontSize.value * 5;
+      });
+
+      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
+
       return {
-        localValue: Math.round(this.modelValue),
+        localValue,
+        tickSize,
+        trackSize,
+        props,
+        minWidth,
+        minHeight,
       };
     },
-    watch: {
-      modelValue() {
-        this.localValue = clamp(Math.round(this.modelValue), -90, 0);
-      },
-    },
-    computed: {
-      tilt: {
-        get() {
-          return this.localValue;
-        },
-        set(value) {
-          if (value !== this.localValue) {
-            this.localValue = value;
-            this.$emit('update:modelValue', value);
-          }
-        },
-      },
-    },
-  };
+  });
 </script>

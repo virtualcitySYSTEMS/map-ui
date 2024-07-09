@@ -335,9 +335,12 @@
 <style lang="scss" scoped>
   .nav-container {
     position: absolute;
-    right: 2rem;
-    bottom: 1rem;
+    right: 26px;
+    // right: 26px --> the 2rem were 26px in the old map, now 32px ?Important?
+    bottom: 13px;
+    // bottom: 13px --> the 1rem were 13px in the old map, now 16px ?Important?
     width: unset;
+    padding: 12px;
     &.mobile {
       top: 1rem;
       right: 1rem;
@@ -345,7 +348,7 @@
     }
   }
   .nav-container > {
-    .row {
+    .v-row {
       margin-top: 15px;
       margin-bottom: 0;
     }
