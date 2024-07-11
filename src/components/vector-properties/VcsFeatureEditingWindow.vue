@@ -22,22 +22,30 @@
       <VcsFeatureStyleComponent :feature-properties="featureProperties" />
     </VcsFormSection>
     <VcsVectorPropertiesComponent
-      :model-value="featureProperties"
       :show3-d-properties="is3D"
-      @propertyChange="updateFeatureProperties"
       :value-default="defaultVectorProperties"
       :properties="availableVectorProperties"
       :show-dividers="false"
       :expandable="expandableVectorProperties"
       :start-open="startOpenVectorProperties"
       :show-reset="showResetVectorProperties"
+      :model-value="featureProperties"
+      @update:model-value="updateFeatureProperties"
     />
   </v-sheet>
 </template>
 
 <script>
   import { VSheet } from 'vuetify/components';
-  import { inject, ref, watch, onUnmounted, provide, computed } from 'vue';
+  import {
+    inject,
+    ref,
+    watch,
+    onUnmounted,
+    provide,
+    computed,
+    shallowRef,
+  } from 'vue';
   import {
     CesiumMap,
     GeometryType,
@@ -166,11 +174,11 @@
         currentLayer: layer,
       } = editorManager;
 
-      const availableModifyActions = ref([]);
-      const availableVectorProperties = ref([]);
+      const availableModifyActions = shallowRef([]);
+      const availableVectorProperties = shallowRef([]);
 
       provide('features', features);
-      const featureProperties = ref();
+      const featureProperties = shallowRef();
 
       watch(
         features,

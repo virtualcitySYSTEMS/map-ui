@@ -6,7 +6,7 @@
           <VcsList
             :items="propertiesToSelectFrom"
             :selectable="true"
-            v-model="propertiesToDisplay"
+            v-model="propertiesSelected"
             title="Select all"
           />
         </v-col>
@@ -29,13 +29,20 @@
           />
         </v-col>
       </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <VcsFormButton @click="() => console.log({ ...featureProperties })"
+            >Log VectorProperties</VcsFormButton
+          >
+        </v-col>
+      </v-row>
     </v-container>
     <VcsVectorPropertiesComponent
       v-model="featureProperties"
       :value-default="defaultOptions"
       :show3-d-properties="is3D"
-      :properties="propertiesToDisplay.map((item) => item.name)"
-      :hide-dividers="hideDividers"
+      :properties="properties"
+      :show-dividers="!hideDividers"
       :expandable="expandable"
       :show-reset="showReset"
     />
@@ -43,12 +50,22 @@
 </template>
 
 <script>
-  import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
+  import {
+    computed,
+    inject,
+    onMounted,
+    onUnmounted,
+    reactive,
+    ref,
+    shallowRef,
+    watch,
+  } from 'vue';
   import { CesiumMap, VectorLayer, VectorProperties } from '@vcmap/core';
   import {
     VcsVectorPropertiesComponent,
     VcsList,
     VcsCheckbox,
+    VcsFormButton,
   } from '@vcmap/ui';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
   import { Feature } from 'ol';
@@ -69,6 +86,7 @@
       VcsVectorPropertiesComponent,
       VcsList,
       VcsCheckbox,
+      VcsFormButton,
       VSheet,
       VContainer,
       VRow,
@@ -96,9 +114,10 @@
         },
       });
 
-      const featureProperties = ref(
+      const featureProperties = shallowRef(
         layer.vectorProperties.getValuesForFeatures([feature]),
       );
+      featureProperties.value.scaleByDistance = [0, 1, 100, 0];
       watch(featureProperties, () => {
         layer.vectorProperties.setValuesForFeatures(featureProperties.value, [
           feature,
@@ -106,10 +125,13 @@
       });
 
       const defaultOptions = VectorProperties.getDefaultOptions();
-      const propertiesToSelectFrom = Object.keys(defaultOptions).map((key) => ({
-        name: key,
-        title: key,
-      }));
+      const propertiesToSelectFrom = reactive(
+        Object.keys(defaultOptions).map((key) => ({
+          name: key,
+          title: key,
+        })),
+      );
+      const propertiesSelected = shallowRef([...propertiesToSelectFrom]);
 
       onMounted(() => {
         vcsApp.layers.add(layer);
@@ -128,7 +150,10 @@
         defaultOptions,
         is3D,
         propertiesToSelectFrom,
-        propertiesToDisplay: ref([...propertiesToSelectFrom]),
+        propertiesSelected,
+        properties: computed(() =>
+          propertiesSelected.value.map(({ name }) => name),
+        ),
         hideDividers: ref(false),
         expandable: ref(false),
         showReset: ref(true),

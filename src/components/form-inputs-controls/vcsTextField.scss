@@ -76,3 +76,8 @@
 :deep(.v-field__loader) {
   top: calc(100% - 2px);
 }
+
+// unit margin
+:deep(.v-field__clearable) {
+  margin-left: 0;
+}

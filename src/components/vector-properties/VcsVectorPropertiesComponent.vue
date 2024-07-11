@@ -6,137 +6,134 @@
     :header-actions="headerActions"
   >
     <v-container class="px-1 py-0">
-      <v-row
-        v-if="visibleProperties.has('altitudeMode') && show3DProperties"
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel html-for="vp-altitude-mode">{{
-            $t('components.vectorProperties.altitudeMode')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsSelect
-            id="vp-altitude-mode"
-            :items="availableAltitudeModes"
-            v-model="altitudeMode"
-            dense
-          />
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="
-          visibleProperties.has('heightAboveGround') &&
-          altitudeMode === 'relativeToGround' &&
-          show3DProperties
-        "
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel html-for="vp-height-above-ground">{{
-            $t('components.vectorProperties.heightAboveGround')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-height-above-ground"
-            v-model.number="heightAboveGround"
-            :hide-spin-buttons="true"
-            type="number"
-            unit="m"
-            :placeholder="'heightAboveGround' in value ? '0' : ''"
-          />
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="visibleProperties.has('groundLevel') && show3DProperties"
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel html-for="vp-ground-level">{{
-            $t('components.vectorProperties.groundLevel')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-ground-level"
-            v-model.number="groundLevel"
-            :hide-spin-buttons="true"
-            type="number"
-            unit="m"
-            :placeholder="'groundLevel' in value ? '0' : ''"
-            clearable
-          />
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="visibleProperties.has('scaleByDistance') && show3DProperties"
-        no-gutters
-      >
-        <v-col>
-          <VcsCheckbox
-            label="components.vectorProperties.scaleByDistance"
-            v-model="hasScaleByDistance"
-          />
-        </v-col>
-        <v-col>
+      <template v-if="show3DProperties">
+        <v-row v-if="visibleProperties.has('altitudeMode')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-altitude-mode">{{
+              $t('components.vectorProperties.altitudeMode')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsSelect
+              id="vp-altitude-mode"
+              :items="availableAltitudeModes"
+              v-model="localValue.altitudeMode"
+            />
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="
+            visibleProperties.has('heightAboveGround') &&
+            localValue.altitudeMode === 'relativeToGround'
+          "
+          no-gutters
+        >
+          <v-col>
+            <VcsLabel html-for="vp-height-above-ground">{{
+              $t('components.vectorProperties.heightAboveGround')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-height-above-ground"
+              v-model.number="localValue.heightAboveGround"
+              :hide-spin-buttons="true"
+              type="number"
+              unit="m"
+              placeholder="0"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('groundLevel')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-ground-level">{{
+              $t('components.vectorProperties.groundLevel')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-ground-level"
+              v-model.number="localValue.groundLevel"
+              :hide-spin-buttons="true"
+              type="number"
+              unit="m"
+              placeholder="0"
+              clearable
+            />
+          </v-col>
+        </v-row>
+        <template v-if="visibleProperties.has('scaleByDistance')">
           <v-row no-gutters>
-            <v-col v-for="(nearFar, index) in scaleByDistance" :key="index">
-              <VcsTextField
-                v-model.number="nearFar.value"
-                :hide-spin-buttons="true"
-                type="number"
-                :unit="index % 2 === 0 ? 'm' : ''"
-                :disabled="!hasScaleByDistance"
-                :placeholder="
-                  'scaleByDistance' in value
-                    ? `${scaleByDistanceDefault[index]}`
-                    : ''
-                "
-                :rules="[
-                  (v) =>
-                    !hasScaleByDistance ||
-                    !isNaN(v) ||
-                    'components.validation.required',
-                ]"
+            <v-col cols="6">
+              <VcsCheckbox
+                label="components.vectorProperties.scaleByDistance"
+                v-model="hasScaleByDistance"
               />
             </v-col>
           </v-row>
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="visibleProperties.has('eyeOffset') && show3DProperties"
-        no-gutters
-      >
-        <v-col>
-          <VcsCheckbox
-            label="components.vectorProperties.eyeOffset"
-            v-model="hasEyeOffset"
-          />
-        </v-col>
-        <v-col v-for="(distance, index) in eyeOffset" :key="index" cols="2">
-          <VcsTextField
-            v-model.number="distance.value"
-            unit="m"
-            :hide-spin-buttons="true"
-            type="number"
-            :disabled="!hasEyeOffset"
-            :prefix="dimensionsUpperCase[index]"
-            :rules="[
-              (v) =>
-                !hasEyeOffset || !isNaN(v) || 'components.validation.required',
-            ]"
-            :placeholder="
-              'eyeOffset' in value ? `${eyeOffsetDefault[index]}` : ''
-            "
-          />
-        </v-col>
-      </v-row>
+          <template v-if="hasScaleByDistance">
+            <v-row no-gutters class="pb-2">
+              <v-col
+                v-for="(_, index) in localValue.scaleByDistance"
+                :key="index"
+              >
+                <VcsTextField
+                  v-model="localValue.scaleByDistance[index]"
+                  :hide-spin-buttons="true"
+                  type="number"
+                  :unit="index % 2 === 0 ? 'm' : ''"
+                  :disabled="!localValue.scaleByDistance"
+                  :placeholder="String(scaleByDistanceDefault[index])"
+                  :rules="[
+                    (v) =>
+                      !hasScaleByDistance ||
+                      !isNaN(v) ||
+                      'components.validation.required',
+                  ]"
+                />
+              </v-col>
+            </v-row>
+          </template>
+        </template>
+        <template v-if="visibleProperties.has('eyeOffset')">
+          <v-row no-gutters>
+            <v-col>
+              <VcsCheckbox
+                label="components.vectorProperties.eyeOffset"
+                v-model="hasEyeOffset"
+              />
+            </v-col>
+          </v-row>
+          <template v-if="hasEyeOffset">
+            <v-row no-gutters class="pb-2">
+              <v-col v-for="(_, index) in localValue.eyeOffset" :key="index">
+                <VcsTextField
+                  v-model.number="localValue.eyeOffset[index]"
+                  unit="m"
+                  :hide-spin-buttons="true"
+                  type="number"
+                  :disabled="!hasEyeOffset"
+                  :prefix="dimensionsUpperCase[index]"
+                  :rules="[
+                    (v) =>
+                      !hasEyeOffset ||
+                      !isNaN(v) ||
+                      'components.validation.required',
+                  ]"
+                  :placeholder="String(eyeOffsetDefault[index])"
+                />
+              </v-col>
+            </v-row>
+          </template>
+        </template>
+      </template>
       <v-row v-if="visibleProperties.has('allowPicking')" no-gutters>
         <v-col>
           <VcsCheckbox
             label="components.vectorProperties.allowPicking"
-            v-model="allowPicking"
+            v-model="localValue.allowPicking"
+            :true-value="true"
+            :false-value="false"
           />
         </v-col>
       </v-row>
@@ -145,336 +142,329 @@
         no-gutters
       >
         <v-col>
-          <VcsLabel html-for="vp-classification-type" :dense="true">
+          <VcsLabel html-for="vp-classification-type">
             {{ $t('components.vectorProperties.classificationType') }}
           </VcsLabel>
         </v-col>
         <v-col>
           <VcsSelect
             id="vp-classification-type"
-            :items="[
-              { value: 'none', text: 'components.vectorProperties.none' },
-              { value: 'both', text: 'components.vectorProperties.both' },
-              {
-                value: 'cesium3DTile',
-                text: 'components.vectorProperties.cesium3DTile',
-              },
-              { value: 'terrain', text: 'components.vectorProperties.terrain' },
-            ]"
+            :items="availableClassificationTypes"
             v-model="classificationType"
-            dense
           />
         </v-col>
       </v-row>
     </v-container>
-    <v-divider
-      v-if="
-        showDividers &&
-        show3DProperties &&
-        [
-          'extrudedHeight',
-          'skirt',
-          'storeysAboveGround',
-          'storeysBelowGround',
-          'storeyHeightsAboveGround',
-          'storeyHeightsBelowGround',
-        ].some((prop) => visibleProperties.has(prop))
-      "
-    />
-    <v-container class="px-1 py-0" v-if="show3DProperties">
-      <v-row
+    <template v-if="show3DProperties">
+      <v-divider
         v-if="
-          visibleProperties.has('storeysAboveGround') ||
-          visibleProperties.has('storeyHeightsAboveGround')
+          showDividers &&
+          [
+            'extrudedHeight',
+            'skirt',
+            'storeysAboveGround',
+            'storeysBelowGround',
+            'storeyHeightsAboveGround',
+            'storeyHeightsBelowGround',
+          ].some((prop) => visibleProperties.has(prop))
         "
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel>{{
-            $t('components.vectorProperties.aboveGround')
-          }}</VcsLabel>
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('extrudedHeight')" no-gutters>
-        <v-col>
-          <VcsLabel
-            html-for="vp-extruded-height"
-            :class="{
-              'px-4':
-                visibleProperties.has('storeysAboveGround') ||
-                visibleProperties.has('storeyHeightsAboveGround'),
-            }"
-            >{{ $t('components.vectorProperties.extrudedHeight') }}</VcsLabel
-          >
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-extruded-height"
-            v-model.number="extrudedHeight"
-            :hide-spin-buttons="true"
-            type="number"
-            unit="m"
-            :placeholder="'extrudedHeight' in value ? '0' : ''"
-            clearable
-            :rules="[
-              (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
-            ]"
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('storeysAboveGround')" no-gutters>
-        <v-col>
-          <VcsLabel html-for="vp-storeys-above" class="px-4">{{
-            $t('components.vectorProperties.storeys')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-storeys-above"
-            v-model.number="storeysAboveGround"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="'storeysAboveGround' in value ? '0' : ''"
-            clearable
-            :rules="[
-              (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
-            ]"
-          />
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="visibleProperties.has('storeyHeightsAboveGround')"
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel :html-for="'vp-storey-heights-above'" class="px-4">{{
-            $t('components.vectorProperties.storeyHeights')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsChipArrayInput
-            id="vp-storey-heights-above"
-            dense
-            column
-            type="number"
-            v-model="storeyHeights.storeyHeightsAboveGround.value"
-            placeholder="3"
-            :rules="[(v) => !(v <= 0) || 'components.validation.notValid']"
-          />
-        </v-col>
-      </v-row>
-      <v-row
+      />
+      <v-container class="px-1 py-0">
+        <v-row
+          v-if="
+            visibleProperties.has('storeysAboveGround') ||
+            visibleProperties.has('storeyHeightsAboveGround')
+          "
+          no-gutters
+        >
+          <v-col>
+            <VcsLabel>{{
+              $t('components.vectorProperties.aboveGround')
+            }}</VcsLabel>
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('extrudedHeight')" no-gutters>
+          <v-col>
+            <VcsLabel
+              html-for="vp-extruded-height"
+              :class="{
+                'px-4':
+                  visibleProperties.has('storeysAboveGround') ||
+                  visibleProperties.has('storeyHeightsAboveGround'),
+              }"
+              >{{ $t('components.vectorProperties.extrudedHeight') }}</VcsLabel
+            >
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-extruded-height"
+              v-model.number="localValue.extrudedHeight"
+              :hide-spin-buttons="true"
+              type="number"
+              unit="m"
+              :placeholder="'extrudedHeight' in localValue ? '0' : ''"
+              clearable
+              :rules="[
+                (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
+              ]"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('storeysAboveGround')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-storeys-above" class="px-4">{{
+              $t('components.vectorProperties.storeys')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-storeys-above"
+              v-model.number="localValue.storeysAboveGround"
+              :hide-spin-buttons="true"
+              type="number"
+              :placeholder="'storeysAboveGround' in localValue ? '0' : ''"
+              clearable
+              :rules="[
+                (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
+              ]"
+            />
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="visibleProperties.has('storeyHeightsAboveGround')"
+          no-gutters
+        >
+          <v-col>
+            <VcsLabel :html-for="'vp-storey-heights-above'" class="px-4">{{
+              $t('components.vectorProperties.storeyHeights')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsChipArrayInput
+              id="vp-storey-heights-above"
+              column
+              type="number"
+              v-model="storeyHeights.storeyHeightsAboveGround.value"
+              placeholder="3"
+              :rules="[(v) => !(v <= 0) || 'components.validation.notValid']"
+            />
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="
+            visibleProperties.has('storeysBelowGround') ||
+            visibleProperties.has('storeyHeightsBelowGround')
+          "
+          no-gutters
+        >
+          <v-col>
+            <VcsLabel>{{
+              $t('components.vectorProperties.belowGround')
+            }}</VcsLabel>
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('skirt')" no-gutters>
+          <v-col>
+            <VcsLabel
+              html-for="vp-skirt"
+              :class="{
+                'px-4':
+                  visibleProperties.has('storeysBelowGround') ||
+                  visibleProperties.has('storeyHeightsBelowGround'),
+              }"
+              >{{ $t('components.vectorProperties.skirt') }}</VcsLabel
+            >
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-skirt"
+              v-model.number="localValue.skirt"
+              :hide-spin-buttons="true"
+              type="number"
+              unit="m"
+              :placeholder="'skirt' in localValue ? '0' : ''"
+              clearable
+              :rules="[
+                (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
+              ]"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('storeysBelowGround')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-storeys-below" class="px-4">{{
+              $t('components.vectorProperties.storeys')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-storeys-below"
+              v-model.number="localValue.storeysBelowGround"
+              :hide-spin-buttons="true"
+              type="number"
+              :placeholder="'storeysBelowGround' in localValue ? '0' : ''"
+              clearable
+              :rules="[
+                (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
+              ]"
+            />
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="visibleProperties.has('storeyHeightsBelowGround')"
+          no-gutters
+        >
+          <v-col>
+            <VcsLabel :html-for="'vp-storey-heights-below'" class="px-4">{{
+              $t('components.vectorProperties.storeyHeights')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsChipArrayInput
+              :id="'vp-storey-heights-below'"
+              column
+              type="number"
+              v-model="storeyHeights.storeyHeightsBelowGround.value"
+              placeholder="3"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-divider
         v-if="
-          visibleProperties.has('storeysBelowGround') ||
-          visibleProperties.has('storeyHeightsBelowGround')
+          showDividers &&
+          [
+            'modelUrl',
+            'modelScaleX',
+            'modelScaleY',
+            'modelScaleZ',
+            'modelHeading',
+            'modelPitch',
+            'modelRoll',
+            'baseUrl',
+          ].some((prop) => visibleProperties.has(prop))
         "
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel>{{
-            $t('components.vectorProperties.belowGround')
-          }}</VcsLabel>
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('skirt')" no-gutters>
-        <v-col>
-          <VcsLabel
-            html-for="vp-skirt"
-            :class="{
-              'px-4':
-                visibleProperties.has('storeysBelowGround') ||
-                visibleProperties.has('storeyHeightsBelowGround'),
-            }"
-            >{{ $t('components.vectorProperties.skirt') }}</VcsLabel
-          >
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-skirt"
-            v-model.number="skirt"
-            :hide-spin-buttons="true"
-            type="number"
-            unit="m"
-            :placeholder="'skirt' in value ? '0' : ''"
-            clearable
-            :rules="[
-              (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
-            ]"
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('storeysBelowGround')" no-gutters>
-        <v-col>
-          <VcsLabel html-for="vp-storeys-below" class="px-4">{{
-            $t('components.vectorProperties.storeys')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-storeys-below"
-            v-model.number="storeysBelowGround"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="'storeysBelowGround' in value ? '0' : ''"
-            clearable
-            :rules="[
-              (v) => v >= 0 || isNaN(v) || 'components.validation.notValid',
-            ]"
-          />
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="visibleProperties.has('storeyHeightsBelowGround')"
-        no-gutters
-      >
-        <v-col>
-          <VcsLabel :html-for="'vp-storey-heights-below'" class="px-4">{{
-            $t('components.vectorProperties.storeyHeights')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsChipArrayInput
-            :id="'vp-storey-heights-below'"
-            dense
-            column
-            type="number"
-            v-model="storeyHeights.storeyHeightsBelowGround.value"
-            placeholder="3"
-          />
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-divider
-      v-if="
-        showDividers &&
-        show3DProperties &&
-        [
-          'modelUrl',
-          'modelScaleX',
-          'modelScaleY',
-          'modelScaleZ',
-          'modelHeading',
-          'modelPitch',
-          'modelRoll',
-          'baseUrl',
-        ].some((prop) => visibleProperties.has(prop))
-      "
-    />
-    <v-container class="px-1 py-0" v-if="show3DProperties">
-      <v-row v-if="visibleProperties.has('modelUrl')" no-gutters>
-        <v-col>
-          <VcsLabel html-for="vp-model-url">
-            {{ $t('components.vectorProperties.modelUrl') }}
-          </VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-model-url"
-            dense
-            v-model="modelUrl"
-            clearable
-            :placeholder="'modelUrl' in value ? 'example.glb' : ''"
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="Object.keys(modelScale).length" no-gutters>
-        <v-col cols="6">
-          <VcsLabel>{{
-            $t('components.vectorProperties.modelScale')
-          }}</VcsLabel>
-        </v-col>
-        <v-col v-for="(dimension, key) in modelScale" :key="key">
-          <VcsTextField
-            v-model.number="dimension.value"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="`modelScale${key}` in value ? '1' : ''"
-            :prefix="key"
-            :rules="[(v) => v > 0 || 'components.validation.notValid']"
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('modelHeading')" no-gutters>
-        <v-col cols="6">
-          <VcsLabel>{{
-            $t('components.vectorProperties.modelHeading')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            v-model.number="modelHeading"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="'modelHeading' in value ? '0' : ''"
-            unit="°"
-            clearable
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('modelPitch')" no-gutters>
-        <v-col cols="6">
-          <VcsLabel>{{
-            $t('components.vectorProperties.modelPitch')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            v-model.number="modelPitch"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="'modelPitch' in value ? '0' : ''"
-            unit="°"
-            clearable
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('modelRoll')" no-gutters>
-        <v-col cols="6">
-          <VcsLabel>{{ $t('components.vectorProperties.modelRoll') }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            v-model.number="modelRoll"
-            :hide-spin-buttons="true"
-            type="number"
-            :placeholder="'modelRoll' in value ? '0' : ''"
-            unit="°"
-            clearable
-          />
-        </v-col>
-      </v-row>
-      <v-row v-if="visibleProperties.has('baseUrl')" no-gutters>
-        <v-col>
-          <VcsLabel html-for="vp-base-url">{{
-            $t('components.vectorProperties.baseUrl')
-          }}</VcsLabel>
-        </v-col>
-        <v-col>
-          <VcsTextField
-            id="vp-base-url"
-            dense
-            clearable
-            v-model="baseUrl"
-            :placeholder="'baseUrl' in value ? 'path/to/files/' : ''"
-          />
-        </v-col>
-      </v-row>
-    </v-container>
+      />
+      <v-container class="px-1 py-0">
+        <v-row v-if="visibleProperties.has('modelUrl')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-model-url">
+              {{ $t('components.vectorProperties.modelUrl') }}
+            </VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-model-url"
+              v-model="localValue.modelUrl"
+              clearable
+              :placeholder="'modelUrl' in localValue ? 'example.glb' : ''"
+            />
+          </v-col>
+        </v-row>
+        <template v-if="Object.keys(modelScale).length">
+          <v-row no-gutters>
+            <v-col cols="6">
+              <VcsLabel>{{
+                $t('components.vectorProperties.modelScale')
+              }}</VcsLabel>
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="pb-2">
+            <v-col v-for="(dimension, key) in modelScale" :key="key">
+              <VcsTextField
+                v-model.number="dimension.value"
+                :hide-spin-buttons="true"
+                type="number"
+                :placeholder="`modelScale${key}` in localValue ? '1' : ''"
+                :prefix="key"
+                :rules="[(v) => v > 0 || 'components.validation.notValid']"
+              />
+            </v-col>
+          </v-row>
+        </template>
+        <v-row v-if="visibleProperties.has('modelHeading')" no-gutters>
+          <v-col cols="6">
+            <VcsLabel>{{
+              $t('components.vectorProperties.modelHeading')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              v-model.number="localValue.modelHeading"
+              :hide-spin-buttons="true"
+              type="number"
+              :placeholder="'modelHeading' in localValue ? '0' : ''"
+              unit="°"
+              clearable
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('modelPitch')" no-gutters>
+          <v-col cols="6">
+            <VcsLabel>{{
+              $t('components.vectorProperties.modelPitch')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              v-model.number="localValue.modelPitch"
+              :hide-spin-buttons="true"
+              type="number"
+              :placeholder="'modelPitch' in localValue ? '0' : ''"
+              unit="°"
+              clearable
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('modelRoll')" no-gutters>
+          <v-col cols="6">
+            <VcsLabel>{{
+              $t('components.vectorProperties.modelRoll')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              v-model.number="localValue.modelRoll"
+              :hide-spin-buttons="true"
+              type="number"
+              :placeholder="'modelRoll' in localValue ? '0' : ''"
+              unit="°"
+              clearable
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="visibleProperties.has('baseUrl')" no-gutters>
+          <v-col>
+            <VcsLabel html-for="vp-base-url">{{
+              $t('components.vectorProperties.baseUrl')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsTextField
+              id="vp-base-url"
+              clearable
+              v-model="localValue.baseUrl"
+              :placeholder="'baseUrl' in localValue ? 'path/to/files/' : ''"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
   </VcsFormSection>
 </template>
 <script>
   import { computed } from 'vue';
   import { VContainer, VRow, VCol, VDivider } from 'vuetify/components';
+  import { VectorProperties } from '@vcmap/core';
+  import {
+    useProxiedComplexModel,
+    useModelHasProperty,
+  } from '../modelHelper.js';
   import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
-  import {
-    usePrimitiveProperty,
-    useArrayProperty,
-    useHasProperty,
-  } from './composables.js';
   import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
 
   export const genericVectorProperties = [
@@ -533,6 +523,7 @@
    */
   export default {
     name: 'VcsVectorPropertiesComponent',
+    methods: { computed },
     components: {
       VcsFormSection,
       VcsLabel,
@@ -548,7 +539,7 @@
     props: {
       modelValue: {
         type: Object,
-        default: () => {},
+        default: () => VectorProperties.getDefaultOptions(),
       },
       valueDefault: {
         type: Object,
@@ -579,161 +570,98 @@
         default: true,
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { emit }) {
+      /**
+       * @type {import("vue").Ref<import("vue").UnwrapRef<import("@vcmap/core").VectorProperties>>}
+       */
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+
       const visibleProperties = computed(() => {
         return new Set(props.properties);
       });
-
-      const altitudeMode = usePrimitiveProperty(
-        () => props.modelValue,
-        'altitudeMode',
-        emit,
-      );
 
       const availableAltitudeModes = computed(() => {
         const altitudeModes = [
           {
             value: 'clampToGround',
-            text: 'components.vectorProperties.clampToGround',
+            title: 'components.vectorProperties.clampToGround',
           },
           {
             value: 'absolute',
-            text: 'components.vectorProperties.absolute',
+            title: 'components.vectorProperties.absolute',
           },
         ];
 
         if (visibleProperties.value.has('heightAboveGround')) {
           altitudeModes.push({
             value: 'relativeToGround',
-            text: 'components.vectorProperties.relativeToGround',
+            title: 'components.vectorProperties.relativeToGround',
           });
         }
 
         return altitudeModes;
       });
 
-      const heightAboveGround = usePrimitiveProperty(
-        () => props.modelValue,
-        'heightAboveGround',
-        emit,
-      );
-      const allowPicking = computed({
-        get() {
-          return props.modelValue.allowPicking;
+      const availableClassificationTypes = [
+        { value: 'none', title: 'components.vectorProperties.none' },
+        { value: 'both', title: 'components.vectorProperties.both' },
+        {
+          value: 'cesium3DTile',
+          title: 'components.vectorProperties.cesium3DTile',
         },
-        set(value) {
-          if (props.modelValue.allowPicking !== value) {
-            const newParams = structuredClone(props.modelValue);
-            const changedParams = { allowPicking: value || false };
-            emit('update:modelValue', Object.assign(newParams, changedParams));
-            emit('propertyChange', changedParams);
-          }
-        },
-      });
+        { value: 'terrain', title: 'components.vectorProperties.terrain' },
+      ];
+
       const classificationType = computed({
         get() {
-          if ('classificationType' in props.modelValue) {
-            return props.modelValue.classificationType || 'none';
+          if ('classificationType' in localValue.value) {
+            return localValue.value.classificationType || 'none';
           } else {
             return undefined;
           }
         },
         set(value) {
-          if (props.modelValue.classificationType !== value) {
-            const newParams = structuredClone(props.modelValue);
-            const changedParams = {
-              classificationType: value === 'none' ? undefined : value,
-            };
-            emit('update:modelValue', Object.assign(newParams, changedParams));
-            emit('propertyChange', changedParams);
+          const v = value === 'none' ? undefined : value;
+          if (localValue.value.classificationType !== v) {
+            localValue.value.classificationType = v;
           }
         },
       });
-      const scaleByDistance = useArrayProperty(
-        () => props.modelValue,
+
+      const hasScaleByDistance = useModelHasProperty(
+        localValue,
         'scaleByDistance',
-        emit,
-        4,
-      );
-      const hasScaleByDistance = useHasProperty(
-        () => props.modelValue,
-        'scaleByDistance',
-        emit,
         scaleByDistanceDefault,
       );
 
-      const eyeOffset = useArrayProperty(
-        () => props.modelValue,
+      const hasEyeOffset = useModelHasProperty(
+        localValue,
         'eyeOffset',
-        emit,
-        3,
-      );
-      const hasEyeOffset = useHasProperty(
-        () => props.modelValue,
-        'eyeOffset',
-        emit,
         eyeOffsetDefault,
-      );
-
-      const groundLevel = usePrimitiveProperty(
-        () => props.modelValue,
-        'groundLevel',
-        emit,
-      );
-      const extrudedHeight = usePrimitiveProperty(
-        () => props.modelValue,
-        'extrudedHeight',
-        emit,
-      );
-      const skirt = usePrimitiveProperty(() => props.modelValue, 'skirt', emit);
-      const storeysAboveGround = usePrimitiveProperty(
-        () => props.modelValue,
-        'storeysAboveGround',
-        emit,
-      );
-      const storeysBelowGround = usePrimitiveProperty(
-        () => props.modelValue,
-        'storeysBelowGround',
-        emit,
       );
 
       const storeyHeights = computed(() => {
         return ['storeyHeightsAboveGround', 'storeyHeightsBelowGround']
           .filter((key) => visibleProperties.value.has(key))
           .reduce((acc, key) => {
-            return {
-              ...acc,
-              [key]: computed({
-                get() {
-                  if (Array.isArray(props.modelValue?.[key])) {
-                    return props.modelValue?.[key];
-                  } else if (props.modelValue?.[key] > 0) {
-                    return [props.modelValue?.[key]];
-                  } else {
-                    return [];
-                  }
-                },
-                set(value) {
-                  const newParams = structuredClone(props.modelValue);
-                  const changedParams = {
-                    [key]: value,
-                  };
-                  emit(
-                    'update:modelValue',
-                    Object.assign(newParams, changedParams),
-                  );
-                  emit('propertyChange', changedParams);
-                },
-              }),
-            };
+            acc[key] = computed({
+              get() {
+                if (Array.isArray(localValue.value[key])) {
+                  return localValue.value[key];
+                } else if (localValue.value[key] > 0) {
+                  return [localValue.value[key]];
+                } else {
+                  return [];
+                }
+              },
+              set(value) {
+                localValue.value[key] = value;
+              },
+            });
+            return acc;
           }, {});
       });
-
-      const modelUrl = usePrimitiveProperty(
-        () => props.modelValue,
-        'modelUrl',
-        emit,
-      );
 
       const modelScale = computed(() => {
         return dimensionsUpperCase
@@ -743,42 +671,17 @@
           .reduce((acc, dimension) => {
             return {
               ...acc,
-              [dimension]: usePrimitiveProperty(
-                () => props.modelValue,
-                `modelScale${dimension}`,
-                emit,
-              ),
+              [dimension]: computed({
+                get() {
+                  return localValue.value[`modelScale${dimension}`];
+                },
+                set(value) {
+                  localValue.value[`modelScale${dimension}`] = value;
+                },
+              }),
             };
           }, {});
       });
-
-      const modelHeading = usePrimitiveProperty(
-        () => props.modelValue,
-        'modelHeading',
-        emit,
-      );
-      const modelPitch = usePrimitiveProperty(
-        () => props.modelValue,
-        'modelPitch',
-        emit,
-      );
-      const modelRoll = usePrimitiveProperty(
-        () => props.modelValue,
-        'modelRoll',
-        emit,
-      );
-      const baseUrl = usePrimitiveProperty(
-        () => props.modelValue,
-        'baseUrl',
-        emit,
-      );
-
-      function reset() {
-        const newParams = structuredClone(props.valueDefault);
-
-        emit('update:modelValue', newParams);
-        emit('propertyChange', newParams);
-      }
 
       const headerActions = computed(() =>
         props.showReset
@@ -788,7 +691,7 @@
                 title: 'components.style.reset',
                 icon: '$vcsReturn',
                 callback: () => {
-                  reset();
+                  localValue.value = props.valueDefault;
                 },
               },
             ]
@@ -796,32 +699,18 @@
       );
 
       return {
+        localValue,
         headerActions,
         visibleProperties,
-        altitudeMode,
         availableAltitudeModes,
-        heightAboveGround,
-        allowPicking,
+        availableClassificationTypes,
         classificationType,
-        scaleByDistance,
         hasScaleByDistance,
         scaleByDistanceDefault,
-        eyeOffset,
         hasEyeOffset,
         eyeOffsetDefault,
-        groundLevel,
-        extrudedHeight,
-        skirt,
-        storeysAboveGround,
-        storeysBelowGround,
         storeyHeights,
-        modelUrl,
         modelScale,
-        modelHeading,
-        modelPitch,
-        modelRoll,
-        baseUrl,
-        reset,
         dimensionsUpperCase,
       };
     },

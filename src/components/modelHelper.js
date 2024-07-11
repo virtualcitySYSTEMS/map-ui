@@ -86,3 +86,28 @@ export function useProxiedComplexModel(props, prop, emit) {
 
   return internal;
 }
+
+/**
+ * Helper function that returns a modelValue for VcsCheckbox depending on the availability of a specific property within a model object
+ * Getter returns true, if property is available, otherwise false.
+ * Setter applies provided defaultValue on the model object, if checked (true) and undefined, if unchecked (false)
+ * @param {import("vue").Ref<Object>} localValue The model object, e.g. provided by `useProxiedComplexModel` or a local ref object.
+ * @param {string} key The key of the localValue that should be return on get and updated on set.
+ * @param {D} defaultValue  The default value that is set on checked (true)
+ * @returns {import('vue').WritableComputedRef<boolean>}
+ * @template D
+ */
+export function useModelHasProperty(localValue, key, defaultValue) {
+  const model = () => localValue.value;
+  return computed({
+    get() {
+      return model()[key] !== undefined;
+    },
+    set(value) {
+      const v = value ? defaultValue : undefined;
+      if (localValue.value[key] !== v) {
+        localValue.value[key] = v;
+      }
+    },
+  });
+}
