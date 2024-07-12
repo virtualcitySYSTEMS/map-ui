@@ -27,11 +27,11 @@ describe('URL state IO', () => {
 
       originalState.activeObliqueCollection = 'foo';
       originalState.activeMap = 'bar';
-      originalState.activeViewpoint = new Viewpoint({
+      originalState.activeViewpoint = {
         cameraPosition: [1, 1, 2],
         groundPosition: [1, 1, 0],
         distance: 2,
-      });
+      };
       const url = new URL('http://localhost');
       setStateToUrl(originalState, url);
       recreatedState = getStateFromURL(url);
@@ -93,11 +93,11 @@ describe('URL state IO', () => {
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
-        originalState.activeViewpoint = new Viewpoint({
+        originalState.activeViewpoint = {
           cameraPosition: [1, 1, 2],
           groundPosition: [1, 1, 0],
           distance: 2,
-        });
+        };
         const url = new URL('http://localhost');
         setStateToUrl(originalState, url);
         recreatedState = getStateFromURL(url);
@@ -161,11 +161,11 @@ describe('URL state IO', () => {
 
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
-        originalState.activeViewpoint = new Viewpoint({
+        originalState.activeViewpoint = {
           cameraPosition: [1, 1, 2],
           groundPosition: [1, 1, 0],
           distance: 2,
-        });
+        };
         const url = new URL('http://localhost');
         setStateToUrl(originalState, url);
         recreatedState = getStateFromURL(url);

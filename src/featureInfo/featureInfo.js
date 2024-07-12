@@ -21,7 +21,7 @@ import {
   Entity,
 } from '@vcmap-cesium/engine';
 import { Feature } from 'ol';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, oneOf } from '@vcsuite/check';
 
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
@@ -390,15 +390,13 @@ class FeatureInfo extends Collection {
    * @returns {Promise<void>}
    */
   async selectFeature(feature, position, windowPosition, featureInfoView) {
-    check(feature, [
-      Feature,
-      Entity,
-      Cesium3DTileFeature,
-      Cesium3DTilePointFeature,
-    ]);
-    checkMaybe(position, [Number]);
-    checkMaybe(windowPosition, [Number]);
-    checkMaybe(featureInfoView, AbstractFeatureInfoView);
+    check(
+      feature,
+      oneOf(Feature, Entity, Cesium3DTileFeature, Cesium3DTilePointFeature),
+    );
+    check(position, maybe([Number]));
+    check(windowPosition, maybe([Number]));
+    check(featureInfoView, maybe(AbstractFeatureInfoView));
 
     const usedFeatureInfoView =
       feature[featureInfoViewSymbol] ??

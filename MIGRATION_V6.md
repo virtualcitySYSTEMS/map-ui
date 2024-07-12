@@ -90,6 +90,7 @@ Story development can be done by calling `npm run story:dev`. This will start a 
   - `useProxiedComplexModel` when creating a component with an array or object model value
   - `removeListenersFromAttrs` when binding attrs without listener
 - Update Wizard steps beginning from 0 instead of 1
+- `@vcsuite/check` should be updated to v2 if used
 
 # Troubleshooting & Solutions
 

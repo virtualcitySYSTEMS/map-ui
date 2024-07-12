@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, oneOf, optional } from '@vcsuite/check';
 import {
   Collection,
   Extent,
@@ -48,8 +48,8 @@ import SearchComponent from '../search/SearchComponent.vue';
  */
 export function getActionFromOptions(options) {
   check(options.name, String);
-  checkMaybe(options.title, String);
-  checkMaybe(options.icon, String);
+  check(options.title, maybe(String));
+  check(options.icon, maybe(String));
   check(options.callback, Function);
   options.active = parseBoolean(options.active, false);
   options.hasUpdate = parseBoolean(options.hasUpdate, false);
@@ -67,8 +67,8 @@ export function getActionFromOptions(options) {
 export function createMapButtonAction(actionOptions, mapName, maps) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
   });
   check(mapName, String);
   check(maps, MapCollection);
@@ -104,12 +104,12 @@ export function createToggleAction(
 ) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
-    hasUpdate: [undefined, Boolean],
+    icon: optional(String),
+    title: optional(String),
+    hasUpdate: optional(Boolean),
   });
   check(windowComponent, { id: String });
-  check(owner, [String, vcsAppSymbol]);
+  check(owner, oneOf(String, vcsAppSymbol));
 
   const action = reactive({
     ...actionOptions,
@@ -256,10 +256,10 @@ export function createOverviewMapAction(
 export function createModalAction(actionOptions, modalComponent, app, owner) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
   });
-  check(owner, [String, vcsAppSymbol]);
+  check(owner, oneOf(String, vcsAppSymbol));
 
   const id = uuid();
   const { position: windowPositionOptions, ...component } = modalComponent;
@@ -334,10 +334,10 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
 export function createLinkAction(actionOptions, url) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
   });
-  check(url, [String, Function]);
+  check(url, oneOf(String, Function));
 
   return {
     ...actionOptions,
@@ -369,10 +369,10 @@ export function createGoToViewpointAction(
 ) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
   });
-  check(viewpoint, [Viewpoint, String]);
+  check(viewpoint, oneOf(Viewpoint, String));
   check(viewpointCollection, Collection);
   check(mapCollection, MapCollection);
 
@@ -422,8 +422,8 @@ export function createZoomToFeatureAction(
 ) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
   });
   check(feature, Feature);
   check(mapCollection, MapCollection);

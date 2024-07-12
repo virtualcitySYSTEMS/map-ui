@@ -61,7 +61,6 @@ const configMain = defineConfig(async ({ mode }) => {
     },
     optimizeDeps: {
       include: ['vuetify'],
-      exclude: ['@vcsuite/check'],
     },
     histoire: {
       plugins: [HstVue()],
@@ -79,7 +78,7 @@ const configMain = defineConfig(async ({ mode }) => {
 
   if (process.env.NO_OPTIMIZED_CORE) {
     config.optimizeDeps = {
-      exclude: ['@vcmap/core', 'ol', '@vcsuite/check'],
+      exclude: ['@vcmap/core', 'ol'],
       include: [
         '@vcmap/core > fast-deep-equal',
         '@vcmap/core > rbush-knn',

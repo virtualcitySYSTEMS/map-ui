@@ -1,5 +1,5 @@
 import { nextTick, reactive, watch } from 'vue';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, oneOf } from '@vcsuite/check';
 import { WindowSlot } from '../window/windowManager.js';
 import CollectionComponentClass from './collectionComponentClass.js';
 import { createListEditAction } from '../../actions/listActions.js';
@@ -65,9 +65,9 @@ export function makeEditorCollectionComponentClass(
   parentId = 'category-manager',
 ) {
   check(collectionComponent, CollectionComponentClass);
-  check(editingOptions.editor, [Object, Function]);
-  checkMaybe(editingOptions.multiEditor, Object);
-  checkMaybe(editingOptions.predicate, Function);
+  check(editingOptions.editor, oneOf(Object, Function));
+  check(editingOptions.multiEditor, maybe(Object));
+  check(editingOptions.predicate, maybe(Function));
 
   const editorCollectionComponent =
     /** @type {EditorCollectionComponentClass} */ collectionComponent;

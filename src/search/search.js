@@ -10,7 +10,7 @@ import {
   Viewpoint,
 } from '@vcmap/core';
 import { shallowRef } from 'vue';
-import { check } from '@vcsuite/check';
+import { check, oneOf } from '@vcsuite/check';
 import { Icon } from 'ol/style.js';
 import { getLogger } from '@vcsuite/logger';
 import { vcsAppSymbol } from '../pluginHelper.js';
@@ -183,7 +183,7 @@ class Search extends IndexedCollection {
    * @param {number=} index
    */
   add(item, owner, index) {
-    check(owner, [String, vcsAppSymbol]);
+    check(owner, oneOf(String, vcsAppSymbol));
     check(item.search, Function);
 
     item[searchImplOwnerSymbol] = owner;

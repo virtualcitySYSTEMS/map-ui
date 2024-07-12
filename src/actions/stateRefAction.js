@@ -1,5 +1,5 @@
 import { reactive, watch } from 'vue';
-import { check } from '@vcsuite/check';
+import { check, ofEnum } from '@vcsuite/check';
 
 /**
  * @enum {number}
@@ -28,7 +28,7 @@ const stateIconMap = {
  */
 export function createStateRefAction(name, stateRef, callback) {
   check(name, String);
-  check(stateRef?.value, Object.values(StateActionState));
+  check(stateRef?.value, ofEnum(StateActionState));
   check(callback, Function);
 
   const currentState = stateRef.value;

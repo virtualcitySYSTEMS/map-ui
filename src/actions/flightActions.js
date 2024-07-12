@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, ofEnum } from '@vcsuite/check';
 import {
   createFlightVisualization,
   exportFlightAsGeoJson,
@@ -87,7 +87,7 @@ export const PlayerDirection = {
  * @returns {{action: import("./actionHelper.js").VcsAction, destroy: () => void}}
  */
 export function createStepAction(app, instance, direction) {
-  check(direction, Object.values(PlayerDirection));
+  check(direction, ofEnum(PlayerDirection));
 
   let player;
   const action = reactive({
@@ -123,7 +123,7 @@ export function createStepAction(app, instance, direction) {
  * @returns {{ action: import("./actionHelper.js").VcsAction & { listeners:Object<string,()=>void>, destroy: () => void }}}
  */
 export function createFastAction(app, instance, direction) {
-  check(direction, Object.values(PlayerDirection));
+  check(direction, ofEnum(PlayerDirection));
 
   let player;
   const sign = direction === PlayerDirection.Forward ? 1 : -1;
@@ -421,8 +421,8 @@ export function createExportFlightAction(instance, isPathExport = false) {
  * @returns {Promise<boolean>}
  */
 export async function importFlights(app, files, moduleId, importSuccessCb) {
-  checkMaybe(moduleId, String);
-  checkMaybe(importSuccessCb, Function);
+  check(moduleId, maybe(String));
+  check(importSuccessCb, maybe(Function));
 
   const { vueI18n } = app;
   const results = await Promise.all(

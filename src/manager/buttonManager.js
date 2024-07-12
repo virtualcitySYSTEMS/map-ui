@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, oneOf } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { ActionPattern } from '../components/lists/VcsActionList.vue';
 import { getActionFromOptions } from '../actions/actionHelper.js';
@@ -101,10 +101,10 @@ class ButtonManager {
    * @returns {ButtonComponent}
    */
   add(buttonComponentOptions, owner) {
-    checkMaybe(buttonComponentOptions.id, String);
-    checkMaybe(buttonComponentOptions.weight, Number);
+    check(buttonComponentOptions.id, maybe(String));
+    check(buttonComponentOptions.weight, maybe(Number));
     check(buttonComponentOptions.action, ActionPattern);
-    check(owner, [String, vcsAppSymbol]);
+    check(owner, oneOf(String, vcsAppSymbol));
 
     if (buttonComponentOptions.id && this.has(buttonComponentOptions.id)) {
       throw new Error(

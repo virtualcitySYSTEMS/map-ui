@@ -1,5 +1,5 @@
 import { VcsEvent } from '@vcmap/core';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, ofEnum, oneOf, optional } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
 import { reactive, shallowReactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
@@ -230,7 +230,7 @@ class ToolboxManager {
   }
 
   set toolboxName(name) {
-    check(name, [String, defaultToolboxName]);
+    check(name, oneOf(String, defaultToolboxName));
 
     if (this._toolboxName !== name) {
       this._toolboxName = name;
@@ -285,9 +285,9 @@ class ToolboxManager {
    * @returns {SingleToolboxComponent|SelectToolboxComponent|import("vue").ShallowReactive<GroupToolboxComponent>}
    */
   add(toolboxComponentOptions, owner) {
-    checkMaybe(toolboxComponentOptions.id, String);
-    check(toolboxComponentOptions.type, Object.values(ToolboxType));
-    check(owner, [String, vcsAppSymbol]);
+    check(toolboxComponentOptions.id, maybe(String));
+    check(toolboxComponentOptions.type, ofEnum(ToolboxType));
+    check(owner, oneOf(String, vcsAppSymbol));
 
     if (toolboxComponentOptions.id && this.has(toolboxComponentOptions.id)) {
       throw new Error(
@@ -335,13 +335,13 @@ class ToolboxManager {
         ...ActionPattern,
         selected: Function,
         currentIndex: Number,
-        disabled: [undefined, Boolean],
+        disabled: optional(Boolean),
         tools: [
           {
             name: String,
-            title: [undefined, String],
+            title: optional(String),
             icon: String,
-            disabled: [undefined, Boolean],
+            disabled: optional(Boolean),
           },
         ],
       });
@@ -357,8 +357,8 @@ class ToolboxManager {
       };
     } else {
       check(toolboxComponentOptions.icon, String);
-      checkMaybe(toolboxComponentOptions.title, String);
-      checkMaybe(toolboxComponentOptions.disabled, Boolean);
+      check(toolboxComponentOptions.title, maybe(String));
+      check(toolboxComponentOptions.disabled, maybe(Boolean));
       const {
         icon,
         title = undefined,

@@ -2,7 +2,7 @@ import { computed, reactive, ref } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { parseEnumValue } from '@vcsuite/parsers';
-import { check } from '@vcsuite/check';
+import { check, oneOf } from '@vcsuite/check';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 
 /**
@@ -563,7 +563,7 @@ class WindowManager {
    * @returns {WindowComponent}
    */
   add(windowComponentOptions, owner) {
-    check(owner, [String, vcsAppSymbol]);
+    check(owner, oneOf(String, vcsAppSymbol));
 
     if (
       windowComponentOptions.id &&
@@ -747,7 +747,7 @@ class WindowManager {
    */
   addExternalIdToZIndex(id, owner) {
     check(id, String);
-    check(owner, [String, vcsAppSymbol]);
+    check(owner, oneOf(String, vcsAppSymbol));
 
     if (this.has(id)) {
       throw new Error(`Id ${id} already belongs to a window id`);

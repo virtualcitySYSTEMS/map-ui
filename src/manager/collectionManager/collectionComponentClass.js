@@ -3,7 +3,7 @@ import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, ref, shallowRef, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
-import { check } from '@vcsuite/check';
+import { check, oneOf } from '@vcsuite/check';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
 import { sortByWeight } from '../buttonManager.js';
 import {
@@ -77,7 +77,7 @@ export function createSupportedMapMappingFunction(
   supportedMaps,
   mapCollection,
 ) {
-  check(supportedMaps, [[String], Function]);
+  check(supportedMaps, oneOf([String], Function));
 
   return (item, _c, listItem) => {
     const mapNames =

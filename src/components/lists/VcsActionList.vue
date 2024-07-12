@@ -34,7 +34,7 @@
 </style>
 <script>
   import { computed } from 'vue';
-  import { is } from '@vcsuite/check';
+  import { is, optional } from '@vcsuite/check';
   import {
     VIcon,
     VList,
@@ -50,13 +50,13 @@
    */
   export const ActionPattern = {
     name: String,
-    title: [undefined, String],
-    icon: [undefined, String],
+    title: optional(String),
+    icon: optional(String),
     callback: Function,
-    active: [undefined, Boolean],
-    background: [undefined, Boolean],
-    hasUpdate: [undefined, Boolean],
-    disabled: [undefined, Boolean],
+    active: optional(Boolean),
+    background: optional(Boolean),
+    hasUpdate: optional(Boolean),
+    disabled: optional(Boolean),
   };
 
   /**

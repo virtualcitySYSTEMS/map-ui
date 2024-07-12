@@ -1,5 +1,5 @@
 import { reactive, watch } from 'vue';
-import { check } from '@vcsuite/check';
+import { check, oneOf, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import { parseGeoJSON } from '@vcmap/core';
 import VcsImportComponent from '../components/import/VcsImportComponent.vue';
@@ -57,8 +57,8 @@ export function createListItemDeleteAction(
 export function createListItemBulkAction(selection, actionOptions) {
   check(actionOptions, {
     name: String,
-    icon: [undefined, String],
-    title: [undefined, String],
+    icon: optional(String),
+    title: optional(String),
     callback: Function,
   });
 
@@ -218,7 +218,7 @@ export function createListImportAction(
   parentId,
 ) {
   check(importCallback, Function);
-  check(owner, [String, vcsAppSymbol]);
+  check(owner, oneOf(String, vcsAppSymbol));
   check(parentId, String);
 
   const { action, destroy } = createToggleAction(

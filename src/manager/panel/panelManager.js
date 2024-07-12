@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 import { VcsEvent } from '@vcmap/core';
-import { check } from '@vcsuite/check';
+import { check, ofEnum, oneOf } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
 import { parseBoolean } from '@vcsuite/parsers';
 import { vcsAppSymbol } from '../../pluginHelper.js';
@@ -279,8 +279,8 @@ class PanelManager {
    * @returns {PanelComponent}
    */
   add(panelComponentOptions, owner, location) {
-    check(owner, [String, vcsAppSymbol]);
-    check(location, Object.values(PanelLocation));
+    check(owner, oneOf(String, vcsAppSymbol));
+    check(location, ofEnum(PanelLocation));
 
     const id = panelComponentOptions.id || uuidv4();
     const { component, position: panelPosition } = panelComponentOptions;

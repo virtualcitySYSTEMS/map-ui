@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { check, checkMaybe, is } from '@vcsuite/check';
+import { check, is, maybe, oneOf, optional } from '@vcsuite/check';
 import { VcsModule } from '@vcmap/core';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
 import VcsUiApp from './vcsUiApp.js';
@@ -15,23 +15,24 @@ const VcsObjectPattern = {
 
 /**
  * Base pattern to check VcsUiAppConfig
+ * @type {Record<string, import("@vcsuite/check").Pattern}
  */
 export const VcsUiAppConfigPattern = {
-  id: [undefined, String],
-  layers: [undefined, [VcsObjectPattern]],
-  maps: [undefined, [VcsObjectPattern]],
-  styles: [undefined, [VcsObjectPattern]],
-  viewpoints: [undefined, [VcsObjectPattern]],
-  startingViewpointName: [undefined, String],
-  startingMapName: [undefined, String],
-  projection: [undefined, Object],
-  categories: [undefined, [{ name: String, items: [Object] }]],
-  obliqueCollections: [undefined, [VcsObjectPattern]],
-  plugins: [undefined, [Object]],
-  contentTree: [undefined, [Object]],
-  uiConfig: [undefined, [Object]],
-  featureInfo: [undefined, [VcsObjectPattern]],
-  i18n: [undefined, [Object]],
+  id: optional(String),
+  layers: optional([VcsObjectPattern]),
+  maps: optional([VcsObjectPattern]),
+  styles: optional([VcsObjectPattern]),
+  viewpoints: optional([VcsObjectPattern]),
+  startingViewpointName: optional(String),
+  startingMapName: optional(String),
+  projection: optional(Object),
+  categories: optional([{ name: String, items: [Object] }]),
+  obliqueCollections: optional([VcsObjectPattern]),
+  plugins: optional([Object]),
+  contentTree: optional([Object]),
+  uiConfig: optional([Object]),
+  featureInfo: optional([VcsObjectPattern]),
+  i18n: optional([Object]),
 };
 
 /**
@@ -62,7 +63,7 @@ export default async function initApp(mountTarget) {
  */
 export async function initAppFromModule(mountTarget, configUrl) {
   check(mountTarget, String);
-  checkMaybe(configUrl, String);
+  check(configUrl, maybe(String));
 
   const app = await initApp(mountTarget);
   if (configUrl) {
@@ -90,7 +91,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
    */
   const appConfig = await fetch(appUrl).then((response) => response.json());
 
-  check(appConfig.modules, [String, Object]);
+  check(appConfig.modules, oneOf([String], [Object]));
 
   const modules = await Promise.all(
     appConfig.modules.map(async (c) => {

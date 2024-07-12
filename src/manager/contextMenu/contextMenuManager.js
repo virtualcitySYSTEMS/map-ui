@@ -1,6 +1,6 @@
 import { CesiumMap, BaseOLMap, VcsEvent } from '@vcmap/core';
 import { unByKey } from 'ol/Observable.js';
-import { check } from '@vcsuite/check';
+import { check, oneOf } from '@vcsuite/check';
 import ContextMenuInteraction from './contextMenuInteraction.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
@@ -176,7 +176,7 @@ class ContextMenuManager {
    */
   addEventHandler(handler, owner) {
     check(handler, Function);
-    check(owner, [String, vcsAppSymbol]);
+    check(owner, oneOf(String, vcsAppSymbol));
 
     this._ensureInteraction();
     this._eventHandlers.push({ owner, handler });

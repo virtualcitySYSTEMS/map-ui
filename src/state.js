@@ -1,4 +1,4 @@
-import { check } from '@vcsuite/check';
+import { check, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import { Viewpoint } from '@vcmap/core';
 
@@ -257,9 +257,9 @@ export function getStateFromURL(url) {
  */
 export function setStateToUrl(state, url) {
   check(state, {
-    activeMap: [String, undefined],
-    activeViewpoint: [Object, undefined],
-    activeObliqueCollection: [String, undefined],
+    activeMap: optional(String),
+    activeViewpoint: optional(Object),
+    activeObliqueCollection: optional(String),
     layers: Array,
     plugins: Array,
     moduleIds: [String],

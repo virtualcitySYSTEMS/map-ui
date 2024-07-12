@@ -1,5 +1,5 @@
 import { ref, reactive, computed, shallowRef } from 'vue';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, ofEnum, oneOf } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
 import { createLinkAction } from '../actions/actionHelper.js';
@@ -258,7 +258,7 @@ class ContentTreeItem {
    * @param {StateActionState} state
    */
   set state(state) {
-    check(state, Object.values(StateActionState));
+    check(state, ofEnum(StateActionState));
 
     if (this._state.value !== state) {
       this._state.value = state;
@@ -277,7 +277,7 @@ class ContentTreeItem {
    * @param {string} url
    */
   set infoUrl(url) {
-    checkMaybe(url, String);
+    check(url, maybe(String));
 
     if (this._infoUrl !== url) {
       this._infoUrl = url;
@@ -309,7 +309,7 @@ class ContentTreeItem {
    * @param {string|undefined} title
    */
   set title(title) {
-    checkMaybe(title, String);
+    check(title, maybe(String));
 
     this._title.value = title;
   }
@@ -325,7 +325,7 @@ class ContentTreeItem {
    * @param {string|undefined} tooltip
    */
   set tooltip(tooltip) {
-    checkMaybe(tooltip, String);
+    check(tooltip, maybe(String));
 
     this._tooltip.value = tooltip;
   }
@@ -341,7 +341,7 @@ class ContentTreeItem {
    * @param {(string|HTMLCanvasElement|HTMLImageElement)=} icon
    */
   set icon(icon) {
-    checkMaybe(icon, [String, HTMLElement]);
+    check(icon, maybe(oneOf(String, HTMLElement)));
 
     this._icon.value = icon;
   }
@@ -411,7 +411,7 @@ class ContentTreeItem {
    */
   addAction(action, weight = 11) {
     check(action.name, String);
-    checkMaybe(weight, Number);
+    check(weight, maybe(Number));
 
     const index = this._getActionIndex(action.name);
     if (index > -1) {

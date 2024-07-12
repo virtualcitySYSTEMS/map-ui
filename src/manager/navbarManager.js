@@ -1,4 +1,4 @@
-import { check } from '@vcsuite/check';
+import { check, ofEnum } from '@vcsuite/check';
 import ButtonManager, { sortByWeight } from './buttonManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
@@ -89,7 +89,7 @@ class NavbarManager extends ButtonManager {
    * @returns {import("./buttonManager.js").ButtonComponent}
    */
   add(buttonComponentOptions, owner, location) {
-    check(location, Object.values(ButtonLocation));
+    check(location, ofEnum(ButtonLocation));
     const buttonComponent = super.add(buttonComponentOptions, owner);
     buttonComponent[locationSymbol] = location;
     return buttonComponent;

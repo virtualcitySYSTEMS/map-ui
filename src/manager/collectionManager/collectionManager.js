@@ -1,6 +1,6 @@
 import { VcsEvent, Collection } from '@vcmap/core';
 import { reactive } from 'vue';
-import { check, checkMaybe } from '@vcsuite/check';
+import { check, maybe, oneOf } from '@vcsuite/check';
 import { validateActions } from '../../components/lists/VcsActionList.vue';
 import CollectionComponentClass from './collectionComponentClass.js';
 
@@ -133,7 +133,7 @@ class CollectionManager {
    */
   add(collectionComponentOptions, owner) {
     check(collectionComponentOptions, { collection: Collection });
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
 
     if (
       collectionComponentOptions.id &&
@@ -220,9 +220,9 @@ class CollectionManager {
     owner,
     collectionComponentIds = [],
   ) {
-    checkMaybe(predicate, Function);
+    check(predicate, maybe(Function));
     check(mappingFunction, Function);
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
     check(collectionComponentIds, [String]);
 
     /** @type {ItemMapping} */
@@ -260,7 +260,7 @@ class CollectionManager {
    */
   removeMappingFunction(mappingFunction, owner) {
     check(mappingFunction, Function);
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
 
     [...this._collectionComponents.values()].forEach((collectionComponent) => {
       collectionComponent.removeItemMapping({ mappingFunction, owner });
@@ -279,7 +279,7 @@ class CollectionManager {
    */
   addFilterFunction(filterFunction, owner, collectionComponentIds = []) {
     check(filterFunction, Function);
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
     check(collectionComponentIds, [String]);
 
     /** @type {ItemFilter} */
@@ -316,7 +316,7 @@ class CollectionManager {
    */
   removeFilterFunction(filterFunction, owner) {
     check(filterFunction, Function);
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
 
     [...this._collectionComponents.values()].forEach((collectionComponent) => {
       collectionComponent.removeItemFilter({ filterFunction, owner });
@@ -334,7 +334,7 @@ class CollectionManager {
    * @param {Array<string>} [collectionComponentIds] list of collectionComponents this mappingFunction should be used on. If empty, actions are applied to all managed collectionComponents.
    */
   addActions(actions, owner, collectionComponentIds = []) {
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
     check(collectionComponentIds, [String]);
 
     if (!validateActions(actions)) {
@@ -367,7 +367,7 @@ class CollectionManager {
    * @param {string | symbol} owner
    */
   removeActions(actions, owner) {
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
 
     const idx = this._itemActions.findIndex((a) => a.actions === actions);
     if (idx > -1) {
@@ -386,7 +386,7 @@ class CollectionManager {
    * @param {string | symbol} owner
    */
   removeOwner(owner) {
-    check(owner, [String, Symbol]);
+    check(owner, oneOf(String, Symbol));
 
     [...this._collectionComponents.values()].forEach((collectionComponent) => {
       if (collectionComponent.owner === owner) {
