@@ -2,9 +2,8 @@
   <v-container class="fill-height pa-0" absolute fluid>
     <VcsSplashScreen
       v-if="splashScreen"
-      v-model="splashScreenRef"
       :options="splashScreen"
-      :window-id="'splashScreen'"
+      v-model="splashScreenRef"
     ></VcsSplashScreen>
     <VcsNavbar />
     <VcsContainer :attribution-action="attributionAction" />

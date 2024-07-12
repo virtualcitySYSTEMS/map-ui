@@ -251,6 +251,7 @@ export { default as VcsWizard } from './src/components/form-inputs-controls/VcsW
 export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
 export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.vue';
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
+export { default as VcsMarkdown } from './src/components/form-output/VcsMarkdown.vue';
 export { default as VcsTextPage } from './src/application/VcsTextPage.vue';
 export {
   default as VcsActionList,

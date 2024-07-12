@@ -1,7 +1,7 @@
 <template>
   <v-sheet>
     <v-container>
-      <div v-html="markedHtml"></div>
+      <VcsMarkdown :content="markedHtml"></VcsMarkdown>
     </v-container>
   </v-sheet>
 </template>
@@ -32,7 +32,7 @@
 <script>
   import { computed, getCurrentInstance } from 'vue';
   import { VContainer, VSheet } from 'vuetify/components';
-  import { parseAndSanitizeMarkdown } from './markdownHelper.js';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
 
   /**
    * @description Is a component to render and sanitize a String
@@ -43,6 +43,7 @@
     components: {
       VSheet,
       VContainer,
+      VcsMarkdown,
     },
     props: {
       content: {
@@ -53,8 +54,7 @@
     setup(props) {
       const vm = getCurrentInstance().proxy;
       const markedHtml = computed(() => {
-        const translatedContent = vm.$st(props.content);
-        return parseAndSanitizeMarkdown(translatedContent);
+        return vm.$st(props.content);
       });
 
       return {

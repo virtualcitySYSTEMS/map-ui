@@ -11,16 +11,11 @@
     <v-card>
       <div class="px-2 pt-2 pb-1">
         <v-card-text>
-          <div v-html="splashScreenText"></div>
+          <VcsMarked :content="splashScreenText"></VcsMarked>
 
           <v-row class="mt-2" v-if="options.acceptInput" no-gutters>
             <v-col class="align-center d-flex">
-              <VcsCheckbox
-                id="checkbox_splashScreen"
-                style="margin-bottom: 16px"
-                v-model="checkBox"
-              >
-              </VcsCheckbox>
+              <VcsCheckbox v-model="checkBox"> </VcsCheckbox>
 
               <VcsLabel>
                 <div
@@ -36,6 +31,7 @@
           <v-col class="text-right">
             <VcsFormButton
               color="primary"
+              variant="filled"
               @click="exitScreen"
               :disabled="!checkBox"
               >{{ $t(options.buttonTitle) }}</VcsFormButton
@@ -56,11 +52,13 @@
     VRow,
     VCol,
   } from 'vuetify/components';
-  import { computed, getCurrentInstance, ref, watch } from 'vue';
+  import { computed, getCurrentInstance, ref } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
   import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
+  import VcsMarked from '../components/form-output/VcsMarkdown.vue';
+  import { useProxiedAtomicModel } from '../components/modelHelper.js';
 
   export default {
     name: 'VcsSplashScreen',
@@ -74,9 +72,10 @@
       VcsCheckbox,
       VRow,
       VCol,
+      VcsMarked,
     },
     props: {
-      value: {
+      modelValue: {
         type: Boolean,
         default: false,
       },
@@ -86,17 +85,11 @@
       },
     },
     setup(props, { emit }) {
-      const localValue = ref(props.value);
-      watch(
-        () => props.value,
-        (newValue) => {
-          localValue.value = newValue;
-        },
-      );
+      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
+
       const vm = getCurrentInstance().proxy;
       const splashScreenText = computed(() => {
-        const translatedContent = vm.$st(props.options.content);
-        return parseAndSanitizeMarkdown(translatedContent);
+        return vm.$st(props.options.content);
       });
 
       const splashScreenCheckboxText = computed(() => {
@@ -107,7 +100,6 @@
       const checkBox = ref(!props.options.acceptInput);
       const exitScreen = () => {
         localValue.value = false;
-        emit('input', localValue.value);
       };
 
       const position = computed(() => ({
@@ -130,7 +122,12 @@
 </script>
 
 <style scoped lang="scss">
-  .marked-checkbox-content ::v-deep p {
-    margin-bottom: 0;
+  .marked-checkbox-content {
+    :deep(p) {
+      margin-bottom: 0;
+    }
+  }
+  .v-input {
+    margin-left: -5px !important;
   }
 </style>

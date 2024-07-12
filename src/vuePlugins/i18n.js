@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n';
 import { is } from '@vcsuite/check';
+import { resolveValue } from '@intlify/core-base';
 
 /**
  * creates a new VueI18n Instance.
@@ -12,6 +13,12 @@ export function createVueI18n() {
     missingWarn: false,
     fallbackWarn: false,
     fallbackLocale: ['en', 'de'],
+    messageResolver: (obj, path) => {
+      const value = resolveValue(obj, path);
+      return typeof value === 'string'
+        ? value.replaceAll(/@/g, "{'@'}")
+        : value;
+    },
     messages: {
       en: {},
     },

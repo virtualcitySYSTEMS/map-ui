@@ -1,28 +1,13 @@
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
-// Create a custom renderer
-const renderer = new marked.Renderer();
-
-renderer.link = (href, title, text) => {
-  const target = '_blank';
-  const titleAttr = title ? ` title="${title}"` : '';
-  return `<a href="${href}" target="${target}"${titleAttr}>${text}</a>`;
-};
-
-// Set options for marked to use the custom renderer
-marked.setOptions({
-  renderer,
-  breaks: true, // Enable line breaks
-});
-
 /**
  * @param {string} content
  * @returns {string}
  */
 export function parseAndSanitizeMarkdown(content) {
-  // First, convert the Markdown to HTML using marked
-  const html = marked(content);
+  const html = marked.parse(content, { breaks: true });
+
   // Then sanitize the HTML using DOMPurify
   return DOMPurify.sanitize(html, { ADD_ATTR: ['target'] });
 }

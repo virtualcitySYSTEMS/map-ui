@@ -2,7 +2,7 @@
   <v-card>
     <div class="px-2 pt-2 pb-1">
       <v-card-text>
-        <div v-html="customScreenText"></div>
+        <VcsMarkdown :content="customScreenText"></VcsMarkdown>
       </v-card-text>
     </div>
   </v-card>
@@ -12,11 +12,12 @@
   import { VCard, VCardText } from 'vuetify/components';
 
   import { computed, getCurrentInstance } from 'vue';
-  import { parseAndSanitizeMarkdown } from './markdownHelper.js';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
 
   export default {
     name: 'VcsCustomScreen',
     components: {
+      VcsMarkdown,
       VCard,
       VCardText,
     },
@@ -30,8 +31,7 @@
       const vm = getCurrentInstance().proxy;
       const dialog = true;
       const customScreenText = computed(() => {
-        const translatedContent = vm.$t(props.content);
-        return parseAndSanitizeMarkdown(translatedContent);
+        return vm.$st(props.content);
       });
 
       return {

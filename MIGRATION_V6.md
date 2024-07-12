@@ -28,6 +28,7 @@
 - VcsActionButtonList
   - removed `blockOverflow` property
 - `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
+- There is a new VcsMarkdown Component that should be used for rendering Markdown Text.
 
 # Extended Theming
 
