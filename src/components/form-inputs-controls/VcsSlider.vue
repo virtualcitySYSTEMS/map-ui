@@ -3,8 +3,9 @@
     :class="{
       'py-1': !paddingProvided,
     }"
-    class="VcsSlider"
+    class="vcs-slider"
     hide-details
+    ref="sliderRef"
     :track-color="'base-darken-1'"
     thumb-color="base-darken-3"
     track-fill-color="base-darken-1"
@@ -13,8 +14,18 @@
     :tick-size="tickSize"
     v-bind="{ ...$attrs }"
   >
-    <template v-for="slot of Object.keys($slots)" #[slot]="scope">
-      <slot :name="slot" v-bind="scope" />
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+
+    <template #append="scope">
+      <slot name="append" v-bind="scope ?? {}"></slot>
+      <v-tooltip
+        v-if="tooltip"
+        :activator="sliderRef"
+        :location="tooltipPosition"
+        :text="$st(tooltip)"
+      ></v-tooltip>
     </template>
   </v-slider>
 </template>
@@ -54,20 +65,33 @@
   }
 </style>
 <script>
-  import { computed } from 'vue';
-  import { VSlider } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { computed, ref } from 'vue';
+  import { VSlider, VTooltip } from 'vuetify/components';
+  import { useForwardSlots, usePadding } from '../composables.js';
   import { useItemHeight } from '../../vuePlugins/vuetify.js';
 
   /**
-   * @description stylized wrapper around {@link https://v2.vuetifyjs.com/en/components/sliders/#api}.
+   * @description stylized wrapper around {@link https://vuetifyjs.com/en/components/sliders/#usage}.
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the tooltip.
+   * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
    */
   export default {
     name: 'VcsSlider',
     components: {
       VSlider,
+      VTooltip,
     },
-    setup(props, { attrs }) {
+    props: {
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
+      tooltipPosition: {
+        type: String,
+        default: 'right',
+      },
+    },
+    setup(props, { attrs, slots }) {
       const itemHeight = useItemHeight();
       const thumbSize = computed(() => {
         return Math.floor(itemHeight.value / 4);
@@ -79,8 +103,11 @@
         return trackSize.value * 2;
       });
       const paddingProvided = usePadding(attrs);
-
+      const forwardSlots = useForwardSlots(slots, ['append']);
+      const sliderRef = ref();
       return {
+        forwardSlots,
+        sliderRef,
         thumbSize,
         tickSize,
         trackSize,

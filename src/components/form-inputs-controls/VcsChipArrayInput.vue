@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex d-inline-block align-center"
+    class="d-flex d-inline-block align-center vcs-chip-array-input"
     :class="{
       'py-1': !paddingProvided,
     }"

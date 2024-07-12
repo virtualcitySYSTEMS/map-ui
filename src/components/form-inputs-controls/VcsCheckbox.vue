@@ -5,14 +5,17 @@
     false-icon="$vcsCheckbox"
     indeterminate-icon="$vcsCheckboxIndeterminate"
     :hide-details="false"
+    class="vcs-checkbox"
     :class="{
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
   >
-    <template #label>
-      <slot name="label" />
-      <template v-if="!$slots.label">{{ $st($attrs.label) }}</template>
+    <template #label="scope">
+      <slot name="label" v-bind="scope ?? {}">{{ $st($attrs.label) }}</slot>
+    </template>
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
     </template>
     <template #message="{ message }">
       <v-tooltip
@@ -49,7 +52,7 @@
 <script>
   import { ref } from 'vue';
   import { VCheckbox, VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { useForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
@@ -76,12 +79,13 @@
         default: 'right',
       },
     },
-    setup(props, { attrs }) {
+    setup(props, { attrs, slots }) {
       const checkbox = ref();
       const errorTooltip = ref();
       const paddingProvided = usePadding(attrs);
-
+      const forwardSlots = useForwardSlots(slots, ['label']);
       return {
+        forwardSlots,
         paddingProvided,
         checkbox,
         errorTooltip,

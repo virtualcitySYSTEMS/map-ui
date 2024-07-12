@@ -12,19 +12,25 @@
         {{ unit }}
       </span>
     </slot>
+    <v-tooltip
+      v-if="tooltip"
+      activator="parent"
+      :location="tooltipPosition"
+      :text="$st(tooltip)"
+    ></v-tooltip>
   </span>
 </template>
 <style lang="scss" scoped>
-  @import '../../styles/vcsGrid.scss';
-  @import '../../styles/vcsFont';
-  .vcs-formatted-number,
-  .vcs-formatted-number span {
-    font-size: var(--v-vcs-font-size);
-    line-height: $line-height-dense;
+  .vcs-formatted-number {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    height: calc(var(--v-vcs-item-height) - 8px);
   }
 </style>
 <script>
   import { computed } from 'vue';
+  import { VTooltip } from 'vuetify/components';
   import { usePadding } from '../composables.js';
 
   /**
@@ -68,12 +74,14 @@
    * @vue-prop {number} [fractionDigits=undefined]
    * @vue-prop {number} modelValue
    * @vue-prop {string|number} prefix
-   * @vue-prop {boolean} [dense=true] - default line height is 32px (dense). If set false, height is 40px.
-   * @vue-prop {boolean} noPadding    - Padding is required for usage within rows. For standalone usage this prop removes class.
-   * @vue-computed {string} formatted - value formatted to locale string
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the tooltip.
+   * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
    */
   export default {
     name: 'VcsFormattedNumber',
+    components: {
+      VTooltip,
+    },
     props: {
       unit: {
         type: [String || SpecialUnits],
@@ -90,6 +98,14 @@
       prefix: {
         type: [String, Number],
         default: undefined,
+      },
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
+      tooltipPosition: {
+        type: String,
+        default: 'right',
       },
     },
     setup(props, { attrs }) {

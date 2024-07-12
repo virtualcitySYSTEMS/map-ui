@@ -10,7 +10,7 @@
 
 <template>
   <Story title="VcsLabel" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsLabel>{{ label }}</VcsLabel>
+    <VcsLabel v-bind="{ ...state.bind }">{{ label }}</VcsLabel>
     <template #controls>
       <GlobalControls v-model="state">
         <HstText v-model="label" title="Label">

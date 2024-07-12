@@ -29,6 +29,12 @@
   - removed `blockOverflow` property
 - `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
 - There is a new VcsMarkdown Component that should be used for rendering Markdown Text.
+- `VcsLabel`
+  - added tooltip and tooltipPosition
+- `VcsFormattedNumber`
+  - added tooltip and tooltipPosition
+- `VcsSlider`
+  - added tooltip and tooltipPosition
 
 # Extended Theming
 

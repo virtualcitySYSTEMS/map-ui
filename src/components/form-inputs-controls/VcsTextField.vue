@@ -6,7 +6,7 @@
     :hide-details="false"
     :rules="rules"
     :type="type"
-    class="primary--placeholder"
+    class="vcs-text-field primary--placeholder"
     :class="{
       'py-1': !paddingProvided,
     }"
@@ -17,8 +17,8 @@
     <template #append-inner v-if="unit">
       <slot name="append-inner">{{ unit }}</slot>
     </template>
-    <template v-for="slot of Object.keys($slots)" #[slot]="scope">
-      <slot :name="slot" v-bind="scope" />
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
     </template>
     <template #message="{ message }">
       <v-tooltip
@@ -30,12 +30,15 @@
         :location="tooltipPosition"
       />
     </template>
-    <v-tooltip
-      v-if="tooltip && !errorTooltipRef"
-      :activator="textFieldRef"
-      :location="tooltipPosition"
-      :text="$st(tooltip)"
-    ></v-tooltip>
+    <template #default="scope">
+      <v-tooltip
+        v-if="tooltip && !errorTooltipRef"
+        :activator="textFieldRef"
+        :location="tooltipPosition"
+        :text="$st(tooltip)"
+      ></v-tooltip>
+      <slot name="default" v-bind="scope ?? {}"></slot>
+    </template>
   </v-text-field>
 </template>
 
@@ -45,7 +48,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VTextField, VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { useForwardSlots, usePadding } from '../composables.js';
   import { useProxiedAtomicModel } from '../modelHelper.js';
 
   function countDecimalPlaces(value) {
@@ -108,7 +111,7 @@
         default: undefined,
       },
     },
-    setup(props, { attrs }) {
+    setup(props, { attrs, slots }) {
       const textFieldRef = ref();
       const errorTooltipRef = ref();
       const focused = ref(attrs.autofocus);
@@ -148,8 +151,10 @@
       });
 
       const paddingProvided = usePadding(attrs);
+      const forwardSlots = useForwardSlots(slots, ['default']);
 
       return {
+        forwardSlots,
         paddingProvided,
         visibleValue,
         rules,
