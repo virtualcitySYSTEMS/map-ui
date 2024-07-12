@@ -1,26 +1,25 @@
 <template>
-  <div class="d-contents">
+  <div class="d-contents vcs-list">
     <vcs-treeview-searchbar
       v-if="searchable"
       :placeholder="searchbarPlaceholder"
       v-model="query"
     />
-    <v-list density="compact">
-      <v-list-item v-if="showTitle" class="font-weight-bold">
+    <v-list :class="{ 'vcs-list__selectable': selectable }">
+      <v-list-item v-if="showTitle && title">
         <template #prepend>
           <v-icon v-if="icon">
             {{ icon }}
           </v-icon>
         </template>
-        <v-list-item-title>
-          <VcsTooltip :tooltip="$st(listHeaderTooltip)">
-            <template #activator="{ props }">
-              <span v-bind="props" ref="listHeader">
-                {{ $st(title) }}
-              </span>
-            </template>
-          </VcsTooltip>
-          <span v-if="selectable && selected.length > 0">
+        <v-list-item-title class="font-weight-bold" ref="listHeader">
+          <span :class="{ 'vcs-list-title__selected': selected.length > 0 }">
+            {{ $st(title) }}
+          </span>
+          <v-tooltip v-if="listHeaderTooltip" activator="parent">
+            {{ $st(listHeaderTooltip) }}
+          </v-tooltip>
+          <span v-if="selectable && selected.length > 0" class="ml-1">
             {{ `(${selected.length})` }}
           </span>
         </v-list-item-title>
@@ -32,90 +31,49 @@
           />
         </template>
       </v-list-item>
-      <div v-for="(item, index) in renderingItems" :key="`item-${index}`">
-        <v-list-item
+      <template v-for="(item, index) in renderingItems">
+        <VcsListItem
+          v-if="item"
+          :dragging="dragging === index"
+          :item="item"
+          :key="`item-${index}`"
           :active="selected.includes(item)"
-          :disabled="item.disabled"
           @mousedown.shift="$event.preventDefault()"
           @mouseover="hovering = index"
           @mouseout="hovering = undefined"
           :draggable="isDraggable"
           @dragstart="drag($event, item, index)"
           @mouseup="drop($event, index)"
-          color="primary"
           :class="{
             'v-list-item__selected': selected.includes(item),
             'v-list-item__lighten_even': lightenEven,
             'v-list-item__lighten_odd': !lightenEven,
             'vcs-draggable-item': isDraggable,
             'v-list-item__dragged': dragging === index,
+            'v-list-item__dragged_over': dragging !== undefined,
             'border-bottom': borderBottom(index),
             'border-top': borderTop(index),
             'cursor-pointer': selectable && !isDraggable,
           }"
           @click="select(item, $event)"
+          @item-renamed="$emit('item-renamed', $event)"
         >
-          <template #prepend>
-            <v-icon v-if="item.icon">
-              {{ item.icon }}
-            </v-icon>
+          <template #prepend-title>
+            <slot name="item.prepend-title" :item="item" :index="index" />
           </template>
-          <VcsTooltip
-            :tooltip="
-              dragging !== undefined
-                ? undefined
-                : $st(item.tooltip || overflowTitle(index, item.title))
-            "
-          >
-            <template #activator="{ props }">
-              <v-list-item-title
-                v-bind="props"
-                ref="titles"
-                class="d-flex gc-2"
-              >
-                <slot name="item.prepend-title" :item="item" :index="index" />
-                <slot name="item.title" :item="item" :index="index">
-                  <VcsTextField
-                    v-if="item.rename"
-                    :model-value="item.title"
-                    autofocus
-                    :no-padding="true"
-                    @update:model-value="(value) => rename(item, value)"
-                    @click.stop
-                    @keydown.enter="item.rename = false"
-                    @blur="item.rename = false"
-                    :rules="[(v) => !!v || 'components.validation.required']"
-                  />
-                  <span v-else>
-                    {{ $st(item.title) }}
-                  </span>
-                </slot>
-                <slot
-                  name="item.append-title"
-                  :item="item"
-                  :index="index"
-                  class="ml-auto"
-                />
-              </v-list-item-title>
-            </template>
-          </VcsTooltip>
-          <template #append>
-            <VcsBadge v-if="item.hasUpdate" :color="'warning'" />
-            <vcs-action-button-list
-              v-if="item.actions?.length > 0"
-              :actions="item.actions"
-              :disabled="item.disabled"
-              :block-overflow="true"
-              :overflow-count="actionButtonListOverflowCount"
-            />
+          <template #title>
+            <slot name="item.title" :item="item" :index="index"></slot>
           </template>
-        </v-list-item>
+          <template #append-title>
+            <slot name="item.append-title" :item="item" :index="index" />
+          </template>
+        </VcsListItem>
         <slot name="item.intermediate" :item="item" :index="index" />
         <div
           v-if="hasIntermediateSlot"
           :key="`item-intermediate-child-balance-${index}`"
         />
-      </div>
+      </template>
     </v-list>
   </div>
 </template>
@@ -130,12 +88,17 @@
     shallowRef,
     watch,
   } from 'vue';
-  import { VList, VListItem, VIcon, VListItemTitle } from 'vuetify/components';
+  import {
+    VList,
+    VListItem,
+    VIcon,
+    VListItemTitle,
+    VTooltip,
+  } from 'vuetify/components';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
-  import VcsTooltip from '../notification/VcsTooltip.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
-  import VcsBadge from '../notification/VcsBadge.vue';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import VcsListItem from './VcsListItem.vue';
+  import { createEllipseTooltip } from '../composables.js';
 
   /**
    * @param {import("vue").Ref<VcsListItem[]>} items
@@ -181,7 +144,7 @@
    * @property {string} name
    * @property {boolean} [visible] - Whether to display this item or not.
    * @property {boolean} [disabled] - Whether this item should be displayed as disabled.
-   * @property {boolean} [rename] - Whether the title of this item is currently in edit mode.
+   * @property {boolean} [rename] - Whether the title of can be edited. will add a rename action to the end of the action list
    * @property {string} title - The title to be displayed
    * @property {string} [tooltip]
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
@@ -239,15 +202,14 @@
   export default {
     name: 'VcsList',
     components: {
-      VcsBadge,
+      VcsListItem,
       VcsTreeviewSearchbar,
       VcsActionButtonList,
-      VcsTooltip,
+      VTooltip,
       VList,
       VListItem,
       VIcon,
       VListItemTitle,
-      VcsTextField,
     },
     props: {
       items: {
@@ -335,8 +297,7 @@
         return !(!props.searchable && !props.showTitle);
       });
       let firstSelected = null;
-      const titles = ref([]);
-      const listHeader = ref(null);
+      const listHeader = ref();
 
       watch(
         props,
@@ -383,7 +344,7 @@
       let draggedItem = null;
 
       const isDraggable = computed(() => {
-        return query.value === '' && props.draggable;
+        return !query.value && props.draggable;
       });
 
       /**
@@ -587,31 +548,12 @@
         },
         drag,
         drop,
-        titles,
-        overflowTitle(index, alternative) {
-          const elem = titles.value[index];
-          if (elem && elem.offsetWidth < elem.scrollWidth) {
-            return alternative;
-          }
-          return '';
-        },
         listHeader,
-        listHeaderTooltip: computed(() => {
-          if (props.tooltip) {
-            return props.tooltip;
-          }
-          const elem = listHeader.value;
-          if (elem && elem.offsetWidth < elem.scrollWidth) {
-            return props.title;
-          }
-          return '';
-        }),
-        rename(item, newTitle) {
-          if (newTitle) {
-            emit('item-renamed', { item, newTitle });
-            item.titleChanged?.(newTitle);
-          }
-        },
+        listHeaderTooltip: createEllipseTooltip(
+          computed(() => listHeader.value?.$el),
+          computed(() => props.tooltip),
+          computed(() => props.title),
+        ),
         hasIntermediateSlot: computed(() => !!slots['item.intermediate']),
       };
     },
@@ -620,67 +562,56 @@
 
 <style lang="scss" scoped>
   :deep(.v-list) {
-    .v-list-item__lighten_even {
-      &:nth-child(even) {
-        background-color: var(--v-base-lighten4);
-      }
+    .v-list-item__lighten_even:nth-child(even) {
+      background-color: rgb(var(--v-theme-base-lighten-4));
     }
-    .v-list-item__lighten_odd {
-      &:nth-child(odd) {
-        background-color: var(--v-base-lighten4);
-      }
+    .v-list-item__lighten_odd:nth-child(odd) {
+      background-color: rgb(var(--v-theme-base-lighten-4));
     }
     .v-list-item__dragged {
-      background-color: var(--v-base-lighten2) !important;
+      background-color: rgb(var(--v-theme-base-lighten-2)) !important;
+    }
+    .v-list-item__dragged_over:hover {
+      background-color: rgb(var(--v-theme-base-lighten-1)) !important;
     }
     .v-list-item__selected {
       border-left: solid 4px;
-      border-left-color: var(--v-primary-base);
-      padding-left: 12px !important;
+      border-left-color: rgb(var(--v-theme-primary));
+      padding-left: 13px !important;
+    }
+    .v-list-item--active {
+      .v-list-item__append {
+        color: rgb(var(--v-theme-on-surface));
+      }
     }
     .v-list-item {
-      padding: 4px 8px 4px 16px;
       &.vcs-draggable-item:hover {
         cursor: grab;
         user-select: none;
       }
-      &.border-bottom {
-        border-bottom: solid;
-        border-bottom-color: var(--v-base-lighten2);
-      }
-      &.border-top {
-        border-top: solid;
-        border-top-color: var(--v-base-lighten2);
-      }
-      &:after {
-        display: none;
-      }
-      &.font-weight-bold {
-        .v-list-item__title {
-          font-weight: 700;
+      &:hover {
+        .v-list-item__overlay {
+          background-color: rgb(var(--v-theme-base));
         }
       }
-      .v-list-item__action {
-        .v-icon {
-          font-size: 16px;
-        }
-        &:last-child {
-          min-width: auto;
-        }
+      .vcs-list-title__selected {
+        width: 90%;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
       }
-      .v-list-item__content {
-        flex-wrap: nowrap;
-        column-gap: 4px;
-        .v-icon,
-        .action-btn-wrap {
-          flex: 1 1 auto;
-        }
-        .v-icon {
-          font-size: 16px;
-          .v-icon__component {
-            width: 16px;
-            height: 16px;
-          }
+    }
+
+    &:not(.vcs-list__selectable) {
+      .v-list-item--link {
+        cursor: auto;
+      }
+      cursor: auto;
+
+      &:hover {
+        .v-list-item__overlay {
+          background-color: transparent;
         }
       }
     }

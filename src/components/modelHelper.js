@@ -1,5 +1,6 @@
 import { computed, ref, toRaw, watch } from 'vue';
 import deepEqual from 'fast-deep-equal';
+import { getLogger } from '@vcsuite/logger';
 
 /**
  * Can only be used in setup of Vue components!
@@ -59,7 +60,14 @@ export function useProxiedComplexModel(props, prop, emit) {
       if (deepEqual(internal.value, newValue)) {
         return;
       }
-      internal.value = structuredClone(newValue);
+      try {
+        internal.value = structuredClone(newValue);
+      } catch (e) {
+        getLogger('modelHelper').error(
+          'Failed to update internal value. You may have a provided a deeply nested ref, which caused',
+          e,
+        );
+      }
     },
     {
       deep: true,
@@ -77,7 +85,14 @@ export function useProxiedComplexModel(props, prop, emit) {
       if (deepEqual(value, newValue)) {
         return;
       }
-      emit(`update:${prop}`, structuredClone(newValue));
+      try {
+        emit(`update:${prop}`, structuredClone(newValue));
+      } catch (e) {
+        getLogger('modelHelper').error(
+          'Failed to emit value. You may have a provided a deeply nested ref, which caused',
+          e,
+        );
+      }
     },
     {
       deep: true,

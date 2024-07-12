@@ -1,74 +1,46 @@
 <template>
   <v-sheet>
     <VcsFormSection heading="Settings">
-      <v-container class="py-0 px-1">
+      <v-container class="py-0 px-4">
         <v-row no-gutters>
           <v-col>
-            <v-switch
-              v-model="selectable"
-              label="Selectable"
-              class="ma-0"
-              dense
-            />
+            <v-switch v-model="selectable" label="Selectable" />
           </v-col>
           <v-col>
             <v-switch
               :disabled="!selectable"
               v-model="selectSingle"
               label=" Single Select"
-              class="ma-0"
-              dense
             />
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-switch
-              dense
-              v-model="searchable"
-              label="Searchable"
-              class="ma-0"
-            />
+            <v-switch v-model="searchable" label="Searchable" />
           </v-col>
           <v-col>
-            <v-switch
-              dense
-              v-model="draggable"
-              label="Draggable"
-              class="ma-0"
-            />
+            <v-switch v-model="draggable" label="Draggable" />
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col>
             <v-switch
-              dense
               v-model="prependIndex"
               label="Prepend Index"
               class="ma-0"
             />
           </v-col>
           <v-col>
-            <v-switch
-              dense
-              v-model="appendIndex"
-              label="Append Index"
-              class="ma-0"
-            />
+            <v-switch v-model="appendIndex" label="Append Index" />
           </v-col>
         </v-row>
       </v-container>
     </VcsFormSection>
     <VcsFormSection heading="Title">
-      <v-container class="py-0 px-1">
+      <v-container class="py-0 px-4">
         <v-row no-gutters>
           <v-col>
-            <v-switch
-              dense
-              v-model="showTitle"
-              label="Show Title"
-              class="ma-0"
-            />
+            <v-switch v-model="showTitle" label="Show Title" />
           </v-col>
           <v-col>
             <vcs-text-field
@@ -84,28 +56,22 @@
               v-model="titleActions"
               label="Title Actions"
               class="ma-0"
-              dense
             />
           </v-col>
           <v-col>
-            <v-switch
-              dense
-              v-model="titleIcon"
-              label="Title Icon"
-              class="ma-0"
-            />
+            <v-switch v-model="titleIcon" label="Title Icon" class="ma-0" />
           </v-col>
         </v-row>
       </v-container>
     </VcsFormSection>
     <VcsFormSection heading="Item">
-      <v-container class="py-1 px-1">
+      <v-container class="py-2 px-4">
         <v-row no-gutters>
           <v-dialog v-model="dialog" width="400">
             <template #activator="{ props }">
               <vcs-form-button v-bind="props"> Add An item </vcs-form-button>
             </template>
-            <v-card class="pa-2">
+            <v-card class="py-2 px-4">
               <v-form @submit.prevent="add">
                 <vcs-text-field
                   v-model="newItem.name"
@@ -117,52 +83,22 @@
                   label="Title"
                   :rules="required"
                 />
+                <v-switch label="visible" v-model="newItem.visible" />
+                <v-switch label="disabled" v-model="newItem.disabled" />
+                <v-switch label="random icon" v-model="newItem.icon" />
+                <v-switch label="hasUpdate" v-model="newItem.hasUpdate" />
                 <v-switch
-                  dense
-                  label="visible"
-                  v-model="newItem.visible"
-                  class="ma-0"
-                />
-                <v-switch
-                  dense
-                  label="disabled"
-                  v-model="newItem.disabled"
-                  class="ma-0"
-                />
-                <v-switch
-                  dense
-                  label="random icon"
-                  v-model="newItem.icon"
-                  class="ma-0"
-                />
-                <v-switch
-                  dense
-                  label="hasUpdate"
-                  v-model="newItem.hasUpdate"
-                  class="ma-0"
-                />
-                <v-switch
-                  dense
                   label="rename action"
                   v-model="newItem.renameAction"
-                  class="ma-0"
                 />
-                <v-switch
-                  dense
-                  label="console.log action"
-                  v-model="newItem.action"
-                  class="ma-0"
-                />
+                <v-switch label="console.log action" v-model="newItem.action" />
                 <v-switch
                   label="console.log on clicked"
                   v-model="newItem.clicked"
-                  class="ma-0"
                 />
                 <v-switch
-                  dense
                   label="console.log selected state"
                   v-model="newItem.selected"
-                  class="ma-0"
                 />
                 <vcs-form-button type="submit"> Add </vcs-form-button>
               </v-form>
@@ -172,7 +108,7 @@
       </v-container>
     </VcsFormSection>
     <VcsFormSection heading="Selection">
-      <v-container class="py-1 px-1">
+      <v-container class="py-2 px-4">
         <v-row no-gutters>
           <template v-if="selectable">
             <v-col>
@@ -238,7 +174,7 @@
     VRow,
     VCol,
   } from 'vuetify/components';
-  import { computed, ref } from 'vue';
+  import { computed, reactive, ref } from 'vue';
 
   function getRandomIcon() {
     const keys = Object.keys(Icons);
@@ -339,13 +275,13 @@
           (v) => v.length > 0 || 'Input must have a length',
         ],
         add() {
-          const item = {
+          const item = reactive({
             name: newItem.value.name,
             title: newItem.value.title,
             disabled: newItem.value.disabled,
             visible: newItem.value.visible,
             hasUpdate: newItem.value.hasUpdate,
-          };
+          });
 
           if (newItem.value.icon) {
             item.icon = getRandomIcon();
@@ -368,9 +304,11 @@
           }
 
           if (newItem.value.clicked) {
-            item.clicked = () => {
-              console.log(`${item.name} just got clicked`);
-            };
+            item.clickedCallbacks = [
+              () => {
+                console.log(`${item.name} just got clicked`);
+              },
+            ];
           }
 
           if (newItem.value.selected) {
