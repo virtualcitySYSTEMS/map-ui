@@ -466,7 +466,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @returns {import("vue-i18n").VueI18n}
+   * @returns {import("vue-i18n").Composer<{}, {}, {}, string, string, string>}
    */
   get vueI18n() {
     return this._vueI18n;
