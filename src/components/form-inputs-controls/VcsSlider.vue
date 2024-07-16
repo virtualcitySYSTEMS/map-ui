@@ -2,8 +2,9 @@
   <v-slider
     :class="{
       'py-1': !paddingProvided,
+      'remove-append-margin': !hasAppendSlot,
     }"
-    class="vcs-slider"
+    class="vcs-slider mx-1"
     hide-details
     ref="sliderRef"
     :track-color="'base-darken-1'"
@@ -32,6 +33,9 @@
 <style lang="scss" scoped>
   .v-input--horizontal :deep(.v-input__control) {
     min-height: calc(var(--v-vcs-item-height) - 8px);
+  }
+  .v-input--horizontal.v-slider--has-labels {
+    margin-bottom: var(--v-vcs-font-size);
   }
   .v-slider.v-input--horizontal {
     :deep(.v-slider-track__fill) {
@@ -62,6 +66,11 @@
   }
   :deep(.v-slider-track__tick) {
     background-color: rgb(var(--v-theme-base-darken-1));
+  }
+  .remove-append-margin {
+    :deep(.v-input__append) {
+      margin-inline-start: 0px;
+    }
   }
 </style>
 <script>
@@ -106,6 +115,9 @@
       const forwardSlots = useForwardSlots(slots, ['append']);
       const sliderRef = ref();
       return {
+        hasAppendSlot: computed(() => {
+          return !!slots.append;
+        }),
         forwardSlots,
         sliderRef,
         thumbSize,

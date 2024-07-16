@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-1 py-0">
+  <v-container class="px-2 py-0">
     <v-row no-gutters>
       <v-col>
         <VcsLabel html-for="settingsLanguageSelect">
@@ -19,20 +19,18 @@
         {{ $t('settings.displayQuality.title') }}
       </VcsLabel>
     </v-row>
-    <v-row v-if="is3D" no-gutters class="quality-slider-padding">
+    <v-row v-if="is3D" no-gutters>
       <VcsSlider
-        step="1"
+        :step="1"
         v-model="displaySettings"
-        type="number"
-        max="2"
-        min="0"
-        ticks="always"
-        tick-size="5"
-        :tick-labels="[
-          $t('settings.displayQuality.level.low'),
-          $t('settings.displayQuality.level.medium'),
-          $t('settings.displayQuality.level.high'),
-        ]"
+        :max="2"
+        :min="0"
+        show-ticks="always"
+        :ticks="{
+          0: $t('settings.displayQuality.level.low'),
+          1: $t('settings.displayQuality.level.medium'),
+          2: $t('settings.displayQuality.level.high'),
+        }"
       />
     </v-row>
     <v-row no-gutters>
@@ -170,8 +168,3 @@
     },
   };
 </script>
-<style scoped>
-  .quality-slider-padding {
-    padding-bottom: 20px !important;
-  }
-</style>
