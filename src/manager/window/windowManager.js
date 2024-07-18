@@ -109,7 +109,7 @@ export function isSlotPosition(windowPosition) {
  *   headerComponent?: import("vue").Component<T, unknown, unknown>,
  *   state? : Partial<WindowState>,
  *   position? : Partial<WindowPositionOptions>,
- *   slot: WindowSlot,
+ *   slot?: WindowSlot,
  *   props?: T,
  *   provides?: Record<string, unknown>
  * }} WindowComponentOptions
