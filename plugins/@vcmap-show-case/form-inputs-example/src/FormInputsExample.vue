@@ -20,13 +20,18 @@
       <template #default>
         <v-container class="py-0 px-1">
           <v-row no-gutters>
-            <v-col class="w-max-half">
-              <VcsLabel html-for="selectInput">
+            <v-col>
+              <VcsLabel
+                :disabled="disabled"
+                html-for="selectInput"
+                tooltip="labelTooltip"
+              >
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
-            <v-col class="w-max-half">
+            <v-col>
               <VcsSelect
+                :disabled="disabled"
                 id="selectInput"
                 loading="primary"
                 :items="selectOptions"
@@ -37,12 +42,13 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="conditionalInput">
+              <VcsLabel :disabled="disabled" html-for="conditionalInput">
                 ConditionalInput
               </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                :disabled="disabled"
                 id="conditionalInput"
                 clearable
                 :rules="[
@@ -54,13 +60,21 @@
             </v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col class="w-max-half">
-              <VcsLabel html-for="arrayInput"> Array Input </VcsLabel>
+            <v-col>
+              <VcsCheckbox :disabled="disabled" label="Checkbox"></VcsCheckbox>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <VcsLabel :disabled="disabled" html-for="arrayInput">
+                Array Input
+              </VcsLabel>
             </v-col>
           </v-row>
           <v-row no-gutters>
             <v-col>
               <VcsChipArrayInput
+                :disabled="disabled"
                 id="arrayInput"
                 type="number"
                 v-model="array"
@@ -71,6 +85,7 @@
           <v-row no-gutters>
             <v-col>
               <VcsChipArrayInput
+                :disabled="disabled"
                 id="arrayInput"
                 v-model="state.arrayInputString"
                 column
@@ -80,6 +95,7 @@
           <v-row no-gutters>
             <v-col>
               <VcsTextField
+                :disabled="disabled"
                 v-model="state.initialTextInput"
                 :rules="[isValidText]"
                 :loading="
@@ -98,7 +114,7 @@
           <v-row no-gutters>
             <v-col>
               <VcsTextArea
-                :dense="dense"
+                :disabled="disabled"
                 :rules="[(v) => !!v || 'text area must not be empty']"
                 placeholder="This is a text area"
                 tooltip="This is a tooltip"
@@ -108,10 +124,13 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="emailInput" required> Email </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="emailInput" required>
+                Email
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                :disabled="disabled"
                 id="emailInput"
                 type="email"
                 :rules="[isValidEmail]"
@@ -122,10 +141,13 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="prependedInput"> String With Icon </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="prependedInput">
+                String With Icon
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                :disabled="disabled"
                 id="prependedInput"
                 prepend-icon="mdi-map-marker"
                 v-model="state.prependedInput"
@@ -135,10 +157,13 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="fileInput"> File input </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="fileInput">
+                File input
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsFileInput
+                :disabled="disabled"
                 id="fileInput"
                 multiple
                 tooltip="Click to select a file."
@@ -148,10 +173,12 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="dateInput"> Date </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="dateInput">
+                Date
+              </VcsLabel>
             </v-col>
             <v-col>
-              <VcsDatePicker id="dateInput" v-model="state.dateInput" />
+              <VcsDatePicker :disabled="disabled" id="dateInput" />
             </v-col>
           </v-row>
         </v-container>
@@ -165,10 +192,13 @@
         <v-container class="py-0 px-1">
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="numberInput"> NumberInput </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="numberInput">
+                NumberInput
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                :disabled="disabled"
                 id="numberInput"
                 type="number"
                 step="1"
@@ -180,12 +210,14 @@
           </v-row>
           <v-row no-gutters class="align-center">
             <v-col>
-              <VcsLabel html-for="sliderInput"> Slider </VcsLabel>
+              <VcsLabel :disabled="disabled" html-for="sliderInput">
+                Slider
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsSlider
+                :disabled="disabled"
                 id="sliderInput"
-                :dense="dense"
                 type="number"
                 step="1"
                 v-model.number="state.numberInput"
@@ -194,53 +226,53 @@
           </v-row>
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="formattedNumber">
+              <VcsLabel :disabled="disabled" html-for="formattedNumber">
                 VcsFormattedNumber
               </VcsLabel>
             </v-col>
             <v-col class="d-flex justify-end">
               <VcsFormattedNumber
+                :disabled="disabled"
                 id="formattedNumber"
                 :value="state.numberInput"
                 unit="cm"
                 :fraction-digits="1"
-                :dense="dense"
               />
             </v-col>
           </v-row>
           <v-row no-gutters class="gc-2">
             <v-col>
               <VcsFormattedNumber
+                :disabled="disabled"
                 id="formattedNumber"
                 :value="state.numberInput"
                 prefix="X"
                 unit="cm"
                 :fraction-digits="1"
-                :dense="dense"
               />
             </v-col>
             <v-col>
               <VcsFormattedNumber
+                :disabled="disabled"
                 id="formattedNumber"
                 :value="state.numberInput"
                 prefix="Y"
                 unit="cm"
                 :fraction-digits="1"
-                :dense="dense"
               />
             </v-col>
             <v-col>
               <VcsFormattedNumber
+                :disabled="disabled"
                 id="formattedNumber"
                 :value="state.numberInput"
                 prefix="Z"
                 unit="cm"
                 :fraction-digits="1"
-                :dense="dense"
               />
             </v-col>
           </v-row>
-          <VcsCoordinate v-model="array" />
+          <VcsCoordinate :disabled="disabled" v-model="array" />
         </v-container>
       </template>
     </VcsFormSection>
@@ -254,6 +286,7 @@
         <v-row no-gutters>
           <v-col>
             <VcsRadio
+              :disabled="disabled"
               :items="[
                 ...selectOptions,
                 {
@@ -270,12 +303,13 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <VcsLabel> Radio with img label </VcsLabel>
+            <VcsLabel :disabled="disabled"> Radio with img label </VcsLabel>
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col>
             <VcsRadio
+              :disabled="disabled"
               v-model="state.selected"
               :items="[
                 { value: 'AAAAAAAA', src: 'mdi-circle-outline' },
@@ -283,7 +317,6 @@
                 { value: 'C', src: 'mdi-triangle-outline' },
                 { value: 'D', src: 'mdi-square-outline' },
               ]"
-              :dense="dense"
               :rules="[(v) => v !== 'D' || 'Square is not allowed']"
               tooltip="This is a radio grid"
               inline
@@ -313,6 +346,7 @@
         <v-row no-gutters>
           <v-col>
             <VcsCheckbox
+              :disabled="disabled"
               id="checkboxInput"
               label="CheckboxInput"
               tooltip="This is a checkbox for terms of usage"
@@ -324,6 +358,7 @@
           </v-col>
           <v-col>
             <VcsFormButton
+              :disabled="disabled"
               :is-active="state.checkboxInput"
               @click="state.checkboxInput = !state.checkboxInput"
               tooltip="toggle button"
@@ -349,29 +384,35 @@
         <v-container class="py-0 px-1">
           <v-row>
             <v-col cols="1">
-              <VcsLabel html-for="textInput" class="text-caption"> 1 </VcsLabel>
+              <VcsLabel
+                :disabled="disabled"
+                html-for="textInput"
+                class="text-caption"
+              >
+                1
+              </VcsLabel>
             </v-col>
             <v-col>
               <VcsSelect
+                :disabled="disabled"
                 :items="[
                   { value: 'one', i18n: 'form-inputs-example.numbers.one' },
                   { value: 'two', i18n: 'form-inputs-example.numbers.two' },
                   { value: 'three', i18n: 'form-inputs-example.numbers.three' },
                 ]"
                 :item-text="(item) => item.i18n"
-                :dense="dense"
                 placeholder="Numbers"
               />
             </v-col>
             <v-col>
               <VcsSelect
+                :disabled="disabled"
                 :items="[
                   { value: 'Anna', fullName: 'Annabella' },
                   { value: 'Bella', fullName: 'Belladonna' },
                   { value: 'Claudi', fullName: 'Claudine' },
                 ]"
                 :item-text="(item) => item.fullName"
-                :dense="dense"
                 multiple
                 v-model="state.selectedMultiple"
                 :rules="[
@@ -404,16 +445,15 @@
       <template #default>
         <v-container class="py-0 px-1">
           <v-row no-gutters>
-            <v-col class="w-max-half">
+            <v-col>
               <VcsLabel html-for="selectInput2" disabled>
                 {{ $t('form-inputs-example.select') }}
               </VcsLabel>
             </v-col>
-            <v-col class="w-max-half">
+            <v-col>
               <VcsSelect
                 id="selectInput2"
                 :items="selectOptions"
-                :dense="dense"
                 :rules="[(v) => v !== 'D' || 'D is not allowed']"
                 v-model="state.selected"
                 :disabled="true"
@@ -499,7 +539,7 @@
         type: Array,
         required: true,
       },
-      dense: {
+      disabled: {
         type: Boolean,
         required: true,
       },

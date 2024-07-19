@@ -178,7 +178,7 @@ export default function formInputsExample(config) {
     getSerializedState,
     setSerializedState,
     onVcsAppMounted(app) {
-      const { actions, dense } = createExampleActions();
+      const { actions, disabled } = createExampleActions();
 
       const { action, destroy } = createToggleAction(
         {
@@ -199,7 +199,7 @@ export default function formInputsExample(config) {
           },
           props: reactive({
             actions,
-            dense,
+            disabled,
           }),
         },
         app.windowManager,

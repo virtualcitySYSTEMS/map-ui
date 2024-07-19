@@ -7,7 +7,7 @@
     :menu-props="{ origin: 'overlap' }"
     :item-title="(item) => $st(getTitle(item))"
     color="primary"
-    class="primary--placeholder"
+    class="primary--placeholder vcs-select"
     :class="{
       'py-1': !paddingProvided,
     }"
@@ -23,8 +23,8 @@
       </span>
     </template>
 
-    <template #append-inner>
-      <slot name="append-inner"></slot>
+    <template #append-inner="scope">
+      <slot name="append-inner" v-bind="scope ?? {}"></slot>
       <v-tooltip
         :activator="selectFieldRef"
         v-if="tooltip && !errorTooltipRef"
@@ -32,23 +32,19 @@
         :location="tooltipPosition"
       />
     </template>
-    <template
-      v-for="slot of Object.keys($slots).filter(
-        (name) => name !== 'append-inner',
-      )"
-      #[slot]="scope"
-    >
-      <slot :name="slot" v-bind="scope" />
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
     </template>
-    <template #message="{ message }">
+    <template #message="scope">
       <v-tooltip
         :activator="selectFieldRef"
         ref="errorTooltipRef"
-        v-if="message"
-        :text="$st(message)"
+        v-if="scope?.message"
+        :text="$st(scope?.message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
+      <slot name="message" v-bind="scope ?? {}"></slot>
     </template>
     <template #item="{ props }">
       <v-list-item density="compact" v-bind="props" role="option">
@@ -61,8 +57,8 @@
 </template>
 <style lang="scss" scoped>
   :deep(.v-field) {
-    --v-field-padding-start: 8px;
-    --v-field-padding-end: 8px;
+    --v-field-padding-start: 4px;
+    --v-field-padding-end: 4px;
   }
   :deep(.v-field__input) {
     flex-wrap: unset;
@@ -95,12 +91,12 @@
       border-radius: 0;
     }
     .v-field__outline {
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 4px;
+      padding-right: 4px;
     }
     .v-field__loader {
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 3px;
+      padding-right: 3px;
     }
     .v-field__outline *::before {
       border-width: 0;
@@ -109,6 +105,14 @@
     .v-field__outline * label {
       color: rgb(var(--v-theme-primary));
       margin-left: -4px;
+    }
+  }
+  :deep(.v-field--appended) {
+    padding-inline-end: 4px;
+    .v-field__append-inner {
+      i {
+        margin-left: 0;
+      }
     }
   }
   .primary--placeholder {
@@ -135,7 +139,7 @@
 <script>
   import { VSelect, VTooltip, VListItem } from 'vuetify/components';
   import { computed, ref } from 'vue';
-  import { usePadding } from '../composables.js';
+  import { useForwardSlots, usePadding } from '../composables.js';
   import VcsCheckbox from './VcsCheckbox.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
 
@@ -183,7 +187,8 @@
         default: undefined,
       },
     },
-    setup(props, { attrs, emit }) {
+    emits: ['update:modelValue'],
+    setup(props, { attrs, slots, emit }) {
       const selectFieldRef = ref();
       const errorTooltipRef = ref();
       const localModelValue = useProxiedComplexModel(props, 'modelValue', emit);
@@ -206,8 +211,10 @@
         return props.multiple;
       });
       const paddingProvided = usePadding(attrs);
+      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
 
       return {
+        forwardSlots,
         localModelValue,
         additionalItems,
         isMultiple,

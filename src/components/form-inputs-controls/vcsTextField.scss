@@ -1,6 +1,6 @@
 :deep(.v-field) {
-  --v-field-padding-start: 8px;
-  --v-field-padding-end: 8px;
+  --v-field-padding-start: 4px;
+  --v-field-padding-end: 4px;
 }
 .v-input--density-compact :deep(.v-field) {
   --v-input-control-height: calc(var(--v-vcs-item-height) - 8px);
@@ -29,12 +29,12 @@
     border-radius: 0;
   }
   .v-field__outline {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
   .v-field__loader {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 3px;
+    padding-right: 3px;
   }
   .v-field__outline *::before {
     border-width: 0;
@@ -48,7 +48,7 @@
 
 // move unit to the right
 :deep(.v-field--appended) {
-  padding-inline-end: 8px;
+  padding-inline-end: 4px;
 }
 
 // remove margin from prepended Icon
@@ -72,7 +72,6 @@
   display: none;
 }
 
-// Progress Bar
 :deep(.v-field__loader) {
   top: calc(100% - 2px);
 }
@@ -80,4 +79,5 @@
 // unit margin
 :deep(.v-field__clearable) {
   margin-left: 0;
+  margin-right: 0;
 }

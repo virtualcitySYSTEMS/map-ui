@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-2 py-0">
+  <v-container class="px-1 py-0">
     <v-row no-gutters>
       <v-col>
         <VcsLabel html-for="settingsLanguageSelect">

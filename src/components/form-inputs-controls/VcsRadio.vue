@@ -1,5 +1,12 @@
 <template>
-  <v-radio-group v-bind="{ ...$attrs }" ref="radioGroup">
+  <v-radio-group
+    ref="radioGroup"
+    class="vcs-radio"
+    :class="{
+      'py-1': !paddingProvided,
+    }"
+    v-bind="$attrs"
+  >
     <v-radio
       v-for="(item, idx) in items"
       :id="`${$.uid}-${idx}`"
@@ -8,6 +15,7 @@
       :disabled="$attrs.disabled ?? item.disabled ?? false"
       :color="item?.color ?? undefined"
       :error="!!errorTooltip"
+      class="pa-0"
       :class="{
         'flex-column': labelPosition !== 'right',
         'label-top': labelPosition === 'top',
@@ -44,7 +52,6 @@
   .v-input--density-compact :deep(.v-selection-control) {
     --v-selection-control-size: calc(var(--v-vcs-item-height) - 8px);
     --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
-    padding: 4px;
   }
   // remove ripple effect
   :deep(.v-selection-control__input::before) {
@@ -58,10 +65,15 @@
   :deep(.label-top > .v-selection-control__wrapper) {
     order: 2;
   }
+  :deep(.v-selection-control-group) {
+    row-gap: 8px;
+    column-gap: 8px;
+  }
 </style>
 <script>
   import { ref } from 'vue';
   import { VRadio, VRadioGroup, VTooltip } from 'vuetify/components';
+  import { usePadding } from '../composables.js';
 
   /**
    * @typedef {Object} VcsRadioItem
@@ -112,11 +124,13 @@
         default: 'right',
       },
     },
-    setup() {
+    setup(props, { attrs }) {
       const radioGroup = ref();
       const errorTooltip = ref();
+      const paddingProvided = usePadding(attrs);
 
       return {
+        paddingProvided,
         radioGroup,
         errorTooltip,
       };

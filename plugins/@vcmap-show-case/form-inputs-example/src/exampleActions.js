@@ -1,21 +1,17 @@
 import { reactive, ref } from 'vue';
 
 export default function createExampleActions() {
-  const dense = ref(false);
+  const disabled = ref(false);
   const showSection = ref(true);
 
   const actions = [
     reactive({
-      name: 'denseSelection',
-      title: 'change row height',
-      icon: dense.value
-        ? 'mdi-arrow-split-horizontal'
-        : 'mdi-arrow-collapse-vertical',
+      name: 'disabledSelection',
+      title: 'Changed Disabled',
+      icon: disabled.value ? 'mdi-airplane' : 'mdi-airplane-off',
       callback() {
-        dense.value = !dense.value;
-        this.icon = dense.value
-          ? 'mdi-arrow-split-horizontal'
-          : 'mdi-arrow-collapse-vertical';
+        disabled.value = !disabled.value;
+        this.icon = disabled.value ? 'mdi-airplane' : 'mdi-airplane-off';
       },
     }),
     {
@@ -32,5 +28,5 @@ export default function createExampleActions() {
     },
   ];
 
-  return { actions, dense, showSection };
+  return { actions, disabled, showSection };
 }

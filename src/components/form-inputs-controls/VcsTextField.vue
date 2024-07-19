@@ -6,6 +6,7 @@
     :hide-details="false"
     :rules="rules"
     :type="type"
+    color="primary"
     class="vcs-text-field primary--placeholder"
     :class="{
       'py-1': !paddingProvided,
@@ -20,15 +21,16 @@
     <template v-for="slot of forwardSlots" #[slot]="scope">
       <slot :name="slot" v-bind="scope ?? {}" />
     </template>
-    <template #message="{ message }">
+    <template #message="scope">
       <v-tooltip
         ref="errorTooltipRef"
         :activator="textFieldRef"
-        v-if="message"
-        :text="$st(message)"
+        v-if="scope?.message"
+        :text="$st(scope?.message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
+      <slot name="message" v-bind="scope ?? {}"></slot>
     </template>
     <template #default="scope">
       <v-tooltip
@@ -111,6 +113,7 @@
         default: undefined,
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { attrs, slots }) {
       const textFieldRef = ref();
       const errorTooltipRef = ref();
@@ -151,7 +154,7 @@
       });
 
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['default']);
+      const forwardSlots = useForwardSlots(slots, ['default', 'message']);
 
       return {
         forwardSlots,

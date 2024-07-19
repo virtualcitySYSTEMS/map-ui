@@ -1,5 +1,11 @@
 <template>
-  <span class="vcs-formatted-number" :class="{ 'py-1': !paddingProvided }">
+  <span
+    class="vcs-formatted-number"
+    :class="{
+      'vcs-disabled': disabled,
+      'pa-1': !paddingProvided,
+    }"
+  >
     <slot name="prepend">
       <span v-if="prefix" class="pr-1">{{ prefix }}</span>
     </slot>
@@ -26,6 +32,9 @@
     display: flex;
     align-items: center;
     height: calc(var(--v-vcs-item-height) - 8px);
+  }
+  .vcs-disabled {
+    opacity: var(--v-disabled-opacity);
   }
 </style>
 <script>
@@ -70,6 +79,7 @@
 
   /**
    * @description Formatted number display, optionally with unit
+   * @vue-prop {boolean} [disabled=false] - disabled by adding transparency to the label.
    * @vue-prop {string|SpecialUnits} [unit=undefined]
    * @vue-prop {number} [fractionDigits=undefined]
    * @vue-prop {number} modelValue
@@ -83,6 +93,10 @@
       VTooltip,
     },
     props: {
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
       unit: {
         type: [String || SpecialUnits],
         default: undefined,

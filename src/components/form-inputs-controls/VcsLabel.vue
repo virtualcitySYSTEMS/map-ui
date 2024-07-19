@@ -5,7 +5,7 @@
     :class="{
       'vcs-label-required': required,
       'vcs-label-disabled': disabled,
-      'py-1': !paddingProvided,
+      'pa-1': !paddingProvided,
     }"
   >
     <slot />

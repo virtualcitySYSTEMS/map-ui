@@ -64,6 +64,8 @@ export function createVcsThemes() {
       },
       variables: {
         'hover-opacity': 0.16,
+        'high-emphasis-opacity': 1,
+        'medium-emphasis-opacity': 1,
         'vcs-item-height': '40px',
         'vcs-font-size': '15px',
         'vcs-font-family': 'Titillium Web',

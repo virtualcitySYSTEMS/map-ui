@@ -1,5 +1,12 @@
 <template>
-  <v-row no-gutters v-if="localValue">
+  <v-row
+    no-gutters
+    v-if="localValue"
+    class="vcs-coordinate"
+    :class="{
+      'py-1': !paddingProvided,
+    }"
+  >
     <slot name="prepend" v-bind="{ ...$props }" />
     <template v-for="(_, idx) in localValue">
       <v-col :key="`${prefixes[idx]}-coordinate`" v-if="!hideZ || idx < 2">
@@ -7,6 +14,7 @@
           :id="`${prefixes[idx]}-coordinate`"
           :hide-spin-buttons="true"
           type="number"
+          class="py-0"
           :min="getRangeFromExtent(idx, extent)?.[0]"
           :max="getRangeFromExtent(idx, extent)?.[1]"
           :step="steps[idx]"
@@ -33,6 +41,7 @@
   import { between } from '../style/composables.js';
   import { useProxiedComplexModel } from '../modelHelper.js';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
+  import { usePadding } from '../composables.js';
 
   /**
    *
@@ -114,11 +123,14 @@
         default: () => [[], [], []],
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { attrs, emit }) {
       const localValue = useProxiedComplexModel(props, 'modelValue', emit);
       const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
+      const paddingProvided = usePadding(attrs);
 
       return {
+        paddingProvided,
         localValue,
         noListenerAttrs,
         getRangeFromExtent,

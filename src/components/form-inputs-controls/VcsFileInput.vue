@@ -4,38 +4,35 @@
     variant="outlined"
     clear-icon="$close"
     :hide-details="false"
+    color="primary vcs-file-input"
     class="primary--placeholder"
     :class="{
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
   >
-    <template #message="{ message }">
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
+    </template>
+    <template #message="scope">
       <v-tooltip
         ref="errorTooltipRef"
         :activator="fileInputRef"
-        v-if="message"
-        :text="$st(message)"
+        v-if="scope?.message"
+        :text="$st(scope?.message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
+      <slot name="message" v-bind="scope ?? {}"></slot>
     </template>
-    <template #append-inner>
-      <slot name="append-inner"></slot>
+    <template #append-inner="scope">
+      <slot name="append-inner" v-bind="scope ?? {}"></slot>
       <v-tooltip
         :activator="fileInputRef"
         v-if="tooltip && !errorTooltipRef"
         :text="$st(tooltip)"
         :location="tooltipPosition"
       />
-    </template>
-    <template
-      v-for="slot of Object.keys($slots).filter(
-        (name) => name !== 'append-inner',
-      )"
-      #[slot]="scope"
-    >
-      <slot :name="slot" v-bind="scope" />
     </template>
   </v-file-input>
 </template>
@@ -44,19 +41,19 @@
   @import './vcsTextField.scss';
 
   // set text overflow for file input
-  :deep(.v-field__field) {
-    display: inline-block;
-    max-width: 100%;
+  :deep(.v-field__input) {
+    display: unset;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: calc(var(--v-vcs-item-height) - 9px);
   }
 </style>
 
 <script>
   import { ref } from 'vue';
   import { VFileInput, VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { useForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-file-input v-text-field}.
@@ -84,13 +81,15 @@
         default: 'right',
       },
     },
-    setup(props, { attrs }) {
+    setup(props, { attrs, slots }) {
       const fileInputRef = ref();
       const errorTooltipRef = ref();
 
       const paddingProvided = usePadding(attrs);
+      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
 
       return {
+        forwardSlots,
         paddingProvided,
         fileInputRef,
         errorTooltipRef,

@@ -4,27 +4,29 @@
     variant="outlined"
     clear-icon="$close"
     :rows="$attrs.rows"
-    class="primary--placeholder"
+    color="primary"
+    class="primary--placeholder vcs-text-area"
     :class="{
       'py-1': !paddingProvided,
     }"
-    v-bind="{ ...$attrs }"
+    v-bind="$attrs"
   >
-    <template v-for="slot of Object.keys($slots)" #[slot]="scope">
-      <slot :name="slot" v-bind="scope" />
+    <template v-for="slot of forwardSlots" #[slot]="scope">
+      <slot :name="slot" v-bind="scope ?? {}" />
     </template>
-    <template #message="{ message }">
+    <template #message="scope">
       <v-tooltip
         ref="errorTooltipRef"
         :activator="textAreaRef"
-        v-if="message"
-        :text="$st(message)"
+        v-if="scope?.message"
+        :text="$st(scope?.message)"
         content-class="bg-error"
         :location="tooltipPosition"
       />
+      <slot name="message" v-bind="scope ?? {}"></slot>
     </template>
-    <template #append-inner>
-      <slot name="append-inner"></slot>
+    <template #append-inner="scope">
+      <slot name="append-inner" v-bind="scope ?? {}"></slot>
       <v-tooltip
         v-if="tooltip && !errorTooltipRef"
         :activator="textAreaRef"
@@ -44,12 +46,12 @@
   }
 
   :deep(.v-field) {
-    --v-field-padding-start: 8px;
-    --v-field-padding-end: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
+    --v-field-padding-start: 4px;
+    --v-field-padding-end: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
     .v-field__clearable {
-      margin: 4px -4px 0px 0px;
+      margin: 2px -2px 0px 0px;
     }
   }
 
@@ -86,10 +88,13 @@
     .v-field__outline__end {
       border-width: 0 0 1px 0 !important;
       border-radius: 0;
-      margin-right: 8px;
-      margin-left: -4px;
+      margin-right: 4px;
+      margin-left: -8px;
     }
-
+    .v-field__loader {
+      padding-left: 3px;
+      padding-right: 3px;
+    }
     .v-field__outline *::before {
       border-width: 0;
       border-radius: 0;
@@ -131,9 +136,6 @@
   }
 
   // Progress Bar
-  :deep(.v-progress-linear) {
-    color: rgb(var(--v-theme-primary));
-  }
   :deep(.v-field__loader) {
     top: calc(100% - 2px);
   }
@@ -142,7 +144,7 @@
 <script>
   import { ref } from 'vue';
   import { VTextarea, VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { useForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
@@ -169,13 +171,15 @@
         default: 'right',
       },
     },
-    setup(_p, { attrs }) {
+    setup(_p, { attrs, slots }) {
       const textAreaRef = ref();
       const errorTooltipRef = ref();
 
       const paddingProvided = usePadding(attrs);
+      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
 
       return {
+        forwardSlots,
         textAreaRef,
         errorTooltipRef,
         paddingProvided,
