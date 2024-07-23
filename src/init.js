@@ -91,7 +91,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
    */
   const appConfig = await fetch(appUrl).then((response) => response.json());
 
-  check(appConfig.modules, oneOf([String], [Object]));
+  check(appConfig.modules, [oneOf(String, Object)]);
 
   const modules = await Promise.all(
     appConfig.modules.map(async (c) => {
