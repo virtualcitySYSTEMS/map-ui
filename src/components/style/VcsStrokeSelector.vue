@@ -14,7 +14,7 @@
             :hide-spin-buttons="true"
             type="number"
             unit="px"
-            :disabled="!value"
+            :disabled="!modelValue"
           />
         </v-col>
       </v-row>
@@ -23,7 +23,8 @@
       :model-value="rgbaObject"
       @update:model-value="updateColor"
       mode="rgba"
-      :disabled="!value"
+      :disabled="!modelValue"
+      width="100%"
     />
   </v-sheet>
 </template>
@@ -40,10 +41,11 @@
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { useColorObject } from './composables.js';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   /**
    * @description Allows to model a JSON representation of ol/Stroke vector style with a vuetify VColorPicker.
-   * @vue-prop {import("ol/style/Stroke").Options} value - The Stroke Options
+   * @vue-prop {import("ol/style/Stroke").Options} [modelValue] - The Stroke Options
    */
   export default {
     name: 'VcsFillSelector',
@@ -63,30 +65,21 @@
       },
     },
     setup(props, { emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
       return {
-        rgbaObject: useColorObject(() => props.modelValue?.color),
+        rgbaObject: useColorObject(() => localValue.value?.color),
         width: computed({
           get() {
-            return props.modelValue?.width;
+            return localValue.value?.width;
           },
           set(value) {
-            if (value > 0 && value !== props.modelValue?.width) {
-              const stroke = {
-                width: value,
-              };
-              if (props.modelValue?.color) {
-                stroke.color = [...props.modelValue.color];
-              }
-              emit('update:modelValue', stroke);
+            if (value > 0 && value !== localValue.value?.width) {
+              localValue.value.width = value;
             }
           },
         }),
         updateColor(rgba) {
-          const stroke = {
-            color: [rgba.r, rgba.g, rgba.b, rgba.a],
-            width: props.modelValue?.width,
-          };
-          emit('update:modelValue', stroke);
+          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a];
         },
       };
     },

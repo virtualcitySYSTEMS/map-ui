@@ -25,13 +25,21 @@
     <v-divider />
     <v-container class="px-1 pt-1 pb-0">
       <VcsRadio
-        v-model="selectedImage"
+        v-model="selectedIdx"
         :items="currentItems"
-        :disabled="!value"
-        item-value="src"
+        :disabled="!modelValue"
+        item-value="idx"
+        label-position="top"
+        inline
+        class="d-flex justify-center"
       >
-        <template #top-label="{ item }" v-if="selectedType === ImageType.SHAPE">
-          <v-icon size="24">{{ item.src }}</v-icon>
+        <template #label="{ item }">
+          <img
+            v-if="selectedType !== ImageType.SHAPE"
+            :src="item.src"
+            alt="shape"
+          />
+          <v-icon v-else size="24">{{ item.src }}</v-icon>
         </template>
       </VcsRadio>
       <div v-if="selectedType === ImageType.ICON">
@@ -44,7 +52,7 @@
           <v-col>
             <VcsSlider
               id="style-icon-opacity"
-              v-model="selectedOpacity"
+              v-model="localValue.opacity"
               step="0.1"
               type="number"
               max="1"
@@ -58,18 +66,18 @@
         <v-row
           no-gutters
           v-for="input in shapeSingleValueInputs"
-          :key="input.name"
+          :key="input.key"
         >
           <v-col>
-            <VcsLabel>{{ $st(`components.style.${input.text}`) }}</VcsLabel>
+            <VcsLabel>{{ $st(`components.style.${input.key}`) }}</VcsLabel>
           </v-col>
           <v-col cols="3">
             <VcsTextField
-              :id="`style-shape-${input.text}`"
+              :id="`style-shape-${input.key}`"
               :hide-spin-buttons="true"
               type="number"
               :unit="input.unit || ''"
-              v-model.number="input.value.value"
+              v-model.number="localValue[input.key]"
               :disabled="currentType !== ImageType.SHAPE"
               :step="input.step || 1"
               :min="input.range?.[0] || 0"
@@ -110,22 +118,22 @@
       </v-row>
       <VcsStrokeMenu
         v-if="selectedType === ImageType.SHAPE"
-        v-model="selectedStroke"
+        v-model="localValue.stroke"
         :value-default="valueDefault?.stroke"
-        :disabled="!value || currentType !== ImageType.SHAPE"
+        :disabled="!localValue || currentType !== ImageType.SHAPE"
       />
       <VcsFillMenu
         v-if="selectedType === ImageType.SHAPE"
-        v-model="selectedFill"
+        v-model="localValue.fill"
         :value-default="valueDefault?.fill"
-        :disabled="!value || currentType !== ImageType.SHAPE"
+        :disabled="!localValue || currentType !== ImageType.SHAPE"
       />
     </v-container>
   </v-sheet>
 </template>
 
 <script>
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, onMounted, ref, toRaw, watch } from 'vue';
   import {
     VSheet,
     VDivider,
@@ -136,16 +144,18 @@
     VTabs,
     VTab,
   } from 'vuetify/components';
-  import { Circle, Fill, Icon, RegularShape, Stroke, Style } from 'ol/style.js';
+  import { Icon, Style } from 'ol/style.js';
   import { toContext } from 'ol/render.js';
   import { Point } from 'ol/geom.js';
+  import { getImageStyleFromOptions } from '@vcmap/core';
+  import { useProxiedComplexModel } from '../modelHelper.js';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import VcsRadio from '../form-inputs-controls/VcsRadio.vue';
   import VcsFillMenu from './VcsFillMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
-  import { useSelectedKey, between } from './composables.js';
+  import { between } from './composables.js';
 
   /**
    * @enum {string}
@@ -160,8 +170,8 @@
   /**
    * Draws an image style on a canvas.
    * @param {HTMLCanvasElement} canvas The canvas to draw on
-   * @param {import("ol/style/Image").Options} imageOptions The JSON options of the image style.
-   * @param {boolean} fitToCanvas If the circle, shape or icon should be fitted into the canvas or if it should be draw with it's actual size.
+   * @param {import("ol/style/Image").Options} [imageOptions] The JSON options of the image style.
+   * @param {boolean} [fitToCanvas=false] If the circle, shape or icon should be fitted into the canvas or if it should be draw with it's actual size.
    */
   export async function drawImageStyle(
     canvas,
@@ -177,37 +187,9 @@
     let imageStyle;
     let size;
     if (imageOptions.radius) {
-      // TODO: Replace with getImageStyleFromOptions from styleHelpers.ts in @vcmap/core
       const { radius } = imageOptions;
       size = [radius * 2, radius * 2];
-      const options = {
-        stroke: new Stroke(
-          imageOptions.stroke
-            ? {
-                color: imageOptions.stroke.color,
-                width: imageOptions.stroke.width,
-              }
-            : null,
-        ),
-        fill: new Fill(
-          imageOptions.fill
-            ? {
-                color: imageOptions.fill.color,
-              }
-            : null,
-        ),
-        radius,
-      };
-      if (imageOptions.points) {
-        options.radius2 = imageOptions.radius2;
-        options.angle = imageOptions.angle;
-        options.points = imageOptions.points;
-        options.rotation = imageOptions.rotation;
-        options.scale = imageOptions.scale;
-        imageStyle = new RegularShape(options);
-      } else {
-        imageStyle = new Circle(options);
-      }
+      imageStyle = getImageStyleFromOptions(imageOptions);
     } else if (imageOptions.src) {
       // Somehow the icon does not load the img when providing the src. And icon.load() is not async.
       // Therefore the img first has to be loaded and then passed to new Icon
@@ -747,8 +729,8 @@
 
   /**
    * @description Allows to model a JSON representation of ol/style/Image style. It makes use of VcsStrokeMenu and VcsFillMenu.
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} value - The Image options
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
+   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} [modelValue] - The Image options
+   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} [valueDefault] - The default image options
    * @vue-prop {Array<import("ol/style/Icon").Options>} [iconOptions] - The icon options too choose from. Scale and opacity are ignored. The defaults are 3 different shapes with 4 different colors.
    * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
    */
@@ -789,10 +771,11 @@
       },
     },
     setup(props, { emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
       const currentType = computed(() => {
-        if (props.modelValue?.radius) {
+        if (localValue.value?.radius) {
           return ImageType.SHAPE;
-        } else if (props.modelValue?.src) {
+        } else if (localValue.value?.src) {
           return ImageType.ICON;
         } else {
           return undefined;
@@ -814,136 +797,87 @@
       const canvas = ref();
 
       const shapeSingleValueInputs = computed(() => {
+        /**
+         * @type {[{key: string,isRequired?: boolean, unit?: string,  range?: number[]}]}
+         */
         const inputs = [
-          { name: 'radius', unit: 'px', range: [1, 100], isRequired: true },
+          { key: 'radius', unit: 'px', range: [1, 100], isRequired: true },
         ];
         if (props.extendedShapeSettings) {
-          [
-            { name: 'points', range: [0, 10] },
-            { name: 'radius2', unit: 'px', range: [0, 100] },
-            { name: 'angle', step: 0.1, unit: 'rad' },
-            { name: 'rotation', step: 0.1, unit: 'rad' },
-          ].forEach((entry) => inputs.push(entry));
+          inputs.push(
+            { key: 'points', range: [0, 10] },
+            { key: 'radius2', unit: 'px', range: [0, 100] },
+            { key: 'angle', step: 0.1, unit: 'rad' },
+            { key: 'rotation', step: 0.1, unit: 'rad' },
+          );
         }
-        return inputs.map((input) => {
-          return {
-            text: input.name,
-            value: useSelectedKey(
-              () => props.modelValue,
-              input.name,
-              props.valueDefault[input.name],
-              emit,
-              input.range,
-              input.isRequired,
-            ),
-            unit: input.unit,
-            range: input.range,
-            step: input.step,
-          };
-        });
+        return inputs;
       });
 
       const selectedScale = computed({
         get() {
-          if (Array.isArray(props.modelValue?.scale)) {
-            return props.modelValue.scale[0];
+          if (Array.isArray(localValue.value?.scale)) {
+            return localValue.value.scale[0];
           } else {
-            return props.modelValue?.scale;
+            return localValue.value?.scale;
           }
         },
         set(value) {
-          if (!value) {
-            const newImage = structuredClone(props.modelValue);
-            delete newImage.scale;
-            emit('update:modelValue', newImage);
-          } else if (value > 0) {
-            const newImage = structuredClone(props.modelValue);
-            emit(
-              'update:modelValue',
-              Object.assign(newImage, { scale: value }),
-            );
-          }
+          localValue.value.scale = value;
         },
       });
 
-      const selectedOpacity = useSelectedKey(
-        () => props.modelValue,
-        'opacity',
-        props.valueDefault.opacity,
-        emit,
-      );
+      const selectedIdx = ref(-1);
 
-      const selectedFill = useSelectedKey(
-        () => props.modelValue,
-        'fill',
-        props.valueDefault.fill,
-        emit,
-      );
-      const selectedStroke = useSelectedKey(
-        () => props.modelValue,
-        'stroke',
-        props.valueDefault.stroke,
-        emit,
-      );
+      watch(selectedType, () => {
+        // unset selection on tab change
+        if (currentType.value !== selectedType.value) {
+          selectedIdx.value = -1;
+        }
+      });
 
-      const selectedImage = computed({
-        get() {
-          if (currentType.value !== selectedType.value) {
-            return undefined;
-          } else if (currentType.value === ImageType.SHAPE) {
-            const equalShape = defaultShapes.find((preset) =>
-              isEqualShape(props.modelValue, preset.value),
-            );
-            if (equalShape) {
-              return equalShape.src;
-            } else {
-              return customIcon;
-            }
+      watch(
+        localValue,
+        () => {
+          // derive selection on modelValue change
+          if (currentType.value === ImageType.SHAPE) {
+            const idx = defaultShapes
+              .map(({ value }) => value)
+              .findIndex((i) => isEqualShape(localValue.value, i));
+            // select custom (index 7), if no defaultShape found
+            selectedIdx.value = idx < 0 ? 7 : idx;
           } else if (currentType.value === ImageType.ICON) {
-            return props.modelValue?.src;
-          } else {
-            return undefined;
+            selectedIdx.value = props.iconOptions.findIndex(
+              (i) => i.src === localValue.value.src,
+            );
           }
         },
-        set(value) {
-          let newImage = {};
-          if (selectedType.value === ImageType.SHAPE) {
+        { deep: true },
+      );
+
+      watch(selectedIdx, (idx) => {
+        // update modelValue on selection
+        if (idx > -1) {
+          if (
+            selectedType.value === ImageType.SHAPE &&
+            idx < defaultShapes.length
+          ) {
             const switchFromICON = currentType.value === ImageType.ICON;
-            let newPreset;
-            if (value === customIcon && !switchFromICON) {
-              return;
-            } else if (value === customIcon) {
-              newPreset = defaultShapes[0];
-            } else {
-              newPreset = defaultShapes.find((preset) => preset.src === value);
-            }
-
-            if (newPreset) {
-              let fill;
-              let stroke;
-
-              if (switchFromICON) {
-                fill = props.valueDefault?.fill;
-                stroke = props.valueDefault?.stroke;
-              } else {
-                fill = selectedFill.value;
-                stroke = selectedStroke.value;
-              }
-              newImage = JSON.parse(JSON.stringify(newPreset.value));
-              Object.assign(newImage, {
-                fill,
-                stroke,
-              });
-            }
+            localValue.value = {
+              ...defaultShapes[idx]?.value,
+              fill: switchFromICON
+                ? props.valueDefault?.fill
+                : toRaw(localValue.value?.fill),
+              stroke: switchFromICON
+                ? props.valueDefault?.stroke
+                : toRaw(localValue.value?.stroke),
+            };
           } else if (selectedType.value === ImageType.ICON) {
-            newImage = props.iconOptions.find((option) => option.src === value);
-            Object.assign(newImage, {
-              scale: selectedScale.value || 1,
-              opacity: selectedOpacity.value || 1,
-            });
+            localValue.value = {
+              ...props.iconOptions[idx],
+            };
           }
-          emit('update:modelValue', JSON.parse(JSON.stringify(newImage)));
-        },
+        }
       });
 
       const currentItems = computed(() => {
@@ -956,15 +890,18 @@
         } else if (selectedType.value === ImageType.ICON) {
           items = props.iconOptions;
         }
-        return items;
+        return items.map(({ src }, idx) => ({
+          src,
+          idx,
+        }));
       });
 
       onMounted(() => {
-        drawImageStyle(canvas.value, props.modelValue);
+        drawImageStyle(canvas.value, localValue.value);
         watch(
-          () => props.modelValue,
+          localValue,
           () => {
-            drawImageStyle(canvas.value, props.modelValue);
+            drawImageStyle(canvas.value, localValue.value);
           },
           { deep: true },
         );
@@ -972,15 +909,13 @@
 
       return {
         ImageType,
+        localValue,
         selectedType,
         currentType,
-        selectedImage,
+        selectedIdx,
         canvas,
         shapeSingleValueInputs,
         selectedScale,
-        selectedOpacity,
-        selectedFill,
-        selectedStroke,
         between,
         currentItems,
         selectedImageTypeTab,

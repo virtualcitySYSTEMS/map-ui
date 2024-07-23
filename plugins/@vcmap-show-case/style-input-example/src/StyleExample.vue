@@ -1,27 +1,30 @@
 <template>
   <v-sheet>
-    <VcsFormSection heading="Style menus">
+    <VcsFormSection
+      heading="Style menus"
+      :header-actions="[resetExample, logStyle]"
+    >
       <VcsVectorStyleComponent
-        v-model="styleOptions"
+        v-model="styleOptions.style"
         :value-default="defaultStyleOptions"
       />
     </VcsFormSection>
     <VcsFormSection :expandable="true" heading="Fill Selector">
-      <VcsFillSelector v-model="styleOptions.fill" />
+      <VcsFillSelector v-model="styleOptions.style.fill" />
     </VcsFormSection>
     <VcsFormSection :expandable="true" heading="Stroke Selector">
-      <VcsStrokeSelector v-model="styleOptions.stroke" />
+      <VcsStrokeSelector v-model="styleOptions.style.stroke" />
     </VcsFormSection>
     <VcsFormSection :expandable="true" heading="Image Selector">
       <VcsImageSelector
-        v-model="styleOptions.image"
+        v-model="styleOptions.style.image"
         :value-default="defaultStyleOptions.image"
         :extended-shape-settings="true"
       />
     </VcsFormSection>
     <VcsFormSection :expandable="true" heading="Text Selector">
       <VcsTextSelector
-        v-model="styleOptions.text"
+        v-model="styleOptions.style.text"
         :value-default="defaultStyleOptions.text"
       />
     </VcsFormSection>
@@ -30,7 +33,7 @@
 
 <script>
   import { VSheet } from 'vuetify/components';
-  import { onMounted, ref, watchEffect } from 'vue';
+  import { reactive, toRaw } from 'vue';
   import {
     VcsFormSection,
     VcsFillSelector,
@@ -40,8 +43,8 @@
     VcsVectorStyleComponent,
     VectorStyleMenus,
   } from '@vcmap/ui';
-  import { parseColor } from '@vcmap/core';
-  import { Fill, Icon, RegularShape, Stroke, Style, Text } from 'ol/style.js';
+  import { getStyleOptions } from '@vcmap/core';
+  import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style.js';
 
   export default {
     name: 'StyleExample',
@@ -97,93 +100,29 @@
         },
       };
 
-      const styleOptions = ref({
-        fill: undefined,
-        stroke: undefined,
-        image: undefined,
-        text: undefined,
-      });
-
-      const fill = exampleStyle.getFill();
-      const stroke = exampleStyle.getStroke();
-      const image = exampleStyle.getImage();
-      const text = exampleStyle.getText();
-
-      // TODO: Replace with new getStyleOptions from @vcmap/core as soon as available
-      if (fill) {
-        styleOptions.value.fill = {
-          color: parseColor(fill.getColor()),
-        };
-      }
-      if (stroke) {
-        styleOptions.value.stroke = {
-          color: parseColor(stroke.getColor()),
-          width: exampleStyle.getStroke().getWidth(),
-        };
-      }
-      if (image) {
-        if (image instanceof RegularShape) {
-          styleOptions.value.image = {
-            points: image.getPoints(),
-            radius: image.getRadius(),
-            radius2: image.getRadius2(),
-            angle: image.getAngle(),
-            fill: {
-              color: parseColor(image.getFill().getColor()),
-            },
-            stroke: {
-              color: parseColor(image.getStroke().getColor()),
-              width: image.getStroke().getWidth(),
-            },
-          };
-        } else if (image instanceof Icon) {
-          styleOptions.value.image = {
-            src: image.getSrc(),
-            scale: image.getScale(),
-            opacity: image.getOpacity(),
-          };
-        }
-      }
-      if (text) {
-        styleOptions.value.text = {
-          font: text.getFont(),
-          fill: {
-            color: parseColor(text.getFill()?.getColor()),
-          },
-          stroke: {
-            color: parseColor(text.getStroke()?.getColor()),
-            width: text.getStroke().getWidth(),
-          },
-          textBaseline: text.getTextBaseline(),
-          offsetY: text.getOffsetY(),
-          offsetX: text.getOffsetX(),
-          text: text.getText(),
-        };
-      }
-
-      onMounted(() => {
-        watchEffect(() => {
-          const newFill = styleOptions.value.fill;
-          const newStroke = styleOptions.value.stroke;
-          const newImage = styleOptions.value.image;
-          // const newText = styleOptions.value.text;
-          // TODO: Replace with new getStyleFromOptions from @vcmap/core as soon as available
-          exampleStyle.setFill(newFill ? new Fill(newFill) : null);
-          exampleStyle.setStroke(newStroke ? new Stroke(newStroke) : null);
-          if (newImage?.points) {
-            // exampleStyle.setImage(new RegularShape(newImage));
-          } else if (newImage?.src) {
-            exampleStyle.setImage(new Icon(newImage));
-          } else {
-            exampleStyle.setImage(null);
-          }
-        });
+      // use reactive wrapper object to ensure updates
+      const styleOptions = reactive({
+        style: getStyleOptions(exampleStyle),
       });
 
       return {
         styleOptions,
         defaultStyleOptions,
         VectorStyleMenus,
+        resetExample: {
+          name: 'resetExample',
+          icon: 'mdi-sync',
+          callback() {
+            styleOptions.style = getStyleOptions(exampleStyle);
+          },
+        },
+        logStyle: {
+          name: 'logStyle',
+          icon: 'mdi-console',
+          callback() {
+            console.log(toRaw(styleOptions.style));
+          },
+        },
       };
     },
   };

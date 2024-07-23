@@ -146,6 +146,10 @@ export function createVcsVuetify(i18n) {
         density: 'compact',
         ripple: false,
       },
+      VColorPicker: {
+        elevation: 0,
+        tile: true,
+      },
     },
     defaultAssets: {
       font: {

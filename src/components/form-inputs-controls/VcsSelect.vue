@@ -46,12 +46,17 @@
       />
       <slot name="message" v-bind="scope ?? {}"></slot>
     </template>
-    <template #item="{ props }">
-      <v-list-item density="compact" v-bind="props" role="option">
-        <template #prepend="scope" v-if="multiple">
-          <VcsCheckbox v-model="scope.isSelected" class="py-0"></VcsCheckbox>
-        </template>
-      </v-list-item>
+    <template #item="itemScope">
+      <slot name="item" v-bind="itemScope ?? {}">
+        <v-list-item density="compact" v-bind="itemScope.props" role="option">
+          <template #prepend="prependScope" v-if="multiple">
+            <VcsCheckbox
+              v-model="prependScope.isSelected"
+              class="py-0"
+            ></VcsCheckbox>
+          </template>
+        </v-list-item>
+      </slot>
     </template>
   </v-select>
 </template>

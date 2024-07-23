@@ -1,6 +1,6 @@
 <template>
   <MenuWrapper
-    v-bind="{ ...$attrs, modelValue, valueDefault }"
+    v-bind="{ ...$attrs, ...$props }"
     :value-fallback="fallbackStyle"
     name="components.style.text"
   >
@@ -10,13 +10,14 @@
       </div>
     </template>
     <template #content>
-      <VcsTextSelector v-bind="{ ...$attrs, modelValue, valueDefault }" />
+      <VcsTextSelector v-bind="{ ...$attrs, ...$props }" />
     </template>
   </MenuWrapper>
 </template>
 
 <script>
   import { computed } from 'vue';
+  import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsTextSelector from './VcsTextSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { rgbaObjectToString, useColorObject } from './composables.js';
@@ -31,8 +32,7 @@
 
   /**
    * @description A wrapper for the VcsTextSelector, that has a small shape/icon preview and a menu that pops up when clicking the preview, containing the text style selector.
-   * @vue-prop {import("ol/style/Text").Options} value - The ol Text style options
-   * @vue-prop {import("ol/style/Text").Options} valueDefault - The default ol Text style options
+   * @vue-prop {import("ol/style/Text").Options} [modelValue] - The ol Text style options
    */
   export default {
     name: 'VcsTextMenu',
@@ -45,17 +45,14 @@
         type: Object,
         default: undefined,
       },
-      valueDefault: {
-        type: Object,
-        default: undefined,
-      },
     },
-    setup(props) {
+    setup(props, { emit }) {
+      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
       const fillColorObject = useColorObject(
-        () => props.modelValue?.fill?.color,
+        () => localValue.value?.fill?.color,
       );
       const strokeColorObject = useColorObject(
-        () => props.modelValue?.stroke?.color,
+        () => localValue.value?.stroke?.color,
       );
 
       return {
@@ -63,7 +60,7 @@
           rgbaObjectToString(strokeColorObject.value),
         ),
         fillColor: computed(() => rgbaObjectToString(fillColorObject.value)),
-        fontStyle: computed(() => props.modelValue?.font),
+        fontStyle: computed(() => localValue.value?.font),
         fallbackStyle,
       };
     },

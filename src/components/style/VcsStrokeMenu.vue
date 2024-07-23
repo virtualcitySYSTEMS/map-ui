@@ -1,8 +1,8 @@
 <template>
   <MenuWrapper
-    v-bind="{ ...$attrs, value, valueDefault, disabled }"
     :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
     name="components.style.stroke"
+    v-bind="{ ...$attrs, ...$props }"
   >
     <template #preview>
       <v-sheet
@@ -15,7 +15,7 @@
       />
     </template>
     <template #content>
-      <VcsStrokeSelector :model-value="modelValue" v-bind="$attrs" />
+      <VcsStrokeSelector v-bind="{ ...$attrs, ...$props }" />
     </template>
   </MenuWrapper>
 </template>
@@ -23,16 +23,16 @@
 <script>
   import { computed } from 'vue';
   import { VSheet } from 'vuetify/components';
+  import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsStrokeSelector from './VcsStrokeSelector.vue';
   import MenuWrapper from './MenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
 
   /**
    * @description A wrapper for the VcsStrokeSelector, that has a small color preview and a menu that pops up when clicking the preview, containing the stroke selector.
-   * When clicking the reset button, the valueDefault is emitted, when unchecking the checkbox in front of the preview, null is emitted. If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [0, 0, 0, 1], width: 1 } is emitted.
+   * When clicking the reset button, the valueDefault is emitted, when unchecking the checkbox in front of the preview, null is emitted.
+   * If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [0, 0, 0, 1], width: 1 } is emitted.
    * @vue-prop {import("ol/style/Stroke").Options} [modelValue] - The Stroke Options
-   * @vue-prop {import("ol/style/Stroke").Options} [valueDefault] - The default Stroke Options.
-   * @vue-prop {boolean} [disabled=false] - Disable the input
    */
   export default {
     name: 'VcsStrokeMenu',
@@ -46,17 +46,10 @@
         type: Object,
         default: undefined,
       },
-      valueDefault: {
-        type: Object,
-        default: undefined,
-      },
-      disabled: {
-        type: Boolean,
-        default: false,
-      },
     },
-    setup(props) {
-      const rgbaObject = useColorObject(() => props.modelValue?.color);
+    setup(props, { emit }) {
+      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
+      const rgbaObject = useColorObject(() => localValue.value?.color);
       return {
         rgbaString: computed(() => rgbaObjectToString(rgbaObject.value)),
       };

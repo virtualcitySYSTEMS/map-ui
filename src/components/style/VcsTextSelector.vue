@@ -4,26 +4,25 @@
       <v-row no-gutters>
         <v-col>
           <VcsTextField
-            v-model="selectedText"
+            v-model="localValue.text"
             :placeholder="$t('components.style.enterText')"
           />
         </v-col>
       </v-row>
       <v-row no-gutters>
         <v-col>
-          <VcsSelect
-            :items="
-              Object.keys(fonts).map((text) => ({
-                text,
-                value: fonts[font],
-              }))
-            "
-            v-model="fontFamily"
-          >
-            <template #item="{ item }">
-              <span :style="`font-family: ${item.value} !important`">{{
-                item.text
-              }}</span>
+          <VcsSelect :items="fontItems" v-model="fontFamily">
+            <template #item="scope">
+              <v-list-item density="compact" v-bind="scope.props" role="option">
+                <template #title="{ title }">
+                  <span
+                    :style="{
+                      fontFamily: `${scope.item.value} !important`,
+                    }"
+                    >{{ title }}</span
+                  >
+                </template>
+              </v-list-item>
             </template>
           </VcsSelect>
         </v-col>
@@ -56,14 +55,14 @@
         </VcsButton>
       </div>
       <VcsStrokeMenu
-        v-model="selectedStroke"
+        v-model="localValue.stroke"
         :value-default="valueDefault.stroke"
-        :disabled="!value"
+        :disabled="!localValue"
       />
       <VcsFillMenu
-        v-model="selectedFill"
+        v-model="localValue.fill"
         :value-default="valueDefault.fill"
-        :disabled="!value"
+        :disabled="!localValue"
       />
       <v-row no-gutters>
         <v-col cols="6">
@@ -73,7 +72,7 @@
           <VcsTextField
             :hide-spin-buttons="true"
             type="number"
-            v-model.number="selectedOffsetX"
+            v-model.number="localValue.offsetX"
             tooltip-position="top"
             prefix="X"
             unit="px"
@@ -84,7 +83,7 @@
           <VcsTextField
             :hide-spin-buttons="true"
             type="number"
-            v-model.number="selectedOffsetY"
+            v-model.number="localValue.offsetY"
             tooltip-position="top"
             prefix="Y"
             unit="px"
@@ -98,14 +97,20 @@
 
 <script>
   import { computed } from 'vue';
-  import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
+  import {
+    VSheet,
+    VContainer,
+    VRow,
+    VCol,
+    VListItem,
+  } from 'vuetify/components';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsFillMenu from './VcsFillMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
-  import { useSelectedKey } from './composables.js';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   export const fonts = {
     Georgia: 'Georgia, serif',
@@ -122,7 +127,7 @@
 
   /**
    * @description Allows to model a JSON representation of ol/style/Text style. It makes use of VcsStrokeMenu and VcsFillMenu.
-   * @vue-prop {import("ol/style/Text").Options} value - The ol Text style options
+   * @vue-prop {import("ol/style/Text").Options} modelValue - The ol Text style options
    * @vue-prop {import("ol/style/Text").Options} valueDefault - The default ol Text style options
    */
   export default {
@@ -132,6 +137,7 @@
       VContainer,
       VRow,
       VCol,
+      VListItem,
       VcsSelect,
       VcsTextField,
       VcsButton,
@@ -146,51 +152,49 @@
       },
       valueDefault: {
         type: Object,
-        required: true,
+        default: undefined,
       },
     },
     setup(props, { emit }) {
-      const font = computed({
-        get() {
-          let fontStyle = {
-            // fontStyle: 'normal',
-            // fontWeight: 'normal',
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+      const font = computed(() => {
+        if (localValue.value) {
+          const el = document.createElement('span');
+          el.setAttribute('style', `font: ${localValue.value.font}`);
+          const { fontStyle, fontWeight, fontSize, fontFamily } = el.style;
+          el.remove();
+          return {
+            fontStyle,
+            fontWeight,
+            fontSize,
+            fontFamily,
           };
-          if (props.modelValue) {
-            const el = document.createElement('span');
-            el.setAttribute('style', `font: ${props.modelValue.font}`);
-            fontStyle = el.style;
-            el.remove();
-          }
-          return fontStyle;
-        },
+        }
+        return {};
       });
 
-      function emitNewFont(key, value) {
-        font.value[key] = value;
-        const newModelObject = JSON.parse(JSON.stringify(props.modelValue));
-        const fontPropertyArray = [
-          font.value.fontStyle,
-          font.value.fontWeight,
-          font.value.fontSize,
-          font.value.fontFamily,
-        ];
-        emit(
-          'update:modelValue',
-          Object.assign(newModelObject, {
-            font: fontPropertyArray
-              .filter((prop) => prop && prop !== 'normal')
-              .join(' '),
-          }),
-        );
+      function setNewFont(fontPropertyArray) {
+        localValue.value.font = fontPropertyArray
+          .filter((prop) => prop && prop !== 'normal')
+          .join(' ');
       }
+
+      const fontItems = Object.keys(fonts).map((key) => ({
+        title: key,
+        value: fonts[key],
+      }));
 
       const fontFamily = computed({
         get() {
           return font.value.fontFamily;
         },
         set(newFamily) {
-          emitNewFont('fontFamily', newFamily);
+          setNewFont([
+            font.value.fontStyle,
+            font.value.fontWeight,
+            font.value.fontSize,
+            newFamily,
+          ]);
         },
       });
 
@@ -202,7 +206,12 @@
           if (!newSize || newSize < 1) {
             return;
           }
-          emitNewFont('fontSize', `${newSize}px`);
+          setNewFont([
+            font.value.fontStyle,
+            font.value.fontWeight,
+            `${newSize}px`,
+            font.value.fontFamily,
+          ]);
         },
       });
 
@@ -211,7 +220,12 @@
           return font.value.fontWeight === 'bold';
         },
         set(newValue) {
-          emitNewFont('fontWeight', newValue ? 'bold' : 'normal');
+          setNewFont([
+            font.value.fontStyle,
+            newValue ? 'bold' : 'normal',
+            font.value.fontSize,
+            font.value.fontFamily,
+          ]);
         },
       });
       const isItalic = computed({
@@ -219,53 +233,23 @@
           return font.value.fontStyle === 'italic';
         },
         set(newValue) {
-          emitNewFont('fontStyle', newValue ? 'italic' : 'normal');
+          setNewFont([
+            newValue ? 'italic' : 'normal',
+            font.value.fontWeight,
+            font.value.fontSize,
+            font.value.fontFamily,
+          ]);
         },
       });
 
-      const selectedFill = useSelectedKey(
-        () => props.modelValue,
-        'fill',
-        props.valueDefault.fill,
-        emit,
-      );
-      const selectedStroke = useSelectedKey(
-        () => props.modelValue,
-        'stroke',
-        props.valueDefault.stroke,
-        emit,
-      );
-      const selectedOffsetX = useSelectedKey(
-        () => props.modelValue,
-        'offsetX',
-        props.valueDefault.offsetX,
-        emit,
-      );
-      const selectedOffsetY = useSelectedKey(
-        () => props.modelValue,
-        'offsetY',
-        props.valueDefault.offsetY,
-        emit,
-      );
-      const selectedText = useSelectedKey(
-        () => props.modelValue,
-        'text',
-        props.valueDefault.text,
-        emit,
-      );
       return {
-        fonts,
+        localValue,
+        fontItems,
         font,
         fontFamily,
         fontSize,
-        selectedFill,
-        selectedStroke,
-        emitNewFont,
         isBold,
         isItalic,
-        selectedOffsetX,
-        selectedOffsetY,
-        selectedText,
       };
     },
   };

@@ -1,26 +1,25 @@
 <template>
-  <v-sheet>
-    <v-color-picker
-      :model-value="rgbaObject"
-      @update:model-value="updateColor"
-      mode="rgba"
-      :disabled="!value"
-    />
-  </v-sheet>
+  <v-color-picker
+    :model-value="rgbaObject"
+    @update:model-value="updateColor"
+    mode="rgba"
+    :disabled="!modelValue"
+    width="100%"
+  />
 </template>
 
 <script>
-  import { VSheet, VColorPicker } from 'vuetify/components';
+  import { VColorPicker } from 'vuetify/components';
   import { useColorObject } from './composables.js';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   /**
    * @description Allows to model a JSON representation of ol/Fill vector style with a vuetify VColorPicker.
-   * @vue-prop {import("ol/style/Fill").Options} value - The Fill Options
+   * @vue-prop {import("ol/style/Fill").Options} [modelValue] - The Fill Options
    */
   export default {
     name: 'VcsFillSelector',
     components: {
-      VSheet,
       VColorPicker,
     },
     props: {
@@ -30,13 +29,11 @@
       },
     },
     setup(props, { emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
       return {
-        rgbaObject: useColorObject(() => props.modelValue?.color),
+        rgbaObject: useColorObject(() => localValue.value?.color),
         updateColor(rgba) {
-          const fill = {
-            color: [rgba.r, rgba.g, rgba.b, rgba.a],
-          };
-          emit('update:modelValue', fill);
+          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a];
         },
       };
     },

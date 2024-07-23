@@ -5,7 +5,7 @@
       :key="key"
       :is="componentMap[key]"
       :value-default="valueDefault[key]"
-      v-model="selectedKeys[key].value"
+      v-model="localValue[key]"
       @update:model-value="(v) => $emit(`update:${key}`, v)"
       v-bind="specificProps[key]"
     />
@@ -19,7 +19,7 @@
   import VcsImageMenu from './VcsImageMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
   import VcsTextMenu from './VcsTextMenu.vue';
-  import { useSelectedKey } from './composables.js';
+  import { useProxiedComplexModel } from '../modelHelper.js';
 
   /**
    * @enum {string}
@@ -44,9 +44,9 @@
 
   /**
    * @description Wraps the style component into a single component so whole @vcmap/core/VectorStyleItemOptions can be modelled.
-   * @vue-prop {import("@vcmap/core").VectorStyleItemOptions} value - The VectorStyleItemOptions that should be modelled.
-   * @vue-prop {import("@vcmap/core").VectorStyleItemOptions} valueDefault - The default VectorStyleItemOptions.
-   * @vue-prop {VectorStyleMenus[]} styleComponents - The style component that should be rendered.
+   * @vue-prop {import("@vcmap/core").VectorStyleItemOptions} [modelValue] - The VectorStyleItemOptions that should be modelled.
+   * @vue-prop {import("@vcmap/core").VectorStyleItemOptions} [valueDefault] - The default VectorStyleItemOptions.
+   * @vue-prop {VectorStyleMenus[]} [styleComponents] - The style component that should be rendered.
    * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
    * @vue-prop {Array<import("ol/style/Icon").Options>} [iconOptions] - The icon options in the image component too choose from. Scale and opacity are ignored. The defaults are 3 different icon types with 4 different colors.
    */
@@ -86,18 +86,7 @@
       },
     },
     setup(props, { emit }) {
-      const selectedKeys = computed(() =>
-        // convert to Object with style prop names as keys and computed props as value to allow v-model.
-        props.styleComponents.reduce((acc, key) => {
-          acc[key] = useSelectedKey(
-            () => props.modelValue,
-            key,
-            props.valueDefault[key],
-            emit,
-          );
-          return acc;
-        }, {}),
-      );
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
       const specificProps = computed(() => ({
         [VectorStyleMenus.IMAGE]: {
           extendedShapeSettings: props.extendedShapeSettings,
@@ -105,7 +94,7 @@
         },
       }));
       return {
-        selectedKeys,
+        localValue,
         specificProps,
         componentMap,
       };

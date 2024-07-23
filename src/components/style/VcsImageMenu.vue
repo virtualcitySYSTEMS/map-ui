@@ -1,12 +1,12 @@
 <template>
   <MenuWrapper
-    v-bind="{ ...$attrs, modelValue, valueDefault }"
     :value-fallback="{
       radius: 10,
       fill: { color: [255, 255, 255, 1] },
       stroke: { color: [0, 0, 0, 1], width: 2 },
     }"
     name="components.style.image"
+    v-bind="{ ...$attrs, ...$props }"
   >
     <template #preview>
       <canvas ref="canvas" width="32" height="24" />
@@ -15,10 +15,7 @@
       <VcsImageSelector
         v-bind="{
           ...$attrs,
-          modelValue,
-          valueDefault,
-          iconOptions,
-          extendedShapeSettings,
+          ...$props,
         }"
         class="pb-2"
       />
@@ -28,15 +25,13 @@
 
 <script>
   import { onMounted, ref, watch } from 'vue';
+  import { useProxiedAtomicModel } from '../modelHelper.js';
   import MenuWrapper from './MenuWrapper.vue';
   import VcsImageSelector, { drawImageStyle } from './VcsImageSelector.vue';
 
   /**
    * @description A wrapper for the VcsImageSelector, that has a small shape/icon preview and a menu that pops up when clicking the preview, containing the image selector.
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} modelValue - The Image options
-   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} valueDefault - The default image options
-   * @vue-prop {import("ol/style/Icon").Options} iconOptions - The icon options too choose from. Scale and opacity are ignored.
-   * @vue-prop {boolean} [extendedShapeSettings=false] - If true, there are all the input fields needed to create arbitrary ol RegularShapes.
+   * @vue-prop {import("ol/style/RegularShape").Options | import("ol/style/Circle").Options | import("ol/style/Icon").Options} [modelValue] - The Image options
    */
   export default {
     name: 'VcsImageMenu',
@@ -49,29 +44,17 @@
         type: Object,
         default: undefined,
       },
-      valueDefault: {
-        type: Object,
-        default: undefined,
-      },
-      iconOptions: {
-        type: Array,
-        default: undefined,
-      },
-      extendedShapeSettings: {
-        type: Boolean,
-        default: false,
-      },
     },
-    setup(props) {
+    setup(props, { emits }) {
       const canvas = ref(null);
+      const localValue = useProxiedAtomicModel(props, 'modelValue', emits);
 
       onMounted(() => {
-        drawImageStyle(canvas.value, props.modelValue, true);
+        drawImageStyle(canvas.value, localValue.value, true);
         watch(
           () => props.modelValue,
           () => {
-            // XXX Maybe add some sort of timeout funciton, so it draws only once when user stops using the slider
-            drawImageStyle(canvas.value, props.modelValue, true);
+            drawImageStyle(canvas.value, localValue.value, true);
           },
           { deep: true },
         );
