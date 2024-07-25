@@ -61,10 +61,9 @@
         {{ item.icon }}
       </v-icon>
     </template>
-    <template #default>
-      <v-list-item-title ref="title">
-        <slot name="prepend-title" :item="item" />
-        <slot name="title" :item="item">
+    <template #title>
+      <slot name="title" v-bind="{ item, dragging, tooltip }">
+        <v-list-item-title ref="title">
           <vcs-text-field
             v-if="item.rename"
             :model-value="item.title"
@@ -79,12 +78,17 @@
           <template v-else>
             {{ $st(item.title) }}
           </template>
-        </slot>
-        <slot name="append-title" :item="item" class="ml-auto" />
-        <v-tooltip v-if="dragging === false && tooltip" activator="parent">
-          {{ $st(tooltip) }}
-        </v-tooltip>
-      </v-list-item-title>
+          <v-tooltip v-if="dragging === false && tooltip" activator="parent">
+            {{ $st(tooltip) }}
+          </v-tooltip>
+        </v-list-item-title>
+      </slot>
+    </template>
+    <template #subtitle>
+      <slot name="subtitle" v-bind="{ item }" />
+    </template>
+    <template #default="scope">
+      <slot name="default" v-bind="{ ...scope, item, dragging, tooltip }" />
     </template>
     <template #append>
       <vcs-badge v-if="item.hasUpdate" class="mr-1" />

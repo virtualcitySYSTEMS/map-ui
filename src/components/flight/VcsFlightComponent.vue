@@ -18,24 +18,23 @@
       <v-container class="py-0 px-1">
         <v-row no-gutters v-if="!hideName">
           <v-col cols="6">
-            <VcsLabel html-for="name" dense required>
+            <VcsLabel html-for="name" required>
               {{ $t('components.flight.name') }}
             </VcsLabel>
           </v-col>
           <v-col>
-            <VcsTextField id="name" dense clearable v-model="name" />
+            <VcsTextField id="name" clearable v-model="name" />
           </v-col>
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
           <v-col cols="6">
-            <VcsLabel html-for="title" dense>
+            <VcsLabel html-for="title">
               {{ $t('components.flight.title') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
               id="title"
-              dense
               clearable
               :placeholder="$t('components.flight.titlePlaceholder')"
               v-model="title"
@@ -44,17 +43,16 @@
         </v-row>
         <v-row no-gutters v-if="!hideInterpolation">
           <v-col cols="6">
-            <VcsLabel html-for="interpolation" dense>
+            <VcsLabel html-for="interpolation">
               {{ $t('components.flight.interpolation') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsSelect
               id="title"
-              dense
               :items="[
-                { value: 'spline', text: 'components.flight.spline' },
-                { value: 'linear', text: 'components.flight.linear' },
+                { value: 'spline', title: 'components.flight.spline' },
+                { value: 'linear', title: 'components.flight.linear' },
               ]"
               v-model="interpolation"
             />
@@ -62,18 +60,17 @@
         </v-row>
         <v-row no-gutters v-if="!hideDuration">
           <v-col cols="6">
-            <VcsLabel html-for="duration" dense>
+            <VcsLabel html-for="duration">
               {{ $t('components.flight.duration') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
               id="duration"
-              v-model.number="duration"
+              v-model="duration"
               :hide-spin-buttons="true"
               type="number"
               unit="s"
-              step="1"
               :decimals="2"
               :disabled="disablePlayer"
               :rules="[durationRule]"
@@ -85,7 +82,6 @@
             <VcsCheckbox
               id="animate"
               label="components.flight.loop"
-              dense
               v-model="loop"
             />
           </v-col>
@@ -128,7 +124,7 @@
   function getFlightDuration(instance) {
     if (instance.isValid()) {
       const { times } = getSplineAndTimesForInstance(instance);
-      return times.at(-1);
+      return Math.round(times.at(-1) * 100) / 100;
     }
     return 0;
   }
@@ -208,6 +204,7 @@
     setup() {
       const app = inject('vcsApp');
       const flightInstance = getProvidedFlightInstance();
+      const loop = ref(flightInstance.loop);
       const flightDuration = ref(getFlightDuration(flightInstance));
       const disablePlayer = ref(!(flightDuration.value > 0));
       const flightDurationListener = [
@@ -258,12 +255,9 @@
             return flightDuration.value;
           },
           set(value) {
-            if (
-              Number.isFinite(value) &&
-              value > 0 &&
-              flightDuration.value > 0
-            ) {
-              const factor = value / flightDuration.value;
+            const v = parseFloat(value);
+            if (Number.isFinite(v) && v > 0 && flightDuration.value > 0) {
+              const factor = v / flightDuration.value;
               [...flightInstance.anchors].forEach((anchor) => {
                 anchor.duration *= factor;
               });
@@ -273,9 +267,10 @@
         durationRule,
         loop: computed({
           get() {
-            return flightInstance?.loop;
+            return loop.value;
           },
           set(value) {
+            loop.value = !!value;
             flightInstance.loop = !!value;
           },
         }),

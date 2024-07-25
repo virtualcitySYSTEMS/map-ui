@@ -176,6 +176,7 @@
     onUnmounted,
     reactive,
     ref,
+    toRaw,
     watch,
   } from 'vue';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
@@ -187,6 +188,20 @@
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
+
+  /**
+   * Updates the localValue ref by keeping name and properties
+   * @param {import("vue").Ref<import("vue").UnwrapRef<import("@vcmap/core").ViewpointOptions>>} localValue
+   * @param {import("@vcmap/core").Viewpoint} viewpoint
+   */
+  function updateLocalValueFromViewpoint(localValue, viewpoint) {
+    const options = viewpoint.toJSON();
+    options.name = localValue.value.name;
+    if (localValue.value.properties) {
+      options.properties = toRaw(localValue.value.properties);
+    }
+    localValue.value = options;
+  }
 
   /**
    * Set up post render handler, if action is active.
@@ -213,9 +228,7 @@
           ) {
             return;
           }
-          const options = viewpoint.toJSON();
-          options.name = localValue.value.name;
-          localValue.value = options;
+          updateLocalValueFromViewpoint(localValue, viewpoint);
           cachedViewpoint = viewpoint;
         },
       );
@@ -416,10 +429,10 @@
         title: 'components.viewpoint.updateFromView',
         async callback() {
           if (app.maps.activeMap) {
-            const viewpoint = await app.maps.activeMap.getViewpoint();
-            const options = viewpoint.toJSON();
-            options.name = localValue.value.name;
-            localValue.value = options;
+            updateLocalValueFromViewpoint(
+              localValue,
+              await app.maps.activeMap.getViewpoint(),
+            );
           }
         },
       };

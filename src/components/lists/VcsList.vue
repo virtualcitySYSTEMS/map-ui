@@ -58,14 +58,14 @@
           @click="select(item, $event)"
           @item-renamed="$emit('item-renamed', $event)"
         >
-          <template #prepend-title>
-            <slot name="item.prepend-title" :item="item" :index="index" />
+          <template #title="titleScope">
+            <slot name="item.title" v-bind="{ ...titleScope, index }"></slot>
           </template>
-          <template #title>
-            <slot name="item.title" :item="item" :index="index"></slot>
+          <template #subtitle="subtitleScope">
+            <slot name="item.subtitle" v-bind="{ ...subtitleScope, index }" />
           </template>
-          <template #append-title>
-            <slot name="item.append-title" :item="item" :index="index" />
+          <template #default="scope">
+            <slot name="item.default" v-bind="{ ...scope, index }" />
           </template>
         </VcsListItem>
         <slot name="item.intermediate" :item="item" :index="index" />

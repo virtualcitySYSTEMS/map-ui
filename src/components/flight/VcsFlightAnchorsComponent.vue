@@ -7,13 +7,14 @@
   >
     <v-container class="py-0 px-0">
       <v-sheet v-if="items.length < 1" class="ma-2 pl-2">
-        {{ $t('components.flight.noAnchor') }}
-        <VcsButton
-          :icon="addAnchorAction.icon"
-          :tooltip="addAnchorAction.title"
-          @click.stop="addAnchorAction.callback()"
-          class="d-flex justify-center"
-        />
+        <p>{{ $t('components.flight.noAnchor') }}</p>
+        <div class="d-flex justify-center">
+          <VcsButton
+            :icon="addAnchorAction.icon"
+            :tooltip="addAnchorAction.title"
+            @click.stop="addAnchorAction.callback()"
+          />
+        </div>
       </v-sheet>
       <VcsList
         v-else
@@ -22,32 +23,35 @@
         :show-title="false"
         @item-moved="move"
       >
-        <!-- eslint-disable-next-line -->
-        <template #item.append-title="{ item, index }">
-          <VcsTextField
-            v-if="showDuration(index)"
-            v-model.number="item.duration"
-            :hide-spin-buttons="true"
-            type="number"
-            unit="s"
-            step="1"
-            :decimals="2"
-            :rules="[durationRule]"
-            no-padding
-            class="ml-auto"
-            style="width: 50px"
-          />
+        <template #item.title="{ item, index }">
+          <div class="d-flex align-center">
+            <span>{{ $st(item.title) }}</span>
+            <v-spacer />
+            <div class="duration-input">
+              <VcsTextField
+                v-if="showDuration(index)"
+                v-model.number="item.duration"
+                :hide-spin-buttons="true"
+                type="number"
+                unit="s"
+                step="1"
+                :decimals="2"
+                :rules="[durationRule]"
+                no-padding
+                class="ml-auto"
+              />
+            </div>
+          </div>
         </template>
-        <!-- eslint-disable-next-line -->
-        <template #item.intermediate="{ item, index }">
-          <VcsButton
-            :key="`item-intermediate-${index}`"
-            :icon="addAnchorAction.icon"
-            :tooltip="addAnchorAction.title"
-            @click.stop="addAnchorAction.callback(index + 1)"
-            class="d-flex justify-center z-index-99"
-            height="0"
-          />
+        <template #item.intermediate="{ index }">
+          <div class="d-flex justify-center h-0">
+            <VcsButton
+              :icon="addAnchorAction.icon"
+              :tooltip="addAnchorAction.title"
+              @click.stop="addAnchorAction.callback(index + 1)"
+              class="z-index-99 mx-auto add-in-button"
+            />
+          </div>
         </template>
       </VcsList>
     </v-container>
@@ -55,7 +59,7 @@
 </template>
 <script>
   import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-  import { VContainer, VSheet } from 'vuetify/components';
+  import { VContainer, VSheet, VSpacer } from 'vuetify/components';
   import {
     anchorFromViewpoint,
     anchorToViewpoint,
@@ -197,7 +201,8 @@
   }
 
   export function durationRule(value) {
-    if (Number.isFinite(value) && value > 0) {
+    const v = Number.parseFloat(value);
+    if (Number.isFinite(v) && v > 0) {
       return true;
     }
     return 'components.flight.invalidDuration';
@@ -217,6 +222,7 @@
       VcsTextField,
       VContainer,
       VSheet,
+      VSpacer,
       VcsFormSection,
       VcsList,
     },
@@ -242,6 +248,14 @@
         flightInstance.propertyChanged.addEventListener((prop) => {
           if (prop === 'loop') {
             loop.value = flightInstance.loop;
+            // update last anchor's duration
+            const lastAnchor = flightInstance.anchors.get(
+              flightInstance.anchors.size - 1,
+            );
+            lastAnchor.duration = calculateDuration(
+              lastAnchor,
+              flightInstance.anchors.get(0),
+            );
           }
         });
 
@@ -328,7 +342,20 @@
   };
 </script>
 <style scoped lang="scss">
+  :deep(.v-list-item) {
+    padding: 0 8px 0 16px;
+  }
+  :deep(.v-list) {
+    overflow: visible;
+  }
+  .duration-input {
+    width: 60px;
+  }
   .z-index-99 {
-    z-index: 99;
+    z-index: 99 !important;
+  }
+  .add-in-button {
+    min-height: 0 !important;
+    margin-top: -8px;
   }
 </style>

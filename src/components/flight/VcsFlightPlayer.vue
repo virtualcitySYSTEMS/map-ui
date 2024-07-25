@@ -4,8 +4,8 @@
     <VcsSlider
       v-if="clock"
       type="number"
-      v-model="clock.currentTime"
-      @change="setTime"
+      :model-value="clock.currentTime"
+      @update:modelValue="setTime"
       :step="0"
       :min="clock.startTime"
       :max="clock.endTime"
@@ -25,7 +25,8 @@
         :has-update="btn.hasUpdate"
         :background="btn.background"
         @click.stop="btn.callback($event)"
-        v-bind="{ ...$attrs, ...btn.listeners }"
+        v-bind="{ ...$attrs }"
+        v-on="btn.listeners ? btn.listeners : {}"
       />
       <span>{{ clockTime(clock.endTime) }}</span>
     </div>
@@ -47,6 +48,19 @@
       currentTime: 0,
       times: [],
     };
+  }
+
+  /**
+   *
+   * @param {import("vue").Ref<Partial<import("@vcmap/core").FlightPlayerClock>>} clock
+   * @param {import("@vcmap/core").FlightPlayerClock} changed
+   */
+  function syncClocks(clock, changed) {
+    Object.keys(getDefaultClock()).forEach((key) => {
+      if (clock.value[key] !== changed[key]) {
+        clock.value[key] = changed[key];
+      }
+    });
   }
 
   /**
@@ -79,12 +93,19 @@
         flightInstance,
       );
 
+      let clockChangedListener = () => {};
       const playerChangedListener = app.flights.playerChanged.addEventListener(
         (player) => {
+          clockChangedListener();
           if (player?.flightInstanceName === flightInstance.name) {
             isCurrentPlayer.value = true;
             flightInstancePlayer = player;
-            clock.value = player.clock;
+            syncClocks(clock, player.clock);
+            clockChangedListener = player.clock.changed.addEventListener(
+              (changed) => {
+                syncClocks(clock, changed);
+              },
+            );
           } else {
             isCurrentPlayer.value = false;
             flightInstancePlayer = undefined;
@@ -96,7 +117,7 @@
       onMounted(async () => {
         flightInstancePlayer =
           await app.flights.setPlayerForFlight(flightInstance);
-        clock.value = flightInstancePlayer.clock;
+        syncClocks(clock, flightInstancePlayer.clock);
       });
 
       onUnmounted(() => {
@@ -114,6 +135,7 @@
           return `${mins}:${secs < 10 ? 0 : ''}${secs}`;
         },
         setTime(seconds) {
+          clock.value.currentTime = seconds;
           flightInstancePlayer?.goToTime(seconds);
         },
       };

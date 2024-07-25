@@ -17,7 +17,16 @@
 
 <script>
   import { VSheet } from 'vuetify/components';
-  import { provide, ref, shallowRef, nextTick } from 'vue';
+  import {
+    provide,
+    ref,
+    shallowRef,
+    nextTick,
+    toRaw,
+    isReactive,
+    reactive,
+    watch,
+  } from 'vue';
   import { VcsFlightComponent, VcsFormButton } from '@vcmap/ui';
   import { FlightInstance } from '@vcmap/core';
 
@@ -35,6 +44,37 @@
       );
       const hasFlightInstance = ref(true);
       provide('flightInstance', flightInstance);
+
+      const obj = ref({
+        foo: {
+          bar: true,
+          array: [1, 2, 3],
+          obj: {
+            baz: 'abc',
+          },
+        },
+      });
+      console.log('obj', obj);
+      const raw = toRaw(obj);
+      console.log('toRaw obj', raw);
+      console.log('isReactive obj', isReactive(raw));
+      console.log('isReactive foo', isReactive(raw.foo));
+      console.log('isReactive array', isReactive(raw.array));
+
+      const props = reactive({
+        raw,
+      });
+
+      const internal = ref(structuredClone(toRaw(props.raw)));
+
+      watch(
+        internal,
+        (newObj) => {
+          console.log('watch', newObj);
+        },
+        { deep: true },
+      );
+      internal.value.foo.array[2] = 5;
 
       return {
         hasFlightInstance,
