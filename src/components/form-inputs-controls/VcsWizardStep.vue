@@ -32,7 +32,7 @@
       </slot>
     </template>
     <template #default>
-      <div class="pr-4">
+      <div>
         <VcsHelp :text="helpText" :show="showHelp">
           <slot name="help" />
         </VcsHelp>
