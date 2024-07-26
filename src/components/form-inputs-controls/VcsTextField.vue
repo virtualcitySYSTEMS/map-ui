@@ -113,7 +113,6 @@
         default: undefined,
       },
     },
-    emits: ['update:modelValue'],
     setup(props, { attrs, slots }) {
       const textFieldRef = ref();
       const errorTooltipRef = ref();

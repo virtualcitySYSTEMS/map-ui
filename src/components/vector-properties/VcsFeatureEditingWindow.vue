@@ -290,6 +290,9 @@
         nFeatures: features.value.length,
       }));
 
+      /**
+       * @returns {{actions: VcsActions, destroy: function():void}}
+       */
       function getAllowedModifyActions() {
         const allowedModes = getAllowedEditorTransformationModes(
           currentGeometryTypes.value.types,
@@ -301,26 +304,49 @@
             name: mode,
             title: `components.editor.${mode}`,
             icon: EditorTransformationIcons[mode],
-            active: computed(() => currentTransformationMode.value === mode),
+            active: mode === currentTransformationMode.value,
             callback: () => {
               toggleTransformationSession(mode);
             },
           };
         });
 
+        const transformationModeWatcher = watch(
+          currentTransformationMode,
+          (mode) => {
+            allowedActions.forEach((action) => {
+              if (Object.values(TransformationMode).includes(action.name)) {
+                action.active = mode === action.name;
+              }
+            });
+          },
+        );
+
+        let geometryEditingWatcher;
         if (features.value.length === 1) {
-          allowedActions.unshift({
+          const editGeometryAction = {
             name: 'editGeometry',
             title: `components.editor.edit`,
             icon: '$vcsEditVertices',
-            active: isGeometryEditing,
+            active: isGeometryEditing.value,
             callback: () => {
               toggleEditGeometrySession();
             },
+          };
+          allowedActions.unshift(editGeometryAction);
+
+          geometryEditingWatcher = watch(isGeometryEditing, () => {
+            editGeometryAction.active = isGeometryEditing.value;
           });
         }
 
-        return allowedActions;
+        return {
+          actions: allowedActions,
+          destroy() {
+            transformationModeWatcher();
+            geometryEditingWatcher?.();
+          },
+        };
       }
 
       function getAllowedVectorProperties() {
@@ -350,6 +376,8 @@
         return properties;
       }
 
+      let destroyModifyActions = () => {};
+
       const geometryTypesWatcher = watch(
         currentGeometryTypes,
         (curr, prev) => {
@@ -359,7 +387,11 @@
             (curr.nFeatures > 1 && prev.nFeatures === 1) ||
             (prev.nFeatures > 1 && curr.nFeatures === 1)
           ) {
-            availableModifyActions.value = getAllowedModifyActions();
+            destroyModifyActions();
+            const modifyActions = getAllowedModifyActions();
+            destroyModifyActions = modifyActions.destroy;
+
+            availableModifyActions.value = modifyActions.actions;
             availableVectorProperties.value = getAllowedVectorProperties();
           }
         },
@@ -379,6 +411,7 @@
         geometryTypesWatcher();
         propsWatcher();
         editorManager.stopEditing();
+        destroyModifyActions();
       });
 
       return {
