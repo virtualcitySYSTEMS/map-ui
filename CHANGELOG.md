@@ -1,3 +1,7 @@
+# 5.3.4
+
+- Update @vcmap/core to 5.3.2 to fix a reading legacy oblique datasets
+
 # 5.3.3
 
 - Updates `splashScreen` to use the filled variant of the button.
