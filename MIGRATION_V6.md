@@ -35,6 +35,7 @@
   - added tooltip and tooltipPosition
 - `VcsSlider`
   - added tooltip and tooltipPosition
+- Removed `VcsCustomScreen.vue`. Use `VcsTextPage.vue` instead.
 
 # Extended Theming
 

@@ -1,55 +1,37 @@
 <template v-if="textPage.title">
-  <VcsTooltip :tooltip="textPage.tooltip">
-    <template #activator="{ props }">
-      <span
-        class="d-inline-block text-truncate mr-10 setmargin"
-        v-bind="{ ...$attrs, ...props }"
-      >
-        <span v-if="textPage.url" class="imprint-span imprint button">
-          <a :href="textPage.url" class="link" target="_blank"
-            >{{ $st(textPage.title) }} <span></span>
-          </a>
-        </span>
+  <span class="d-inline-block text-truncate mr-1">
+    <span v-if="textPage.url" class="imprint">
+      <a :href="textPage.url" target="_blank"
+        >{{ $st(textPage.title) }} <span></span>
+      </a>
+    </span>
 
-        <span
-          v-else
-          class="imprint-span imprint button link"
-          @click="addTextPage()"
-          >{{ $st(textPage.title) }}</span
-        >
-      </span>
-    </template>
-  </VcsTooltip>
+    <span
+      v-else
+      class="imprint cursor-pointer text-decoration-underline"
+      @click="addTextPage()"
+      >{{ $st(textPage.title) }}</span
+    >
+    <v-tooltip
+      :text="$st(textPage.tooltip)"
+      activator="parent"
+      location="top"
+    />
+  </span>
 </template>
 
 <style lang="scss" scoped>
-  .button {
-    cursor: pointer !important;
-  }
-  .setmargin {
-    margin-right: 2px !important;
-  }
   .imprint {
-    margin-left: 2px;
-  }
-  .link {
-    text-decoration: underline;
-  }
-  .imprint-span {
     font-size: smaller;
-
-    &:first-child::before {
-      content: '';
-    }
-    span {
-      font-size: inherit;
+    a {
+      color: var(--v-text-color);
     }
   }
 </style>
 
 <script>
   import { inject } from 'vue';
-  import VcsTooltip from '../components/notification/VcsTooltip.vue';
+  import { VTooltip } from 'vuetify/components';
   import VcsTextPage from './VcsTextPage.vue';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import { WindowSlot } from '../manager/window/windowManager.js';
@@ -61,7 +43,7 @@
    */
   export default {
     name: 'VcsTextPageFooter',
-    components: { VcsTooltip },
+    components: { VTooltip },
     props: {
       textPage: {
         type: Object,

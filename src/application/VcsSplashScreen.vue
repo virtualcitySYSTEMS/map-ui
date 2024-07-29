@@ -11,32 +11,29 @@
     <v-card>
       <div class="px-2 pt-2 pb-1">
         <v-card-text>
-          <VcsMarked :content="splashScreenText"></VcsMarked>
-
-          <v-row class="mt-2" v-if="options.acceptInput" no-gutters>
-            <v-col class="align-center d-flex">
-              <VcsCheckbox v-model="checkBox"> </VcsCheckbox>
-
-              <VcsLabel>
-                <div
-                  v-html="splashScreenCheckboxText"
-                  class="marked-checkbox-content"
-                ></div>
-              </VcsLabel>
-            </v-col>
-          </v-row>
+          <VcsMarkdown :content="$st(options.content)" />
+          <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
+            <template #label>
+              <VcsMarkdown
+                :content="$st(options.checkBoxText)"
+                class="marked-checkbox-content"
+              />
+            </template>
+          </VcsCheckbox>
         </v-card-text>
 
         <v-card-actions>
-          <v-col class="text-right">
-            <VcsFormButton
-              color="primary"
-              variant="filled"
-              @click="exitScreen"
-              :disabled="!checkBox"
-              >{{ $t(options.buttonTitle) }}</VcsFormButton
-            >
-          </v-col>
+          <v-row no-gutters>
+            <v-col class="text-right">
+              <VcsFormButton
+                color="primary"
+                variant="filled"
+                @click="exitScreen"
+                :disabled="options.acceptInput && !checkBox"
+                >{{ $t(options.buttonTitle) }}</VcsFormButton
+              >
+            </v-col>
+          </v-row>
         </v-card-actions>
       </div>
     </v-card>
@@ -52,18 +49,15 @@
     VRow,
     VCol,
   } from 'vuetify/components';
-  import { computed, getCurrentInstance, ref } from 'vue';
-  import { parseAndSanitizeMarkdown } from './markdownHelper.js';
+  import { computed, ref } from 'vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
-  import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
-  import VcsMarked from '../components/form-output/VcsMarkdown.vue';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
   import { useProxiedAtomicModel } from '../components/modelHelper.js';
 
   export default {
     name: 'VcsSplashScreen',
     components: {
-      VcsLabel,
       VDialog,
       VCard,
       VCardText,
@@ -72,7 +66,7 @@
       VcsCheckbox,
       VRow,
       VCol,
-      VcsMarked,
+      VcsMarkdown,
     },
     props: {
       modelValue: {
@@ -87,19 +81,10 @@
     setup(props, { emit }) {
       const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
 
-      const vm = getCurrentInstance().proxy;
-      const splashScreenText = computed(() => {
-        return vm.$st(props.options.content);
-      });
-
-      const splashScreenCheckboxText = computed(() => {
-        const translatedContent = vm.$st(props.options.checkBoxText);
-        return parseAndSanitizeMarkdown(translatedContent);
-      });
-
-      const checkBox = ref(!props.options.acceptInput);
+      const checkBox = ref(false);
       const exitScreen = () => {
         localValue.value = false;
+        checkBox.value = false;
       };
 
       const position = computed(() => ({
@@ -112,8 +97,6 @@
       return {
         localValue,
         exitScreen,
-        splashScreenText,
-        splashScreenCheckboxText,
         checkBox,
         position,
       };

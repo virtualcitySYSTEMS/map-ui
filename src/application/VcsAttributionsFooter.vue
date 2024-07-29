@@ -2,11 +2,11 @@
   <span class="d-inline-block text-truncate mr-10">
     <span
       v-for="attribution in mergedAttributions"
-      class="attribution-span"
+      class="attribution"
       :key="attribution.provider"
     >
-      <a :href="attribution.url" target="_blank"
-        >{{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
+      <a :href="attribution.url" target="_blank">
+        {{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
       </a>
     </span>
     <VcsButton
@@ -21,14 +21,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .attribution-wrap .vcs-button-wrap {
-    bottom: 3px;
-  }
-
-  a:before {
-    content: '\00a9\00a0';
-  }
-  .attribution-span {
+  .attribution {
     font-size: smaller;
     &:before {
       content: '\00a0\007c\00a0';
@@ -38,6 +31,12 @@
     }
     span {
       font-size: inherit;
+    }
+    a {
+      color: var(--v-text-color);
+      &:before {
+        content: '\00a9\00a0';
+      }
     }
   }
 </style>

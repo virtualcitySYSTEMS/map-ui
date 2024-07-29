@@ -1,13 +1,13 @@
 <template>
   <span
-    class="d-flex gc-1 px-1"
+    class="d-flex gc-2 px-1 h-100 align-center"
     :class="{ 'vcs-position-display': positionDisplayAction.active }"
   >
     <VcsButton
       :tooltip="positionDisplayAction.title"
       :icon="positionDisplayAction.icon"
       @click.stop="positionDisplayAction.callback($event)"
-      :custom-classes="customClasses"
+      :class="{ 'bg-primary': positionDisplayAction.active }"
     >
     </VcsButton>
     <template
@@ -17,17 +17,20 @@
         prefix="x:"
         :model-value="transformedPosition[0]"
         :fraction-digits="fractionDigits"
+        class="pa-0"
       />
       <VcsFormattedNumber
         no-padding
         prefix="y:"
         :model-value="transformedPosition[1]"
         :fraction-digits="fractionDigits"
+        class="pa-0"
       />
       <VcsFormattedNumber
         v-if="transformedPosition[2]"
         prefix="z:"
         :model-value="transformedPosition[2]"
+        class="pa-0"
       />
     </template>
     <v-menu v-if="positionDisplayAction.active">
@@ -36,10 +39,10 @@
           v-bind="props"
           tooltip="footer.positionDisplay.projection"
           icon="mdi-chevron-down"
-          :custom-classes="customClasses"
+          class="bg-primary"
         />
       </template>
-      <v-list selectable density="compact" v-model:selected="selectedEPSG">
+      <v-list selectable v-model:selected="selectedEPSG">
         <v-list-item v-for="(item, i) in items" :key="i" :value="item.value">
           <v-list-item-title>{{ $st(item.text) }}</v-list-item-title>
         </v-list-item>
@@ -49,22 +52,10 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '../styles/shades.scss';
-
   .vcs-position-display {
-    height: 22px;
     background-color: rgb(var(--v-theme-primary));
     span {
-      color: map-get($shades, 'white');
-    }
-
-    :deep(.vcs-formatted-number),
-    :deep(.vcs-formatted-number span) {
-      font-size: unset;
-      line-height: unset;
-    }
-    :deep(.vcs-formatted-number-dense) {
-      line-height: unset;
+      color: rgb(var(--v-theme-on-primary));
     }
   }
 </style>
@@ -89,7 +80,6 @@
 
   /**
    * @description Activates an interaction to display the mouse click or mouse move position, depending on the uiConfig property 'positionDisplayEventType'
-   * @vue-computed {string[]} customClasses - changes button color depending on state
    * @vue-computed {import("ol").Coordinate} transformedPosition - position in selected projection
    * @vue-computed {number} fractionDigits - number of digits depending on selected projection
    */
@@ -174,10 +164,6 @@
         },
       });
 
-      const customClasses = computed(() => {
-        return positionDisplayAction.active ? ['primary'] : [];
-      });
-
       const transformedPosition = computed(() => {
         if (position.value.length > 0) {
           return mercatorProjection.transformTo(
@@ -198,7 +184,6 @@
         fractionDigits,
         selectedEPSG,
         items,
-        customClasses,
       };
     },
   };

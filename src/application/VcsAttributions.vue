@@ -25,21 +25,10 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '../styles/shades.scss';
-
-  .theme--light {
-    a {
-      color: map-get($shades, 'black');
-    }
-  }
-  .theme--dark {
-    a {
-      color: map-get($shades, 'white');
-    }
-  }
   a {
+    color: var(--v-theme-surface);
     &:hover {
-      color: var(--v-primary-base);
+      color: rgb(var(--v-theme-primary));
     }
     &:before {
       content: '\00a9';

@@ -7,7 +7,13 @@
     ></VcsSplashScreen>
     <VcsNavbar />
     <VcsContainer :attribution-action="attributionAction" />
-    <v-footer v-if="smAndUp" app absolute height="22" class="d-flex gc-1 pa-0">
+    <v-footer
+      v-if="smAndUp"
+      app
+      absolute
+      :height="footerHeight"
+      class="d-flex gc-1 pa-0"
+    >
       <VcsPositionDisplay />
       <VcsTextPageFooter
         v-if="imprint"
@@ -57,13 +63,13 @@
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
-  import { defaultPrimaryColor } from '../vuePlugins/vuetify.js';
+  import { defaultPrimaryColor, useFontSize } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
   import VcsSplashScreen from './VcsSplashScreen.vue';
-  import VcsCustomScreen from './VcsCustomScreen.vue';
+  import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
@@ -267,7 +273,7 @@
           },
           {
             id: 'customScreenId',
-            component: VcsCustomScreen,
+            component: VcsTextPage,
             state: {
               headerIcon: customScreen.icon,
               headerTitle: customScreen.name,
@@ -322,36 +328,50 @@
   function setupSplashScreen(app, splashScreenRef) {
     function setupSplashScreenAction() {
       const { splashScreen } = app.uiConfig.config.value;
-      const splashScreenAction = {
-        name: splashScreen.name || 'components.splashScreen.name',
-        icon: splashScreen.icon || 'mdi-alert-box',
-        title: splashScreen.title,
-        callback() {
-          splashScreenRef.value = !splashScreenRef.value;
-        },
-      };
-      app.navbarManager.add(
-        {
-          id: 'splashScreenToggle',
-          action: splashScreenAction,
-        },
-        vcsAppSymbol,
-        ButtonLocation.MENU,
-      );
+      if (splashScreen) {
+        splashScreenRef.value = true;
+      }
+      if (splashScreen && splashScreen.menuEntry) {
+        const splashScreenAction = {
+          name: splashScreen.name || 'components.splashScreen.name',
+          icon: splashScreen.icon || 'mdi-alert-box',
+          title: splashScreen.title,
+          callback() {
+            splashScreenRef.value = !splashScreenRef.value;
+          },
+        };
+        app.navbarManager.add(
+          {
+            id: 'splashScreenToggle',
+            action: splashScreenAction,
+          },
+          vcsAppSymbol,
+          ButtonLocation.MENU,
+        );
+      }
     }
-
-    return watch(
-      () => app.uiConfig.config.value.splashScreen,
-      (newSplashScreen) => {
+    setupSplashScreenAction();
+    const removeAddedListener = app.uiConfig.added.addEventListener((item) => {
+      if (item.name === 'splashScreen') {
         if (app.navbarManager.has('splashScreenToggle')) {
           app.navbarManager.remove('splashScreenToggle');
         }
-        if (newSplashScreen && newSplashScreen.menuEntry) {
-          setupSplashScreenAction();
+        setupSplashScreenAction();
+      }
+    });
+    const removeRemovedListener = app.uiConfig.removed.addEventListener(
+      (item) => {
+        if (item.name === 'splashScreen') {
+          if (app.navbarManager.has('splashScreenToggle')) {
+            app.navbarManager.remove('splashScreenToggle');
+          }
         }
       },
-      { immediate: true },
     );
+    return () => {
+      removeAddedListener();
+      removeRemovedListener();
+    };
   }
   /**
    * This helper function will add a settings action button to the apps NavbarManager MENU location.
@@ -685,9 +705,14 @@
       });
 
       const { smAndUp } = useDisplay();
+      const fontSize = useFontSize();
+      const footerHeight = computed(() => {
+        return Math.ceil(fontSize.value * 1.65);
+      });
 
       return {
         smAndUp,
+        footerHeight,
         mobileLogo: computed(
           () =>
             app.uiConfig.config.value.mobileLogo ??

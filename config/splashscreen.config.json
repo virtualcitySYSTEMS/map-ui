@@ -1,0 +1,45 @@
+{
+  "name": "SplashScreen Examples",
+  "uiConfig": [
+    {
+      "name": "splashScreen",
+      "value": {
+        "name": "MyCustomScreen.name",
+        "title": "MyCustomScreen.tooltip",
+        "icon": "mdi-information-slab-circle-outline",
+        "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\nSplash Screen Template\n-------------------\nErste Schritte\n-------------------\n\nDies ist ein <em> Beispieltext</em>, der Ihnen den Einstieg erleichtern soll. **Marked** wird verwendet, um Ihren Text <u>von Markdown nach HTML</u> zu konvertieren. Um mehr über die <u><em>korrekte Syntax</em></u>zu erfahren, besuchen Sie bitte diesen [Link](https://marked.js.org/demo/) für eine Demo.  \n\nWie man Listen hinzufügt\n\n1. Punkt 1 einer Aufzählung\n2. Punkt 2 einer Aufzählung.\n\nWenn Sie Aufzählungen nicht mögen, wie wäre es mit Aufzählungspunkten?  \n- Punkt 1: einer Liste mit Aufzählungspunkten. \n- Punkt 2: einer Aufzählungsliste.",
+        "acceptInput": true,
+        "menuEntry": false,
+        "checkBoxText": "components.splashScreen.checkBoxText",
+        "buttonTitle": "components.splashScreen.buttonTitle",
+        "position": {
+          "width": "800px",
+          "height": "500px",
+          "maxWidth": "800px",
+          "maxHeight": "500px"
+        }
+      },
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.splashScreen"
+      }
+    },
+    {
+      "name": "customScreen",
+      "value": {
+        "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n<br/>Projekt: \n--------\n\nErste Schritte\n\nZusammenfassung:\n--------\nDies ist ein <em> Beispieltext</em>, der Ihnen den Einstieg erleichtern soll. **Marked** wird verwendet, um Ihren Text <u>von Markdown nach HTML</u> zu konvertieren. Um mehr über die <u><em>korrekte Syntax</em></u>zu erfahren, besuchen Sie bitte diesen [Link](https://marked.js.org/demo/) für eine Demo.  \n \nInhalt:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n<br/>1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Punkt 1: einer Liste mit Aufzählungspunkten.\n- Punkt 2: einer Liste mit Aufzählungspunkten.\n\n<br/>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
+        "icon": "mdi-information",
+        "name": "MyCustomScreen.name",
+        "title": "MyCustomScreen.tooltip",
+        "windowPosition": {
+          "left": "30%",
+          "right": "30%",
+          "top": "10%",
+          "bottom": "20%"
+        }
+      },
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.customScreen"
+      }
+    }
+  ]
+}
