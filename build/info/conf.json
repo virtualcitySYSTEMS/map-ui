@@ -8,7 +8,7 @@
   },
   "source": {
     "includePattern": "\\.js$",
-    "exclude": ["dist"]
+    "exclude": ["dist", "node_modules/ol/node_modules"]
   },
   "plugins": [
     "jsdoc-plugin-intersection",

@@ -259,6 +259,7 @@ export {
   validateActions,
 } from './src/components/lists/VcsActionList.vue';
 export { default as VcsList } from './src/components/lists/VcsList.vue';
+export { default as VcsListItem } from './src/components/lists/VcsListItem.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
 export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
