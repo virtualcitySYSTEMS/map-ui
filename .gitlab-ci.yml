@@ -171,7 +171,7 @@ deployNew:
   script:
     - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
     - echo "{\"modules\":[\"config/www.config.json\"]}" > ./dist/app.config.json
-    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/new hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
+    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/dev hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
 
 publish:
   <<: *after_build_definition

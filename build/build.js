@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { readFile, writeFile } from 'node:fs/promises';
 import { build } from 'vite';
 import { v4 as uuid } from 'uuid';
 
@@ -13,7 +14,6 @@ import {
   getFileMd5,
   getFilesInDirectory,
   libraries,
-  writeRewrittenFile,
 } from './buildHelpers.js';
 
 /**
@@ -97,8 +97,8 @@ function hashLibraries() {
       throw new Error(`Trying to build unexported library ${key}`);
     }
     value.lib = libraries[key];
-    value.hash = `${uuid().substring(0, 6)}`;
-    libraryPaths[key] = `./${value.lib}.${value.hash}.js`;
+    value.hash = `${uuid().substring(0, 8)}`;
+    libraryPaths[key] = `./${value.lib}-${value.hash}.js`;
     value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
   });
 
@@ -121,11 +121,13 @@ const { libraryBuildOptions, libraryPaths } = hashLibraries();
 console.log('Building ol dump file');
 await generateOLLib();
 
+const distFolder = path.join(process.cwd(), 'dist');
+const assetsFolder = path.join(distFolder, 'assets');
+
 /** Cleaning/recreating Dist Folder */
-if (await fs.existsSync(path.join(process.cwd(), 'dist'))) {
-  await fs.promises.rm(path.join(process.cwd(), 'dist'), { recursive: true });
+if (await fs.existsSync(distFolder)) {
+  await fs.promises.rm(distFolder, { recursive: true });
 }
-const assetsFolder = path.join(process.cwd(), 'dist', 'assets');
 await fs.promises.mkdir(assetsFolder, { recursive: true });
 
 /**
@@ -141,6 +143,8 @@ const fileTypesToHash = ['.png', '.css', '.svg', '.woff2'];
  * we exclude the materialDesignIcons font because we do not want to also rewrite the materialDesignIcons.css file.
  * The .woff2 is loaded with the materialDesignIcons Version number as a query parameter. So this also makes sure,
  * that the browser can cache the file.
+ *
+ * we also exclude favicons from hashing, to just use the index.html as is.
  */
 const filesToExclude = [
   path.join(
@@ -150,6 +154,11 @@ const filesToExclude = [
     'fonts',
     'materialdesignicons-webfont.woff2',
   ),
+  path.join('assets', 'favicon-4c4ce5df.svg'),
+  path.join('assets', 'favicon-32-4c4ce5df.png'),
+  path.join('assets', 'favicon-128-4c4ce5df.png'),
+  path.join('assets', 'favicon-180-4c4ce5df.png'),
+  path.join('assets', 'favicon-192-4c4ce5df.png'),
 ];
 const hashedPublicFiles = new Map();
 const filesToCopy = new Map();
@@ -165,7 +174,7 @@ for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
     const fileHash = await getFileMd5(filePath);
     const hashedFileUrl = path.posix.join(
       ...path.dirname(relativePathInDist).split(path.sep),
-      `${path.basename(filePath, fileType)}.${fileHash.slice(0, 6)}${fileType}`,
+      `${path.basename(filePath, fileType)}-${fileHash.slice(0, 8)}${fileType}`,
     );
     hashedPublicFiles.set(
       path.posix.join(...relativePath.split(path.sep)),
@@ -174,9 +183,9 @@ for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
     const newFilePath = path.join(
       assetsFolder,
       path.dirname(relativePathInDist),
-      `${path.basename(relativePath, fileType)}.${fileHash.slice(
+      `${path.basename(relativePath, fileType)}-${fileHash.slice(
         0,
-        6,
+        8,
       )}${fileType}`,
     );
     filesToCopy.set(filePath, newFilePath);
@@ -191,57 +200,28 @@ for await (const [originalFilePath, newFilePath] of filesToCopy) {
 }
 
 console.log('Building app');
-const buildoutput = await build({
-  configFile: './build/commonViteConfig.js',
-  base: './',
-  define: {
-    'process.env.NODE_ENV': '"production"',
-  },
-  build: {
-    write: false,
-    modulePreload: false,
-    emptyOutDir: true,
-    rollupOptions: {
-      external: Object.keys(libraries),
-      output: {
-        paths: libraryPaths,
-      },
-    },
-  },
-});
-
-/**
- * Building the Main entrypoint (index.html + index.js)
- * This will ensure that all references to public assets will be rewritten to the hashed filename
- */
-await Promise.all(
-  buildoutput.output?.map((output) => {
-    if (output.type === 'asset') {
-      const { source, fileName } = output;
-      // remove loading of materialdesignicons from index.html, we will later inject this in the ui.js
-      const fileContent = source.replace(
-        /<link[^>]*href=".*materialdesignicons\.min\.css"[^>]*(>[^<]*<\/link>|\/>)/,
-        '',
-      );
-      return writeRewrittenFile(
-        path.join(process.cwd(), 'dist', fileName),
-        fileContent,
-        hashedPublicFiles,
-        'assets',
-      );
-    }
-    if (output.type === 'chunk') {
-      const { code, fileName } = output;
-      return writeRewrittenFile(
-        path.join(process.cwd(), 'dist', fileName),
-        code,
-        hashedPublicFiles,
-        'assets',
-      );
-    }
-    return undefined;
-  }),
+let indexHTMLContent = await readFile('./index.html', { encoding: 'utf8' });
+// remove mdi icons link, will be later loaded from the ui.js
+indexHTMLContent = indexHTMLContent.replace(
+  /<link[^>]*href=".*materialdesignicons\.min\.css"[^>]*>/,
+  '',
 );
+// replace @vcmap/ui with './assets/ui.js'
+indexHTMLContent = indexHTMLContent.replace(/@vcmap\/ui/, './assets/ui.js');
+await writeFile(path.join(distFolder, 'index.html'), indexHTMLContent, {
+  encoding: 'utf8',
+});
+const htaccessContent = `
+    <FilesMatch "-[\\w\\d]{8}\\.(js|css)$">
+        Header set Cache-Control "public, max-age=31540000, immutable"
+    </FilesMatch>
+    <FilesMatch "(index\\.html|config\\.json|ui\\.js|vue\\.js|vuetify\\.js|ol\\.js|cesium\\.js|core\\.js)$">
+        Header set Cache-Control "no-store, max-age=0"
+    </FilesMatch>
+`;
+await writeFile(path.join(distFolder, '.htaccess'), htaccessContent, {
+  encoding: 'utf8',
+});
 
 /**
  * Building the Libraries, (vue, vuetify, openlayers, cesium, core, and ui). This will build one hashed library.hash.js
@@ -271,7 +251,7 @@ await Promise.all(
         lib: {
           entry: path.resolve(process.cwd(), value.entry),
           formats: ['es'],
-          fileName: `${value.lib}.${value.hash}`,
+          fileName: `${value.lib}-${value.hash}`,
         },
         rollupOptions: {
           ...value.rollupOptions,

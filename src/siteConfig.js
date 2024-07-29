@@ -35,7 +35,7 @@ function setHeaderTitle(title) {
   document.head.appendChild(titleElement);
 }
 
-const defaultFavicon = './assets/favicon.svg';
+const defaultFavicon = './assets/favicon-4c4ce5df.svg';
 
 const defaultHeaderTitle = 'VC Map';
 

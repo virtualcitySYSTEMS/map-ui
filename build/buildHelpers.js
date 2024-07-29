@@ -159,18 +159,12 @@ export async function buildLibrary(
   base64Css = false,
   rewrittenPublicAssets = undefined,
 ) {
-  // Base64 contains the characters '+', '/', and '=', which have a reserved meaning in URLs.
-  // Base64url solves this by replacing '+' with '-' and '/' with '_'.
-  // See https://stackoverflow.com/a/55389212
   const cssInjectorCode = `
 function loadCss(href) {
-  const base64url = href
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
   return new Promise((resolve, reject) => {
     const elem = document.createElement('link');
     elem.rel = 'stylesheet';
-    elem.href = base64url;
+    elem.href = href;
     elem.defer = false;
     elem.async = false;
     elem.onload = resolve;
@@ -180,7 +174,7 @@ function loadCss(href) {
 }`;
 
   const write = async (output) => {
-    const addedHash = hash ? `.${hash}` : '';
+    const addedHash = hash ? `-${hash}` : '';
     let css = false;
     if (output[1] && output[1].type === 'asset') {
       if (base64Css) {
