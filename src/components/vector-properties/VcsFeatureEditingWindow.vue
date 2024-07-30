@@ -1,7 +1,7 @@
 <template>
   <v-sheet>
     <VcsFormSection
-      v-if="session.type === SessionType.SELECT"
+      v-if="session?.type === SessionType.SELECT"
       heading="components.editor.modifyHeader"
       :action-button-list-overflow-count="5"
       :header-actions="availableModifyActions"
@@ -45,6 +45,7 @@
     provide,
     computed,
     shallowRef,
+    reactive,
   } from 'vue';
   import {
     CesiumMap,
@@ -300,7 +301,7 @@
         );
 
         const allowedActions = allowedModes.map((mode) => {
-          return {
+          return reactive({
             name: mode,
             title: `components.editor.${mode}`,
             icon: EditorTransformationIcons[mode],
@@ -308,7 +309,7 @@
             callback: () => {
               toggleTransformationSession(mode);
             },
-          };
+          });
         });
 
         const transformationModeWatcher = watch(
@@ -324,7 +325,7 @@
 
         let geometryEditingWatcher;
         if (features.value.length === 1) {
-          const editGeometryAction = {
+          const editGeometryAction = reactive({
             name: 'editGeometry',
             title: `components.editor.edit`,
             icon: '$vcsEditVertices',
@@ -332,7 +333,7 @@
             callback: () => {
               toggleEditGeometrySession();
             },
-          };
+          });
           allowedActions.unshift(editGeometryAction);
 
           geometryEditingWatcher = watch(isGeometryEditing, () => {
