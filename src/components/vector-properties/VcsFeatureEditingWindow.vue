@@ -60,7 +60,7 @@
     pointVectorProperties,
     nonPointVectorProperties,
   } from './VcsVectorPropertiesComponent.vue';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
 
   /**
    * @typedef {Object} EditorManager

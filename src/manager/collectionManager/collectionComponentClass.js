@@ -9,7 +9,6 @@ import { sortByWeight } from '../buttonManager.js';
 import {
   createListItemBulkAction,
   createListItemDeleteAction,
-  createListItemRenameAction,
 } from '../../actions/listActions.js';
 import { sortByOwner } from '../navbarManager.js';
 
@@ -56,7 +55,7 @@ function destroyListItem(listItem) {
 /**
  * Renames the title of an item for VcsObject based items.
  * @param {import("@vcmap/core").VcsObject} item
- * @param {import("../../components/lists/VcsList").VcsListItem} listItem
+ * @param {import("../../components/lists/VcsList.vue").VcsListItem} listItem
  * @param {string} newTitle
  */
 function titleChanged(item, listItem, newTitle) {
@@ -359,11 +358,9 @@ class CollectionComponentClass {
       destroyFunctions: [],
     };
     if (this.renamable.value) {
-      listItem.actions.push(
-        createListItemRenameAction(listItem, {
-          name: this._actionTitles.renameTitle,
-        }),
-      );
+      listItem.renamable = {
+        name: this._actionTitles.renameTitle,
+      };
       listItem.titleChanged = (newTitle) =>
         titleChanged(item, listItem, newTitle);
     }

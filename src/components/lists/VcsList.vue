@@ -56,7 +56,6 @@
             'cursor-pointer': selectable && !isDraggable,
           }"
           @click="select(item, $event)"
-          @item-renamed="$emit('item-renamed', $event)"
         >
           <template #title="titleScope">
             <slot name="item.title" v-bind="{ ...titleScope, index }"></slot>
@@ -144,7 +143,7 @@
    * @property {string} name
    * @property {boolean} [visible] - Whether to display this item or not.
    * @property {boolean} [disabled] - Whether this item should be displayed as disabled.
-   * @property {boolean} [rename] - Whether the title of can be edited. will add a rename action to the end of the action list
+   * @property {boolean|import("../../actions/actionHelper.js").ActionOptions} [renamable] - Whether the title of can be edited. will add a rename action to the end of the action list. This action will call titleChanged with the new title, you must provide the callback yourself, otherwise this does not work as expeted.
    * @property {string} title - The title to be displayed
    * @property {string} [tooltip]
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
@@ -152,19 +151,13 @@
    * @property {Array<import("../../actions/actionHelper.js").VcsAction>} [actions]
    * @property {Array<function(PointerEvent):void>|undefined} [clickedCallbacks] - An array of callbacks called on item click. called before selection update
    * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
-   * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. called before value update
+   * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. only usable with renamble true.
    */
 
   /**
    * @typedef {Object} ItemMovedEvent
    * @property {VcsListItem} item
    * @property {number} targetIndex
-   */
-
-  /**
-   * @typedef {Object} ItemRenamedEvent
-   * @property {VcsListItem} item
-   * @property {string} newTitle
    */
 
   /**
@@ -193,7 +186,6 @@
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
    * @vue-prop {Array<import("../../actions/actionHelper.js").VcsAction>} [actions] - actions to render in the list title
    * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
-   * @vue-event {ItemRenamedEvent} item-renamed - event triggered after item was renamed
    * @vue-data {slot} [#item.prepend-title] - A slot to adapt the list item titel, adding content before the title. Binds item and index.
    * @vue-data {slot} [#item.title] - A slot to adapt the list item titel. Default content is a span or VcsTextField for active rename action. Binds item and index.
    * @vue-data {slot} [#item.append-title] - A slot to adapt the list item titel, adding content after the title. Binds item and index.
@@ -577,7 +569,8 @@
     .v-list-item__selected {
       border-left: solid 4px;
       border-left-color: rgb(var(--v-theme-primary));
-      padding-left: 13px !important;
+      color: rgb(var(--v-theme-primary));
+      padding-left: 12px !important;
     }
     .v-list-item--active {
       .v-list-item__append {

@@ -57,7 +57,7 @@
 <script>
   import { ref, toRaw } from 'vue';
   import { VSheet, VMenu, VCard } from 'vuetify/components';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
 
   /**

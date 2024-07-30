@@ -4,6 +4,7 @@
     :header-actions="actions"
     :action-button-list-overflow-count="overflowCount"
     v-bind="{ ...$attrs }"
+    class="collection-component-standalone"
   >
     <collection-component-list
       v-if="componentListView"
@@ -16,7 +17,7 @@
 
 <script>
   import { computed, getCurrentInstance, inject, ref } from 'vue';
-  import VcsFormSection from '../../components/form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../../components/section/VcsFormSection.vue';
   import { createSelectionActions } from '../../components/lists/VcsList.vue';
   import CollectionComponentList from './CollectionComponentList.vue';
   import CollectionComponentContent from './CollectionComponentContent.vue';
@@ -27,7 +28,7 @@
    * The collectionComponent must be passed via {@link https://vuejs.org/api/composition-api-dependency-injection.html |provide }.
    */
   export default {
-    name: 'CollectionComponent',
+    name: 'CollectionComponentStandalone',
     components: {
       CollectionComponentList,
       CollectionComponentContent,

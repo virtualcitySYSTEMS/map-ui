@@ -1,17 +1,13 @@
 <template>
-  <v-list density="compact">
-    <v-row>
+  <v-list>
+    <v-row no-gutters>
       <v-col
         v-for="(row, idx) in item.rows"
         :key="idx"
         :cols="cols"
         :class="{ 'w-100': item.colNr === 1, 'w-50': item.colNr !== 1 }"
       >
-        <v-list-item
-          density="compact"
-          class="pa-0"
-          :class="determineInnerPadding(idx)"
-        >
+        <v-list-item class="pa-0" :class="determineInnerPadding(idx)">
           <template #prepend>
             <v-img
               v-if="
@@ -20,7 +16,6 @@
               "
               width="32"
               height="24"
-              cover
               :src="getImageSrcFromShape(row.image)"
             />
             <svg
@@ -93,7 +88,7 @@
           </template>
 
           <v-list-item-title
-            class="pt-2"
+            class="pa-2"
             :title="$st(row.tooltip || row.title)"
           >
             {{ $st(row.title) }}

@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <div
-      v-if="!hideHeader"
-      class="v-expansion-panel-header px-2 v-expansion-panel-header--active"
-    >
-      <div class="d-flex justify-space-between">
-        <div class="d-flex align-center gc-1 pl-2">
+  <div class="collection-component-list">
+    <div v-if="!hideHeader" class="pr-2 pl-4 py-1">
+      <div class="d-flex justify-space-between inner-header">
+        <div class="d-flex align-center gc-1">
           <span>
             {{ $st(title) }}
           </span>
@@ -93,6 +90,7 @@
       VcsList,
       VSheet,
     },
+    emits: ['closeList'],
     setup(_props, { emit }) {
       /**
        * @type {import("./collectionComponentClass.js").CollectionComponentClass}
@@ -136,4 +134,8 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .inner-header {
+    height: calc(var(--v-vcs-item-height) - 8px);
+  }
+</style>

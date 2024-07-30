@@ -1,7 +1,7 @@
 <script setup>
   import { VContainer, VRow, VCol } from 'vuetify/components';
   import { getStoryState } from '../../setup.js';
-  import VcsFormSection from '../../../src/components/form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../../../src/components/section/VcsFormSection.vue';
   import VcsLabel from '../../../src/components/form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../../../src/components/form-inputs-controls/VcsTextField.vue';
   import GlobalControls from '../../controls/GlobalControls.vue';

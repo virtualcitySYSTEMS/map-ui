@@ -38,7 +38,6 @@ export {
   importFlights,
 } from './src/actions/flightActions.js';
 export {
-  createListItemRenameAction,
   createListItemDeleteAction,
   createListItemBulkAction,
   createListExportAction,
@@ -239,7 +238,7 @@ export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vu
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
 export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
-export { default as VcsFormSection } from './src/components/form-inputs-controls/VcsFormSection.vue';
+export { default as VcsFormSection } from './src/components/section/VcsFormSection.vue';
 export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
 export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
 export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
@@ -304,6 +303,7 @@ export { default as VcsFeatureStyleComponent } from './src/components/style/VcsF
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
+export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.vue';
 export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
 export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';

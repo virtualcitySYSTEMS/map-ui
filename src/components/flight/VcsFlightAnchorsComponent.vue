@@ -67,7 +67,7 @@
   } from '@vcmap/core';
   import { Cartesian3 } from '@vcmap-cesium/engine';
   import { createToggleAction } from '../../actions/actionHelper.js';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
   import VcsList from '../lists/VcsList.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsButton from '../buttons/VcsButton.vue';

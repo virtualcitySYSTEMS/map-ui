@@ -102,7 +102,7 @@
   import { computed, onUnmounted, ref, inject } from 'vue';
   import { VSheet, VContainer, VRow, VCol, VDivider } from 'vuetify/components';
   import { getSplineAndTimesForInstance } from '@vcmap/core';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';

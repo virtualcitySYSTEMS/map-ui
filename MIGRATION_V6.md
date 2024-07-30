@@ -10,7 +10,10 @@
 - `ContentTreeCollection.getTreeOpenStateRef` now returns `string[]` instead of `Ref<string[]>` and was renamed to `getTreeOpenState`
 - Changed the `Notification.open` type, it is now a boolean. To get the ref, there is a readonly `openRef` property.
 - access to color scss variables changed, `var(--v-primary-base)` becomes `rgb(var(--v-theme-primary))` see:https://vuetifyjs.com/en/getting-started/upgrade-guide/#theme
-- `VcsList` component now only accepts reactive items via the API (using v-model still works the same). Do not use ref, but reactive, because refs stripe functions from actions!
+- `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
+  - `createListItemRenameAction` and `@rename-item` event has been removed.
+  - Renaming is now handled directly by the new `VcsListItem` component. You need to provide a titleChanged function on the item!
+  - The `VcsListItem` interface is extended by a prop `renamable`, which can be a boolean or action options.
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
 - Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
 - Globally removed `noPadding` property of all Components, which supported `noPadding`, default component padding can be deactivated by adding py-0 to the component
@@ -29,6 +32,7 @@
   - removed `blockOverflow` property
 - `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
 - There is a new VcsMarkdown Component that should be used for rendering Markdown Text.
+- There is a new VcsExpansionPanel Component that should be used for expandable sections.
 - `VcsLabel`
   - added tooltip and tooltipPosition
 - `VcsFormattedNumber`

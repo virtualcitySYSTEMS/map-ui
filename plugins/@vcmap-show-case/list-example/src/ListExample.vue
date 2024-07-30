@@ -87,9 +87,10 @@
                 <v-switch label="disabled" v-model="newItem.disabled" />
                 <v-switch label="random icon" v-model="newItem.icon" />
                 <v-switch label="hasUpdate" v-model="newItem.hasUpdate" />
+                <v-switch label="rename action" v-model="newItem.renamable" />
                 <v-switch
-                  label="rename action"
-                  v-model="newItem.renameAction"
+                  label="toggle rename action"
+                  v-model="newItem.toggleRename"
                 />
                 <v-switch label="console.log action" v-model="newItem.action" />
                 <v-switch
@@ -162,7 +163,6 @@
     VcsTextField,
     Icons,
     VcsFormSection,
-    createListItemRenameAction,
   } from '@vcmap/ui';
   import {
     VSwitch,
@@ -247,7 +247,8 @@
         disabled: false,
         visible: true,
         icon: false,
-        renameAction: false,
+        renamable: false,
+        toggleRename: false,
         action: false,
         clicked: false,
         selected: false,
@@ -281,6 +282,7 @@
             disabled: newItem.value.disabled,
             visible: newItem.value.visible,
             hasUpdate: newItem.value.hasUpdate,
+            renamable: newItem.value.renamable,
           });
 
           if (newItem.value.icon) {
@@ -289,9 +291,13 @@
 
           item.actions = [];
 
-          if (newItem.value.renameAction) {
-            item.rename = false;
-            item.actions.push(createListItemRenameAction(item));
+          if (newItem.value.toggleRename) {
+            item.actions.push({
+              name: 'toggle rename',
+              callback() {
+                item.renamable = !item.renamable;
+              },
+            });
           }
 
           if (newItem.value.action) {
@@ -320,6 +326,13 @@
               }
             };
           }
+
+          if (newItem.value.renamable) {
+            item.titleChanged = (newTitle) => {
+              item.title = newTitle;
+            };
+          }
+
           items.value.push(item);
           newItem.value = {
             name: 'foo',
@@ -327,7 +340,7 @@
             disabled: false,
             visible: true,
             icon: false,
-            renameAction: false,
+            renamable: false,
             action: false,
             clicked: false,
             selected: false,

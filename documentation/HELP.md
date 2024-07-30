@@ -22,7 +22,7 @@ Providing an url will render a help icon (?) on the [WindowHeader](./WINDOWS.md#
 ## VcsFormSection
 
 VC Map UI provides an ui component with an option to display context based help.
-[VcsFormSection](../src/components/form-inputs-controls/VcsFormSection.vue) is meant to be used to structure form fields.
+[VcsFormSection](../src/components/section/VcsFormSection.vue) is meant to be used to structure form fields.
 To provide a help for a section, use the `helpText` prop to pass plain text or an [i18n](INTERNATIONALIZATION.md) string:
 
 ```js

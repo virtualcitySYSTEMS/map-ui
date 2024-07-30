@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0 px-0">
+  <v-container class="py-0 px-0 collection-component-content">
     <vcs-list
       :items="items.slice(0, limit)"
       :draggable="draggable"
@@ -36,13 +36,14 @@
    * @vue-event {string} openList
    */
   export default {
-    name: 'CollectionComponent',
+    name: 'CollectionComponentContent',
     components: {
       VcsButton,
       VcsList,
       VSheet,
       VContainer,
     },
+    emits: ['openList'],
     setup(_props, { emit }) {
       /**
        * @type {CollectionComponentClass}
@@ -89,12 +90,12 @@
 <style lang="scss" scoped>
   :deep(.v-list) {
     .v-list-item {
-      padding: 4px 8px 4px 28px;
+      padding-left: 24px;
+      padding-inline-start: 24px !important;
     }
     .v-list-item__selected {
-      border-left: solid 4px;
-      border-left-color: var(--v-primary-base);
-      padding-left: 24px !important;
+      padding-left: 20px !important;
+      padding-inline-start: 20px !important;
     }
   }
 </style>

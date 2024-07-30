@@ -18,7 +18,7 @@
   import { useProxiedComplexModel } from '../modelHelper.js';
   import { setupExtentComponentActions } from '../../actions/extentActions.js';
   import VcsExtent from './VcsExtent.vue';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
 
   /**
    * A VcsFormSection with actions to draw and edit an extent

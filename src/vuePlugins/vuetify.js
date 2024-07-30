@@ -150,6 +150,11 @@ export function createVcsVuetify(i18n) {
         elevation: 0,
         tile: true,
       },
+      VExpansionPanel: {
+        ripple: false,
+        elevation: 0,
+        tile: true,
+      },
     },
     defaultAssets: {
       font: {

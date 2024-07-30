@@ -6,6 +6,7 @@
     VTooltip,
   } from 'vuetify/components';
   import { computed, ref } from 'vue';
+  import { is } from '@vcsuite/check';
   import VcsBadge from '../notification/VcsBadge.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
@@ -27,17 +28,35 @@
     },
   });
 
-  const emits = defineEmits(['item-renamed']);
+  const rename = ref(false);
+  const renameAction = computed(() => {
+    if (props.item.renamable) {
+      return {
+        name: 'list.renameItem',
+        ...(is(props.item.renamable, Object) ? props.item.renamable : {}),
+        callback() {
+          rename.value = true;
+        },
+      };
+    }
+    return undefined;
+  });
 
   function renameOff() {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.item.rename = false;
+    rename.value = false;
   }
+
+  const actions = computed(() => {
+    if (renameAction.value) {
+      return [...(props.item?.actions || []), renameAction.value];
+    }
+    return [...(props.item?.actions || [])];
+  });
 
   const title = ref();
   const tooltip = createEllipseTooltip(
     computed(() => {
-      if (props.item?.rename) {
+      if (rename.value) {
         return undefined;
       }
       return title.value?.$el;
@@ -46,9 +65,8 @@
     computed(() => props.item?.title),
   );
 
-  function rename(item, newTitle) {
+  function renameItem(item, newTitle) {
     if (newTitle) {
-      emits('item-renamed', { item, newTitle });
       item.titleChanged?.(newTitle);
     }
   }
@@ -63,12 +81,15 @@
     </template>
     <template #title>
       <slot name="title" v-bind="{ item, dragging, tooltip }">
-        <v-list-item-title ref="title">
+        <v-list-item-title
+          ref="title"
+          :class="{ 'vcs-list-item__rename': rename }"
+        >
           <vcs-text-field
-            v-if="item.rename"
+            v-if="rename"
             :model-value="item.title"
             autofocus
-            @update:model-value="(value) => rename(item, value)"
+            @update:model-value="(value) => renameItem(item, value)"
             @click.stop
             @keydown.enter="renameOff"
             @blur="renameOff"
@@ -93,8 +114,8 @@
     <template #append>
       <vcs-badge v-if="item.hasUpdate" class="mr-1" />
       <vcs-action-button-list
-        v-if="item.actions?.length > 0"
-        :actions="item.actions"
+        v-if="actions.length > 0"
+        :actions="actions"
         :disabled="item.disabled"
         :block-overflow="true"
         :overflow-count="actionButtonListOverflowCount"
@@ -106,7 +127,9 @@
 
 <style lang="scss" scoped>
   .v-list-item {
-    padding: 4px 8px 4px 16px;
+    padding: 4px 8px 4px 8px;
+    padding-inline-end: 8px !important;
+    padding-inline-start: 16px !important;
     &.border-bottom {
       border-bottom: solid;
       border-bottom-color: rgb(var(--v-theme-base-lighten-2));
@@ -153,6 +176,9 @@
     }
     :deep(.v-list-item__overlay) {
       background-color: transparent;
+    }
+    :deep(.vcs-list-item__rename) {
+      color: rgb(var(--v-theme-on-surface));
     }
   }
 </style>

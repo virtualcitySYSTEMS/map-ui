@@ -128,17 +128,16 @@ describe('CollectionComponentClass', () => {
       expect(collectionComponent.draggable.value).to.be.false;
     });
 
-    it('should add list item rename action, if renamable is true', async () => {
+    it('should add list item renamable action options, if renamable is true', async () => {
       collectionComponent.renamable.value = true;
       await sleep(0);
-      expect(collectionComponent.items.value[0].actions).to.have.length(1);
-      expect(collectionComponent.items.value[0].actions[0]).to.have.property(
+      expect(collectionComponent.items.value[0].renamable).to.have.property(
         'name',
         'list.renameItem',
       );
       collectionComponent.renamable.value = false;
       await sleep(0);
-      expect(collectionComponent.items.value[0].actions).to.have.length(0);
+      expect(collectionComponent.items.value[0].renamable).to.be.undefined;
     });
 
     it('should add list item remove action, if removable is true', async () => {

@@ -181,7 +181,7 @@
   } from 'vue';
   import { VSheet, VContainer, VRow, VCol } from 'vuetify/components';
   import { CesiumMap, ObliqueMap, OpenlayersMap, Viewpoint } from '@vcmap/core';
-  import VcsFormSection from '../form-inputs-controls/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';

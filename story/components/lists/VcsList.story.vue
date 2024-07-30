@@ -5,6 +5,23 @@
   import GlobalControls from '../../controls/GlobalControls.vue';
   import VcsList from '../../../src/components/lists/VcsList.vue';
 
+  const renamableItem = {
+    name: 'renamable item',
+    title: 'renamable item',
+    renamable: true,
+    titleChanged: (value) => {
+      renamableItem.title = value;
+    },
+    actions: [
+      {
+        name: 'toggle rename',
+        callback() {
+          renamableItem.renamable = !renamableItem.renamable;
+        },
+      },
+    ],
+  };
+
   const items = reactive([
     {
       name: 'foo',
@@ -90,6 +107,7 @@
         },
       ],
     },
+    renamableItem,
   ]);
 
   const state = getStoryState('$vcs3d');

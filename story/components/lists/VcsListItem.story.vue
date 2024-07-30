@@ -9,6 +9,9 @@
     name: 'foo',
     disabled: false,
     renameable: true,
+    titleChanged: (value) => {
+      item.title = value;
+    },
     title: 'foo',
     tooltip: 'this is the foo',
     hasUpdate: false,
@@ -19,6 +22,9 @@
     name: 'foo',
     disabled: false,
     renameable: true,
+    titleChanged: (value) => {
+      actionItem.title = value;
+    },
     title: 'foo',
     tooltip: 'this is the foo',
     hasUpdate: false,
@@ -57,20 +63,22 @@
       <VcsListItem :item="item" v-bind="{ ...state.attrs }" />
       <template #controls>
         <GlobalControls v-model="state" with-icon />
-        <HstText title="Title" v-model="item.title" />
-        <HstText title="Tooltip" v-model="item.tooltip" />
-        <HstCheckbox title="Disabled" v-model="item.disabled" />
-        <HstCheckbox title="HasUpdate" v-model="item.hasUpdate" />
+        <HstText title="title" v-model="item.title" />
+        <HstText title="tooltip" v-model="item.tooltip" />
+        <HstCheckbox title="renamable" v-model="item.renamable" />
+        <HstCheckbox title="disabled" v-model="item.disabled" />
+        <HstCheckbox title="hasUpdate" v-model="item.hasUpdate" />
       </template>
     </Variant>
     <Variant title="Actions">
       <VcsListItem :item="actionItem" v-bind="{ ...state.attrs }" />
       <template #controls>
         <GlobalControls v-model="state" with-icon />
-        <HstText title="Title" v-model="actionItem.title" />
-        <HstText title="Tooltip" v-model="actionItem.tooltip" />
-        <HstCheckbox title="Disabled" v-model="actionItem.disabled" />
-        <HstCheckbox title="HasUpdate" v-model="actionItem.hasUpdate" />
+        <HstText title="title" v-model="actionItem.title" />
+        <HstText title="tooltip" v-model="actionItem.tooltip" />
+        <HstCheckbox title="renamable" v-model="actionItem.renamable" />
+        <HstCheckbox title="disabled" v-model="actionItem.disabled" />
+        <HstCheckbox title="hHasUpdate" v-model="actionItem.hasUpdate" />
       </template>
     </Variant>
   </Story>

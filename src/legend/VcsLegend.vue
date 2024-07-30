@@ -6,51 +6,37 @@
       v-if="entries.length > 0"
       class="rounded-0"
     >
-      <v-expansion-panel
+      <vcs-expansion-panel
         v-for="(entry, i) in entries"
         :key="i"
-        class="px-2"
+        :heading="entry.title"
+        :header-actions="entry.actions"
         @group:selected="entry.open = !entry.open"
       >
-        <v-expansion-panel-title hide-actions>
-          <template #default="{ open }">
-            <div class="d-flex justify-space-between">
-              <div class="d-flex align-center">
-                <v-icon class="mr-1" :class="{ rotate: !open }">
-                  mdi-chevron-down
-                </v-icon>
-                {{ $st(entry.title) }}
-              </div>
-              <VcsActionButtonList :actions="entry.actions" />
+        <v-list class="pl-6 pb-2">
+          <div v-for="(item, idx) in entry.legend" :key="idx">
+            <div v-if="item.type === LegendType.Image">
+              <img
+                :src="$st(item.src)"
+                :alt="item.src"
+                class="legend-image"
+                :title="item.tooltip"
+              />
             </div>
-          </template>
-        </v-expansion-panel-title>
-        <v-expansion-panel-text class="pl-6 pb-2">
-          <v-list density="compact">
-            <div v-for="(item, idx) in entry.legend" :key="idx">
-              <div v-if="item.type === LegendType.Image">
-                <img
-                  :src="$st(item.src)"
-                  :alt="item.src"
-                  class="legend-image"
-                  :title="item.tooltip"
-                />
-              </div>
-              <div v-else-if="item.type === LegendType.Iframe">
-                <iframe
-                  :id="`legendIframe${idx}`"
-                  :src="$st(item.src)"
-                  scrolling="no"
-                  style="width: 100%; height: 100%"
-                  frameBorder="0"
-                  @load="setIframeHeight(`legendIframe${idx}`)"
-                />
-              </div>
-              <style-legend-item v-else :item="item" />
+            <div v-else-if="item.type === LegendType.Iframe">
+              <iframe
+                :id="`legendIframe${idx}`"
+                :src="$st(item.src)"
+                scrolling="no"
+                style="width: 100%; height: 100%"
+                frameBorder="0"
+                @load="setIframeHeight(`legendIframe${idx}`)"
+              />
             </div>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
+            <style-legend-item v-else :item="item" />
+          </div>
+        </v-list>
+      </vcs-expansion-panel>
     </v-expansion-panels>
     <v-sheet v-else class="ma-2">
       {{ $t('legend.empty') }}
@@ -59,19 +45,11 @@
 </template>
 
 <script>
-  import {
-    VExpansionPanels,
-    VExpansionPanel,
-    VExpansionPanelText,
-    VExpansionPanelTitle,
-    VIcon,
-    VList,
-    VSheet,
-  } from 'vuetify/components';
+  import { VExpansionPanels, VList, VSheet } from 'vuetify/components';
   import { computed } from 'vue';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
-  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
+  import VcsExpansionPanel from '../components/section/VcsExpansionPanel.vue';
 
   /**
    * @description A component rendering configured legend information for active layers.
@@ -81,13 +59,9 @@
   export default {
     name: 'VcsLegend',
     components: {
-      VcsActionButtonList,
+      VcsExpansionPanel,
       StyleLegendItem,
       VExpansionPanels,
-      VExpansionPanel,
-      VExpansionPanelText,
-      VExpansionPanelTitle,
-      VIcon,
       VList,
       VSheet,
     },

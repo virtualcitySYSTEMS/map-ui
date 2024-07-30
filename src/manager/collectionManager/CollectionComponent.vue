@@ -1,39 +1,24 @@
 <template>
-  <v-expansion-panel>
-    <v-expansion-panel-title hide-actions class="px-2">
-      <div class="d-flex justify-space-between">
-        <div class="d-flex align-center gc-1">
-          <v-icon :class="{ rotate: !open }"> mdi-chevron-down </v-icon>
-          <span>
-            {{ $st(title) }}
-          </span>
-          <span v-if="selectable && selection.length > 0">
-            {{ `(${selection.length})` }}
-          </span>
-        </div>
-        <VcsActionButtonList
-          v-if="actions?.length > 0"
-          :actions="actions"
-          :overflow-count="overflowCount"
-        />
-      </div>
-    </v-expansion-panel-title>
-    <v-expansion-panel-text class="pb-1">
+  <vcs-expansion-panel
+    :heading="title"
+    :header-actions="actions"
+    :action-button-list-overflow-count="overflowCount"
+  >
+    <template #header-append>
+      <span v-if="selectable && selection.length > 0" class="ml-1">
+        {{ `(${selection.length})` }}
+      </span>
+    </template>
+    <template #default>
       <CollectionComponentContent @openList="(id) => $emit('openList', id)" />
-    </v-expansion-panel-text>
-  </v-expansion-panel>
+    </template>
+  </vcs-expansion-panel>
 </template>
 
 <script>
   import { computed, inject } from 'vue';
-  import {
-    VIcon,
-    VExpansionPanel,
-    VExpansionPanelTitle,
-    VExpansionPanelText,
-  } from 'vuetify/components';
+  import VcsExpansionPanel from '../../components/section/VcsExpansionPanel.vue';
   import { createSelectionActions } from '../../components/lists/VcsList.vue';
-  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import CollectionComponentContent from './CollectionComponentContent.vue';
 
   /**
@@ -51,12 +36,8 @@
   export default {
     name: 'CollectionComponent',
     components: {
+      VcsExpansionPanel,
       CollectionComponentContent,
-      VcsActionButtonList,
-      VExpansionPanel,
-      VExpansionPanelTitle,
-      VExpansionPanelText,
-      VIcon,
     },
     props: {
       open: {
@@ -64,6 +45,7 @@
         default: false,
       },
     },
+    emits: ['openList'],
     setup(_props, { emit }) {
       /**
        * @type {CollectionComponentClass}
@@ -97,11 +79,4 @@
   };
 </script>
 
-<style lang="scss" scoped>
-  .rotate {
-    transform: rotate(-90deg);
-  }
-  .v-icon {
-    font-size: 16px;
-  }
-</style>
+<style lang="scss" scoped></style>

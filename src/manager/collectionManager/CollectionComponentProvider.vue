@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100">
+  <div class="w-100 collection-component-provider">
     <slot>
       <collection-component />
     </slot>

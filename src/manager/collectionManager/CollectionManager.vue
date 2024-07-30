@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-0 collection-manager">
     <v-expansion-panels
       variant="accordion"
       multiple
