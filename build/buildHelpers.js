@@ -1,4 +1,3 @@
-/* eslint import/no-extraneous-dependencies: ["error", { "devDependencies": false }] */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { build } from 'vite'; // vite is also a plugin-cli dep
 import fs from 'fs';
@@ -279,7 +278,12 @@ const toCopy = [
   'README.md',
 ];
 
-async function buildInlinePlugin(plugin, baseConfig, minify) {
+async function buildInlinePlugin(
+  plugin,
+  baseConfig,
+  minify,
+  isDependend = false,
+) {
   // the relative path between plugins and libraries, is not known beforehand, so we calculate the distance.
   // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
   const relativePluginPaths = {};
@@ -292,7 +296,9 @@ async function buildInlinePlugin(plugin, baseConfig, minify) {
       .join(path.posix.sep);
   });
 
-  const pluginDir = getProjectPath('plugins', plugin);
+  const pluginDir = isDependend
+    ? getProjectPath('plugins', 'node_modules', plugin)
+    : getProjectPath('plugins', plugin);
   const pluginConfig = {
     ...baseConfig,
     esbuild: {
@@ -310,6 +316,7 @@ async function buildInlinePlugin(plugin, baseConfig, minify) {
       rollupOptions: {
         external: Object.keys(libraries),
         output: {
+          manualChunks: () => 'index.js',
           paths: relativePluginPaths,
         },
       },
@@ -365,6 +372,19 @@ async function buildDependentPlugin(pluginName) {
   );
 }
 
+function filterDependentPlugins(dependentPlugins, pluginIsBuild = true) {
+  const pluginsDir = getPluginDirectory();
+  return dependentPlugins.filter((pluginName) => {
+    const pluginExists = fs.existsSync(
+      path.join(pluginsDir, 'node_modules', ...pluginName.split('/'), 'dist'),
+    );
+    if (pluginIsBuild) {
+      return pluginExists;
+    }
+    return !pluginExists;
+  });
+}
+
 /**
  * Will build a preview of all the current plugins & inline plugins
  * @param {import("vite").InlineConfig} [baseConfig={}] - the base config to use. build & esbuild will be completely overwritten
@@ -374,14 +394,25 @@ async function buildDependentPlugin(pluginName) {
 export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
   const inlinePlugins = await getInlinePlugins();
   const dependentPlugins = await getPluginNames();
+  // only take already build plugins into account.
+  // Plugins loaded from a git repository do not have a dist folder.
+  // These plugins need to be build, same as the inline plugins
+  const buildDependentPlugins = filterDependentPlugins(dependentPlugins, true);
+  const notBuildDependentPlugins = filterDependentPlugins(
+    dependentPlugins,
+    false,
+  );
 
   const promises = inlinePlugins.map((plugin) =>
     buildInlinePlugin(plugin, baseConfig, minify),
   );
 
   promises.push(
-    ...dependentPlugins.map(async (pluginName) =>
+    ...buildDependentPlugins.map(async (pluginName) =>
       buildDependentPlugin(pluginName, baseConfig, minify),
+    ),
+    ...notBuildDependentPlugins.map(async (pluginName) =>
+      buildInlinePlugin(pluginName, baseConfig, minify, true),
     ),
   );
   await Promise.all(promises);
@@ -390,12 +421,13 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
 export async function buildPluginsForBundle(baseConfig = {}) {
   const inlinePlugins = await getInlinePlugins();
   const dependentPlugins = await getPluginNames(false);
+  const buildDependentPlugins = filterDependentPlugins(dependentPlugins, true);
   const promises = inlinePlugins
     .filter((plugin) => plugin.startsWith('@vcmap/'))
     .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));
 
   promises.push(
-    ...dependentPlugins.map(async (pluginName) =>
+    ...buildDependentPlugins.map(async (pluginName) =>
       buildDependentPlugin(pluginName),
     ),
   );

@@ -1827,6 +1827,22 @@
       "layerName": "festgesetzte Überschwemmungsgebiete"
     }
   ],
+  "plugins": [
+    {
+      "name": "@vcmap/print",
+      "entry": "plugins/@vcmap/print/index.js",
+      "contactDetails": {
+        "department": "Entwicklung",
+        "name": "Virtual City Systems",
+        "streetAddress": "Tauentzienstr. 7 b/c",
+        "zipAndCity": "10789 Berlin",
+        "country": "Germany",
+        "mail": "info@vc.systems",
+        "phone": "+49 (0) 30 . 8904 . 871 . 0",
+        "fax": "+49 (0) 30 . 8904 . 871 . 0"
+      }
+    }
+  ],
   "plugins2": [
     {
       "name": "@vcmap/link-button",
@@ -1853,20 +1869,6 @@
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
-    },
-    {
-      "name": "@vcmap/print",
-      "entry": "plugins/@vcmap/print/index.js",
-      "contactDetails": {
-        "department": "Entwicklung",
-        "name": "Virtual City Systems",
-        "streetAddress": "Tauentzienstr. 7 b/c",
-        "zipAndCity": "10789 Berlin",
-        "country": "Germany",
-        "mail": "info@vc.systems",
-        "phone": "+49 (0) 30 . 8904 . 871 . 0",
-        "fax": "+49 (0) 30 . 8904 . 871 . 0"
-      }
     },
     {
       "name": "@vcmap/swipe-tool",

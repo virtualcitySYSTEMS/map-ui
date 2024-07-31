@@ -1,27 +1,5 @@
 {
   "dependencies": {
-    "@vcmap/print": "^1.0.2",
-    "@vcmap/swipe-tool": "^1.0.3",
-    "@vcmap/export": "^1.0.1",
-    "@vcmap/shadow": "^2.0.0",
-    "@vcmap/draw": "^2.0.0",
-    "@vcmap/create-link": "^1.0.1",
-    "@vcmap/search-nominatim": "^1.0.1",
-    "@vcmap/multi-view": "^1.1.0",
-    "@vcmap/cesium-filters": "^1.0.1",
-    "@vcmap/viewshed": "^2.0.1",
-    "@vcmap/measurement": "^1.0.2",
-    "@vcmap/flight": "^1.1.0",
-    "@vcmap/transparent-terrain": "^1.0.1",
-    "@vcmap/search-coordinate": "^1.0.0",
-    "@vcmap/clipping-tool": "^1.0.0",
-    "@vcmap/height-profile": "^1.0.0",
-    "@vcmap/search-wfs": "^1.0.0",
-    "@vcmap/search-esri": "^1.0.0",
-    "@vcmap/link-button": "^1.0.0",
-    "@vcmap/walk": "^1.0.2"
-  },
-  "optionalDependencies": {
-    "@vcmap/planning": "^5.2.0"
+    "@vcmap/print": "https://github.com/virtualcitySYSTEMS/map-print.git#main"
   }
 }

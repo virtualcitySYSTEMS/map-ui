@@ -188,9 +188,11 @@ export { i18nPluginSymbol } from './src/i18n/i18nCollection.js';
 export {
   createVcsThemes,
   createVcsVuetify,
-  getColorByKey,
+  isDark,
   getDefaultPrimaryColor,
+  getColorByKey,
   useItemHeight,
+  useFontSize,
 } from './src/vuePlugins/vuetify.js';
 export {
   downloadURI,
