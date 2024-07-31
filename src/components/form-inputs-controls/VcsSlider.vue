@@ -100,7 +100,6 @@
         default: 'right',
       },
     },
-    emits: ['update:modelValue'],
     setup(props, { attrs, slots }) {
       const itemHeight = useItemHeight();
       const thumbSize = computed(() => {
