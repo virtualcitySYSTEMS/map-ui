@@ -1,7 +1,7 @@
 import { VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { defaultTagOptions } from '../components/tables/VcsTable.vue';
-import { replaceAttributes } from '../application/markdownHelper.js';
+import { renderTemplate } from '../application/markdownHelper.js';
 
 /**
  * @typedef {Object} FeatureInfoProps
@@ -251,11 +251,9 @@ function getWindowState(app, state, attributes) {
   let headerTitle = state?.headerTitle;
   if (headerTitle) {
     if (Array.isArray(headerTitle)) {
-      headerTitle = headerTitle.map((item) =>
-        replaceAttributes(item, attributes),
-      );
+      headerTitle = headerTitle.map((item) => renderTemplate(item, attributes));
     } else {
-      headerTitle = replaceAttributes(headerTitle, attributes);
+      headerTitle = renderTemplate(headerTitle, attributes);
     }
   }
   return {

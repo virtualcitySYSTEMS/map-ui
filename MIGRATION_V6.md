@@ -40,6 +40,17 @@
 - `VcsSlider`
   - added tooltip and tooltipPosition
 - Removed `VcsCustomScreen.vue`. Use `VcsTextPage.vue` instead.
+- Added new templating capabilities to markdown:
+  - Removed `replaceAttributes` and renamed to `renderTemplate`.
+  - Top level attributes with spaces in their names shall no longer be expanded with
+    `["spaced attributes"]`, but `"spaced attribute"`. Nested spaced attributes remain as `nested["spaced attribute"]`
+  - Templates now support ol style expressions which evaluate to a string in normal attribute expansion (`{{ attribute }}` can now
+    also be written as `{{ ["get", "attribute"] }}` or any other style expression).
+  - Templates can now be rendered with expressions. These follow mustache syntax using the special
+    expansions `{{#if $expression}}`, `{{elseif $expression}}`, `{{else}}` and
+    have to be closed with `{{/if}}`. Expression can be attribute keys directly or
+    any ol style expression that will evaluate to a boolean (same as with normal attribute expansion, just not a string).
+  - Templates can now iterate over Arrays and Objects to render a block multiple times using the `{{#each (item) in object}}` syntax.
 
 # Extended Theming
 

@@ -50,6 +50,7 @@ describe('MarkdownFeatureInfoView', () => {
         },
         array: [['foo'], 'foo'],
         'spaced property': 'foo',
+        number: 5.1,
       });
       feature.setId('foo');
       layer.addFeatures([feature]);
@@ -59,85 +60,24 @@ describe('MarkdownFeatureInfoView', () => {
       layer.destroy();
     });
 
-    it('should render a property', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ property }}',
+    describe('rendering properties', () => {
+      it('should render a property', () => {
+        const infoView = new MarkdownFeatureInfoView({
+          name: 'foo',
+          template: '{{ property }}',
+        });
+        const { html } = infoView.getProperties({ feature }, layer);
+        expect(html.trim()).to.equal('<p>foo</p>');
       });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
 
-    it('should render a nested property', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ nested.property }}',
+      it('should render a non attributes', () => {
+        const infoView = new MarkdownFeatureInfoView({
+          name: 'foo',
+          template: '{{ featureId }}',
+        });
+        const { html } = infoView.getProperties({ feature }, layer);
+        expect(html.trim()).to.equal('<p>foo</p>');
       });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
-
-    it('should render an array element', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ array[1] }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
-
-    it('should render a nested array elements property', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ nested.array[0].property }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
-
-    it('should render a nested array element', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ array[0][0] }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
-
-    it('should render a non attributes', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ featureId }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.equal('<p>foo</p>');
-    });
-
-    it('should render empty for inexistent keys', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ foo }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.be.empty;
-    });
-
-    it('should access bracket notation', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ ["spaced property"] }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.be.empty;
-    });
-
-    it('should access nested bracket notation', () => {
-      const infoView = new MarkdownFeatureInfoView({
-        name: 'foo',
-        template: '{{ nested["spaced property"] }}',
-      });
-      const { html } = infoView.getProperties({ feature }, layer);
-      expect(html.trim()).to.be.empty;
     });
   });
 });

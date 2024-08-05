@@ -1,7 +1,7 @@
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import {
   parseAndSanitizeMarkdown,
-  replaceAttributes,
+  renderTemplate,
 } from '../application/markdownHelper.js';
 import MarkdownComponent from './MarkdownComponent.vue';
 
@@ -47,7 +47,7 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
    * @returns {string}
    */
   _renderTemplate(attributes) {
-    return replaceAttributes(this.template, attributes);
+    return renderTemplate(this.template, attributes);
   }
 
   /**

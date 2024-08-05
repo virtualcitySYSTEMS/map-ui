@@ -1,6 +1,6 @@
 import {
   parseAndSanitizeMarkdown,
-  replaceAttributes,
+  renderTemplate,
 } from '../application/markdownHelper.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import MarkdownBalloonComponent from './MarkdownBalloonComponent.vue';
@@ -47,7 +47,7 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
    * @returns {string}
    */
   _renderTemplate(attributes) {
-    return replaceAttributes(this.template, attributes);
+    return renderTemplate(this.template, attributes);
   }
 
   /**

@@ -13,7 +13,7 @@ export {
 } from './src/actions/actionHelper.js';
 export {
   parseAndSanitizeMarkdown,
-  replaceAttributes,
+  renderTemplate,
 } from './src/application/markdownHelper.js';
 export {
   createStateRefAction,
