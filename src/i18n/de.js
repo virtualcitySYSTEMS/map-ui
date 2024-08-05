@@ -50,6 +50,11 @@ const messages = {
         'Während dem ermitteln Ihrer Position wurde die Verbindung verloren',
       errorPosition: 'Ihre Position kann leider nicht erfasst werden',
     },
+    obliqueFallback: {
+      message:
+        'Für die aktuelle Position liegen bei dem ausgewählten Datensatz keine Daten vor',
+      title: 'Fehlende Daten',
+    },
   },
   categoryManager: {
     title: 'Mein Arbeitsbereich',

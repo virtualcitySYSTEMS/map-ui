@@ -44,6 +44,7 @@ import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
 import createSiteConfig from './siteConfig.js';
+import createObliqueFallbackWarnings from './obliqueFallbackWarnings.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
@@ -343,6 +344,8 @@ class VcsUiApp extends VcsApp {
     this.mounted = new VcsEvent();
 
     this._destroySiteConfig = createSiteConfig(this._uiConfig);
+
+    this._destroyObliqueFallback = createObliqueFallbackWarnings(this);
   }
 
   /**
@@ -708,6 +711,7 @@ class VcsUiApp extends VcsApp {
     this._featureInfo.destroy();
     this._uiConfig.destroy();
     this._destroySiteConfig();
+    this._destroyObliqueFallback();
     super.destroy();
   }
 }

@@ -151,7 +151,12 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
       if (this.state === StateActionState.INACTIVE) {
         this.state = StateActionState.LOADING;
         await map.setCollection(this._collection, vp);
-        executeCallbacks(this._app, this._onActivate);
+        if (map.collection === this._collection) {
+          executeCallbacks(this._app, this._onActivate);
+        } else {
+          // failed to activate collection
+          this.state = StateActionState.INACTIVE;
+        }
       } else if (this.state === StateActionState.ACTIVE) {
         this.state = StateActionState.INACTIVE;
         await map.setCollection(defaultCollection, vp);

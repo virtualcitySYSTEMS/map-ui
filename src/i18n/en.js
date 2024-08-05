@@ -50,6 +50,11 @@ const messages = {
         'The connection was lost while your position was being determined',
       errorPosition: 'Unfortunately, your position cannot be recorded',
     },
+    obliqueFallback: {
+      message:
+        'There is no data for the current position and selected data set.',
+      title: 'Missing Data',
+    },
   },
   categoryManager: {
     title: 'My Workspace',

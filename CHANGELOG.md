@@ -1,3 +1,7 @@
+# 5.3.5
+
+- Oblique fallback warnings have been re-instated as notifications.
+
 # 5.3.4
 
 - Update @vcmap/core to 5.3.2 to fix a reading legacy oblique datasets
