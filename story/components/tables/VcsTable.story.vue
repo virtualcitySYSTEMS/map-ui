@@ -14,6 +14,9 @@
       Country: 'Germany',
       City: 'Berlin',
     },
+    singleLine: 'oneVeryLongSingelLineWordThatCanNotBeBroken',
+    multiLine:
+      'A long attribute consisting of multiple words that can be broken',
   });
 </script>
 

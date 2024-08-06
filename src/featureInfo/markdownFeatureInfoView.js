@@ -1,9 +1,6 @@
+import { renderTemplate } from '../components/form-output/markdownHelper.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-import {
-  parseAndSanitizeMarkdown,
-  renderTemplate,
-} from '../application/markdownHelper.js';
-import MarkdownComponent from './MarkdownComponent.vue';
+import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { template: string | string[] }} MarkdownFeatureInfoViewOptions
@@ -31,7 +28,7 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
    * @param {MarkdownFeatureInfoViewOptions} options
    */
   constructor(options) {
-    super(options, MarkdownComponent);
+    super(options, VcsMarkdown);
 
     /**
      * @type {string | string[]}
@@ -60,9 +57,10 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      html: parseAndSanitizeMarkdown(
-        this._renderTemplate({ ...properties, ...properties.attributes }),
-      ),
+      content: this._renderTemplate({
+        ...properties,
+        ...properties.attributes,
+      }),
     };
   }
 

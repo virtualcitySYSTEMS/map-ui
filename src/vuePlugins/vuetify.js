@@ -135,6 +135,9 @@ export function createVcsVuetify(i18n) {
         density: 'compact',
         ripple: false,
       },
+      VDataTable: {
+        density: 'compact',
+      },
       VSelect: {
         density: 'compact',
       },

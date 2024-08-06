@@ -14,7 +14,7 @@ export {
 export {
   parseAndSanitizeMarkdown,
   renderTemplate,
-} from './src/application/markdownHelper.js';
+} from './src/components/form-output/markdownHelper.js';
 export {
   createStateRefAction,
   StateActionState,

@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { renderTemplate } from '../../../src/application/markdownHelper.js';
+import { renderTemplate } from '../../../../src/components/form-output/markdownHelper.js';
 
 describe('renderTemplate', () => {
   describe('rendering data', () => {

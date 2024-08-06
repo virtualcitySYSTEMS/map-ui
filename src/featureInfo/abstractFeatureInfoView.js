@@ -1,7 +1,7 @@
 import { VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { defaultTagOptions } from '../components/tables/VcsTable.vue';
-import { renderTemplate } from '../application/markdownHelper.js';
+import { renderTemplate } from '../components/form-output/markdownHelper.js';
 
 /**
  * @typedef {Object} FeatureInfoProps

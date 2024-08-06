@@ -66,8 +66,8 @@ describe('MarkdownFeatureInfoView', () => {
           name: 'foo',
           template: '{{ property }}',
         });
-        const { html } = infoView.getProperties({ feature }, layer);
-        expect(html.trim()).to.equal('<p>foo</p>');
+        const { content } = infoView.getProperties({ feature }, layer);
+        expect(content.trim()).to.equal('foo');
       });
 
       it('should render a non attributes', () => {
@@ -75,8 +75,8 @@ describe('MarkdownFeatureInfoView', () => {
           name: 'foo',
           template: '{{ featureId }}',
         });
-        const { html } = infoView.getProperties({ feature }, layer);
-        expect(html.trim()).to.equal('<p>foo</p>');
+        const { content } = infoView.getProperties({ feature }, layer);
+        expect(content.trim()).to.equal('foo');
       });
     });
   });

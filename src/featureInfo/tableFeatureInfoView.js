@@ -92,10 +92,6 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
       itemsPerPageArray: this.itemsPerPageArray,
       showSearchbar: this.showSearchbar,
       searchbarPlaceholder: this.searchbarPlaceholder,
-      headers: [
-        { text: 'components.vcsTable.key', value: 'key', width: '128px' },
-        { text: 'components.vcsTable.value', value: 'value', width: '192px' },
-      ],
     };
   }
 

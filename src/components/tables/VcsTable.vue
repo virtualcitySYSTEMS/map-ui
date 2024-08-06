@@ -1,34 +1,29 @@
 <template>
   <VcsDataTable :items="items" :headers="headers" v-bind="$attrs">
-    <template #item.key="{ item }">
-      <td
-        class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-        :style="{ 'max-width': headers[0].width }"
+    <template #body="{ page, itemsPerPage }">
+      <tr
+        class="v-data-table__tr"
+        v-for="(item, idx) in items.slice(
+          (page - 1) * itemsPerPage,
+          page * itemsPerPage,
+        )"
+        :key="`row-${idx}`"
       >
-        {{ $st(item.key) }}
-      </td>
-    </template>
-    <template #item.value="{ item }">
-      <td
-        class="vcs-table px-2 overflow-max-width rounded-0 noBorder"
-        :style="{ 'max-width': headers[1].width }"
-      >
-        <component
-          :is="getTag(tags, item.key)"
-          v-bind="getTagOptions(tags, item.key)"
-          :class="{
-            'single-line': !/\s/.test(item.value),
-            'multi-line': /\s/.test(item.value),
-          }"
+        <vcs-table-cell :title="item.key" :width="headers[0].width" />
+        <vcs-table-cell
+          :title="item.value"
+          :width="headers[1].width"
+          :tag="getTag(tags, item.key)"
+          :tag-options="getTagOptions(tags, item.key)"
         >
-          {{ $st(item.value) }}
-        </component>
-      </td>
+        </vcs-table-cell>
+      </tr>
     </template>
   </VcsDataTable>
 </template>
 <script>
   import { computed } from 'vue';
+  import VcsTableCell from './VcsTableCell.vue';
   import VcsDataTable from './VcsDataTable.vue';
 
   /**
@@ -134,6 +129,7 @@
   export default {
     name: 'VcsTable',
     components: {
+      VcsTableCell,
       VcsDataTable,
     },
     props: {
@@ -152,11 +148,11 @@
       headers: {
         type: Array,
         default: () => [
-          { title: 'components.vcsTable.key', value: 'key', width: '160px' },
+          { title: 'components.vcsTable.key', key: 'key', width: '128px' },
           {
             title: 'components.vcsTable.value',
-            value: 'value',
-            width: '160px',
+            key: 'value',
+            width: '192px',
           },
         ],
       },
@@ -182,28 +178,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .single-line {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .multi-line {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
-    height: auto;
-    max-height: 96px;
-  }
-
-  .noBorder {
-    border-bottom: none !important;
-  }
-
   :deep(.v-data-table__mobile-row__cell) {
     td.vcs-table.overflow-max-width {
       max-width: 100% !important;
     }
+  }
+  :deep(.v-table__wrapper) {
   }
 </style>

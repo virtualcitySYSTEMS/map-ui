@@ -1,10 +1,11 @@
 <template>
   <BalloonComponent v-bind="{ ...$attrs }">
-    <div class="pa-2" v-html="html" />
+    <VcsMarkdown :content="$st(html)" />
   </BalloonComponent>
 </template>
 <script>
   import BalloonComponent from './BalloonComponent.vue';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
 
   /**
    * @description A balloon showing markdown content
@@ -18,6 +19,7 @@
       },
     },
     components: {
+      VcsMarkdown,
       BalloonComponent,
     },
   };

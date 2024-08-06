@@ -72,28 +72,30 @@
         <tfoot>
           <tr class="v-data-table__tr">
             <td colspan="100" class="text-center pa-1">
-              <v-menu dense>
-                <template #activator="{ props }">
-                  <VcsButton
-                    color="primary"
-                    v-bind="props"
-                    class="v-btn--variant-plain mx-2 d-flex flex-wrap"
-                  >
-                    {{ itemsPerPageRef }}
-                    <v-icon>mdi-chevron-down</v-icon>
-                  </VcsButton>
-                </template>
-                <v-list>
-                  <v-list-item
-                    v-for="(number, index) in itemsPerPageArray"
-                    :key="index"
-                    @click="updateItemsPerPage(number)"
-                    style="min-height: auto; height: 24px; text-align: right"
-                  >
-                    <v-list-item-title>{{ number }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+              <div class="d-inline-block">
+                <v-menu>
+                  <template #activator="{ props }">
+                    <VcsButton
+                      color="primary"
+                      v-bind="props"
+                      class="v-btn--variant-plain mx-2 d-flex flex-wrap"
+                    >
+                      {{ itemsPerPageRef }}
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </VcsButton>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="(number, index) in itemsPerPageArray"
+                      :key="index"
+                      @click="updateItemsPerPage(number)"
+                      style="min-height: auto; height: 24px; text-align: right"
+                    >
+                      <v-list-item-title>{{ number }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
               <span class="mx-2">{{
                 $t('components.vcsDataTable.itemsPerPage')
               }}</span>
@@ -419,6 +421,9 @@
   }
 
   :deep(.vcs-table > .v-table__wrapper) {
+    overflow-x: hidden;
+    overflow-y: auto;
+
     table tbody tr {
       &:hover {
         background-color: transparent !important;
@@ -430,6 +435,7 @@
 
       td {
         padding: 0 8px;
+        border-bottom: transparent !important;
       }
     }
     table thead tr {

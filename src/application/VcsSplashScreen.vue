@@ -9,33 +9,31 @@
     persistent
   >
     <v-card>
-      <div class="px-2 pt-2 pb-1">
-        <v-card-text>
-          <VcsMarkdown :content="$st(options.content)" />
-          <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
-            <template #label>
-              <VcsMarkdown
-                :content="$st(options.checkBoxText)"
-                class="marked-checkbox-content"
-              />
-            </template>
-          </VcsCheckbox>
-        </v-card-text>
+      <v-card-text>
+        <VcsMarkdown :content="$st(options.content)" />
+        <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
+          <template #label>
+            <VcsMarkdown
+              :content="$st(options.checkBoxText)"
+              class="marked-checkbox-content"
+            />
+          </template>
+        </VcsCheckbox>
+      </v-card-text>
 
-        <v-card-actions>
-          <v-row no-gutters>
-            <v-col class="text-right">
-              <VcsFormButton
-                color="primary"
-                variant="filled"
-                @click="exitScreen"
-                :disabled="options.acceptInput && !checkBox"
-                >{{ $t(options.buttonTitle) }}</VcsFormButton
-              >
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </div>
+      <v-card-actions>
+        <v-row no-gutters>
+          <v-col class="text-right">
+            <VcsFormButton
+              color="primary"
+              variant="filled"
+              @click="exitScreen"
+              :disabled="options.acceptInput && !checkBox"
+              >{{ $t(options.buttonTitle) }}</VcsFormButton
+            >
+          </v-col>
+        </v-row>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

@@ -1,9 +1,11 @@
 <template>
   <v-card class="mx-auto elevation-0" v-if="position">
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
-      <v-list-item class="px-2 align-center">
+      <v-list-item class="px-1">
         <template #prepend>
-          <v-icon color="primary" size="16" class="mr-2"> $vcsInfo </v-icon>
+          <div class="pl-1 pr-2">
+            <v-icon color="primary" size="16"> $vcsInfo </v-icon>
+          </div>
         </template>
         <v-list-item-title>
           <h3 class="font-weight-bold">
@@ -13,12 +15,14 @@
         <v-list-item-subtitle v-if="balloonSubtitle">
           {{ $st(balloonSubtitle) }}
         </v-list-item-subtitle>
-        <VcsButton
-          @click.stop="close"
-          icon="mdi-close-thick"
-          tooltip="components.close"
-          class="d-flex"
-        />
+        <template #append>
+          <VcsButton
+            @click.stop="close"
+            icon="mdi-close-thick"
+            tooltip="components.close"
+            class="px-1"
+          />
+        </template>
       </v-list-item>
     </slot>
 
@@ -194,8 +198,6 @@
 </script>
 
 <style lang="scss">
-  @import '../styles/shades.scss';
-
   .balloon {
     z-index: 0 !important;
   }
@@ -213,11 +215,8 @@
     width: 0;
     filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.3));
   }
-  .theme--light .balloon:after {
-    border-color: map-get($shades, 'white') transparent;
-  }
-  .theme--dark .balloon:after {
-    border-color: map-get($shades, 'black') transparent;
+  .balloon:after {
+    border-color: rgb(var(--v-theme-surface-light)) transparent;
   }
   .balloon .v-list-item .v-list-item__title,
   .balloon .v-list-item .v-list-item__subtitle {

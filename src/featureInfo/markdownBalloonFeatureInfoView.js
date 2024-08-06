@@ -1,7 +1,7 @@
 import {
   parseAndSanitizeMarkdown,
   renderTemplate,
-} from '../application/markdownHelper.js';
+} from '../components/form-output/markdownHelper.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import MarkdownBalloonComponent from './MarkdownBalloonComponent.vue';
 
