@@ -18,20 +18,13 @@
 </template>
 
 <style scoped lang="scss">
-  @import '../../styles/shades.scss';
-
   .panel-component {
     padding: 0 4px;
   }
-  .panel-component.theme--dark::after {
+  .panel-component::after {
     content: '';
     position: absolute;
-    background: map-get($shades, 'black');
-  }
-  .panel-component.theme--light::after {
-    content: '';
-    position: absolute;
-    background: map-get($shades, 'white');
+    background: rgb(var(--v-theme-surface-light));
   }
 
   .panel-component-left::after {

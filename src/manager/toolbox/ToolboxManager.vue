@@ -1,14 +1,13 @@
 <template>
   <v-toolbar
     v-if="toolboxOpen && orderedGroups.length > 0 && mdAndUp"
-    class="vcs-toolbox mx-auto marginToTop opacity-80"
+    class="vcs-toolbox mx-auto elevation-4 opacity-80"
     :class="{
       'rounded-b': !open,
     }"
-    :height="40"
+    :height="useItemHeight().value + 8"
     :style="{ zIndex }"
     @click.stop="bringToTop"
-    style="width: fit-content"
   >
     <v-toolbar-items class="w-100 px-4 gc-1">
       <div
@@ -42,8 +41,9 @@
 </template>
 
 <style lang="scss" scoped>
-  .marginToTop {
+  .vcs-toolbox {
     margin-top: 2px;
+    width: fit-content;
   }
 </style>
 
@@ -61,6 +61,7 @@
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { ButtonLocation } from '../navbarManager.js';
+  import { useItemHeight } from '../../vuePlugins/vuetify.js';
 
   /**
    * @typedef {Object} ToolboxButtonGroup
@@ -200,6 +201,7 @@
             bringToTop();
           }
         },
+        useItemHeight,
       };
     },
   };

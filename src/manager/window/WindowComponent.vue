@@ -9,8 +9,8 @@
     :class="{
       rounded: !isDocked,
       marginToTop: isDocked || !isChild,
-      'rounded-br': isDynamicLeft,
-      'rounded-bl': isDynamicRight,
+      'rounded-be': isDynamicLeft,
+      'rounded-bs': isDynamicRight,
     }"
   >
     <div
@@ -89,17 +89,21 @@
       });
 
       const isChild = computed(() => !!props.windowState.parentId);
-      const isDynamic = computed(() => props.slotWindow !== WindowSlot.STATIC);
-      const isDocked = computed(() => props.slotWindow !== WindowSlot.DETACHED);
+      const isDynamic = computed(
+        () => props.slotWindow.value !== WindowSlot.STATIC,
+      );
+      const isDocked = computed(
+        () => props.slotWindow.value !== WindowSlot.DETACHED,
+      );
       const isDockedLeft = computed(() => {
         return (
-          props.slotWindow === WindowSlot.STATIC ||
-          props.slotWindow === WindowSlot.DYNAMIC_LEFT ||
-          props.slotWindow === WindowSlot.DYNAMIC_CHILD
+          props.slotWindow.value === WindowSlot.STATIC ||
+          props.slotWindow.value === WindowSlot.DYNAMIC_LEFT ||
+          props.slotWindow.value === WindowSlot.DYNAMIC_CHILD
         );
       });
       const isDockedRight = computed(
-        () => props.slotWindow === WindowSlot.DYNAMIC_RIGHT,
+        () => props.slotWindow.value === WindowSlot.DYNAMIC_RIGHT,
       );
       const isDraggable = ref(false);
       /**

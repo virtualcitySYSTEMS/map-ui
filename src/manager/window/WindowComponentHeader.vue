@@ -6,14 +6,14 @@
       <v-icon
         v-if="windowState.headerIcon"
         class="mr-1"
-        :class="{ 'primary--text': isOnTop }"
+        :class="{ 'text-primary': isOnTop }"
         size="16"
       >
         {{ windowState.headerIcon }}
       </v-icon>
       <span
         class="d-inline-block user-select-none font-weight-bold"
-        :class="{ 'primary--text': isOnTop }"
+        :class="{ 'text-primary': isOnTop }"
       >
         {{ translatedHeaderTitle }}
       </span>

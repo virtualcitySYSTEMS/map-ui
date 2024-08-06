@@ -27,6 +27,10 @@
     .v-list-item-title {
       color: rgb(var(--v-theme-primary));
     }
+    .v-icon {
+      // the icon color slightly differs from the text color, darken-1 seems to fit better
+      color: rgb(var(--v-theme-primary-darken-1));
+    }
   }
   :deep(.v-list-item .v-list-item__prepend .v-list-item__spacer) {
     width: 8px;

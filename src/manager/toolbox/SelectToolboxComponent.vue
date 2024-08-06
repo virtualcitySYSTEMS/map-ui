@@ -28,7 +28,7 @@
           :tooltip="group.action.title"
           :disabled="group.action.disabled"
           v-bind="props"
-          class="vcs-toolbox-action-select"
+          class="vcs-toolbox-action-select px-0"
           :min-width="16"
           :width="16"
         >
@@ -37,12 +37,12 @@
       </template>
 
       <v-toolbar
-        class="vcs-toolbox-2 mx-auto marginToTop rounded-b opacity-80 px-1"
-        :height="40"
+        class="vcs-toolbox-2 mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
+        :height="useItemHeight().value + 8"
         dense
       >
         <v-toolbar-items class="w-100">
-          <div class="d-flex align-center justify-space-between w-100">
+          <div class="d-flex align-center justify-space-between gc-1 w-100">
             <VcsToolButton
               v-for="(item, index) in group.action.tools"
               :key="`${item.name}-${index}`"
@@ -67,6 +67,7 @@
   import { ref } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
+  import { useItemHeight } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description
@@ -93,6 +94,7 @@
 
       return {
         open,
+        useItemHeight,
       };
     },
   };

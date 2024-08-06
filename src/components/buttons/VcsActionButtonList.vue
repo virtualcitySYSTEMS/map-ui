@@ -44,8 +44,24 @@
   import VcsActionList, { validateActions } from '../lists/VcsActionList.vue';
 
   /**
+   * compares two strings token based
+   * @param {string} str1
+   * @param {string} str2
+   * @returns {number} the convergence of both strings in percent
+   */
+  function jaccardSimilarity(str1, str2) {
+    const set1 = new Set(str1.split(' '));
+    const set2 = new Set(str2.split(' '));
+    const intersection = new Set([...set1].filter((x) => set2.has(x)));
+    const union = new Set([...set1, ...set2]);
+
+    return intersection.size / union.size;
+  }
+
+  /**
    * @description
    * A component rendering a list of actions with overflow mechanic using
+   * For overflow buttons the title is only rendered, if it differs significantly from the action's name.
    * {@link VcsButton} and {@link VcsActionList}.
    * @vue-prop {Array<VcsAction>} actions - Array of actions
    * @vue-prop {string} [button='VcsButton'] - used button type (one of 'VcsButton', 'VcsToolButton' or 'VcsFormButton)
@@ -106,7 +122,18 @@
       },
       overflowButtons() {
         const buttonsNames = this.buttons.map((i) => i.name);
-        return this.actions.filter((i) => !buttonsNames.includes(i.name));
+        return this.actions
+          .filter((i) => !buttonsNames.includes(i.name))
+          .map((i) => {
+            const { title, ...button } = i;
+            if (
+              title &&
+              jaccardSimilarity(this.$t(i.name), this.$t(title)) > 0.5
+            ) {
+              return button;
+            }
+            return i;
+          });
       },
       classes() {
         const classes = ['d-flex', 'align-center', 'action-btn-wrap'];

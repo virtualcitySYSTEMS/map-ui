@@ -155,10 +155,10 @@ Anchor are underlined and the color is also set to shades by default.
 
 Icon color (`<v-icon>`) is set to shades by default.
 
-To highlight text/anchor/icons use class (`text--primary`) as shown:
+To highlight text/anchor/icons use class (`text-primary`) as shown:
 
 ```html
-<v-icon class="text--primary"> <span class="text--primary">text</span></v-icon>
+<v-icon class="text--primary"> <span class="text-primary">text</span></v-icon>
 ```
 
 ### Usage examples
@@ -184,7 +184,7 @@ An alert:
 A component with text in primary color:
 
 ```vue
-<MapNavCompass class="primary--text" />
+<MapNavCompass class="text-primary" />
 ```
 
 #### In SCSS

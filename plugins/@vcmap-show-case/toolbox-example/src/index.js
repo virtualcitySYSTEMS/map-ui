@@ -227,7 +227,8 @@ export default async function toolboxExample() {
       this._stopWatching = watch(
         () => disabled.value,
         () => {
-          selectToolboxAction.disabled = disabled.value;
+          app.toolboxManager.get(selectToolboxComponent.id).action.disabled =
+            disabled.value;
           app.toolboxManager.get(
             groupToolboxComponentExampleOptions.id,
           ).disabled = disabled.value;

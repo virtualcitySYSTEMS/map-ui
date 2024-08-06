@@ -13,7 +13,7 @@
           :icon="group.icon"
           :disabled="group.disabled"
           :tooltip="group.title"
-          :active="open || hasActiveAction"
+          :active="hasActiveAction"
           :color="hasActiveAction ? 'primary' : ''"
           v-bind="props"
         >
@@ -23,11 +23,11 @@
 
       <v-toolbar
         id="vcs-toolbox-toolbar--secondary"
-        class="mx-auto marginToTop px-1 rounded-b opacity-80 px-1"
-        :height="40"
+        class="mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
+        :height="useItemHeight().value + 8"
       >
         <v-toolbar-items class="w-100">
-          <div class="d-flex align-center justify-space-between w-100">
+          <div class="d-flex align-center justify-space-between gc-1 w-100">
             <VcsToolButton
               v-for="{ id, action } in orderedButtons"
               :key="id"
@@ -54,6 +54,7 @@
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { getComponentsByOrder } from './toolboxManager.js';
+  import { useItemHeight } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description
@@ -98,6 +99,7 @@
         open,
         orderedButtons,
         hasActiveAction,
+        useItemHeight,
       };
     },
   };

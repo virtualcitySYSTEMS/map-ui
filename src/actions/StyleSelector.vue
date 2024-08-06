@@ -7,7 +7,7 @@
         @click.stop="select(item.value)"
       >
         <v-list-item-title
-          :class="{ 'primary--text': item.value === currentStyleName }"
+          :class="{ 'text-primary': item.value === currentStyleName }"
         >
           {{ $st(item.text) }}
         </v-list-item-title>
