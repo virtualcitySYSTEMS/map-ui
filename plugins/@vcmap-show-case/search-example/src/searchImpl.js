@@ -36,17 +36,42 @@ function randomPOI(title) {
   return feature;
 }
 
+function getRandomIcon() {
+  const keys = Object.keys(Icons);
+  const index = Math.floor(keys.length * Math.random());
+  return `$${keys[index]}`;
+}
+
 /**
  * @param {string} line
  * @param {boolean} withIcon
  * @param {boolean} withPOI
+ * @param {boolean} withActions
  * @returns {import("@vcmap/ui").ResultItem}
  */
-function lineToResultItem(line, withIcon, withPOI) {
+function lineToResultItem(line, withIcon, withPOI, withActions) {
   let icon;
   if (withIcon) {
-    const icons = Object.keys(Icons);
-    icon = icons[Math.floor(Math.random() * icons.length)];
+    icon = getRandomIcon();
+  }
+
+  let actions;
+  if (withActions) {
+    actions = [
+      {
+        name: 'action-1',
+        icon,
+        callback() {
+          console.log('Action 1');
+        },
+      },
+      {
+        name: 'action-2',
+        callback() {
+          console.log('Action 2');
+        },
+      },
+    ];
   }
 
   let clicked;
@@ -64,6 +89,7 @@ function lineToResultItem(line, withIcon, withPOI) {
     icon,
     clicked,
     feature,
+    actions,
   };
 }
 
@@ -75,19 +101,23 @@ export default class SearchImpl {
    * @param {string[]} lines
    * @param {boolean} withIcon
    * @param {boolean} withPOI
+   * @param {boolean} withActions
    */
-  constructor(lines, withIcon, withPOI) {
+  constructor(lines, withIcon, withPOI, withActions) {
     this.name = name;
     this.lines = lines;
     this.withIcon = withIcon;
     this.withPOI = withPOI;
+    this.withActions = withActions;
   }
 
   search(query) {
     return Promise.resolve(
       this.lines
         .filter((l) => l.toLowerCase().includes(query.toLowerCase()))
-        .map((line) => lineToResultItem(line, this.withIcon, this.withPOI)),
+        .map((line) =>
+          lineToResultItem(line, this.withIcon, this.withPOI, this.withActions),
+        ),
     );
   }
 

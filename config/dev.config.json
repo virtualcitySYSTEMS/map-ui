@@ -656,6 +656,10 @@
       "name": "@vcmap-show-case/hello-world",
       "entry": "plugins/@vcmap-show-case/hello-world/index.js",
       "showComponent": false
+    },
+    {
+      "name": "@vcmap-show-case/search-example",
+      "entry": "plugins/@vcmap-show-case/search-example/index.js"
     }
   ],
   "plugins2": [

@@ -1,17 +1,19 @@
 <template>
   <v-sheet>
     <span class="d-flex justify-space-between align-center mt-1 ml-2">
-      <v-icon class="pa-1"> $vcsSearch </v-icon>
+      <v-icon class="pa-1" :size="useItemHeight().value - 8">
+        $vcsSearch
+      </v-icon>
       <VcsTextField
         class="d-inline-block user-select-none w-100 mx-1"
         autofocus
         :loading="searching"
         clearable
-        dense
         :placeholder="$t('search.placeholder')"
         v-model.trim="query"
         @keydown.enter="search"
         @input="reset"
+        @click:clear="reset"
       />
     </span>
     <v-divider class="mt-1 base-darken-1" v-if="!!results.length" />
@@ -26,18 +28,8 @@
 </template>
 
 <style lang="scss" scoped>
-  :deep(.v-input) {
-    fieldset {
-      padding: 0 !important;
-    }
-    fieldset,
-    input {
-      border-color: transparent !important;
-    }
-  }
-  :deep(.v-icon .v-icon__component) {
-    width: 16px;
-    height: 16px;
+  :deep(.v-field .v-field__outline *) {
+    border-color: transparent !important;
   }
   .user-select-none {
     user-select: none;
@@ -51,6 +43,7 @@
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './ResultsComponent.vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
+  import { useItemHeight } from '../vuePlugins/vuetify.js';
 
   /**
    * @description Stylized search component providing an input field for search inputs.
@@ -111,6 +104,7 @@
         clear,
         search,
         zoomToAll,
+        useItemHeight,
       };
     },
   };

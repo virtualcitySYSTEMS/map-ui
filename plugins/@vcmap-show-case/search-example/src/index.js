@@ -65,6 +65,7 @@ export default function searchExample(config) {
         config.lines ?? defaultLines,
         config.withIcon ?? true,
         config.withPOI ?? true,
+        config.withActions ?? true,
       );
       app.search.add(impl, name);
     },

@@ -1,15 +1,16 @@
 <template>
   <v-list
-    density="compact"
     class="ma-0 overflow-y-auto vcs-search-results"
-    v-model="highlighted"
+    v-model:selected="highlighted"
   >
     <ResultItem
       :item="item"
       :query="query"
-      class="cursor-pointer px-0"
-      v-for="(item, index) in results"
+      class="cursor-pointer"
+      :class="{ 'vcs-search-result-border': index < items.length - 1 }"
+      v-for="(item, index) in items"
       :key="index"
+      :value="item.value"
     />
   </v-list>
 </template>
@@ -22,7 +23,7 @@
   /**
    * @description ResultsComponent listing all available result items in a scrollable list
    * @vue-prop {string} query - The query string forwarded to mark results within resultItem component.
-   * @vue-prop {Array<ResultItem>} results - Array of results.
+   * @vue-prop {Array<import("./search.js").ResultItem>} results - Array of results.
    * @vue-computed {import("vue").Ref<string>} highlighted - The highlighted result item. Updates also on feature select.
    */
   export default {
@@ -42,23 +43,27 @@
       },
     },
     setup(props) {
-      const highlightedRef = ref(-1);
+      const items = computed(() => {
+        return props.results.map((item, index) => ({
+          ...item,
+          value: index,
+        }));
+      });
+      const selectedRef = ref([]);
       /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const selectedListener = app.featureInfo.featureChanged.addEventListener(
         (feature) => {
-          if (highlightedRef.value >= 0) {
-            if (
-              feature &&
-              props.results[highlightedRef.value].feature === feature
-            ) {
+          if (selectedRef.value.length > 0) {
+            const [index] = selectedRef.value;
+            if (feature && items.value[index].feature === feature) {
               return;
             }
-            highlightedRef.value = -1;
+            selectedRef.value = [];
           } else if (feature) {
-            highlightedRef.value = props.results.findIndex(
-              (r) => r.feature === feature,
-            );
+            selectedRef.value = [
+              items.value.findIndex((r) => r.feature === feature),
+            ];
           }
         },
       );
@@ -68,14 +73,16 @@
       });
 
       return {
+        items,
         highlighted: computed({
           get() {
-            return highlightedRef.value;
+            return selectedRef.value;
           },
           set(value) {
-            highlightedRef.value = value;
-            if (value >= 0) {
-              const item = props.results[value];
+            selectedRef.value = value;
+            const [index] = value;
+            if (index >= 0) {
+              const item = items.value[index];
               item.clicked();
             }
           },
@@ -85,8 +92,12 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .vcs-search-results {
     max-height: 400px;
+  }
+  .vcs-search-result-border {
+    border-bottom: thin solid;
+    border-color: rgb(var(--v-theme-base-lighten-2));
   }
 </style>

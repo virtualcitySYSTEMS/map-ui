@@ -1,13 +1,18 @@
 <template>
-  <v-list-item class="ma-2 d-flex flex-row align-center" v-if="item">
+  <v-list-item v-if="item" v-bind="$attrs">
     <template #prepend v-if="item.icon">
       <v-icon>
         {{ item.icon }}
       </v-icon>
     </template>
-    <div class="px-2 d-flex align-center" :title="$t('search.select')">
-      <span v-html="marked" />
-    </div>
+    <template #title>
+      <v-list-item-title>
+        <span v-html="marked" />
+      </v-list-item-title>
+    </template>
+    <v-tooltip activator="parent">
+      {{ $st('search.select') }}
+    </v-tooltip>
     <template #append>
       <VcsActionButtonList
         v-if="hasActions"
@@ -21,7 +26,12 @@
 
 <script>
   import { computed } from 'vue';
-  import { VIcon, VListItem } from 'vuetify/components';
+  import {
+    VIcon,
+    VListItem,
+    VListItemTitle,
+    VTooltip,
+  } from 'vuetify/components';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
 
   /**
@@ -58,6 +68,8 @@
       VcsActionButtonList,
       VIcon,
       VListItem,
+      VListItemTitle,
+      VTooltip,
     },
     props: {
       query: {
