@@ -5,6 +5,7 @@
       :key="notification.id"
       v-model="notification.open"
       :timeout="notification.timeout"
+      class="vcs-notifier"
     >
       <v-icon :color="notification.type">
         {{ icon[notification.type] }}
@@ -63,21 +64,23 @@
 </script>
 
 <style lang="scss" scoped>
-  .v-snack {
-    :deep(.v-snack__content) {
-      display: grid;
-      gap: 8px 4px;
-      grid-template-columns: 20px auto;
-      .v-icon {
-        grid-row-start: 1;
-        grid-row-end: 3;
-        align-self: start;
-        font-size: 17px;
-      }
+  .vcs-notifier {
+    opacity: 0.95;
+  }
+  :deep(.v-snackbar__content) {
+    display: grid;
+    padding: 8px 8px;
+    gap: 8px 4px;
+    grid-template-columns: 20px auto;
+    .v-icon {
+      grid-row-start: 1;
+      grid-row-end: 3;
+      align-self: start;
+      font-size: var(--v-vcs-font-size);
     }
-    :deep(.v-snack__action) {
-      align-self: flex-start;
-      margin-top: 4px;
-    }
+  }
+  :deep(.v-snackbar__actions) {
+    align-self: flex-start;
+    margin-top: 4px;
   }
 </style>
