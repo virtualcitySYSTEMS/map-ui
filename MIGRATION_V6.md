@@ -28,8 +28,6 @@
 - `ImportComponent.vue` has been renamed to `VcsImportComponent.vue` and is now exported as `VcsImportComponent`
 - `FileDrop.vue` has been renamed to `VcsFileDrop.vue` and is now exported as `VcsFileDrop`
 - `setupExtentComponentActions()` has no longer a param `disabled`. Change the disabled state on the returned actions instead.
-- VcsActionButtonList
-  - removed `blockOverflow` property
 - `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
 - There is a new VcsMarkdown Component that should be used for rendering Markdown Text.
 - There is a new VcsExpansionPanel Component that should be used for expandable sections.

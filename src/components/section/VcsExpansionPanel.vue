@@ -45,8 +45,8 @@
     <v-expansion-panel-title static class="px-2">
       <template #default="{ expanded }">
         <v-list-item-title ref="panelHeader">
-          <v-icon v-if="!expanded" class="pr-1"> mdi-chevron-down </v-icon>
-          <v-icon v-if="expanded" class="pr-1"> mdi-chevron-right </v-icon>
+          <v-icon v-if="!expanded" class="pr-1"> mdi-chevron-right </v-icon>
+          <v-icon v-if="expanded" class="pr-1"> mdi-chevron-down </v-icon>
           <span
             :class="{
               'vcs-panel-title__append':

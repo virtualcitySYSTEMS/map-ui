@@ -53,12 +53,19 @@
 </script>
 
 <template>
-  <v-treeview-item v-if="item" ref="parentElement">
-    <template #prepend v-if="item.icon">
-      <v-icon v-if="isStringIcon" :size="16" class="mr-1">
-        {{ item.icon }}
-      </v-icon>
-      <ImageElementInjector :element="item.icon" v-else />
+  <v-treeview-item
+    v-if="item"
+    ref="parentElement"
+    density="compact"
+    class="vcs-treeview-leaf pr-2"
+  >
+    <template #prepend>
+      <template v-if="item.icon">
+        <v-icon v-if="isStringIcon" :size="16">
+          {{ item.icon }}
+        </v-icon>
+        <ImageElementInjector :element="item.icon" v-else />
+      </template>
     </template>
     <div class="text-truncate" ref="titleElem">
       {{ $st(item.title || item.name) }}
@@ -76,6 +83,8 @@
         :overflow-count="3"
         :disabled="item.disabled"
         right
+        tooltip-position="right"
+        block-overflow
         class="col-4 pa-0 d-flex align-center"
       />
     </template>

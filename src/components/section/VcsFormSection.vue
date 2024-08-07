@@ -10,7 +10,7 @@
             <v-btn
               :ripple="false"
               dense
-              variant="plain"
+              variant="text"
               icon
               :size="useItemHeight().value - 4"
               :disabled="disabled"
@@ -19,7 +19,7 @@
               v-if="expandable"
               :aria-expanded="open"
             >
-              <v-icon :size="useItemHeight().value - 8">{{
+              <v-icon>{{
                 open ? 'mdi-chevron-down' : 'mdi-chevron-right'
               }}</v-icon>
             </v-btn>
@@ -151,5 +151,9 @@
   }
   .v-alert--text:before {
     background-color: transparent;
+  }
+  // remove hover shadow over button
+  :deep(.v-btn__overlay) {
+    --v-hover-opacity: 0;
   }
 </style>

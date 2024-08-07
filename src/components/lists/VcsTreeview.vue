@@ -7,6 +7,7 @@
     />
     <v-treeview
       class="vcs-treeview"
+      density="compact"
       v-bind="{ ...$props, ...$attrs }"
       item-value="name"
       :item-props="true"
@@ -14,6 +15,8 @@
       :custom-filter="handleFilter"
       :selectable="false"
       :activatable="false"
+      expand-icon="mdi-chevron-right"
+      collapse-icon="mdi-chevron-down"
     >
       <template #item="{ props: item }">
         <VcsTreeviewLeaf
@@ -33,6 +36,7 @@
     > .v-list-item,
     > .v-list-group > .v-list-item {
       min-height: calc(var(--v-vcs-item-height) + 8px) !important;
+      padding-left: 6px;
     }
     // Border around root nodes with children included
     > .v-list-item:not(:last-child),
@@ -46,16 +50,31 @@
       > .v-list-item-title {
       font-weight: 700 !important;
     }
-    // remove ripple effect from expand icon
-    .v-icon.v-icon {
-      &::after {
-        background-color: transparent;
-      }
+  }
+
+  // leaf indent
+  :deep(.v-list--slim .v-treeview-group.v-list-group) {
+    --prepend-width: 0px;
+  }
+
+  // Padding left of root nodes
+  :deep(.v-list-item__prepend) {
+    width: var(--v-vcs-font-size);
+    margin-right: 8px;
+    > .v-list-item-action > .v-btn {
+      width: var(--v-vcs-font-size);
+      height: var(--v-vcs-font-size);
+      margin: auto;
     }
-    // Toggle Item Chevron with should be 16px
-    .v-treeview-node__toggle {
-      width: 16px;
-    }
+  }
+
+  // remove hover shadow over button
+  :deep(.v-btn__overlay) {
+    --v-hover-opacity: 0;
+  }
+  // remove ripple effect
+  :deep(.v-ripple__container) {
+    display: none;
   }
   // hide active class
   :deep(.v-list-item__overlay) {

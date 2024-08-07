@@ -2,6 +2,7 @@
   <div v-if="actions.length > 0" :class="classes" class="gc-2">
     <template v-if="buttons.length > 0">
       <component
+        v-bind="$attrs"
         :is="button"
         class="d-flex"
         v-for="(btn, index) in buttons"
@@ -34,6 +35,10 @@
       </template>
       <VcsActionList :actions="overflowButtons" :disabled="disabled" />
     </v-menu>
+    <v-spacer
+      v-else-if="blockOverflow"
+      class="flex-grow-0 d-inline-block px-2"
+    />
   </div>
 </template>
 <script>
@@ -67,6 +72,7 @@
    * @vue-prop {string} [button='VcsButton'] - used button type (one of 'VcsButton', 'VcsToolButton' or 'VcsFormButton)
    * @vue-prop {number} [overflowCount=2] - number of buttons rendered until overflow.
    * @vue-prop {string} [overflowIcon='$vcsKebab'] - optional custom icon for overflow button
+   * @vue-prop {boolean} [blockOverflow=false] - if space for the overflow should be blocked or not (e.g. when rendering lists in a grid)
    * @vue-computed {Array<VcsAction>} buttons - buttons rendered directly, have to provide an icon
    * @vue-computed {Array<VcsAction>} overflowButtons - rest of buttons rendered in overflow
    * @vue-prop {boolean} [disabled=false] - disable all actions
@@ -101,6 +107,10 @@
       overflowIcon: {
         type: String,
         default: '$vcsKebab',
+      },
+      blockOverflow: {
+        type: Boolean,
+        default: false,
       },
       disabled: {
         type: Boolean,

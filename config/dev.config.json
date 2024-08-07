@@ -512,7 +512,8 @@
       "name": "flight",
       "flightName": "FlightExampleBerlin",
       "type": "FlightContentTreeItem",
-      "title": "this flight has a very long name. You can find the rest in the tooltip"
+      "title": "this flight has a very long name. You can find the rest in the tooltip",
+      "icon": "mdi-airplane"
     },
     {
       "name": "flight2",
@@ -549,6 +550,7 @@
       "name": "building.myTest",
       "type": "ContentTreeItem",
       "title": "test SwitchMapCallback Test",
+      "icon": "mdi-toggle-switch",
       "onClick": [
         {
           "type": "ActivateLayersCallback",
