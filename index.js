@@ -324,3 +324,4 @@ export { default as FileDrop } from './src/components/import/FileDrop.vue';
 export { default as ImportComponent } from './src/components/import/ImportComponent.vue';
 export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
 export { default as VcsCustomScreen } from './src/application/VcsCustomScreen.vue';
+export { LegendType, StyleRowType } from './src/legend/legendHelper.js';

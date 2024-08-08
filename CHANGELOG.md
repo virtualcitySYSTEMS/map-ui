@@ -1,3 +1,7 @@
+# 5.3.6
+
+- Added export `LegendTypes` and `StyleRowType` enums and typedefs from `legendHelper.js`
+
 # 5.3.5
 
 - Oblique fallback warnings have been re-instated as notifications.
