@@ -8,27 +8,27 @@
 <style lang="scss" scoped></style>
 
 <script>
-  import { inject, onMounted, onUnmounted, ref } from 'vue';
+  import { inject, onMounted, onUnmounted, ref, computed } from 'vue';
   import { v4 as uuid } from 'uuid';
   import MapNavigation from '../navigation/MapNavigation.vue';
   import VcsMap from './VcsMap.vue';
 
   export function setupMapNavigation(app) {
-    const showMapNavigation = ref(app.maps.size < 1);
+    const mapSize = ref(app.maps.size);
 
     const listeners = [
       app.maps.added.addEventListener(() => {
-        showMapNavigation.value = true;
+        mapSize.value = app.maps.size;
       }),
       app.maps.removed.addEventListener(() => {
-        if (app.maps.size < 1) {
-          showMapNavigation.value = false;
-        }
+        mapSize.value = app.maps.size;
       }),
     ];
 
     return {
-      showMapNavigation,
+      showMapNavigation: computed(() => {
+        return mapSize.value > 0 && !app.uiConfig.config.hideMapNavigation;
+      }),
       destroy: () => {
         listeners.forEach((cb) => cb());
       },

@@ -153,11 +153,17 @@ export function createToggleAction(
 export function createSearchButtonAction(app) {
   let destroyAction = () => {};
   const searchAction = ref(null);
+  const uiConfig = app.uiConfig.config;
+
   const determineAction = () => {
     if (app.windowManager.has('searchId')) {
       app.windowManager.remove('searchId');
     }
-    if (app.search.size > 0 && searchAction.value === null) {
+    if (
+      !uiConfig.hideSearch &&
+      app.search.size > 0 &&
+      searchAction.value === null
+    ) {
       const action = createToggleAction(
         {
           name: 'search.title',
@@ -178,7 +184,10 @@ export function createSearchButtonAction(app) {
       );
       destroyAction = action.destroy;
       searchAction.value = reactive(action.action);
-    } else if (app.search.size === 0 && searchAction.value !== null) {
+    } else if (
+      (uiConfig.hideSearch || app.search.size === 0) &&
+      searchAction.value !== null
+    ) {
       destroyAction();
       destroyAction = () => {};
       searchAction.value = null;
@@ -186,6 +195,8 @@ export function createSearchButtonAction(app) {
   };
   determineAction();
   const listeners = [
+    app.uiConfig.added.addEventListener(determineAction),
+    app.uiConfig.removed.addEventListener(determineAction),
     app.search.added.addEventListener(determineAction),
     app.search.removed.addEventListener(determineAction),
   ];

@@ -268,6 +268,12 @@ class VcsUiApp extends VcsApp {
     );
 
     /**
+     * @type {import("@vcmap/core").OverrideCollection<import("./uiConfig.js").UiConfigurationItem<unknown>, UiConfig>}
+     * @private
+     */
+    this._uiConfig = new UiConfig(() => this.dynamicModuleId);
+
+    /**
      * @type {import("@vcmap/core").OverrideCollection<import("./contentTree/contentTreeItem.js").ContentTreeItem, import("./contentTree/contentTreeCollection.js").ContentTreeCollection>}
      * @private
      */
@@ -297,11 +303,6 @@ class VcsUiApp extends VcsApp {
      */
     this._navbarManager = new NavbarManager();
 
-    /**
-     * @type {import("@vcmap/core").OverrideCollection<import("./uiConfig.js").UiConfigurationItem<unknown>, UiConfig>}
-     * @private
-     */
-    this._uiConfig = new UiConfig(() => this.dynamicModuleId);
     /**
      * @type {import("@vcmap/core").OverrideClassRegistry<AbstractFeatureInfoView>}
      * @private
@@ -527,7 +528,7 @@ class VcsUiApp extends VcsApp {
     )[0];
     return () => {
       const base =
-        this.uiConfig.config.value.helpBaseUrl || 'https://help.vc.systems/';
+        this.uiConfig.config.helpBaseUrl || 'https://help.vc.systems/';
       const url = `${
         this.locale
       }/${subpage}/v${mayorMinorVersion}/${path.replace(/^\//, '')}`;

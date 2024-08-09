@@ -140,7 +140,7 @@ class OverviewMap {
     this._obliqueSelectedImageLayer = null;
 
     const primary =
-      app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(app);
+      app.uiConfig.config.primaryColor ?? getDefaultPrimaryColor(app);
     const fillColor = Color.fromCssColorString('#EDEDED');
 
     /**

@@ -186,7 +186,7 @@
         );
 
       const logo = computed(() => {
-        return app.uiConfig.config.value.logo ?? VcsDefaultLogo;
+        return app.uiConfig.config.logo ?? VcsDefaultLogo;
       });
 
       const { searchAction, destroy: destroySearchAction } =

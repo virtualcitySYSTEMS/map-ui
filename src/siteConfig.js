@@ -44,25 +44,25 @@ const defaultHeaderTitle = 'VC Map';
  * @returns {() => void}
  */
 export default function createSiteConfig(uiConfig) {
-  if (typeof uiConfig.config.value.favicon === 'string') {
-    setFavicon(uiConfig.config.value.favicon);
+  if (typeof uiConfig.config.favicon === 'string') {
+    setFavicon(uiConfig.config.favicon);
   }
 
-  if (typeof uiConfig.config.value.headerTitle === 'string') {
-    setHeaderTitle(uiConfig.config.value.headerTitle);
+  if (typeof uiConfig.config.headerTitle === 'string') {
+    setHeaderTitle(uiConfig.config.headerTitle);
   }
 
   const updateFavicon = () => {
-    if (typeof uiConfig.config.value.favicon === 'string') {
-      setFavicon(uiConfig.config.value.favicon);
+    if (typeof uiConfig.config.favicon === 'string') {
+      setFavicon(uiConfig.config.favicon);
     } else {
       setFavicon(defaultFavicon);
     }
   };
 
   const updateHeaderTitle = () => {
-    if (typeof uiConfig.config.value.headerTitle === 'string') {
-      setHeaderTitle(uiConfig.config.value.headerTitle);
+    if (typeof uiConfig.config.headerTitle === 'string') {
+      setHeaderTitle(uiConfig.config.headerTitle);
     } else {
       setHeaderTitle(defaultHeaderTitle);
     }

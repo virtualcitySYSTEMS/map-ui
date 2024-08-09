@@ -164,12 +164,12 @@
       }
       handleToolboxButton();
 
-      const stopWatching = watch(groups, () => handleToolboxButton());
+      watch(groups, () => handleToolboxButton());
 
       onUnmounted(() => {
-        stopWatching();
         nameChangeListener();
         app.windowManager.removeExternalIdFromZIndex('toolbox');
+        app.navbarManager.remove('toolbox');
       });
 
       watch(toolboxOpen, () => {

@@ -53,6 +53,24 @@ class ContentTreeCollection extends IndexedCollection {
      */
     this._weightListeners = new Map();
 
+    const uiConfigChanged = () => {
+      this.subTreeViewItems.value.forEach((subTree) => {
+        if (
+          !this._app.uiConfig.config.hideContentTree &&
+          !this._subTreeListeners.has(subTree.name)
+        ) {
+          this._subTreeListeners.get(subTree.name)?.();
+          this._subTreeListeners.set(
+            subTree.name,
+            this._createSubtreeActionButton(subTree),
+          );
+        } else if (this._app.uiConfig.config.hideContentTree) {
+          this._subTreeListeners.get(subTree.name)?.();
+          this._subTreeListeners.delete(subTree.name);
+        }
+      });
+    };
+
     /**
      * @type {Array<function():void>}
      * @private
@@ -78,6 +96,8 @@ class ContentTreeCollection extends IndexedCollection {
         }
       }),
       this.moved.addEventListener(() => recreateTree(true)),
+      app.uiConfig.added.addEventListener(uiConfigChanged),
+      app.uiConfig.removed.addEventListener(uiConfigChanged),
     ];
     /**
      * This is the default content tree.
@@ -113,11 +133,19 @@ class ContentTreeCollection extends IndexedCollection {
 
   /**
    * @private
+   * @param {Array<string>} exclude
    */
-  _clearSubTrees() {
-    this._subTreeViewItems.value.clear();
-    [...this._subTreeListeners.values()].forEach((cb) => {
-      cb();
+  _clearSubTrees(exclude = []) {
+    this._subTreeViewItems.value.forEach((tree, key) => {
+      if (!exclude.includes(key)) {
+        this._subTreeViewItems.value.delete(key);
+      }
+    });
+    this._subTreeListeners.forEach((cb, key) => {
+      if (!exclude.includes(key)) {
+        cb();
+        this._subTreeListeners.delete(key);
+      }
     });
   }
 
@@ -159,7 +187,6 @@ class ContentTreeCollection extends IndexedCollection {
       vcsAppSymbol,
       ButtonLocation.CONTENT,
     );
-    this._subTreeViewItems.value.set(id, subTreeViewItem);
     return () => {
       app.windowManager.remove(id);
       app.navbarManager.remove(id);
@@ -228,14 +255,21 @@ class ContentTreeCollection extends IndexedCollection {
       defaultSubTreeViewItem,
       ...topLevelItems.filter((i) => i[subTreeSymbol]),
     ];
-
+    this._clearSubTrees(
+      subTrees.map((tree) => {
+        return tree.name;
+      }),
+    );
     subTrees.forEach((subTree) => {
       if (!this._app.navbarManager.has(subTree.name) || resetSubtreeButtons) {
-        this._subTreeListeners.get(subTree.name)?.();
-        this._subTreeListeners.set(
-          subTree.name,
-          this._createSubtreeActionButton(subTree),
-        );
+        this._subTreeViewItems.value.set(subTree.name, subTree);
+        if (!this._app.uiConfig.config.hideContentTree) {
+          this._subTreeListeners.get(subTree.name)?.();
+          this._subTreeListeners.set(
+            subTree.name,
+            this._createSubtreeActionButton(subTree),
+          );
+        }
       } else {
         const buttonComponent = this._app.navbarManager.get(subTree.name);
         if (buttonComponent.weight !== subTree[subTreeItemWeight]) {

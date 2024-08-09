@@ -290,7 +290,7 @@ Predefined groups of VcsUiApp are:
 
 You can render specific toolbox constellation for a specific
 layout or use case. The best use case is the planning plugin,
-where when active, the toolbar reflects the tools required to edit
+where when active, the toolbox reflects the tools required to edit
 the planning scenario and not the default tools.
 
 You can provide components with one or more toolbox names

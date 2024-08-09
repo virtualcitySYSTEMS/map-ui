@@ -1,7 +1,12 @@
 <template>
   <v-container
     class="vcs-container pa-0"
-    :class="{ 'vcs-container-xs': xs }"
+    :class="{
+      'vcs-container-xs': xs,
+      'with-header': !config.hideHeader,
+      'without-header': config.hideHeader,
+      'without-footer': config.hideFooter,
+    }"
     fluid
     absolute
     style="background: #1b5e20"
@@ -25,24 +30,36 @@
       class="z-index-1 mobile-attribution-btn"
     /-->
     <PanelManagerComponent />
-    <ToolboxManagerComponent />
+    <ToolboxManagerComponent v-if="!config.hideToolbox" />
     <WindowManagerComponent />
     <NotifierComponent />
   </v-container>
 </template>
 
 <style scoped lang="scss">
+  .without-header {
+    top: 0px;
+  }
+  .with-header {
+    top: 48px;
+  }
   .vcs-container {
     position: absolute;
-    top: 48px;
     left: 0;
     right: 0;
-    bottom: 22px;
+    bottom: round(up, calc(var(--v-vcs-font-size) * 1.65), 1px);
+  }
+  .vcs-container.without-footer {
+    bottom: 0;
   }
 
-  .vcs-container-xs {
+  .vcs-container-xs.with-header {
     top: 0;
     bottom: 56px;
+  }
+  .vcs-container-xs.without-header {
+    top: 0;
+    bottom: 0px;
   }
 
   .mobile-logo {
@@ -93,16 +110,16 @@
       },
     },
     setup() {
+      /** @type {import("../vcsUiApp.js").default} */
       const app = inject('vcsApp');
-
       const { xs } = useDisplay();
-
       return {
+        config: app.uiConfig.config,
         xs,
         mobileLogo: computed(
           () =>
-            app.uiConfig.config.value.mobileLogo ??
-            app.uiConfig.config.value.logo ??
+            app.uiConfig.config.mobileLogo ??
+            app.uiConfig.config.logo ??
             VcsDefaultLogoMobile,
         ),
       };

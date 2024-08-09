@@ -1,5 +1,5 @@
 import { Collection, makeOverrideCollection } from '@vcmap/core';
-import { ref } from 'vue';
+import { reactive, readonly } from 'vue';
 
 /**
  * @typedef {{
@@ -58,6 +58,17 @@ import { ref } from 'vue';
  * @property {string} [favicon] - the favicon to set
  * @property {string} [headerTitle] - the title to display in the tab of the browser
  * @property {boolean} [showLocator] - an optional flag whether to show the Locator in the map.
+ * @property {boolean} [hideHeader] - can be used to hide the default Header of the map
+ * @property {boolean} [hideSearch] - can be used to hide the integrated Search bar
+ * @property {boolean} [hideMapButtons] - can be used to hide the default Map Buttons
+ * @property {boolean} [hideToolbox] - can be used to hide the toolbox
+ * @property {boolean} [hideMapNavigation] - can be used to hide the navigation
+ * @property {boolean} [hideFooter] - can be used to hide the footer
+ * @property {boolean} [hideMyWorkspace] - can be used to hide the myWorkspace button
+ * @property {boolean} [hideContentTree] - can be used to hide the contentTree
+ * @property {boolean} [hideLegend] - can be used to hide the legend
+ * @property {boolean} [hideSettings] - can be used to hide the settings Window
+ * @property {boolean} [overviewMapActiveOnStartup] - can be used to activate the overviewMap on startup
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  */
 
@@ -70,19 +81,18 @@ class UiConfig extends Collection {
    */
   constructor(getDynamicModuleId) {
     super();
-
     makeOverrideCollection(this, getDynamicModuleId);
     /**
-     * This object just acts as a go between for reactivity until we have vue3
-     * @todo vue3 cleanup
-     * @type {Object<string, *>}
-     */
-    const configObject = {};
-    /**
-     * @type {import("vue").Ref<Object<string, *>>}
+     * @type {import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>}
      * @private
      */
-    this._config = ref({});
+    this._config = reactive({});
+
+    /**
+     * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>>}
+     */
+    this._readonlyConfig = readonly(this._config);
+
     /**
      * @type {Array<function():void>}
      * @private
@@ -90,24 +100,26 @@ class UiConfig extends Collection {
     this._listeners = [
       this.added.addEventListener((item) => {
         if (typeof item?.name === 'string') {
-          configObject[item.name] = item.value;
-          this._config.value = { ...configObject }; // shallow clone to trip reactivity
+          this._config[item.name] = structuredClone(item.value);
         }
       }),
       this.removed.addEventListener((item) => {
-        if (typeof item?.name === 'string') {
-          delete configObject[item.name];
-          this._config.value = { ...configObject }; // shallow clone to trip reactivity
+        const previousItem = this.getByKey(item?.name);
+        if (typeof previousItem?.name === 'string') {
+          // still in the collection
+          this._config[previousItem.name] = structuredClone(previousItem.value);
+        } else if (typeof item?.name === 'string') {
+          delete this._config[item.name];
         }
       }),
     ];
   }
 
   /**
-   * @type {import("vue").Ref<Object<string, unknown>|UiConfigObject>}
+   * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>>}
    */
   get config() {
-    return this._config;
+    return this._readonlyConfig;
   }
 
   /**

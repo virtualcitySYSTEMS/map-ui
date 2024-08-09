@@ -160,9 +160,9 @@
         const position = getPosition(windowComponent);
         moveWindow(id, translation, windowManager, targetSize.value, position);
       };
-
+      const display = useDisplay();
       const addMobileClass = computed(() => {
-        return useDisplay().xs.value && componentIds.length > 0;
+        return display.xs.value && componentIds.length > 0;
       });
 
       const setTargetSize = () => {

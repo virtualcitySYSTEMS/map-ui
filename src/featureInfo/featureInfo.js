@@ -414,7 +414,7 @@ class FeatureInfo extends Collection {
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ??
+            this._app.uiConfig.config.primaryColor ??
               getDefaultPrimaryColor(this._app),
           ),
         });
@@ -426,7 +426,7 @@ class FeatureInfo extends Collection {
           [featureId]: getHighlightStyle(
             feature,
             layer,
-            this._app.uiConfig.config.value.primaryColor ??
+            this._app.uiConfig.config.primaryColor ??
               getDefaultPrimaryColor(this._app),
           ),
         });

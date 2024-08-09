@@ -140,7 +140,7 @@ describe('FeatureInfo', () => {
       app = new VcsUiApp();
       app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
       fillColor = Color.fromCssColorString(
-        app.uiConfig.config.value.primaryColor ?? getDefaultPrimaryColor(app),
+        app.uiConfig.config.primaryColor ?? getDefaultPrimaryColor(app),
       ).withAlpha(0.8);
     });
 

@@ -49,6 +49,10 @@
     have to be closed with `{{/if}}`. Expression can be attribute keys directly or
     any ol style expression that will evaluate to a boolean (same as with normal attribute expansion, just not a string).
   - Templates can now iterate over Arrays and Objects to render a block multiple times using the `{{#each (item) in object}}` syntax.
+- `UIConfig`
+  - changed the `config` accessor from `ref` to `reactive` use `app.uiConfig.config.x` instead of `app.uiConfig.config.value.x`
+  - added new config options: `hideHeader`, `hideSearch`, `hideMapButtons`, `hideToolbox`, `hideMapNavigation`,
+    `hideFooter`, `hideMyWorkspace`, `hideMyWorkspace`, `hideLegend`, `hideSettings`, `overviewMapActiveOnStartup`
 
 # Extended Theming
 

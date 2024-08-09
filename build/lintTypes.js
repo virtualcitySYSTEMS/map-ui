@@ -15,6 +15,11 @@ async function lintTypes() {
         // eslint-disable-next-line no-continue
         continue;
       }
+      if (path.endsWith('uiConfig.d.ts')) {
+        // we do not check the vcsUiApp.d.ts, because import("vue").DeepReadonly creates an any type
+        // eslint-disable-next-line no-continue
+        continue;
+      }
       // eslint-disable-next-line no-loop-func
       content.split(EOL).forEach((line, index) => {
         const matches = line.match(anyRegex);

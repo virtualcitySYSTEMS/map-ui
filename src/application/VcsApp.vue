@@ -5,10 +5,10 @@
       :options="splashScreen"
       v-model="splashScreenRef"
     ></VcsSplashScreen>
-    <VcsNavbar />
+    <VcsNavbar v-if="!config.hideHeader" />
     <VcsContainer :attribution-action="attributionAction" />
     <v-footer
-      v-if="smAndUp"
+      v-if="showFooter"
       app
       absolute
       :height="footerHeight"
@@ -76,6 +76,37 @@
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
 
   /**
+   * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
+   * @param {import("../vcsUiApp.js").default} app
+   * @param {(import("../vcsUiApp.js").default) => () => void} setupFunction
+   * @param {string} configOption parameter name of a uiConfig parameter, for example `app.uiConfig.config.hideContentTree`
+   * @returns {function():void} - cleanup function
+   */
+  export function setupUIConfigDependency(app, setupFunction, configOption) {
+    let destroyFunction = null;
+    function handler() {
+      if (!app.uiConfig.config[configOption] && !destroyFunction) {
+        destroyFunction = setupFunction(app);
+      } else if (app.uiConfig.config[configOption] && destroyFunction) {
+        destroyFunction();
+        destroyFunction = null;
+      }
+    }
+    handler();
+    const listeners = [
+      app.uiConfig.added.addEventListener(handler),
+      app.uiConfig.added.addEventListener(handler),
+    ];
+
+    return () => {
+      if (destroyFunction) {
+        destroyFunction();
+      }
+      listeners.forEach((cb) => cb());
+    };
+  }
+
+  /**
    * You should call this function in the component providing the vcsUiApp to your
    * application in the components mounted hook. This will call VcsAppMounted on all plugins in the app
    * and add a listener to call. Returns a destroy hook to stop listening to the added event. If you use the VcsApp
@@ -109,6 +140,7 @@
   /**
    * This helper function will add a map action button based on the default icons
    * to the apps NavbarManager. Furthermore, all maps on the app are synced for adding and removing.
+   * The buttons can be removed with the uiConfig hideMapButtons
    * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
@@ -231,8 +263,11 @@
       if (layersWithLegend < 1 && stylesWithLegend < 1) {
         app.navbarManager.remove('legend');
         app.windowManager.remove('legend');
+      } else {
+        addLegend();
       }
     };
+    handleLegend();
 
     const listeners = [
       app.layers.added.addEventListener((layer) => {
@@ -250,6 +285,8 @@
     ];
 
     return () => {
+      app.navbarManager.remove('legend');
+      app.windowManager.remove('legend');
       destroy();
       legendDestroy();
       listeners.forEach((cb) => cb());
@@ -263,7 +300,7 @@
    */
   function setupCustomScreen(app) {
     function setupCustomScreenAction() {
-      const { customScreen } = app.uiConfig.config.value;
+      const { customScreen } = app.uiConfig.config;
       const { action: customScreenAction, destroy: customScreenDestroy } =
         createToggleAction(
           {
@@ -301,7 +338,7 @@
     }
     let customScreen;
     const stopCustomScreenWatcher = watch(
-      () => app.uiConfig.config.value.customScreen,
+      () => app.uiConfig.config.customScreen,
       (newCustomScreen) => {
         if (app.navbarManager.has('customScreenToggle')) {
           app.navbarManager.remove('customScreenToggle');
@@ -327,7 +364,7 @@
    */
   function setupSplashScreen(app, splashScreenRef) {
     function setupSplashScreenAction() {
-      const { splashScreen } = app.uiConfig.config.value;
+      const { splashScreen } = app.uiConfig.config;
       if (splashScreen) {
         splashScreenRef.value = true;
       }
@@ -379,6 +416,7 @@
    * @returns {function():void}
    */
   export function setupSettingsWindow(app) {
+    const settingsWindowId = 'vcsSettings';
     const { action: settingsAction, destroy: settingsDestroy } =
       createToggleAction(
         {
@@ -387,7 +425,7 @@
           title: 'settings.tooltip',
         },
         {
-          id: 'settingsId',
+          id: settingsWindowId,
           component: VcsSettings,
           state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
           slot: WindowSlot.DYNAMIC_RIGHT,
@@ -397,13 +435,15 @@
       );
     app.navbarManager.add(
       {
-        id: 'settingsToggle',
+        id: settingsWindowId,
         action: settingsAction,
       },
       vcsAppSymbol,
       ButtonLocation.MENU,
     );
     return () => {
+      app.navbarManager.remove(settingsWindowId);
+      app.windowManager.remove(settingsWindowId);
       settingsDestroy();
     };
   }
@@ -527,6 +567,8 @@
     );
 
     return () => {
+      app.windowManager.remove(id);
+      app.navbarManager.remove(id);
       destroy();
       addedListener();
       removedListener();
@@ -671,14 +713,30 @@
       /** @type {import("../vcsUiApp.js").default} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
-      const mapNavbarListener = setupMapNavbar(app);
-      const legendDestroy = setupLegendWindow(app);
-      const settingsDestroy = setupSettingsWindow(app);
+      const mapNavbarListener = setupUIConfigDependency(
+        app,
+        setupMapNavbar,
+        'hideMapButtons',
+      );
+      const legendDestroy = setupUIConfigDependency(
+        app,
+        setupLegendWindow,
+        'hideLegend',
+      );
+      const settingsDestroy = setupUIConfigDependency(
+        app,
+        setupSettingsWindow,
+        'hideSettings',
+      );
       const stopCustomScreen = setupCustomScreen(app);
       const splashScreenRef = ref(true);
       const stopSplashScreen = setupSplashScreen(app, splashScreenRef);
       setupHelpButton(app);
-      const destroyComponentsWindow = setupCategoryManagerWindow(app);
+      const destroyMyWorkspace = setupUIConfigDependency(
+        app,
+        setupCategoryManagerWindow,
+        'hideMyWorkspace',
+      );
       const destroyThemingListener = setupUiConfigTheming(app);
       const destroyDisplayQualityListener = setupUiConfigDisplayQuality(app);
       const { attributionEntries, attributionAction, destroyAttributions } =
@@ -698,10 +756,10 @@
         settingsDestroy();
         stopCustomScreen();
         stopSplashScreen();
-        destroyComponentsWindow();
+        destroyMyWorkspace();
         destroyThemingListener();
-        destroyAttributions();
         destroyDisplayQualityListener();
+        destroyAttributions();
       });
 
       const { smAndUp } = useDisplay();
@@ -711,37 +769,40 @@
       });
 
       return {
-        smAndUp,
+        config: app.uiConfig.config,
+        showFooter: computed(() => {
+          return !app.uiConfig.config.hideFooter && smAndUp.value;
+        }),
         footerHeight,
         mobileLogo: computed(
           () =>
-            app.uiConfig.config.value.mobileLogo ??
-            app.uiConfig.config.value.logo ??
+            app.uiConfig.config.mobileLogo ??
+            app.uiConfig.config.logo ??
             VcsDefaultLogoMobile,
         ),
         imprint: computed(() => {
-          if (app.uiConfig.config.value.imprint) {
+          if (app.uiConfig.config.imprint) {
             return {
               title: 'footer.imprint.title',
               tooltip: 'footer.imprint.tooltip',
-              ...app.uiConfig.config.value.imprint,
+              ...app.uiConfig.config.imprint,
             };
           }
           return undefined;
         }),
         dataProtection: computed(() => {
-          if (app.uiConfig.config.value.dataProtection) {
+          if (app.uiConfig.config.dataProtection) {
             return {
               title: 'footer.dataProtection.title',
               tooltip: 'footer.dataProtection.tooltip',
-              ...app.uiConfig.config.value.dataProtection,
+              ...app.uiConfig.config.dataProtection,
             };
           }
           return undefined;
         }),
         splashScreenRef,
         splashScreen: computed(() => {
-          if (app.uiConfig.config.value.splashScreen) {
+          if (app.uiConfig.config.splashScreen) {
             return {
               title: 'components.splashScreen.name',
               tooltip: 'components.splashScreen.tooltip',
@@ -749,7 +810,7 @@
                 width: '800px',
                 height: '400px',
               },
-              ...app.uiConfig.config.value.splashScreen,
+              ...app.uiConfig.config.splashScreen,
             };
           }
           return undefined;
