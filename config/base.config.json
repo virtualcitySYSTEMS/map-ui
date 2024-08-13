@@ -571,7 +571,8 @@
       "name": "tableAllWithTemplateHeader",
       "keyMapping": {
         "roofType": "codeLists.keys.roofType",
-        "function": "codeLists.keys.function"
+        "function": "codeLists.keys.function",
+        "featureId": "Feature ID"
       },
       "valueMapping": {
         "roofType": "codeLists.values.roofType.${value}",

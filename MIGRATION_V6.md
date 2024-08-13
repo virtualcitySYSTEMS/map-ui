@@ -53,6 +53,8 @@
   - changed the `config` accessor from `ref` to `reactive` use `app.uiConfig.config.x` instead of `app.uiConfig.config.value.x`
   - added new config options: `hideHeader`, `hideSearch`, `hideMapButtons`, `hideToolbox`, `hideMapNavigation`,
     `hideFooter`, `hideMyWorkspace`, `hideMyWorkspace`, `hideLegend`, `hideSettings`, `overviewMapActiveOnStartup`
+- Changed interface of `VcsTable.vue`. You can provide `keyHeader` and `valueHeader` props instead of a `headers` array.
+- Changed featureInfo classes `IframeFeatureInfoView`, `MarkdownFeatureInfoView` and `MarkdownBalloonFeatureInfoView` to all support same markdown template syntax and style expressions for attribute replacement.
 
 # Extended Theming
 

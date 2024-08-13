@@ -48,7 +48,7 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
-   * Variables wrapped in `${}` within `src` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
+   * Supports markdown templates (e.g. {{someProperty}}) and style expressions to derive a markdown rendering
    * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {MarkdownFeatureInfoViewProps}

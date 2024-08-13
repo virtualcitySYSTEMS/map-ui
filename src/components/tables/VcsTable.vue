@@ -1,5 +1,9 @@
 <template>
-  <VcsDataTable :items="items" :headers="headers" v-bind="$attrs">
+  <VcsDataTable
+    v-bind="$attrs"
+    :items="items"
+    :headers="[keyHeader, valueHeader]"
+  >
     <template #body="{ page, itemsPerPage }">
       <tr
         class="v-data-table__tr"
@@ -9,10 +13,10 @@
         )"
         :key="`row-${idx}`"
       >
-        <vcs-table-cell :title="item.key" :width="headers[0].width" />
+        <vcs-table-cell :title="item.key" :width="keyHeader.width" />
         <vcs-table-cell
           :title="item.value"
-          :width="headers[1].width"
+          :width="valueHeader.width"
           :tag="getTag(tags, item.key)"
           :tag-options="getTagOptions(tags, item.key)"
         >
@@ -120,10 +124,10 @@
 
   /**
    * @description A table view for feature attributes using VcsDataTable
-   * @vue-prop {string} featureId - feature's id
    * @vue-prop {Object} attributes - feature's attributes
    * @vue-prop {Object} tags - Allows to render the value column for specific attribute keys with special html elements. See 'defaultTagOptions' for supported html tags.
-   * @vue-prop {Array<{title: string, value: string}>} [headers] - optional array defining column names
+   * @vue-prop {{title: string, key: 'key', width: string|undefined}} [keyHeader] - optional header defining the key column
+   * @vue-prop {{title: string, key: 'value', width: string|undefined}} [valueHeader] - optional header defining the value column
    * @vue-computed {Array<TableItem>} items - from attributes derived table items
    */
   export default {
@@ -133,10 +137,6 @@
       VcsDataTable,
     },
     props: {
-      featureId: {
-        type: String,
-        required: true,
-      },
       attributes: {
         type: Object,
         required: true,
@@ -145,16 +145,23 @@
         type: Object,
         default: undefined,
       },
-      headers: {
-        type: Array,
-        default: () => [
-          { title: 'components.vcsTable.key', key: 'key', width: '128px' },
-          {
-            title: 'components.vcsTable.value',
-            key: 'value',
-            width: '192px',
-          },
-        ],
+      keyHeader: {
+        type: Object,
+        default: () => ({
+          title: 'components.vcsTable.key',
+          key: 'key',
+          width: '128px',
+        }),
+        validator: (value) => value.key === 'key',
+      },
+      valueHeader: {
+        type: Object,
+        default: () => ({
+          title: 'components.vcsTable.value',
+          key: 'value',
+          width: '192px',
+        }),
+        validator: (value) => value.key === 'value',
       },
     },
     setup(props) {
@@ -162,10 +169,7 @@
        * @type {ComputedRef<Array<TableItem>>}
        */
       const items = computed(() => {
-        return attributesToItems({
-          featureId: props.featureId,
-          ...props.attributes,
-        });
+        return attributesToItems(props.attributes);
       });
 
       return {

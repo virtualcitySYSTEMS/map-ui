@@ -304,6 +304,12 @@ class VcsUiApp extends VcsApp {
     this._navbarManager = new NavbarManager();
 
     /**
+     * @type {Search}
+     * @private
+     */
+    this._search = new Search(this);
+
+    /**
      * @type {import("@vcmap/core").OverrideClassRegistry<AbstractFeatureInfoView>}
      * @private
      */
@@ -340,12 +346,6 @@ class VcsUiApp extends VcsApp {
      * @private
      */
     this._contextMenuManager = new ContextMenuManager(this);
-
-    /**
-     * @type {Search}
-     * @private
-     */
-    this._search = new Search(this);
 
     /**
      * @type {Notifier}

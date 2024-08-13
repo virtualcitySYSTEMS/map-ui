@@ -1,12 +1,11 @@
 <script setup>
-  import { reactive, ref } from 'vue';
+  import { reactive } from 'vue';
   import { getStoryState } from '../../setup.js';
   import VcsTable from '../../../src/components/tables/VcsTable.vue';
   import GlobalControls from '../../controls/GlobalControls.vue';
 
   const state = getStoryState();
 
-  const featureId = ref('DEBE01YYK0001xqy');
   const attributes = reactive({
     externalObjectName: 'DEBE01YYK0001xqy',
     measuredHeight: undefined,
@@ -17,16 +16,13 @@
     singleLine: 'oneVeryLongSingelLineWordThatCanNotBeBroken',
     multiLine:
       'A long attribute consisting of multiple words that can be broken',
+    featureId: 'DEBE01YYK0001xqy',
   });
 </script>
 
 <template>
   <Story title="VcsTable" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsTable
-      :feature-id="featureId"
-      :attributes="attributes"
-      v-bind="{ ...state.bind }"
-    />
+    <VcsTable :attributes="attributes" v-bind="{ ...state.bind }" />
     <template #controls>
       <GlobalControls v-model="state"></GlobalControls>
     </template>

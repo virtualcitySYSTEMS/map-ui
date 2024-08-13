@@ -1,4 +1,7 @@
-import { describe, beforeAll, expect, it } from 'vitest';
+import { describe, beforeAll, expect, it, afterAll } from 'vitest';
+import { VectorLayer } from '@vcmap/core';
+import { Feature } from 'ol';
+import { Point } from 'ol/geom.js';
 import IframeFeatureInfoView from '../../../src/featureInfo/iframeFeatureInfoView.js';
 
 describe('IframeFeatureInfoView', () => {
@@ -35,6 +38,47 @@ describe('IframeFeatureInfoView', () => {
       });
       it('should configure src', () => {
         expect(outputConfig).to.have.property('src', inputConfig.src);
+      });
+    });
+  });
+
+  describe('rendering the template', () => {
+    let layer;
+    let feature;
+
+    beforeAll(() => {
+      layer = new VectorLayer({});
+      feature = new Feature({
+        geometry: new Point([0, 0, 1]),
+        property: 'foo',
+        nested: {
+          property: 'foo',
+          array: [{ property: 'foo' }],
+          'spaced property': 'foo',
+        },
+        array: [['foo'], 'foo'],
+        'spaced property': 'foo',
+        number: 5.1,
+      });
+      feature.setId('foo');
+      layer.addFeatures([feature]);
+    });
+
+    afterAll(() => {
+      layer.destroy();
+    });
+
+    describe('rendering properties', () => {
+      it('should render a properties and attributes', () => {
+        const infoView = new IframeFeatureInfoView({
+          name: 'foo',
+          // eslint-disable-next-line no-template-curly-in-string
+          src: 'https://myIframeUrl.com/myFeatureInformation?layer={{layerName}}&featureId={{featureId}}&property={{property}}&nested={{nested.array[0].property}}',
+        });
+        const { src } = infoView.getProperties({ feature }, layer);
+        expect(src).to.equal(
+          `https://myIframeUrl.com/myFeatureInformation?layer=${layer.name}&featureId=${feature.getId()}&property=foo&nested=foo`,
+        );
       });
     });
   });

@@ -419,15 +419,15 @@ To render an image, simply define:
 Markdown feature info views can render most markdown text, without special flavoring.
 You can expand feature properties by wrapping them in two braces: `{{foo}}` would expand the
 feature property `foo`. This also works for array accessors and nested properties, simply use
-java script dot notation: `foo.bar` to access an object `{ foo: { bar: 'bar' } }` or bracktes: `foo[0]` to access
+java script dot notation: `foo.bar` to access an object `{ foo: { bar: 'bar' } }` or brackets: `foo[0]` to access
 an array `{ foo: ['bar'] }` where `foo["bar"]` is equivalent to `foo.bar`. Currently
 only string and number properties are rendered correctly. Missing keys are rendered as an empty string `''`.
 
 Alternatively, you can use [openlayers style expressions](https://openlayers.org/en/latest/apidoc/module-ol_style_expressions.html)
 which evaluate to a string within
-the expansion bracktes, so `{{ ["round", ["get", "value"]] }}` would render the value
+the expansion brackets, so `{{ ["round", ["get", "value"]] }}` would render the value
 attribute rounded. Using the above property shorthand is equivalent to writing a `["get", ...keys]`
-style expression. If writting expressions, you must use `"` for strings and not `'`, the expression within the brackets
+style expression. If writing expressions, you must use `"` for strings and not `'`, the expression within the brackets
 must be JSON parsable (`{{ ['round', ['get', 'value]] }}` will not work).
 
 The following example can illustrate this:

@@ -342,6 +342,16 @@ class AbstractFeatureInfoView extends VcsObject {
   }
 
   /**
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @returns {Object}
+   * @protected
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _getAttributesFromFeature(feature) {
+    return feature?.getProperty('attributes') || {};
+  }
+
+  /**
    * This method returns all relevant attributes for this view.
    * Called by `getProperties()` to pass attributes as props object to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
@@ -350,7 +360,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * @returns {Object}
    */
   getAttributes(feature) {
-    let attributes = feature.getProperty('attributes') || {};
+    let attributes = this._getAttributesFromFeature(feature);
     if (this.attributeKeys.length > 0) {
       attributes = applyAttributeFilter(attributes, this.attributeKeys);
     }
@@ -373,7 +383,7 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   getTags(feature) {
     if (this.tags) {
-      const attributes = feature.getProperty('attributes') || {};
+      const attributes = this._getAttributesFromFeature(feature);
       const tags = Object.keys(this.tags)
         .filter(
           (key) =>

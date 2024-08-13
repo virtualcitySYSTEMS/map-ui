@@ -23,6 +23,7 @@ import {
 import { Feature } from 'ol';
 import { check, maybe, oneOf } from '@vcsuite/check';
 
+import { reactive } from 'vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -51,6 +52,17 @@ import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
 function getLogger() {
   return getLoggerByName('featureInfo');
 }
+
+/**
+ * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
+ */
+export const featureInfoClassRegistry = new ClassRegistry();
+
+/**
+ * Symbol added to features to overwrite the layers predefined feature info
+ * @type {symbol}
+ */
+export const featureInfoViewSymbol = Symbol('featureInfoView');
 
 /**
  * @param {FeatureType} feature
@@ -133,7 +145,7 @@ function setupFeatureInfoTool(app) {
   /** @type {FeatureInfoSession|null} */
   let session = null;
 
-  const action = {
+  const action = reactive({
     name: 'featureInfoToggle',
     title: 'featureInfo.activateToolTitle',
     icon: '$vcsInfo',
@@ -144,46 +156,65 @@ function setupFeatureInfoTool(app) {
       } else {
         session = createFeatureInfoSession(app);
         session.stopped.addEventListener(() => {
-          this.active = false;
+          action.active = false;
           session = null;
           app.featureInfo.clear();
-          this.title = 'featureInfo.activateToolTitle';
+          action.title = 'featureInfo.activateToolTitle';
         });
         this.active = true;
-        this.title = 'featureInfo.deactivateToolTitle';
+        action.title = 'featureInfo.deactivateToolTitle';
       }
     },
-  };
+  });
 
   function addFeatureInfoButton() {
     if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
       action.callback();
     }
-    app.toolboxManager.add(
-      {
-        id: 'featureInfo',
-        type: ToolboxType.SINGLE,
-        action,
-      },
-      vcsAppSymbol,
-    );
+    if (!app.toolboxManager.has('featureInfo')) {
+      app.toolboxManager.add(
+        {
+          id: 'featureInfo',
+          type: ToolboxType.SINGLE,
+          action,
+        },
+        vcsAppSymbol,
+      );
+    }
   }
 
-  if ([...app.layers].some((l) => l.properties?.featureInfo)) {
+  if (
+    [...app.layers].some((l) => l.properties?.featureInfo) ||
+    app.search.resultLayer.getFeatures().some((f) => !!f[featureInfoViewSymbol])
+  ) {
     addFeatureInfoButton();
   }
 
   const listeners = [
     app.layers.added.addEventListener((layer) => {
-      if (
-        layer?.properties?.featureInfo &&
-        !app.toolboxManager.has('featureInfo')
-      ) {
+      if (layer?.properties?.featureInfo) {
         addFeatureInfoButton();
       }
     }),
     app.layers.removed.addEventListener(() => {
       if (
+        ![...app.layers].some((l) => l.properties?.featureInfo) &&
+        !app.search.resultLayer
+          .getFeatures()
+          .some((f) => !!f[featureInfoViewSymbol]) &&
+        app.toolboxManager.has('featureInfo')
+      ) {
+        app.toolboxManager.remove('featureInfo');
+      }
+    }),
+    app.search.resultsChanged.addEventListener(() => {
+      if (
+        app.search.resultLayer
+          .getFeatures()
+          .some((f) => !!f[featureInfoViewSymbol])
+      ) {
+        addFeatureInfoButton();
+      } else if (
         ![...app.layers].some((l) => l.properties?.featureInfo) &&
         app.toolboxManager.has('featureInfo')
       ) {
@@ -206,17 +237,6 @@ function setupFeatureInfoTool(app) {
  * @property {VcsEvent<void>} stopped
  * @property {function():void} stop
  */
-
-/**
- * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
- */
-export const featureInfoClassRegistry = new ClassRegistry();
-
-/**
- * Symbol added to features to overwrite the layers predefined feature info
- * @type {symbol}
- */
-export const featureInfoViewSymbol = Symbol('featureInfoView');
 
 /**
  * @class FeatureInfo

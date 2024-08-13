@@ -80,6 +80,19 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @returns {Object}
+   * @private
+   */
+  _getAttributesFromFeature(feature) {
+    const attributes = super._getAttributesFromFeature(feature);
+    return {
+      ...attributes,
+      featureId: feature.getId(),
+    };
+  }
+
+  /**
    * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {TableFeatureInfoViewProps}

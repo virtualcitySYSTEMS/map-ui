@@ -1,9 +1,10 @@
+import { renderTemplate } from '../components/form-output/markdownHelper.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions
- * @property {string} src - Specifies the address of the document to embed in the <iframe>. Variables wrapped in `${}` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
+ * @property {string} src - Specifies the address of the document to embed in the <iframe>. Variables wrapped in `${}` are replaced by their values, e.g. `${featureId}` or `${gml:name}`
  * @property {string} [title] - optional title for the <iframe>
  */
 
@@ -41,7 +42,16 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
-   * Variables wrapped in `${}` within `src` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
+   * @param {Record<string, unknown>} attributes
+   * @protected
+   * @returns {string}
+   */
+  _renderTemplate(attributes) {
+    return renderTemplate(this.src, attributes);
+  }
+
+  /**
+   * Supports markdown templates (e.g. {{someProperty}}) and style expressions to derive a URL
    * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {IframeFeatureInfoViewProps}
@@ -50,9 +60,9 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      src: this.src.replace(/\$\{(.*?)}/g, (match, token) => {
-        const variable = token.split('.');
-        return variable.reduce((obj, prop) => obj?.[prop], properties);
+      src: this._renderTemplate({
+        ...properties,
+        ...properties.attributes,
       }),
       title: this.title,
     };

@@ -382,7 +382,7 @@ function expandConditionalsAndLoops(template, data) {
 
 /**
  * Renders a template in these steps
- * 1. expand conditional blocks. this will remove any bocks that do not match their expressions and choose from if / elseif / else block which of them to render
+ * 1. expand conditional blocks. this will remove any blocks that do not match their expressions and choose from if / elseif / else block which of them to render
  * 2. expand iterations. this will create new templates for each iteration and re-run the rendering for those blocks
  * 3. render attributes. this will add the attributes to all the blocks not within each blocks
  * @param {string|string[]} template

@@ -27,6 +27,7 @@ import { createDummyCesium3DTileFeature } from '@vcmap/core/dist/tests/unit/help
 import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
 import { Color } from '@vcmap-cesium/engine';
 
+import { sleep } from '../../helpers.js';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 import { getDefaultPrimaryColor } from '../../../src/vuePlugins/vuetify.js';
@@ -916,6 +917,51 @@ describe('FeatureInfo', () => {
         const featureInfo = new FeatureInfo(app);
         expect(toolboxComponent.action).to.have.property('active', false);
         featureInfo.destroy();
+      });
+    });
+
+    describe('feature tool button listeners', () => {
+      let app;
+      let layer;
+
+      beforeAll(() => {
+        app = new VcsUiApp();
+        layer = new VectorLayer({
+          projection: mercatorProjection.toJSON(),
+        });
+        layer.properties.featureInfo = 'foo';
+      });
+
+      afterAll(() => {
+        app.destroy();
+      });
+
+      it('should add the featureInfo tool button, if a layer with featureInfo prop is added', () => {
+        expect(app.toolboxManager.has('featureInfo')).to.be.false;
+        app.layers.add(layer);
+        expect(app.toolboxManager.has('featureInfo')).to.be.true;
+        app.layers.remove(layer);
+      });
+      it('should add the featureInfo tool button, if a search at least one search result feature with featureInfoViewSymbol is available', () => {
+        expect(app.toolboxManager.has('featureInfo')).to.be.false;
+        const feature = new Feature();
+        feature[featureInfoViewSymbol] = new AbstractFeatureInfoView({}, {});
+        app.search.resultLayer.addFeatures([feature]);
+        app.search.resultsChanged.raiseEvent([{ title: 'result', feature }]);
+        expect(app.toolboxManager.has('featureInfo')).to.be.true;
+        app.search.resultLayer.removeAllFeatures();
+      });
+      it('should remove the featureInfo tool button, if no layer with featureInfo prop and no search result with featureInfoViewSymbol is available', async () => {
+        app.layers.add(layer);
+        const f = new Feature();
+        f[featureInfoViewSymbol] = new AbstractFeatureInfoView({}, {});
+        app.search.resultLayer.addFeatures([f]);
+        expect(app.toolboxManager.has('featureInfo')).to.be.true;
+        app.layers.remove(layer);
+        app.search.resultLayer.removeAllFeatures();
+        app.search.resultsChanged.raiseEvent([]);
+        await sleep();
+        expect(app.toolboxManager.has('featureInfo')).to.be.false;
       });
     });
 

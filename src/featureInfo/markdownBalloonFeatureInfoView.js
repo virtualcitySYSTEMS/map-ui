@@ -51,7 +51,7 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
   }
 
   /**
-   * Variables wrapped in `${}` within `src` are replaced by their values, e.g. `${featureId}` or `${attributes.gml:name}`
+   * Supports markdown templates (e.g. {{someProperty}}) and style expressions to derive markdown rendering
    * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
    * @returns {MarkdownBalloonFeatureInfoViewProps}
@@ -60,7 +60,7 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      html: parseAndSanitizeMarkdown(
+      content: parseAndSanitizeMarkdown(
         this._renderTemplate({ ...properties, ...properties.attributes }),
       ),
     };

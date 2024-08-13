@@ -1,6 +1,6 @@
 <template>
   <BalloonComponent v-bind="{ ...$attrs }">
-    <VcsMarkdown :content="$st(html)" />
+    <VcsMarkdown :content="content" />
   </BalloonComponent>
 </template>
 <script>
@@ -13,7 +13,7 @@
   export default {
     name: 'MarkdownBalloonComponent',
     props: {
-      html: {
+      content: {
         type: String,
         required: true,
       },
