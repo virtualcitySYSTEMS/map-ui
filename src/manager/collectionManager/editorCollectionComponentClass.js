@@ -3,6 +3,7 @@ import { check, maybe, oneOf } from '@vcsuite/check';
 import { WindowSlot } from '../window/windowManager.js';
 import CollectionComponentClass from './collectionComponentClass.js';
 import { createListEditAction } from '../../actions/listActions.js';
+import { categoryManagerWindowId } from '../../application/VcsApp.vue';
 
 /**
  * @typedef {Omit<import("../window/windowManager.js").WindowComponentOptions,"id"|"parentId"|"slot">} EditorWindowComponentOptions
@@ -62,7 +63,7 @@ export function makeEditorCollectionComponentClass(
   app,
   collectionComponent,
   editingOptions,
-  parentId = 'category-manager',
+  parentId = categoryManagerWindowId,
 ) {
   check(collectionComponent, CollectionComponentClass);
   check(editingOptions.editor, oneOf(Object, Function));

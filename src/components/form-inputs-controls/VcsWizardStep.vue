@@ -23,9 +23,6 @@
             v-if="isActiveStep"
             :actions="actions"
             :overflow-count="actionButtonListOverflowCount"
-            @mousedown.stop
-            @touchstart.stop
-            @keydown.stop
             class="justify-end"
           />
         </div>
@@ -33,7 +30,7 @@
     </template>
     <template #default>
       <div>
-        <VcsHelp :text="helpText" :show="showHelp">
+        <VcsHelp :text="helpText" :show="showHelp" class="mb-1">
           <slot name="help" />
         </VcsHelp>
         <slot />
@@ -136,7 +133,7 @@
       const helpAction = reactive({
         name: 'help',
         title: 'components.vcsFormSection.help',
-        active: false,
+        active: true,
         icon: 'mdi-help-circle',
         callback() {
           this.active = !this.active;

@@ -55,6 +55,7 @@
     `hideFooter`, `hideMyWorkspace`, `hideMyWorkspace`, `hideLegend`, `hideSettings`, `overviewMapActiveOnStartup`
 - Changed interface of `VcsTable.vue`. You can provide `keyHeader` and `valueHeader` props instead of a `headers` array.
 - Changed featureInfo classes `IframeFeatureInfoView`, `MarkdownFeatureInfoView` and `MarkdownBalloonFeatureInfoView` to all support same markdown template syntax and style expressions for attribute replacement.
+- panelManager now has a `positionChanged` event, which is raised whenever a panel position changes
 
 # Extended Theming
 
@@ -71,9 +72,14 @@ For the item height and fontSize a helper function is exported, which can be use
 
 The ItemHeight should at minimum be `fontSize * 1.5 + 4px`
 
+```js
+const itemHeight = useItemHeight();
+const fontSize = useFontSize();
+```
+
 ```vue
-<v-btn :size="useItemHeight().value - 4"></v-btn>
-<v-btn :size="useFontSize().value - 4"></v-btn>
+<v-btn :size="itemHeight - 4"></v-btn>
+<v-btn :size="fontSize - 4"></v-btn>
 ```
 
 For Development the darkTheme has a larger FontSize and a large ItemHeight;

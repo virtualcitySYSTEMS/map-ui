@@ -5,7 +5,7 @@
     :class="{
       'rounded-b': !open,
     }"
-    :height="useItemHeight().value + 8"
+    :height="itemHeight + 8"
     :style="{ zIndex }"
     @click.stop="bringToTop"
   >
@@ -184,6 +184,7 @@
       };
 
       const { mdAndUp } = useDisplay();
+      const itemHeight = useItemHeight();
       return {
         mdAndUp,
         toolboxOpen,
@@ -201,7 +202,7 @@
             bringToTop();
           }
         },
-        useItemHeight,
+        itemHeight,
       };
     },
   };

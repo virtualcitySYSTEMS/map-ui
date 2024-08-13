@@ -472,21 +472,25 @@
   }
 
   /**
+   * @type {string}
+   */
+  export const categoryManagerWindowId = 'category-manager';
+
+  /**
    * This helper function will add a category manager button to the navbar. The category Manager
    * will only be shown if there is at least one category under management in the categoryManager.
    * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupCategoryManagerWindow(app) {
-    const id = 'category-manager';
     const { action: categoryManagerAction, destroy } = createToggleAction(
       {
-        name: id,
+        name: categoryManagerWindowId,
         icon: '$vcsComponents',
         title: 'categoryManager.tooltip',
       },
       {
-        id,
+        id: categoryManagerWindowId,
         state: {
           headerTitle: 'categoryManager.title',
           headerIcon: '$vcsComponents',
@@ -512,9 +516,9 @@
      * @param {import("../manager/collectionManager/collectionComponentClass.js").default} collectionComponent
      */
     function handleAdded(collectionComponent) {
-      if (!app.navbarManager.has(id)) {
+      if (!app.navbarManager.has(categoryManagerWindowId)) {
         app.navbarManager.add(
-          { id, action: categoryManagerAction },
+          { id: categoryManagerWindowId, action: categoryManagerAction },
           vcsAppSymbol,
           ButtonLocation.CONTENT,
         );
@@ -523,7 +527,7 @@
         collectionComponent.id,
         collectionComponent.collection.added.addEventListener((item) => {
           if (
-            !app.windowManager.has(id) &&
+            !app.windowManager.has(categoryManagerWindowId) &&
             item[moduleIdSymbol] === app.dynamicModuleId
           ) {
             categoryManagerAction.hasUpdate = true;
@@ -542,8 +546,8 @@
       collectionListeners.delete(collectionComponent.id);
 
       if (!app.categoryManager.componentIds.length) {
-        app.windowManager.remove(id);
-        app.navbarManager.remove(id);
+        app.windowManager.remove(categoryManagerWindowId);
+        app.navbarManager.remove(categoryManagerWindowId);
         categoryManagerAction.hasUpdate = false;
       }
     }
@@ -560,15 +564,15 @@
 
     const windowListener = app.windowManager.added.addEventListener(
       (windowComponent) => {
-        if (windowComponent.id === id) {
+        if (windowComponent.id === categoryManagerWindowId) {
           categoryManagerAction.hasUpdate = false;
         }
       },
     );
 
     return () => {
-      app.windowManager.remove(id);
-      app.navbarManager.remove(id);
+      app.windowManager.remove(categoryManagerWindowId);
+      app.navbarManager.remove(categoryManagerWindowId);
       destroy();
       addedListener();
       removedListener();

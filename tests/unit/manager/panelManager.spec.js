@@ -14,6 +14,17 @@ import PanelManager, {
   PanelLocation,
   setPanelPosition,
 } from '../../../src/manager/panel/panelManager.js';
+import { updatePanelSizes } from '../../../src/manager/panel/panelHelper.js';
+import { createMainPanel } from '../../../src/manager/panel/PanelManagerComponent.vue';
+
+const targetRect = {
+  top: 20,
+  left: 10,
+  width: 1900,
+  height: 1080,
+  bottom: 0,
+  right: 0,
+};
 
 describe('panelManager', () => {
   describe('adding panelComponents', () => {
@@ -167,10 +178,6 @@ describe('panelManager', () => {
       expect(removedSpy).toHaveBeenCalledTimes(1);
       expect(removedSpy).toHaveBeenCalledWith(panel1);
     });
-
-    it('should throw if main panel is removed', () => {
-      // expect(panelManager.remove.bind(panelManager, main.id)).to.throw();
-    });
   });
 
   describe('caching window position', () => {
@@ -195,8 +202,8 @@ describe('panelManager', () => {
     });
 
     describe('on removing a window', () => {
-      it('should cache the panel widht and height options', () => {
-        setPanelPosition(panel1, { width: '35%' });
+      it('should cache the panel width and height options', () => {
+        setPanelPosition(panelManager, panel1, { width: '35%' });
         panelManager.remove(panel1.id);
         expect(panelManager.getCachedPosition(panel1.id)).to.have.property(
           'width',
@@ -209,7 +216,7 @@ describe('panelManager', () => {
       let cachedPosition;
 
       beforeEach(() => {
-        setPanelPosition(panel1, { width: '35%' });
+        setPanelPosition(panelManager, panel1, { width: '35%' });
         panelManager.remove(panel1.id);
         cachedPosition = panelManager.getCachedPosition(panel1.id);
         panelManager.add({ id: panel1.id }, 'plugin', PanelLocation.LEFT);
@@ -221,6 +228,78 @@ describe('panelManager', () => {
           cachedPosition.width,
         );
       });
+    });
+  });
+
+  describe('positionChanged event', () => {
+    /** @type {PanelManager} */
+    let panelManager;
+    let mainPanel;
+
+    beforeAll(() => {
+      panelManager = new PanelManager();
+      mainPanel = createMainPanel();
+    });
+
+    beforeEach(() => {});
+
+    afterEach(() => {
+      panelManager.clear();
+    });
+
+    afterAll(() => {
+      panelManager.destroy();
+    });
+
+    it('should raise positionChanged, if panel is added influencing an existing panels position', () => {
+      const spy = vi.fn();
+      panelManager.positionChanged.addEventListener(spy);
+      const leftPanel = panelManager.add({}, 'plugin', PanelLocation.LEFT);
+      // normally called by PanelManagerComponent.vue
+      updatePanelSizes(panelManager, mainPanel, targetRect);
+      expect(spy).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({ panelId: leftPanel.id }),
+      );
+      expect(spy).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({ panelId: 'vcs-main' }),
+      );
+    });
+
+    it('should raise positionChanged, if panel is removed influencing an existing panels position', () => {
+      const panelComponent = panelManager.add({}, 'plugin', PanelLocation.LEFT);
+      const spy = vi.fn();
+      panelManager.positionChanged.addEventListener(spy);
+      panelManager.remove(panelComponent.id);
+      // normally called by PanelManagerComponent.vue
+      updatePanelSizes(panelManager, mainPanel, targetRect);
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({ panelId: 'vcs-main' }),
+      );
+    });
+
+    it('should raise positionChanged, if panel is resized influencing an existing panels position', () => {
+      const leftPanel = panelManager.add({}, 'plugin', PanelLocation.LEFT);
+      const bottomPanel = panelManager.add({}, 'plugin', PanelLocation.BOTTOM);
+      const spy = vi.fn();
+      panelManager.positionChanged.addEventListener(spy);
+      setPanelPosition(panelManager, bottomPanel, { height: '500px' });
+
+      // normally called by PanelManagerComponent.vue
+      updatePanelSizes(panelManager, mainPanel, targetRect);
+      expect(spy).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({ panelId: bottomPanel.id }),
+      );
+      expect(spy).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({ panelId: leftPanel.id }),
+      );
+      expect(spy).toHaveBeenNthCalledWith(
+        3,
+        expect.objectContaining({ panelId: 'vcs-main' }),
+      );
     });
   });
 

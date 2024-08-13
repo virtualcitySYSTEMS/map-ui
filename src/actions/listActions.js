@@ -34,7 +34,7 @@ export function createListItemDeleteAction(
 
 /**
  * Creates an action based on a provided selection
- * @param {import("vue").Ref<Array<import("../components/lists/VcsList.vue").VcsListItem>>} selection
+ * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.vue").VcsListItem>>} selection
  * @param {import("./actionHelper.js").ActionOptions & {callback:import("./actionHelper.js").ActionCallback}} [actionOptions]
  * @returns {{action: import("vue").UnwrapRef<import("./actionHelper.js").VcsAction>, destroy: import("vue").WatchStopHandle}}
  */
@@ -59,7 +59,7 @@ export function createListItemBulkAction(selection, actionOptions) {
 }
 
 /**
- * @param {import("vue").Ref<Array<import("../components/lists/VcsList.vue").VcsListItem>>} selection
+ * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.vue").VcsListItem>>} selection
  * @param {import("./actionHelper.js").ActionCallback} exportCallback
  * @param {string|symbol} owner
  * @returns {{action: import("../manager/collectionManager/collectionManager.js").OwnedAction, destroy: (function(): void)}}

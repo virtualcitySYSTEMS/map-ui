@@ -1,9 +1,7 @@
 <template>
   <v-sheet>
     <span class="d-flex justify-space-between align-center mt-1 ml-2">
-      <v-icon class="pa-1" :size="useItemHeight().value - 8">
-        $vcsSearch
-      </v-icon>
+      <v-icon class="pa-1" :size="itemHeight - 8"> $vcsSearch </v-icon>
       <VcsTextField
         class="d-inline-block user-select-none w-100 mx-1"
         autofocus
@@ -96,6 +94,8 @@
         clear();
       });
 
+      const itemHeight = useItemHeight();
+
       return {
         query,
         searching,
@@ -104,7 +104,7 @@
         clear,
         search,
         zoomToAll,
-        useItemHeight,
+        itemHeight,
       };
     },
   };

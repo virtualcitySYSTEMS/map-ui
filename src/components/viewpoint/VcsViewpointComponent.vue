@@ -154,9 +154,9 @@
                   height="32"
                   hide-details
                   :step="0.1"
-                  v-model="localValue[key]"
-                  v-bind="hprSliderOptions[key]"
                   :disabled="editAction.active"
+                  v-bind="hprSliderOptions[key]"
+                  v-model="localValue[key]"
                   @update:model-value="gotoViewpoint"
                 />
               </v-col>

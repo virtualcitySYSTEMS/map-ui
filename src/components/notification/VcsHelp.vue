@@ -37,7 +37,7 @@
       },
       show: {
         type: Boolean,
-        required: true,
+        default: true,
       },
     },
   };

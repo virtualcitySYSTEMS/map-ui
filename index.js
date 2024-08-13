@@ -58,6 +58,7 @@ export {
   setupMapNavbar,
   setupPluginMountedListeners,
   setupCategoryManagerWindow,
+  categoryManagerWindowId,
 } from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
@@ -260,7 +261,7 @@ export {
   validateActions,
 } from './src/components/lists/VcsActionList.vue';
 export { default as VcsList } from './src/components/lists/VcsList.vue';
-export { default as VcsListItem } from './src/components/lists/VcsListItem.vue';
+export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
 export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';

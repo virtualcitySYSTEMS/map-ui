@@ -239,7 +239,7 @@ export function updatePanelSizes(
       },
       targetSize,
     );
-    setPanelPosition(leftPanel, updatedLeft);
+    setPanelPosition(panelManager, leftPanel, updatedLeft);
   }
   if (panelManager.hasLocation(PanelLocation.RIGHT) && resizeKey !== 'left') {
     const updatedRight = handleSidePanel(
@@ -252,7 +252,7 @@ export function updatePanelSizes(
       },
       targetSize,
     );
-    setPanelPosition(rightPanel, updatedRight);
+    setPanelPosition(panelManager, rightPanel, updatedRight);
   }
 
   const main = percentageFromPanelOptions(
@@ -267,6 +267,6 @@ export function updatePanelSizes(
     return acc;
   }, {});
   if (Object.keys(toUpdate).length > 0) {
-    setPanelPosition(mainPanel, toUpdate);
+    setPanelPosition(panelManager, mainPanel, toUpdate);
   }
 }

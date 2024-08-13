@@ -3,7 +3,7 @@
   import { reactive, watch } from 'vue';
   import { getStoryState } from '../../setup.js';
   import GlobalControls from '../../controls/GlobalControls.vue';
-  import VcsListItem from '../../../src/components/lists/VcsListItem.vue';
+  import VcsListItemComponent from '../../../src/components/lists/VcsListItemComponent.vue';
 
   const item = reactive({
     name: 'foo',
@@ -60,7 +60,7 @@
 <template>
   <Story title="VcsListItem" :meta="{ wrapper: { ...state.wrapper } }">
     <Variant title="Default">
-      <VcsListItem :item="item" v-bind="{ ...state.attrs }" />
+      <VcsListItemComponent :item="item" v-bind="{ ...state.attrs }" />
       <template #controls>
         <GlobalControls v-model="state" with-icon />
         <HstText title="title" v-model="item.title" />

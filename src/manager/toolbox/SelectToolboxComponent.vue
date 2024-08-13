@@ -38,7 +38,7 @@
 
       <v-toolbar
         class="vcs-toolbox-2 mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
-        :height="useItemHeight().value + 8"
+        :height="itemHeight + 8"
         dense
       >
         <v-toolbar-items class="w-100">
@@ -91,10 +91,11 @@
     },
     setup() {
       const open = ref(false);
+      const itemHeight = useItemHeight();
 
       return {
         open,
-        useItemHeight,
+        itemHeight,
       };
     },
   };

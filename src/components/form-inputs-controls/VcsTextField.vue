@@ -12,6 +12,7 @@
       'py-1': !paddingProvided,
     }"
     v-bind="$attrs"
+    :prefix="forcePrefix ? undefined : $attrs.prefix"
     v-model="visibleValue"
     v-model:focused="focused"
   >
@@ -40,6 +41,14 @@
         :text="$st(tooltip)"
       ></v-tooltip>
       <slot name="default" v-bind="scope ?? {}"></slot>
+    </template>
+    <!-- use slot to show prefix always, independent of modelValue (unlike prefix prop) -->
+    <template #prepend-inner="prependInnerScope">
+      <slot name="prepend-inner" v-bind="prependInnerScope">
+        <template v-if="forcePrefix && $attrs.prefix">
+          {{ $attrs.prefix }}
+        </template>
+      </slot>
     </template>
   </v-text-field>
 </template>
@@ -74,6 +83,7 @@
    * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
    * @vue-prop {string}                                 unit - Unit for number input fields. Is displayed behind the number.
    * @vue-prop {number|undefined}                       [decimals] - An optional number of decimal places the visible value will be rounded to. Does not affect the input value!
+   * @vue-prop {boolean}                                [forcePrefix=false] - If set, forces the prefix to be always rendered independent of modelValue by using prepend-inner slot
    */
   export default {
     name: 'VcsTextField',
@@ -111,6 +121,10 @@
       decimals: {
         type: Number,
         default: undefined,
+      },
+      forcePrefix: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props, { attrs, slots }) {

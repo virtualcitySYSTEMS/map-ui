@@ -5,7 +5,7 @@
 
   const props = defineProps({
     title: {
-      type: String,
+      type: [String, Number],
       default: undefined,
     },
     width: {

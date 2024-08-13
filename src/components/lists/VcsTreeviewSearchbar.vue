@@ -10,8 +10,8 @@
       <VcsTextField
         class="searchbar outlined rounded-xl align-center justify-center base-lighten-4 pa-1 pl-6"
         :placeholder="$st(placeholder)"
-        v-bind="$attrs"
         clearable
+        v-bind="$attrs"
       />
     </slot>
 
@@ -66,7 +66,7 @@
   // override primary--placeholder of VcsTextField
   :deep(input::placeholder) {
     color: rgb(var(--v-theme-base-lighten-1)) !important;
-    font-style: initial !important;
+    font-style: italic !important;
     opacity: 0.75 !important;
   }
 </style>

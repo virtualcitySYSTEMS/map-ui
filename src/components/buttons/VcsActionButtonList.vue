@@ -2,12 +2,12 @@
   <div v-if="actions.length > 0" :class="classes" class="gc-2">
     <template v-if="buttons.length > 0">
       <component
-        v-bind="$attrs"
         :is="button"
         class="d-flex"
         v-for="(btn, index) in buttons"
         :key="`${btn.name}-${index}`"
         :tooltip="btn.title"
+        :tooltip-position="tooltipPosition"
         :icon="btn.icon"
         :active="btn.active"
         :disabled="btn.disabled || disabled"
@@ -73,9 +73,11 @@
    * @vue-prop {number} [overflowCount=2] - number of buttons rendered until overflow.
    * @vue-prop {string} [overflowIcon='$vcsKebab'] - optional custom icon for overflow button
    * @vue-prop {boolean} [blockOverflow=false] - if space for the overflow should be blocked or not (e.g. when rendering lists in a grid)
+   * @vue-prop {boolean} [forceOverflow=true] - if there is only one overflow button, this button can be rendered instead of the overflow button by setting this option to false
+   * @vue-prop {boolean} [disabled=false] - disable all actions
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
    * @vue-computed {Array<VcsAction>} buttons - buttons rendered directly, have to provide an icon
    * @vue-computed {Array<VcsAction>} overflowButtons - rest of buttons rendered in overflow
-   * @vue-prop {boolean} [disabled=false] - disable all actions
    */
   export default {
     name: 'VcsActionButtonList',
@@ -112,19 +114,36 @@
         type: Boolean,
         default: false,
       },
+      forceOverflow: {
+        type: Boolean,
+        default: true,
+      },
       disabled: {
         type: Boolean,
         default: false,
+      },
+      tooltipPosition: {
+        type: String,
+        default: 'bottom',
       },
     },
     computed: {
       right() {
         return this.$attrs.right !== undefined && this.$attrs.right !== false;
       },
+      computedCount() {
+        if (
+          !this.forceOverflow &&
+          this.actions.length === this.overflowCount + 1
+        ) {
+          return this.actions.length;
+        }
+        return this.overflowCount;
+      },
       buttons() {
         const buttons = this.actions
           .filter((i) => i.icon)
-          .slice(0, this.overflowCount);
+          .slice(0, this.computedCount);
         if (this.right) {
           return buttons.reverse();
         }

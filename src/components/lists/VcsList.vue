@@ -32,7 +32,7 @@
         </template>
       </v-list-item>
       <template v-for="(item, index) in renderingItems">
-        <VcsListItem
+        <VcsListItemComponent
           v-if="item"
           :dragging="dragging === index"
           :item="item"
@@ -66,7 +66,7 @@
           <template #default="scope">
             <slot name="item.default" v-bind="{ ...scope, index }" />
           </template>
-        </VcsListItem>
+        </VcsListItemComponent>
         <slot name="item.intermediate" :item="item" :index="index" />
         <div
           v-if="hasIntermediateSlot"
@@ -94,14 +94,14 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
+  import VcsListItemComponent from './VcsListItemComponent.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
-  import VcsListItem from './VcsListItem.vue';
   import { createEllipseTooltip } from '../composables.js';
 
   /**
-   * @param {import("vue").Ref<VcsListItem[]>} items
-   * @param {import("vue").ShallowRef<VcsListItem[]>} selected
+   * @param {import("vue").Ref<import("./VcsListItemComponent.vue").VcsListItem[]>} items
+   * @param {import("vue").ShallowRef<import("./VcsListItemComponent.vue").VcsListItem[]>} selected
    * @param {function(string, ...any[]):void} emit
    * @returns {Array<import("../../actions/actionHelper.js").VcsAction>}
    */
@@ -139,24 +139,8 @@
   }
 
   /**
-   * @typedef {Object} VcsListItem
-   * @property {string} name
-   * @property {boolean} [visible] - Whether to display this item or not.
-   * @property {boolean} [disabled] - Whether this item should be displayed as disabled.
-   * @property {boolean|import("../../actions/actionHelper.js").ActionOptions} [renamable] - Whether the title of can be edited. will add a rename action to the end of the action list. This action will call titleChanged with the new title, you must provide the callback yourself, otherwise this does not work as expeted.
-   * @property {string} title - The title to be displayed
-   * @property {string} [tooltip]
-   * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
-   * @property {boolean} [hasUpdate] - Shows badge, if item has an update.
-   * @property {Array<import("../../actions/actionHelper.js").VcsAction>} [actions]
-   * @property {Array<function(PointerEvent):void>|undefined} [clickedCallbacks] - An array of callbacks called on item click. called before selection update
-   * @property {function(boolean):void} [selectionChanged] - A callback called if the selection changes with the current selection status. called before value update
-   * @property {function(string):void} [titleChanged] - A callback called if the title changes via rename action. only usable with renamble true.
-   */
-
-  /**
    * @typedef {Object} ItemMovedEvent
-   * @property {VcsListItem} item
+   * @property {import("./VcsListItemComponent.vue").VcsListItem} item
    * @property {number} targetIndex
    */
 
@@ -172,12 +156,12 @@
    * Clicking with CTRL adds or removes to a selection set.
    * Clicking with SHIFT will create a selection range, starting or ending with the first item in the list
    * or the last normally selected item (not the last item clicked with CTRL for instance).
-   * @vue-prop {Array<VcsListItem>} items
+   * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} items
    * @vue-prop {boolean} [draggable=false]
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
-   * @vue-prop {Array<VcsListItem>} [value=[]] - the initial items to be selected.
-   * @vue-prop {boolean} [searchable=false] - if this list can have its items searched. you can provide your own predicate function by providing "filterPredicate" which is of type function(VcsListItem, string):boolean
+   * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} [value=[]] - the initial items to be selected.
+   * @vue-prop {boolean} [searchable=false] - if this list can have its items searched. you can provide your own predicate function by providing "filterPredicate" which is of type function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    * @vue-prop {boolean} [showTitle=true] - show the title component
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items
@@ -194,7 +178,7 @@
   export default {
     name: 'VcsList',
     components: {
-      VcsListItem,
+      VcsListItemComponent,
       VcsTreeviewSearchbar,
       VcsActionButtonList,
       VTooltip,
@@ -263,7 +247,7 @@
       },
     },
     setup(props, { emit, slots }) {
-      /** @type {import("vue").ShallowRef<Array<VcsListItem>>} */
+      /** @type {import("vue").ShallowRef<Array<import("./VcsListItemComponent.vue").VcsListItem>>} */
       const selected = shallowRef([]);
       /** @type {import("vue").Ref<string>} */
       const query = ref('');
@@ -319,7 +303,7 @@
       );
 
       const vm = getCurrentInstance().proxy;
-      /** @type {function(VcsListItem, string):boolean} */
+      /** @type {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} */
       const filterPredicate = inject(
         'filterPredicate',
         (item, queryString = '') => {
@@ -331,7 +315,7 @@
       );
 
       /**
-       * @type {VcsListItem|null}
+       * @type {import("./VcsListItemComponent.vue").VcsListItem|null}
        */
       let draggedItem = null;
 
@@ -356,7 +340,7 @@
 
       /**
        * @param {MouseEvent} e
-       * @param {VcsListItem} item
+       * @param {import("./VcsListItemComponent.vue").VcsListItem} item
        * @param {number} index
        */
       function drag(e, item, index) {
@@ -369,7 +353,7 @@
       }
 
       /**
-       * @type {import("vue").ComputedRef<Array<VcsListItem>>}
+       * @type {import("vue").ComputedRef<Array<import("./VcsListItemComponent.vue").VcsListItem>>}
        */
       const renderingItems = computed(() => {
         let items = props.items.filter((i) => i.visible !== false);
@@ -408,13 +392,13 @@
          */
         renderingActions,
         /**
-         * @type {import("vue").ComputedRef<Array<VcsListItem>>}
+         * @type {import("vue").ComputedRef<Array<import("./VcsListItemComponent.vue").VcsListItem>>}
          */
         renderingItems,
-        /** @type {import("vue").ShallowRef<Array<VcsListItem>>} */
+        /** @type {import("vue").ShallowRef<Array<import("./VcsListItemComponent.vue").VcsListItem>>} */
         selected,
         /**
-         * @param {import("vue").UnwrapNestedRef<VcsListItem>} item
+         * @param {import("vue").UnwrapNestedRef<import("./VcsListItemComponent.vue").VcsListItem>} item
          * @param {PointerEvent} event
          */
         select(item, event) {
@@ -508,7 +492,7 @@
           emit('update:modelValue', selected.value);
         },
         /**
-         * @param {import("vue").UnwrapNestedRefs<VcsListItem>} item
+         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
          */
         add(item) {
           if (!isReactive(item)) {
@@ -521,7 +505,7 @@
           }
         },
         /**
-         * @param {import("vue").UnwrapNestedRefs<VcsListItem>} item
+         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
          */
         remove(item) {
           if (selected.value.includes(item) && !item.disabled) {
@@ -597,10 +581,11 @@
     }
 
     &:not(.vcs-list__selectable) {
+      cursor: auto;
+
       .v-list-item--link {
         cursor: auto;
       }
-      cursor: auto;
 
       &:hover {
         .v-list-item__overlay {

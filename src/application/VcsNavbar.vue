@@ -14,6 +14,7 @@
               <VcsActionButtonList
                 :actions="mapActions"
                 :overflow-count="3"
+                :force-overflow="false"
                 button="VcsToolButton"
               />
               <v-divider
@@ -28,6 +29,7 @@
               <VcsActionButtonList
                 :actions="contentActions"
                 :overflow-count="xs ? 3 : 4"
+                :force-overflow="false"
                 button="VcsToolButton"
               />
               <v-divider
@@ -38,6 +40,7 @@
               />
               <VcsActionButtonList
                 :actions="toolActions"
+                :force-overflow="false"
                 v-if="mdAndUp"
                 button="VcsToolButton"
               />
@@ -62,6 +65,7 @@
             <div class="d-flex">
               <VcsActionButtonList
                 :actions="projectActions"
+                :force-overflow="false"
                 button="VcsToolButton"
               />
               <v-divider

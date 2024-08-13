@@ -11,6 +11,7 @@
             type="number"
             placeholder="0"
             prefix="X"
+            force-prefix
             v-model.number="xValue"
             unit="m"
             @keydown.enter.prevent="translate"
@@ -22,6 +23,7 @@
             type="number"
             placeholder="0"
             prefix="Y"
+            force-prefix
             v-model.number="yValue"
             unit="m"
             @keydown.enter.prevent="translate"
@@ -33,6 +35,7 @@
             type="number"
             placeholder="0"
             prefix="Z"
+            force-prefix
             v-model.number="zValue"
             unit="m"
             :disabled="
@@ -89,6 +92,7 @@
         <v-col cols="3">
           <VcsTextField
             prefix="X"
+            force-prefix
             v-model.number="xValue"
             placeholder="1"
             @keydown.enter.prevent="scale"
@@ -97,6 +101,7 @@
         <v-col cols="3">
           <VcsTextField
             prefix="Y"
+            force-prefix
             v-model.number="yValue"
             placeholder="1"
             @keydown.enter.prevent="scale"

@@ -1,8 +1,7 @@
 <template>
   <v-card flat class="pa-2">
     <vcs-file-drop
-      elevation="4"
-      :height="2 * useItemHeight().value"
+      :height="3 * itemHeight"
       :multiple="multiple"
       v-model="files"
     />
@@ -78,11 +77,13 @@
 
       const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
 
+      const itemHeight = useItemHeight();
+
       return {
         files,
         loading,
         noListenerAttrs,
-        useItemHeight,
+        itemHeight,
         async doImport() {
           loading.value = true;
           try {

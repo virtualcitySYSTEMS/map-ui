@@ -11,10 +11,12 @@
     </slot>
     {{ formatted }}
     <slot name="append">
-      <span v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
-      <span v-else-if="unit === SpecialUnits.CBM"> m<sup>3</sup> </span>
-      <span v-else-if="unit === SpecialUnits.DEG"> ° </span>
-      <span v-else>
+      <span class="pl-1" v-if="unit === SpecialUnits.SQM"> m<sup>2</sup> </span>
+      <span class="pl-1" v-else-if="unit === SpecialUnits.CBM">
+        m<sup>3</sup>
+      </span>
+      <span class="pl-1" v-else-if="unit === SpecialUnits.DEG"> ° </span>
+      <span class="pl-1" v-else>
         {{ unit }}
       </span>
     </slot>

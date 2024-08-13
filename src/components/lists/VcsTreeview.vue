@@ -3,20 +3,20 @@
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
       :placeholder="searchbarPlaceholder"
-      v-model="search"
+      v-model="localSearchValue"
     />
     <v-treeview
       class="vcs-treeview"
       density="compact"
-      v-bind="{ ...$props, ...$attrs }"
       item-value="name"
       :item-props="true"
-      :search="search"
       :custom-filter="handleFilter"
       :selectable="false"
       :activatable="false"
       expand-icon="mdi-chevron-right"
       collapse-icon="mdi-chevron-down"
+      v-bind="{ ...$props, ...$attrs }"
+      :search="localSearchValue"
     >
       <template #item="{ props: item }">
         <VcsTreeviewLeaf
@@ -87,8 +87,9 @@
 </style>
 
 <script>
-  import { getCurrentInstance, ref } from 'vue';
+  import { getCurrentInstance } from 'vue';
   import { VTreeview } from 'vuetify/labs/VTreeview';
+  import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
 
@@ -96,6 +97,7 @@
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
    * Can render dynamic components as leaf items.
    * In order to display an item needs to be registered and added to `availableComponents`.
+   * Exposes the `search` value for filtering the treeview.
    * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated
    */
@@ -107,6 +109,10 @@
       VTreeview,
     },
     props: {
+      search: {
+        type: String,
+        default: '',
+      },
       showSearchbar: {
         type: Boolean,
         default: false,
@@ -116,8 +122,10 @@
         default: undefined,
       },
     },
-    setup() {
-      const search = ref('');
+    emits: ['update:search'],
+    setup(props, { emit }) {
+      const localSearchValue = useProxiedAtomicModel(props, 'search', emit);
+
       // TODO properly type the tree view item interface & export in index.d.ts
 
       const vm = getCurrentInstance().proxy;
@@ -138,7 +146,7 @@
       };
 
       return {
-        search,
+        localSearchValue,
         handleFilter,
       };
     },

@@ -143,17 +143,21 @@
               ((panelFrameRef.value.offsetTop + e.y) /
                 panelFrameRef.value.parentElement.offsetHeight) *
               100;
-            setPanelPosition(panel, { height: `${Math.round(100 - height)}%` });
+            setPanelPosition(panelManager, panel, {
+              height: `${Math.round(100 - height)}%`,
+            });
           } else {
             const width =
               ((panelFrameRef.value.offsetLeft + e.x) /
                 panelFrameRef.value.parentElement.offsetWidth) *
               100;
             if (panel[panelLocationSymbol] === PanelLocation.LEFT) {
-              setPanelPosition(panel, { width: `${width}%` });
+              setPanelPosition(panelManager, panel, { width: `${width}%` });
               resizeKey = 'left';
             } else if (panel[panelLocationSymbol] === PanelLocation.RIGHT) {
-              setPanelPosition(panel, { width: `${Math.round(100 - width)}%` });
+              setPanelPosition(panelManager, panel, {
+                width: `${Math.round(100 - width)}%`,
+              });
               resizeKey = 'right';
             }
           }

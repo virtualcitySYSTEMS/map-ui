@@ -7,10 +7,10 @@
     v-bind="{ ...$attrs, ...$props }"
   >
     <VcsViewpointComponent
-      v-bind="$attrs"
-      v-model="localConfig"
       hide-name
       :name-rules="nameRules"
+      v-bind="$attrs"
+      v-model="localConfig"
     />
   </AbstractConfigEditor>
 </template>

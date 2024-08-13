@@ -1,8 +1,8 @@
 <template>
   <MenuWrapper
-    v-bind="{ ...$attrs, ...$props }"
     :value-fallback="fallbackStyle"
     name="components.style.text"
+    v-bind="{ ...$attrs, ...$props }"
   >
     <template #preview>
       <div v-if="modelValue" class="d-flex justify-center align-center">

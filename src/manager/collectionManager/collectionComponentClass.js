@@ -36,7 +36,7 @@ import { sortByOwner } from '../navbarManager.js';
  */
 
 /**
- * @typedef {import("../../components/lists/VcsList.vue").VcsListItem & {
+ * @typedef {import("../../components/lists/VcsListItemComponent.vue").VcsListItem & {
  *   actions: Array<import("../../actions/actionHelper.js").VcsAction & { weight?: number }>,
  *   clickedCallbacks: Array<function(PointerEvent):void>,
  *   destroy: function():void|undefined
@@ -55,7 +55,7 @@ function destroyListItem(listItem) {
 /**
  * Renames the title of an item for VcsObject based items.
  * @param {import("@vcmap/core").VcsObject} item
- * @param {import("../../components/lists/VcsList.vue").VcsListItem} listItem
+ * @param {import("../../components/lists/VcsListItemComponent.vue").VcsListItem} listItem
  * @param {string} newTitle
  */
 function titleChanged(item, listItem, newTitle) {

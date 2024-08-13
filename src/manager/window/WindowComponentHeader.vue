@@ -2,7 +2,7 @@
   <div
     class="d-flex justify-space-between align-center window-component-header"
   >
-    <h3 class="d-flex align-center">
+    <h3 class="d-flex align-center flex-grow-1">
       <v-icon
         v-if="windowState.headerIcon"
         class="mr-1"
@@ -12,11 +12,15 @@
         {{ windowState.headerIcon }}
       </v-icon>
       <span
-        class="d-inline-block user-select-none font-weight-bold"
+        ref="headerRef"
+        class="d-inline-block user-select-none font-weight-bold vcs-window-header-title"
         :class="{ 'text-primary': isOnTop }"
       >
         {{ translatedHeaderTitle }}
       </span>
+      <v-tooltip v-if="headerTooltip" activator="parent">
+        {{ $st(headerTooltip) }}
+      </v-tooltip>
     </h3>
     <div class="d-flex justify-space-between align-center">
       <template v-if="windowState.headerActions?.length > 0">
@@ -52,10 +56,10 @@
 
 <style lang="scss" scoped>
   .window-component-header {
-    max-height: 16px;
+    max-height: calc(var(--v-vcs-item-height) / 2);
 
     h3 {
-      line-height: 16px;
+      line-height: calc(var(--v-vcs-item-height) / 2);
     }
     .v-divider--vertical.v-divider--inset {
       margin-top: 2px;
@@ -64,11 +68,19 @@
   .user-select-none {
     user-select: none;
   }
+  .vcs-window-header-title {
+    width: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
 </style>
 
 <script>
-  import { VIcon, VDivider } from 'vuetify/components';
-  import { computed, getCurrentInstance } from 'vue';
+  import { VIcon, VDivider, VTooltip } from 'vuetify/components';
+  import { computed, getCurrentInstance, ref } from 'vue';
+  import { createEllipseTooltip } from '../../components/composables.js';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import { createLinkAction } from '../../actions/actionHelper.js';
@@ -88,6 +100,7 @@
       VcsButton,
       VIcon,
       VDivider,
+      VTooltip,
     },
     inheritAttrs: false,
     props: {
@@ -124,6 +137,8 @@
           : vm.$st(props.windowState.headerTitle),
       );
 
+      const headerRef = ref(null);
+
       const infoAction =
         props.windowState.infoUrl || props.windowState.infoUrlCallback
           ? createLinkAction(
@@ -141,6 +156,12 @@
         close,
         isDockable,
         translatedHeaderTitle,
+        headerRef,
+        headerTooltip: createEllipseTooltip(
+          computed(() => headerRef.value),
+          computed(() => undefined),
+          translatedHeaderTitle,
+        ),
         infoAction,
       };
     },

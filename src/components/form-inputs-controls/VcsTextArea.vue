@@ -121,12 +121,9 @@
   .primary--placeholder {
     :deep(textarea::placeholder) {
       color: rgb(var(--v-theme-primary));
-      font-style: italic;
+      font-style: italic !important;
       opacity: 1;
       padding: 0 3px 0 0;
-    }
-    :deep(textarea::-moz-placeholder) {
-      font-style: initial;
     }
   }
 

@@ -7,10 +7,13 @@
     class="d-flex justify-center drop-field"
     :class="{ dragging: isDragging }"
     :dragging="isDragging"
+    flat
     v-bind="$attrs"
   >
     <slot>
-      <v-card-title class="d-flex align-center">{{ $st(title) }}</v-card-title>
+      <v-card-title class="d-flex align-center text-primary">{{
+        $st(title)
+      }}</v-card-title>
     </slot>
   </v-card>
 </template>
@@ -68,13 +71,13 @@
 
 <style scoped lang="scss">
   .drop-field {
-    outline: 4px dashed rgb(var(--v-theme-base));
-    outline-offset: -8px;
+    margin: 8px 8px;
+    outline: 2px dashed rgb(var(--v-theme-primary));
+    border-radius: 4px;
     background-color: rgb(var(--v-theme-base-lighten-4));
   }
 
   .dragging {
-    outline-color: rgb(var(--v-theme-primary));
-    background-color: rgb(var(--v-theme-base-lighten-1));
+    background-color: rgb(var(--v-theme-primary-lighten-3));
   }
 </style>

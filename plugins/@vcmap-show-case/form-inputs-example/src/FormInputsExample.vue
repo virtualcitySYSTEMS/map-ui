@@ -77,7 +77,7 @@
                 :disabled="disabled"
                 id="arrayInput"
                 type="number"
-                v-model="array"
+                v-model="state.arrayInput"
                 :rules="[arrayTest]"
               />
             </v-col>
@@ -272,7 +272,7 @@
               />
             </v-col>
           </v-row>
-          <VcsCoordinate :disabled="disabled" v-model="array" />
+          <VcsCoordinate :disabled="disabled" v-model="state.arrayInput" />
         </v-container>
       </template>
     </VcsFormSection>
@@ -556,7 +556,6 @@
       return {
         // no object-destruction of reactive objects! or use toRef()
         state: plugin.state,
-        array: ref([1, 2, 3]),
         // do not put the whole config here, since it would become reactive
         selectOptions: plugin.config.selectOptions,
         form,

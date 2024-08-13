@@ -114,10 +114,11 @@ export function getPanelPosition(panelComponent) {
 }
 
 /**
+ * @param {PanelManager} panelManager
  * @param {PanelComponent} panelComponent
  * @param {Partial<PanelPosition>} panelPosition
  */
-export function setPanelPosition(panelComponent, panelPosition) {
+export function setPanelPosition(panelManager, panelComponent, panelPosition) {
   const position = getPanelPosition(panelComponent);
   const toUpdate = Object.keys(panelPosition).reduce((acc, key) => {
     if (position?.[key] !== panelPosition[key]) {
@@ -126,7 +127,14 @@ export function setPanelPosition(panelComponent, panelPosition) {
     return acc;
   }, {});
   if (Object.keys(toUpdate).length > 0) {
-    Object.assign(panelComponent[panelPositionSymbol], panelPosition);
+    const newPosition = Object.assign(
+      panelComponent[panelPositionSymbol],
+      panelPosition,
+    );
+    panelManager.positionChanged.raiseEvent({
+      panelId: panelComponent.id,
+      panelPosition: newPosition,
+    });
   }
 }
 
@@ -149,6 +157,10 @@ class PanelManager {
      * @type {import("@vcmap/core").VcsEvent<PanelComponent>}
      */
     this.removed = new VcsEvent();
+    /**
+     * @type {import("@vcmap/core").VcsEvent<{panelId: string, panelPosition: PanelPosition}>}
+     */
+    this.positionChanged = new VcsEvent();
     /**
      * reactive ordered array of ids,
      * @type {import("vue").UnwrapRef<string[]>}
@@ -266,7 +278,7 @@ class PanelManager {
           return acc;
         }, {});
       if (Object.keys(toUpdate).length > 0) {
-        setPanelPosition(panelComponent, toUpdate);
+        setPanelPosition(this, panelComponent, toUpdate);
       }
     }
   }

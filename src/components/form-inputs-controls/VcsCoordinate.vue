@@ -9,17 +9,18 @@
   >
     <slot name="prepend" v-bind="{ ...$props }" />
     <template v-for="(_, idx) in localValue">
-      <v-col :key="`${prefixes[idx]}-coordinate`" v-if="!hideZ || idx < 2">
+      <v-col :key="`coordinate-${idx}`" v-if="!hideZ || idx < 2">
         <VcsTextField
-          :id="`${prefixes[idx]}-coordinate`"
+          :id="`coordinate-${idx}`"
           :hide-spin-buttons="true"
           type="number"
           class="py-0"
           :min="getRangeFromExtent(idx, extent)?.[0]"
           :max="getRangeFromExtent(idx, extent)?.[1]"
           :step="steps[idx]"
-          :prefix="prefixes[idx]"
           :unit="units[idx]"
+          :prefix="prefixes[idx]"
+          force-prefix
           :decimals="decimals[idx]"
           v-bind="noListenerAttrs"
           v-model="localValue[idx]"

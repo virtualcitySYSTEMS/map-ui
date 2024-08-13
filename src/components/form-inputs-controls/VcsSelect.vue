@@ -124,11 +124,8 @@
     :deep(input::placeholder) {
       color: rgb(var(--v-theme-primary));
       opacity: 1;
-      // line-height: unset !important;
+      font-style: italic !important;
       padding: 0 3px 0 0;
-    }
-    :deep(input::-moz-placeholder) {
-      font-style: italic;
     }
   }
   // remove details

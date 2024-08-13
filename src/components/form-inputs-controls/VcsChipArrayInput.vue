@@ -23,24 +23,22 @@
       <div v-for="({ key, value }, index) in localValue" :key="key">
         <v-chip
           v-if="selected !== index"
-          v-bind="{ ...noListenerAttrs }"
           size="small"
           :disabled="disabled"
           :closable="deletableChips"
           @click="select(index)"
           @click:close="remove(index)"
+          v-bind="{ ...noListenerAttrs }"
         >
           <span class="text-truncate d-inline-block">{{ value }}</span>
         </v-chip>
         <VcsTextField
           v-else
-          v-bind="{ ...noListenerAttrs }"
           rounded
           filled
           autofocus
           hide-spin-buttons
-          :height="useItemHeight().value - 8"
-          v-model="editValue"
+          :height="itemHeight - 8"
           @keydown.esc="selected = -1"
           @blur="selected = -1"
           @keydown.enter="submitChange($event)"
@@ -48,27 +46,27 @@
           append-inner-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
           class="py-0"
+          v-bind="{ ...noListenerAttrs }"
+          v-model="editValue"
         />
       </div>
       <div>
         <v-chip
           v-if="adding === false"
-          v-bind="{ ...noListenerAttrs }"
           size="small"
           :disabled="disabled"
           @click="adding = true"
+          v-bind="{ ...noListenerAttrs }"
         >
           <v-icon>$vcsPlus</v-icon>
         </v-chip>
         <VcsTextField
           v-else
-          v-bind="{ ...noListenerAttrs }"
           rounded
           filled
           autofocus
           hide-spin-buttons
-          :height="useItemHeight().value - 8"
-          v-model="newValue"
+          :height="itemHeight - 8"
           @keydown.enter="add($event, newValue)"
           @click:append-inner="add($event, newValue)"
           @keydown.esc="cancel"
@@ -76,6 +74,8 @@
           append-inner-icon="mdi-check"
           :style="{ width: `${inputWidth}px` }"
           class="py-0"
+          v-bind="{ ...noListenerAttrs }"
+          v-model="newValue"
         />
       </div>
     </div>
@@ -166,8 +166,8 @@
     setup(props, { attrs, emit }) {
       const selected = ref(-1);
       const adding = ref(false);
-      const editValue = ref(undefined);
-      const newValue = ref(undefined);
+      const editValue = ref(null);
+      const newValue = ref(null);
       const vcsChipArrayInput = ref();
       const hasScrollbar = ref();
 
@@ -247,7 +247,7 @@
       }
 
       function cancel() {
-        newValue.value = undefined;
+        newValue.value = null;
         adding.value = false;
       }
 
@@ -271,13 +271,15 @@
           vcsChipArrayInput.value.scrollLeft =
             vcsChipArrayInput.value.scrollWidth;
         }
-        newValue.value = undefined;
+        newValue.value = null;
         adding.value = true;
       }
 
       const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
 
       const paddingProvided = usePadding(attrs);
+
+      const itemHeight = useItemHeight();
 
       return {
         paddingProvided,
@@ -294,7 +296,7 @@
         submitChange,
         add,
         cancel,
-        useItemHeight,
+        itemHeight,
       };
     },
   };

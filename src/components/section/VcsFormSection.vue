@@ -12,7 +12,7 @@
               dense
               variant="text"
               icon
-              :size="useItemHeight().value - 4"
+              :size="itemHeight - 4"
               :disabled="disabled"
               elevation="0"
               @click="open = !open"
@@ -134,12 +134,14 @@
         return props.headerActions;
       });
 
+      const itemHeight = useItemHeight();
+
       return {
         open,
         showContent,
         showHelp,
         actions,
-        useItemHeight,
+        itemHeight,
       };
     },
   };

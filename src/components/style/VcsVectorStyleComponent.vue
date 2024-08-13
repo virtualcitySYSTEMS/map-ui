@@ -5,9 +5,9 @@
       :key="key"
       :is="componentMap[key]"
       :value-default="valueDefault[key]"
+      v-bind="specificProps[key]"
       v-model="localValue[key]"
       @update:model-value="(v) => $emit(`update:${key}`, v)"
-      v-bind="specificProps[key]"
     />
   </v-sheet>
 </template>
