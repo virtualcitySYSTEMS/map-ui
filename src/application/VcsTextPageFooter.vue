@@ -1,7 +1,7 @@
 <template v-if="textPage.title">
   <span class="d-inline-block text-truncate mr-1">
     <span v-if="textPage.url" class="imprint">
-      <a :href="textPage.url" target="_blank"
+      <a :href="$st(textPage.url)" target="_blank"
         >{{ $st(textPage.title) }} <span></span>
       </a>
     </span>
@@ -38,6 +38,7 @@
 
   /**
    * A Footer element opening either an URL in a new tab or a WindowComponent with provided content
+   * textPage title, tooltip and the url can also be i18n keys, and will be translated.
    * @vue-prop {import("../uiConfig.js").TextPageType} [textPage]
    * @vue-prop {string} windowId
    */

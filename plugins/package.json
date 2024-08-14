@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@vcmap/print": "https://github.com/virtualcitySYSTEMS/map-print.git#main"
+    "@vcmap/print": "https://github.com/virtualcitySYSTEMS/map-print.git#main",
+    "@vcmap/multi-view": "https://github.com/virtualcitySYSTEMS/map-multi-view.git",
+    "@vcmap/transparent-terrain": "https://github.com/virtualcitySYSTEMS/map-transparent-terrain.git"
   }
 }

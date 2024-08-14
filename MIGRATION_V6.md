@@ -56,6 +56,7 @@
 - Changed interface of `VcsTable.vue`. You can provide `keyHeader` and `valueHeader` props instead of a `headers` array.
 - Changed featureInfo classes `IframeFeatureInfoView`, `MarkdownFeatureInfoView` and `MarkdownBalloonFeatureInfoView` to all support same markdown template syntax and style expressions for attribute replacement.
 - panelManager now has a `positionChanged` event, which is raised whenever a panel position changes
+- VcsTextPage now uses i18n to translate the url, can be used to configure a locale aware imprint or dataprivacy
 
 # Extended Theming
 

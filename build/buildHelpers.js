@@ -299,6 +299,12 @@ async function buildInlinePlugin(
   const pluginDir = isDependend
     ? getProjectPath('plugins', 'node_modules', plugin)
     : getProjectPath('plugins', plugin);
+
+  const isTs = fs.existsSync(path.join(pluginDir, 'src', 'index.ts'));
+  const entry = isTs
+    ? path.join(pluginDir, 'src', 'index.ts')
+    : path.join(pluginDir, 'src', 'index.js');
+
   const pluginConfig = {
     ...baseConfig,
     esbuild: {
@@ -309,7 +315,7 @@ async function buildInlinePlugin(
       emptyOutDir: false,
       outDir: `dist/plugins/${plugin}/`,
       lib: {
-        entry: path.join(pluginDir, 'src', 'index.js'),
+        entry,
         formats: ['es'],
         fileName: 'index',
       },
@@ -328,11 +334,11 @@ async function buildInlinePlugin(
   }
   await buildLibrary(pluginConfig, `plugins/${plugin}`, 'index', '', true);
   await Promise.all(
-    toCopy.map(async (entry) => {
-      if (fs.existsSync(path.join(pluginDir, entry))) {
+    toCopy.map(async (fileEntry) => {
+      if (fs.existsSync(path.join(pluginDir, fileEntry))) {
         await fs.promises.cp(
-          path.join(pluginDir, entry),
-          path.join(distPath, entry),
+          path.join(pluginDir, fileEntry),
+          path.join(distPath, fileEntry),
           { recursive: true, force: true },
         );
       }
@@ -340,6 +346,10 @@ async function buildInlinePlugin(
   );
 }
 
+/**
+ * Dependent Plugins which are installed from npm are already build and we just copy the relevant files
+ * @param {string} pluginName
+ */
 async function buildDependentPlugin(pluginName) {
   const pluginsDirectory = getPluginDirectory();
   let scope = '';
@@ -409,7 +419,7 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
 
   promises.push(
     ...buildDependentPlugins.map(async (pluginName) =>
-      buildDependentPlugin(pluginName, baseConfig, minify),
+      buildDependentPlugin(pluginName),
     ),
     ...notBuildDependentPlugins.map(async (pluginName) =>
       buildInlinePlugin(pluginName, baseConfig, minify, true),

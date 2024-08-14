@@ -83,13 +83,13 @@ class UiConfig extends Collection {
     super();
     makeOverrideCollection(this, getDynamicModuleId);
     /**
-     * @type {import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>}
+     * @type {import("vue").UnwrapNestedRefs<Object<string, *> & UiConfigObject>}
      * @private
      */
     this._config = reactive({});
 
     /**
-     * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>>}
+     * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *> & UiConfigObject>>}
      */
     this._readonlyConfig = readonly(this._config);
 
@@ -116,7 +116,7 @@ class UiConfig extends Collection {
   }
 
   /**
-   * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *>|UiConfigObject>>}
+   * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *> & UiConfigObject>>}
    */
   get config() {
     return this._readonlyConfig;

@@ -1841,6 +1841,14 @@
         "phone": "+49 (0) 30 . 8904 . 871 . 0",
         "fax": "+49 (0) 30 . 8904 . 871 . 0"
       }
+    },
+    {
+      "name": "@vcmap/multi-view",
+      "entry": "plugins/@vcmap/multi-view/index.js"
+    },
+    {
+      "name": "@vcmap/transparent-terrain",
+      "entry": "plugins/@vcmap/transparent-terrain/index.js"
     }
   ],
   "plugins2": [
@@ -1885,10 +1893,6 @@
     {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
-    },
-    {
-      "name": "@vcmap/multi-view",
-      "entry": "plugins/@vcmap/multi-view/index.js"
     },
     {
       "name": "@vcmap/cesium-filters",
@@ -1938,10 +1942,7 @@
       "projectId": "rBW58EJz5RwCz75Q3",
       "mapId": "csunCGqmQE8Py4KCe"
     },
-    {
-      "name": "@vcmap/transparent-terrain",
-      "entry": "plugins/@vcmap/transparent-terrain/index.js"
-    },
+
     {
       "name": "@vcmap/search-coordinate",
       "entry": "plugins/@vcmap/search-coordinate/index.js"
