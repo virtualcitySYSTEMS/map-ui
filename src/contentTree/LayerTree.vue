@@ -3,8 +3,9 @@
     <VcsTreeview
       v-if="tree && tree.length"
       :items="tree"
-      v-model:opened="opened"
       :show-searchbar="true"
+      v-model:opened="open"
+      open-on-click
       :searchbar-placeholder="'content.search.placeholder'"
       item-children="visibleChildren"
     />
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-  import { computed, inject, onMounted, reactive, watch } from 'vue';
+  import { inject, ref, watch } from 'vue';
   import { VSheet } from 'vuetify/components';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
@@ -35,7 +36,7 @@
     },
     setup(props) {
       const app = inject('vcsApp');
-      const open = app.contentTree.getTreeOpenState(props.windowState.id);
+      const open = ref(app.contentTree.getTreeOpenState(props.windowState.id));
       const tree = app.contentTree.getComputedVisibleTree(props.windowState.id);
 
       function getWithVisibleChildren(item) {
@@ -59,8 +60,7 @@
         tree,
         (value, oldValue) => {
           if (openStateMap.has(app.maps.activeMap?.name)) {
-            open.splice(0);
-            open.push(...openStateMap.get(app.maps.activeMap?.name));
+            open.value = openStateMap.get(app.maps.activeMap?.name);
           } else {
             const items = [...app.contentTree]
               .filter((i) => i.initOpen && i.getTreeViewItem().visible)
@@ -69,9 +69,9 @@
               ? oldValue.map(getWithVisibleChildren).flat()
               : [];
             const changed = items.filter(
-              (name) => !oldValues.includes(name) && !open.includes(name),
+              (name) => !oldValues.includes(name) && !open.value.includes(name),
             );
-            open.push(...changed);
+            open.value.push(...changed);
           }
         },
         { immediate: true },
@@ -79,31 +79,13 @@
 
       watch(open, () => {
         if (app.maps.activeMap) {
-          openStateMap.set(app.maps.activeMap.name, [...open]);
+          openStateMap.set(app.maps.activeMap.name, [...open.value]);
         }
-      });
-
-      // the entire block, very ugly because of https://github.com/vuetifyjs/vuetify/issues/19414
-      const opened = reactive([]);
-      onMounted(() => {
-        opened.splice(0);
-        opened.push(...open);
-
-        watch(opened, () => {
-          open.splice(0);
-          open.push(...opened);
-        });
       });
 
       return {
         tree,
-        opened: computed({
-          get: () => opened,
-          set: (value) => {
-            opened.splice(0);
-            opened.push(...value);
-          },
-        }),
+        open,
       };
     },
   };

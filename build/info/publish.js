@@ -20,37 +20,31 @@ exports.publish = function publish(data) {
 
   // get all doclets that have exports
   const classes = {};
-  const docs = data(
-    [
-      { define: { isObject: true } },
-      function someKindOfExportsTransformer() {
-        if (this?.meta?.code?.name) {
-          if (this.meta.code.name === 'module.exports') {
-            this.exports = 'default';
-          } else if (String(this.meta.code.name).startsWith('exports.')) {
-            this.exports = this.meta.code.name.replace(/exports./, '');
-          }
-        }
-        if (this.kind === 'class') {
-          if (
-            !('extends' in this) ||
-            typeof this.api === 'boolean' ||
-            this.exports
-          ) {
-            classes[this.longname] = this;
-            return true;
-          }
-        }
-        return (
-          typeof this.api === 'boolean' ||
-          this.exports ||
-          (this.meta && /[\\/]externs$/.test(this.meta.path))
-        );
-      },
-    ],
-    { kind: { '!is': 'file' } },
-    { kind: { '!is': 'event' } },
-  ).get();
+  const docs = data(function someKindOfExportsTransformer() {
+    if (this?.meta?.code?.name) {
+      if (this.meta.code.name === 'module.exports') {
+        this.exports = 'default';
+      } else if (String(this.meta.code.name).startsWith('exports.')) {
+        this.exports = this.meta.code.name.replace(/exports./, '');
+      }
+    }
+    if (this.kind === 'class') {
+      if (
+        !('extends' in this) ||
+        typeof this.api === 'boolean' ||
+        this.exports
+      ) {
+        classes[this.longname] = this;
+        return true;
+      }
+    }
+    return (
+      !['file', 'event', 'module'].includes(this.kind) &&
+      (typeof this.api === 'boolean' ||
+        this.exports ||
+        (this.meta && /[\\/]externs$/.test(this.meta.path)))
+    );
+  }).get();
 
   // get symbols data, filter out those that are members of private classes
   const symbols = [];

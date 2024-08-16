@@ -1,6 +1,6 @@
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
 import { join as joinPath } from 'path';
-import tar from 'tar';
+import * as tar from 'tar';
 import { cp, rm } from 'fs/promises';
 import { createGzip } from 'zlib';
 import { pipeline } from 'stream';

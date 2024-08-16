@@ -432,6 +432,10 @@ export async function buildPluginsForBundle(baseConfig = {}) {
   const inlinePlugins = await getInlinePlugins();
   const dependentPlugins = await getPluginNames(false);
   const buildDependentPlugins = filterDependentPlugins(dependentPlugins, true);
+  const notBuildDependentPlugins = filterDependentPlugins(
+    dependentPlugins,
+    false,
+  );
   const promises = inlinePlugins
     .filter((plugin) => plugin.startsWith('@vcmap/'))
     .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));
@@ -439,6 +443,9 @@ export async function buildPluginsForBundle(baseConfig = {}) {
   promises.push(
     ...buildDependentPlugins.map(async (pluginName) =>
       buildDependentPlugin(pluginName),
+    ),
+    ...notBuildDependentPlugins.map(async (pluginName) =>
+      buildInlinePlugin(pluginName, baseConfig, true, true),
     ),
   );
   await Promise.all(promises);

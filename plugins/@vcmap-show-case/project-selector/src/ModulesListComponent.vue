@@ -10,29 +10,36 @@
         @click="toggle(module)"
       >
         {{ module.name || module.configUrl }}
-        <VcsTooltip
+        <v-icon
           v-if="module.description && toggleable"
-          :tooltip="module.description"
+          right
+          v-bind="{ ...$attrs, ...props }"
         >
-          <template #activator="{ props }">
-            <v-icon right v-bind="{ ...$attrs, ...props }">
-              mdi-help-circle
-            </v-icon>
-          </template>
-        </VcsTooltip>
+          mdi-help-circle
+        </v-icon>
+        <v-tooltip
+          v-if="module.description && toggleable"
+          :text="module.description"
+          activator="parent"
+        />
       </v-chip>
     </v-list>
   </v-container>
 </template>
 
 <script>
-  import { VcsTooltip } from '@vcmap/ui';
-  import { VChip, VContainer, VIcon, VList } from 'vuetify/components';
+  import {
+    VChip,
+    VContainer,
+    VIcon,
+    VList,
+    VTooltip,
+  } from 'vuetify/components';
 
   export default {
     name: 'ModulesListComponent',
     components: {
-      VcsTooltip,
+      VTooltip,
       VContainer,
       VList,
       VChip,
