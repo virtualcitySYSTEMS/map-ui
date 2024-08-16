@@ -183,7 +183,8 @@ publish:
       - $PUBLISH
   script:
     - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-    - npm publish --registry https://registry.npmjs.org --access public
+    - NPM_TAG=$([ CI_COMMIT_REF_NAME == "main" ] && echo "dev" || echo "latest")
+    - npm publish --registry https://registry.npmjs.org --access public --tag $NPM_TAG
     - VERSION=$(node -pe "require('./package.json').version")
     - npm pack
     - npm run bundle
