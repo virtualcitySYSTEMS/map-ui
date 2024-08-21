@@ -1,8 +1,10 @@
 import { createVuetify, useTheme } from 'vuetify';
+import { VSvgIcon } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 import 'vuetify/styles';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
-import { computed } from 'vue';
+import { computed, h } from 'vue';
+import DOMPurify from 'dompurify';
 import Icons from '../components/icons/+all.js';
 
 /**
@@ -73,6 +75,34 @@ export function createVcsThemes() {
     },
   };
 }
+
+const imageUrlSet = {
+  component: (props) =>
+    h(
+      props.tag,
+      h('img', {
+        src: props.icon,
+        alt: 'custom icon',
+        style: { width: 'auto', height: '100%' },
+      }),
+    ),
+};
+
+const svgStringSet = {
+  component: (props) => {
+    const svg = new DOMParser()
+      .parseFromString(DOMPurify.sanitize(props.icon), 'image/svg+xml')
+      .querySelector('svg');
+    svg?.classList.add('v-icon__svg');
+    return h(props.tag, {
+      innerHTML: svg?.outerHTML,
+    });
+  },
+};
+
+const svgPathDataSet = {
+  component: VSvgIcon,
+};
 
 /**
  * @param {import("vue-i18n").I18n} i18n
@@ -168,6 +198,11 @@ export function createVcsVuetify(i18n) {
     icons: {
       aliases: {
         ...Icons,
+      },
+      sets: {
+        imageUrl: imageUrlSet,
+        svgString: svgStringSet,
+        svgPathData: svgPathDataSet,
       },
     },
     locale: {
