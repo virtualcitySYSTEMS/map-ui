@@ -7,14 +7,16 @@
             <v-icon color="primary" size="16"> $vcsInfo </v-icon>
           </div>
         </template>
-        <v-list-item-title>
-          <h3 class="font-weight-bold">
-            {{ $st(balloonTitle) }}
-          </h3>
-        </v-list-item-title>
-        <v-list-item-subtitle v-if="balloonSubtitle">
-          {{ $st(balloonSubtitle) }}
-        </v-list-item-subtitle>
+        <slot name="balloon-title" :attrs="{ ...$props, ...$attrs }">
+          <v-list-item-title>
+            <h3 class="font-weight-bold">
+              {{ $st(balloonTitle) }}
+            </h3>
+          </v-list-item-title>
+          <v-list-item-subtitle v-if="balloonSubtitle">
+            {{ $st(balloonSubtitle) }}
+          </v-list-item-subtitle>
+        </slot>
         <template #append>
           <VcsButton
             @click.stop="close"
@@ -84,6 +86,7 @@
    * @vue-prop {Object} tags - optional object containing keys rendered as tags
    * @vue-prop {Array<import("ol/coordinate").Coordinate>} position - clicked position balloon is rendered at
    * @vue-data {slot} [#balloon-header] - slot to override balloon header, $props and $attrs are passed to `attrs`
+   * @vue-data {slot} [#balloon-title] - slot to override balloon title and subtitle, $props and $attrs are passed to `attrs`. Is overwritten by balloon-header slot.
    * @vue-data {slot} [#default] - slot to override balloon content, $props and $attrs are passed to `attrs`
    */
   export default {
