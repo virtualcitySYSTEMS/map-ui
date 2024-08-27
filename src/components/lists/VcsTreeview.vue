@@ -18,14 +18,25 @@
       v-bind="{ ...$props, ...$attrs }"
       :search="localSearchValue"
     >
-      <template #item="{ props: item }">
-        <VcsTreeviewLeaf
-          @click.stop="item.clicked && !item.disabled && item.clicked($event)"
-          :item="item"
-        />
+      <template #item="scope">
+        <slot name="item" v-bind="scope ?? {}">
+          <VcsTreeviewLeaf
+            @click.stop="
+              scope.props.clicked &&
+                !scope.props.disabled &&
+                scope.props.clicked($event)
+            "
+            :item="scope.props"
+          />
+        </slot>
       </template>
-      <template #title="{ item }">
-        {{ $st(item.title || item.name) }}
+      <template #title="scope">
+        <slot name="title" v-bind="scope ?? {}">
+          {{ $st(scope.item.title || scope.item.name) }}
+        </slot>
+      </template>
+      <template v-for="slot of forwardSlots" #[slot]="scope">
+        <slot :name="slot" v-bind="scope ?? {}" />
       </template>
     </v-treeview>
   </div>
@@ -90,6 +101,7 @@
   import { getCurrentInstance } from 'vue';
   import { VTreeview } from 'vuetify/labs/VTreeview';
   import { useProxiedAtomicModel } from '../modelHelper.js';
+  import { useForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
 
@@ -123,7 +135,7 @@
       },
     },
     emits: ['update:search'],
-    setup(props, { emit }) {
+    setup(props, { emit, slots }) {
       const localSearchValue = useProxiedAtomicModel(props, 'search', emit);
 
       // TODO properly type the tree view item interface & export in index.d.ts
@@ -145,9 +157,12 @@
           .indexOf(q.toLocaleLowerCase());
       };
 
+      const forwardSlots = useForwardSlots(slots);
+
       return {
         localSearchValue,
         handleFilter,
+        forwardSlots,
       };
     },
   };
