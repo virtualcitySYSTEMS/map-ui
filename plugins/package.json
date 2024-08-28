@@ -2,6 +2,10 @@
   "dependencies": {
     "@vcmap/print": "https://github.com/virtualcitySYSTEMS/map-print.git#main",
     "@vcmap/multi-view": "https://github.com/virtualcitySYSTEMS/map-multi-view.git",
-    "@vcmap/transparent-terrain": "https://github.com/virtualcitySYSTEMS/map-transparent-terrain.git"
+    "@vcmap/transparent-terrain": "https://github.com/virtualcitySYSTEMS/map-transparent-terrain.git",
+    "@vcmap/walk": "https://github.com/virtualcitySYSTEMS/map-walk.git#main",
+    "@vcmap/clipping-tool": "https://github.com/virtualcitySYSTEMS/map-clipping-tool.git#main",
+    "@vcmap/viewshed": "https://github.com/virtualcitySYSTEMS/map-viewshed.git#main",
+    "@vcmap/link-button": "https://github.com/virtualcitySYSTEMS/map-link-button.git#main"
   }
 }

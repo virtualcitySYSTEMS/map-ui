@@ -1829,6 +1829,28 @@
   ],
   "plugins": [
     {
+      "name": "@vcmap/link-button",
+      "entry": "plugins/@vcmap/link-button/index.js",
+      "buttons": [
+        {
+          "buttonLocation": 5,
+          "templateUrl": "https://www.virtualcitymap.de/?state=[[[{{cameraPosition}}],[{{groundPosition}}],{{distance}},{{heading}},{{pitch}},{{roll}}],\"cesium\",[\"VC Map Demo\"]]",
+          "title": "Zweites Fenster öffnen",
+          "projection": {}
+        },
+        {
+          "buttonLocation": 5,
+          "templateUrl": "https://old.virtualcitymap.de/?cameraPosition={{cameraPosition}}&groundPosition={{groundPosition}}&distance={{distance}}&pitch={{pitch}}&heading={{heading}}&roll={{roll}}#/",
+          "title": "Alte 4.3 Map öffnen",
+          "projection": {}
+        }
+      ]
+    },
+    {
+      "name": "@vcmap/walk",
+      "entry": "plugins/@vcmap/walk/index.js"
+    },
+    {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js",
       "contactDetails": {
@@ -1849,31 +1871,17 @@
     {
       "name": "@vcmap/transparent-terrain",
       "entry": "plugins/@vcmap/transparent-terrain/index.js"
+    },
+    {
+      "name": "@vcmap/viewshed",
+      "entry": "plugins/@vcmap/viewshed/index.js"
+    },
+    {
+      "name": "@vcmap/clipping-tool",
+      "entry": "plugins/@vcmap/clipping-tool/index.js"
     }
   ],
   "plugins2": [
-    {
-      "name": "@vcmap/link-button",
-      "entry": "plugins/@vcmap/link-button/index.js",
-      "buttons": [
-        {
-          "buttonLocation": 5,
-          "templateUrl": "https://new.virtualcitymap.de/?state=[[[{{cameraPosition}}],[{{groundPosition}}],{{distance}},{{heading}},{{pitch}},{{roll}}],\"cesium\",[\"VC Map Demo\"]]",
-          "title": "Zweites Fenster öffnen",
-          "projection": {}
-        },
-        {
-          "buttonLocation": 5,
-          "templateUrl": "https://www.virtualcitymap.de/?cameraPosition={{cameraPosition}}&groundPosition={{groundPosition}}&distance={{distance}}&pitch={{pitch}}&heading={{heading}}&roll={{roll}}#/",
-          "title": "Alte 4.3 Map öffnen",
-          "projection": {}
-        }
-      ]
-    },
-    {
-      "name": "@vcmap/walk",
-      "entry": "plugins/@vcmap/walk/index.js"
-    },
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
@@ -1923,10 +1931,7 @@
         }
       ]
     },
-    {
-      "name": "@vcmap/viewshed",
-      "entry": "plugins/@vcmap/viewshed/index.js"
-    },
+
     {
       "name": "@vcmap/measurement",
       "entry": "plugins/@vcmap/measurement/index.js"
@@ -1946,10 +1951,6 @@
     {
       "name": "@vcmap/search-coordinate",
       "entry": "plugins/@vcmap/search-coordinate/index.js"
-    },
-    {
-      "name": "@vcmap/clipping-tool",
-      "entry": "plugins/@vcmap/clipping-tool/index.js"
     },
     {
       "name": "@vcmap/height-profile",
