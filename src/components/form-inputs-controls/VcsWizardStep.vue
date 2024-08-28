@@ -30,7 +30,11 @@
     </template>
     <template #default>
       <div>
-        <VcsHelp :text="helpText" :show="showHelp" class="mb-1">
+        <VcsHelp
+          :text="helpText"
+          v-if="showHelp && ($slots.help || helpText)"
+          class="mb-1"
+        >
           <slot name="help" />
         </VcsHelp>
         <slot />

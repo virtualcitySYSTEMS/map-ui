@@ -23,7 +23,7 @@
           force-prefix
           :decimals="decimals[idx]"
           v-bind="noListenerAttrs"
-          v-model="localValue[idx]"
+          v-model.number="localValue[idx]"
           :rules="getRulesForAxis(idx)"
         />
       </v-col>

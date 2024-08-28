@@ -1,15 +1,21 @@
 <template>
-  <VcsList :items="plugins" :show-title="false" />
+  <div>
+    <VcsHelp
+      text="Below all config editors provided by plugins are listed. Important Note: Changes made in editors are not applied!"
+    ></VcsHelp>
+    <VcsList :items="plugins" :show-title="false" />
+  </div>
 </template>
 
 <script>
   import { inject, onUnmounted, ref } from 'vue';
-  import { VcsList, createToggleAction, WindowSlot } from '@vcmap/ui';
+  import { VcsList, createToggleAction, WindowSlot, VcsHelp } from '@vcmap/ui';
   import { name } from '../package.json';
 
   export default {
     name: 'PluginEditors',
     components: {
+      VcsHelp,
       VcsList,
     },
     setup() {
@@ -41,12 +47,10 @@
                       if (config) {
                         vcsApp.notifier.add({
                           type: 'info',
-                          message: `${plugin.name}: ${JSON.stringify(
-                            config,
-                            null,
-                            2,
-                          )}`,
+                          title: plugin.name,
+                          message: JSON.stringify(config, null, 2),
                         });
+                        console.log(config);
                       } else {
                         vcsApp.notifier.add({
                           type: 'warning',

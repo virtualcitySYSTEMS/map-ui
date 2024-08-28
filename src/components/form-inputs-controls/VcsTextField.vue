@@ -151,8 +151,12 @@
           return localValue.value ?? '';
         },
         set(value) {
-          localValue.value = value;
           // emit is not needed since the vuetify component already emits an @input event. (forwarded listeners)
+          if (props.type === 'number') {
+            localValue.value = parseFloat(value);
+          } else {
+            localValue.value = value;
+          }
         },
       });
 

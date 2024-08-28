@@ -127,16 +127,26 @@
     <template #default="scope">
       <slot name="default" v-bind="{ ...scope, item, dragging, tooltip }" />
     </template>
-    <template #append>
-      <vcs-badge v-if="item.hasUpdate" class="mr-1" />
-      <vcs-action-button-list
-        v-if="actions.length > 0"
-        :actions="actions"
-        :disabled="item.disabled"
-        :block-overflow="true"
-        :overflow-count="actionButtonListOverflowCount"
-        class="ml-2"
-      />
+    <template #append="appendScope">
+      <slot
+        name="append"
+        v-bind="{
+          ...appendScope,
+          item,
+          actions,
+          actionButtonListOverflowCount,
+        }"
+      >
+        <vcs-badge v-if="item.hasUpdate" class="mr-1" />
+        <vcs-action-button-list
+          v-if="actions.length > 0"
+          :actions="actions"
+          :disabled="item.disabled"
+          :block-overflow="true"
+          :overflow-count="actionButtonListOverflowCount"
+          class="ml-2"
+        />
+      </slot>
     </template>
   </v-list-item>
 </template>

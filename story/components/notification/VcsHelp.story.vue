@@ -16,13 +16,13 @@
     :layout="{ type: 'grid', width: '100%' }"
   >
     <Variant title="Text">
-      <VcsHelp v-bind="{ ...state.bind }" :text="helpText" :show="show" />
+      <VcsHelp v-bind="{ ...state.bind }" :text="helpText" v-if="show" />
       <template #controls>
         <GlobalControls v-model="state"></GlobalControls>
       </template>
     </Variant>
     <Variant title="HTML">
-      <VcsHelp v-bind="{ ...state.bind }" :show="show">
+      <VcsHelp v-bind="{ ...state.bind }" v-if="show">
         <ol>
           <li>First help note</li>
           <li>Second help note</li>

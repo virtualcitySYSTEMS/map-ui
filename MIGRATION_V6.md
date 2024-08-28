@@ -57,6 +57,10 @@
 - Changed featureInfo classes `IframeFeatureInfoView`, `MarkdownFeatureInfoView` and `MarkdownBalloonFeatureInfoView` to all support same markdown template syntax and style expressions for attribute replacement.
 - panelManager now has a `positionChanged` event, which is raised whenever a panel position changes
 - VcsTextPage now uses i18n to translate the url, can be used to configure a locale aware imprint or dataprivacy
+- Removed `show` property from `VcsHelp.vue`. Use `<VcsHelp v-if="">` instead.
+- Changed API of `AbstractConfigEditor.vue`.
+  - No longer calls callback props `onSubmit`, `onCancel` and `onReset`. Use event handler instead.
+  - Removed prop `setConfigOnCancel`. Explicitly add a `@cancel` event listener, if required.
 
 # Extended Theming
 

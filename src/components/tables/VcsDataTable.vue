@@ -38,12 +38,8 @@
       v-model:items-per-page="itemsPerPageRef"
       @update:options="(o) => $emit('update:items', { ...o, search })"
     >
-      <template v-for="slot of Object.keys($slots)" #[slot]="scope">
-        <slot
-          v-if="!['prepend', 'default', 'append'].includes(slot)"
-          :name="slot"
-          v-bind="scope"
-        />
+      <template v-for="slot of forwardSlots" #[slot]="scope">
+        <slot :name="slot" v-bind="scope ?? {}" />
       </template>
       <template
         #header.data-table-select="{ allSelected, selectAll, someSelected }"
@@ -137,6 +133,7 @@
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
+  import { useForwardSlots } from '../composables.js';
 
   /**
    * @typedef {Object} UpdateItemsEvent
@@ -220,7 +217,7 @@
         default: 'isSelectable',
       },
     },
-    setup(props, { attrs, emit }) {
+    setup(props, { attrs, emit, slots }) {
       const vm = getCurrentInstance().proxy;
       const hovering = ref(null);
       /**
@@ -366,6 +363,12 @@
           props.serverItemsLength > itemsPerPageRef.value,
       );
 
+      const forwardSlots = useForwardSlots(slots, [
+        'prepend',
+        'default',
+        'append',
+      ]);
+
       return {
         hovering,
         search,
@@ -393,6 +396,7 @@
         handleSearch,
         translatedHeaders,
         showFooter,
+        forwardSlots,
       };
     },
   };

@@ -36,7 +36,7 @@
         </div>
       </div>
     </slot>
-    <VcsHelp :text="helpText" :show="showHelp">
+    <VcsHelp :text="helpText" v-if="showHelp && ($slots.help || helpText)">
       <slot name="help" />
     </VcsHelp>
     <article class="section-content" v-if="showContent">
