@@ -1,0 +1,68 @@
+{
+  "name": "Theming Examples",
+  "plugins": [
+    {
+      "name": "@vcmap-show-case/theming-example",
+      "entry": "plugins/@vcmap-show-case/theming-example/index.js"
+    }
+  ],
+  "uiConfig": [
+    {
+      "name": "vuetifyTheme",
+      "value": {
+        "light": {
+          "colors": {
+            "base": "#9E9E9E",
+            "base-lighten-5": "#FFFFFF",
+            "base-lighten-4": "#F8F8F8",
+            "base-lighten-3": "#EBEBEB",
+            "base-lighten-2": "#D0D0D0",
+            "base-lighten-1": "#B8B8B8",
+            "base-darken-1": "#858585",
+            "base-darken-2": "#6B6B6B",
+            "base-darken-3": "#525252",
+            "base-darken-4": "#383838",
+            "warning": "#FFCE00",
+            "error": "#AA0000",
+            "info": "#2196F3",
+            "success": "#4CAF50",
+            "surface-light": "#ffffff"
+          },
+          "variables": {
+            "hover-opacity": 0.16,
+            "high-emphasis-opacity": 1,
+            "medium-emphasis-opacity": 1,
+            "vcs-font-size": "14px",
+            "vcs-font-family": "Times New Roman"
+          }
+        },
+        "dark": {
+          "colors": {
+            "base": "#9E9E9E",
+            "base-lighten-5": "#FFFFFF",
+            "base-lighten-4": "#383838",
+            "base-lighten-3": "#525252",
+            "base-lighten-2": "#6B6B6B",
+            "base-lighten-1": "#858585",
+            "base-darken-1": "#B8B8B8",
+            "base-darken-2": "#D0D0D0",
+            "base-darken-3": "#EBEBEB",
+            "base-darken-4": "#F8F8F8",
+            "warning": "#FFCE00",
+            "error": "#FF5252",
+            "info": "#2196F3",
+            "success": "#4CAF50",
+            "surface-light": "#222222"
+          },
+          "variables": {
+            "hover-opacity": 0.16,
+            "high-emphasis-opacity": 1,
+            "medium-emphasis-opacity": 1,
+            "vcs-font-size": "14px",
+            "vcs-font-family": "Times New Roman"
+          }
+        }
+      }
+    }
+  ]
+}

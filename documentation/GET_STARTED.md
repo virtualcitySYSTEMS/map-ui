@@ -162,7 +162,7 @@ To enforce these rules we use the [eslint jsdoc plugin](https://github.com/gajus
 15. [Search](SEARCH.md)
 16. [State](STATE.md)
 17. [Toolbox](TOOLBOX.md)
-18. [UI Colors](UI_COLORS.md)
+18. [UI Theming](UI_THEMING.md)
 19. [UI Components & Styles](UI_COMPONENTS_STYLES.md)
 20. [UI Configuration](UI_CONFIG.md)
 21. [Windows](WINDOWS.md)

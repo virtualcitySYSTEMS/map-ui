@@ -63,7 +63,11 @@
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
-  import { defaultPrimaryColor, useFontSize } from '../vuePlugins/vuetify.js';
+  import {
+    createVcsThemes,
+    setTheme,
+    useFontSize,
+  } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
@@ -590,25 +594,19 @@
    * @returns {function():void} - call to stop syncing
    */
   export function setupUiConfigTheming(app) {
+    function updateTheme(item) {
+      if (item.name === 'primaryColor' || item.name === 'vuetifyTheme') {
+        const mergedThemes = createVcsThemes(
+          app.uiConfig.getByKey('vuetifyTheme')?.value,
+          app.uiConfig.getByKey('primaryColor')?.value,
+        );
+        setTheme(app.vuetify, mergedThemes);
+        app.themeChanged.raiseEvent();
+      }
+    }
     const listeners = [
-      app.uiConfig.added.addEventListener((item) => {
-        if (item.name === 'primaryColor') {
-          app.vuetify.theme.themes.value.dark.colors.primary =
-            item.value?.dark || item.value;
-          app.vuetify.theme.themes.value.light.colors.primary =
-            item.value?.light || item.value;
-          app.themeChanged.raiseEvent();
-        }
-      }),
-      app.uiConfig.removed.addEventListener((item) => {
-        if (item.name === 'primaryColor') {
-          app.vuetify.theme.themes.value.dark.colors.primary =
-            defaultPrimaryColor.dark;
-          app.vuetify.theme.themes.value.light.colors.primary =
-            defaultPrimaryColor.light;
-          app.themeChanged.raiseEvent();
-        }
-      }),
+      app.uiConfig.added.addEventListener(updateTheme),
+      app.uiConfig.removed.addEventListener(updateTheme),
     ];
     const stopWatching = watch(
       () => app.vuetify.theme.current.value.dark,

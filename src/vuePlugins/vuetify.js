@@ -15,7 +15,53 @@ export const defaultPrimaryColor = {
   dark: '#27B97C',
 };
 
-export function createVcsThemes() {
+/**
+ * @typedef {Object} VcsColors
+ * @property {string} [base]
+ * @property {string} [base-lighten-5]
+ * @property {string} [base-lighten-4]
+ * @property {string} [base-lighten-3]
+ * @property {string} [base-lighten-2]
+ * @property {string} [base-lighten-1]
+ * @property {string} [base-darken-1]
+ * @property {string} [base-darken-2]
+ * @property {string} [base-darken-3]
+ * @property {string} [base-darken-4]
+ * @property {string} [primary]
+ * @property {string} [warning]
+ * @property {string} [error]
+ * @property {string} [info]
+ * @property {string} [success]
+ * @property {string} [surface-light]
+ */
+
+/**
+ * @typedef {Object} VcsVariables
+ * @property {string} [hover-opacity]
+ * @property {string} [high-emphasis-opacity]
+ * @property {string} [medium-emphasis-opacity]
+ * @property {string} [vcs-font-size]
+ * @property {string} [vcs-font-family]
+ */
+
+/**
+ * @typedef {Object} VcsTheme
+ * @property {VcsColors} [colors]
+ * @property {VcsVariables} [variables]
+ */
+
+/**
+ * @typedef {Object} VcsThemes
+ * @property {VcsTheme} [dark]
+ * @property {VcsTheme} [light]
+ */
+
+/**
+ * @param {VcsThemes} [options]
+ * @param {{ dark:string, light:string }|string} [primaryColor]
+ * @returns {VcsThemes}
+ */
+export function createVcsThemes(options, primaryColor) {
   return {
     light: {
       colors: {
@@ -29,12 +75,14 @@ export function createVcsThemes() {
         'base-darken-2': '#6B6B6B',
         'base-darken-3': '#525252',
         'base-darken-4': '#383838',
-        primary: defaultPrimaryColor.light,
+        primary:
+          primaryColor?.dark ?? primaryColor ?? defaultPrimaryColor.light,
         warning: '#FFCE00',
         error: '#AA0000',
         info: '#2196F3',
         success: '#4CAF50',
         'surface-light': '#ffffff',
+        ...options?.light?.colors,
       },
       variables: {
         'hover-opacity': 0.16,
@@ -43,6 +91,7 @@ export function createVcsThemes() {
         'vcs-item-height': '32px',
         'vcs-font-size': '13px',
         'vcs-font-family': 'Titillium Web',
+        ...options?.light?.variables,
       },
     },
     dark: {
@@ -57,12 +106,13 @@ export function createVcsThemes() {
         'base-darken-2': '#D0D0D0',
         'base-darken-3': '#EBEBEB',
         'base-darken-4': '#F8F8F8',
-        primary: defaultPrimaryColor.dark,
+        primary: primaryColor?.dark ?? primaryColor ?? defaultPrimaryColor.dark,
         warning: '#FFCE00',
         error: '#FF5252',
         info: '#2196F3',
         success: '#4CAF50',
         'surface-light': '#222222',
+        ...options?.dark?.colors,
       },
       variables: {
         'hover-opacity': 0.16,
@@ -71,9 +121,27 @@ export function createVcsThemes() {
         'vcs-item-height': '40px',
         'vcs-font-size': '15px',
         'vcs-font-family': 'Titillium Web',
+        ...options?.dark?.variables,
       },
     },
   };
+}
+
+/**
+ * @param {ReturnType<typeof import("vuetify").createVuetify>} vuetify
+ * @param {VcsThemes} theme
+ */
+export function setTheme(vuetify, theme) {
+  Object.assign(vuetify.theme.themes.value.light.colors, theme?.light?.colors);
+  Object.assign(
+    vuetify.theme.themes.value.light.variables,
+    theme?.light?.variables,
+  );
+  Object.assign(vuetify.theme.themes.value.dark.colors, theme?.dark?.colors);
+  Object.assign(
+    vuetify.theme.themes.value.dark.variables,
+    theme?.dark?.variables,
+  );
 }
 
 const imageUrlSet = {

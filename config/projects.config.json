@@ -23,7 +23,8 @@
         "config/dev.config.json",
         "config/codes.config.json",
         "config/graphFeatureInfo.config.json",
-        "config/splashscreen.config.json"
+        "config/splashscreen.config.json",
+        "config/theming.config.json"
       ]
     }
   ]
