@@ -1,4 +1,4 @@
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 
 /**
  * returns a computed which is true, if the provided attributes contain one or more
@@ -30,6 +30,35 @@ export function useForwardSlots(slots, exclude = []) {
   });
 }
 
+let intersectionObserver = null;
+/** @type {WeakMap<WeakKey<HTMLElement>, import("vue").ComputedRef<boolean>>} */
+const observedTargets = new WeakMap();
+
+/**
+ * if the visibility of the element changes, the computed ref will be set.
+ * @param {HTMLElement} elem
+ * @param {import("vue").ComputedRef<boolean>} visible
+ * @returns {() => void}}
+ */
+function registerTargetWithIntersectionObserver(elem, visible) {
+  if (!intersectionObserver) {
+    intersectionObserver = new IntersectionObserver((targets) => {
+      targets.forEach((target) => {
+        const visibilityRef = observedTargets.get(target.target);
+        if (visibilityRef) {
+          visibilityRef.value = target.isIntersecting;
+        }
+      });
+    });
+  }
+  intersectionObserver.observe(elem);
+  observedTargets.set(elem, visible);
+  return () => {
+    intersectionObserver.unobserve(elem);
+    observedTargets.delete(elem);
+  };
+}
+
 /**
  * @param {import("vue").ComputedRef<HTMLElement|undefined>} parent
  * @param {import("vue").ComputedRef<string|undefined>} tooltip
@@ -39,18 +68,48 @@ export function useForwardSlots(slots, exclude = []) {
 export function createEllipseTooltip(parent, tooltip, title) {
   const offsetWidth = ref(0);
   const scrollWidth = ref(0);
-
-  watch([parent, title], async () => {
-    const elem = parent.value;
-    if (elem) {
-      await nextTick(() => {
-        offsetWidth.value = elem.offsetWidth;
-        scrollWidth.value = elem.scrollWidth;
-      });
+  const visible = ref(false);
+  let observerListener = () => {};
+  watch(visible, () => {
+    if (visible.value && parent.value) {
+      offsetWidth.value = parent.value.offsetWidth;
+      scrollWidth.value = parent.value.scrollWidth;
     } else {
       offsetWidth.value = 0;
       scrollWidth.value = 0;
     }
+  });
+  watch(
+    parent,
+    () => {
+      observerListener();
+      visible.value = false;
+      const elem = parent.value;
+      if (elem) {
+        if (elem.checkVisibility()) {
+          visible.value = true;
+        } else {
+          observerListener = registerTargetWithIntersectionObserver(
+            elem,
+            visible,
+          );
+        }
+      }
+    },
+    { immediate: true },
+  );
+
+  watch(title, async () => {
+    if (visible.value) {
+      await nextTick(() => {
+        offsetWidth.value = parent.value.offsetWidth;
+        scrollWidth.value = parent.value.scrollWidth;
+      });
+    }
+  });
+
+  onUnmounted(() => {
+    observerListener();
   });
 
   return computed(() => {

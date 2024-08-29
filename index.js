@@ -267,7 +267,7 @@ export {
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
-export { default as VcsTreeviewLeaf } from './src/components/lists/VcsTreeviewLeaf.vue';
+export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.vue';
 export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
 export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
 export { default as VcsDefaultLogo } from './src/logo.svg';

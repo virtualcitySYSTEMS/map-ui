@@ -18,25 +18,37 @@
       v-bind="{ ...$props, ...$attrs }"
       :search="localSearchValue"
     >
-      <template #item="scope">
-        <slot name="item" v-bind="scope ?? {}">
-          <VcsTreeviewLeaf
-            @click.stop="
-              scope.props.clicked &&
-                !scope.props.disabled &&
-                scope.props.clicked($event)
-            "
-            :item="scope.props"
-          />
-        </slot>
-      </template>
       <template #title="scope">
         <slot name="title" v-bind="scope ?? {}">
-          {{ $st(scope.item.title || scope.item.name) }}
+          <VcsTreeviewTitle :item="scope.item"></VcsTreeviewTitle>
         </slot>
       </template>
       <template v-for="slot of forwardSlots" #[slot]="scope">
         <slot :name="slot" v-bind="scope ?? {}" />
+      </template>
+      <template #prepend="scope">
+        <slot name="prepend" v-bind="scope ?? {}">
+          <template v-if="scope.item?.icon">
+            <v-icon v-if="typeof scope.item?.icon === 'string'" :size="16">
+              {{ scope.item.icon }}
+            </v-icon>
+            <ImageElementInjector :element="scope.item.icon" v-else />
+          </template>
+        </slot>
+      </template>
+      <template #append="scope">
+        <slot name="append" v-bind="scope ?? {}">
+          <VcsActionButtonList
+            v-if="scope.item.actions?.length > 0"
+            :actions="scope.item.actions"
+            :overflow-count="3"
+            :disabled="scope.item.disabled"
+            right
+            tooltip-position="right"
+            block-overflow
+            class="col-4 pa-0 d-flex align-center"
+          />
+        </slot>
       </template>
     </v-treeview>
   </div>
@@ -99,11 +111,14 @@
 
 <script>
   import { getCurrentInstance } from 'vue';
+  import { VIcon } from 'vuetify/components';
   import { VTreeview } from 'vuetify/labs/VTreeview';
   import { useProxiedAtomicModel } from '../modelHelper.js';
   import { useForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
-  import VcsTreeviewLeaf from './VcsTreeviewLeaf.vue';
+  import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+  import ImageElementInjector from '../ImageElementInjector.vue';
+  import VcsTreeviewTitle from './VcsTreeviewTitle.vue';
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
@@ -116,7 +131,10 @@
   export default {
     name: 'VcsTreeview',
     components: {
-      VcsTreeviewLeaf,
+      VcsTreeviewTitle,
+      VIcon,
+      ImageElementInjector,
+      VcsActionButtonList,
       VcsTreeviewSearchbar,
       VTreeview,
     },
@@ -157,7 +175,11 @@
           .indexOf(q.toLocaleLowerCase());
       };
 
-      const forwardSlots = useForwardSlots(slots);
+      const forwardSlots = useForwardSlots(slots, [
+        'append',
+        'title',
+        'prepend',
+      ]);
 
       return {
         localSearchValue,
