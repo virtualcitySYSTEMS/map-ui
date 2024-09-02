@@ -47,7 +47,7 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
 const actionWeightSymbol = Symbol('ActionWeight');
 
 /**
- * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof ContentTreeItem>>}
+ * @type {ClassRegistry<typeof ContentTreeItem>}
  */
 export const contentTreeClassRegistry = new ClassRegistry();
 

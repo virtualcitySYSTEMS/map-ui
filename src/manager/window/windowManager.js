@@ -105,15 +105,15 @@ export function isSlotPosition(windowPosition) {
  * @typedef {{
  *   id?: string,
  *   parentId?: string,
- *   component: import("vue").Component<T, unknown, unknown>,
- *   headerComponent?: import("vue").Component<T, unknown, unknown>,
+ *   component: import("vue").Component<T>,
+ *   headerComponent?: import("vue").Component<T>,
  *   state? : Partial<WindowState>,
  *   position? : Partial<WindowPositionOptions>,
  *   slot?: WindowSlot,
  *   props?: T,
  *   provides?: Record<string, unknown>
  * }} WindowComponentOptions
- * @template {Object} [T=Object]
+ * @template [T=any]
  * @property {string} [id] Optional ID, If not provided an uuid will be generated.
  * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
  * @property {import("vue").Component<T, unknown, unknown>} component Main Component which is shown below the header.

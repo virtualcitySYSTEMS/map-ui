@@ -54,7 +54,7 @@ function getLogger() {
 }
 
 /**
- * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
+ * @type {ClassRegistry<typeof AbstractFeatureInfoView>}
  */
 export const featureInfoClassRegistry = new ClassRegistry();
 

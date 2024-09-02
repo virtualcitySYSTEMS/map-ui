@@ -48,40 +48,46 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
- *    plugins?: Object[],
+ *    plugins?: Record<string, unknown>[],
  *    contentTree?: import("./contentTree/contentTreeItem.js").ContentTreeItemOptions[],
  *    uiConfig?: import("./uiConfig.js").UiConfigurationItem<unknown>[],
  *    featureInfo?: import("./featureInfo/abstractFeatureInfoView.js").FeatureInfoViewOptions[],
- *    i18n?: Object[]
+ *    i18n?: import("./i18n/i18nCollection.js").I18nConfigurationItem[]
  *  }} VcsUiModuleConfig
  */
 
 /**
- * @typedef {Object} PluginConfig
+ * @typedef {{ name: string, entry?: string, version?: string}} PluginConfig
  * @property {string} name
  * @property {string|undefined} [entry] - path to the plugin's index.js
  * @property {string|undefined} [version] - version or version range
  */
 
 /**
- * @typedef {import("vue").Component<{ getConfig(): Promise<Config>, setConfig(config: Config): Promise<void> }> & {
- *  title?: string
- * }} PluginConfigEditorComponent
+ * @typedef {import("vue").Component<{ getConfig(): Config, setConfig(config?: Config): void }>} PluginConfigEditorComponent
  * @template {Object} Config
  */
 
 /**
- * @typedef {Object} PluginConfigEditor
- * @property {PluginConfigEditorComponent<object>} component - A editor component to configure a plugin or item
+ * @typedef {{
+ *   component: PluginConfigEditorComponent<Config>,
+ *   title?: string,
+ *   collectionName?: string,
+ *   itemName?: string,
+ *   infoUrlCallback?: () => string,
+ * }} PluginConfigEditor
+ * @template {Object} Config
+ * @property {PluginConfigEditorComponent<Config>} component - A editor component to configure a plugin or item
+ * @property {string} [title] - optional title to render in the window header & actions of this editor
  * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
  * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
  * @property {function():string} [infoUrlCallback] - An optional function returning an url referencing help or further information regarding the config editor.
  */
 
 /**
- * @typedef {function(P, string):VcsPlugin<P, S>} createPlugin
- * @template {Object} P
- * @template {Object} S
+ * @typedef {function(Config, string):VcsPlugin<Config, State>} createPlugin
+ * @template {Object} Config
+ * @template {Object} State
  */
 
 /**
@@ -92,22 +98,22 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
  *   version: string,
  *   mapVersion: string,
  *   i18n?: Object<string, unknown>,
- *   initialize?: function(import("@src/vcsUiApp.js").default, S=):void|Promise<void>,
+ *   initialize?: function(import("@src/vcsUiApp.js").default, State=):void|Promise<void>,
  *   onVcsAppMounted?: function(import("@src/vcsUiApp.js").default):void,
- *   toJSON?: function(): P,
- *   getDefaultOptions?: function(): P,
- *   getState?: function(boolean=):S|Promise<S>,
- *   getConfigEditors?: function():Array<PluginConfigEditor>,
+ *   toJSON?: function(): Config,
+ *   getDefaultOptions?: function(): Config,
+ *   getState?: function(boolean=):State|Promise<State>,
+ *   getConfigEditors?: function():Array<PluginConfigEditor<Config>>,
  *   destroy?: function(): void
  * }} VcsPlugin
- * @template {Object} P
- * @template {Object} S
+ * @template {Object} Config
+ * @template {Object} State
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
- * @property {function(import("@src/vcsUiApp.js").default, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
+ * @property {function(import("@src/vcsUiApp.js").default, State=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(import("@src/vcsUiApp.js").default)} onVcsAppMounted - called on mounted of VcsApp.vue
- * @property {function():P} [toJSON] - should return the plugin's serialization excluding all default values
- * @property {function():P} [getDefaultOptions] - should return the plugin's default options
- * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
+ * @property {function():Config} [toJSON] - should return the plugin's serialization excluding all default values
+ * @property {function():Config} [getDefaultOptions] - should return the plugin's default options
+ * @property {function(boolean=):S|Promise<State>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
  * @property {Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
  * @api
  */
@@ -164,7 +170,7 @@ class VcsUiApp extends VcsApp {
      */
     this.themeChanged = new VcsEvent();
     /**
-     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin>}
+     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin, Collection<VcsPlugin>, Object>}
      * @private
      */
     this._plugins = makeOverrideCollection(
@@ -260,7 +266,7 @@ class VcsUiApp extends VcsApp {
     );
 
     /**
-     * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<ContentTreeItem>>}
+     * @type {import("@vcmap/core").OverrideClassRegistry<typeof ContentTreeItem>}
      * @private
      */
     this._contentTreeClassRegistry = new OverrideClassRegistry(
@@ -369,7 +375,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<Object, Object>>}
+   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin, Collection<VcsPlugin>, Object>}
    */
   get plugins() {
     return this._plugins;
@@ -383,21 +389,21 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof import("./callback/vcsCallback.js").default>>}
+   * @type {import("@vcmap/core").OverrideClassRegistry<typeof import("./callback/vcsCallback.js").default>}
    */
   get callbackClassRegistry() {
     return this._callbackClassRegistry;
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof ContentTreeItem>>}
+   * @type {import("@vcmap/core").OverrideClassRegistry<typeof ContentTreeItem>}
    */
   get contentTreeClassRegistry() {
     return this._contentTreeClassRegistry;
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<import("@vcmap/core").Ctor<typeof AbstractFeatureInfoView>>}
+   * @type {import("@vcmap/core").OverrideClassRegistry<typeof AbstractFeatureInfoView>}
    */
   get featureInfoClassRegistry() {
     return this._featureInfoClassRegistry;

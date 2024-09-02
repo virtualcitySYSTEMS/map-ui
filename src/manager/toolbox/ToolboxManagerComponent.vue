@@ -85,7 +85,7 @@
    * @vue-computed {Array<ToolboxButtonGroup>} orderedGroups - Array of group components sorted by owner
    */
   export default {
-    name: 'VcsToolboxManager',
+    name: 'ToolboxManagerComponent',
     components: {
       ToolboxActionSelect,
       ToolboxActionGroup,

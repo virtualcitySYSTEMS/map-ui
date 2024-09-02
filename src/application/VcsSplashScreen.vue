@@ -14,7 +14,12 @@
         <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
           <template #label>
             <VcsMarkdown
-              :content="$st(options.checkBoxText)"
+              :content="
+                $st(
+                  options.checkBoxText ||
+                    'components.splashScreen.checkBoxText',
+                )
+              "
               class="marked-checkbox-content"
             />
           </template>
@@ -29,7 +34,11 @@
               variant="filled"
               @click="exitScreen"
               :disabled="options.acceptInput && !checkBox"
-              >{{ $t(options.buttonTitle) }}</VcsFormButton
+              >{{
+                $st(
+                  options.buttonTitle || 'components.splashScreen.buttonTitle',
+                )
+              }}</VcsFormButton
             >
           </v-col>
         </v-row>

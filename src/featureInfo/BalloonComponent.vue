@@ -2,10 +2,12 @@
   <v-card class="mx-auto elevation-0" v-if="position">
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-1">
-        <template #prepend>
-          <div class="pl-1 pr-2">
-            <v-icon color="primary" size="16"> $vcsInfo </v-icon>
-          </div>
+        <template #prepend="prependScope">
+          <slot name="prepend" v-bind="prependScope">
+            <div class="pl-1 pr-2">
+              <v-icon color="primary" size="16"> $vcsInfo </v-icon>
+            </div>
+          </slot>
         </template>
         <slot name="balloon-title" :attrs="{ ...$props, ...$attrs }">
           <v-list-item-title>
@@ -88,6 +90,7 @@
    * @vue-data {slot} [#balloon-header] - slot to override balloon header, $props and $attrs are passed to `attrs`
    * @vue-data {slot} [#balloon-title] - slot to override balloon title and subtitle, $props and $attrs are passed to `attrs`. Is overwritten by balloon-header slot.
    * @vue-data {slot} [#default] - slot to override balloon content, $props and $attrs are passed to `attrs`
+   * @vue-data {slot} [#prepend] - slot to override balloon header icon
    */
   export default {
     name: 'BalloonComponent',

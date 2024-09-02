@@ -2,23 +2,23 @@ import { reactive } from 'vue';
 import { ObliqueMap } from '@vcmap/core';
 
 /**
- * @typedef {Object} Attribution.Options
+ * @typedef {Object} AttributionOptions
  * @property {string} provider - name of the data provider
  * @property {number} [year] - year of dataset
- * @property {URL} url - link to data provider
+ * @property {string} url - link to data provider
  */
 
 /**
  * @typedef {Object} AttributionEntry
  * @property {string} key - name of the VcsObject the attribution applies to
  * @property {string} title - title of the VcsObject the attribution applies to
- * @property {Attribution.Options|Array<Attribution.Options>} attributions - attributions of a map, layer or oblique collection
+ * @property {AttributionOptions|Array<AttributionOptions>} attributions - attributions of a map, layer or oblique collection
  */
 
 /**
  * merges attribution entries of same providers
  * @param {Array<AttributionEntry>} entries
- * @returns {Array<{provider: string, years: string, url: URL}>}
+ * @returns {Array<{provider: string, years: string, url: string}>}
  */
 export function mergeAttributions(entries) {
   const providers = {};

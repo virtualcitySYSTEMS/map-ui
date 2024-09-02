@@ -113,12 +113,16 @@ async function vueAugmentations() {
   let content = await readFile('./index.d.ts', 'utf-8');
   content = `${content}
 declare module 'vue' {
-  type ReplaceFirstParam<TParams extends readonly any[], TReplace> = {
-    [K in keyof TParams]: K extends "0" ? TReplace : TParams[K]
-  }
-
   interface ComponentCustomProperties {
-    $st: (...params: ReplaceFirstParam<Parameters<import("vue-i18n").ComposerTranslation>, string | null | undefined>) => ReturnType<import("vue-i18n").ComposerTranslation>
+    $st(key: string | number | undefined | null): string;
+    $st(key: string | number | undefined | null, plural: number, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
+    $st(key: string | number | undefined | null, defaultMsg: string, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
+    $st(key: string | number | undefined | null, list: unknown[], options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
+    $st(key: string | number | undefined | null, list: unknown[], plural: number): string;
+    $st(key: string | number | undefined | null, list: unknown[], defaultMsg: string): string;
+    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
+    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, plural: number): string;
+    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, defaultMsg: string): string;
   }
 }
 `;

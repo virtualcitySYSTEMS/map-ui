@@ -24,13 +24,13 @@ import { renderTemplate } from '../components/form-output/markdownHelper.js';
  *   keyMapping?: Record<string,string>,
  *   valueMapping?: Record<string, string|Record<string,string>>,
  *   tags?: Record<string, HTMLTagOptions>,
- *   window?: import("../manager/window/windowManager.js").WindowComponentOptions
+ *   window?: Pick<import("../manager/window/windowManager.js").WindowComponentOptions,'state'|'slot'|'position'>
  * }} FeatureInfoViewOptions
  * @property {Array<string>} [attributeKeys] - list of keys to filter attributes of selected feature
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values
  * @property {Object<string,HTMLTagOptions>} [tags] - object with keys rendered as special html element. Value contains html options
- * @property {import("../manager/window/windowManager.js").WindowComponentOptions} [window] - state, slot, position can be set. Other options are predefined. headerTitle of window state can be a template string, e.g. "{{myAttribute}}" or ["{{layerName}}", " - ", "{{myAttribute}}"]
+ * @property {Pick<import("../manager/window/windowManager.js").WindowComponentOptions,'state'|'slot'|'position'>} [window] - state, slot, position can be set. Other options are predefined. headerTitle of window state can be a template string, e.g. "{{myAttribute}}" or ["{{layerName}}", " - ", "{{myAttribute}}"]
  */
 
 /**
@@ -314,7 +314,7 @@ class AbstractFeatureInfoView extends VcsObject {
      */
     this.tags = options.tags || defaultOptions.tags;
     /**
-     * @type {import("../manager/window/windowManager.js").WindowComponentOptions|Object}
+     * @type {Pick<import("../manager/window/windowManager.js").WindowComponentOptions,'state'|'slot'|'position'>|Object}
      * @private
      */
     this._window = options.window || defaultOptions.window;
@@ -327,7 +327,7 @@ class AbstractFeatureInfoView extends VcsObject {
 
   /**
    * window options, configured in a module, used only internally by AbstractFeatureInfoView or subclass
-   * @type {import("../manager/window/windowManager.js").WindowComponentOptions|Object}
+   * @type {Pick<import("../manager/window/windowManager.js").WindowComponentOptions<FeatureInfoProps>,'state'|'slot'|'position'>|Object}
    */
   get window() {
     return this._window;

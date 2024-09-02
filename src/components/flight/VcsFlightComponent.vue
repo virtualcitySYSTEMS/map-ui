@@ -49,7 +49,7 @@
           </v-col>
           <v-col>
             <VcsSelect
-              id="title"
+              id="interpolation"
               :items="[
                 { value: 'spline', title: 'components.flight.spline' },
                 { value: 'linear', title: 'components.flight.linear' },

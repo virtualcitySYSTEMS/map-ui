@@ -61,6 +61,8 @@
 - Changed API of `AbstractConfigEditor.vue`.
   - No longer calls callback props `onSubmit`, `onCancel` and `onReset`. Use event handler instead.
   - Removed prop `setConfigOnCancel`. Explicitly add a `@cancel` event listener, if required.
+- The `title` property for pluin editors has moved from `PluginConfigEditorComponent` to the `PluginConfigEditor`.
+- Plugins which provide editors can no longer return promises from `getConfig` or `setConfig`.
 
 # Extended Theming
 

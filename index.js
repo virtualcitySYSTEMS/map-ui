@@ -124,6 +124,7 @@ export {
   ToolboxType,
   defaultToolboxName,
 } from './src/manager/toolbox/toolboxManager.js';
+export { default as ToolboxManagerComponent } from './src/manager/toolbox/ToolboxManagerComponent.vue';
 export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
 export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
 export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
@@ -185,7 +186,11 @@ export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
 export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.vue';
 //
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
-export { i18nPluginSymbol } from './src/i18n/i18nCollection.js';
+export {
+  default as I18nCollection,
+  i18nPluginSymbol,
+} from './src/i18n/i18nCollection.js';
+export { default as UiConfig } from './src/uiConfig.js'; // export UiConfig types
 export {
   createVcsThemes,
   createVcsVuetify,
@@ -307,5 +312,6 @@ export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue'
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
 export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.vue';
 export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
+export * from './src/application/attributionsHelper.js';
 export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';

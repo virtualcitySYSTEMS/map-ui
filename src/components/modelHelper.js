@@ -8,11 +8,12 @@ import { getLogger } from '@vcsuite/logger';
  * getter returns the internal value
  * setter updates internal value and emits the update event
  * simplified based on https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/composables/proxiedModel.ts
- * @param {Object} props
- * @param {string} prop
- * @param {(event: string, value: T) => void} emit
+ * @param {{ [k in P]: string extends P ? unknown : T }} props
+ * @param {P} prop
+ * @param {(event: string extends P ? P : `update:${P}`, value: T) => void} emit
  * @returns {import("vue").Ref<import("vue").UnwrapRef<T>>}
  * @template T
+ * @template  {string} [P=string]
  */
 export function useProxiedAtomicModel(props, prop, emit) {
   const internal = ref(props[prop]);
@@ -43,11 +44,12 @@ export function useProxiedAtomicModel(props, prop, emit) {
  * Provides a ref model for complex properties.
  * Watches changes on the provided prop and updates the internal ref
  * Watches changes on the internal ref and emits the change, if prop has not already been updated
- * @param {Object} props
- * @param {string} prop
- * @param {(event: string, value: T) => void} emit
+ * @param {{ [k in P]: string extends P ? unknown : T }} props
+ * @param {P} prop
+ * @param {(event: string extends P ? P : `update:${P}`, value: T) => void} emit
  * @returns {import("vue").Ref<import("vue").UnwrapRef<T>>}
  * @template T
+ * @template {string} [P=string]
  */
 export function useProxiedComplexModel(props, prop, emit) {
   const internal = ref(structuredClone(toRaw(props[prop])));

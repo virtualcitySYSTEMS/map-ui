@@ -17,8 +17,8 @@ export function isObject(item) {
 /**
  * Item for internationalization containing an object with key value mapping for each locale (de, en, nl, pl, ...).
  * Other locales can be supported by adding corresponding mapping objects with associated locale key.
- * @typedef {Object} I18nConfigurationItem
- * @property {string} [name] - optional name for the item. If not provided checksum is used.
+ * @typedef {Record<string, string | object> & { name: string, properties?: object, de?: object, en?: object }} I18nConfigurationItem
+ * @property {string} name - the name for the item.
  * @property {Object} [properties]
  * @property {Object} [de]
  * @property {Object} [en]
@@ -113,7 +113,7 @@ class I18nCollection extends IndexedCollection {
   /**
    * Returns a merged Message Object with the locale as a key and an Object with all the translated keys.
    * Includes all available plugin messages.
-   * @returns {Object}
+   * @returns {Record<string, object>}
    */
   getMergedMessages() {
     const pluginMessages = [...this._pluginCollection]

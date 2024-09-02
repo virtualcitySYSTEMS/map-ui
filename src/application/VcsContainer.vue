@@ -87,7 +87,7 @@
   import { VContainer } from 'vuetify/components';
   import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
-  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManager.vue';
+  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';
   import NotifierComponent from '../notifier/NotifierComponent.vue';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
 

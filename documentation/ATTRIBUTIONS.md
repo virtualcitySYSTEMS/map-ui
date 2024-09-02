@@ -12,7 +12,7 @@ The entry options are defined as:
 
 ```js
 /**
- * @typedef {Object} Attribution.Options
+ * @typedef {Object} AttributionOptions
  * @property {string} provider - name of the data provider
  * @property {number} [year] - year of dataset
  * @property {URL} url - link to data provider

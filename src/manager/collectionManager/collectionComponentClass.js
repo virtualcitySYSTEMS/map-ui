@@ -1,7 +1,7 @@
 import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
-import { computed, ref, shallowRef, watch } from 'vue';
+import { computed, reactive, ref, shallowRef, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { check, oneOf } from '@vcsuite/check';
 import { validateAction } from '../../components/lists/VcsActionList.vue';
@@ -95,7 +95,7 @@ export function createSupportedMapMappingFunction(
  * Listens to all collection events and synchronizes changes to the items array.
  * The Collection Items will be transformed and filtered with the given itemMappings and itemFilter functions
  * @class
- * @template {Object|import("@vcmap/core").VcsObject} T
+ * @template {Object|import("@vcmap/core").VcsObject} [T=Object|import("@vcmap/core").VcsObject]
  */
 class CollectionComponentClass {
   /**
@@ -341,7 +341,7 @@ class CollectionComponentClass {
    */
   _transformItem(item) {
     const keyProperty = this._collection.uniqueKey;
-    const listItem = {
+    const listItem = reactive({
       get name() {
         return item[keyProperty];
       },
@@ -356,7 +356,7 @@ class CollectionComponentClass {
       clickedCallbacks: [],
       destroy: undefined,
       destroyFunctions: [],
-    };
+    });
     if (this.renamable.value) {
       listItem.renamable = {
         name: this._actionTitles.renameTitle,

@@ -19,14 +19,11 @@ import {
 import SearchComponent from '../search/SearchComponent.vue';
 
 /**
- * @typedef {Object} ActionOptions
- * @property {string} name
- * @property {string} [title]
- * @property {string} [icon]
+ * @typedef {Omit<VcsAction, 'callback'>} ActionOptions
  */
 
 /**
- * @typedef {function(PointerEvent): void | Promise<void>} ActionCallback
+ * @typedef {(p?: PointerEvent) => (void | Promise<void>)} ActionCallback
  */
 
 /**

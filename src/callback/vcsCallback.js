@@ -1,7 +1,7 @@
 import { ClassRegistry } from '@vcmap/core';
 
 /**
- * @type {ClassRegistry<import("@vcmap/core").Ctor<typeof VcsCallback>>}
+ * @type {ClassRegistry<typeof VcsCallback>}
  */
 export const callbackClassRegistry = new ClassRegistry();
 
