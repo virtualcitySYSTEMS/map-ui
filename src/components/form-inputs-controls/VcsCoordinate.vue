@@ -11,7 +11,6 @@
     <template v-for="(_, idx) in localValue">
       <v-col :key="`coordinate-${idx}`" v-if="!hideZ || idx < 2">
         <VcsTextField
-          :id="`coordinate-${idx}`"
           :hide-spin-buttons="true"
           type="number"
           class="py-0"

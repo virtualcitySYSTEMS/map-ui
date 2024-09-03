@@ -9,13 +9,13 @@
       <template v-if="show3DProperties">
         <v-row v-if="visibleProperties.has('altitudeMode')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-altitude-mode">{{
+            <VcsLabel :html-for="`${cid}-vp-altitude-mode`">{{
               $t('components.vectorProperties.altitudeMode')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsSelect
-              id="vp-altitude-mode"
+              :id="`${cid}-vp-altitude-mode`"
               :items="availableAltitudeModes"
               v-model="localValue.altitudeMode"
             />
@@ -29,13 +29,13 @@
           no-gutters
         >
           <v-col>
-            <VcsLabel html-for="vp-height-above-ground">{{
+            <VcsLabel :html-for="`${cid}-vp-height-above-ground`">{{
               $t('components.vectorProperties.heightAboveGround')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-height-above-ground"
+              :id="`${cid}-vp-height-above-ground`"
               v-model.number="localValue.heightAboveGround"
               :hide-spin-buttons="true"
               type="number"
@@ -46,13 +46,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('groundLevel')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-ground-level">{{
+            <VcsLabel :html-for="`${cid}-vp-ground-level`">{{
               $t('components.vectorProperties.groundLevel')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-ground-level"
+              :id="`${cid}-vp-ground-level`"
               v-model.number="localValue.groundLevel"
               :hide-spin-buttons="true"
               type="number"
@@ -142,13 +142,13 @@
         no-gutters
       >
         <v-col>
-          <VcsLabel html-for="vp-classification-type">
+          <VcsLabel :html-for="`${cid}-vp-classification-type`">
             {{ $t('components.vectorProperties.classificationType') }}
           </VcsLabel>
         </v-col>
         <v-col>
           <VcsSelect
-            id="vp-classification-type"
+            :id="`${cid}-vp-classification-type`"
             :items="availableClassificationTypes"
             v-model="classificationType"
           />
@@ -186,7 +186,7 @@
         <v-row v-if="visibleProperties.has('extrudedHeight')" no-gutters>
           <v-col>
             <VcsLabel
-              html-for="vp-extruded-height"
+              :html-for="`${cid}-vp-extruded-height`"
               :class="{
                 'px-4':
                   visibleProperties.has('storeysAboveGround') ||
@@ -197,7 +197,7 @@
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-extruded-height"
+              :id="`${cid}-vp-extruded-height`"
               v-model.number="localValue.extrudedHeight"
               :hide-spin-buttons="true"
               type="number"
@@ -212,13 +212,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('storeysAboveGround')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-storeys-above" class="px-4">{{
+            <VcsLabel :html-for="`${cid}-vp-storeys-above`" class="px-4">{{
               $t('components.vectorProperties.storeys')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-storeys-above"
+              :id="`${cid}-vp-storeys-above`"
               v-model.number="localValue.storeysAboveGround"
               :hide-spin-buttons="true"
               type="number"
@@ -235,13 +235,15 @@
           no-gutters
         >
           <v-col>
-            <VcsLabel :html-for="'vp-storey-heights-above'" class="px-4">{{
-              $t('components.vectorProperties.storeyHeights')
-            }}</VcsLabel>
+            <VcsLabel
+              :html-for="`${cid}-vp-storey-heights-above`"
+              class="px-4"
+              >{{ $t('components.vectorProperties.storeyHeights') }}</VcsLabel
+            >
           </v-col>
           <v-col>
             <VcsChipArrayInput
-              id="vp-storey-heights-above"
+              :id="`${cid}-vp-storey-heights-above`"
               column
               type="number"
               v-model="storeyHeights.storeyHeightsAboveGround.value"
@@ -266,7 +268,7 @@
         <v-row v-if="visibleProperties.has('skirt')" no-gutters>
           <v-col>
             <VcsLabel
-              html-for="vp-skirt"
+              :html-for="`${cid}-vp-skirt`"
               :class="{
                 'px-4':
                   visibleProperties.has('storeysBelowGround') ||
@@ -277,7 +279,7 @@
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-skirt"
+              :id="`${cid}-vp-skirt`"
               v-model.number="localValue.skirt"
               :hide-spin-buttons="true"
               type="number"
@@ -292,13 +294,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('storeysBelowGround')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-storeys-below" class="px-4">{{
+            <VcsLabel :html-for="`${cid}-vp-storeys-below`" class="px-4">{{
               $t('components.vectorProperties.storeys')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-storeys-below"
+              :id="`${cid}-vp-storeys-below`"
               v-model.number="localValue.storeysBelowGround"
               :hide-spin-buttons="true"
               type="number"
@@ -315,13 +317,15 @@
           no-gutters
         >
           <v-col>
-            <VcsLabel :html-for="'vp-storey-heights-below'" class="px-4">{{
-              $t('components.vectorProperties.storeyHeights')
-            }}</VcsLabel>
+            <VcsLabel
+              :html-for="`${cid}-vp-storey-heights-below`"
+              class="px-4"
+              >{{ $t('components.vectorProperties.storeyHeights') }}</VcsLabel
+            >
           </v-col>
           <v-col>
             <VcsChipArrayInput
-              :id="'vp-storey-heights-below'"
+              :id="`${cid}-vp-storey-heights-below`"
               column
               type="number"
               v-model="storeyHeights.storeyHeightsBelowGround.value"
@@ -348,13 +352,13 @@
       <v-container class="px-1 py-0">
         <v-row v-if="visibleProperties.has('modelUrl')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-model-url">
+            <VcsLabel :html-for="`${cid}-vp-model-url`">
               {{ $t('components.vectorProperties.modelUrl') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-model-url"
+              :id="`${cid}-vp-model-url`"
               v-model="localValue.modelUrl"
               clearable
               :placeholder="'modelUrl' in localValue ? 'example.glb' : ''"
@@ -384,12 +388,13 @@
         </template>
         <v-row v-if="visibleProperties.has('modelHeading')" no-gutters>
           <v-col cols="6">
-            <VcsLabel>{{
+            <VcsLabel :html-for="`${cid}-vp-model-heading`">{{
               $t('components.vectorProperties.modelHeading')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
+              :id="`${cid}-vp-model-heading`"
               v-model.number="localValue.modelHeading"
               :hide-spin-buttons="true"
               type="number"
@@ -401,12 +406,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('modelPitch')" no-gutters>
           <v-col cols="6">
-            <VcsLabel>{{
+            <VcsLabel :html-for="`${cid}-vp-model-pitch`">{{
               $t('components.vectorProperties.modelPitch')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
+              :id="`${cid}-vp-model-pitch`"
               v-model.number="localValue.modelPitch"
               :hide-spin-buttons="true"
               type="number"
@@ -418,12 +424,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('modelRoll')" no-gutters>
           <v-col cols="6">
-            <VcsLabel>{{
+            <VcsLabel :html-for="`${cid}-vp-model-roll`">{{
               $t('components.vectorProperties.modelRoll')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
+              :id="`${cid}-vp-model-roll`"
               v-model.number="localValue.modelRoll"
               :hide-spin-buttons="true"
               type="number"
@@ -435,13 +442,13 @@
         </v-row>
         <v-row v-if="visibleProperties.has('baseUrl')" no-gutters>
           <v-col>
-            <VcsLabel html-for="vp-base-url">{{
+            <VcsLabel :html-for="`${cid}-vp-base-url`">{{
               $t('components.vectorProperties.baseUrl')
             }}</VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="vp-base-url"
+              :id="`${cid}-vp-base-url`"
               clearable
               v-model="localValue.baseUrl"
               :placeholder="'baseUrl' in localValue ? 'path/to/files/' : ''"
@@ -466,6 +473,7 @@
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
+  import { useComponentId } from '../composables.js';
 
   export const genericVectorProperties = [
     'altitudeMode',
@@ -698,6 +706,8 @@
           : [],
       );
 
+      const cid = useComponentId();
+
       return {
         localValue,
         headerActions,
@@ -712,6 +722,7 @@
         storeyHeights,
         modelScale,
         dimensionsUpperCase,
+        cid,
       };
     },
   };

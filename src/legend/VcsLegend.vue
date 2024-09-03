@@ -25,12 +25,12 @@
             </div>
             <div v-else-if="item.type === LegendType.Iframe">
               <iframe
-                :id="`legendIframe${idx}`"
+                :id="`${cid}-legendIframe${idx}`"
                 :src="$st(item.src)"
                 scrolling="no"
                 style="width: 100%; height: 100%"
                 frameBorder="0"
-                @load="setIframeHeight(`legendIframe${idx}`)"
+                @load="setIframeHeight(`${cid}-legendIframe${idx}`)"
               />
             </div>
             <style-legend-item v-else :item="item" />
@@ -47,6 +47,7 @@
 <script>
   import { VExpansionPanels, VList, VSheet } from 'vuetify/components';
   import { computed } from 'vue';
+  import { useComponentId } from '../components/composables.js';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
   import VcsExpansionPanel from '../components/section/VcsExpansionPanel.vue';
@@ -93,10 +94,13 @@
         set() {},
       });
 
+      const cid = useComponentId();
+
       return {
         LegendType,
         setIframeHeight,
         panels, // TODO
+        cid,
       };
     },
   };

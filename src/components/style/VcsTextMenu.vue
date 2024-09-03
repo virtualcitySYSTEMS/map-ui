@@ -6,7 +6,7 @@
   >
     <template #preview>
       <div v-if="modelValue" class="d-flex justify-center align-center">
-        <span id="text-preview">T</span>
+        <span class="vcs-text-menu-preview">T</span>
       </div>
     </template>
     <template #content>
@@ -68,7 +68,7 @@
 </script>
 
 <style>
-  #text-preview {
+  .vcs-text-menu-preview {
     font: v-bind(fontStyle) !important;
     font-size: 20px !important;
     -webkit-text-stroke-color: v-bind(strokeColor);

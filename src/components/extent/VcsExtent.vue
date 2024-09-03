@@ -2,13 +2,13 @@
   <v-container class="py-0 px-1">
     <v-row no-gutters v-if="modelValue.projection">
       <v-col :cols="firstCols">
-        <VcsLabel html-for="projection">
+        <VcsLabel :html-for="`${cid}-projection`">
           {{ $t('components.extent.projection') }}
         </VcsLabel>
       </v-col>
       <v-col>
         <VcsTextField
-          id="projection"
+          :id="`${cid}-projection`"
           disabled
           :model-value="modelValue.projection.epsg"
         />
@@ -23,9 +23,9 @@
         [(v) => checkInput(v, max[1])],
       ]"
     >
-      <template #prepend="{ prefixes }">
+      <template #prepend>
         <v-col :cols="firstCols">
-          <VcsLabel :html-for="`${prefixes[0]}-coordinate`">
+          <VcsLabel>
             {{ $t('components.extent.min') }}
           </VcsLabel>
         </v-col>
@@ -40,9 +40,9 @@
         [(v) => checkInput(min[1], v)],
       ]"
     >
-      <template #prepend="{ prefixes }">
+      <template #prepend>
         <v-col :cols="firstCols">
-          <VcsLabel :html-for="`${prefixes[0]}-coordinate`">
+          <VcsLabel>
             {{ $t('components.extent.max') }}
           </VcsLabel>
         </v-col>
@@ -59,6 +59,7 @@
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
+  import { useComponentId } from '../composables.js';
 
   function checkInput(min, max) {
     return min < max || 'components.extent.invalid';
@@ -114,10 +115,13 @@
           },
         });
 
+      const cid = useComponentId();
+
       return {
         min: getCoordinate(0, 2),
         max: getCoordinate(2),
         checkInput,
+        cid,
       };
     },
   };

@@ -315,3 +315,4 @@ export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vu
 export * from './src/application/attributionsHelper.js';
 export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';
+export * from './src/components/composables.js';

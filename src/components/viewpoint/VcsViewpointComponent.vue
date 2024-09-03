@@ -9,13 +9,13 @@
       <v-container class="py-0 px-1">
         <v-row no-gutters v-if="!hideName">
           <v-col cols="6">
-            <VcsLabel html-for="name" dense required>
+            <VcsLabel :html-for="`${cid}-name`" dense required>
               {{ $t('components.viewpoint.name') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="name"
+              :id="`${cid}-name`"
               clearable
               v-model="localValue.name"
               :rules="nameRules"
@@ -24,13 +24,13 @@
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
           <v-col cols="6">
-            <VcsLabel html-for="title" dense>
+            <VcsLabel :html-for="`${cid}-title`" dense>
               {{ $t('components.viewpoint.title') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="title"
+              :id="`${cid}-title`"
               clearable
               :placeholder="$t('components.viewpoint.titlePlaceholder')"
               v-model="title"
@@ -40,7 +40,6 @@
         <v-row no-gutters v-if="!hideAnimate">
           <v-col cols="6">
             <VcsCheckbox
-              id="animate"
               label="components.viewpoint.animate"
               v-model="localValue.animate"
             />
@@ -48,7 +47,6 @@
           <v-col>
             <VcsTextField
               v-if="localValue.animate"
-              id="duration"
               clearable
               :hide-spin-buttons="true"
               type="number"
@@ -102,12 +100,13 @@
         <template v-if="!isCesiumMap">
           <v-row no-gutters>
             <v-col>
-              <VcsLabel html-for="distance" dense>
+              <VcsLabel :html-for="`${cid}-distance`" dense>
                 {{ $t('components.viewpoint.distance') }}
               </VcsLabel>
             </v-col>
             <v-col>
               <VcsTextField
+                :id="`${cid}-distance`"
                 :min="0"
                 :step="100"
                 prefix="d"
@@ -128,13 +127,13 @@
           <div v-for="key in ['heading', 'pitch', 'roll']" :key="key">
             <v-row no-gutters>
               <v-col cols="9">
-                <VcsLabel :html-for="key" dense>
+                <VcsLabel :html-for="`${cid}-${key}`" dense>
                   {{ $st(`components.viewpoint.${key}`) }}
                 </VcsLabel>
               </v-col>
               <v-col cols="3">
                 <VcsTextField
-                  :id="key"
+                  :id="`${cid}-${key}`"
                   :hide-spin-buttons="true"
                   type="number"
                   unit="°"
@@ -188,6 +187,7 @@
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
+  import { useComponentId } from '../composables.js';
 
   /**
    * Updates the localValue ref by keeping name and properties
@@ -489,6 +489,8 @@
         }
       }
 
+      const cid = useComponentId();
+
       return {
         isCesiumMap,
         localValue,
@@ -500,6 +502,7 @@
         hprSliderOptions,
         isFiniteNumber,
         isPositiveNumber,
+        cid,
       };
     },
   };

@@ -9,8 +9,8 @@
   >
     <v-radio
       v-for="(item, idx) in items"
-      :id="`${$.uid}-${idx}`"
-      :key="`${$.uid}-${idx}`"
+      :id="`${cid}-${idx}`"
+      :key="`${cid}-${idx}`"
       :value="item[itemValue] ?? item"
       :disabled="$attrs.disabled ?? item.disabled ?? false"
       :color="item?.color ?? undefined"
@@ -23,7 +23,7 @@
     >
       <template #label>
         <slot name="label" :item="item" :error="!!errorTooltip">
-          <span :html-for="`${$.uid}-${idx}`">
+          <span :html-for="`${cid}-${idx}`">
             {{ $st(item.label ?? item) }}
           </span>
         </slot>
@@ -73,7 +73,7 @@
 <script>
   import { ref } from 'vue';
   import { VRadio, VRadioGroup, VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { useComponentId, usePadding } from '../composables.js';
 
   /**
    * @typedef {Object} VcsRadioItem
@@ -128,11 +128,13 @@
       const radioGroup = ref();
       const errorTooltip = ref();
       const paddingProvided = usePadding(attrs);
+      const cid = useComponentId();
 
       return {
         paddingProvided,
         radioGroup,
         errorTooltip,
+        cid,
       };
     },
   };

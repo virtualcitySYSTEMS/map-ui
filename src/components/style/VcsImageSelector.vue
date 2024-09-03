@@ -45,13 +45,13 @@
       <div v-if="selectedType === ImageType.ICON">
         <v-row no-gutters>
           <v-col>
-            <VcsLabel html-for="style-icon-opacity">
+            <VcsLabel :html-for="`${cid}-style-icon-opacity`">
               {{ $t('components.style.opacity') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsSlider
-              id="style-icon-opacity"
+              :id="`${cid}-style-icon-opacity`"
               v-model="localValue.opacity"
               step="0.1"
               type="number"
@@ -69,11 +69,13 @@
           :key="input.key"
         >
           <v-col>
-            <VcsLabel>{{ $st(`components.style.${input.key}`) }}</VcsLabel>
+            <VcsLabel :html-for="`${cid}-${input.key}`">{{
+              $st(`components.style.${input.key}`)
+            }}</VcsLabel>
           </v-col>
           <v-col cols="3">
             <VcsTextField
-              :id="`style-shape-${input.key}`"
+              :id="`${cid}-${input.key}`"
               :hide-spin-buttons="true"
               type="number"
               :unit="input.unit || ''"
@@ -102,11 +104,13 @@
         v-if="extendedShapeSettings || selectedType === ImageType.ICON"
       >
         <v-col>
-          <VcsLabel>{{ $t('components.style.scale') }}</VcsLabel>
+          <VcsLabel :html-for="`${cid}-style-shape-scale`">{{
+            $t('components.style.scale')
+          }}</VcsLabel>
         </v-col>
         <v-col cols="3">
           <VcsTextField
-            id="style-shape-scale"
+            :id="`${cid}-style-shape-scale`"
             :hide-spin-buttons="true"
             type="number"
             v-model.number="selectedScale"
@@ -148,6 +152,7 @@
   import { toContext } from 'ol/render.js';
   import { Point } from 'ol/geom.js';
   import { getImageStyleFromOptions } from '@vcmap/core';
+  import { useComponentId } from '../composables.js';
   import { useProxiedComplexModel } from '../modelHelper.js';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
@@ -907,6 +912,8 @@
         );
       });
 
+      const cid = useComponentId();
+
       return {
         ImageType,
         localValue,
@@ -919,6 +926,7 @@
         between,
         currentItems,
         selectedImageTypeTab,
+        cid,
       };
     },
   };

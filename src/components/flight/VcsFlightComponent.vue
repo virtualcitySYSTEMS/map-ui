@@ -18,23 +18,23 @@
       <v-container class="py-0 px-1">
         <v-row no-gutters v-if="!hideName">
           <v-col cols="6">
-            <VcsLabel html-for="name" required>
+            <VcsLabel :html-for="`${cid}-name`" required>
               {{ $t('components.flight.name') }}
             </VcsLabel>
           </v-col>
           <v-col>
-            <VcsTextField id="name" clearable v-model="name" />
+            <VcsTextField :id="`${cid}-name`" clearable v-model="name" />
           </v-col>
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
           <v-col cols="6">
-            <VcsLabel html-for="title">
+            <VcsLabel :html-for="`${cid}-title`">
               {{ $t('components.flight.title') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="title"
+              :id="`${cid}-title`"
               clearable
               :placeholder="$t('components.flight.titlePlaceholder')"
               v-model="title"
@@ -43,13 +43,13 @@
         </v-row>
         <v-row no-gutters v-if="!hideInterpolation">
           <v-col cols="6">
-            <VcsLabel html-for="interpolation">
+            <VcsLabel :html-for="`${cid}-interpolation`">
               {{ $t('components.flight.interpolation') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsSelect
-              id="interpolation"
+              :id="`${cid}-interpolation`"
               :items="[
                 { value: 'spline', title: 'components.flight.spline' },
                 { value: 'linear', title: 'components.flight.linear' },
@@ -60,13 +60,13 @@
         </v-row>
         <v-row no-gutters v-if="!hideDuration">
           <v-col cols="6">
-            <VcsLabel html-for="duration">
+            <VcsLabel :html-for="`${cid}-duration`">
               {{ $t('components.flight.duration') }}
             </VcsLabel>
           </v-col>
           <v-col>
             <VcsTextField
-              id="duration"
+              :id="`${cid}-duration`"
               v-model="duration"
               :hide-spin-buttons="true"
               type="number"
@@ -79,11 +79,7 @@
         </v-row>
         <v-row no-gutters v-if="!hideLoop">
           <v-col cols="6">
-            <VcsCheckbox
-              id="animate"
-              label="components.flight.loop"
-              v-model="loop"
-            />
+            <VcsCheckbox label="components.flight.loop" v-model="loop" />
           </v-col>
         </v-row>
       </v-container>
@@ -116,6 +112,7 @@
     getProvidedFlightInstance,
     setupFlightAnchorEditingListener,
   } from './composables.js';
+  import { useComponentId } from '../composables.js';
 
   /**
    * @param {import("@vcmap/core").FlightInstance} instance
@@ -228,6 +225,8 @@
         editingListener();
       });
 
+      const cid = useComponentId();
+
       return {
         name: flightInstance.name,
         title: computed({
@@ -275,6 +274,7 @@
           },
         }),
         disablePlayer,
+        cid,
       };
     },
   };

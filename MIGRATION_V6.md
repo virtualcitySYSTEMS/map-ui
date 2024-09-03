@@ -63,6 +63,7 @@
   - Removed prop `setConfigOnCancel`. Explicitly add a `@cancel` event listener, if required.
 - The `title` property for pluin editors has moved from `PluginConfigEditorComponent` to the `PluginConfigEditor`.
 - Plugins which provide editors can no longer return promises from `getConfig` or `setConfig`.
+- Use newly introduced `useComponentId()` helper to generate unique html ids for inputs with labels.
 
 # Extended Theming
 

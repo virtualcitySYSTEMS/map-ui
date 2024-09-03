@@ -122,3 +122,14 @@ export function createEllipseTooltip(parent, tooltip, title) {
     return '';
   });
 }
+
+let componentIdCounter = 0;
+
+/**
+ * Returns a globally unique vcs component id string
+ * @returns {string}
+ */
+export function useComponentId() {
+  componentIdCounter += 1;
+  return `vcs-${componentIdCounter}`;
+}

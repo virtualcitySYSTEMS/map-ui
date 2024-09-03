@@ -3,13 +3,13 @@
     <v-container class="px-1 py-0">
       <v-row no-gutters>
         <v-col>
-          <VcsLabel html-for="draw-stroke-width">
+          <VcsLabel :html-for="`${cid}-draw-stroke-width`">
             {{ $t('components.style.lineWidth') }}
           </VcsLabel>
         </v-col>
         <v-col cols="3">
           <VcsTextField
-            id="draw-stroke-width"
+            :id="`${cid}-draw-stroke-width`"
             v-model.number="width"
             :hide-spin-buttons="true"
             type="number"
@@ -38,6 +38,7 @@
     VRow,
     VCol,
   } from 'vuetify/components';
+  import { useComponentId } from '../composables.js';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { useColorObject } from './composables.js';
@@ -66,6 +67,7 @@
     },
     setup(props, { emit }) {
       const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+      const cid = useComponentId();
       return {
         rgbaObject: useColorObject(() => localValue.value?.color),
         width: computed({
@@ -81,6 +83,7 @@
         updateColor(rgba) {
           localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a];
         },
+        cid,
       };
     },
   };

@@ -22,8 +22,7 @@
       </template>
 
       <v-toolbar
-        id="vcs-toolbox-toolbar--secondary"
-        class="mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
+        class="vcs-toolbox-toolbar--secondary mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
         :height="itemHeight + 8"
       >
         <v-toolbar-items class="w-100">
