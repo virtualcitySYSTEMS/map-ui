@@ -63,7 +63,6 @@ export function getStoryState(defaultIcon = '', wrapperType = 'window') {
     },
   });
 
-  const itemHeight = createVariableComputed(vuetify, 'vcs-item-height');
   const fontSize = createVariableComputed(vuetify, 'vcs-font-size');
   const fontFamily = createVariableComputed(vuetify, 'vcs-font-family');
 
@@ -90,7 +89,6 @@ export function getStoryState(defaultIcon = '', wrapperType = 'window') {
     },
     darkMode,
     primaryColor,
-    itemHeight,
     fontSize,
     fontFamily,
     bind,

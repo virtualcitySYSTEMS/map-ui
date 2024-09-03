@@ -37,7 +37,6 @@
   }
 </style>
 <script>
-  import { computed } from 'vue';
   import { is, optional } from '@vcsuite/check';
   import {
     VIcon,
@@ -46,7 +45,7 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
-  import { useFontSize } from '../../vuePlugins/vuetify.js';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * pattern to check actions
@@ -121,10 +120,7 @@
       },
     },
     setup() {
-      const fontSize = useFontSize();
-      const iconSize = computed(() => {
-        return fontSize.value * (1.2 + 0.1 / 3);
-      });
+      const iconSize = useIconSize();
       return {
         iconSize,
       };

@@ -39,7 +39,7 @@
 
 <style lang="scss" scoped>
   .v-input--density-compact :deep(.v-field) {
-    --v-input-control-height: calc(var(--v-vcs-item-height) - 8px);
+    --v-input-control-height: calc(var(--v-vcs-font-size) * 2 - 2px);
     --v-field-padding-bottom: 0px;
     --v-field-input-padding-top: 0px;
     --v-input-padding-top: 0px;

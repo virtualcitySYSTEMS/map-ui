@@ -197,7 +197,6 @@ export {
   isDark,
   getDefaultPrimaryColor,
   getColorByKey,
-  useItemHeight,
   useFontSize,
 } from './src/vuePlugins/vuetify.js';
 export {

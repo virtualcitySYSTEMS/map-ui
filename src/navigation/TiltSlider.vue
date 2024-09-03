@@ -65,7 +65,7 @@
 <script>
   import { computed, defineComponent } from 'vue';
   import { VCard, VSlider, VTooltip } from 'vuetify/components';
-  import { useFontSize, useItemHeight } from '../vuePlugins/vuetify.js';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
   import { useProxiedAtomicModel } from '../components/modelHelper.js';
 
   export default defineComponent({
@@ -87,15 +87,13 @@
       },
     },
     setup(props, { emit }) {
-      const itemHeight = useItemHeight();
-
+      const fontSize = useFontSize();
       const trackSize = computed(() => {
-        return Math.floor(itemHeight.value / 12);
+        return Math.floor((fontSize.value + 3) / 6);
       });
       const tickSize = computed(() => {
         return trackSize.value * 2;
       });
-      const fontSize = useFontSize();
       const minWidth = computed(() => {
         return fontSize.value * 2.5;
       });

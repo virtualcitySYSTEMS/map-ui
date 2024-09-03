@@ -70,7 +70,7 @@
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import { useForwardSlots } from '../composables.js';
-  import { useItemHeight, useFontSize } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn} using {@link VcsTooltip}. Used for tool buttons in the Navbar.
@@ -149,7 +149,9 @@
       });
 
       const fontSize = useFontSize();
-      const itemHeight = useItemHeight();
+      const itemHeight = computed(() => {
+        return fontSize.value * 2 + 6;
+      });
       const iconSize = computed(() => {
         return fontSize.value * 1.5;
       });

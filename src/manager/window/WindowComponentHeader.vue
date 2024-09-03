@@ -7,7 +7,7 @@
         v-if="windowState.headerIcon"
         class="mr-1"
         :class="{ 'text-primary': isOnTop }"
-        size="16"
+        :size="iconSize"
       >
         {{ windowState.headerIcon }}
       </v-icon>
@@ -56,10 +56,10 @@
 
 <style lang="scss" scoped>
   .window-component-header {
-    max-height: calc(var(--v-vcs-item-height) / 2);
+    max-height: calc(var(--v-vcs-font-size) * 2 - 10px);
 
     h3 {
-      line-height: calc(var(--v-vcs-item-height) / 2);
+      line-height: calc(var(--v-vcs-font-size) * 2 - 10px);
     }
     .v-divider--vertical.v-divider--inset {
       margin-top: 2px;
@@ -84,6 +84,7 @@
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import { createLinkAction } from '../../actions/actionHelper.js';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description Default window component header with drag functionality close action and further optional window actions.
@@ -151,12 +152,14 @@
             )
           : undefined;
 
+      const iconSize = useIconSize();
       return {
         pin,
         close,
         isDockable,
         translatedHeaderTitle,
         headerRef,
+        iconSize,
         headerTooltip: createEllipseTooltip(
           computed(() => headerRef.value),
           computed(() => undefined),

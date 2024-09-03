@@ -46,7 +46,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: calc(var(--v-vcs-item-height) - 9px);
+    line-height: calc(var(--v-vcs-font-size) * 2 - 3px);
   }
 </style>
 

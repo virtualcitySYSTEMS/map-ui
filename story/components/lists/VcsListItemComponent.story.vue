@@ -71,7 +71,7 @@
       </template>
     </Variant>
     <Variant title="Actions">
-      <VcsListItem :item="actionItem" v-bind="{ ...state.attrs }" />
+      <VcsListItemComponent :item="actionItem" v-bind="{ ...state.attrs }" />
       <template #controls>
         <GlobalControls v-model="state" with-icon />
         <HstText title="title" v-model="actionItem.title" />

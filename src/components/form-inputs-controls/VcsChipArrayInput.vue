@@ -38,7 +38,6 @@
           filled
           autofocus
           hide-spin-buttons
-          :height="itemHeight - 8"
           @keydown.esc="selected = -1"
           @blur="selected = -1"
           @keydown.enter="submitChange($event)"
@@ -66,7 +65,6 @@
           filled
           autofocus
           hide-spin-buttons
-          :height="itemHeight - 8"
           @keydown.enter="add($event, newValue)"
           @click:append-inner="add($event, newValue)"
           @keydown.esc="cancel"
@@ -96,10 +94,11 @@
     display: none;
   }
   .v-chip.v-chip--size-small {
-    --v-chip-height: calc(var(--v-vcs-item-height) - 8px);
+    --v-chip-height: calc(var(--v-vcs-font-size) * 2 - 2px);
+    padding: 0 calc(var(--v-vcs-font-size) - 3px);
   }
   :deep(.v-icon--size-x-small) {
-    font-size: 18px;
+    font-size: calc(var(--v-vcs-font-size) + 3px);
   }
   .row-gap {
     row-gap: 8px !important;
@@ -111,7 +110,6 @@
   import { VChip, VIcon } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
   import { usePadding } from '../composables.js';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsTextField from './VcsTextField.vue';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
@@ -279,8 +277,6 @@
 
       const paddingProvided = usePadding(attrs);
 
-      const itemHeight = useItemHeight();
-
       return {
         paddingProvided,
         localValue,
@@ -296,7 +292,6 @@
         submitChange,
         add,
         cancel,
-        itemHeight,
       };
     },
   };

@@ -136,6 +136,6 @@
 
 <style lang="scss" scoped>
   .inner-header {
-    height: calc(var(--v-vcs-item-height) - 8px);
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
   }
 </style>

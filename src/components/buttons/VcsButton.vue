@@ -64,7 +64,7 @@
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
-  import { useFontSize } from '../../vuePlugins/vuetify.js';
+  import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
   import { useForwardSlots } from '../composables.js';
 
   /**
@@ -132,9 +132,7 @@
       const minHeight = computed(() => {
         return fontSize.value * 1.5;
       });
-      const iconSize = computed(() => {
-        return fontSize.value * (1.2 + 0.1 / 3);
-      });
+      const iconSize = useIconSize();
       return {
         forwardSlots,
         hasDefaultSlot,

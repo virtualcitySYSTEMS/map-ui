@@ -4,6 +4,7 @@
     :density="density"
     elevation="0"
     class="px-4"
+    :height="toolbarHeight"
     :style="xs ? { bottom: 0 } : { top: 0 }"
   >
     <v-container fluid class="pa-0">
@@ -124,7 +125,7 @@
 
 <style lang="scss" scoped>
   .logo {
-    max-height: 36px;
+    max-height: calc(var(--v-vcs-font-size) * 3 - 3px);
     margin: 0 auto;
   }
   .v-toolbar.v-toolbar--bottom {
@@ -154,6 +155,7 @@
   import VcsToolButton from '../components/buttons/VcsToolButton.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
   import VcsDefaultLogo from '../logo.svg';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description The menu bar of a VcsMap application.
@@ -206,6 +208,11 @@
         return xs.value ? 'comfortable' : 'compact';
       });
 
+      const fontSize = useFontSize();
+      const toolbarHeight = computed(() => {
+        return fontSize.value * 3 + 8 + 16;
+      });
+
       return {
         mapActions: getActions(ButtonLocation.MAP),
         contentActions: getActions(ButtonLocation.CONTENT),
@@ -219,6 +226,7 @@
         xs,
         density,
         mdAndUp,
+        toolbarHeight,
       };
     },
   };

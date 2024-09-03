@@ -20,10 +20,8 @@
     },
     set(value) {
       if (value === 'large') {
-        model.value.itemHeight = '48px';
         model.value.fontSize = '15px';
       } else {
-        model.value.itemHeight = '32px';
         model.value.fontSize = '13px';
         model.value.fontFamily = 'Titillium Web';
         model.value.primaryColor = '#27B97C';
@@ -47,7 +45,6 @@
       title="Presets"
       :options="['default', 'large']"
     />
-    <HstText v-model="model.itemHeight" title="Item Height" />
     <HstText v-model="model.fontSize" title="Font Size" />
     <HstSelect
       v-model="model.fontFamily"

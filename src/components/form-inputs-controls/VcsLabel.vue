@@ -23,7 +23,7 @@
     box-sizing: content-box;
     display: flex;
     align-items: center;
-    height: calc(var(--v-vcs-item-height) - 8px);
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
     font-size: var(--v-vcs-font-size);
   }
   .vcs-label-required:after {

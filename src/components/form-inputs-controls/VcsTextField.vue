@@ -10,6 +10,7 @@
     class="vcs-text-field primary--placeholder"
     :class="{
       'py-1': !paddingProvided,
+      'no-prepended-content': !prependedContent,
     }"
     v-bind="$attrs"
     :prefix="forcePrefix ? undefined : $attrs.prefix"
@@ -173,7 +174,11 @@
       const paddingProvided = usePadding(attrs);
       const forwardSlots = useForwardSlots(slots, ['default', 'message']);
 
+      const prependedContent = computed(() => {
+        return (props.forcePrefix && attrs.prefix) || !!slots['prepend-inner'];
+      });
       return {
+        prependedContent,
         forwardSlots,
         paddingProvided,
         visibleValue,

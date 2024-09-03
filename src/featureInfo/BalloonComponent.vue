@@ -5,7 +5,7 @@
         <template #prepend="prependScope">
           <slot name="prepend" v-bind="prependScope">
             <div class="pl-1 pr-2">
-              <v-icon color="primary" size="16"> $vcsInfo </v-icon>
+              <v-icon color="primary" :size="iconSize"> $vcsInfo </v-icon>
             </div>
           </slot>
         </template>
@@ -77,6 +77,7 @@
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import { getTag, getTagOptions } from '../components/tables/VcsTable.vue';
+  import { useIconSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description A balloon viewing feature attributes. Size dynamic dependent on number of attributes.
@@ -192,8 +193,9 @@
         app.windowManager.remove(attrs['window-state'].id);
         destroyListener();
       };
-
+      const iconSize = useIconSize();
       return {
+        iconSize,
         close,
         getTag,
         getTagOptions,

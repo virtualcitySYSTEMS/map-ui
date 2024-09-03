@@ -29,7 +29,10 @@
       <template #prepend="scope">
         <slot name="prepend" v-bind="scope ?? {}">
           <template v-if="scope.item?.icon">
-            <v-icon v-if="typeof scope.item?.icon === 'string'" :size="16">
+            <v-icon
+              v-if="typeof scope.item?.icon === 'string'"
+              :size="iconSize"
+            >
               {{ scope.item.icon }}
             </v-icon>
             <ImageElementInjector :element="scope.item.icon" v-else />
@@ -58,7 +61,7 @@
     // Root Level Entries should be 40px high
     > .v-list-item,
     > .v-list-group > .v-list-item {
-      min-height: calc(var(--v-vcs-item-height) + 8px) !important;
+      min-height: calc(var(--v-vcs-font-size) * 2 + 14px) !important;
       padding-left: 6px;
     }
     // Border around root nodes with children included
@@ -119,6 +122,7 @@
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import ImageElementInjector from '../ImageElementInjector.vue';
   import VcsTreeviewTitle from './VcsTreeviewTitle.vue';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
@@ -180,8 +184,9 @@
         'title',
         'prepend',
       ]);
-
+      const iconSize = useIconSize();
       return {
+        iconSize,
         localSearchValue,
         handleFilter,
         forwardSlots,

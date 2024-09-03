@@ -67,7 +67,7 @@
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
-  import { useFontSize, useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
   import { useForwardSlots } from '../composables.js';
 
   /**
@@ -112,7 +112,6 @@
       },
     },
     setup(props, { slots }) {
-      const itemHeight = useItemHeight();
       const buttonVariant = computed(() => {
         if (props.variant === 'filled') {
           return 'flat';
@@ -124,8 +123,9 @@
       });
       const forwardSlots = useForwardSlots(slots, ['default']);
       const fontSize = useFontSize();
-      const iconSize = computed(() => {
-        return fontSize.value * (1.2 + 0.1 / 3);
+      const iconSize = useIconSize();
+      const itemHeight = computed(() => {
+        return fontSize.value * 2 + 6;
       });
       return {
         forwardSlots,

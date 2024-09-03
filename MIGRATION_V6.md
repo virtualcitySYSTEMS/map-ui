@@ -71,32 +71,31 @@ Vuetify Theming can now be used to create custom css variables, see `vuetify.js`
 themes
 
 - `vcs-font-size` To globally set the default fontsize. Allows customers to configure a map with larger fonts.
+  The fontsize should have valid values between 10 and 24px.
 - `vcs-font-family` Sets font Family
-- `vcs-item-height` Sets the root ItemHeight for our VcsComponents. The height of InputFields, Rows, ... is at 32px. This can be used to change that default Height
 
-To use these Variables they can be used in CSS with `var(--v-vcs-font-size)`
-Also CSS can be used to calculate Values `calc(var(--v-vcs-font-size) - 1px)`;
-For the item height and fontSize a helper function is exported, which can be used to set size properties in html:
+These variables can be used in CSS with `var(--v-vcs-font-size)`
+Also CSS can be used to calculate values `calc(var(--v-vcs-font-size) - 1px)`;
+Most height values like the height of the buttons/listItems/navbar/toolbar ... is calculated based on the `fontSize`
 
-The ItemHeight should at minimum be `fontSize * 1.5 + 4px`
+For the fontSize a helper function is exported, which can be used to set size properties in html:
+There is also `useIconSize` helper which will return the default small Icons Size as a computed based on the `fontSize`
 
 ```js
-const itemHeight = useItemHeight();
 const fontSize = useFontSize();
+const iconSize = useIconSize();
 ```
 
 ```vue
-<v-btn :size="itemHeight - 4"></v-btn>
-<v-btn :size="fontSize - 4"></v-btn>
+<v-btn :size="fontSize * 2"></v-btn>
+<v-icon :size="iconSize">mdi-chevron</v-icon>
 ```
 
-For Development the darkTheme has a larger FontSize and a large ItemHeight;
+For Development the darkTheme has a larger FontSize;
 
 Todo:
 
-- Add Theming Support to `uiConfig`
 - Write documentation for Theming Support
-- Change DarkTheme `ItemHeight` and `FontSize` to default values before Merge into main
 
 # Component Stories
 

@@ -1,7 +1,7 @@
 <template>
   <v-card flat class="pa-2">
     <vcs-file-drop
-      :height="3 * itemHeight"
+      :height="dropElementHeight"
       :multiple="multiple"
       v-model="files"
     />
@@ -30,7 +30,7 @@
   import { VCard } from 'vuetify/components';
   import { computed, inject, ref } from 'vue';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
   import VcsFileDrop from './VcsFileDrop.vue';
   import VcsFormButton from '../buttons/VcsFormButton.vue';
   import VcsFileInput from '../form-inputs-controls/VcsFileInput.vue';
@@ -77,13 +77,16 @@
 
       const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
 
-      const itemHeight = useItemHeight();
+      const fontSize = useFontSize();
+      const dropElementHeight = computed(() => {
+        return fontSize.value * 6 + 18;
+      });
 
       return {
         files,
         loading,
         noListenerAttrs,
-        itemHeight,
+        dropElementHeight,
         async doImport() {
           loading.value = true;
           try {

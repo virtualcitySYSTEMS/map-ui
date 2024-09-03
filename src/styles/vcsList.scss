@@ -3,6 +3,6 @@
 
 .vcsList {
   .v-list-item--density-compact.v-list-item--one-line {
-    min-height: var(--v-vcs-item-height);
+    min-height: calc(var(--v-vcs-font-size) * 2 + 6px);
   }
 }

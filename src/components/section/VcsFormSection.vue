@@ -12,7 +12,7 @@
               dense
               variant="text"
               icon
-              :size="itemHeight - 4"
+              :size="fontSize * 2"
               :disabled="disabled"
               elevation="0"
               @click="open = !open"
@@ -48,7 +48,7 @@
 <script>
   import { computed, reactive, ref } from 'vue';
   import { VBtn, VIcon } from 'vuetify/components';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 
@@ -134,14 +134,14 @@
         return props.headerActions;
       });
 
-      const itemHeight = useItemHeight();
+      const fontSize = useFontSize();
 
       return {
         open,
         showContent,
         showHelp,
         actions,
-        itemHeight,
+        fontSize,
       };
     },
   };
@@ -149,7 +149,7 @@
 
 <style lang="scss" scoped>
   .vcs-form-section-header {
-    height: calc(var(--v-vcs-item-height) + 8px);
+    height: calc(var(--v-vcs-font-size) * 2 + 14px);
   }
   .v-alert--text:before {
     background-color: transparent;

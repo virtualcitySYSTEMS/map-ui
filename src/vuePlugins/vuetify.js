@@ -88,7 +88,6 @@ export function createVcsThemes(options, primaryColor) {
         'hover-opacity': 0.16,
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
-        'vcs-item-height': '32px',
         'vcs-font-size': '13px',
         'vcs-font-family': 'Titillium Web',
         ...options?.light?.variables,
@@ -118,8 +117,7 @@ export function createVcsThemes(options, primaryColor) {
         'hover-opacity': 0.16,
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
-        'vcs-item-height': '40px',
-        'vcs-font-size': '15px',
+        'vcs-font-size': '13px',
         'vcs-font-family': 'Titillium Web',
         ...options?.dark?.variables,
       },
@@ -200,9 +198,6 @@ export function createVcsVuetify(i18n) {
     defaults: {
       VBtn: {
         ripple: false,
-      },
-      VIcon: {
-        size: 16,
       },
       VList: {
         density: 'compact',
@@ -315,19 +310,6 @@ export function getColorByKey(app, value, variant) {
 }
 
 /**
- * returns the itemHeight as a number
- * @returns {import("vue").ComputedRef<number>}
- */
-export function useItemHeight() {
-  const theme = useTheme();
-  return computed(() => {
-    const itemHeight = theme.current.value.variables['vcs-item-height'] ?? 32;
-    // get rid of `px`
-    return Number.parseFloat(itemHeight);
-  });
-}
-
-/**
  * returns the fontSize as a number
  * @returns {import("vue").ComputedRef<number>}
  */
@@ -337,5 +319,16 @@ export function useFontSize() {
     const fontSize = theme.current.value.variables['vcs-font-size'] ?? 13;
     // get rid of `px`
     return Number.parseFloat(fontSize);
+  });
+}
+
+/**
+ * returns the default IconSize as a number, value is based on the fontSize
+ * @returns {import("vue").ComputedRef<number>}
+ */
+export function useIconSize() {
+  const fontSize = useFontSize();
+  return computed(() => {
+    return fontSize.value * (1.2 + 0.1 / 3);
   });
 }

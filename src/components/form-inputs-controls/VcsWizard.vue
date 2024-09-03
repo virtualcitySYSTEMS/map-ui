@@ -35,8 +35,8 @@
 </script>
 <style scoped lang="scss">
   :deep(.v-expansion-panel-title) {
-    height: var(--v-vcs-item-height);
-    min-height: var(--v-vcs-item-height);
+    height: calc(var(--v-vcs-font-size) * 2 + 6px);
+    min-height: calc(var(--v-vcs-font-size) * 2 + 6px);
     padding: 0 8px;
   }
   :deep(.v-expansion-panel-title.v-expansion-panel-title--active) {
@@ -58,7 +58,7 @@
   }
   :deep(.v-stepper-vertical-item:not(:last-child):before) {
     height: 100%;
-    top: calc(var(--v-vcs-item-height) * 0.5);
+    top: calc(var(--v-vcs-font-size) * 2 - 16px);
     left: calc(14px + var(--v-vcs-font-size) * 0.42);
     width: calc(var(--v-vcs-font-size) * 0.1);
   }

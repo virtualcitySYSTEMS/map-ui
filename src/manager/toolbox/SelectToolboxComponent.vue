@@ -38,7 +38,7 @@
 
       <v-toolbar
         class="vcs-toolbox-2 mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
-        :height="itemHeight + 8"
+        :height="toolboxHeight"
         dense
       >
         <v-toolbar-items class="w-100">
@@ -64,10 +64,10 @@
   }
 </style>
 <script>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description
@@ -91,11 +91,13 @@
     },
     setup() {
       const open = ref(false);
-      const itemHeight = useItemHeight();
-
+      const fontSize = useFontSize();
+      const toolboxHeight = computed(() => {
+        return fontSize.value * 3 + 1;
+      });
       return {
         open,
-        itemHeight,
+        toolboxHeight,
       };
     },
   };

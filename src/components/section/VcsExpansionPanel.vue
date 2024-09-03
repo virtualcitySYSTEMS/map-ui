@@ -10,6 +10,7 @@
   import { computed, ref, useSlots } from 'vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import { createEllipseTooltip } from '../composables.js';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   const props = defineProps({
     heading: {
@@ -39,14 +40,19 @@
     computed(() => undefined),
     computed(() => props.heading),
   );
+  const iconSize = useIconSize();
 </script>
 <template>
   <v-expansion-panel :disabled="disabled" v-bind="$attrs">
     <v-expansion-panel-title static class="px-2">
       <template #default="{ expanded }">
         <v-list-item-title ref="panelHeader">
-          <v-icon v-if="!expanded" class="pr-1"> mdi-chevron-right </v-icon>
-          <v-icon v-if="expanded" class="pr-1"> mdi-chevron-down </v-icon>
+          <v-icon :size="iconSize" v-if="!expanded" class="pr-1">
+            mdi-chevron-right
+          </v-icon>
+          <v-icon :size="iconSize" v-if="expanded" class="pr-1">
+            mdi-chevron-down
+          </v-icon>
           <span
             :class="{
               'vcs-panel-title__append':
@@ -82,7 +88,7 @@
   :deep(.v-expansion-panel-title) {
     font-size: var(--v-vcs-font-size);
     min-height: unset;
-    height: var(--v-vcs-item-height);
+    height: calc(var(--v-vcs-font-size) * 2 + 6px);
     line-height: 1.2;
     padding: 0 8px;
   }

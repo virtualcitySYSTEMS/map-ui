@@ -37,12 +37,17 @@
   </v-checkbox>
 </template>
 <style lang="scss" scoped>
+  :deep(.v-icon--size-default) {
+    font-size: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3));
+  }
   .v-input--density-compact :deep(.v-selection-control) {
-    --v-selection-control-size: 20px;
-    --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
+    --v-selection-control-size: calc(
+      var(--v-vcs-font-size) * (1.2 + 0.1 / 3) + 4
+    );
+    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
   }
   :deep(.v-input__control) {
-    height: calc(var(--v-vcs-item-height) - 8px);
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
   }
   // remove ripple effect
   :deep(.v-selection-control__input::before) {

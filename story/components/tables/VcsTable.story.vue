@@ -7,7 +7,7 @@
   const state = getStoryState();
 
   const attributes = reactive({
-    externalObjectName: 'DEBE01YYK0001xqy',
+    externalObjectNameWhichisVeryLong: 'DEBE01YYK0001xqy',
     measuredHeight: undefined,
     Address: {
       Country: 'Germany',

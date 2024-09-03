@@ -32,7 +32,7 @@
 </template>
 <style lang="scss" scoped>
   .v-input--horizontal :deep(.v-input__control) {
-    min-height: calc(var(--v-vcs-item-height) - 8px);
+    min-height: calc(var(--v-vcs-font-size) * 2 - 2px);
   }
   .v-input--horizontal.v-slider--has-labels {
     margin-bottom: var(--v-vcs-font-size);
@@ -77,7 +77,7 @@
   import { computed, ref } from 'vue';
   import { VSlider, VTooltip } from 'vuetify/components';
   import { useForwardSlots, usePadding } from '../composables.js';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description stylized wrapper around {@link https://vuetifyjs.com/en/components/sliders/#usage}.
@@ -101,12 +101,12 @@
       },
     },
     setup(props, { attrs, slots }) {
-      const itemHeight = useItemHeight();
+      const fontSize = useFontSize();
       const thumbSize = computed(() => {
-        return Math.floor(itemHeight.value / 4);
+        return Math.floor((fontSize.value + 3) / 2);
       });
       const trackSize = computed(() => {
-        return Math.floor(itemHeight.value / 12);
+        return Math.floor((fontSize.value + 3) / 6);
       });
       const tickSize = computed(() => {
         return trackSize.value * 2;

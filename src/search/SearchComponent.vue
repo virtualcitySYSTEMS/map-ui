@@ -1,7 +1,7 @@
 <template>
   <v-sheet>
     <span class="d-flex justify-space-between align-center mt-1 ml-2">
-      <v-icon class="pa-1" :size="itemHeight - 8"> $vcsSearch </v-icon>
+      <v-icon class="pa-1" :size="searchIconSize"> $vcsSearch </v-icon>
       <VcsTextField
         class="d-inline-block user-select-none w-100 mx-1"
         autofocus
@@ -35,13 +35,13 @@
 </style>
 
 <script>
-  import { inject, onUnmounted, ref } from 'vue';
+  import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
   import { VSheet, VDivider, VIcon } from 'vuetify/components';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './ResultsComponent.vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
-  import { useItemHeight } from '../vuePlugins/vuetify.js';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description Stylized search component providing an input field for search inputs.
@@ -94,8 +94,10 @@
         clear();
       });
 
-      const itemHeight = useItemHeight();
-
+      const fontSize = useFontSize();
+      const searchIconSize = computed(() => {
+        return fontSize.value + 11;
+      });
       return {
         query,
         searching,
@@ -104,7 +106,7 @@
         clear,
         search,
         zoomToAll,
-        itemHeight,
+        searchIconSize,
       };
     },
   };

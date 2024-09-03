@@ -29,9 +29,8 @@
           :disabled="disabled"
           v-bind="props"
           class="d-flex"
-        >
-          <v-icon>{{ overflowIcon }}</v-icon>
-        </component>
+          :icon="overflowIcon"
+        />
       </template>
       <VcsActionList :actions="overflowButtons" :disabled="disabled" />
     </v-menu>

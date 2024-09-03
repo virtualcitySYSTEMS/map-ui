@@ -23,7 +23,7 @@
 
       <v-toolbar
         class="vcs-toolbox-toolbar--secondary mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
-        :height="itemHeight + 8"
+        :height="toolboxHeight"
       >
         <v-toolbar-items class="w-100">
           <div class="d-flex align-center justify-space-between gc-1 w-100">
@@ -53,7 +53,7 @@
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { getComponentsByOrder } from './toolboxManager.js';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description
@@ -94,13 +94,16 @@
         orderedButtons.value.some((a) => a.action.active),
       );
 
-      const itemHeight = useItemHeight();
+      const fontSize = useFontSize();
+      const toolboxHeight = computed(() => {
+        return fontSize.value * 3 + 1;
+      });
 
       return {
         open,
         orderedButtons,
         hasActiveAction,
-        itemHeight,
+        toolboxHeight,
       };
     },
   };

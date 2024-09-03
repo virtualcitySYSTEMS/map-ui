@@ -41,7 +41,7 @@
     top: 0px;
   }
   .with-header {
-    top: 48px;
+    top: calc(var(--v-vcs-font-size) * 3 + 9px);
   }
   .vcs-container {
     position: absolute;

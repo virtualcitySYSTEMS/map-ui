@@ -50,8 +50,8 @@
 </template>
 <style lang="scss" scoped>
   .v-input--density-compact :deep(.v-selection-control) {
-    --v-selection-control-size: calc(var(--v-vcs-item-height) - 8px);
-    --v-input-control-height: calc(var(--v-vcs-item-height) - 16px);
+    --v-selection-control-size: calc(var(--v-vcs-font-size) * 2 - 2px);
+    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
   }
   // remove ripple effect
   :deep(.v-selection-control__input::before) {

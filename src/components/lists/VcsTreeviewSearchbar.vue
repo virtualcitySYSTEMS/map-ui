@@ -3,7 +3,9 @@
     class="pa-2 bg-base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0"
   >
     <slot name="prepend">
-      <v-icon class="search-icon my-0 ml-1" size="12"> $vcsSearch </v-icon>
+      <v-icon class="search-icon my-0 ml-1" :size="iconSize - 4">
+        $vcsSearch
+      </v-icon>
     </slot>
 
     <slot v-bind="{ ...$props, attrs: $attrs }">
@@ -16,7 +18,7 @@
     </slot>
 
     <slot name="append" :has-filter="hasFilter">
-      <v-icon v-if="hasFilter" class="ml-2" size="16">$vcsFilter</v-icon>
+      <v-icon v-if="hasFilter" class="ml-2" :size="iconSize">$vcsFilter</v-icon>
     </slot>
   </div>
 </template>
@@ -48,7 +50,9 @@
         > .v-field__field
         > .v-field__input
     ) {
-    --v-input-control-height: calc(var(--v-vcs-item-height) - 20px) !important;
+    --v-input-control-height: calc(
+      var(--v-vcs-font-size) * 2 - 14px
+    ) !important;
     min-height: var(--v-input-control-height);
   }
 
@@ -74,6 +78,7 @@
 <script>
   import { VIcon } from 'vuetify/components';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
@@ -99,6 +104,12 @@
         type: Boolean,
         default: false,
       },
+    },
+    setup() {
+      const iconSize = useIconSize();
+      return {
+        iconSize,
+      };
     },
   };
 </script>

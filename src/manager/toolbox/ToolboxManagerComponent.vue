@@ -5,7 +5,7 @@
     :class="{
       'rounded-b': !open,
     }"
-    :height="itemHeight + 8"
+    :height="toolboxHeight"
     :style="{ zIndex }"
     @click.stop="bringToTop"
   >
@@ -61,7 +61,7 @@
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { ButtonLocation } from '../navbarManager.js';
-  import { useItemHeight } from '../../vuePlugins/vuetify.js';
+  import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
    * @typedef {Object} ToolboxButtonGroup
@@ -184,7 +184,10 @@
       };
 
       const { mdAndUp } = useDisplay();
-      const itemHeight = useItemHeight();
+      const fontSize = useFontSize();
+      const toolboxHeight = computed(() => {
+        return fontSize.value * 3 + 1;
+      });
       return {
         mdAndUp,
         toolboxOpen,
@@ -202,7 +205,7 @@
             bringToTop();
           }
         },
-        itemHeight,
+        toolboxHeight,
       };
     },
   };

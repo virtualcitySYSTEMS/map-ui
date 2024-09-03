@@ -450,10 +450,10 @@
   }
 
   .v-table--density-compact {
-    --v-table-header-height: var(--v-vcs-item-height);
-    --v-table-row-height: var(--v-vcs-item-height);
+    --v-table-header-height: calc(var(--v-vcs-font-size) * 2 + 6px);
+    --v-table-row-height: calc(var(--v-vcs-font-size) * 2 + 6px);
     & :deep(.v-selection-control--density-default) {
-      --v-selection-control-size: var(--v-vcs-item-height);
+      --v-selection-control-size: calc(var(--v-vcs-font-size) * 2 + 6px);
     }
   }
 

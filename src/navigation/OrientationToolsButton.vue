@@ -18,7 +18,7 @@
 <script>
   import { VCard, VIcon, VTooltip } from 'vuetify/components';
   import { computed } from 'vue';
-  import { useFontSize } from '../vuePlugins/vuetify.js';
+  import { useFontSize, useIconSize } from '../vuePlugins/vuetify.js';
 
   /**
    * @description v-card with h & w 8. Requires an icon and binds all attributes & listeners to the v-card
@@ -50,9 +50,7 @@
     setup() {
       const fontSize = useFontSize();
 
-      const iconSize = computed(() => {
-        return fontSize.value * (1.2 + 0.1 / 3);
-      });
+      const iconSize = useIconSize();
       const height = computed(() => {
         return fontSize.value * 2.5;
       });
