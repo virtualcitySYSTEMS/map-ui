@@ -57,7 +57,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^10.0.1",
-    "@vcmap/core": "^6.0.0-rc.4",
+    "@vcmap/core": "^6.0.0-rc.5",
     "ol": "^10.0.0",
     "vue": "~3.4.38",
     "vuetify": "^3.7.1"
