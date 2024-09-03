@@ -173,7 +173,7 @@
           if (rawProps.multiple) {
             return [];
           }
-          return '';
+          return null;
         },
       },
       tooltip: {
