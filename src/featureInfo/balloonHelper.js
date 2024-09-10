@@ -28,7 +28,7 @@ export const balloonOffset = { x: 55, y: 25 };
  * @returns {undefined|import("@vcmap-cesium/engine").Cartesian2}
  */
 function getBalloonPositionCesium(scene, cartesian) {
-  return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian);
+  return SceneTransforms.worldToWindowCoordinates(scene, cartesian);
 }
 
 /**

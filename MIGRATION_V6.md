@@ -65,6 +65,7 @@
 - Plugins which provide editors can no longer return promises from `getConfig` or `setConfig`.
 - Use newly introduced `useComponentId()` helper to generate unique html ids for inputs with labels.
 - `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
+- Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
 
 # Extended Theming
 

@@ -680,7 +680,8 @@
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "tilesetOptions": {
-        "skipLevelOfDetail": true
+        "skipLevelOfDetail": true,
+        "enableCollision": true
       },
       "exclusiveGroups": ["bldg"],
       "properties": {

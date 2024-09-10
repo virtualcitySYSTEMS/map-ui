@@ -99,18 +99,28 @@
   /**
    * Returns the allowed transformation modes for the provided geometry types and number of features. Rotate is e.g. not allowed for a single point but for multiple points.
    * @param {Set<GeometryType>} geometryTypes A set with all geometry types of the features.
-   * @param {number} nFeatures The number of the features.
+   * @param {import("ol").Feature[]} features The features currently being edited.
+   * @param {import("@vcmap/core").VectorLayer} layer The number of the features.
+   * @param {boolean} is3D if the current map is 3D
    * @returns {Array<TransformationMode>} The allowed transformation modes.
    */
   export function getAllowedEditorTransformationModes(
     geometryTypes,
-    nFeatures,
+    features,
+    layer,
+    is3D = false,
   ) {
+    const nFeatures = features.length;
     const isSinglePoint =
-      nFeatures === 1 && geometryTypes.has(GeometryType.Point);
+      nFeatures === 1 &&
+      geometryTypes.has(GeometryType.Point) &&
+      (!is3D || layer.vectorProperties.renderAs(features[0]) === 'geometry');
+
     const isSingleCircle =
       nFeatures === 1 && geometryTypes.has(GeometryType.Circle);
+
     const isBboxSelected = geometryTypes.has(GeometryType.BBox);
+
     return [
       TransformationMode.TRANSLATE,
       ...(isSinglePoint || isSingleCircle || isBboxSelected
@@ -194,36 +204,7 @@
        * Sets the changed vector property options on the features. Also handles side effects.
        * @param {import("@vcmap/core").VectorPropertiesOptions} update New property values from user input.
        */
-      async function updateFeatureProperties(update) {
-        const extrusionLikePropertyKeys = [
-          'extrudedHeight',
-          'skirt',
-          'storeysAboveGround',
-          'storeysBelowGround',
-          'storeyHeightsAboveGround',
-          'storeyHeightsBelowGround',
-        ];
-        const setsExtrusionLikePropertyKeys =
-          !!extrusionLikePropertyKeys.filter(
-            (key) => Object.keys(update).includes(key) && !!update[key],
-          ).length;
-        if (
-          setsExtrusionLikePropertyKeys &&
-          featureProperties.value.altitudeMode !== 'absolute'
-        ) {
-          update.altitudeMode = 'absolute';
-        } else if (update.altitudeMode === 'clampToGround') {
-          extrusionLikePropertyKeys
-            .filter((key) => !!featureProperties.value[key])
-            .forEach((key) => {
-              update[key] = 0;
-            });
-        }
-        // when in create mode and changing altitude mode, this is triggered, but currentFeatures is empty array.
-        if (update.altitudeMode === 'absolute' && features?.length) {
-          await editorManager.placeCurrentFeaturesOnTerrain();
-        }
-
+      function updateFeatureProperties(update) {
         layer.value.vectorProperties.setValuesForFeatures(
           update,
           features.value,
@@ -297,7 +278,9 @@
       function getAllowedModifyActions() {
         const allowedModes = getAllowedEditorTransformationModes(
           currentGeometryTypes.value.types,
-          currentGeometryTypes.value.nFeatures,
+          features.value,
+          layer.value,
+          is3D.value,
         );
 
         const allowedActions = allowedModes.map((mode) => {

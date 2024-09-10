@@ -5,8 +5,6 @@ import {
   Projection,
   VectorLayer,
   VectorStyleItem,
-  ensureFeatureAbsolute,
-  CesiumMap,
 } from '@vcmap/core';
 import { Circle, Point } from 'ol/geom';
 import { Feature } from 'ol';
@@ -34,9 +32,9 @@ function getColor(opacity, app) {
  * Place a location point and accuracy circle on the map.
  * @param {import("@vcmap/core").VectorLayer} layer The OpenLayers layer to add the features to.
  * @param {GeolocationCoordinates} point The point object containing longitude, latitude, and accuracy.
- * @param {import("../vcsUiApp.js").default} app
+ * @returns {Promise<void>}
  */
-async function placeLocationInMap(layer, point, app) {
+async function placeLocationInMap(layer, point) {
   layer.removeFeaturesById(['_tooltipLocationPoint']);
   layer.removeFeaturesById(['_tooltipLocationCircle']);
 
@@ -49,15 +47,12 @@ async function placeLocationInMap(layer, point, app) {
   });
   feature.setId('_tooltipLocationPoint');
 
-  if (app.maps.activeMap instanceof CesiumMap) {
-    await ensureFeatureAbsolute(feature, layer, app.maps.activeMap);
-  }
-
   const accuracyCircle = new Feature({
     geometry: new Circle(
       Projection.wgs84ToMercator([point.longitude, point.latitude]),
       point.accuracy,
     ),
+    olcs_altitudeMode: 'clampToGround',
   });
   accuracyCircle.setId('_tooltipLocationCircle');
   layer.addFeatures([accuracyCircle, feature]);
@@ -202,18 +197,6 @@ export function createLocatorAction(app) {
     style,
   });
 
-  const mapChangedListener = app.maps.mapActivated.addEventListener(
-    async (map) => {
-      if (map instanceof CesiumMap) {
-        const locatorFeature = vectorLayer.getFeatureById(
-          '_tooltipLocationPoint',
-        );
-        if (locatorFeature) {
-          await ensureFeatureAbsolute(locatorFeature, vectorLayer, map);
-        }
-      }
-    },
-  );
   markVolatile(vectorLayer);
   app.layers.add(vectorLayer);
 
@@ -283,7 +266,6 @@ export function createLocatorAction(app) {
   };
   const destroy = () => {
     destroyLayer();
-    mapChangedListener();
     themeListener();
     style.destroy();
     state.coordinates = undefined;

@@ -68,14 +68,14 @@ describe('BalloonHelper', () => {
 
     afterAll(() => {
       destroy();
-      vi.spyOn(SceneTransforms, 'wgs84ToWindowCoordinates').mockClear();
+      vi.spyOn(SceneTransforms, 'worldToWindowCoordinates').mockClear();
     });
 
     it('should update position on render', () => {
       const { activeMap } = app.maps;
       vi.spyOn(
         SceneTransforms,
-        'wgs84ToWindowCoordinates',
+        'worldToWindowCoordinates',
       ).mockImplementationOnce(() => new Cartesian2(rect.left, rect.height));
       activeMap.getScene().postRender.raiseEvent(activeMap.getScene());
       expect(app.windowManager.get('balloon').position.left).to.equal(

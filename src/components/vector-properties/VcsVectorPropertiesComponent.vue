@@ -21,13 +21,7 @@
             />
           </v-col>
         </v-row>
-        <v-row
-          v-if="
-            visibleProperties.has('heightAboveGround') &&
-            localValue.altitudeMode === 'relativeToGround'
-          "
-          no-gutters
-        >
+        <v-row v-if="visibleProperties.has('heightAboveGround')" no-gutters>
           <v-col>
             <VcsLabel :html-for="`${cid}-vp-height-above-ground`">{{
               $t('components.vectorProperties.heightAboveGround')
@@ -40,7 +34,7 @@
               :hide-spin-buttons="true"
               type="number"
               unit="m"
-              placeholder="0"
+              clearable
             />
           </v-col>
         </v-row>
@@ -345,6 +339,7 @@
             'modelHeading',
             'modelPitch',
             'modelRoll',
+            'modelAutoScale',
             'baseUrl',
           ].some((prop) => visibleProperties.has(prop))
         "
@@ -440,6 +435,16 @@
             />
           </v-col>
         </v-row>
+        <v-row v-if="visibleProperties.has('modelAutoScale')" no-gutters>
+          <v-col cols="6">
+            <VcsLabel>{{
+              $t('components.vectorProperties.modelAutoScale')
+            }}</VcsLabel>
+          </v-col>
+          <v-col>
+            <VcsCheckbox v-model="localValue.modelAutoScale" />
+          </v-col>
+        </v-row>
         <v-row v-if="visibleProperties.has('baseUrl')" no-gutters>
           <v-col>
             <VcsLabel :html-for="`${cid}-vp-base-url`">{{
@@ -494,6 +499,7 @@
     'modelHeading',
     'modelPitch',
     'modelRoll',
+    'modelAutoScale',
     'baseUrl',
   ];
 
@@ -596,16 +602,34 @@
             title: 'components.vectorProperties.clampToGround',
           },
           {
+            value: 'clampToTerrain',
+            title: 'components.vectorProperties.clampToTerrain',
+          },
+          {
+            value: 'clampTo3DTiles',
+            title: 'components.vectorProperties.clampTo3DTiles',
+          },
+          {
             value: 'absolute',
             title: 'components.vectorProperties.absolute',
           },
         ];
 
         if (visibleProperties.value.has('heightAboveGround')) {
-          altitudeModes.push({
-            value: 'relativeToGround',
-            title: 'components.vectorProperties.relativeToGround',
-          });
+          altitudeModes.push(
+            {
+              value: 'relativeToGround',
+              title: 'components.vectorProperties.relativeToGround',
+            },
+            {
+              value: 'relativeToTerrain',
+              title: 'components.vectorProperties.relativeToTerrain',
+            },
+            {
+              value: 'relativeTo3DTiles',
+              title: 'components.vectorProperties.relativeTo3DTiles',
+            },
+          );
         }
 
         return altitudeModes;
