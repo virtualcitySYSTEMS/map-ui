@@ -64,20 +64,20 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
  */
 
 /**
- * @typedef {import("vue").Component<{ getConfig(): Config, setConfig(config?: Config): void }>} PluginConfigEditorComponent
- * @template {Object} Config
+ * @typedef {import("vue").Component<{ getConfig(): C, setConfig(config?: C): void }>} PluginConfigEditorComponent
+ * @template {Object} C - plugin or item config
  */
 
 /**
  * @typedef {{
- *   component: PluginConfigEditorComponent<Config>,
+ *   component: PluginConfigEditorComponent<C>,
  *   title?: string,
  *   collectionName?: string,
  *   itemName?: string,
  *   infoUrlCallback?: () => string,
  * }} PluginConfigEditor
- * @template {Object} Config
- * @property {PluginConfigEditorComponent<Config>} component - A editor component to configure a plugin or item
+ * @template {Object} C - plugin or item config
+ * @property {PluginConfigEditorComponent<C>} component - A editor component to configure a plugin or item
  * @property {string} [title] - optional title to render in the window header & actions of this editor
  * @property {string} [collectionName='plugins'] - The collection the item belongs to. Default is plugins collection.
  * @property {string} [itemName] - The item the editor can be used for. Can be a name or className. Default is the plugin's name.
@@ -85,9 +85,9 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
  */
 
 /**
- * @typedef {function(Config, string):VcsPlugin<Config, State>} createPlugin
- * @template {Object} Config
- * @template {Object} State
+ * @typedef {function(C, string):VcsPlugin<C, S>} createPlugin
+ * @template {Object} C
+ * @template {Object} S
  */
 
 /**
@@ -98,22 +98,22 @@ import { createVcsVuetify } from './vuePlugins/vuetify.js';
  *   version: string,
  *   mapVersion: string,
  *   i18n?: Object<string, unknown>,
- *   initialize?: function(import("@src/vcsUiApp.js").default, State=):void|Promise<void>,
+ *   initialize?: function(import("@src/vcsUiApp.js").default, S=):void|Promise<void>,
  *   onVcsAppMounted?: function(import("@src/vcsUiApp.js").default):void,
- *   toJSON?: function(): Config,
- *   getDefaultOptions?: function(): Config,
- *   getState?: function(boolean=):State|Promise<State>,
- *   getConfigEditors?: function():Array<PluginConfigEditor<Config>>,
+ *   toJSON?: function(): C,
+ *   getDefaultOptions?: function(): C,
+ *   getState?: function(boolean=):S|Promise<S>,
+ *   getConfigEditors?: function():Array<PluginConfigEditor<object>>,
  *   destroy?: function(): void
  * }} VcsPlugin
- * @template {Object} Config
- * @template {Object} State
+ * @template {Object} C - plugin config
+ * @template {Object} S - plugin state
  * @property {Object<string, *>} [i18n] - the i18n messages of this plugin
- * @property {function(import("@src/vcsUiApp.js").default, State=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
+ * @property {function(import("@src/vcsUiApp.js").default, S=)} initialize - called on plugin added. Is passed the VcsUiApp and optionally, the state for the plugin
  * @property {function(import("@src/vcsUiApp.js").default)} onVcsAppMounted - called on mounted of VcsApp.vue
- * @property {function():Config} [toJSON] - should return the plugin's serialization excluding all default values
- * @property {function():Config} [getDefaultOptions] - should return the plugin's default options
- * @property {function(boolean=):S|Promise<State>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
+ * @property {function():C} [toJSON] - should return the plugin's serialization excluding all default values
+ * @property {function():C} [getDefaultOptions] - should return the plugin's default options
+ * @property {function(boolean=):S|Promise<S>} [getState] - should return the plugin's state or a promise for said state. is passed a "for url" flag. If true, only the state relevant for sharing a URL should be passed and short keys shall be used
  * @property {Array<PluginConfigEditor>} [getConfigEditors] - should return components for configuring the plugin or custom items defined by the plugin
  * @api
  */

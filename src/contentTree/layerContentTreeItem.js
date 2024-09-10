@@ -44,6 +44,47 @@ export function setViewpointAction(item, app, viewpoint) {
 }
 
 /**
+ * @param {import("./contentTreeItem.js").default} item
+ * @param {import("@src/vcsUiApp.js").default} app
+ * @param {Array<Function>} listeners
+ * @param {Array<string>} layerNames
+ * @param {Array<string>=} availableStyles
+ */
+export function setStyleAction(
+  item,
+  app,
+  listeners,
+  layerNames,
+  availableStyles,
+) {
+  const name = 'StyleSelector';
+  item.removeAction(name);
+  if (Array.isArray(availableStyles) && availableStyles.length > 0) {
+    const { action, destroy } = createModalAction(
+      {
+        name,
+        icon: '$vcsColorSwatch',
+        title: 'content.styleAction.title',
+      },
+      {
+        component,
+        position: {
+          width: 200,
+        },
+        props: reactive({
+          availableStyles: availableStyles.slice(),
+          layerNames: layerNames.slice(),
+        }),
+      },
+      app,
+      vcsAppSymbol,
+    );
+    item.addAction(action, 4);
+    listeners.push(destroy);
+  }
+}
+
+/**
  * @param {import("@vcmap/core").Layer} layer
  * @returns {StateActionState}
  */
@@ -102,38 +143,6 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   /**
-   * @param {Array<string>=} availableStyles
-   * @private
-   */
-  _setStyleAction(availableStyles) {
-    const name = 'StyleSelector';
-    this.removeAction(name);
-    if (Array.isArray(availableStyles) && availableStyles.length > 0) {
-      const { action, destroy } = createModalAction(
-        {
-          name,
-          icon: '$vcsColorSwatch',
-          title: 'content.styleAction.title',
-        },
-        {
-          component,
-          position: {
-            width: 200,
-          },
-          props: reactive({
-            availableStyles: availableStyles.slice(),
-            layerName: this._layerName,
-          }),
-        },
-        this._app,
-        vcsAppSymbol,
-      );
-      this.addAction(action, 4);
-      this._listeners.push(destroy);
-    }
-  }
-
-  /**
    * @private
    */
   _setLayerExtentAction() {
@@ -165,8 +174,13 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
    */
   _setProperties(properties) {
     super._setProperties(properties);
-
-    this._setStyleAction(properties.availableStyles);
+    setStyleAction(
+      this,
+      this._app,
+      this._listeners,
+      [this._layerName],
+      properties.availableStyles,
+    );
     setViewpointAction(this, this._app, properties.defaultViewpoint);
   }
 

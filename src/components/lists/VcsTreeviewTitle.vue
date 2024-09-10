@@ -25,7 +25,11 @@
   }
 </style>
 <template>
-  <div class="title-parent pr-2" ref="titleParent">
+  <div
+    class="title-parent pr-2"
+    ref="titleParent"
+    @click.stop="item.clicked && !item.disabled && item.clicked($event)"
+  >
     <span>
       {{ $st(item.title || item.name) }}
     </span>

@@ -1,6 +1,6 @@
 <template v-if="textPage.title">
-  <span class="d-inline-block text-truncate mr-1">
-    <span v-if="textPage.url" class="imprint">
+  <span class="d-inline-block text-truncate mr-1 flex-shrink-0">
+    <span v-if="textPage.url" class="text-page-footer">
       <a :href="$st(textPage.url)" target="_blank"
         >{{ $st(textPage.title) }} <span></span>
       </a>
@@ -8,7 +8,7 @@
 
     <span
       v-else
-      class="imprint cursor-pointer text-decoration-underline"
+      class="text-page-footer cursor-pointer text-decoration-underline"
       @click="addTextPage()"
       >{{ $st(textPage.title) }}</span
     >
@@ -21,7 +21,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .imprint {
+  .text-page-footer {
     font-size: smaller;
     a {
       color: var(--v-text-color);

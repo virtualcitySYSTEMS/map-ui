@@ -37,7 +37,7 @@ describe('LayerGroupContentTreeItem', () => {
       app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
       layers = [
-        { mapNames: ['ol'] },
+        { mapNames: ['ol'], properties: { availableStyles: ['foo', 'bar'] } },
         { mapNames: ['ol'] },
         { mapNames: ['bar'] },
       ].map((config) => new VectorLayer(config));
@@ -49,6 +49,8 @@ describe('LayerGroupContentTreeItem', () => {
         {
           name: 'foo',
           layerNames: layers.map((l) => l.name),
+          defaultViewpoint: 'foo',
+          availableStyles: ['foo'],
         },
         app,
       );
@@ -132,6 +134,17 @@ describe('LayerGroupContentTreeItem', () => {
         await Promise.all(layers.map((l) => l.activate()));
         await item.clicked();
         expect(layers.filter((l) => l.active)).to.be.empty;
+      });
+    });
+
+    describe('actions', () => {
+      it('should add a viewpoint action', () => {
+        expect(item.actions.some((a) => a.name === 'ViewpointAction')).to.be
+          .true;
+      });
+
+      it('should add a style action', () => {
+        expect(item.actions.some((a) => a.name === 'StyleSelector')).to.be.true;
       });
     });
   });

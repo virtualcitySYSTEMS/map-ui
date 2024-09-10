@@ -13,7 +13,7 @@
         <v-icon
           v-if="module.description && toggleable"
           right
-          v-bind="{ ...$attrs, ...props }"
+          v-bind="{ ...$attrs, ...$props }"
         >
           mdi-help-circle
         </v-icon>

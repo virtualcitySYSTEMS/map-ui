@@ -3,13 +3,14 @@ import ContentTreeItem, {
 } from './contentTreeItem.js';
 import {
   getStateFromLayer,
+  setStyleAction,
   setViewpointAction,
 } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], defaultViewpoint?: string }} LayerGroupContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], defaultViewpoint?: string, availableStyles?: string[] }} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
@@ -69,10 +70,18 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     this._listeners = [];
 
     /**
-     * @type {string|null}
+     * @type {string|undefined}
      * @private
      */
-    this._defaultViewpoint = options.defaultViewpoint || null;
+    this._defaultViewpoint = options.defaultViewpoint;
+
+    /**
+     * @type {string[]}
+     * @private
+     */
+    this._availableStyles = Array.isArray(options.availableStyles)
+      ? options.availableStyles.slice()
+      : [];
 
     this._setup();
   }
@@ -116,6 +125,13 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     this.visible = layers.some((l) => l.isSupported(this._app.maps.activeMap));
     this.state = getStateFromLayers(layers);
     setViewpointAction(this, this._app, this._defaultViewpoint);
+    setStyleAction(
+      this,
+      this._app,
+      this._listeners,
+      this._layerNames,
+      this._availableStyles,
+    );
 
     this._listeners.push(
       this._app.layers.removed.addEventListener(resetHandler),
@@ -165,6 +181,9 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     config.layerNames = this._layerNames.slice();
     if (this._defaultViewpoint) {
       config.defaultViewpoint = this._defaultViewpoint;
+    }
+    if (this._availableStyles.length > 0) {
+      config.availableStyles = this._availableStyles.slice();
     }
     return config;
   }

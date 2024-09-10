@@ -8,20 +8,32 @@
       'pa-1': !paddingProvided,
     }"
   >
-    <slot />
-    <v-tooltip
-      v-if="tooltip"
-      activator="parent"
-      :location="tooltipPosition"
-      :text="$st(tooltip)"
-    ></v-tooltip>
+    <span class="ellipsis-text" ref="labelTextRef">
+      <slot />
+      <v-tooltip
+        v-if="labelTooltip"
+        activator="parent"
+        :location="tooltipPosition"
+        :text="$st(labelTooltip)"
+      ></v-tooltip>
+    </span>
   </label>
 </template>
 
 <style lang="scss" scoped>
+  .ellipsis-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .vcs-label {
     box-sizing: content-box;
     display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     align-items: center;
     height: calc(var(--v-vcs-font-size) * 2 - 2px);
     font-size: var(--v-vcs-font-size);
@@ -36,7 +48,8 @@
 </style>
 <script>
   import { VTooltip } from 'vuetify/components';
-  import { usePadding } from '../composables.js';
+  import { computed, ref } from 'vue';
+  import { createEllipseTooltip, usePadding } from '../composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label |label label}.
@@ -76,8 +89,18 @@
     },
     setup(props, { attrs }) {
       const paddingProvided = usePadding(attrs);
+      const labelTextRef = ref();
+      const labelTooltip = createEllipseTooltip(
+        computed(() => {
+          return labelTextRef.value;
+        }),
+        computed(() => props.tooltip),
+        computed(() => labelTextRef.value?.textContent),
+      );
       return {
         paddingProvided,
+        labelTooltip,
+        labelTextRef,
       };
     },
   };

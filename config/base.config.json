@@ -1075,7 +1075,12 @@
       "name": "reasonableLayerGroup",
       "type": "LayerGroupContentTreeItem",
       "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain.4"],
-      "title": "Buildings - Trees - Terrain. A Layer Group Item"
+      "title": "Buildings - Trees - Terrain. A Layer Group Item",
+      "availableStyles": [
+        "MeasuredHeightGreen",
+        "MeasuredHeightBrown",
+        "MeasuredHeightBlue"
+      ]
     },
     {
       "name": "berlin_obliques",

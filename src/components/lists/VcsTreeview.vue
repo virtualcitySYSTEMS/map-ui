@@ -17,6 +17,7 @@
       collapse-icon="mdi-chevron-down"
       v-bind="{ ...$props, ...$attrs }"
       :search="localSearchValue"
+      @click:select="itemClicked($event.id, $event.event)"
     >
       <template #title="scope">
         <slot name="title" v-bind="scope ?? {}">
@@ -143,6 +144,10 @@
       VTreeview,
     },
     props: {
+      items: {
+        type: Array,
+        default: () => [],
+      },
       search: {
         type: String,
         default: '',
@@ -190,6 +195,23 @@
         localSearchValue,
         handleFilter,
         forwardSlots,
+        itemClicked(name, event) {
+          const items = props.items.slice();
+          let item;
+          while (items.length > 0) {
+            item = items.pop();
+            if (item.name === name) {
+              break;
+            }
+            if (item.children?.length > 0) {
+              items.push(...item.children);
+            }
+          }
+
+          if (item?.clicked && !item?.disabled) {
+            item.clicked(event);
+          }
+        },
       };
     },
   };

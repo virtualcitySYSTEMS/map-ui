@@ -25,8 +25,8 @@
         :text-page="dataProtection"
         :window-id="'dataProtectionWindow'"
       />
+      <v-spacer />
       <VcsAttributionsFooter
-        class="align-wrapper"
         :entries="attributionEntries"
         :attribution-action="attributionAction"
       />
@@ -38,18 +38,13 @@
   :deep(.v-application--wrap) {
     min-height: fit-content;
   }
-  .align-wrapper {
-    position: absolute;
-    right: 0;
-    margin-right: 4px !important;
-  }
 </style>
 
 <script>
   import { computed, onMounted, onUnmounted, provide, watch, ref } from 'vue';
   import { useDisplay } from 'vuetify';
   import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
-  import { VContainer, VFooter } from 'vuetify/components';
+  import { VContainer, VFooter, VSpacer } from 'vuetify/components';
   import { getLogger } from '@vcsuite/logger';
   import VcsContainer from './VcsContainer.vue';
   import { ButtonLocation } from '../manager/navbarManager.js';
@@ -704,6 +699,7 @@
       VcsNavbar,
       VContainer,
       VFooter,
+      VSpacer,
     },
     props: {
       appId: {

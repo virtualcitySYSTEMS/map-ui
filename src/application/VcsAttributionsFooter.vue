@@ -1,15 +1,18 @@
 <template>
-  <span class="d-inline-block text-truncate mr-10">
-    <span
-      v-for="attribution in mergedAttributions"
-      class="attribution"
-      :key="attribution.provider"
-    >
-      <a :href="attribution.url" target="_blank">
-        {{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
-      </a>
-    </span>
+  <div class="d-flex align-center justify-end overflow-hidden">
+    <div class="attribution-container">
+      <span
+        v-for="attribution in mergedAttributions"
+        class="attribution"
+        :key="attribution.provider"
+      >
+        <a :href="attribution.url" target="_blank">
+          {{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
+        </a>
+      </span>
+    </div>
     <VcsButton
+      class="flex-shrink-0"
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
       :icon="attributionAction.icon"
@@ -17,10 +20,16 @@
       :disabled="attributionAction.disabled"
       @click.stop="attributionAction.callback($event)"
     />
-  </span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+  .attribution-container {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .attribution {
     font-size: smaller;
     &:before {

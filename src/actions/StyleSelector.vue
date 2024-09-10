@@ -19,12 +19,13 @@
 <script>
   import { computed, inject, onUnmounted, ref } from 'vue';
   import { VList, VListItem, VListItemTitle, VSheet } from 'vuetify/components';
+  import { FeatureLayer } from '@vcmap/core';
 
   /**
    * @description Modal listing available styles.
    * On selection style is set to provided layer.
    * @vue-prop {Array<string>} availableStyles - Name of available styles
-   * @vue-prop {string} layerName              - Name of a layer, the style shall be applied to on selection
+   * @vue-prop {Array<string>} layerNames      - Name of layers, the style shall be applied to on selection
    */
   export default {
     name: 'StyleSelector',
@@ -39,28 +40,43 @@
         type: Array,
         default: () => [],
       },
-      layerName: {
-        type: String,
+      layerNames: {
+        type: Array,
         required: true,
       },
     },
     setup(props, { attrs }) {
       /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
-      /** @type {import("@vcmap/core").FeatureLayer} */
-      const layer = app.layers.getByKey(props.layerName);
-      const currentStyleName = ref(layer.style.name || layer.defaultStyle.name);
-      const defaultStyle = layer.defaultStyle.name;
+      /** @type {import("@vcmap/core").FeatureLayer[]} */
+      const layers = props.layerNames
+        .map((name) => app.layers.getByKey(name))
+        .filter((layer) => layer instanceof FeatureLayer);
 
-      function setStyle() {
-        currentStyleName.value = layer.style.name;
-      }
-      setStyle();
-      // TODO error handling if layer is missing or not a feature layer
-      const styleChangedListener =
-        layer.styleChanged.addEventListener(setStyle);
+      const currentStyleName = ref();
+      const setCurrentStyle = () => {
+        let styleName = null;
+        layers.forEach((layer) => {
+          const layerStyle = layer?.style?.name || layer?.defaultStyle?.name;
+          if (styleName === null) {
+            styleName = layerStyle;
+          }
+          if (styleName !== layerStyle) {
+            styleName = '';
+          }
+        });
+        currentStyleName.value = styleName;
+      };
+
+      setCurrentStyle();
+      const defaultStyle =
+        layers.length === 1 ? layers[0]?.defaultStyle?.name : null;
+
+      const styleChangedListener = layers.map((layer) =>
+        layer.styleChanged.addEventListener(setCurrentStyle),
+      );
       onUnmounted(() => {
-        styleChangedListener();
+        styleChangedListener.forEach((cb) => cb());
       });
 
       const items = computed(() => {
@@ -88,10 +104,10 @@
       });
 
       function select(styleName) {
-        const style = app.styles.hasKey(styleName)
-          ? app.styles.getByKey(styleName)
-          : layer.defaultStyle;
-        layer.setStyle(style);
+        const style = app.styles.getByKey(styleName);
+        layers.forEach((layer) => {
+          layer.setStyle(style || layer.defaultStyle);
+        });
         app.windowManager.remove(attrs['window-state'].id);
       }
 

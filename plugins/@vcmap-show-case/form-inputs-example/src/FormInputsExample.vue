@@ -41,9 +41,9 @@
             </v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col>
+            <v-col cols="6">
               <VcsLabel :disabled="disabled" html-for="conditionalInput">
-                ConditionalInput
+                Conditional Input with long label
               </VcsLabel>
             </v-col>
             <v-col>
