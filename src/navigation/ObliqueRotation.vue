@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-flex rounded vcs-oblique-orientation">
+  <div class="d-inline-flex rounded oblique-orientation">
     <div class="d-inline-flex rounded inner">
       <OrientationToolsButton
         @click="input(-90)"
@@ -56,7 +56,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .vcs-oblique-orientation {
+  .oblique-orientation {
     box-shadow: rgba(0, 0, 0, 0.15) 0 2px 2px 0;
     .inner {
       box-shadow: rgba(0, 0, 0, 0.25) 0 -2px 2px 0 inset;

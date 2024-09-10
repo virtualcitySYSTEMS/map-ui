@@ -1,5 +1,6 @@
 <template>
   <div
+    class="vcs-map"
     :id="mapId"
     @click.right.stop="
       (e) => {

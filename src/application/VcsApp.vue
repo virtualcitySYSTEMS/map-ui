@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height pa-0" absolute fluid>
+  <v-container class="fill-height pa-0 vcs-app" absolute fluid>
     <VcsSplashScreen
       v-if="splashScreen"
       :options="splashScreen"

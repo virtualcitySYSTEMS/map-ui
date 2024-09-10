@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="items" class="pt-1 pb-0 px-0">
+  <v-sheet v-if="items" class="pt-1 pb-0 px-0 style-selector">
     <v-list>
       <v-list-item
         v-for="(item, index) in items"

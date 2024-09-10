@@ -4,7 +4,7 @@
     :variant="buttonVariant"
     :height="itemHeight + 2"
     :min-width="itemHeight + itemHeight / 3"
-    class="vcsToolButton"
+    class="vcs-tool-button"
     :disabled="disabled"
     :class="{
       'vcs-background': background,

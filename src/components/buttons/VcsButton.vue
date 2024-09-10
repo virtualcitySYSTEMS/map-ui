@@ -5,7 +5,7 @@
     variant="text"
     :color="appliedColor"
     :disabled="disabled"
-    class="vcsButton"
+    class="vcs-button"
     elevation="0"
     density="compact"
     size="small"
@@ -41,7 +41,7 @@
   }
   .v-btn {
     padding: 0px;
-    &.vcsButton {
+    &.vcs-button {
       &:hover {
         color: rgb(var(--v-theme-primary-lighten-1)) !important;
       }

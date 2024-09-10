@@ -1,5 +1,8 @@
 <template>
-  <v-container :class="xs ? 'nav-container mobile' : 'nav-container'">
+  <v-container
+    :class="xs ? 'nav-container mobile' : 'nav-container'"
+    class="map-navigation"
+  >
     <v-row>
       <VcsCompass
         :view-mode="viewMode"

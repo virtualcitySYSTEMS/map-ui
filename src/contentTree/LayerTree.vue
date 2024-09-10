@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layer-tree">
     <VcsTreeview
       v-if="tree && tree.length"
       :items="tree"

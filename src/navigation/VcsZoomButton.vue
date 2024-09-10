@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded vcs-navigation-zoom">
+  <div class="rounded vcs-navigation-zoom vcs-zoom-button">
     <div class="rounded inner">
       <OrientationToolsButton
         @click="$emit('zoom-in')"

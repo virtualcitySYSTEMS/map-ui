@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-feature-transforms">
     <v-container class="pl-0 pr-1 py-1">
       <v-row
         no-gutters

@@ -1,5 +1,10 @@
 <template>
-  <iframe :src="src" :title="title" :style="{ height, width }" />
+  <iframe
+    :src="src"
+    :title="title"
+    :style="{ height, width }"
+    class="iframe-component"
+  />
 </template>
 <script>
   import { inject } from 'vue';

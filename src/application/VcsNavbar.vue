@@ -3,7 +3,7 @@
     absolute
     :density="density"
     elevation="0"
-    class="px-4"
+    class="px-4 vcs-navbar"
     :height="toolbarHeight"
     :style="xs ? { bottom: 0 } : { top: 0 }"
   >

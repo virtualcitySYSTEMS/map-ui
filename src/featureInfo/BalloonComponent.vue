@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto elevation-0" v-if="position">
+  <v-card class="mx-auto elevation-0 balloon-component" v-if="position">
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-1">
         <template #prepend="prependScope">

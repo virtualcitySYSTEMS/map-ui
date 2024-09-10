@@ -1,5 +1,5 @@
 <template>
-  <v-stepper-vertical v-bind="$attrs">
+  <v-stepper-vertical v-bind="$attrs" class="vcs-wizard">
     <template #icon>
       <slot name="icon"><v-icon>mdi-circle</v-icon></slot>
     </template>

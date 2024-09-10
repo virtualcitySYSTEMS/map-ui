@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="group.action"
-    class="d-flex"
+    class="d-flex select-toolbox-component"
     :class="{ 'vcs-toolbox-action-select-button--active': open }"
   >
     <VcsToolButton
@@ -75,7 +75,7 @@
    * @vue-prop {SelectToolboxComponent} group - A toolbox group of type 'select'.
    */
   export default {
-    name: 'ToolboxActionSelect',
+    name: 'SelectToolboxComponent',
     components: {
       VcsToolButton,
       VMenu,

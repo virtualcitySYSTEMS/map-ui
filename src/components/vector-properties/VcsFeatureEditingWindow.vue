@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-feature-editing-window">
     <VcsFormSection
       v-if="session?.type === SessionType.SELECT"
       heading="components.editor.modifyHeader"

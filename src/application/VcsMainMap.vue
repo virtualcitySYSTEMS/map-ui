@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vcs-main-map">
     <VcsMap :map-id="mapId" />
     <MapNavigation v-if="showMapNavigation" />
   </div>

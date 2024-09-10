@@ -1,5 +1,5 @@
 <template>
-  <div v-if="orderedButtons.length > 0">
+  <div v-if="orderedButtons.length > 0" class="group-toolbox-component">
     <v-menu
       v-model="open"
       @update:model-value="$emit('toggle', open)"
@@ -66,7 +66,7 @@
    * @vue-computed {boolean} hasActiveAction - Whether the group has an active action.
    */
   export default {
-    name: 'ToolboxActionGroup',
+    name: 'GroupToolboxComponent',
     components: {
       VcsToolButton,
       VMenu,

@@ -7,6 +7,7 @@
     :max-width="position.maxWidth"
     :max-height="position.maxHeight"
     persistent
+    class="vcs-splash-screen"
   >
     <v-card>
       <v-card-text>

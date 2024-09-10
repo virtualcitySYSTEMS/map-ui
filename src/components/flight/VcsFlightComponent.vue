@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-flight-component">
     <VcsFormSection
       :heading="heading"
       :expandable="expandable"

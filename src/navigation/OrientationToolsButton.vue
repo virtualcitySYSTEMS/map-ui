@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="d-flex align-center justify-center text-center btn-orientation-tools"
+    class="d-flex align-center justify-center text-center btn-orientation-tools orientation-tools-button"
     v-bind="{ ...$attrs }"
     :height="height"
     :width="width"

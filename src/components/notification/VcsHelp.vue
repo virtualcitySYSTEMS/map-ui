@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="$slots.default || text"
-    class="ma-0 font-weight-regular rounded-0 bg-base-lighten-4"
+    class="ma-0 font-weight-regular rounded-0 bg-base-lighten-4 vcs-help"
   >
     <v-container class="py-1 px-2 vcs-help">
       <slot>

@@ -1,5 +1,6 @@
 <template>
   <VcsFormSection
+    class="vcs-extent-editor"
     :heading="heading"
     :header-actions="actions"
     :action-button-list-overflow-count="2"

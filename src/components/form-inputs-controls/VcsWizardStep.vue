@@ -1,5 +1,6 @@
 <template>
   <v-stepper-vertical-item
+    class="vcs-wizard-step"
     :value="step"
     :editable="isActiveStep || editable"
     :complete="complete"

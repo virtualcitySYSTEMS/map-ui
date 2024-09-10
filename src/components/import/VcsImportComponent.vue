@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="pa-2">
+  <v-card flat class="pa-2 vcs-import-component">
     <vcs-file-drop
       :height="dropElementHeight"
       :multiple="multiple"

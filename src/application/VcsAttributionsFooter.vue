@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex align-center justify-end overflow-hidden">
+  <div
+    class="d-flex align-center justify-end overflow-hidden vcs-attributions-footer"
+  >
     <div class="attribution-container">
       <span
         v-for="attribution in mergedAttributions"

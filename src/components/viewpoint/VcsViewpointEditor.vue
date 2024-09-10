@@ -1,5 +1,6 @@
 <template>
   <AbstractConfigEditor
+    class="vcs-viewpoint-editor"
     @submit="apply"
     @cancel="cancel"
     @reset="reset"

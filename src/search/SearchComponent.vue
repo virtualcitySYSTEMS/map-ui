@@ -1,6 +1,8 @@
 <template>
   <v-sheet>
-    <span class="d-flex justify-space-between align-center mt-1 ml-2">
+    <span
+      class="d-flex justify-space-between align-center mt-1 ml-2 search-component"
+    >
       <v-icon class="pa-1" :size="searchIconSize"> $vcsSearch </v-icon>
       <VcsTextField
         class="d-inline-block user-select-none w-100 mx-1"

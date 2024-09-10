@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="notifier-component">
     <v-snackbar
       v-for="notification in notifications"
       :key="notification.id"

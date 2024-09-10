@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="vcs-app-wrapper">
     <VcsApp :app-id="appId" />
   </v-app>
 </template>

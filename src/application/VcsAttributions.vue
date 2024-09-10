@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-attributions">
     <v-list v-if="entries.length" class="px-2">
       <v-list-item
         v-for="{ key, title, attributions } in entries"

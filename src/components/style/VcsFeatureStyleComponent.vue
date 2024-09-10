@@ -1,5 +1,6 @@
 <template>
   <VcsVectorStyleComponent
+    class="vcs-feature-style-component"
     :model-value="styleOptions"
     @update:fill="updateFill"
     @update:stroke="updateStroke"

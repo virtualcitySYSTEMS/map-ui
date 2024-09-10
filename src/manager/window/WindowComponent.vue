@@ -1,7 +1,7 @@
 <template>
   <v-sheet
     :id="`window-component--${windowState.id}`"
-    class="elevation-3 position-absolute d-flex flex-column"
+    class="elevation-3 position-absolute d-flex flex-column window-component"
     v-bind="$attrs"
     @dragstart="dragStart"
     @dragend="dragEnd"

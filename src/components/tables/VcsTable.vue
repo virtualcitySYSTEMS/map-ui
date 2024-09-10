@@ -1,5 +1,6 @@
 <template>
   <VcsDataTable
+    class="vcs-table"
     v-bind="$attrs"
     :items="items"
     :headers="[keyHeader, valueHeader]"

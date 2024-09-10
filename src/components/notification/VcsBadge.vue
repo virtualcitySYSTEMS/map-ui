@@ -1,9 +1,9 @@
 <template>
-  <span class="badge rounded-circle h-3 w-3" :class="[color]" />
+  <span class="vcs-badge rounded-circle h-3 w-3" :class="[color]" />
 </template>
 
 <style lang="scss" scoped>
-  .badge {
+  .vcs-badge {
     border: 1px solid rgb(var(--v-theme-surface)) !important;
   }
   .h-3 {

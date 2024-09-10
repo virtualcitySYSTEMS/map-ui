@@ -1,5 +1,6 @@
 <template>
   <v-card
+    class="tilt-slider"
     :width="minWidth"
     :height="minHeight"
     v-bind="props"

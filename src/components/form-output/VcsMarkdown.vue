@@ -1,6 +1,6 @@
 <template>
   <div
-    class="marked"
+    class="marked vcs-markdown"
     :class="{
       'pa-2': !paddingProvided,
     }"

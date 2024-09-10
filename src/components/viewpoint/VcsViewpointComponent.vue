@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-viewpoint-component">
     <VcsFormSection
       heading="components.viewpoint.general"
       :expandable="expandable"

@@ -1,5 +1,9 @@
 <template>
-  <div v-if="actions.length > 0" :class="classes" class="gc-2">
+  <div
+    v-if="actions.length > 0"
+    :class="classes"
+    class="gc-2 vcs-action-button-list"
+  >
     <template v-if="buttons.length > 0">
       <component
         :is="button"

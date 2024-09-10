@@ -1,5 +1,6 @@
 <template>
   <VcsFormSection
+    class="vcs-flight-anchors-component"
     :heading="title"
     :expandable="expandable"
     start-open

@@ -1,6 +1,6 @@
 <template>
   <v-list
-    class="ma-0 overflow-y-auto vcs-search-results"
+    class="ma-0 overflow-y-auto vcs-search-results results-component"
     v-model:selected="highlighted"
   >
     <ResultItem

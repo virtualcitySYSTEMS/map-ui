@@ -4,7 +4,7 @@
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="isDragging = false"
     @drop.prevent="dropped"
-    class="d-flex justify-center drop-field"
+    class="d-flex justify-center drop-field vcs-file-drop"
     :class="{ dragging: isDragging }"
     :dragging="isDragging"
     flat

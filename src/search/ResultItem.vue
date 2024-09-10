@@ -1,5 +1,5 @@
 <template>
-  <v-list-item v-if="item" v-bind="$attrs">
+  <v-list-item v-if="item" v-bind="$attrs" class="result-item">
     <template #prepend v-if="item.icon">
       <v-icon>
         {{ item.icon }}

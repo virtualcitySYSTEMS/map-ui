@@ -4,7 +4,7 @@
       transform: `rotate(${compassRotation}deg)`,
     }"
     @click="$emit('update:modelValue', 0)"
-    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease"
+    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease vcs-compass"
     elevation="1"
     :height="height"
     :width="width"

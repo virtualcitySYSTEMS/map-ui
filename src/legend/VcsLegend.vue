@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="overflow-y-auto">
+  <v-sheet class="overflow-y-auto vcs-legend">
     <v-expansion-panels
       variant="accordion"
       multiple

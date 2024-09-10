@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="close">
+  <div @click.stop="close" class="context-menu-component">
     <VcsActionList :actions="actions" :show-icon="true" />
   </div>
 </template>

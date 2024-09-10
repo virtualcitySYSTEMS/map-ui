@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'win-container-mobile': addMobileClass }">
+  <div
+    :class="{ 'win-container-mobile': addMobileClass }"
+    class="window-manager"
+  >
     <WindowComponent
       v-for="id in componentIds"
       :key="id"

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-image-selector">
     <v-container class="px-1 py-0">
       <v-row no-gutters>
         <v-col class="d-flex justify-center py-1">

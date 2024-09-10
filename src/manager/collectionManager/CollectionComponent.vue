@@ -1,5 +1,6 @@
 <template>
   <vcs-expansion-panel
+    class="collection-component"
     :heading="title"
     :header-actions="actions"
     :action-button-list-overflow-count="overflowCount"

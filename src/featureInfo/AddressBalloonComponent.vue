@@ -1,5 +1,5 @@
 <template>
-  <BalloonComponent v-bind="{ ...$attrs }">
+  <BalloonComponent v-bind="{ ...$attrs }" class="address-balloon-component">
     <template #default="{ attrs }">
       <v-list-item
         lines="two"

@@ -26,7 +26,7 @@
 </style>
 <template>
   <div
-    class="title-parent pr-2"
+    class="title-parent pr-2 vcs-treeview-title"
     ref="titleParent"
     @click.stop="item.clicked && !item.disabled && item.clicked($event)"
   >

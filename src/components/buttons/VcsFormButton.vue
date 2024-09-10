@@ -5,7 +5,7 @@
     color="primary"
     :min-width="itemHeight * 1.5"
     :height="itemHeight"
-    class="vcsFormButton"
+    class="vcs-form-button"
     :slim="false"
     v-bind="{ ...$attrs }"
   >

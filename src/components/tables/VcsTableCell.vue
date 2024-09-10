@@ -37,7 +37,7 @@
 </script>
 
 <template>
-  <td ref="td" :style="{ 'max-width': width }">
+  <td ref="td" :style="{ 'max-width': width }" class="vcs-table-cell">
     <component
       :is="tag"
       :class="{

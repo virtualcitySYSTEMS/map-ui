@@ -43,7 +43,11 @@
   const iconSize = useIconSize();
 </script>
 <template>
-  <v-expansion-panel :disabled="disabled" v-bind="$attrs">
+  <v-expansion-panel
+    :disabled="disabled"
+    v-bind="$attrs"
+    class="vcs-expansion-panel"
+  >
     <v-expansion-panel-title static class="px-2">
       <template #default="{ expanded }">
         <v-list-item-title ref="panelHeader">

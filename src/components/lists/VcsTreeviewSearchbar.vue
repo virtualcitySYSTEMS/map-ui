@@ -1,6 +1,6 @@
 <template>
   <div
-    class="pa-2 bg-base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0"
+    class="pa-2 bg-base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0 vcs-treeview-searchbar"
   >
     <slot name="prepend">
       <v-icon class="search-icon my-0 ml-1" :size="iconSize - 4">

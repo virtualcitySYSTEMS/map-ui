@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0 px-1">
+  <v-container class="py-0 px-1 vcs-extent">
     <v-row no-gutters v-if="modelValue.projection">
       <v-col :cols="firstCols">
         <VcsLabel :html-for="`${cid}-projection`">

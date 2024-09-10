@@ -1,7 +1,7 @@
 <template>
   <span
-    class="d-flex gc-2 px-1 h-100 align-center"
-    :class="{ 'vcs-position-display': positionDisplayAction.active }"
+    class="d-flex gc-2 px-1 h-100 align-center vcs-position-display"
+    :class="{ active: positionDisplayAction.active }"
   >
     <VcsButton
       :tooltip="positionDisplayAction.title"
@@ -52,7 +52,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .vcs-position-display {
+  .active {
     background-color: rgb(var(--v-theme-primary));
     span {
       color: rgb(var(--v-theme-on-primary));

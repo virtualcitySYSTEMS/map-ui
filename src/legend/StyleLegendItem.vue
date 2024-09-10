@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list class="style-legend-item">
     <v-row no-gutters>
       <v-col
         v-for="(row, idx) in item.rows"

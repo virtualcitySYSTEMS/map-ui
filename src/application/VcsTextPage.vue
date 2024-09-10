@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="vcs-text-page">
     <VcsMarkdown :content="$st(content)"></VcsMarkdown>
   </v-container>
 </template>

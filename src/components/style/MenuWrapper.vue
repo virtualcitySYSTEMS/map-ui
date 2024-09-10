@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="menu-wrapper">
     <div class="d-flex align-center py-1">
       <VcsCheckbox
         :model-value="!!modelValue"

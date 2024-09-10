@@ -1,5 +1,6 @@
 <template>
   <MenuWrapper
+    class="vcs-stroke-menu"
     :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
     name="components.style.stroke"
     v-bind="{ ...$attrs, ...$props }"

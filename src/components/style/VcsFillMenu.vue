@@ -1,5 +1,6 @@
 <template>
   <MenuWrapper
+    class="vcs-fill-menu"
     :value-fallback="{ color: [255, 255, 255, 1] }"
     name="components.style.fill"
     v-bind="{ ...$attrs, ...$props }"

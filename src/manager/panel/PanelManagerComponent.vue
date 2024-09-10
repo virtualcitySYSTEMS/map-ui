@@ -1,6 +1,6 @@
 <template>
   <div
-    class="vcs-panel-frame"
+    class="vcs-panel-frame panel-manager-component"
     @mouseup="setResizing(undefined)"
     @mouseleave="setResizing(undefined)"
     ref="panelFrameRef"
@@ -85,7 +85,7 @@
    * @description PanelManager rendering all Panels
    */
   export default {
-    name: 'VcsPanelManager',
+    name: 'VcsPanelManagerComponent',
     components: {
       VcsMainMap,
       PanelComponent,

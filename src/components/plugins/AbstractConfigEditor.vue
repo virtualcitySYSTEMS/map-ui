@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-0 abstract-config-editor">
     <v-form v-model="isValid" @submit.prevent="submit">
       <slot />
       <div class="d-flex gc-2 px-2 pt-2 pb-1">

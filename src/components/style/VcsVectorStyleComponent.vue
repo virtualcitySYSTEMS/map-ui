@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="vcs-vector-style-component">
     <component
       v-for="key in styleComponents"
       :key="key"

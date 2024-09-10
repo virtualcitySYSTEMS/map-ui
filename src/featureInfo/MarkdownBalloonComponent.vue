@@ -1,5 +1,5 @@
 <template>
-  <BalloonComponent v-bind="{ ...$attrs }">
+  <BalloonComponent v-bind="{ ...$attrs }" class="markdown-balloon-component">
     <VcsMarkdown :content="content" />
   </BalloonComponent>
 </template>

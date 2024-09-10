@@ -89,7 +89,11 @@
 </script>
 
 <template>
-  <v-list-item :disabled="item.disabled" v-bind="$attrs">
+  <v-list-item
+    :disabled="item.disabled"
+    v-bind="$attrs"
+    class="vcs-list-item-component"
+  >
     <template #prepend>
       <v-icon v-if="item.icon">
         {{ item.icon }}

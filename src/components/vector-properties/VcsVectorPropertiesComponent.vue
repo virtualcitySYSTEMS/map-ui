@@ -1,5 +1,6 @@
 <template>
   <VcsFormSection
+    class="vcs-vector-properties-component"
     :heading="$attrs.heading || 'components.vectorProperties.header'"
     :expandable="expandable"
     :start-open="startOpen"

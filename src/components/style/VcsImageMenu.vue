@@ -1,5 +1,6 @@
 <template>
   <MenuWrapper
+    class="vcs-image-menu"
     :value-fallback="{
       radius: 10,
       fill: { color: [255, 255, 255, 1] },

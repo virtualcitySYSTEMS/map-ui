@@ -1,7 +1,7 @@
 <template>
   <v-toolbar
     v-if="toolboxOpen && orderedGroups.length > 0 && mdAndUp"
-    class="vcs-toolbox mx-auto elevation-4 opacity-80"
+    class="vcs-toolbox mx-auto elevation-4 opacity-80 toolbox-manager-component"
     :class="{
       'rounded-b': !open,
     }"

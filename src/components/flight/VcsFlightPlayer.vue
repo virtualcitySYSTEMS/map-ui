@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0 px-1">
+  <v-container class="py-0 px-1 vcs-flight-player">
     <VcsLabel>{{ $t('flight.player') }}</VcsLabel>
     <VcsSlider
       v-if="clock"

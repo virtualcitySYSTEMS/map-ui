@@ -1,5 +1,6 @@
 <template>
   <MenuWrapper
+    class="vcs-text-menu"
     :value-fallback="fallbackStyle"
     name="components.style.text"
     v-bind="{ ...$attrs, ...$props }"

@@ -179,6 +179,17 @@ class VcsUiApp extends VcsApp {
       serializePlugin,
       deserializePlugin,
     );
+
+    /**
+     * I18n Collection adds plugin listener first, so the plugin i18n data is available on plugin initialize
+     * @type {I18nCollection<Object>}
+     * @private
+     */
+    this._i18n = makeOverrideCollection(
+      new I18nCollection(this._plugins),
+      () => this.dynamicModuleId,
+    );
+
     /**
      * @type {Array<function():void>}
      * @private
@@ -221,15 +232,6 @@ class VcsUiApp extends VcsApp {
         // i18n messages of the plugin are removed by the i18n collection
       }),
     ];
-
-    /**
-     * @type {I18nCollection<Object>}
-     * @private
-     */
-    this._i18n = makeOverrideCollection(
-      new I18nCollection(this._plugins),
-      () => this.dynamicModuleId,
-    );
 
     /**
      *

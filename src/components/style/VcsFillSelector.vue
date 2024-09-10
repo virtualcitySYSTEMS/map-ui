@@ -1,5 +1,6 @@
 <template>
   <v-color-picker
+    class="vcs-fill-selector"
     :model-value="rgbaObject"
     @update:model-value="updateColor"
     mode="rgba"

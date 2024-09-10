@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vcs-data-table">
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
       :placeholder="$st(searchbarPlaceholder)"

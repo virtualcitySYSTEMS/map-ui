@@ -1,5 +1,7 @@
 <template v-if="textPage.title">
-  <span class="d-inline-block text-truncate mr-1 flex-shrink-0">
+  <span
+    class="d-inline-block text-truncate mr-1 flex-shrink-0 vcs-text-page-footer"
+  >
     <span v-if="textPage.url" class="text-page-footer">
       <a :href="$st(textPage.url)" target="_blank"
         >{{ $st(textPage.title) }} <span></span>
