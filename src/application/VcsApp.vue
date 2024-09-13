@@ -248,6 +248,33 @@
       }
     };
 
+    let currentEntryLength = entries.length;
+    const watchEntries = watch(entries, (newValue) => {
+      if (
+        app.uiConfig.config.openLegendOnAdd &&
+        newValue.length > currentEntryLength &&
+        !app.windowManager.has('legend')
+      ) {
+        app.windowManager.add(
+          {
+            id: 'legend',
+            component: VcsLegend,
+            state: {
+              headerTitle: 'legend.title',
+              headerIcon: '$vcsLegend',
+              infoUrl: app.getHelpUrlCallback(
+                '/components/contentspace.html#id_legend',
+              ),
+            },
+            slot: WindowSlot.DYNAMIC_RIGHT,
+            props: { entries },
+          },
+          vcsAppSymbol,
+        );
+      }
+      currentEntryLength = newValue.length;
+    });
+
     /**
      * Handles legend button and window.
      * Adds a button, if legend definitions are available or removes legend otherwise.
@@ -284,6 +311,7 @@
     ];
 
     return () => {
+      watchEntries();
       app.navbarManager.remove('legend');
       app.windowManager.remove('legend');
       destroy();

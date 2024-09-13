@@ -70,7 +70,8 @@ import { reactive, readonly } from 'vue';
  * @property {boolean} [hideSettings] - can be used to hide the settings Window
  * @property {boolean} [overviewMapActiveOnStartup] - can be used to activate the overviewMap on startup
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
- * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuration https://vuetifyjs.com/en/features/theme/
+ * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuraton https://vuetifyjs.com/en/features/theme/
+ * @property {boolean} [openLegendOnAdd] - open the legend window, if new layer has a config
  */
 
 /**
@@ -117,7 +118,7 @@ class UiConfig extends Collection {
   }
 
   /**
-   * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Object<string, *> & UiConfigObject>>}
+   * @type {import("vue").DeepReadonly<import("vue").UnwrapNestedRefs<Record<string, *> & UiConfigObject>>}
    */
   get config() {
     return this._readonlyConfig;

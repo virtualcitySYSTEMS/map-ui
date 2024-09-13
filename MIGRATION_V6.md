@@ -67,6 +67,10 @@
 - `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
 - Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
 
+# Features
+
+- Added an `openLegendOnAdd` ui config to open the legend, if new legend entries become available.
+
 # Extended Theming
 
 Vuetify Theming can now be used to create custom css variables, see `vuetify.js` we will use this to configure the following

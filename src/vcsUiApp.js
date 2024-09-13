@@ -170,7 +170,7 @@ class VcsUiApp extends VcsApp {
      */
     this.themeChanged = new VcsEvent();
     /**
-     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin, Collection<VcsPlugin>, Object>}
+     * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<Object, Object>, Collection<VcsPlugin<Object, Object>>, Object>}
      * @private
      */
     this._plugins = makeOverrideCollection(
@@ -377,7 +377,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin, Collection<VcsPlugin>, Object>}
+   * @type {import("@vcmap/core").OverrideCollection<VcsPlugin<Object, Object>, Collection<VcsPlugin<Object, Object>>, Object>}
    */
   get plugins() {
     return this._plugins;
