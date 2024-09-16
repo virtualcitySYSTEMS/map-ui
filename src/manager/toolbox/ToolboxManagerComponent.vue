@@ -4,6 +4,7 @@
     class="vcs-toolbox mx-auto elevation-4 opacity-80 toolbox-manager-component"
     :class="{
       'rounded-b': !open,
+      'vcs-toolbox__secondary': !isDefaultToolbox,
     }"
     :height="toolboxHeight"
     :style="{ zIndex }"
@@ -41,6 +42,16 @@
 </template>
 
 <style lang="scss" scoped>
+  .vcs-toolbox__secondary {
+    &.vcs-toolbox.v-theme {
+      &--light {
+        background-color: rgba(var(--v-theme-primary-lighten-3));
+      }
+      &--dark {
+        background-color: rgba(var(--v-theme-primary-darken-4));
+      }
+    }
+  }
   .vcs-toolbox {
     margin-top: 2px;
     width: fit-content;
