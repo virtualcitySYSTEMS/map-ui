@@ -39,10 +39,9 @@
                   parentId: name,
                   slot: WindowSlot.DYNAMIC_CHILD,
                   props: {
-                    getConfig: () =>
-                      Promise.resolve(
-                        vcsApp.plugins.getSerializedByKey(plugin.name),
-                      ),
+                    getConfig: () => {
+                      return vcsApp.plugins.getSerializedByKey(plugin.name);
+                    },
                     setConfig(config) {
                       if (config) {
                         vcsApp.notifier.add({
