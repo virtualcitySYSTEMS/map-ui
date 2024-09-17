@@ -42,7 +42,7 @@
       <VcsTextField
         v-bind="{ ...state.bind }"
         type="number"
-        v-model="numberValue"
+        v-model.number="numberValue"
         :clearable="clearable"
         :rules="applyRules ? [(v) => v === 2 || 'input is not 2'] : undefined"
         :decimals="2"

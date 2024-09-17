@@ -22,7 +22,7 @@
       <VcsBadge
         v-if="hasUpdate"
         :color="'bg-warning'"
-        class="position-absolute"
+        class="position-absolute badge"
       />
       <slot name="default" v-bind="scope ?? {}" />
     </template>

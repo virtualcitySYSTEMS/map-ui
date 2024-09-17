@@ -146,7 +146,7 @@
           ) {
             const v = parseFloat(localValue.value);
             if (Number.isFinite(v)) {
-              return v.toFixed(props.decimals);
+              return parseFloat(v.toFixed(props.decimals));
             }
           }
           return localValue.value ?? '';
