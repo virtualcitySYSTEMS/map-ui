@@ -94,13 +94,15 @@
     v-bind="$attrs"
     class="vcs-list-item-component"
   >
-    <template #prepend>
-      <v-icon v-if="item.icon">
-        {{ item.icon }}
-      </v-icon>
+    <template #prepend="scope">
+      <slot name="prepend" v-bind="scope">
+        <v-icon v-if="item.icon">
+          {{ item.icon }}
+        </v-icon>
+      </slot>
     </template>
-    <template #title>
-      <slot name="title" v-bind="{ item, dragging, tooltip }">
+    <template #title="scope">
+      <slot name="title" v-bind="{ ...scope, tooltip }">
         <v-list-item-title
           ref="title"
           :class="{ 'vcs-list-item__rename': rename }"
@@ -125,17 +127,17 @@
         </v-list-item-title>
       </slot>
     </template>
-    <template #subtitle>
-      <slot name="subtitle" v-bind="{ item }" />
+    <template #subtitle="scope">
+      <slot name="subtitle" v-bind="scope" />
     </template>
     <template #default="scope">
-      <slot name="default" v-bind="{ ...scope, item, dragging, tooltip }" />
+      <slot name="default" v-bind="{ ...scope, tooltip }" />
     </template>
-    <template #append="appendScope">
+    <template #append="scope">
       <slot
         name="append"
         v-bind="{
-          ...appendScope,
+          ...scope,
           item,
           actions,
           actionButtonListOverflowCount,

@@ -57,14 +57,17 @@
           }"
           @click="select(item, $event)"
         >
-          <template #title="titleScope">
-            <slot name="item.title" v-bind="{ ...titleScope, index }"></slot>
+          <template #append="scope">
+            <slot name="item.append" v-bind="{ ...scope, index, item }" />
           </template>
-          <template #subtitle="subtitleScope">
-            <slot name="item.subtitle" v-bind="{ ...subtitleScope, index }" />
+          <template #title="scope">
+            <slot name="item.title" v-bind="{ ...scope, index, item }" />
           </template>
-          <template #default="scope">
-            <slot name="item.default" v-bind="{ ...scope, index }" />
+          <template #subtitle="scope">
+            <slot name="item.subtitle" v-bind="{ ...scope, index, item }" />
+          </template>
+          <template #prepend="scope">
+            <slot name="item.prepend" v-bind="{ ...scope, index, item }" />
           </template>
         </VcsListItemComponent>
         <slot name="item.intermediate" :item="item" :index="index" />
@@ -170,10 +173,11 @@
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
    * @vue-prop {Array<import("../../actions/actionHelper.js").VcsAction>} [actions] - actions to render in the list title
    * @vue-event {ItemMovedEvent} item-moved - event triggered after item was dragged and is dropped
-   * @vue-data {slot} [#item.prepend-title] - A slot to adapt the list item titel, adding content before the title. Binds item and index.
-   * @vue-data {slot} [#item.title] - A slot to adapt the list item titel. Default content is a span or VcsTextField for active rename action. Binds item and index.
-   * @vue-data {slot} [#item.append-title] - A slot to adapt the list item titel, adding content after the title. Binds item and index.
-   * @vue-data {slot} [#item.intermediate] - A slot to introduce content, e.g. buttons between two list items. Binds item and index.
+   * @vue-data {slot} [#item.prepend] - A slot that forwads to v-list-item prepend slot. Binds v-list-item append slot props, item and item index.
+   * @vue-data {slot} [#item.title] - A slot that forwards to v-list-item title slot. Binds v-list-item title slot props, item and item index.
+   * @vue-data {slot} [#item.subtitle] - A slot that forwards to v-list-item subtitle slot. Binds v-list-item subtitle slot props, item and item index.
+   * @vue-data {slot} [#item.append] - A slot that forwards to v-list-item append slot. Binds v-list-item append slot props, item and item index.
+   * @vue-data {slot} [#item.intermediate] - A slot to introduce content, e.g. buttons between two list items. Binds item and item index.
    */
   export default {
     name: 'VcsList',

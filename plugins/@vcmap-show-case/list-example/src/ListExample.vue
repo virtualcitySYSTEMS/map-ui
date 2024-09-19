@@ -146,10 +146,13 @@
       @item-moved="move"
       @item-renamed="({ item, newTitle }) => (item.title = newTitle)"
     >
-      <template #[`item.prepend-title`]="{ index }" v-if="prependIndex">
+      <template #[`item.prepend`]="{ index }" v-if="prependIndex">
         {{ index }}
       </template>
-      <template #[`item.append-title`]="{ index }" v-if="appendIndex">
+      <template #[`item.title`]="{ index }">
+        {{ index }}
+      </template>
+      <template #[`item.append`]="{ index }" v-if="appendIndex">
         {{ index }}
       </template>
     </vcs-list>
