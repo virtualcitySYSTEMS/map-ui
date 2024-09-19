@@ -66,6 +66,7 @@
 - Use newly introduced `useComponentId()` helper to generate unique html ids for inputs with labels.
 - `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
 - Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
+- Changed the type of `WindowComponentOptions.state`. The state now has its own type and accepts `Ref` or `ComputedRef` for certain properties.
 
 # Features
 

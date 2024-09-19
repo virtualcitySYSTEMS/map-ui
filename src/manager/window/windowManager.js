@@ -107,7 +107,7 @@ export function isSlotPosition(windowPosition) {
  *   parentId?: string,
  *   component: import("vue").Component<T>,
  *   headerComponent?: import("vue").Component<T>,
- *   state? : Partial<WindowState>,
+ *   state? : WindowStateOptions,
  *   position? : Partial<WindowPositionOptions>,
  *   slot?: WindowSlot,
  *   props?: T,
@@ -118,7 +118,7 @@ export function isSlotPosition(windowPosition) {
  * @property {string} [parentId] An optional ID of a parent window for 'dynamicChild' slot. Parent windows with slot dynamicRight are not supported.
  * @property {import("vue").Component<T, unknown, unknown>} component Main Component which is shown below the header.
  * @property {import("vue").Component<T, unknown, unknown>} [headerComponent] Replaces the Header Component.
- * @property {Partial<WindowState>} [state]
+ * @property {WindowStateOptions} [state]
  * @property {Partial<WindowPositionOptions>} [position] Will be merged with default position for slot
  * @property {WindowSlot} [slot]
  * @property {T} [props]
@@ -126,9 +126,29 @@ export function isSlotPosition(windowPosition) {
  */
 
 /**
+ * @typedef {T|import('vue').Ref<T>|import('vue').ComputedRef<T>} OptionsOrRef
+ * @template T
+ */
+
+/**
+ * @typedef {Object} WindowStateOptions
+ * @property {OptionsOrRef<boolean>} [hideHeader] be used to not show the header.
+ * @property {OptionsOrRef<boolean>} [hidePin] be used to not show the pin button.
+ * @property {OptionsOrRef<string|string[]>} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
+ * @property {OptionsOrRef<string>} [headerIcon]
+ * @property {OptionsOrRef<Array<import("../../actions/actionHelper.js").VcsAction>>} [headerActions]
+ * @property {OptionsOrRef<number>} [headerActionsOverflow]
+ * @property {OptionsOrRef<string>} [infoUrl] An optional url referencing help or further information on the window's content.
+ * @property {OptionsOrRef<function():string>} [infoUrlCallback] An optional function returning an url referencing help or further information. Can be used for urls depending on the app's locale, e.g. app.getHelpUrl()
+ * @property {Record<string, string>} [styles] Can be used to add additional styles to the root WindowComponent. Use Vue Style Bindings Object Syntax https://vuejs.org/v2/guide/class-and-style.html
+ * @property {Array<string>|Record<string,string>} [classes] Can be used to add additional classes to the root WindowComponent. Use Vue Class Bindings Syntax https://vuejs.org/v2/guide/class-and-style.html
+ */
+
+/**
  * @typedef {Object} WindowState
  * @property {string} id
  * @property {string|vcsAppSymbol} owner Owner of the window, set by windowManager on add
+ * @property {string|undefined} parentId - the parent of this window
  * @property {boolean} [hideHeader] be used to not show the header.
  * @property {boolean} [hidePin] be used to not show the pin button.
  * @property {string|string[]} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
@@ -599,6 +619,7 @@ class WindowManager {
       ? [...(windowComponentOptions?.state?.classes ?? [])]
       : { ...windowComponentOptions?.state?.classes };
 
+    /** @type {WindowState} */
     const state = reactive({
       id,
       parentId,
