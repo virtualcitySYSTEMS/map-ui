@@ -650,7 +650,9 @@
       "name": "Oblique Map",
       "showObliqueImageName": true,
       "obliqueImageNameTemplate": "Oblique Image Name : {0}",
-      "type": "ObliqueMap"
+      "type": "ObliqueMap",
+      "maintainViewpointOnCollectionChange": true,
+      "fallbackToCurrentMap": true
     }
   ],
   "layers": [

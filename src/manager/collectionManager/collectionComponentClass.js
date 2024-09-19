@@ -81,7 +81,11 @@ export function createSupportedMapMappingFunction(
   return (item, _c, listItem) => {
     const mapNames =
       typeof supportedMaps === 'function' ? supportedMaps(item) : supportedMaps;
-    listItem.disabled = !mapNames.includes(mapCollection.activeMap.className);
+    if (mapCollection.activeMap) {
+      listItem.disabled = !mapNames.includes(mapCollection.activeMap.className);
+    } else {
+      listItem.disabled = true;
+    }
     listItem.destroyFunctions.push(
       mapCollection.mapActivated.addEventListener((map) => {
         listItem.disabled = !mapNames.includes(map.className);

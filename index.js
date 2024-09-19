@@ -315,3 +315,4 @@ export * from './src/application/attributionsHelper.js';
 export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';
 export * from './src/components/composables.js';
+export { LegendType, StyleRowType } from './src/legend/legendHelper.js';
