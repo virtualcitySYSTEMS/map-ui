@@ -178,7 +178,7 @@ function loadCss(href) {
     if (output[1] && output[1].type === 'asset') {
       if (base64Css) {
         css = `data:text/css;base64,${Buffer.from(output[1].source).toString(
-          'base64url',
+          'base64',
         )}`;
       } else {
         await writeRewrittenFile(

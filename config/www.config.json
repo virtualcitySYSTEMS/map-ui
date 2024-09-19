@@ -1879,9 +1879,7 @@
     {
       "name": "@vcmap/clipping-tool",
       "entry": "plugins/@vcmap/clipping-tool/index.js"
-    }
-  ],
-  "plugins2": [
+    },
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"

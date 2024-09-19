@@ -666,9 +666,7 @@
     {
       "name": "@vcmap-show-case/custom-icons-example",
       "entry": "plugins/@vcmap-show-case/custom-icons-example/index.js"
-    }
-  ],
-  "plugins2": [
+    },
     {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js"

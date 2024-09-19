@@ -9,6 +9,7 @@ import { resolveValue } from '@intlify/core-base';
 export function createVueI18n() {
   return createI18n({
     legacy: false,
+    globalInjection: true,
     locale: 'en',
     missingWarn: false,
     fallbackWarn: false,
