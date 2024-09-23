@@ -65,7 +65,7 @@
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
 
   /**
    * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn}.
@@ -124,7 +124,7 @@
           return null;
         }
       });
-      const forwardSlots = useForwardSlots(slots, ['default']);
+      const forwardSlots = getForwardSlots(slots, ['default']);
       const hasDefaultSlot = computed(() => {
         return !!slots?.default;
       });

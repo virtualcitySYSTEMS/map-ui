@@ -69,7 +69,7 @@
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
@@ -140,7 +140,7 @@
       const hasDefaultSlot = computed(() => {
         return !!slots?.default;
       });
-      const forwardSlots = useForwardSlots(slots, ['default']);
+      const forwardSlots = getForwardSlots(slots, ['default']);
       const buttonVariant = computed(() => {
         if (props.active && !props.disabled) {
           return 'flat';

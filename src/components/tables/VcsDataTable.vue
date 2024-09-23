@@ -133,7 +133,7 @@
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
   import VcsButton from '../buttons/VcsButton.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
 
   /**
    * @typedef {Object} UpdateItemsEvent
@@ -363,7 +363,7 @@
           props.serverItemsLength > itemsPerPageRef.value,
       );
 
-      const forwardSlots = useForwardSlots(slots, [
+      const forwardSlots = getForwardSlots(slots, [
         'prepend',
         'default',
         'append',

@@ -53,7 +53,7 @@
 <script>
   import { ref } from 'vue';
   import { VFileInput, VTooltip } from 'vuetify/components';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-file-input v-text-field}.
@@ -86,7 +86,7 @@
       const errorTooltipRef = ref();
 
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
+      const forwardSlots = getForwardSlots(slots, ['append-inner', 'message']);
 
       return {
         forwardSlots,

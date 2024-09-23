@@ -12,7 +12,7 @@
 <script>
   import { VStepperVertical } from 'vuetify/labs/VStepperVertical';
   import { VIcon } from 'vuetify/components';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-stepper-vertical/ |vuetify stepper vertical}per.
@@ -25,7 +25,7 @@
       VIcon,
     },
     setup(_p, { slots }) {
-      const forwardSlots = useForwardSlots(slots, ['icon']);
+      const forwardSlots = getForwardSlots(slots, ['icon']);
 
       return {
         forwardSlots,

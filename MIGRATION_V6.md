@@ -274,32 +274,36 @@ Story development can be done by calling `npm run story:dev`. This will start a 
 
 ### Slots
 
-For Wrapper Components we should forward all Slots. This can be done by using the `useForwardSlots` composable
+For Wrapper Components we should forward all Slots. This can be done by using the `getForwardSlots` function
 
 ```vue
+
 <template>
   <v-component>
-    // If we want to use a slot in the wrapper, we normally should forward the same slot to vuetify, this can be done in two ways.
+    // If we want to use a slot in the wrapper, we normally should forward the same slot to vuetify, this can be done in
+    two ways.
     <template #default="scope">
       Custom Content which cannot be overwritten.
-      <slot name="default" v-bind="scope ?? {}" > Custom Content which will be overwritten if default content is provided </slot>
+      <slot name="default" v-bind="scope ?? {}"> Custom Content which will be overwritten if default content is
+        provided
+      </slot>
     </template>
     // forward all other slots which are not `default`
     // we need to bind the scope.
     <template v-for="slot of forwardSlots" #[slot]="scope">
       <slot :name="slot" v-bind="scope ?? {}" />
     </template>
-  <v-component>
+    <v-component>
 </template>
 
 <script>
-export default {
-  setup(props, { slots }){
-    const forwardSlots = useForwardSlots(slots, ['default']);
-    return {
-      forwardSlots
+  export default {
+    setup(props, { slots }) {
+      const forwardSlots = getForwardSlots(slots, ['default']);
+      return {
+        forwardSlots
+      }
     }
   }
-}
 </script>
 ```

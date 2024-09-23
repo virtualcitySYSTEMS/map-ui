@@ -76,7 +76,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VSlider, VTooltip } from 'vuetify/components';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
@@ -112,7 +112,7 @@
         return trackSize.value * 2;
       });
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['append']);
+      const forwardSlots = getForwardSlots(slots, ['append']);
       const sliderRef = ref();
       return {
         hasAppendSlot: computed(() => {

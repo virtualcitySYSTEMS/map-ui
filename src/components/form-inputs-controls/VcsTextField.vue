@@ -60,7 +60,7 @@
 <script>
   import { computed, ref } from 'vue';
   import { VTextField, VTooltip } from 'vuetify/components';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
   import { useProxiedAtomicModel } from '../modelHelper.js';
 
   function countDecimalPlaces(value) {
@@ -172,7 +172,7 @@
       });
 
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['default', 'message']);
+      const forwardSlots = getForwardSlots(slots, ['default', 'message']);
 
       const prependedContent = computed(() => {
         return (props.forcePrefix && attrs.prefix) || !!slots['prepend-inner'];

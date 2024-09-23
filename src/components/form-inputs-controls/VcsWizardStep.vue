@@ -52,7 +52,7 @@
   import { VStepperVerticalItem } from 'vuetify/labs/VStepperVertical';
   import { VSpacer } from 'vuetify/components';
   import { useProxiedComplexModel } from '../modelHelper.js';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsHelp from '../notification/VcsHelp.vue';
 
@@ -167,7 +167,7 @@
         return props.headerActions;
       });
 
-      const forwardSlots = useForwardSlots(slots, ['title', 'default']);
+      const forwardSlots = getForwardSlots(slots, ['title', 'default']);
 
       return {
         showHelp,

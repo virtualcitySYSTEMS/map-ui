@@ -22,12 +22,10 @@ export function usePadding(attrs) {
  * returns only the slotNames which are not excluded as a computed.
  * @param {import("vue").Slots} slots
  * @param {Array<string>} exclude
- * @returns {import("vue").ComputedRef<Array<string>>}
+ * @returns {Array<string>}
  */
-export function useForwardSlots(slots, exclude = []) {
-  return computed(() => {
-    return Object.keys(slots).filter((slotName) => !exclude.includes(slotName));
-  });
+export function getForwardSlots(slots, exclude = []) {
+  return Object.keys(slots).filter((slotName) => !exclude.includes(slotName));
 }
 
 let intersectionObserver = null;

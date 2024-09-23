@@ -11,8 +11,10 @@
     }"
     v-bind="$attrs"
   >
-    <template #label="scope">
-      <slot name="label" v-bind="scope ?? {}">{{ $st($attrs.label) }}</slot>
+    <template #label="scope" v-if="label || $slots.label">
+      <span class="pl-1">
+        <slot name="label" v-bind="scope ?? {}">{{ $st(label) }}</slot>
+      </span>
     </template>
     <template v-for="slot of forwardSlots" #[slot]="scope">
       <slot :name="slot" v-bind="scope ?? {}" />
@@ -61,14 +63,14 @@
 <script>
   import { ref } from 'vue';
   import { VCheckbox, VTooltip } from 'vuetify/components';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description Stylized wrapper around {@link https://vuetifyjs.com/en/api/v-checkbox/ |vuetify checkbox}.
    * Provides VTooltip to show error messages
    * @vue-prop {string} [tooltip] - A message to be displayed when there is no error.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip, see {@link https://vuetifyjs.com/en/api/v-tooltip/#props-location | vuetify tooltip}.
-   * @vue-prop {string} label - Label to be displayed, will be translated.
+   * @vue-prop {string} [label] - Label to be displayed, will be translated.
    * @vue-data {slot} [#label] - slot to pass html for Checkbox label. Overrides label passed as prop.
    */
   export default {
@@ -87,12 +89,16 @@
         type: String,
         default: 'right',
       },
+      label: {
+        type: String,
+        default: undefined,
+      },
     },
     setup(props, { attrs, slots }) {
       const checkbox = ref();
       const errorTooltip = ref();
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['label', 'message']);
+      const forwardSlots = getForwardSlots(slots, ['label', 'message']);
       return {
         forwardSlots,
         paddingProvided,

@@ -118,7 +118,7 @@
   import { VIcon } from 'vuetify/components';
   import { VTreeview } from 'vuetify/labs/VTreeview';
   import { useProxiedAtomicModel } from '../modelHelper.js';
-  import { useForwardSlots } from '../composables.js';
+  import { getForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import ImageElementInjector from '../ImageElementInjector.vue';
@@ -184,7 +184,7 @@
           .indexOf(q.toLocaleLowerCase());
       };
 
-      const forwardSlots = useForwardSlots(slots, [
+      const forwardSlots = getForwardSlots(slots, [
         'append',
         'title',
         'prepend',

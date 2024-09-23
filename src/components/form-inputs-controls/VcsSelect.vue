@@ -141,7 +141,7 @@
 <script>
   import { VSelect, VTooltip, VListItem } from 'vuetify/components';
   import { computed, ref } from 'vue';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
   import VcsCheckbox from './VcsCheckbox.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
 
@@ -213,7 +213,7 @@
         return props.multiple;
       });
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
+      const forwardSlots = getForwardSlots(slots, ['append-inner', 'message']);
 
       return {
         forwardSlots,

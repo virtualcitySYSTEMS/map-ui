@@ -141,7 +141,7 @@
 <script>
   import { ref } from 'vue';
   import { VTextarea, VTooltip } from 'vuetify/components';
-  import { useForwardSlots, usePadding } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
@@ -173,7 +173,7 @@
       const errorTooltipRef = ref();
 
       const paddingProvided = usePadding(attrs);
-      const forwardSlots = useForwardSlots(slots, ['append-inner', 'message']);
+      const forwardSlots = getForwardSlots(slots, ['append-inner', 'message']);
 
       return {
         forwardSlots,
