@@ -430,15 +430,16 @@ class AbstractFeatureInfoView extends VcsObject {
    * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
    */
   getWindowComponentOptions(app, featureInfo, layer) {
+    const props = this.getProperties(featureInfo, layer);
     return {
       state: getWindowState(app, this.window.state, {
-        ...this.getAttributes(featureInfo.feature),
+        ...props.attributes,
         layerName: layer.properties?.title || layer.name,
       }),
       slot: this.window.slot ?? WindowSlot.DYNAMIC_RIGHT,
       component: this.component,
       position: this.window.position,
-      props: this.getProperties(featureInfo, layer),
+      props,
     };
   }
 
