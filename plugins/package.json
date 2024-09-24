@@ -9,7 +9,7 @@
     "@vcmap/swipe-tool": "https://github.com/virtualcitySYSTEMS/map-swipe-tool.git#main",
     "@vcmap/export": "https://github.com/virtualcitySYSTEMS/map-export.git#main",
     "@vcmap/viewshed": "https://github.com/virtualcitySYSTEMS/map-viewshed.git#main",
-    "@vcmap/measurement": "https://github.com/virtualcitySYSTEMS/map-measurement.git#main",
+    "@vcmap/measurement": "^2.0.0-rc.1",
     "@vcmap/multi-view": "https://github.com/virtualcitySYSTEMS/map-multi-view.git#main",
     "@vcmap/draw": "https://github.com/virtualcitySYSTEMS/map-draw.git#main",
     "@vcmap/shadow": "https://github.com/virtualcitySYSTEMS/map-shadow.git#main",
