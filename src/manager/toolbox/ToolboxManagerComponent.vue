@@ -33,7 +33,7 @@
           :active="group.action.active"
           :background="group.action.background"
           :disabled="group.action.disabled"
-          @click="group.action.callback($event)"
+          @click.stop="group.action.callback($event)"
           v-bind="{ ...$attrs }"
         />
       </div>
