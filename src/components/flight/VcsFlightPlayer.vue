@@ -1,6 +1,6 @@
 <template>
   <v-container class="py-0 px-1 vcs-flight-player">
-    <VcsLabel>{{ $t('flight.player') }}</VcsLabel>
+    <VcsLabel html-for="player">{{ $t('flight.player') }}</VcsLabel>
     <VcsSlider
       v-if="clock"
       type="number"
@@ -94,30 +94,36 @@
       );
 
       let clockChangedListener = () => {};
-      const playerChangedListener = app.flights.playerChanged.addEventListener(
-        (player) => {
-          clockChangedListener();
-          if (player?.flightInstanceName === flightInstance.name) {
-            isCurrentPlayer.value = true;
-            flightInstancePlayer = player;
-            syncClocks(clock, player.clock);
-            clockChangedListener = player.clock.changed.addEventListener(
-              (changed) => {
-                syncClocks(clock, changed);
-              },
-            );
-          } else {
-            isCurrentPlayer.value = false;
-            flightInstancePlayer = undefined;
-            clock.value = getDefaultClock();
-          }
-        },
-      );
+      let playerChangedListener = () => {};
+
+      function syncPlayer(player) {
+        if (player?.flightInstanceName === flightInstance.name) {
+          isCurrentPlayer.value = true;
+          flightInstancePlayer = player;
+          syncClocks(clock, player.clock);
+          clockChangedListener = player.clock.changed.addEventListener(
+            (changed) => {
+              syncClocks(clock, changed);
+            },
+          );
+        } else {
+          isCurrentPlayer.value = false;
+          flightInstancePlayer = undefined;
+          clock.value = getDefaultClock();
+        }
+      }
 
       onMounted(async () => {
         flightInstancePlayer =
           await app.flights.setPlayerForFlight(flightInstance);
+        syncPlayer(flightInstancePlayer);
         syncClocks(clock, flightInstancePlayer.clock);
+        playerChangedListener = app.flights.playerChanged.addEventListener(
+          (player) => {
+            clockChangedListener();
+            syncPlayer(player);
+          },
+        );
       });
 
       onUnmounted(() => {

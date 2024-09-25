@@ -36,33 +36,54 @@ export function createPlayAction(app, instance) {
       } else {
         player = await app.flights.setPlayerForFlight(instance);
         if (player) {
-          stateListener = player.stateChanged.addEventListener((state) => {
-            if (state === 'stopped') {
-              action.icon = '$vcsPlayCircle';
-              action.title = 'flight.playTooltip';
-            } else if (state === 'paused') {
-              action.icon = '$vcsPlayCircle';
-              action.title = 'flight.playTooltip';
-            } else {
-              action.icon = 'mdi-pause';
-              action.title = 'flight.pauseTooltip';
-            }
-          });
-          destroyListener = player.destroyed.addEventListener(() => {
-            player = null;
-            action.icon = '$vcsPlayCircle';
-            stateListener();
-            destroyListener();
-          });
           player.play();
         }
       }
     },
   });
 
+  function updateAction(state) {
+    if (state === 'stopped' || state === 'paused') {
+      action.icon = '$vcsPlayCircle';
+      action.title = 'flight.playTooltip';
+    } else {
+      action.icon = 'mdi-pause';
+      action.title = 'flight.pauseTooltip';
+    }
+  }
+
+  function destroyPlayer() {
+    player = undefined;
+    updateAction('stopped');
+    stateListener?.();
+    destroyListener?.();
+  }
+
+  function checkPlayer(_player) {
+    if (_player?.flightInstanceName === instance.name) {
+      player = _player;
+      updateAction(player.state);
+      stateListener = player.stateChanged.addEventListener((state) => {
+        updateAction(state);
+      });
+      destroyListener = player.destroyed.addEventListener(() => {
+        destroyPlayer();
+      });
+    } else {
+      destroyPlayer();
+    }
+  }
+  const playerListener = app.flights.playerChanged.addEventListener(
+    (_player) => {
+      checkPlayer(_player);
+    },
+  );
+  checkPlayer(app.flights.player);
+
   return {
     action,
     destroy: () => {
+      playerListener();
       if (player) {
         player.stop();
         player.destroy();
