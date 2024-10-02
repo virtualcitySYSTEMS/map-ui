@@ -266,9 +266,9 @@ const messages = {
     displayQuality: {
       title: 'Anzeigequalität',
       level: {
-        low: 'Niedrige',
-        medium: 'Mittlere',
-        high: 'Hohe',
+        low: 'Niedrig',
+        medium: 'Mittel',
+        high: 'Hoch',
       },
     },
     theme: {
