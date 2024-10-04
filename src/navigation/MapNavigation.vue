@@ -60,9 +60,10 @@
 
 <script>
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
-  import { ObliqueMap, CesiumMap } from '@vcmap/core';
+  import { ObliqueMap, CesiumMap, ObliqueViewDirection } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
+  import { Math as CesiumMath } from '@vcmap-cesium/engine';
   import { createOverviewMapAction } from '../actions/actionHelper.js';
   import { createLocatorAction } from './locatorHelper.js';
   import {
@@ -185,6 +186,16 @@
     };
   }
 
+  /**
+   * @enum {number}
+   */
+  const directionToDegrees = {
+    [ObliqueViewDirection.NORTH]: 0,
+    [ObliqueViewDirection.EAST]: 90,
+    [ObliqueViewDirection.SOUTH]: 180,
+    [ObliqueViewDirection.WEST]: 270,
+  };
+
   export default {
     components: {
       OrientationToolsButton,
@@ -204,10 +215,16 @@
 
       const handleRenderEvent = ({ map }) => {
         viewMode.value = getViewModeForMap(map);
-        const vp = map.getViewpointSync();
-        if (vp) {
-          headingRef.value = vp.heading;
-          tiltRef.value = vp.pitch;
+        if (map instanceof ObliqueMap && map.currentImage) {
+          headingRef.value = map.currentImage.viewDirectionAngle
+            ? 90 - CesiumMath.toDegrees(map.currentImage.viewDirectionAngle)
+            : directionToDegrees[map.currentImage.viewDirection];
+        } else {
+          const vp = map.getViewpointSync();
+          if (vp) {
+            headingRef.value = vp.heading;
+            tiltRef.value = vp.pitch;
+          }
         }
       };
 
