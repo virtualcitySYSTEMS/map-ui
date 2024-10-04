@@ -31,11 +31,10 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-  import { computed, ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { VMenu, VDatePicker, VBtn } from 'vuetify/components';
   import { useI18n } from 'vue-i18n';
   import VcsTextField from './VcsTextField.vue';
-  import { useProxiedAtomicModel } from '../modelHelper.js';
 
   /**
    * @description stylized wrapper around {@link https://vuetifyjs.com/en/components/date-pickers/#internationalization}.
@@ -63,8 +62,29 @@
     emits: ['update:modelValue'],
     setup(props, { emit }) {
       const i18n = useI18n();
-      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
       const menuOpen = ref(false);
+      const internal = ref(props.modelValue);
+
+      watch(
+        () => props.modelValue,
+        (newValue) => {
+          if (!menuOpen.value) {
+            internal.value = newValue;
+          }
+        },
+      );
+
+      const localValue = computed({
+        get() {
+          return internal.value;
+        },
+        set(newValue) {
+          if (internal.value?.getTime() !== newValue?.getTime()) {
+            internal.value = newValue;
+            emit('update:modelValue', newValue);
+          }
+        },
+      });
 
       const formatDate = (date) => {
         if (date) {
