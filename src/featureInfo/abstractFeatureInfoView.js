@@ -222,6 +222,21 @@ export function applyOlcsAttributeFilter(attributes, keys = []) {
 }
 
 /**
+ * Filters all __ attributes (from vc-converter tilesets) not provided as keys
+ * @param {Object<string, unknown>} attributes
+ * @param {Array<string>} keys
+ * @returns {Object}
+ */
+export function applyDoubleUnderscoreFilter(attributes, keys = []) {
+  return Object.keys(attributes)
+    .filter((key) => keys.includes(key) || !/^__/.test(key))
+    .reduce((obj, key) => {
+      obj[key] = attributes[key];
+      return obj;
+    }, {});
+}
+
+/**
  * Filters attributes having an empty object as value
  * @param {Object<string, unknown>} attributes
  * @returns {Object}
@@ -348,7 +363,7 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   // eslint-disable-next-line class-methods-use-this
   _getAttributesFromFeature(feature) {
-    return feature?.getProperty('attributes') || {};
+    return feature?.getAttributes() || {};
   }
 
   /**
@@ -371,6 +386,7 @@ class AbstractFeatureInfoView extends VcsObject {
       applyKeyMapping(attributes, this.keyMapping);
     }
     attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    attributes = applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
     return applyEmptyAttributesFilter(attributes);
   }
 

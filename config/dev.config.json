@@ -93,6 +93,153 @@
   ],
   "layers": [
     {
+      "name": "testGeojsonVectorTile",
+      "type": "VectorTileLayer",
+      "minLevel": 18,
+      "maxLevel": 18,
+      "zIndex": 11,
+      "tileProvider": {
+        "baseLevels": [14],
+        "idProperty": "id",
+        "useSpatialIndex": false,
+        "type": "StaticGeoJSONTileProvider",
+        "url": "exampleData/perFeature.json"
+      },
+      "activeOnStartup": false,
+      "debug": false,
+      "renderer": "primitive",
+      "properties": {
+        "title": "Test GeoJSON VectorTile",
+        "featureInfo": "markdownFeatureInfo",
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "StrokeLegendRow",
+                "title": "Line",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 1.2
+                }
+              },
+              {
+                "type": "StrokeLegendRow",
+                "title": "Line blue",
+                "stroke": {
+                  "color": [118, 165, 204, 1],
+                  "width": 1.2
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Polygon no fill",
+                "fill": false,
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 1.2
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Polygon blue",
+                "fill": {
+                  "color": [118, 165, 204, 1]
+                },
+                "stroke": {
+                  "color": [68, 68, 68, 1],
+                  "width": 2
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Polygon white",
+                "tooltip": "Extruded polygons by height or storey",
+                "fill": {
+                  "color": [255, 255, 255, 0.4]
+                },
+                "stroke": {
+                  "color": [51, 153, 204, 1],
+                  "width": 1.25
+                }
+              },
+              {
+                "type": "CircleLegendRow",
+                "title": "Point Circle",
+                "image": {
+                  "radius": 8,
+                  "scale": 4,
+                  "fill": {
+                    "color": "rgba(255, 0, 0, 1)"
+                  },
+                  "stroke": {
+                    "color": "#00FF00",
+                    "width": 2
+                  }
+                }
+              },
+              {
+                "type": "CircleLegendRow",
+                "title": "Point Default",
+                "image": {
+                  "radius": 5,
+                  "scale": 1,
+                  "fill": {
+                    "color": [255, 255, 255, 0.4]
+                  },
+                  "stroke": {
+                    "color": [0, 0, 0, 1],
+                    "width": 1
+                  }
+                }
+              },
+              {
+                "type": "IconLegendRow",
+                "title": "Icon",
+                "tooltip": "An exemplary icon",
+                "image": {
+                  "src": "data:image/png;base64,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",
+                  "scale": 0.2
+                }
+              },
+              {
+                "type": "RegularShapeLegendRow",
+                "title": "Rhombus Shape",
+                "image": {
+                  "radius": 8,
+                  "points": 4,
+                  "angle": 1.5707963267948966,
+                  "scale": 4,
+                  "fill": {
+                    "color": [255, 0, 255, 0.8]
+                  },
+                  "stroke": {
+                    "color": "#000000",
+                    "width": 2
+                  }
+                }
+              },
+              {
+                "type": "TextLegendRow",
+                "title": "Text",
+                "text": {
+                  "font": "italic bold 32px Courier New, monospace",
+                  "fill": {
+                    "color": "#73D9D1"
+                  },
+                  "stroke": {
+                    "color": "#000000",
+                    "width": 2
+                  }
+                },
+                "label": "Test!"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "testGeojson",
       "type": "GeoJSONLayer",
       "url": "exampleData/perFeature.json",
@@ -524,6 +671,11 @@
     {
       "name": "geojson",
       "layerName": "testGeojson",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "geojson vector tile",
+      "layerName": "testGeojsonVectorTile",
       "type": "LayerContentTreeItem"
     },
     {

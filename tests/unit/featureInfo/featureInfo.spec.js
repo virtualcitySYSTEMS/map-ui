@@ -23,7 +23,10 @@ import {
   WMSLayer,
   WMTSLayer,
 } from '@vcmap/core';
-import { createDummyCesium3DTileFeature } from '@vcmap/core/dist/tests/unit/helpers/cesiumHelpers.js';
+import {
+  createDummyCesium3DTileFeature,
+  tilesetJSON,
+} from '@vcmap/core/dist/tests/unit/helpers/cesiumHelpers.js';
 import { Circle, Style, Stroke, Fill, Text } from 'ol/style.js';
 import { Color } from '@vcmap-cesium/engine';
 
@@ -327,7 +330,10 @@ describe('FeatureInfo', () => {
           layer = new CesiumTilesetLayer({});
           layer.properties.featureInfo = 'foo';
           app.layers.add(layer);
-          const feature = createDummyCesium3DTileFeature({ _id: 'foo' });
+          const feature = createDummyCesium3DTileFeature(
+            { _id: 'foo' },
+            tilesetJSON,
+          );
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
           highlightStyle =
@@ -351,7 +357,10 @@ describe('FeatureInfo', () => {
           layer.properties.featureInfo = 'foo';
           layer.highlightStyle = new VectorStyleItem({});
           app.layers.add(layer);
-          const feature = createDummyCesium3DTileFeature({ id: 'foo' });
+          const feature = createDummyCesium3DTileFeature(
+            { id: 'foo' },
+            tilesetJSON,
+          );
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
           highlightStyle =

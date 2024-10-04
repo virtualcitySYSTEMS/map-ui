@@ -732,8 +732,8 @@
     {
       "name": "osmBuildingFootprints",
       "type": "VectorTileLayer",
-      "minLevel": 15,
-      "maxLevel": 21,
+      "minLevel": 18,
+      "maxLevel": 18,
       "zIndex": 11,
       "tileProvider": {
         "baseLevels": [14],
@@ -743,10 +743,12 @@
         "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
       },
       "activeOnStartup": false,
+      "debug": false,
       "properties": {
         "featureInfo": "addressBalloon",
         "title": "layers.osmBuildingFootprints.title",
-        "tooltip": "OpenStreetMap Building Polygons"
+        "tooltip": "OpenStreetMap Building Polygons",
+        "availableStyles": ["Transparentbuildings"]
       }
     },
     {
