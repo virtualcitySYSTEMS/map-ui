@@ -57,7 +57,8 @@
               !allowZInput || featureProperties.altitudeMode !== 'absolute'
             "
           >
-            <v-icon>$vcsGround</v-icon>
+            <v-icon v-if="placeOnTerrainLoading">$vcsProgress</v-icon>
+            <v-icon v-else>$vcsGround</v-icon>
           </VcsButton>
         </v-col>
       </v-row>
@@ -118,8 +119,8 @@
 </template>
 
 <script>
-  import { Math as CesiumMath } from '@vcmap-cesium/engine';
-  import { TransformationMode } from '@vcmap/core';
+  import { Math as CesiumMath, HeightReference } from '@vcmap-cesium/engine';
+  import { TransformationMode, placeGeometryOnSurface } from '@vcmap/core';
   import { VSheet, VContainer, VRow, VCol, VIcon } from 'vuetify/components';
   import { inject, ref, watch } from 'vue';
   import VcsButton from '../buttons/VcsButton.vue';
@@ -159,6 +160,8 @@
     setup(props) {
       /** @type {import("./VcsFeatureEditingWindow.vue").EditorManager} */
       const manager = inject('manager');
+      /** @type {import("../../vcsUiApp.js").default} */
+      const vcsApp = inject('vcsApp');
 
       const showTranslate = ref(false);
       const showRotate = ref(false);
@@ -179,6 +182,8 @@
           resetInputs();
         },
       );
+
+      const placeOnTerrainLoading = ref(false);
 
       return {
         showTranslate,
@@ -215,8 +220,37 @@
           );
           resetInputs();
         },
-        placeOnTerrain() {
-          manager.placeCurrentFeaturesOnTerrain();
+        placeOnTerrainLoading,
+        async placeOnTerrain() {
+          const scene = vcsApp.maps.activeMap?.getScene?.();
+          if (!scene) {
+            return;
+          }
+
+          placeOnTerrainLoading.value = true;
+
+          await Promise.allSettled(
+            manager.currentFeatures.value.map(async (feature) => {
+              const geometry = feature.getGeometry();
+              if (geometry) {
+                await placeGeometryOnSurface(
+                  geometry,
+                  scene,
+                  HeightReference.CLAMP_TO_TERRAIN,
+                );
+              }
+            }),
+          );
+
+          const currentEditingFeatures =
+            manager.currentSession.value?.currentFeatures;
+          if (currentEditingFeatures) {
+            manager.currentSession.value?.setCurrentFeatures(
+              currentEditingFeatures,
+            );
+          }
+
+          placeOnTerrainLoading.value = false;
         },
       };
     },

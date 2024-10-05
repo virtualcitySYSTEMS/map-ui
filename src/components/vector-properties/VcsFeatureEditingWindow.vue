@@ -69,7 +69,6 @@
    * @property {import("vue").ShallowRef<import("ol").Feature[]>} currentFeatures
    * @property {import("vue").ShallowRef<import("@vcmap/core").EditGeometrySession | import("@vcmap/core").EditFeaturesSession | undefined>} currentEditSession
    * @property {import("vue").ShallowRef<import("@vcmap/core").SelectFeaturesSession | import("@vcmap/core").CreateFeatureSession<import("@vcmap/core").GeometryType> | undefined>} currentSession
-   * @property {function():Promise<void>} placeCurrentFeaturesOnTerrain
    * @property {function():void} stopEditing
    * @property {function(import("ol").Feature=):Promise<void>|void} startEditSession
    * @property {function(import("@vcmap/core").TransformationMode, import("ol").Feature[]=):Promise<void>|void} startTransformSession
