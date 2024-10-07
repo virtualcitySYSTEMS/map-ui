@@ -92,6 +92,8 @@
       width: var(--v-vcs-font-size);
       height: var(--v-vcs-font-size);
       margin: auto;
+      // for alignment of chevron
+      display: flex;
     }
   }
 

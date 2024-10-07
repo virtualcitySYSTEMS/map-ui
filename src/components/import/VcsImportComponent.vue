@@ -13,15 +13,15 @@
       v-model="files"
     />
     <div class="d-flex justify-end gc-1 mx-3 pt-2 pb-1">
-      <vcs-form-button @click="$emit('close')">
-        {{ $t('components.cancel') }}
-      </vcs-form-button>
       <vcs-form-button
         variant="filled"
         :disabled="files.length === 0"
         @click="doImport"
         >{{ $t('components.import.submit') }}</vcs-form-button
       >
+      <vcs-form-button @click="$emit('close')">
+        {{ $t('components.cancel') }}
+      </vcs-form-button>
     </div>
   </v-card>
 </template>
