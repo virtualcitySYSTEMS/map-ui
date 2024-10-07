@@ -23,6 +23,7 @@
     </VcsFormSection>
     <VcsVectorPropertiesComponent
       :show3-d-properties="is3D"
+      :is2-d-feature="is2DFeature"
       :value-default="defaultVectorProperties"
       :properties="availableVectorProperties"
       :show-dividers="false"
@@ -50,6 +51,7 @@
   import {
     CesiumMap,
     GeometryType,
+    is2DLayout,
     SessionType,
     TransformationMode,
     VectorProperties,
@@ -213,6 +215,15 @@
       }
 
       const is3D = ref(false);
+      const is2DFeature = computed(() =>
+        features.value.some((f) => {
+          const geometry = f.getGeometry();
+          if (geometry && geometry.getFlatCoordinates().length > 0) {
+            return is2DLayout(f.getGeometry()?.getLayout());
+          }
+          return !is3D.value;
+        }),
+      );
 
       function updateIs3D() {
         is3D.value = vcsApp.maps.activeMap instanceof CesiumMap;
@@ -406,6 +417,7 @@
         availableModifyActions,
         availableVectorProperties,
         is3D,
+        is2DFeature,
         updateFeatureProperties,
         defaultVectorProperties: VectorProperties.getDefaultOptions(),
       };

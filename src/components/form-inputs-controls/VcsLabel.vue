@@ -17,6 +17,9 @@
         :text="$st(labelTooltip)"
       ></v-tooltip>
     </span>
+    <vcs-help-tooltip :text="helpText" v-if="helpText || $slots.help">
+      <slot name="help" />
+    </vcs-help-tooltip>
   </label>
 </template>
 
@@ -50,6 +53,7 @@
   import { VTooltip } from 'vuetify/components';
   import { computed, ref } from 'vue';
   import { createEllipseTooltip, usePadding } from '../composables.js';
+  import VcsHelpTooltip from '../notification/VcsHelpTooltip.vue';
 
   /**
    * @description Stylized wrapper around {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label |label label}.
@@ -63,6 +67,7 @@
   export default {
     name: 'VcsLabel',
     components: {
+      VcsHelpTooltip,
       VTooltip,
     },
     props: {
@@ -85,6 +90,10 @@
       tooltipPosition: {
         type: String,
         default: 'right',
+      },
+      helpText: {
+        type: String,
+        default: undefined,
       },
     },
     setup(props, { attrs }) {

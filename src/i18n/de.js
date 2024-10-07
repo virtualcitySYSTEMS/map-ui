@@ -222,13 +222,13 @@ const messages = {
     vectorProperties: {
       header: 'Vektor Eigenschaften',
       altitudeMode: 'Höhenmodus',
-      clampToGround: 'Auf Grund legen',
+      clampToGround: 'Auf alle Oberflächen legen',
       clampToTerrain: 'Auf Gelände legen',
-      clampTo3DTiles: 'Auf 3D Tiles legen',
+      clampTo3DTiles: 'Auf Objekte legen',
       absolute: 'Absolut',
-      relativeToGround: 'Relativ zum Grund',
+      relativeToGround: 'Relativ zu allen Oberflächen',
       relativeToTerrain: 'Relativ zum Gelände',
-      relativeTo3DTiles: 'Relativ zu 3D Tiles',
+      relativeTo3DTiles: 'Relativ zu Objekten',
       groundLevel: 'Geländehöhe',
       classificationType: 'Klassifizierung',
       none: 'Keine',
@@ -252,6 +252,19 @@ const messages = {
       extrudedHeight: 'Extrusion',
       skirt: 'Skirts',
       modelScale: 'Modell Skalierung',
+      help: {
+        clampToGround:
+          'Auf alle Oberflächen legen (wie z.B. Gelände, Mesh oder Gebäude)',
+        clampToTerrain: 'Nur aufs Gelände legen',
+        clampTo3DTiles: 'Nur auf Objekte legen (wie z.B. Mesh oder Gebäude)',
+        absolute:
+          'Jeden Stützpunkt in 3D darstellen. Nicht anwendbar für 2D Feature.',
+        relativeToGround:
+          'Relativ zu allen Oberflächen (wie z.B. Gelände, Mesh oder Gebäude)',
+        relativeToTerrain: 'Nur Relative zum Gelände.',
+        relativeTo3DTiles:
+          'Nur Relativ zu Objekten (wie z.B. Mesh oder Gebäude)',
+      },
     },
     validation: {
       allowedRange: 'Erlaubter Wertebereich',

@@ -10,9 +10,17 @@
       <template v-if="show3DProperties">
         <v-row v-if="visibleProperties.has('altitudeMode')" no-gutters>
           <v-col>
-            <VcsLabel :html-for="`${cid}-vp-altitude-mode`">{{
-              $t('components.vectorProperties.altitudeMode')
-            }}</VcsLabel>
+            <VcsLabel :html-for="`${cid}-vp-altitude-mode`"
+              >{{ $t('components.vectorProperties.altitudeMode') }}
+              <template #help>
+                <ul>
+                  <li v-for="mode in availableAltitudeModes" :key="mode.value">
+                    {{ $t(mode.title) }}:
+                    {{ $t(`components.vectorProperties.help.${mode.value}`) }}
+                  </li>
+                </ul>
+              </template>
+            </VcsLabel>
           </v-col>
           <v-col>
             <VcsSelect
@@ -564,9 +572,25 @@
         type: Array,
         default: () => vectorProperties,
       },
+      altitudeModes: {
+        type: Array,
+        default: () => [
+          'absolute',
+          'relativeToGround',
+          'relativeToTerrain',
+          'relativeTo3DTiles',
+          'clampToGround',
+          'clampToTerrain',
+          'clampTo3DTiles',
+        ],
+      },
       show3DProperties: {
         type: Boolean,
         default: true,
+      },
+      is2DFeature: {
+        type: Boolean,
+        default: false,
       },
       showDividers: {
         type: Boolean,
@@ -597,7 +621,7 @@
       });
 
       const availableAltitudeModes = computed(() => {
-        const altitudeModes = [
+        return [
           {
             value: 'clampToGround',
             title: 'components.vectorProperties.clampToGround',
@@ -613,27 +637,23 @@
           {
             value: 'absolute',
             title: 'components.vectorProperties.absolute',
+            props: {
+              disabled: props.is2DFeature,
+            },
           },
-        ];
-
-        if (visibleProperties.value.has('heightAboveGround')) {
-          altitudeModes.push(
-            {
-              value: 'relativeToGround',
-              title: 'components.vectorProperties.relativeToGround',
-            },
-            {
-              value: 'relativeToTerrain',
-              title: 'components.vectorProperties.relativeToTerrain',
-            },
-            {
-              value: 'relativeTo3DTiles',
-              title: 'components.vectorProperties.relativeTo3DTiles',
-            },
-          );
-        }
-
-        return altitudeModes;
+          {
+            value: 'relativeToGround',
+            title: 'components.vectorProperties.relativeToGround',
+          },
+          {
+            value: 'relativeToTerrain',
+            title: 'components.vectorProperties.relativeToTerrain',
+          },
+          {
+            value: 'relativeTo3DTiles',
+            title: 'components.vectorProperties.relativeTo3DTiles',
+          },
+        ].filter((item) => props.altitudeModes.includes(item.value));
       });
 
       const availableClassificationTypes = [

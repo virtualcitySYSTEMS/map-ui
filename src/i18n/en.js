@@ -222,13 +222,13 @@ const messages = {
     vectorProperties: {
       header: 'Vector properties',
       altitudeMode: 'Altitude mode',
-      clampToGround: 'Drape on ground',
+      clampToGround: 'Drape on surface',
       clampToTerrain: 'Drape on terrain',
-      clampTo3DTiles: 'Drape on 3D tiles',
+      clampTo3DTiles: 'Drape on objects',
       absolute: 'Absolute',
-      relativeToGround: 'Relative to ground',
+      relativeToGround: 'Relative to surface',
       relativeToTerrain: 'Relative to terrain',
-      relativeTo3DTiles: 'Relative to 3D tiles',
+      relativeTo3DTiles: 'Relative to objects',
       groundLevel: 'Ground level',
       classificationType: 'Classification',
       none: 'None',
@@ -252,6 +252,19 @@ const messages = {
       extrudedHeight: 'Extrusion',
       skirt: 'Skirts',
       modelScale: 'Model scale',
+      help: {
+        clampToGround:
+          'Drape on any surface (such as terrain, mesh or buildings)',
+        clampToTerrain: 'Only drape onto the terrain.',
+        clampTo3DTiles: 'Only drape on objects (such as a mesh or buildings)',
+        absolute:
+          'Every vertex is drawn at its 3D position, not applicable to 2D features',
+        relativeToGround:
+          'Relative to any surface (such as terrain, mesh or buildings)',
+        relativeToTerrain: 'Only relative to the terrain',
+        relativeTo3DTiles:
+          'Only relative to objects (such as a mesh or buildings)',
+      },
     },
     validation: {
       allowedRange: 'Allowed value range',
