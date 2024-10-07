@@ -12,7 +12,7 @@
           :key="attribution.provider"
           :title="`${$st(attribution.provider)} ${attribution.year}`"
         >
-          <a :href="attribution.url" target="_blank">
+          <a :href="attribution.url ? attribution.url : null" target="_blank">
             {{ $st(attribution.provider) }} {{ attribution.year }}
           </a>
         </v-list-item-subtitle>

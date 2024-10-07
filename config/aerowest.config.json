@@ -271,7 +271,12 @@
       "minZoom": 2,
       "hideLevels": null,
       "properties": {
-        "title": "Schrägluftbilder 2020"
+        "title": "Schrägluftbilder 2020",
+        "attributions": {
+          "provider": "Aerowest",
+          "year": "2020",
+          "url": "https://www.aerowest.de/"
+        }
       }
     },
     {
@@ -292,7 +297,12 @@
       "minZoom": 2,
       "hideLevels": null,
       "properties": {
-        "title": "Schrägluftbilder 2019"
+        "title": "Schrägluftbilder 2019",
+        "attributions": {
+          "provider": "Aerowest",
+          "year": "2019",
+          "url": "https://www.aerowest.de/"
+        }
       }
     }
   ],

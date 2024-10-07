@@ -107,14 +107,14 @@ export function getAttributions(app) {
   }
 
   /**
-   * adds or removes a AttributionEntry on layer state changes
-   * @param {import("@vcmap/core").VcsMap|import("@vcmap/core").Layer|import("@vcmap/core").ObliqueCollection} object
+   * adds or removes a AttributionEntry for layers or maps
+   * @param {import("@vcmap/core").VcsMap|import("@vcmap/core").Layer} object
    */
   function syncAttributions(object) {
     if (object?.properties?.attributions === undefined) {
       return;
     }
-    if (object.active || object.loaded) {
+    if (object.active) {
       addAttributions(object);
     } else {
       removeAttributions(object);
@@ -138,9 +138,13 @@ export function getAttributions(app) {
       }
     });
     if (map instanceof ObliqueMap) {
-      syncAttributions(map.collection);
-      obliqueListener =
-        map.collectionChanged.addEventListener(syncAttributions);
+      addAttributions(map.collection);
+      obliqueListener = map.collectionChanged.addEventListener(
+        (obliqueCollection) => {
+          [...app.obliqueCollections].forEach(removeAttributions);
+          addAttributions(obliqueCollection);
+        },
+      );
     }
   }
 

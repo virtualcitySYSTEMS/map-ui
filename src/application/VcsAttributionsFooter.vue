@@ -8,7 +8,7 @@
         class="attribution"
         :key="attribution.provider"
       >
-        <a :href="attribution.url" target="_blank">
+        <a :href="attribution.url ? attribution.url : null" target="_blank">
           {{ $st(attribution.provider) }} <span>{{ attribution.years }}</span>
         </a>
       </span>
