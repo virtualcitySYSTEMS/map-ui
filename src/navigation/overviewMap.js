@@ -232,7 +232,10 @@ class OverviewMap {
     this._collectionListeners = [
       this._app.maps.layerCollection.added.addEventListener((layer) => {
         if (layer.properties.showInOverviewMap) {
-          const clone = deserializeLayer(this._app, layer.toJSON());
+          const clone = deserializeLayer(this._app, {
+            ...layer.toJSON(),
+            mapNames: [this._map.name],
+          });
           clone.activate();
           const idx = this._map.layerCollection.indexOf(clone);
           if (idx < 0) {
