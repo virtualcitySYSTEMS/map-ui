@@ -218,9 +218,11 @@ export function makeEditorCollectionComponentClass(
   );
 
   const itemRemovedListener =
-    editorCollectionComponent.collection.removed.addEventListener(
-      closeEditorWindow,
-    );
+    editorCollectionComponent.collection.removed.addEventListener((item) => {
+      if (predicate(item)) {
+        closeEditorWindow(item);
+      }
+    });
 
   editorCollectionComponent.addItemMapping({
     predicate,
