@@ -19,9 +19,11 @@
     "@vcmap/link-button": "https://github.com/virtualcitySYSTEMS/map-link-button.git#main",
     "@vcmap/cesium-filters": "https://github.com/virtualcitySYSTEMS/map-cesium-filters.git#main",
     "@vcmap/search-nominatim": "https://github.com/virtualcitySYSTEMS/map-search-nominatim.git#main",
-    "@vcmap/create-link": "https://github.com/virtualcitySYSTEMS/map-create-link.git#main"
+    "@vcmap/create-link": "https://github.com/virtualcitySYSTEMS/map-create-link.git#main",
+    "@vcmap/module-selector": "^2.0.0-rc.3"
   },
   "optionalDependencies": {
-    "@vcmap/planning": "^6.0.0-rc.1"
+    "@vcmap/planning": "^6.0.0-rc.1",
+    "@vcmap/solar-revenue": "^2.0.0-rc.1"
   }
 }

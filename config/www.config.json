@@ -1829,6 +1829,20 @@
   ],
   "plugins": [
     {
+      "name": "@vcmap/module-selector",
+      "isActiveOnStart": true,
+      "requireModuleSelection": false,
+      "entry": "plugins/@vcmap/module-selector/index.js",
+      "modules": [
+        {
+          "type": "url",
+          "title": "Solar Tool",
+          "icon": "mdi-solar-power-variant",
+          "moduleUrl": "./config/solar.config.json"
+        }
+      ]
+    },
+    {
       "name": "@vcmap/link-button",
       "entry": "plugins/@vcmap/link-button/index.js",
       "buttons": [

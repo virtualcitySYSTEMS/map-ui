@@ -1,0 +1,65 @@
+{
+  "name": "Solar",
+  "i18n": [
+    {
+      "name": "Demo",
+      "de": {
+        "solarLayer": {
+          "solar": "Vorberechnete Solardaten"
+        }
+      },
+      "en": {
+        "solarLayer": {
+          "solar": "Precalculated solardata"
+        }
+      }
+    }
+  ],
+  "layers": [
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Solar Buildings Berlin",
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/32bae501-7f69-4d3f-b807-f606009fdd0a/tileset.json",
+      "extent": {
+        "coordinates": [
+          13.331909136005015, 52.48718257333008, 13.42529294872331,
+          52.54760738995393
+        ],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "exclusiveGroups": ["3D"],
+      "properties": {
+        "title": "solarLayer.solar",
+        "properties": "tableAll"
+      },
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    }
+  ],
+  "plugins": [
+    {
+      "name": "@vcmap/solar-revenue",
+      "entry": "plugins/@vcmap/solar-revenue/index.js",
+      "adminOptions": {
+        "germanPowerMix": 0.5
+      },
+      "globalSettings": {
+        "isVcSolar": true
+      }
+    }
+  ],
+  "contentTree": [
+    {
+      "type": "LayerContentTreeItem",
+      "name": "berlin.solar",
+      "layerName": "Solar Buildings Berlin"
+    }
+  ]
+}
