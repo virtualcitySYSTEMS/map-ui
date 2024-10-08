@@ -25,7 +25,7 @@
     "@vcmap/line-of-sight": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/line-of-sight.git#feature-v1"
   },
   "optionalDependencies": {
-    "@vcmap/planning": "^6.0.0-rc.1",
+    "@vcmap/planning": "^6.0.0-rc.2",
     "@vcmap/solar-revenue": "^2.0.0-rc.1"
   }
 }
