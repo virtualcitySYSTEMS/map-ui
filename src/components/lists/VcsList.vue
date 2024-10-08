@@ -86,6 +86,7 @@
     getCurrentInstance,
     inject,
     isReactive,
+    reactive,
     ref,
     shallowRef,
     watch,
@@ -109,36 +110,48 @@
    * @returns {Array<import("../../actions/actionHelper.js").VcsAction>}
    */
   export function createSelectionActions(items, selected, emit) {
-    return [
-      {
-        name: 'list.selectAll',
-        tooltip: 'list.selectAll',
-        callback() {
-          const currentSelection = [...selected.value];
-          selected.value = items.value.filter((item) => !item.disabled);
+    const selectAllAction = reactive({
+      name: 'list.selectAll',
+      tooltip: 'list.selectAll',
+      disabled: items.value.length - selected.value.length < 1,
+      callback() {
+        const currentSelection = [...selected.value];
+        selected.value = items.value.filter((item) => !item.disabled);
 
-          selected.value.forEach((item) => {
-            if (item.selectionChanged && !currentSelection.includes(item)) {
-              item.selectionChanged(true);
-            }
-          });
-          emit('update:modelValue', selected.value);
-        },
+        selected.value.forEach((item) => {
+          if (item.selectionChanged && !currentSelection.includes(item)) {
+            item.selectionChanged(true);
+          }
+        });
+        emit('update:modelValue', selected.value);
       },
-      {
-        name: 'list.clearSelection',
-        tooltip: 'list.clearSelection',
-        callback() {
-          [...selected.value].forEach((item) => {
-            if (item.selectionChanged) {
-              item.selectionChanged(false);
-            }
-          });
-          selected.value = [];
-          emit('update:modelValue', selected.value);
-        },
+    });
+    const clearSelectionAction = reactive({
+      name: 'list.clearSelection',
+      tooltip: 'list.clearSelection',
+      disabled: selected.value.length < 1,
+      callback() {
+        [...selected.value].forEach((item) => {
+          if (item.selectionChanged) {
+            item.selectionChanged(false);
+          }
+        });
+        selected.value = [];
+        emit('update:modelValue', selected.value);
       },
-    ];
+    });
+
+    watch(
+      [items, selected],
+      () => {
+        selectAllAction.disabled =
+          items.value.length - selected.value.length < 1;
+        clearSelectionAction.disabled = selected.value.length < 1;
+      },
+      { deep: true, immediate: true },
+    );
+
+    return [selectAllAction, clearSelectionAction];
   }
 
   /**
