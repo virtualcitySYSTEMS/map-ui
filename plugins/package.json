@@ -9,7 +9,7 @@
     "@vcmap/swipe-tool": "https://github.com/virtualcitySYSTEMS/map-swipe-tool.git#main",
     "@vcmap/export": "https://github.com/virtualcitySYSTEMS/map-export.git#main",
     "@vcmap/viewshed": "https://github.com/virtualcitySYSTEMS/map-viewshed.git#main",
-    "@vcmap/measurement": "^2.0.0-rc.1",
+    "@vcmap/measurement": "^2.0.0-rc.2",
     "@vcmap/multi-view": "https://github.com/virtualcitySYSTEMS/map-multi-view.git#main",
     "@vcmap/draw": "https://github.com/virtualcitySYSTEMS/map-draw.git#main",
     "@vcmap/shadow": "https://github.com/virtualcitySYSTEMS/map-shadow.git#main",
@@ -20,7 +20,7 @@
     "@vcmap/cesium-filters": "https://github.com/virtualcitySYSTEMS/map-cesium-filters.git#main",
     "@vcmap/search-nominatim": "https://github.com/virtualcitySYSTEMS/map-search-nominatim.git#main",
     "@vcmap/create-link": "https://github.com/virtualcitySYSTEMS/map-create-link.git#main",
-    "@vcmap/module-selector": "^2.0.0-rc.3",
+    "@vcmap/module-selector": "^2.0.0",
     "@vcmap/dynamic-layer": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/dynamic-layer.git#feature-idra-catalogue",
     "@vcmap/line-of-sight": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/line-of-sight.git#feature-v1"
   },
