@@ -1,0 +1,32 @@
+{
+  "name": "Dynamic-Layer",
+  "plugins": [
+    {
+      "name": "@vcmap/dynamic-layer",
+      "entry": "plugins/@vcmap/dynamic-layer/index.js",
+      "defaultTab": "catalogues",
+      "enabledTabs": ["webdata", "catalogues"],
+      "webdata": {
+        "defaultType": "WMSLayer",
+        "defaultUrl": "https://sgx.geodatenzentrum.de/wms_topplus_open"
+      },
+      "catalogues": {
+        "presets": [
+          {
+            "url": "https://data.europa.eu/api/hub/search/",
+            "type": "piveau",
+            "title": "Data Europa",
+            "subtitle": "The official portal for European data"
+          },
+          {
+            "url": "https://open.bydata.de/api/hub/search/",
+            "type": "piveau",
+            "title": "Data Bayern",
+            "subtitle": "Hier finden Datenbegeisterte freie Datensätze und Unterstützung, um noch mehr Daten zu teilen. Damit schaffen wir gemeinsam – Verwaltung, Unternehmen, aber auch Wissenschaft und Zivilgesellschaft – Mehrwert für uns alle.",
+            "description": "# Offene Daten aus Bayern\nHier finden Datenbegeisterte freie Datensätze und Unterstützung, um noch mehr Daten zu teilen. Damit schaffen wir gemeinsam – Verwaltung, Unternehmen, aber auch Wissenschaft und Zivilgesellschaft – Mehrwert für uns alle.\n"
+          }
+        ]
+      }
+    }
+  ]
+}

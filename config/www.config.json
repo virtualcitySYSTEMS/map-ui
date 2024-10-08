@@ -1830,7 +1830,7 @@
   "plugins": [
     {
       "name": "@vcmap/module-selector",
-      "isActiveOnStart": true,
+      "isActiveOnStart": false,
       "requireModuleSelection": false,
       "entry": "plugins/@vcmap/module-selector/index.js",
       "modules": [
@@ -1839,6 +1839,24 @@
           "title": "Solar Tool",
           "icon": "mdi-solar-power-variant",
           "moduleUrl": "./config/solar.config.json"
+        },
+        {
+          "type": "url",
+          "title": "Dynamic Layer",
+          "icon": "mdi-database-search-outline",
+          "moduleUrl": "./config/dynamic-layer.config.json"
+        },
+        {
+          "type": "url",
+          "title": "Analytics",
+          "icon": "mdi-map-search",
+          "moduleUrl": "./config/analysis.config.json"
+        },
+        {
+          "type": "url",
+          "title": "Vector Tiles",
+          "icon": "mdi-vector-combine",
+          "moduleUrl": "./config/vectorTile.config.json"
         }
       ]
     },
@@ -1885,10 +1903,6 @@
     {
       "name": "@vcmap/transparent-terrain",
       "entry": "plugins/@vcmap/transparent-terrain/index.js"
-    },
-    {
-      "name": "@vcmap/viewshed",
-      "entry": "plugins/@vcmap/viewshed/index.js"
     },
     {
       "name": "@vcmap/clipping-tool",
@@ -1959,14 +1973,9 @@
       "projectId": "rBW58EJz5RwCz75Q3",
       "mapId": "csunCGqmQE8Py4KCe"
     },
-
     {
       "name": "@vcmap/search-coordinate",
       "entry": "plugins/@vcmap/search-coordinate/index.js"
-    },
-    {
-      "name": "@vcmap/height-profile",
-      "entry": "plugins/@vcmap/height-profile/index.js"
     }
   ]
 }

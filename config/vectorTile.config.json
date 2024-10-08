@@ -1,0 +1,70 @@
+{
+  "name": "Vector tile config",
+  "description": "Vector tile config for the 2024 UC",
+  "startingViewpointName": "wittenbergplatz",
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "wittenbergplatz",
+      "distance": 422.0485304702391,
+      "cameraPosition": [
+        13.343328129361538, 52.499130914591746, 240.7210072500593
+      ],
+      "groundPosition": [
+        13.342268173013679, 52.50237738561543, 34.73260275304841
+      ],
+      "heading": 348.7317861517271,
+      "pitch": -29.215327290008023,
+      "roll": 0.0008171150282449203,
+      "animate": false
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "MarkdownFeatureInfoView",
+      "name": "vectorTilePrimitiveMarkdown",
+      "title": "Vector Tile Primitive - Markdown",
+      "template": [
+        "{{#if name}}",
+        "# {{name}}",
+        "{{else}}",
+        "# Unnamed {{type}}",
+        "{{/if}}",
+        "| Key | Value |",
+        "| --- | ----- |",
+        "{{#each (value, key) in attributes}}{{#if [\"!=\", [\"get\", \"key\"], \"name\"]}}| _{{key}}_ | {{value}} |\n{{/if}}{{/each}}"
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "name": "osmBuildingFootprints",
+      "type": "VectorTileLayer",
+      "minLevel": 18,
+      "maxLevel": 18,
+      "zIndex": 11,
+      "tileProvider": {
+        "baseLevels": [14],
+        "idProperty": "osm_id",
+        "useSpatialIndex": false,
+        "type": "MVTTileProvider",
+        "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
+      },
+      "activeOnStartup": true,
+      "debug": false,
+      "renderer": "primitive",
+      "exclusiveGroups": ["3D"],
+      "vectorProperties": {
+        "extrudedHeight": 38,
+        "altitudeMode": "absolute",
+        "groundLevel": 20
+      },
+      "properties": {
+        "featureInfo": "vectorTilePrimitiveMarkdown",
+        "title": "layer.footprints",
+        "tooltip": "OpenStreetMap Building Polygons",
+        "availableStyles": ["Transparentbuildings"]
+      }
+    }
+  ]
+}

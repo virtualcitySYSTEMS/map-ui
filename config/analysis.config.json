@@ -1,0 +1,17 @@
+{
+  "name": "Analysis",
+  "plugins": [
+    {
+      "name": "@vcmap/line-of-sight",
+      "entry": "plugins/@vcmap/line-of-sight/index.js"
+    },
+    {
+      "name": "@vcmap/viewshed",
+      "entry": "plugins/@vcmap/viewshed/index.js"
+    },
+    {
+      "name": "@vcmap/height-profile",
+      "entry": "plugins/@vcmap/height-profile/index.js"
+    }
+  ]
+}

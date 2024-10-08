@@ -2,7 +2,7 @@
   "name": "Solar",
   "i18n": [
     {
-      "name": "Demo",
+      "name": "Solar",
       "de": {
         "solarLayer": {
           "solar": "Vorberechnete Solardaten"
