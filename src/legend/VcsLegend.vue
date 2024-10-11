@@ -4,11 +4,13 @@
       variant="accordion"
       multiple
       v-if="entries.length > 0"
+      v-model="panels"
       class="rounded-0"
     >
       <vcs-expansion-panel
         v-for="(entry, i) in entries"
         :key="i"
+        :value="entry.key"
         :heading="entry.title"
         :header-actions="entry.actions"
         @group:selected="entry.open = !entry.open"
@@ -46,7 +48,7 @@
 
 <script>
   import { VExpansionPanels, VList, VSheet } from 'vuetify/components';
-  import { computed } from 'vue';
+  import { ref, watch } from 'vue';
   import { useComponentId } from '../components/composables.js';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
@@ -83,15 +85,12 @@
       };
 
       /**
-       * @type {import("vue").ComputedRef<number[]>}
+       * @type {import("vue").Ref<string[]>}
        */
-      const panels = computed({
-        get() {
-          return [...Array(props.entries.length).keys()].filter(
-            (p, idx) => !!props.entries[idx].open,
-          );
-        },
-        set() {},
+      const panels = ref(props.entries.filter((e) => e.open).map((e) => e.key));
+
+      watch(props.entries, () => {
+        panels.value = props.entries.filter((e) => e.open).map((e) => e.key);
       });
 
       const cid = useComponentId();
@@ -99,7 +98,7 @@
       return {
         LegendType,
         setIframeHeight,
-        panels, // TODO
+        panels,
         cid,
       };
     },
