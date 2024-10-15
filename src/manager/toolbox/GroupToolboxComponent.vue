@@ -34,7 +34,12 @@
               :icon="action.icon"
               :disabled="action.disabled"
               :active="action.active"
-              @click="action.callback($event)"
+              @click.stop="
+                () => {
+                  $emit('click', $event);
+                  action.callback($event);
+                }
+              "
               v-bind="{ ...$attrs }"
             />
           </div>

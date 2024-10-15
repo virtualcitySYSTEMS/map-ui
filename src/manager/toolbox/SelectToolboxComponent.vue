@@ -11,7 +11,12 @@
       :active="group.action.active"
       :disabled="group.action.disabled"
       :background="group.action.background"
-      @click="group.action.callback($event)"
+      @click.stop="
+        () => {
+          $emit('click', $event);
+          group.action.callback($event);
+        }
+      "
       v-bind="{ ...$attrs }"
       class="vcs-toolbox-action-selected"
       :min-width="32"

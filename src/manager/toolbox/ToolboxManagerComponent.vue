@@ -20,11 +20,13 @@
           v-if="group.type === ToolboxType.GROUP"
           :group="group"
           @toggle="openGroup"
+          @click="bringToTop"
         />
         <ToolboxActionSelect
           v-else-if="group.type === ToolboxType.SELECT"
           :group="group"
           @toggle="openGroup"
+          @click="bringToTop"
         />
         <VcsToolButton
           v-else
