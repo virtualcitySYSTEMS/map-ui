@@ -1,0 +1,39 @@
+{
+  "name": "concepts-show-case",
+  "_id": "concepts-show-case",
+  "description": "module containing showcases plugins demonstrating concepts",
+  "plugins": [
+    {
+      "name": "category-tester",
+      "entry": "plugins/@vcmap-show-case/category-tester/index.js"
+    },
+    {
+      "name": "context-menu-tester",
+      "entry": "plugins/@vcmap-show-case/context-menu-tester/index.js"
+    },
+    {
+      "name": "notifier-tester",
+      "entry": "plugins/@vcmap-show-case/notifier-tester/index.js"
+    },
+    {
+      "name": "panel-tester",
+      "entry": "plugins/@vcmap-show-case/panel-tester/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/search-example",
+      "entry": "plugins/@vcmap-show-case/search-example/index.js"
+    },
+    {
+      "name": "switch-map-callback-example",
+      "entry": "plugins/@vcmap-show-case/switch-map-callback-example/index.js"
+    },
+    {
+      "name": "toolbox-example",
+      "entry": "plugins/@vcmap-show-case/toolbox-example/index.js"
+    },
+    {
+      "name": "window-tester",
+      "entry": "plugins/@vcmap-show-case/window-tester/index.js"
+    }
+  ]
+}

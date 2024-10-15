@@ -4,7 +4,7 @@
       v-for="(example, index) in examples"
       :key="`b-${index}`"
       @click="(e) => toggle(e, example)"
-      class="pa-1"
+      class="ma-1"
     >
       toggle {{ example }}
     </VcsFormButton>

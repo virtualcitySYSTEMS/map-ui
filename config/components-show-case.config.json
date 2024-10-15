@@ -1,0 +1,49 @@
+{
+  "name": "components-show-case",
+  "_id": "components-show-case",
+  "description": "module containing showcases plugins demonstrating components",
+  "plugins": [
+    {
+      "name": "@vcmap-show-case/collection-manager-example",
+      "entry": "plugins/@vcmap-show-case/collection-manager-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/custom-icons-example",
+      "entry": "plugins/@vcmap-show-case/custom-icons-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/extent-example",
+      "entry": "plugins/@vcmap-show-case/extent-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/flight-component-example",
+      "entry": "plugins/@vcmap-show-case/flight-component-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/form-inputs-example",
+      "entry": "plugins/@vcmap-show-case/form-inputs-example/index.js",
+      "selectOptions": ["A", "B", "C", "D"],
+      "initialTextInput": "myInitialText"
+    },
+    {
+      "name": "@vcmap-show-case/icons-example",
+      "entry": "plugins/@vcmap-show-case/icons-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/style-input-example",
+      "entry": "plugins/@vcmap-show-case/style-input-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/vector-properties-example",
+      "entry": "plugins/@vcmap-show-case/vector-properties-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/viewpoint-component-example",
+      "entry": "plugins/@vcmap-show-case/viewpoint-component-example/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/wizard-example",
+      "entry": "plugins/@vcmap-show-case/wizard-example/index.js"
+    }
+  ]
+}

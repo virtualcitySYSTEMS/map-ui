@@ -19,7 +19,6 @@
                 <VcsSelect
                   id="selectInput"
                   :items="appCollections"
-                  dense
                   v-model="selected"
                 />
               </v-col>
@@ -71,13 +70,16 @@
   };
 
   function setupCollectionComponentStandalone() {
-    const collectionComponent = new CollectionComponentClass({
-      id: 'standalone',
-      title: 'Collection Component Standalone',
-      collection: new Collection(),
-      renamable: true,
-      selectable: true,
-    });
+    const collectionComponent = new CollectionComponentClass(
+      {
+        id: 'standalone',
+        title: 'Collection Component Standalone',
+        collection: new Collection(),
+        renamable: true,
+        selectable: true,
+      },
+      owner,
+    );
 
     for (let i = 0; i <= 12; i++) {
       collectionComponent.collection.add({

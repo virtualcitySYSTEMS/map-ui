@@ -4,28 +4,26 @@
     <v-list v-for="(project, index) in state.projects" :key="index">
       <v-card
         class="ma-1"
-        :color="project.active ? 'base lighten-3' : undefined"
+        :title="project.name"
+        :subtitle="project.description"
+        :color="project.active ? 'base-lighten-3' : undefined"
         @click="selectProject(project)"
         hover
         outlined
         :loading="loading === project.name"
       >
-        <v-list-item>
-          <v-list-item-title class="font-weight-bold">
-            {{ project.name }}
-          </v-list-item-title>
-          <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
+        <template #actions>
           <ModulesListComponent
             :modules="project.modules"
             @toggle-module="toggleModule"
             :toggleable="false"
           />
-          <v-list-item-action>
-            <v-avatar color="success" size="30" v-if="project.active">
-              <v-icon>mdi-check</v-icon>
-            </v-avatar>
-          </v-list-item-action>
-        </v-list-item>
+        </template>
+        <template #append>
+          <v-avatar color="success" size="30" v-if="project.active">
+            <v-icon>mdi-check</v-icon>
+          </v-avatar>
+        </template>
       </v-card>
     </v-list>
     <v-divider />
@@ -37,16 +35,12 @@
   </v-container>
 </template>
 <script>
-  import { inject } from 'vue';
+  import { inject, ref } from 'vue';
   import {
     VList,
     VContainer,
     VCard,
     VIcon,
-    VListItem,
-    VListItemTitle,
-    VListItemSubtitle,
-    VListItemAction,
     VAvatar,
     VDivider,
   } from 'vuetify/components';
@@ -60,20 +54,18 @@
       VContainer,
       VCard,
       VIcon,
-      VListItem,
-      VListItemTitle,
-      VListItemSubtitle,
-      VListItemAction,
       VAvatar,
       VDivider,
     },
     setup() {
       const app = inject('vcsApp');
       const plugin = app.plugins.getByKey('@vcmap-show-case/project-selector');
+      const loading = ref(undefined);
+
       async function selectProject(project) {
-        this.loading = project.name;
+        loading.value = project.name;
         await plugin.selectProject(app, project);
-        this.loading = undefined;
+        loading.value = undefined;
       }
 
       async function toggleModule(module) {

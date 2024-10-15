@@ -1,7 +1,7 @@
 {
   "name": "development",
   "_id": "dev",
-  "description": "module containing examples, showcases and other stuff",
+  "description": "module containing dev configs and examples",
   "startingViewpointName": "potsdamer_platz",
   "i18n": [
     {
@@ -717,115 +717,16 @@
   ],
   "plugins": [
     {
-      "name": "config-editor",
-      "entry": "plugins/@vcmap-show-case/config-editor/index.js"
-    },
-    {
-      "name": "collection-manager-example",
-      "entry": "plugins/@vcmap-show-case/collection-manager-example/index.js"
-    },
-    {
-      "name": "category-tester",
-      "entry": "plugins/@vcmap-show-case/category-tester/index.js"
-    },
-    {
-      "name": "context-menu-tester",
-      "entry": "plugins/@vcmap-show-case/context-menu-tester/index.js"
-    },
-    {
-      "name": "notifier-tester",
-      "entry": "plugins/@vcmap-show-case/notifier-tester/index.js"
-    },
-    {
-      "name": "window-tester",
-      "entry": "plugins/@vcmap-show-case/window-tester/index.js"
-    },
-    {
-      "name": "panel-tester",
-      "entry": "plugins/@vcmap-show-case/panel-tester/index.js"
-    },
-    {
-      "name": "toolbox-example",
-      "entry": "plugins/@vcmap-show-case/toolbox-example/index.js"
-    },
-    {
-      "name": "buttons-example",
-      "entry": "plugins/@vcmap-show-case/buttons-example/index.js"
-    },
-    {
-      "name": "form-inputs-example",
-      "entry": "plugins/@vcmap-show-case/form-inputs-example/index.js",
-      "selectOptions": ["A", "B", "C", "D"],
-      "initialTextInput": "myInitialText"
-    },
-    {
-      "name": "icons-example",
-      "entry": "plugins/@vcmap-show-case/icons-example/index.js"
-    },
-    {
-      "name": "list-example",
-      "entry": "plugins/@vcmap-show-case/list-example/index.js"
-    },
-    {
-      "name": "textfields-example",
-      "entry": "plugins/@vcmap-show-case/textfields-example/index.js"
-    },
-    {
-      "name": "table-example",
-      "entry": "plugins/@vcmap-show-case/table-example/index.js"
-    },
-    {
-      "name": "wizard-example",
-      "entry": "plugins/@vcmap-show-case/wizard-example/index.js"
-    },
-    {
-      "name": "style-input-example",
-      "entry": "plugins/@vcmap-show-case/style-input-example/index.js"
-    },
-    {
-      "name": "extent-example",
-      "entry": "plugins/@vcmap-show-case/extent-example/index.js"
-    },
-    {
-      "name": "viewpoint-component-example",
-      "entry": "plugins/@vcmap-show-case/viewpoint-component-example/index.js"
-    },
-    {
-      "name": "flight-component-example",
-      "entry": "plugins/@vcmap-show-case/flight-component-example/index.js"
-    },
-    {
-      "name": "vector-properties-example",
-      "entry": "plugins/@vcmap-show-case/vector-properties-example/index.js"
-    },
-    {
-      "name": "switch-map-callback-example",
-      "entry": "plugins/@vcmap-show-case/switch-map-callback-example/index.js"
-    },
-    {
-      "name": "@vcmap-show-case/plugin-editors",
-      "entry": "plugins/@vcmap-show-case/plugin-editors/index.js"
-    },
-    {
-      "name": "@vcmap-show-case/hello-world",
-      "entry": "plugins/@vcmap-show-case/hello-world/index.js",
-      "showComponent": false
-    },
-    {
-      "name": "@vcmap-show-case/search-example",
-      "entry": "plugins/@vcmap-show-case/search-example/index.js"
-    },
-    {
-      "name": "@vcmap-show-case/custom-icons-example",
-      "entry": "plugins/@vcmap-show-case/custom-icons-example/index.js"
-    },
-    {
       "name": "@vcmap/print",
       "entry": "plugins/@vcmap/print/index.js"
     },
     {
       "name": "@vcmap/search-nominatim",
       "entry": "plugins/@vcmap/search-nominatim/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/plugin-editors",
+      "entry": "plugins/@vcmap-show-case/plugin-editors/index.js"
     }
   ],
   "uiConfig": [

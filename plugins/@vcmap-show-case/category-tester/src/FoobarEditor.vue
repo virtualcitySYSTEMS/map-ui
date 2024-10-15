@@ -12,7 +12,7 @@
           </VcsLabel>
         </v-col>
         <v-col>
-          <VcsTextField id="name" clearable dense v-model="localConfig.name" />
+          <VcsTextField id="name" clearable v-model="localConfig.name" />
         </v-col>
       </v-row>
       <v-row no-gutters v-if="!multi">
@@ -22,12 +22,7 @@
           </VcsLabel>
         </v-col>
         <v-col>
-          <VcsTextField
-            id="title"
-            clearable
-            dense
-            v-model="localConfig.title"
-          />
+          <VcsTextField id="title" clearable v-model="localConfig.title" />
         </v-col>
       </v-row>
       <v-row no-gutters>
@@ -40,7 +35,6 @@
           <VcsTextField
             id="random"
             clearable
-            dense
             type="number"
             v-model.number="localConfig.random"
             :placeholder="$t('categoryTester.fooEditor.ambiguous')"

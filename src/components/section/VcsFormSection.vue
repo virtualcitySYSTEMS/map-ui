@@ -9,7 +9,6 @@
           <div class="d-flex align-center" :class="{ 'px-2': !expandable }">
             <v-btn
               :ripple="false"
-              dense
               variant="text"
               icon
               :size="fontSize * 2"

@@ -39,7 +39,6 @@
       <v-toolbar
         class="vcs-toolbox-2 mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
         :height="toolboxHeight"
-        dense
       >
         <v-toolbar-items class="w-100">
           <div class="d-flex align-center justify-space-between gc-1 w-100">

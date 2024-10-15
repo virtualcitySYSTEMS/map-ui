@@ -9,7 +9,7 @@
       <v-container class="py-0 px-1">
         <v-row no-gutters v-if="!hideName">
           <v-col cols="6">
-            <VcsLabel :html-for="`${cid}-name`" dense required>
+            <VcsLabel :html-for="`${cid}-name`" required>
               {{ $t('components.viewpoint.name') }}
             </VcsLabel>
           </v-col>
@@ -24,7 +24,7 @@
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
           <v-col cols="6">
-            <VcsLabel :html-for="`${cid}-title`" dense>
+            <VcsLabel :html-for="`${cid}-title`">
               {{ $t('components.viewpoint.title') }}
             </VcsLabel>
           </v-col>
@@ -69,7 +69,7 @@
         <template v-if="!isCesiumMap">
           <v-row no-gutters>
             <v-col cols="6">
-              <VcsLabel html-for="groundPosition" dense>
+              <VcsLabel html-for="groundPosition">
                 {{ $t('components.viewpoint.groundPosition') }}
               </VcsLabel>
             </v-col>
@@ -85,7 +85,7 @@
         <template v-else>
           <v-row no-gutters>
             <v-col cols="6">
-              <VcsLabel html-for="cameraPosition" dense>
+              <VcsLabel html-for="cameraPosition">
                 {{ $t('components.viewpoint.cameraPosition') }}
               </VcsLabel>
             </v-col>
@@ -100,7 +100,7 @@
         <template v-if="!isCesiumMap">
           <v-row no-gutters>
             <v-col>
-              <VcsLabel :html-for="`${cid}-distance`" dense>
+              <VcsLabel :html-for="`${cid}-distance`">
                 {{ $t('components.viewpoint.distance') }}
               </VcsLabel>
             </v-col>
@@ -127,7 +127,7 @@
           <div v-for="key in ['heading', 'pitch', 'roll']" :key="key">
             <v-row no-gutters>
               <v-col cols="9">
-                <VcsLabel :html-for="`${cid}-${key}`" dense>
+                <VcsLabel :html-for="`${cid}-${key}`">
                   {{ $st(`components.viewpoint.${key}`) }}
                 </VcsLabel>
               </v-col>

@@ -168,8 +168,4 @@
   };
 </script>
 
-<style scoped>
-  .v-list-item--dense {
-    height: 32px;
-  }
-</style>
+<style scoped></style>

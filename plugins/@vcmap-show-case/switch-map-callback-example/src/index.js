@@ -1,4 +1,4 @@
-import { version, name } from '../package.json';
+import { version, mapVersion, name } from '../package.json';
 import SwitchMapCallback from './switchMapCallback.js';
 
 /**
@@ -12,6 +12,9 @@ export default function switchMapCallbackExample() {
     },
     get version() {
       return version;
+    },
+    get mapVersion() {
+      return mapVersion;
     },
     /**
      * @param {import("@vcmap/ui").VcsUiApp} vcsUiApp

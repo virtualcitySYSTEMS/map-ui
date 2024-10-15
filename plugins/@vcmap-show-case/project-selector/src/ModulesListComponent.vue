@@ -1,47 +1,38 @@
 <template>
   <v-container class="pa-0">
-    <v-list color="rgba(0,0,0,0)">
-      <v-chip
-        v-for="(module, index) in modules"
-        :key="index"
-        class="mx-1"
-        :color="module.active ? 'primary' : undefined"
-        :disabled="!toggleable"
-        @click="toggle(module)"
+    <v-chip
+      v-for="(module, index) in modules"
+      :key="index"
+      class="ma-1"
+      :color="module.active ? 'primary' : undefined"
+      :disabled="!toggleable"
+      @click="toggle(module)"
+    >
+      {{ module.name || module.configUrl }}
+      <v-icon
+        v-if="module.description && toggleable"
+        right
+        v-bind="{ ...$attrs, ...$props }"
       >
-        {{ module.name || module.configUrl }}
-        <v-icon
-          v-if="module.description && toggleable"
-          right
-          v-bind="{ ...$attrs, ...$props }"
-        >
-          mdi-help-circle
-        </v-icon>
-        <v-tooltip
-          v-if="module.description && toggleable"
-          :text="module.description"
-          activator="parent"
-        />
-      </v-chip>
-    </v-list>
+        mdi-help-circle
+      </v-icon>
+      <v-tooltip
+        v-if="module.description && toggleable"
+        :text="module.description"
+        activator="parent"
+      />
+    </v-chip>
   </v-container>
 </template>
 
 <script>
-  import {
-    VChip,
-    VContainer,
-    VIcon,
-    VList,
-    VTooltip,
-  } from 'vuetify/components';
+  import { VChip, VContainer, VIcon, VTooltip } from 'vuetify/components';
 
   export default {
     name: 'ModulesListComponent',
     components: {
       VTooltip,
       VContainer,
-      VList,
       VChip,
       VIcon,
     },

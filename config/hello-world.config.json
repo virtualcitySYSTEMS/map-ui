@@ -1,0 +1,11 @@
+{
+  "name": "hello-world",
+  "_id": "hello-world",
+  "description": "module adding hello-world showcase plugin",
+  "plugins": [
+    {
+      "name": "@vcmap-show-case/hello-world",
+      "entry": "plugins/@vcmap-show-case/hello-world/index.js"
+    }
+  ]
+}

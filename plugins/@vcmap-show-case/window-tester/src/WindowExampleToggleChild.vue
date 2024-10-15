@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <VcsFormButton v-for="num in [1, 2]" :key="num" @click.stop="toggle(num)"
+    <VcsFormButton
+      v-for="num in [1, 2]"
+      :key="num"
+      @click.stop="toggle(num)"
+      class="ma-1"
       >toggle child {{ num }}</VcsFormButton
     >
   </v-container>

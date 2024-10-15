@@ -1,13 +1,20 @@
 import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
-import { name, version } from '../package.json';
+import packageJSON from '../package.json';
 import component from './PluginEditors.vue';
 /**
  * @returns {VcsPlugin}
  */
 export default function pluginEditors() {
   return {
-    name,
-    version,
+    get name() {
+      return packageJSON.name;
+    },
+    get version() {
+      return packageJSON.version;
+    },
+    get mapVersion() {
+      return packageJSON.mapVersion;
+    },
     async initialize(app) {
       const { action, destroy } = createToggleAction(
         {
@@ -15,7 +22,7 @@ export default function pluginEditors() {
           title: 'Overview of Plugins with editors.',
         },
         {
-          id: name,
+          id: packageJSON.name,
           component,
           slot: WindowSlot.DYNAMIC_LEFT,
           state: {
@@ -23,9 +30,13 @@ export default function pluginEditors() {
           },
         },
         app.windowManager,
-        name,
+        packageJSON.name,
       );
-      app.navbarManager.add({ id: name, action }, name, ButtonLocation.TOOL);
+      app.navbarManager.add(
+        { id: packageJSON.name, action },
+        packageJSON.name,
+        ButtonLocation.TOOL,
+      );
       this._destroyAction = destroy;
     },
     getConfigEditors() {

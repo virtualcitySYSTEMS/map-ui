@@ -1,9 +1,9 @@
 # @vcmap-show-case/switch-map-callback-example
 
-This plugin adds a MapSwitcherCallback to the uiApp.
+This plugin demonstrates the concept of `VcsCallback` by adding a MapSwitcherCallback to the uiApp.
 
 This can be used to switch the map i the ContentTree,
-on Click of an Item.
+on Click of a ContentTreeItem.
 
 ```json
 

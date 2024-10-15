@@ -6,7 +6,12 @@
       "name": "@vcmap-show-case/project-selector",
       "entry": "plugins/@vcmap-show-case/project-selector/index.js",
       "selected": "",
-      "selectedModules": ["config/dev.config.json", "config/codes.config.json"],
+      "selectedModules": [
+        "config/dev.config.json",
+        "config/codes.config.json",
+        "config/components-show-case.config.json",
+        "config/concepts-show-case.config.json"
+      ],
       "projects": [
         {
           "name": "VC Map HOSTING",
@@ -22,8 +27,11 @@
       "modules": [
         "config/dev.config.json",
         "config/codes.config.json",
+        "config/components-show-case.config.json",
+        "config/concepts-show-case.config.json",
         "config/graphFeatureInfo.config.json",
         "config/splashscreen.config.json",
+        "config/hello-world.config.json",
         "config/theming.config.json"
       ]
     }
