@@ -28,6 +28,9 @@ const messages = {
     search: {
       placeholder: 'Search elements',
     },
+    helpAction: {
+      title: 'Open Documentation',
+    },
     infoAction: {
       title: 'Further informationen',
     },

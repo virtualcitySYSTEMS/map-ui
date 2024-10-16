@@ -145,7 +145,7 @@
           ? createLinkAction(
               {
                 name: 'info',
-                title: 'content.infoAction.title',
+                title: 'content.helpAction.title',
                 icon: '$vcsHelp',
               },
               props.windowState.infoUrl || props.windowState.infoUrlCallback,

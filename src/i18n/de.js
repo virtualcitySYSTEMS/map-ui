@@ -28,6 +28,9 @@ const messages = {
     search: {
       placeholder: 'Elemente suchen',
     },
+    helpAction: {
+      title: 'Dokumentation öffnen',
+    },
     infoAction: {
       title: 'Weitere Informationen',
     },
