@@ -2,9 +2,10 @@
   <v-sheet
     :style="{
       transform: `rotate(${compassRotation}deg)`,
+      transition: 'transform 0.2s ease',
     }"
     @click="$emit('update:modelValue', 0)"
-    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none transition-transform-200-ease vcs-compass"
+    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none vcs-compass"
     elevation="1"
     :height="height"
     :width="width"
