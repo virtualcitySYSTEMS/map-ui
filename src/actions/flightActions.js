@@ -369,7 +369,7 @@ export async function createFlightVisualizationAction(
   const action = reactive({
     name: 'components.flight.hidePath',
     title: 'components.flight.hidePath',
-    icon: 'mdi-eye-outline',
+    icon: '$vcsEye',
     active,
     async callback() {
       if (!flightVis) {
@@ -381,7 +381,6 @@ export async function createFlightVisualizationAction(
         await flightVis.activate();
       }
       this.active = !this.active;
-      this.icon = this.active ? 'mdi-eye-outline' : 'mdi-eye-off-outline';
     },
   });
 
