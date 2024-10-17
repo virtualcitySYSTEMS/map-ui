@@ -57,6 +57,10 @@
   :deep(.v-selection-control__input::before) {
     background-color: transparent;
   }
+  :deep(.v-icon--size-default) {
+    font-size: calc(var(--v-vcs-font-size) + 3px);
+    padding-right: 2px;
+  }
   // remove details
   :deep(.v-input__details) {
     display: none;
