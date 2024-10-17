@@ -170,7 +170,7 @@ export function getLegendEntries(app) {
    */
   function syncLayerLegendEntries(layer) {
     removeEntryForLayer(layer);
-    if (layer.active) {
+    if (layer.active && layer.isSupported(app.maps.activeMap)) {
       const key = layer.name;
       const title = layer.properties.title || layer.name;
       const legend =
@@ -187,6 +187,10 @@ export function getLegendEntries(app) {
     }
   }
 
+  const destroyMapListener = app.maps.mapActivated.addEventListener(() =>
+    [...app.layers].forEach(syncLayerLegendEntries),
+  );
+
   const destroyChangedListener = app.layers.stateChanged.addEventListener(
     syncLayerLegendEntries,
   );
@@ -196,6 +200,7 @@ export function getLegendEntries(app) {
   [...app.layers].forEach(syncLayerLegendEntries);
 
   const destroy = () => {
+    destroyMapListener();
     destroyChangedListener();
     destroyRemovedListener();
     Object.values(styleChangedListener).forEach((cb) => cb());
