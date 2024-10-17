@@ -321,6 +321,7 @@ class CollectionComponentClass {
         [...this.selection.value].forEach((listItem) => {
           this._collection.remove(this._collection.getByKey(listItem.name));
         });
+        this.selection.value = [];
       },
     });
     this._destroyBulkDelete = destroy;
@@ -513,10 +514,9 @@ class CollectionComponentClass {
     });
     if (index > -1) {
       const listItem = this._listItems.value[index];
-      const selectionIdx = this.selection.value.indexOf(listItem);
-      if (selectionIdx > -1) {
-        this.selection.value.splice(selectionIdx, 1);
-      }
+      this.selection.value = this.selection.value.filter(
+        (i) => i.name !== listItem.name,
+      );
       destroyListItem(this._listItems.value[index]);
       this._listItems.value.splice(index, 1);
     }

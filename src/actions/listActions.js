@@ -9,7 +9,7 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 import { NotificationType } from '../notifier/notifier.js';
 
 /**
- * Creates an action for renaming an item in a VcsList.
+ * Creates an action for deleting an item in a VcsList.
  * @param {import("@vcmap/core").Collection<T>} collection
  * @param {T} item
  * @param {Partial<import("./actionHelper.js").ActionOptions>} [actionOptions={}]

@@ -148,7 +148,7 @@
           items.value.length - selected.value.length < 1;
         clearSelectionAction.disabled = selected.value.length < 1;
       },
-      { deep: true, immediate: true },
+      { deep: false, immediate: true },
     );
 
     return [selectAllAction, clearSelectionAction];
