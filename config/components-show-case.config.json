@@ -30,6 +30,10 @@
       "entry": "plugins/@vcmap-show-case/icons-example/index.js"
     },
     {
+      "name": "@vcmap-show-case/projection-example",
+      "entry": "plugins/@vcmap-show-case/projection-example/index.js"
+    },
+    {
       "name": "@vcmap-show-case/style-input-example",
       "entry": "plugins/@vcmap-show-case/style-input-example/index.js"
     },

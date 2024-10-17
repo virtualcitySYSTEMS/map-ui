@@ -206,6 +206,16 @@ const messages = {
       translate: 'Translate extent',
       toggle: 'Toggle extent',
     },
+    projection: {
+      title: 'Coordinate reference system',
+      epsg: 'Code',
+      proj4: 'Proj4',
+      proj4Tooltip: 'Request EPSG definition from server',
+      alias: 'Alias',
+      epsgIoRequestFailed: 'Requesting epsg failed!',
+      invalidEpsg: 'EPSG code is invalid!',
+      invalidProj4: 'Proj4 string is invalid!',
+    },
     editor: {
       translate: 'Translate features',
       rotate: 'Rotate features',

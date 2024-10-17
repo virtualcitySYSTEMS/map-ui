@@ -281,6 +281,7 @@ export { default as VcsTextSelector } from './src/components/style/VcsTextSelect
 export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.vue';
 export { default as VcsExtent } from './src/components/extent/VcsExtent.vue';
 export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.vue';
+export { default as VcsProjection } from './src/components/projection/VcsProjection.vue';
 export {
   default as VcsVectorStyleComponent,
   VectorStyleMenus,

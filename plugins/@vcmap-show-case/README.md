@@ -14,6 +14,7 @@ This directory contains show-case plugins demonstrating the usage of VC Map UI c
 - [vector-properties-example](./vector-properties-example/README.md)
 - [viewpoint-component-example](./viewpoint-component-example/README.md)
 - [wizard-example](./wizard-example/README.md)
+- [projection-example](./projection-example/README.md)
 
 For base components see [stories](../../story), which can be run with `npm run story:dev`.
 

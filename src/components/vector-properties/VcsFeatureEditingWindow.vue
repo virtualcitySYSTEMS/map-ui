@@ -31,6 +31,7 @@
       :start-open="startOpenVectorProperties"
       :show-reset="showResetVectorProperties"
       :model-value="featureProperties"
+      :altitude-modes="altitudeModes"
       @update:model-value="updateFeatureProperties"
     />
   </v-sheet>
@@ -157,6 +158,10 @@
           'extrudedHeight',
           'classificationType',
         ],
+      },
+      altitudeModes: {
+        type: Array,
+        default: undefined,
       },
       expandableVectorProperties: {
         type: Boolean,
