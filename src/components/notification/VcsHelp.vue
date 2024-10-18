@@ -13,7 +13,6 @@
 <style lang="scss">
   .vcs-help {
     box-sizing: border-box;
-    padding-left: 16px;
     ol,
     ul {
       padding-left: 16px; /* Indentation for list items */
