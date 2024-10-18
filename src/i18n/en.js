@@ -53,6 +53,12 @@ const messages = {
     pitchTooltip: 'Camera pitch: {0}°',
     overviewMapTooltip: 'Show overview map',
     homeButton: 'Go to home view',
+    compass: {
+      alignEast: 'Align east',
+      alignNorth: 'Align north',
+      alignSouth: 'Align south',
+      alignWest: 'Align west',
+    },
     locator: {
       errorAccess: 'Access to your location has been denied',
       errorCurrentPosition:

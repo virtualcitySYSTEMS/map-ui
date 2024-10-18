@@ -53,6 +53,12 @@ const messages = {
     pitchTooltip: 'Kameraneigung: {0}°',
     overviewMapTooltip: 'Übersichtskarte',
     homeButton: 'Zur Startansicht springen',
+    compass: {
+      alignEast: 'Nach Osten ausrichten',
+      alignNorth: 'Nach Norden ausrichten',
+      alignSouth: 'Nach Süden ausrichten',
+      alignWest: 'Nach Westen ausrichten',
+    },
     locator: {
       errorAccess: 'Der Zugriff auf Ihre Position wurde verweigert.',
       errorCurrentPosition:
