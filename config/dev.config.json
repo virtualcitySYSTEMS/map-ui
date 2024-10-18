@@ -749,6 +749,10 @@
     {
       "name": "primaryColor",
       "value": "#FFCE00"
+    },
+    {
+      "name": "contentTreeActiveOnStartup",
+      "value": true
     }
   ]
 }

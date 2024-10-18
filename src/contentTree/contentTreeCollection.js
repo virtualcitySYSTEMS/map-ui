@@ -69,6 +69,12 @@ class ContentTreeCollection extends IndexedCollection {
           this._subTreeListeners.delete(subTree.name);
         }
       });
+      if (this._app.uiConfig.getByKey('contentTreeActiveOnStartup')?.value) {
+        const action = this._app.navbarManager.get('Content')?.action;
+        if (action && !action.active) {
+          action.callback();
+        }
+      }
     };
 
     /**
@@ -181,7 +187,12 @@ class ContentTreeCollection extends IndexedCollection {
       app.windowManager,
       vcsAppSymbol,
     );
-
+    if (
+      id === 'Content' &&
+      this._app.uiConfig.getByKey('contentTreeActiveOnStartup')?.value
+    ) {
+      action.callback();
+    }
     this._app.navbarManager.add(
       { id, action, weight: subTreeViewItem[subTreeItemWeight] },
       vcsAppSymbol,

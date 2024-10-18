@@ -71,6 +71,7 @@ import { reactive, readonly } from 'vue';
  * @property {boolean} [hideSettings] - can be used to hide the settings Window
  * @property {boolean} [hideObliqueFooter] - can be used to hide the oblique name in the footer
  * @property {boolean} [overviewMapActiveOnStartup] - can be used to activate the overviewMap on startup
+ * @property {boolean} [contentTreeActiveOnStartup] - can be used to activate a contentTree on startup
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuraton https://vuetifyjs.com/en/features/theme/
  * @property {boolean} [openLegendOnAdd] - open the legend window, if new layer has a config
