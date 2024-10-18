@@ -7,7 +7,10 @@
   >
     <g id="Group_1654" data-name="Group 1654" transform="translate(24)">
       <path
-        :class="canEmit ? 'cursor-pointer' : ''"
+        :class="{
+          'cursor-pointer': canEmit,
+          'compass-cursor': canEmit,
+        }"
         id="north_arrow"
         data-name="Polygon 14"
         d="M4,0,8,13H0Z"
@@ -16,7 +19,10 @@
         @click="emit($event, 0)"
       />
       <path
-        :class="canEmit ? 'cursor-pointer' : ''"
+        :class="{
+          'cursor-pointer': canEmit,
+          'compass-cursor': canEmit,
+        }"
         id="south_arrow"
         data-name="Polygon 17"
         d="M4,0,8,13H0Z"
@@ -31,7 +37,10 @@
       transform="translate(0 33) rotate(-90)"
     >
       <path
-        :class="canEmit ? 'cursor-pointer' : ''"
+        :class="{
+          'cursor-pointer': canEmit,
+          'compass-cursor': canEmit,
+        }"
         id="west_arrow"
         data-name="Polygon 14"
         d="M4,0,8,13H0Z"
@@ -39,7 +48,10 @@
         @click="emit($event, 270)"
       />
       <path
-        :class="canEmit ? 'cursor-pointer' : ''"
+        :class="{
+          'cursor-pointer': canEmit,
+          'compass-cursor': canEmit,
+        }"
         id="east_arrow"
         data-name="Polygon 17"
         d="M4,0,8,13H0Z"
@@ -175,7 +187,7 @@
     margin: 7.5%;
   }
 
-  svg path:hover {
-    fill: var(--v-primary-lighten1) !important;
+  .compass-cursor:hover {
+    fill: rgb(var(--v-theme-primary-lighten-1)) !important;
   }
 </style>
