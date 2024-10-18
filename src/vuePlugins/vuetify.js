@@ -85,6 +85,7 @@ export function createVcsThemes(options, primaryColor) {
         ...options?.light?.colors,
       },
       variables: {
+        'activated-opacity': 0.04,
         'hover-opacity': 0.16,
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
@@ -114,6 +115,7 @@ export function createVcsThemes(options, primaryColor) {
         ...options?.dark?.colors,
       },
       variables: {
+        'active-opacity': 0.04,
         'hover-opacity': 0.16,
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,

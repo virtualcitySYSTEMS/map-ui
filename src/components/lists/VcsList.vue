@@ -585,7 +585,7 @@
       }
       &:hover {
         .v-list-item__overlay {
-          background-color: rgb(var(--v-theme-base));
+          background-color: rgb(var(--v-theme-on-surface));
         }
       }
       .vcs-list-title__selected {
@@ -606,7 +606,7 @@
 
       &:hover {
         .v-list-item__overlay {
-          background-color: transparent;
+          background-color: rgb(var(--v-theme-on-surface));
         }
       }
     }

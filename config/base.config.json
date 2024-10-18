@@ -676,7 +676,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "mesh_surface",
-      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2020/",
+      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2023/",
       "activeOnStartup": false,
       "allowPicking": false,
       "screenSpaceError": 16,

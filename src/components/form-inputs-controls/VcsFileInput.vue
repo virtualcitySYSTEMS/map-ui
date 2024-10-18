@@ -38,7 +38,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './vcsTextField.scss';
+  @use './vcsTextField.scss';
 
   // set text overflow for file input
   :deep(.v-field__input) {

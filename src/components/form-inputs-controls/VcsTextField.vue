@@ -55,7 +55,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './vcsTextField.scss';
+  @use './vcsTextField.scss';
 </style>
 <script>
   import { computed, ref } from 'vue';

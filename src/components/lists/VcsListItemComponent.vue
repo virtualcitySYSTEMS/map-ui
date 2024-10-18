@@ -207,7 +207,7 @@
       width: 8px;
     }
     :deep(.v-list-item__overlay) {
-      background-color: transparent;
+      background-color: rgb(var(--v-theme-on-surface));
     }
     :deep(.vcs-list-item__rename) {
       color: rgb(var(--v-theme-on-surface));

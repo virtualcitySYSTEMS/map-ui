@@ -17,6 +17,13 @@ const configMain = defineConfig({
   define: {
     'process.env.NODE_ENV': '"development"',
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler', // or "modern", "legacy"
+      },
+    },
+  },
   plugins: [
     vue3({
       template: { transformAssetUrls },

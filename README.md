@@ -160,6 +160,8 @@ app can be opened with http://localhost:8080.
 
 Further Information see [GET_STARTED](documentation/GET_STARTED.md) and [Plugin-cli](https://github.com/virtualcitySYSTEMS/map-plugin-cli).
 
+> [API Story Docs](https://lib.virtualcitymap.de/ui/6.0/story/)
+
 ## Included Dataset
 
 The included datasets for Berlin and Osnabrück in the app configurations in the project can only be used for Development.

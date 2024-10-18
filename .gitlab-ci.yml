@@ -12,6 +12,7 @@ stages:
   - deploy
   - deployCluster
   - publish
+  - docs
 
 .template: &job_definition
   only:
@@ -191,3 +192,17 @@ publish:
     - tar -tf vcmap-ui-*.tgz | sed s/package/./ | zip -@ vcmap-ui.zip
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file vcmap-ui.zip "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-ui-${VERSION}.zip"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/vcmap-bundle.tar.gz "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-bundle-${VERSION}.tar.gz"'
+
+deployDocs:
+  <<: *after_build_definition
+  stage: docs
+  only:
+    variables:
+      - $PUBLISH
+    refs:
+      - /^(main|release-v.*)$/
+  script:
+    - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
+    - VERSION=$(node -pe "const version = require('./package.json').version; /\d*\.\d*/.exec(version)[0]")
+    - echo "Uploading documentation to /lib/ui/${VERSION}/story"
+    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/lib/ui/ hostingsftp.virtualcitypublisher.de --cores 4 -s ./.histoire/dist -d "${VERSION}/story/"
