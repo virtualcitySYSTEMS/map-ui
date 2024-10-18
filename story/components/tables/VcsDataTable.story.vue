@@ -37,37 +37,76 @@
     return items;
   }
 
+  const totalItems = ref(-1);
+  const totalPages = ref(-1);
   const items = shallowRef(createItems(20));
+  const serverItems = shallowRef(createItems(20));
 
-  async function updateItems() {
-    items.value = [];
+  async function requestServerItems({ page, itemsPerPage, sortBy, search }) {
     loading.value = true;
     setTimeout(() => {
-      items.value = createItems(20);
+      const newItems = createItems(20).filter(({ name }) =>
+        name.includes(search),
+      );
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+
+      if (sortBy.length) {
+        const sortKey = sortBy[0].key;
+        const sortOrder = sortBy[0].order;
+        newItems.sort((a, b) => {
+          const aValue = a[sortKey];
+          const bValue = b[sortKey];
+          return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+        });
+      }
+
+      serverItems.value = newItems.slice(start, end);
+      totalItems.value = newItems.length;
+      totalPages.value = Math.ceil(totalItems.value / itemsPerPage);
       loading.value = false;
-    }, 2000);
+    }, 500);
   }
 </script>
 
 <template>
   <Story title="VcsDataTable" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsDataTable
-      :items="items"
-      :headers="headers"
-      :show-select="showSelect"
-      :loading="loading"
-      v-model="selected"
-      v-bind="{ ...state.bind }"
-    />
-    <template #controls>
-      <GlobalControls v-model="state">
-        <HstCheckbox title="Selectable" v-model="showSelect" />
-        <HstCheckbox title="Loading" v-model="loading" />
-        <HstButton class="ma-2" @click="updateItems"
-          >Fetch new dummy items</HstButton
-        >
-      </GlobalControls>
-    </template>
+    <Variant title="VDataTable">
+      <VcsDataTable
+        :items="items"
+        :headers="headers"
+        :show-select="showSelect"
+        :loading="loading"
+        v-model="selected"
+        v-bind="{ ...state.bind }"
+      />
+      <template #controls>
+        <GlobalControls v-model="state">
+          <HstCheckbox title="Selectable" v-model="showSelect" />
+          <HstCheckbox title="Loading" v-model="loading" />
+        </GlobalControls>
+      </template>
+    </Variant>
+    <Variant title="VDataTableServer">
+      <VcsDataTable
+        base-component="VDataTableServer"
+        :items="serverItems"
+        :headers="headers"
+        :show-select="showSelect"
+        :server-items-length="totalItems"
+        :server-pages-length="totalPages"
+        :loading="loading"
+        v-model="selected"
+        @update:items="requestServerItems"
+        v-bind="{ ...state.bind }"
+      />
+      <template #controls>
+        <GlobalControls v-model="state">
+          <HstCheckbox title="Selectable" v-model="showSelect" />
+          <HstCheckbox title="Loading" v-model="loading" />
+        </GlobalControls>
+      </template>
+    </Variant>
   </Story>
 </template>
 

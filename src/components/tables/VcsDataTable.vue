@@ -16,10 +16,14 @@
         <slot name="append" v-bind="scope" />
       </template>
     </VcsTreeviewSearchbar>
-    <v-data-table
+    <component
+      :is="baseComponent"
       :headers="translatedHeaders"
       :items="internalItems"
       :items-per-page="itemsPerPageRef"
+      :items-length="
+        baseComponent === 'VDataTableServer' ? serverItemsLength : null
+      "
       :search="search"
       :custom-filter="handleFilter"
       :no-data-text="
@@ -117,13 +121,14 @@
           </tr>
         </tfoot>
       </template>
-    </v-data-table>
+    </component>
   </div>
 </template>
 <script>
   import { getCurrentInstance, ref, computed, watch } from 'vue';
   import {
     VDataTable,
+    VDataTableServer,
     VList,
     VListItem,
     VListItemTitle,
@@ -173,6 +178,7 @@
       VcsButton,
       VcsTreeviewSearchbar,
       VDataTable,
+      VDataTableServer,
       VMenu,
       VIcon,
       VList,
@@ -180,6 +186,11 @@
       VListItemTitle,
     },
     props: {
+      baseComponent: {
+        type: String,
+        default: 'VDataTable',
+        validator: (type) => ['VDataTable', 'VDataTableServer'].includes(type),
+      },
       headers: {
         type: Array,
         default: () => [],
