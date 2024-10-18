@@ -2,15 +2,9 @@
   import { ref, toRaw } from 'vue';
   import { mercatorProjection } from '@vcmap/core';
   import { VContainer, VCol, VRow, VSwitch } from 'vuetify/components';
-  import {
-    VcsProjection,
-    VcsProjectionModal,
-    VcsFormButton,
-    VcsLabel,
-  } from '@vcmap/ui';
+  import { VcsProjection, VcsFormButton, VcsLabel } from '@vcmap/ui';
 
   const projectionOptions = ref(mercatorProjection.toJSON());
-  const open = ref(false);
   const required = ref(false);
   const hideRequestButton = ref(false);
   const hideAlias = ref(false);
@@ -68,15 +62,7 @@
       :hide-alias="hideAlias"
       class="pa-1"
     ></vcs-projection>
-    <!-- eslint-disable vue/no-v-model-argument -->
-    <vcs-projection-modal
-      v-model="projectionOptions"
-      v-model:opened="open"
-    ></vcs-projection-modal>
     <div class="d-flex gc-2 justify-end mr-2">
-      <vcs-form-button @click="open = !open">{{
-        $t('projectionExample.openDialog')
-      }}</vcs-form-button>
       <vcs-form-button @click="console.log(toRaw(projectionOptions))">{{
         $t('projectionExample.log')
       }}</vcs-form-button>

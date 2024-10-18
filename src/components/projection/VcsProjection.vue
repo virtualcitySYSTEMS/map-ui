@@ -243,7 +243,7 @@
   // manual conditional validation
   const errorMessages = ref();
   watch([epsg, proj4], () => {
-    const e = validateProj4(localValue.value.proj4);
+    const e = validateProj4(localValue.value?.proj4);
     errorMessages.value = e === true ? undefined : e;
   });
 </script>
