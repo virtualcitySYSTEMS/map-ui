@@ -9,7 +9,6 @@
     }"
     fluid
     absolute
-    style="background: #1b5e20"
   >
     <template v-if="xs">
       <img
