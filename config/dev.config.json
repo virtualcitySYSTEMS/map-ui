@@ -731,6 +731,10 @@
   ],
   "uiConfig": [
     {
+      "name": "hideObliqueFooter",
+      "value": true
+    },
+    {
       "name": "appTitle",
       "value": "DEV"
     },

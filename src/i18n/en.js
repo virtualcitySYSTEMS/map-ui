@@ -355,6 +355,14 @@ const messages = {
       title: 'Position display',
       projection: 'Select projection',
     },
+    oblique: {
+      template: 'Oblique image: {{ name }} - {{ viewDirection }}',
+      north: 'north',
+      east: 'east',
+      south: 'south',
+      west: 'west',
+      nadir: 'nadir',
+    },
   },
   notification: {
     error: 'Error',

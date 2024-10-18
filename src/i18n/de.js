@@ -355,6 +355,14 @@ const messages = {
       title: 'Positionsanzeige',
       projection: 'Projektionsauswahl',
     },
+    oblique: {
+      template: 'Schrägluftbild: {{ name }} - {{ viewDirection }}',
+      north: 'Nord',
+      east: 'Ost',
+      south: 'Süd',
+      west: 'West',
+      nadir: 'Nadir',
+    },
   },
   notification: {
     error: 'Fehler',

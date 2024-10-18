@@ -23,6 +23,10 @@
       }
     },
     {
+      "name": "obliqueFooterTemplate",
+      "value": "MyObliqueFooter.content"
+    },
+    {
       "name": "customScreen",
       "value": {
         "content": "MyCustomScreen.content",
@@ -95,6 +99,9 @@
           "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\nProjekt: \n--------\n\nErste Schritte\n\nZusammenfassung:\n--------\nDies ist ein **Beispieltext**, der Ihnen den Einstieg erleichtern soll. **Marked** wird verwendet, um Ihren Text _von Markdown nach HTML_ zu konvertieren. Um mehr über die __*korrekte Syntax*__ zu erfahren, besuchen Sie bitte diesen [Link](https://marked.js.org/demo/) für eine Demo.  \n \nInhalt:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Punkt 1: einer Liste mit Aufzählungspunkten.\n- Punkt 2: einer Liste mit Aufzählungspunkten.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
           "name": "Meine benutzerdefinierte Anzeige",
           "title": "Meine benutzerdefinierte Anzeige"
+        },
+        "MyObliqueFooter": {
+          "content": "Mein Bildtitel: {{ name }} {{ viewDirection }}"
         }
       },
       "en": {
@@ -122,6 +129,9 @@
           "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n\n\nProject: \n--------\n\nGetting started\n\nSummary:\n--------\nThis is a sample text to help you get started. **Marked** is used to convert your text _from Markdown to HTML_. To learn more about the __*correct syntax*__, please visit this [link](https://marked.js.org/demo/) for a demo.\n \nContent:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Bullet Point 1: Lorem ipsum dolor sit amet.\n- Bullet Point 2: Lorem ipsum dolor sit amet.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
           "name": "My Custom Screen",
           "title": "My Custom Screen"
+        },
+        "MyObliqueFooter": {
+          "content": "My Oblique Title: {{ name }} {{ viewDirection }}"
         }
       }
     }

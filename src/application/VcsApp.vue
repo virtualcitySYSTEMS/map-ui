@@ -15,6 +15,7 @@
       class="d-flex gc-1 pa-0"
     >
       <VcsPositionDisplay />
+      <VcsObliqueFooter />
       <VcsTextPageFooter
         v-if="imprint"
         :text-page="imprint"
@@ -66,6 +67,7 @@
   import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
+  import VcsObliqueFooter from './VcsObliqueFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
   import VcsSplashScreen from './VcsSplashScreen.vue';
   import VcsTextPage from './VcsTextPage.vue';
@@ -723,6 +725,7 @@
       VcsPositionDisplay,
       VcsAttributionsFooter,
       VcsTextPageFooter,
+      VcsObliqueFooter,
       VcsSplashScreen,
       VcsNavbar,
       VContainer,

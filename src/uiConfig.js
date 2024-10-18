@@ -50,6 +50,7 @@ import { reactive, readonly } from 'vue';
  * @property {string} [primaryColor] - an optional primary color to use in all themes, can be overwritten by `vuetifyTheme`
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
  * @property {string} [positionDisplayEventType] - mouse event, when position display is updated. Either 'click' (default) or 'move'.
+ * @property {string} [obliqueFooterTemplate] - A template for rendering information of the current image in oblique mode, e.g. '{{ name }}' printing the image's name
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
  * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer. Default title is 'footer.imprint.title'.
  * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer. Default title is 'footer.dataProtection.title'.
@@ -68,6 +69,7 @@ import { reactive, readonly } from 'vue';
  * @property {boolean} [hideContentTree] - can be used to hide the contentTree
  * @property {boolean} [hideLegend] - can be used to hide the legend
  * @property {boolean} [hideSettings] - can be used to hide the settings Window
+ * @property {boolean} [hideObliqueFooter] - can be used to hide the oblique name in the footer
  * @property {boolean} [overviewMapActiveOnStartup] - can be used to activate the overviewMap on startup
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuraton https://vuetifyjs.com/en/features/theme/
