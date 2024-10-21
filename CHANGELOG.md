@@ -1,3 +1,9 @@
+# 6.0.1
+
+### Fixes
+
+- fixed a Problem with Plugin dependencies
+
 # 6.0.0
 
 ### Updated Peer dependencies

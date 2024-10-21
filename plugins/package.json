@@ -20,11 +20,11 @@
     "@vcmap/cesium-filters": "https://github.com/virtualcitySYSTEMS/map-cesium-filters.git#main",
     "@vcmap/search-nominatim": "https://github.com/virtualcitySYSTEMS/map-search-nominatim.git#main",
     "@vcmap/create-link": "https://github.com/virtualcitySYSTEMS/map-create-link.git#main",
-    "@vcmap/module-selector": "^2.0.0",
-    "@vcmap/dynamic-layer": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/dynamic-layer.git#feature-idra-catalogue",
-    "@vcmap/line-of-sight": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/line-of-sight.git#feature-v1"
+    "@vcmap/module-selector": "^2.0.0"
   },
   "optionalDependencies": {
+    "@vcmap/dynamic-layer": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/dynamic-layer.git#feature-idra-catalogue",
+    "@vcmap/line-of-sight": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/line-of-sight.git#feature-v1",
     "@vcmap/planning": "^6.0.0-rc.2",
     "@vcmap/solar-revenue": "^2.0.0-rc.1"
   }
