@@ -15,6 +15,7 @@
       >{{ $st(textPage.title) }}</span
     >
     <v-tooltip
+      v-if="$st(textPage.tooltip)"
       :text="$st(textPage.tooltip)"
       activator="parent"
       location="top"

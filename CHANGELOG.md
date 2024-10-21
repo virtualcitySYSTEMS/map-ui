@@ -1,3 +1,122 @@
+# 6.0.0
+
+### Updated Peer dependencies
+
+- Updated @vcmap/core to 6.0.0
+  - Updates Cesium to 1.121
+  - Updated Openlayers to 10.2.1
+- Updated Vue to 3.4
+- Updated Vuetify to 3.7
+
+### New Plugins
+
+- module-selector a new plugin, which allows configuring and selection Modules.
+- line-of-sight a new plugin to calculate the visibility along a line.
+
+### Breaking Changes
+
+- VcsDatePicker now expects a `Date` input.
+- `vuetify` is no longer global, but attached to the `VcsUiApp`.
+  - `getDefaultPrimaryColor` now requires the app as a parameter.
+  - `getColorByKey` now requires the app as a parameter.
+- `i18n` update
+  - We use the new `Composition API` and not the legacy API.
+  - The `$t` mixin no longer supports any other type of input but `string`. If you have potentially undefined input (user input or configurations such as `item.tooltip`) you can use the `safe translate`mixin `$st` which will return `''` on null or undefined.
+- `ContentTreeCollection.getTreeOpenStateRef` now returns `string[]` instead of `Ref<string[]>` and was renamed to `getTreeOpenState`
+- Changed the `Notification.open` type, it is now a boolean. To get the ref, there is a readonly `openRef` property.
+- access to color scss variables changed, `var(--v-primary-base)` becomes `rgb(var(--v-theme-primary))` see:https://vuetifyjs.com/en/getting-started/upgrade-guide/#theme
+- `VcsList` component now only accepts reactive items via the API (using v-model still works the same).
+  - `createListItemRenameAction` and `@rename-item` event has been removed.
+  - Renaming is now handled directly by the new `VcsListItem` component. You need to provide a titleChanged function on the item!
+  - The `VcsListItem` interface is extended by a prop `renamable`, which can be a boolean or action options.
+- @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
+- Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default
+- Globally removed `noPadding` property of all Components, which supported `noPadding`, default component padding can be deactivated by adding py-0 to the component
+- `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
+- Legacy style `legend` handling was completely removed. Use the new `properties.legend`.
+- VcsTextField
+  - `showSpinButtons` has been removed, this is now the default behaviour, can be changed with the vuetify `hideSpinButtons` api
+  - added `tooltip` to show a tooltip on hover over the element
+  - progress bar changes: loading="primary" can now be used to get a progress bar in the primary color
+  - input type `file` has been moved to a new component `VcsFileInput.vue`
+- `VcsRadioGrid.vue` is removed. Use `VcsRadio` with properties `inline`, `labelPosition="top"` and `class="d-flex justify-center"` instead.
+- `ImportComponent.vue` has been renamed to `VcsImportComponent.vue` and is now exported as `VcsImportComponent`
+- `FileDrop.vue` has been renamed to `VcsFileDrop.vue` and is now exported as `VcsFileDrop`
+- `setupExtentComponentActions()` has no longer a param `disabled`. Change the disabled state on the returned actions instead.
+- `PluginEditorComponent` is more strictly typed. You must ensure the types of the `setConfig` and `getConfig` props actually fit the interface.
+- Removed `VcsCustomScreen.vue`. Use `VcsTextPage.vue` instead.
+- Changed interface of `VcsTable.vue`. You can provide `keyHeader` and `valueHeader` props instead of a `headers` array.
+- Changed featureInfo classes `IframeFeatureInfoView`, `MarkdownFeatureInfoView` and `MarkdownBalloonFeatureInfoView` to all support same markdown template syntax and style expressions for attribute replacement.
+- Removed `show` property from `VcsHelp.vue`. Use `<VcsHelp v-if="">` instead.
+- Changed API of `AbstractConfigEditor.vue`.
+  - No longer calls callback props `onSubmit`, `onCancel` and `onReset`. Use event handler instead.
+  - Removed prop `setConfigOnCancel`. Explicitly add a `@cancel` event listener, if required.
+- The `title` property for plugin editors has moved from `PluginConfigEditorComponent` to the `PluginConfigEditor`.
+- Plugins which provide editors can no longer return promises from `getConfig` or `setConfig`.
+- `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
+- Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
+- Changed the type of `WindowComponentOptions.state`. The state now has its own type and accepts `Ref` or `ComputedRef` for certain properties.
+
+### Changes
+
+- New API story description for VCS Components, see: [API story docs](https://lib.virtualcitymap.de/ui/6.0/story/) or `npm run story:dev`
+- New UI/UX guidelines (WIP) see: [Guidelines](./documentation/guidelines/VCMap_UI.md)
+- New Query parameter documentation see: [Query parameters](./documentation/QUERY_PARAMETER.md)
+- The current oblique image name is shown in the footer.
+- LayerGroupContentTreeItem will now also support a styleSelector which will activate the selected style on all Layers in the Group.
+- Conditional Markdown Templates. Allows for Conditions and Loops over the Feature Attributes. Can be used to create more complex balloons and Featureinfo windows.
+  - Removed `replaceAttributes` and renamed to `renderTemplate`.
+  - Top level attributes with spaces in their names shall no longer be expanded with
+    `["spaced attributes"]`, but `"spaced attribute"`. Nested spaced attributes remain as `nested["spaced attribute"]`
+  - Templates now support ol style expressions which evaluate to a string in normal attribute expansion (`{{ attribute }}` can now
+    also be written as `{{ ["get", "attribute"] }}` or any other style expression).
+  - Templates can now be rendered with expressions. These follow mustache syntax using the special
+    expansions `{{#if $expression}}`, `{{elseif $expression}}`, `{{else}}` and
+    have to be closed with `{{/if}}`. Expression can be attribute keys directly or
+    any ol style expression that will evaluate to a boolean (same as with normal attribute expansion, just not a string).
+  - Templates can now iterate over Arrays and Objects to render a block multiple times using the `{{#each (item) in object}}` syntax.
+- Several changes in the default texts/tooltips.
+- New `VcsProjection` component.
+- panelManager now has a `positionChanged` event, which is raised whenever a panel position changes
+- VcsTextPage now uses i18n to translate the url, can be used to configure a locale aware imprint or data privacy
+- There is a new VcsMarkdown component that should be used for rendering markdown text.
+- There is a new VcsExpansionPanel component that should be used for expandable sections.
+- `VcsLabel`
+  - added tooltip and tooltipPosition
+- `VcsFormattedNumber`
+  - added tooltip and tooltipPosition
+- `VcsSlider`
+  - added tooltip and tooltipPosition
+- Added `useComponentId()` helper to generate unique html ids for inputs with labels.
+- Every VCS Component has now the component name as a class, `<VcsMainMap class="vcs-main-map">`
+
+### New uiConfig Options
+
+- `obliqueFooterTemplate` can be used to change the template which is used to render the current image name in the footer
+- `hideHeader` can be used to completely hide the Header
+- `hideSearch` can be used to hide the default search button, can be used to implement a custom search ui.
+- `hideMapButtons` can be used to hide the default map buttons.
+- `hideToolbox` can be used to hide the default toolbox.
+- `hideMapNavigation` can be used to hide the whole map navigation.
+- `hideMyWorkspace` can be used to not show the myWorkspace section.
+- `hideContentTree` can be used to hide the default ContentTree, can be used to implement a custom contentTree ui.
+- `hideLegend` can be used to hide the Legend.
+- `hideSettings` will hide the settings button in the burger menu.
+- `hideObliqueFooter` can be used to now show the current oblique image name in the footer
+- `overviewMapActiveOnStartup` will open the overviewMap on startup
+- `contentTreeActiveOnStartup` will open the contentTree on startup
+- `openLegendOnAdd` will automatically open the legend window if a new legend entry appears
+- `theming`: it is now possible to change default vuetify Theming in the config, for example the default fontsize, or fontfamiliy can be changed.
+  - example configuration see: [config](https://github.com/virtualcitySYSTEMS/map-ui/blob/main/config/theming.config.json)
+  - default settings see: [default settings](https://github.com/virtualcitySYSTEMS/map-ui/blob/main/src/vuePlugins/vuetify.js#L64)
+
+### Bugfixes
+
+- Fixed a problem that windows were not focused after opening.
+- Fixed a problem, where layers could not be shown in the overviewmap, if mapNames was used.
+- Fixed several problems with the flightplayer, where different instances and ui components where not correctly synchronized.
+- Fixed a problem where attributions where shown, but the source was not visible.
+
 # 5.3.6
 
 - Added export `LegendTypes` and `StyleRowType` enums and typedefs from `legendHelper.js`

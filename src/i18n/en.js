@@ -11,9 +11,9 @@ const messages = {
   },
   navbar: {
     maps: {
-      CesiumMap: 'Enable 3D map',
-      OpenlayersMap: 'Enable 2D map',
-      ObliqueMap: 'Enable oblique imagery map',
+      CesiumMap: '3D map',
+      OpenlayersMap: '2D map',
+      ObliqueMap: 'Oblique imagery map',
     },
     menu: {
       tooltip: 'Menu',
@@ -29,7 +29,7 @@ const messages = {
       placeholder: 'Search elements',
     },
     helpAction: {
-      title: 'Open Documentation',
+      title: 'Open help',
     },
     infoAction: {
       title: 'Further informationen',
@@ -51,7 +51,7 @@ const messages = {
     zoomInTooltip: 'Zoom in',
     zoomOutTooltip: 'Zoom out',
     pitchTooltip: 'Camera pitch: {0}°',
-    overviewMapTooltip: 'Show overview map',
+    overviewMapTooltip: 'Overview map',
     homeButton: 'Go to home view',
     compass: {
       alignEast: 'Align east',
@@ -98,7 +98,7 @@ const messages = {
       nothingAdded: 'No features could be imported.',
     },
     vcsFormSection: {
-      help: 'Show help',
+      help: 'Toggle help text',
     },
     vcsTable: {
       key: 'Name',
@@ -293,7 +293,7 @@ const messages = {
   },
   settings: {
     title: 'Settings',
-    tooltip: 'Configure settings',
+    tooltip: '',
     languageSelector: 'Language',
     displayQuality: {
       title: 'Display Settings',
@@ -311,11 +311,11 @@ const messages = {
   },
   help: {
     title: 'Help',
-    tooltip: 'Open external help page in new browser tab',
+    tooltip: '',
   },
   featureInfo: {
-    activateToolTitle: 'Enable Info Tool',
-    deactivateToolTitle: 'Disable Info Tool',
+    activateToolTitle: 'Query information',
+    deactivateToolTitle: 'Query information',
   },
   legend: {
     title: 'Legend',
@@ -333,6 +333,7 @@ const messages = {
     zoomToAll: 'Zoom to all',
   },
   toolbox: {
+    title: 'Toolbox',
     flight: 'flight',
     miscellaneous: 'miscellaneous',
   },
@@ -340,20 +341,20 @@ const messages = {
     title: 'Footer',
     attributions: {
       title: 'Attributions',
-      tooltip: 'Open attributions window',
+      tooltip: 'Show attributions',
       empty: 'Currently there are no attribution entries available.',
     },
     imprint: {
       title: 'Imprint',
-      tooltip: 'Open imprint window',
+      tooltip: '',
     },
     dataProtection: {
       title: 'Data Protection',
-      tooltip: 'Open data protection window',
+      tooltip: '',
     },
     positionDisplay: {
-      title: 'Position display',
-      projection: 'Select projection',
+      title: 'Query map coordinates',
+      projection: 'Select coordinate reference system',
     },
     oblique: {
       template: 'Oblique image: {{ name }} - {{ viewDirection }}',

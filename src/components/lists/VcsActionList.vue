@@ -13,7 +13,7 @@
       </template>
       <v-list-item-title>{{ $st(action.name) }}</v-list-item-title>
       <v-tooltip
-        v-if="action.title"
+        v-if="action.title && $st(action.title)"
         activator="parent"
         :text="$st(action.title)"
         :location="tooltipPosition"

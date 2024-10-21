@@ -154,7 +154,7 @@
       const toolboxToggleAction = {
         name: 'toolboxToggleAction',
         icon: '$vcsTools',
-        title: 'Toolbox',
+        title: 'toolbox.title',
         active: true,
         callback() {
           this.active = !this.active;

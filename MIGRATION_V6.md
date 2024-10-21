@@ -15,7 +15,7 @@
   - Renaming is now handled directly by the new `VcsListItem` component. You need to provide a titleChanged function on the item!
   - The `VcsListItem` interface is extended by a prop `renamable`, which can be a boolean or action options.
 - @vcmap/ui css utility classes are removed (https://github.com/virtualcitySYSTEMS/map-ui/tree/release-v5.2/src/styles/utils), use vuetify utility classes: https://vuetifyjs.com/en/styles/borders/#usage
-- Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default lineheight of 32px
+- Globally removed `dense` property of all Components, which supported `dense` Components will now render in the vcs default
 - Globally removed `noPadding` property of all Components, which supported `noPadding`, default component padding can be deactivated by adding py-0 to the component
 - `VcsTooltip.vue` is removed. Use `v-tooltip` instead.
 - Legacy style `legend` handling was completely removed. Use the new `properties.legend`.

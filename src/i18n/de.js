@@ -11,9 +11,9 @@ const messages = {
   },
   navbar: {
     maps: {
-      CesiumMap: '3D-Karte aktivieren',
-      OpenlayersMap: '2D-Karte aktivieren',
-      ObliqueMap: 'Schrägluftbildkarte aktivieren',
+      CesiumMap: '3D-Karte',
+      OpenlayersMap: '2D-Karte',
+      ObliqueMap: 'Schrägluftbildkarte',
     },
     menu: {
       tooltip: 'Menü',
@@ -29,7 +29,7 @@ const messages = {
       placeholder: 'Elemente suchen',
     },
     helpAction: {
-      title: 'Dokumentation öffnen',
+      title: 'Hilfe öffnen',
     },
     infoAction: {
       title: 'Weitere Informationen',
@@ -98,7 +98,7 @@ const messages = {
       nothingAdded: 'Es konnten keine Feature importiert werden.',
     },
     vcsFormSection: {
-      help: 'Hilfe anzeigen',
+      help: 'Hilfetext ein-/ausblenden',
     },
     vcsTable: {
       key: 'Name',
@@ -293,7 +293,7 @@ const messages = {
   },
   settings: {
     title: 'Einstellungen',
-    tooltip: 'Einstellungen',
+    tooltip: '',
     languageSelector: 'Sprache',
     displayQuality: {
       title: 'Anzeigequalität',
@@ -311,11 +311,11 @@ const messages = {
   },
   help: {
     title: 'Hilfe',
-    tooltip: 'Externe Hilfeseite in neuem Browser Tab öffnen',
+    tooltip: '',
   },
   featureInfo: {
-    activateToolTitle: 'Informationswerkzeug aktivieren',
-    deactivateToolTitle: 'Informationswerkzeug deaktivieren',
+    activateToolTitle: 'Informationen abfragen',
+    deactivateToolTitle: 'Informationen abfragen',
   },
   legend: {
     title: 'Legende',
@@ -333,27 +333,28 @@ const messages = {
     zoomToAll: 'Auf alle Ergebnisse zoomen',
   },
   toolbox: {
+    title: 'Werkzeugkasten',
     flight: 'Flug',
     miscellaneous: 'Verschiedenes',
   },
   footer: {
     title: 'Fußzeile',
     attributions: {
-      title: 'Attributionen',
-      tooltip: 'Öffne Attributionsfenster',
-      empty: 'Aktuell sind keine Attributionseinträge verfügbar.',
+      title: 'Quellenvermerke',
+      tooltip: 'Quellenvermerke anzeigen',
+      empty: 'Aktuell sind keine Quellvermerke verfügbar.',
     },
     imprint: {
       title: 'Impressum',
-      tooltip: 'Öffne Impressumsfenster',
+      tooltip: '',
     },
     dataProtection: {
       title: 'Datenschutz',
-      tooltip: 'Öffne Datenschutzfenster',
+      tooltip: '',
     },
     positionDisplay: {
-      title: 'Positionsanzeige',
-      projection: 'Projektionsauswahl',
+      title: 'Kartenkoordinaten abfragen',
+      projection: 'Koordinatenprojektion auswählen',
     },
     oblique: {
       template: 'Schrägluftbild: {{ name }} - {{ viewDirection }}',
