@@ -1,3 +1,9 @@
+# 6.0.2
+
+### Fixes
+
+- fixed an English localization error for help buttons: 'Further Information'
+
 # 6.0.1
 
 ### Fixes

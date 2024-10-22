@@ -32,7 +32,7 @@ const messages = {
       title: 'Open help',
     },
     infoAction: {
-      title: 'Further informationen',
+      title: 'Further information',
     },
     viewpointAction: {
       title: 'Go to viewpoint',
