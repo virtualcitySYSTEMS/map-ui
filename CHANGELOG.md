@@ -4,6 +4,7 @@
 
 - fixed an English localization error for help buttons: 'Further Information'
 - fixed a bug in the VcsViewpointComponent, where syncing the view would reset the animate and duration property
+- fixed a bug in VCSSelect where v-model was not allowed to be an Object
 
 # 6.0.1
 

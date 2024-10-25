@@ -168,7 +168,7 @@
         default: false,
       },
       modelValue: {
-        type: [Array, String, Boolean, Number],
+        type: [Array, String, Boolean, Number, Object],
         default(rawProps) {
           if (rawProps.multiple) {
             return [];
