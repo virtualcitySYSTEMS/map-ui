@@ -197,6 +197,8 @@
   function updateLocalValueFromViewpoint(localValue, viewpoint) {
     const options = viewpoint.toJSON();
     options.name = localValue.value.name;
+    options.animate = localValue.value.animate;
+    options.duration = localValue.value.duration;
     if (localValue.value.properties) {
       options.properties = toRaw(localValue.value.properties);
     }

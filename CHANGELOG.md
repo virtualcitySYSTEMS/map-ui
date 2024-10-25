@@ -3,6 +3,7 @@
 ### Fixes
 
 - fixed an English localization error for help buttons: 'Further Information'
+- fixed a bug in the VcsViewpointComponent, where syncing the view would reset the animate and duration property
 
 # 6.0.1
 
