@@ -392,9 +392,9 @@
    * @returns {WatchStopHandle}
    */
   function setupSplashScreen(app, splashScreenRef) {
-    function setupSplashScreenAction() {
+    function setupSplashScreenAction(moduleId) {
       const { splashScreen } = app.uiConfig.config;
-      if (splashScreen) {
+      if (splashScreen && moduleId !== app.dynamicModuleId) {
         splashScreenRef.value = true;
       }
       if (splashScreen && splashScreen.menuEntry) {
@@ -422,7 +422,7 @@
         if (app.navbarManager.has('splashScreenToggle')) {
           app.navbarManager.remove('splashScreenToggle');
         }
-        setupSplashScreenAction();
+        setupSplashScreenAction(item[moduleIdSymbol]);
       }
     });
     const removeRemovedListener = app.uiConfig.removed.addEventListener(
@@ -758,7 +758,7 @@
         'hideSettings',
       );
       const stopCustomScreen = setupCustomScreen(app);
-      const splashScreenRef = ref(true);
+      const splashScreenRef = ref(false);
       const stopSplashScreen = setupSplashScreen(app, splashScreenRef);
       setupHelpButton(app);
       const destroyMyWorkspace = setupUIConfigDependency(

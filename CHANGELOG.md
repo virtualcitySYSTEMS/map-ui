@@ -1,3 +1,7 @@
+# 6.0.3
+
+- Fixes handling of uiConfig changes on `splashScreen`, `contentTreeActiveOnStartup` and `hideMapNavigation`
+
 # 6.0.2
 
 ### Fixes

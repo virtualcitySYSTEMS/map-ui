@@ -20,6 +20,7 @@ import { Math as CesiumMath, Color, Cartographic } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
+import { watch } from 'vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
 import {
@@ -256,6 +257,20 @@ class OverviewMap {
         this._updatePrimaryColor.bind(this),
       ),
     ];
+
+    this._uiConfigWatcher = watch(
+      () => [
+        this._app.uiConfig.config.hideMapNavigation,
+        this._app.uiConfig.config.overviewMapActiveOnStartup,
+      ],
+      async ([hide, activeOnStartup]) => {
+        if (activeOnStartup && !hide && !this._active) {
+          await this.activate();
+        } else if (hide && this._active) {
+          await this.deactivate();
+        }
+      },
+    );
   }
 
   /**
@@ -632,6 +647,7 @@ class OverviewMap {
     this._clearListeners();
     this._collectionListeners.forEach((cb) => cb());
     this._collectionListeners = [];
+    this._uiConfigWatcher();
     if (this._mapPointerListener) {
       this._mapPointerListener();
       this._mapPointerListener = null;

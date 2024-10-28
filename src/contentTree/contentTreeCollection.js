@@ -3,6 +3,7 @@ import {
   IndexedCollection,
   makeOverrideCollection,
   getObjectFromClassRegistry,
+  moduleIdSymbol,
 } from '@vcmap/core';
 import { computed, ref } from 'vue';
 import ContentTreeItem from './contentTreeItem.js';
@@ -69,7 +70,13 @@ class ContentTreeCollection extends IndexedCollection {
           this._subTreeListeners.delete(subTree.name);
         }
       });
-      if (this._app.uiConfig.getByKey('contentTreeActiveOnStartup')?.value) {
+      const contentTreeActiveOnStartup = this._app.uiConfig.getByKey(
+        'contentTreeActiveOnStartup',
+      );
+      if (
+        contentTreeActiveOnStartup?.value &&
+        contentTreeActiveOnStartup[moduleIdSymbol] !== this._app.dynamicModuleId
+      ) {
         const action = this._app.navbarManager.get('Content')?.action;
         if (action && !action.active) {
           action.callback();

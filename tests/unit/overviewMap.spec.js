@@ -442,4 +442,85 @@ describe('OverviewMap', () => {
       expect(overviewMap._mapActivatedListener).to.be.null;
     });
   });
+
+  describe('handling uiConfig options', () => {
+    let overviewMap;
+    let activeOnStartup;
+    let hideMapNavigation;
+
+    beforeAll(async () => {
+      overviewMap = new OverviewMap(app);
+      activeOnStartup = { name: 'overviewMapActiveOnStartup', value: true };
+      hideMapNavigation = { name: 'hideMapNavigation', value: true };
+    });
+
+    beforeEach(async () => {
+      await overviewMap.deactivate();
+      app.uiConfig.removeModule('test');
+      app.uiConfig.removeModule('test2');
+      await sleep();
+    });
+
+    describe('active on startup', () => {
+      it('should activate overview map on startup', async () => {
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems([activeOnStartup], 'test');
+        await sleep();
+        expect(overviewMap.active).to.be.true;
+      });
+
+      it('should not activate overview map on startup, if map navigation is hidden', async () => {
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems(
+          [activeOnStartup, hideMapNavigation],
+          'test',
+        );
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+
+      it('should not activate overview map on startup, if map navigation is already hidden by another module', async () => {
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems([hideMapNavigation], 'test');
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems([activeOnStartup], 'test2');
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+    });
+
+    describe('hide map navigation', () => {
+      it('should deactivate overview map, if map navigation is hidden', async () => {
+        await overviewMap.activate();
+        expect(overviewMap.active).to.be.true;
+        await app.uiConfig.parseItems([hideMapNavigation], 'test');
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+
+      it('should not activate overview map on startup, if map navigation is hidden', async () => {
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems(
+          [
+            { name: 'hideMapNavigation', value: true },
+            { name: 'overviewMapActiveOnStartup', value: true },
+          ],
+          'test',
+        );
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+
+      it('should deactivate overview map, if map navigation is hidden by another module', async () => {
+        expect(overviewMap.active).to.be.false;
+        await app.uiConfig.parseItems([activeOnStartup], 'test');
+        await sleep();
+        expect(overviewMap.active).to.be.true;
+        await app.uiConfig.parseItems([hideMapNavigation], 'test2');
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+    });
+  });
 });

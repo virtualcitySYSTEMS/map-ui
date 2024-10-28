@@ -270,24 +270,6 @@
         app.overviewMap.map.layerCollection.size > 0,
       );
 
-      const handleOverviewMapActiveOnStartup = (item) => {
-        if (
-          item &&
-          item.name === 'overviewMapActiveOnStartup' &&
-          showOverviewButton.value &&
-          item.value &&
-          !overviewAction.active
-        ) {
-          overviewAction.callback();
-        }
-      };
-      handleOverviewMapActiveOnStartup(
-        app.uiConfig.getByKey('overviewMapActiveOnStartup'),
-      );
-      const uiConfigListener = app.uiConfig.added.addEventListener(
-        handleOverviewMapActiveOnStartup,
-      );
-
       // Locator
       const { action: locatorAction, destroy: destroyLocator } =
         createLocatorAction(app);
@@ -325,7 +307,6 @@
       const { action: homeAction, destroy: homeDestroy } = setupHomeButton(app);
 
       onUnmounted(() => {
-        uiConfigListener();
         if (overviewDestroy) {
           overviewDestroy();
         }
