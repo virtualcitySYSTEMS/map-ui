@@ -49,6 +49,7 @@
         #header.data-table-select="{ allSelected, selectAll, someSelected }"
       >
         <VcsCheckbox
+          v-if="$attrs.selectStrategy !== 'single'"
           :indeterminate="someSelected && !allSelected"
           indeterminate-icon="mdi-minus-circle"
           false-icon="mdi-circle-outline"
@@ -239,13 +240,13 @@
       /**
        * @param {any} value
        * @param {string|undefined} filter
-       * @param {TableItem} item
+       * @param {Record<string,unknown>} item
        * @returns {boolean}
        */
-      const handleFilter = (value, filter, item) => {
+      const handleFilterInternal = (value, filter, item) => {
         if (filter) {
           const q = filter.toLocaleLowerCase();
-          return Object.values(item.raw).some((i) => {
+          return Object.values(item).some((i) => {
             if (i) {
               const content = i.toString();
               const translated = vm.$st(content);
@@ -258,6 +259,16 @@
           });
         }
         return true;
+      };
+
+      /**
+       * @param {any} value
+       * @param {string|undefined} filter
+       * @param {TableItem} item
+       * @returns {boolean}
+       */
+      const handleFilter = (value, filter, item) => {
+        return handleFilterInternal(value, filter, item.raw);
       };
 
       /**
@@ -286,7 +297,7 @@
        */
       const filteredItems = computed(() =>
         props.items.filter((item) =>
-          handleFilter(item.value, search.value, item),
+          handleFilterInternal(item.value, search.value, item),
         ),
       );
       const numberOfItems = computed(() => {

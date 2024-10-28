@@ -51,7 +51,7 @@
       const start = (page - 1) * itemsPerPage;
       const end = start + itemsPerPage;
 
-      if (sortBy.length) {
+      if (sortBy?.length) {
         const sortKey = sortBy[0].key;
         const sortOrder = sortBy[0].order;
         newItems.sort((a, b) => {
