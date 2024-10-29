@@ -2,6 +2,7 @@
 
 - changes `placeOnTerrain()` in `VcsFeatureTransforms` to not use selectSession anymore
 - fix `@vcmap-show-case/plugin-editors` displaying of window header and info url
+- add `create-link` plugin to base.config.json
 
 # 6.0.3
 

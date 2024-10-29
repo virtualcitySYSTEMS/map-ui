@@ -1132,7 +1132,7 @@
       }
     }
   ],
-  "plugins2": [
+  "plugins": [
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
