@@ -1,3 +1,7 @@
+# 6.0.4
+
+- changes `placeOnTerrain()` in `VcsFeatureTransforms` to not use selectSession anymore
+
 # 6.0.3
 
 - Fixes handling of uiConfig changes on `splashScreen`, `contentTreeActiveOnStartup` and `hideMapNavigation`

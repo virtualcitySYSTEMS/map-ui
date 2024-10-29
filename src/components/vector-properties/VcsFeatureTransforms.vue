@@ -120,7 +120,11 @@
 
 <script>
   import { Math as CesiumMath, HeightReference } from '@vcmap-cesium/engine';
-  import { TransformationMode, placeGeometryOnSurface } from '@vcmap/core';
+  import {
+    SessionType,
+    TransformationMode,
+    placeGeometryOnSurface,
+  } from '@vcmap/core';
   import { VSheet, VContainer, VRow, VCol, VIcon } from 'vuetify/components';
   import { inject, ref, watch } from 'vue';
   import VcsButton from '../buttons/VcsButton.vue';
@@ -242,11 +246,17 @@
             }),
           );
 
-          const currentEditingFeatures =
-            manager.currentSession.value?.currentFeatures;
-          if (currentEditingFeatures) {
-            manager.currentSession.value?.setCurrentFeatures(
-              currentEditingFeatures,
+          if (
+            manager.currentEditSession.value?.type === SessionType.EDIT_FEATURES
+          ) {
+            manager.currentEditSession.value?.setFeatures(
+              manager.currentFeatures.value,
+            );
+          } else if (
+            manager.currentEditSession.value?.type === SessionType.EDIT_GEOMETRY
+          ) {
+            manager.currentEditSession.value.setFeature(
+              manager.currentFeatures.value[0],
             );
           }
 
