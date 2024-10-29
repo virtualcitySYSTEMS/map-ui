@@ -25,17 +25,17 @@
         const editors = plugin.getConfigEditors?.();
         if (editors?.length > 0) {
           const actions = editors
-            .map((e) => e.component)
-            .filter((c) => c)
-            .map((component, index) =>
+            .filter((e) => e.component)
+            .map((e, index) =>
               createToggleAction(
                 {
                   name: `editor-${index + 1}`,
+                  title: e.title,
                   icon: index < 9 ? `mdi-numeric-${index + 1}-box` : undefined,
                 },
                 {
                   id: `${plugin.name}-editor-${index}`,
-                  component,
+                  component: e.component,
                   parentId: name,
                   slot: WindowSlot.DYNAMIC_CHILD,
                   props: {
@@ -60,7 +60,8 @@
                   },
                   state: {
                     headerTitle:
-                      component.title ?? `${plugin.name} Editor ${index + 1}`,
+                      e.title ?? `${plugin.name} Editor ${index + 1}`,
+                    infoUrlCallback: e.infoUrlCallback,
                   },
                   position: {
                     width: 500,

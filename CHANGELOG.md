@@ -1,6 +1,7 @@
 # 6.0.4
 
 - changes `placeOnTerrain()` in `VcsFeatureTransforms` to not use selectSession anymore
+- fix `@vcmap-show-case/plugin-editors` displaying of window header and info url
 
 # 6.0.3
 
