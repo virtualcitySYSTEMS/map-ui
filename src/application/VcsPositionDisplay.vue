@@ -42,8 +42,13 @@
           class="bg-primary"
         />
       </template>
-      <v-list selectable v-model:selected="selectedEPSG">
-        <v-list-item v-for="(item, i) in items" :key="i" :value="item.value">
+      <v-list selectable v-model:selected="selectedEPSG" mandatory>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :value="item.value"
+          color="primary"
+        >
           <v-list-item-title>{{ $st(item.text) }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -109,7 +114,7 @@
         [defaultProjection.epsg]: defaultProjection,
         [wgs84Projection.epsg]: wgs84Projection,
       };
-      const selectedEPSG = ref([]);
+      const selectedEPSG = ref([defaultProjection.epsg]);
 
       function getProjectionItems() {
         return Object.keys(projections).map((epsg) => {
