@@ -1,3 +1,7 @@
+# 6.0.5
+
+- Fixes a bug in `VcsExtent`, where feature were not reset, if extent creation was canceled
+
 # 6.0.4
 
 - changes `placeOnTerrain()` in `VcsFeatureTransforms` to not use selectSession anymore

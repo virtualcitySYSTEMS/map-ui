@@ -97,6 +97,7 @@ export function createExtentFeatureAction(
       if (!this.active) {
         this.active = true;
         layer.activate();
+        const feature = layer.getFeatureById(featureId);
         layer.removeFeaturesById([featureId]);
         session = startCreateFeatureSession(app, layer, GeometryType.BBox);
         const listeners = [
@@ -112,6 +113,9 @@ export function createExtentFeatureAction(
                 extent: newExtent,
               });
               session.stop();
+            } else if (feature) {
+              // reset feature, if creation is canceled
+              layer.addFeatures([feature]);
             }
           }),
           session.stopped.addEventListener(() => {
