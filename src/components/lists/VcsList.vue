@@ -113,7 +113,7 @@
     const selectAllAction = reactive({
       name: 'list.selectAll',
       tooltip: 'list.selectAll',
-      disabled: items.value.length - selected.value.length < 1,
+      disabled: computed(() => items.value.length - selected.value.length < 1),
       callback() {
         const currentSelection = [...selected.value];
         selected.value = items.value.filter((item) => !item.disabled);
@@ -126,10 +126,11 @@
         emit('update:modelValue', selected.value);
       },
     });
+
     const clearSelectionAction = reactive({
       name: 'list.clearSelection',
       tooltip: 'list.clearSelection',
-      disabled: selected.value.length < 1,
+      disabled: computed(() => selected.value.length < 1),
       callback() {
         [...selected.value].forEach((item) => {
           if (item.selectionChanged) {
@@ -140,16 +141,6 @@
         emit('update:modelValue', selected.value);
       },
     });
-
-    watch(
-      [items, selected],
-      () => {
-        selectAllAction.disabled =
-          items.value.length - selected.value.length < 1;
-        clearSelectionAction.disabled = selected.value.length < 1;
-      },
-      { deep: false, immediate: true },
-    );
 
     return [selectAllAction, clearSelectionAction];
   }
