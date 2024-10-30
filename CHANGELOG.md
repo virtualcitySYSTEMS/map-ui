@@ -4,6 +4,9 @@
 - Fixes a bug where selecting a HEX color would fail and fallback to black
 - Fixes a bug where selecting an EPSG in PositionDisplay could fail
 - Fixes a bug, where `Select all` was disabled after adding the first entry in a category.
+- Changed the Behaviour of the PositionDisplay to not display 1000 seperators.
+- Added locale and NumberFormatOptions to the `numberToLocaleString` function
+- Add layer-slider plugin
 
 # 6.0.4
 

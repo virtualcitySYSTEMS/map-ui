@@ -40,7 +40,7 @@
   }
 </style>
 <script>
-  import { computed } from 'vue';
+  import { computed, inject } from 'vue';
   import { VTooltip } from 'vuetify/components';
   import { usePadding } from '../composables.js';
 
@@ -49,18 +49,26 @@
    * dot-seperated string with given amount of fractional digits (e.g. 12.345.678,90)
    * @param {string|number} value
    * @param {number} fractionDigits
+   * @param {string} [locale=navigator.language] can be used to set the locale, navigator.language is the default.
+   * @param {Intl.NumberFormatOptions} [options={}] can be used to provide options to the function
    * @returns {string|number}
    */
-  export function numberToLocaleString(value, fractionDigits) {
+  export function numberToLocaleString(
+    value,
+    fractionDigits,
+    locale = navigator.language,
+    options = {},
+  ) {
     // XXX todo maybe merge with dateTime helpers in core?
     const number = parseInt(value, 10);
     if (Number.isNaN(number)) {
       return number;
     }
 
-    return /** @type {number} */ value.toLocaleString(navigator.language, {
+    return /** @type {number} */ value.toLocaleString(locale, {
       minimumFractionDigits: fractionDigits,
       maximumFractionDigits: fractionDigits,
+      ...options,
     });
   }
 
@@ -84,6 +92,7 @@
    * @vue-prop {boolean} [disabled=false] - disabled by adding transparency to the label.
    * @vue-prop {string|SpecialUnits} [unit=undefined]
    * @vue-prop {number} [fractionDigits=undefined]
+   * @vue-prop {Intl.NumberFormatOptions} [numberFormatOptions=undefined] Intl.NumberFormatOptions
    * @vue-prop {number} modelValue
    * @vue-prop {string|number} prefix
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the tooltip.
@@ -107,6 +116,10 @@
         type: Number,
         default: 2,
       },
+      numberFormatOptions: {
+        type: Object,
+        default: undefined,
+      },
       modelValue: {
         type: Number,
         default: 0,
@@ -125,8 +138,14 @@
       },
     },
     setup(props, { attrs }) {
+      const app = inject('vcsApp');
       const formatted = computed(() =>
-        numberToLocaleString(props.modelValue, props.fractionDigits),
+        numberToLocaleString(
+          props.modelValue,
+          props.fractionDigits,
+          app.vueI18n.locale.value,
+          props.numberFormatOptions,
+        ),
       );
       const paddingProvided = usePadding(attrs);
       return {

@@ -17,6 +17,7 @@
         prefix="x:"
         :model-value="transformedPosition[0]"
         :fraction-digits="fractionDigits"
+        :number-format-options="{ useGrouping: false }"
         class="pa-0"
       />
       <VcsFormattedNumber
@@ -24,12 +25,14 @@
         prefix="y:"
         :model-value="transformedPosition[1]"
         :fraction-digits="fractionDigits"
+        :number-format-options="{ useGrouping: false }"
         class="pa-0"
       />
       <VcsFormattedNumber
         v-if="transformedPosition[2]"
         prefix="z:"
         :model-value="transformedPosition[2]"
+        :number-format-options="{ useGrouping: false }"
         class="pa-0"
       />
     </template>

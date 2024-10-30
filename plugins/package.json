@@ -21,7 +21,8 @@
     "@vcmap/search-nominatim": "^2.0.0",
     "@vcmap/create-link": "^2.0.0",
     "@vcmap/module-selector": "^2.0.0",
-    "@vcmap/line-of-sight": "^1.0.0"
+    "@vcmap/line-of-sight": "^1.0.0",
+    "@vcmap/layer-slider": "^2.0.0"
   },
   "optionalDependencies": {
     "@vcmap/planning": "^6.0.0"
