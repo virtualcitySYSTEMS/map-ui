@@ -1,6 +1,7 @@
 # 6.0.5
 
 - Fixes a bug in `VcsExtent`, where feature were not reset, if extent creation was canceled
+- Fixes a bug where selecting a HEX color would fail and fallback to black
 
 # 6.0.4
 

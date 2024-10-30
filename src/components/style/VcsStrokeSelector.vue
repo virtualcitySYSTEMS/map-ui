@@ -81,7 +81,7 @@
           },
         }),
         updateColor(rgba) {
-          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a];
+          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a ?? 1];
         },
         cid,
       };
