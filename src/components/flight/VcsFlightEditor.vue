@@ -63,8 +63,8 @@
           emit('close');
         },
         async cancel() {
-          await props.resetFlightInstance(new FlightInstance(originalConfig));
           cancel = true;
+          await props.resetFlightInstance(new FlightInstance(originalConfig));
           emit('close');
         },
         async reset() {
