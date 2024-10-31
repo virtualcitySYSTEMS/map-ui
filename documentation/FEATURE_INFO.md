@@ -20,6 +20,15 @@ A view class is registered by type and defines
 - a logic which properties are passed to the Vue component and
 - all options corresponding to the feature info window.
 
+> With vue 3 it is important, that your VueComponent either defines a prop `attributes` or sets `inheritAttrs: false`.
+>
+> Explanation:
+> The window manager v-binds all props of a window component per default.
+> On your custom component they are either defined as props or passed on as attrs.
+> On HTML Elements `attributes` is a readonly key, which cannot be set by vue.
+> Hence, you need to prevent the binding of the `attributes` key on the HTML element either by defining a prop or disabling attrs inheritance.
+> For more information see https://vuejs.org/guide/components/attrs#disabling-attribute-inheritance
+
 View classes should extend `AbstractFeatureInfoView` class.
 Each implementation has to provide a Vue component in the class constructor passing it as second argument to the super class.
 It may overwrite the following methods:

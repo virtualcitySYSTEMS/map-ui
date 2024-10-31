@@ -1,3 +1,7 @@
+# 6.0.6
+
+- Fix IframeFeatureInfoView, which bound attributes on the iframe HTML element. Document how to prevent attrs inheritance. See [FEATURE_INFO.md](./documentation/FEATURE_INFO.md)
+
 # 6.0.5
 
 - Fixes a bug in `VcsExtent`, where feature were not reset, if extent creation was canceled

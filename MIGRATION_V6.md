@@ -67,6 +67,7 @@
 - `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
 - Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
 - Changed the type of `WindowComponentOptions.state`. The state now has its own type and accepts `Ref` or `ComputedRef` for certain properties.
+- Components used in custom feature info views, must either define a prop `attributes` or set `inheritAttrs: false`. Otherwise, vue will try to assign attributes to the read only attributes key of the dom element.
 
 # Features
 
