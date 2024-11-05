@@ -317,3 +317,6 @@ export * from './src/components/attrsHelpers.js';
 export * from './src/components/modelHelper.js';
 export * from './src/components/composables.js';
 export { LegendType, StyleRowType } from './src/legend/legendHelper.js';
+export { default as Search } from './src/search/search.js';
+export { default as ResultItemComponent } from './src/search/ResultItem.vue';
+export { default as ResultsComponent } from './src/search/ResultsComponent.vue';
