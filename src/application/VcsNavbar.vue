@@ -56,6 +56,7 @@
             <div
               v-if="mdAndUp && config.appTitle"
               class="ml-4 text-h6 font-weight-bold"
+              style="line-height: 1.1"
             >
               {{ $st(config.appTitle) }}
             </div>
