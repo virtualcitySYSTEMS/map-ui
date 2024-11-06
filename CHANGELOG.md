@@ -2,6 +2,7 @@
 
 - Fixes a bug that masked some application titles that were too long
 - Fix contentTreeActiveOnStartup behaviour
+- Add vcs-solar-balloon plugin
 
 # 6.0.6
 
