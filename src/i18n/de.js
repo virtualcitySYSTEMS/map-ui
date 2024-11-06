@@ -237,6 +237,14 @@ const messages = {
       modifyInfo:
         'Klicke die Symbole in der Überschrift um die selektierten Geometrien zu editieren.',
       styleHeader: 'Stil',
+      snapping: {
+        title: 'Fang',
+        help: 'Durch STRG gedrückt halten lässt sich der Fang temporär unterdrücken.',
+        orthogonalTooltip: 'Orthogonaler Fang auf horizontale Kanten.',
+        parallelTooltip: 'Paralleler Fang auf horizontale Kanten.',
+        vertexTooltip: 'Fang auf gezeichnete Stützpunkte.',
+        edgeTooltip: 'Fang auf gezeichnete Kanten.',
+      },
     },
     vectorProperties: {
       header: 'Vektor Eigenschaften',

@@ -1,8 +1,10 @@
 # 6.0.7
 
-- Fixes a bug that masked some application titles that were too long
+- Fixes a bug that masked some application titles that were too long.
 - Fix contentTreeActiveOnStartup behaviour
 - Add vcs-solar-balloon plugin
+- Adds the `VcsSnapTo` component to set the snap to values for editor sessions.
+- Renders the `VcsSnapTo` component by default in the VcsFeatureEditingWindow when the appropriate session is set.
 
 # 6.0.6
 

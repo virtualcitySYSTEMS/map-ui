@@ -306,6 +306,7 @@ export {
   getAllowedEditorTransformationModes,
 } from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
+export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';

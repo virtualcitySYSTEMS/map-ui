@@ -237,6 +237,14 @@ const messages = {
       modifyInfo:
         'For modifying the selected feature(s), click on one of the icons in the header above.',
       styleHeader: 'Style',
+      snapping: {
+        title: 'Snapping',
+        help: 'Snapping can be temporarily disabled by holding the CTRL key.',
+        orthogonalTooltip: 'Orthogonal snapping to horizontal edges.',
+        parallelTooltip: 'Parallel snapping to horizontal edges.',
+        vertexTooltip: 'Snap to drawn vertices.',
+        edgeTooltip: 'Snap to drawn edges.',
+      },
     },
     vectorProperties: {
       header: 'Vector properties',

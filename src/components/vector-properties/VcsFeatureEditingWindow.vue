@@ -18,6 +18,7 @@
         </div>
       </div>
     </VcsFormSection>
+    <VcsSnapTo v-if="snapTo" v-model="snapTo" />
     <VcsFormSection heading="components.editor.styleHeader" v-if="showStyle">
       <VcsFeatureStyleComponent :feature-properties="featureProperties" />
     </VcsFormSection>
@@ -65,6 +66,7 @@
     nonPointVectorProperties,
   } from './VcsVectorPropertiesComponent.vue';
   import VcsFormSection from '../section/VcsFormSection.vue';
+  import VcsSnapTo from './VcsSnapTo.vue';
 
   /**
    * @typedef {Object} EditorManager
@@ -142,6 +144,7 @@
    */
   export default {
     components: {
+      VcsSnapTo,
       VcsFeatureTransforms,
       VSheet,
       VcsFormSection,
@@ -179,6 +182,10 @@
         type: Boolean,
         default: true,
       },
+      showSnapping: {
+        type: Boolean,
+        default: true,
+      },
     },
     setup(props) {
       const vcsApp = inject('vcsApp');
@@ -190,6 +197,38 @@
         currentEditSession: editSession,
         currentLayer: layer,
       } = editorManager;
+
+      const localSnapTo = ref([]);
+      watch(
+        () => [session, editSession],
+        () => {
+          if (session.value?.type === SessionType.CREATE) {
+            localSnapTo.value = session.value.snapTo;
+          } else if (editSession.value?.type === SessionType.EDIT_GEOMETRY) {
+            localSnapTo.value = editSession.value.snapTo;
+          }
+        },
+        { immediate: true },
+      );
+
+      const snapTo = computed({
+        get() {
+          if (props.showSnapping) {
+            return localSnapTo.value;
+          }
+          return undefined;
+        },
+        set(v) {
+          localSnapTo.value = v;
+          if (session.value?.type === SessionType.CREATE) {
+            session.value.snapTo = v;
+          }
+
+          if (editSession.value?.type === SessionType.EDIT_GEOMETRY) {
+            editSession.value.snapTo = v;
+          }
+        },
+      });
 
       const availableModifyActions = shallowRef([]);
       const availableVectorProperties = shallowRef([]);
@@ -416,6 +455,7 @@
       return {
         featureProperties,
         session,
+        snapTo,
         SessionType,
         currentTransformationMode,
         TransformationMode,
