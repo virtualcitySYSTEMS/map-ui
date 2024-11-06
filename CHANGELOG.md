@@ -1,6 +1,7 @@
 # 6.0.7
 
 - Fixes a bug that masked some application titles that were too long
+- Fix contentTreeActiveOnStartup behaviour
 
 # 6.0.6
 

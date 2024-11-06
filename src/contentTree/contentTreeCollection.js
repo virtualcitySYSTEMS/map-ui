@@ -194,9 +194,13 @@ class ContentTreeCollection extends IndexedCollection {
       app.windowManager,
       vcsAppSymbol,
     );
+    const contentTreeActiveOnStartup = this._app.uiConfig.getByKey(
+      'contentTreeActiveOnStartup',
+    );
     if (
       id === 'Content' &&
-      this._app.uiConfig.getByKey('contentTreeActiveOnStartup')?.value
+      contentTreeActiveOnStartup?.value &&
+      contentTreeActiveOnStartup[moduleIdSymbol] !== this._app.dynamicModuleId
     ) {
       action.callback();
     }
