@@ -1,3 +1,7 @@
+# 6.0.8
+
+- Fixed a bug in the @vcmap/core
+
 # 6.0.7
 
 - Fixes a bug that masked some application titles that were too long.
