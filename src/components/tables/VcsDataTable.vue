@@ -142,13 +142,17 @@
   import { getForwardSlots } from '../composables.js';
 
   /**
+   * @typedef {Object} SortKey
+   * @property {string} key - The key to sort by.
+   * @property {boolean | 'asc' | 'desc'} [order] - The order of sorting, can be a boolean or 'asc' or 'desc'.
+   */
+
+  /**
    * @typedef {Object} UpdateItemsEvent
    * @property {number} page
    * @property {number} itemsPerPage
-   * @property {string[]} sortBy
-   * @property {boolean[]} sortDesc
-   * @property {string[]} groupBy
-   * @property {boolean[]} groupDesc
+   * @property {SortKey[]} sortBy
+   * @property {SortKey[]} groupBy
    * @property {boolean} multiSort
    * @property {boolean} mustSort
    * @property {string} search

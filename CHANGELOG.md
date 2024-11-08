@@ -1,3 +1,8 @@
+# 6.0.9
+
+- Fixcontent tree group padding
+- Fix VcsDataTable type `UpdateItemsEvent`
+
 # 6.0.8
 
 - Fixed a bug in the @vcmap/core
