@@ -58,7 +58,7 @@
             "hover-opacity": 0.16,
             "high-emphasis-opacity": 1,
             "medium-emphasis-opacity": 1,
-            "vcs-font-size": "14px",
+            "vcs-font-size": "18px",
             "vcs-font-family": "Times New Roman"
           }
         }

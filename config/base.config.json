@@ -1042,6 +1042,7 @@
       "name": "viewpoints.places",
       "type": "NodeContentTreeItem",
       "title": "Places",
+      "icon": "mdi-map-marker-star",
       "weight": 1
     },
     {
@@ -1069,7 +1070,8 @@
     {
       "name": "reasonableGroup",
       "type": "GroupContentTreeItem",
-      "title": "Textured Berlin"
+      "title": "Textured Berlin",
+      "icon": "mdi-star"
     },
     {
       "name": "reasonableGroup.trees",

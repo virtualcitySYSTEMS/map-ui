@@ -97,6 +97,14 @@
     }
   }
 
+  // Width of prepend for group nodes having two icons (chevron and custom icon)
+  :deep(.v-list-item__prepend:has(> .v-list-item-action + .v-icon)) {
+    width: calc(var(--v-vcs-font-size) + 23px);
+    .v-list-item-action {
+      margin-right: calc(22px - var(--v-vcs-font-size));
+    }
+  }
+
   // remove hover shadow over button
   :deep(.v-btn__overlay) {
     --v-hover-opacity: 0;
