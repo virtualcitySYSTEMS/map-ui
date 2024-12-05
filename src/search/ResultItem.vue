@@ -32,28 +32,9 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
+  import DOMPurify from 'dompurify';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
-
-  /**
-   * @param {string} text
-   * @param {string} query
-   * @returns {string}
-   */
-  function markText(text, query) {
-    let replacement = text;
-    if (query) {
-      const partials = query
-        .split(/[.,\s]/)
-        .filter((partial) => partial.trim());
-      partials.forEach((partial) => {
-        replacement = replacement.replaceAll(
-          new RegExp(`(^|[^>])(${partial})`, 'ig'),
-          '<span>$1<span class="text-primary">$2</span></span>',
-        );
-      });
-    }
-    return replacement;
-  }
+  import { markText } from './markText.js';
 
   /**
    * @description ResultItem with optional icon or image, title and optional actions
@@ -83,7 +64,9 @@
     },
     setup(props) {
       const hasActions = computed(() => props.item?.actions?.length > 0);
-      const marked = computed(() => markText(props.item.title, props.query));
+      const marked = computed(() =>
+        DOMPurify.sanitize(markText(props.item.title, props.query)),
+      );
 
       return {
         hasActions,

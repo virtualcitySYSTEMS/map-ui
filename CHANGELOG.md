@@ -1,8 +1,10 @@
-# 6.0.10
+# 6.0.11
 
 - Fixes a bug where VcsTable would not respect searching in TableFeatureInfo
 - Fix a bug, where VcsList dragging interfered with window dragging (drag events inside WindowComponent).
 - Fixes a bug where story deployment would not work.
+- Fixes an issue where marked text in search result items could replace already replaced text.
+- Fixes an issue where marked text in search result items was not sanitized properly.
 
 # 6.0.9
 
