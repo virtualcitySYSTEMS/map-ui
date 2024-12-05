@@ -1,3 +1,7 @@
+# 6.0.10
+
+- Fix a bug, where VcsList dragging interfered with window dragging (drag events inside WindowComponent).
+
 # 6.0.9
 
 - Fixcontent tree group padding

@@ -110,12 +110,29 @@
     renamableItem,
   ]);
 
+  function move({ item, targetIndex }) {
+    let target = targetIndex;
+    target = target >= 0 ? target : 0;
+    target = target < items.length ? target : items.length - 1;
+    const itemIndex = items.findIndex((i) => i.name === item.name);
+    if (itemIndex !== target) {
+      items.splice(itemIndex, 1);
+      items.splice(target, 0, item);
+    }
+    return target;
+  }
+
   const state = getStoryState('$vcs3d');
 </script>
 
 <template>
   <Story title="VcsList" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsList :items="items" v-bind="{ ...state.bind }" title="foo - bar" />
+    <VcsList
+      :items="items"
+      v-bind="{ ...state.bind }"
+      title="foo - bar"
+      @item-moved="move"
+    />
     <template #controls>
       <GlobalControls v-model="state" with-icon></GlobalControls>
     </template>
