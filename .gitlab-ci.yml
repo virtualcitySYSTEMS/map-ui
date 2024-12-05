@@ -202,8 +202,10 @@ deployDocs:
     refs:
       - /^(main|release-v.*)$/
   script:
+    - VERSION=$(node -pe "const version = require('./package.json').version; /\d*\.\d*/.exec(version)[0]")
+    - HISTOIRE_DEPLOYMENT="/ui/${VERSION}/story/"
     - npm run story:build
     - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
-    - VERSION=$(node -pe "const version = require('./package.json').version; /\d*\.\d*/.exec(version)[0]")
     - echo "Uploading documentation to /lib/ui/${VERSION}/story"
+
     - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/lib/ui/ hostingsftp.virtualcitypublisher.de --cores 4 -s ./.histoire/dist -d "${VERSION}/story/"

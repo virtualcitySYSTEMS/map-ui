@@ -1,6 +1,8 @@
 # 6.0.10
 
+- Fixes a bug where VcsTable would not respect searching in TableFeatureInfo
 - Fix a bug, where VcsList dragging interfered with window dragging (drag events inside WindowComponent).
+- Fixes a bug where story deployment would not work.
 
 # 6.0.9
 
