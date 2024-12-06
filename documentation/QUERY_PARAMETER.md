@@ -1,6 +1,8 @@
 # virtualcityMAP URL Parameters Explained
 
 In a virtualcityMAP, you can create a link using the "_Generate Link (Share Current View of the Map)_" function that allows the map to return to the exact view you had when the link was created. This means that the map's current view, active layers (things you can see on the map), and information for certain plugins will be restored when the link is used to open a new map.
+The link can also be manually modified or created to open a map. Specifically, the Viewpoint can include an EPSG Code that references the default coordinate system of the map. If no EPSG Code is included, it assumes the coordinates are in WGS84.
+Additionally, a simple Extent with an EPSG Code of the default coordinate system can be used to open the map at a specific location.
 
 The URL generated for this purpose includes several parameters in a json format, which are explained below.
 
@@ -11,6 +13,10 @@ It uses regular URL encoding to describe the state of the Map. Here is the examp
 
 https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0]
 
+Alternatively, a second example with a EPSG Code in the URL:
+
+https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514,4326],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0]
+
 This is how the URL looks schematically:
 
 https://dev.virtualcitymap.de/?state=[[[longitude,latitude,altitude],[longitude,latitude,altitude],distance,heading,pitch,roll],"map_type",["layers"],[],[plugins],other_parameters]
@@ -20,6 +26,8 @@ If on of the names contains empty spaces they are connected via `+`.
 ## Viewpoint Parameters
 
 These parameters describe the viewpoint of the map, how far the camera is, and how the camera is positioned:
+
+Parameters marked with \* can optionally be used in the URL by the user to open a map at a specific location.
 
 ### Camera Position and Ground Position
 
@@ -78,6 +86,22 @@ A subtle adjustment to the camera's roll refers to how level the camera is. It's
   (A very slight adjustment roll of the camera.)
 
 ---
+
+### \*EPSG Code
+
+An optional parameter that specifies the EPSG code of the coordinate system used in the Map as default. If no EPSG code is given, the coordinates are assumed to be in WGS84.
+
+- Example:  
+  `25832`
+
+---
+
+## \*Extent Parameters
+
+An optional way of providing a location to the map is by using an Extent. It needs two coordinates that describe the lower left and upper right corner of the extent. The coordinates are given in x,y format and are seperated by comma.
+Here is a partial Example of a URL with an Extent:
+
+http://dev.virtualcitymap.de/?state=[[[690340.49,5322140.33,692561.84,5334842.39],25832],0,["VC+Map+Demo"]]
 
 ## Starting Map Parameter
 

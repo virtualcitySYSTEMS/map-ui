@@ -693,6 +693,13 @@ class VcsUiApp extends VcsApp {
         await this.maps.activeMap.gotoViewpoint(
           new Viewpoint(this._cachedAppState.activeViewpoint),
         );
+      } else if (
+        typeof this._cachedAppState.getViewpoint === 'function' &&
+        this.maps.activeMap
+      ) {
+        await this.maps.activeMap.gotoViewpoint(
+          new Viewpoint(this._cachedAppState.getViewpoint()),
+        );
       }
       this._cachedAppState.moduleIds.splice(
         this._cachedAppState.moduleIds.indexOf(module._id),
