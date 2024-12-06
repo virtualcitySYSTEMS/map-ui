@@ -48,7 +48,7 @@
             </div>
           </v-toolbar-items>
         </v-col>
-        <v-col class="d-flex justify-center">
+        <v-col class="d-flex justify-center flex-grow-2 mx-2">
           <div class="d-flex align-center">
             <template v-if="!xs">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
@@ -132,6 +132,9 @@
   .v-toolbar.v-toolbar--bottom {
     bottom: 0;
     position: fixed;
+  }
+  .flex-grow-2 {
+    flex-grow: 2;
   }
 </style>
 

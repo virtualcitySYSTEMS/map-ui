@@ -6,6 +6,7 @@
 - Fixes an issue where marked text in search result items could replace already replaced text.
 - Fixes an issue where marked text in search result items was not sanitized properly.
 - Fixed a bug where exclusive layers with legends could crash the Map
+- Fixed a Bug where a long AppTitle would not be shown correctly
 
 # 6.0.9
 
