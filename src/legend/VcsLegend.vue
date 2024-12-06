@@ -13,7 +13,6 @@
         :value="entry.key"
         :heading="entry.title"
         :header-actions="entry.actions"
-        @group:selected="entry.open = !entry.open"
       >
         <v-list class="pl-6 pb-2">
           <div v-for="(item, idx) in entry.legend" :key="idx">
@@ -84,13 +83,27 @@
         iframe.style.height = `${iframe.contentWindow.document.documentElement.scrollHeight}px`;
       };
 
+      let handledEntries = props.entries
+        .filter((e) => e.open)
+        .map((e) => e.key);
       /**
        * @type {import("vue").Ref<string[]>}
        */
-      const panels = ref(props.entries.filter((e) => e.open).map((e) => e.key));
+      const panels = ref(handledEntries.slice());
 
       watch(props.entries, () => {
-        panels.value = props.entries.filter((e) => e.open).map((e) => e.key);
+        props.entries.forEach((e) => {
+          if (!handledEntries.includes(e.key)) {
+            handledEntries.push(e.key);
+            panels.value.push(e.key);
+          }
+        });
+        handledEntries = handledEntries.filter((key) =>
+          props.entries.find((e) => e.key === key),
+        );
+        panels.value = panels.value.filter((key) =>
+          props.entries.find((e) => e.key === key),
+        );
       });
 
       const cid = useComponentId();
@@ -109,8 +122,5 @@
   .legend-image {
     max-width: 100%;
     height: auto;
-  }
-  .rotate {
-    transform: rotate(-90deg);
   }
 </style>

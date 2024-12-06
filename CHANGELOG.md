@@ -5,6 +5,7 @@
 - Fixes a bug where story deployment would not work.
 - Fixes an issue where marked text in search result items could replace already replaced text.
 - Fixes an issue where marked text in search result items was not sanitized properly.
+- Fixed a bug where exclusive layers with legends could crash the Map
 
 # 6.0.9
 
