@@ -116,7 +116,7 @@
 
   /**
    * @description Renders elements of an array as chips with an input field to edit or add new elements.
-   * Provides VcsTooltip to show error messages on focus
+   * Provides a tooltip to show error messages on focus
    * When clicking esc key, previous input is restored.
    * @vue-prop {T[]} modelValue
    * @vue-prop {string}                                 [type] - The input type (string or number)
