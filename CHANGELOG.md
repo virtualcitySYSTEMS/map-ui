@@ -8,6 +8,7 @@
 - Fixed a bug where exclusive layers with legends could crash the Map
 - Added functionality to use EPSG codes and Extents in the query parameters
 - Fixed a Bug where a long AppTitle would not be shown correctly
+- Fixed a bug where TreeviewSearchbar could trigger an event twice
 - Removes `mapVersion` from plugin serialization. The `mapVersion` was and is set by the app regardless of the plugin's config.
 - Fix `VcsList` issue, when clicking list items of a not selectable list. Remove deprecated unused api `add`, `remove` and `clear` from `VcsList`.
 

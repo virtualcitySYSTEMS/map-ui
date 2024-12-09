@@ -1,5 +1,6 @@
 <template>
   <div
+    v-bind="noListenerAttrs"
     class="pa-2 bg-base-lighten-3 position-relative d-flex flex-row justify-space-between align-center rounded-0 vcs-treeview-searchbar"
   >
     <slot name="prepend">
@@ -76,9 +77,11 @@
 </style>
 
 <script>
+  import { computed } from 'vue';
   import { VIcon } from 'vuetify/components';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
+  import { removeListenersFromAttrs } from '../attrsHelpers.js';
 
   /**
    * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
@@ -91,6 +94,7 @@
    */
   export default {
     name: 'VcsTreeviewSearchbar',
+    inheritAttrs: false,
     components: {
       VIcon,
       VcsTextField,
@@ -105,10 +109,12 @@
         default: false,
       },
     },
-    setup() {
+    setup(_, { attrs }) {
       const iconSize = useIconSize();
+      const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
       return {
         iconSize,
+        noListenerAttrs,
       };
     },
   };
