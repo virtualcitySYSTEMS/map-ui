@@ -429,14 +429,14 @@
          * @param {PointerEvent} event
          */
         select(item, event) {
+          if (!props.selectable || item.disabled) {
+            return;
+          }
           if (!isReactive(item)) {
             throw new Error('Trying to select an unreactive item');
           }
           if (Array.isArray(item.clickedCallbacks)) {
             item.clickedCallbacks.forEach((cb) => cb(event));
-          }
-          if (!props.selectable || item.disabled) {
-            return;
           }
           if (props.singleSelect) {
             if (selected.value[0] === item) {
@@ -516,37 +516,6 @@
             firstSelected = item;
           }
 
-          emit('update:modelValue', selected.value);
-        },
-        /**
-         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
-         */
-        add(item) {
-          if (!isReactive(item)) {
-            throw new Error('Trying to select an unreactive item');
-          }
-          if (!selected.value.includes(item) && !item.disabled) {
-            item.selectionChanged?.(true);
-            selected.value = [...selected.value, item];
-            emit('update:modelValue', selected.value);
-          }
-        },
-        /**
-         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
-         */
-        remove(item) {
-          if (selected.value.includes(item) && !item.disabled) {
-            item.selectionChanged?.(false);
-            selected.value = selected.value.filter((i) => i !== item);
-            emit('update:modelValue', selected.value);
-          }
-        },
-        clear() {
-          selected.value
-            .filter((i) => i.selectionChanged)
-            .forEach((i) => i.selectionChanged(false));
-          selected.value = [];
-          firstSelected = null;
           emit('update:modelValue', selected.value);
         },
         drag,
