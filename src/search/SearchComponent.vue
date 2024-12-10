@@ -10,20 +10,33 @@
         :loading="searching"
         clearable
         :placeholder="$t('search.placeholder')"
-        v-model.trim="query"
+        v-model="query"
         @keydown.enter="search"
-        @input="reset"
+        @keydown.down.stop.prevent="selectSuggestion(1)"
+        @keydown.up.stop.prevent="selectSuggestion(-1)"
+        @input="onInput"
         @click:clear="reset"
       />
     </span>
-    <v-divider class="mt-1 base-darken-1" v-if="!!results.length" />
-    <ResultsComponent :query="query" :results="results" />
-    <v-divider v-if="!!results.length" />
-    <div v-if="!!results.length" class="d-flex px-2 pt-2 pb-1 justify-end">
-      <VcsFormButton @click="zoomToAll" variant="outlined">
-        {{ $t('search.zoomToAll') }}
-      </VcsFormButton>
-    </div>
+    <template v-if="results.length > 0">
+      <v-divider class="mt-1 base-darken-1" />
+      <ResultsComponent :query="query" :results="results" />
+      <v-divider />
+      <div class="d-flex px-2 pt-2 pb-1 justify-end">
+        <VcsFormButton @click="zoomToAll" variant="outlined">
+          {{ $t('search.zoomToAll') }}
+        </VcsFormButton>
+      </div>
+    </template>
+    <template v-else-if="suggestions.length > 0">
+      <v-divider class="mt-1 base-darken-1" />
+      <ResultsComponent
+        class="suggestions"
+        :results="suggestions"
+        :query="query"
+        :selected-index="selectedSuggestion"
+      />
+    </template>
   </v-sheet>
 </template>
 
@@ -31,14 +44,20 @@
   :deep(.v-field .v-field__outline *) {
     border-color: transparent !important;
   }
+
   .user-select-none {
     user-select: none;
+  }
+
+  .suggestions {
+    font-style: italic;
   }
 </style>
 
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
+  import { v4 as uuid } from 'uuid';
   import { VSheet, VDivider, VIcon } from 'vuetify/components';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './ResultsComponent.vue';
@@ -62,26 +81,63 @@
       /** @type {import("@src/vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const searching = ref(false);
+      const suggesting = ref('');
       const query = ref(null);
       const suggestions = ref([]);
+      const selectedSuggestion = ref(-1);
       const results = app.search.currentResults;
+      let queryPreSuggestion = '';
+
+      let suggestionTimeout;
+
+      const onInput = () => {
+        app.search.clearResults();
+        const trimmedInput = query.value?.trim() ?? '';
+        if (trimmedInput.length > 0) {
+          const requestId = uuid();
+          if (suggestionTimeout) {
+            clearTimeout(suggestionTimeout);
+          }
+          suggestionTimeout = setTimeout(() => {
+            suggesting.value = requestId;
+            queryPreSuggestion = trimmedInput;
+            selectedSuggestion.value = -1;
+            app.search.suggest(trimmedInput).then((s) => {
+              if (suggesting.value === requestId) {
+                suggestions.value = s;
+                suggesting.value = '';
+              }
+            });
+          }, 200);
+        } else {
+          selectedSuggestion.value = -1;
+          suggesting.value = '';
+          suggestions.value = [];
+          queryPreSuggestion = '';
+        }
+      };
 
       const reset = () => {
         app.search.clearResults();
+        selectedSuggestion.value = -1;
+        suggesting.value = '';
         suggestions.value = [];
+        queryPreSuggestion = '';
       };
 
       const clear = () => {
         reset();
         searching.value = false;
+        suggestions.value = [];
         query.value = null;
+        queryPreSuggestion = '';
       };
 
       const search = async () => {
         reset();
         searching.value = true;
         try {
-          await app.search.search(query.value);
+          await app.search.search(query.value.trim());
         } catch (e) {
           getLogger('Search').error(e);
         }
@@ -109,6 +165,27 @@
         search,
         zoomToAll,
         searchIconSize,
+        suggestions: computed(() =>
+          suggestions.value.map((s) => ({
+            title: s,
+            clicked() {
+              query.value = s;
+              search();
+            },
+          })),
+        ),
+        selectedSuggestion,
+        onInput,
+        selectSuggestion(value) {
+          const newSelection = selectedSuggestion.value + value;
+          if (newSelection > -1 && newSelection < suggestions.value?.length) {
+            selectedSuggestion.value = newSelection;
+            query.value = suggestions.value[newSelection];
+          } else {
+            selectedSuggestion.value = -1;
+            query.value = queryPreSuggestion;
+          }
+        },
       };
     },
   };

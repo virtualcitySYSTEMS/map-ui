@@ -121,6 +121,16 @@ export default class SearchImpl {
     );
   }
 
+  suggest(query) {
+    const lowerQuery = query.toLowerCase();
+    return Promise.resolve(
+      this.lines.filter((l) => {
+        const lowerLine = l.toLowerCase();
+        return lowerLine !== lowerQuery && lowerLine.startsWith(lowerQuery);
+      }),
+    );
+  }
+
   // eslint-disable-next-line class-methods-use-this
   abort() {}
 

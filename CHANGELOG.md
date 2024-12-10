@@ -1,3 +1,7 @@
+# 6.1.0
+
+- Suggestions implemented for search interfaces that provide string suggestions.
+
 # 6.0.11
 
 - Fixes a bug where VcsTable would not respect searching in TableFeatureInfo

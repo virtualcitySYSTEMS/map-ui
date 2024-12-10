@@ -7,7 +7,10 @@
       :item="item"
       :query="query"
       class="cursor-pointer"
-      :class="{ 'vcs-search-result-border': index < items.length - 1 }"
+      :class="{
+        'vcs-search-result-border': index < items.length - 1,
+        selected: index === selectedIndex,
+      }"
       v-for="(item, index) in items"
       :key="index"
       :value="item.value"
@@ -40,6 +43,10 @@
       results: {
         type: Array,
         required: true,
+      },
+      selectedIndex: {
+        type: Number,
+        default: -1,
       },
     },
     setup(props) {
@@ -99,5 +106,8 @@
   .vcs-search-result-border {
     border-bottom: thin solid;
     border-color: rgb(var(--v-theme-base-lighten-2));
+  }
+  .selected {
+    background-color: rgb(var(--v-theme-base-lighten-4));
   }
 </style>

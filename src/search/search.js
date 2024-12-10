@@ -35,8 +35,8 @@ import { getViewpointFromFeature } from '../actions/actionHelper.js';
  * @typedef {Object} SearchImpl
  * @property {string} name Name of the implementation. Must be unique, best practice is to prefix with your plugin name to ensure uniqueness or use a uuid.
  * @property {function(string):Promise<Array<ResultItem>>} search
- * @property {function(string):Promise<Array<string>>} [suggest] // XXX currently not implemented in UI at Beta state
- * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
+ * @property {function(string):Promise<Array<string>>} [suggest] - optional, provides suggestions for autocomplete.
+ * @property {function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
  * @property {function():void} destroy
  */
 
@@ -257,6 +257,7 @@ class Search extends IndexedCollection {
    * @returns {Promise<Array<string>>}
    */
   async suggest(q) {
+    this.clearResults();
     const promises = await Promise.allSettled(
       [...this._array].map((impl) => {
         if (impl.suggest) {

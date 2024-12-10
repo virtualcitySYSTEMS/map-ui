@@ -19,7 +19,7 @@ Search plugins must obey the interface defined as:
  * @interface SearchImpl
  * @property {string} name - Name of the implementation. Must be unique, best practice is to prefix with your plugin name to ensure uniqueness or use a uuid.
  * @property {function(q:string):Array<ResultItem>} search
- * @property {function(q:string):Array<string>} [suggest] // XXX currently not implemented in UI at Beta state
+ * @property {function(q:string):Array<string>} [suggest] - optional, provides suggestions for autocomplete.
  * @property{function():void} abort - should abort any ongoing requests to search or suggest without throwing an error
  * @property {function():void} destroy
  */
@@ -116,7 +116,7 @@ If no feature is provided, a clicked handler is mandatory.
 ## Search API
 
 All registered implementations are stored in an indexed collection.
-The search function iterates over all registered implementations and calls their search function.
+The `search` function iterates over all registered implementations and calls their search function.
 After resolving all promises invalid result items are filtered, default clicked handler for feature items are added, features are added to the result layer and the `resultsChanged` event is raised.
 The function returns a flat array of result items, which is also stored on the search instance and accessible by its readonly getter `currentResults`.
 
@@ -133,9 +133,10 @@ app.search.resultsChanged.addEventListener((newResults) =>
 ```
 
 The suggest function iterates over all registered implementations providing a suggest function and returns a flat array of suggestions for autocomplete.
+Suggest must only return an array of strings.
 
 ```js
-const suggestions = await app.search.search('Berlin');
+const suggestions = await app.search.suggest('Berlin');
 ```
 
 Before a new search or suggest request is done, ongoing requests are aborted, if search implementations provide an abort method.
@@ -182,7 +183,7 @@ class MySearchImplementation {
 ```
 
 Clearing empties the currentResults array and removes all features from the result layer.
-The `resultsChanged` event is raised afterwards.
+The `resultsChanged` event is raised afterward.
 
 ```js
 app.search.clearResults();

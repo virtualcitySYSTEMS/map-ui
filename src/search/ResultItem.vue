@@ -10,9 +10,6 @@
         <span v-html="marked" />
       </v-list-item-title>
     </template>
-    <v-tooltip activator="parent">
-      {{ $st('search.select') }}
-    </v-tooltip>
     <template #append>
       <VcsActionButtonList
         v-if="hasActions"
@@ -26,12 +23,7 @@
 
 <script>
   import { computed } from 'vue';
-  import {
-    VIcon,
-    VListItem,
-    VListItemTitle,
-    VTooltip,
-  } from 'vuetify/components';
+  import { VIcon, VListItem, VListItemTitle } from 'vuetify/components';
   import DOMPurify from 'dompurify';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
   import { markText } from './markText.js';
@@ -50,7 +42,6 @@
       VIcon,
       VListItem,
       VListItemTitle,
-      VTooltip,
     },
     props: {
       query: {
