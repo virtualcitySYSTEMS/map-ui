@@ -5,7 +5,7 @@
       :placeholder="searchbarPlaceholder"
       v-model="query"
     />
-    <v-list :class="{ 'vcs-list__selectable': selectable }">
+    <v-list>
       <v-list-item v-if="showTitle && title">
         <template #prepend>
           <v-icon v-if="icon">
@@ -39,11 +39,12 @@
           :key="`item-${index}`"
           :active="selected.includes(item)"
           @mousedown.shift="$event.preventDefault()"
-          @mouseover="hovering = index"
-          @mouseout="hovering = undefined"
           :draggable="isDraggable"
           @dragstart="drag($event, item, index)"
-          @mouseup="drop($event, index)"
+          @dragover.prevent="dragOver($event, index)"
+          @dragend="dragEnd($event)"
+          @drop="drop($event, index)"
+          @dragleave="dragLeave($event, index)"
           :class="{
             'v-list-item__selected': selected.includes(item),
             'v-list-item__lighten_even': lightenEven,
@@ -342,7 +343,7 @@
           }
           draggedItem = null;
           dragging.value = undefined;
-          document.removeEventListener('mouseup', drop);
+          hovering.value = undefined;
         }
       }
 
@@ -352,12 +353,30 @@
        * @param {number} index
        */
       function drag(e, item, index) {
+        e.stopPropagation();
         if (isDraggable.value) {
           dragging.value = index;
           draggedItem = item;
           e.dataTransfer.effectAllowed = 'move';
-          document.addEventListener('mouseup', drop);
         }
+      }
+
+      function dragOver(e, index) {
+        e.stopPropagation();
+        e.preventDefault();
+        hovering.value = index;
+      }
+
+      function dragLeave(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        hovering.value = undefined;
+      }
+
+      function dragEnd(e) {
+        e.stopPropagation();
+        dragging.value = undefined;
+        hovering.value = undefined;
       }
 
       /**
@@ -410,14 +429,14 @@
          * @param {PointerEvent} event
          */
         select(item, event) {
+          if (!props.selectable || item.disabled) {
+            return;
+          }
           if (!isReactive(item)) {
             throw new Error('Trying to select an unreactive item');
           }
           if (Array.isArray(item.clickedCallbacks)) {
             item.clickedCallbacks.forEach((cb) => cb(event));
-          }
-          if (!props.selectable || item.disabled) {
-            return;
           }
           if (props.singleSelect) {
             if (selected.value[0] === item) {
@@ -499,39 +518,11 @@
 
           emit('update:modelValue', selected.value);
         },
-        /**
-         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
-         */
-        add(item) {
-          if (!isReactive(item)) {
-            throw new Error('Trying to select an unreactive item');
-          }
-          if (!selected.value.includes(item) && !item.disabled) {
-            item.selectionChanged?.(true);
-            selected.value = [...selected.value, item];
-            emit('update:modelValue', selected.value);
-          }
-        },
-        /**
-         * @param {import("vue").UnwrapNestedRefs<import("./VcsListItemComponent.vue").VcsListItem>} item
-         */
-        remove(item) {
-          if (selected.value.includes(item) && !item.disabled) {
-            item.selectionChanged?.(false);
-            selected.value = selected.value.filter((i) => i !== item);
-            emit('update:modelValue', selected.value);
-          }
-        },
-        clear() {
-          selected.value
-            .filter((i) => i.selectionChanged)
-            .forEach((i) => i.selectionChanged(false));
-          selected.value = [];
-          firstSelected = null;
-          emit('update:modelValue', selected.value);
-        },
         drag,
         drop,
+        dragOver,
+        dragLeave,
+        dragEnd,
         listHeader,
         listHeaderTooltip: createEllipseTooltip(
           computed(() => listHeader.value?.$el),

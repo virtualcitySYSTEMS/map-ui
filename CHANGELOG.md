@@ -1,3 +1,17 @@
+# 6.0.11
+
+- Fixes a bug where VcsTable would not respect searching in TableFeatureInfo
+- Fix a bug, where VcsList dragging interfered with window dragging (drag events inside WindowComponent).
+- Fixes a bug where story deployment would not work.
+- Fixes an issue where marked text in search result items could replace already replaced text.
+- Fixes an issue where marked text in search result items was not sanitized properly.
+- Fixed a bug where exclusive layers with legends could crash the Map
+- Added functionality to use EPSG codes and Extents in the query parameters
+- Fixed a Bug where a long AppTitle would not be shown correctly
+- Fixed a bug where TreeviewSearchbar could trigger an event twice
+- Removes `mapVersion` from plugin serialization. The `mapVersion` was and is set by the app regardless of the plugin's config.
+- Fix `VcsList` issue, when clicking list items of a not selectable list. Remove deprecated unused api `add`, `remove` and `clear` from `VcsList`.
+
 # 6.0.9
 
 - Fixcontent tree group padding
@@ -111,6 +125,7 @@
 - `StyleSelector.vue` expects now a layerNames `Array<string>` prop instead of a single layerName
 - Changed the parameters of `getAllowedEditorTransformationModes` to respect new capabilities.
 - Changed the type of `WindowComponentOptions.state`. The state now has its own type and accepts `Ref` or `ComputedRef` for certain properties.
+- Components used in custom feature info views, must either define a prop `attributes` or set `inheritAttrs: false`. Otherwise, vue will try to assign attributes to the read only attributes key of the dom element.
 
 ### Changes
 

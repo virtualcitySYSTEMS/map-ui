@@ -5,15 +5,8 @@
     :items="items"
     :headers="[keyHeader, valueHeader]"
   >
-    <template #body="{ page, itemsPerPage }">
-      <tr
-        class="v-data-table__tr"
-        v-for="(item, idx) in items.slice(
-          (page - 1) * itemsPerPage,
-          page * itemsPerPage,
-        )"
-        :key="`row-${idx}`"
-      >
+    <template #item="{ index, item }">
+      <tr class="v-data-table__tr" :key="`row-${index}`">
         <vcs-table-cell :title="item.key" :width="keyHeader.width" />
         <vcs-table-cell
           :title="item.value"

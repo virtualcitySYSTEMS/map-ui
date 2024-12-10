@@ -186,6 +186,7 @@ export function getPluginEntry(base, pluginUrl) {
   const baseUrl = new URL(base);
   const pluginModuleUrl = new URL(pluginUrl);
   pluginModuleUrl.searchParams.delete('version'); // semver is part of config
+  pluginModuleUrl.searchParams.delete('mapVersion'); // semver is set on loadPlugin by the app
   if (baseUrl.origin !== pluginModuleUrl.origin) {
     return pluginModuleUrl.toString();
   }

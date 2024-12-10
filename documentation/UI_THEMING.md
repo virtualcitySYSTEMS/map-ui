@@ -1,4 +1,10 @@
-# Colors
+# Theming
+
+The VC Map UI supports a light and a dark theme.
+All components are automatically updated by vuetify on theme change.
+Additionally, the [VcsUiApp](../src/vcsUiApp.js) fires a `themeChanged` event, when the theme changes from light to dark, vice versa or a newly added context changes the primary color.
+
+## Primary color
 
 The interface of the VC Map is based on an individual monochromatic grey color scheme (`base`) combined with one accent/cooperate
 design color (`primary`).
@@ -32,85 +38,31 @@ The primary color can also be configured for light/dark mode
 }
 ```
 
-The VC Map UI supports a light and a dark theme.
-All components are automatically updated by vuetify on theme change.
-Additionally, the [VcsUiApp](../src/vcsUiApp.js) fires a `themeChanged` event,
-when the theme changes from light to dark, vice versa or a newly added context changes the primary color.
-The color palette can be configured via the uiConfig (see [UI CONFIG](./UI_CONFIG.md)).
-This can also be used to customize the lighten/darken variations.
-Defining the primary Color via `vuetifyTheme` uiConfig has priority over directly defining the primaryColor.
+## Text colors
 
-```json
-{
-  "uiConfig": [
-    {
-      "name": "vuetifyTheme",
-      "value": {
-        "light": {
-          "colors": {
-            "base": "#9E9E9E",
-            "base-lighten-5": "#FFFFFF",
-            "base-lighten-4": "#F8F8F8",
-            "base-lighten-3": "#EBEBEB",
-            "base-lighten-2": "#D0D0D0",
-            "base-lighten-1": "#B8B8B8",
-            "base-darken-1": "#858585",
-            "base-darken-2": "#6B6B6B",
-            "base-darken-3": "#525252",
-            "base-darken-4": "#383838",
-            "warning": "#FFCE00",
-            "error": "#AA0000",
-            "info": "#2196F3",
-            "success": "#4CAF50",
-            "surface-light": "#ffffff"
-          },
-          "variables": {
-            "hover-opacity": 0.16,
-            "high-emphasis-opacity": 1,
-            "medium-emphasis-opacity": 1,
-            "vcs-font-size": "14px",
-            "vcs-font-family": "Times New Roman"
-          }
-        },
-        "dark": {
-          "colors": {
-            "base": "#9E9E9E",
-            "base-lighten-5": "#FFFFFF",
-            "base-lighten-4": "#383838",
-            "base-lighten-3": "#525252",
-            "base-lighten-2": "#6B6B6B",
-            "base-lighten-1": "#858585",
-            "base-darken-1": "#B8B8B8",
-            "base-darken-2": "#D0D0D0",
-            "base-darken-3": "#EBEBEB",
-            "base-darken-4": "#F8F8F8",
-            "warning": "#FFCE00",
-            "error": "#FF5252",
-            "info": "#2196F3",
-            "success": "#4CAF50",
-            "surface-light": "#222222"
-          },
-          "variables": {
-            "hover-opacity": 0.16,
-            "high-emphasis-opacity": 1,
-            "medium-emphasis-opacity": 1,
-            "vcs-font-size": "14px",
-            "vcs-font-family": "Times New Roman"
-          }
-        }
-      }
+Text colors are set automatic and are calculated based on the background color, so that the contrast is high.
+The text Colors can be accessed via css variables: `rgb(var(--v-theme-on-surface))` or `rgb(var(--v-theme-on-primary))`
+or `rgb(var(--v-theme-on-primary--lighten-5))`.
+These classes work in and dark/light mode. If necessary they can be customized by overwriting them in the vuetifyThemes uiConfig Object.
+
+```
+    variables: {
+        'theme-on-surface': '#ff0000'
     }
-  ]
-}
 ```
 
-- [sass](#in-scss) variables
-- [css classes](#css-color-class) or
-- [javascript](#in-javascript) via `getColorByKey` API.
+To highlight text/anchor/icons use class (`text-primary`) as shown:
+
+```html
+<v-icon class="text-primary"> <span class="text-primary">text</span></v-icon>
+```
 
 ## VCS Color palette
 
 The VC Map UI pre-defines a coherent color scheme for a light and dark theme.
+The color scheme is based on the vuetify [color class system](https://vuetifyjs.com/en/styles/colors/) and overwrites it where
+necessary.
+
 The table below shows all color keys and corresponding hex codes.
 
 <style>
@@ -190,6 +142,8 @@ grid-area: 12 / 1 / 12 / 6;
 
 </div>
 
+### Usage within VC Map UI
+
 To ensure the harmonious color scheme through the whole map application, it is vital that colors are used correctly:
 
 | Color key      | Description and usage                                                                          |
@@ -204,31 +158,80 @@ To ensure the harmonious color scheme through the whole map application, it is v
 | base-darken-3  | Text and icon color on small buttons                                                           |
 | base-darken-4  | Use as former secondary color                                                                  |
 
-### Vuetify customization
+The following image illustrates where different colors are used on the VC Map user interface
+![UI Actions Overview](UI_COLORS_FORMS.png)
 
-The color scheme is based on the vuetify [color class system](https://vuetifyjs.com/en/styles/colors/) and overwrites it where
-necessary.
+### Example theme configuration
 
-### Text style
+The color palette can be configured via the uiConfig (see [UI CONFIG](./UI_CONFIG.md)).
+This can also be used to customize the lighten/darken variations.
+Defining the primary Color via `vuetifyTheme` uiConfig has priority over directly defining the primaryColor.
 
-Text colors are set automatic and are calculated based on the background color, so that the contrast is high.
-The text Colors can be accessed via css variables: `rgb(var(--v-theme-on-surface))` or `rgb(var(--v-theme-on-primary))`
-or `rgb(var(--v-theme-on-primary--lighten-5))`.
-These classes work in and dark/light mode. If necessary they can be customized by overwriting them in the vuetifyThemes uiConfig Object.
-
-```
-    variables: {
-        'theme-on-surface': '#ff0000'
+```json
+{
+  "uiConfig": [
+    {
+      "name": "vuetifyTheme",
+      "value": {
+        "light": {
+          "colors": {
+            "base": "#9E9E9E",
+            "base-lighten-5": "#FFFFFF",
+            "base-lighten-4": "#F8F8F8",
+            "base-lighten-3": "#EBEBEB",
+            "base-lighten-2": "#D0D0D0",
+            "base-lighten-1": "#B8B8B8",
+            "base-darken-1": "#858585",
+            "base-darken-2": "#6B6B6B",
+            "base-darken-3": "#525252",
+            "base-darken-4": "#383838",
+            "warning": "#FFCE00",
+            "error": "#AA0000",
+            "info": "#2196F3",
+            "success": "#4CAF50",
+            "surface-light": "#ffffff"
+          },
+          "variables": {
+            "hover-opacity": 0.16,
+            "high-emphasis-opacity": 1,
+            "medium-emphasis-opacity": 1,
+            "vcs-font-size": "14px",
+            "vcs-font-family": "Times New Roman"
+          }
+        },
+        "dark": {
+          "colors": {
+            "base": "#9E9E9E",
+            "base-lighten-5": "#FFFFFF",
+            "base-lighten-4": "#383838",
+            "base-lighten-3": "#525252",
+            "base-lighten-2": "#6B6B6B",
+            "base-lighten-1": "#858585",
+            "base-darken-1": "#B8B8B8",
+            "base-darken-2": "#D0D0D0",
+            "base-darken-3": "#EBEBEB",
+            "base-darken-4": "#F8F8F8",
+            "warning": "#FFCE00",
+            "error": "#FF5252",
+            "info": "#2196F3",
+            "success": "#4CAF50",
+            "surface-light": "#222222"
+          },
+          "variables": {
+            "hover-opacity": 0.16,
+            "high-emphasis-opacity": 1,
+            "medium-emphasis-opacity": 1,
+            "vcs-font-size": "14px",
+            "vcs-font-family": "Times New Roman"
+          }
+        }
+      }
     }
+  ]
+}
 ```
 
-To highlight text/anchor/icons use class (`text-primary`) as shown:
-
-```html
-<v-icon class="text-primary"> <span class="text-primary">text</span></v-icon>
-```
-
-### Usage [examples
+### Color Usage examples
 
 The following examples illustrate, how the color scheme can be used in vue components (or style sheets) and javascript code.
 
@@ -247,7 +250,7 @@ An alert:
 <v-alert color="base-lighten-2"> ... </v-alert>
 ```
 
-#### CSS color class
+#### As CSS color class
 
 A component with text in primary color:
 
@@ -324,7 +327,30 @@ app.themeChanged.addEventListener(() => {
 });
 ```
 
-## Usage within VC Map UI
+## Extended Theming
 
-The following image illustrates where different colors are used on the VC Map user interface
-![UI Actions Overview](UI_COLORS_FORMS.png)
+Vuetify Theming can be used to create custom css variables, see [vuetify.js](../src/vuePlugins/vuetify.js).
+We use this to configure the following vcs variables:
+
+- `vcs-font-size` To globally set the default fontsize. Allows customers to configure a map with larger fonts.
+  The fontsize should have valid values between 10 and 24px.
+- `vcs-font-family` Sets font Family
+
+These variables can be configured via the uiConfig (see [example theme configuration](#example-theme-configuration) and [UI CONFIG](./UI_CONFIG.md)).
+
+These variables can be used in CSS with `var(--v-vcs-font-size)`
+Also CSS can be used to calculate values `calc(var(--v-vcs-font-size) - 1px)`;
+Most height values within the VC Map like the height of buttons, list items, navbar, toolbar and more is calculated based on the `fontSize`
+
+For the fontSize a helper function is exported, which can be used to set size properties in html:
+There is also `useIconSize` helper which will return the default small Icons Size as a computed based on the `fontSize`
+
+```js
+const fontSize = useFontSize();
+const iconSize = useIconSize();
+```
+
+```vue
+<v-btn :size="fontSize * 2"></v-btn>
+<v-icon :size="iconSize">mdi-chevron</v-icon>
+```

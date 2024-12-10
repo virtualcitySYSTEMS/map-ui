@@ -57,7 +57,7 @@
 
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-file-input v-text-field}.
-   * Provides VcsTooltip to
+   * Provides a tooltip to
    * - show error messages on focus
    * - show tooltips, if supplied, when hovered over append-icon
    * When clicking esc key, previous input is restored.

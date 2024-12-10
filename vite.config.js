@@ -68,7 +68,9 @@ const configMain = defineConfig(async ({ mode }) => {
         browser: './story/setup.js',
       },
       vite: {
-        base: './',
+        base: process.env.HISTOIRE_DEPLOYMENT
+          ? process.env.HISTOIRE_DEPLOYMENT
+          : './',
         server: {
           host: process.argv.includes('--host'),
         },

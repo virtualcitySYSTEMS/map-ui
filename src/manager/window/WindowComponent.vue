@@ -129,24 +129,27 @@
         if (!isDraggable.value) {
           e.preventDefault();
           e.stopPropagation();
+        } else {
+          startEvent = e;
+          // set mouse cursor to move
+          e.dataTransfer.effectAllowed = 'move';
         }
-        startEvent = e;
-        // set mouse cursor to move
-        e.dataTransfer.effectAllowed = 'move';
       };
       /**
        * @param {DragEvent} endEvent
        */
       const dragEnd = (endEvent) => {
-        const movement = {
-          dx: endEvent.clientX - startEvent.clientX,
-          dy: endEvent.clientY - startEvent.clientY,
-        };
-        emit('moved', movement);
-        startEvent = null;
-        isDraggable.value = false;
-        endEvent.target.parentElement.ondragover = null;
-        app.maps.target.ondragover = null;
+        if (isDraggable.value) {
+          const movement = {
+            dx: endEvent.clientX - startEvent.clientX,
+            dy: endEvent.clientY - startEvent.clientY,
+          };
+          emit('moved', movement);
+          startEvent = null;
+          isDraggable.value = false;
+          endEvent.target.parentElement.ondragover = null;
+          app.maps.target.ondragover = null;
+        }
       };
 
       return {

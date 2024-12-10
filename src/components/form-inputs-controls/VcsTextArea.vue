@@ -146,7 +146,7 @@
   /**
    * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
    * Default for number of rows can be overwritten using the vuetify API.
-   * Provides VcsTooltip to
+   * Provides a tooltip to
    * - show error messages on focus
    * - show tooltips, if no error messages are available
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.

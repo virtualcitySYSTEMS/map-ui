@@ -73,7 +73,7 @@
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
-   * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn} using {@link VcsTooltip}. Used for tool buttons in the Navbar.
+   * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/\|vuetify v-btn}. Used for tool buttons in the Navbar.
    * @vue-prop {boolean}                                active - Whether button has background color. Applies vuetify primary color if color property is not set.
    * @vue-prop {boolean}                                disabled - Whether button is disabled.
    * @vue-prop {string}                                 color - Passes property to v-btn in case prop active is true.
@@ -82,7 +82,7 @@
    * @vue-prop {string}                                 icon - When given, will display an icon in the button. Replaces vuetify icon property.
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
-   * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to VcsTooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
+   * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to the tooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
    * @vue-computed {string}                             appliedColor - color applied to button, depending on size and state
    * @vue-computed {boolean}                            hasDefaultSlot
    */
