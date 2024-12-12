@@ -36,6 +36,15 @@
       <v-row justify="center" v-if="is3D && mdAndUp">
         <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
       </v-row>
+      <v-row v-if="!hideRotationButton && is3D" justify="center">
+        <OrientationToolsButton
+          :icon="rotationAction.icon"
+          :tooltip="rotationAction.title"
+          :color="rotationAction.active ? 'primary' : undefined"
+          @click.stop="rotationAction.callback($event)"
+          :disabled="rotationAction.disabled"
+        />
+      </v-row>
       <v-row justify="center">
         <OrientationToolsButton
           v-if="homeAction.icon"
@@ -60,7 +69,13 @@
 
 <script>
   import { computed, inject, ref, reactive, onUnmounted } from 'vue';
-  import { ObliqueMap, CesiumMap, ObliqueViewDirection } from '@vcmap/core';
+  import {
+    ObliqueMap,
+    CesiumMap,
+    ObliqueViewDirection,
+    startRotation,
+    rotationMapControlSymbol,
+  } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
   import { Math as CesiumMath } from '@vcmap-cesium/engine';
@@ -123,6 +138,59 @@
     });
 
     return { action, destroy: () => listener?.() };
+  }
+
+  /**
+   * @description Creates a rotate-around-center action to continuously rotate the viewpoint around the current map center at a specified speed. The action can be toggled on or off.
+   * @param {import("@src/vcsUiApp.js").default} app - The app instance containing the active map.
+   * @param {import("vue").ComputedRef<number>} defaultTimePerRotation - A computed property representing the time it takes to complete one rotation. The value should be a number representing seconds per rotation. Default is 60 seconds per rotation.
+   * @returns {{ action: import("vue").Reactive<VcsAction>, destroy: function():void }} - Returns the rotation action and a destroy method to stop the rotation listener if active.
+   */
+  function setupRotationButton(app, defaultTimePerRotation) {
+    let stopRotation;
+    const action = reactive({
+      name: 'rotate-action',
+      title: 'navigation.rotateButton',
+      icon: '$vcsView360',
+      active: false,
+      callback: async () => {
+        if (action.active) {
+          if (stopRotation) {
+            stopRotation();
+          } else {
+            app.maps.resetExclusiveMapControls();
+          }
+        } else {
+          stopRotation = await startRotation(
+            app,
+            undefined,
+            defaultTimePerRotation.value,
+          );
+        }
+      },
+    });
+
+    const rotationListener =
+      app.maps.exclusiveMapControlsChanged.addEventListener((eventData) => {
+        const { options, id } = eventData;
+        action.active =
+          id === rotationMapControlSymbol &&
+          options.keyEvents === true &&
+          options.apiCalls === true &&
+          options.pointerEvents === true;
+        action.disabled =
+          id !== rotationMapControlSymbol &&
+          options.keyEvents === true &&
+          options.apiCalls === true &&
+          options.pointerEvents === true;
+      });
+    return {
+      action,
+      destroy: () => {
+        stopRotation();
+        rotationListener();
+      },
+    };
   }
 
   /**
@@ -306,6 +374,17 @@
 
       const { action: homeAction, destroy: homeDestroy } = setupHomeButton(app);
 
+      const defaultTimePerRotation = computed(() => {
+        return app.uiConfig.config?.timePerRotation;
+      });
+
+      const { action: rotationAction, destroy: rotationDestroy } =
+        setupRotationButton(app, defaultTimePerRotation);
+
+      const hideRotationButton = computed(() => {
+        return app.uiConfig.config?.hideRotationButton;
+      });
+
       onUnmounted(() => {
         if (overviewDestroy) {
           overviewDestroy();
@@ -316,6 +395,7 @@
         if (homeDestroy) {
           homeDestroy();
         }
+        rotationDestroy();
         postRenderHandler();
         overviewMapListeners.forEach((cb) => cb());
         removeMovementDisabledListener();
@@ -346,7 +426,9 @@
         locatorAction: reactive(locatorAction),
         showOverviewButton,
         showLocatorButton,
+        hideRotationButton,
         homeAction,
+        rotationAction,
         movementApiCallsDisabled,
       };
     },

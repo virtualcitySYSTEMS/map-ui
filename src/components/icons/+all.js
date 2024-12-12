@@ -110,6 +110,7 @@ import ViewshedConeIcon from './ViewshedConeIcon.vue';
 import WalkingIcon from './WalkingIcon.vue';
 import WallIcon from './WallIcon.vue';
 import WandIcon from './WandIcon.vue';
+import View360Icon from './View360Icon.vue';
 
 // * // IconMap.boundingBox
 // * <v-icon size="16" v-text="'$vcsBoundingBox'" />
@@ -458,6 +459,9 @@ const IconMap = {
   },
   viewshed360: {
     component: Viewshed360Icon,
+  },
+  view360: {
+    component: View360Icon,
   },
   viewshedCone: {
     component: ViewshedConeIcon,

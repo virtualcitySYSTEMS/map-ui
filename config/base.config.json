@@ -990,6 +990,28 @@
       ]
     },
     {
+      "name": "viewpoints.startRotation",
+      "title": "Start rotation",
+      "infoUrl": "https://vc.systems",
+      "type": "ContentTreeItem",
+      "onClick": [
+        {
+          "type": "StartRotationCallback"
+        }
+      ]
+    },
+    {
+      "name": "viewpoints.stopRotation",
+      "title": "Stop rotation",
+      "infoUrl": "https://vc.systems",
+      "type": "ContentTreeItem",
+      "onClick": [
+        {
+          "type": "StopRotationCallback"
+        }
+      ]
+    },
+    {
       "name": "building.osmBuildingFootprints",
       "layerName": "osmBuildingFootprints",
       "type": "LayerContentTreeItem"

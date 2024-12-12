@@ -59,6 +59,8 @@ import { reactive, readonly } from 'vue';
  * @property {string} [favicon] - the favicon to set
  * @property {string} [headerTitle] - the title to display in the tab of the browser
  * @property {boolean} [showLocator] - an optional flag whether to show the Locator in the map.
+ * @property {boolean} [hideRotationButton] - an optional flag to hide the Rotator in the map.
+ * @property {number} [timePerRotation] - an optional flag that describes the time per rotation in seconds.
  * @property {boolean} [hideHeader] - can be used to hide the default Header of the map
  * @property {boolean} [hideSearch] - can be used to hide the integrated Search bar
  * @property {boolean} [hideMapButtons] - can be used to hide the default Map Buttons

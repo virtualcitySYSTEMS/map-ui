@@ -20,6 +20,7 @@
 
 - Fixcontent tree group padding
 - Fix VcsDataTable type `UpdateItemsEvent`
+- Add UI-Element for map rotation and provide start and stop callbacks
 
 # 6.0.8
 

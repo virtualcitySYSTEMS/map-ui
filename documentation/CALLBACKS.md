@@ -47,6 +47,8 @@ Per default four extensions are available:
 - [DeactivateLayersCallback](../src/callback/deactivateLayersCallback.js) - deactivates one or more layers
 - [GoToViewpointCallback](../src/callback/goToViewpointCallback.js) - jumps to a provided viewpoint
 - [ApplyLayerStyleCallback](../src/callback/applyLayerStyleCallback.js) - applies a provided style on a layer
+- [StartRotationCallback](../src/callback/startRotationCallback.js) - rotates around a given or the current viewpoint
+- [StopRotationCallback](../src/callback/stopRotationCallback.js) - stops the rotation
 
 ## CallbackClassRegistry
 

@@ -46,6 +46,7 @@ const messages = {
     },
   },
   navigation: {
+    rotateButton: 'Rotate view',
     obliqueLeftTooltip: 'Rotate view to left',
     obliqueRightTooltip: 'Rotate view to right',
     zoomInTooltip: 'Zoom in',

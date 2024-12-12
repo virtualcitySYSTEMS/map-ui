@@ -52,6 +52,8 @@ export { default as ActivateLayersCallback } from './src/callback/activateLayers
 export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.js';
 export { default as GoToViewpointCallback } from './src/callback/goToViewpointCallback.js';
 export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.js';
+export { default as StopRotationCallback } from './src/callback/stopRotationCallback.js';
+export { default as StartRotationCallback } from './src/callback/startRotationCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
