@@ -2,17 +2,10 @@
   <iframe
     :src="src"
     :title="title"
-    :style="{ height, width }"
-    class="iframe-component"
+    class="h-100 w-100 border-0 d-block flex-grow-1"
   />
 </template>
 <script>
-  import { inject } from 'vue';
-  import {
-    getTargetSize,
-    posToNumber,
-  } from '../manager/window/windowHelper.js';
-
   /**
    * @description An iframe component
    * @vue-prop {string} src - Specifies the address of the document to embed in the <iframe>
@@ -37,30 +30,6 @@
         type: Object,
         default: () => {},
       },
-    },
-    setup(props, { attrs }) {
-      const app = inject('vcsApp');
-      let { height, width } = app.windowManager.get(
-        attrs['window-state'].id,
-      ).position;
-
-      // set iframe size to absolute px values
-      if (app.maps.target) {
-        const targetSize = getTargetSize(app.maps.target);
-        const heightNumber = posToNumber(height, 'height', targetSize);
-        if (heightNumber) {
-          height = `${heightNumber - 36}px`; // 32px header height + 4px margin
-        }
-        const widthNumber = posToNumber(width, 'width', targetSize);
-        if (widthNumber) {
-          width = `${widthNumber}px`;
-        }
-      }
-
-      return {
-        height,
-        width,
-      };
     },
   };
 </script>

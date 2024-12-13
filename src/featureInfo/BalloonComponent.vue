@@ -1,5 +1,8 @@
 <template>
-  <v-card class="mx-auto elevation-0 balloon-component" v-if="position">
+  <v-sheet
+    class="balloon-component d-flex flex-column flex-grow-1"
+    v-if="position"
+  >
     <slot name="balloon-header" :attrs="{ ...$props, ...$attrs }">
       <v-list-item class="px-1">
         <template #prepend="prependScope">
@@ -32,21 +35,17 @@
 
     <v-divider />
 
-    <v-card
-      class="overflow-y-auto py-2 elevation-0"
-      :max-height="maxHeight"
-      color="transparent"
+    <div
+      class="overflow-x-hidden overflow-y-auto d-flex flex-column flex-grow-1"
     >
       <slot :attrs="{ ...$props, ...$attrs }">
-        <v-list
-          v-for="(value, key, index) in attributes"
-          :key="`attribute-${index}`"
-          color="transparent"
-        >
-          <v-list-item class="px-2">
-            <v-list-item-title>
-              {{ $st(key) }}
-            </v-list-item-title>
+        <v-list color="transparent" class="py-2">
+          <v-list-item
+            v-for="(value, key, index) in attributes"
+            :key="`attribute-${index}`"
+            class="px-2"
+            :title="$st(key)"
+          >
             <v-list-item-subtitle
               :tag="getTag(tags, key)"
               v-bind="getTagOptions(tags, key)"
@@ -56,13 +55,13 @@
           </v-list-item>
         </v-list>
       </slot>
-    </v-card>
-  </v-card>
+    </div>
+  </v-sheet>
 </template>
 <script>
-  import { inject, onMounted, onUnmounted, ref, watch } from 'vue';
+  import { inject, onMounted, onUnmounted, watch } from 'vue';
   import {
-    VCard,
+    VSheet,
     VDivider,
     VIcon,
     VList,
@@ -70,10 +69,6 @@
     VListItemSubtitle,
     VListItemTitle,
   } from 'vuetify/components';
-  import {
-    getTargetSize,
-    posToNumber,
-  } from '../manager/window/windowHelper.js';
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.vue';
   import { getTag, getTagOptions } from '../components/tables/VcsTable.vue';
@@ -97,7 +92,7 @@
     name: 'BalloonComponent',
     components: {
       VcsButton,
-      VCard,
+      VSheet,
       VList,
       VListItem,
       VIcon,
@@ -134,28 +129,6 @@
     setup(props, { attrs }) {
       const app = inject('vcsApp');
       const windowId = attrs['window-state'].id;
-      function getMaxHeight() {
-        if (app.windowManager.get(windowId)?.position?.maxHeight) {
-          return (
-            posToNumber(
-              app.windowManager.get(windowId).position.maxHeight,
-              'maxHeight',
-              getTargetSize(app.maps.target),
-            ) - 49 // 44px header offset with padding 5px
-          );
-        }
-        if (app.windowManager.get(windowId)?.position?.height) {
-          return (
-            posToNumber(
-              app.windowManager.get(windowId).position.height,
-              'height',
-              getTargetSize(app.maps.target),
-            ) - 49 // 44px header offset with padding 5px
-          );
-        }
-        return 250;
-      }
-      const maxHeight = ref(getMaxHeight());
 
       let balloonPositionListener = null;
       const destroyListener = () => {
@@ -181,7 +154,6 @@
             windowId,
             props.position,
           );
-          maxHeight.value = getMaxHeight();
         },
       );
 
@@ -199,7 +171,6 @@
         close,
         getTag,
         getTagOptions,
-        maxHeight,
       };
     },
   };

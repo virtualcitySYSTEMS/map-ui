@@ -1,6 +1,8 @@
 # 6.1.0
 
 - Suggestions implemented for search interfaces that provide string suggestions.
+- Fixes styling issues with IframeComponent, BalloonComponent and WindowComponent
+- Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
 
 # 6.0.11
 

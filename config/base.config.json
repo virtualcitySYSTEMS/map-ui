@@ -593,7 +593,7 @@
       },
       "window": {
         "state": {
-          "headerTitle": ["{{layerName}}", ": ", "{{gml:name}}"]
+          "headerTitle": ["{{layer}}", ": ", "{{osm_id}}"]
         }
       }
     },
@@ -736,7 +736,7 @@
           "Transparentbuildings"
         ],
         "title": "Berlin - LOD2",
-        "featureInfo": "tableAllWithTemplateHeader"
+        "featureInfo": "addressBalloon"
       }
     },
     {
@@ -755,7 +755,7 @@
       "activeOnStartup": false,
       "debug": false,
       "properties": {
-        "featureInfo": "addressBalloon",
+        "featureInfo": "tableAllWithTemplateHeader",
         "title": "layers.osmBuildingFootprints.title",
         "tooltip": "OpenStreetMap Building Polygons",
         "availableStyles": ["Transparentbuildings"]

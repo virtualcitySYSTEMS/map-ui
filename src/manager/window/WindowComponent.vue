@@ -27,7 +27,7 @@
     </div>
     <v-divider v-if="!windowState.hideHeader" />
     <div
-      class="overflow-x-hidden mb-1"
+      class="overflow-x-hidden overflow-y-auto mb-1 d-flex flex-grow-1 flex-column"
       :class="{
         rounded: !isDocked,
       }"

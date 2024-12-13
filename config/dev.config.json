@@ -26,8 +26,8 @@
     {
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloon",
-      "title": "This is a Balloon Title",
-      "subtitle": "olcs_altitudeMode",
+      "balloonTitle": "This is a Balloon Title",
+      "balloonSubtitle": "olcs_altitudeMode",
       "keyMapping": {
         "olcs_storeyNumber": "Storey Number",
         "olcs_storeyHeight": "Storey Height",
@@ -87,6 +87,16 @@
         "betreiber": {
           "tag": "video",
           "src": "https://www.w3schools.com/TAgs/movie.mp4"
+        }
+      }
+    },
+    {
+      "type": "IframeFeatureInfoView",
+      "name": "iframeFeatureInfo",
+      "src": "https://example.org",
+      "window": {
+        "position": {
+          "height": "300px"
         }
       }
     }
@@ -389,7 +399,7 @@
       "url": "exampleData/point.czml",
       "properties": {
         "title": "czmlPoint",
-        "featureInfo": "tableAll",
+        "featureInfo": "iframeFeatureInfo",
         "legend": [
           {
             "type": "ImageLegendItem",
