@@ -54,6 +54,8 @@ export { default as GoToViewpointCallback } from './src/callback/goToViewpointCa
 export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.js';
 export { default as StopRotationCallback } from './src/callback/stopRotationCallback.js';
 export { default as StartRotationCallback } from './src/callback/startRotationCallback.js';
+export { default as AddModuleCallback } from './src/callback/addModuleCallback.js';
+export { default as RemoveModuleCallback } from './src/callback/removeModuleCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
@@ -212,6 +214,7 @@ export {
   VcsUiAppConfigPattern,
   initAppFromModule,
   initAppFromAppConfig,
+  createModuleFromObjectOrUrl,
 } from './src/init.js';
 export {
   vcsAppSymbol,

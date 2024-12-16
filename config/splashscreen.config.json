@@ -12,6 +12,19 @@
         "menuEntry": false,
         "checkBoxText": "components.splashScreen.checkBoxText",
         "buttonTitle": "components.splashScreen.buttonTitle",
+        "secondaryButtonTitle": "Hello World Callback",
+        "secondaryCallbackOptions": [
+          {
+            "type": "AddModuleCallback",
+            "module": "config/hello-world.config.json"
+          }
+        ],
+        "exitCallbackOptions": [
+          {
+            "type": "GoToViewpointCallback",
+            "viewpoint": "alexanderplatz"
+          }
+        ],
         "position": {
           "width": "800px",
           "height": "500px",

@@ -49,6 +49,8 @@ Per default four extensions are available:
 - [ApplyLayerStyleCallback](../src/callback/applyLayerStyleCallback.js) - applies a provided style on a layer
 - [StartRotationCallback](../src/callback/startRotationCallback.js) - rotates around a given or the current viewpoint
 - [StopRotationCallback](../src/callback/stopRotationCallback.js) - stops the rotation
+- [AddModuleCallback](../src/callback/addModuleCallback.js) - adds a module
+- [RemoveModuleCallback](../src/callback/removeModuleCallback.js) - removes a module
 
 ## CallbackClassRegistry
 

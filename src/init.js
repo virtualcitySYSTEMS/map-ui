@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { check, is, maybe, oneOf, optional } from '@vcsuite/check';
 import { VcsModule } from '@vcmap/core';
+import { getLogger } from '@vcsuite/logger';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
 import VcsUiApp from './vcsUiApp.js';
 import { createSafeI18n } from './vuePlugins/i18n.js';
@@ -77,6 +78,30 @@ export async function initAppFromModule(mountTarget, configUrl) {
 }
 
 /**
+ * Creates a module from a config object or a url
+ * @param {import("@vcmap/core").VcsModuleConfig|string} c
+ * @returns {Promise<import("@vcmap/core").VcsModule|null>}
+ */
+export async function createModuleFromObjectOrUrl(c) {
+  if (is(c, Object)) {
+    if (!is(c, VcsUiAppConfigPattern)) {
+      getLogger('init').warning(
+        'Provided object is no valid VcsUiAppConfig',
+        c,
+      );
+    }
+    return new VcsModule(/** @type{import("@vcmap/core").VcsModuleConfig} */ c);
+  } else if (is(c, String)) {
+    const response = await fetch(c);
+    if (response.ok) {
+      const config = await response.json();
+      return new VcsModule(config);
+    }
+  }
+  return null;
+}
+
+/**
  * Initializes app with a map config containing a set of config urls
  * @param {string} mountTarget
  * @param {string} appUrl app config containing further modules to be loaded
@@ -95,20 +120,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
   check(appConfig.modules, [oneOf(String, Object)]);
 
   const modules = await Promise.all(
-    appConfig.modules.map(async (c) => {
-      if (is(c, VcsUiAppConfigPattern)) {
-        return new VcsModule(
-          /** @type{import("@vcmap/core").VcsModuleConfig} */ c,
-        );
-      } else if (is(c, String)) {
-        const response = await fetch(c);
-        if (response.ok) {
-          const config = await response.json();
-          return new VcsModule(config);
-        }
-      }
-      return null;
-    }),
+    appConfig.modules.map(createModuleFromObjectOrUrl),
   );
   // eslint-disable-next-line no-restricted-syntax
   for await (const module of modules) {
