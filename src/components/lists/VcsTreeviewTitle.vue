@@ -8,6 +8,10 @@
       type: Object,
       default: undefined,
     },
+    cursorPointer: {
+      type: Boolean,
+      default: false,
+    },
   });
 
   const titleParent = ref();
@@ -23,14 +27,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .cursor-pointer {
+    cursor: pointer;
+  }
 </style>
 <template>
   <div
-    class="title-parent pr-2 vcs-treeview-title"
+    class="title-parent pr-2 vcs-treeview-title w-100"
+    :class="{ 'cursor-pointer': cursorPointer }"
     ref="titleParent"
-    @click.stop="item.clicked && !item.disabled && item.clicked($event)"
   >
-    <span>
+    <span class="w-100">
       {{ $st(item.title || item.name) }}
     </span>
     <v-tooltip v-if="tooltip" activator="parent">

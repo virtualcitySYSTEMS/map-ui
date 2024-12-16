@@ -1,162 +1,79 @@
 <template>
-  <div class="d-contents">
+  <div class="vcs-treeview">
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
       :placeholder="searchbarPlaceholder"
       v-model="localSearchValue"
     />
-    <v-treeview
-      class="vcs-treeview"
-      density="compact"
-      item-value="name"
-      :item-props="true"
-      :custom-filter="handleFilter"
-      :selectable="false"
-      :activatable="false"
-      expand-icon="mdi-chevron-right"
-      collapse-icon="mdi-chevron-down"
-      v-bind="{ ...$props, ...$attrs }"
-      :search="localSearchValue"
-      @click:select="itemClicked($event.id, $event.event)"
-    >
-      <template #title="scope">
-        <slot name="title" v-bind="scope ?? {}">
-          <VcsTreeviewTitle :item="scope.item"></VcsTreeviewTitle>
-        </slot>
-      </template>
-      <template v-for="slot of forwardSlots" #[slot]="scope">
-        <slot :name="slot" v-bind="scope ?? {}" />
-      </template>
-      <template #prepend="scope">
-        <slot name="prepend" v-bind="scope ?? {}">
-          <template v-if="scope.item?.icon">
-            <v-icon
-              v-if="typeof scope.item?.icon === 'string'"
-              :size="iconSize"
-            >
-              {{ scope.item.icon }}
-            </v-icon>
-            <ImageElementInjector :element="scope.item.icon" v-else />
-          </template>
-        </slot>
-      </template>
-      <template #append="scope">
-        <slot name="append" v-bind="scope ?? {}">
-          <VcsActionButtonList
-            v-if="scope.item.actions?.length > 0"
-            :actions="scope.item.actions"
-            :overflow-count="3"
-            :disabled="scope.item.disabled"
-            right
-            tooltip-position="right"
-            block-overflow
-            class="col-4 pa-0 d-flex align-center"
-          />
-        </slot>
-      </template>
-    </v-treeview>
+    <div v-for="item in items" :key="item.name" class="vcs-treeitem">
+      <VcsTreeNode
+        class="root-node"
+        :item="item"
+        :search="localSearchValue"
+        v-model:opened="localOpenedItems"
+        :open-on-click="openOnClick"
+        :item-children="itemChildren"
+        @item-toggled="itemToggled"
+        @click="itemClicked"
+      >
+        <template v-for="slot of forwardSlots" #[slot]="scope">
+          <slot :name="slot" v-bind="scope ?? {}" />
+        </template>
+      </VcsTreeNode>
+    </div>
   </div>
 </template>
-<style lang="scss" scoped>
-  :deep(.vcs-treeview) {
-    // Root Level Entries should be 40px high
-    > .v-list-item,
-    > .v-list-group > .v-list-item {
-      min-height: calc(var(--v-vcs-font-size) * 2 + 14px) !important;
-      padding-left: 6px;
-    }
-    // Border around root nodes with children included
-    > .v-list-item:not(:last-child),
-    > .v-list-group:not(:last-child) {
-      border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
-    }
-    // Only Group Entries have a bold font
-    > .v-list-group
-      > .v-list-item
-      > .v-list-item__content
-      > .v-list-item-title {
-      font-weight: 700 !important;
-    }
-  }
-
-  // leaf indent
-  :deep(.v-list--slim .v-treeview-group.v-list-group) {
-    --prepend-width: 0px;
-  }
-
-  // Padding left of root nodes
-  :deep(.v-list-item__prepend) {
-    width: var(--v-vcs-font-size);
-    margin-right: 8px;
-    > .v-list-item-action > .v-btn {
-      width: var(--v-vcs-font-size);
-      height: var(--v-vcs-font-size);
-      margin: auto;
-      // for alignment of chevron
-      display: flex;
-    }
-  }
-
-  // Width of prepend for group nodes having two icons (chevron and custom icon)
-  :deep(.v-list-item__prepend:has(> .v-list-item-action + .v-icon)) {
-    width: calc(var(--v-vcs-font-size) + 23px);
-    .v-list-item-action {
-      margin-right: calc(22px - var(--v-vcs-font-size));
-    }
-  }
-
-  // remove hover shadow over button
-  :deep(.v-btn__overlay) {
-    --v-hover-opacity: 0;
-  }
-  // remove ripple effect
-  :deep(.v-ripple__container) {
-    display: none;
-  }
-  // hide active class
-  :deep(.v-list-item__overlay) {
-    display: none;
-  }
-
-  .d-contents {
-    display: contents;
-  }
-</style>
 
 <script>
-  import { getCurrentInstance } from 'vue';
-  import { VIcon } from 'vuetify/components';
-  import { VTreeview } from 'vuetify/labs/VTreeview';
-  import { useProxiedAtomicModel } from '../modelHelper.js';
+  import { watch } from 'vue';
+  import {
+    useProxiedAtomicModel,
+    useProxiedComplexModel,
+  } from '../modelHelper.js';
   import { getForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
-  import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
-  import ImageElementInjector from '../ImageElementInjector.vue';
-  import VcsTreeviewTitle from './VcsTreeviewTitle.vue';
-  import { useIconSize } from '../../vuePlugins/vuetify.js';
+  import VcsTreeNode from './VcsTreeNode.vue';
 
   /**
-   * @description extends API of https://vuetifyjs.com/en/api/v-treeview/
-   * Can render dynamic components as leaf items.
-   * In order to display an item needs to be registered and added to `availableComponents`.
+   * @description The VcsTreeview is heavily inspired by the Vuetify VTreeview component. Can render dynamic components as leaf items.
    * Exposes the `search` value for filtering the treeview.
-   * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview
-   * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated
+   * Exposes the `opened` model-value for controlling the opened state of the treeview.
+   * Forwards the `prepend`, `title` and `append` slots to the VcsTreeNode component.
+   * @vue-prop {Array<import("./VcsTreeNode.vue").VcsTreeNodeItem>} items.
+   * @vue-prop {Array<import("./VcsTreeNode.vue").VcsTreeNodeItem>} opened - Array of name of opened nodes.
+   * @vue-prop {string} [itemChildren='children'] - The property key of the children.
+   * @vue-prop {boolean} [openAll=false] - Whether to open all root items on startup.
+   * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click.
+   * @vue-prop {string} [search=''] - The value used to filter the items.
+   * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview.
+   * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated.
    */
   export default {
     name: 'VcsTreeview',
     components: {
-      VcsTreeviewTitle,
-      VIcon,
-      ImageElementInjector,
-      VcsActionButtonList,
       VcsTreeviewSearchbar,
-      VTreeview,
+      VcsTreeNode,
     },
     props: {
       items: {
         type: Array,
         default: () => [],
+      },
+      opened: {
+        type: Array,
+        default: () => [],
+      },
+      itemChildren: {
+        type: String,
+        default: 'children',
+      },
+      openAll: {
+        type: Boolean,
+        default: false,
+      },
+      openOnClick: {
+        type: Boolean,
+        default: false,
       },
       search: {
         type: String,
@@ -171,58 +88,71 @@
         default: undefined,
       },
     },
-    emits: ['update:search'],
+    emits: ['update:search', 'update:opened'],
     setup(props, { emit, slots }) {
+      const forwardSlots = getForwardSlots(slots);
       const localSearchValue = useProxiedAtomicModel(props, 'search', emit);
+      const localOpenedItems = useProxiedComplexModel(props, 'opened', emit);
 
-      // TODO properly type the tree view item interface & export in index.d.ts
+      if ((props.openAll ?? false) !== false) {
+        localOpenedItems.value = props.items.map((item) => item.name);
+        watch(
+          () => props.items,
+          (items) => {
+            const newItems = items.filter(
+              (item) => !localOpenedItems.value.includes(item.name),
+            );
+            localOpenedItems.value.push(...newItems.map((item) => item.name));
+          },
+        );
+      }
 
-      const vm = getCurrentInstance().proxy;
-      /**
-       * @param {string} value
-       * @param {string} q
-       * @param {Object} item
-       * @returns {number}
-       */
-      const handleFilter = (value, q, item) => {
-        if (value == null || q == null) {
-          return -1;
-        }
-        const translatedTitle = item.title ? vm.$st(item.title) : item.value;
-        return translatedTitle
-          .toLocaleLowerCase()
-          .indexOf(q.toLocaleLowerCase());
-      };
-
-      const forwardSlots = getForwardSlots(slots, [
-        'append',
-        'title',
-        'prepend',
-      ]);
-      const iconSize = useIconSize();
-      return {
-        iconSize,
-        localSearchValue,
-        handleFilter,
-        forwardSlots,
-        itemClicked(name, event) {
-          const items = props.items.slice();
-          let item;
-          while (items.length > 0) {
-            item = items.pop();
-            if (item.name === name) {
-              break;
-            }
-            if (item.children?.length > 0) {
-              items.push(...item.children);
-            }
+      function itemToggled(name, state) {
+        if (state) {
+          localOpenedItems.value.push(name);
+        } else {
+          const idx = localOpenedItems.value.indexOf(name);
+          if (idx >= 0) {
+            localOpenedItems.value.splice(idx, 1);
           }
+        }
+      }
 
-          if (item?.clicked && !item?.disabled) {
-            item.clicked(event);
+      return {
+        localSearchValue,
+        localOpenedItems,
+        forwardSlots,
+        itemToggled,
+        itemClicked(item, event) {
+          if (item?.clickable) {
+            if (item?.clicked && !item?.disabled) {
+              item.clicked(event);
+            }
+          } else if ((props.openOnClick ?? false) !== false) {
+            itemToggled(item.name, !localOpenedItems.value.includes(item.name));
           }
         },
       };
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  // Hide node component when not rendered (e.g. filtered by search)
+  .vcs-treeitem:not(:has(.vcs-tree-node)) {
+    display: none;
+  }
+  .vcs-treeitem:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
+  }
+  .root-node {
+    :deep(.level-0) {
+      // Root Level Entries should be 40px high
+      min-height: calc(var(--v-vcs-font-size) * 2 + 14px) !important;
+    }
+    // Only Group Entries have a bold font
+    > :deep(.group) {
+      font-weight: 700 !important;
+    }
+  }
+</style>

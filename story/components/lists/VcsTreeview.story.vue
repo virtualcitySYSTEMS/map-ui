@@ -1,5 +1,6 @@
 <script setup>
   /* eslint-disable no-console */
+  import { ref } from 'vue';
   import { getStoryState } from '../../setup.js';
   import GlobalControls from '../../controls/GlobalControls.vue';
   import VcsTreeview from '../../../src/components/lists/VcsTreeview.vue';
@@ -84,14 +85,25 @@
       children: createItems('other'),
     },
   ];
+
   const state = getStoryState('$vcs3d');
+  const openAll = ref(false);
+  const openOnClick = ref(true);
 </script>
 
 <template>
-  <Story title="VcsTreeview" :meta="{ wrapper: { type: 'window' } }">
-    <VcsTreeview :items="items" />
+  <Story title="VcsTreeview" :meta="{ wrapper: { ...state.wrapper } }">
+    <VcsTreeview
+      v-bind="{ ...state.bind }"
+      :items="items"
+      :open-all="openAll"
+      :open-on-click="openOnClick"
+    />
     <template #controls>
-      <GlobalControls v-model="state" with-icon></GlobalControls>
+      <GlobalControls with-icon v-model="state">
+        <HstCheckbox title="Open all on startup" v-model="openAll" />
+        <HstCheckbox title="Open on click" v-model="openOnClick" />
+      </GlobalControls>
     </template>
   </Story>
 </template>
