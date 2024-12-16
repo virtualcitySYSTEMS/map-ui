@@ -1,3 +1,7 @@
+# 6.0.12
+
+- Fixes a bug in the @vcmap/core, where an invalid projection could crash the map.
+
 # 6.0.11
 
 - Fixes a bug where VcsTable would not respect searching in TableFeatureInfo
