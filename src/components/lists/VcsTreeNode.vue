@@ -10,7 +10,7 @@
         class="chevron-btn"
         variant="text"
         :icon="isOpen ? 'mdi-chevron-down' : 'mdi-chevron-right'"
-        @click="isOpen = !isOpen"
+        @click="bubbleItemToggled(item.name)"
       />
       <slot name="prepend" v-bind="{ item }">
         <span class="prepend">
@@ -53,7 +53,7 @@
           :open-on-click="openOnClick"
           :item-children="itemChildren"
           :opened="opened"
-          @item-toggled="bubbleItemToggled(child, e)"
+          @item-toggled="bubbleItemToggled"
           @click="bubbleItemClicked"
         >
           <template v-for="slot of forwardSlots" #[slot]="scope">
@@ -146,13 +146,7 @@
       const iconSize = useIconSize();
       const forwardSlots = getForwardSlots(slots);
 
-      const isOpen = computed({
-        get: () => props.opened?.includes(props.item.name),
-        set: (value) => {
-          emit('itemToggled', props.item.name, value);
-        },
-      });
-
+      const isOpen = computed(() => props.opened.includes(props.item.name));
       const children = computed(() => props.item[props.itemChildren] ?? []);
 
       const matchFilter = computed(() => {
@@ -179,8 +173,8 @@
         children,
 
         // Bubble up events for the nested tree-items
-        bubbleItemToggled: (itemName, openState) => {
-          emit('itemToggled', itemName, openState);
+        bubbleItemToggled: (itemName) => {
+          emit('itemToggled', itemName);
         },
         bubbleItemClicked: (item, event) => {
           emit('click', item, event);

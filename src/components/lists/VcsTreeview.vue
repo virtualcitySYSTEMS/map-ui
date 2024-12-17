@@ -107,14 +107,12 @@
         );
       }
 
-      function itemToggled(name, state) {
-        if (state) {
-          localOpenedItems.value.push(name);
+      function itemToggled(itemName) {
+        const idx = localOpenedItems.value.indexOf(itemName);
+        if (idx >= 0) {
+          localOpenedItems.value.splice(idx, 1);
         } else {
-          const idx = localOpenedItems.value.indexOf(name);
-          if (idx >= 0) {
-            localOpenedItems.value.splice(idx, 1);
-          }
+          localOpenedItems.value.push(itemName);
         }
       }
 
@@ -129,7 +127,7 @@
               item.clicked(event);
             }
           } else if ((props.openOnClick ?? false) !== false) {
-            itemToggled(item.name, !localOpenedItems.value.includes(item.name));
+            itemToggled(item.name);
           }
         },
       };
