@@ -1,7 +1,7 @@
 # 6.1.0
 
 - Suggestions implemented for search interfaces that provide string suggestions.
-- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent and VcsTextArea
+- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList and VcsTextArea
 - Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
 - Remove Config pattern check for modules in `init.js`
 - Add two more `VcsCallback` extensions: `AddModuleCallback` and `RemoveModuleCallback`

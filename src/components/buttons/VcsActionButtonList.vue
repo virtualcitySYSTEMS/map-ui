@@ -38,12 +38,14 @@
       </template>
       <VcsActionList :actions="overflowButtons" :disabled="disabled" />
     </v-menu>
-    <v-spacer
-      v-else-if="blockOverflow"
-      class="flex-grow-0 d-inline-block px-2"
-    />
+    <v-spacer v-else-if="blockOverflow" />
   </div>
 </template>
+<style scoped lang="scss">
+  :deep(.v-spacer) {
+    width: calc(var(--v-vcs-font-size) + 4px);
+  }
+</style>
 <script>
   import { VIcon, VMenu, VSpacer } from 'vuetify/components';
   import VcsButton from './VcsButton.vue';
