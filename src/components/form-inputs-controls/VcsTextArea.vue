@@ -110,7 +110,7 @@
   // Not color, just used if label is given
   :deep(.v-field--focused:not(.v-field--error) .v-field__outline *::after) {
     border-color: rgb(var(--v-theme-primary));
-    border-width: 1px !important;
+    border-width: 0 0 1px !important;
   }
 
   // remove margin from prepended Icon
