@@ -12,6 +12,7 @@
       v-bind="noListenerAttrs"
       v-model="files"
     />
+    <slot />
     <div class="d-flex justify-end gc-1 mx-3 pt-2 pb-1">
       <vcs-form-button
         variant="filled"
@@ -41,6 +42,7 @@
    * @vue-prop {function(Array<File>):boolean} importFiles - the callback to
    * @vue-prop {string[]} [fileTypes=[]] - accepted file types, see https://html.spec.whatwg.org/multipage/input.html#attr-input-accept
    * @vue-prop {boolean} [multiple=true] - allows or disallows importing multiple files at once
+   * @vue-data {#default} - Slot to add additional html after file input and before the buttons
    */
   export default {
     name: 'VcsImportComponent',

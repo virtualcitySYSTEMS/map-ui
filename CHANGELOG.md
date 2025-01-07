@@ -10,6 +10,7 @@
   - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
   - added option `secondaryButtonTitle` to configure the new secondary button title
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
+- Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 
 # 6.0.11
 
