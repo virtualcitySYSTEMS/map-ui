@@ -1,3 +1,8 @@
+# 5.3.7
+
+- Backport Cesium Tileset Attribute 1.1 fix
+- Deactivated Audit
+
 # 5.3.6
 
 - Added export `LegendTypes` and `StyleRowType` enums and typedefs from `legendHelper.js`

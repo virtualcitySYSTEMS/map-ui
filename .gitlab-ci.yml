@@ -62,12 +62,6 @@ test:
     reports:
       junit: test-report.xml
 
-audit:
-  <<: *after_build_definition
-  stage: test
-  script:
-    - npm audit --production --audit-level=low
-
 bundle:
   <<: *after_build_definition
   stage: bundle

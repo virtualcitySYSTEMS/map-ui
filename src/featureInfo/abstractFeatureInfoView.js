@@ -267,6 +267,21 @@ function getWindowState(app, state, attributes) {
 }
 
 /**
+ * Filters all __ attributes (from vc-converter tilesets) not provided as keys
+ * @param {Object<string, unknown>} attributes
+ * @param {Array<string>} keys
+ * @returns {Object}
+ */
+function applyDoubleUnderscoreFilter(attributes, keys = []) {
+  return Object.keys(attributes)
+    .filter((key) => keys.includes(key) || !/^__/.test(key))
+    .reduce((obj, key) => {
+      obj[key] = attributes[key];
+      return obj;
+    }, {});
+}
+
+/**
  * Abstract class to be extended by FeatureInfoView classes
  * Subclasses must always provide a component and may overwrite class methods.
  * @abstract
@@ -344,6 +359,23 @@ class AbstractFeatureInfoView extends VcsObject {
   }
 
   /**
+   * @param {undefined|import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+   * @returns {Object}
+   * @protected
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _getAttributesFromFeature(feature) {
+    if (feature?.tileset?.asset?.version === '1.1') {
+      const attributes = {};
+      feature.getPropertyIds().forEach((id) => {
+        attributes[id] = feature.getProperty(id);
+      });
+      return attributes;
+    }
+    return feature.getProperty('attributes') || {};
+  }
+
+  /**
    * This method returns all relevant attributes for this view.
    * Called by `getProperties()` to pass attributes as props object to the VueComponent of this view.
    * May be overwritten by classes extending AbstractFeatureInfoView.
@@ -352,7 +384,7 @@ class AbstractFeatureInfoView extends VcsObject {
    * @returns {Object}
    */
   getAttributes(feature) {
-    let attributes = feature.getProperty('attributes') || {};
+    let attributes = this._getAttributesFromFeature(feature);
     if (this.attributeKeys.length > 0) {
       attributes = applyAttributeFilter(attributes, this.attributeKeys);
     }
@@ -363,6 +395,7 @@ class AbstractFeatureInfoView extends VcsObject {
       applyKeyMapping(attributes, this.keyMapping);
     }
     attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
+    attributes = applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
     return applyEmptyAttributesFilter(attributes);
   }
 
@@ -375,7 +408,7 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   getTags(feature) {
     if (this.tags) {
-      const attributes = feature.getProperty('attributes') || {};
+      const attributes = this._getAttributesFromFeature(feature);
       const tags = Object.keys(this.tags)
         .filter(
           (key) =>
