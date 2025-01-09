@@ -11,6 +11,7 @@
         :item="item"
         :search="localSearchValue"
         v-model:opened="localOpenedItems"
+        :custom-filter="customFilter"
         :open-on-click="openOnClick"
         :item-children="itemChildren"
         @item-toggled="itemToggled"
@@ -46,6 +47,7 @@
    * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click.
    * @vue-prop {string} [search=''] - The value used to filter the items.
    * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview.
+   * @vue-prop {function(import("./VcsTreeNode.vue").VcsTreeNodeItem, string|undefined):boolean}} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated.
    */
   export default {
@@ -85,6 +87,14 @@
       },
       searchbarPlaceholder: {
         type: String,
+        default: undefined,
+      },
+      /**
+       * @param {import("./VcsTreeNode.vue").VcsTreeNodeItem} item The item to filter.
+       * @param {string} search The query value.
+       */
+      customFilter: {
+        type: Function,
         default: undefined,
       },
     },

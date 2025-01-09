@@ -11,6 +11,8 @@
   - added option `secondaryButtonTitle` to configure the new secondary button title
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
+- Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
+- Replace `filterPredicate` injection by `customFilter` in the VcsList component.
 
 # 6.0.11
 

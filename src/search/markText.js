@@ -1,12 +1,12 @@
 /**
- * @typedef {Object} Block
+ * @typedef {Object} BlockIndices
  * @property {number} start
  * @property {number} end
  */
 
 /**
- * @param {Block[]} blocks
- * @param {Block} candidate
+ * @param {BlockIndices[]} blocks
+ * @param {BlockIndices} candidate
  * @returns {boolean}
  */
 function isBlockWithinBlocks(blocks, candidate) {
@@ -18,7 +18,7 @@ function isBlockWithinBlocks(blocks, candidate) {
 /**
  * @param {string} text
  * @param {RegExp} partial
- * @param {Block[]} blocks
+ * @param {BlockIndices[]} blocks
  */
 function addPartialBlocks(text, partial, blocks) {
   let match;

@@ -168,6 +168,7 @@
    * @vue-prop {boolean} [showSearchbar=true] - whether to show searchbar
    * @vue-prop {string} [searchbarPlaceholder] - placeholder for searchbar
    * @vue-prop {string} [itemSelectable='isSelectable'] - The property on each item that is used to determine if it is selectable or not. Non-selectable items are automatically disabled.
+   * @vue-prop {function(any, string|undefined, TableItem):boolean} [customFilter] - a function to customize filtering when searching. The first parameter represents the item values, with the function called for each of them. The second is the search term. The third is the complete item.
    * @vue-event {UpdateItemsEvent} update:items - Emits when one of the options properties is updated or on search input. Can be used to update items via API call to a server.
    * @vue-computed {Array<TableItem>} filteredItems - array of items with search filter applied on. If search string is empty, same as items array.
    * @vue-computed {Array<import("vuetify").DataTableHeader>} translatedHeaders - array of translated header items.
@@ -232,6 +233,10 @@
         type: String,
         default: 'isSelectable',
       },
+      customFilter: {
+        type: Function,
+        default: undefined,
+      },
     },
     setup(props, { attrs, emit, slots }) {
       const vm = getCurrentInstance().proxy;
@@ -272,6 +277,9 @@
        * @returns {boolean}
        */
       const handleFilter = (value, filter, item) => {
+        if (props.customFilter) {
+          return props.customFilter(value, filter, item.raw);
+        }
         return handleFilterInternal(value, filter, item.raw);
       };
 
@@ -300,9 +308,12 @@
        * @type {ComputedRef<Array<Object>>}
        */
       const filteredItems = computed(() =>
-        props.items.filter((item) =>
-          handleFilterInternal(item.value, search.value, item),
-        ),
+        props.items.filter((item) => {
+          if (props.customFilter) {
+            return props.customFilter(item.value, search.value, item);
+          }
+          return handleFilterInternal(item.value, search.value, item);
+        }),
       );
       const numberOfItems = computed(() => {
         if (props.serverItemsLength > -1) {

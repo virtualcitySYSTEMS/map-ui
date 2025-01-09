@@ -49,6 +49,7 @@
           :key="child.name"
           :item="child"
           :search="search"
+          :custom-filter="customFilter"
           :level="level + 1"
           :open-on-click="openOnClick"
           :item-children="itemChildren"
@@ -98,6 +99,7 @@
    * @vue-prop {string} [itemChildren='children'] - The property key of the children.
    * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click..
    * @vue-prop {string} [search] - The search string to filter the tree.
+   * @vue-prop {function(VcsTreeNodeItem, string|undefined):boolean}} [customFilter] - a function to customize filtering when searching.
    * @vue-data {slot} [#prepend] - A slot prepended to the item, binding the item. Default fallback renders an image.
    * @vue-data {slot} [#title] - A slot to render the item title, binding the item. Default fallback renders a translatable title using the VcsTreeviewTitle component.
    * @vue-data {slot} [#append] - A slot appended to the item, binding the item. Default fallback renders the VcsActionButtonList if the item has an array of Actions.
@@ -139,6 +141,14 @@
         type: String,
         default: undefined,
       },
+      /**
+       * @param {VcsTreeNodeItem} item The item to check the match for.
+       * @param {string} search The search value.
+       */
+      customFilter: {
+        type: Function,
+        default: undefined,
+      },
     },
     emits: ['itemToggled', 'click'],
     setup(props, { emit, slots }) {
@@ -152,6 +162,9 @@
       const matchFilter = computed(() => {
         if (!props.search) {
           return true;
+        }
+        if (props.customFilter) {
+          return props.customFilter(props.item, props.search);
         }
         const translatedTitle = (item) =>
           item.title ? vm.$t(item.title) : item.name;

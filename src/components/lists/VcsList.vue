@@ -85,7 +85,6 @@
   import {
     computed,
     getCurrentInstance,
-    inject,
     isReactive,
     reactive,
     ref,
@@ -169,7 +168,8 @@
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
    * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} [value=[]] - the initial items to be selected.
-   * @vue-prop {boolean} [searchable=false] - if this list can have its items searched. you can provide your own predicate function by providing "filterPredicate" which is of type function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean
+   * @vue-prop {boolean} [searchable=false] - if this list can have its items searched.
+   * @vue-prop {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    * @vue-prop {boolean} [showTitle=true] - show the title component
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items
@@ -220,6 +220,10 @@
       searchable: {
         type: Boolean,
         default: false,
+      },
+      customFilter: {
+        type: Function,
+        default: undefined,
       },
       searchbarPlaceholder: {
         type: String,
@@ -313,15 +317,15 @@
 
       const vm = getCurrentInstance().proxy;
       /** @type {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} */
-      const filterPredicate = inject(
-        'filterPredicate',
-        (item, queryString = '') => {
-          const translatedTitle = vm.$st(item.title);
-          return translatedTitle
-            .toLocaleLowerCase()
-            .includes(queryString.toLocaleLowerCase());
-        },
-      );
+      const filterPredicate = (item, queryString = '') => {
+        if (props.customFilter) {
+          return props.customFilter(item, queryString);
+        }
+        const translatedTitle = vm.$st(item.title);
+        return translatedTitle
+          .toLocaleLowerCase()
+          .includes(queryString.toLocaleLowerCase());
+      };
 
       /**
        * @type {import("./VcsListItemComponent.vue").VcsListItem|null}
