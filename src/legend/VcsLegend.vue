@@ -19,7 +19,7 @@
             <div v-if="item.type === LegendType.Image">
               <img
                 :src="$st(item.src)"
-                :alt="item.src"
+                :alt="$st(item.src)"
                 class="legend-image"
                 :title="item.tooltip"
               />
