@@ -1,3 +1,10 @@
+# 6.0.13
+
+- Fixes a bug where url state did not work when
+  - omitting cameraPosition
+  - providing epsg code in combination with oblique map
+- Add logging if url state viewpoint is invalid
+
 # 6.0.12
 
 - Fixes a bug in the @vcmap/core, where an invalid projection could crash the map.

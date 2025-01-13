@@ -61,7 +61,7 @@ import {
 
 /**
  * @typedef {AppState} CachedAppState
- * @property {() => import("@vcmap/core").Viewpoint?} [getViewpoint]
+ * @property {(string) => import("@vcmap/core").Viewpoint?} [getViewpoint]
  */
 
 /**
@@ -104,66 +104,87 @@ function parseUrlViewpointState(state) {
     roll: state[5],
   });
 
-  return vp.isValid() ? vp.toJSON() : null;
+  if (vp.isValid()) {
+    return vp.toJSON();
+  } else {
+    getLogger('StateManagement').warning(
+      'The provided viewpoint options are not valid. Viewpoint will be ignored.',
+    );
+    return null;
+  }
 }
 
 /**
  * @param {UrlViewpointState} state
+ * @param {string} moduleId
  * @returns {import("@vcmap/core").ViewpointOptions|null}
  */
-export function parseUrlProjectedViewpointState(state) {
+export function parseUrlProjectedViewpointState(state, moduleId) {
   const projection = getDefaultProjection();
   const projectionCode = parseInt(projection.epsg.split(':')[1], 10);
 
-  let cameraPosition = state[0];
-  let groundPosition = state[1];
-  if (state[6] && state[6] === projectionCode) {
-    if (cameraPosition) {
+  if (state[6] === projectionCode) {
+    let cameraPosition;
+    let groundPosition;
+    if (state[0]) {
       // (cameraPosition instanceof Coordinate)
       cameraPosition = Projection.transform(
         wgs84Projection,
         projection,
-        cameraPosition,
+        state[0],
       );
     }
-    if (groundPosition) {
+    if (state[1]) {
       groundPosition = Projection.transform(
         wgs84Projection,
         projection,
-        groundPosition,
+        state[1],
       );
     }
+    return parseUrlViewpointState([
+      cameraPosition,
+      groundPosition,
+      ...state.slice(2),
+    ]);
+  } else {
+    getLogger('StateManagement').warning(
+      `The provided viewpoint epsg code (${state[6]}) does not equal epsg code (${projectionCode}) of module '${moduleId}' and therefore can not be handled. Camera and ground position will be ignored.`,
+    );
+    return null;
   }
-
-  const vp = new Viewpoint({
-    cameraPosition: cameraPosition ?? undefined,
-    groundPosition: groundPosition ?? undefined,
-    distance: state[2] > 0 ? state[2] : undefined,
-    heading: state[3],
-    pitch: state[4],
-    roll: state[5],
-  });
-  vp.animate = false;
-  return vp.isValid() ? vp.toJSON() : null;
 }
 
 /**
  * @param {UrlExtentState} state
+ * @param {string} moduleId
  * @returns {import("@vcmap/core").ViewpointOptions|null}
  */
-export function parseUrlExtentState(state) {
+export function parseUrlExtentState(state, moduleId) {
   const projection = getDefaultProjection();
   const projectionCode = parseInt(projection.epsg.split(':')[1], 10);
   const extentOptions = { coordinates: state[0] };
-  if (projectionCode === state[1]) {
+  if (!state[1]) {
+    extentOptions.projection = wgs84Projection;
+  } else if (state[1] && state[1] === projectionCode) {
     extentOptions.projection = projection;
   } else {
-    extentOptions.projection = wgs84Projection;
+    getLogger('StateManagement').warning(
+      `The provided extent epsg code (${state[6]}) does not equal epsg code (${projectionCode}) of module '${moduleId}' and therefore can not be handled. The provided extent will be ignored.`,
+    );
+    return null;
   }
   const extent = new Extent(extentOptions);
-  const vp = Viewpoint.createViewpointFromExtent(extent);
-  vp.animate = false;
-  return vp.isValid() ? vp.toJSON() : null;
+
+  if (extent.isValid()) {
+    const vp = Viewpoint.createViewpointFromExtent(extent);
+    vp.animate = false;
+    return vp.toJSON();
+  } else {
+    getLogger('StateManagement').warning(
+      'The provided extent options are not valid. Extent will be ignored.',
+    );
+    return null;
+  }
 }
 
 /**
@@ -215,10 +236,12 @@ function writeUrlPluginState(state) {
 function parseUrlAppState(urlState) {
   const state = createEmptyState();
   if (Array.isArray(urlState[0])) {
-    if (urlState[0][0].length === 4) {
-      state.getViewpoint = () => parseUrlExtentState(urlState[0]);
-    } else if (urlState[0].length === 7) {
-      state.getViewpoint = () => parseUrlProjectedViewpointState(urlState[0]);
+    if (Array.isArray(urlState[0][0]) && urlState[0][0].length === 4) {
+      state.getViewpoint = (moduleId) =>
+        parseUrlExtentState(urlState[0], moduleId);
+    } else if (urlState[0][6]) {
+      state.getViewpoint = (moduleId) =>
+        parseUrlProjectedViewpointState(urlState[0], moduleId);
     } else {
       state.activeViewpoint = parseUrlViewpointState(urlState[0]);
     }

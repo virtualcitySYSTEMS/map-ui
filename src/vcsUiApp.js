@@ -687,18 +687,14 @@ class VcsUiApp extends VcsApp {
           this.obliqueCollections.getByKey(
             this._cachedAppState.activeObliqueCollection,
           ),
-          new Viewpoint(this._cachedAppState.activeViewpoint),
         );
-      } else if (this._cachedAppState.activeViewpoint && this.maps.activeMap) {
-        await this.maps.activeMap.gotoViewpoint(
-          new Viewpoint(this._cachedAppState.activeViewpoint),
-        );
-      } else if (
-        typeof this._cachedAppState.getViewpoint === 'function' &&
-        this.maps.activeMap
-      ) {
-        await this.maps.activeMap.gotoViewpoint(
-          new Viewpoint(this._cachedAppState.getViewpoint()),
+      }
+      const viewpointOptions =
+        this._cachedAppState.activeViewpoint ??
+        this._cachedAppState.getViewpoint?.(module._id);
+      if (viewpointOptions) {
+        await this.maps.activeMap?.gotoViewpoint(
+          new Viewpoint(viewpointOptions),
         );
       }
       this._cachedAppState.moduleIds.splice(
