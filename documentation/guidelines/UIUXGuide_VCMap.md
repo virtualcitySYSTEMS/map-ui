@@ -2,8 +2,8 @@
 
 ## Inhaltsverzeichnis
 
-1. [Allgemeine Grundsätze](sections/UIUXGuide_general#allgemeine-grundsätze)
-2. [Terminologie](sections/UIUXGuide_terminology#terminologie)
+1. [Allgemeine Grundsätze](sections/UIUXGuide_general.md#allgemeine-grundsätze)
+2. [Terminologie](sections/UIUXGuide_terminology.md#terminologie)
 3. [Formulierung von Tooltips](sections/UIUXGuide_tooltips.md#formulierung-von-tooltips)
    - [Allgemeine Grundsätze](sections/UIUXGuide_tooltips.md#allgemeine-grundsätze)
    - [Aufbau](sections/UIUXGuide_tooltips.md#aufbau)
