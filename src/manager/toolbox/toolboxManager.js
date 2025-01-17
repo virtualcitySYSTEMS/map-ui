@@ -1,7 +1,7 @@
 import { VcsEvent } from '@vcmap/core';
 import { check, maybe, ofEnum, oneOf, optional } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
-import { reactive, shallowReactive } from 'vue';
+import { reactive, ref, shallowReactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
 import { ActionPattern } from '../../components/lists/VcsActionList.vue';
@@ -207,6 +207,12 @@ class ToolboxManager {
      * @type {import("vue").UnwrapRef<string[]>}
      */
     this.componentIds = reactive([]);
+
+    /**
+     * reative boolean to show or hide the toolbox
+     * @type {import("vue").Ref<boolean>}
+     */
+    this.open = ref(true);
     /**
      * @type {Map<string, ToolboxComponent>}
      * @private

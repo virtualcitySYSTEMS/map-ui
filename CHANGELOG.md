@@ -13,6 +13,7 @@
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
 - Replace `filterPredicate` injection by `customFilter` in the VcsList component.
+- Add Tablet view for display size < 960px.
 
 # 6.0.11
 

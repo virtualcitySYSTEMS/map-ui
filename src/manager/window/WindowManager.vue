@@ -1,6 +1,8 @@
 <template>
   <div
-    :class="{ 'win-container-mobile': addMobileClass }"
+    :class="{
+      'win-container-mobile': addMobileClass,
+    }"
     class="window-manager"
   >
     <WindowComponent
@@ -126,13 +128,14 @@
           // do not clip balloons to target
           return windowComponent?.position;
         }
-
         return getPositionAppliedOnTarget(
           windowComponent?.position,
           targetSize.value,
           getPosition(parentComponent),
         );
       };
+      const display = useDisplay();
+
       /**
        * @param {string} id
        * @returns {import("vue").ComputedRef<Object>}
@@ -140,12 +143,14 @@
       const getStyles = (id) =>
         computed(() => {
           const windowComponent = windowManager.get(id);
+          const zIndexOffset = Number(display.sm.value); // add z-Index Offset for Tablet View to keep the windows above the detached Icon
           return {
-            zIndex: windowComponent.zIndex.value,
+            zIndex: windowComponent.zIndex.value + zIndexOffset,
             ...getPosition(windowComponent),
             ...(windowComponent?.state?.styles || {}),
           };
         });
+
       /**
        * @param {string} id
        */
@@ -163,9 +168,13 @@
         const position = getPosition(windowComponent);
         moveWindow(id, translation, windowManager, targetSize.value, position);
       };
-      const display = useDisplay();
+
       const addMobileClass = computed(() => {
         return display.xs.value && componentIds.length > 0;
+      });
+
+      const addTabletClass = computed(() => {
+        return display.sm.value && componentIds.length > 0;
       });
 
       const setTargetSize = () => {
@@ -199,6 +208,7 @@
         bringWindowToTop,
         move,
         addMobileClass,
+        addTabletClass,
       };
     },
   };

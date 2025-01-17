@@ -25,7 +25,7 @@
         ></OrientationToolsButton>
       </v-row>
     </template>
-    <template v-if="mdAndUp">
+    <template v-if="smAndUp">
       <v-row justify="center">
         <VcsZoomButton
           @zoom-out="zoomOut()"
@@ -33,7 +33,7 @@
           :disabled="movementApiCallsDisabled"
         />
       </v-row>
-      <v-row justify="center" v-if="is3D && mdAndUp">
+      <v-row justify="center" v-if="is3D && smAndUp">
         <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
       </v-row>
       <v-row v-if="!hideRotationButton && is3D" justify="center">
@@ -401,11 +401,11 @@
         removeMovementDisabledListener();
       });
 
-      const { xs, mdAndUp, mobile } = useDisplay();
+      const { xs, mobile, smAndUp } = useDisplay();
 
       return {
         xs,
-        mdAndUp,
+        smAndUp,
         mobile,
         viewMode,
         heading,

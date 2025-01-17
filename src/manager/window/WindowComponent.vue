@@ -9,6 +9,7 @@
     :class="{
       rounded: !isDocked,
       marginToTop: isDocked || !isChild,
+      marginToTopTablet: isTabletWithOpenToolbar,
       'rounded-be': isDynamicLeft,
       'rounded-bs': isDynamicRight,
     }"
@@ -41,11 +42,15 @@
   .marginToTop {
     margin-top: 2px;
   }
+  .marginToTopTablet {
+    margin-top: calc(var(--v-vcs-font-size) * 3 + 6px);
+  }
 </style>
 
 <script>
   import { computed, inject, provide, ref } from 'vue';
   import { VDivider, VSheet } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import { WindowSlot } from './windowManager.js';
 
   /**
@@ -94,6 +99,10 @@
       );
       const isDocked = computed(
         () => props.slotWindow.value !== WindowSlot.DETACHED,
+      );
+      const display = useDisplay();
+      const isTabletWithOpenToolbar = computed(
+        () => app.toolboxManager.open.value && display.sm.value,
       );
       const isDockedLeft = computed(() => {
         return (
@@ -156,6 +165,7 @@
         isDynamic,
         isChild,
         isDocked,
+        isTabletWithOpenToolbar,
         isDynamicLeft: isDockedLeft,
         isDynamicRight: isDockedRight,
         isDraggable,

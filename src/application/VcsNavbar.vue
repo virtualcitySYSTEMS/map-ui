@@ -14,7 +14,7 @@
             <div class="d-flex">
               <VcsActionButtonList
                 :actions="mapActions"
-                :overflow-count="3"
+                :overflow-count="smAndDown ? 2 : 3"
                 :force-overflow="false"
                 button="VcsToolButton"
               />
@@ -29,7 +29,7 @@
               />
               <VcsActionButtonList
                 :actions="contentActions"
-                :overflow-count="xs ? 3 : 4"
+                :overflow-count="smAndDown ? 2 : 3"
                 :force-overflow="false"
                 button="VcsToolButton"
               />
@@ -41,8 +41,9 @@
               />
               <VcsActionButtonList
                 :actions="toolActions"
+                :overflow-count="smAndDown ? 1 : 2"
                 :force-overflow="false"
-                v-if="mdAndUp"
+                v-if="smAndUp"
                 button="VcsToolButton"
               />
             </div>
@@ -50,7 +51,7 @@
         </v-col>
         <v-col class="d-flex justify-center flex-grow-2 mx-2">
           <div class="d-flex align-center">
-            <template v-if="!xs">
+            <template v-if="!smAndDown">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
             <div
@@ -63,10 +64,11 @@
           </div>
         </v-col>
         <v-col class="align-content-end d-flex justify-end">
-          <v-toolbar-items v-if="mdAndUp">
+          <v-toolbar-items v-if="smAndUp">
             <div class="d-flex">
               <VcsActionButtonList
                 :actions="projectActions"
+                :overflow-count="smAndDown ? 1 : 2"
                 :force-overflow="false"
                 button="VcsToolButton"
               />
@@ -206,7 +208,7 @@
         destroySearchAction();
       });
 
-      const { xs, mdAndUp } = useDisplay();
+      const { xs, mdAndUp, smAndDown, smAndUp } = useDisplay();
 
       const density = computed(() => {
         return xs.value ? 'comfortable' : 'compact';
@@ -228,8 +230,10 @@
         config: app.uiConfig.config,
         logo,
         xs,
+        smAndDown,
         density,
         mdAndUp,
+        smAndUp,
         toolbarHeight,
       };
     },

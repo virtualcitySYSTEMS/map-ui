@@ -1,6 +1,6 @@
 <template>
   <v-toolbar
-    v-if="toolboxOpen && orderedGroups.length > 0 && mdAndUp"
+    v-if="toolboxOpen && orderedGroups.length > 0 && smAndUp"
     class="vcs-toolbox mx-auto elevation-4 opacity-80 toolbox-manager-component"
     :class="{
       'rounded-b': !open,
@@ -150,7 +150,7 @@
           .filter(filterFunc),
       );
 
-      const toolboxOpen = ref(true);
+      const toolboxOpen = app.toolboxManager.open;
       const toolboxToggleAction = {
         name: 'toolboxToggleAction',
         icon: '$vcsTools',
@@ -199,13 +199,13 @@
         app.windowManager.bringWindowToTop('toolbox');
       };
 
-      const { mdAndUp } = useDisplay();
+      const { smAndUp } = useDisplay();
       const fontSize = useFontSize();
       const toolboxHeight = computed(() => {
         return fontSize.value * 3 + 1;
       });
       return {
-        mdAndUp,
+        smAndUp,
         toolboxOpen,
         orderedGroups,
         zIndex,

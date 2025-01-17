@@ -10,13 +10,14 @@
     fluid
     absolute
   >
-    <template v-if="xs">
+    <template v-if="smAndDown">
       <img
         v-if="mobileLogo"
         :src="mobileLogo"
         alt="Logo"
         draggable="false"
         class="mobile-logo"
+        :class="{ 'mobile-logo': sm }"
       />
     </template>
     <!--VcsButton
@@ -69,7 +70,6 @@
     left: 1rem;
     z-index: 1;
   }
-
   .mobile-attribution-btn {
     position: fixed;
     right: 2px;
@@ -111,10 +111,12 @@
     setup() {
       /** @type {import("../vcsUiApp.js").default} */
       const app = inject('vcsApp');
-      const { xs } = useDisplay();
+      const { smAndDown, xs, sm } = useDisplay();
       return {
         config: app.uiConfig.config,
+        smAndDown,
         xs,
+        sm,
         mobileLogo: computed(
           () =>
             app.uiConfig.config.mobileLogo ??
