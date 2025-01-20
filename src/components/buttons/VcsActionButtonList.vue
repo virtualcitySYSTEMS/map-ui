@@ -43,7 +43,7 @@
 </template>
 <style scoped lang="scss">
   :deep(.v-spacer) {
-    width: calc(var(--v-vcs-font-size) + 4px);
+    width: calc(var(--v-vcs-font-size) * 1.25);
   }
 </style>
 <script>
