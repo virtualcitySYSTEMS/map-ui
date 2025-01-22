@@ -14,6 +14,7 @@
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
 - Replace `filterPredicate` injection by `customFilter` in the VcsList component.
 - Add Tablet view for display size < 960px.
+- Add UI-Element for map rotation and provide start and stop callbacks
 
 # 6.0.11
 
@@ -33,7 +34,6 @@
 
 - Fixcontent tree group padding
 - Fix VcsDataTable type `UpdateItemsEvent`
-- Add UI-Element for map rotation and provide start and stop callbacks
 
 # 6.0.8
 

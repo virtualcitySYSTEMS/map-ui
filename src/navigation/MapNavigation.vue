@@ -187,7 +187,7 @@
     return {
       action,
       destroy: () => {
-        stopRotation();
+        stopRotation?.();
         rotationListener();
       },
     };
