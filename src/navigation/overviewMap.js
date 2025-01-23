@@ -158,6 +158,13 @@ class OverviewMap {
     });
 
     /**
+     * A factor by which to multiply the distance of the viewpoint of the overviewMap.
+     * @type {number}
+     * @private
+     */
+    this._scaleFactor = 1;
+
+    /**
      * A factor by witch to multiply the resolution when zooming to a single oblique image.
      * @type {number}
      * @private
@@ -262,12 +269,16 @@ class OverviewMap {
       () => [
         this._app.uiConfig.config.hideMapNavigation,
         this._app.uiConfig.config.overviewMapActiveOnStartup,
+        this._app.uiConfig.config.overviewMapScaleFactor,
       ],
-      async ([hide, activeOnStartup]) => {
+      async ([hide, activeOnStartup, scaleFactor]) => {
         if (activeOnStartup && !hide && !this._active) {
           await this.activate();
         } else if (hide && this._active) {
           await this.deactivate();
+        }
+        if (scaleFactor) {
+          this._scaleFactor = scaleFactor;
         }
       },
     );
@@ -482,6 +493,7 @@ class OverviewMap {
 
         const vp = Viewpoint.createViewpointFromExtent(extent);
         vp.distance /= this._obliqueResolutionFactor;
+        vp.distance *= this._scaleFactor;
         this._map.gotoViewpoint(vp);
       }
     }
@@ -632,6 +644,7 @@ class OverviewMap {
       viewpoint.groundPosition = null;
       viewpoint.distance = distance * 4;
     }
+    viewpoint.distance *= this._scaleFactor;
     this._map.gotoViewpoint(viewpoint);
   }
 

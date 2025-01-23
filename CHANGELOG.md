@@ -15,6 +15,7 @@
 - Replace `filterPredicate` injection by `customFilter` in the VcsList component.
 - Add Tablet view for display size < 960px.
 - Add UI-Element for map rotation and provide start and stop callbacks
+- Adds a `overviewMapScaleFactor` property to the `uiConfig` options.
 
 # 6.0.11
 

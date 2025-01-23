@@ -80,6 +80,7 @@ import { reactive, readonly } from 'vue';
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuraton https://vuetifyjs.com/en/features/theme/
  * @property {boolean} [openLegendOnAdd] - open the legend window, if new layer has a config
+ * @property {number} [overviewMapScaleFactor] - can be used to apply a scale factor the the overviewMap
  */
 
 /**
