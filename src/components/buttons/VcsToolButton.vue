@@ -82,7 +82,6 @@
    * @vue-prop {string}                                 icon - When given, will display an icon in the button. Replaces vuetify icon property.
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
-   * @vue-prop {Object<string, any>}                    tooltipProps - Properties to be passed to the tooltip {@link https://vuetifyjs.com/en/api/v-tooltip/#props|vuetify v-tooltip}
    * @vue-computed {string}                             appliedColor - color applied to button, depending on size and state
    * @vue-computed {boolean}                            hasDefaultSlot
    */

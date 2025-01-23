@@ -18,7 +18,8 @@
         v-model="localValue"
         hide-header
         @update:model-value="menuOpen = false"
-        color="primary"
+        :color="datePickerProps.color ?? 'primary'"
+        v-bind="{ ...datePickerProps }"
       >
         <template #actions>
           <v-btn color="primary" @click="goToToday">
@@ -40,6 +41,7 @@
    * @description stylized wrapper around {@link https://vuetifyjs.com/en/components/date-pickers/#internationalization}.
    * @vue-prop {Date} modelValue - value of the date picker as a Date (changes to the Date Object are not tracked, handled as atomic value)
    * @vue-prop {string} [icon] - specify optional prepend icon, defaults to mdi-calendar
+   * @vue-prop {Object} [datePickerProps] - props that are passed to the {@link https://vuetifyjs.com/en/api/v-date-picker/ | VDatePicker}
    */
   export default {
     name: 'VcsDatePicker',
@@ -51,6 +53,10 @@
       icon: {
         type: String,
         default: 'mdi-calendar',
+      },
+      datePickerProps: {
+        type: Object,
+        default: () => ({}),
       },
     },
     components: {

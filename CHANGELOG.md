@@ -16,6 +16,7 @@
 - Add Tablet view for display size < 960px.
 - Add UI-Element for map rotation and provide start and stop callbacks
 - Adds a `overviewMapScaleFactor` property to the `uiConfig` options.
+- Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
 
 # 6.0.11
 
