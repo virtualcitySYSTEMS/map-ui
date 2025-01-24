@@ -6,9 +6,9 @@
 - Remove Config pattern check for modules in `init.js`
 - Add two more `VcsCallback` extensions: `AddModuleCallback` and `RemoveModuleCallback`
 - Extend `splashScreen` configuration with in `uiConfig`:
-  - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary (exit) button
-  - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
-  - added option `secondaryButtonTitle` to configure the new secondary button title
+    - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary (exit) button
+    - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
+    - added option `secondaryButtonTitle` to configure the new secondary button title
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
@@ -17,6 +17,21 @@
 - Add UI-Element for map rotation and provide start and stop callbacks
 - Adds a `overviewMapScaleFactor` property to the `uiConfig` options.
 - Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
+
+# 6.0.14
+
+- Fixes a bug where loading a plugin from a baseUrl including "index.html" would not load.
+
+# 6.0.13
+
+- Fixes a bug where url state did not work when
+  - omitting cameraPosition
+  - providing epsg code in combination with oblique map
+- Add logging if url state viewpoint is invalid
+
+# 6.0.12
+
+- Fixes a bug in the @vcmap/core, where an invalid projection could crash the map.
 
 # 6.0.11
 

@@ -83,6 +83,23 @@ export function isValidPackageName(name) {
 }
 
 /**
+ * joins pathname and moduleUrl.
+ * @param {string} pathname will remove filenames with extension or add a trailing slash if missing
+ * @param {string} module relative url to the module
+ * @returns {string}
+ */
+export function getModuleUrl(pathname, module) {
+  const pathNameParts = pathname.split('/');
+  if (pathNameParts.at(-1).includes('.')) {
+    pathNameParts.pop();
+  } else if (pathNameParts.at(-1) === '') {
+    pathNameParts.pop();
+  }
+  const pathName = pathNameParts.join('/');
+  return `${pathName}/${module}`;
+}
+
+/**
  * @param {string} name
  * @param {T} config
  * @returns {Promise<import("@src/vcsUiApp.js").VcsPlugin<T, S>|null>}
@@ -93,10 +110,7 @@ export async function loadPlugin(name, config) {
   let module = config.entry;
 
   if (!/^(https?:\/\/|\/)/.test(module)) {
-    module = `${window.location.origin}${window.location.pathname.replace(
-      /\/?$/,
-      '/',
-    )}${module}`;
+    module = `${window.location.origin}${getModuleUrl(window.location.pathname, module)}`;
   } else if (module === '_dev') {
     module = `/${name}.js`;
   } else if (module === 'http://localhost/_test') {
