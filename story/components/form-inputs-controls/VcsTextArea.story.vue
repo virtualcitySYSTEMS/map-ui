@@ -7,6 +7,7 @@
   const state = getStoryState(undefined, 'row');
   const textValue = ref('short Text');
   const clearable = ref(true);
+  const applyRules = ref(true);
 </script>
 
 <template>
@@ -16,11 +17,17 @@
         v-bind="{ ...state.bind }"
         v-model="textValue"
         :clearable="clearable"
+        :rules="
+          applyRules
+            ? [(v) => v.length > 10 || 'Input length is wrong']
+            : undefined
+        "
       />
       <template #controls>
         <GlobalControls v-model="state">
           <HstText title="modelValue" v-model="textValue"></HstText>
           <HstCheckbox title="clearable" v-model="clearable"></HstCheckbox>
+          <HstCheckbox title="apply rules" v-model="applyRules"></HstCheckbox>
         </GlobalControls>
       </template>
     </Variant>

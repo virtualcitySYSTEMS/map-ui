@@ -52,7 +52,7 @@
           <template #prepend="prependScope" v-if="multiple">
             <VcsCheckbox
               v-model="prependScope.isSelected"
-              class="py-0"
+              class="py-0 pr-1"
             ></VcsCheckbox>
           </template>
         </v-list-item>

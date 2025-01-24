@@ -72,24 +72,27 @@
     border-color: rgb(var(--v-theme-primary));
   }
 
-  :deep(.v-field--focused .v-field__outline__end) {
-    border-width: 1px 1px 1px 0 !important;
-  }
   :deep(.v-field--focused .v-field__outline__start) {
     border-width: 1px 0 1px 1px !important;
+  }
+  :deep(.v-field--focused .v-field__outline__notch)::after {
+    border-width: 0 0 1px 0 !important;
+  }
+  :deep(.v-field--focused .v-field__outline__end) {
+    border-width: 1px 1px 1px 0 !important;
   }
 
   // remove outline, if not focused, hovered or an error
   :deep(.v-field:not(.v-field--focused):not(.v-field--error):not(:hover)) {
     .v-field__outline * {
-      border-width: 0 0 0 0;
-      border-radius: 0;
-    }
-    .v-field__outline__end {
       border-width: 0 0 1px 0 !important;
       border-radius: 0;
+    }
+    .v-field__outline__start {
+      margin-left: 4px;
+    }
+    .v-field__outline__end {
       margin-right: 4px;
-      margin-left: -8px;
     }
     .v-field__loader {
       padding-left: 3px;
@@ -102,6 +105,8 @@
     .v-field__outline * label {
       color: rgb(var(--v-theme-primary));
       margin-left: -4px;
+      border-width: 0 0 0 0;
+      border-radius: 0;
     }
   }
   :deep(.v-field .v-field--focused .v-field--error):hover {

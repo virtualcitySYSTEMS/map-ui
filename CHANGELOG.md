@@ -1,14 +1,14 @@
 # 6.1.0
 
 - Suggestions implemented for search interfaces that provide string suggestions.
-- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList and VcsTextArea
+- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList, VcsSelect and VcsTextArea
 - Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
 - Remove Config pattern check for modules in `init.js`
 - Add two more `VcsCallback` extensions: `AddModuleCallback` and `RemoveModuleCallback`
 - Extend `splashScreen` configuration with in `uiConfig`:
-    - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary (exit) button
-    - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
-    - added option `secondaryButtonTitle` to configure the new secondary button title
+  - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary (exit) button
+  - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
+  - added option `secondaryButtonTitle` to configure the new secondary button title
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
