@@ -1,3 +1,7 @@
+# 6.0.14
+
+- Fixes a bug where loading a plugin from a baseUrl including "index.html" would not load.
+
 # 6.0.13
 
 - Fixes a bug where url state did not work when

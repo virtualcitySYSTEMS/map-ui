@@ -1,6 +1,7 @@
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 import VcsUiApp from '../../src/vcsUiApp.js';
 import {
+  getModuleUrl,
   getPluginAssetUrl,
   getPluginEntry,
   pluginBaseUrlSymbol,
@@ -89,5 +90,37 @@ describe('getPluginEntry', () => {
         'https://virtualcitymap.de/map/plugins/foo/index.js',
       ),
     ).to.equal('https://virtualcitymap.de/map/plugins/foo/index.js');
+  });
+});
+
+describe('getModuleUrl', () => {
+  it('should handle empty pathName', () => {
+    expect(getModuleUrl('', 'plugins/@vcmap/create-link/index.js')).to.equal(
+      '/plugins/@vcmap/create-link/index.js',
+    );
+    expect(getModuleUrl('/', 'plugins/@vcmap/create-link/index.js')).to.equal(
+      '/plugins/@vcmap/create-link/index.js',
+    );
+  });
+  it('should add a trailing slash to the pathname', () => {
+    expect(
+      getModuleUrl('test', 'plugins/@vcmap/create-link/index.js'),
+    ).to.equal('test/plugins/@vcmap/create-link/index.js');
+    expect(
+      getModuleUrl('test/', 'plugins/@vcmap/create-link/index.js'),
+    ).to.equal('test/plugins/@vcmap/create-link/index.js');
+  });
+  it('should strip elements with a . after the last slash', () => {
+    expect(
+      getModuleUrl('test/index.html', 'plugins/@vcmap/create-link/index.js'),
+    ).to.equal('test/plugins/@vcmap/create-link/index.js');
+  });
+  it('should handle longer pathNames', () => {
+    expect(
+      getModuleUrl(
+        '/foo/bar/test/index.html',
+        'plugins/@vcmap/create-link/index.js',
+      ),
+    ).to.equal('/foo/bar/test/plugins/@vcmap/create-link/index.js');
   });
 });
