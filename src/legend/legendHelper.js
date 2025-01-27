@@ -117,7 +117,7 @@ export function getImageSrcFromShape(image) {
  * @param {Array<LegendItem>} legend
  * @returns {LegendEntry}
  */
-export function createLayerLegendEntry(key, title, legend) {
+export function createLegendEntry(key, title, legend) {
   const actions = [];
   legend.forEach((item) => {
     // XXX only one popout button allowed. Rethink if use case for multiple popout buttons comes up.
@@ -176,7 +176,7 @@ export function getLegendEntries(app) {
       const legend =
         layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
-        const legendEntry = createLayerLegendEntry(key, title, legend);
+        const legendEntry = createLegendEntry(key, title, legend);
         entries.unshift(legendEntry);
       }
       if (layer.styleChanged) {
@@ -187,17 +187,60 @@ export function getLegendEntries(app) {
     }
   }
 
-  const destroyMapListener = app.maps.mapActivated.addEventListener(() =>
-    [...app.layers].forEach(syncLayerLegendEntries),
-  );
+  /**
+   * @param {import("@vcmap/core").VectorClusterGroup} group
+   */
+  function removeEntryForGroup(group) {
+    const groupName = group.name;
+    const entryIndex = entries.findIndex(({ key }) => key === groupName);
+    if (entryIndex >= 0) {
+      entries.splice(entryIndex, 1);
+    }
+  }
+
+  /**
+   * Handles addition or removal of VectorClusterGroups
+   * @param {import("@vcmap/core").Layer[]} layers
+   */
+  function syncVectorClusterGroups(layers) {
+    [...app.vectorClusterGroups].forEach(removeEntryForGroup);
+    const vectorClusterGroups = layers
+      .filter((layer) => layer.active && layer.isSupported)
+      .map((layer) => layer.vectorClusterGroup);
+    const uniqueVectorClusterGroups = [...new Set(vectorClusterGroups)];
+    uniqueVectorClusterGroups.forEach((groupName) => {
+      const group = app.vectorClusterGroups.getByKey(groupName);
+      if (group?.properties?.legend) {
+        const title = group.properties.title || group.name;
+        const { legend } = group.properties;
+        if (!entries.some(({ key }) => key === group.name)) {
+          const legendEntry = createLegendEntry(group.name, title, legend);
+          entries.unshift(legendEntry);
+        }
+      }
+    });
+  }
+
+  const destroyMapListener = app.maps.mapActivated.addEventListener(() => {
+    [...app.layers].forEach(syncLayerLegendEntries);
+    syncVectorClusterGroups([...app.layers]);
+  });
 
   const destroyChangedListener = app.layers.stateChanged.addEventListener(
-    syncLayerLegendEntries,
+    (l) => {
+      syncLayerLegendEntries(l);
+      syncVectorClusterGroups([...app.layers]);
+    },
   );
-  const destroyRemovedListener =
-    app.layers.removed.addEventListener(removeEntryForLayer);
+  const destroyRemovedListener = app.layers.removed.addEventListener((l) => {
+    removeEntryForLayer(l);
+    syncVectorClusterGroups([...app.layers]);
+  });
 
-  [...app.layers].forEach(syncLayerLegendEntries);
+  [...app.layers].forEach((l) => {
+    syncLayerLegendEntries(l);
+  });
+  syncVectorClusterGroups([...app.layers]);
 
   const destroy = () => {
     destroyMapListener();

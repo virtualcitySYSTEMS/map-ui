@@ -1,8 +1,13 @@
 import { describe, expect, it, beforeAll, beforeEach, afterEach } from 'vitest';
-import { OpenlayersMap, VectorLayer, VectorStyleItem } from '@vcmap/core';
+import {
+  OpenlayersMap,
+  VectorClusterGroup,
+  VectorLayer,
+  VectorStyleItem,
+} from '@vcmap/core';
 import {
   getLegendEntries,
-  createLayerLegendEntry,
+  createLegendEntry,
 } from '../../src/legend/legendHelper.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 
@@ -36,6 +41,9 @@ describe('createLegendEntries', () => {
   let layer;
   let activeLayer;
   let inactiveLayer;
+  let vectorClusterGroup;
+  let layerForVectorClusterGroup1;
+  let layerForVectorClusterGroup2;
   let entries;
   let destroy;
 
@@ -57,6 +65,26 @@ describe('createLegendEntries', () => {
     app.layers.add(inactiveLayer);
     await layer.activate();
     await activeLayer.activate();
+
+    vectorClusterGroup = new VectorClusterGroup({
+      name: 'vectorClusterGroup',
+      properties: { legend },
+    });
+    app.vectorClusterGroups.add(vectorClusterGroup);
+    layerForVectorClusterGroup1 = new VectorLayer({
+      name: 'layerForVectorClusterGroup1',
+      vectorClusterGroup: 'vectorClusterGroup',
+    });
+    app.layers.add(layerForVectorClusterGroup1);
+    vectorClusterGroup.addLayer(layerForVectorClusterGroup1);
+    await layerForVectorClusterGroup1.activate();
+    layerForVectorClusterGroup2 = new VectorLayer({
+      name: 'layerForVectorClusterGroup2',
+      vectorClusterGroup: 'vectorClusterGroup',
+    });
+    app.layers.add(layerForVectorClusterGroup2);
+    vectorClusterGroup.addLayer(layerForVectorClusterGroup2);
+    await layerForVectorClusterGroup2.activate();
   });
 
   beforeEach(() => {
@@ -79,7 +107,7 @@ describe('createLegendEntries', () => {
     });
 
     it('should create a legend entry for active layers with configured legend', () => {
-      const expectedEntry = createLayerLegendEntry(
+      const expectedEntry = createLegendEntry(
         'activeLayer',
         'activeLayer',
         legend,
@@ -89,7 +117,7 @@ describe('createLegendEntries', () => {
     });
 
     it('should create a legend entry for active layers having style with configured legend preferring the style legend over the layer legend', () => {
-      const expectedEntry = createLayerLegendEntry(
+      const expectedEntry = createLegendEntry(
         'activeLayer',
         'activeLayer',
         styleLegend,
@@ -104,11 +132,18 @@ describe('createLegendEntries', () => {
       expect(entry).to.deep.equal(expectedEntry);
       activeLayer.clearStyle();
     });
+
+    it('should create one legend entry for VectorClusterGroup, no matter the number of layers', () => {
+      const vectorClusterGroupLegendEntries = entries.filter(
+        ({ key }) => key === 'vectorClusterGroup',
+      );
+      expect(vectorClusterGroupLegendEntries.length).to.equal(1);
+    });
   });
 
   describe('updating legend entries', () => {
     it('should update a legend entry for layers with configured legend on activation', async () => {
-      const expectedEntry = createLayerLegendEntry(
+      const expectedEntry = createLegendEntry(
         'inactiveLayer',
         'inactiveLayer',
         legend,
@@ -122,7 +157,7 @@ describe('createLegendEntries', () => {
     });
 
     it('should update a legend entry on style change', () => {
-      const expectedEntry = createLayerLegendEntry(
+      const expectedEntry = createLegendEntry(
         'activeLayer',
         'activeLayer',
         styleLegend,
@@ -135,7 +170,7 @@ describe('createLegendEntries', () => {
       );
       let entry = entries.find(({ key }) => key === 'activeLayer');
       expect(entry).to.deep.equal(expectedEntry);
-      const expectedEntryChanged = createLayerLegendEntry(
+      const expectedEntryChanged = createLegendEntry(
         'activeLayer',
         'activeLayer',
         legend,
@@ -147,6 +182,14 @@ describe('createLegendEntries', () => {
       expect(entry).to.deep.equal(expectedEntryChanged);
       activeLayer.clearStyle();
     });
+
+    it('should keep a legend entry for the VectorClusterGroup when one of the two layers is disabled', () => {
+      layerForVectorClusterGroup1.deactivate();
+      const vectorClusterGroupLegendEntries = entries.filter(
+        ({ key }) => key === 'vectorClusterGroup',
+      );
+      expect(vectorClusterGroupLegendEntries.length).to.equal(1);
+    });
   });
 
   describe('removing legend entries', () => {
@@ -157,11 +200,7 @@ describe('createLegendEntries', () => {
           properties: { legend: styleLegend },
         }),
       );
-      const expectedEntry = createLayerLegendEntry(
-        'layer',
-        'layer',
-        styleLegend,
-      );
+      const expectedEntry = createLegendEntry('layer', 'layer', styleLegend);
       let entry = entries.find(({ key }) => key === 'layer');
       expect(entry).to.deep.equal(expectedEntry);
       layer.deactivate();
@@ -172,7 +211,7 @@ describe('createLegendEntries', () => {
     });
 
     it('should remove a legend entry for layers with configured legend on deactivation', async () => {
-      const expectedEntry = createLayerLegendEntry(
+      const expectedEntry = createLegendEntry(
         'activeLayer',
         'activeLayer',
         legend,
@@ -192,11 +231,7 @@ describe('createLegendEntries', () => {
           properties: { legend: styleLegend },
         }),
       );
-      const expectedEntry = createLayerLegendEntry(
-        'layer',
-        'layer',
-        styleLegend,
-      );
+      const expectedEntry = createLegendEntry('layer', 'layer', styleLegend);
       const entry = entries.find(({ key }) => key === 'layer');
       expect(entry).to.deep.equal(expectedEntry);
       layer.clearStyle();
@@ -208,6 +243,15 @@ describe('createLegendEntries', () => {
       const entry = entries.find(({ key }) => key === 'activeLayer');
       expect(entry).to.be.undefined;
       app.maps.activeMap.layerCollection.add(activeLayer);
+    });
+
+    it('should should remove legend entry of a VectorClusterGroup when all its layers are disabled', () => {
+      layerForVectorClusterGroup1.deactivate();
+      layerForVectorClusterGroup2.deactivate();
+      const vectorClusterGroupLegendEntries = entries.filter(
+        ({ key }) => key === 'vectorClusterGroup',
+      );
+      expect(vectorClusterGroupLegendEntries.length).to.equal(0);
     });
   });
 });

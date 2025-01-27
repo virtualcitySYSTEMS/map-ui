@@ -6,10 +6,10 @@ The window opening on activation contains information on all active layers with 
 
 ## Configuration
 
-The legend has to be configured at a `layer` or `style` property bag.
+The legend has to be configured at a `VectorClusterGroup`, `layer` or `style` property bag.
 Using the key `legend` one (or more) [LegendItems](#LegendItems) can be added.
 
-> Legend definition on styles are preferred over legend definitions on layers!
+> Legend definition on styles are preferred over legend definitions on layers! Legend definition on VectorClusterGroup are handled separately, and can therefore be shown at the same time than a layer/style legend.
 
 You may define both, legend on a layer and on its style(s).
 If a style is active, the style legend will be rendered.
@@ -44,7 +44,7 @@ Example:
 
 ### Adding a legend to a style
 
-Legends belonging to styles should always be defined ton the style and not on the layer!
+Legends belonging to styles should always be defined on the style and not on the layer!
 Legends of styles are shown whenever the style is active on an active layer.
 It overwrites a legend definition on the layer, if one is existing.
 If style changes, the legend updates accordingly.
@@ -75,6 +75,30 @@ Example:
             "title": "Transparent buildings"
           }
         ]
+      }
+    ]
+  }
+}
+```
+
+### Adding a legend to a VectorClusterGroup
+
+Legends on VectorClusterGroups are handled separately from legends on Layers and Styles. They are shown whenever one of the layers of the group is active. The `title` property defined in the `properties` bag of the VectorclusterGroup is used as the title of the Legend Entry. If a layer with a legend is part of a VectorClusterGroup with a legend, both legends will be shown.
+
+Example:
+
+```json
+{
+  "type": "VectorClusterLayer",
+  "name": "clusterLayerLocations",
+  "showInContent": true,
+  "clusterDistance": 90,
+  "properties": {
+    "title": "VectorClusterGroup of Locations",
+    "legend": [
+      {
+        "type": "IframeLegendItem",
+        "src": "/exampleData/legendExample.html"
       }
     ]
   }
