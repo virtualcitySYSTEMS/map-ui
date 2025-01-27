@@ -32,7 +32,8 @@
         "config/graphFeatureInfo.config.json",
         "config/splashscreen.config.json",
         "config/hello-world.config.json",
-        "config/theming.config.json"
+        "config/theming.config.json",
+        "config/clipping.config.json"
       ]
     }
   ]

@@ -56,6 +56,8 @@ export { default as StopRotationCallback } from './src/callback/stopRotationCall
 export { default as StartRotationCallback } from './src/callback/startRotationCallback.js';
 export { default as AddModuleCallback } from './src/callback/addModuleCallback.js';
 export { default as RemoveModuleCallback } from './src/callback/removeModuleCallback.js';
+export { default as ActivateClippingPolygonCallback } from './src/callback/activateClippingPolygonCallback.js';
+export { default as DeactivateClippingPolygonCallback } from './src/callback/deactivateClippingPolygonCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,

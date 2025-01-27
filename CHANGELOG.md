@@ -17,6 +17,8 @@
 - Add UI-Element for map rotation and provide start and stop callbacks
 - Adds a `overviewMapScaleFactor` property to the `uiConfig` options.
 - Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
+- Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
+- Add new callbacks `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
 
 # 6.0.14
 
@@ -51,6 +53,7 @@
 
 - Fixcontent tree group padding
 - Fix VcsDataTable type `UpdateItemsEvent`
+- Add UI-Element for map rotation and provide start and stop callbacks
 
 # 6.0.8
 
