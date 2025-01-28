@@ -107,16 +107,52 @@ describe('windowHelper', () => {
       );
     });
 
-    it('should fit a window to the right', () => {
-      const position = getFittedWindowPositionOptions(1900, 40, 20, 40, target);
-      expect(position).to.have.property('right', 10);
+    it('should fit a window to the left, if click position is in left half of the screen', () => {
+      const position = getFittedWindowPositionOptions(
+        200,
+        40,
+        1800,
+        40,
+        target,
+      );
+      expect(position).to.have.property('left', 190);
       expect(position).to.have.property('top', 20);
     });
 
-    it('should fit a window to the bottom', () => {
-      const position = getFittedWindowPositionOptions(20, 1090, 20, 40, target);
+    it('should fit a window to the right, if click position is in right half of the screen', () => {
+      const position = getFittedWindowPositionOptions(
+        1800,
+        40,
+        1800,
+        40,
+        target,
+      );
+      expect(position).to.have.property('right', 110);
+      expect(position).to.have.property('top', 20);
+    });
+
+    it('should fit a window to the top, if click position is in upper half of the screen', () => {
+      const position = getFittedWindowPositionOptions(
+        20,
+        120,
+        20,
+        1000,
+        target,
+      );
       expect(position).to.have.property('left', 10);
-      expect(position).to.have.property('bottom', 10);
+      expect(position).to.have.property('top', 100);
+    });
+
+    it('should fit a window to the bottom, if click position is in lower half of the screen', () => {
+      const position = getFittedWindowPositionOptions(
+        20,
+        1000,
+        20,
+        1000,
+        target,
+      );
+      expect(position).to.have.property('left', 10);
+      expect(position).to.have.property('bottom', 100);
     });
 
     it('should fit a window to right & bottom', () => {
@@ -129,6 +165,114 @@ describe('windowHelper', () => {
       );
       expect(position).to.have.property('right', 10);
       expect(position).to.have.property('bottom', 10);
+    });
+
+    describe('with offset', () => {
+      it('should calculate the position for TOP_LEFT', () => {
+        const position = getWindowPositionOptions(
+          20,
+          40,
+          target,
+          WindowAlignment.TOP_LEFT,
+          16,
+          16,
+        );
+        expect(position).to.have.property('left', 26);
+        expect(position).to.have.property('top', 4);
+      });
+
+      it('should calculate the position for BOTTOM_LEFT', () => {
+        const position = getWindowPositionOptions(
+          20,
+          40,
+          target,
+          WindowAlignment.BOTTOM_LEFT,
+          16,
+          16,
+        );
+        expect(position).to.have.property('left', 20 - targetSize.left + 16);
+        expect(position).to.have.property(
+          'bottom',
+          targetSize.height + targetSize.top - 40 - 16,
+        );
+      });
+
+      it('should calculate the position for TOP_RIGHT', () => {
+        const position = getWindowPositionOptions(
+          20,
+          40,
+          target,
+          WindowAlignment.TOP_RIGHT,
+          16,
+          16,
+        );
+        expect(position).to.have.property(
+          'right',
+          targetSize.left + targetSize.width - 20 + 16,
+        );
+        expect(position).to.have.property('top', 40 - targetSize.top - 16);
+      });
+
+      it('should calculate the position for BOTTOM_RIGHT', () => {
+        const position = getWindowPositionOptions(
+          20,
+          40,
+          target,
+          WindowAlignment.BOTTOM_RIGHT,
+          16,
+          16,
+        );
+        expect(position).to.have.property(
+          'right',
+          targetSize.left + targetSize.width - 20 + 16,
+        );
+        expect(position).to.have.property(
+          'bottom',
+          targetSize.height + targetSize.top - 40 - 16,
+        );
+      });
+
+      it('should fit a window to the right', () => {
+        const position = getFittedWindowPositionOptions(
+          1900,
+          40,
+          20,
+          40,
+          target,
+          16,
+          16,
+        );
+        expect(position).to.have.property('right', 26);
+        expect(position).to.have.property('top', 4);
+      });
+
+      it('should fit a window to the bottom', () => {
+        const position = getFittedWindowPositionOptions(
+          20,
+          1090,
+          20,
+          40,
+          target,
+          16,
+          16,
+        );
+        expect(position).to.have.property('left', 26);
+        expect(position).to.have.property('bottom', -6);
+      });
+
+      it('should fit a window to right & bottom', () => {
+        const position = getFittedWindowPositionOptions(
+          1900,
+          1090,
+          20,
+          40,
+          target,
+          16,
+          16,
+        );
+        expect(position).to.have.property('right', 26);
+        expect(position).to.have.property('bottom', -6);
+      });
     });
   });
 

@@ -49,6 +49,8 @@ export function getTargetSize(target) {
  * @param {number} y - client pixel position
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  * @param {WindowAlignment} [alignment=WindowAlignment.TOP_LEFT]
+ * @param {number} [offsetX=0]
+ * @param {number} [offsetY=0]
  * @returns {import("./windowManager.js").WindowPositionOptions}
  */
 export function getWindowPositionOptions(
@@ -56,6 +58,8 @@ export function getWindowPositionOptions(
   y,
   target,
   alignment = WindowAlignment.TOP_LEFT,
+  offsetX = 0,
+  offsetY = 0,
 ) {
   const targetSize = getTargetSize(target);
   if (!targetSize) {
@@ -64,13 +68,19 @@ export function getWindowPositionOptions(
 
   const { left, top, width, height } = targetSize;
   if (alignment === WindowAlignment.TOP_LEFT) {
-    return { left: x - left, top: y - top };
+    return { left: x - left + offsetX, top: y - top - offsetY };
   } else if (alignment === WindowAlignment.TOP_RIGHT) {
-    return { right: left + width - x, top: y - top };
+    return { right: left + width - x + offsetX, top: y - top - offsetY };
   } else if (alignment === WindowAlignment.BOTTOM_LEFT) {
-    return { left: x - left, bottom: height + top - y };
+    return {
+      left: x - left + offsetX,
+      bottom: height + top - y - offsetY,
+    };
   }
-  return { right: left + width - x, bottom: height + top - y };
+  return {
+    right: left + width - x + offsetX,
+    bottom: height + top - y - offsetY,
+  };
 }
 
 /**
@@ -106,18 +116,28 @@ export function getWindowPositionOptionsFromMapEvent(
  * @param {number} y - client pixel position
  * @param {number} width - window width to fit
  * @param {number} height - window height to fit
- *  @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
+ * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
+ * @param {number} [offsetX=0]
+ * @param {number} [offsetY=0]
  * @returns {import("./windowManager.js").WindowPositionOptions}
  */
-export function getFittedWindowPositionOptions(x, y, width, height, target) {
+export function getFittedWindowPositionOptions(
+  x,
+  y,
+  width,
+  height,
+  target,
+  offsetX = 0,
+  offsetY = 0,
+) {
   const targetSize = getTargetSize(target);
   if (!targetSize) {
     return { left: x, top: y };
   }
 
-  const { width: parentWidth, height: parentHeight } = targetSize;
-  const bottom = y + height > parentHeight;
-  const right = x + width > parentWidth;
+  const { left, top, width: parentWidth, height: parentHeight } = targetSize;
+  const bottom = y - top + height > parentHeight && y - top > parentHeight / 2;
+  const right = x - left + width > parentWidth && x - left > parentWidth / 2;
   let alignment = WindowAlignment.TOP_LEFT;
   if (bottom) {
     if (right) {
@@ -128,7 +148,7 @@ export function getFittedWindowPositionOptions(x, y, width, height, target) {
   } else if (right) {
     alignment = WindowAlignment.TOP_RIGHT;
   }
-  return getWindowPositionOptions(x, y, target, alignment);
+  return getWindowPositionOptions(x, y, target, alignment, offsetX, offsetY);
 }
 
 /**

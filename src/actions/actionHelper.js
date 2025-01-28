@@ -8,12 +8,12 @@ import {
   Viewpoint,
 } from '@vcmap/core';
 import { Feature } from 'ol';
-import { reactive, ref } from 'vue';
+import { nextTick, reactive, ref } from 'vue';
 import { parseBoolean } from '@vcsuite/parsers';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import {
-  getFittedWindowPositionOptionsFromMapEvent,
+  getFittedWindowPositionOptions,
   getTargetSize,
 } from '../manager/window/windowHelper.js';
 import SearchComponent from '../search/SearchComponent.vue';
@@ -272,6 +272,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
   const id = uuid();
   const { position: windowPositionOptions, ...component } = modalComponent;
   let modalActivator = null;
+  let clickedWindowPosition = null;
 
   /**
    * Closes the modal at mousedown on an app element
@@ -285,28 +286,58 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
     }
   };
 
+  const getPositionOptions = (contentHeight = 0) => {
+    const { width, height } = modalActivator.getBoundingClientRect();
+    const fittedPosition = getFittedWindowPositionOptions(
+      clickedWindowPosition.x,
+      clickedWindowPosition.y,
+      windowPositionOptions?.width || 320,
+      windowPositionOptions?.height || contentHeight,
+      app.maps.target,
+      width,
+      height,
+    );
+    const position = {
+      ...fittedPosition,
+      ...windowPositionOptions,
+    };
+    const targetSize = getTargetSize(app.maps.target);
+    if (contentHeight) {
+      if (position.bottom) {
+        position.maxHeight = Math.min(
+          position.maxHeight ?? Infinity,
+          clickedWindowPosition.y - targetSize.top,
+        );
+      } else {
+        position.maxHeight = Math.min(
+          position.maxHeight ?? Infinity,
+          targetSize.height - (clickedWindowPosition.y - targetSize.top),
+        );
+      }
+    }
+    position.maxWidth = 320;
+    position.width = windowPositionOptions?.width || -1; // unset width magic. dont touch.
+    return position;
+  };
+
   const action = reactive({
     ...actionOptions,
     active: false,
     callback(event) {
       if (!this.active) {
         this.active = true;
-        const { left, top, width } =
-          event.currentTarget.getBoundingClientRect();
         modalActivator = event.currentTarget;
-        const position = {
-          ...getFittedWindowPositionOptionsFromMapEvent(
-            { x: left + width, y: top - getTargetSize(app.maps.target).top },
-            windowPositionOptions?.width || 320,
-            windowPositionOptions?.height || 0,
-            app.maps.target,
-          ),
-          ...windowPositionOptions,
-        };
-        position.maxWidth = 320;
-        position.width = windowPositionOptions?.width || -1; // unset width magic. dont touch.
+        clickedWindowPosition = { x: event.x, y: event.y };
         const state = { ...modalComponent?.state, hideHeader: true };
-        app.windowManager.add({ position, ...component, id, state }, owner);
+        app.windowManager.add(
+          {
+            position: getPositionOptions(),
+            ...component,
+            id,
+            state,
+          },
+          owner,
+        );
         document.addEventListener('mousedown', handleMouseDown);
       } else {
         this.active = false;
@@ -324,6 +355,24 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
       }
     }),
   ];
+
+  // if no height is provided, update fitted window position after actual div size is available
+  if (!windowPositionOptions?.height) {
+    listeners.push(
+      app.windowManager.added.addEventListener(async (added) => {
+        if (added.id === id) {
+          await nextTick();
+          const div = document.getElementById(`window-component--${id}`);
+          if (div) {
+            app.windowManager.setWindowPositionOptions(
+              id,
+              getPositionOptions(div.offsetHeight),
+            );
+          }
+        }
+      }),
+    );
+  }
 
   const destroy = () => {
     listeners.forEach((cb) => {

@@ -19,6 +19,7 @@
 - Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
 - Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
 - Add new callbacks `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
+- Fix modal alignment for `createModalAction`
 
 # 6.0.14
 
