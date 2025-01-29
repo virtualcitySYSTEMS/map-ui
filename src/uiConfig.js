@@ -29,6 +29,7 @@ import { reactive, readonly } from 'vue';
  * @property {Array<import("./callback/vcsCallback.js").VcsCallbackOptions>} [secondaryCallbackOptions]
  * @property {boolean} [menuEntry]
  * @property {boolean} [acceptInput]
+ * @property {boolean} [enableDontShowAgain] Whether to display a checkbox allowing the user not to see the SplashScreen again. This parameter is relative to moduleId and configuration; the SplashScreen will be shown again in case of any change.
  * @property {Object} [position]
  * @property {string} [position.width]
  * @property {string} [position.height]

@@ -212,6 +212,12 @@ export {
   downloadCanvas,
 } from './src/downloadHelper.js';
 export {
+  getFromLocalStorage,
+  setToLocalStorage,
+  removeFromLocalStorage,
+  hideSplashScreenKey,
+} from './src/localStorage.js';
+export {
   default as initApp,
   VcsUiAppConfigPattern,
   initAppFromModule,

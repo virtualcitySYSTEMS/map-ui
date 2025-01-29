@@ -25,6 +25,13 @@
             />
           </template>
         </VcsCheckbox>
+        <VcsCheckbox v-if="options.enableDontShowAgain" v-model="dontShowAgain">
+          <template #label>
+            <div class="pl-2">
+              {{ $t('components.splashScreen.dontShowAgain') }}
+            </div>
+          </template>
+        </VcsCheckbox>
       </v-card-text>
 
       <v-card-actions>
@@ -55,11 +62,27 @@
 <script>
   import { VDialog, VCard, VCardText, VCardActions } from 'vuetify/components';
   import { computed, ref, inject } from 'vue';
+  import { moduleIdSymbol } from '@vcmap/core';
+  import { v5 as uuidv5 } from 'uuid';
+  import { hideSplashScreenKey, setToLocalStorage } from '../localStorage.js';
   import { executeCallbacks } from '../callback/vcsCallback.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
   import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
   import { useProxiedAtomicModel } from '../components/modelHelper.js';
+  import { name } from '../../package.json';
+
+  /**
+   * @param {import("@vcmap/ui").VcsUiApp} app
+   * @returns {Promise<string>} The hash of the SplashScreen config.
+   */
+  export function getSplashScreenHash(app) {
+    const config = app.uiConfig.getByKey('splashScreen');
+    const string = JSON.stringify(
+      Object.entries(config.value).sort((a, b) => a[0].localeCompare(b[0])),
+    );
+    return uuidv5(string, uuidv5.URL);
+  }
 
   export default {
     name: 'VcsSplashScreen',
@@ -87,9 +110,17 @@
       const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
 
       const checkBox = ref(false);
+      const dontShowAgain = ref(false);
       function exitScreen() {
         localValue.value = false;
         checkBox.value = false;
+
+        if (dontShowAgain.value) {
+          const config = app.uiConfig.getByKey('splashScreen');
+          const hash = getSplashScreenHash(app);
+          const moduleId = config[moduleIdSymbol];
+          setToLocalStorage(`${name}_${moduleId}`, hideSplashScreenKey, hash);
+        }
         if (Array.isArray(props.options.exitCallbackOptions)) {
           executeCallbacks(app, props.options.exitCallbackOptions);
         }
@@ -113,6 +144,7 @@
         exitScreen,
         secondaryButtonClicked,
         checkBox,
+        dontShowAgain,
         position,
       };
     },

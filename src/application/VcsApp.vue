@@ -42,7 +42,15 @@
 </style>
 
 <script>
-  import { computed, onMounted, onUnmounted, provide, watch, ref } from 'vue';
+  import {
+    computed,
+    onMounted,
+    onUnmounted,
+    provide,
+    watch,
+    ref,
+    shallowRef,
+  } from 'vue';
   import { useDisplay } from 'vuetify';
   import { getVcsAppById, moduleIdSymbol } from '@vcmap/core';
   import { VContainer, VFooter, VSpacer } from 'vuetify/components';
@@ -69,12 +77,14 @@
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsObliqueFooter from './VcsObliqueFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
-  import VcsSplashScreen from './VcsSplashScreen.vue';
+  import VcsSplashScreen, { getSplashScreenHash } from './VcsSplashScreen.vue';
   import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
+  import { getFromLocalStorage, hideSplashScreenKey } from '../localStorage.js';
+  import { name as packageName } from '../../package.json';
 
   /**
    * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
@@ -776,6 +786,33 @@
         pluginMountedListener = setupPluginMountedListeners(app);
       });
 
+      function getSplashScreenConfig() {
+        if (app.uiConfig.config.splashScreen) {
+          const config = app.uiConfig.getByKey('splashScreen');
+          const hash = getSplashScreenHash(app);
+          const moduleId = config[moduleIdSymbol];
+          const storedHash = getFromLocalStorage(
+            `${packageName}_${moduleId}`,
+            hideSplashScreenKey,
+          );
+          if (hash !== storedHash) {
+            return {
+              title: 'components.splashScreen.name',
+              tooltip: 'components.splashScreen.tooltip',
+              position: { width: '800px', height: '400px' },
+              ...app.uiConfig.config.splashScreen,
+            };
+          }
+        }
+        return undefined;
+      }
+      const splashScreen = shallowRef(getSplashScreenConfig());
+      app.uiConfig.added.addEventListener(({ name }) => {
+        if (name === 'splashScreen') {
+          splashScreen.value = getSplashScreenConfig();
+        }
+      });
+
       onUnmounted(() => {
         if (pluginMountedListener) {
           pluginMountedListener();
@@ -830,20 +867,7 @@
           return undefined;
         }),
         splashScreenRef,
-        splashScreen: computed(() => {
-          if (app.uiConfig.config.splashScreen) {
-            return {
-              title: 'components.splashScreen.name',
-              tooltip: 'components.splashScreen.tooltip',
-              position: {
-                width: '800px',
-                height: '400px',
-              },
-              ...app.uiConfig.config.splashScreen,
-            };
-          }
-          return undefined;
-        }),
+        splashScreen,
         attributionEntries,
         attributionAction,
       };

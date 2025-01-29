@@ -9,6 +9,7 @@
   - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary (exit) button
   - added option `secondaryCallbackOptions` to configure an array of callback options executed on click a new secondary button
   - added option `secondaryButtonTitle` to configure the new secondary button title
+  - added option `enableDontShowAgain`, to allow the user to disable the SplashScreen on next opening
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
@@ -20,6 +21,7 @@
 - Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
 - Add new callbacks `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
 - Fix modal alignment for `createModalAction`
+- Add a LocalStorage API
 - Update Dependencies
   - vuetify to 3.7.8
   - openlayers to 10.3.1

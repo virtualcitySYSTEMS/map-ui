@@ -172,6 +172,7 @@ const messages = {
       checkBoxText:
         'Bitte akzeptieren sie die [Bedingungen](https://vc.systems/) um Fortzufahren',
       buttonTitle: 'Weiter',
+      dontShowAgain: 'Diese Nachricht nicht erneut anzeigen',
     },
     customScreen: {
       name: 'Benutzerdefinierter Screen',
