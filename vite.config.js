@@ -67,6 +67,7 @@ const configMain = defineConfig(async ({ mode }) => {
       setupFile: {
         browser: './story/setup.js',
       },
+      viteNodeInlineDeps: ['uuid'],
       vite: {
         base: process.env.HISTOIRE_DEPLOYMENT
           ? process.env.HISTOIRE_DEPLOYMENT
