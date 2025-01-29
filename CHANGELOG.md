@@ -20,6 +20,12 @@
 - Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
 - Add new callbacks `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
 - Fix modal alignment for `createModalAction`
+- Update Dependencies
+  - vuetify to 3.7.8
+  - openlayers to 10.3.1
+  - marked to 15.0.6
+  - dompurifier to 3.2.3
+  - uuid 11.0.5
 
 # 6.0.14
 
