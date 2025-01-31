@@ -3,7 +3,7 @@
   import { reactive } from 'vue';
   import { getStoryState } from '../../setup.js';
   import GlobalControls from '../../controls/GlobalControls.vue';
-  import VcsList from '../../../src/components/lists/VcsList.vue';
+  import VcsGroupedList from '../../../src/components/lists/VcsGroupedList.vue';
 
   const renamableItem = {
     name: 'renamable item',
@@ -20,6 +20,7 @@
         },
       },
     ],
+    group: 'group-renamable',
   };
 
   const items = reactive([
@@ -29,6 +30,7 @@
       tooltip: 'this is the foo',
       icon: 'mdi-pen',
       selectionChanged: (value) => console.log('changed cb foo', value),
+      group: 'group-1',
     },
     {
       name: 'bar',
@@ -42,6 +44,7 @@
         },
       ],
       selectionChanged: (value) => console.log('changed cb bar', value),
+      group: 'group-2',
     },
     {
       name: 'baz',
@@ -49,12 +52,14 @@
       disabled: true,
       tooltip: 'special baz',
       selectionChanged: (value) => console.log('changed cb baz', value),
+      group: 'group-2',
     },
     {
       name: 'baz2',
       title: 'Baz 2',
       tooltip: 'special baz',
       selectionChanged: (value) => console.log('changed cb baz', value),
+      group: 'group-1',
     },
     {
       name: 'baz3',
@@ -62,11 +67,13 @@
       hasUpdate: true,
       tooltip: 'special baz',
       selectionChanged: (value) => console.log('changed cb baz', value),
+      group: 'group-1',
     },
     {
       name: `with very, very, very, very, very long name`,
       title: `with very, very, very, very, very, very, very, very, very long name`,
       selectionChanged: (value) => console.log('changed cb', value),
+      group: 'group-2',
     },
     {
       name: 'bar2',
@@ -88,6 +95,7 @@
         },
       ],
       selectionChanged: (value) => console.log('changed cb bar', value),
+      group: 'group-1',
     },
     {
       name: 'short title',
@@ -97,41 +105,44 @@
           name: 'titleChange',
           icon: 'mdi-sync',
           callback() {
-            if (items.at(-1).title === 'short title') {
-              items.at(-1).title =
+            if (items.value.at(-1).title === 'short title') {
+              items.value.at(-1).title =
                 'very, very, very, very, very, very, long title for just this small item';
             } else {
-              items.at(-1).title = 'short title';
+              items.value.at(-1).title = 'short title';
             }
           },
         },
       ],
+      group: 'group-1',
     },
     renamableItem,
   ]);
 
-  function move({ item, targetIndex }) {
-    let target = targetIndex;
-    target = target >= 0 ? target : 0;
-    target = target < items.length ? target : items.length - 1;
-    const itemIndex = items.findIndex((i) => i.name === item.name);
-    if (itemIndex !== target) {
-      items.splice(itemIndex, 1);
-      items.splice(target, 0, item);
-    }
-    return target;
-  }
+  const groups = reactive([
+    { name: 'group-1' },
+    {
+      name: 'group-2',
+      headerActions: [
+        {
+          name: 'console.log',
+          callback() {
+            console.log('group-2');
+          },
+        },
+      ],
+    },
+  ]);
 
   const state = getStoryState('$vcs3d');
 </script>
 
 <template>
-  <Story title="Lists/VcsList" :meta="{ wrapper: { ...state.wrapper } }">
-    <VcsList
-      :items="items"
+  <Story title="Lists/VcsGroupedList" :meta="{ wrapper: { ...state.wrapper } }">
+    <VcsGroupedList
       v-bind="{ ...state.bind }"
-      title="foo - bar"
-      @item-moved="move"
+      :items="items"
+      :groups="groups"
     />
     <template #controls>
       <GlobalControls v-model="state" with-icon></GlobalControls>

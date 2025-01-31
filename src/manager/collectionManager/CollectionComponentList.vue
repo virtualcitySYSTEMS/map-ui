@@ -38,9 +38,8 @@
   import { computed, inject } from 'vue';
   import { IndexedCollection } from '@vcmap/core';
   import { VSheet } from 'vuetify/components';
-  import VcsList, {
-    createSelectionActions,
-  } from '../../components/lists/VcsList.vue';
+  import { createSelectionActions } from '../../components/lists/listHelper.js';
+  import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
 

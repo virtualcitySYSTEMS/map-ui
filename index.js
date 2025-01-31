@@ -174,9 +174,12 @@ export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureI
 export { default as MarkdownFeatureInfoView } from './src/featureInfo/markdownFeatureInfoView.js';
 export { default as MarkdownBalloonFeatureInfoView } from './src/featureInfo/markdownBalloonFeatureInfoView.js';
 export {
+  getHighlightStyleFromStyle,
   getHighlightStyle,
+  getClusterHighlightStyle,
   featureInfoViewSymbol,
 } from './src/featureInfo/featureInfo.js';
+export { default as ClusterFeatureComponent } from './src/featureInfo/ClusterFeatureComponent.vue';
 
 export { default as MapNavCompass } from './src/navigation/MapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/MapNavigation.vue';
@@ -278,6 +281,8 @@ export {
 } from './src/components/lists/VcsActionList.vue';
 export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
+export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.vue';
+export * from './src/components/lists/listHelper.js';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeNode } from './src/components/lists/VcsTreeNode.vue';
 export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.vue';

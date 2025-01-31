@@ -23,9 +23,8 @@
 <script>
   import { computed, inject } from 'vue';
   import { VSheet, VContainer } from 'vuetify/components';
-  import VcsList, {
-    createSelectionActions,
-  } from '../../components/lists/VcsList.vue';
+  import { createSelectionActions } from '../../components/lists/listHelper.js';
+  import VcsList from '../../components/lists/VcsList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import { moveItem } from './CollectionComponentList.vue';
 

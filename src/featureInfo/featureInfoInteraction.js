@@ -2,6 +2,8 @@ import {
   AbstractInteraction,
   EventType,
   ModificationKeyType,
+  vectorClusterGroupName,
+  isProvidedClusterFeature,
 } from '@vcmap/core';
 
 /**
@@ -28,9 +30,22 @@ class FeatureInfoInteraction extends AbstractInteraction {
    */
   async pipe(event) {
     if (event.feature) {
-      if (
+      const featureId = event.feature.getId();
+      const isClusterFeature = !!(
+        event.feature[vectorClusterGroupName] ||
+        event.feature[isProvidedClusterFeature]
+      );
+      if (isClusterFeature) {
+        if (
+          !this._featureInfo.selectedClusterFeature ||
+          featureId !== this._featureInfo.selectedClusterFeatureId
+        ) {
+          event.stopPropagation = true;
+          await this._featureInfo.selectClusterFeature(event.feature);
+        }
+      } else if (
         !this._featureInfo.selectedFeature ||
-        event.feature.getId() !== this._featureInfo.selectedFeatureId
+        featureId !== this._featureInfo.selectedFeatureId
       ) {
         event.stopPropagation = true;
         await this._featureInfo.selectFeature(event.feature, event.position, [
@@ -39,7 +54,7 @@ class FeatureInfoInteraction extends AbstractInteraction {
         ]);
       }
     } else {
-      await this._featureInfo.clear();
+      await this._featureInfo.clearSelection();
     }
     return event;
   }

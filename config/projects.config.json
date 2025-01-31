@@ -10,7 +10,8 @@
         "config/dev.config.json",
         "config/codes.config.json",
         "config/components-show-case.config.json",
-        "config/concepts-show-case.config.json"
+        "config/concepts-show-case.config.json",
+        "config/cluster.config.json"
       ],
       "projects": [
         {
@@ -33,7 +34,8 @@
         "config/splashscreen.config.json",
         "config/hello-world.config.json",
         "config/theming.config.json",
-        "config/clipping.config.json"
+        "config/clipping.config.json",
+        "config/cluster.config.json"
       ]
     }
   ]

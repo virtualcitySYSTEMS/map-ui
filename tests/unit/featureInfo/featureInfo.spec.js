@@ -22,6 +22,9 @@ import {
   VectorStyleItem,
   WMSLayer,
   WMTSLayer,
+  VectorClusterGroup,
+  vectorClusterGroupName,
+  hidden,
 } from '@vcmap/core';
 import {
   createDummyCesium3DTileFeature,
@@ -40,21 +43,56 @@ import FeatureInfo, {
 } from '../../../src/featureInfo/featureInfo.js';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 
+function setupTestFeatureAndVectorLayer(app) {
+  const layer = new VectorLayer({
+    projection: mercatorProjection.toJSON(),
+  });
+  layer.properties.featureInfo = 'foo';
+  app.layers.add(layer);
+  const feature = new Feature({ geometry: new Point([1, 1, 1]) });
+  layer.addFeatures([feature]);
+  app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+
+  return { layer, feature };
+}
+
+function setupTestClusterFeatureAndGroup(app, layer) {
+  const feature2 = new Feature({ geometry: new Point([2, 2, 2]) });
+  layer.addFeatures([feature2]);
+  const clusterGroup = new VectorClusterGroup({});
+  clusterGroup.addLayer(layer);
+  app.vectorClusterGroups.add(clusterGroup);
+  const features = layer.getFeatures();
+  const clusterFeature = new Feature({
+    geometry: new Point([1, 2, 2]),
+    features,
+  });
+  clusterFeature[vectorClusterGroupName] = clusterGroup.name;
+
+  return { clusterGroup, clusterFeature, features };
+}
+
+function setupTestProvidedFeatureAndWmsLayer(app) {
+  const layer = new WMSLayer({});
+  layer.properties.featureInfo = 'foo';
+  app.layers.add(layer);
+  const feature = new Feature({ geometry: new Point([1, 1, 1]) });
+  feature[isProvidedFeature] = true;
+  feature[vcsLayerName] = layer.name;
+  app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+
+  return { layer, feature };
+}
+
 describe('FeatureInfo', () => {
   describe('setting up listeners', () => {
     let app;
     let layer;
+    let feature;
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
-      layer = new VectorLayer({
-        projection: mercatorProjection.toJSON(),
-      });
-      layer.properties.featureInfo = 'foo';
-      app.layers.add(layer);
-      const feature = new Feature({});
-      layer.addFeatures([feature]);
+      ({ layer, feature } = setupTestFeatureAndVectorLayer(app));
       await app.addModule(new VcsModule({ _id: 'remove' }));
       await app.featureInfo.selectFeature(feature);
     });
@@ -100,14 +138,7 @@ describe('FeatureInfo', () => {
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      layer = new VectorLayer({
-        projection: mercatorProjection.toJSON(),
-      });
-      layer.properties.featureInfo = 'foo';
-      app.layers.add(layer);
-      feature = new Feature({ geometry: new Point([1, 1, 1]) });
-      layer.addFeatures([feature]);
-      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+      ({ layer, feature } = setupTestFeatureAndVectorLayer(app));
       selectedCallback = vi.fn();
       app.featureInfo.featureChanged.addEventListener(selectedCallback);
       await app.featureInfo.selectFeature(feature);
@@ -133,6 +164,54 @@ describe('FeatureInfo', () => {
 
     it('should raise the feature selected event', () => {
       expect(selectedCallback).toHaveBeenCalledWith(feature);
+    });
+
+    describe('selecting of a cluster feature', () => {
+      let clusterFeature;
+      let features;
+      let selectedClusterCallback;
+
+      beforeEach(async () => {
+        ({ clusterFeature, features } = setupTestClusterFeatureAndGroup(
+          app,
+          layer,
+        ));
+        selectedClusterCallback = vi.fn();
+        app.featureInfo.clusterFeatureChanged.addEventListener(
+          selectedClusterCallback,
+        );
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+      });
+
+      it('should add cluster window with items prop', () => {
+        expect(app.windowManager.has(app.featureInfo.clusterWindowId)).to.be
+          .true;
+        const { props } = app.windowManager.get(
+          app.featureInfo.clusterWindowId,
+        );
+        expect(props.items).to.have.length(2);
+        expect(props.items.map((i) => i.name)).to.have.members(
+          features.map((f) => f.getId()),
+        );
+      });
+
+      it('should clone selected cluster feature and add it to scratch layer', () => {
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures).to.have.length(1);
+        expect(scratchFeatures[0].get('features')).to.have.members(features);
+      });
+
+      it('should hide original cluster feature', () => {
+        expect(clusterFeature[hidden]).to.be.true;
+      });
+
+      it('should set current cluster feature', () => {
+        expect(app.featureInfo.selectedClusterFeature).to.equal(clusterFeature);
+      });
+
+      it('should raise the cluster feature selected event', () => {
+        expect(selectedClusterCallback).toHaveBeenCalledWith(clusterFeature);
+      });
     });
   });
 
@@ -612,13 +691,7 @@ describe('FeatureInfo', () => {
 
       beforeEach(async () => {
         app = new VcsUiApp();
-        const layer = new WMSLayer({});
-        layer.properties.featureInfo = 'foo';
-        app.layers.add(layer);
-        feature = new Feature({ geometry: new Point([1, 1, 1]) });
-        feature[isProvidedFeature] = true;
-        feature[vcsLayerName] = layer.name;
-        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+        ({ feature } = setupTestProvidedFeatureAndWmsLayer(app));
         selectedCallback = vi.fn();
         app.featureInfo.featureChanged.addEventListener(selectedCallback);
         await app.featureInfo.selectFeature(feature);
@@ -660,18 +733,12 @@ describe('FeatureInfo', () => {
 
       beforeEach(async () => {
         app = new VcsUiApp();
-        const layer = new WMSLayer({});
-        layer.properties.featureInfo = 'foo';
-        app.layers.add(layer);
-        feature = new Feature({ geometry: new Point([1, 1, 1]) });
-        feature[isProvidedFeature] = true;
-        feature[vcsLayerName] = layer.name;
-        app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+        ({ feature } = setupTestProvidedFeatureAndWmsLayer(app));
         await app.featureInfo.selectFeature(feature);
         ({ windowId } = app.featureInfo);
         selectedCallback = vi.fn();
         app.featureInfo.featureChanged.addEventListener(selectedCallback);
-        await app.featureInfo.clear();
+        await app.featureInfo.clearFeature();
       });
 
       afterEach(() => {
@@ -849,22 +916,12 @@ describe('FeatureInfo', () => {
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      const map = new OpenlayersMap({ name: 'ol' });
-      app.maps.add(map);
-      await app.maps.setActiveMap(map.name);
-      layer = new VectorLayer({
-        projection: mercatorProjection.toJSON(),
-      });
-      layer.properties.featureInfo = 'foo';
-      app.layers.add(layer);
-      feature = new Feature({ geometry: new Point([1, 1, 1]) });
-      layer.addFeatures([feature]);
-      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+      ({ layer, feature } = setupTestFeatureAndVectorLayer(app));
       await app.featureInfo.selectFeature(feature);
       ({ windowId } = app.featureInfo);
       selectedCallback = vi.fn();
       app.featureInfo.featureChanged.addEventListener(selectedCallback);
-      await app.featureInfo.clear();
+      await app.featureInfo.clearFeature();
     });
 
     afterEach(() => {
@@ -888,6 +945,93 @@ describe('FeatureInfo', () => {
 
     it('should raise the feature selected event with null', () => {
       expect(selectedCallback).toHaveBeenCalledWith(null);
+    });
+
+    describe('unselecting of a cluster feature', () => {
+      let clusterFeature;
+      let clusterWindowId;
+      let selectedClusterCallback;
+
+      beforeEach(async () => {
+        ({ clusterFeature } = setupTestClusterFeatureAndGroup(app, layer));
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+        ({ clusterWindowId } = app.featureInfo);
+        selectedClusterCallback = vi.fn();
+        app.featureInfo.clusterFeatureChanged.addEventListener(
+          selectedClusterCallback,
+        );
+        await app.featureInfo.clearCluster();
+      });
+
+      it('should remove window of previous selected cluster feature', () => {
+        expect(app.windowManager.has(clusterWindowId)).to.be.false;
+        expect(app.featureInfo.clusterWindowId).to.be.null;
+      });
+
+      it('should remove cluster feature from scratch layer', () => {
+        expect(app.featureInfo._scratchLayer.getFeatureById(clusterWindowId)).to
+          .be.null;
+      });
+
+      it('should unhide original cluster feature', () => {
+        expect(clusterFeature[hidden]).to.be.false;
+      });
+
+      it('should set current cluster feature to null', () => {
+        expect(app.featureInfo.selectedClusterFeature).to.be.null;
+      });
+
+      it('should raise the cluster feature selected event with null', () => {
+        expect(selectedClusterCallback).toHaveBeenCalledWith(null);
+      });
+    });
+  });
+
+  describe('clearing selection', () => {
+    let app;
+    let layer;
+    let feature;
+    let clusterFeature;
+    let selectedCallback;
+    let selectedClusterCallback;
+
+    beforeEach(async () => {
+      app = new VcsUiApp();
+      ({ layer, feature } = setupTestFeatureAndVectorLayer(app));
+      ({ clusterFeature } = setupTestClusterFeatureAndGroup(app, layer));
+      app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
+      await app.featureInfo.selectFeature(feature);
+      await app.featureInfo.selectClusterFeature(clusterFeature);
+      selectedCallback = vi.fn();
+      app.featureInfo.featureChanged.addEventListener(selectedCallback);
+      selectedClusterCallback = vi.fn();
+      app.featureInfo.clusterFeatureChanged.addEventListener(
+        selectedClusterCallback,
+      );
+      app.featureInfo.clearSelection();
+    });
+
+    afterEach(() => {
+      app.destroy();
+    });
+
+    it('should clear selected feature', () => {
+      expect(app.featureInfo.selectedFeature).to.be.null;
+    });
+
+    it('should clear selected cluster feature', () => {
+      expect(app.featureInfo.selectedClusterFeature).to.be.null;
+    });
+
+    it('should fire changed events', () => {
+      expect(selectedCallback).toHaveBeenCalledWith(null);
+      expect(selectedClusterCallback).toHaveBeenCalledWith(null);
+    });
+
+    it('should close feature info windows', () => {
+      expect(app.windowManager.componentIds).to.have.length(0);
+      expect(app.featureInfo.windowId).to.be.null;
+      expect(app.featureInfo.clusterWindowId).to.be.null;
     });
   });
 

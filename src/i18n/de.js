@@ -326,6 +326,12 @@ const messages = {
   featureInfo: {
     activateToolTitle: 'Informationen abfragen',
     deactivateToolTitle: 'Informationen abfragen',
+    cluster: {
+      headerTitle: 'Gruppeninformationen',
+      expand: 'Informationsliste anzeigen',
+      collapse: 'Informationsliste minimieren',
+      empty: 'Keine Informationen verfügbar',
+    },
   },
   legend: {
     title: 'Legende',

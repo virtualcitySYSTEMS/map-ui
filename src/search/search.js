@@ -318,7 +318,7 @@ class Search extends IndexedCollection {
       this._app.featureInfo.selectedFeature?.[vcsLayerName] ===
       this._resultLayer.name
     ) {
-      this._app.featureInfo.clear();
+      this._app.featureInfo.clearSelection();
     }
   }
 

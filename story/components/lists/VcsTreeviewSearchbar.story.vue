@@ -9,7 +9,10 @@
 </script>
 
 <template>
-  <Story title="VcsTreeviewSearchbar" :meta="{ wrapper: { type: 'window' } }">
+  <Story
+    title="Lists/VcsTreeviewSearchbar"
+    :meta="{ wrapper: { type: 'window' } }"
+  >
     <VcsTreeviewSearchbar v-model="search" v-bind="{ ...state.bind }" />
     <template #controls>
       <GlobalControls v-model="state" with-icon>

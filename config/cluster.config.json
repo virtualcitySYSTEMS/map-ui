@@ -1,0 +1,106 @@
+{
+  "name": "Cluster Example",
+  "layers": [
+    {
+      "type": "GeoJSONLayer",
+      "name": "12de4200e2e76f756e06da59c07eae3a1760acdd",
+      "activeOnStartup": true,
+      "balloonHeightOffset": 0,
+      "vectorProperties": {
+        "altitudeMode": "relativeToGround",
+        "heightAboveGround": 65
+      },
+      "projection": {
+        "epsg": "4326",
+        "proj4": "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+      },
+      "style": "universal",
+      "genericFeatureProperties": {
+        "layername": "Grundschulen",
+        "baseurl": "https://www.businesslocationcenter.de/wsv-live/",
+        "category": "Schulstandorte Berlin"
+      },
+      "baseurl": "https://www.businesslocationcenter.de/wsv-live/",
+      "url": "https://www.businesslocationcenter.de/wsv-live/api/de/layer/12de4200e2e76f756e06da59c07eae3a1760acdd.geojson",
+      "vectorClusterGroup": "clusterLayerOthers",
+      "properties": {
+        "title": "Grundschulen",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "Senatsverwaltung für Bildung, Jugend und Familie",
+            "url": "https://www.berlin.de/sen/bjf/",
+            "year": "2024"
+          }
+        ]
+      }
+    },
+    {
+      "type": "GeoJSONLayer",
+      "name": "b408b454472a5ce5dfb44bb57afe8da1baeeb6cf",
+      "balloonHeightOffset": 0,
+      "vectorProperties": {
+        "altitudeMode": "relativeToGround",
+        "heightAboveGround": 65
+      },
+      "projection": {
+        "epsg": "4326",
+        "proj4": "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+      },
+      "style": "universal",
+      "genericFeatureProperties": {
+        "layername": "Berufliche Schulen",
+        "baseurl": "https://www.businesslocationcenter.de/wsv-live/",
+        "category": "Schulstandorte Berlin"
+      },
+      "baseurl": "https://www.businesslocationcenter.de/wsv-live/",
+      "url": "https://www.businesslocationcenter.de/wsv-live/api/de/layer/b408b454472a5ce5dfb44bb57afe8da1baeeb6cf.geojson",
+      "vectorClusterGroup": "clusterLayerOthers",
+      "properties": {
+        "title": "Berufliche Schulen",
+        "featureInfo": "genericBalloon",
+        "attributions": [
+          {
+            "provider": "Senatsverwaltung für Bildung, Jugend und Familie",
+            "url": "https://www.berlin.de/sen/bjf/",
+            "year": "2024"
+          }
+        ]
+      }
+    }
+  ],
+  "vectorClusterGroups": [
+    {
+      "type": "VectorClusterLayer",
+      "name": "clusterLayerOthers",
+      "showInContent": true,
+      "defaultFeatureTemplate": "<%=name%>",
+      "clusterDistance": 90,
+      "style": {
+        "type": "cluster",
+        "fillColor": "#002e4d",
+        "strokeColor": "#cc970f",
+        "strokeWidth": 7,
+        "textColor": "#ffffff",
+        "font": "bold 18px/53px DroidSans400, Droid, Arial, sans-serif",
+        "scaleFactor": 0.125,
+        "breaks": [2, 3, 4, 5, 10, 15, 25, 50, 100, 250, 500, 1000, 2000, 5000]
+      },
+      "heightAboveGround": 65,
+      "altitudeMode": "relativeToGround",
+      "url": ""
+    }
+  ],
+  "contentTree": [
+    {
+      "type": "LayerContentTreeItem",
+      "name": "cluster",
+      "layerName": "12de4200e2e76f756e06da59c07eae3a1760acdd"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "cluster2",
+      "layerName": "b408b454472a5ce5dfb44bb57afe8da1baeeb6cf"
+    }
+  ]
+}

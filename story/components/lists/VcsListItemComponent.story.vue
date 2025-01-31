@@ -58,7 +58,7 @@
 </script>
 
 <template>
-  <Story title="VcsListItem" :meta="{ wrapper: { ...state.wrapper } }">
+  <Story title="Lists/VcsListItem" :meta="{ wrapper: { ...state.wrapper } }">
     <Variant title="Default">
       <VcsListItemComponent :item="item" v-bind="{ ...state.attrs }" />
       <template #controls>

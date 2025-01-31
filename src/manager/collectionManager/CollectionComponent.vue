@@ -19,8 +19,8 @@
 <script>
   import { computed, inject } from 'vue';
   import VcsExpansionPanel from '../../components/section/VcsExpansionPanel.vue';
-  import { createSelectionActions } from '../../components/lists/VcsList.vue';
   import CollectionComponentContent from './CollectionComponentContent.vue';
+  import { createSelectionActions } from '../../components/lists/listHelper.js';
 
   /**
    * @typedef {Object} FormSectionOptions

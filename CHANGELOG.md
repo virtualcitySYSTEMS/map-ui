@@ -28,6 +28,14 @@
   - marked to 15.0.6
   - dompurifier to 3.2.3
   - uuid 11.0.5
+- Extend `featureInfo` by new API to support cluster features:
+  - added method `selectClusterFeature` to select a cluster feature. This will open a window listing the features of the cluster
+  - added method `clearCluster` to deselect the previously selected cluster feature
+  - added event `clusterFeatureChanged`, which is raised on selection and deselection of cluster features
+  - added method `clearFeature`, which clears the current feature selection
+  - added method `clearSelection`, which clears current feature and cluster selection
+  - deprecated method `clear`. Use `clearSelection` instead!
+- Add new component `VcsGroupedList` to render groups as expandable sub lists
 
 # 6.0.14
 

@@ -84,7 +84,7 @@ export function getStoryState(defaultIcon = '', wrapperType = 'window') {
       cols: 6,
       title: 'Card Title',
       subtitle: 'Card Subtitle',
-      height: 200,
+      height: 500,
       width: 320,
     },
     darkMode,

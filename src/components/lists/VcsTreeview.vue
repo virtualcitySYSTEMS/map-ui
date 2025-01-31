@@ -104,18 +104,17 @@
       const localSearchValue = useProxiedAtomicModel(props, 'search', emit);
       const localOpenedItems = useProxiedComplexModel(props, 'opened', emit);
 
-      if ((props.openAll ?? false) !== false) {
-        localOpenedItems.value = props.items.map((item) => item.name);
-        watch(
-          () => props.items,
-          (items) => {
-            const newItems = items.filter(
-              (item) => !localOpenedItems.value.includes(item.name),
-            );
-            localOpenedItems.value.push(...newItems.map((item) => item.name));
-          },
-        );
-      }
+      watch(
+        [() => props.items, () => props.openAll],
+        () => {
+          if (props.openAll) {
+            localOpenedItems.value = [...props.items.map((item) => item.name)];
+          }
+        },
+        {
+          immediate: true,
+        },
+      );
 
       function itemToggled(itemName) {
         const idx = localOpenedItems.value.indexOf(itemName);

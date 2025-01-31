@@ -46,7 +46,7 @@
       <v-sheet
         v-if="story.meta?.wrapper?.type === 'window'"
         :width="story.meta?.wrapper?.width || 320"
-        :height="story.meta?.wrapper?.height || 200"
+        :height="story.meta?.wrapper?.height || 500"
         :style="story.meta?.wrapper?.style"
         class="wrapper-border elevation-3 d-flex flex-column"
       >

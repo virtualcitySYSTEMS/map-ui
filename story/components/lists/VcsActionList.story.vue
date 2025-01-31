@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <Story title="VcsActionList" :meta="{ wrapper: { type: 'window' } }">
+  <Story title="Lists/VcsActionList" :meta="{ wrapper: { type: 'window' } }">
     <VcsActionList :actions="actions" />
     <template #controls>
       <GlobalControls v-model="state" with-icon></GlobalControls>

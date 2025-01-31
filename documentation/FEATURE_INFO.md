@@ -10,6 +10,10 @@ Configuration is context-sensitive, which allows configuring different views on 
 The FeatureInfo tool can be activated via a button within the toolbox or using its API.
 Whenever the tool is active, FeatureInfo listens to clicks on features, highlights a selected feature and opens a FeatureInfo window, if configured.
 
+If a cluster feature is clicked, the tool opens a window listing all features of the cluster.
+Clicking a list item opens the FeatureInfo window of the corresponding feature.
+List items of features not providing a FeatureInfo are disabled.
+
 ## View classes & class registry
 
 FeatureInfo provides a class registry, where view classes can be registered.

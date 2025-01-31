@@ -12,6 +12,9 @@ import {
   VectorStyleItem,
   markVolatile,
   maxZIndex,
+  vectorClusterGroupName,
+  hidden,
+  isProvidedClusterFeature,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -24,6 +27,7 @@ import { Feature } from 'ol';
 import { check, maybe, oneOf } from '@vcsuite/check';
 
 import { reactive } from 'vue';
+import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -36,6 +40,7 @@ import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
 import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
+import ClusterFeatureComponent from './ClusterFeatureComponent.vue';
 
 /** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
@@ -65,13 +70,50 @@ export const featureInfoClassRegistry = new ClassRegistry();
 export const featureInfoViewSymbol = Symbol('featureInfoView');
 
 /**
+ *
+ * @param {import("ol/style/Style.js").default?} style
+ * @param {import("@vcmap-cesium/engine").Color} fillColor
+ * @returns {import("ol/style/Style.js").default}
+ */
+export function getHighlightStyleFromStyle(style, fillColor) {
+  const highlightStyle =
+    style?.clone?.() ??
+    new VectorStyleItem(getDefaultVectorStyleItemOptions()).style;
+  if (highlightStyle.getText()) {
+    if (highlightStyle.getText().getFill()) {
+      highlightStyle.getText().getFill().setColor(fillColor.toCssColorString());
+    }
+    highlightStyle
+      .getText()
+      .setScale((highlightStyle.getText().getScale() ?? 1) * 2);
+  }
+  if (highlightStyle.getImage()) {
+    highlightStyle
+      .getImage()
+      .setScale(highlightStyle.getImage().getScale() * 2);
+  }
+  if (highlightStyle.getStroke()) {
+    highlightStyle.getStroke().setColor(fillColor.toCssColorString());
+    highlightStyle
+      .getStroke()
+      .setWidth(highlightStyle.getStroke().getWidth() * 2);
+  }
+  if (highlightStyle.getFill()) {
+    const color = fillColor.toBytes();
+    color[3] /= 255;
+    highlightStyle.getFill().setColor(color);
+  }
+  return highlightStyle;
+}
+
+/**
  * @param {FeatureType} feature
  * @param {import("@vcmap/core").Layer} layer
  * @param {string} defaultFillColor
  * @returns {import("ol/style/Style.js").default|import("@vcmap/core").VectorStyleItem}
  */
 export function getHighlightStyle(feature, layer, defaultFillColor) {
-  if (layer && layer.highlightStyle) {
+  if (layer?.highlightStyle) {
     return layer.highlightStyle;
   }
 
@@ -81,30 +123,30 @@ export function getHighlightStyle(feature, layer, defaultFillColor) {
     if (typeof style === 'function') {
       style = style(feature, 1);
     }
-    style =
-      style?.clone?.() ??
-      new VectorStyleItem(getDefaultVectorStyleItemOptions()).style;
-    if (style.getText()) {
-      if (style.getText().getFill()) {
-        style.getText().getFill().setColor(fillColor.toCssColorString());
-      }
-      style.getText().setScale((style.getText().getScale() ?? 1) * 2);
-    }
-    if (style.getImage()) {
-      style.getImage().setScale(style.getImage().getScale() * 2);
-    }
-    if (style.getStroke()) {
-      style.getStroke().setColor(fillColor.toCssColorString());
-      style.getStroke().setWidth(style.getStroke().getWidth() * 2);
-    }
-    if (style.getFill()) {
-      const color = fillColor.toBytes();
-      color[3] /= 255;
-      style.getFill().setColor(color);
-    }
-    return style;
+    return getHighlightStyleFromStyle(style, fillColor);
   }
   return fromCesiumColor(fillColor);
+}
+
+/**
+ * @param {import("ol").Feature} clusterFeature
+ * @param {import("@vcmap/core").VectorClusterGroup} clusterGroup
+ * @param {import("ol/style/Style.js").default} clusterStyle
+ * @param {string} defaultFillColor
+ * @returns {import("ol/style/Style.js").default}
+ */
+export function getClusterHighlightStyle(
+  clusterFeature,
+  clusterGroup,
+  clusterStyle,
+  defaultFillColor,
+) {
+  if (clusterGroup?.highlightStyle) {
+    return clusterGroup.getHighlightStyleForFeature(clusterFeature);
+  }
+
+  const fillColor = Color.fromCssColorString(defaultFillColor).withAlpha(0.8);
+  return getHighlightStyleFromStyle(clusterStyle, fillColor);
 }
 
 /**
@@ -158,7 +200,7 @@ function setupFeatureInfoTool(app) {
         session.stopped.addEventListener(() => {
           action.active = false;
           session = null;
-          app.featureInfo.clear();
+          app.featureInfo.clearSelection();
           action.title = 'featureInfo.activateToolTitle';
         });
         this.active = true;
@@ -266,7 +308,12 @@ class FeatureInfo extends Collection {
      */
     this._windowId = null;
     /**
-     * @type {VcsEvent<FeatureType>}
+     * @type {string|null}
+     * @private
+     */
+    this._clusterWindowId = null;
+    /**
+     * @type {VcsEvent<FeatureType|null>}
      * @private
      */
     this._featureChanged = new VcsEvent();
@@ -280,6 +327,21 @@ class FeatureInfo extends Collection {
      * @private
      */
     this._selectedFeatureId = null;
+    /**
+     * @type {VcsEvent<import("ol").Feature|null>}
+     * @private
+     */
+    this._clusterFeatureChanged = new VcsEvent();
+    /**
+     * @type {import("ol").Feature|null}
+     * @private
+     */
+    this._selectedClusterFeature = null;
+    /**
+     * @type {string|null}
+     * @private
+     */
+    this._selectedClusterFeatureId = null;
     /**
      * @type {Array<function():void>}
      * @private
@@ -308,15 +370,18 @@ class FeatureInfo extends Collection {
       }),
       this._app.windowManager.removed.addEventListener(({ id }) => {
         if (id === this._windowId) {
-          this.clear();
+          this.clearFeature();
+        }
+        if (id === this._clusterWindowId) {
+          this.clearCluster();
         }
       }),
       this._app.moduleAdded.addEventListener(() => {
-        this.clear();
+        this.clearSelection();
         this._destroyFeatureInfoTool();
         this._destroyFeatureInfoTool = setupFeatureInfoTool(this._app);
       }),
-      this._app.moduleRemoved.addEventListener(() => this.clear()),
+      this._app.moduleRemoved.addEventListener(() => this.clearSelection()),
     ];
     /**
      * A vector layer to render provided features on
@@ -332,6 +397,8 @@ class FeatureInfo extends Collection {
   }
 
   /**
+   * Emitted whenever a feature is selected or cleared.
+   * Does not reflect cluster feature changes!
    * @type {VcsEvent<null|FeatureType>}
    */
   get featureChanged() {
@@ -353,11 +420,41 @@ class FeatureInfo extends Collection {
   }
 
   /**
+   * Emitted whenever a cluster feature is selected or cleared.
+   * @type {VcsEvent<null|import("ol").Feature>}
+   */
+  get clusterFeatureChanged() {
+    return this._clusterFeatureChanged;
+  }
+
+  /**
+   * @type {null|import("ol").Feature}
+   */
+  get selectedClusterFeature() {
+    return this._selectedClusterFeature;
+  }
+
+  /**
+   * @type {null|string}
+   */
+  get selectedClusterFeatureId() {
+    return this._selectedClusterFeatureId;
+  }
+
+  /**
    * The window id of the current features FeatureInfoView window
    * @type {string|null}
    */
   get windowId() {
     return this._windowId;
+  }
+
+  /**
+   * The window id of the current cluster feature window
+   * @type {string|null}
+   */
+  get clusterWindowId() {
+    return this._clusterWindowId;
   }
 
   /**
@@ -470,8 +567,104 @@ class FeatureInfo extends Collection {
       this._selectedFeatureId = feature.getId();
       this._featureChanged.raiseEvent(this._selectedFeature);
     } else {
-      this.clear();
+      this.clearFeature();
     }
+  }
+
+  /**
+   * Selecting a cluster feature opens a window listing the features belonging to the cluster feature.
+   * To be listed the feature must meet the following criteria: a) the feature must be part of a layer, b) said layer must be managed in
+   * the same VcsApp as provided to the FeatureInfo on construction. if not providing a feature info view, then c) said layer must have a featureInfo property set on
+   * its properties bag and d) said featureInfo property must provide the name of a FeatureInfoView present on this FeatureInfos
+   * collection.
+   * The cluster feature will be cloned, highlighted and added on an internal scratch layer to ensure availability until deselection.
+   * The original cluster feature will be hidden until deselection.
+   * @param {import("ol").Feature} clusterFeature
+   * @returns {Promise<void>}
+   */
+  async selectClusterFeature(clusterFeature) {
+    this._clearClusterInternal();
+    const id = `cluster-at-${clusterFeature.getGeometry().getCoordinates().join('-')}`;
+
+    this._ensureScratchLayer();
+    const feature = clusterFeature.clone();
+    feature.setId(id);
+
+    clusterFeature[hidden] = true;
+    clusterFeature.changed();
+
+    const fillColor =
+      this._app.uiConfig.config.primaryColor ??
+      getDefaultPrimaryColor(this._app);
+    if (clusterFeature[vectorClusterGroupName]) {
+      const clusterGroup = this._app.vectorClusterGroups.getByKey(
+        clusterFeature[vectorClusterGroupName],
+      );
+      const clusterStyle = clusterGroup.style.createStyleFunction((layerName) =>
+        this._app.layers.getByKey(layerName),
+      )(clusterFeature, 1);
+      const highlightStyle = getClusterHighlightStyle(
+        clusterFeature,
+        clusterGroup,
+        clusterStyle,
+        fillColor,
+      );
+      feature.setStyle(highlightStyle);
+    } else if (clusterFeature[isProvidedClusterFeature]) {
+      feature.setStyle(fromCesiumColor(fillColor));
+    }
+
+    this._scratchLayer.addFeatures([feature]);
+
+    const features = clusterFeature.get('features');
+    const groups = {};
+    const items = features.map((f) => {
+      const listItem = reactive({
+        name: f.getId(),
+        title: f.getAttributes()?.title || f.getAttributes()?.name || f.getId(),
+        disabled: !this._getFeatureInfoViewForFeature(f),
+        selectionChanged: (value) => {
+          if (value) {
+            this.selectFeature(f);
+          } else {
+            this.clearFeature();
+          }
+        },
+      });
+      const layerName = f[vcsLayerName];
+      if (layerName) {
+        if (!groups[layerName]) {
+          const title = this._app.layers.getByKey(layerName)?.properties?.title;
+          groups[layerName] = {
+            name: layerName,
+            title: title || layerName,
+          };
+        }
+        listItem.group = layerName;
+      }
+      return listItem;
+    });
+
+    this._clusterWindowId = id;
+    this._app.windowManager.add(
+      {
+        id,
+        component: ClusterFeatureComponent,
+        props: {
+          items,
+          groups: Object.values(groups),
+        },
+        state: {
+          headerTitle: 'featureInfo.cluster.headerTitle',
+        },
+        slot: WindowSlot.DYNAMIC_LEFT,
+      },
+      vcsAppSymbol,
+    );
+
+    this._selectedClusterFeature = clusterFeature;
+    this._selectedClusterFeatureId = id;
+    this._clusterFeatureChanged.raiseEvent(this._selectedClusterFeature);
   }
 
   /**
@@ -487,16 +680,29 @@ class FeatureInfo extends Collection {
       this._app.windowManager.remove(this._windowId);
       this._windowId = null;
     }
+    if (this._scratchLayer && this._selectedFeatureId) {
+      this._scratchLayer.removeFeaturesById([this._selectedFeatureId]);
+    }
+  }
 
-    if (this._scratchLayer) {
-      this._scratchLayer.removeAllFeatures();
+  /**
+   * Clears the current cluster feature. remove window, highlighting and provided cluster feature.
+   * @private
+   */
+  _clearClusterInternal() {
+    if (this._clusterWindowId) {
+      this._app.windowManager.remove(this._clusterWindowId);
+      this._clusterWindowId = null;
+    }
+    if (this._scratchLayer && this._selectedClusterFeatureId) {
+      this._scratchLayer.removeFeaturesById([this._selectedClusterFeatureId]);
     }
   }
 
   /**
    * Deselecting feature clears highlighting and closes FeatureInfoView. fires feature changed with null
    */
-  clear() {
+  clearFeature() {
     this._clearInternal();
     if (this._selectedFeature) {
       this._selectedFeature = null;
@@ -506,11 +712,44 @@ class FeatureInfo extends Collection {
   }
 
   /**
+   * Deselecting and removing cluster feature. Closing cluster window and fires cluster feature changed with null
+   */
+  clearCluster() {
+    this._clearClusterInternal();
+    if (this._selectedClusterFeature) {
+      this._selectedClusterFeature[hidden] = false;
+      this._selectedClusterFeature = null;
+      this._clusterFeatureChanged.raiseEvent(this._selectedClusterFeature);
+    }
+  }
+
+  /**
+   * @deprecated
+   */
+  clear() {
+    getLogger().deprecate(
+      'clear',
+      'Use clearSelection instead. Clear will clear the FeatureInfo collection removing all registered FeatureInfoViews in feature.',
+    );
+    this.clearSelection();
+  }
+
+  /**
+   * Clears selection by deselecting current feature and cluster and closing all related windows.
+   * Fires feature changed and cluster feature changed events with null.
+   */
+  clearSelection() {
+    this.clearFeature();
+    this.clearCluster();
+  }
+
+  /**
    * Destroys the feature info and all its events & listeners
    */
   destroy() {
     super.destroy();
     this._clearInternal();
+    this._clearClusterInternal();
     this._featureChanged.destroy();
     this._destroyFeatureInfoTool();
     if (this._scratchLayer) {

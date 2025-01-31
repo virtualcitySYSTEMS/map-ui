@@ -92,7 +92,7 @@
 </script>
 
 <template>
-  <Story title="VcsTreeview" :meta="{ wrapper: { ...state.wrapper } }">
+  <Story title="Lists/VcsTreeview" :meta="{ wrapper: { ...state.wrapper } }">
     <VcsTreeview
       v-bind="{ ...state.bind }"
       :items="items"
