@@ -6,6 +6,7 @@
       start-open
       :header-actions="actions"
       :action-button-list-overflow-count="4"
+      :start-help-open="true"
     >
       <template #help>
         <ol>

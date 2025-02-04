@@ -64,6 +64,7 @@
    * @vue-prop {Array<VcsAction>}    headerActions - Icons to be displayed on the right side
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items
    * @vue-prop {string} [helpText] - Optional help text. Must be plain string. Use 'help' slot for html based help texts. Help slot has precedence over helpText prop.
+   * @vue-prop {boolean} [startHelpOpen=false] - If help text starts open.
    * @vue-computed {Array<VcsAction>} actions - Returns header actions extended by a help action, if help prop is passed or help slot is used.
    */
   export default {
@@ -104,6 +105,10 @@
         type: String,
         default: undefined,
       },
+      startHelpOpen: {
+        type: Boolean,
+        default: false,
+      },
     },
     setup(props, { slots }) {
       const open = ref(props.startOpen);
@@ -116,7 +121,7 @@
       const helpAction = reactive({
         name: 'help',
         title: 'components.vcsFormSection.help',
-        active: false,
+        active: props.startHelpOpen,
         icon: 'mdi-help-circle',
         callback() {
           this.active = !this.active;
@@ -128,7 +133,7 @@
        */
       const actions = computed(() => {
         if (props.helpText || (slots.help && slots.help().length > 0)) {
-          return [helpAction, ...props.headerActions];
+          return [...props.headerActions, helpAction];
         }
         return props.headerActions;
       });

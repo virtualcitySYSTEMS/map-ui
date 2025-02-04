@@ -1,5 +1,7 @@
 # 6.1.0
 
+- VcsFormSection Help action is always aligned to the right.
+- VcsFormSection help could be started open.
 - Suggestions implemented for search interfaces that provide string suggestions.
 - Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList, VcsSelect and VcsTextArea
 - Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
