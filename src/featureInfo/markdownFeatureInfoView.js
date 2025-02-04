@@ -1,4 +1,4 @@
-import { renderTemplate } from '../components/form-output/markdownHelper.js';
+import { renderTemplate } from '@vcmap/core';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
 

@@ -17,8 +17,12 @@
 
 <script>
   import { computed, inject, onUnmounted, shallowRef } from 'vue';
-  import { ObliqueMap, ObliqueViewDirection } from '@vcmap/core';
-  import { renderTemplate } from '../components/form-output/markdownHelper.js';
+  import {
+    ObliqueMap,
+    ObliqueViewDirection,
+    renderTemplate,
+  } from '@vcmap/core';
+  import { parseAndSanitizeMarkdown } from '../components/form-output/markdownHelper.js';
 
   const i18nViewDirection = {
     [ObliqueViewDirection.NORTH]: 'footer.oblique.north',
@@ -95,7 +99,9 @@
             app.uiConfig.config.obliqueFooterTemplate ??
             'footer.oblique.template';
           return renderTemplate(
-            app.vueI18n.te(template) ? app.vueI18n.tm(template) : template,
+            parseAndSanitizeMarkdown(
+              app.vueI18n.te(template) ? app.vueI18n.tm(template) : template,
+            ),
             getTranslatedImageInfo(currentImage.value),
           );
         }

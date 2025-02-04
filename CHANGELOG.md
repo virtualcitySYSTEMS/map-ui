@@ -22,6 +22,7 @@
 - Add new callbacks `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
 - Fix modal alignment for `createModalAction`
 - Add a LocalStorage API
+- Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies
   - vuetify to 3.7.8
   - openlayers to 10.3.1

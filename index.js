@@ -11,10 +11,8 @@ export {
   createGoToViewpointAction,
   createZoomToFeatureAction,
 } from './src/actions/actionHelper.js';
-export {
-  parseAndSanitizeMarkdown,
-  renderTemplate,
-} from './src/components/form-output/markdownHelper.js';
+export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.js';
+export { renderTemplate } from '@vcmap/core';
 export {
   createStateRefAction,
   StateActionState,

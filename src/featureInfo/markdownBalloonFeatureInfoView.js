@@ -1,7 +1,5 @@
-import {
-  parseAndSanitizeMarkdown,
-  renderTemplate,
-} from '../components/form-output/markdownHelper.js';
+import { renderTemplate } from '@vcmap/core';
+import { parseAndSanitizeMarkdown } from '../components/form-output/markdownHelper.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import MarkdownBalloonComponent from './MarkdownBalloonComponent.vue';
 
