@@ -55,7 +55,7 @@ class PositionDisplayInteraction extends AbstractInteraction {
    * @returns {Promise<import("@vcmap/core").InteractionEvent>}
    */
   pipe(event) {
-    if (!event.position.every((pos) => pos === 0)) {
+    if (event.position && !event.position.every((pos) => pos === 0)) {
       this.position.value = [...event.position];
     }
     return Promise.resolve(event);
