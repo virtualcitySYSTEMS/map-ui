@@ -40,6 +40,11 @@
             v-if="
               options.secondaryButtonTitle && options.secondaryCallbackOptions
             "
+            :disabled="
+              option.requireInputForSecondary &&
+              options.acceptInput &&
+              !checkBox
+            "
             @click="secondaryButtonClicked"
           >
             {{ $st(options.secondaryButtonTitle) }}
@@ -111,10 +116,10 @@
 
       const checkBox = ref(false);
       const dontShowAgain = ref(false);
+
       function exitScreen() {
         localValue.value = false;
         checkBox.value = false;
-
         if (dontShowAgain.value) {
           const config = app.uiConfig.getByKey('splashScreen');
           const hash = getSplashScreenHash(app);

@@ -41,7 +41,7 @@ For each event, one or more callbacks can be configured:
 
 [VcsCallback](../src/callback/vcsCallback.js) is an abstract class to be extended for specific use cases.
 
-Per default four extensions are available:
+Per default ten extensions are available:
 
 - [ActivateLayersCallback](../src/callback/activateLayersCallback.js) - activates one or more layers
 - [DeactivateLayersCallback](../src/callback/deactivateLayersCallback.js) - deactivates one or more layers
@@ -51,6 +51,8 @@ Per default four extensions are available:
 - [StopRotationCallback](../src/callback/stopRotationCallback.js) - stops the rotation
 - [AddModuleCallback](../src/callback/addModuleCallback.js) - adds a module
 - [RemoveModuleCallback](../src/callback/removeModuleCallback.js) - removes a module
+- [OpenSplashScreenCallback](../src/callback/openSplashScreenCallback.js) - opens the SplashScreen if defined
+- [CloseSplashScreenCallback](../src/callback/closeSplashScreenCallback.js) - closes the SplashScreen
 
 ## CallbackClassRegistry
 

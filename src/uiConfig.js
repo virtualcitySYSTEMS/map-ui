@@ -1,5 +1,5 @@
 import { Collection, makeOverrideCollection } from '@vcmap/core';
-import { reactive, readonly } from 'vue';
+import { reactive, readonly, ref } from 'vue';
 
 /**
  * @typedef {{
@@ -29,6 +29,7 @@ import { reactive, readonly } from 'vue';
  * @property {Array<import("./callback/vcsCallback.js").VcsCallbackOptions>} [secondaryCallbackOptions]
  * @property {boolean} [menuEntry]
  * @property {boolean} [acceptInput]
+ * @property {boolean} [requireInputForSecondary] Whether the Secondary Button is disabled as well as long as the checkbox is not checked.
  * @property {boolean} [enableDontShowAgain] Whether to display a checkbox allowing the user not to see the SplashScreen again. This parameter is relative to moduleId and configuration; the SplashScreen will be shown again in case of any change.
  * @property {Object} [position]
  * @property {string} [position.width]
@@ -106,6 +107,12 @@ class UiConfig extends Collection {
     this._readonlyConfig = readonly(this._config);
 
     /**
+     * @type {import("vue").Ref<boolean>}
+     * @private
+     */
+    this._showSplashScreen = ref(false);
+
+    /**
      * @type {Array<function():void>}
      * @private
      */
@@ -132,6 +139,13 @@ class UiConfig extends Collection {
    */
   get config() {
     return this._readonlyConfig;
+  }
+
+  /**
+   * @type {import("vue").Ref<boolean>}
+   */
+  get showSplashScreen() {
+    return this._showSplashScreen;
   }
 
   /**

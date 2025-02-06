@@ -3,7 +3,7 @@
     <VcsSplashScreen
       v-if="splashScreen"
       :options="splashScreen"
-      v-model="splashScreenRef"
+      v-model="showSplashScreen"
     ></VcsSplashScreen>
     <VcsNavbar v-if="!config.hideHeader" />
     <VcsContainer :attribution-action="attributionAction" />
@@ -48,7 +48,6 @@
     onUnmounted,
     provide,
     watch,
-    ref,
     shallowRef,
   } from 'vue';
   import { useDisplay } from 'vuetify';
@@ -398,14 +397,14 @@
   /**
    * This helper function will add a Splash Screen action button to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
-   * @param {import("vue").Ref} splashScreenRef
    * @returns {WatchStopHandle}
    */
-  function setupSplashScreen(app, splashScreenRef) {
+  function setupSplashScreen(app) {
     function setupSplashScreenAction(moduleId) {
-      const { splashScreen } = app.uiConfig.config;
+      const { config, showSplashScreen } = app.uiConfig;
+      const { splashScreen } = config;
       if (splashScreen && moduleId !== app.dynamicModuleId) {
-        splashScreenRef.value = true;
+        showSplashScreen.value = true;
       }
       if (splashScreen && splashScreen.menuEntry) {
         const splashScreenAction = {
@@ -413,7 +412,7 @@
           icon: splashScreen.icon || 'mdi-alert-box',
           title: splashScreen.title,
           callback() {
-            splashScreenRef.value = !splashScreenRef.value;
+            showSplashScreen.value = !showSplashScreen.value;
           },
         };
         app.navbarManager.add(
@@ -768,8 +767,8 @@
         'hideSettings',
       );
       const stopCustomScreen = setupCustomScreen(app);
-      const splashScreenRef = ref(false);
-      const stopSplashScreen = setupSplashScreen(app, splashScreenRef);
+      const { showSplashScreen } = app.uiConfig;
+      const stopSplashScreen = setupSplashScreen(app);
       setupHelpButton(app);
       const destroyMyWorkspace = setupUIConfigDependency(
         app,
@@ -866,7 +865,7 @@
           }
           return undefined;
         }),
-        splashScreenRef,
+        showSplashScreen,
         splashScreen,
         attributionEntries,
         attributionAction,
