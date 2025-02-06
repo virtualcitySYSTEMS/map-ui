@@ -58,11 +58,12 @@ function setupTestFeatureAndVectorLayer(app) {
 
 function setupTestClusterFeatureAndGroup(app, layer) {
   const feature2 = new Feature({ geometry: new Point([2, 2, 2]) });
-  layer.addFeatures([feature2]);
+  const feature3 = new Feature({ geometry: new Point([2, 3, 1]) });
+  const features = [feature2, feature3];
+  layer.addFeatures(features);
   const clusterGroup = new VectorClusterGroup({});
   clusterGroup.addLayer(layer);
   app.vectorClusterGroups.add(clusterGroup);
-  const features = layer.getFeatures();
   const clusterFeature = new Feature({
     geometry: new Point([1, 2, 2]),
     features,
@@ -86,6 +87,7 @@ function setupTestProvidedFeatureAndWmsLayer(app) {
 
 describe('FeatureInfo', () => {
   describe('setting up listeners', () => {
+    /** @type {VcsUiApp} */
     let app;
     let layer;
     let feature;
@@ -128,9 +130,43 @@ describe('FeatureInfo', () => {
       await app.removeModule('remove');
       expect(app.featureInfo.selectedFeature).to.be.null;
     });
+
+    it('should update the cluster props, if a clustered layer gets deactivated', async () => {
+      const layer1 = new VectorLayer({});
+      await layer1.activate();
+      app.layers.add(layer1);
+
+      const { clusterGroup, clusterFeature } = setupTestClusterFeatureAndGroup(
+        app,
+        layer1,
+      );
+      clusterGroup.addLayer(layer);
+      clusterFeature.get('features').push(feature);
+      await app.featureInfo.selectClusterFeature(clusterFeature);
+      const clusterWindow = app.windowManager.get(
+        app.featureInfo.clusterWindowId,
+      );
+      expect(clusterWindow.props.items).to.have.length(3);
+      layer1.deactivate();
+      expect(clusterWindow.props.items).to.have.length(1);
+    });
+
+    it('should close the cluster window, if all layers have been deactivated', async () => {
+      const { clusterFeature } = setupTestClusterFeatureAndGroup(app, layer);
+      await layer.activate();
+      await app.featureInfo.selectClusterFeature(clusterFeature);
+      const clusterWindow = app.windowManager.get(
+        app.featureInfo.clusterWindowId,
+      );
+      expect(clusterWindow.props.items).to.have.length(2);
+      layer.deactivate();
+      expect(app.windowManager.has(app.featureInfo.clusterWindowId)).to.be
+        .false;
+    });
   });
 
   describe('selecting of a feature', () => {
+    /** @type {VcsUiApp} */
     let app;
     let layer;
     let feature;
@@ -211,6 +247,25 @@ describe('FeatureInfo', () => {
 
       it('should raise the cluster feature selected event', () => {
         expect(selectedClusterCallback).toHaveBeenCalledWith(clusterFeature);
+      });
+
+      it('should deselect the cluster if a feature is selected', async () => {
+        await app.featureInfo.selectFeature(feature);
+        expect(app.featureInfo.selectedClusterFeature).to.be.null;
+      });
+
+      it('should keep the cluster, when selecting a feature which belongs to the cluster', async () => {
+        await app.featureInfo.selectFeature(features[0]);
+        expect(app.featureInfo.selectedClusterFeature).to.equal(clusterFeature);
+      });
+
+      it('should clear any previously selected feature', async () => {
+        await app.featureInfo.selectFeature(feature);
+        const changed = vi.fn();
+        app.featureInfo.featureChanged.addEventListener(changed);
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+        expect(app.featureInfo.selectedFeature).to.be.null;
+        expect(changed).toHaveBeenCalled;
       });
     });
   });
@@ -989,19 +1044,19 @@ describe('FeatureInfo', () => {
 
   describe('clearing selection', () => {
     let app;
-    let layer;
-    let feature;
-    let clusterFeature;
     let selectedCallback;
     let selectedClusterCallback;
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      ({ layer, feature } = setupTestFeatureAndVectorLayer(app));
-      ({ clusterFeature } = setupTestClusterFeatureAndGroup(app, layer));
+      const { layer } = setupTestFeatureAndVectorLayer(app);
+      const { clusterFeature, features } = setupTestClusterFeatureAndGroup(
+        app,
+        layer,
+      );
       app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
-      await app.featureInfo.selectFeature(feature);
       await app.featureInfo.selectClusterFeature(clusterFeature);
+      await app.featureInfo.selectFeature(features[0]);
       selectedCallback = vi.fn();
       app.featureInfo.featureChanged.addEventListener(selectedCallback);
       selectedClusterCallback = vi.fn();

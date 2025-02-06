@@ -15,6 +15,8 @@ import {
   vectorClusterGroupName,
   hidden,
   isProvidedClusterFeature,
+  alreadyTransformedToImage,
+  ObliqueMap,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -367,6 +369,24 @@ class FeatureInfo extends Collection {
         ) {
           this._app.windowManager.remove(this._windowId);
         }
+
+        if (
+          this._clusterWindowId &&
+          this._app.windowManager.has(this._clusterWindowId)
+        ) {
+          const { props } = this._app.windowManager.get(this._clusterWindowId);
+          if (props.items.some((item) => item.group === layer.name)) {
+            props.items = props.items.filter(
+              (item) => item.group !== layer.name,
+            );
+            props.groups = props.groups.filter(
+              (group) => group.name !== layer.name,
+            );
+            if (props.items.length === 0) {
+              this._app.windowManager.remove(this._clusterWindowId);
+            }
+          }
+        }
       }),
       this._app.windowManager.removed.addEventListener(({ id }) => {
         if (id === this._windowId) {
@@ -523,6 +543,12 @@ class FeatureInfo extends Collection {
 
     if (usedFeatureInfoView && layer) {
       this._clearInternal();
+      if (
+        this._selectedClusterFeature &&
+        !this._selectedClusterFeature.get('features').includes(feature)
+      ) {
+        this.clearCluster();
+      }
       if (feature[isProvidedFeature]) {
         this._ensureScratchLayer();
         this._scratchLayer.addFeatures([feature]);
@@ -567,7 +593,7 @@ class FeatureInfo extends Collection {
       this._selectedFeatureId = feature.getId();
       this._featureChanged.raiseEvent(this._selectedFeature);
     } else {
-      this.clearFeature();
+      this.clearSelection();
     }
   }
 
@@ -583,6 +609,7 @@ class FeatureInfo extends Collection {
    * @returns {Promise<void>}
    */
   async selectClusterFeature(clusterFeature) {
+    this.clearFeature();
     this._clearClusterInternal();
     const id = `cluster-at-${clusterFeature.getGeometry().getCoordinates().join('-')}`;
 
@@ -596,6 +623,7 @@ class FeatureInfo extends Collection {
     const fillColor =
       this._app.uiConfig.config.primaryColor ??
       getDefaultPrimaryColor(this._app);
+
     if (clusterFeature[vectorClusterGroupName]) {
       const clusterGroup = this._app.vectorClusterGroups.getByKey(
         clusterFeature[vectorClusterGroupName],
@@ -614,6 +642,9 @@ class FeatureInfo extends Collection {
       feature.setStyle(fromCesiumColor(fillColor));
     }
 
+    if (this._app.maps.activeMap instanceof ObliqueMap) {
+      feature.getGeometry()[alreadyTransformedToImage] = true;
+    }
     this._scratchLayer.addFeatures([feature]);
 
     const features = clusterFeature.get('features');
@@ -650,10 +681,10 @@ class FeatureInfo extends Collection {
       {
         id,
         component: ClusterFeatureComponent,
-        props: {
+        props: reactive({
           items,
           groups: Object.values(groups),
-        },
+        }),
         state: {
           headerTitle: 'featureInfo.cluster.headerTitle',
         },
@@ -694,8 +725,14 @@ class FeatureInfo extends Collection {
       this._app.windowManager.remove(this._clusterWindowId);
       this._clusterWindowId = null;
     }
-    if (this._scratchLayer && this._selectedClusterFeatureId) {
-      this._scratchLayer.removeFeaturesById([this._selectedClusterFeatureId]);
+
+    if (this._selectedClusterFeature) {
+      this._selectedClusterFeature[hidden] = false;
+      this._selectedClusterFeature.changed();
+
+      if (this._scratchLayer) {
+        this._scratchLayer.removeFeaturesById([this._selectedClusterFeatureId]);
+      }
     }
   }
 
