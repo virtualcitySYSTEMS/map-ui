@@ -551,8 +551,11 @@ class FeatureInfo extends Collection {
       }
       if (feature[isProvidedFeature]) {
         this._ensureScratchLayer();
-        this._scratchLayer.addFeatures([feature]);
-        const featureId = feature.getId(); // make sure to grab ID after adding it to the layer
+        // we need to clone the feature to avoid changing vcsLayerNameSymbol on the original feature
+        const clonedFeature = feature.clone();
+        clonedFeature.setId(feature.getId());
+        this._scratchLayer.addFeatures([clonedFeature]);
+        const featureId = clonedFeature.getId(); // make sure to grab ID after adding it to the layer
         this._scratchLayer.featureVisibility.highlight({
           [featureId]: getHighlightStyle(
             feature,
@@ -639,7 +642,9 @@ class FeatureInfo extends Collection {
       );
       feature.setStyle(highlightStyle);
     } else if (clusterFeature[isProvidedClusterFeature]) {
-      feature.setStyle(fromCesiumColor(fillColor));
+      feature.setStyle(
+        fromCesiumColor(Color.fromCssColorString(fillColor)).style,
+      );
     }
 
     if (this._app.maps.activeMap instanceof ObliqueMap) {

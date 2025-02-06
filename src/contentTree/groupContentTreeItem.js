@@ -33,11 +33,13 @@ class GroupContentTreeItem extends ContentTreeItem {
       () => {
         const children = this._children.value;
         this.visible = children.some((c) => c.visible);
-        if (children.every((c) => c.state === StateActionState.NONE)) {
+        if (
+          children.every((c) => c.state === StateActionState.NONE || !c.visible)
+        ) {
           this.state = StateActionState.NONE;
         } else {
           const childrenWithState = children.filter(
-            (c) => c.state !== StateActionState.NONE,
+            (c) => c.visible && c.state !== StateActionState.NONE,
           );
           if (
             childrenWithState.every((c) => c.state === StateActionState.ACTIVE)
@@ -54,7 +56,7 @@ class GroupContentTreeItem extends ContentTreeItem {
           }
         }
       },
-      { deep: true },
+      { deep: true, immediate: true },
     );
   }
 

@@ -38,6 +38,22 @@ describe('GroupContentTreeItem', () => {
     app.destroy();
   });
 
+  describe('visibility without Children', () => {
+    let item;
+
+    beforeAll(() => {
+      item = new GroupContentTreeItem({ name: 'foo' }, app);
+    });
+
+    afterAll(() => {
+      item.destroy();
+    });
+
+    it('should be not be visible, if the item does not have children ', async () => {
+      expect(item.visible).to.be.false;
+    });
+  });
+
   describe('visibility', () => {
     let item;
     let children;
@@ -77,8 +93,12 @@ describe('GroupContentTreeItem', () => {
 
     beforeAll(() => {
       ({ item, children } = setupGroupItem());
+    });
+
+    beforeEach(() => {
       children.forEach((c) => {
         c.state = StateActionState.NONE;
+        c.visible = true;
       });
     });
 
@@ -90,9 +110,6 @@ describe('GroupContentTreeItem', () => {
     });
 
     it('should have a state of NONE, if all items have a state of NONE', async () => {
-      children.forEach((c) => {
-        c.state = StateActionState.NONE;
-      });
       await sleep();
       expect(item.state).to.equal(StateActionState.NONE);
     });
@@ -116,6 +133,28 @@ describe('GroupContentTreeItem', () => {
       children[1].state = StateActionState.LOADING;
       await sleep();
       expect(item.state).to.equal(StateActionState.INDETERMINATE);
+    });
+
+    it('should ignore children that are not visible for NONE state', async () => {
+      children.forEach((c) => {
+        c.state = StateActionState.NONE;
+      });
+      children[0].state = StateActionState.INACTIVE;
+      children[0].visible = false;
+
+      await sleep();
+      expect(item.state).to.equal(StateActionState.NONE);
+    });
+
+    it('should ignore children that are not visible for other states', async () => {
+      children.forEach((c) => {
+        c.state = StateActionState.INACTIVE;
+      });
+      children[0].state = StateActionState.ACTIVE;
+      children[0].visible = false;
+
+      await sleep();
+      expect(item.state).to.equal(StateActionState.INACTIVE);
     });
   });
 

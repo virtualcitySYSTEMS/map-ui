@@ -422,9 +422,11 @@ class ContentTreeItem {
       (a) => a[actionWeightSymbol] > weight,
     );
     if (insertIndex > -1) {
-      this._actions.value.splice(insertIndex, 0, action);
+      const newActions = [...this._actions.value];
+      newActions.splice(insertIndex, 0, action);
+      this._actions.value = newActions;
     } else {
-      this._actions.value.push(action);
+      this._actions.value = [...this._actions.value, action];
     }
   }
 

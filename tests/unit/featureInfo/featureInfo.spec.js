@@ -25,6 +25,7 @@ import {
   VectorClusterGroup,
   vectorClusterGroupName,
   hidden,
+  isProvidedClusterFeature,
 } from '@vcmap/core';
 import {
   createDummyCesium3DTileFeature,
@@ -78,11 +79,31 @@ function setupTestProvidedFeatureAndWmsLayer(app) {
   layer.properties.featureInfo = 'foo';
   app.layers.add(layer);
   const feature = new Feature({ geometry: new Point([1, 1, 1]) });
+  feature.setId('myId');
   feature[isProvidedFeature] = true;
   feature[vcsLayerName] = layer.name;
   app.featureInfo.add(new TableFeatureInfoView({ name: 'foo' }));
 
   return { layer, feature };
+}
+function setupTestClusteredProvidedFeatureAndWmsLayer(app) {
+  const layer = new WMSLayer({});
+  layer.properties.featureInfo = 'foo';
+  app.layers.add(layer);
+  const feature2 = new Feature({ geometry: new Point([2, 2, 2]) });
+  feature2.setId('feature2');
+  const feature3 = new Feature({ geometry: new Point([2, 3, 1]) });
+  feature2.setId('feature3');
+  const features = [feature2, feature3];
+  const clusterFeature = new Feature({
+    geometry: new Point([1, 2, 2]),
+    features,
+  });
+  clusterFeature.setId('myId');
+  clusterFeature[isProvidedFeature] = true;
+  clusterFeature[isProvidedClusterFeature] = true;
+
+  return { clusterFeature, features, layer };
 }
 
 describe('FeatureInfo', () => {
@@ -522,7 +543,8 @@ describe('FeatureInfo', () => {
           let highlightStyle;
 
           beforeAll(async () => {
-            const feature = new Feature({});
+            const feature = new Feature();
+            feature.setId('myId');
             feature[isProvidedFeature] = true;
             feature[vcsLayerName] = layer.name;
             await app.featureInfo.selectFeature(feature);
@@ -575,6 +597,7 @@ describe('FeatureInfo', () => {
           beforeAll(() => {
             setupFeature = async (style) => {
               const feature = new Feature();
+              feature.setId('myId');
               feature[isProvidedFeature] = true;
               feature[vcsLayerName] = layer.name;
               feature.setStyle(style);
@@ -655,6 +678,7 @@ describe('FeatureInfo', () => {
 
         it('should set the layers highlight style, if the feature has no style', async () => {
           const feature = new Feature({});
+          feature.setId('myId');
           feature[isProvidedFeature] = true;
           feature[vcsLayerName] = layer.name;
           await app.featureInfo.selectFeature(feature);
@@ -667,6 +691,7 @@ describe('FeatureInfo', () => {
 
         it('should set the layers highlight style, if the feature has a style', async () => {
           const feature = new Feature({});
+          feature.setId('myId');
           feature[isProvidedFeature] = true;
           feature[vcsLayerName] = layer.name;
           feature.setStyle(new Style({}));
@@ -777,6 +802,84 @@ describe('FeatureInfo', () => {
 
       it('should raise the feature selected event', () => {
         expect(selectedCallback).toHaveBeenCalledWith(feature);
+      });
+    });
+
+    describe('selecting of a cluster feature', () => {
+      let app;
+      let features;
+      let clusterFeature;
+      let selectedClusterCallback;
+
+      beforeEach(async () => {
+        app = new VcsUiApp();
+        ({ clusterFeature, features } =
+          setupTestClusteredProvidedFeatureAndWmsLayer(app));
+        selectedClusterCallback = vi.fn();
+        app.featureInfo.clusterFeatureChanged.addEventListener(
+          selectedClusterCallback,
+        );
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+      });
+
+      afterEach(() => {
+        app.destroy();
+      });
+
+      it('should add cluster window with items prop', () => {
+        expect(app.windowManager.has(app.featureInfo.clusterWindowId)).to.be
+          .true;
+        const { props } = app.windowManager.get(
+          app.featureInfo.clusterWindowId,
+        );
+        expect(props.items).to.have.length(2);
+        expect(props.items.map((i) => i.name)).to.have.members(
+          features.map((f) => f.getId()),
+        );
+      });
+
+      it('should clone selected cluster feature and add it to scratch layer', () => {
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures).to.have.length(1);
+        expect(scratchFeatures[0].get('features')).to.have.members(features);
+      });
+
+      it('should set the style on the cloned cluster feature', () => {
+        const fillColor = Color.fromCssColorString(
+          getDefaultPrimaryColor(app),
+        ).toBytes();
+        fillColor[3] /= 255;
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        const scratchFeature = scratchFeatures[0];
+        expect(scratchFeature.getStyle().getFill().getColor()).to.have.members(
+          fillColor,
+        );
+      });
+
+      it('should hide original cluster feature', () => {
+        expect(clusterFeature[hidden]).to.be.true;
+      });
+
+      it('should set current cluster feature', () => {
+        expect(app.featureInfo.selectedClusterFeature).to.equal(clusterFeature);
+      });
+
+      it('should raise the cluster feature selected event', () => {
+        expect(selectedClusterCallback).toHaveBeenCalledWith(clusterFeature);
+      });
+
+      it('should deselect the cluster if a feature is selected', async () => {
+        await app.featureInfo.selectFeature(new Feature({}));
+        expect(app.featureInfo.selectedClusterFeature).to.be.null;
+      });
+
+      it('should clear any previously selected feature', async () => {
+        await app.featureInfo.selectFeature(new Feature({}));
+        const changed = vi.fn();
+        app.featureInfo.featureChanged.addEventListener(changed);
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+        expect(app.featureInfo.selectedFeature).to.be.null;
+        expect(changed).toHaveBeenCalled;
       });
     });
 

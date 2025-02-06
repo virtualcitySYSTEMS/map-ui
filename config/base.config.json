@@ -1090,6 +1090,12 @@
       "title": "Oberbaum Bridge"
     },
     {
+      "name": "emptyGroup",
+      "type": "GroupContentTreeItem",
+      "title": "Empty Group",
+      "icon": "mdi-star"
+    },
+    {
       "name": "reasonableGroup",
       "type": "GroupContentTreeItem",
       "title": "Textured Berlin",
