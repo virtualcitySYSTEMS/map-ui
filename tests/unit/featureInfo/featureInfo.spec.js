@@ -225,14 +225,13 @@ describe('FeatureInfo', () => {
 
     describe('selecting of a cluster feature', () => {
       let clusterFeature;
+      let clusterGroup;
       let features;
       let selectedClusterCallback;
 
       beforeEach(async () => {
-        ({ clusterFeature, features } = setupTestClusterFeatureAndGroup(
-          app,
-          layer,
-        ));
+        ({ clusterGroup, clusterFeature, features } =
+          setupTestClusterFeatureAndGroup(app, layer));
         selectedClusterCallback = vi.fn();
         app.featureInfo.clusterFeatureChanged.addEventListener(
           selectedClusterCallback,
@@ -287,6 +286,63 @@ describe('FeatureInfo', () => {
         await app.featureInfo.selectClusterFeature(clusterFeature);
         expect(app.featureInfo.selectedFeature).to.be.null;
         expect(changed).toHaveBeenCalled;
+      });
+
+      it('should copy the vector properties of the cluster group onto the cloned feature', async () => {
+        clusterGroup.vectorProperties.extrudedHeight = 20;
+        await app.featureInfo.selectClusterFeature(clusterFeature);
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures[0].get('olcs_extrudedHeight')).to.equal(20);
+      });
+    });
+
+    describe('selecting a feature belonging to a cluster group', () => {
+      let features;
+      let clusterGroup;
+
+      beforeEach(async () => {
+        ({ clusterGroup, features } = setupTestClusterFeatureAndGroup(
+          app,
+          layer,
+        ));
+        layer.vectorClusterGroup = clusterGroup.name;
+      });
+
+      it('should create a clone of the feature and add it to the scratch layer', async () => {
+        await app.featureInfo.selectFeature(features[0]);
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures).to.have.lengthOf(1);
+      });
+
+      it('should remove the clone feature after deselecting', async () => {
+        await app.featureInfo.selectFeature(features[0]);
+        app.featureInfo.clearSelection();
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures).to.be.empty;
+      });
+
+      it('should add an eye offset to the cloned feature', async () => {
+        await app.featureInfo.selectFeature(features[0]);
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures[0].get('olcs_eyeOffset'))
+          .to.be.an('array')
+          .and.have.members([0, 0, -10]);
+      });
+
+      it('should pull the eye offset, should it be set already', async () => {
+        features[0].set('olcs_eyeOffset', [0, 0, 20]);
+        await app.featureInfo.selectFeature(features[0]);
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures[0].get('olcs_eyeOffset'))
+          .to.be.an('array')
+          .and.have.members([0, 0, 10]);
+      });
+
+      it('should copy vector properties from the layer onto the cloned feature', async () => {
+        layer.vectorProperties.extrudedHeight = 20;
+        await app.featureInfo.selectFeature(features[0]);
+        const scratchFeatures = app.featureInfo._scratchLayer.getFeatures();
+        expect(scratchFeatures[0].get('olcs_extrudedHeight')).to.equal(20);
       });
     });
   });

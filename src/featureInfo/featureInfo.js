@@ -566,6 +566,29 @@ class FeatureInfo extends Collection {
         });
         this._clearHighlightingCb = () =>
           this._scratchLayer.featureVisibility.unHighlight([featureId]);
+      } else if (layer.vectorClusterGroup) {
+        this._ensureScratchLayer();
+        const clone = feature.clone();
+        const featureId = feature.getId();
+        this._scratchLayer.vectorProperties.setValuesForFeatures(
+          layer.vectorProperties.getValuesForFeatures([clone]),
+          [clone],
+        );
+        const eyeOffset = clone.get('olcs_eyeOffset') ?? [0, 0, 0];
+        eyeOffset[2] -= 10;
+        clone.set('olcs_eyeOffset', eyeOffset);
+        clone.setId(featureId);
+        this._scratchLayer.addFeatures([clone]);
+        this._scratchLayer.featureVisibility.highlight({
+          [featureId]: getHighlightStyle(
+            feature,
+            layer,
+            this._app.uiConfig.config.primaryColor ??
+              getDefaultPrimaryColor(this._app),
+          ),
+        });
+        this._clearHighlightingCb = () =>
+          this._scratchLayer.featureVisibility.unHighlight([clone]);
       } else if (layer.featureVisibility) {
         const featureId = feature.getId();
         layer.featureVisibility.highlight({
@@ -630,6 +653,10 @@ class FeatureInfo extends Collection {
     if (clusterFeature[vectorClusterGroupName]) {
       const clusterGroup = this._app.vectorClusterGroups.getByKey(
         clusterFeature[vectorClusterGroupName],
+      );
+      this._scratchLayer.vectorProperties.setValuesForFeatures(
+        clusterGroup.vectorProperties.getValuesForFeatures([feature]),
+        [feature],
       );
       const clusterStyle = clusterGroup.style.createStyleFunction((layerName) =>
         this._app.layers.getByKey(layerName),
