@@ -30,6 +30,7 @@ import {
 import { vcsAppSymbol } from '../pluginHelper.js';
 import VcsMap from '../application/VcsMap.vue';
 
+export const overviewMapWindowId = 'overview-map-container';
 export const overviewMapLayerSymbol = Symbol('overviewMapLayerSymbol');
 
 /**
@@ -40,7 +41,7 @@ export function getWindowComponentOptions() {
     component: VcsMap,
     props: { mapId: 'overview-map-container' },
     slot: WindowSlot.DETACHED,
-    id: 'overview-map-container',
+    id: overviewMapWindowId,
     state: {
       hideHeader: true,
       classes: ['overview-map'],
@@ -361,7 +362,7 @@ class OverviewMap {
    * @returns {Promise<void>}
    */
   async activate() {
-    if (!this._app.windowManager.has('overview-map-container')) {
+    if (!this._app.windowManager.has(overviewMapWindowId)) {
       this._app.windowManager.add(getWindowComponentOptions(), vcsAppSymbol);
     }
     await this._activate();
@@ -371,7 +372,7 @@ class OverviewMap {
    * closes window and clears all listeners
    */
   deactivate() {
-    this._app.windowManager.remove('overview-map-container');
+    this._app.windowManager.remove(overviewMapWindowId);
     this._clearListeners();
     if (this._mapActivatedListener) {
       this._mapActivatedListener();

@@ -211,6 +211,8 @@
     };
   }
 
+  export const legendComponentId = 'legendId';
+
   /**
    * This helper function will add a legend action button to the apps NavbarManager TOOL location, if legend entries are available.
    * Watches number of legend entries.
@@ -227,7 +229,7 @@
         title: 'legend.tooltip',
       },
       {
-        id: 'legend',
+        id: legendComponentId,
         component: VcsLegend,
         state: {
           headerTitle: 'legend.title',
@@ -247,10 +249,10 @@
      * Adds a legend button, if not existing
      */
     const addLegend = () => {
-      if (!app.navbarManager.has('legend')) {
+      if (!app.navbarManager.has(legendComponentId)) {
         app.navbarManager.add(
           {
-            id: 'legend',
+            id: legendComponentId,
             action: legendAction,
           },
           vcsAppSymbol,
@@ -264,11 +266,11 @@
       if (
         app.uiConfig.config.openLegendOnAdd &&
         newValue.length > currentEntryLength &&
-        !app.windowManager.has('legend')
+        !app.windowManager.has(legendComponentId)
       ) {
         app.windowManager.add(
           {
-            id: 'legend',
+            id: legendComponentId,
             component: VcsLegend,
             state: {
               headerTitle: 'legend.title',
@@ -298,8 +300,8 @@
         (style) => style?.properties?.legend,
       );
       if (layersWithLegend < 1 && stylesWithLegend < 1) {
-        app.navbarManager.remove('legend');
-        app.windowManager.remove('legend');
+        app.navbarManager.remove(legendComponentId);
+        app.windowManager.remove(legendComponentId);
       } else {
         addLegend();
       }
@@ -323,13 +325,15 @@
 
     return () => {
       watchEntries();
-      app.navbarManager.remove('legend');
-      app.windowManager.remove('legend');
+      app.navbarManager.remove(legendComponentId);
+      app.windowManager.remove(legendComponentId);
       destroy();
       legendDestroy();
       listeners.forEach((cb) => cb());
     };
   }
+
+  export const customScreenComponentId = 'customScreenId';
 
   /**
    * This helper function will add a customScreen action button to the apps NavbarManager MENU location.
@@ -347,7 +351,7 @@
             title: customScreen.title,
           },
           {
-            id: 'customScreenId',
+            id: customScreenComponentId,
             component: VcsTextPage,
             state: {
               headerIcon: customScreen.icon,
@@ -364,7 +368,7 @@
         );
       app.navbarManager.add(
         {
-          id: 'customScreenToggle',
+          id: customScreenComponentId,
           action: customScreenAction,
         },
         vcsAppSymbol,
@@ -378,8 +382,8 @@
     const stopCustomScreenWatcher = watch(
       () => app.uiConfig.config.customScreen,
       (newCustomScreen) => {
-        if (app.navbarManager.has('customScreenToggle')) {
-          app.navbarManager.remove('customScreenToggle');
+        if (app.navbarManager.has(customScreenComponentId)) {
+          app.navbarManager.remove(customScreenComponentId);
         }
         if (newCustomScreen) {
           customScreen = setupCustomScreenAction();
@@ -394,6 +398,8 @@
       stopCustomScreenWatcher();
     };
   }
+
+  export const splashScreenComponentId = 'splashScreenToggle';
   /**
    * This helper function will add a Splash Screen action button to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
@@ -417,7 +423,7 @@
         };
         app.navbarManager.add(
           {
-            id: 'splashScreenToggle',
+            id: splashScreenComponentId,
             action: splashScreenAction,
           },
           vcsAppSymbol,
@@ -428,8 +434,8 @@
     setupSplashScreenAction();
     const removeAddedListener = app.uiConfig.added.addEventListener((item) => {
       if (item.name === 'splashScreen') {
-        if (app.navbarManager.has('splashScreenToggle')) {
-          app.navbarManager.remove('splashScreenToggle');
+        if (app.navbarManager.has(splashScreenComponentId)) {
+          app.navbarManager.remove(splashScreenComponentId);
         }
         setupSplashScreenAction(item[moduleIdSymbol]);
       }
@@ -437,8 +443,8 @@
     const removeRemovedListener = app.uiConfig.removed.addEventListener(
       (item) => {
         if (item.name === 'splashScreen') {
-          if (app.navbarManager.has('splashScreenToggle')) {
-            app.navbarManager.remove('splashScreenToggle');
+          if (app.navbarManager.has(splashScreenComponentId)) {
+            app.navbarManager.remove(splashScreenComponentId);
           }
         }
       },
@@ -448,13 +454,14 @@
       removeRemovedListener();
     };
   }
+
+  export const settingsComponentId = 'vcsSettings';
   /**
    * This helper function will add a settings action button to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
    * @returns {function():void}
    */
   export function setupSettingsWindow(app) {
-    const settingsWindowId = 'vcsSettings';
     const { action: settingsAction, destroy: settingsDestroy } =
       createToggleAction(
         {
@@ -463,7 +470,7 @@
           title: 'settings.tooltip',
         },
         {
-          id: settingsWindowId,
+          id: settingsComponentId,
           component: VcsSettings,
           state: { headerIcon: 'mdi-cog', headerTitle: 'settings.title' },
           slot: WindowSlot.DYNAMIC_RIGHT,
@@ -473,19 +480,20 @@
       );
     app.navbarManager.add(
       {
-        id: settingsWindowId,
+        id: settingsComponentId,
         action: settingsAction,
       },
       vcsAppSymbol,
       ButtonLocation.MENU,
     );
     return () => {
-      app.navbarManager.remove(settingsWindowId);
-      app.windowManager.remove(settingsWindowId);
+      app.navbarManager.remove(settingsComponentId);
+      app.windowManager.remove(settingsComponentId);
       settingsDestroy();
     };
   }
 
+  export const helpComponentId = 'helpButton';
   /**
    * This helper function will add a help action button referencing VC Map help page to the apps NavbarManager MENU location.
    * @param {import("../vcsUiApp.js").default} app
@@ -501,7 +509,7 @@
     );
     app.navbarManager.add(
       {
-        id: 'helpButton',
+        id: helpComponentId,
         action: helpAction,
       },
       vcsAppSymbol,
@@ -683,6 +691,8 @@
     };
   }
 
+  export const attributionsComponentId = 'attributionId';
+
   /**
    * This helper gets attributions of all active maps, layers and oblique collections and returns an array of entries.
    * It also returns a attributionAction to toggle the attributions window and a destroy function.
@@ -700,7 +710,7 @@
           title: 'footer.attributions.tooltip',
         },
         {
-          id: 'attribution',
+          id: attributionsComponentId,
           component: VcsAttributions,
           state: {
             headerTitle: 'footer.attributions.title',

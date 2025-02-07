@@ -90,6 +90,8 @@
    * @property {function(number):void} [selectCb]
    */
 
+  export const toolboxComponentId = 'toolbox';
+
   /**
    * @description ToolboxManager component rendering toolbox different kind of Toolbox buttons:
    * - Single toggle button
@@ -125,7 +127,7 @@
         });
 
       const zIndex = app.windowManager.addExternalIdToZIndex(
-        'toolbox',
+        toolboxComponentId,
         vcsAppSymbol,
       );
 
@@ -164,10 +166,10 @@
 
       function handleToolboxButton() {
         if (orderedGroups.value.length > 0) {
-          if (!app.navbarManager.has('toolbox')) {
+          if (!app.navbarManager.has(toolboxComponentId)) {
             app.navbarManager.add(
               {
-                id: 'toolbox',
+                id: toolboxComponentId,
                 action: toolboxToggleAction,
               },
               vcsAppSymbol,
@@ -175,7 +177,7 @@
             );
           }
         } else {
-          app.navbarManager.remove('toolbox');
+          app.navbarManager.remove(toolboxComponentId);
         }
       }
       handleToolboxButton();
@@ -184,19 +186,19 @@
 
       onUnmounted(() => {
         nameChangeListener();
-        app.windowManager.removeExternalIdFromZIndex('toolbox');
-        app.navbarManager.remove('toolbox');
+        app.windowManager.removeExternalIdFromZIndex(toolboxComponentId);
+        app.navbarManager.remove(toolboxComponentId);
       });
 
       watch(toolboxOpen, () => {
         if (toolboxOpen.value) {
-          app.windowManager.bringWindowToTop('toolbox');
+          app.windowManager.bringWindowToTop(toolboxComponentId);
         }
       });
 
       const open = ref(false);
       const bringToTop = () => {
-        app.windowManager.bringWindowToTop('toolbox');
+        app.windowManager.bringWindowToTop(toolboxComponentId);
       };
 
       const { smAndUp } = useDisplay();

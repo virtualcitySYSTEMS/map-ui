@@ -20,6 +20,8 @@ import { ButtonLocation } from '../manager/navbarManager.js';
 const subTreeOpenStateSymbol = Symbol('SubTreeOpenState');
 const subTreeItemWeight = Symbol('SubTreeItemWeight');
 
+export const defaultContentTreeComponentId = 'Content';
+
 /**
  * @typedef {Object} ParentTreeViewItem
  * @property {import("./contentTreeItem.js").TreeViewItem} [treeViewItem]
@@ -77,7 +79,9 @@ class ContentTreeCollection extends IndexedCollection {
         contentTreeActiveOnStartup?.value &&
         contentTreeActiveOnStartup[moduleIdSymbol] !== this._app.dynamicModuleId
       ) {
-        const action = this._app.navbarManager.get('Content')?.action;
+        const action = this._app.navbarManager.get(
+          defaultContentTreeComponentId,
+        )?.action;
         if (action && !action.active) {
           action.callback();
         }
@@ -119,7 +123,7 @@ class ContentTreeCollection extends IndexedCollection {
      */
     this._defaultSubtreeItem = new SubContentTreeItem(
       {
-        name: 'Content',
+        name: defaultContentTreeComponentId,
         icon: '$vcsLayers',
         title: 'content.title',
         tooltip: 'content.title',
@@ -198,7 +202,7 @@ class ContentTreeCollection extends IndexedCollection {
       'contentTreeActiveOnStartup',
     );
     if (
-      id === 'Content' &&
+      id === defaultContentTreeComponentId &&
       contentTreeActiveOnStartup?.value &&
       contentTreeActiveOnStartup[moduleIdSymbol] !== this._app.dynamicModuleId
     ) {

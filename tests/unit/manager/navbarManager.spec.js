@@ -3,6 +3,7 @@ import {
   beforeAll,
   afterAll,
   afterEach,
+  beforeEach,
   expect,
   it,
   vi,
@@ -206,17 +207,31 @@ describe('NavbarManager', () => {
   describe('toggling buttons from the Manager', () => {
     /** @type {NavbarManager} */
     let navbarManager;
-    let action;
+    let buttonComponent;
 
     beforeAll(() => {
       navbarManager = new NavbarManager();
-      action = {
-        name: 'test',
-        active: false,
-        callback() {
-          this.active = !this.active;
+    });
+
+    beforeEach(() => {
+      buttonComponent = navbarManager.add(
+        {
+          id: 'test-toggle',
+          action: {
+            name: 'test',
+            active: false,
+            callback() {
+              this.active = !this.active;
+            },
+          },
         },
-      };
+        'plugin',
+        ButtonLocation.TOOL,
+      );
+    });
+
+    afterEach(() => {
+      navbarManager.remove(buttonComponent.id);
     });
 
     afterAll(() => {
@@ -224,25 +239,37 @@ describe('NavbarManager', () => {
     });
 
     it('should toggle a buttons state', () => {
-      const buttonComponent = navbarManager.add(
-        { id: 'test-toggle', action: { ...action } },
-        'plugin',
-        ButtonLocation.TOOL,
-      );
       expect(buttonComponent.action.active).to.be.false;
       navbarManager.toggle('test-toggle');
       expect(buttonComponent.action.active).to.be.true;
     });
 
     it('should NOT toggle a buttons state, when provided flag equals buttons state', () => {
-      const buttonComponent = navbarManager.add(
-        { id: 'test-toggle-flag', action: { ...action } },
-        'plugin',
-        ButtonLocation.TOOL,
-      );
       expect(buttonComponent.action.active).to.be.false;
       navbarManager.toggle('test-toggle-flag', false);
       expect(buttonComponent.action.active).to.be.false;
+    });
+
+    it('should not click a callback, if the action is disabled', () => {
+      buttonComponent.action.disabled = true;
+      navbarManager.toggle('test-toggle');
+      expect(buttonComponent.action.active).to.be.false;
+    });
+
+    it('should click an action, if the action is active, the state is active, but the action is in the background', () => {
+      buttonComponent.action.callback = vi.fn();
+      buttonComponent.action.active = true;
+      buttonComponent.action.background = true;
+      navbarManager.toggle('test-toggle', true);
+      expect(buttonComponent.action.callback).toHaveBeenCalled();
+    });
+
+    it('should not click an action, if its active in the background and the passed state is false', () => {
+      buttonComponent.action.callback = vi.fn();
+      buttonComponent.action.active = true;
+      buttonComponent.action.background = true;
+      navbarManager.toggle('test-toggle', false);
+      expect(buttonComponent.action.callback).not.toHaveBeenCalled();
     });
   });
 });

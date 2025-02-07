@@ -7,12 +7,13 @@
 - Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
 - Remove Config pattern check for modules in `init.js`
 - Add UI-Element for map rotation and provide callbacks
-- Add height more `VcsCallback` extensions:
+- Add nine more `VcsCallback` extensions:
   - `AddModuleCallback` and `RemoveModuleCallback` to add/remove a module
   - `OpenSplashScreenCallback` and `CloseSplashScreenCallback` to open/close a SplashScreen
   - `StartRotationCallback` and `StopRotationCallback` to start/stop map rotation
-  - `activateClippingPolygonCallback` and `deactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
-- Add four more `VcsCallback` extensions: `AddModuleCallback`, `RemoveModuleCallback`, `OpenSplashScreenCallback` and `CloseSplashScreenCallback`
+  - `ActivateClippingPolygonCallback` and `DeactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
+  - `ToggleNavbarButtonCallback` to call the callback of a registered Navbar action
+- Add new CallbackTester plugin for dev
 - Extend `splashScreen` configuration with in `uiConfig`:
   - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary button
   - added a new secondary button
@@ -21,6 +22,7 @@
   - added option `requireInputForSecondary` to disable the secondary button as well when the checkbox is not checked
   - added option `enableDontShowAgain`, to allow the user to disable the SplashScreen on next opening
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
+- Export the `openStateMapSymbol` from the VcsLayerTree component
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
 - Replace `filterPredicate` injection by `customFilter` in the VcsList component.

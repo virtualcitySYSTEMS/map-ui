@@ -4,6 +4,10 @@
   "description": "module containing showcases plugins demonstrating concepts",
   "plugins": [
     {
+      "name": "callback-tester",
+      "entry": "plugins/@vcmap-show-case/callback-tester/index.js"
+    },
+    {
       "name": "category-tester",
       "entry": "plugins/@vcmap-show-case/category-tester/index.js"
     },

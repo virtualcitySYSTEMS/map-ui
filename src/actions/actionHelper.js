@@ -142,6 +142,8 @@ export function createToggleAction(
   return { action, destroy };
 }
 
+export const searchComponentId = 'searchId';
+
 /**
  * Creates a toggle button for the search tool, which is only available, if at least one search implementation is registered.
  * @param {import("../vcsUiApp.js").default} app
@@ -153,8 +155,8 @@ export function createSearchButtonAction(app) {
   const uiConfig = app.uiConfig.config;
 
   const determineAction = () => {
-    if (app.windowManager.has('searchId')) {
-      app.windowManager.remove('searchId');
+    if (app.windowManager.has(searchComponentId)) {
+      app.windowManager.remove(searchComponentId);
     }
     if (
       !uiConfig.hideSearch &&
@@ -168,7 +170,7 @@ export function createSearchButtonAction(app) {
           title: 'search.tooltip',
         },
         {
-          id: 'searchId',
+          id: searchComponentId,
           component: SearchComponent,
           state: { hideHeader: true },
           slot: WindowSlot.DYNAMIC_RIGHT,

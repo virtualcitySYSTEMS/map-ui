@@ -42,7 +42,7 @@ class DeactivateClippingPolygonCallback extends VcsCallback {
    */
   toJSON() {
     const config = super.toJSON();
-    config.names = this._names;
+    config.names = this._names.slice();
     return config;
   }
 }

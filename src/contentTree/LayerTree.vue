@@ -20,7 +20,8 @@
   import { VSheet } from 'vuetify/components';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
-  const openStateMapSymbol = Symbol('openStateMap');
+  /** The open state Symbol of the ContentTree */
+  export const openStateMapSymbol = Symbol('openStateMap');
   /**
    * @description
    * Implements Treeview and shows content tree

@@ -10,6 +10,7 @@ export {
   createLinkAction,
   createGoToViewpointAction,
   createZoomToFeatureAction,
+  searchComponentId,
 } from './src/actions/actionHelper.js';
 export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.js';
 export { renderTemplate } from '@vcmap/core';
@@ -58,19 +59,27 @@ export { default as ActivateClippingPolygonCallback } from './src/callback/activ
 export { default as DeactivateClippingPolygonCallback } from './src/callback/deactivateClippingPolygonCallback.js';
 export { default as OpenSplashScreenCallback } from './src/callback/openSplashScreenCallback.js';
 export { default as CloseSplashScreenCallback } from './src/callback/closeSplashScreenCallback.js';
+export { default as ToggleNavbarButtonCallback } from './src/callback/toggleNavbarButtonCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
   setupMapNavbar,
   setupPluginMountedListeners,
   setupCategoryManagerWindow,
+  attributionsComponentId,
   categoryManagerWindowId,
+  customScreenComponentId,
+  helpComponentId,
+  legendComponentId,
+  settingsComponentId,
+  splashScreenComponentId,
 } from './src/application/VcsApp.vue';
 export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.vue';
 export { default as VcsMap } from './src/application/VcsMap.vue';
 export {
   default as ContentTreeCollection,
   createContentTreeCollection,
+  defaultContentTreeComponentId,
 } from './src/contentTree/contentTreeCollection.js';
 export { default as ContentTreeItem } from './src/contentTree/contentTreeItem.js';
 export { default as GroupContentTreeItem } from './src/contentTree/groupContentTreeItem.js';
@@ -81,7 +90,10 @@ export {
 } from './src/contentTree/layerContentTreeItem.js';
 export { default as LayerGroupContentTreeItem } from './src/contentTree/layerGroupContentTreeItem.js';
 export { default as FlightContentTreeItem } from './src/contentTree/flightContentTreeItem.js';
-export { default as LayerTree } from './src/contentTree/LayerTree.vue';
+export {
+  default as LayerTree,
+  openStateMapSymbol,
+} from './src/contentTree/LayerTree.vue';
 export { default as NodeContentTreeItem } from './src/contentTree/nodeContentTreeItem.js';
 export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/obliqueCollectionContentTreeItem.js';
 export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.js';
@@ -130,7 +142,10 @@ export {
   ToolboxType,
   defaultToolboxName,
 } from './src/manager/toolbox/toolboxManager.js';
-export { default as ToolboxManagerComponent } from './src/manager/toolbox/ToolboxManagerComponent.vue';
+export {
+  default as ToolboxManagerComponent,
+  toolboxComponentId,
+} from './src/manager/toolbox/ToolboxManagerComponent.vue';
 export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
 export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
 export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
@@ -188,6 +203,7 @@ export { default as OrientationToolsButton } from './src/navigation/OrientationT
 export {
   getWindowComponentOptions,
   default as OverviewMap,
+  overviewMapWindowId,
 } from './src/navigation/overviewMap.js';
 export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.js';
 export { default as TiltSlider } from './src/navigation/TiltSlider.vue';

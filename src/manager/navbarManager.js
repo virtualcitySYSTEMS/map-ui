@@ -101,15 +101,20 @@ class NavbarManager extends ButtonManager {
    * @param {string} id
    * @param {boolean} [active]
    */
-  toggle(id, active = undefined) {
+  toggle(id, active) {
     check(id, String);
     if (this.has(id)) {
       const { action } = this.get(id);
-      if (active !== undefined) {
-        if (action?.active !== active) {
+      if (action.disabled) {
+        return;
+      }
+
+      if (active != null) {
+        const isActionActive = action.active && !action.background;
+        if (isActionActive !== active) {
           action.callback();
         }
-      } else if (action) {
+      } else {
         action.callback();
       }
     }
