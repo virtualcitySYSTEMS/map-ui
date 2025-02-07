@@ -17,6 +17,7 @@ import {
   isProvidedClusterFeature,
   alreadyTransformedToImage,
   ObliqueMap,
+  originalFeatureSymbol,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -545,7 +546,10 @@ class FeatureInfo extends Collection {
       this._clearInternal();
       if (
         this._selectedClusterFeature &&
-        !this._selectedClusterFeature.get('features').includes(feature)
+        !this._selectedClusterFeature
+          .get('features')
+          .map((f) => f[originalFeatureSymbol] ?? f)
+          .includes(feature)
       ) {
         this.clearCluster();
       }
@@ -682,19 +686,23 @@ class FeatureInfo extends Collection {
     const features = clusterFeature.get('features');
     const groups = {};
     const items = features.map((f) => {
+      const oFeature = f[originalFeatureSymbol] ?? f;
       const listItem = reactive({
-        name: f.getId(),
-        title: f.getAttributes()?.title || f.getAttributes()?.name || f.getId(),
-        disabled: !this._getFeatureInfoViewForFeature(f),
+        name: oFeature.getId(),
+        title:
+          oFeature.getAttributes()?.title ||
+          oFeature.getAttributes()?.name ||
+          oFeature.getId(),
+        disabled: !this._getFeatureInfoViewForFeature(oFeature),
         selectionChanged: (value) => {
           if (value) {
-            this.selectFeature(f);
+            this.selectFeature(oFeature);
           } else {
             this.clearFeature();
           }
         },
       });
-      const layerName = f[vcsLayerName];
+      const layerName = oFeature[vcsLayerName];
       if (layerName) {
         if (!groups[layerName]) {
           const title = this._app.layers.getByKey(layerName)?.properties?.title;
