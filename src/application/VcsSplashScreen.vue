@@ -41,7 +41,7 @@
               options.secondaryButtonTitle && options.secondaryCallbackOptions
             "
             :disabled="
-              option.requireInputForSecondary &&
+              options.requireInputForSecondary &&
               options.acceptInput &&
               !checkBox
             "
