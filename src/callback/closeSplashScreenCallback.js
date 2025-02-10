@@ -13,7 +13,7 @@ class CloseSplashScreenCallback extends VcsCallback {
   }
 
   callback() {
-    this._app.uiConfig.showSplashScreen = false;
+    this._app.uiConfig.showSplashScreen.value = false;
   }
 
   /**

@@ -139,7 +139,7 @@
 
       const position = computed(() => ({
         width: props.options.position?.width || 800,
-        height: props.options.position?.width || 500,
+        height: props.options.position?.height || 500,
         maxWidth: props.options.position?.maxWidth,
         maxHeight: props.options.position?.maxHeight,
       }));

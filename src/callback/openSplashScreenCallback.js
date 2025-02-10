@@ -14,7 +14,7 @@ class OpenSplashScreenCallback extends VcsCallback {
 
   callback() {
     if (this._app.uiConfig.getByKey('splashScreen')) {
-      this._app.uiConfig.showSplashScreen = true;
+      this._app.uiConfig.showSplashScreen.value = true;
     }
   }
 
