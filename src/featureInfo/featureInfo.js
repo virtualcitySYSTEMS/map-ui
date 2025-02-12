@@ -662,9 +662,7 @@ class FeatureInfo extends Collection {
         clusterGroup.vectorProperties.getValuesForFeatures([feature]),
         [feature],
       );
-      const clusterStyle = clusterGroup.style.createStyleFunction((layerName) =>
-        this._app.layers.getByKey(layerName),
-      )(clusterFeature, 1);
+      const clusterStyle = clusterGroup.styleFunction(clusterFeature, 1);
       const highlightStyle = getClusterHighlightStyle(
         clusterFeature,
         clusterGroup,
