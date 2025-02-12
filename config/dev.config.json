@@ -43,7 +43,7 @@
     {
       "type": "MarkdownBalloonFeatureInfoView",
       "name": "markdownFeatureInfo",
-      "template": "# {{featureId}}\n- Altitude Mode: {{Altitude Mode}}\n [Link text Here](https://vc.systems/?id={{id}})",
+      "template": "# {{featureId}}\n- {{#t components.vectorProperties.altitudeMode}}: {{Altitude Mode}}\n [Link text Here](https://vc.systems/?id={{id}})\nCurrent Locale: {{ currentVcsAppLocale }}",
       "keyMapping": {
         "olcs_storeyNumber": "Storey Number",
         "olcs_storeyHeight": "Storey Height",

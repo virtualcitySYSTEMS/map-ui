@@ -1,25 +1,19 @@
 <template>
   <BalloonComponent v-bind="{ ...$attrs }" class="markdown-balloon-component">
-    <VcsMarkdown :content="content" />
+    <vcs-template-markdown v-bind="{ ...$attrs }" />
   </BalloonComponent>
 </template>
 <script>
   import BalloonComponent from './BalloonComponent.vue';
-  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
+  import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.vue';
 
   /**
    * @description A balloon showing markdown content
    */
   export default {
     name: 'MarkdownBalloonComponent',
-    props: {
-      content: {
-        type: String,
-        required: true,
-      },
-    },
     components: {
-      VcsMarkdown,
+      VcsTemplateMarkdown,
       BalloonComponent,
     },
   };

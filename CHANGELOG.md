@@ -48,7 +48,14 @@
   - deprecated method `clear`. Use `clearSelection` instead!
 - Add new component `VcsGroupedList` to render groups as expandable sub lists
 - Fixed a Bug in the contentTree, where GroupContentTreeItems state calculation would take invisible children into account
-- Fixed a Bug in the contentTree where empty groups would be rendered
+- Fixed a Bug in the contentTree where empty groups would be rendered.
+- Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses
+  `app.vuei18n.t` for translation of and `{{#t}}` directives in the template and re-renders on locale change.
+
+### Breaking Changes
+
+- `MarkdownBalloonFeatureInfoView`and `MarkdownFeatureInfoView` no longer have `content` in their properties. The template &
+  context are now passed to the `VcsTemplateMarkdown` component instead.
 
 # 6.0.14
 

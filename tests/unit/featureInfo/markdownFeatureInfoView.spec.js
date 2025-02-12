@@ -1,7 +1,4 @@
-import { describe, expect, it, beforeAll, afterAll } from 'vitest';
-import { VectorLayer } from '@vcmap/core';
-import { Feature } from 'ol';
-import { Point } from 'ol/geom.js';
+import { describe, expect, it } from 'vitest';
 import MarkdownFeatureInfoView from '../../../src/featureInfo/markdownFeatureInfoView.js';
 
 describe('MarkdownFeatureInfoView', () => {
@@ -31,53 +28,6 @@ describe('MarkdownFeatureInfoView', () => {
         MarkdownFeatureInfoView.className,
       );
       expect(config).to.have.property('template').and.to.have.members(template);
-    });
-  });
-
-  describe('rendering the template', () => {
-    let layer;
-    let feature;
-
-    beforeAll(() => {
-      layer = new VectorLayer({});
-      feature = new Feature({
-        geometry: new Point([0, 0, 1]),
-        property: 'foo',
-        nested: {
-          property: 'foo',
-          array: [{ property: 'foo' }],
-          'spaced property': 'foo',
-        },
-        array: [['foo'], 'foo'],
-        'spaced property': 'foo',
-        number: 5.1,
-      });
-      feature.setId('foo');
-      layer.addFeatures([feature]);
-    });
-
-    afterAll(() => {
-      layer.destroy();
-    });
-
-    describe('rendering properties', () => {
-      it('should render a property', () => {
-        const infoView = new MarkdownFeatureInfoView({
-          name: 'foo',
-          template: '{{ property }}',
-        });
-        const { content } = infoView.getProperties({ feature }, layer);
-        expect(content.trim()).to.equal('foo');
-      });
-
-      it('should render a non attributes', () => {
-        const infoView = new MarkdownFeatureInfoView({
-          name: 'foo',
-          template: '{{ featureId }}',
-        });
-        const { content } = infoView.getProperties({ feature }, layer);
-        expect(content.trim()).to.equal('foo');
-      });
     });
   });
 });

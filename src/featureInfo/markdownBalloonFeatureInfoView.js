@@ -1,5 +1,3 @@
-import { renderTemplate } from '@vcmap/core';
-import { parseAndSanitizeMarkdown } from '../components/form-output/markdownHelper.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import MarkdownBalloonComponent from './MarkdownBalloonComponent.vue';
 
@@ -40,15 +38,6 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
   }
 
   /**
-   * @param {Record<string, unknown>} attributes
-   * @protected
-   * @returns {string}
-   */
-  _renderTemplate(attributes) {
-    return renderTemplate(this.template, attributes);
-  }
-
-  /**
    * Supports markdown templates (e.g. {{someProperty}}) and style expressions to derive markdown rendering
    * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
    * @param {import("@vcmap/core").Layer} layer
@@ -58,9 +47,11 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      content: parseAndSanitizeMarkdown(
-        this._renderTemplate({ ...properties, ...properties.attributes }),
-      ),
+      template: this.template,
+      context: {
+        ...properties,
+        ...properties.attributes,
+      },
     };
   }
 

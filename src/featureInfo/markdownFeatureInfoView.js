@@ -1,6 +1,5 @@
-import { renderTemplate } from '@vcmap/core';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
+import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { template: string | string[] }} MarkdownFeatureInfoViewOptions
@@ -8,7 +7,7 @@ import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
  */
 
 /**
- * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoProps & { html: string }} MarkdownFeatureInfoViewProps
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoProps & { template: string }} MarkdownFeatureInfoViewProps
  */
 
 /**
@@ -28,7 +27,7 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
    * @param {MarkdownFeatureInfoViewOptions} options
    */
   constructor(options) {
-    super(options, VcsMarkdown);
+    super(options, VcsTemplateMarkdown);
 
     /**
      * @type {string | string[]}
@@ -36,15 +35,6 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
     this.template = Array.isArray(options.template)
       ? options.template.slice()
       : options.template;
-  }
-
-  /**
-   * @param {Record<string, unknown>} attributes
-   * @protected
-   * @returns {string}
-   */
-  _renderTemplate(attributes) {
-    return renderTemplate(this.template, attributes);
   }
 
   /**
@@ -57,10 +47,11 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
     const properties = super.getProperties(featureInfo, layer);
     return {
       ...properties,
-      content: this._renderTemplate({
+      template: this.template,
+      context: {
         ...properties,
         ...properties.attributes,
-      }),
+      },
     };
   }
 

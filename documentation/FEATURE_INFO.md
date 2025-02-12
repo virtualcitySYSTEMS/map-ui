@@ -429,4 +429,6 @@ To render an image, simply define:
 
 ### Markdown Rendering
 
-Markdown feature info views can render most markdown text, without special flavoring. To do so, write Markdown and use the [VcsTemplateEngine](https://github.com/virtualcitySYSTEMS/map-core/blob/main/documentation/vcsTemplate.md) to access feature properties and conditional rendering.
+Markdown feature info views can render most markdown text, without special flavoring. To do so, write Markdown and use
+the [VcsTemplateEngine](https://github.com/virtualcitySYSTEMS/map-core/blob/main/documentation/vcsTemplate.md) to access feature properties and conditional rendering. You can use
+the `{{#t }}` directive to translate keys known to `app.vueI18n`.
