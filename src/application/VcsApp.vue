@@ -76,14 +76,14 @@
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsObliqueFooter from './VcsObliqueFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
-  import VcsSplashScreen, { getSplashScreenHash } from './VcsSplashScreen.vue';
+  import VcsSplashScreen, {
+    shouldShowSplashSceen,
+  } from './VcsSplashScreen.vue';
   import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
-  import { getFromLocalStorage, hideSplashScreenKey } from '../localStorage.js';
-  import { name as packageName } from '../../package.json';
 
   /**
    * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
@@ -406,11 +406,11 @@
    * @returns {WatchStopHandle}
    */
   function setupSplashScreen(app) {
+    const { config, showSplashScreen } = app.uiConfig;
     function setupSplashScreenAction(moduleId) {
-      const { config, showSplashScreen } = app.uiConfig;
       const { splashScreen } = config;
       if (splashScreen && moduleId !== app.dynamicModuleId) {
-        showSplashScreen.value = true;
+        showSplashScreen.value = shouldShowSplashSceen(app);
       }
       if (splashScreen && splashScreen.menuEntry) {
         const splashScreenAction = {
@@ -797,21 +797,14 @@
 
       function getSplashScreenConfig() {
         if (app.uiConfig.config.splashScreen) {
-          const config = app.uiConfig.getByKey('splashScreen');
-          const hash = getSplashScreenHash(app);
-          const moduleId = config[moduleIdSymbol];
-          const storedHash = getFromLocalStorage(
-            `${packageName}_${moduleId}`,
-            hideSplashScreenKey,
-          );
-          if (hash !== storedHash) {
-            return {
-              title: 'components.splashScreen.name',
-              tooltip: 'components.splashScreen.tooltip',
-              position: { width: '800px', height: '400px' },
-              ...app.uiConfig.config.splashScreen,
-            };
+          if (shouldShowSplashSceen(app)) {
+            showSplashScreen.value = true;
           }
+          return {
+            title: 'components.splashScreen.name',
+            tooltip: 'components.splashScreen.tooltip',
+            ...app.uiConfig.config.splashScreen,
+          };
         }
         return undefined;
       }

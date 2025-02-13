@@ -69,7 +69,12 @@
   import { computed, ref, inject } from 'vue';
   import { moduleIdSymbol } from '@vcmap/core';
   import { v5 as uuidv5 } from 'uuid';
-  import { hideSplashScreenKey, setToLocalStorage } from '../localStorage.js';
+  import {
+    hideSplashScreenKey,
+    getFromLocalStorage,
+    removeFromLocalStorage,
+    setToLocalStorage,
+  } from '../localStorage.js';
   import { executeCallbacks } from '../callback/vcsCallback.js';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
@@ -87,6 +92,25 @@
       Object.entries(config.value).sort((a, b) => a[0].localeCompare(b[0])),
     );
     return uuidv5(string, uuidv5.URL);
+  }
+
+  /**
+   * Whether the splash screen should be shown.
+   * @param {import("../vcsUiApp.js").default} app
+   * @returns {boolean} - true if the SplashScreenConfigHash of the local storage is different from the current SplashScreenConfigHash
+   */
+  export function shouldShowSplashSceen(app) {
+    if (app.uiConfig.config.splashScreen) {
+      const config = app.uiConfig.getByKey('splashScreen');
+      const hash = getSplashScreenHash(app);
+      const moduleId = config[moduleIdSymbol];
+      const storedHash = getFromLocalStorage(
+        `${name}_${moduleId}`,
+        hideSplashScreenKey,
+      );
+      return hash !== storedHash;
+    }
+    return false;
   }
 
   export default {
@@ -115,16 +139,20 @@
       const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
 
       const checkBox = ref(false);
-      const dontShowAgain = ref(false);
+      const dontShowAgain = ref(!shouldShowSplashSceen(app));
 
       function exitScreen() {
         localValue.value = false;
         checkBox.value = false;
-        if (dontShowAgain.value) {
+        if (props.options.enableDontShowAgain) {
           const config = app.uiConfig.getByKey('splashScreen');
           const hash = getSplashScreenHash(app);
           const moduleId = config[moduleIdSymbol];
-          setToLocalStorage(`${name}_${moduleId}`, hideSplashScreenKey, hash);
+          if (dontShowAgain.value) {
+            setToLocalStorage(`${name}_${moduleId}`, hideSplashScreenKey, hash);
+          } else {
+            removeFromLocalStorage(`${name}_${moduleId}`, hideSplashScreenKey);
+          }
         }
         if (Array.isArray(props.options.exitCallbackOptions)) {
           executeCallbacks(app, props.options.exitCallbackOptions);
@@ -139,7 +167,7 @@
 
       const position = computed(() => ({
         width: props.options.position?.width || 800,
-        height: props.options.position?.height || 500,
+        height: props.options.position?.height,
         maxWidth: props.options.position?.maxWidth,
         maxHeight: props.options.position?.maxHeight,
       }));
