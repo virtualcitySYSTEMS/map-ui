@@ -107,31 +107,7 @@ export function getImageSrcFromShape(image) {
  * @property {string} title - layer or entry name
  * @property {boolean} [open=true] - panel state of entry
  * @property {Array<LegendItem>} legend - legend properties
- * @property {Array<import("../actions/actionHelper.js").VcsAction>} actions - popout actions
  */
-
-/**
- * creates a LegendEntry with title, options and optionally popout action to the entries array
- * @param {string} key - layerName
- * @param {string} title
- * @param {Array<LegendItem>} legend
- * @returns {LegendEntry}
- */
-export function createLegendEntry(key, title, legend) {
-  const actions = [];
-  legend.forEach((item) => {
-    // XXX only one popout button allowed. Rethink if use case for multiple popout buttons comes up.
-    if (item.src && item.popoutBtn && actions.length < 1) {
-      actions.push({
-        name: 'legendPopoutAction',
-        icon: 'mdi-open-in-new',
-        title: 'legend.openInNew',
-        callback: () => window.open(item.src, '_blank'),
-      });
-    }
-  });
-  return { key, title, legend, actions, open: true };
-}
 
 /**
  *
@@ -176,7 +152,7 @@ export function getLegendEntries(app) {
       const legend =
         layer.style?.properties?.legend ?? layer.properties?.legend;
       if (legend) {
-        const legendEntry = createLegendEntry(key, title, legend);
+        const legendEntry = { key, title, legend, open: true };
         entries.unshift(legendEntry);
       }
       if (layer.styleChanged) {
@@ -214,7 +190,7 @@ export function getLegendEntries(app) {
         const title = group.properties.title || group.name;
         const { legend } = group.properties;
         if (!entries.some(({ key }) => key === group.name)) {
-          const legendEntry = createLegendEntry(group.name, title, legend);
+          const legendEntry = { key: group.name, title, legend, open: true };
           entries.unshift(legendEntry);
         }
       }

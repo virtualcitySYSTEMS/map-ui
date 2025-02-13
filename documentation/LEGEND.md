@@ -114,13 +114,13 @@ The following **LegendTypes** are available:
 ##### ImageLegendItem
 
 An item rendering the image of a provided source. Use an i18n string as `src`, if you want to provide a translatable legend.
-If multiple ImageLegendItems are used within a legend definition, only one can have a popout button!
+Each ImageLegendItems with the `popoutBtn` flag set to true will get a popout button overlaying the top-right corner of the image.
 For further explanations a tooltip can be defined, showing up on hover.
 
 ```js
 /**
  * @typedef {LegendItem} ImageLegendItem
- * @property {boolean} [popoutBtn=false] - show a button in legend title to open legend in new tab
+ * @property {boolean} [popoutBtn=false] - show a button in the top-right corner of the image to open legend in new tab
  * @property {string} src - the source url. Can be an i18n string.
  * @property {string} [tooltip] - Optional further explanation of the legend
  */
@@ -138,12 +138,12 @@ Example:
 ##### IframeLegendItem
 
 An item rendering a provided source as iframe. Use an i18n string as `src`, if you want to provide a translatable legend.
-If multiple IframeLegendItems are used within a legend definition, only one can have a popout button!
+Each IframeLegendItems with the `popoutBtn` flag set to true will get a popout button overlaying the top-right corner of the iframe body.
 
 ```js
 /**
  * @typedef {LegendItem} IframeLegendItem
- * @property {boolean} [popoutBtn=false] - show a button in legend title to open legend in new tab
+ * @property {boolean} [popoutBtn=false] - show a button in the top-right corner of the item to open legend in new tab
  * @property {string} src - the source url. Can be an i18n string.
  */
 ```

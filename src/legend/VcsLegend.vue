@@ -12,10 +12,16 @@
         :key="i"
         :value="entry.key"
         :heading="entry.title"
-        :header-actions="entry.actions"
       >
-        <v-list class="pl-6 pb-2">
+        <v-list class="pl-6 pb-2 pr-2">
           <div v-for="(item, idx) in entry.legend" :key="idx">
+            <VcsButton
+              v-if="item.popoutBtn && item.src"
+              class="popout-button ma-1"
+              icon="mdi-open-in-new"
+              tooltip="legend.openInNew"
+              @click="openInNew(item.src)"
+            />
             <div v-if="item.type === LegendType.Image">
               <img
                 :src="$st(item.src)"
@@ -51,6 +57,7 @@
   import { useComponentId } from '../components/composables.js';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
+  import VcsButton from '../components/buttons/VcsButton.vue';
   import VcsExpansionPanel from '../components/section/VcsExpansionPanel.vue';
 
   /**
@@ -61,6 +68,7 @@
   export default {
     name: 'VcsLegend',
     components: {
+      VcsButton,
       VcsExpansionPanel,
       StyleLegendItem,
       VExpansionPanels,
@@ -113,6 +121,9 @@
         setIframeHeight,
         panels,
         cid,
+        openInNew(src) {
+          window.open(src, '_blank');
+        },
       };
     },
   };
@@ -122,5 +133,13 @@
   .legend-image {
     max-width: 100%;
     height: auto;
+    position: relative;
+  }
+  .popout-button {
+    position: absolute;
+    // Matches the pr-2 padding of the LegendItem
+    right: 8px;
+    background-color: rgb(var(--v-theme-base-lighten-2));
+    z-index: 1;
   }
 </style>
