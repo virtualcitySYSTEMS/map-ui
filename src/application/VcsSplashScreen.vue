@@ -10,7 +10,7 @@
     class="vcs-splash-screen"
   >
     <v-card>
-      <v-card-text>
+      <v-card-text class="pb-0 overflow-y-auto">
         <VcsMarkdown :content="$st(options.content)" />
         <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
           <template #label>
@@ -34,7 +34,7 @@
         </VcsCheckbox>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions class="vcs-splash-screen-actions">
         <div class="d-flex gc-2 w-100 justify-end">
           <VcsFormButton
             v-if="
@@ -192,5 +192,9 @@
   }
   .v-input {
     margin-left: -5px !important;
+  }
+  .vcs-splash-screen-actions {
+    position: sticky !important;
+    bottom: 0;
   }
 </style>

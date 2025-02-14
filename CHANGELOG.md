@@ -21,6 +21,7 @@
   - added option `secondaryButtonTitle` to configure the new secondary button title
   - added option `requireInputForSecondary` to disable the secondary button as well when the checkbox is not checked
   - added option `enableDontShowAgain`, to allow the user to disable the SplashScreen on next opening
+- Make SplashScreen buttons sticky at the bottom, only the content will overflow
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Export the `openStateMapSymbol` from the VcsLayerTree component
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
