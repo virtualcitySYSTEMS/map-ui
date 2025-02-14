@@ -50,6 +50,7 @@
 - Fixed a Bug in the contentTree, where GroupContentTreeItems state calculation would take invisible children into account
 - Fixed a Bug in the contentTree where empty groups would be rendered.
 - Changed the behavior of the `popoutBtn` flag of the LegendItems: each item with that flag enabled will now get a button to open the legend in a new tab
+- Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`
 - Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses
   `app.vuei18n.t` for translation of and `{{#t}}` directives in the template and re-renders on locale change.
 

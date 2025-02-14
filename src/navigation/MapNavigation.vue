@@ -306,13 +306,10 @@
           return headingRef.value;
         },
         async set(headingValue) {
-          let vp;
-          if (viewMode.value === OrientationToolsViewMode.OBLIQUE) {
-            vp = await app.maps.activeMap.getViewpoint();
-          } else {
-            vp = app.maps.activeMap.getViewpointSync();
-          }
+          const vp = await app.maps.activeMap.getViewpoint();
+          delete vp.cameraPosition;
           vp.heading = headingValue;
+          vp.animate = true;
           app.maps.activeMap.gotoViewpoint(vp);
         },
       });
