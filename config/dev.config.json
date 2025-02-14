@@ -691,12 +691,15 @@
     {
       "name": "czmlPoint",
       "layerName": "czmlPoint",
-      "type": "LayerContentTreeItem"
+      "type": "LayerContentTreeItem",
+
+      "showWhenNotSupported": true
     },
     {
       "name": "czmlDynamicPoint",
       "layerName": "czmlDynamicPoint",
-      "type": "LayerContentTreeItem"
+      "type": "LayerContentTreeItem",
+      "showWhenNotSupported": true
     },
     {
       "name": "wmsLayerPOI",

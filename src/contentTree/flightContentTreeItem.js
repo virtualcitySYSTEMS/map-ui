@@ -1,11 +1,13 @@
 import { CesiumMap } from '@vcmap/core';
+import { parseBoolean } from '@vcsuite/parsers';
 import { reactive } from 'vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { flightName: string }} FlightContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { flightName: string, showWhenNotSupported?: boolean }} FlightContentTreeItemOptions
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 
 /**
@@ -35,6 +37,15 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
      * @private
      */
     this._flightName = options.flightName;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._showWhenNotSupported = parseBoolean(
+      options.showWhenNotSupported,
+      false,
+    );
 
     /**
      * @type {Array<Function>}
@@ -161,7 +172,9 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
         this._app.flights.added.addEventListener(resetHandler),
       );
     } else {
-      this.visible = this._app.maps.activeMap instanceof CesiumMap;
+      let isCesium = this._app.maps.activeMap instanceof CesiumMap;
+      this.visible = isCesium || this.showWhenNotSupported;
+      this.disabled = !isCesium && this.showWhenNotSupported;
       this._setupPlayer();
       this.setPropertiesFromObject(this._flight);
 
@@ -174,7 +187,9 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
 
       this._listeners.push(
         this._app.maps.mapActivated.addEventListener(() => {
-          this.visible = this._app.maps.activeMap instanceof CesiumMap;
+          isCesium = this._app.maps.activeMap instanceof CesiumMap;
+          this.visible = isCesium || this.showWhenNotSupported;
+          this.disabled = !isCesium && this.showWhenNotSupported;
         }),
       );
     }
@@ -186,6 +201,9 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.flightName = this._flightName;
+    if (this._showWhenNotSupported) {
+      config.showWhenNotSupported = this._showWhenNotSupported;
+    }
     return config;
   }
 

@@ -87,6 +87,39 @@ describe('GroupContentTreeItem', () => {
     });
   });
 
+  describe('disabled', () => {
+    let item;
+    let children;
+
+    beforeAll(() => {
+      ({ item, children } = setupGroupItem());
+      children.forEach((c) => {
+        c.showWhenNotSupported = true;
+      });
+    });
+
+    afterAll(() => {
+      item.destroy();
+      children.forEach((c) => {
+        c.destroy();
+      });
+    });
+
+    it('should be disabled, if all children are disabled', async () => {
+      children.forEach((c) => {
+        c.disabled = true;
+      });
+      await sleep();
+      expect(item.disabled).to.be.true;
+    });
+
+    it('should not be disabled, if a single child is not disabled', async () => {
+      children[0].disabled = false;
+      await sleep();
+      expect(item.disabled).to.be.false;
+    });
+  });
+
   describe('state', () => {
     let item;
     let children;

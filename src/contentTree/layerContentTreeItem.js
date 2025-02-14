@@ -1,4 +1,5 @@
 import { Viewpoint } from '@vcmap/core';
+import { parseBoolean } from '@vcsuite/parsers';
 import { reactive } from 'vue';
 import { StateActionState } from '../actions/stateRefAction.js';
 import {
@@ -12,7 +13,8 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerName: string }} LayerContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerName: string, showWhenNotSupported?: boolean }} LayerContentTreeItemOptions
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 
 /**
@@ -126,6 +128,15 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
     this._layerName = options.layerName;
 
     /**
+     * @type {boolean}
+     * @private
+     */
+    this._showWhenNotSupported = parseBoolean(
+      options.showWhenNotSupported,
+      false,
+    );
+
+    /**
      * @type {Array<Function>}
      * @private
      */
@@ -215,7 +226,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         this._app.layers.added.addEventListener(resetHandler),
       );
     } else {
-      this.visible = this._layer.isSupported(this._app.maps.activeMap);
+      let isSupported = this._layer.isSupported(this._app.maps.activeMap);
+      this.visible = isSupported || this._showWhenNotSupported;
+      this.disabled = !isSupported && this._showWhenNotSupported;
       this.state = getStateFromLayer(this._layer);
       this._setLayerExtentAction();
       this.setPropertiesFromObject(this._layer);
@@ -235,7 +248,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
 
       this._listeners.push(
         this._app.maps.mapActivated.addEventListener(() => {
-          this.visible = this._layer.isSupported(this._app.maps.activeMap);
+          isSupported = this._layer.isSupported(this._app.maps.activeMap);
+          this.visible = isSupported || this._showWhenNotSupported;
+          this.disabled = !isSupported && this._showWhenNotSupported;
         }),
       );
     }
@@ -260,6 +275,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.layerName = this._layerName;
+    if (this._showWhenNotSupported) {
+      config.showWhenNotSupported = this._showWhenNotSupported;
+    }
     return config;
   }
 

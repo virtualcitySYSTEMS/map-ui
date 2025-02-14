@@ -29,6 +29,7 @@ describe('LayerGroupContentTreeItem', () => {
   describe('if layers are present', () => {
     let app;
     let item;
+    let itemToShowWhenNotSupported;
     let layers;
 
     beforeEach(async () => {
@@ -54,6 +55,14 @@ describe('LayerGroupContentTreeItem', () => {
         },
         app,
       );
+      itemToShowWhenNotSupported = new LayerGroupContentTreeItem(
+        {
+          name: 'bar',
+          layerNames: layers.map((l) => l.name),
+          showWhenNotSupported: true,
+        },
+        app,
+      );
     });
 
     afterEach(() => {
@@ -69,6 +78,12 @@ describe('LayerGroupContentTreeItem', () => {
       it('should not be visible, if all layers are not supported', async () => {
         await app.maps.setActiveMap('obl');
         expect(item.visible).to.be.false;
+      });
+
+      it('should be visible but disabled, if all layers are not supported', async () => {
+        await app.maps.setActiveMap('obl');
+        expect(itemToShowWhenNotSupported.visible).to.be.true;
+        expect(itemToShowWhenNotSupported.disabled).to.be.true;
       });
 
       it('should not be visible if removing all supported layers', () => {

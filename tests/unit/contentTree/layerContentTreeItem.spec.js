@@ -15,7 +15,9 @@ describe('LayerContentTreeItem', () => {
   describe('if there is a layer', () => {
     let layer;
     let layerToDeactivate;
+    let layerToShowWhenNotSupported;
     let item;
+    let itemToDisabled;
     /** @type {VcsUiApp} */
     let app;
 
@@ -26,12 +28,25 @@ describe('LayerContentTreeItem', () => {
       await app.maps.setActiveMap('ol');
       layer = new VectorLayer({ mapNames: ['ol'] });
       layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
+      layerToShowWhenNotSupported = new VectorLayer({
+        name: 'layerToShowWhenNotSupported',
+        mapNames: ['ol'],
+      });
       app.layers.add(layer);
       app.layers.add(layerToDeactivate);
+      app.layers.add(layerToShowWhenNotSupported);
       item = new LayerContentTreeItem(
         {
           name: 'foo',
           layerName: layer.name,
+        },
+        app,
+      );
+      itemToDisabled = new LayerContentTreeItem(
+        {
+          name: 'bar',
+          layerName: layerToShowWhenNotSupported.name,
+          showWhenNotSupported: true,
         },
         app,
       );
@@ -52,9 +67,21 @@ describe('LayerContentTreeItem', () => {
         expect(item.visible).to.be.false;
       });
 
+      it('should be visible but disabled if activating an unsuported map', async () => {
+        await app.maps.setActiveMap('obl');
+        expect(itemToDisabled.visible).to.be.true;
+        expect(itemToDisabled.disabled).to.be.true;
+      });
+
       it('should be visible if the active map is supported', async () => {
         await app.maps.setActiveMap('ol');
         expect(item.visible).to.be.true;
+      });
+
+      it('should be visible and enabled if the active map is supported', async () => {
+        await app.maps.setActiveMap('ol');
+        expect(itemToDisabled.visible).to.be.true;
+        expect(itemToDisabled.disabled).to.be.false;
       });
 
       it('should activate the layer on click', async () => {

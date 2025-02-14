@@ -55,6 +55,9 @@ The options are defined by `ContentTreeItemOptions`:
  * @property {number} [weight] - optional weighting of the item. higher weights come first.
  * @property {string} [infoUrl] - optional info url providing link with additional information.
  * @property {boolean} [initOpen=false] - groups being initially open or not.
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onClick] - optional callback actions executed on click
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
  */
 ```
 
@@ -70,6 +73,7 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {ContentTreeItemOptions} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
 ```
@@ -86,6 +90,7 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {ContentTreeItemOptions} LayerContentTreeItemOptions
  * @property {string} layerName
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 ```
 
@@ -95,6 +100,7 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {ContentTreeItemOptions} ObliqueCollectionContentTreeItemOptions
  * @property {string} collectionName
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 ```
 
@@ -104,6 +110,16 @@ The `type` option defines the item type. Following types with specific behaviour
 /**
  * @typedef {VcsObjectContentTreeItem.Options} ViewpointContentTreeItemOptions
  * @property {string} viewpointName
+ */
+```
+
+- [FlightContentTreeItem](../src/contentTree/flightContentTreeItem.js): A flight item. Allows for playing a flight from the content tree. Callbacks for onActivate are called on play, when playing from a paused state and onDeactivate are called on stop. Pausing and continueing a flight does not trigger any callbacks.
+
+```js
+/**
+ * @typedef {VcsObjectContentTreeItem.Options} FlightContentTreeItemOptions
+ * @property {string} flightName
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 ```
 

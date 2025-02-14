@@ -13,6 +13,7 @@ describe('ObliqueCollectionContentTreeItem', () => {
     let collection;
     let otherCollection;
     let item;
+    let itemToShowWhenNotSupported;
     /** @type {VcsUiApp} */
     let app;
     let map;
@@ -32,11 +33,20 @@ describe('ObliqueCollectionContentTreeItem', () => {
         { name: 'foo', collectionName: collection.name },
         app,
       );
+      itemToShowWhenNotSupported = new ObliqueCollectionContentTreeItem(
+        {
+          name: 'bar',
+          collectionName: collection.name,
+          showWhenNotSupported: true,
+        },
+        app,
+      );
     });
 
     afterAll(() => {
       app.destroy();
       item.destroy();
+      itemToShowWhenNotSupported.destroy();
     });
 
     describe('handling map activation', () => {
@@ -49,9 +59,21 @@ describe('ObliqueCollectionContentTreeItem', () => {
         expect(item.visible).to.be.false;
       });
 
+      it('should be visible but disabled if the activated map is not an oblique map', async () => {
+        await app.maps.setActiveMap('ol');
+        expect(itemToShowWhenNotSupported.visible).to.be.true;
+        expect(itemToShowWhenNotSupported.disabled).to.be.true;
+      });
+
       it('should be visible if the active map is supported', async () => {
         await app.maps.setActiveMap('obl');
         expect(item.visible).to.be.true;
+      });
+
+      it('should be visible and enabled if the activated map is an oblique map', async () => {
+        await app.maps.setActiveMap('obl');
+        expect(itemToShowWhenNotSupported.visible).to.be.true;
+        expect(itemToShowWhenNotSupported.disabled).to.be.false;
       });
     });
 

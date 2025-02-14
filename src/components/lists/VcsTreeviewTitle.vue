@@ -30,11 +30,18 @@
   .cursor-pointer {
     cursor: pointer;
   }
+  .disabled {
+    cursor: default;
+    opacity: var(--v-disabled-opacity);
+  }
 </style>
 <template>
   <div
     class="title-parent pr-2 vcs-treeview-title w-100"
-    :class="{ 'cursor-pointer': cursorPointer }"
+    :class="{
+      'cursor-pointer': cursorPointer && !item.disabled,
+      disabled: item.disabled,
+    }"
     ref="titleParent"
   >
     <span class="w-100">

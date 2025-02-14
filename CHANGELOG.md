@@ -22,7 +22,6 @@
   - added option `requireInputForSecondary` to disable the secondary button as well when the checkbox is not checked
   - added option `enableDontShowAgain`, to allow the user to disable the SplashScreen on next opening
 - Make SplashScreen buttons sticky at the bottom, only the content will overflow
-- Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
 - Export the `openStateMapSymbol` from the VcsLayerTree component
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
@@ -48,8 +47,13 @@
   - added method `clearSelection`, which clears current feature and cluster selection
   - deprecated method `clear`. Use `clearSelection` instead!
 - Add new component `VcsGroupedList` to render groups as expandable sub lists
-- Fixed a Bug in the contentTree, where GroupContentTreeItems state calculation would take invisible children into account
-- Fixed a Bug in the contentTree where empty groups would be rendered.
+- Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
+- Fixed various bugs in the ContentTree, where:
+  - GroupContentTreeItems state calculation would take invisible children into account
+  - empty groups would be rendered
+  - disabled item would not be render as it
+- Added a `showWhenNotSupported` flag to LayerContentTreeItem, LayerGroupContentTreeItem, ObliqueCollectionContentTreeItem, and FlightContentTreeItem to optionally show them disabled on unsupported maps
+
 - Changed the behavior of the `popoutBtn` flag of the LegendItems: each item with that flag enabled will now get a button to open the legend in a new tab
 - Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`
 - Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses

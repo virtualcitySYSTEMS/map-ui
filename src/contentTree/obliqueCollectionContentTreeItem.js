@@ -1,4 +1,5 @@
 import { ObliqueMap, DefaultObliqueCollection } from '@vcmap/core';
+import { parseBoolean } from '@vcsuite/parsers';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { setViewpointAction } from './layerContentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
@@ -6,7 +7,8 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { collectionName: string }} ObliqueCollectionContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { collectionName: string, showWhenNotSupported?: boolean }} ObliqueCollectionContentTreeItemOptions
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
 
 /**
@@ -42,6 +44,15 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
      * @private
      */
     this._collectionName = options.collectionName;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._showWhenNotSupported = parseBoolean(
+      options.showWhenNotSupported,
+      false,
+    );
 
     /**
      * @type {Array<function():void>}
@@ -105,6 +116,7 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
       const map = this._app.maps.activeMap;
       if (map instanceof ObliqueMap) {
         this.visible = true;
+        this.disabled = false;
         this.state =
           map.collection === this._collection
             ? StateActionState.ACTIVE
@@ -118,7 +130,8 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
           }),
         );
       } else {
-        this.visible = false;
+        this.visible = this._showWhenNotSupported;
+        this.disabled = this._showWhenNotSupported;
       }
 
       this.setPropertiesFromObject(this._collection);
@@ -171,6 +184,9 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.collectionName = this._collectionName;
+    if (this._showWhenNotSupported) {
+      config.showWhenNotSupported = this._showWhenNotSupported;
+    }
     return config;
   }
 

@@ -1,3 +1,4 @@
+import { parseBoolean } from '@vcsuite/parsers';
 import ContentTreeItem, {
   contentTreeClassRegistry,
 } from './contentTreeItem.js';
@@ -10,8 +11,9 @@ import { StateActionState } from '../actions/stateRefAction.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
 /**
- * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], defaultViewpoint?: string, availableStyles?: string[] }} LayerGroupContentTreeItemOptions
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], showWhenNotSupported?: boolean, defaultViewpoint?: string, availableStyles?: string[] }} LayerGroupContentTreeItemOptions
  * @property {Array<string>} layerNames list of LayerNames which should be activated on click
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  * @property {string} [defaultViewpoint] - the name of an optional default viewpoint
  */
 
@@ -62,6 +64,15 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     this._layerNames = Array.isArray(options.layerNames)
       ? options.layerNames.slice()
       : [];
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._showWhenNotSupported = parseBoolean(
+      options.showWhenNotSupported,
+      false,
+    );
 
     /**
      * @type {Array<function():void>}
@@ -121,8 +132,12 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
       }
     };
     const layers = this._layers;
+    let isSupported = layers.some((l) =>
+      l.isSupported(this._app.maps.activeMap),
+    );
 
-    this.visible = layers.some((l) => l.isSupported(this._app.maps.activeMap));
+    this.visible = isSupported || this._showWhenNotSupported;
+    this.disabled = !isSupported && this._showWhenNotSupported;
     this.state = getStateFromLayers(layers);
     setViewpointAction(this, this._app, this._defaultViewpoint);
     setStyleAction(
@@ -148,9 +163,11 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
 
     this._listeners.push(
       this._app.maps.mapActivated.addEventListener(() => {
-        this.visible = !!layers.find((l) =>
+        isSupported = layers.some((l) =>
           l.isSupported(this._app.maps.activeMap),
         );
+        this.visible = isSupported || this._showWhenNotSupported;
+        this.disabled = !isSupported && this._showWhenNotSupported;
       }),
     );
   }
@@ -179,6 +196,9 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
   toJSON() {
     const config = super.toJSON();
     config.layerNames = this._layerNames.slice();
+    if (this._showWhenNotSupported) {
+      config.showWhenNotSupported = this._showWhenNotSupported;
+    }
     if (this._defaultViewpoint) {
       config.defaultViewpoint = this._defaultViewpoint;
     }
