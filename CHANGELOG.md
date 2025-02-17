@@ -34,7 +34,7 @@
 - Add a LocalStorage API
 - Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies
-  - vuetify to 3.7.11
+  - vuetify to 3.7.12
   - openlayers to 10.4.0
   - marked to 15.0.6
   - dompurify to 3.2.4
@@ -64,6 +64,7 @@
 
 - `MarkdownBalloonFeatureInfoView`and `MarkdownFeatureInfoView` no longer have `content` in their properties. The template &
   context are now passed to the `VcsTemplateMarkdown` component instead.
+- Disabled GroupContentTreeItems can now be opened/closed with the chevron in front.
 
 # 6.0.14
 

@@ -143,7 +143,10 @@
             if (item?.clicked && !item?.disabled) {
               item.clicked(event);
             }
-          } else if ((props.openOnClick ?? false) !== false) {
+          } else if (
+            (props.openOnClick ?? false) !== false &&
+            !item?.disabled
+          ) {
             itemToggled(item.name);
           }
         },

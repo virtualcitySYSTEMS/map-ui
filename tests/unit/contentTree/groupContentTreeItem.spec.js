@@ -105,6 +105,47 @@ describe('GroupContentTreeItem', () => {
       });
     });
 
+    it('should not be disabled, if all children are disabled', async () => {
+      children.forEach((c) => {
+        c.disabled = true;
+      });
+      await sleep();
+      expect(item.disabled).to.be.false;
+    });
+
+    it('should not be disabled, if a single child is not disabled', async () => {
+      children[0].disabled = false;
+      await sleep();
+      expect(item.disabled).to.be.false;
+    });
+  });
+
+  describe('disabled if disableIfChildrenDisabled', () => {
+    let item;
+    let children;
+
+    beforeAll(() => {
+      item = new GroupContentTreeItem(
+        { name: 'foo', disableIfChildrenDisabled: true },
+        app,
+      );
+      const childrenArray = item.getTreeViewItem().children;
+      children = [
+        new ContentTreeItem({ name: 'foo.bar' }, app),
+        new ContentTreeItem({ name: 'foo.bar' }, app),
+        new ContentTreeItem({ name: 'foo.bar' }, app),
+      ];
+
+      childrenArray.push(...children.map((c) => c.getTreeViewItem()));
+    });
+
+    afterAll(() => {
+      item.destroy();
+      children.forEach((c) => {
+        c.destroy();
+      });
+    });
+
     it('should be disabled, if all children are disabled', async () => {
       children.forEach((c) => {
         c.disabled = true;
@@ -200,6 +241,7 @@ describe('GroupContentTreeItem', () => {
       ({ item, children } = setupGroupItem());
       children.forEach((c) => {
         c.state = StateActionState.NONE;
+        c.disabled = false;
       });
       spies = item
         .getTreeViewItem()
@@ -213,15 +255,16 @@ describe('GroupContentTreeItem', () => {
       });
     });
 
-    it('should click all visible children with a state not NONE, if the group is ACTIVE', async () => {
+    it('should click all visible not disabled children with a state not NONE, if the group is ACTIVE', async () => {
       children[0].state = StateActionState.ACTIVE;
       children[1].state = StateActionState.ACTIVE;
+      children[1].disabled = true;
       children[2].state = StateActionState.ACTIVE;
       children[2].visible = false;
       await sleep();
       await item.clicked();
       expect(spies[0]).toHaveBeenCalled();
-      expect(spies[1]).toHaveBeenCalled();
+      expect(spies[1]).not.toHaveBeenCalled();
       expect(spies[2]).not.toHaveBeenCalled();
     });
 
@@ -247,6 +290,30 @@ describe('GroupContentTreeItem', () => {
       expect(spies[0]).not.toHaveBeenCalled();
       expect(spies[1]).not.toHaveBeenCalled();
       expect(spies[2]).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('toJSON', () => {
+    let item;
+
+    afterAll(() => {
+      item?.destroy();
+    });
+
+    it('should ignore default values', async () => {
+      item = new GroupContentTreeItem({ name: 'foo' }, app);
+      const serialized = item.toJSON();
+      expect(serialized).to.have.all.keys(['type', 'name']);
+      expect(serialized).not.to.have.property('disableIfChildrenDisabled');
+    });
+
+    it('should set disableIfChildrenDisabled value', async () => {
+      item = new GroupContentTreeItem(
+        { name: 'foo', disableIfChildrenDisabled: true },
+        app,
+      );
+      const serialized = item.toJSON();
+      expect(serialized).to.have.property('disableIfChildrenDisabled');
     });
   });
 });

@@ -116,7 +116,9 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
       const map = this._app.maps.activeMap;
       if (map instanceof ObliqueMap) {
         this.visible = true;
-        this.disabled = false;
+        if (this._showWhenNotSupported) {
+          this.disabled = false;
+        }
         this.state =
           map.collection === this._collection
             ? StateActionState.ACTIVE
@@ -131,7 +133,9 @@ class ObliqueCollectionContentTreeItem extends VcsObjectContentTreeItem {
         );
       } else {
         this.visible = this._showWhenNotSupported;
-        this.disabled = this._showWhenNotSupported;
+        if (this._showWhenNotSupported) {
+          this.disabled = this._showWhenNotSupported;
+        }
       }
 
       this.setPropertiesFromObject(this._collection);

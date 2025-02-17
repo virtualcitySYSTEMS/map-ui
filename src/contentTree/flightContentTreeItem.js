@@ -173,8 +173,11 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
       );
     } else {
       let isCesium = this._app.maps.activeMap instanceof CesiumMap;
-      this.visible = isCesium || this.showWhenNotSupported;
-      this.disabled = !isCesium && this.showWhenNotSupported;
+      this.visible = isCesium || this._showWhenNotSupported;
+
+      if (this._showWhenNotSupported) {
+        this.disabled = !isCesium;
+      }
       this._setupPlayer();
       this.setPropertiesFromObject(this._flight);
 
@@ -188,8 +191,10 @@ class FlightContentTreeItem extends VcsObjectContentTreeItem {
       this._listeners.push(
         this._app.maps.mapActivated.addEventListener(() => {
           isCesium = this._app.maps.activeMap instanceof CesiumMap;
-          this.visible = isCesium || this.showWhenNotSupported;
-          this.disabled = !isCesium && this.showWhenNotSupported;
+          this.visible = isCesium || this._showWhenNotSupported;
+          if (this._showWhenNotSupported) {
+            this.disabled = !isCesium;
+          }
         }),
       );
     }

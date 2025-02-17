@@ -66,7 +66,15 @@ The `type` option defines the item type. Following types with specific behaviour
 
 ### Groups
 
-- [GroupContentTreeItem](../src/contentTree/groupContentTreeItem.js): A clickable group item. When clicked, every child with a state not NONE will also be clicked.
+- [GroupContentTreeItem](../src/contentTree/groupContentTreeItem.js): A clickable group item. When clicked, every child with a state not NONE will also be clicked. The group will only forward click events to visible and not disabled children.
+
+```js
+/**
+ * @typedef {ContentTreeItemOptions} GroupContentTreeItemOptions
+ * @property {boolean} [disableIfChildrenDisabled=false] - optional flag to enable the behaviour that the group is disabled if all children are disabled, otherwise the Group is still clickable.
+ */
+```
+
 - [LayerGroupContentTreeItem](../src/contentTree/layerGroupContentTreeItem.js): A layer group. When clicked will try to activate all layers in the group or deactivate all layer in the group if all are active.
 
 ```js
@@ -78,7 +86,9 @@ The `type` option defines the item type. Following types with specific behaviour
  */
 ```
 
-- [NodeContentTreeItem](../src/contentTree/nodeContentTreeItem.js): A group item which has _no click handler_.
+- [NodeContentTreeItem](../src/contentTree/nodeContentTreeItem.js): A group item which has _no click handler_ and does not show the state of the children.
+
+````js
 
 ### VcsObject
 
@@ -92,7 +102,7 @@ The `type` option defines the item type. Following types with specific behaviour
  * @property {string} layerName
  * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  */
-```
+````
 
 - [ObliqueCollectionContentTreeItem](../src/contentTree/obliqueCollectionContentTreeItem.js): An oblique collection item. Sets/unsets the oblique collection when clicked.
 

@@ -67,21 +67,9 @@ describe('LayerContentTreeItem', () => {
         expect(item.visible).to.be.false;
       });
 
-      it('should be visible but disabled if activating an unsuported map', async () => {
-        await app.maps.setActiveMap('obl');
-        expect(itemToDisabled.visible).to.be.true;
-        expect(itemToDisabled.disabled).to.be.true;
-      });
-
       it('should be visible if the active map is supported', async () => {
         await app.maps.setActiveMap('ol');
         expect(item.visible).to.be.true;
-      });
-
-      it('should be visible and enabled if the active map is supported', async () => {
-        await app.maps.setActiveMap('ol');
-        expect(itemToDisabled.visible).to.be.true;
-        expect(itemToDisabled.disabled).to.be.false;
       });
 
       it('should activate the layer on click', async () => {
@@ -89,6 +77,27 @@ describe('LayerContentTreeItem', () => {
         layer.deactivate();
         await item.clicked();
         expect(layer.active).to.be.true;
+      });
+
+      describe('showWhenNotSupported flag', () => {
+        it('should not change disabled if showWhenNotSupported is not set', async () => {
+          expect(item.disabled).to.be.false;
+          await app.maps.setActiveMap('obl');
+          expect(item.disabled).to.be.false;
+          expect(item.visible).to.be.false;
+        });
+
+        it('should be visible but disabled if activating an unsupported map', async () => {
+          await app.maps.setActiveMap('obl');
+          expect(itemToDisabled.visible).to.be.true;
+          expect(itemToDisabled.disabled).to.be.true;
+        });
+
+        it('should be visible and enabled if the active map is supported', async () => {
+          await app.maps.setActiveMap('ol');
+          expect(itemToDisabled.visible).to.be.true;
+          expect(itemToDisabled.disabled).to.be.false;
+        });
       });
     });
 

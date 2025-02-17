@@ -32,7 +32,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -77,7 +77,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: false },
+            reactive({ items, modelValue, selectable: false }),
             computed(() => items),
             emit,
           );
@@ -120,7 +120,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([items[1]]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -169,7 +169,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([items[1]]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -216,7 +216,7 @@ describe('list helper', () => {
           ]);
           modelValue = [items[1], items[2]];
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -272,7 +272,7 @@ describe('list helper', () => {
         ]);
         modelValue = [items[0]];
         selectableList = setupSelectableList(
-          { items, modelValue, selectable: true },
+          reactive({ items, modelValue, selectable: true }),
           computed(() => items),
           emit,
         );
@@ -323,7 +323,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -368,7 +368,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: false },
+            reactive({ items, modelValue, selectable: false }),
             computed(() => items),
             emit,
           );
@@ -411,7 +411,7 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([items[1]]);
           selectableList = setupSelectableList(
-            { items, modelValue, selectable: true },
+            reactive({ items, modelValue, selectable: true }),
             computed(() => items),
             emit,
           );
@@ -464,12 +464,12 @@ describe('list helper', () => {
           ]);
           modelValue = [items[1]];
           selectableList = setupSelectableList(
-            {
+            reactive({
               items,
               modelValue,
               selectable: true,
               singleSelect: true,
-            },
+            }),
             computed(() => items),
             emit,
           );
@@ -518,11 +518,11 @@ describe('list helper', () => {
           ]);
           modelValue = reactive([items[1]]);
           selectableList = setupSelectableList(
-            {
+            reactive({
               items,
               modelValue,
               selectable: true,
-            },
+            }),
             computed(() => items),
             emit,
           );
@@ -569,11 +569,11 @@ describe('list helper', () => {
           ]);
           modelValue = [items[1], items[2]];
           selectableList = setupSelectableList(
-            {
+            reactive({
               items,
               modelValue,
               selectable: true,
-            },
+            }),
             computed(() => items),
             emit,
           );
@@ -633,11 +633,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -694,11 +694,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: false,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -748,11 +748,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -814,12 +814,12 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
             singleSelect: true,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -877,11 +877,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -949,11 +949,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
-          },
+          }),
           computed(() => items),
           emit,
         );
@@ -1021,11 +1021,11 @@ describe('list helper', () => {
         ]);
         modelValue = reactive([]);
         selectableList = setupSelectableList(
-          {
+          reactive({
             items,
             modelValue,
             selectable: true,
-          },
+          }),
           computed(() => items.filter((i) => i.visible !== false)),
           emit,
         );

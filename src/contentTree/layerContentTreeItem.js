@@ -228,7 +228,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
     } else {
       let isSupported = this._layer.isSupported(this._app.maps.activeMap);
       this.visible = isSupported || this._showWhenNotSupported;
-      this.disabled = !isSupported && this._showWhenNotSupported;
+      if (this._showWhenNotSupported) {
+        this.disabled = !isSupported;
+      }
       this.state = getStateFromLayer(this._layer);
       this._setLayerExtentAction();
       this.setPropertiesFromObject(this._layer);
@@ -250,7 +252,9 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
         this._app.maps.mapActivated.addEventListener(() => {
           isSupported = this._layer.isSupported(this._app.maps.activeMap);
           this.visible = isSupported || this._showWhenNotSupported;
-          this.disabled = !isSupported && this._showWhenNotSupported;
+          if (this._showWhenNotSupported) {
+            this.disabled = !isSupported;
+          }
         }),
       );
     }

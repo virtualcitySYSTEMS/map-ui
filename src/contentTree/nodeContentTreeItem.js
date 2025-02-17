@@ -30,7 +30,6 @@ class NodeContentTreeItem extends ContentTreeItem {
       () => {
         const children = this._children.value;
         this.visible = children.some((c) => c.visible);
-        this.disabled = children.every((c) => c.disabled);
       },
       { deep: true },
     );

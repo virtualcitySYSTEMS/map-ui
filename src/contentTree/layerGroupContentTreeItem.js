@@ -137,7 +137,9 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     );
 
     this.visible = isSupported || this._showWhenNotSupported;
-    this.disabled = !isSupported && this._showWhenNotSupported;
+    if (this._showWhenNotSupported) {
+      this.disabled = !isSupported;
+    }
     this.state = getStateFromLayers(layers);
     setViewpointAction(this, this._app, this._defaultViewpoint);
     setStyleAction(
@@ -167,7 +169,9 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
           l.isSupported(this._app.maps.activeMap),
         );
         this.visible = isSupported || this._showWhenNotSupported;
-        this.disabled = !isSupported && this._showWhenNotSupported;
+        if (this._showWhenNotSupported) {
+          this.disabled = !isSupported;
+        }
       }),
     );
   }

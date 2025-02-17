@@ -80,16 +80,23 @@ describe('LayerGroupContentTreeItem', () => {
         expect(item.visible).to.be.false;
       });
 
-      it('should be visible but disabled, if all layers are not supported', async () => {
-        await app.maps.setActiveMap('obl');
-        expect(itemToShowWhenNotSupported.visible).to.be.true;
-        expect(itemToShowWhenNotSupported.disabled).to.be.true;
-      });
-
       it('should not be visible if removing all supported layers', () => {
         app.layers.remove(layers[0]);
         app.layers.remove(layers[1]);
         expect(item.visible).to.be.false;
+      });
+
+      describe('showWhenNotSupported flag', () => {
+        it('should be visible but disabled, if all layers are not supported', async () => {
+          await app.maps.setActiveMap('obl');
+          expect(itemToShowWhenNotSupported.visible).to.be.true;
+          expect(itemToShowWhenNotSupported.disabled).to.be.true;
+        });
+        it('should only change disabled state if flag is set', async () => {
+          await app.maps.setActiveMap('obl');
+          expect(item.visible).to.be.false;
+          expect(item.disabled).to.be.false;
+        });
       });
     });
 

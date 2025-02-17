@@ -1,8 +1,14 @@
 import { watch } from 'vue';
+import { parseBoolean } from '@vcsuite/parsers';
 import ContentTreeItem, {
   contentTreeClassRegistry,
 } from './contentTreeItem.js';
 import { StateActionState } from '../actions/stateRefAction.js';
+
+/**
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { disableIfChildrenDisabled?: boolean }} GroupContentTreeItemOptions
+ * @property {boolean} [disableIfChildrenDisabled=false] - optional flag to disable the contentTreeItem if all children are disabled.
+ */
 
 /**
  * A clickable group item. When clicked, every child with a state not NONE will also be clicked.
@@ -25,6 +31,15 @@ class GroupContentTreeItem extends ContentTreeItem {
     super(options, app);
 
     /**
+     * @type {boolean}
+     * @private
+     */
+    this._disableIfChildrenDisabled = parseBoolean(
+      options.disableIfChildrenDisabled,
+      false,
+    );
+
+    /**
      * @type {function():void}
      * @private
      */
@@ -33,7 +48,10 @@ class GroupContentTreeItem extends ContentTreeItem {
       () => {
         const children = this._children.value;
         this.visible = children.some((c) => c.visible);
-        this.disabled = children.every((c) => c.disabled);
+
+        if (this._disableIfChildrenDisabled) {
+          this.disabled = children.every((c) => c.disabled);
+        }
         if (
           children.every((c) => c.state === StateActionState.NONE || !c.visible)
         ) {
@@ -75,9 +93,20 @@ class GroupContentTreeItem extends ContentTreeItem {
             state !== StateActionState.ACTIVE;
 
     const promises = this._children.value
-      .filter((c) => c.visible && statePredicate(c.state))
+      .filter((c) => c.visible && !c.disabled && statePredicate(c.state))
       .map((c) => c.clicked());
     await Promise.all(promises);
+  }
+
+  /**
+   * @returns {GroupContentTreeItemOptions}
+   */
+  toJSON() {
+    const config = super.toJSON();
+    if (this._disableIfChildrenDisabled) {
+      config.disableIfChildrenDisabled = this._disableIfChildrenDisabled;
+    }
+    return config;
   }
 
   destroy() {

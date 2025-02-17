@@ -13,7 +13,12 @@
         @click="bubbleItemToggled(item.name)"
       />
       <slot name="prepend" v-bind="{ item }">
-        <span class="prepend">
+        <span
+          class="prepend"
+          :class="{
+            'text-disabled': item.disabled,
+          }"
+        >
           <div v-if="item.icon">
             <v-icon v-if="typeof item?.icon === 'string'" :size="iconSize">
               {{ item.icon }}

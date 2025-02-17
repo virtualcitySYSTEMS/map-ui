@@ -57,10 +57,13 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^11.0.2",
-    "@vcmap/core": "git+ssh://git@gitlab.virtualcitysystems.de:vcsuite/npm/vcmap/core#main",
+    "@vcmap/core": "^6.1.0-rc.6",
     "ol": "^10.4.0",
     "vue": "~3.4.38",
-    "vuetify": "^3.7.11"
+    "vuetify": "^3.7.12"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
