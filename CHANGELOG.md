@@ -58,6 +58,7 @@
 - Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`
 - Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses
   `app.vuei18n.t` for translation of and `{{#t}}` directives in the template and re-renders on locale change.
+- Mobile View is added to the Map. ToolboxComponents and Buttons provide now an API to define if they should be shown in the mobile view.
 
 ### Breaking Changes
 

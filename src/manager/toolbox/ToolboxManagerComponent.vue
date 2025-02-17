@@ -1,13 +1,15 @@
 <template>
   <v-toolbar
-    v-if="toolboxOpen && orderedGroups.length > 0 && smAndUp"
+    v-if="toolboxOpen && orderedGroups.length > 0"
     class="vcs-toolbox mx-auto elevation-4 opacity-80 toolbox-manager-component"
     :class="{
-      'rounded-b': !open,
+      'rounded-b': !open && !xs,
+      'rounded-t': xs,
       'vcs-toolbox__secondary': !isDefaultToolbox,
+      mobileToolbox: xs,
     }"
     :height="toolboxHeight"
-    :style="{ zIndex }"
+    :style="{ zIndex: xs ? zIndexMobile : zIndex }"
     @click.stop="bringToTop"
   >
     <v-toolbar-items class="w-100 px-4 gc-1">
@@ -20,13 +22,19 @@
           v-if="group.type === ToolboxType.GROUP"
           :group="group"
           @toggle="openGroup"
-          @click="bringToTop"
+          @click="
+            bringToTop;
+            xs && toolboxToggleAction.callback();
+          "
         />
         <ToolboxActionSelect
           v-else-if="group.type === ToolboxType.SELECT"
           :group="group"
           @toggle="openGroup"
-          @click="bringToTop"
+          @click="
+            bringToTop;
+            xs && toolboxToggleAction.callback();
+          "
         />
         <VcsToolButton
           v-else
@@ -37,6 +45,7 @@
           :disabled="group.action.disabled"
           @click.stop="
             bringToTop();
+            xs && toolboxToggleAction.callback();
             group.action.callback($event);
           "
           v-bind="{ ...$attrs }"
@@ -61,10 +70,16 @@
     margin-top: 2px;
     width: fit-content;
   }
+  .mobileToolbox {
+    bottom: 0px !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
 </style>
 
 <script>
-  import { inject, ref, computed, watch, onUnmounted } from 'vue';
+  import { inject, ref, computed, watch, onUnmounted, reactive } from 'vue';
   import { useDisplay } from 'vuetify';
   import { VToolbar, VToolbarItems } from 'vuetify/components';
   import {
@@ -76,7 +91,7 @@
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
-  import { ButtonLocation } from '../navbarManager.js';
+  import { ButtonLocation, deviceSymbol } from '../navbarManager.js';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
@@ -114,6 +129,8 @@
     setup() {
       const app = inject('vcsApp');
 
+      const { smAndUp, xs, sm, mdAndUp } = useDisplay();
+
       const groups = computed(() => {
         return app.toolboxManager.componentIds.map((id) =>
           app.toolboxManager.get(id),
@@ -130,6 +147,8 @@
         toolboxComponentId,
         vcsAppSymbol,
       );
+      // The zIndex of the mobile toolbox is two higher than the desktop toolbox because it needs to be above the windows
+      const zIndexMobile = computed(() => zIndex.value + 2);
 
       /**
        * To be rendered in Toolbox components must meet certain conditions:
@@ -139,13 +158,18 @@
        * @param {SingleToolboxComponent|SelectToolboxComponent|GroupToolboxComponent} c
        * @returns {boolean}
        */
+
       function filterFunc(c) {
         return (
-          c.type === ToolboxType.SINGLE ||
-          c?.action?.tools?.length > 1 ||
-          c.buttonManager?.componentIds?.length > 0
+          (c.type === ToolboxType.SINGLE ||
+            c?.action?.tools?.length > 1 ||
+            c.buttonManager?.componentIds?.length > 0) &&
+          ((xs.value === true && c[deviceSymbol]?.mobile === true) ||
+            (sm.value === true && c[deviceSymbol]?.tablet === true) ||
+            (mdAndUp.value === true && c[deviceSymbol]?.desktop === true))
         );
       }
+
       const orderedGroups = computed(() =>
         getComponentsByOrder(groups.value)
           .filter((comp) => comp.toolboxNames.includes(toolboxName.value))
@@ -153,16 +177,19 @@
       );
 
       const toolboxOpen = app.toolboxManager.open;
-      const toolboxToggleAction = {
+      if (xs.value) {
+        toolboxOpen.value = false;
+      }
+      const toolboxToggleAction = reactive({
         name: 'toolboxToggleAction',
         icon: '$vcsTools',
         title: 'toolbox.title',
-        active: true,
+        active: toolboxOpen.value,
         callback() {
           this.active = !this.active;
           toolboxOpen.value = this.active;
         },
-      };
+      });
 
       function handleToolboxButton() {
         if (orderedGroups.value.length > 0) {
@@ -174,6 +201,7 @@
               },
               vcsAppSymbol,
               ButtonLocation.TOOL,
+              { desktop: true, tablet: true, mobile: true },
             );
           }
         } else {
@@ -201,7 +229,6 @@
         app.windowManager.bringWindowToTop(toolboxComponentId);
       };
 
-      const { smAndUp } = useDisplay();
       const fontSize = useFontSize();
       const toolboxHeight = computed(() => {
         return fontSize.value * 3 + 1;
@@ -209,8 +236,10 @@
       return {
         smAndUp,
         toolboxOpen,
+        toolboxToggleAction,
         orderedGroups,
         zIndex,
+        zIndexMobile,
         isDefaultToolbox: computed(
           () => toolboxName.value === defaultToolboxName,
         ),
@@ -224,6 +253,7 @@
           }
         },
         toolboxHeight,
+        xs,
       };
     },
   };

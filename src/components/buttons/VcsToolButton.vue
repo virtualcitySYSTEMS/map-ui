@@ -20,7 +20,11 @@
         :text="$st(tooltip)"
         :location="tooltipPosition"
       />
-      <v-icon :size="iconSize" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
+      <v-icon
+        :size="iconSize"
+        v-if="icon"
+        :class="{ 'mr-2': hasDefaultSlot && !xs }"
+      >
         {{ icon }}
       </v-icon>
       <VcsBadge
@@ -68,6 +72,7 @@
 <script>
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import VcsBadge from '../notification/VcsBadge.vue';
   import { getForwardSlots } from '../composables.js';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
@@ -147,6 +152,7 @@
         return 'text';
       });
 
+      const { xs } = useDisplay();
       const fontSize = useFontSize();
       const itemHeight = computed(() => {
         return fontSize.value * 2 + 6;
@@ -162,6 +168,7 @@
         forwardSlots,
         buttonVariant,
         hasDefaultSlot,
+        xs,
       };
     },
   };

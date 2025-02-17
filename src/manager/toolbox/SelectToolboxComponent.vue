@@ -24,9 +24,9 @@
     />
     <v-menu
       v-model="open"
-      location="bottom center"
+      :location="xs ? 'top center' : 'bottom center'"
       @update:model-value="$emit('toggle', open)"
-      z-index="0"
+      :z-index="xs ? 2 : undefined"
     >
       <template #activator="{ props }">
         <VcsToolButton
@@ -42,7 +42,13 @@
       </template>
 
       <v-toolbar
-        class="vcs-toolbox-2 mx-auto marginToTop rounded-b elevation-4 opacity-80 px-1"
+        class="vcs-toolbox-2 mx-auto elevation-4 opacity-80 px-1"
+        :class="{
+          marginToTop: !xs,
+          marginToBottom: xs,
+          'rounded-t': xs,
+          'rounded-b': !xs,
+        }"
         :height="toolboxHeight"
       >
         <v-toolbar-items class="w-100">
@@ -66,10 +72,14 @@
   .marginToTop {
     margin-top: 3px;
   }
+  .marginToBottom {
+    margin-bottom: 3px;
+  }
 </style>
 <script>
   import { ref, computed } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
@@ -99,9 +109,11 @@
       const toolboxHeight = computed(() => {
         return fontSize.value * 3 + 1;
       });
+      const { xs } = useDisplay();
       return {
         open,
         toolboxHeight,
+        xs,
       };
     },
   };

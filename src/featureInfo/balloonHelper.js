@@ -75,7 +75,7 @@ export async function getBalloonPosition(app, position) {
  * @param {HTMLElement} target - the map's target { @link @import("@vcmap/core").MapCollection }
  */
 export function setBalloonPosition(windowManager, id, windowPosition, target) {
-  if (!windowPosition) {
+  if (!windowPosition || !windowManager.has(id)) {
     return;
   }
 

@@ -1,7 +1,8 @@
 <template>
   <v-sheet>
     <span
-      class="d-flex justify-space-between align-center mt-1 ml-2 search-component"
+      class="d-flex justify-space-between align-center ml-2 search-component"
+      :class="xs ? 'mobile-style' : 'mt-1'"
     >
       <v-icon class="pa-1" :size="searchIconSize"> $vcsSearch </v-icon>
       <VcsTextField
@@ -11,7 +12,7 @@
         clearable
         :placeholder="$t('search.placeholder')"
         v-model="query"
-        @keydown.enter="search"
+        @keydown.enter.prevent="search"
         @keydown.down.stop.prevent="selectSuggestion(1)"
         @keydown.up.stop.prevent="selectSuggestion(-1)"
         @input="onInput"
@@ -20,13 +21,32 @@
     </span>
     <template v-if="results.length > 0">
       <v-divider class="mt-1 base-darken-1" />
-      <ResultsComponent :query="query" :results="results" />
+      <ResultsComponent
+        :query="query"
+        :results="results"
+        :show-selected-only="showSelectedOnly"
+      />
       <v-divider />
-      <div class="d-flex px-2 pt-2 pb-1 justify-end">
-        <VcsFormButton @click="zoomToAll" variant="outlined">
-          {{ $t('search.zoomToAll') }}
-        </VcsFormButton>
-      </div>
+
+      <v-row no-gutters>
+        <v-col>
+          <div class="button-container d-flex align-center px-2 pt-2 pb-1">
+            <VcsFormButton
+              class="fixed-button"
+              @click="showSelectedOnly = !showSelectedOnly"
+            >
+              <v-icon icon="mdi-arrow-collapse-vertical" />
+            </VcsFormButton>
+            <VcsFormButton
+              @click="zoomToAll"
+              class="ellipsis-button"
+              variant="outlined"
+            >
+              {{ xs ? $t('search.zoomToAllMobile') : $t('search.zoomToAll') }}
+            </VcsFormButton>
+          </div></v-col
+        ></v-row
+      >
     </template>
     <template v-else-if="suggestions.length > 0">
       <v-divider class="mt-1 base-darken-1" />
@@ -52,13 +72,35 @@
   .suggestions {
     font-style: italic;
   }
+  .mobile-style .vcs-text-field.py-1 {
+    padding-bottom: 0 !important;
+    padding-right: 1px !important;
+  }
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .fixed-button {
+    flex-shrink: 0;
+  }
+
+  .ellipsis-button {
+    flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>
 
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
   import { v4 as uuid } from 'uuid';
-  import { VSheet, VDivider, VIcon } from 'vuetify/components';
+  import { VSheet, VDivider, VIcon, VRow, VCol } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
   import ResultsComponent from './ResultsComponent.vue';
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
@@ -76,6 +118,8 @@
       VSheet,
       VIcon,
       VDivider,
+      VRow,
+      VCol,
     },
     setup() {
       /** @type {import("@src/vcsUiApp.js").default} */
@@ -86,7 +130,10 @@
       const suggestions = ref([]);
       const selectedSuggestion = ref(-1);
       const results = app.search.currentResults;
+      const { xs } = useDisplay();
       let queryPreSuggestion = '';
+
+      const showSelectedOnly = ref(false);
 
       let suggestionTimeout;
 
@@ -123,6 +170,7 @@
         suggesting.value = '';
         suggestions.value = [];
         queryPreSuggestion = '';
+        showSelectedOnly.value = false;
       };
 
       const clear = () => {
@@ -131,6 +179,7 @@
         suggestions.value = [];
         query.value = null;
         queryPreSuggestion = '';
+        showSelectedOnly.value = false;
       };
 
       const search = async () => {
@@ -157,6 +206,8 @@
         return fontSize.value + 11;
       });
       return {
+        showSelectedOnly,
+        xs,
         query,
         searching,
         results,

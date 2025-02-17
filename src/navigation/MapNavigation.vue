@@ -1,6 +1,8 @@
 <template>
   <v-container
-    :class="xs ? 'nav-container mobile' : 'nav-container'"
+    :class="
+      xs || mobileLandscape ? 'nav-container mobile no-zoom ' : 'nav-container'
+    "
     class="map-navigation"
   >
     <v-row>
@@ -25,7 +27,7 @@
         ></OrientationToolsButton>
       </v-row>
     </template>
-    <template v-if="smAndUp">
+    <template v-if="smAndUp && !mobileLandscape">
       <v-row justify="center">
         <VcsZoomButton
           @zoom-out="zoomOut()"
@@ -33,7 +35,7 @@
           :disabled="movementApiCallsDisabled"
         />
       </v-row>
-      <v-row justify="center" v-if="is3D && smAndUp">
+      <v-row justify="center" v-if="is3D">
         <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
       </v-row>
       <v-row v-if="!hideRotationButton && is3D" justify="center">
@@ -45,15 +47,17 @@
           :disabled="rotationAction.disabled"
         />
       </v-row>
-      <v-row justify="center">
-        <OrientationToolsButton
-          v-if="homeAction.icon"
-          :icon="homeAction.icon"
-          :tooltip="homeAction.title"
-          @click.stop="homeAction.callback($event)"
-          :disabled="movementApiCallsDisabled"
-        />
-      </v-row>
+    </template>
+    <v-row justify="center">
+      <OrientationToolsButton
+        v-if="homeAction.icon"
+        :icon="homeAction.icon"
+        :tooltip="homeAction.title"
+        @click.stop="homeAction.callback($event)"
+        :disabled="movementApiCallsDisabled"
+      />
+    </v-row>
+    <template v-if="smAndUp && !mobileLandscape">
       <v-row justify="center">
         <OrientationToolsButton
           v-if="showOverviewButton"
@@ -90,6 +94,7 @@
   import TiltSlider from './TiltSlider.vue';
   import ObliqueRotation from './ObliqueRotation.vue';
   import OrientationToolsButton from './OrientationToolsButton.vue';
+  import { isMobileLandscape } from '../vuePlugins/vuetify.js';
 
   /**
    * @description Creates a go-to viewpoint action from a startingViewpointName defined in a module. If no startingViewpointName is defined, uses default map view as fallback.
@@ -280,6 +285,7 @@
       const viewMode = ref(OrientationToolsViewMode.TWO_D);
       const headingRef = ref(0);
       const tiltRef = ref(0);
+      const mobileLandscape = isMobileLandscape();
 
       const handleRenderEvent = ({ map }) => {
         viewMode.value = getViewModeForMap(map);
@@ -427,6 +433,7 @@
         homeAction,
         rotationAction,
         movementApiCallsDisabled,
+        mobileLandscape,
       };
     },
   };
@@ -442,7 +449,8 @@
     width: unset;
     padding: 12px;
     &.mobile {
-      top: 1rem;
+      // same height as mobile Icon
+      padding-top: 0px;
       right: 1rem;
       bottom: auto;
     }
@@ -452,5 +460,8 @@
       margin-top: 15px;
       margin-bottom: 0;
     }
+  }
+  .no-zoom {
+    touch-action: none; /* Disable gestures like pinch and double-tap zoom */
   }
 </style>

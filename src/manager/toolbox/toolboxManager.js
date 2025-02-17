@@ -6,6 +6,7 @@ import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
 import { ActionPattern } from '../../components/lists/VcsActionList.vue';
 import { getActionFromOptions } from '../../actions/actionHelper.js';
+import { deviceSymbol } from '../navbarManager.js';
 
 /**
  * Possible group types. Define behaviour of group:
@@ -287,12 +288,22 @@ class ToolboxManager {
    * adds a ToolboxComponent
    * @param {SingleToolboxComponentOptions|SelectToolboxComponentOptions|GroupToolboxComponentOptions} toolboxComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
+   * @param {import('../navbarManager.js').DeviceOptions} [device={destop: true, tablet: true}] Device - optional device configuration
    * @throws {Error} if a toolboxComponent with the same ID has already been added
    * @returns {SingleToolboxComponent|SelectToolboxComponent|import("vue").ShallowReactive<GroupToolboxComponent>}
    */
-  add(toolboxComponentOptions, owner) {
+  add(
+    toolboxComponentOptions,
+    owner,
+    device = { desktop: true, tablet: true },
+  ) {
     check(toolboxComponentOptions.id, maybe(String));
     check(toolboxComponentOptions.type, ofEnum(ToolboxType));
+    check(device, {
+      desktop: optional(Boolean),
+      tablet: optional(Boolean),
+      mobile: optional(Boolean),
+    });
     check(owner, oneOf(String, vcsAppSymbol));
 
     if (toolboxComponentOptions.id && this.has(toolboxComponentOptions.id)) {
@@ -322,6 +333,7 @@ class ToolboxManager {
       get toolboxNames() {
         return toolboxNames;
       },
+      [deviceSymbol]: device,
     };
 
     if (type === ToolboxType.SINGLE) {

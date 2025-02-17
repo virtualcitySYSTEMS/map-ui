@@ -40,6 +40,7 @@ export default async () => {
         { id: 'theming-example', action },
         packageJSON.name,
         ButtonLocation.MENU,
+        { desktop: true, tablet: true },
       );
       this._destroyAction = destroy;
     },

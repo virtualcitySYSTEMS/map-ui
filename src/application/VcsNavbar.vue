@@ -154,6 +154,7 @@
   } from 'vuetify/components';
   import {
     ButtonLocation,
+    deviceSymbol,
     getActionsByLocation,
   } from '../manager/navbarManager.js';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
@@ -185,8 +186,18 @@
     setup() {
       const app = inject('vcsApp');
 
+      const { xs, mdAndUp, smAndDown, smAndUp, sm } = useDisplay();
+
       const buttonComponents = computed(() =>
-        app.navbarManager.componentIds.map((id) => app.navbarManager.get(id)),
+        app.navbarManager.componentIds
+          .map((id) => app.navbarManager.get(id))
+          .filter((buttonComponent) => {
+            if (sm.value) {
+              return buttonComponent[deviceSymbol].tablet;
+            } else {
+              return buttonComponent[deviceSymbol].desktop;
+            }
+          }),
       );
       const getActions = (location) =>
         computed(() =>
@@ -207,8 +218,6 @@
       onUnmounted(() => {
         destroySearchAction();
       });
-
-      const { xs, mdAndUp, smAndDown, smAndUp } = useDisplay();
 
       const density = computed(() => {
         return xs.value ? 'comfortable' : 'compact';

@@ -177,13 +177,13 @@
 </script>
 
 <style lang="scss">
-  .balloon {
+  :not(.mobile) > .balloon {
     z-index: 0 !important;
   }
-  .balloon hr:first-child {
+  :not(.mobile) > .balloon hr:first-child {
     display: none;
   }
-  .balloon:after {
+  :not(.mobile) > .balloon:after {
     content: '';
     position: absolute;
     bottom: -12px;
@@ -194,11 +194,11 @@
     width: 0;
     filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.3));
   }
-  .balloon:after {
+  :not(.mobile) > .balloon:after {
     border-color: rgb(var(--v-theme-surface-light)) transparent;
   }
-  .balloon .v-list-item .v-list-item__title,
-  .balloon .v-list-item .v-list-item__subtitle {
+  :not(.mobile) > .balloon .v-list-item .v-list-item__title,
+  :not(.mobile) > .balloon .v-list-item .v-list-item__subtitle {
     line-height: 18px;
   }
 </style>

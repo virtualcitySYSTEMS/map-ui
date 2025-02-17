@@ -1,4 +1,4 @@
-import { createVuetify, useTheme } from 'vuetify';
+import { createVuetify, useDisplay, useTheme } from 'vuetify';
 import { VSvgIcon } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 import 'vuetify/styles';
@@ -62,6 +62,19 @@ export const defaultPrimaryColor = {
  * @returns {VcsThemes}
  */
 export function createVcsThemes(options, primaryColor) {
+  const isTouchDevice =
+    'ontouchstart' in (window || {}) || navigator?.maxTouchPoints > 0 || false;
+  const isSmallerScreen =
+    window.matchMedia?.('(max-width: 600px)')?.matches ?? false;
+
+  const isPhone = isSmallerScreen && isTouchDevice;
+  let fontSizeLight = options?.light?.variables?.['vcs-font-size'] || '13px';
+  let fontSizeDark = options?.dark?.variables?.['vcs-font-size'] || '13px';
+
+  if (isPhone) {
+    fontSizeLight = `${parseInt(fontSizeLight, 10) + 1}px`;
+    fontSizeDark = `${parseInt(fontSizeDark, 10) + 1}px`;
+  }
   return {
     light: {
       colors: {
@@ -90,9 +103,9 @@ export function createVcsThemes(options, primaryColor) {
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
         'list-item-subtitle-opacity': 0.6,
-        'vcs-font-size': '13px',
         'vcs-font-family': 'Titillium Web',
         ...options?.light?.variables,
+        'vcs-font-size': fontSizeLight,
       },
     },
     dark: {
@@ -121,9 +134,9 @@ export function createVcsThemes(options, primaryColor) {
         'high-emphasis-opacity': 1,
         'medium-emphasis-opacity': 1,
         'list-item-subtitle-opacity': 0.6,
-        'vcs-font-size': '13px',
         'vcs-font-family': 'Titillium Web',
         ...options?.dark?.variables,
+        'vcs-font-size': fontSizeDark,
       },
     },
   };
@@ -181,6 +194,14 @@ const svgPathDataSet = {
 export function createVcsVuetify(i18n) {
   const dark =
     window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
+
+  const isTouchDevice =
+    'ontouchstart' in (window || {}) || navigator?.maxTouchPoints > 0 || false;
+  // Check if the screen is large enough to display tooltips (Issue: large tablets don't fall in this screen size and will display tooltips)
+  const isLargeScreen =
+    window.matchMedia?.('(min-width: 960px)')?.matches ?? true;
+
+  const allowTooltip = isLargeScreen || !isTouchDevice;
 
   const theme = {
     options: {
@@ -255,6 +276,9 @@ export function createVcsVuetify(i18n) {
         elevation: 0,
         tile: true,
       },
+      VTooltip: {
+        openOnHover: allowTooltip,
+      },
     },
     defaultAssets: {
       font: {
@@ -323,6 +347,28 @@ export function useFontSize() {
     const fontSize = theme.current.value.variables['vcs-font-size'] ?? 13;
     // get rid of `px`
     return Number.parseFloat(fontSize);
+  });
+}
+
+/**
+ * @returns {import("vue").ComputedRef<boolean>} - A computed reference indicating if the device is a mobile platform in landscape mode.
+ */
+export function isMobileLandscape() {
+  const display = useDisplay();
+  return computed(() => {
+    // Check if the device is a mobile platform (e.g., Android, iOS, or touch-based)
+    const isMobilePlatform =
+      display.platform.value.android ||
+      display.platform.value.ios ||
+      display.platform.value.touch;
+
+    // Check if the device height is less than the threshold for SM
+    const isHeightXs = display.height.value <= display.thresholds.value.sm;
+
+    // Check if the device is in landscape mode
+    const isLandscape = display.height.value < display.width.value;
+
+    return isMobilePlatform && isLandscape && isHeightXs;
   });
 }
 

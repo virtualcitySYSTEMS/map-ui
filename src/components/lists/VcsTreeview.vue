@@ -5,7 +5,12 @@
       :placeholder="searchbarPlaceholder"
       v-model="localSearchValue"
     />
-    <div v-for="item in items" :key="item.name" class="vcs-treeitem">
+    <div
+      v-for="item in items"
+      :key="item.name"
+      class="vcs-treeitem"
+      :class="{ 'mobile-spacing': xs }"
+    >
       <VcsTreeNode
         class="root-node"
         :item="item"
@@ -27,6 +32,7 @@
 
 <script>
   import { watch } from 'vue';
+  import { useDisplay } from 'vuetify';
   import {
     useProxiedAtomicModel,
     useProxiedComplexModel,
@@ -125,6 +131,8 @@
         }
       }
 
+      const { xs } = useDisplay();
+
       return {
         localSearchValue,
         localOpenedItems,
@@ -139,6 +147,7 @@
             itemToggled(item.name);
           }
         },
+        xs,
       };
     },
   };
@@ -151,6 +160,28 @@
   }
   .vcs-treeitem:not(:last-child) {
     border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
+  }
+  :deep(
+      .mobile-spacing
+        > .vcs-tree-node
+        > .children
+        > .vcs-tree-node
+        > .treenode
+        > .vcs-action-button-list
+        > button:not(:last-child)
+    ) {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+  }
+  :deep(
+      .mobile-spacing
+        > .vcs-tree-node
+        > .treenode
+        > .vcs-action-button-list
+        > button:not(:last-child)
+    ) {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
   }
   .root-node {
     :deep(.level-0) {

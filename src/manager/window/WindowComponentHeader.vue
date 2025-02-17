@@ -22,7 +22,10 @@
         {{ $st(headerTooltip) }}
       </v-tooltip>
     </h3>
-    <div class="d-flex justify-space-between align-center">
+    <div
+      class="d-flex justify-space-between align-center"
+      :class="{ 'gc-4': xs, 'mr-2': xs }"
+    >
       <template v-if="windowState.headerActions?.length > 0">
         <VcsActionButtonList
           :actions="windowState.headerActions"
@@ -30,6 +33,7 @@
         />
         <v-divider vertical inset class="mx-1 my-1" />
       </template>
+
       <VcsButton
         v-if="infoAction"
         @click.stop="infoAction.callback()"
@@ -80,6 +84,7 @@
 <script>
   import { VIcon, VDivider, VTooltip } from 'vuetify/components';
   import { computed, getCurrentInstance, ref } from 'vue';
+  import { useDisplay } from 'vuetify';
   import { createEllipseTooltip } from '../../components/composables.js';
   import VcsButton from '../../components/buttons/VcsButton.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
@@ -130,6 +135,8 @@
         () => !props.windowState.hidePin && props.windowState.dockable,
       );
 
+      const { xs } = useDisplay();
+
       const vm = getCurrentInstance().proxy;
 
       const translatedHeaderTitle = computed(() =>
@@ -166,6 +173,7 @@
           translatedHeaderTitle,
         ),
         infoAction,
+        xs,
       };
     },
   };

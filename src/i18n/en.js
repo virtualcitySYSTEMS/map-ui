@@ -22,6 +22,7 @@ const messages = {
       tooltip: 'Share current view of the map',
     },
   },
+  mobileMenu: { title: 'Menu' },
   content: {
     title: 'Content',
     empty: 'Currently there are no entries available.',
@@ -346,6 +347,7 @@ const messages = {
     select: 'Select result item',
     placeholder: 'Search for address or landmark/point of interest',
     zoomToFeatureAction: 'Zoom to result',
+    zoomToAllMobile: 'Zoom to all',
     zoomToAll: 'Zoom to all',
   },
   toolbox: {
@@ -379,6 +381,9 @@ const messages = {
       south: 'south',
       west: 'west',
       nadir: 'nadir',
+    },
+    mobile: {
+      rotationWarning: 'Rotate to use all features',
     },
   },
   notification: {

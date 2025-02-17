@@ -224,6 +224,7 @@ function setupFeatureInfoTool(app) {
           action,
         },
         vcsAppSymbol,
+        { desktop: true, tablet: true, mobile: true },
       );
     }
   }

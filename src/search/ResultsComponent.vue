@@ -1,6 +1,7 @@
 <template>
   <v-list
-    class="ma-0 overflow-y-auto vcs-search-results results-component"
+    class="ma-0 overflow-y-auto results-component"
+    :class="xs ? 'vcs-search-results-mobile' : 'vcs-search-results'"
     v-model:selected="highlighted"
   >
     <ResultItem
@@ -8,10 +9,10 @@
       :query="query"
       class="cursor-pointer"
       :class="{
-        'vcs-search-result-border': index < items.length - 1,
+        'vcs-search-result-border': index < renderingItems.length - 1,
         selected: index === selectedIndex,
       }"
-      v-for="(item, index) in items"
+      v-for="(item, index) in renderingItems"
       :key="index"
       :value="item.value"
     />
@@ -21,6 +22,7 @@
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { VList } from 'vuetify/components';
+  import { useDisplay } from 'vuetify';
   import ResultItem from './ResultItem.vue';
 
   /**
@@ -47,6 +49,10 @@
       selectedIndex: {
         type: Number,
         default: -1,
+      },
+      showSelectedOnly: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props) {
@@ -75,25 +81,43 @@
         },
       );
 
+      const { xs } = useDisplay();
+
+      const highlighted = computed({
+        get() {
+          return selectedRef.value;
+        },
+        set(value) {
+          selectedRef.value = value;
+          const [index] = value;
+          if (index >= 0) {
+            const item = items.value[index];
+            item.clicked();
+          }
+        },
+      });
+
       onUnmounted(() => {
         selectedListener();
       });
 
+      // Dynamically filter items based on showSelectedOnly
+      const renderingItems = computed(() => {
+        if (props.showSelectedOnly) {
+          const index = selectedRef.value[0];
+          if (index !== undefined && index !== null) {
+            return [items.value[index]];
+          } else {
+            return [];
+          }
+        }
+        return items.value;
+      });
+
       return {
-        items,
-        highlighted: computed({
-          get() {
-            return selectedRef.value;
-          },
-          set(value) {
-            selectedRef.value = value;
-            const [index] = value;
-            if (index >= 0) {
-              const item = items.value[index];
-              item.clicked();
-            }
-          },
-        }),
+        renderingItems,
+        highlighted,
+        xs,
       };
     },
   };
@@ -102,6 +126,9 @@
 <style lang="scss" scoped>
   .vcs-search-results {
     max-height: 400px;
+  }
+  .vcs-search-results-mobile {
+    max-height: 300px;
   }
   .vcs-search-result-border {
     border-bottom: thin solid;

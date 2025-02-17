@@ -5,10 +5,11 @@
       :options="splashScreen"
       v-model="showSplashScreen"
     ></VcsSplashScreen>
-    <VcsNavbar v-if="!config.hideHeader" />
+    <VcsNavbar v-if="!config.hideHeader && smAndUp && !mobileLandscape" />
+    <VcsNavbarMobile v-if="!config.hideHeader && xs && !mobileLandscape" />
     <VcsContainer :attribution-action="attributionAction" />
     <v-footer
-      v-if="showFooter"
+      v-if="showFooter && !mobileLandscape"
       app
       absolute
       :height="footerHeight"
@@ -32,12 +33,26 @@
         :attribution-action="attributionAction"
       />
     </v-footer>
+    <p v-if="mobileLandscape" class="mobileRotatedWarning">
+      {{ $st('footer.mobile.rotationWarning') }}
+    </p>
   </v-container>
 </template>
 
 <style scoped lang="scss">
   :deep(.v-application--wrap) {
     min-height: fit-content;
+  }
+  .mobileRotatedWarning {
+    bottom: 0px;
+    z-index: 5;
+    position: fixed;
+    background-color: rgba(var(--v-theme-surface-light), 0.5);
+    color: rgb(var(--v-theme-on-surface));
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    padding: 5px;
+    border-radius: 4px;
   }
 </style>
 
@@ -58,6 +73,7 @@
   import { ButtonLocation } from '../manager/navbarManager.js';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsNavbar from './VcsNavbar.vue';
+  import VcsNavbarMobile from './VcsNavbarMobile.vue';
   import {
     createLinkAction,
     createMapButtonAction,
@@ -70,6 +86,7 @@
     createVcsThemes,
     setTheme,
     useFontSize,
+    isMobileLandscape,
   } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/VcsLegend.vue';
   import { getLegendEntries } from '../legend/legendHelper.js';
@@ -188,6 +205,7 @@
         },
         vcsAppSymbol,
         ButtonLocation.MAP,
+        { mobile: true, tablet: true, desktop: true },
       );
       mapButtonActionDestroy[name] = () => {
         app.navbarManager.remove(`mapButton-${name}`);
@@ -257,16 +275,18 @@
           },
           vcsAppSymbol,
           ButtonLocation.CONTENT,
+          { mobile: true, tablet: true, desktop: true },
         );
       }
     };
-
+    const { xs } = useDisplay();
     let currentEntryLength = entries.length;
     const watchEntries = watch(entries, (newValue) => {
       if (
         app.uiConfig.config.openLegendOnAdd &&
         newValue.length > currentEntryLength &&
-        !app.windowManager.has(legendComponentId)
+        !app.windowManager.has(legendComponentId) &&
+        !xs.value
       ) {
         app.windowManager.add(
           {
@@ -373,6 +393,7 @@
         },
         vcsAppSymbol,
         ButtonLocation.MENU,
+        { mobile: true, tablet: true, desktop: true },
       );
       return () => {
         customScreenDestroy();
@@ -428,6 +449,7 @@
           },
           vcsAppSymbol,
           ButtonLocation.MENU,
+          { mobile: true, tablet: true, desktop: true },
         );
       }
     }
@@ -485,6 +507,7 @@
       },
       vcsAppSymbol,
       ButtonLocation.MENU,
+      { mobile: true, tablet: true, desktop: true },
     );
     return () => {
       app.navbarManager.remove(settingsComponentId);
@@ -514,6 +537,7 @@
       },
       vcsAppSymbol,
       ButtonLocation.MENU,
+      { mobile: true, tablet: true, desktop: true },
     );
   }
 
@@ -747,6 +771,7 @@
       VcsObliqueFooter,
       VcsSplashScreen,
       VcsNavbar,
+      VcsNavbarMobile,
       VContainer,
       VFooter,
       VSpacer,
@@ -830,7 +855,10 @@
         destroyAttributions();
       });
 
-      const { smAndUp } = useDisplay();
+      const { smAndUp, xs } = useDisplay();
+
+      const mobileLandscape = isMobileLandscape();
+
       const fontSize = useFontSize();
       const footerHeight = computed(() => {
         return Math.ceil(fontSize.value * 1.65);
@@ -872,6 +900,9 @@
         splashScreen,
         attributionEntries,
         attributionAction,
+        smAndUp,
+        xs,
+        mobileLandscape,
       };
     },
   };

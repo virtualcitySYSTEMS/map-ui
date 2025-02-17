@@ -212,6 +212,7 @@ class ContentTreeCollection extends IndexedCollection {
       { id, action, weight: subTreeViewItem[subTreeItemWeight] },
       vcsAppSymbol,
       ButtonLocation.CONTENT,
+      { mobile: true, desktop: true, tablet: true },
     );
     return () => {
       app.windowManager.remove(id);

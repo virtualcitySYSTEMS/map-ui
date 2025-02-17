@@ -94,6 +94,8 @@ The navbar is separated in different locations, where buttons can be placed.
 NavbarManager extends the add method of ButtonManager. Additionally, to `buttonComponentOptions` and `owner`,
 you have to provide a render position.
 
+Additionally, you can define if the button should be displayed on desktop, tablet, or mobile devices. By default, buttons are only shown on desktop and tablet. Developers can either write a component supporting both or provide individual components for mobile and desktop/tablet.
+
 Possible render positions from left to right are defined by the `ButtonLocation` enumeration object:
 
 ```js
@@ -116,10 +118,18 @@ export const ButtonLocation = {
   MENU: 5,
 };
 
+/**
+ * @typedef {Object} DeviceOptions
+ * @property {boolean?} desktop
+ * @property {boolean?} tablet
+ * @property {boolean?} mobile
+ */
+
 app.navbarManager.add(
   { id: 'myPlugin', action },
   'myPlugin',
   ButtonLocation.TOOL,
+  { desktop: true, tablet: true, mobile: true },
 );
 ```
 

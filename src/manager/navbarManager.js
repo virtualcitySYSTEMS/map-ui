@@ -1,8 +1,9 @@
-import { check, ofEnum } from '@vcsuite/check';
+import { check, ofEnum, optional } from '@vcsuite/check';
 import ButtonManager, { sortByWeight } from './buttonManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
 export const locationSymbol = Symbol('location');
+export const deviceSymbol = Symbol('device');
 
 /**
  * sorts by owner and optionally plugin order
@@ -75,6 +76,13 @@ export const ButtonLocation = {
  */
 
 /**
+ * @typedef {Object} DeviceOptions
+ * @property {boolean?} desktop
+ * @property {boolean?} tablet
+ * @property {boolean?} mobile
+ */
+
+/**
  * @class NavbarManager
  * @description Manages a set of Map Buttons in the Navbar
  * @implements {INavbarManager}
@@ -85,13 +93,25 @@ class NavbarManager extends ButtonManager {
    * @param {import("./buttonManager.js").ButtonComponentOptions} buttonComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
    * @param {ButtonLocation} location Button render position
+   * @param {DeviceOptions} [device={destop: true, tablet: true}] Device - optional device configuration
    * @throws {Error} if a buttonComponent with the same ID has already been added
    * @returns {import("./buttonManager.js").ButtonComponent}
    */
-  add(buttonComponentOptions, owner, location) {
+  add(
+    buttonComponentOptions,
+    owner,
+    location,
+    device = { desktop: true, tablet: true },
+  ) {
     check(location, ofEnum(ButtonLocation));
+    check(device, {
+      desktop: optional(Boolean),
+      tablet: optional(Boolean),
+      mobile: optional(Boolean),
+    });
     const buttonComponent = super.add(buttonComponentOptions, owner);
     buttonComponent[locationSymbol] = location;
+    buttonComponent[deviceSymbol] = device;
     return buttonComponent;
   }
 

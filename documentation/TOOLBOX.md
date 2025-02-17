@@ -64,6 +64,17 @@ The ToolboxManager supports three different `ToolboxType`s with different behavi
  */
 ```
 
+Additionally, it can be defined if the ToolboxComponent should be displayed on desktop, tablet, or mobile devices. By default, ToolboxComponents are only shown on desktop and tablet. Developers can either write a component supporting both or provide individual components for mobile and desktop/tablet.
+
+```js
+/**
+ * @typedef {Object} DeviceOptions
+ * @property {boolean?} desktop
+ * @property {boolean?} tablet
+ * @property {boolean?} mobile
+ */
+```
+
 ### SingleToolboxComponent
 
 Renders one **single** toggle button.
@@ -96,6 +107,7 @@ app.toolboxManager.add(
     },
   },
   'sample-plugin',
+  { desktop: true, tablet: true, mobile: true },
 );
 ```
 
@@ -193,6 +205,7 @@ const selectGroup = app.toolboxManager.add(
     },
   },
   'sample-plugin',
+  { desktop: true, tablet: true, mobile: true },
 );
 ```
 

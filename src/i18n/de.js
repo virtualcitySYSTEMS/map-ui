@@ -22,6 +22,7 @@ const messages = {
       tooltip: 'Aktuellen Kartenausschnitt teilen',
     },
   },
+  mobileMenu: { title: 'Menü' },
   content: {
     title: 'Inhalte',
     empty: 'Aktuell sind keine Einträge verfügbar.',
@@ -347,6 +348,7 @@ const messages = {
     placeholder: 'Suche nach Adresse oder Ort/Sehenswürdigkeit',
     zoomToFeatureAction: 'Auf Ergebnis zoomen',
     zoomToAll: 'Auf alle Ergebnisse zoomen',
+    zoomToAllMobile: 'Auf alle zoomen',
   },
   toolbox: {
     title: 'Werkzeugkasten',
@@ -379,6 +381,9 @@ const messages = {
       south: 'Süd',
       west: 'West',
       nadir: 'Nadir',
+    },
+    mobile: {
+      rotationWarning: 'Rotieren um alle Feature zu benutzen',
     },
   },
   notification: {

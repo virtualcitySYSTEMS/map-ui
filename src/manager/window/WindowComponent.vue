@@ -9,7 +9,7 @@
     :class="{
       rounded: !isDocked,
       marginToTop: isDocked || !isChild,
-      marginToTopTablet: isTabletWithOpenToolbar,
+      marginTablet: isTabletWithOpenToolbar,
       'rounded-be': isDynamicLeft,
       'rounded-bs': isDynamicRight,
     }"
@@ -42,8 +42,9 @@
   .marginToTop {
     margin-top: 2px;
   }
-  .marginToTopTablet {
+  .marginTablet {
     margin-top: calc(var(--v-vcs-font-size) * 3 + 6px);
+    margin-bottom: 2px;
   }
 </style>
 
