@@ -1,5 +1,5 @@
 <template>
-  <div class="window-manager" :class="{ oblique: isOblique, mobile: isMobile }">
+  <div class="window-manager" :class="{ oblique: isOblique, mobile: xs }">
     <WindowComponent
       v-for="id in componentIds"
       :key="id"
@@ -192,7 +192,6 @@
         });
 
       const isOblique = ref(false);
-      const isMobile = ref(display.xs.value);
       // fix search width to oblique map
       const mobileSearchObliqueListener =
         app.maps.mapActivated.addEventListener((map) => {
@@ -354,7 +353,7 @@
         onTouchMove,
         onTouchEnd,
         isOblique,
-        isMobile,
+        xs: display.xs,
       };
     },
   };
