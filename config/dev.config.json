@@ -689,14 +689,18 @@
       "type": "LayerContentTreeItem"
     },
     {
-      "name": "czmlPoint",
+      "name": "czml",
+      "type": "NodeContentTreeItem",
+      "disableIfChildrenDisabled": true
+    },
+    {
+      "name": "czml.czmlPoint",
       "layerName": "czmlPoint",
       "type": "LayerContentTreeItem",
-
       "showWhenNotSupported": true
     },
     {
-      "name": "czmlDynamicPoint",
+      "name": "czml.czmlDynamicPoint",
       "layerName": "czmlDynamicPoint",
       "type": "LayerContentTreeItem",
       "showWhenNotSupported": true

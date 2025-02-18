@@ -1,7 +1,13 @@
 import { watch } from 'vue';
+import { parseBoolean } from '@vcsuite/parsers';
 import ContentTreeItem, {
   contentTreeClassRegistry,
 } from './contentTreeItem.js';
+
+/**
+ * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { disableIfChildrenDisabled?: boolean }} NodeContentTreeItemOptions
+ * @property {boolean} [disableIfChildrenDisabled=false] - optional flag to disable the contentTreeItem if all children are disabled.
+ */
 
 /**
  * A group item which has _no click handler_
@@ -17,7 +23,7 @@ class NodeContentTreeItem extends ContentTreeItem {
   }
 
   /**
-   * @param {import("./contentTreeItem.js").ContentTreeItemOptions} options
+   * @param {NodeContentTreeItemOptions} options
    * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
@@ -25,14 +31,37 @@ class NodeContentTreeItem extends ContentTreeItem {
 
     this.clickable = false;
 
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._disableIfChildrenDisabled = parseBoolean(
+      options.disableIfChildrenDisabled,
+      false,
+    );
+
     this._childWatcher = watch(
       this._children,
       () => {
         const children = this._children.value;
         this.visible = children.some((c) => c.visible);
+        if (this._disableIfChildrenDisabled) {
+          this.disabled = children.every((c) => c.disabled);
+        }
       },
-      { deep: true },
+      { deep: true, immediate: true },
     );
+  }
+
+  /**
+   * @returns {NodeContentTreeItemOptions}
+   */
+  toJSON() {
+    const config = super.toJSON();
+    if (this._disableIfChildrenDisabled) {
+      config.disableIfChildrenDisabled = this._disableIfChildrenDisabled;
+    }
+    return config;
   }
 
   destroy() {

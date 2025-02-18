@@ -24,7 +24,7 @@ class GroupContentTreeItem extends ContentTreeItem {
   }
 
   /**
-   * @param {import("./contentTreeItem.js").ContentTreeItemOptions} options
+   * @param {GroupContentTreeItemOptions} options
    * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(options, app) {
