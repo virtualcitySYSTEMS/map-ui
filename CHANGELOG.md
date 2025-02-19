@@ -53,6 +53,7 @@
   - empty groups would be rendered
   - disabled item would not be render as it
 - Added a `showWhenNotSupported` flag to LayerContentTreeItem, LayerGroupContentTreeItem, ObliqueCollectionContentTreeItem, and FlightContentTreeItem to optionally show them disabled on unsupported maps
+- Added `StyleMenuWrapper.vue` to exports after renaming from `MenuWrapper`
 
 - Changed the behavior of the `popoutBtn` flag of the LegendItems: each item with that flag enabled will now get a button to open the legend in a new tab
 - Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`

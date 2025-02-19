@@ -307,6 +307,7 @@ export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreev
 export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
 export { default as VcsDefaultLogo } from './src/logo.svg';
 export { default as VcsDefaultMobileLogo } from './src/logo-mobile.svg';
+export { default as StyleMenuWrapper } from './src/components/style/StyleMenuWrapper.vue';
 export { default as VcsFillSelector } from './src/components/style/VcsFillSelector.vue';
 export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.vue';
 export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.vue';

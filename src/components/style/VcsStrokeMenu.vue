@@ -1,5 +1,5 @@
 <template>
-  <MenuWrapper
+  <StyleMenuWrapper
     class="vcs-stroke-menu"
     :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
     name="components.style.stroke"
@@ -18,7 +18,7 @@
     <template #content>
       <VcsStrokeSelector v-bind="{ ...$attrs, ...$props }" />
     </template>
-  </MenuWrapper>
+  </StyleMenuWrapper>
 </template>
 
 <script>
@@ -26,7 +26,7 @@
   import { VSheet } from 'vuetify/components';
   import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsStrokeSelector from './VcsStrokeSelector.vue';
-  import MenuWrapper from './MenuWrapper.vue';
+  import StyleMenuWrapper from './StyleMenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
 
   /**
@@ -40,7 +40,7 @@
     components: {
       VSheet,
       VcsStrokeSelector,
-      MenuWrapper,
+      StyleMenuWrapper,
     },
     props: {
       modelValue: {

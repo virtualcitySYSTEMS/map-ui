@@ -1,5 +1,5 @@
 <template>
-  <MenuWrapper
+  <StyleMenuWrapper
     class="vcs-fill-menu"
     :value-fallback="{ color: [255, 255, 255, 1] }"
     name="components.style.fill"
@@ -11,7 +11,7 @@
     <template #content>
       <VcsFillSelector v-bind="{ ...$attrs, ...$props }" />
     </template>
-  </MenuWrapper>
+  </StyleMenuWrapper>
 </template>
 
 <script>
@@ -19,7 +19,7 @@
   import { VSheet } from 'vuetify/components';
   import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsFillSelector from './VcsFillSelector.vue';
-  import MenuWrapper from './MenuWrapper.vue';
+  import StyleMenuWrapper from './StyleMenuWrapper.vue';
   import { useColorObject, rgbaObjectToString } from './composables.js';
 
   /**
@@ -33,7 +33,7 @@
     components: {
       VSheet,
       VcsFillSelector,
-      MenuWrapper,
+      StyleMenuWrapper,
     },
     props: {
       modelValue: {

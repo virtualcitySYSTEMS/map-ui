@@ -1,5 +1,5 @@
 <template>
-  <MenuWrapper
+  <StyleMenuWrapper
     class="vcs-image-menu"
     :value-fallback="{
       radius: 10,
@@ -21,13 +21,13 @@
         class="pb-2"
       />
     </template>
-  </MenuWrapper>
+  </StyleMenuWrapper>
 </template>
 
 <script>
   import { onMounted, ref, watch } from 'vue';
   import { useProxiedAtomicModel } from '../modelHelper.js';
-  import MenuWrapper from './MenuWrapper.vue';
+  import StyleMenuWrapper from './StyleMenuWrapper.vue';
   import VcsImageSelector, { drawImageStyle } from './VcsImageSelector.vue';
 
   /**
@@ -37,7 +37,7 @@
   export default {
     name: 'VcsImageMenu',
     components: {
-      MenuWrapper,
+      StyleMenuWrapper,
       VcsImageSelector,
     },
     props: {

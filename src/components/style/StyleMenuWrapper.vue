@@ -5,6 +5,7 @@
         :model-value="!!modelValue"
         @update:modelValue="handleCheckbox"
         :disabled="disabled"
+        class="pr-1"
       />
       <v-menu
         :close-on-content-click="false"
@@ -73,7 +74,7 @@
    * @vue-prop {boolean} [disabled=false] - Disable the input
    */
   export default {
-    name: 'MenuWrapper',
+    name: 'StyleMenuWrapper',
     components: {
       VSheet,
       VMenu,

@@ -1,5 +1,5 @@
 <template>
-  <MenuWrapper
+  <StyleMenuWrapper
     class="vcs-text-menu"
     :value-fallback="fallbackStyle"
     name="components.style.text"
@@ -13,14 +13,14 @@
     <template #content>
       <VcsTextSelector v-bind="{ ...$attrs, ...$props }" />
     </template>
-  </MenuWrapper>
+  </StyleMenuWrapper>
 </template>
 
 <script>
   import { computed } from 'vue';
   import { useProxiedAtomicModel } from '../modelHelper.js';
   import VcsTextSelector from './VcsTextSelector.vue';
-  import MenuWrapper from './MenuWrapper.vue';
+  import StyleMenuWrapper from './StyleMenuWrapper.vue';
   import { rgbaObjectToString, useColorObject } from './composables.js';
 
   export const fallbackStyle = {
@@ -38,7 +38,7 @@
   export default {
     name: 'VcsTextMenu',
     components: {
-      MenuWrapper,
+      StyleMenuWrapper,
       VcsTextSelector,
     },
     props: {
