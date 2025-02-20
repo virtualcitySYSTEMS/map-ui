@@ -1,7 +1,7 @@
 <template>
   <v-toolbar
     absolute
-    :density="density"
+    density="comfortable"
     elevation="0"
     class="px-4 vcs-navbar-mobile"
     :height="toolbarHeight"
@@ -76,7 +76,7 @@
 </style>
 
 <script>
-  import { inject, computed, onUnmounted, shallowRef } from 'vue';
+  import { computed, inject, onUnmounted, shallowRef } from 'vue';
   import {
     VCol,
     VContainer,
@@ -100,8 +100,6 @@
   import { WindowSlot } from '../manager/window/windowManager.js';
   import MapsGroupMobileMenu from './MapsGroupMobileMenu.vue';
   import { toolboxComponentId } from '../manager/toolbox/ToolboxManagerComponent.vue';
-  import { defaultContentTreeComponentId } from '../contentTree/contentTreeCollection.js';
-  import { legendComponentId } from './VcsApp.vue';
 
   export const mobileMenuListId = 'mobileMenuList';
 
@@ -148,10 +146,6 @@
         destroySearchAction();
       });
 
-      const density = computed(() => {
-        return 'comfortable';
-      });
-
       const fontSize = useFontSize();
       const toolbarHeight = computed(() => {
         return fontSize.value * 3 + 1;
@@ -178,16 +172,9 @@
         vcsAppSymbol,
       );
 
-      // only show the ContentTree and Legend actions, rest handled in VcsMobileMenuList
+      // only show the first two actions, rest handled in VcsMobileMenuList
       const contentActions = computed(() => {
-        return getActions(ButtonLocation.CONTENT).value.filter(
-          (action) =>
-            action.name ===
-              app.navbarManager.get(defaultContentTreeComponentId).action
-                .name ||
-            action.name ===
-              app.navbarManager.get(legendComponentId).action.name,
-        );
+        return getActions(ButtonLocation.CONTENT)?.value?.slice(0, 2);
       });
 
       const toolboxToggleAction = shallowRef(
@@ -210,7 +197,6 @@
         contentActions,
         toolboxToggleAction,
         searchAction,
-        density,
         toolbarHeight,
       };
     },

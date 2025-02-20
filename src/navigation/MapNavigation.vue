@@ -57,7 +57,7 @@
         :disabled="movementApiCallsDisabled"
       />
     </v-row>
-    <template v-if="smAndUp && !mobileLandscape">
+    <template v-if="!mobileLandscape">
       <v-row justify="center">
         <OrientationToolsButton
           v-if="showOverviewButton"

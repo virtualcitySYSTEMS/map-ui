@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, inject } from 'vue';
+  import { inject } from 'vue';
   import { VDivider, VList, VListItem } from 'vuetify/components';
   import {
     ButtonLocation,
@@ -9,56 +9,48 @@
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
   import { getDataProtection, getImprint } from './uiConfigHelper.js';
   import { toolboxComponentId } from '../manager/toolbox/ToolboxManagerComponent.vue';
-  import { defaultContentTreeComponentId } from '../contentTree/contentTreeCollection.js';
-  import { legendComponentId } from './VcsApp.vue';
 
   const app = inject('vcsApp');
 
-  const mobileButtonComponents = computed(() =>
-    app.navbarManager.componentIds
-      .map((id) => app.navbarManager.get(id))
-      .filter((buttonComponent) => {
-        return buttonComponent[deviceSymbol].mobile;
-      }),
-  );
-
-  const getActions = (location) =>
-    computed(() =>
-      getActionsByLocation(
-        mobileButtonComponents.value,
-        location,
-        [...app.plugins].map((p) => p.name),
-      ),
-    );
+  const mobileButtonComponents = app.navbarManager.componentIds
+    .map((id) => app.navbarManager.get(id))
+    .filter((buttonComponent) => {
+      return buttonComponent[deviceSymbol].mobile;
+    });
 
   // Actions from the content overflow are put in Menu
-  const defaultContentTreeComponentIdAction = app.navbarManager.get(
-    defaultContentTreeComponentId,
-  ).action;
-  const legendComponentIdAction =
-    app.navbarManager.get(legendComponentId).action;
-  const contentOverflowActions = computed(() => {
-    return getActions(ButtonLocation.CONTENT).value.filter(
-      (action) =>
-        action.name !== defaultContentTreeComponentIdAction.name &&
-        action.name !== legendComponentIdAction.name,
-    );
-  });
+  const contentOverflowActions = getActionsByLocation(
+    mobileButtonComponents,
+    ButtonLocation.CONTENT,
+    [...app.plugins].map((p) => p.name),
+  )?.slice(2);
 
   const toolboxToggleAction = app.navbarManager.get(toolboxComponentId).action;
 
-  const toolboxOverflowActions = computed(() =>
-    getActions(ButtonLocation.TOOL).value.filter(
-      (action) => action.name !== toolboxToggleAction.name,
-    ),
-  );
+  const toolboxOverflowActions = getActionsByLocation(
+    mobileButtonComponents,
+    ButtonLocation.TOOL,
+    [...app.plugins].map((p) => p.name),
+  )?.filter((action) => action.name !== toolboxToggleAction.name);
 
   const mobileMenuActions = [
-    ...getActions(ButtonLocation.MENU).value,
-    ...getActions(ButtonLocation.SHARE).value,
-    ...getActions(ButtonLocation.PROJECT).value,
-    ...toolboxOverflowActions.value,
-    ...contentOverflowActions.value,
+    ...getActionsByLocation(
+      mobileButtonComponents,
+      ButtonLocation.MENU,
+      [...app.plugins].map((p) => p.name),
+    ),
+    ...getActionsByLocation(
+      mobileButtonComponents,
+      ButtonLocation.SHARE,
+      [...app.plugins].map((p) => p.name),
+    ),
+    ...getActionsByLocation(
+      mobileButtonComponents,
+      ButtonLocation.PROJECT,
+      [...app.plugins].map((p) => p.name),
+    ),
+    ...toolboxOverflowActions,
+    ...contentOverflowActions,
   ];
 
   const dataProtection = getDataProtection(app.uiConfig?.config);
