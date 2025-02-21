@@ -31,6 +31,7 @@
 - Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
 - Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
 - Fix modal alignment for `createModalAction`
+- Add a `callSafeAction` export to safely and sync call a VcsAction callback
 - Add a LocalStorage API
 - Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies

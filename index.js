@@ -3,6 +3,7 @@ import './src/styles/main.scss';
 
 export { default as StyleSelector } from './src/actions/StyleSelector.vue';
 export {
+  callSafeAction,
   createMapButtonAction,
   createToggleAction,
   createOverviewMapAction,

@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { check, maybe, oneOf, optional } from '@vcsuite/check';
+import { getLogger } from '@vcsuite/logger';
 import {
   Collection,
   Extent,
@@ -497,4 +498,25 @@ export function createZoomToFeatureAction(
       }
     },
   };
+}
+
+/**
+ * Calls the callback of an action and handles potential error.
+ * @param {VcsAction} action
+ * @param {PointerEvent} [p]
+ */
+export function callSafeAction(action, p) {
+  const logError = (e) =>
+    getLogger(action.name).error(
+      `Error while calling the ${action.title ?? action.name} callback:`,
+      e,
+    );
+  try {
+    const optPromise = action.callback(p);
+    if (optPromise instanceof Promise) {
+      optPromise.catch(logError);
+    }
+  } catch (e) {
+    logError(e);
+  }
 }

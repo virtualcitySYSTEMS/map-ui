@@ -65,12 +65,12 @@ class ContentTreeItem {
 
   /**
    * @param {ContentTreeItemOptions} options
-   * @param {import("@src/vcsUiApp.js").default} app
+   * @param {import("../vcsUiApp.js").default} app
    */
   constructor(options, app) {
     /**
      * @protected
-     * @type {import("@src/vcsUiApp.js").default}
+     * @type {import("../vcsUiApp.js").default}
      */
     this._app = app;
 
