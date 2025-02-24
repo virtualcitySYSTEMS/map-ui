@@ -50,7 +50,6 @@
         "type": "MVTTileProvider",
         "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
       },
-      "activeOnStartup": true,
       "debug": false,
       "renderer": "primitive",
       "exclusiveGroups": ["3D"],
@@ -65,6 +64,48 @@
         "tooltip": "OpenStreetMap Building Polygons",
         "availableStyles": ["Transparentbuildings"]
       }
+    },
+    {
+      "name": "berlinStreetsTiled",
+      "type": "VectorTileLayer",
+      "style": "streetStyle",
+      "minLevel": 10,
+      "zIndex": 11,
+      "tileProvider": {
+        "type": "FlatGeobufTileProvider",
+        "projection": {
+          "epsg": 4326
+        },
+        "levels": [
+          {
+            "level": 10,
+            "url": "exampleData/flatGeobuf/berlin-classified-level-0.fgb"
+          },
+          {
+            "level": 12,
+            "url": "exampleData/flatGeobuf/berlin-classified-level-1.fgb"
+          },
+          {
+            "level": 14,
+            "url": "exampleData/flatGeobuf/berlin-classified-level-2.fgb"
+          },
+          {
+            "level": 16,
+            "url": "exampleData/flatGeobuf/berlin-classified-level-3.fgb"
+          }
+        ]
+      },
+      "exclusiveGroups": ["streets"],
+      "properties": {
+        "title": "Berlin Streets (tiled)"
+      }
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "flatGeobufLayers",
+      "type": "LayerContentTreeItem",
+      "layerName": "berlinStreetsTiled"
     }
   ]
 }

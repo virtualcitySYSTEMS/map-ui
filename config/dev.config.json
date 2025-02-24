@@ -101,6 +101,26 @@
       }
     }
   ],
+  "styles": [
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "streetStyle",
+      "declarativeStyle": {
+        "show": "true",
+        "color": "color('#784176')",
+        "strokeWidth": {
+          "conditions": [
+            ["${strassenkl} === '0'", "18"],
+            ["${strassenkl} === 'I'", "12"],
+            ["${strassenkl} === 'II'", "9"],
+            ["${strassenkl} === 'III'", "6"],
+            ["${strassenkl} === 'IV'", "2"],
+            ["true", "2"]
+          ]
+        }
+      }
+    }
+  ],
   "layers": [
     {
       "name": "testGeojsonVectorTile",
@@ -550,6 +570,20 @@
           }
         ]
       }
+    },
+    {
+      "name": "FlatGeobufLayer",
+      "type": "FlatGeobufLayer",
+      "style": "streetStyle",
+      "url": "exampleData/flatGeobuf/berlin-classified-level-2.fgb",
+      "zIndex": 11,
+      "exclusiveGroups": ["streets"],
+      "projection": {
+        "epsg": 4326
+      },
+      "properties": {
+        "title": "Berlin Streets Class 0-II"
+      }
     }
   ],
   "flights": [
@@ -714,6 +748,11 @@
       "name": "wmsLayerLaerm",
       "layerName": "wmsLayerLaerm",
       "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "FlatGeobufLayers",
+      "type": "LayerContentTreeItem",
+      "layerName": "FlatGeobufLayer"
     },
     {
       "name": "building.myTest",

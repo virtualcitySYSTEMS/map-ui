@@ -35,7 +35,8 @@
         "config/hello-world.config.json",
         "config/theming.config.json",
         "config/clipping.config.json",
-        "config/cluster.config.json"
+        "config/cluster.config.json",
+        "config/vectorTile.config.json"
       ]
     }
   ]
