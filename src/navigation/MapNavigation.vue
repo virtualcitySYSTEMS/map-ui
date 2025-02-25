@@ -188,6 +188,8 @@
           options.keyEvents === true &&
           options.apiCalls === true &&
           options.pointerEvents === true;
+
+        stopRotation = null;
       });
     return {
       action,
