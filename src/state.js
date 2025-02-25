@@ -66,7 +66,8 @@ import {
 
 /**
  * The URL state of the app is an array. To null parameters, pass in 0 instead.
- * The first entry is the viewpoint state, the second the active map name
+ * The first entry is the viewpoint state or an extent state
+ * The second the active map name
  * The third is an array of modules to apply the state to
  * the fourth is an array of layer states
  * the fifth is an array of plugin states

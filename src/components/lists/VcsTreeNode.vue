@@ -1,5 +1,9 @@
 <template>
-  <div class="vcs-tree-node" v-if="matchFilter">
+  <div
+    class="vcs-tree-node"
+    v-if="matchFilter"
+    :data-tree-item-name="item.name"
+  >
     <v-row
       no-gutters
       class="treenode flex-nowrap text-truncate"

@@ -75,6 +75,9 @@ Additionally, it can be defined if the ToolboxComponent should be displayed on d
  */
 ```
 
+The `data-toolbox-id` attribute is used to identify the toolbox in the DOM. Actions within gorup or select components
+are identifiable with the `data-action-name` attribute.
+
 ### SingleToolboxComponent
 
 Renders one **single** toggle button.

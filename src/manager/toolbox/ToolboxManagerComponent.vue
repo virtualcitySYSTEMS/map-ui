@@ -16,7 +16,9 @@
       <div
         class="d-flex align-center justify-space-between w-100"
         v-for="group in orderedGroups"
+        :data-toobox-id="group.id"
         :key="group.id"
+        :data-toolbox-id="id"
       >
         <ToolboxActionGroup
           v-if="group.type === ToolboxType.GROUP"

@@ -85,6 +85,7 @@
                       v-bind="props"
                       tooltip="navbar.share.tooltip"
                       icon="$vcsShare"
+                      id="vcs-navbar-share-menu-activator"
                     />
                   </template>
                   <VcsActionList
@@ -96,6 +97,7 @@
                 <VcsToolButton
                   class="d-flex"
                   v-if="searchAction"
+                  :data-action-name="searchAction.name"
                   :key="searchAction.name"
                   :tooltip="searchAction.title"
                   :icon="searchAction.icon"
@@ -108,6 +110,7 @@
                     <VcsToolButton
                       v-bind="props"
                       tooltip="navbar.menu.tooltip"
+                      id="vcs-navbar-burger-menu-activator"
                       icon="$vcsMenu"
                     />
                   </template>

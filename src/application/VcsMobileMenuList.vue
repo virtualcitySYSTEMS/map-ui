@@ -62,6 +62,7 @@
     <div v-for="action in mobileMenuActions" :key="action.name">
       <v-list-item
         @click="action.callback()"
+        :data-action-name="action.name"
         :title="$t(action.name)"
         :prepend-icon="action.icon"
       >

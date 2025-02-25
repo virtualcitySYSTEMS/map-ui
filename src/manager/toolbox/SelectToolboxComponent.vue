@@ -6,6 +6,7 @@
   >
     <VcsToolButton
       :key="group.action.tools[group.action.currentIndex].name"
+      :data-action-name="group.action.tools[group.action.currentIndex].name"
       :tooltip="group.action.tools[group.action.currentIndex].title"
       :icon="group.action.tools[group.action.currentIndex].icon"
       :active="group.action.active"
@@ -55,6 +56,7 @@
           <div class="d-flex align-center justify-space-between gc-1 w-100">
             <VcsToolButton
               v-for="(item, index) in group.action.tools"
+              :data-action-name="item.name"
               :key="`${item.name}-${index}`"
               :tooltip="item.title"
               :icon="item.icon"

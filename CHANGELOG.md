@@ -62,6 +62,7 @@
   `app.vuei18n.t` for translation of and `{{#t}}` directives in the template and re-renders on locale change.
 - Mobile View is added to the Map. ToolboxComponents and Buttons provide now an API to define if they should be shown in the mobile view.
 - Adds a "Whats Here" API which drill picks the given location.
+- Introduces `data-` attributes to identify actions, toolbox entries, windows, panels, list & content tree items in the DOM.
 
 ### Breaking Changes
 

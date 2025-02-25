@@ -10,6 +10,7 @@
         class="d-flex"
         v-for="(btn, index) in buttons"
         :key="`${btn.name}-${index}`"
+        :data-action-name="btn.name"
         :tooltip="btn.title"
         :tooltip-position="tooltipPosition"
         :icon="btn.icon"

@@ -38,6 +38,7 @@ const action = {
 
 ```vue
 <VcsButton
+  :data-action-name="action.name"
   :id="action.name"
   :tooltip="action.title"
   :icon="action.icon"
@@ -49,6 +50,8 @@ const action = {
 
 VcsAction can be validated using [validateAction()](../src/components/lists/VcsActionList.vue).
 There is a set of helper functions providing standard user interactions. See [actionHelper.js](../src/actions/actionHelper.js) for more information.
+Action should be discoverable via the `data-action-name` HTML attribute. This is applied
+to buttons automatically when using a VcsActionList to render an action.
 
 ## Toggle Action
 

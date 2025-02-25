@@ -156,6 +156,7 @@
     >
       <vcs-expansion-panel
         v-for="(group, i) in groups"
+        :data-group-name="group.name"
         :key="i"
         :value="group.name"
         :disabled="group.disabled"

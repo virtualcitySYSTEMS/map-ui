@@ -15,6 +15,7 @@
     </div>
     <VcsButton
       class="flex-shrink-0"
+      :data-action-name="attributionAction.name"
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
       :icon="attributionAction.icon"

@@ -4,6 +4,7 @@
     :class="{ active: positionDisplayAction.active }"
   >
     <VcsButton
+      :data-action-name="positionDisplayAction.name"
       :tooltip="positionDisplayAction.title"
       :icon="positionDisplayAction.icon"
       @click.stop="positionDisplayAction.callback($event)"

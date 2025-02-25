@@ -19,9 +19,9 @@ https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039
 
 This is how the URL looks schematically:
 
-https://dev.virtualcitymap.de/?state=[[[longitude,latitude,altitude],[longitude,latitude,altitude],distance,heading,pitch,roll],"map_type",["layers"],[],[plugins],other_parameters]
+https://dev.virtualcitymap.de/?state=[[[longitude,latitude,altitude],[longitude,latitude,altitude],distance,heading,pitch,roll],"map_type",[modules],[layers],[plugins],other_parameters]
 
-If on of the names contains empty spaces they are connected via `+`.
+If one of the names contains empty spaces they are connected via `+`.
 
 ## Viewpoint Parameters
 
@@ -103,18 +103,12 @@ Here is a partial Example of a URL with an Extent:
 
 http://dev.virtualcitymap.de/?state=[[[690340.49,5322140.33,692561.84,5334842.39],25832],0,["VC+Map+Demo"]]
 
-## Starting Map Parameter
+## Starting Map Name
 
-This parameter decides which type of map appears when the scene loads. Maps can be shown in 3D, 2D, or as oblique aerial views (which are angled pictures taken from a plane or drone).
+You can provide the starting map name in the URL. This is the _name_ of the map
+that is loaded when the URL is used to open the application. The name is given as a string.
 
-- Example: `CesiumMap`  
-  (The scene starts with a 3D map.)
-
-- Example: `OpenlayersMap`  
-  (The scene starts with a 2D map.)
-
-- Example: `ObliqueMap`  
-  (The scene starts with angled aerial images.)
+- Example: `"my_map_name"`
 
 ## Module Parameter
 

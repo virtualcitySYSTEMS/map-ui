@@ -35,6 +35,7 @@
           <div class="d-flex align-center justify-space-between gc-1 w-100">
             <VcsToolButton
               v-for="{ id, action } in orderedButtons"
+              :data-action-name="action.name"
               :key="id"
               :tooltip="action.title"
               :icon="action.icon"

@@ -2,6 +2,7 @@
   <v-list v-if="actions.length > 0" rounded class="vcs-action-list">
     <v-list-item
       v-for="(action, index) in actions"
+      :data-action-name="action.name"
       :key="`${action.name}-${index}`"
       :class="action.active ? 'text-primary' : ''"
       :disabled="action.disabled || disabled"

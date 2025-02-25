@@ -170,6 +170,7 @@ Each [ContentTreeItem](../src/contentTree/contentTreeItem.js) in the [ContentTre
 Items must have a name, a state and a title.
 Items can be displayed as visible or not, clickable or not and disabled or not.
 It may have a tooltip, an icon, actions and children.
+The `data-tree-item-name` attribute is used to identify the item in the DOM.
 
 ### Actions
 

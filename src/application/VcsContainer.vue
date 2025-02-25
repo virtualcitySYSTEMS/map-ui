@@ -22,6 +22,7 @@
     </template>
     <VcsButton
       v-if="!smAndUp"
+      :data-action-name="attributionAction.name"
       :key="attributionAction.name"
       :tooltip="attributionAction.title"
       icon="mdi-copyright"

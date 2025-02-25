@@ -14,6 +14,7 @@
               <VcsToolButton
                 v-if="mobileMenuAction"
                 :key="mobileMenuAction.name"
+                :data-action-name="mobileMenuAction.name"
                 :tooltip="mobileMenuAction.title"
                 :icon="mobileMenuAction.icon"
                 :active="mobileMenuAction.active"
@@ -22,6 +23,7 @@
               />
               <VcsToolButton
                 v-if="searchAction"
+                :data-action-name="searchAction.name"
                 :key="searchAction.name"
                 :tooltip="searchAction.title"
                 :icon="searchAction.icon"

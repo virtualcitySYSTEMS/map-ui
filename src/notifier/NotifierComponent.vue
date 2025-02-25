@@ -3,6 +3,7 @@
     <v-snackbar
       v-for="notification in notifications"
       :key="notification.id"
+      :data-notification-id="notification.id"
       v-model="notification.open"
       :timeout="notification.timeout"
       class="vcs-notifier"

@@ -93,6 +93,7 @@
     :disabled="item.disabled"
     v-bind="$attrs"
     class="vcs-list-item-component"
+    :data-list-item-name="item.name"
   >
     <template #prepend="scope">
       <slot name="prepend" v-bind="scope">
