@@ -333,6 +333,10 @@ const messages = {
       collapse: 'Collapse information list',
       empty: 'No information available',
     },
+    deepPicking: {
+      title: "What's here?",
+      headerTitle: 'Available information',
+    },
   },
   legend: {
     title: 'Legend',

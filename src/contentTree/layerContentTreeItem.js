@@ -35,7 +35,7 @@ export function setViewpointAction(item, app, viewpoint) {
     const action = createGoToViewpointAction(
       {
         name,
-        icon: 'mdi-crosshairs-gps',
+        icon: 'mdi-target',
       },
       viewpoint,
       app.viewpoints,

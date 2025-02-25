@@ -13,6 +13,10 @@ export {
   createZoomToFeatureAction,
   searchComponentId,
 } from './src/actions/actionHelper.js';
+export {
+  createDeepPickingAction,
+  deepPickingWindowId,
+} from './src/actions/deepPickingAction.js';
 export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.js';
 export { renderTemplate } from '@vcmap/core';
 export {
@@ -265,7 +269,10 @@ export {
   default as Notifier,
   NotificationType,
 } from './src/notifier/notifier.js';
-export { default as Icons } from './src/components/icons/+all.js';
+export {
+  default as Icons,
+  getColoredMapIcon,
+} from './src/components/icons/+all.js';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
 export { default as VcsToolButton } from './src/components/buttons/VcsToolButton.vue';

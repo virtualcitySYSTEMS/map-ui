@@ -54,6 +54,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {string} [appTitle] - an optional title to display next to the company logo
  * @property {string} [primaryColor] - an optional primary color to use in all themes, can be overwritten by `vuetifyTheme`
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)
+ * @property {boolean} [enableDeepPicking] - an optional flag whether to enable deep picking via right click context menu (default active)
  * @property {string} [positionDisplayEventType] - mouse event, when position display is updated. Either 'click' (default) or 'move'.
  * @property {string} [obliqueFooterTemplate] - A template for rendering information of the current image in oblique mode, e.g. '{{ name }}' printing the image's name
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page

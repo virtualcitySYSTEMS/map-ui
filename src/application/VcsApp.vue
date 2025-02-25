@@ -79,6 +79,7 @@
     createMapButtonAction,
     createToggleAction,
   } from '../actions/actionHelper.js';
+  import { setupDeepPicking } from '../actions/deepPickingAction.js';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
@@ -814,6 +815,7 @@
       const destroyDisplayQualityListener = setupUiConfigDisplayQuality(app);
       const { attributionEntries, attributionAction, destroyAttributions } =
         setupAttributions(app);
+      const destroyDeepPicking = setupDeepPicking(app);
 
       let pluginMountedListener;
       onMounted(() => {
@@ -853,6 +855,7 @@
         destroyThemingListener();
         destroyDisplayQualityListener();
         destroyAttributions();
+        destroyDeepPicking();
       });
 
       const { smAndUp, xs } = useDisplay();

@@ -3,25 +3,6 @@
   "_id": "dev",
   "description": "module containing dev configs and examples",
   "startingViewpointName": "potsdamer_platz",
-  "i18n": [
-    {
-      "name": "dev",
-      "de": {
-        "layers": {
-          "wmsLayerLaerm": {
-            "title": "WMS Lärm Bayern"
-          }
-        }
-      },
-      "en": {
-        "layers": {
-          "wmsLayerLaerm": {
-            "title": "WMS Noise Bavaria"
-          }
-        }
-      }
-    }
-  ],
   "featureInfo": [
     {
       "type": "BalloonFeatureInfoView",
@@ -48,18 +29,6 @@
         "olcs_storeyNumber": "Storey Number",
         "olcs_storeyHeight": "Storey Height",
         "olcs_altitudeMode": "Altitude Mode"
-      }
-    },
-    {
-      "type": "BalloonFeatureInfoView",
-      "name": "genericBalloonLaerm",
-      "title": "Lärmkarte Bayern",
-      "subtitle": "WMS Feature Info",
-      "window": {
-        "position": {
-          "width": "200px",
-          "maxHeight": "100px"
-        }
       }
     },
     {
@@ -413,6 +382,55 @@
       }
     },
     {
+      "name": "geojsonClassification",
+      "type": "GeoJSONLayer",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Polygon Bundestag"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.377401890755296, 52.51939811240837, 31.981617368890852],
+                [13.375217214695466, 52.51942601210445, 34.79993872986513],
+                [13.375163996940483, 52.51788301808247, 34.527692201263896],
+                [13.37734866165336, 52.51785511755142, 34.49136397983607],
+                [13.377401890755296, 52.51939811240837, 31.981617368890852]
+              ]
+            ]
+          },
+          "id": "d5925529-505a-43bf-adb6-64a4dd043533",
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [51, 153, 204, 1],
+                "width": 1.25
+              },
+              "fill": {
+                "color": [243, 2, 2, 0.84375]
+              }
+            }
+          }
+        }
+      ],
+      "projection": {
+        "epsg": 4326
+      },
+      "activeOnStartup": false,
+      "vectorProperties": {
+        "altitudeMode": "clampToGround",
+        "classificationType": "both"
+      },
+      "properties": {
+        "title": "GeoJSON Classification",
+        "featureInfo": "genericBalloon"
+      }
+    },
+    {
       "type": "CzmlLayer",
       "name": "czmlPoint",
       "activeOnStartup": false,
@@ -454,26 +472,16 @@
       }
     },
     {
-      "name": "wmsLayerLaerm",
+      "name": "wmsStadtstruktur",
       "type": "WMSLayer",
-      "url": "https://www.lfu.bayern.de/gdi/wms/laerm/hauptverkehrsstrassen",
-      "datasourceId": "P7xfmLJ5zkFmT7hNQ",
+      "url": "https://gdi.berlin.de/services/wms/ua_stadtstruktur_2020",
       "activeOnStartup": false,
       "version": "1.3.0",
-      "layers": "mroadbylden2022,lsemroadby2022",
+      "layers": "ua_stadtstruktur_2020",
       "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "extent": {
-        "coordinates": [8.7992, 47.156072, 14.055682, 50.670961],
-        "projection": {
-          "epsg": "4326"
-        }
-      },
       "featureInfo": {
         "showFeature": true,
-        "responseType": "application/geojson",
-        "vectorProperties": {
-          "extrudedHeight": 20
-        },
+        "responseType": "application/json",
         "style": {
           "type": "VectorStyleItem",
           "stroke": {
@@ -485,12 +493,12 @@
       "tilingSchema": "geographic",
       "zIndex": 12,
       "properties": {
-        "title": "layers.wmsLayerLaerm.title",
-        "featureInfo": "genericBalloonLaerm",
+        "title": "WMS Stadtstruktur Berlin",
+        "featureInfo": "tableAll",
         "legend": [
           {
             "type": "ImageLegendItem",
-            "src": "https://www.lfu.bayern.de/gdi/wms/laerm/hauptverkehrsstrassen?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=mroadbylden"
+            "src": "https://gdi.berlin.de/services/wms/ua_stadtstruktur_2020?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=500&height=875&layer=ua_stadtstruktur_2020"
           }
         ]
       }
@@ -713,6 +721,11 @@
       "tooltip": "This is a flight. Its flight 2, actually."
     },
     {
+      "name": "geojsonClassification",
+      "layerName": "geojsonClassification",
+      "type": "LayerContentTreeItem"
+    },
+    {
       "name": "geojson",
       "layerName": "testGeojson",
       "type": "LayerContentTreeItem"
@@ -745,8 +758,8 @@
       "type": "LayerContentTreeItem"
     },
     {
-      "name": "wmsLayerLaerm",
-      "layerName": "wmsLayerLaerm",
+      "name": "wmsStadtstruktur",
+      "layerName": "wmsStadtstruktur",
       "type": "LayerContentTreeItem"
     },
     {

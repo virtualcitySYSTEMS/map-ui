@@ -151,39 +151,6 @@ describe('FeatureInfo', () => {
       await app.removeModule('remove');
       expect(app.featureInfo.selectedFeature).to.be.null;
     });
-
-    it('should update the cluster props, if a clustered layer gets deactivated', async () => {
-      const layer1 = new VectorLayer({});
-      await layer1.activate();
-      app.layers.add(layer1);
-
-      const { clusterGroup, clusterFeature } = setupTestClusterFeatureAndGroup(
-        app,
-        layer1,
-      );
-      clusterGroup.addLayer(layer);
-      clusterFeature.get('features').push(feature);
-      await app.featureInfo.selectClusterFeature(clusterFeature);
-      const clusterWindow = app.windowManager.get(
-        app.featureInfo.clusterWindowId,
-      );
-      expect(clusterWindow.props.items).to.have.length(3);
-      layer1.deactivate();
-      expect(clusterWindow.props.items).to.have.length(1);
-    });
-
-    it('should close the cluster window, if all layers have been deactivated', async () => {
-      const { clusterFeature } = setupTestClusterFeatureAndGroup(app, layer);
-      await layer.activate();
-      await app.featureInfo.selectClusterFeature(clusterFeature);
-      const clusterWindow = app.windowManager.get(
-        app.featureInfo.clusterWindowId,
-      );
-      expect(clusterWindow.props.items).to.have.length(2);
-      layer.deactivate();
-      expect(app.windowManager.has(app.featureInfo.clusterWindowId)).to.be
-        .false;
-    });
   });
 
   describe('selecting of a feature', () => {

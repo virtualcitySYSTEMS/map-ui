@@ -44,6 +44,7 @@ import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
 import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
 import ClusterFeatureComponent from './ClusterFeatureComponent.vue';
+import { createZoomToFeatureAction } from '../actions/actionHelper.js';
 
 /** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
@@ -150,6 +151,89 @@ export function getClusterHighlightStyle(
 
   const fillColor = Color.fromCssColorString(defaultFillColor).withAlpha(0.8);
   return getHighlightStyleFromStyle(clusterStyle, fillColor);
+}
+
+/**
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("ol").Feature} feature
+ * @returns {import("./abstractFeatureInfoView.js").default|null}
+ */
+export function getFeatureInfoViewForFeature(app, feature) {
+  if (feature[featureInfoViewSymbol]) {
+    return feature[featureInfoViewSymbol];
+  }
+  const layer = app.layers.getByKey(feature[vcsLayerName]);
+  const name = layer?.properties?.featureInfo;
+  if (!name) {
+    getLogger().debug(
+      `No view has been configured for layer '${layer?.name}'.`,
+    );
+    return null;
+  }
+  if (!app.featureInfo.hasKey(name)) {
+    getLogger().warning(`No view with name '${name}' has been registered.`);
+    return null;
+  }
+  return app.featureInfo.getByKey(name);
+}
+
+/**
+ * Returns a VcsGroupedListItem for each provided feature and corresponding groups
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("@vcmap/core").EventFeature[]} features
+ * @param {import("ol/coordinate.js").Coordinate?} position
+ * @returns {{
+ *   groups: import("../components/lists/VcsGroupedList.vue").VcsListGroup,
+ *   items: import("../components/lists/VcsGroupedList.vue").VcsGroupedListItem,
+ * }}
+ */
+export function getGroupedFeatureList(app, features, position = undefined) {
+  const groups = {};
+  const items = features.map((f) => {
+    const oFeature = f[originalFeatureSymbol] ?? f;
+    let actions;
+    if (oFeature instanceof Feature) {
+      actions = [
+        createZoomToFeatureAction(
+          { name: 'zoomToFeature', icon: 'mdi-target' },
+          oFeature,
+          app.maps,
+        ),
+      ];
+    }
+    /** @type {import("../components/lists/VcsListItemComponent.vue").VcsListItem} */
+    const listItem = reactive({
+      name: oFeature.getId(),
+      title:
+        oFeature.getAttributes()?.title ||
+        oFeature.getAttributes()?.name ||
+        oFeature.getId(),
+      disabled: !getFeatureInfoViewForFeature(app, oFeature),
+      selectionChanged: (value) => {
+        if (value) {
+          app.featureInfo
+            .selectFeature(oFeature, position)
+            .catch((e) => getLogger().error(e));
+        } else {
+          app.featureInfo.clearFeature();
+        }
+      },
+      actions,
+    });
+    const layerName = oFeature[vcsLayerName];
+    if (layerName) {
+      if (!groups[layerName]) {
+        const title = app.layers.getByKey(layerName)?.properties?.title;
+        groups[layerName] = {
+          name: layerName,
+          title: title || layerName,
+        };
+      }
+      listItem.group = layerName;
+    }
+    return listItem;
+  });
+  return { groups: Object.values(groups), items };
 }
 
 /**
@@ -317,7 +401,7 @@ class FeatureInfo extends Collection {
      */
     this._clusterWindowId = null;
     /**
-     * @type {VcsEvent<FeatureType|null>}
+     * @type {import("@vcmap/core").VcsEvent<FeatureType|null>}
      * @private
      */
     this._featureChanged = new VcsEvent();
@@ -371,24 +455,6 @@ class FeatureInfo extends Collection {
         ) {
           this._app.windowManager.remove(this._windowId);
         }
-
-        if (
-          this._clusterWindowId &&
-          this._app.windowManager.has(this._clusterWindowId)
-        ) {
-          const { props } = this._app.windowManager.get(this._clusterWindowId);
-          if (props.items.some((item) => item.group === layer.name)) {
-            props.items = props.items.filter(
-              (item) => item.group !== layer.name,
-            );
-            props.groups = props.groups.filter(
-              (group) => group.name !== layer.name,
-            );
-            if (props.items.length === 0) {
-              this._app.windowManager.remove(this._clusterWindowId);
-            }
-          }
-        }
       }),
       this._app.windowManager.removed.addEventListener(({ id }) => {
         if (id === this._windowId) {
@@ -407,7 +473,7 @@ class FeatureInfo extends Collection {
     ];
     /**
      * A vector layer to render provided features on
-     * @type {VectorLayer|null}
+     * @type {import("@vcmap/core").VectorLayer|null}
      * @private
      */
     this._scratchLayer = null;
@@ -421,7 +487,7 @@ class FeatureInfo extends Collection {
   /**
    * Emitted whenever a feature is selected or cleared.
    * Does not reflect cluster feature changes!
-   * @type {VcsEvent<null|FeatureType>}
+   * @type {import("@vcmap/core").VcsEvent<null|FeatureType>}
    */
   get featureChanged() {
     return this._featureChanged;
@@ -443,7 +509,7 @@ class FeatureInfo extends Collection {
 
   /**
    * Emitted whenever a cluster feature is selected or cleared.
-   * @type {VcsEvent<null|import("ol").Feature>}
+   * @type {import("@vcmap/core").VcsEvent<null|import("ol").Feature>}
    */
   get clusterFeatureChanged() {
     return this._clusterFeatureChanged;
@@ -496,23 +562,11 @@ class FeatureInfo extends Collection {
 
   /**
    * @param {FeatureType} feature
-   * @returns {null|AbstractFeatureInfoView}
+   * @returns {null|import("./abstractFeatureInfoView.js").default}
    * @private
    */
   _getFeatureInfoViewForFeature(feature) {
-    const layer = this._app.layers.getByKey(feature[vcsLayerName]);
-    const name = layer?.properties?.featureInfo;
-    if (!name) {
-      getLogger().debug(
-        `No view has been configured for layer '${layer?.name}'.`,
-      );
-      return null;
-    }
-    if (!this.hasKey(name)) {
-      getLogger().warning(`No view with name '${name}' has been registered.`);
-      return null;
-    }
-    return /** @type {AbstractFeatureInfoView} */ this.getByKey(name);
+    return getFeatureInfoViewForFeature(this._app, feature);
   }
 
   /**
@@ -525,7 +579,7 @@ class FeatureInfo extends Collection {
    * @param {FeatureType} feature
    * @param {import("ol/coordinate.js").Coordinate=} [position] - optional clicked position. If not given feature's center point is used to place balloons
    * @param {import("ol/coordinate.js").Coordinate=} [windowPosition] - optional clicked window position. If not given derived from position for balloons
-   * @param {AbstractFeatureInfoView=} featureInfoView
+   * @param {import("./abstractFeatureInfoView.js").default=} featureInfoView
    * @returns {Promise<void>}
    */
   async selectFeature(feature, position, windowPosition, featureInfoView) {
@@ -559,6 +613,7 @@ class FeatureInfo extends Collection {
         // we need to clone the feature to avoid changing vcsLayerNameSymbol on the original feature
         const clonedFeature = feature.clone();
         clonedFeature.setId(feature.getId());
+        clonedFeature.set('olcs_allowPicking', true);
         this._scratchLayer.addFeatures([clonedFeature]);
         const featureId = clonedFeature.getId(); // make sure to grab ID after adding it to the layer
         this._scratchLayer.featureVisibility.highlight({
@@ -573,17 +628,17 @@ class FeatureInfo extends Collection {
           this._scratchLayer.featureVisibility.unHighlight([featureId]);
       } else if (layer.vectorClusterGroup) {
         this._ensureScratchLayer();
-        const clone = feature.clone();
+        const clonedFeature = feature.clone();
         const featureId = feature.getId();
         this._scratchLayer.vectorProperties.setValuesForFeatures(
-          layer.vectorProperties.getValuesForFeatures([clone]),
-          [clone],
+          layer.vectorProperties.getValuesForFeatures([clonedFeature]),
+          [clonedFeature],
         );
-        const eyeOffset = clone.get('olcs_eyeOffset') ?? [0, 0, 0];
+        const eyeOffset = clonedFeature.get('olcs_eyeOffset') ?? [0, 0, 0];
         eyeOffset[2] -= 10;
-        clone.set('olcs_eyeOffset', eyeOffset);
-        clone.setId(featureId);
-        this._scratchLayer.addFeatures([clone]);
+        clonedFeature.set('olcs_eyeOffset', eyeOffset);
+        clonedFeature.setId(featureId);
+        this._scratchLayer.addFeatures([clonedFeature]);
         this._scratchLayer.featureVisibility.highlight({
           [featureId]: getHighlightStyle(
             feature,
@@ -593,7 +648,7 @@ class FeatureInfo extends Collection {
           ),
         });
         this._clearHighlightingCb = () =>
-          this._scratchLayer.featureVisibility.unHighlight([clone]);
+          this._scratchLayer.featureVisibility.unHighlight([clonedFeature]);
       } else if (layer.featureVisibility) {
         const featureId = feature.getId();
         layer.featureVisibility.highlight({
@@ -645,8 +700,8 @@ class FeatureInfo extends Collection {
     const id = `cluster-at-${clusterFeature.getGeometry().getCoordinates().join('-')}`;
 
     this._ensureScratchLayer();
-    const feature = clusterFeature.clone();
-    feature.setId(id);
+    const clonedFeature = clusterFeature.clone();
+    clonedFeature.setId(id);
 
     clusterFeature[hidden] = true;
     clusterFeature.changed();
@@ -660,8 +715,8 @@ class FeatureInfo extends Collection {
         clusterFeature[vectorClusterGroupName],
       );
       this._scratchLayer.vectorProperties.setValuesForFeatures(
-        clusterGroup.vectorProperties.getValuesForFeatures([feature]),
-        [feature],
+        clusterGroup.vectorProperties.getValuesForFeatures([clonedFeature]),
+        [clonedFeature],
       );
       const clusterStyle = clusterGroup.styleFunction(clusterFeature, 1);
       const highlightStyle = getClusterHighlightStyle(
@@ -670,50 +725,20 @@ class FeatureInfo extends Collection {
         clusterStyle,
         fillColor,
       );
-      feature.setStyle(highlightStyle);
+      clonedFeature.setStyle(highlightStyle);
     } else if (clusterFeature[isProvidedClusterFeature]) {
-      feature.setStyle(
+      clonedFeature.setStyle(
         fromCesiumColor(Color.fromCssColorString(fillColor)).style,
       );
     }
 
     if (this._app.maps.activeMap instanceof ObliqueMap) {
-      feature.getGeometry()[alreadyTransformedToImage] = true;
+      clonedFeature.getGeometry()[alreadyTransformedToImage] = true;
     }
-    this._scratchLayer.addFeatures([feature]);
+    this._scratchLayer.addFeatures([clonedFeature]);
 
     const features = clusterFeature.get('features');
-    const groups = {};
-    const items = features.map((f) => {
-      const oFeature = f[originalFeatureSymbol] ?? f;
-      const listItem = reactive({
-        name: oFeature.getId(),
-        title:
-          oFeature.getAttributes()?.title ||
-          oFeature.getAttributes()?.name ||
-          oFeature.getId(),
-        disabled: !this._getFeatureInfoViewForFeature(oFeature),
-        selectionChanged: (value) => {
-          if (value) {
-            this.selectFeature(oFeature);
-          } else {
-            this.clearFeature();
-          }
-        },
-      });
-      const layerName = oFeature[vcsLayerName];
-      if (layerName) {
-        if (!groups[layerName]) {
-          const title = this._app.layers.getByKey(layerName)?.properties?.title;
-          groups[layerName] = {
-            name: layerName,
-            title: title || layerName,
-          };
-        }
-        listItem.group = layerName;
-      }
-      return listItem;
-    });
+    const { items, groups } = getGroupedFeatureList(this._app, features);
 
     this._clusterWindowId = id;
     this._app.windowManager.add(
@@ -722,7 +747,7 @@ class FeatureInfo extends Collection {
         component: ClusterFeatureComponent,
         props: reactive({
           items,
-          groups: Object.values(groups),
+          groups,
         }),
         state: {
           headerTitle: 'featureInfo.cluster.headerTitle',

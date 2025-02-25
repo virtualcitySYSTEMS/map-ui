@@ -142,7 +142,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="vcs-grouped-list">
     <VcsTreeviewSearchbar
       v-if="searchable"
       :placeholder="searchbarPlaceholder"
