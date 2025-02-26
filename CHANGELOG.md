@@ -35,11 +35,11 @@
 - Add a LocalStorage API
 - Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies
-  - vuetify to 3.7.12
+  - vuetify to 3.7.14
   - openlayers to 10.4.0
-  - marked to 15.0.6
+  - marked to 15.0.7
   - dompurify to 3.2.4
-  - uuid 11.0.5
+  - uuid 11.1.0
 - Extend `featureInfo` by new API to support cluster features:
   - added method `selectClusterFeature` to select a cluster feature. This will open a window listing the features of the cluster
   - added method `clearCluster` to deselect the previously selected cluster feature
