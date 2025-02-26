@@ -951,6 +951,11 @@
       "title": "contentTree.building.title"
     },
     {
+      "name": "terrain",
+      "type": "LayerContentTreeItem",
+      "layerName": "GermanyBaseTerrain"
+    },
+    {
       "name": "building.texturedBuildings",
       "layerName": "buildings",
       "type": "LayerContentTreeItem",
@@ -1119,7 +1124,7 @@
     {
       "name": "reasonableLayerGroup",
       "type": "LayerGroupContentTreeItem",
-      "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain.4"],
+      "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain"],
       "title": "Buildings - Trees - Terrain. A Layer Group Item",
       "availableStyles": [
         "MeasuredHeightGreen",
@@ -1150,8 +1155,7 @@
           }
         }
       ],
-      "maxZoom": 7,
-      "minZoom": 3,
+
       "hideLevels": null,
       "properties:": {
         "attributions": {

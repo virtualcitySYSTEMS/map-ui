@@ -50,6 +50,7 @@
       :expandable="expandable"
       :show-reset="showReset"
     />
+    <layer-settings />
   </v-sheet>
 </template>
 
@@ -76,10 +77,12 @@
   import { name } from '../package.json';
   import GeometrySettings from './GeometrySettings.vue';
   import TerrainSettings from './TerrainSettings.vue';
+  import LayerSettings from './LayerSettings.vue';
 
   export default {
     name: 'VectorPropertiesExample',
     components: {
+      LayerSettings,
       TerrainSettings,
       GeometrySettings,
       VcsVectorPropertiesComponent,

@@ -24,10 +24,14 @@ export const balloonOffset = { x: 55, y: 25 };
 
 /**
  * @param {import("@vcmap-cesium/engine").Scene} scene
- * @param {import("@vcmap-cesium/engine").Cartesian3} cartesian
+ * @param {import("ol/coordinate.js").Coordinate} position
  * @returns {undefined|import("@vcmap-cesium/engine").Cartesian2}
  */
-function getBalloonPositionCesium(scene, cartesian) {
+function getBalloonPositionCesium(scene, position) {
+  const wgs84Position = Projection.mercatorToWgs84(position);
+  const cartesian = Cartographic.toCartesian(
+    Cartographic.fromDegrees(...wgs84Position),
+  );
   return SceneTransforms.worldToWindowCoordinates(scene, cartesian);
 }
 
@@ -53,11 +57,7 @@ function getBalloonPositionOL(olMap, position) {
 export async function getBalloonPosition(app, position) {
   const map = app.maps.activeMap;
   if (map instanceof CesiumMap) {
-    const wgs84Position = Projection.mercatorToWgs84(position);
-    const cartesian = Cartographic.toCartesian(
-      Cartographic.fromDegrees(...wgs84Position),
-    );
-    return getBalloonPositionCesium(map.getScene(), cartesian);
+    return getBalloonPositionCesium(map.getScene(), position);
   } else if (map instanceof OpenlayersMap) {
     return getBalloonPositionOL(map.olMap, position);
   } else if (map instanceof ObliqueMap) {
@@ -130,16 +130,12 @@ export async function setupBalloonPositionListener(
         const [position3D] = await map.getHeightFromTerrain([position]);
         position[2] = position3D[2];
       }
-      const wgs84Position = Projection.mercatorToWgs84(position);
-      const cartesian = Cartographic.toCartesian(
-        Cartographic.fromDegrees(...wgs84Position),
-      );
       listeners.push(
         map.getScene().postRender.addEventListener((scene) => {
           setBalloonPosition(
             app.windowManager,
             windowId,
-            getBalloonPositionCesium(scene, cartesian),
+            getBalloonPositionCesium(scene, position),
             app.maps.target,
           );
         }),

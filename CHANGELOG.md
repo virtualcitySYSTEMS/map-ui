@@ -55,7 +55,6 @@
   - disabled item would not be render as it
 - Added a `showWhenNotSupported` flag to LayerContentTreeItem, LayerGroupContentTreeItem, ObliqueCollectionContentTreeItem, and FlightContentTreeItem to optionally show them disabled on unsupported maps
 - Added `StyleMenuWrapper.vue` to exports after renaming from `MenuWrapper`
-
 - Changed the behavior of the `popoutBtn` flag of the LegendItems: each item with that flag enabled will now get a button to open the legend in a new tab
 - Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`
 - Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses
@@ -63,6 +62,8 @@
 - Mobile View is added to the Map. ToolboxComponents and Buttons provide now an API to define if they should be shown in the mobile view.
 - Adds a "Whats Here" API which drill picks the given location.
 - Introduces `data-` attributes to identify actions, toolbox entries, windows, panels, list & content tree items in the DOM.
+- Changed the behaviour of BalloonFeatureInfo
+  - if a point Feature is selected the Balloon will be placed on the point instead of the "clickedPosition"
 
 ### Breaking Changes
 

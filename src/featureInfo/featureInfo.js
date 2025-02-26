@@ -18,13 +18,18 @@ import {
   alreadyTransformedToImage,
   ObliqueMap,
   originalFeatureSymbol,
+  mercatorToCartesian,
+  cartesianToMercator,
+  CesiumMap,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
+  Cartographic,
   Cesium3DTileFeature,
   Cesium3DTilePointFeature,
   Color,
   Entity,
+  HeightReference,
 } from '@vcmap-cesium/engine';
 import { Feature } from 'ol';
 import { check, maybe, oneOf } from '@vcsuite/check';
@@ -363,6 +368,52 @@ function setupFeatureInfoTool(app) {
 }
 
 /**
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("./balloonFeatureInfoView.js").BalloonFeatureInfoViewProps} props
+ * @returns {() => void}
+ */
+function setupBalloonHeightListener(app, props) {
+  let updateHeightListener = () => {};
+  function setupUpdateHeightListener(map) {
+    updateHeightListener();
+    if (map instanceof CesiumMap) {
+      const cartesian = mercatorToCartesian(props.position);
+      const cartographic = Cartographic.fromCartesian(cartesian);
+      const scene = map.getScene();
+      cartographic.height =
+        scene.getHeight(cartographic, props.heightReference) +
+        props.heightOffset;
+      props.position.splice(
+        0,
+        Infinity,
+        ...cartesianToMercator(Cartographic.toCartesian(cartographic)),
+      );
+
+      updateHeightListener = scene.updateHeight(
+        cartographic,
+        (clampedCartographic) => {
+          const pos = cartesianToMercator(
+            Cartographic.toCartesian(clampedCartographic),
+          );
+          pos[2] += props.heightOffset;
+          props.position.splice(0, Infinity, ...pos);
+        },
+        props.heightReference,
+      );
+    }
+  }
+  setupUpdateHeightListener(app.maps.activeMap);
+  const mapActivatedListener = app.maps.mapActivated.addEventListener((map) => {
+    setupUpdateHeightListener(map);
+  });
+
+  return () => {
+    updateHeightListener();
+    mapActivatedListener();
+  };
+}
+
+/**
  * @typedef {Object} FeatureInfoSession
  * @property {VcsEvent<void>} stopped
  * @property {function():void} stop
@@ -430,6 +481,12 @@ class FeatureInfo extends Collection {
      * @private
      */
     this._selectedClusterFeatureId = null;
+
+    /**
+     * @type {Array<function():void>}
+     * @private
+     */
+    this._destroyBalloonClampedListener = () => {};
     /**
      * @type {Array<function():void>}
      * @private
@@ -663,14 +720,31 @@ class FeatureInfo extends Collection {
           layer.featureVisibility.unHighlight([featureId]);
       }
       this._windowId = usedFeatureInfoView.className; // use className for a type based position caching
+      const windowComponentOptions =
+        usedFeatureInfoView.getWindowComponentOptions(
+          this._app,
+          { feature, position, windowPosition },
+          layer,
+        );
+
+      let { props } = windowComponentOptions;
+      // check if Balloon should be Rendered Relative or ClampedTo Ground
+      if (usedFeatureInfoView instanceof BalloonFeatureInfoView) {
+        props = reactive(props);
+        if (
+          windowComponentOptions.props.heightReference !== HeightReference.NONE
+        ) {
+          this._destroyBalloonClampedListener = setupBalloonHeightListener(
+            this._app,
+            props,
+          );
+        }
+      }
       this._app.windowManager.add(
         {
           id: this._windowId,
-          ...usedFeatureInfoView.getWindowComponentOptions(
-            this._app,
-            { feature, position, windowPosition },
-            layer,
-          ),
+          ...windowComponentOptions,
+          props,
         },
         vcsAppSymbol,
       );
@@ -767,6 +841,7 @@ class FeatureInfo extends Collection {
    * @private
    */
   _clearInternal() {
+    this._destroyBalloonClampedListener();
     if (this._clearHighlightingCb) {
       this._clearHighlightingCb();
       this._clearHighlightingCb = null;

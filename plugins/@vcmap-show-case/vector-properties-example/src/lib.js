@@ -16,6 +16,7 @@ import {
   Polygon,
 } from 'ol/geom';
 import { Stroke, Style, Text as OLText } from 'ol/style';
+import { BalloonFeatureInfoView } from '@vcmap/ui';
 
 function layoutHelper(feature, layout = 'XYZ') {
   if (layout !== 'XYZ') {
@@ -291,4 +292,16 @@ export function getTiltedLineStringFeature(layout) {
   feature.setId('TiltedLineString');
   layoutHelper(feature, layout);
   return feature;
+}
+
+let balloonFeatureInfo;
+export function getBalloonFeatureInfo(app) {
+  if (!balloonFeatureInfo) {
+    balloonFeatureInfo = new BalloonFeatureInfoView({
+      title: 'Vector Properties Example',
+      attributeKeys: ['featureId'],
+    });
+    app.featureInfo.add(balloonFeatureInfo);
+  }
+  return balloonFeatureInfo;
 }

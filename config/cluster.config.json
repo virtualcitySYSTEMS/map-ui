@@ -24,7 +24,7 @@
       "vectorClusterGroup": "clusterLayerOthers",
       "properties": {
         "title": "Grundschulen",
-        "featureInfo": "tableAll",
+        "featureInfo": "genericBalloon",
         "attributions": [
           {
             "provider": "Senatsverwaltung für Bildung, Jugend und Familie",
