@@ -114,7 +114,10 @@
         [() => props.items, () => props.openAll],
         () => {
           if (props.openAll) {
-            localOpenedItems.value = [...props.items.map((item) => item.name)];
+            const newItems = props.items
+              .map((item) => item.name)
+              .filter((name) => !localOpenedItems.value.includes(name));
+            localOpenedItems.value.push(...newItems);
           }
         },
         {

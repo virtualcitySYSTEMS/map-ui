@@ -99,6 +99,10 @@ class ContentTreeCollection extends IndexedCollection {
           child.name,
           child.weightChanged.addEventListener(recreateTree),
         );
+        if (child.initOpen) {
+          const subTreeId = this._getSubtreeIdForItem(child);
+          this.getTreeOpenState(subTreeId).push(child.name);
+        }
       }),
       this.removed.addEventListener((child) => {
         recreateTree();
@@ -307,6 +311,19 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
+   * @param {ContentTreeItem} item
+   * @returns {string}
+   * @private
+   */
+  _getSubtreeIdForItem(item) {
+    const [parent] = item.name.split('.');
+    if (this._subTreeViewItems.value.has(parent)) {
+      return parent;
+    }
+    return defaultContentTreeComponentId;
+  }
+
+  /**
    * Returns all managed subtrees. Entries are not persisted and will change, if the trees get recalculated.
    * @type {import("vue").Ref<Map<string, import("./contentTreeItem.js").TreeViewItem>>}
    */
@@ -376,6 +393,7 @@ class ContentTreeCollection extends IndexedCollection {
   }
 
   /**
+   * This returns a proxy to the subtrees open state. You should mutate this array in place.
    * @param {string} id
    * @returns {Array<string>}
    */
@@ -383,9 +401,7 @@ class ContentTreeCollection extends IndexedCollection {
     const subTree = this._getSubTree(id);
     if (subTree) {
       if (!subTree[subTreeOpenStateSymbol]) {
-        subTree[subTreeOpenStateSymbol] = this.getChildrenForSubTree(id)
-          .filter((i) => i.initOpen)
-          .map((i) => i.name);
+        subTree[subTreeOpenStateSymbol] = [];
       }
       return subTree[subTreeOpenStateSymbol];
     }

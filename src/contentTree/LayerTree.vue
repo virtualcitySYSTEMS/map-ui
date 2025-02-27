@@ -16,12 +16,10 @@
 </template>
 
 <script>
-  import { inject, ref, watch } from 'vue';
+  import { inject, computed } from 'vue';
   import { VSheet } from 'vuetify/components';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
 
-  /** The open state Symbol of the ContentTree */
-  export const openStateMapSymbol = Symbol('openStateMap');
   /**
    * @description
    * Implements Treeview and shows content tree
@@ -37,52 +35,16 @@
     },
     setup(props) {
       const app = inject('vcsApp');
-      const open = ref(app.contentTree.getTreeOpenState(props.windowState.id));
-      const tree = app.contentTree.getComputedVisibleTree(props.windowState.id);
 
-      function getWithVisibleChildren(item) {
-        return [
-          item.name,
-          ...(item.visibleChildren
-            ?.map((c) => getWithVisibleChildren(c))
-            ?.flat() ?? []),
-        ];
-      }
-
-      if (!app.contentTree[openStateMapSymbol]) {
-        app.contentTree[openStateMapSymbol] = new Map();
-      }
-      /**
-       * @type {Map<string, string[]>}
-       */
-      const openStateMap = app.contentTree[openStateMapSymbol];
-      // watch for new visible children, which should start init open
-      watch(
-        tree,
-        (value, oldValue) => {
-          if (openStateMap.has(app.maps.activeMap?.name)) {
-            open.value = openStateMap.get(app.maps.activeMap?.name);
-          } else {
-            const items = [...app.contentTree]
-              .filter((i) => i.initOpen && i.getTreeViewItem().visible)
-              .map(({ name }) => name);
-            const oldValues = oldValue
-              ? oldValue.map(getWithVisibleChildren).flat()
-              : [];
-            const changed = items.filter(
-              (name) => !oldValues.includes(name) && !open.value.includes(name),
-            );
-            open.value.push(...changed);
-          }
+      const open = computed({
+        get: () => app.contentTree.getTreeOpenState(props.windowState.id),
+        set: (value) => {
+          app.contentTree
+            .getTreeOpenState(props.windowState.id)
+            .splice(0, Infinity, ...value);
         },
-        { immediate: true },
-      );
-
-      watch(open, () => {
-        if (app.maps.activeMap) {
-          openStateMap.set(app.maps.activeMap.name, [...open.value]);
-        }
       });
+      const tree = app.contentTree.getComputedVisibleTree(props.windowState.id);
 
       return {
         tree,

@@ -753,6 +753,20 @@
       "showWhenNotSupported": true
     },
     {
+      "name": "czml2",
+      "type": "NodeContentTreeItem"
+    },
+    {
+      "name": "czml2.czmlPoint",
+      "layerName": "czmlPoint",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "czml2.czmlDynamicPoint",
+      "layerName": "czmlDynamicPoint",
+      "type": "LayerContentTreeItem"
+    },
+    {
       "name": "wmsLayerPOI",
       "layerName": "wmsLayerPOI",
       "type": "LayerContentTreeItem"
