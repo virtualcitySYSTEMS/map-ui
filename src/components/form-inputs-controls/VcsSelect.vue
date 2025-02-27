@@ -15,12 +15,14 @@
     v-model="localModelValue"
   >
     <template #selection="{ item, index }">
-      <span v-if="index === 0" class="text-truncate w-100">
-        {{ $st(getTitle(item.raw)) }}
-      </span>
-      <span v-if="index === 1" class="text-no-wrap">
-        (+{{ additionalItems }})
-      </span>
+      <slot name="selection" v-bind="{ item, index }">
+        <span v-if="index === 0" class="text-truncate w-100">
+          {{ $st(getTitle(item.raw)) }}
+        </span>
+        <span v-if="index === 1" class="text-no-wrap">
+          (+{{ additionalItems }})
+        </span>
+      </slot>
     </template>
 
     <template #append-inner="scope">

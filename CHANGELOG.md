@@ -63,6 +63,7 @@
 - Introduces `data-` attributes to identify actions, toolbox entries, windows, panels, list & content tree items in the DOM.
 - Changed the behaviour of BalloonFeatureInfo
   - if a point Feature is selected the Balloon will be placed on the point instead of the "clickedPosition"
+- Adds selection slot to `VcsSelect.vue`, which is forwarded to VSelect
 
 ### Breaking Changes
 
