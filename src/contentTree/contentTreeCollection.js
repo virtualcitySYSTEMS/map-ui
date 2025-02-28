@@ -291,20 +291,24 @@ class ContentTreeCollection extends IndexedCollection {
         return tree.name;
       }),
     );
+
     subTrees.forEach((subTree) => {
-      if (!this._app.navbarManager.has(subTree.name) || resetSubtreeButtons) {
+      if (!this._subTreeViewItems.value.has(subTree.name)) {
         this._subTreeViewItems.value.set(subTree.name, subTree);
-        if (!this._app.uiConfig.config.hideContentTree) {
+      }
+
+      if (!this._app.uiConfig.config.hideContentTree) {
+        if (!this._app.navbarManager.has(subTree.name) || resetSubtreeButtons) {
           this._subTreeListeners.get(subTree.name)?.();
           this._subTreeListeners.set(
             subTree.name,
             this._createSubtreeActionButton(subTree),
           );
-        }
-      } else {
-        const buttonComponent = this._app.navbarManager.get(subTree.name);
-        if (buttonComponent.weight !== subTree[subTreeItemWeight]) {
-          buttonComponent.weight = subTree[subTreeItemWeight];
+        } else {
+          const buttonComponent = this._app.navbarManager.get(subTree.name);
+          if (buttonComponent.weight !== subTree[subTreeItemWeight]) {
+            buttonComponent.weight = subTree[subTreeItemWeight];
+          }
         }
       }
     });
