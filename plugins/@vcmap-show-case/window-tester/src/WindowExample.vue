@@ -12,6 +12,9 @@
     <VcsFormButton @click="toggleClass()" :active="showTestClass" class="pa-1">
       Change Static2 TestClass
     </VcsFormButton>
+    <vcs-form-button @click="logStates"
+      >Log Current window states</vcs-form-button
+    >
   </div>
 </template>
 <style></style>
@@ -217,6 +220,12 @@
             );
             app.windowManager.add(windowComponentOptions, owner);
           }
+        },
+        logStates() {
+          app.windowManager.componentIds.forEach((id) => {
+            console.log(app.windowManager.get(id));
+            console.log(app.windowManager.getCachedPosition(id));
+          });
         },
         examples: exampleWindows.map((item) => item.id),
       };

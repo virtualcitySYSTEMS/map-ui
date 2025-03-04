@@ -64,6 +64,7 @@
 - Changed the behaviour of BalloonFeatureInfo
   - if a point Feature is selected the Balloon will be placed on the point instead of the "clickedPosition"
 - Adds selection slot to `VcsSelect.vue`, which is forwarded to VSelect
+- Fixes an issue where non-detached windows would have their positions cached.
 
 ### Breaking Changes
 

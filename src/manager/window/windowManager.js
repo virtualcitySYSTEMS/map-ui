@@ -170,7 +170,7 @@ export function isSlotPosition(windowPosition) {
  *   headerComponent?: import("vue").Component<T, unknown, unknown>,
  *   state : Partial<WindowState>,
  *   position : Partial<WindowPositionOptions>,
- *   slot: WindowSlot,
+ *   slot: import("vue").Ref<WindowSlot>,
  *   props: T,
  *   provides: Record<string, unknown>,
  *   zIndex: import("vue").ComputedGetter<number>
@@ -545,15 +545,17 @@ class WindowManager {
    * @private
    */
   _cachePosition(windowComponent) {
-    const initialWindowPosition = windowPositionFromOptions(
-      windowComponent.initialPositionOptions,
-    );
-    if (
-      !compareWindowPositions(initialWindowPosition, windowComponent.position)
-    ) {
-      this._windowPositionsCache.set(windowComponent.id, {
-        ...windowComponent.position,
-      });
+    if (windowComponent.slot.value === WindowSlot.DETACHED) {
+      const initialWindowPosition = windowPositionFromOptions(
+        windowComponent.initialPositionOptions,
+      );
+      if (
+        !compareWindowPositions(initialWindowPosition, windowComponent.position)
+      ) {
+        this._windowPositionsCache.set(windowComponent.id, {
+          ...windowComponent.position,
+        });
+      }
     }
   }
 
