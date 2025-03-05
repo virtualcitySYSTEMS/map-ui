@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "@vcmap/print": "^2.0.0",
+    "@vcmap/print": "^3.0.0",
     "@vcmap/walk": "^2.0.0",
     "@vcmap/clipping-tool": "^2.0.0",
     "@vcmap/transparent-terrain": "^2.0.0",
     "@vcmap/height-profile": "^2.0.0",
     "@vcmap/flight": "^2.0.0",
-    "@vcmap/swipe-tool": "^2.0.0",
+    "@vcmap/swipe-tool": "^3.0.0",
     "@vcmap/export": "^2.0.0",
     "@vcmap/viewshed": "^3.0.0",
-    "@vcmap/measurement": "^2.0.0",
+    "@vcmap/measurement": "^3.0.0",
     "@vcmap/multi-view": "^2.0.0",
     "@vcmap/draw": "^3.0.0",
     "@vcmap/shadow": "^3.0.0",
@@ -19,11 +19,13 @@
     "@vcmap/link-button": "^2.0.0",
     "@vcmap/cesium-filters": "^2.0.0",
     "@vcmap/search-nominatim": "^2.0.0",
-    "@vcmap/create-link": "^2.0.0",
+    "@vcmap/create-link": "^3.0.0",
     "@vcmap/module-selector": "^2.0.0",
     "@vcmap/line-of-sight": "^1.0.0",
     "@vcmap/layer-slider": "^2.0.0",
-    "@vcmap/vcs-solar-balloon": "^2.0.0"
+    "@vcmap/vcs-solar-balloon": "^2.0.0",
+    "@vcmap/list-view": "^1.0.0",
+    "@vcmap/pointcloud-settings": "^1.0.0"
   },
   "optionalDependencies": {
     "@vcmap/planning": "^6.0.0"

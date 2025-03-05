@@ -49,8 +49,8 @@ Per default eleven extensions are available:
 - [ApplyLayerStyleCallback](../src/callback/applyLayerStyleCallback.js) - applies a provided style on a layer
 - [StartRotationCallback](../src/callback/startRotationCallback.js) - rotates around a given or the current viewpoint
 - [StopRotationCallback](../src/callback/stopRotationCallback.js) - stops the rotation
-  [ActivateClippingPolygonCallback](../src/callback/activateClippingPolygonCallback.js) - activates one or more Clipping Polygon
-  [DeactivateClippingPolygonCallback](../src/callback/deactivateClippingPolygonCallback.js) - deactivates one or more Clipping Polygon
+- [ActivateClippingPolygonCallback](../src/callback/activateClippingPolygonCallback.js) - activates one or more Clipping Polygon
+- [DeactivateClippingPolygonCallback](../src/callback/deactivateClippingPolygonCallback.js) - deactivates one or more Clipping Polygon
 - [AddModuleCallback](../src/callback/addModuleCallback.js) - adds a module
 - [RemoveModuleCallback](../src/callback/removeModuleCallback.js) - removes a module
 - [OpenSplashScreenCallback](../src/callback/openSplashScreenCallback.js) - opens the SplashScreen if defined

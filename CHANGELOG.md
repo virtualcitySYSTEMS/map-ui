@@ -1,39 +1,84 @@
 # 6.1.0
 
-- VcsFormSection Help action is always aligned to the right.
+### Highlights
+
+#### WMSContentTreeItem
+
+The new WMSContentTreeItem can manage a WMSLayer to fetch and parse the layer capabilities to show contenTree entries for each layer and its styles.
+
+#### Clustering
+
+The map now supports clustering of point features.
+Clustering can be configured via the `app.vectorClusterGroups` collection. Clustering can be activated for each layer individually, by
+referencing a new `VectorClusterGroup`. Clicking on a cluster will use the new `Deep Picking` feature to show all features of the cluster.
+
+#### clippingPolygons
+
+The @vcmap/core has a new clippingPolygons API to clip the terrain/tilesets/meshes with a given Polygon.
+The clipping polygons can be added to the map via the `app.clippingPolygons` collection.
+
+#### Navigation API
+
+The @vcmap/core now supports a new Navigation API with a new keyboard controller. The map can now be controlled by
+the `arrow`, `wasd`, `xyqe` keys.
+
+#### Mobile View
+
+The VCMap now has more user-friendly mobile view with access to the `search`, `print plugin`, `share link`, `impressum` etc.
+The Tablet view for display sizes < 960px has been optimized to show the same functionality as in the fullscreen mode.
+Developers can use a new API to create tool buttons for the mobile view.
+
+#### Rotation View
+
+The VCMap now has a new presentation mode, where the map will rotate slowly around the centerpoint.
+
+#### Search suggestions
+
+The VCMap can now handle the `suggest` interface of the search API. This allows the VCMap to show suggestions
+while typing in the search bar. Search implementations can now provide suggestions for the search term, the esri-search plugin supports this.
+
+#### Deep Picking
+
+The VCMap Featureinfo API now supports showing several `Features` which may be clustered at the same location.
+On the map, the user can use the right mouse and select `Whats here?` to pick all active layers at the given location.
+WMSlayer with getFeatureInfo where the service provides more than one feature, the user can now see all provided features.
+
+### Plugins
+
+- New pointcloud-settings plugin to show a window in map to change the pointsize and further pointcloud settings.
+- New list-view plugin which can be used to show a list of all Vector Features for example of a POI Layer.
+
+### Changes
+
 - VcsFormSection help could be started open.
-- Suggestions implemented for search interfaces that provide string suggestions.
-- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList, VcsSelect and VcsTextArea
-- Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
-- Remove Config pattern check for modules in `init.js`
-- Add UI-Element for map rotation and provide callbacks
-- Add nine more `VcsCallback` extensions:
+- Callbacks
+  - Add nine more `VcsCallback` extensions:
   - `AddModuleCallback` and `RemoveModuleCallback` to add/remove a module
   - `OpenSplashScreenCallback` and `CloseSplashScreenCallback` to open/close a SplashScreen
   - `StartRotationCallback` and `StopRotationCallback` to start/stop map rotation
   - `ActivateClippingPolygonCallback` and `DeactivateClippingPolygonCallback` to change the state of `app.clippingPolygons` collection items
   - `ToggleNavbarButtonCallback` to call the callback of a registered Navbar action
-- Add new CallbackTester plugin for dev
-- Extend `splashScreen` configuration with in `uiConfig`:
+  - Add new CallbackTester plugin for dev
+- Splashscreen
+  - Extend `splashScreen` configuration with in `uiConfig`:
   - added option `exitCallbackOptions` to configure an array of callback options executed on click of the primary button
   - added a new secondary button
   - added option `secondaryCallbackOptions` to configure an array of callback options executed on secondary button clicked
   - added option `secondaryButtonTitle` to configure the new secondary button title
   - added option `requireInputForSecondary` to disable the secondary button as well when the checkbox is not checked
   - added option `enableDontShowAgain`, to allow the user to disable the SplashScreen on next opening
-- Make SplashScreen buttons sticky at the bottom, only the content will overflow
+  - Make SplashScreen buttons sticky at the bottom, only the content will overflow
 - Add slot to `VcsImportComponent.vue` that allows to add additional content like e.g. import options
 - Adds `customFilter` prop to VcsDataTable and VcsTreeview components.
 - Replace `filterPredicate` injection by `customFilter` in the VcsList component.
-- Add Tablet view for display size < 960px.
 - Adds a `overviewMapScaleFactor` property to the `uiConfig` options.
 - Add `datePickerProps` to `VcsDatePicker` which allows to pass props to the underlying Vuetify `VDatePicker`
 - Add new `clipping.config.json` with example clipping polygons illustrating the new VC Map Core Clipping Polygon feature
-- Fix modal alignment for `createModalAction`
 - Add a `callSafeAction` export to safely and sync call a VcsAction callback
 - Add a LocalStorage API
 - Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies
+  - @vcmap/core to 6.1.0
   - vuetify to 3.7.15
   - openlayers to 10.4.0
   - marked to 15.0.7
@@ -48,26 +93,30 @@
   - deprecated method `clear`. Use `clearSelection` instead!
 - Add new component `VcsGroupedList` to render groups as expandable sub lists
 - Reimplements VcsTreeview without the VTreeview component; significantly improved performance.
-- Fixed various bugs in the ContentTree, where:
-  - GroupContentTreeItems state calculation would take invisible children into account
-  - empty groups would be rendered
-  - disabled item would not be render as it
 - Added a `showWhenNotSupported` flag to LayerContentTreeItem, LayerGroupContentTreeItem, ObliqueCollectionContentTreeItem, and FlightContentTreeItem to optionally show them disabled on unsupported maps
 - Added `StyleMenuWrapper.vue` to exports after renaming from `MenuWrapper`
 - Changed the behavior of the `popoutBtn` flag of the LegendItems: each item with that flag enabled will now get a button to open the legend in a new tab
 - Changed the behavior of rotation when clicking the MapCompass in 3D: rotation takes place around the `groundPointpoint on the ground`, not around the `cameraPosition`
-- Adds the `VcsTemplateMarkdown` component. This will rendere a provided `template` and `context` as markdown. It uses
+- Adds the `VcsTemplateMarkdown` component. This will render a provided `template` and `context` as markdown. It uses
   `app.vuei18n.t` for translation of and `{{#t}}` directives in the template and re-renders on locale change.
-- Mobile View is added to the Map. ToolboxComponents and Buttons provide now an API to define if they should be shown in the mobile view.
-- Adds a "Whats Here" API which drill picks the given location.
 - Introduces `data-` attributes to identify actions, toolbox entries, windows, panels, list & content tree items in the DOM.
 - Changed the behaviour of BalloonFeatureInfo
   - if a point Feature is selected the Balloon will be placed on the point instead of the "clickedPosition"
 - Adds selection slot to `VcsSelect.vue`, which is forwarded to VSelect
-- Fixes an issue where non-detached windows would have their positions cached.
-- Added a new ContentTree Element
-  - WMSContentTreeItem which manages WMSLayers and will show all layers of the WMS in the ContentTree
 - Export component `VcsHelpTooltip.vue`
+
+### Fixes
+
+- VcsFormSection Help action is always aligned to the right.
+- Fixes styling issues with IframeComponent, BalloonComponent, WindowComponent, VcsActionButtonList, VcsSelect and VcsTextArea
+- Fixes issue with VListItem subtitle opacity by adding `list-item-subtitle-opacity` to vuetify variables
+- Remove Config pattern check for modules in `init.js`
+- Fix modal alignment for `createModalAction`
+- Fixed various bugs in the ContentTree, where:
+  - GroupContentTreeItems state calculation would take invisible children into account
+  - empty groups would be rendered
+  - disabled item would not be render as it
+- Fixes an issue where non-detached windows would have their positions cached.
 
 ### Breaking Changes
 
