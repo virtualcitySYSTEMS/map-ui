@@ -277,6 +277,7 @@ export { default as VcsToolButton } from './src/components/buttons/VcsToolButton
 export { default as VcsFormButton } from './src/components/buttons/VcsFormButton.vue';
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
 export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';
+export { default as VcsHelpTooltip } from './src/components/notification/VcsHelpTooltip.vue';
 export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vue';
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';

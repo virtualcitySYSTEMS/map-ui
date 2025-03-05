@@ -67,6 +67,7 @@
 - Fixes an issue where non-detached windows would have their positions cached.
 - Added a new ContentTree Element
   - WMSContentTreeItem which manages WMSLayers and will show all layers of the WMS in the ContentTree
+- Export component `VcsHelpTooltip.vue`
 
 ### Breaking Changes
 
