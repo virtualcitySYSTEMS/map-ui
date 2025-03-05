@@ -478,7 +478,7 @@
       "activeOnStartup": false,
       "version": "1.3.0",
       "layers": "ua_stadtstruktur_2020",
-      "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
       "featureInfo": {
         "showFeature": true,
         "responseType": "application/json",
@@ -510,7 +510,7 @@
       "activeOnStartup": false,
       "version": "1.3.0",
       "layers": "flughaefen,grenzuebergaenge,heliports,kilometrierungen_bab,seehaefen",
-      "parameters": "STYLE=default&TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
       "featureInfo": {
         "showFeature": true,
         "responseType": "application/json",
@@ -578,6 +578,31 @@
           }
         ]
       }
+    },
+
+    {
+      "name": "wmsTopplus",
+      "type": "WMSLayer",
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+      "activeOnStartup": false,
+      "version": "1.3.0",
+      "layers": "web",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "tilingSchema": "geographic",
+      "zIndex": 13,
+      "properties": { "title": "WMS TopPlus Open" }
+    },
+    {
+      "name": "nasa",
+      "type": "WMSLayer",
+      "url": "https://maps.eatlas.org.au/maps/wms",
+      "activeOnStartup": false,
+      "version": "1.3.0",
+      "tilingSchema": "geographic",
+      "zIndex": 13,
+      "layers": "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true&styles=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Depth",
+      "properties": { "title": "NASA WMS" }
     },
     {
       "name": "FlatGeobufLayer",
@@ -769,7 +794,28 @@
     {
       "name": "wmsLayerPOI",
       "layerName": "wmsLayerPOI",
-      "type": "LayerContentTreeItem"
+      "type": "WMSGroupContentTreeItem"
+    },
+    {
+      "name": "wmsTopplus",
+      "layerName": "wmsTopplus",
+      "type": "WMSGroupContentTreeItem",
+      "setWMSLayersExclusive": true,
+      "initOpen": true,
+      "showWhenNotSupported": true
+    },
+    {
+      "name": "nasa",
+      "layerName": "nasa",
+      "type": "WMSGroupContentTreeItem",
+      "initOpen": true,
+      "showWhenNotSupported": true,
+      "allowedWMSLayers": [
+        "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
+        "nesp5:GBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites",
+        "nesp3:GBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites",
+        "ea-be:World_Bright-Earth-e-Atlas-basemap"
+      ]
     },
     {
       "name": "wmsStadtstruktur",

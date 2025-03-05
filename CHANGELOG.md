@@ -34,7 +34,7 @@
 - Add a LocalStorage API
 - Remove `renderTemplate`, re-export it from '@vcmap/core' to avoid breaking change.
 - Update Dependencies
-  - vuetify to 3.7.14
+  - vuetify to 3.7.15
   - openlayers to 10.4.0
   - marked to 15.0.7
   - dompurify to 3.2.4
@@ -65,6 +65,8 @@
   - if a point Feature is selected the Balloon will be placed on the point instead of the "clickedPosition"
 - Adds selection slot to `VcsSelect.vue`, which is forwarded to VSelect
 - Fixes an issue where non-detached windows would have their positions cached.
+- Added a new ContentTree Element
+  - WMSContentTreeItem which manages WMSLayers and will show all layers of the WMS in the ContentTree
 
 ### Breaking Changes
 

@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?><WMS_Capabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" version="1.3.0" updateSequence="122481" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms https://sgx.geodatenzentrum.de/geoserver/schemas/wms/1.3.0/capabilities_1_3_0.xsd http://inspire.ec.europa.eu/schemas/inspire_vs/1.0 https://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd">
+  <Service>
+    <Name>WMS</Name>
+    <Title>WMS POI Open</Title>
+    <Abstract>
+      <![CDATA[Darstellungsdienst Points of Interests (POI-Open) für das Gebiet der Bundesrepublik Deutschland. 
+Der Dienst visualisiert die POI Themen Flughäfen, Grenzübergänge, Hubschrauberlandeplätze, Kilometrierungen BAB, Seehäfen, Haltestellen und Traumazentren für das Gebiet der Bundesrepublik Deutschland. 
+  ]]>
+    </Abstract>
+    <KeywordList/>
+    <OnlineResource xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/geoserver/"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson/>
+        <ContactOrganization>Dienstleistungszentrum des Bundes für Geoinformation und Geodäsie</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Technischer Administrator</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Karl-Rothe-Str. 10 - 14</Address>
+        <City>Leipzig</City>
+        <StateOrProvince>DE-SN</StateOrProvince>
+        <PostCode>04105</PostCode>
+        <Country>Deutschland</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49 (0) 341 5634 333</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49 (0) 341 5634 415</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>dlz@bkg.bund.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>Die Daten sind urheberrechtlich geschützt. Die Daten werden geldleistungsfrei gemäß der Datenlizenz Deutschland Namensnennung 2.0 (https://www.govdata.de/dl-de/by-2-0) zur Verfügung gestellt. Die Verwendung des Datensatzes für die Pflege und Erweiterung der Daten des OpenStreetMap Projektes wird unter Einhaltung der im Ergänzungstext beschriebenen Angaben zur Namensnennung ausdrücklich erlaubt, siehe https://sg.geodatenzentrum.de/web_public/gdz/lizenz/deu/Datenlizenz_Deutschland_Erg%C3%A4nzungstext_Namensnennung.pdf. Der Quellenvermerk ist zu beachten. || Quellenvermerk: ©BKG (Jahr des letzten Datenbezugs), Datenquellen: https://sg.geodatenzentrum.de/web_public/Datenquellen_POI-Open.pdf</Fees>
+    <AccessConstraints>Es gelten keine Zugriffsbeschränkungen.</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?SERVICE=WMS&amp;"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?SERVICE=WMS&amp;"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/json;type=utfgrid</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml;mode=networklink</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>image/vnd.jpeg-png</Format>
+        <Format>image/vnd.jpeg-png8</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <Format>text/html; subtype=openlayers2</Format>
+        <Format>text/html; subtype=openlayers3</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+      <Format>JSON</Format>
+    </Exception>
+    <inspire_vs:ExtendedCapabilities>
+      <inspire_common:MetadataUrl>
+        <inspire_common:URL>https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;elementSetName=full&amp;id=05FA8B65-BEBA-416F-9D76-66ADAFA5F314</inspire_common:URL>
+        <inspire_common:MediaType>application/vnd.iso.19139+xml</inspire_common:MediaType>
+      </inspire_common:MetadataUrl>
+      <inspire_common:SupportedLanguages>
+        <inspire_common:DefaultLanguage>
+          <inspire_common:Language>ger</inspire_common:Language>
+        </inspire_common:DefaultLanguage>
+      </inspire_common:SupportedLanguages>
+      <inspire_common:ResponseLanguage>
+        <inspire_common:Language>ger</inspire_common:Language>
+      </inspire_common:ResponseLanguage>
+    </inspire_vs:ExtendedCapabilities>
+    <Layer>
+      <Title>POI Open</Title>
+      <Abstract>
+        <![CDATA[Darstellungsdienst Points of Interests (POI-Open) für das Gebiet der Bundesrepublik Deutschland. 
+Der Dienst visualisiert die POI Themen Flughäfen, Grenzübergänge, Hubschrauberlandeplätze, Kilometrierungen BAB, Seehäfen, Haltestellen und Traumazentren für das Gebiet der Bundesrepublik Deutschland. 
+  ]]>
+      </Abstract>
+      <!--Limited list of EPSG projections:-->
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>EPSG:25832</CRS>
+      <CRS>EPSG:25833</CRS>
+      <CRS>EPSG:4647</CRS>
+      <CRS>EPSG:5650</CRS>
+      <CRS>EPSG:31466</CRS>
+      <CRS>EPSG:31467</CRS>
+      <CRS>EPSG:31468</CRS>
+      <CRS>EPSG:31469</CRS>
+      <CRS>EPSG:5676</CRS>
+      <CRS>EPSG:5677</CRS>
+      <CRS>EPSG:5678</CRS>
+      <CRS>EPSG:5679</CRS>
+      <CRS>EPSG:4839</CRS>
+      <CRS>EPSG:4258</CRS>
+      <CRS>EPSG:3034</CRS>
+      <CRS>EPSG:3035</CRS>
+      <CRS>EPSG:3044</CRS>
+      <CRS>EPSG:3045</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>3.9303828331778696</westBoundLongitude>
+        <eastBoundLongitude>15.712210649877766</eastBoundLongitude>
+        <southBoundLatitude>46.891407044857935</southBoundLatitude>
+        <northBoundLatitude>55.934358230227296</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" minx="3.9303828331778696" miny="46.891407044857935" maxx="15.712210649877766" maxy="55.934358230227296"/>
+      <BoundingBox CRS="EPSG:4326" minx="46.891407044857935" miny="3.9303828331778696" maxx="55.934358230227296" maxy="15.712210649877766"/>
+      <BoundingBox CRS="EPSG:3857" minx="437528.2156119844" miny="5924366.916116491" maxx="1749075.2887810431" maxy="7545359.318563125"/>
+      <BoundingBox CRS="EPSG:25832" minx="113832.35382702405" miny="5193424.07249834" maxx="1011254.7079663582" maxy="6219142.05559288"/>
+      <BoundingBox CRS="EPSG:25833" minx="-342908.23480552074" miny="5193342.878732851" maxx="554255.7429898463" maxy="6254266.446239654"/>
+      <BoundingBox CRS="EPSG:4647" minx="3.2113832353827026E7" miny="5193424.07249834" maxx="3.3011254707966357E7" maxy="6219142.05559288"/>
+      <BoundingBox CRS="EPSG:5650" minx="3.265709176519448E7" miny="5193342.878732851" maxx="3.3554255742989846E7" maxy="6254266.446239654"/>
+      <BoundingBox CRS="EPSG:31466" minx="5194736.90244457" miny="2342321.3898457065" maxx="6243531.565502685" maxy="3239972.517733901"/>
+      <BoundingBox CRS="EPSG:31467" minx="5195059.6176673835" miny="3113753.417850993" maxx="6221197.221435979" maxy="4011540.3296316233"/>
+      <BoundingBox CRS="EPSG:31468" minx="5194752.458583564" miny="3885258.9131248044" maxx="6230273.358898328" maxy="4783006.4548625015"/>
+      <BoundingBox CRS="EPSG:31469" minx="5194974.463502958" miny="4656892.091631401" maxx="6256319.443379146" maxy="5554420.236191859"/>
+      <BoundingBox CRS="EPSG:5676" minx="2342321.3898457065" miny="5194736.90244457" maxx="3239972.517733901" maxy="6243531.565502685"/>
+      <BoundingBox CRS="EPSG:5677" minx="3113753.417850993" miny="5195059.6176673835" maxx="4011540.3296316233" maxy="6221197.221435979"/>
+      <BoundingBox CRS="EPSG:5678" minx="3885258.9131248044" miny="5194752.458583564" maxx="4783006.4548625015" maxy="6230273.358898328"/>
+      <BoundingBox CRS="EPSG:5679" minx="4656892.091631401" miny="5194974.463502958" maxx="5554420.236191859" maxy="6256319.443379146"/>
+      <BoundingBox CRS="EPSG:4839" minx="-456675.16077577113" miny="-500893.28671046434" maxx="567644.6597954665" maxy="397595.3617924818"/>
+      <BoundingBox CRS="EPSG:4258" minx="46.89140708741723" miny="3.93038283317787" maxx="55.93435826463272" maxy="15.712210649877768"/>
+      <BoundingBox CRS="EPSG:3034" minx="2251042.699226911" miny="3552808.609604032" maxx="3238687.869624409" maxy="4420912.858336099"/>
+      <BoundingBox CRS="EPSG:3035" minx="2642008.227900871" miny="3858610.4209425007" maxx="3663818.0304027116" maxy="4756225.5429788865"/>
+      <BoundingBox CRS="EPSG:3044" minx="5193424.07249834" miny="113832.35382702405" maxx="6219142.05559288" maxy="1011254.7079663582"/>
+      <BoundingBox CRS="EPSG:3045" minx="5193342.878732851" miny="-342908.23480552074" maxx="6254266.446239654" maxy="554255.7429898463"/>
+      <AuthorityURL name="BKG">
+        <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+      </AuthorityURL>
+      <Layer queryable="1" opaque="0">
+        <Name>flughaefen</Name>
+        <Title>Flughäfen</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>flughaefen</Keyword>
+          <Keyword>features</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>5.9238179590214335</westBoundLongitude>
+          <eastBoundLongitude>14.255722806017229</eastBoundLongitude>
+          <southBoundLatitude>47.5862685191116</southBoundLatitude>
+          <northBoundLatitude>54.91535832089788</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="5.9238179590214335" miny="47.5862685191116" maxx="14.255722806017229" maxy="54.91535832089788"/>
+        <BoundingBox CRS="EPSG:25832" minx="302650.51102327" miny="5280099.55465985" maxx="837696.488661349" maxy="6085412.86048233"/>
+        <BoundingBox CRS="EPSG:4326" minx="47.58626851911159" miny="5.9238179590214335" maxx="54.91535832089787" maxy="14.255722806017229"/>
+        <BoundingBox CRS="EPSG:3857" minx="659436.3987503151" miny="6038298.598217918" maxx="1586939.803655895" maxy="7345456.187550478"/>
+        <BoundingBox CRS="EPSG:25833" minx="-147766.58940435783" miny="5271419.600492424" maxx="452155.78552201064" maxy="6118883.324631308"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.230265051102327E7" miny="5280099.554659851" maxx="3.283769648866135E7" maxy="6085412.860482331"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.2852233410595644E7" miny="5271419.600492424" maxx="3.3452155785522014E7" maxy="6118883.324631308"/>
+        <BoundingBox CRS="EPSG:31466" minx="5278495.017504933" miny="2495151.709194634" maxx="6106046.05693569" maxy="3063421.0936162383"/>
+        <BoundingBox CRS="EPSG:31467" minx="5281772.15431969" miny="3302645.193949842" maxx="6087409.390543024" maxy="3837907.821856127"/>
+        <BoundingBox CRS="EPSG:31468" minx="5273062.319430529" miny="4077323.76203983" maxx="6099998.268580958" maxy="4645155.256213534"/>
+        <BoundingBox CRS="EPSG:31469" minx="5273081.840378309" miny="4852112.347638153" maxx="6120882.705692238" maxy="5452272.412854872"/>
+        <BoundingBox CRS="EPSG:5676" minx="2495151.7091946346" miny="5278495.017504933" maxx="3063421.093616239" maxy="6106046.05693569"/>
+        <BoundingBox CRS="EPSG:5677" minx="3302645.1939498414" miny="5281772.15431969" maxx="3837907.8218561267" maxy="6087409.390543024"/>
+        <BoundingBox CRS="EPSG:5678" minx="4077323.76203983" miny="5273062.319430529" maxx="4645155.256213534" maxy="6099998.268580958"/>
+        <BoundingBox CRS="EPSG:5679" minx="4852112.347638153" miny="5273081.840378309" maxx="5452272.412854872" maxy="6120882.705692238"/>
+        <BoundingBox CRS="EPSG:4839" minx="-374975.5649163732" miny="-310260.81682212424" maxx="440453.188027386" maxy="241685.32051391783"/>
+        <BoundingBox CRS="EPSG:4258" minx="47.58626847866447" miny="5.923817959021434" maxx="54.91535828686848" maxy="14.255722806017225"/>
+        <BoundingBox CRS="EPSG:3034" minx="2331766.807640988" miny="3736504.6418466726" maxx="3116504.134060149" maxy="4264777.6581470845"/>
+        <BoundingBox CRS="EPSG:3035" minx="2725381.980080101" miny="4048378.885278925" maxx="3537514.452077273" maxy="4594593.865357885"/>
+        <BoundingBox CRS="EPSG:3044" minx="5280099.55465985" miny="302650.51102327" maxx="6085412.86048233" maxy="837696.488661349"/>
+        <BoundingBox CRS="EPSG:3045" minx="5271419.600492425" miny="-147766.58940435798" maxx="6118883.324631309" maxy="452155.78552201064"/>
+        <AuthorityURL name="BKG">
+          <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+        </AuthorityURL>
+        <Identifier authority="BKG">https://registry.gdi-de.org/id/de.bund.bkg.csw/8d1a5df8-7c9f-4bad-9d41-e074fcb35a64</Identifier>
+        <MetadataURL type="ISO19115:2003">
+          <Format>application/xml</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=f0030ce6-bba1-41da-b76f-ec0dac823687"/>
+        </MetadataURL>
+        <Style>
+          <Name>flughaefen</Name>
+          <Title>flughaefen</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=flughaefen"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>grenzuebergaenge</Name>
+        <Title>Grenzübergange</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>grenzuebergang</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>5.516143332571778</westBoundLongitude>
+          <eastBoundLongitude>15.597488261828879</eastBoundLongitude>
+          <southBoundLatitude>47.21912517714418</southBoundLatitude>
+          <northBoundLatitude>55.05482823357361</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="5.516143332571778" miny="47.21912517714418" maxx="15.597488261828879" maxy="55.05482823357361"/>
+        <BoundingBox CRS="EPSG:25832" minx="277217.46875" miny="5244678.0" maxx="923019.625" maxy="6100899.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="47.219125177144186" miny="5.516143332571778" maxx="55.054828233573616" maxy="15.597488261828879"/>
+        <BoundingBox CRS="EPSG:3857" minx="614054.2669246014" miny="5977914.5112650115" maxx="1736304.4509608524" maxy="7372514.434720744"/>
+        <BoundingBox CRS="EPSG:25833" minx="-176004.5532409905" miny="5229597.579493353" maxx="538338.425115153" maxy="6136565.526466987"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.227721746875E7" miny="5244678.000000001" maxx="3.2923019625E7" maxy="6100899.000000001"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.282399544675901E7" miny="5229597.579493353" maxx="3.3538338425115157E7" maxy="6136565.526466987"/>
+        <BoundingBox CRS="EPSG:31466" minx="5242123.218367358" miny="2469081.832537725" maxx="6125241.10100075" maxy="3150326.1413289807"/>
+        <BoundingBox CRS="EPSG:31467" minx="5246336.344688393" miny="3277201.9897587635" maxx="6102902.177048513" maxy="3923265.3662361777"/>
+        <BoundingBox CRS="EPSG:31468" minx="5234415.290009552" miny="4050480.6745321043" maxx="6116592.8690250935" maxy="4730982.9665089"/>
+        <BoundingBox CRS="EPSG:31469" minx="5231243.279406478" miny="4823863.123578038" maxx="6138571.906408329" maxy="5538489.293227223"/>
+        <BoundingBox CRS="EPSG:5676" minx="2469081.8325377256" miny="5242123.218367358" maxx="3150326.141328981" maxy="6125241.10100075"/>
+        <BoundingBox CRS="EPSG:5677" minx="3277201.989758763" miny="5246336.344688393" maxx="3923265.3662361773" maxy="6102902.177048513"/>
+        <BoundingBox CRS="EPSG:5678" minx="4050480.6745321043" miny="5234415.290009552" maxx="4730982.9665089" maxy="6116592.8690250935"/>
+        <BoundingBox CRS="EPSG:5679" minx="4823863.123578038" miny="5231243.279406478" maxx="5538489.293227223" maxy="6138571.906408329"/>
+        <BoundingBox CRS="EPSG:4839" minx="-411807.5841238299" miny="-336507.0806212231" maxx="456415.5784676279" maxy="327340.48512958275"/>
+        <BoundingBox CRS="EPSG:4258" minx="47.219125136566575" miny="5.516143332571778" maxx="55.054828199726714" maxy="15.597488261828879"/>
+        <BoundingBox CRS="EPSG:3034" minx="2296715.4196527945" miny="3711384.0759555968" maxx="3131766.250204133" maxy="4347516.495158646"/>
+        <BoundingBox CRS="EPSG:3035" minx="2689156.3816588586" miny="4022455.4900907604" maxx="3553311.594132554" maxy="4680028.179414888"/>
+        <BoundingBox CRS="EPSG:3044" minx="5244678.0" miny="277217.46875" maxx="6100899.0" maxy="923019.625"/>
+        <BoundingBox CRS="EPSG:3045" minx="5229597.579493354" miny="-176004.55324099064" maxx="6136565.526466988" maxy="538338.425115153"/>
+        <AuthorityURL name="BKG">
+          <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+        </AuthorityURL>
+        <Identifier authority="BKG">https://registry.gdi-de.org/id/de.bund.bkg.csw/8d1a5df8-7c9f-4bad-9d41-e074fcb35a64</Identifier>
+        <MetadataURL type="ISO19115:2003">
+          <Format>application/xml</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=f0030ce6-bba1-41da-b76f-ec0dac823687"/>
+        </MetadataURL>
+        <Style>
+          <Name>grenzuebergaenge</Name>
+          <Title>grenzuebergaenge</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=grenzuebergaenge"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>haltestellen</Name>
+        <Title>Haltestellen</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>haltestellen</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>5.576805203057176</westBoundLongitude>
+          <eastBoundLongitude>15.551715513266265</eastBoundLongitude>
+          <southBoundLatitude>47.20274545244817</southBoundLatitude>
+          <northBoundLatitude>55.03684575823304</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="5.576805203057176" miny="47.20274545244817" maxx="15.551715513266265" maxy="55.03684575823304"/>
+        <BoundingBox CRS="EPSG:25832" minx="281006.25" miny="5242651.0" maxx="920251.375" maxy="6098895.5"/>
+        <BoundingBox CRS="EPSG:4326" minx="47.20274545244817" miny="5.576805203057177" maxx="55.036845758233035" maxy="15.55171551326627"/>
+        <BoundingBox CRS="EPSG:3857" minx="620807.1154576035" miny="5975230.3080166625" maxx="1731209.0518986543" maxy="7369020.409717622"/>
+        <BoundingBox CRS="EPSG:25833" minx="-172365.74978777813" miny="5227793.318159993" maxx="535415.0360298795" maxy="6134234.402908665"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.228100625E7" miny="5242651.000000001" maxx="3.2920251375E7" maxy="6098895.500000001"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.2827634250212226E7" miny="5227793.318159993" maxx="3.3535415036029883E7" maxy="6134234.402908665"/>
+        <BoundingBox CRS="EPSG:31466" minx="5240243.938290803" miny="2472952.3376743337" maxx="6123114.134419406" maxy="3147629.2958684256"/>
+        <BoundingBox CRS="EPSG:31467" minx="5244308.540029549" miny="3280992.283769254" maxx="6100897.862094388" maxy="3920496.0110160816"/>
+        <BoundingBox CRS="EPSG:31468" minx="5232498.916255421" miny="4054196.817414224" maxx="6114424.279593112" maxy="4728134.5189854065"/>
+        <BoundingBox CRS="EPSG:31469" minx="5229438.287869297" miny="4827503.385904656" maxx="6136239.860489562" maxy="5535564.748396367"/>
+        <BoundingBox CRS="EPSG:5676" minx="2472952.337674334" miny="5240243.938290803" maxx="3147629.295868426" maxy="6123114.134419406"/>
+        <BoundingBox CRS="EPSG:5677" minx="3280992.2837692536" miny="5244308.540029549" maxx="3920496.011016081" maxy="6100897.862094388"/>
+        <BoundingBox CRS="EPSG:5678" minx="4054196.817414224" miny="5232498.916255421" maxx="4728134.5189854065" maxy="6114424.279593112"/>
+        <BoundingBox CRS="EPSG:5679" minx="4827503.385904656" miny="5229438.287869297" maxx="5535564.748396367" maxy="6136239.860489562"/>
+        <BoundingBox CRS="EPSG:4839" minx="-413788.98679278296" miny="-332761.1199492498" maxx="454341.9788778572" maxy="324524.8129114649"/>
+        <BoundingBox CRS="EPSG:4258" minx="47.2027454118652" miny="5.576805203057177" maxx="55.03684572436251" maxy="15.551715513266267"/>
+        <BoundingBox CRS="EPSG:3034" minx="2294783.535724103" miny="3715017.6647403957" maxx="3129786.9790750747" maxy="4344805.934379046"/>
+        <BoundingBox CRS="EPSG:3035" minx="2687160.649425711" miny="4026217.0318730366" maxx="3551262.115242805" maxy="4677234.906620329"/>
+        <BoundingBox CRS="EPSG:3044" minx="5242651.0" miny="281006.25" maxx="6098895.5" maxy="920251.375"/>
+        <BoundingBox CRS="EPSG:3045" minx="5227793.318159994" miny="-172365.74978777827" maxx="6134234.402908666" maxy="535415.0360298795"/>
+        <Style>
+          <Name>haltestellen</Name>
+          <Title>haltestellen</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=haltestellen"/>
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>25000.0</MaxScaleDenominator>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>heliports</Name>
+        <Title>Heliports</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>heliports</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.9303828331778696</westBoundLongitude>
+          <eastBoundLongitude>15.712210649877766</eastBoundLongitude>
+          <southBoundLatitude>46.891407044857935</southBoundLatitude>
+          <northBoundLatitude>55.934358230227296</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="3.9303828331778696" miny="46.891407044857935" maxx="15.712210649877766" maxy="55.934358230227296"/>
+        <BoundingBox CRS="EPSG:25832" minx="182607.265625" miny="5207938.5" maxx="920930.0625" maxy="6199084.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="46.89140704485794" miny="3.9303828331778705" maxx="55.9343582302273" maxy="15.712210649877768"/>
+        <BoundingBox CRS="EPSG:3857" minx="437528.2156119845" miny="5924366.916116495" maxx="1749075.2887810431" maxy="7545359.318563131"/>
+        <BoundingBox CRS="EPSG:25833" minx="-273708.87984202034" miny="5193205.69177699" maxx="544700.7106000386" maxy="6243026.194430136"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.2182607265625E7" miny="5207938.500000001" maxx="3.29209300625E7" maxy="6199084.000000001"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.2726291120157983E7" miny="5193205.69177699" maxx="3.354470071060004E7" maxy="6243026.194430136"/>
+        <BoundingBox CRS="EPSG:31466" minx="5201797.047276632" miny="2370365.552884012" maxx="6223518.066228714" maxy="3149653.9902100735"/>
+        <BoundingBox CRS="EPSG:31467" minx="5209581.92590357" miny="3182553.928413608" maxx="6201126.301117632" maxy="3921175.096293094"/>
+        <BoundingBox CRS="EPSG:31468" minx="5197831.588179946" miny="3954281.331269492" maxx="6218990.951937562" maxy="4733129.908257546"/>
+        <BoundingBox CRS="EPSG:31469" minx="5194836.801467717" miny="4726119.720945434" maxx="6245074.769481058" maxy="5544853.716420016"/>
+        <BoundingBox CRS="EPSG:5676" minx="2370365.5528840125" miny="5201797.047276632" maxx="3149653.990210074" maxy="6223518.066228714"/>
+        <BoundingBox CRS="EPSG:5677" minx="3182553.9284136076" miny="5209581.92590357" maxx="3921175.0962930936" maxy="6201126.301117632"/>
+        <BoundingBox CRS="EPSG:5678" minx="3954281.331269492" miny="5197831.588179946" maxx="4733129.908257546" maxy="6218990.951937562"/>
+        <BoundingBox CRS="EPSG:5679" minx="4726119.720945434" miny="5194836.801467717" maxx="5544853.716420016" maxy="6245074.769481058"/>
+        <BoundingBox CRS="EPSG:4839" minx="-448501.39022494125" miny="-432039.2415531444" maxx="556336.3824047535" maxy="327759.1741286825"/>
+        <BoundingBox CRS="EPSG:4258" minx="46.8914070041808" miny="3.93038283317787" maxx="55.934358197571505" maxy="15.71221064987777"/>
+        <BoundingBox CRS="EPSG:3034" minx="2261247.677615854" miny="3619324.599636883" maxx="3227745.2002564333" maxy="4347311.633389534"/>
+        <BoundingBox CRS="EPSG:3035" minx="2652520.052531838" miny="3927353.1288952995" maxx="3652536.334798635" maxy="4679443.345094193"/>
+        <BoundingBox CRS="EPSG:3044" minx="5207938.5" miny="182607.265625" maxx="6199084.0" maxy="920930.0625"/>
+        <BoundingBox CRS="EPSG:3045" minx="5193205.691776991" miny="-273708.8798420205" maxx="6243026.194430137" maxy="544700.7106000386"/>
+        <AuthorityURL name="BKG">
+          <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+        </AuthorityURL>
+        <Identifier authority="BKG">https://registry.gdi-de.org/id/de.bund.bkg.csw/8d1a5df8-7c9f-4bad-9d41-e074fcb35a64</Identifier>
+        <MetadataURL type="ISO19115:2003">
+          <Format>application/xml</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=f0030ce6-bba1-41da-b76f-ec0dac823687"/>
+        </MetadataURL>
+        <Style>
+          <Name>heliports</Name>
+          <Title>heliports</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=heliports"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>kilometrierungen_bab</Name>
+        <Title>Kilometrierungen BAB</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>kmbab</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>5.690815881405464</westBoundLongitude>
+          <eastBoundLongitude>15.554663511720111</eastBoundLongitude>
+          <southBoundLatitude>47.376533107461825</southBoundLatitude>
+          <northBoundLatitude>54.842429812858114</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="5.690815881405464" miny="47.376533107461825" maxx="15.554663511720111" maxy="54.842429812858114"/>
+        <BoundingBox CRS="EPSG:25832" minx="287290.1875" miny="5262215.5" maxx="922472.5625" maxy="6077257.5"/>
+        <BoundingBox CRS="EPSG:4326" minx="47.37653310746183" miny="5.690815881405464" maxx="54.84242981285811" maxy="15.55466351172011"/>
+        <BoundingBox CRS="EPSG:3857" minx="633498.7261163305" miny="6003751.892125762" maxx="1731537.221585395" maxy="7331344.812435786"/>
+        <BoundingBox CRS="EPSG:25833" minx="-164548.080592082" miny="5247086.911431205" maxx="535775.8784186979" maxy="6112051.459265088"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.22872901875E7" miny="5262215.500000001" maxx="3.29224725625E7" maxy="6077257.500000001"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.2835451919407923E7" miny="5247086.911431205" maxx="3.3535775878418703E7" maxy="6112051.459265088"/>
+        <BoundingBox CRS="EPSG:31466" minx="5260032.732601461" miny="2480156.3484070543" maxx="6101530.645532075" maxy="3149095.728378067"/>
+        <BoundingBox CRS="EPSG:31467" minx="5263880.8970425995" miny="3287278.7800830966" maxx="6079251.243379057" maxy="3922718.019417631"/>
+        <BoundingBox CRS="EPSG:31468" minx="5251937.659071528" miny="4061247.5784988003" maxx="6092495.56621757" maxy="4729424.7342053335"/>
+        <BoundingBox CRS="EPSG:31469" minx="5248739.618231416" miny="4835324.161453581" maxx="6114048.10973983" maxy="5535925.818711953"/>
+        <BoundingBox CRS="EPSG:5676" minx="2480156.348407055" miny="5260032.732601461" maxx="3149095.7283780673" maxy="6101530.645532075"/>
+        <BoundingBox CRS="EPSG:5677" minx="3287278.780083096" miny="5263880.8970425995" maxx="3922718.0194176305" maxy="6079251.243379057"/>
+        <BoundingBox CRS="EPSG:5678" minx="4061247.5784988003" miny="5251937.659071528" maxx="4729424.7342053335" maxy="6092495.56621757"/>
+        <BoundingBox CRS="EPSG:5679" minx="4835324.161453581" miny="5248739.618231416" maxx="5535925.818711953" maxy="6114048.10973983"/>
+        <BoundingBox CRS="EPSG:4839" minx="-394272.3764844763" miny="-326030.90514144104" maxx="432571.5184164929" maxy="326206.85547235527"/>
+        <BoundingBox CRS="EPSG:4258" minx="47.37653306693772" miny="5.690815881405464" maxx="54.842429778734" maxy="15.55466351172011"/>
+        <BoundingBox CRS="EPSG:3034" minx="2313655.4531000163" miny="3721387.546615529" maxx="3108776.857589097" maxy="4346567.024225688"/>
+        <BoundingBox CRS="EPSG:3035" minx="2706660.7967009703" miny="4032770.619186818" maxx="3529554.576099736" maxy="4679126.220890088"/>
+        <BoundingBox CRS="EPSG:3044" minx="5262215.5" miny="287290.1875" maxx="6077257.5" maxy="922472.5625"/>
+        <BoundingBox CRS="EPSG:3045" minx="5247086.911431206" miny="-164548.08059208214" maxx="6112051.459265089" maxy="535775.8784186979"/>
+        <AuthorityURL name="BKG">
+          <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+        </AuthorityURL>
+        <Identifier authority="BKG">https://registry.gdi-de.org/id/de.bund.bkg.csw/8d1a5df8-7c9f-4bad-9d41-e074fcb35a64</Identifier>
+        <MetadataURL type="ISO19115:2003">
+          <Format>application/xml</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=f0030ce6-bba1-41da-b76f-ec0dac823687"/>
+        </MetadataURL>
+        <Style>
+          <Name>kilometrierungen_bab</Name>
+          <Title>kilometrierungen_bab</Title>
+          <LegendURL width="165" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=kilometrierungen_bab"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>seehaefen</Name>
+        <Title>Seehäfen</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>seehaefen</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>7.118969196353243</westBoundLongitude>
+          <eastBoundLongitude>13.618770202079716</eastBoundLongitude>
+          <southBoundLatitude>53.03083830396344</southBoundLatitude>
+          <northBoundLatitude>54.801186717903796</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="7.118969196353243" miny="53.03083830396344" maxx="13.618770202079716" maxy="54.801186717903796"/>
+        <BoundingBox CRS="EPSG:25832" minx="379043.524641403" miny="5884910.15025999" maxx="797450.748605627" maxy="6072697.70882341"/>
+        <BoundingBox CRS="EPSG:4326" minx="53.03083830396344" miny="7.118969196353244" maxx="54.801186717903796" maxy="13.618770202079718"/>
+        <BoundingBox CRS="EPSG:3857" minx="792480.025911043" miny="6988704.210357594" maxx="1516034.5641261216" maxy="7323375.724600991"/>
+        <BoundingBox CRS="EPSG:25833" minx="-22239.674209641817" miny="5876843.908128085" maxx="411019.00218279293" maxy="6099597.568784574"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.2379043524641402E7" miny="5884910.150259991" maxx="3.2797450748605628E7" maxy="6072697.708823411"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.297776032579036E7" miny="5876843.908128085" maxx="3.3411019002182797E7" maxy="6099597.568784574"/>
+        <BoundingBox CRS="EPSG:31466" minx="5885967.230370965" miny="2572026.7247012104" maxx="6091580.4535400225" maxy="2998572.310382057"/>
+        <BoundingBox CRS="EPSG:31467" minx="5886824.8485171385" miny="3379068.649534644" maxx="6074688.959977804" maxy="3797643.4587685266"/>
+        <BoundingBox CRS="EPSG:31468" minx="5878575.253071688" miny="4178254.2657832406" maxx="6083994.923916047" maxy="4604428.592442095"/>
+        <BoundingBox CRS="EPSG:31469" minx="5878748.020746051" miny="4977688.618572524" maxx="6101589.382311087" maxy="5411119.304133711"/>
+        <BoundingBox CRS="EPSG:5676" minx="2572026.724701211" miny="5885967.230370965" maxx="2998572.3103820574" maxy="6091580.4535400225"/>
+        <BoundingBox CRS="EPSG:5677" minx="3379068.6495346436" miny="5886824.8485171385" maxx="3797643.458768526" maxy="6074688.959977804"/>
+        <BoundingBox CRS="EPSG:5678" minx="4178254.2657832406" miny="5878575.253071688" maxx="4604428.592442095" maxy="6083994.923916047"/>
+        <BoundingBox CRS="EPSG:5679" minx="4977688.618572524" miny="5878748.020746051" maxx="5411119.304133711" maxy="6101589.382311087"/>
+        <BoundingBox CRS="EPSG:4839" minx="229719.61511584543" miny="-221323.23768610004" maxx="426291.936761137" maxy="201141.54659524295"/>
+        <BoundingBox CRS="EPSG:4258" minx="53.030838267658474" miny="7.118969196353244" maxx="54.80118668372636" maxy="13.618770202079718"/>
+        <BoundingBox CRS="EPSG:3034" minx="2915994.8117265473" miny="3818370.4540605643" maxx="3103329.6917929114" maxy="4225649.354525404"/>
+        <BoundingBox CRS="EPSG:3035" minx="3330159.802633396" miny="4133049.0411053323" maxx="3523820.973272988" maxy="4554191.599769431"/>
+        <BoundingBox CRS="EPSG:3044" minx="5884910.15025999" miny="379043.524641403" maxx="6072697.70882341" maxy="797450.748605627"/>
+        <BoundingBox CRS="EPSG:3045" minx="5876843.908128086" miny="-22239.674209641937" maxx="6099597.568784575" maxy="411019.00218279293"/>
+        <AuthorityURL name="BKG">
+          <OnlineResource xlink:type="simple" xlink:href="https://registry.gdi-de.org/id/de.bund.bkg.csw"/>
+        </AuthorityURL>
+        <Identifier authority="BKG">https://registry.gdi-de.org/id/de.bund.bkg.csw/8d1a5df8-7c9f-4bad-9d41-e074fcb35a64</Identifier>
+        <MetadataURL type="ISO19115:2003">
+          <Format>application/xml</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://mis.bkg.bund.de/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=f0030ce6-bba1-41da-b76f-ec0dac823687"/>
+        </MetadataURL>
+        <Style>
+          <Name>seehaefen</Name>
+          <Title>seehaefen</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=seehaefen"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>traumazentren</Name>
+        <Title>Traumazentren</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>traumazentren</Keyword>
+        </KeywordList>
+        <CRS>EPSG:25832</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>5.708904569990097</westBoundLongitude>
+          <eastBoundLongitude>15.509825739592662</eastBoundLongitude>
+          <southBoundLatitude>47.33131654755817</southBoundLatitude>
+          <northBoundLatitude>54.827578927803344</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="5.708904569990097" miny="47.33131654755817" maxx="15.509825739592662" maxy="54.827578927803344"/>
+        <BoundingBox CRS="EPSG:25832" minx="288377.40625" miny="5256968.5" maxx="919715.5" maxy="6075605.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="47.331316547558174" miny="5.708904569990097" maxx="54.82757892780332" maxy="15.509825739592666"/>
+        <BoundingBox CRS="EPSG:3857" minx="635512.34971869" miny="5996322.039878291" maxx="1726545.9036238631" maxy="7328474.351739348"/>
+        <BoundingBox CRS="EPSG:25833" minx="-163867.33707768563" miny="5242078.815970544" maxx="532893.9214468725" maxy="6110305.090396091"/>
+        <BoundingBox CRS="EPSG:4647" minx="3.228837740625E7" miny="5256968.500000001" maxx="3.29197155E7" maxy="6075605.000000001"/>
+        <BoundingBox CRS="EPSG:5650" minx="3.283613266292232E7" miny="5242078.815970544" maxx="3.3532893921446875E7" maxy="6110305.090396091"/>
+        <BoundingBox CRS="EPSG:31466" minx="5254832.366270002" miny="2481313.1060212962" maxx="6099756.106366963" maxy="3146535.6324858484"/>
+        <BoundingBox CRS="EPSG:31467" minx="5258631.795882748" miny="3288366.4359880574" maxx="6077598.068461646" maxy="3919959.8682524012"/>
+        <BoundingBox CRS="EPSG:31468" minx="5246807.711772757" miny="4062133.0345281363" maxx="6090794.824737916" maxy="4726602.677195368"/>
+        <BoundingBox CRS="EPSG:31469" minx="5243729.508808589" miny="4836005.183555154" maxx="6112301.048033931" maxy="5533042.720756537"/>
+        <BoundingBox CRS="EPSG:5676" minx="2481313.1060212967" miny="5254832.366270002" maxx="3146535.632485849" maxy="6099756.106366963"/>
+        <BoundingBox CRS="EPSG:5677" minx="3288366.435988057" miny="5258631.795882748" maxx="3919959.868252401" maxy="6077598.068461646"/>
+        <BoundingBox CRS="EPSG:5678" minx="4062133.0345281363" miny="5246807.711772757" maxx="4726602.677195368" maxy="6090794.824737916"/>
+        <BoundingBox CRS="EPSG:5679" minx="4836005.183555154" miny="5243729.508808589" maxx="5533042.720756537" maxy="6112301.048033931"/>
+        <BoundingBox CRS="EPSG:4839" minx="-399471.0060028197" miny="-325060.9354994705" maxx="430897.9566052577" maxy="323412.1918811064"/>
+        <BoundingBox CRS="EPSG:4258" minx="47.33131650701831" miny="5.708904569990098" maxx="54.82757889365999" maxy="15.509825739592666"/>
+        <BoundingBox CRS="EPSG:3034" minx="2308614.9373561298" miny="3722360.6579543315" maxx="3107165.90651571" maxy="4343874.672187789"/>
+        <BoundingBox CRS="EPSG:3035" minx="2701452.1764907036" miny="4033786.063725038" maxx="3527889.073114544" maxy="4676349.6775584"/>
+        <BoundingBox CRS="EPSG:3044" minx="5256968.5" miny="288377.40625" maxx="6075605.0" maxy="919715.5"/>
+        <BoundingBox CRS="EPSG:3045" minx="5242078.815970545" miny="-163867.33707768578" maxx="6110305.090396092" maxy="532893.9214468725"/>
+        <Style>
+          <Name>traumazentren</Name>
+          <Title>traumazentren</Title>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=traumazentren"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

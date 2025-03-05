@@ -88,6 +88,7 @@ export {
 } from './src/contentTree/contentTreeCollection.js';
 export { default as ContentTreeItem } from './src/contentTree/contentTreeItem.js';
 export { default as GroupContentTreeItem } from './src/contentTree/groupContentTreeItem.js';
+export { default as WMSGroupContentTreeItem } from './src/contentTree/wmsGroupContentTreeItem.js';
 export {
   default as LayerContentTreeItem,
   setViewpointAction,
