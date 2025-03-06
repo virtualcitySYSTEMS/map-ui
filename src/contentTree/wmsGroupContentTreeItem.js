@@ -8,6 +8,7 @@ import { StateActionState } from '../actions/stateRefAction.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import WmsChildContentTreeItem from './wmsChildContentTreeItem.js';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
+import { legendSymbol } from '../legend/legendHelper.js';
 
 /**
  * @param {string} rawUrl
@@ -87,21 +88,21 @@ async function getWMSEntries(rawUrl, parameters) {
  * @param {import("../vcsUiApp.js").default} app
  * @param {WMSEntry} wmsEntry
  * @param {string} parentName
- * @param {boolean} showStyleSelector
+ * @param {boolean} hideStyleSelector
  * @returns {WmsChildContentTreeItem}
  */
 function createWMSChildContentTreeItem(
   app,
   wmsEntry,
   parentName,
-  showStyleSelector,
+  hideStyleSelector,
 ) {
   const childItem = new WmsChildContentTreeItem(
     {
       name: `${parentName}.${wmsEntry.name.replaceAll('.', '_')}`,
       wmsEntry,
       title: wmsEntry.title,
-      showStyleSelector,
+      hideStyleSelector,
     },
     app,
   );
@@ -111,11 +112,11 @@ function createWMSChildContentTreeItem(
 
 /**
  * @typedef {import('./contentTreeItem.js').ContentTreeItemOptions &
- * { layerName: string, showWhenNotSupported?: boolean, exclusiveLayers?:boolean, editableStyle?:boolean, allowedWMSLayers?:string[]}} WMSGroupContentTreeItemOptions
+ * { layerName: string, showWhenNotSupported?: boolean, setWMSLayersExclusive?:boolean, hideStyleSelector?:boolean, allowedWMSLayers?:string[]}} WMSGroupContentTreeItemOptions
  * @property {boolean} showWhenNotSupported - optional flag to show the item even if it is not supported by the activeMap.
  * @property {string} layerName - The name of the WMSLayer to show the children of.
  * @property {boolean} [setWMSLayersExclusive=false] - Whether the WMSlayers are mutually exclusive.
- * @property {boolean} [showStyleSelector=true] - Whether the layer style can be selected. Will add a StyleSelector action to compatible items if the Layer has more than one style.
+ * @property {boolean} [hideStyleSelector=false] - Whether the layer style can be selected. Will add a StyleSelector action to compatible items if the Layer has more than one style.
  * @property {string[]} allowedWMSLayers - The list of layers to be shown, other available layers will not be shown.
  */
 
@@ -185,7 +186,7 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
      * @type {boolean}
      * @private
      */
-    this._showStyleSelector = parseBoolean(options.showStyleSelector, true);
+    this._hideStyleSelector = parseBoolean(options.hideStyleSelector, false);
 
     this.state = this._setWMSLayersExclusive
       ? StateActionState.NONE
@@ -327,9 +328,9 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
         .flat()
         .filter((l) => l);
       if (legend.length > 0) {
-        this._layer.properties.legend = legend;
+        this._layer[legendSymbol] = legend;
       } else {
-        this._layer.properties.legend = undefined;
+        delete this._layer[legendSymbol];
       }
     }
     this._pauseStateChangedListener = true;
@@ -531,7 +532,7 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
             this._app,
             wmsEntry,
             this.name,
-            this._showStyleSelector,
+            this._hideStyleSelector,
           );
         });
         childItems.forEach((childItem) => {
@@ -594,8 +595,8 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
     if (this._setWMSLayersExclusive) {
       config.setWMSLayersExclusive = this._setWMSLayersExclusive;
     }
-    if (!this._showStyleSelector) {
-      config.showStyleSelector = this._showStyleSelector;
+    if (this._hideStyleSelector) {
+      config.hideStyleSelector = this._hideStyleSelector;
     }
     if (this._allowedWMSLayers?.length > 0) {
       config.allowedWMSLayers = this._allowedWMSLayers;

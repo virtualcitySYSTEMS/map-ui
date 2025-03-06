@@ -1,3 +1,8 @@
+# 6.1.1
+
+- fixed a bug in the wmsGroupContentTreeItem, renamed property showStyleSelector to hideStyleSelector
+- added `legendSymbol` to set a volatile legend on a layer, style or vectorclusterGroup
+
 # 6.1.0
 
 ### Highlights

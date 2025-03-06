@@ -13,7 +13,7 @@ import { vcsAppSymbol } from '../pluginHelper.js';
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions &
  * { wmsEntry:import("./wmsGroupContentTreeItem.js").WMSEntry }} WMSChildItemOptions
  * @property {import("./wmsGroupContentTreeItem.js").WMSEntry} wmsEntry - the wmsEntry
- * @property {boolean} showStyleSelector - show the style selector
+ * @property {boolean} hideStyleSelector - hides the style selector
  */
 
 /**
@@ -71,7 +71,7 @@ class WmsChildContentTreeItem extends ContentTreeItem {
     this._destroyStyleAction = () => {};
 
     this._setExtentAction(this._wmsEntry.extent);
-    if (options.showStyleSelector) {
+    if (!options.hideStyleSelector) {
       this._setStyleAction();
     }
   }

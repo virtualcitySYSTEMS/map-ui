@@ -2,6 +2,12 @@ import { getShapeFromOptions } from '@vcmap/core';
 import { reactive } from 'vue';
 
 /**
+ * Symbol set a volatile legend property on a layer or style
+ * @type {symbol}
+ */
+export const legendSymbol = Symbol('legend');
+
+/**
  * @enum {string}
  * @property {string} Image - an image
  * @property {string} IFRAME - an iframe
@@ -110,6 +116,26 @@ export function getImageSrcFromShape(image) {
  */
 
 /**
+ * @param {import("@vcmap/core").StyleItem|undefined} style
+ * @returns {Array<LegendItem>|undefined}
+ */
+export function getStyleLegend(style) {
+  return style?.[legendSymbol] ?? style?.properties?.legend;
+}
+
+/**
+ * @param {import("@vcmap/core").Layer|undefined} layer
+ * @returns {Array<LegendItem>|undefined}
+ */
+export function getLayerLegend(layer) {
+  return (
+    getStyleLegend(layer?.style) ??
+    layer?.[legendSymbol] ??
+    layer?.properties?.legend
+  );
+}
+
+/**
  *
  * @param {import("../vcsUiApp.js").default} app
  * @returns {{entries: import("vue").UnwrapRef<Array<LegendEntry>>, destroy: function():void }}
@@ -149,8 +175,7 @@ export function getLegendEntries(app) {
     if (layer.active && layer.isSupported(app.maps.activeMap)) {
       const key = layer.name;
       const title = layer.properties.title || layer.name;
-      const legend =
-        layer.style?.properties?.legend ?? layer.properties?.legend;
+      const legend = getLayerLegend(layer);
       if (legend) {
         const legendEntry = { key, title, legend, open: true };
         entries.unshift(legendEntry);
@@ -186,7 +211,7 @@ export function getLegendEntries(app) {
     const uniqueVectorClusterGroups = [...new Set(vectorClusterGroups)];
     uniqueVectorClusterGroups.forEach((groupName) => {
       const group = app.vectorClusterGroups.getByKey(groupName);
-      if (group?.properties?.legend) {
+      if (group?.[legendSymbol] ?? group?.properties?.legend) {
         const title = group.properties.title || group.name;
         const { legend } = group.properties;
         if (!entries.some(({ key }) => key === group.name)) {

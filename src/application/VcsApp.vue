@@ -90,7 +90,11 @@
     isMobileLandscape,
   } from '../vuePlugins/vuetify.js';
   import VcsLegend from '../legend/VcsLegend.vue';
-  import { getLegendEntries } from '../legend/legendHelper.js';
+  import {
+    getLayerLegend,
+    getLegendEntries,
+    getStyleLegend,
+  } from '../legend/legendHelper.js';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsObliqueFooter from './VcsObliqueFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
@@ -280,9 +284,32 @@
         );
       }
     };
+
+    /**
+     * Handles legend button and window.
+     * Adds a button, if legend definitions are available or removes legend otherwise.
+     */
+    const handleLegend = () => {
+      const layersWithLegend = [...app.layers].filter((layer) =>
+        getLayerLegend(layer),
+      );
+      const stylesWithLegend = [...app.styles].filter((style) =>
+        getStyleLegend(style),
+      );
+      if (layersWithLegend < 1 && stylesWithLegend < 1) {
+        app.navbarManager.remove(legendComponentId);
+        app.windowManager.remove(legendComponentId);
+      } else {
+        addLegend();
+      }
+    };
+
     const { xs } = useDisplay();
     let currentEntryLength = entries.length;
     const watchEntries = watch(entries, (newValue) => {
+      if (newValue.length > currentEntryLength) {
+        handleLegend();
+      }
       if (
         app.uiConfig.config.openLegendOnAdd &&
         newValue.length > currentEntryLength &&
@@ -309,34 +336,16 @@
       currentEntryLength = newValue.length;
     });
 
-    /**
-     * Handles legend button and window.
-     * Adds a button, if legend definitions are available or removes legend otherwise.
-     */
-    const handleLegend = () => {
-      const layersWithLegend = [...app.layers].filter(
-        (layer) => layer.style?.properties?.legend ?? layer.properties?.legend,
-      );
-      const stylesWithLegend = [...app.styles].filter(
-        (style) => style?.properties?.legend,
-      );
-      if (layersWithLegend < 1 && stylesWithLegend < 1) {
-        app.navbarManager.remove(legendComponentId);
-        app.windowManager.remove(legendComponentId);
-      } else {
-        addLegend();
-      }
-    };
     handleLegend();
 
     const listeners = [
       app.layers.added.addEventListener((layer) => {
-        if (layer.style?.properties?.legend ?? layer.properties?.legend) {
+        if (getLayerLegend(layer)) {
           addLegend();
         }
       }),
       app.styles.added.addEventListener((style) => {
-        if (style?.properties?.legend) {
+        if (getStyleLegend(style)) {
           addLegend();
         }
       }),
