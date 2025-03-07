@@ -149,12 +149,17 @@
             suggesting.value = requestId;
             queryPreSuggestion = trimmedInput;
             selectedSuggestion.value = -1;
-            app.search.suggest(trimmedInput).then((s) => {
-              if (suggesting.value === requestId) {
-                suggestions.value = s;
-                suggesting.value = '';
-              }
-            });
+            app.search
+              .suggest(trimmedInput)
+              .then((s) => {
+                if (suggesting.value === requestId) {
+                  suggestions.value = s;
+                  suggesting.value = '';
+                }
+              })
+              .catch(() => {
+                getLogger('SearchComponent.vue').warn('suggestion failed');
+              });
           }, 200);
         } else {
           selectedSuggestion.value = -1;

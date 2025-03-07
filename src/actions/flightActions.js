@@ -1,5 +1,6 @@
 import { reactive } from 'vue';
 import { check, maybe, ofEnum } from '@vcsuite/check';
+import { getLogger } from '@vcsuite/logger';
 import {
   createFlightVisualization,
   exportFlightAsGeoJson,
@@ -378,7 +379,10 @@ export async function createFlightVisualizationAction(
       if (this.active) {
         flightVis.deactivate();
       } else {
-        await flightVis.activate();
+        flightVis.activate().catch(() => {
+          getLogger('flightActions').warn('Failed to activate layer');
+          this.active = false;
+        });
       }
       this.active = !this.active;
     },

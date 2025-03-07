@@ -20,6 +20,7 @@ import { fromExtent } from 'ol/geom/Polygon.js';
 import { createOrUpdateFromCoordinates } from 'ol/extent.js';
 import { Polygon } from 'ol/geom.js';
 import { unByKey } from 'ol/Observable.js';
+import { getLogger } from '@vcsuite/logger';
 
 /**
  * @param {import("@src/vcsUiApp.js").default} app
@@ -52,9 +53,12 @@ export function createLayerToggleAction(layer, disabled) {
     icon: '$vcsEye',
     active: false,
     disabled,
-    async callback() {
+    callback() {
       if (!this.active) {
-        await layer.activate();
+        layer.activate().catch(() => {
+          getLogger('extentActions').warn('Failed to activate layer');
+          this.title = 'components.extent.show';
+        });
         this.title = 'components.extent.hide';
       } else {
         layer.deactivate();
@@ -96,7 +100,11 @@ export function createExtentFeatureAction(
     callback() {
       if (!this.active) {
         this.active = true;
-        layer.activate();
+        layer.activate().catch(() => {
+          getLogger('extentActions').warn('Failed to activate layer');
+          session?.stop();
+          this.active = false;
+        });
         const feature = layer.getFeatureById(featureId);
         layer.removeFeaturesById([featureId]);
         session = startCreateFeatureSession(app, layer, GeometryType.BBox);
@@ -176,7 +184,7 @@ function setupTranslateAction(
     title: 'components.extent.translate',
     icon: 'mdi-axis-arrow',
     active: false,
-    async callback() {
+    callback() {
       if (session) {
         session.stop();
       } else {
@@ -189,7 +197,10 @@ function setupTranslateAction(
               suspendFeatureUpdate.value = false;
             });
           });
-          await layer.activate();
+          layer.activate().catch(() => {
+            getLogger('extentActions').warn('Failed to activate layer');
+            session?.stop();
+          });
           session = startEditFeaturesSession(app, layer);
           session.stopped.addEventListener(() => {
             action.active = false;
@@ -246,7 +257,10 @@ function setupVertexAction(
               suspendFeatureUpdate.value = false;
             });
           });
-          await layer.activate();
+          layer.activate().catch(() => {
+            getLogger('extentActions').warn('Failed to activate layer');
+            session?.stop();
+          });
           session = startEditGeometrySession(app, layer);
           session.stopped.addEventListener(() => {
             action.active = false;

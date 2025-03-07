@@ -234,9 +234,15 @@ export function createOverviewMapAction(
   );
 
   const listeners = [
-    windowManager.added.addEventListener(async ({ id }) => {
+    windowManager.added.addEventListener(({ id }) => {
       if (id === windowComponent.id) {
-        await overviewMap.activate();
+        overviewMap.activate().catch((e) => {
+          getLogger('createOverviewMapAction').error(
+            'failed to activate overview map',
+            e,
+          );
+          windowManager.remove(windowComponent.id);
+        });
       }
     }),
     windowManager.removed.addEventListener(({ id }) => {

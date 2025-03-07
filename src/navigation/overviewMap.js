@@ -276,7 +276,7 @@ class OverviewMap {
         if (activeOnStartup && !hide && !this._active) {
           await this.activate();
         } else if (hide && this._active) {
-          await this.deactivate();
+          this.deactivate();
         }
         if (scaleFactor) {
           this._scaleFactor = scaleFactor;

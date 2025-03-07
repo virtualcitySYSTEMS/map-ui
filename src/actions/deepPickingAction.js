@@ -21,6 +21,7 @@ import { Point, LineString } from 'ol/geom.js';
 import { Icon } from 'ol/style.js';
 import { Cartesian3, Ray } from '@vcmap-cesium/engine';
 import { watch } from 'vue';
+import { getLogger } from '@vcsuite/logger';
 import { getColorByKey } from '../vuePlugins/vuetify.js';
 import ClusterFeatureComponent from '../featureInfo/ClusterFeatureComponent.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
@@ -54,7 +55,11 @@ export function setupDeepPickingLayer(app) {
   });
   markVolatile(layer);
   app.layers.add(layer);
-  layer.activate();
+  layer.activate().catch(() => {
+    getLogger('deepPickingAction').error(
+      'Could not activate deep picking layer',
+    );
+  });
 
   const style = new VectorStyleItem({
     image: {

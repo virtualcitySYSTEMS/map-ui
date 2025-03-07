@@ -33,6 +33,7 @@
 <script>
   import { watch } from 'vue';
   import { useDisplay } from 'vuetify';
+  import { getLogger } from '@vcsuite/logger';
   import {
     useProxiedAtomicModel,
     useProxiedComplexModel,
@@ -144,7 +145,15 @@
         itemClicked(item, event) {
           if (item?.clickable) {
             if (item?.clicked && !item?.disabled) {
-              item.clicked(event);
+              const p = item.clicked(event);
+              if (p instanceof Promise) {
+                p.catch((e) => {
+                  getLogger('VcsTreeview.vue').error(
+                    `Tree view item failed to click ${item.name}`,
+                    e,
+                  );
+                });
+              }
             }
           } else if (
             (props.openOnClick ?? false) !== false &&
