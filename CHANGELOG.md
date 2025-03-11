@@ -3,6 +3,8 @@
 - fixed a bug in the wmsGroupContentTreeItem, renamed property showStyleSelector to hideStyleSelector
 - added `legendSymbol` to set a volatile legend on a layer, style or vectorclusterGroup
 - fix bug in `WindowManager` when removing all windows of an owner
+- added @vcmap/gamepad plugin
+- added @vcmap/sensorthings plugin
 
 # 6.1.0
 
@@ -49,10 +51,15 @@ The VCMap Featureinfo API now supports showing several `Features` which may be c
 On the map, the user can use the right mouse and select `Whats here?` to pick all active layers at the given location.
 WMSlayer with getFeatureInfo where the service provides more than one feature, the user can now see all provided features.
 
+#### Sensorthings
+
+A new plugin @vcmap/sensorthings is available. The plugin allows to show sensor data from a sensorthings server on the map.
+
 ### Plugins
 
 - New pointcloud-settings plugin to show a window in map to change the pointsize and further pointcloud settings.
 - New list-view plugin which can be used to show a list of all Vector Features for example of a POI Layer.
+- New gamepad plugin to control the map with a gamepad or spacemouse.
 
 ### Changes
 
