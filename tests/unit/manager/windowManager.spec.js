@@ -574,6 +574,17 @@ describe('windowManager', () => {
       expect(windowManager.has(window2.id)).to.be.true;
       expect(windowManager.externalZIndexIds).to.not.include('external');
     });
+
+    it('should remove parent and child windows of supplied owner', () => {
+      const child = windowManager.add(
+        { slot: WindowSlot.DYNAMIC_CHILD, parentId: window1.id },
+        'plugin',
+      );
+      windowManager.removeOwner('plugin');
+      expect(windowManager.has(child.id)).to.be.false;
+      expect(windowManager.has(window1.id)).to.be.false;
+      expect(windowManager.has(window2.id)).to.be.true;
+    });
   });
 
   describe('pin window', () => {

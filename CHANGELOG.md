@@ -2,6 +2,7 @@
 
 - fixed a bug in the wmsGroupContentTreeItem, renamed property showStyleSelector to hideStyleSelector
 - added `legendSymbol` to set a volatile legend on a layer, style or vectorclusterGroup
+- fix bug in `WindowManager` when removing all windows of an owner
 
 # 6.1.0
 

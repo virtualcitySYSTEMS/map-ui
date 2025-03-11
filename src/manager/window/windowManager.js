@@ -746,12 +746,11 @@ class WindowManager {
    * @param {string|vcsAppSymbol} owner
    */
   removeOwner(owner) {
-    const componentIds = [...this.componentIds];
-    componentIds.forEach((id) => {
-      const { state } = this.get(id);
-      if (owner === state.owner) {
-        this.remove(id);
-      }
+    const toRemove = this.componentIds.filter(
+      (id) => this.get(id)?.state?.owner === owner,
+    );
+    toRemove.forEach((id) => {
+      this.remove(id);
     });
     this._externalZIndexIds.forEach((externalOwner, id) => {
       if (externalOwner === owner) {
