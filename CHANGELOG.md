@@ -1,3 +1,7 @@
+# 6.1.3
+
+- fixed a bug in the ContentTree, where the `initOpen` property was not respected.
+
 # 6.1.2
 
 - updated @vcmap/core to fix pickPosition Bug

@@ -8,6 +8,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
 import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.js';
+import DeactivateLayersCallback from '../../../src/callback/deactivateLayersCallback.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
 import { sleep } from '../../helpers.js';
 
@@ -280,7 +281,7 @@ describe('LayerContentTreeItem', () => {
           ],
           onDeactivate: [
             {
-              type: 'DeaactivateLayersCallback',
+              type: 'DeactivateLayersCallback',
               layerNames: ['layerToDeactivate'],
             },
           ],
@@ -292,6 +293,15 @@ describe('LayerContentTreeItem', () => {
         ApplyLayerStyleCallback.className,
         ApplyLayerStyleCallback,
       );
+      app.callbackClassRegistry.registerClass(
+        app.dynamicModuleId,
+        DeactivateLayersCallback.className,
+        DeactivateLayersCallback,
+      );
+    });
+
+    afterAll(() => {
+      app.destroy();
     });
 
     it('should execute all onActivate callbacks on activation', async () => {
@@ -303,15 +313,16 @@ describe('LayerContentTreeItem', () => {
     });
 
     it('should execute all onDeactivate callbacks on deactivation', async () => {
-      const layerToDeactivate = new VectorLayer({});
+      const layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
       await layerToDeactivate.activate();
-      app.layers.add(layer);
+      app.layers.add(layerToDeactivate);
       expect(item).to.have.property('state', StateActionState.ACTIVE);
       expect(layer).to.have.property('active', true);
       await item.clicked();
       await sleep(0);
       expect(item).to.have.property('state', StateActionState.INACTIVE);
       expect(layer).to.have.property('active', false);
+      expect(layerToDeactivate).to.have.property('active', false);
     });
   });
 

@@ -101,7 +101,10 @@ class ContentTreeCollection extends IndexedCollection {
         );
         if (child.initOpen) {
           const subTreeId = this._getSubtreeIdForItem(child);
-          this.getTreeOpenState(subTreeId).push(child.name);
+          const openState = this.getTreeOpenState(subTreeId);
+          if (!openState.includes(child.name)) {
+            openState.push(child.name);
+          }
         }
       }),
       this.removed.addEventListener((child) => {
@@ -405,7 +408,9 @@ class ContentTreeCollection extends IndexedCollection {
     const subTree = this._getSubTree(id);
     if (subTree) {
       if (!subTree[subTreeOpenStateSymbol]) {
-        subTree[subTreeOpenStateSymbol] = [];
+        subTree[subTreeOpenStateSymbol] = this.getChildrenForSubTree(id)
+          .filter((c) => c.initOpen)
+          .map((c) => c.name);
       }
       return subTree[subTreeOpenStateSymbol];
     }
