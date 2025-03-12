@@ -1,3 +1,7 @@
+# 6.1.2
+
+- updated @vcmap/core to fix pickPosition Bug
+
 # 6.1.1
 
 - fixed a bug in the wmsGroupContentTreeItem, renamed property showStyleSelector to hideStyleSelector
