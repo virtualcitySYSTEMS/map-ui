@@ -132,21 +132,15 @@ function getFeaturesFromOlMap(map, pixel, hitTolerance, drill) {
  * Retrieves features from a Cesium scene at a given window position.
  * @param {import("@vcmap-cesium/engine").Scene} scene
  * @param {import("@vcmap-cesium/engine").Ray} ray
- * @param {number} hitTolerance
  * @param {number} drill
  * @returns {Promise<{ features: import("@vcmap/core").EventFeature[], minZ: number }>}
  */
-async function getFeaturesFromScene(scene, ray, hitTolerance, drill) {
+async function getFeaturesFromScene(scene, ray, drill) {
   const { depthTestAgainstTerrain } = scene.globe;
   scene.globe.depthTestAgainstTerrain = false;
 
   let minZ = 0;
-  const objects = await scene.drillPickFromRay(
-    ray,
-    drill,
-    undefined,
-    hitTolerance,
-  );
+  const objects = await scene.drillPickFromRay(ray, drill);
 
   scene.globe.depthTestAgainstTerrain = depthTestAgainstTerrain;
 
@@ -213,12 +207,7 @@ async function getDeepPickingFeatures(
     );
     const ray = new Ray(origin, direction);
 
-    ({ features, minZ } = await getFeaturesFromScene(
-      scene,
-      ray,
-      hitTolerance,
-      drillLimit,
-    ));
+    ({ features, minZ } = await getFeaturesFromScene(scene, ray, drillLimit));
   }
 
   if (

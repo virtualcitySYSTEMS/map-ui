@@ -1,6 +1,7 @@
 # 6.1.4
 
 - fixed a bug in the FillSelector, where a pasted color would not be taken into account.
+- fixed a bug in `Whats here` functionality where the hitTolerance was a bit large
 
 # 6.1.3
 
