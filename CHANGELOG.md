@@ -2,6 +2,7 @@
 
 - fixed a bug in the FillSelector, where a pasted color would not be taken into account.
 - fixed a bug in `Whats here` functionality where the hitTolerance was a bit large
+- updated @vcmap/core to fix a bug in the vectorClusterGroup and layerCollection handling
 
 # 6.1.3
 
