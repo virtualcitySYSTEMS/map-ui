@@ -1,3 +1,7 @@
+# 6.1.4
+
+- fixed a bug in the FillSelector, where a pasted color would not be taken into account.
+
 # 6.1.3
 
 - fixed a bug in the ContentTree, where the `initOpen` property was not respected.
