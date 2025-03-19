@@ -1,3 +1,7 @@
+# 6.1.5
+
+- fixed a bug where the uiConfig option showLocator was not reactive.
+
 # 6.1.4
 
 - fixed a bug in the FillSelector, where a pasted color would not be taken into account.
