@@ -278,6 +278,7 @@ export function createVcsVuetify(i18n) {
       },
       VTooltip: {
         openOnHover: allowTooltip,
+        maxWidth: 480,
       },
     },
     defaultAssets: {

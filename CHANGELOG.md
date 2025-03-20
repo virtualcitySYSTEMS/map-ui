@@ -1,6 +1,7 @@
 # 6.1.5
 
 - fixed a bug where the uiConfig option showLocator was not reactive.
+- added a default `maxWidth` to tooltips
 
 # 6.1.4
 
