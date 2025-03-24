@@ -1,6 +1,7 @@
 # 6.1.5
 
 - fixed a bug where the uiConfig option showLocator was not reactive.
+- fixed a bug in the ContentTree where a WMSChildItem could be enabled even though its parent is disabled
 - added a default `maxWidth` to tooltips
 
 # 6.1.4

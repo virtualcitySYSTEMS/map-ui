@@ -537,6 +537,7 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
         });
         childItems.forEach((childItem) => {
           this._app.contentTree.add(childItem);
+          childItem.disabled = this.disabled;
           this._listeners.push(
             childItem.clickedEvent.addEventListener(() => {
               this._handleChildClickedEvent(childItem);
