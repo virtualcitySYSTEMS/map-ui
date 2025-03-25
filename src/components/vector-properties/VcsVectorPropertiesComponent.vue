@@ -474,7 +474,7 @@
   </VcsFormSection>
 </template>
 <script>
-  import { computed } from 'vue';
+  import { computed, toRaw } from 'vue';
   import { VContainer, VRow, VCol, VDivider } from 'vuetify/components';
   import { VectorProperties } from '@vcmap/core';
   import {
@@ -744,7 +744,7 @@
                 title: 'components.style.reset',
                 icon: '$vcsReturn',
                 callback: () => {
-                  localValue.value = props.valueDefault;
+                  localValue.value = structuredClone(toRaw(props.valueDefault));
                 },
               },
             ]

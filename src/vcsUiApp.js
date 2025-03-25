@@ -656,7 +656,13 @@ class VcsUiApp extends VcsApp {
         const layer = this.layers.getByKey(layerState.name);
         if (layer) {
           if (layerState.active) {
-            layer.activate();
+            layer.activate().catch((e) => {
+              getLogger().warn(
+                'Failed to activate cached app state. layer failed: ',
+                layer.name,
+              );
+              getLogger().error(e);
+            });
           } else {
             layer.deactivate();
           }

@@ -206,8 +206,23 @@ indexHTMLContent = indexHTMLContent.replace(
   /<link[^>]*href=".*materialdesignicons\.min\.css"[^>]*>/,
   '',
 );
-// replace @vcmap/ui with './assets/ui.js'
-indexHTMLContent = indexHTMLContent.replace(/@vcmap\/ui/, './assets/ui.js');
+
+// replace @vcmap/ui with './assets/ui.js' and outsource to start.js
+// We do not want to have a script tag in the index.html, because of CSP Policies.
+// see https://content-security-policy.com/unsafe-inline/
+const scriptRegex = /<script type="module">([\s\S]*?)<\/script>/;
+const match = indexHTMLContent.match(scriptRegex);
+if (match && match[1]) {
+  let scriptContent = match[1].trim();
+  scriptContent = scriptContent.replace(/@vcmap\/ui/, './ui.js');
+  await writeFile(path.join(assetsFolder, 'start.js'), scriptContent, {
+    encoding: 'utf8',
+  });
+  indexHTMLContent = indexHTMLContent.replace(
+    scriptRegex,
+    '<script src="./assets/start.js" type="module"></script>',
+  );
+}
 await writeFile(path.join(distFolder, 'index.html'), indexHTMLContent, {
   encoding: 'utf8',
 });
@@ -215,7 +230,7 @@ const htaccessContent = `
     <FilesMatch "-[\\w\\d]{8}\\.(js|css)$">
         Header set Cache-Control "public, max-age=31540000, immutable"
     </FilesMatch>
-    <FilesMatch "(index\\.html|config\\.json|ui\\.js|vue\\.js|vuetify\\.js|ol\\.js|cesium\\.js|core\\.js)$">
+    <FilesMatch "(index\\.html|start\\.js|ui\\.js|vue\\.js|vuetify\\.js|ol\\.js|cesium\\.js|core\\.js)$">
         Header set Cache-Control "no-store, max-age=0"
     </FilesMatch>
 `;

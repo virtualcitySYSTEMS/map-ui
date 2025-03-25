@@ -42,14 +42,14 @@ await tar.u(
   ['.'],
 );
 
-await new Promise((res, rej) => {
+await new Promise((resolve, reject) => {
   pipeline(
     [createReadStream(file), createGzip(), createWriteStream(`${file}.gz`)],
     (err) => {
       if (err) {
-        rej(err);
+        reject(err);
       } else {
-        res();
+        resolve();
       }
     },
   );

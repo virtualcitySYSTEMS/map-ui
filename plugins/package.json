@@ -25,7 +25,9 @@
     "@vcmap/layer-slider": "^2.0.0",
     "@vcmap/vcs-solar-balloon": "^2.0.0",
     "@vcmap/list-view": "^1.0.0",
-    "@vcmap/pointcloud-settings": "^1.0.0"
+    "@vcmap/pointcloud-settings": "^1.0.0",
+    "@vcmap/gamepad": "^1.0.0",
+    "@vcmap/sensorthings": "^1.0.0"
   },
   "optionalDependencies": {
     "@vcmap/planning": "^6.0.0"

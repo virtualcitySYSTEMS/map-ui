@@ -1,3 +1,4 @@
+import { getLogger } from '@vcsuite/logger';
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
@@ -34,7 +35,14 @@ class ActivateLayersCallback extends VcsCallback {
     this._layerNames
       .map((n) => this._app.layers.getByKey(n))
       .filter((l) => l)
-      .forEach((l) => l.activate());
+      .forEach((l) =>
+        l.activate().catch((e) => {
+          getLogger('ActivateLayersCallback').error(
+            `Could not activate layer: ${l.name}`,
+            e,
+          );
+        }),
+      );
   }
 
   /**

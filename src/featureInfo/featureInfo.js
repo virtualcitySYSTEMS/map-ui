@@ -613,7 +613,9 @@ class FeatureInfo extends Collection {
       });
       markVolatile(this._scratchLayer);
       this._app.layers.add(this._scratchLayer);
-      this._scratchLayer.activate();
+      this._scratchLayer.activate().catch((e) => {
+        getLogger('FeatureInfo').error('Failed to activate scratch layer', e);
+      });
     }
   }
 

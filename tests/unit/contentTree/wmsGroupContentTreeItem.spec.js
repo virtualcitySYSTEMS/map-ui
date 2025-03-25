@@ -6,6 +6,7 @@ import { WMSLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import { legendSymbol } from '../../../src/legend/legendHelper.js';
 
 async function getWMSPoiXML() {
   const wmsPOIXML = await fs.promises.readFile('./tests/data/wms_poi_open.xml');
@@ -173,7 +174,7 @@ describe('WMSGroupContentTreeItem', async () => {
         expect(layer.parameters.STYLES).to.equal('');
       });
       it('should set the legend on the layer', () => {
-        expect(layer.properties.legend).to.be.undefined;
+        expect(layer[legendSymbol]).to.be.undefined;
       });
       it('should set the layer state', () => {
         expect(layer.active).to.be.false;
@@ -205,7 +206,7 @@ describe('WMSGroupContentTreeItem', async () => {
         );
       });
       it('should set the legend on the layer', () => {
-        expect(layer.properties.legend).to.not.be.undefined;
+        expect(layer[legendSymbol]).to.not.be.undefined;
       });
       it('should set the layer state', () => {
         expect(layer.active).to.be.true;

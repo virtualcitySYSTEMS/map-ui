@@ -21,6 +21,7 @@ import { Point, LineString } from 'ol/geom.js';
 import { Icon } from 'ol/style.js';
 import { Cartesian3, Ray } from '@vcmap-cesium/engine';
 import { watch } from 'vue';
+import { getLogger } from '@vcsuite/logger';
 import { getColorByKey } from '../vuePlugins/vuetify.js';
 import ClusterFeatureComponent from '../featureInfo/ClusterFeatureComponent.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
@@ -54,7 +55,11 @@ export function setupDeepPickingLayer(app) {
   });
   markVolatile(layer);
   app.layers.add(layer);
-  layer.activate();
+  layer.activate().catch(() => {
+    getLogger('deepPickingAction').error(
+      'Could not activate deep picking layer',
+    );
+  });
 
   const style = new VectorStyleItem({
     image: {
@@ -127,21 +132,15 @@ function getFeaturesFromOlMap(map, pixel, hitTolerance, drill) {
  * Retrieves features from a Cesium scene at a given window position.
  * @param {import("@vcmap-cesium/engine").Scene} scene
  * @param {import("@vcmap-cesium/engine").Ray} ray
- * @param {number} hitTolerance
  * @param {number} drill
  * @returns {Promise<{ features: import("@vcmap/core").EventFeature[], minZ: number }>}
  */
-async function getFeaturesFromScene(scene, ray, hitTolerance, drill) {
+async function getFeaturesFromScene(scene, ray, drill) {
   const { depthTestAgainstTerrain } = scene.globe;
   scene.globe.depthTestAgainstTerrain = false;
 
   let minZ = 0;
-  const objects = await scene.drillPickFromRay(
-    ray,
-    drill,
-    undefined,
-    hitTolerance,
-  );
+  const objects = await scene.drillPickFromRay(ray, drill);
 
   scene.globe.depthTestAgainstTerrain = depthTestAgainstTerrain;
 
@@ -208,12 +207,7 @@ async function getDeepPickingFeatures(
     );
     const ray = new Ray(origin, direction);
 
-    ({ features, minZ } = await getFeaturesFromScene(
-      scene,
-      ray,
-      hitTolerance,
-      drillLimit,
-    ));
+    ({ features, minZ } = await getFeaturesFromScene(scene, ray, drillLimit));
   }
 
   if (

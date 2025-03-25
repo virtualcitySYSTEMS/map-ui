@@ -105,6 +105,23 @@ Example:
 }
 ```
 
+#### Dynamically add a volatile legend to an object
+
+To add a volatile legend to a `Layer`, `StyleItem` or `VectorClusterGroup`, you can use the `legendSymbol`.
+This will override any configured legend in the `properties` bag. A legend configured on a style takes precedence over a
+symbol on the layer.
+
+```javascript
+import { legendSymbol } from '@vcmap/ui';
+layer[legendSymbol] = [
+  {
+    type: 'ImageLegendItem',
+    src: 'https://myUrl/someImage.png',
+  },
+];
+layer.stateChanged.raiseEvent(layer.state); // necessary to trigger a legend rerender
+```
+
 ### LegendItems
 
 Each LegendItem must provide a type. The type determines the rendering of an item.

@@ -1,3 +1,4 @@
+import { getLogger } from '@vcsuite/logger';
 import { parseBoolean } from '@vcsuite/parsers';
 import ContentTreeItem, {
   contentTreeClassRegistry,
@@ -184,7 +185,16 @@ class LayerGroupContentTreeItem extends ContentTreeItem {
     const layers = this._layers;
     const activate = layers.some((l) => !(l.active || l.loading));
     if (activate) {
-      await Promise.all(layers.map((l) => l.activate()));
+      await Promise.all(
+        layers.map((l) =>
+          l.activate().catch((e) => {
+            getLogger('LayerGroupContentTreeItem').error(
+              `Could not activate layer ${l.name}`,
+              e,
+            );
+          }),
+        ),
+      );
       executeCallbacks(this._app, this._onActivate);
     } else {
       layers.forEach((l) => {

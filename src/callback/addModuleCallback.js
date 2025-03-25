@@ -36,8 +36,9 @@ class AddModuleCallback extends VcsCallback {
     createModuleFromObjectOrUrl(this._module)
       .then((module) => {
         if (module) {
-          this._app.addModule(module);
+          return this._app.addModule(module);
         }
+        return undefined;
       })
       .catch((e) => {
         getLogger('addModuleCallback').error('Error adding module', e);

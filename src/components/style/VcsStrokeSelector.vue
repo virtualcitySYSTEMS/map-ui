@@ -49,7 +49,7 @@
    * @vue-prop {import("ol/style/Stroke").Options} [modelValue] - The Stroke Options
    */
   export default {
-    name: 'VcsFillSelector',
+    name: 'VcsStrokeSelector',
     components: {
       VSheet,
       VColorPicker,
@@ -81,6 +81,7 @@
           },
         }),
         updateColor(rgba) {
+          // Ensures alpha is not null, e.g. when the color is set by the user by pastying a color code.
           localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a ?? 1];
         },
         cid,

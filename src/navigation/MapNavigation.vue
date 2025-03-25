@@ -347,10 +347,9 @@
       const { action: locatorAction, destroy: destroyLocator } =
         createLocatorAction(app);
 
-      const showLocatorButton = ref(true);
-      if (app.uiConfig.getByKey('showLocator')?.value === false) {
-        showLocatorButton.value = false;
-      }
+      const showLocatorButton = computed(() => {
+        return app.uiConfig.config.showLocator ?? true;
+      });
 
       const overviewMapListeners = [
         app.overviewMap.map.layerCollection.added.addEventListener(() => {

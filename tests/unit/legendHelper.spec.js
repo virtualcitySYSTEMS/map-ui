@@ -5,13 +5,24 @@ import {
   VectorLayer,
   VectorStyleItem,
 } from '@vcmap/core';
-import { getLegendEntries } from '../../src/legend/legendHelper.js';
+import {
+  getLegendEntries,
+  legendSymbol,
+} from '../../src/legend/legendHelper.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
 
 const legend = [
   {
     type: 'IframeLegendItem',
     title: 'iframeLegend',
+    src: '/exampleData/legendExample.html',
+  },
+];
+
+const symbolLegend = [
+  {
+    type: 'IframeLegendItem',
+    title: 'symbolLegend',
     src: '/exampleData/legendExample.html',
   },
 ];
@@ -38,6 +49,7 @@ describe('createLegendEntries', () => {
   let layer;
   let activeLayer;
   let inactiveLayer;
+  let layerWithSymbol;
   let vectorClusterGroup;
   let layerForVectorClusterGroup1;
   let layerForVectorClusterGroup2;
@@ -57,12 +69,18 @@ describe('createLegendEntries', () => {
       name: 'inactiveLayer',
       properties: { legend },
     });
+    layerWithSymbol = new VectorLayer({
+      name: 'legendSymbolLayer',
+      properties: { legend },
+    });
+    layerWithSymbol[legendSymbol] = symbolLegend;
     app.layers.add(layer);
     app.layers.add(activeLayer);
     app.layers.add(inactiveLayer);
+    app.layers.add(layerWithSymbol);
     await layer.activate();
     await activeLayer.activate();
-
+    await layerWithSymbol.activate();
     vectorClusterGroup = new VectorClusterGroup({
       name: 'vectorClusterGroup',
       properties: { legend },
@@ -137,6 +155,71 @@ describe('createLegendEntries', () => {
         ({ key }) => key === 'vectorClusterGroup',
       );
       expect(vectorClusterGroupLegendEntries.length).to.equal(1);
+    });
+  });
+
+  describe('legendSymbol', () => {
+    it('should give legendSymbol priority', () => {
+      const expectedEntry = {
+        key: 'legendSymbolLayer',
+        title: 'legendSymbolLayer',
+        legend: symbolLegend,
+        open: true,
+      };
+      const entry = entries.find(({ key }) => key === 'legendSymbolLayer');
+      expect(entry).to.deep.equal(expectedEntry);
+    });
+
+    it('should update on layer stateChange', () => {
+      const expectedEntry = {
+        key: 'activeLayer',
+        title: 'activeLayer',
+        legend: symbolLegend,
+        open: true,
+      };
+      activeLayer[legendSymbol] = symbolLegend;
+      activeLayer.stateChanged.raiseEvent(activeLayer.state);
+      const entry = entries.find(({ key }) => key === 'activeLayer');
+      expect(entry).to.deep.equal(expectedEntry);
+      delete activeLayer[legendSymbol];
+    });
+
+    it('should give legendSymbol priority over style legend', () => {
+      const expectedEntry = {
+        key: 'activeLayer',
+        title: 'activeLayer',
+        legend: symbolLegend,
+        open: true,
+      };
+      const style = new VectorStyleItem({
+        name: 'style',
+        properties: { legend: styleLegend },
+      });
+      style[legendSymbol] = symbolLegend;
+      activeLayer.setStyle(style);
+      const entry = entries.find(({ key }) => key === 'activeLayer');
+      expect(entry).to.deep.equal(expectedEntry);
+      activeLayer.clearStyle();
+    });
+
+    it('should give style legend priority over layer symbol', () => {
+      const expectedEntry = {
+        key: 'activeLayer',
+        title: 'activeLayer',
+        legend: styleLegend,
+        open: true,
+      };
+      const style = new VectorStyleItem({
+        name: 'style',
+        properties: { legend: styleLegend },
+      });
+      activeLayer[legendSymbol] = symbolLegend;
+      activeLayer.stateChanged.raiseEvent(activeLayer.state);
+      activeLayer.setStyle(style);
+      const entry = entries.find(({ key }) => key === 'activeLayer');
+      expect(entry).to.deep.equal(expectedEntry);
+      activeLayer.clearStyle();
+      delete activeLayer[legendSymbol];
     });
   });
 

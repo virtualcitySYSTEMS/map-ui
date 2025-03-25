@@ -23,6 +23,7 @@
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { VList } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
+  import { getLogger } from '@vcsuite/logger';
   import ResultItem from './ResultItem.vue';
 
   /**
@@ -92,7 +93,15 @@
           const [index] = value;
           if (index >= 0) {
             const item = items.value[index];
-            item.clicked();
+            const p = item.clicked();
+            if (p instanceof Promise) {
+              p.catch((e) => {
+                getLogger('ResultComponent.vue').error(
+                  'Result item failed on click',
+                  e,
+                );
+              });
+            }
           }
         },
       });

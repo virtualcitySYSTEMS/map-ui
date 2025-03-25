@@ -231,6 +231,13 @@ describe('ContentTreeCollection', () => {
       const second = collection.getTreeOpenState(id);
       expect(first).to.equal(second);
     });
+
+    it('should apply the init open state, even if the item is added before the subtree item', () => {
+      collection.add(createVisibleContentTreeItem({ name: 'sub.base' }, app));
+      collection.add(new SubContentTreeItem({ name: 'sub' }, app));
+      const openState = collection.getTreeOpenState('sub');
+      expect(openState).to.have.members(['sub.base']);
+    });
   });
 
   describe('reacting to collection & item changes', () => {

@@ -34,7 +34,8 @@
       return {
         rgbaObject: useColorObject(() => localValue.value?.color),
         updateColor(rgba) {
-          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a];
+          // Ensures alpha is not null, e.g. when the color is set by the user by pastying a color code.
+          localValue.value.color = [rgba.r, rgba.g, rgba.b, rgba.a ?? 1];
         },
       };
     },
