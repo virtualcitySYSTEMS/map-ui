@@ -1,3 +1,7 @@
+# 6.1.6
+
+- updated @vcmap/core to fix a bug in the tileProvider
+
 # 6.1.5
 
 - fixed a bug where the uiConfig option showLocator was not reactive.
