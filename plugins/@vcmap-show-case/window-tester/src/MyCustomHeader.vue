@@ -20,6 +20,7 @@
         default: 'MyCustomHeader',
       },
     },
+    emits: ['close'],
     setup(props, { emit }) {
       return {
         clicked: () => {

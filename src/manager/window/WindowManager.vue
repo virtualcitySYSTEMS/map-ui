@@ -36,47 +36,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-  .mobile > div:not(#window-component--searchId) {
-    position: fixed;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    display: contents;
-    width: 100% !important;
-    max-width: 100% !important;
-    inset: unset !important;
-    border-radius: 0 !important;
-    overflow: auto;
-    bottom: 0 !important;
-    max-height: 50% !important;
-  }
-  .mobile > div {
-    transition: transform 0.4s ease;
-  }
-
-  .mobile > #window-component--searchId {
-    position: fixed !important;
-    top: calc(var(--v-vcs-font-size) * 5 + 28px) !important;
-    left: 5px !important;
-    right: calc(var(--v-vcs-font-size) * 5 + 2px) !important;
-    z-index: 2;
-    border-radius: 4px !important;
-    width: inherit !important;
-    padding-right: 1px !important;
-    .py-1 {
-      padding: 0px !important;
-    }
-  }
-  .mobile > #window-component--searchId > div > div {
-    border-radius: 4px !important;
-  }
-
-  .oblique > #window-component--searchId {
-    right: calc(var(--v-vcs-font-size) * 6.25 + 2px) !important;
-  }
-</style>
-
 <script>
   import { computed, inject, onUnmounted, ref, watch } from 'vue';
   import { useDisplay } from 'vuetify';
@@ -358,3 +317,44 @@
     },
   };
 </script>
+
+<style scoped lang="scss">
+  .mobile > div:not(#window-component--searchId) {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: contents;
+    width: 100% !important;
+    max-width: 100% !important;
+    inset: unset !important;
+    border-radius: 0 !important;
+    overflow: auto;
+    bottom: 0 !important;
+    max-height: 50% !important;
+  }
+  .mobile > div {
+    transition: transform 0.4s ease;
+  }
+
+  .mobile > #window-component--searchId {
+    position: fixed !important;
+    top: calc(var(--v-vcs-font-size) * 5 + 28px) !important;
+    left: 5px !important;
+    right: calc(var(--v-vcs-font-size) * 5 + 2px) !important;
+    z-index: 2;
+    border-radius: 4px !important;
+    width: inherit !important;
+    padding-right: 1px !important;
+    .py-1 {
+      padding: 0px !important;
+    }
+  }
+  .mobile > #window-component--searchId > div > div {
+    border-radius: 4px !important;
+  }
+
+  .oblique > #window-component--searchId {
+    right: calc(var(--v-vcs-font-size) * 6.25 + 2px) !important;
+  }
+</style>

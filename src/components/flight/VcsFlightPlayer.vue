@@ -5,7 +5,7 @@
       v-if="clock"
       type="number"
       :model-value="clock.currentTime"
-      @update:modelValue="setTime"
+      @update:model-value="setTime"
       :step="0"
       :min="clock.startTime"
       :max="clock.endTime"

@@ -37,6 +37,61 @@
   </v-container>
 </template>
 
+<script>
+  import { computed, inject } from 'vue';
+  import { useDisplay } from 'vuetify';
+  import { VContainer } from 'vuetify/components';
+  import VcsButton from '../components/buttons/VcsButton.vue';
+  import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
+  import WindowManagerComponent from '../manager/window/WindowManager.vue';
+  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';
+  import NotifierComponent from '../notifier/NotifierComponent.vue';
+  import VcsDefaultLogoMobile from '../logo-mobile.svg';
+  import { isMobileLandscape } from '../vuePlugins/vuetify.js';
+
+  /**
+   * @description The main container with map canvas
+   * @vue-prop {VcsAction} attributionAction
+   */
+  export default {
+    components: {
+      PanelManagerComponent,
+      WindowManagerComponent,
+      ToolboxManagerComponent,
+      VContainer,
+      NotifierComponent,
+      VcsButton,
+    },
+    props: {
+      attributionAction: {
+        type: Object,
+        required: true,
+      },
+    },
+    setup() {
+      /** @type {import("../vcsUiApp.js").default} */
+      const app = inject('vcsApp');
+      const { smAndDown, xs, sm, smAndUp, mobile } = useDisplay();
+      const mobileLandscape = isMobileLandscape();
+      return {
+        config: app.uiConfig.config,
+        smAndDown,
+        xs,
+        sm,
+        smAndUp,
+        mobile,
+        mobileLandscape,
+        mobileLogo: computed(
+          () =>
+            app.uiConfig.config.mobileLogo ??
+            app.uiConfig.config.logo ??
+            VcsDefaultLogoMobile,
+        ),
+      };
+    },
+  };
+</script>
+
 <style scoped lang="scss">
   .without-header {
     top: 0px;
@@ -95,58 +150,3 @@
     z-index: 1;
   }
 </style>
-
-<script>
-  import { computed, inject } from 'vue';
-  import { useDisplay } from 'vuetify';
-  import { VContainer } from 'vuetify/components';
-  import VcsButton from '../components/buttons/VcsButton.vue';
-  import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
-  import WindowManagerComponent from '../manager/window/WindowManager.vue';
-  import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';
-  import NotifierComponent from '../notifier/NotifierComponent.vue';
-  import VcsDefaultLogoMobile from '../logo-mobile.svg';
-  import { isMobileLandscape } from '../vuePlugins/vuetify.js';
-
-  /**
-   * @description The main container with map canvas
-   * @vue-prop {VcsAction} attributionAction
-   */
-  export default {
-    components: {
-      PanelManagerComponent,
-      WindowManagerComponent,
-      ToolboxManagerComponent,
-      VContainer,
-      NotifierComponent,
-      VcsButton,
-    },
-    props: {
-      attributionAction: {
-        type: Object,
-        required: true,
-      },
-    },
-    setup() {
-      /** @type {import("../vcsUiApp.js").default} */
-      const app = inject('vcsApp');
-      const { smAndDown, xs, sm, smAndUp, mobile } = useDisplay();
-      const mobileLandscape = isMobileLandscape();
-      return {
-        config: app.uiConfig.config,
-        smAndDown,
-        xs,
-        sm,
-        smAndUp,
-        mobile,
-        mobileLandscape,
-        mobileLogo: computed(
-          () =>
-            app.uiConfig.config.mobileLogo ??
-            app.uiConfig.config.logo ??
-            VcsDefaultLogoMobile,
-        ),
-      };
-    },
-  };
-</script>

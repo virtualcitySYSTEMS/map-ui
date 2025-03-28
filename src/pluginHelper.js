@@ -73,7 +73,7 @@ export function getPluginAssetUrl(app, pluginName, asset) {
  * @param {string} name
  * @returns {boolean}
  */
-// eslint-disable-next-line import/prefer-default-export
+
 export function isValidPackageName(name) {
   check(name, String);
 
@@ -133,6 +133,7 @@ export async function loadPlugin(name, config) {
     let plugin;
     if (window.VcsPluginLoaderFunction) {
       // TODO PluginLoaderfunction needs to be documented.
+      // eslint-disable-next-line new-cap
       plugin = await window.VcsPluginLoaderFunction(name, module);
     } else {
       plugin = await import(/* @vite-ignore */ module);

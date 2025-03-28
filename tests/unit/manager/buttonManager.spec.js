@@ -47,20 +47,24 @@ describe('ButtonManager', () => {
       it('should add the buttonComponent to the manager', () => {
         expect(buttonManager.has(buttonComponentOptions.id));
       });
+
       it('should add the buttonComponentId to the componentIds array', () => {
         expect(buttonManager.componentIds).to.have.members([
           buttonComponentOptions.id,
         ]);
       });
+
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(buttonComponent);
       });
+
       it('should throw if no owner is supplied', () => {
         expect(
           buttonManager.add.bind(buttonManager, { id: 'test' }),
         ).to.throw();
       });
+
       it('should throw if same buttonId is already managed', () => {
         expect(
           buttonManager.add.bind(buttonManager, [{ id: 'test' }, 'plugin']),
@@ -85,11 +89,13 @@ describe('ButtonManager', () => {
             buttonComponent.id = 'new';
           }).to.throw();
         });
+
         it('action should be readonly', () => {
           expect(() => {
             buttonComponent.action = 'new';
           }).to.throw();
         });
+
         it('action should be reactive', () => {
           expect(isReactive(buttonComponent.action)).to.be.true;
         });
@@ -133,11 +139,13 @@ describe('ButtonManager', () => {
       expect(buttonManager.has(button1.id)).to.be.false;
       expect(buttonManager.has(button2.id)).to.be.true;
     });
+
     it('should remove the removed id from the buttonId List', () => {
       expect(buttonManager.componentIds).to.include(button1.id);
       buttonManager.remove(button1.id);
       expect(buttonManager.componentIds).to.not.include(button1.id);
     });
+
     it('should fire the removed event', () => {
       const removedSpy = vi.fn();
       buttonManager.removed.addEventListener(removedSpy);

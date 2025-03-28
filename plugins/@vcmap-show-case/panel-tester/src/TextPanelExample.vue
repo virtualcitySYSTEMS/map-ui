@@ -26,9 +26,9 @@
   </div>
 </template>
 
-<style scoped></style>
 <script>
   export default {
     name: 'TextPanelExample',
   };
 </script>
+<style scoped></style>

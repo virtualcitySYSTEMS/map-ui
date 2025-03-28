@@ -6,7 +6,7 @@ const anyRegex = /:[^\n,;]+\bany\b/;
 
 async function lintTypes() {
   let errors = 0;
-  // eslint-disable-next-line no-restricted-syntax
+
   for await (const path of getFilesInDirectory('./src')) {
     if (path.endsWith('.d.ts') && !path.endsWith('vue.d.ts')) {
       const content = await readFile(path, 'utf8');

@@ -51,6 +51,7 @@
         default: () => [],
       },
     },
+    emits: ['close'],
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const localConfig = ref(props.getConfig());

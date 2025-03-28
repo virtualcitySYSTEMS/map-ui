@@ -157,7 +157,7 @@ async function run() {
   if (existsSync(indexDTs)) {
     await unlink(indexDTs);
   }
-  // eslint-disable-next-line no-restricted-syntax
+
   for await (const file of getFilesInDirectory('src')) {
     if (/\.d\.ts/.test(file)) {
       await rm(file);

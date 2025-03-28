@@ -32,37 +32,6 @@
   </v-btn>
 </template>
 
-<style lang="scss" scoped>
-  .badge {
-    top: -3px;
-    right: -3px;
-  }
-  .v-btn {
-    &.v-btn--variant-outlined:hover {
-      border-color: rgb(var(--v-theme-primary-lighten-1));
-    }
-    &.v-btn--variant-flat:hover {
-      background-color: rgb(var(--v-theme-primary-lighten-1)) !important;
-      --v-hover-opacity: 0;
-    }
-    &.v-btn--disabled.v-btn--variant-outlined {
-      opacity: var(--v-disabled-opacity);
-      color: rgb(var(--v-theme-on-surface)) !important;
-    }
-    &.v-btn--disabled.v-btn--variant-flat {
-      opacity: var(--v-disabled-opacity);
-      background-color: rgb(var(--v-theme-base-lighten-1)) !important;
-      :deep(.v-btn__overlay) {
-        opacity: 0;
-      }
-    }
-    :deep(.v-btn__loader > .v-progress-circular) {
-      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-    }
-  }
-</style>
-
 <script>
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
@@ -137,3 +106,34 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .badge {
+    top: -3px;
+    right: -3px;
+  }
+  .v-btn {
+    &.v-btn--variant-outlined:hover {
+      border-color: rgb(var(--v-theme-primary-lighten-1));
+    }
+    &.v-btn--variant-flat:hover {
+      background-color: rgb(var(--v-theme-primary-lighten-1)) !important;
+      --v-hover-opacity: 0;
+    }
+    &.v-btn--disabled.v-btn--variant-outlined {
+      opacity: var(--v-disabled-opacity);
+      color: rgb(var(--v-theme-on-surface)) !important;
+    }
+    &.v-btn--disabled.v-btn--variant-flat {
+      opacity: var(--v-disabled-opacity);
+      background-color: rgb(var(--v-theme-base-lighten-1)) !important;
+      :deep(.v-btn__overlay) {
+        opacity: 0;
+      }
+    }
+    :deep(.v-btn__loader > .v-progress-circular) {
+      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+    }
+  }
+</style>

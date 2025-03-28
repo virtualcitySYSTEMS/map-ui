@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <div
     class="marked vcs-markdown"
     :class="{
@@ -7,28 +8,6 @@
     v-html="markedHtml"
   ></div>
 </template>
-<style lang="scss" scoped>
-  div {
-    :deep(p) {
-      margin-bottom: calc(var(--v-vcs-font-size) * 1);
-    }
-    :deep(h1) {
-      margin-bottom: calc(var(--v-vcs-font-size) * 1);
-    }
-    :deep(h2) {
-      margin-bottom: calc(var(--v-vcs-font-size) * 1);
-    }
-    :deep(ul) {
-      margin-bottom: calc(var(--v-vcs-font-size) * 1);
-    }
-    :deep(ol) {
-      margin-bottom: calc(var(--v-vcs-font-size) * 1);
-    }
-    :deep(li) {
-      margin-left: 1.5em;
-    }
-  }
-</style>
 <script>
   import { computed } from 'vue';
   import { parseAndSanitizeMarkdown } from './markdownHelper.js';
@@ -54,3 +33,25 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  div {
+    :deep(p) {
+      margin-bottom: calc(var(--v-vcs-font-size) * 1);
+    }
+    :deep(h1) {
+      margin-bottom: calc(var(--v-vcs-font-size) * 1);
+    }
+    :deep(h2) {
+      margin-bottom: calc(var(--v-vcs-font-size) * 1);
+    }
+    :deep(ul) {
+      margin-bottom: calc(var(--v-vcs-font-size) * 1);
+    }
+    :deep(ol) {
+      margin-bottom: calc(var(--v-vcs-font-size) * 1);
+    }
+    :deep(li) {
+      margin-left: 1.5em;
+    }
+  }
+</style>

@@ -1,19 +1,11 @@
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <span
     v-if="content"
     class="d-flex align-center overflow-hidden vcs-oblique-footer"
     v-html="content"
   />
 </template>
-
-<style lang="scss" scoped>
-  .vcs-oblique-footer {
-    :deep(p) {
-      font-size: smaller;
-      margin: 0;
-    }
-  }
-</style>
 
 <script>
   import { computed, inject, onUnmounted, shallowRef } from 'vue';
@@ -114,3 +106,12 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .vcs-oblique-footer {
+    :deep(p) {
+      font-size: smaller;
+      margin: 0;
+    }
+  }
+</style>

@@ -574,7 +574,6 @@
           form.value.validate();
         },
         logState() {
-          // eslint-disable-next-line no-console
           console.log(plugin.getSerializedState());
           newUpdate.value = false;
         },

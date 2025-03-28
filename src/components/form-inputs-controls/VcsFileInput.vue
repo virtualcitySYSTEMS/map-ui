@@ -37,19 +37,6 @@
   </v-file-input>
 </template>
 
-<style lang="scss" scoped>
-  @use './vcsTextField.scss';
-
-  // set text overflow for file input
-  :deep(.v-field__input) {
-    display: unset;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: calc(var(--v-vcs-font-size) * 2 - 3px);
-  }
-</style>
-
 <script>
   import { ref } from 'vue';
   import { VFileInput, VTooltip } from 'vuetify/components';
@@ -66,11 +53,11 @@
    */
   export default {
     name: 'VcsTextField',
-    inheritAttrs: false,
     components: {
       VTooltip,
       VFileInput,
     },
+    inheritAttrs: false,
     props: {
       tooltip: {
         type: String,
@@ -97,3 +84,16 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  @use './vcsTextField.scss';
+
+  // set text overflow for file input
+  :deep(.v-field__input) {
+    display: unset;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: calc(var(--v-vcs-font-size) * 2 - 3px);
+  }
+</style>

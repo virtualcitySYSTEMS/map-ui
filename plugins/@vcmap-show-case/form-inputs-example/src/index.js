@@ -54,9 +54,9 @@ export default function formInputsExample(config) {
     // not reactive can be put without using reactive or ref
     nonReactiveProp: 'nonReactive',
     // no validation, ref to track config changes; use reactive on nested arrays or objects
-    selectOptions: ref(
-      [...config.selectOptions] || [...defaultConfig.selectOptions],
-    ),
+    selectOptions: ref([
+      ...(config.selectOptions ?? defaultConfig.selectOptions),
+    ]),
     // ref prop with getter setter --> validation
     _initialTextInput: ref(defaultConfig.initialTextInput),
     set initialTextInput(value) {

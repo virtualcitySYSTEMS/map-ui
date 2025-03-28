@@ -54,9 +54,6 @@
   </v-text-field>
 </template>
 
-<style lang="scss" scoped>
-  @use './vcsTextField.scss';
-</style>
 <script>
   import { computed, ref } from 'vue';
   import { VTextField, VTooltip } from 'vuetify/components';
@@ -88,11 +85,11 @@
    */
   export default {
     name: 'VcsTextField',
-    inheritAttrs: false,
     components: {
       VTooltip,
       VTextField,
     },
+    inheritAttrs: false,
     props: {
       type: {
         type: String,
@@ -190,3 +187,6 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  @use './vcsTextField.scss';
+</style>

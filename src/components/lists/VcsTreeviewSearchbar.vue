@@ -24,6 +24,50 @@
   </div>
 </template>
 
+<script>
+  import { computed } from 'vue';
+  import { VIcon } from 'vuetify/components';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
+  import { useIconSize } from '../../vuePlugins/vuetify.js';
+  import { removeListenersFromAttrs } from '../attrsHelpers.js';
+
+  /**
+   * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
+   * @vue-prop {string} [placeholder='search.title'] - Placeholder will be displayed in the search field, and will be translated.
+   * @vue-prop {string} [value] - The search value
+   * @vue-prop {boolean} [hasFilter=false] - Appends a filter icon
+   * @vue-data {slot} [prepend] - prepend slot overwriting search icon
+   * @vue-data {slot} [default] - default slot overwriting search input text field. binds all props
+   * @vue-data {slot} [append] - append slot overwriting filter icon. binds hasFilter prop
+   */
+  export default {
+    name: 'VcsTreeviewSearchbar',
+    components: {
+      VIcon,
+      VcsTextField,
+    },
+    inheritAttrs: false,
+    props: {
+      placeholder: {
+        type: String,
+        default: 'search.title',
+      },
+      hasFilter: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    setup(_, { attrs }) {
+      const iconSize = useIconSize();
+      const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
+      return {
+        iconSize,
+        noListenerAttrs,
+      };
+    },
+  };
+</script>
+
 <style lang="scss" scoped>
   .search-icon {
     position: absolute;
@@ -45,12 +89,12 @@
 
   // override item height
   :deep(
-      .v-input--density-compact
-        > .v-input__control
-        > .v-field
-        > .v-field__field
-        > .v-field__input
-    ) {
+    .v-input--density-compact
+      > .v-input__control
+      > .v-field
+      > .v-field__field
+      > .v-field__input
+  ) {
     --v-input-control-height: calc(
       var(--v-vcs-font-size) * 2 - 14px
     ) !important;
@@ -75,47 +119,3 @@
     opacity: 0.75 !important;
   }
 </style>
-
-<script>
-  import { computed } from 'vue';
-  import { VIcon } from 'vuetify/components';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
-  import { useIconSize } from '../../vuePlugins/vuetify.js';
-  import { removeListenersFromAttrs } from '../attrsHelpers.js';
-
-  /**
-   * @description stylized searchbar used in VcsTreeview, VcsDataTable and VcsList
-   * @vue-prop {string} [placeholder='search.title'] - Placeholder will be displayed in the search field, and will be translated.
-   * @vue-prop {string} [value] - The search value
-   * @vue-prop {boolean} [hasFilter=false] - Appends a filter icon
-   * @vue-data {slot} [prepend] - prepend slot overwriting search icon
-   * @vue-data {slot} [default] - default slot overwriting search input text field. binds all props
-   * @vue-data {slot} [append] - append slot overwriting filter icon. binds hasFilter prop
-   */
-  export default {
-    name: 'VcsTreeviewSearchbar',
-    inheritAttrs: false,
-    components: {
-      VIcon,
-      VcsTextField,
-    },
-    props: {
-      placeholder: {
-        type: String,
-        default: 'search.title',
-      },
-      hasFilter: {
-        type: Boolean,
-        default: false,
-      },
-    },
-    setup(_, { attrs }) {
-      const iconSize = useIconSize();
-      const noListenerAttrs = computed(() => removeListenersFromAttrs(attrs));
-      return {
-        iconSize,
-        noListenerAttrs,
-      };
-    },
-  };
-</script>

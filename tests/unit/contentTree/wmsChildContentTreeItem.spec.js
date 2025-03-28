@@ -50,6 +50,7 @@ describe('ContentTreeItem', () => {
         StateActionState.ACTIVE,
       );
     });
+
     it('should change the state, if the wmsEntry changes', async () => {
       wmsEntry.active.value = false;
       await nextTick();
@@ -66,6 +67,7 @@ describe('ContentTreeItem', () => {
       );
       expect(extentAction).to.not.equal(undefined);
     });
+
     it('should create style action', () => {
       const extentAction = wmsChildContentTreeItem.actions.find(
         (action) => action.name === 'content.wmsStyleAction.name',

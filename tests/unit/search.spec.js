@@ -262,7 +262,7 @@ describe('search', () => {
     });
   });
 
-  describe('suggest', async () => {
+  describe('suggest', () => {
     beforeAll(async () => {
       app = new VcsUiApp();
       const map = new OpenlayersMap({ name: 'ol' });

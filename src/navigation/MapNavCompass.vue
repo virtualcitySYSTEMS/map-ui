@@ -177,6 +177,10 @@
         default: false,
       },
     },
+    emits: ['direction-click'],
+    setup() {
+      return { alignment: ref('') };
+    },
     methods: {
       emit(event, dir) {
         if (this.canEmit) {
@@ -185,9 +189,6 @@
           this.$emit('direction-click', dir);
         }
       },
-    },
-    setup() {
-      return { alignment: ref('') };
     },
   };
 </script>

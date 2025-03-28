@@ -24,18 +24,6 @@
   </v-sheet>
 </template>
 
-<style lang="scss" scoped>
-  a {
-    color: var(--v-theme-surface);
-    &:hover {
-      color: rgb(var(--v-theme-primary));
-    }
-    &:before {
-      content: '\00a9';
-    }
-  }
-</style>
-
 <script>
   import {
     VList,
@@ -66,3 +54,15 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  a {
+    color: var(--v-theme-surface);
+    &:hover {
+      color: rgb(var(--v-theme-primary));
+    }
+    &:before {
+      content: '\00a9';
+    }
+  }
+</style>

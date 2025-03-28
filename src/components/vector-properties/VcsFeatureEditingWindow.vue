@@ -143,6 +143,7 @@
    * @vue-prop {boolean} [showStyle=true] - Whether the style component should be shown.
    */
   export default {
+    name: 'VcsFeatureEditingWindow',
     components: {
       VcsSnapTo,
       VcsFeatureTransforms,
@@ -151,7 +152,6 @@
       VcsVectorPropertiesComponent,
       VcsFeatureStyleComponent,
     },
-    name: 'VcsFeatureEditingWindow',
     props: {
       allowedVectorProperties: {
         type: Array,

@@ -16,15 +16,15 @@
    */
   export default {
     name: 'VcsAppWrapper',
+    components: {
+      VcsApp,
+      VApp,
+    },
     props: {
       appId: {
         type: String,
         required: true,
       },
-    },
-    components: {
-      VcsApp,
-      VApp,
     },
   };
 </script>

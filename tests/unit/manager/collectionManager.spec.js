@@ -39,15 +39,18 @@ describe('CollectionManager', () => {
     it('should add the collectionComponent to the manager', () => {
       expect(collectionManager.has(collectionComponent.id));
     });
+
     it('should add the componentId to the componentIds array', () => {
       expect(collectionManager.componentIds).to.have.members([
         collectionComponent.id,
       ]);
     });
+
     it('should fire the added Event', () => {
       expect(addedSpy).toHaveBeenCalledTimes(1);
       expect(addedSpy).toHaveBeenLastCalledWith(collectionComponent);
     });
+
     it('should throw if no owner is supplied', () => {
       expect(
         collectionManager.add.bind(
@@ -56,6 +59,7 @@ describe('CollectionManager', () => {
         ),
       ).to.throw();
     });
+
     it('should throw if same componentId is already managed', () => {
       expect(
         collectionManager.add.bind(collectionManager, [
@@ -104,6 +108,7 @@ describe('CollectionManager', () => {
       expect(collectionManager.has(collectionComponent1.id)).to.be.false;
       expect(collectionManager.has(collectionComponent2.id)).to.be.true;
     });
+
     it('should remove the removed id from the componentId List', () => {
       expect(collectionManager.componentIds).to.include(
         collectionComponent1.id,
@@ -113,6 +118,7 @@ describe('CollectionManager', () => {
         collectionComponent1.id,
       );
     });
+
     it('should fire the removed event', () => {
       const removedSpy = vi.fn();
       collectionManager.removed.addEventListener(removedSpy);

@@ -1276,6 +1276,7 @@ describe('FeatureInfo', () => {
         expect(app.toolboxManager.has('featureInfo')).to.be.true;
         app.layers.remove(layer);
       });
+
       it('should add the featureInfo tool button, if a search at least one search result feature with featureInfoViewSymbol is available', () => {
         expect(app.toolboxManager.has('featureInfo')).to.be.false;
         const feature = new Feature();
@@ -1285,6 +1286,7 @@ describe('FeatureInfo', () => {
         expect(app.toolboxManager.has('featureInfo')).to.be.true;
         app.search.resultLayer.removeAllFeatures();
       });
+
       it('should remove the featureInfo tool button, if no layer with featureInfo prop and no search result with featureInfoViewSymbol is available', async () => {
         app.layers.add(layer);
         const f = new Feature();

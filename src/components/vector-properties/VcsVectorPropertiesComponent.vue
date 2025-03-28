@@ -546,7 +546,6 @@
    */
   export default {
     name: 'VcsVectorPropertiesComponent',
-    methods: { computed },
     components: {
       VcsFormSection,
       VcsLabel,
@@ -770,5 +769,6 @@
         cid,
       };
     },
+    methods: { computed },
   };
 </script>

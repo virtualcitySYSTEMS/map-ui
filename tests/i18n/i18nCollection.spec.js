@@ -107,6 +107,7 @@ describe('i18nCollection', () => {
 
     describe('changed event', () => {
       let changedSpy;
+
       beforeEach(() => {
         changedSpy = vi.fn();
       });
@@ -117,6 +118,7 @@ describe('i18nCollection', () => {
         expect(changedSpy).toHaveBeenCalledTimes(1);
         expect(changedSpy).toHaveBeenLastCalledWith(testItem);
       });
+
       it('should raise changed on item moved', () => {
         i18n.add(testItem);
         i18n.add({ name: 'otherItem' });
@@ -125,6 +127,7 @@ describe('i18nCollection', () => {
         expect(changedSpy).toHaveBeenCalledTimes(1);
         expect(changedSpy).toHaveBeenLastCalledWith(testItem);
       });
+
       it('should raise changed on item removed', () => {
         i18n.add(testItem);
         i18n.changed.addEventListener(changedSpy);
@@ -132,6 +135,7 @@ describe('i18nCollection', () => {
         expect(changedSpy).toHaveBeenCalledTimes(1);
         expect(changedSpy).toHaveBeenLastCalledWith(testItem);
       });
+
       it('should raise changed on plugin added', () => {
         i18n.changed.addEventListener(changedSpy);
         plugins.add(plugin);
@@ -141,6 +145,7 @@ describe('i18nCollection', () => {
           ...plugin.i18n,
         });
       });
+
       it('should raise changed on plugin removed', () => {
         plugins.add(plugin);
         i18n.changed.addEventListener(changedSpy);
@@ -151,6 +156,7 @@ describe('i18nCollection', () => {
           ...plugin.i18n,
         });
       });
+
       it('should NOT raise changed, if item add failed', () => {
         i18n.add(testItem);
         i18n.changed.addEventListener(changedSpy);
@@ -158,6 +164,7 @@ describe('i18nCollection', () => {
         expect(idx).to.be.null;
         expect(changedSpy).toHaveBeenCalledTimes(0);
       });
+
       it('should NOT raise changed, if item remove failed', () => {
         i18n.changed.addEventListener(changedSpy);
         i18n.remove({ name: 'otherItem' });

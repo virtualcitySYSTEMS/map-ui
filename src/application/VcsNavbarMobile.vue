@@ -62,21 +62,6 @@
   </v-toolbar>
 </template>
 
-<style lang="scss" scoped>
-  .v-toolbar.v-toolbar--bottom {
-    bottom: 0;
-    position: fixed;
-  }
-  .flex-grow-2 {
-    flex-grow: 2;
-  }
-  .vcs-navbar-mobile {
-    bottom: 0;
-    padding-top: calc(var(--v-vcs-font-size) - 5px);
-    padding-bottom: calc(var(--v-vcs-font-size) - 5px);
-  }
-</style>
-
 <script>
   import { computed, inject, onUnmounted, shallowRef } from 'vue';
   import {
@@ -204,3 +189,18 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .v-toolbar.v-toolbar--bottom {
+    bottom: 0;
+    position: fixed;
+  }
+  .flex-grow-2 {
+    flex-grow: 2;
+  }
+  .vcs-navbar-mobile {
+    bottom: 0;
+    padding-top: calc(var(--v-vcs-font-size) - 5px);
+    padding-bottom: calc(var(--v-vcs-font-size) - 5px);
+  }
+</style>

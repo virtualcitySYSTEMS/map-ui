@@ -56,7 +56,7 @@ describe('AbstractFeatureInfoView', () => {
 
     it('should return a value, if mapping provides a template string', () => {
       const attributes = { ...filteredAttributes };
-      // eslint-disable-next-line no-template-curly-in-string
+
       applyValueMapping(attributes, {
         // eslint-disable-next-line no-template-curly-in-string
         function: 'codeLists.values.function.${value}',
@@ -432,23 +432,27 @@ describe('AbstractFeatureInfoView', () => {
       it('should configure name', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
+
       it('should configure attributeKeys', () => {
         expect(outputConfig.attributeKeys).to.deep.equal(
           inputConfig.attributeKeys,
         );
       });
+
       it('should configure keyMapping', () => {
         expect(outputConfig.keyMapping).to.have.property(
           'function',
           inputConfig.keyMapping.function,
         );
       });
+
       it('should configure valueMapping', () => {
         expect(outputConfig.valueMapping).to.have.property(
           'function',
           inputConfig.valueMapping.function,
         );
       });
+
       it('should configure window', () => {
         expect(outputConfig.window).to.have.property(
           'position',

@@ -137,6 +137,7 @@
    * @vue-prop {boolean} [allowZInput=false]
    */
   export default {
+    name: 'VcsFeatureTransforms',
     components: {
       VcsButton,
       VSheet,
@@ -160,7 +161,6 @@
         default: false,
       },
     },
-    name: 'VcsFeatureTransforms',
     setup(props) {
       /** @type {import("./VcsFeatureEditingWindow.vue").EditorManager} */
       const manager = inject('manager');

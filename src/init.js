@@ -122,7 +122,7 @@ export async function initAppFromAppConfig(mountTarget, appUrl) {
   const modules = await Promise.all(
     appConfig.modules.map(createModuleFromObjectOrUrl),
   );
-  // eslint-disable-next-line no-restricted-syntax
+
   for await (const module of modules) {
     if (module) {
       await app.addModule(module);

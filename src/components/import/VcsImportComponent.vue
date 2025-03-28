@@ -61,6 +61,7 @@
         default: true,
       },
     },
+    emits: ['close'],
     setup(props, { attrs, emit }) {
       const app = inject('vcsApp');
       const localFiles = ref([]);

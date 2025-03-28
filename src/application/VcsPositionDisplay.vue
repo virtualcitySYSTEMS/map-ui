@@ -60,14 +60,6 @@
   </span>
 </template>
 
-<style lang="scss" scoped>
-  .active {
-    background-color: rgb(var(--v-theme-primary));
-    span {
-      color: rgb(var(--v-theme-on-primary));
-    }
-  }
-</style>
 <script>
   import {
     computed,
@@ -197,3 +189,11 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .active {
+    background-color: rgb(var(--v-theme-primary));
+    span {
+      color: rgb(var(--v-theme-on-primary));
+    }
+  }
+</style>

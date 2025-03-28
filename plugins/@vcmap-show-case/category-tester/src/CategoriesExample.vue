@@ -14,7 +14,7 @@
           :key="componentId"
         >
           <collection-component
-            @openList="openList"
+            @open-list="openList"
             :open="panels.includes(index)"
           />
           <v-dialog v-model="optionsDialog" width="300">
@@ -28,7 +28,7 @@
         v-if="componentView"
         :component-id="componentView"
       >
-        <collection-component-list @closeList="closeList" />
+        <collection-component-list @close-list="closeList" />
         <v-dialog v-model="optionsDialog" width="300">
           <v-card class="pa-2">
             <CollectionComponentOptions />
@@ -344,7 +344,6 @@
               category.collection.add(config);
             }
           } catch (e) {
-            // eslint-disable-next-line no-console
             console.error('invalid JSON');
           }
           newItem.value.dialog = false;

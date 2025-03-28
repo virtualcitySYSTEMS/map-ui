@@ -45,6 +45,7 @@
         default: () => {},
       },
     },
+    emits: ['close'],
     setup(props, { emit }) {
       const flightInstance = props.getFlightInstance();
       let cancel = false;

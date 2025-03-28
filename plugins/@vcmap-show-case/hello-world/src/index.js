@@ -29,7 +29,6 @@ export function helloWorld() {
  * @returns {import("@vcmap/ui/src/vcsUiApp").VcsPlugin<PluginConfig, PluginState>}
  */
 export default function helloWorldPlugin(config, baseUrl) {
-  // eslint-disable-next-line no-console
   console.log(config, baseUrl);
   return {
     get name() {
@@ -50,7 +49,6 @@ export default function helloWorldPlugin(config, baseUrl) {
      * @param {PluginState=} state
      */
     initialize(vcsUiApp, state) {
-      // eslint-disable-next-line no-console
       console.log(
         'Called before loading the rest of the current context. Passed in the containing Vcs UI App ',
         vcsUiApp,
@@ -80,7 +78,6 @@ export default function helloWorldPlugin(config, baseUrl) {
           name,
         );
       } else {
-        // eslint-disable-next-line no-console
         console.log(name, helloWorld());
       }
     },
@@ -89,7 +86,6 @@ export default function helloWorldPlugin(config, baseUrl) {
      * @returns {PluginState}
      */
     getState(forUrl) {
-      // eslint-disable-next-line no-console
       console.log('Called when collecting state, e.g. for create link', forUrl);
       const state = {
         active: this._app.windowManager.has(windowId),
@@ -104,7 +100,6 @@ export default function helloWorldPlugin(config, baseUrl) {
      * @returns {PluginConfig}
      */
     toJSON() {
-      // eslint-disable-next-line no-console
       console.log('Called when serializing this plugin instance');
       const defaultOptions = getDefaultOptions();
       const options = {};
@@ -135,7 +130,6 @@ export default function helloWorldPlugin(config, baseUrl) {
       },
     },
     destroy() {
-      // eslint-disable-next-line no-console
       console.log('hook to cleanup');
     },
   };

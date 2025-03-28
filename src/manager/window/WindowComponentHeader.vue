@@ -58,29 +58,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .window-component-header {
-    max-height: calc(var(--v-vcs-font-size) * 2 - 10px);
-
-    h3 {
-      line-height: calc(var(--v-vcs-font-size) * 2 - 10px);
-    }
-    .v-divider--vertical.v-divider--inset {
-      margin-top: 2px;
-    }
-  }
-  .user-select-none {
-    user-select: none;
-  }
-  .vcs-window-header-title {
-    width: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-  }
-</style>
-
 <script>
   import { VIcon, VDivider, VTooltip } from 'vuetify/components';
   import { computed, getCurrentInstance, ref } from 'vue';
@@ -116,7 +93,6 @@
       },
       isOnTop: {
         type: Boolean,
-        required: true,
         default: false,
       },
       slotWindow: {
@@ -124,6 +100,7 @@
         required: true,
       },
     },
+    emits: ['pin', 'close'],
     setup(props, { emit }) {
       const pin = () => {
         emit('pin');
@@ -178,3 +155,26 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .window-component-header {
+    max-height: calc(var(--v-vcs-font-size) * 2 - 10px);
+
+    h3 {
+      line-height: calc(var(--v-vcs-font-size) * 2 - 10px);
+    }
+    .v-divider--vertical.v-divider--inset {
+      margin-top: 2px;
+    }
+  }
+  .user-select-none {
+    user-select: none;
+  }
+  .vcs-window-header-title {
+    width: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+</style>

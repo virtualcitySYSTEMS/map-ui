@@ -26,33 +26,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .attribution-container {
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .attribution {
-    font-size: smaller;
-    &:before {
-      content: '\00a0\007c\00a0';
-    }
-    &:first-child::before {
-      content: '';
-    }
-    span {
-      font-size: inherit;
-    }
-    a {
-      color: var(--v-text-color);
-      &:before {
-        content: '\00a9\00a0';
-      }
-    }
-  }
-</style>
-
 <script>
   import { computed } from 'vue';
   import { mergeAttributions } from './attributionsHelper.js';
@@ -89,3 +62,30 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .attribution-container {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .attribution {
+    font-size: smaller;
+    &:before {
+      content: '\00a0\007c\00a0';
+    }
+    &:first-child::before {
+      content: '';
+    }
+    span {
+      font-size: inherit;
+    }
+    a {
+      color: var(--v-text-color);
+      &:before {
+        content: '\00a9\00a0';
+      }
+    }
+  }
+</style>

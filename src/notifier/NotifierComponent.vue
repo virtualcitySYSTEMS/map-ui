@@ -36,12 +36,12 @@
    * @description Renders notifications of different types
    */
   export default {
+    name: 'NotifierComponent',
     components: {
       VSnackbar,
       VcsButton,
       VIcon,
     },
-    name: 'NotifierComponent',
     setup() {
       const app = inject('vcsApp');
 

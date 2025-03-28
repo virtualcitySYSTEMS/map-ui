@@ -22,19 +22,6 @@
     computed(() => props.item.title || props.item.name),
   );
 </script>
-<style lang="scss" scoped>
-  .title-parent {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  .disabled {
-    cursor: default;
-    opacity: var(--v-disabled-opacity);
-  }
-</style>
 <template>
   <div
     class="title-parent pr-2 vcs-treeview-title w-100"
@@ -52,3 +39,16 @@
     </v-tooltip>
   </div>
 </template>
+<style lang="scss" scoped>
+  .title-parent {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .disabled {
+    cursor: default;
+    opacity: var(--v-disabled-opacity);
+  }
+</style>

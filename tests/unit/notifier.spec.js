@@ -34,7 +34,7 @@ describe('Notifier', () => {
       expect(notifier.notifications.value[0]).to.have.property('open', true);
     });
 
-    it('should set open to true', () => {
+    it('should set openRef to true', () => {
       expect(notifier.notifications.value[0])
         .to.have.property('openRef')
         .and.to.have.property('value', true);

@@ -165,7 +165,7 @@ const geolocationOptions = {
  * @param {import("../vcsUiApp.js").default} app
  * @returns {{ action: import("../actions/actionHelper.js").VcsAction, destroy: Function }}
  */
-// eslint-disable-next-line import/prefer-default-export
+
 export function createLocatorAction(app) {
   let primary = getColor(0.4, app);
 

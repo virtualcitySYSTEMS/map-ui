@@ -73,6 +73,12 @@
    */
   export default {
     name: 'CollectionComponentList',
+    components: {
+      VcsButton,
+      VcsActionButtonList,
+      VcsList,
+      VSheet,
+    },
     props: {
       showLessButton: {
         type: Boolean,
@@ -82,12 +88,6 @@
         type: Boolean,
         default: false,
       },
-    },
-    components: {
-      VcsButton,
-      VcsActionButtonList,
-      VcsList,
-      VSheet,
     },
     emits: ['closeList'],
     setup(_props, { emit }) {

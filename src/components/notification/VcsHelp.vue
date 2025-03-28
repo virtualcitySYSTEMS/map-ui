@@ -10,15 +10,6 @@
     </v-container>
   </div>
 </template>
-<style lang="scss">
-  .vcs-help {
-    box-sizing: border-box;
-    ol,
-    ul {
-      padding-left: 16px; /* Indentation for list items */
-    }
-  }
-</style>
 <script>
   import { VContainer } from 'vuetify/components';
 
@@ -40,3 +31,12 @@
     },
   };
 </script>
+<style lang="scss">
+  .vcs-help {
+    box-sizing: border-box;
+    ol,
+    ul {
+      padding-left: 16px; /* Indentation for list items */
+    }
+  }
+</style>

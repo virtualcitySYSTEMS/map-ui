@@ -40,35 +40,6 @@
   </v-btn>
 </template>
 
-<style lang="scss" scoped>
-  .badge {
-    top: -3px;
-    right: -3px;
-  }
-  .vcs-active.vcs-background:not(.v-btn--disabled) :deep(.badge) {
-    top: -5px;
-    right: -5px;
-  }
-  .v-btn {
-    padding-left: 11px;
-    padding-right: 11px;
-
-    &.vcs-active.vcs-background:not(.v-btn--disabled) {
-      padding-left: 9px;
-      padding-right: 9px;
-      border: 2px solid rgb(var(--v-theme-primary));
-      background-color: rgb(var(--v-theme-base-lighten-2)) !important;
-    }
-    &.v-btn--disabled.v-btn--variant-text {
-      opacity: var(--v-disabled-opacity);
-    }
-    :deep(.v-btn__loader > .v-progress-circular) {
-      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-    }
-  }
-</style>
-
 <script>
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
@@ -173,3 +144,32 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .badge {
+    top: -3px;
+    right: -3px;
+  }
+  .vcs-active.vcs-background:not(.v-btn--disabled) :deep(.badge) {
+    top: -5px;
+    right: -5px;
+  }
+  .v-btn {
+    padding-left: 11px;
+    padding-right: 11px;
+
+    &.vcs-active.vcs-background:not(.v-btn--disabled) {
+      padding-left: 9px;
+      padding-right: 9px;
+      border: 2px solid rgb(var(--v-theme-primary));
+      background-color: rgb(var(--v-theme-base-lighten-2)) !important;
+    }
+    &.v-btn--disabled.v-btn--variant-text {
+      opacity: var(--v-disabled-opacity);
+    }
+    :deep(.v-btn__loader > .v-progress-circular) {
+      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+    }
+  }
+</style>

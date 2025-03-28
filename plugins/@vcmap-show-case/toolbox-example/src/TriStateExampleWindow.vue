@@ -7,7 +7,6 @@
   </v-sheet>
 </template>
 
-<style scoped></style>
 <script>
   import { VSheet } from 'vuetify/components';
 
@@ -19,3 +18,4 @@
     },
   };
 </script>
+<style scoped></style>

@@ -13,7 +13,7 @@
         :key="componentId"
       >
         <collection-component
-          @openList="openList"
+          @open-list="openList"
           :open="panels.includes(index)"
         />
       </collection-component-provider>
@@ -22,7 +22,7 @@
       v-if="componentView"
       :component-id="componentView"
     >
-      <collection-component-list @closeList="closeList" />
+      <collection-component-list @close-list="closeList" />
     </collection-component-provider>
   </v-container>
 </template>

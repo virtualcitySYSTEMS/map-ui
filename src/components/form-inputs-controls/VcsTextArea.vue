@@ -37,6 +37,53 @@
   </v-textarea>
 </template>
 
+<script>
+  import { ref } from 'vue';
+  import { VTextarea, VTooltip } from 'vuetify/components';
+  import { getForwardSlots, usePadding } from '../composables.js';
+
+  /**
+   * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
+   * Default for number of rows can be overwritten using the vuetify API.
+   * Provides a tooltip to
+   * - show error messages on focus
+   * - show tooltips, if no error messages are available
+   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
+   * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
+   */
+  export default {
+    name: 'VcsTextArea',
+    components: {
+      VTooltip,
+      VTextarea,
+    },
+    props: {
+      tooltip: {
+        type: String,
+        default: undefined,
+      },
+      tooltipPosition: {
+        type: String,
+        default: 'right',
+      },
+    },
+    setup(_p, { attrs, slots }) {
+      const textAreaRef = ref();
+      const errorTooltipRef = ref();
+
+      const paddingProvided = usePadding(attrs);
+      const forwardSlots = getForwardSlots(slots, ['append-inner', 'message']);
+
+      return {
+        forwardSlots,
+        textAreaRef,
+        errorTooltipRef,
+        paddingProvided,
+      };
+    },
+  };
+</script>
+
 <style lang="scss" scoped>
   .v-input--density-compact :deep(.v-field) {
     --v-input-control-height: calc(var(--v-vcs-font-size) * 2 - 2px);
@@ -142,50 +189,3 @@
     top: calc(100% - 2px);
   }
 </style>
-
-<script>
-  import { ref } from 'vue';
-  import { VTextarea, VTooltip } from 'vuetify/components';
-  import { getForwardSlots, usePadding } from '../composables.js';
-
-  /**
-   * @description extends API of {@link https://vuetifyjs.com/en/api/v-textarea/|vuetify v-textarea}.
-   * Default for number of rows can be overwritten using the vuetify API.
-   * Provides a tooltip to
-   * - show error messages on focus
-   * - show tooltips, if no error messages are available
-   * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  [tooltipPosition='right'] - Position of the error tooltip.
-   * @vue-prop {string|undefined}                       tooltip - Optional tooltip which will be shown on hover when no error message is shown
-   */
-  export default {
-    name: 'VcsTextArea',
-    components: {
-      VTooltip,
-      VTextarea,
-    },
-    props: {
-      tooltip: {
-        type: String,
-        default: undefined,
-      },
-      tooltipPosition: {
-        type: String,
-        default: 'right',
-      },
-    },
-    setup(_p, { attrs, slots }) {
-      const textAreaRef = ref();
-      const errorTooltipRef = ref();
-
-      const paddingProvided = usePadding(attrs);
-      const forwardSlots = getForwardSlots(slots, ['append-inner', 'message']);
-
-      return {
-        forwardSlots,
-        textAreaRef,
-        errorTooltipRef,
-        paddingProvided,
-      };
-    },
-  };
-</script>

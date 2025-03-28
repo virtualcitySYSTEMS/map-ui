@@ -40,11 +40,6 @@
     </v-menu>
   </div>
 </template>
-<style lang="scss" scoped>
-  .bottom-align {
-    bottom: calc(var(--v-vcs-font-size) * 3 - 2px) !important;
-  }
-</style>
 <script>
   import { computed, ref, inject } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
@@ -65,6 +60,7 @@
       VToolbar,
       VToolbarItems,
     },
+    emits: ['click'],
     setup() {
       const app = inject('vcsApp');
       const open = ref(false);
@@ -103,3 +99,8 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .bottom-align {
+    bottom: calc(var(--v-vcs-font-size) * 3 - 2px) !important;
+  }
+</style>

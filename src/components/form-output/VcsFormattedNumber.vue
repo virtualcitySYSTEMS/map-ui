@@ -28,17 +28,6 @@
     ></v-tooltip>
   </span>
 </template>
-<style lang="scss" scoped>
-  .vcs-formatted-number {
-    box-sizing: content-box;
-    display: flex;
-    align-items: center;
-    height: calc(var(--v-vcs-font-size) * 2 - 2px);
-  }
-  .vcs-disabled {
-    opacity: var(--v-disabled-opacity);
-  }
-</style>
 <script>
   import { computed, inject } from 'vue';
   import { VTooltip } from 'vuetify/components';
@@ -156,3 +145,14 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .vcs-formatted-number {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
+  }
+  .vcs-disabled {
+    opacity: var(--v-disabled-opacity);
+  }
+</style>

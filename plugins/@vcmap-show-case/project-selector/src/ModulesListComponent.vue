@@ -46,6 +46,7 @@
         default: true,
       },
     },
+    emits: ['toggle-module'],
     methods: {
       toggle(module) {
         if (this.toggleable) {

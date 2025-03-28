@@ -23,15 +23,6 @@
   </span>
 </template>
 
-<style lang="scss" scoped>
-  .text-page-footer {
-    font-size: smaller;
-    a {
-      color: var(--v-text-color);
-    }
-  }
-</style>
-
 <script>
   import { inject } from 'vue';
   import { VTooltip } from 'vuetify/components';
@@ -90,3 +81,12 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .text-page-footer {
+    font-size: smaller;
+    a {
+      color: var(--v-text-color);
+    }
+  }
+</style>

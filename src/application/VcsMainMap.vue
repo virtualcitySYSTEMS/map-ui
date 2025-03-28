@@ -5,8 +5,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped></style>
-
 <script>
   import { inject, onMounted, onUnmounted, ref, computed } from 'vue';
   import { v4 as uuid } from 'uuid';
@@ -69,3 +67,5 @@
     },
   };
 </script>
+
+<style lang="scss" scoped></style>

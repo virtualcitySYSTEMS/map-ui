@@ -92,6 +92,7 @@ describe('LayerGroupContentTreeItem', () => {
           expect(itemToShowWhenNotSupported.visible).to.be.true;
           expect(itemToShowWhenNotSupported.disabled).to.be.true;
         });
+
         it('should only change disabled state if flag is set', async () => {
           await app.maps.setActiveMap('obl');
           expect(item.visible).to.be.false;

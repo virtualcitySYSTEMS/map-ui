@@ -10,7 +10,6 @@
     </v-container>
   </v-tooltip>
 </template>
-<style lang="scss" scoped></style>
 <script>
   import { VTooltip, VIcon, VContainer } from 'vuetify/components';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
@@ -46,3 +45,4 @@
     },
   };
 </script>
+<style lang="scss" scoped></style>

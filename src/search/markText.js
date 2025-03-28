@@ -22,7 +22,7 @@ function isBlockWithinBlocks(blocks, candidate) {
  */
 function addPartialBlocks(text, partial, blocks) {
   let match;
-  // eslint-disable-next-line no-cond-assign
+
   while ((match = partial.exec(text))) {
     const block = {
       start: match.index,
@@ -39,7 +39,7 @@ function addPartialBlocks(text, partial, blocks) {
  * @param {string} query
  * @returns {string}
  */
-// eslint-disable-next-line import/prefer-default-export
+
 export function markText(text, query) {
   let replacement = text;
   if (query) {

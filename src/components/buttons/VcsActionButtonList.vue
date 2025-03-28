@@ -42,11 +42,6 @@
     <v-spacer v-else-if="blockOverflow" />
   </div>
 </template>
-<style scoped lang="scss">
-  :deep(.v-spacer) {
-    width: calc(var(--v-vcs-font-size) * 1.25);
-  }
-</style>
 <script>
   import { VIcon, VMenu, VSpacer } from 'vuetify/components';
   import VcsButton from './VcsButton.vue';
@@ -180,3 +175,8 @@
     },
   };
 </script>
+<style scoped lang="scss">
+  :deep(.v-spacer) {
+    width: calc(var(--v-vcs-font-size) * 1.25);
+  }
+</style>

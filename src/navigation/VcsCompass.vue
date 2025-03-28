@@ -20,7 +20,6 @@
     />
   </v-sheet>
 </template>
-<style lang="scss" scoped></style>
 <script>
   import { computed, ref } from 'vue';
 
@@ -55,6 +54,7 @@
         required: false,
       },
     },
+    emits: ['update:modelValue'],
     setup(props) {
       const rotationValue = ref(props.modelValue);
 
@@ -87,3 +87,4 @@
     },
   };
 </script>
+<style lang="scss" scoped></style>

@@ -14,7 +14,6 @@
     ></v-tooltip>
   </v-card>
 </template>
-<style lang="scss" scoped></style>
 <script>
   import { VCard, VIcon, VTooltip } from 'vuetify/components';
   import { computed } from 'vue';
@@ -67,3 +66,4 @@
     },
   };
 </script>
+<style lang="scss" scoped></style>

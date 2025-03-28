@@ -30,7 +30,6 @@
     </v-menu>
   </VcsTextField>
 </template>
-<style lang="scss" scoped></style>
 <script>
   import { computed, ref, watch } from 'vue';
   import { VMenu, VDatePicker, VBtn } from 'vuetify/components';
@@ -45,6 +44,12 @@
    */
   export default {
     name: 'VcsDatePicker',
+    components: {
+      VMenu,
+      VcsTextField,
+      VDatePicker,
+      VBtn,
+    },
     props: {
       modelValue: {
         type: Date,
@@ -58,12 +63,6 @@
         type: Object,
         default: () => ({}),
       },
-    },
-    components: {
-      VMenu,
-      VcsTextField,
-      VDatePicker,
-      VBtn,
     },
     emits: ['update:modelValue'],
     setup(props, { emit }) {
@@ -121,3 +120,4 @@
     },
   };
 </script>
+<style lang="scss" scoped></style>

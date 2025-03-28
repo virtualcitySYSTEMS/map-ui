@@ -23,32 +23,6 @@
   </label>
 </template>
 
-<style lang="scss" scoped>
-  .ellipsis-text {
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .vcs-label {
-    box-sizing: content-box;
-    display: flex;
-    flex-direction: row;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    align-items: center;
-    height: calc(var(--v-vcs-font-size) * 2 - 2px);
-    font-size: var(--v-vcs-font-size);
-  }
-  .vcs-label-required .ellipsis-text:after {
-    content: ' *';
-    color: rgb(var(--v-theme-error));
-  }
-  .vcs-label-disabled {
-    opacity: var(--v-disabled-opacity);
-  }
-</style>
 <script>
   import { VTooltip } from 'vuetify/components';
   import { computed, ref } from 'vue';
@@ -114,3 +88,29 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .ellipsis-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .vcs-label {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
+    font-size: var(--v-vcs-font-size);
+  }
+  .vcs-label-required .ellipsis-text:after {
+    content: ' *';
+    color: rgb(var(--v-theme-error));
+  }
+  .vcs-label-disabled {
+    opacity: var(--v-disabled-opacity);
+  }
+</style>

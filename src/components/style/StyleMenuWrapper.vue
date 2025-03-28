@@ -3,7 +3,7 @@
     <div class="d-flex align-center py-1">
       <VcsCheckbox
         :model-value="!!modelValue"
-        @update:modelValue="handleCheckbox"
+        @update:model-value="handleCheckbox"
         :disabled="disabled"
         class="pr-1"
       />

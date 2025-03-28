@@ -17,7 +17,6 @@
     >
   </div>
 </template>
-<style></style>
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
@@ -232,3 +231,4 @@
     },
   };
 </script>
+<style></style>

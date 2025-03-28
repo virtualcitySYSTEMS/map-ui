@@ -39,23 +39,6 @@
   </v-container>
 </template>
 
-<style scoped lang="scss">
-  :deep(.v-application--wrap) {
-    min-height: fit-content;
-  }
-  .mobileRotatedWarning {
-    bottom: 0px;
-    z-index: 5;
-    position: fixed;
-    background-color: rgba(var(--v-theme-surface-light), 0.5);
-    color: rgb(var(--v-theme-on-surface));
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
-    padding: 5px;
-    border-radius: 4px;
-  }
-</style>
-
 <script>
   import {
     computed,
@@ -919,3 +902,20 @@
     },
   };
 </script>
+
+<style scoped lang="scss">
+  :deep(.v-application--wrap) {
+    min-height: fit-content;
+  }
+  .mobileRotatedWarning {
+    bottom: 0px;
+    z-index: 5;
+    position: fixed;
+    background-color: rgba(var(--v-theme-surface-light), 0.5);
+    color: rgb(var(--v-theme-on-surface));
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    padding: 5px;
+    border-radius: 4px;
+  }
+</style>

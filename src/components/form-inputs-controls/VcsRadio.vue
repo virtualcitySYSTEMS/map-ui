@@ -48,32 +48,6 @@
     ></v-tooltip>
   </v-radio-group>
 </template>
-<style lang="scss" scoped>
-  .v-input--density-compact :deep(.v-selection-control) {
-    --v-selection-control-size: calc(var(--v-vcs-font-size) * 2 - 2px);
-    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
-  }
-  // remove ripple effect
-  :deep(.v-selection-control__input::before) {
-    background-color: transparent;
-  }
-  :deep(.v-icon--size-default) {
-    font-size: calc(var(--v-vcs-font-size) + 3px);
-    padding-right: 2px;
-  }
-  // remove details
-  :deep(.v-input__details) {
-    display: none;
-  }
-  // switch input and label order
-  :deep(.label-top > .v-selection-control__wrapper) {
-    order: 2;
-  }
-  :deep(.v-selection-control-group) {
-    row-gap: 8px;
-    column-gap: 8px;
-  }
-</style>
 <script>
   import { ref } from 'vue';
   import { VRadio, VRadioGroup, VTooltip } from 'vuetify/components';
@@ -100,12 +74,12 @@
    */
   export default {
     name: 'VcsRadio',
-    inheritAttrs: false,
     components: {
       VTooltip,
       VRadioGroup,
       VRadio,
     },
+    inheritAttrs: false,
     props: {
       items: {
         type: Array,
@@ -143,3 +117,29 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .v-input--density-compact :deep(.v-selection-control) {
+    --v-selection-control-size: calc(var(--v-vcs-font-size) * 2 - 2px);
+    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
+  }
+  // remove ripple effect
+  :deep(.v-selection-control__input::before) {
+    background-color: transparent;
+  }
+  :deep(.v-icon--size-default) {
+    font-size: calc(var(--v-vcs-font-size) + 3px);
+    padding-right: 2px;
+  }
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
+  }
+  // switch input and label order
+  :deep(.label-top > .v-selection-control__wrapper) {
+    order: 2;
+  }
+  :deep(.v-selection-control-group) {
+    row-gap: 8px;
+    column-gap: 8px;
+  }
+</style>

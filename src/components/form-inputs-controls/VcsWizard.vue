@@ -70,13 +70,13 @@
     z-index: 2;
   }
   :deep(
-      .v-expansion-panel-title--active .v-stepper-vertical-item__avatar.v-avatar
-    ) {
+    .v-expansion-panel-title--active .v-stepper-vertical-item__avatar.v-avatar
+  ) {
     background: rgb(var(--v-theme-primary));
   }
   :deep(
-      .v-stepper-vertical-item--error .v-stepper-vertical-item__avatar.v-avatar
-    ) {
+    .v-stepper-vertical-item--error .v-stepper-vertical-item__avatar.v-avatar
+  ) {
     background: rgb(var(--v-theme-error));
   }
   /* alignment of heading */

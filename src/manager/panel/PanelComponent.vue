@@ -17,6 +17,53 @@
   </div>
 </template>
 
+<script>
+  import { computed, getCurrentInstance } from 'vue';
+  import { PanelLocation } from './panelManager.js';
+
+  export default {
+    name: 'PanelComponent',
+    props: {
+      panelState: {
+        type: Object,
+        required: true,
+      },
+    },
+    emits: ['resize'],
+    setup(props, { emit }) {
+      return {
+        appIsDark: computed(() => {
+          return getCurrentInstance().proxy.$vuetify.theme.dark || !1;
+        }),
+        isLeft: computed(
+          () => props.panelState.location === PanelLocation.LEFT,
+        ),
+        isRight: computed(
+          () => props.panelState.location === PanelLocation.RIGHT,
+        ),
+        isBottom: computed(
+          () => props.panelState.location === PanelLocation.BOTTOM,
+        ),
+        startResize(e) {
+          const { resizable, location } = props.panelState;
+          if (
+            resizable &&
+            ((location === PanelLocation.LEFT &&
+              e.currentTarget.clientWidth - e.offsetX < 4) ||
+              (location === PanelLocation.RIGHT && e.offsetX < 4) ||
+              (location === PanelLocation.BOTTOM && e.offsetY < 4))
+          ) {
+            emit('resize', props.panelState.id);
+          }
+        },
+        stopResize() {
+          emit('resize', undefined);
+        },
+      };
+    },
+  };
+</script>
+
 <style scoped lang="scss">
   .panel-component {
     padding: 0 4px;
@@ -55,49 +102,3 @@
     cursor: n-resize;
   }
 </style>
-
-<script>
-  import { computed, getCurrentInstance } from 'vue';
-  import { PanelLocation } from './panelManager.js';
-
-  export default {
-    name: 'PanelComponent',
-    props: {
-      panelState: {
-        type: Object,
-        required: true,
-      },
-    },
-    setup(props, { emit }) {
-      return {
-        appIsDark: computed(() => {
-          return getCurrentInstance().proxy.$vuetify.theme.dark || !1;
-        }),
-        isLeft: computed(
-          () => props.panelState.location === PanelLocation.LEFT,
-        ),
-        isRight: computed(
-          () => props.panelState.location === PanelLocation.RIGHT,
-        ),
-        isBottom: computed(
-          () => props.panelState.location === PanelLocation.BOTTOM,
-        ),
-        startResize(e) {
-          const { resizable, location } = props.panelState;
-          if (
-            resizable &&
-            ((location === PanelLocation.LEFT &&
-              e.currentTarget.clientWidth - e.offsetX < 4) ||
-              (location === PanelLocation.RIGHT && e.offsetX < 4) ||
-              (location === PanelLocation.BOTTOM && e.offsetY < 4))
-          ) {
-            emit('resize', props.panelState.id);
-          }
-        },
-        stopResize() {
-          emit('resize', undefined);
-        },
-      };
-    },
-  };
-</script>

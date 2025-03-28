@@ -41,6 +41,7 @@
         required: false,
       },
     },
+    emits: ['update:modelValue'],
     methods: {
       input(rotation) {
         let currentValue = this.modelValue + rotation;

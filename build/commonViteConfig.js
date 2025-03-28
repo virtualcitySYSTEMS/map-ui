@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import path from 'path';
 import { defineConfig } from 'vite';
 import vue3 from '@vitejs/plugin-vue';

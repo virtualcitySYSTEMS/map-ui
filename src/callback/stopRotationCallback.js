@@ -13,7 +13,6 @@ class StopRotationCallback extends VcsCallback {
     return 'StopRotationCallback';
   }
 
-  // eslint-disable-next-line class-methods-use-this
   callback() {
     if (this._app.maps.exclusiveMapControlsId === rotationMapControlSymbol) {
       this._app.maps.resetExclusiveMapControls();

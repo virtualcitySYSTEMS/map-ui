@@ -36,7 +36,7 @@ describe('callSafeAction helper', () => {
     expect(action.callback).toBeCalled;
   });
 
-  it('should catch and log an error when the synchronous callback throws an error', async () => {
+  it('should catch and log an error when the asynchronous callback throws an error', async () => {
     const action = {
       name: 'asyncThrowingAction',
       title: 'Async Throwing Action',

@@ -18,7 +18,6 @@
     </VcsToolButton>
   </div>
 </template>
-<style></style>
 <script>
   import { computed, inject } from 'vue';
   import { VDivider } from 'vuetify/components';
@@ -125,3 +124,4 @@
     },
   };
 </script>
+<style></style>

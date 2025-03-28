@@ -201,6 +201,7 @@ describe('EditorCollectionComponentClass', () => {
           app.windowManager.has(collectionComponent.getMultiEditorWindowId()),
         ).to.be.false;
       });
+
       it('should close the multi editor window on new selection', async () => {
         collectionComponent.selection.value = [
           collectionComponent.items.value[0],
@@ -220,6 +221,7 @@ describe('EditorCollectionComponentClass', () => {
           app.windowManager.has(collectionComponent.getMultiEditorWindowId()),
         ).to.be.false;
       });
+
       it('should close the multi editor window, when opening another editor', async () => {
         collectionComponent.selection.value = [
           collectionComponent.items.value[0],
@@ -234,6 +236,7 @@ describe('EditorCollectionComponentClass', () => {
           app.windowManager.has(collectionComponent.getMultiEditorWindowId()),
         ).to.be.false;
       });
+
       it('should close all other editor windows, when opening the multi editor', async () => {
         collectionComponent.selection.value = [
           collectionComponent.items.value[0],

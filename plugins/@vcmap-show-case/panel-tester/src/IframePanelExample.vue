@@ -7,9 +7,9 @@
     </div>
   </div>
 </template>
-<style scoped></style>
 <script>
   export default {
     name: 'IframePanelExample',
   };
 </script>
+<style scoped></style>

@@ -33,9 +33,11 @@ describe('IframeFeatureInfoView', () => {
       it('should configure name', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
+
       it('should configure title', () => {
         expect(outputConfig).to.have.property('title', inputConfig.title);
       });
+
       it('should configure src', () => {
         expect(outputConfig).to.have.property('src', inputConfig.src);
       });
@@ -72,7 +74,7 @@ describe('IframeFeatureInfoView', () => {
       it('should render a properties and attributes', () => {
         const infoView = new IframeFeatureInfoView({
           name: 'foo',
-          // eslint-disable-next-line no-template-curly-in-string
+
           src: 'https://myIframeUrl.com/myFeatureInformation?layer={{layerName}}&featureId={{featureId}}&property={{property}}&nested={{nested.array[0].property}}',
         });
         const { src } = infoView.getProperties({ feature }, layer);

@@ -60,41 +60,6 @@
   </v-sheet>
 </template>
 
-<style lang="scss" scoped>
-  :deep(.v-field .v-field__outline *) {
-    border-color: transparent !important;
-  }
-
-  .user-select-none {
-    user-select: none;
-  }
-
-  .suggestions {
-    font-style: italic;
-  }
-  .mobile-style .vcs-text-field.py-1 {
-    padding-bottom: 0 !important;
-    padding-right: 1px !important;
-  }
-  .button-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .fixed-button {
-    flex-shrink: 0;
-  }
-
-  .ellipsis-button {
-    flex-shrink: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-</style>
-
 <script>
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
@@ -246,3 +211,38 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  :deep(.v-field .v-field__outline *) {
+    border-color: transparent !important;
+  }
+
+  .user-select-none {
+    user-select: none;
+  }
+
+  .suggestions {
+    font-style: italic;
+  }
+  .mobile-style .vcs-text-field.py-1 {
+    padding-bottom: 0 !important;
+    padding-right: 1px !important;
+  }
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .fixed-button {
+    flex-shrink: 0;
+  }
+
+  .ellipsis-button {
+    flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

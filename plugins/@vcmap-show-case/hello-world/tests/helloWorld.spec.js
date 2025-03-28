@@ -46,7 +46,7 @@ describe('HelloWorld', () => {
 
     it('should add plugins part of the module', () => {
       const plugin = app.plugins.getByKey(name);
-      // eslint-disable-next-line no-unused-expressions
+
       expect(plugin).not.to.be.undefined;
     });
   });

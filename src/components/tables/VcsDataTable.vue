@@ -238,6 +238,7 @@
         default: undefined,
       },
     },
+    emits: ['update:items'],
     setup(props, { attrs, emit, slots }) {
       const vm = getCurrentInstance().proxy;
       const hovering = ref(null);

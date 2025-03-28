@@ -70,14 +70,6 @@
     </v-menu>
   </div>
 </template>
-<style lang="scss" scoped>
-  .marginToTop {
-    margin-top: 3px;
-  }
-  .marginToBottom {
-    margin-bottom: 3px;
-  }
-</style>
 <script>
   import { ref, computed } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
@@ -105,6 +97,7 @@
         required: true,
       },
     },
+    emits: ['click', 'toggle'],
     setup() {
       const open = ref(false);
       const fontSize = useFontSize();
@@ -120,3 +113,11 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .marginToTop {
+    margin-top: 3px;
+  }
+  .marginToBottom {
+    margin-bottom: 3px;
+  }
+</style>

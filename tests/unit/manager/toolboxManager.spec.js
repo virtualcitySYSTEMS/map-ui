@@ -79,20 +79,24 @@ describe('toolboxManager', () => {
       it('should add the component to the manager', () => {
         expect(toolboxManager.has(components.single.id));
       });
+
       it('should add the component id to the componentIds array', () => {
         expect(toolboxManager.componentIds).to.have.members([
           components.single.id,
         ]);
       });
+
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(toolboxComponent);
       });
+
       it('should throw if no owner is supplied', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, { id: components.single.id }),
         ).to.throw();
       });
+
       it('should throw if same componentId is already managed', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, [
@@ -145,20 +149,24 @@ describe('toolboxManager', () => {
       it('should add the component to the manager', () => {
         expect(toolboxManager.has(components.select.id));
       });
+
       it('should add the component id to the componentIds array', () => {
         expect(toolboxManager.componentIds).to.have.members([
           components.select.id,
         ]);
       });
+
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(toolboxComponent);
       });
+
       it('should throw if no owner is supplied', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, { id: components.select.id }),
         ).to.throw();
       });
+
       it('should throw if same componentId is already managed', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, [
@@ -215,20 +223,24 @@ describe('toolboxManager', () => {
       it('should add the component to the manager', () => {
         expect(toolboxManager.has(components.group.id));
       });
+
       it('should add the component id to the componentIds array', () => {
         expect(toolboxManager.componentIds).to.have.members([
           components.group.id,
         ]);
       });
+
       it('should fire the added Event', () => {
         expect(addedSpy).toHaveBeenCalledTimes(1);
         expect(addedSpy).toHaveBeenLastCalledWith(toolboxComponent);
       });
+
       it('should throw if no owner is supplied', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, { id: components.group.id }),
         ).to.throw();
       });
+
       it('should throw if same componentId is already managed', () => {
         expect(
           toolboxManager.add.bind(toolboxManager, [
@@ -336,11 +348,13 @@ describe('toolboxManager', () => {
       expect(toolboxManager.has(components.select.id)).to.be.true;
       expect(toolboxManager.has(components.group.id)).to.be.true;
     });
+
     it('should remove the removed id from the componentId List', () => {
       expect(toolboxManager.componentIds).to.include(components.single.id);
       toolboxManager.remove(components.single.id);
       expect(toolboxManager.componentIds).to.not.include(components.single.id);
     });
+
     it('should fire the removed event', () => {
       const removedSpy = vi.fn();
       toolboxManager.removed.addEventListener(removedSpy);

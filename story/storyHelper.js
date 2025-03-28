@@ -1,7 +1,6 @@
 import { reactive } from 'vue';
 /* eslint-disable no-console */
 
-// eslint-disable-next-line import/prefer-default-export
 export function createActions() {
   const toggleAction = reactive({
     name: 'toggle-action',

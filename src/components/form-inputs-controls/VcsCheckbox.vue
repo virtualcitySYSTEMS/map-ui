@@ -38,28 +38,6 @@
     ></v-tooltip>
   </v-checkbox>
 </template>
-<style lang="scss" scoped>
-  :deep(.v-icon--size-default) {
-    font-size: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3));
-  }
-  .v-input--density-compact :deep(.v-selection-control) {
-    --v-selection-control-size: calc(
-      var(--v-vcs-font-size) * (1.2 + 0.1 / 3) + 4
-    );
-    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
-  }
-  :deep(.v-input__control) {
-    height: calc(var(--v-vcs-font-size) * 2 - 2px);
-  }
-  // remove ripple effect
-  :deep(.v-selection-control__input::before) {
-    background-color: transparent;
-  }
-  // remove details
-  :deep(.v-input__details) {
-    display: none;
-  }
-</style>
 <script>
   import { ref } from 'vue';
   import { VCheckbox, VTooltip } from 'vuetify/components';
@@ -75,11 +53,11 @@
    */
   export default {
     name: 'VcsCheckbox',
-    inheritAttrs: true,
     components: {
       VTooltip,
       VCheckbox,
     },
+    inheritAttrs: true,
     props: {
       tooltip: {
         type: String,
@@ -108,3 +86,25 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  :deep(.v-icon--size-default) {
+    font-size: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3));
+  }
+  .v-input--density-compact :deep(.v-selection-control) {
+    --v-selection-control-size: calc(
+      var(--v-vcs-font-size) * (1.2 + 0.1 / 3) + 4
+    );
+    --v-input-control-height: calc(var(--v-vcs-font-size) + 3px);
+  }
+  :deep(.v-input__control) {
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
+  }
+  // remove ripple effect
+  :deep(.v-selection-control__input::before) {
+    background-color: transparent;
+  }
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
+  }
+</style>

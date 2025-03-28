@@ -11,7 +11,7 @@
       </span>
     </template>
     <template #default>
-      <CollectionComponentContent @openList="(id) => $emit('openList', id)" />
+      <CollectionComponentContent @open-list="(id) => $emit('openList', id)" />
     </template>
   </vcs-expansion-panel>
 </template>

@@ -32,8 +32,6 @@
   </v-row>
 </template>
 
-<style lang="scss" scoped></style>
-
 <script>
   import { computed } from 'vue';
   import { VRow, VCol } from 'vuetify/components';
@@ -83,12 +81,12 @@
    */
   export default {
     name: 'VcsCoordinate',
-    inheritAttrs: false,
     components: {
       VRow,
       VCol,
       VcsTextField,
     },
+    inheritAttrs: false,
     props: {
       modelValue: {
         type: Array,
@@ -152,3 +150,5 @@
     },
   };
 </script>
+
+<style lang="scss" scoped></style>

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { build } from 'vite'; // vite is also a plugin-cli dep
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +19,7 @@ export function getProjectPath(...pathSegments) {
 export async function getFileMd5(filePath) {
   const hash = createHash('md5');
   const stream = fs.createReadStream(filePath);
-  // eslint-disable-next-line no-restricted-syntax
+
   for await (const chunk of stream) {
     hash.update(chunk);
   }
@@ -29,7 +28,7 @@ export async function getFileMd5(filePath) {
 
 export async function* getFilesInDirectory(filePath) {
   const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const file of entries) {
     if (file.isDirectory()) {
       yield* getFilesInDirectory(path.join(filePath, file.name));

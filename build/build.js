@@ -162,7 +162,7 @@ const filesToExclude = [
 ];
 const hashedPublicFiles = new Map();
 const filesToCopy = new Map();
-// eslint-disable-next-line no-restricted-syntax
+
 for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
   const fileType = path.extname(filePath);
   const relativePath = path.relative(publicFolder, filePath);
@@ -194,7 +194,7 @@ for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
     filesToCopy.set(filePath, newFilePath);
   }
 }
-// eslint-disable-next-line no-restricted-syntax
+
 for await (const [originalFilePath, newFilePath] of filesToCopy) {
   await fs.promises.cp(originalFilePath, newFilePath);
 }

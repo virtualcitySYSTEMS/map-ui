@@ -9,9 +9,9 @@
     <collection-component-list
       v-if="componentListView"
       hide-header
-      @closeList="closeList"
+      @close-list="closeList"
     />
-    <CollectionComponentContent v-else @openList="openList" />
+    <CollectionComponentContent v-else @open-list="openList" />
   </VcsFormSection>
 </template>
 

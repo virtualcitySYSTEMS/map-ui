@@ -177,24 +177,24 @@
     border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
   }
   :deep(
-      .mobile-spacing
-        > .vcs-tree-node
-        > .children
-        > .vcs-tree-node
-        > .treenode
-        > .vcs-action-button-list
-        > button:not(:last-child)
-    ) {
+    .mobile-spacing
+      > .vcs-tree-node
+      > .children
+      > .vcs-tree-node
+      > .treenode
+      > .vcs-action-button-list
+      > button:not(:last-child)
+  ) {
     margin-left: 10px !important;
     margin-right: 10px !important;
   }
   :deep(
-      .mobile-spacing
-        > .vcs-tree-node
-        > .treenode
-        > .vcs-action-button-list
-        > button:not(:last-child)
-    ) {
+    .mobile-spacing
+      > .vcs-tree-node
+      > .treenode
+      > .vcs-action-button-list
+      > button:not(:last-child)
+  ) {
     margin-left: 10px !important;
     margin-right: 10px !important;
   }

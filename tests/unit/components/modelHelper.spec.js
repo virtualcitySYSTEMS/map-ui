@@ -44,6 +44,7 @@ describe('modelHelper', () => {
       expect(emitSpy).not.toHaveBeenCalled();
     });
   });
+
   describe('complex', () => {
     describe('model an array', () => {
       let props;

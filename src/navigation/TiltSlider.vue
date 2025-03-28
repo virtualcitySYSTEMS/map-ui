@@ -28,41 +28,6 @@
   </v-card>
 </template>
 
-<style lang="scss" scoped>
-  .v-slider.v-input--vertical {
-    :deep(.v-slider-track__fill) {
-      width: 2px;
-    }
-    :deep(.v-slider-track__tick--first) {
-      bottom: 0;
-    }
-    :deep(.v-slider-track__tick--last) {
-      bottom: 100%;
-    }
-  }
-
-  .vcs-tilt-slider {
-    margin-top: 6px;
-    margin-bottom: 10px;
-    :deep(.v-slider-thumb__surface) {
-      border-radius: 3px;
-      width: 16px;
-      height: 4px;
-      margin-top: 10px;
-      box-shadow: none !important;
-    }
-  }
-  :deep(.v-slider-thumb__surface::before) {
-    --v-focus-opacity: 0;
-    --v-hover-opacity: 0;
-    --v-pressed-opacity: 0;
-  }
-
-  .v-input--vertical :deep(.v-input__control) {
-    min-height: calc(var(--v-vcs-font-size) * 4);
-  }
-</style>
-
 <script>
   import { computed, defineComponent } from 'vue';
   import { VCard, VSlider, VTooltip } from 'vuetify/components';
@@ -115,3 +80,38 @@
     },
   });
 </script>
+
+<style lang="scss" scoped>
+  .v-slider.v-input--vertical {
+    :deep(.v-slider-track__fill) {
+      width: 2px;
+    }
+    :deep(.v-slider-track__tick--first) {
+      bottom: 0;
+    }
+    :deep(.v-slider-track__tick--last) {
+      bottom: 100%;
+    }
+  }
+
+  .vcs-tilt-slider {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    :deep(.v-slider-thumb__surface) {
+      border-radius: 3px;
+      width: 16px;
+      height: 4px;
+      margin-top: 10px;
+      box-shadow: none !important;
+    }
+  }
+  :deep(.v-slider-thumb__surface::before) {
+    --v-focus-opacity: 0;
+    --v-hover-opacity: 0;
+    --v-pressed-opacity: 0;
+  }
+
+  .v-input--vertical :deep(.v-input__control) {
+    min-height: calc(var(--v-vcs-font-size) * 4);
+  }
+</style>

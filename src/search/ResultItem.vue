@@ -6,6 +6,7 @@
       </v-icon>
     </template>
     <template #title>
+      <!-- eslint-disable vue/no-v-html -->
       <v-list-item-title>
         <span v-html="marked" />
       </v-list-item-title>

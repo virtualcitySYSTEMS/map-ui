@@ -30,12 +30,14 @@ describe('BalloonFeatureInfoView', () => {
       it('should configure name', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
+
       it('should configure title', () => {
         expect(outputConfig).to.have.property(
           'balloonTitle',
           inputConfig.balloonTitle,
         );
       });
+
       it('should configure src', () => {
         expect(outputConfig).to.have.property(
           'balloonSubtitle',

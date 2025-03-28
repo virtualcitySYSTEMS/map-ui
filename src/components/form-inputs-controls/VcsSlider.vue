@@ -30,49 +30,6 @@
     </template>
   </v-slider>
 </template>
-<style lang="scss" scoped>
-  .v-input--horizontal :deep(.v-input__control) {
-    min-height: calc(var(--v-vcs-font-size) * 2 - 2px);
-  }
-  .v-input--horizontal.v-slider--has-labels {
-    margin-bottom: var(--v-vcs-font-size);
-  }
-  .v-slider.v-input--horizontal {
-    :deep(.v-slider-track__fill) {
-      height: 2px;
-    }
-    :deep(.v-slider-track__tick--first) {
-      margin-inline-start: 0;
-    }
-    :deep(.v-slider-track__tick--last) {
-      margin-inline-start: 100%;
-    }
-  }
-  .v-slider.v-input--vertical {
-    :deep(.v-slider-track__fill) {
-      width: 2px;
-    }
-    :deep(.v-slider-track__tick--first) {
-      bottom: 0;
-    }
-    :deep(.v-slider-track__tick--last) {
-      bottom: 100%;
-    }
-  }
-  :deep(.v-slider-thumb__surface::before) {
-    --v-focus-opacity: 0;
-    --v-hover-opacity: 0;
-    --v-pressed-opacity: 0;
-  }
-  :deep(.v-slider-track__tick) {
-    background-color: rgb(var(--v-theme-base-darken-1));
-  }
-  .remove-append-margin {
-    :deep(.v-input__append) {
-      margin-inline-start: 0px;
-    }
-  }
-</style>
 <script>
   import { computed, ref } from 'vue';
   import { VSlider, VTooltip } from 'vuetify/components';
@@ -128,3 +85,46 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  .v-input--horizontal :deep(.v-input__control) {
+    min-height: calc(var(--v-vcs-font-size) * 2 - 2px);
+  }
+  .v-input--horizontal.v-slider--has-labels {
+    margin-bottom: var(--v-vcs-font-size);
+  }
+  .v-slider.v-input--horizontal {
+    :deep(.v-slider-track__fill) {
+      height: 2px;
+    }
+    :deep(.v-slider-track__tick--first) {
+      margin-inline-start: 0;
+    }
+    :deep(.v-slider-track__tick--last) {
+      margin-inline-start: 100%;
+    }
+  }
+  .v-slider.v-input--vertical {
+    :deep(.v-slider-track__fill) {
+      width: 2px;
+    }
+    :deep(.v-slider-track__tick--first) {
+      bottom: 0;
+    }
+    :deep(.v-slider-track__tick--last) {
+      bottom: 100%;
+    }
+  }
+  :deep(.v-slider-thumb__surface::before) {
+    --v-focus-opacity: 0;
+    --v-hover-opacity: 0;
+    --v-pressed-opacity: 0;
+  }
+  :deep(.v-slider-track__tick) {
+    background-color: rgb(var(--v-theme-base-darken-1));
+  }
+  .remove-append-margin {
+    :deep(.v-input__append) {
+      margin-inline-start: 0px;
+    }
+  }
+</style>

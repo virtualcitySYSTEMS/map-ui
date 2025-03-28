@@ -38,16 +38,6 @@
   </v-sheet>
 </template>
 
-<style scoped>
-  .marginToTop {
-    margin-top: 2px;
-  }
-  .marginTablet {
-    margin-top: calc(var(--v-vcs-font-size) * 3 + 6px);
-    margin-bottom: 2px;
-  }
-</style>
-
 <script>
   import { computed, inject, provide, ref } from 'vue';
   import { VDivider, VSheet } from 'vuetify/components';
@@ -67,11 +57,11 @@
    */
   export default {
     name: 'WindowComponent',
-    inheritAttrs: false,
     components: {
       VSheet,
       VDivider,
     },
+    inheritAttrs: false,
     props: {
       windowState: {
         type: Object,
@@ -79,7 +69,6 @@
       },
       isOnTop: {
         type: Boolean,
-        required: true,
         default: false,
       },
       slotWindow: {
@@ -87,6 +76,7 @@
         required: true,
       },
     },
+    emits: ['mousedown', 'moved'],
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const { provides } = app.windowManager.get(props.windowState.id);
@@ -177,3 +167,13 @@
     },
   };
 </script>
+
+<style scoped>
+  .marginToTop {
+    margin-top: 2px;
+  }
+  .marginTablet {
+    margin-top: calc(var(--v-vcs-font-size) * 3 + 6px);
+    margin-bottom: 2px;
+  }
+</style>

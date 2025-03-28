@@ -37,6 +37,7 @@
         default: false,
       },
     },
+    emits: ['zoom-in', 'zoom-out'],
   };
 </script>
 <style lang="scss" scoped>

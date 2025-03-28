@@ -62,84 +62,6 @@
     </template>
   </v-select>
 </template>
-<style lang="scss" scoped>
-  :deep(.v-field) {
-    --v-field-padding-start: 4px;
-    --v-field-padding-end: 4px;
-  }
-  :deep(.v-field__input) {
-    flex-wrap: unset;
-    padding-right: calc(var(--v-vcs-font-size) * 2 + 2px);
-    > input {
-      align-self: auto !important;
-    }
-  }
-  .v-input--density-compact :deep(.v-field) {
-    --v-input-control-height: calc(var(--v-vcs-font-size) * 2 - 2px);
-    --v-field-padding-bottom: 0px;
-    --v-field-input-padding-top: 0px;
-    --v-input-padding-top: 0px;
-  }
-  :deep(.v-field--focused .v-field__outline *) {
-    --v-field-border-width: 1px;
-  }
-  // set the border color on focused to primary, but not on error
-  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *) {
-    border-color: rgb(var(--v-theme-primary));
-  }
-  // Not color, just used if label is given
-  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *::after) {
-    border-color: rgb(var(--v-theme-primary));
-  }
-  // remove outline, if not focused, hovered or an error
-  :deep(.v-field:not(.v-field--focused):not(.v-field--error):not(:hover)) {
-    .v-field__outline * {
-      border-width: 0 0 1px 0;
-      border-radius: 0;
-    }
-    .v-field__outline {
-      padding-left: 4px;
-      padding-right: 4px;
-    }
-    .v-field__loader {
-      padding-left: 3px;
-      padding-right: 3px;
-    }
-    .v-field__outline *::before {
-      border-width: 0;
-      border-radius: 0;
-    }
-    .v-field__outline * label {
-      color: rgb(var(--v-theme-primary));
-      margin-left: -4px;
-    }
-  }
-  :deep(.v-field--appended) {
-    padding-inline-end: 4px;
-    .v-field__append-inner {
-      i {
-        margin-left: 0;
-      }
-    }
-  }
-  .primary--placeholder {
-    :deep(input::placeholder) {
-      color: rgb(var(--v-theme-primary));
-      opacity: 1;
-      font-style: italic !important;
-      padding: 0 3px 0 0;
-    }
-  }
-  // remove details
-  :deep(.v-input__details) {
-    display: none;
-  }
-
-  // Progress Bar
-  :deep(.v-field__loader) {
-    top: calc(100% - 2px);
-  }
-</style>
 <script>
   import { VSelect, VTooltip, VListItem } from 'vuetify/components';
   import { computed, ref } from 'vue';
@@ -230,3 +152,81 @@
     },
   };
 </script>
+<style lang="scss" scoped>
+  :deep(.v-field) {
+    --v-field-padding-start: 4px;
+    --v-field-padding-end: 4px;
+  }
+  :deep(.v-field__input) {
+    flex-wrap: unset;
+    padding-right: calc(var(--v-vcs-font-size) * 2 + 2px);
+    > input {
+      align-self: auto !important;
+    }
+  }
+  .v-input--density-compact :deep(.v-field) {
+    --v-input-control-height: calc(var(--v-vcs-font-size) * 2 - 2px);
+    --v-field-padding-bottom: 0px;
+    --v-field-input-padding-top: 0px;
+    --v-input-padding-top: 0px;
+  }
+  :deep(.v-field--focused .v-field__outline *) {
+    --v-field-border-width: 1px;
+  }
+  // set the border color on focused to primary, but not on error
+  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+  // Not color, just used if label is given
+  :deep(.v-field--focused:not(.v-field--error) .v-field__outline *::after) {
+    border-color: rgb(var(--v-theme-primary));
+  }
+  // remove outline, if not focused, hovered or an error
+  :deep(.v-field:not(.v-field--focused):not(.v-field--error):not(:hover)) {
+    .v-field__outline * {
+      border-width: 0 0 1px 0;
+      border-radius: 0;
+    }
+    .v-field__outline {
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+    .v-field__loader {
+      padding-left: 3px;
+      padding-right: 3px;
+    }
+    .v-field__outline *::before {
+      border-width: 0;
+      border-radius: 0;
+    }
+    .v-field__outline * label {
+      color: rgb(var(--v-theme-primary));
+      margin-left: -4px;
+    }
+  }
+  :deep(.v-field--appended) {
+    padding-inline-end: 4px;
+    .v-field__append-inner {
+      i {
+        margin-left: 0;
+      }
+    }
+  }
+  .primary--placeholder {
+    :deep(input::placeholder) {
+      color: rgb(var(--v-theme-primary));
+      opacity: 1;
+      font-style: italic !important;
+      padding: 0 3px 0 0;
+    }
+  }
+  // remove details
+  :deep(.v-input__details) {
+    display: none;
+  }
+
+  // Progress Bar
+  :deep(.v-field__loader) {
+    top: calc(100% - 2px);
+  }
+</style>

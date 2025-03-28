@@ -129,20 +129,6 @@
   </v-toolbar>
 </template>
 
-<style lang="scss" scoped>
-  .logo {
-    max-height: calc(var(--v-vcs-font-size) * 3 - 3px);
-    margin: 0 auto;
-  }
-  .v-toolbar.v-toolbar--bottom {
-    bottom: 0;
-    position: fixed;
-  }
-  .flex-grow-2 {
-    flex-grow: 2;
-  }
-</style>
-
 <script>
   import { inject, computed, onUnmounted } from 'vue';
   import { useDisplay } from 'vuetify';
@@ -251,3 +237,17 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .logo {
+    max-height: calc(var(--v-vcs-font-size) * 3 - 3px);
+    margin: 0 auto;
+  }
+  .v-toolbar.v-toolbar--bottom {
+    bottom: 0;
+    position: fixed;
+  }
+  .flex-grow-2 {
+    flex-grow: 2;
+  }
+</style>

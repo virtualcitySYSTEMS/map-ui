@@ -56,29 +56,6 @@
   </v-toolbar>
 </template>
 
-<style lang="scss" scoped>
-  .vcs-toolbox__secondary {
-    &.vcs-toolbox.v-theme {
-      &--light {
-        background-color: rgba(var(--v-theme-primary-lighten-3));
-      }
-      &--dark {
-        background-color: rgba(var(--v-theme-primary-darken-4));
-      }
-    }
-  }
-  .vcs-toolbox {
-    margin-top: 2px;
-    width: fit-content;
-  }
-  .mobileToolbox {
-    bottom: 0px !important;
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-</style>
-
 <script>
   import { inject, ref, computed, watch, onUnmounted, reactive } from 'vue';
   import { useDisplay } from 'vuetify';
@@ -259,3 +236,26 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .vcs-toolbox__secondary {
+    &.vcs-toolbox.v-theme {
+      &--light {
+        background-color: rgba(var(--v-theme-primary-lighten-3));
+      }
+      &--dark {
+        background-color: rgba(var(--v-theme-primary-darken-4));
+      }
+    }
+  }
+  .vcs-toolbox {
+    margin-top: 2px;
+    width: fit-content;
+  }
+  .mobileToolbox {
+    bottom: 0px !important;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+</style>

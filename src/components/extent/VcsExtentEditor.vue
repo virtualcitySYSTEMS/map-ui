@@ -30,11 +30,11 @@
    */
   export default {
     name: 'VcsExtentEditor',
-    inheritAttrs: false,
     components: {
       VcsFormSection,
       VcsExtent,
     },
+    inheritAttrs: false,
     props: {
       modelValue: {
         type: Object,

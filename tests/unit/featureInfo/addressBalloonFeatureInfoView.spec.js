@@ -101,18 +101,23 @@ describe('AddressBalloonFeatureInfoView', () => {
       it('should configure addressName', () => {
         expect(outputConfig).to.have.property('addressName', 'VCS');
       });
+
       it('should configure street', () => {
         expect(outputConfig).to.have.property('street', inputConfig.street);
       });
+
       it('should configure number', () => {
         expect(outputConfig).to.have.property('number', inputConfig.number);
       });
+
       it('should configure city', () => {
         expect(outputConfig).to.have.property('city', inputConfig.city);
       });
+
       it('should configure zip', () => {
         expect(outputConfig).to.have.property('zip', inputConfig.zip);
       });
+
       it('should configure country', () => {
         expect(outputConfig).to.have.property('country', inputConfig.country);
       });

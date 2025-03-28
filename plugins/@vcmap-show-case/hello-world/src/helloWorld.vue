@@ -26,11 +26,6 @@
   </v-sheet>
 </template>
 
-<style scoped lang="scss">
-  .hello-world {
-    background-color: aqua;
-  }
-</style>
 <script>
   import { inject } from 'vue';
   import { VcsButton, getPluginAssetUrl } from '@vcmap/ui';
@@ -49,6 +44,7 @@
       VRow,
       VImg,
     },
+    emits: ['close'],
     setup(props, { emit }) {
       const app = inject('vcsApp');
       const { helloWorld, showHelloWorldBtn } = app.plugins.getByKey(name);
@@ -58,7 +54,6 @@
           emit('close');
         },
         helloWorld() {
-          // eslint-disable-next-line no-console
           console.log(helloWorld());
         },
         showHelloWorldBtn,
@@ -67,3 +62,8 @@
     },
   };
 </script>
+<style scoped lang="scss">
+  .hello-world {
+    background-color: aqua;
+  }
+</style>

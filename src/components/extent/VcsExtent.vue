@@ -73,7 +73,6 @@
    */
   export default {
     name: 'VcsExtent',
-    inheritAttrs: false,
     components: {
       VcsCoordinate,
       VContainer,
@@ -82,6 +81,7 @@
       VcsLabel,
       VcsTextField,
     },
+    inheritAttrs: false,
     props: {
       modelValue: {
         type: Object,

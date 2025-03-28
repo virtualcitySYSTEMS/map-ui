@@ -27,7 +27,7 @@ function awaitStateChange(state) {
   return Promise.resolve();
 }
 
-describe('WMSGroupContentTreeItem', async () => {
+describe('WMSGroupContentTreeItem', () => {
   let app;
   let scope;
 
@@ -170,12 +170,15 @@ describe('WMSGroupContentTreeItem', async () => {
       it('should set the wmsLayers on the layer', () => {
         expect(layer.getLayers().length).to.be.equal(0);
       });
+
       it('should set the styles on the layer', () => {
         expect(layer.parameters.STYLES).to.equal('');
       });
+
       it('should set the legend on the layer', () => {
         expect(layer[legendSymbol]).to.be.undefined;
       });
+
       it('should set the layer state', () => {
         expect(layer.active).to.be.false;
       });
@@ -200,14 +203,17 @@ describe('WMSGroupContentTreeItem', async () => {
       it('should set the wmsLayers on the layer', () => {
         expect(layer.getLayers().length).to.be.equal(2);
       });
+
       it('should set the styles on the layer', () => {
         expect(layer.parameters.STYLES).to.equal(
           'grenzuebergaenge,haltestellen',
         );
       });
+
       it('should set the legend on the layer', () => {
         expect(layer[legendSymbol]).to.not.be.undefined;
       });
+
       it('should set the layer state', () => {
         expect(layer.active).to.be.true;
       });

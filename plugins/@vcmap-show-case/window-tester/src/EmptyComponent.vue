@@ -3,11 +3,6 @@
     <span> Static Window </span>
   </v-sheet>
 </template>
-<style scoped>
-  .vcsTest span {
-    background-color: red;
-  }
-</style>
 <script>
   import { VSheet } from 'vuetify/components';
 
@@ -16,3 +11,8 @@
     components: { VSheet },
   };
 </script>
+<style scoped>
+  .vcsTest span {
+    background-color: red;
+  }
+</style>

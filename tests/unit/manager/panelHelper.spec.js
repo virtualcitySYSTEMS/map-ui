@@ -38,20 +38,24 @@ describe('panelHelper', () => {
       const top = posToRelativeTarget('1px', 'top', targetSize);
       expect(top).to.equal(0.1);
     });
+
     it('should round floating pixel to integer', () => {
       const top = posToRelativeTarget('1.1px', 'top', targetSize);
       expect(top).to.equal(0.1);
     });
+
     it('should parse percent values', () => {
       const left = posToRelativeTarget('25%', 'left', targetSize);
       const top = posToRelativeTarget('-25%', 'top', targetSize);
       expect(left).to.equal(25);
       expect(top).to.equal(-25);
     });
+
     it('should return undefined for non numeric values', () => {
       const top = posToRelativeTarget('unset', 'top', targetSize);
       expect(top).to.equal(undefined);
     });
+
     it('should parse PanelPosition to numeric percentage values', () => {
       const parsedPosition = percentageFromPanelOptions(
         {
@@ -116,6 +120,7 @@ describe('panelHelper', () => {
           getPanelPosition(left).width,
         );
       });
+
       it('should update MAIN width', () => {
         updatePanelSizes(panelManager, main, targetSize);
         const newWidth =
@@ -154,6 +159,7 @@ describe('panelHelper', () => {
           getPanelPosition(right).width,
         );
       });
+
       it('should update MAIN width', () => {
         updatePanelSizes(panelManager, main, targetSize);
         const newWidth =
@@ -227,6 +233,7 @@ describe('panelHelper', () => {
           `${newHeight}%`,
         );
       });
+
       it('should update right panel height according to BOTTOM height', () => {
         updatePanelSizes(panelManager, main, targetSize);
         const newHeight =

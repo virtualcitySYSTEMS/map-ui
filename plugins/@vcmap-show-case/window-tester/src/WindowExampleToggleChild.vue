@@ -10,7 +10,6 @@
   </v-container>
 </template>
 
-<style scoped></style>
 <script>
   import { VContainer } from 'vuetify/components';
   import { VcsFormButton, WindowSlot } from '@vcmap/ui';
@@ -51,3 +50,4 @@
     },
   };
 </script>
+<style scoped></style>

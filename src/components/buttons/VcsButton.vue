@@ -34,32 +34,6 @@
   </v-btn>
 </template>
 
-<style lang="scss" scoped>
-  .badge {
-    top: -3px;
-    right: -3px;
-  }
-  .v-btn {
-    padding: 0px;
-    &.vcs-button {
-      &:hover {
-        color: rgb(var(--v-theme-primary-lighten-1)) !important;
-      }
-    }
-    &.v-btn--disabled {
-      opacity: var(--v-disabled-opacity);
-    }
-    :deep(.v-btn__loader > .v-progress-circular) {
-      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
-    }
-  }
-  // remove hover shadow over button
-  :deep(.v-btn__overlay) {
-    --v-hover-opacity: 0;
-  }
-</style>
-
 <script>
   import { computed } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
@@ -143,3 +117,29 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .badge {
+    top: -3px;
+    right: -3px;
+  }
+  .v-btn {
+    padding: 0px;
+    &.vcs-button {
+      &:hover {
+        color: rgb(var(--v-theme-primary-lighten-1)) !important;
+      }
+    }
+    &.v-btn--disabled {
+      opacity: var(--v-disabled-opacity);
+    }
+    :deep(.v-btn__loader > .v-progress-circular) {
+      width: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+      height: calc(var(--v-vcs-font-size) * (1.2 + 0.1 / 3)) !important;
+    }
+  }
+  // remove hover shadow over button
+  :deep(.v-btn__overlay) {
+    --v-hover-opacity: 0;
+  }
+</style>

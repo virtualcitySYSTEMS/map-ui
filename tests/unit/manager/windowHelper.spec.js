@@ -281,24 +281,29 @@ describe('windowHelper', () => {
       const top = posToNumber('150px', 'top', targetSize);
       expect(top).to.equal(150);
     });
+
     it('should parse negative pixel values', () => {
       const top = posToNumber('-150px', 'top', targetSize);
       expect(top).to.equal(-150);
     });
+
     it('should round floating pixel to integer', () => {
       const top = posToNumber('150.156px', 'top', targetSize);
       expect(top).to.equal(150);
     });
+
     it('should parse percent values', () => {
       const left = posToNumber('25%', 'left', targetSize);
       const top = posToNumber('-25%', 'top', targetSize);
       expect(left).to.equal(targetSize.width / 4);
       expect(top).to.equal(-targetSize.height / 4);
     });
+
     it('should return undefined for non numeric values', () => {
       const top = posToNumber('unset', 'top', targetSize);
       expect(top).to.equal(undefined);
     });
+
     it('should parse WindowPosition to numeric values', () => {
       const parsedPosition = optionsFromWindowPosition(
         {
@@ -335,19 +340,23 @@ describe('windowHelper', () => {
       it('should not update untouched values', () => {
         expect(updatedPosition).to.have.property('top', '0px');
       });
+
       it('should not update unset values', () => {
         expect(updatedPosition).to.have.property('bottom', 'unset');
         expect(updatedPosition).to.have.property('right', 'unset');
       });
+
       it('should not update auto values', () => {
         expect(updatedPosition).to.have.property('height', 'auto');
       });
+
       it('should update values keeping units', () => {
         expect(updatedPosition).to.have.property(
           'left',
           posToPixel(targetRect.width / 2),
         );
       });
+
       it('should update new values', () => {
         expect(updatedPosition).to.have.property('width', '250px');
       });
@@ -396,6 +405,7 @@ describe('windowHelper', () => {
         );
         expect(clippedPosition).to.have.property('top', 0);
       });
+
       it('should set lower bound of top', () => {
         const windowPositionOptions = { top: 1090 };
         const clippedPosition = clipToTargetSize(
@@ -407,6 +417,7 @@ describe('windowHelper', () => {
           targetRect.height - windowMoveMargin.bottom,
         );
       });
+
       it('should set upper bound of bottom', () => {
         const windowPositionOptions = { bottom: 2000, height: 200 };
         const clippedPosition = clipToTargetSize(
@@ -418,6 +429,7 @@ describe('windowHelper', () => {
           targetRect.height - windowPositionOptions.height,
         );
       });
+
       it('should set lower bound of bottom', () => {
         const windowPositionOptions = { bottom: -1000, height: 200 };
         const clippedPosition = clipToTargetSize(
@@ -429,6 +441,7 @@ describe('windowHelper', () => {
           -windowPositionOptions.height + windowMoveMargin.bottom,
         );
       });
+
       it('should set min bound of left', () => {
         const windowPositionOptions = { left: -150, width: 100 };
         const clippedPosition = clipToTargetSize(
@@ -440,6 +453,7 @@ describe('windowHelper', () => {
           -windowPositionOptions.width + windowMoveMargin.left,
         );
       });
+
       it('should set max bound of left', () => {
         const windowPositionOptions = { left: 2000, width: 100 };
         const clippedPosition = clipToTargetSize(
@@ -451,6 +465,7 @@ describe('windowHelper', () => {
           targetRect.width - windowMoveMargin.left,
         );
       });
+
       it('should set min bound of right', () => {
         const windowPositionOptions = { right: -150, width: 100 };
         const clippedPosition = clipToTargetSize(
@@ -462,6 +477,7 @@ describe('windowHelper', () => {
           -windowPositionOptions.width + windowMoveMargin.right,
         );
       });
+
       it('should set max bound of right', () => {
         const windowPositionOptions = { right: 1900, width: 100 };
         const clippedPosition = clipToTargetSize(
@@ -473,6 +489,7 @@ describe('windowHelper', () => {
           targetRect.width - windowMoveMargin.right,
         );
       });
+
       it('should set maxWidth and maxHeight, if not set', () => {
         const clippedPosition = clipToTargetSize({}, targetSize);
         expect(clippedPosition).to.have.property('maxWidth', targetRect.width);
@@ -481,6 +498,7 @@ describe('windowHelper', () => {
           targetRect.height - 4,
         );
       });
+
       it('should limit maxWidth and maxHeight to the target size', () => {
         const windowPositionOptions = { maxWidth: 2500, maxHeight: 1500 };
         const clippedPosition = clipToTargetSize(
@@ -493,6 +511,7 @@ describe('windowHelper', () => {
           targetRect.height,
         );
       });
+
       it('should limit maxWidth of a TOP_LEFT2 positioned window, if a static window is active', () => {
         const windowPositionOptions = optionsFromWindowPosition(
           { ...WindowPositions.TOP_LEFT2, width: 1000 },

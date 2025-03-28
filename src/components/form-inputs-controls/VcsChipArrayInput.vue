@@ -85,26 +85,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .hide-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .v-chip.v-chip--size-small {
-    --v-chip-height: calc(var(--v-vcs-font-size) * 2 - 2px);
-    padding: 0 calc(var(--v-vcs-font-size) - 3px);
-  }
-  :deep(.v-icon--size-x-small) {
-    font-size: calc(var(--v-vcs-font-size) + 3px);
-  }
-  .row-gap {
-    row-gap: 8px !important;
-  }
-</style>
-
 <script>
   import { computed, nextTick, onMounted, ref, shallowRef, watch } from 'vue';
   import { VChip, VIcon } from 'vuetify/components';
@@ -296,3 +276,23 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .v-chip.v-chip--size-small {
+    --v-chip-height: calc(var(--v-vcs-font-size) * 2 - 2px);
+    padding: 0 calc(var(--v-vcs-font-size) - 3px);
+  }
+  :deep(.v-icon--size-x-small) {
+    font-size: calc(var(--v-vcs-font-size) + 3px);
+  }
+  .row-gap {
+    row-gap: 8px !important;
+  }
+</style>

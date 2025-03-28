@@ -229,6 +229,7 @@ describe('URL state IO', () => {
       ]);
     });
   });
+
   describe('parseUrlViewpointState', () => {
     it('should return a viewpoint options object in EPSG:4326 when given a valid UrlViewpointState in EPSG:3857', () => {
       const state = [

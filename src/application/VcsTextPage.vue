@@ -4,12 +4,6 @@
   </v-container>
 </template>
 
-<style lang="scss" scoped>
-  :deep(a) {
-    color: var(--v-text-color);
-  }
-</style>
-
 <script>
   import { VContainer } from 'vuetify/components';
   import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
@@ -20,15 +14,21 @@
    */
   export default {
     name: 'VcsTextPage',
+    components: {
+      VContainer,
+      VcsMarkdown,
+    },
     props: {
       content: {
         type: String,
         required: true,
       },
     },
-    components: {
-      VContainer,
-      VcsMarkdown,
-    },
   };
 </script>
+
+<style lang="scss" scoped>
+  :deep(a) {
+    color: var(--v-text-color);
+  }
+</style>

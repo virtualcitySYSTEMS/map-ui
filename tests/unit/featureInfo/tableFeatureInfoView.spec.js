@@ -32,18 +32,21 @@ describe('TableFeatureInfoView', () => {
       it('should configure name', () => {
         expect(outputConfig).to.have.property('name', 'TestView');
       });
+
       it('should configure itemsPerPageArray', () => {
         expect(outputConfig).to.have.property(
           'itemsPerPageArray',
           inputConfig.itemsPerPageArray,
         );
       });
+
       it('should configure itemsPerPage', () => {
         expect(outputConfig).to.have.property(
           'itemsPerPage',
           inputConfig.itemsPerPage,
         );
       });
+
       it('should configure searchbarPlaceholder', () => {
         expect(outputConfig).to.have.property(
           'searchbarPlaceholder',

@@ -54,6 +54,7 @@ describe('vuetify', () => {
           defaultPrimaryColor.light,
         );
       });
+
       it('should consider dark mode', () => {
         app.vuetify.theme.global.name.value = 'dark';
         expect(getColorByKey(app, 'primary')).to.equal(
@@ -61,6 +62,7 @@ describe('vuetify', () => {
         );
         app.vuetify.theme.global.name.value = 'light';
       });
+
       it('should return primary variations', () => {
         variations.forEach((v) => {
           expect(getColorByKey(app, 'primary', v).toUpperCase()).to.equal(
@@ -74,6 +76,7 @@ describe('vuetify', () => {
       it('should return base color, when not providing a variant', () => {
         expect(getColorByKey(app, 'base')).to.equal('#9E9E9E');
       });
+
       it('should return base variations', () => {
         variations.forEach((v) => {
           expect(getColorByKey(app, 'base', v).toUpperCase()).to.equal(
@@ -82,6 +85,7 @@ describe('vuetify', () => {
         });
       });
     });
+
     describe('color not defined in theme', () => {
       it('should return undefined, if a color is not defined in the vuetify theme', () => {
         expect(getColorByKey(app, 'pink')).to.undefined;
