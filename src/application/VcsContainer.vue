@@ -10,9 +10,8 @@
     fluid
     absolute
   >
-    <template v-if="smAndDown">
+    <template v-if="smAndDown && mobileLogo">
       <img
-        v-if="mobileLogo"
         :src="mobileLogo"
         alt="Logo"
         draggable="false"
@@ -105,7 +104,6 @@
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';
   import NotifierComponent from '../notifier/NotifierComponent.vue';
-  import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import { isMobileLandscape } from '../vuePlugins/vuetify.js';
 
   /**
@@ -141,10 +139,7 @@
         mobile,
         mobileLandscape,
         mobileLogo: computed(
-          () =>
-            app.uiConfig.config.mobileLogo ??
-            app.uiConfig.config.logo ??
-            VcsDefaultLogoMobile,
+          () => app.uiConfig.config.mobileLogo ?? app.uiConfig.config.logo,
         ),
       };
     },

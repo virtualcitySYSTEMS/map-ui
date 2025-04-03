@@ -104,7 +104,6 @@
   import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
-  import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
 
   /**
@@ -882,12 +881,6 @@
           return !app.uiConfig.config.hideFooter && smAndUp.value;
         }),
         footerHeight,
-        mobileLogo: computed(
-          () =>
-            app.uiConfig.config.mobileLogo ??
-            app.uiConfig.config.logo ??
-            VcsDefaultLogoMobile,
-        ),
         imprint: computed(() => {
           if (app.uiConfig.config.imprint) {
             return {

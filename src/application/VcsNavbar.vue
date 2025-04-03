@@ -51,7 +51,7 @@
         </v-col>
         <v-col class="d-flex justify-center flex-grow-2 mx-2">
           <div class="d-flex align-center">
-            <template v-if="!smAndDown">
+            <template v-if="!smAndDown && logo">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
             <div
@@ -164,7 +164,6 @@
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsToolButton from '../components/buttons/VcsToolButton.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
-  import VcsDefaultLogo from '../logo.svg';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
@@ -212,7 +211,7 @@
         );
 
       const logo = computed(() => {
-        return app.uiConfig.config.logo ?? VcsDefaultLogo;
+        return app.uiConfig.config.logo;
       });
 
       const { searchAction, destroy: destroySearchAction } =

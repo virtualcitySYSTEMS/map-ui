@@ -1,3 +1,8 @@
+# 6.1.7
+
+- removed default VCS Logo, now a logo is only shown if configured.
+- fixed vuetify dependency to not include vuetify 3.8.
+
 # 6.1.6
 
 - updated @vcmap/core to fix a bug in the tileProvider
