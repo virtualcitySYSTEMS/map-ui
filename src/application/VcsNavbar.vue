@@ -198,7 +198,11 @@
         );
 
       const logo = computed(() => {
-        return app.uiConfig.config.logo ?? VcsDefaultLogo;
+        const { config } = app.uiConfig;
+        const isDark = app.vuetify.theme.current.value.dark;
+        return isDark
+          ? (config.logoDark ?? config.logo ?? VcsDefaultLogo)
+          : (config.logo ?? VcsDefaultLogo);
       });
 
       const { searchAction, destroy: destroySearchAction } =

@@ -87,8 +87,12 @@
   import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
-  import VcsDefaultLogoMobile from '../logo-mobile.svg';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
+  import {
+    getDataProtection,
+    getImprint,
+    getMobileLogo,
+  } from './uiConfigHelper.js';
 
   /**
    * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
@@ -861,36 +865,13 @@
 
       return {
         config: app.uiConfig.config,
-        showFooter: computed(() => {
-          return !app.uiConfig.config.hideFooter && smAndUp.value;
-        }),
-        footerHeight,
-        mobileLogo: computed(
-          () =>
-            app.uiConfig.config.mobileLogo ??
-            app.uiConfig.config.logo ??
-            VcsDefaultLogoMobile,
+        showFooter: computed(
+          () => !app.uiConfig.config.hideFooter && smAndUp.value,
         ),
-        imprint: computed(() => {
-          if (app.uiConfig.config.imprint) {
-            return {
-              title: 'footer.imprint.title',
-              tooltip: 'footer.imprint.tooltip',
-              ...app.uiConfig.config.imprint,
-            };
-          }
-          return undefined;
-        }),
-        dataProtection: computed(() => {
-          if (app.uiConfig.config.dataProtection) {
-            return {
-              title: 'footer.dataProtection.title',
-              tooltip: 'footer.dataProtection.tooltip',
-              ...app.uiConfig.config.dataProtection,
-            };
-          }
-          return undefined;
-        }),
+        footerHeight,
+        mobileLogo: getMobileLogo(app),
+        imprint: getImprint(app.uiConfig.config),
+        dataProtection: getDataProtection(app.uiConfig.config),
         showSplashScreen,
         splashScreen,
         attributionEntries,

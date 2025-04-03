@@ -50,7 +50,9 @@ import { reactive, readonly, ref } from 'vue';
 /**
  * @typedef {Object} UiConfigObject
  * @property {string} [logo] - the company logo to display. this will override any and all css overrides.
+ * @property {string} [logoDark] - the company logo to display in dark mode. this will override any and all css overrides. if not set, the `logo` will be used
  * @property {string} [mobileLogo] - an alternative logo to display in mobile view
+ * @property {string} [mobileLogoDark] - an alternative logo to display in mobile view and dark mode. if not set, the `mobileLogo` will be used
  * @property {string} [appTitle] - an optional title to display next to the company logo
  * @property {string} [primaryColor] - an optional primary color to use in all themes, can be overwritten by `vuetifyTheme`
  * @property {boolean} [startingFeatureInfo] - an optional flag whether to activate feature info on startup (default active)

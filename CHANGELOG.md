@@ -1,3 +1,8 @@
+# 6.1.6
+
+- updated @vcmap/core to fix a bug in the tileProvider
+- added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
+
 # 6.1.5
 
 - fixed a bug where the uiConfig option showLocator was not reactive.

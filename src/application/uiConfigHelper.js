@@ -1,4 +1,5 @@
 import { computed } from 'vue';
+import VcsDefaultLogoMobile from '../logo-mobile.svg';
 
 /**
  * Creates a computed property for data protection configuration.
@@ -33,5 +34,25 @@ export function getImprint(uiConfig) {
       };
     }
     return undefined;
+  });
+}
+
+/**
+ * Creates a computed property for mobile logo.
+ * @param {import("../vcsUiApp.js").default} app - The VcsUiApp.
+ * @returns {import('vue').ComputedRef<string>}
+ */
+export function getMobileLogo(app) {
+  return computed(() => {
+    const { config } = app.uiConfig;
+    const isDark = app.vuetify.theme.current.value.dark;
+
+    return isDark
+      ? (config.mobileLogoDark ??
+          config.logoDark ??
+          config.mobileLogo ??
+          config.logo ??
+          VcsDefaultLogoMobile)
+      : (config.mobileLogo ?? config.logo ?? VcsDefaultLogoMobile);
   });
 }
