@@ -1,3 +1,11 @@
+# 6.1.9
+
+- update @vcmap/core to fix a bug in the FeatureProvider code
+
+# 6.1.8
+
+- updated plugin dependencies
+
 # 6.1.7
 
 - removed default VCS Logo, now a logo is only shown if configured.
