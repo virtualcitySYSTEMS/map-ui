@@ -1,3 +1,7 @@
+# 6.1.10
+
+- fixed a bug where point featureInfo for WMS Layers would not render
+
 # 6.1.9
 
 - update @vcmap/core to fix a bug in the FeatureProvider code

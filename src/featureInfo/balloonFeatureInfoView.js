@@ -13,6 +13,7 @@ import {
   isAbsoluteHeightReference,
   isRelativeHeightReference,
   Projection,
+  VectorProperties,
 } from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
@@ -77,10 +78,14 @@ function getPositionFromFeature(feature, layer, clickedPosition) {
   let position = null;
   if (feature instanceof Feature && feature.getGeometry() instanceof Point) {
     const point = feature.getGeometry();
-    const renderAs = layer.vectorProperties.renderAs(feature);
+    const vectorProperties =
+      layer.vectorProperties ??
+      layer.featureProvider?.vectorProperties ??
+      new VectorProperties();
+    const renderAs = vectorProperties.renderAs(feature);
     if (renderAs === 'geometry') {
       // special case where we do not want to use the clickedPosition but the exact Position of the Point
-      const heightInfo = getHeightInfo(feature, point, layer.vectorProperties);
+      const heightInfo = getHeightInfo(feature, point, vectorProperties);
       ({ heightReference } = heightInfo);
       let height = clickedPosition?.[2] ?? 0;
       position = point.getCoordinates();
