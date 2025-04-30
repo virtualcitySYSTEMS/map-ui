@@ -1,6 +1,8 @@
 # 6.1.10
 
 - fixed a bug where point featureInfo for WMS Layers would not render
+- fixed a bug where the flight anchor duration field would not show, if the title was too long
+- fixed a bug in the @vcmap/core where clearing the feature on a geometry editing session would not properly reset the picking
 
 # 6.1.9
 

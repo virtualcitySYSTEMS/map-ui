@@ -26,7 +26,7 @@
       >
         <template #item.title="{ item, index }">
           <div class="d-flex align-center">
-            <span>{{ $st(item.title) }}</span>
+            <span class="anchorTitle">{{ $st(item.title) }}</span>
             <v-spacer />
             <div class="duration-input">
               <VcsTextField
@@ -350,6 +350,7 @@
     overflow: visible;
   }
   .duration-input {
+    min-width: 60px;
     width: 60px;
   }
   .z-index-99 {
@@ -358,5 +359,9 @@
   .add-in-button {
     min-height: 0 !important;
     margin-top: -8px;
+  }
+  .anchorTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
