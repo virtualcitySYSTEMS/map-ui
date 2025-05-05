@@ -1,8 +1,36 @@
 # 6.1.10
 
+### Fixes
+
 - fixed a bug where point featureInfo for WMS Layers would not render
 - fixed a bug where the flight anchor duration field would not show, if the title was too long
 - fixed a bug in the @vcmap/core where clearing the feature on a geometry editing session would not properly reset the picking
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - fixed a bug, where configuring export of multiple Oblique sources would block their export.
+  - fixed a bug, where a GeoJSON export would fail when no terms of use are configured.
+  - fixed a bug, where enabling local coordinates for a city model export would then block any CRS selection.
+- @vcmap/search-nominatim
+  - fixed an issue where some OSM Nominatim responses would not return a geojson Feature.
+- @vcmap/measurement
+  - added the possibility to disable the measurements for specified maps.
+  - added the possibility to configure the shown decimal places for the measurements.
+- @vcmap/heightProfile
+  - changed the tooltip to show more decimal places, this can be configured.
+- @vcmap/shadow
+  - changed the date when the shadow plugin is activated to the current year.
+- @vcmap/planning
+  - show the planningId in the planning edit view
+  - show the supported file types in the file import window
+  - fixed a bug where legacy flight anchors would not display the correct anchor title
+- @vcmap/multi-view
+  - fixed a bug where initializing the state from an url parameter would not work correctly
+- @vcmap/list-view
+  - fixed several styling issues
+- @vcmap/cesium-inspector
+  - Added the plugin, which allows to use cesium Tools to inspect the scene.
 
 # 6.1.9
 

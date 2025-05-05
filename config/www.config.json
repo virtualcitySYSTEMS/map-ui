@@ -1980,6 +1980,10 @@
     {
       "name": "@vcmap/search-coordinate",
       "entry": "plugins/@vcmap/search-coordinate/index.js"
+    },
+    {
+      "name": "@vcmap/cesium-inspector",
+      "entry": "plugins/@vcmap/cesium-inspector/index.js"
     }
   ]
 }
