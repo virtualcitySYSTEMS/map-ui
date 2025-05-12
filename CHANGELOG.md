@@ -1,3 +1,14 @@
+# 6.1.11
+
+### Fixes
+
+- updates @vcmap/core to 6.1.9 to fix a bug with WMSGetFeatureInfo and Mapserver GML format
+
+### Plugin Bundle updates
+
+- @vcmap/event-control
+  - Added the plugin, which allows to trigger actions on events like layer/module/map/planning/window activate and deactivate
+
 # 6.1.10
 
 ### Fixes
