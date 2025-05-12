@@ -2,6 +2,7 @@
 
 ### Fixes
 
+- fixes a bug where the mobile menu would not show, if no toolbox item was configured
 - updates @vcmap/core to 6.1.9 to fix a bug with WMSGetFeatureInfo and Mapserver GML format
 
 ### Plugin Bundle updates

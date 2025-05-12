@@ -25,13 +25,13 @@
     [...app.plugins].map((p) => p.name),
   )?.slice(2);
 
-  const toolboxToggleAction = app.navbarManager.get(toolboxComponentId).action;
+  const toolboxToggleAction = app.navbarManager.get(toolboxComponentId)?.action;
 
   const toolboxOverflowActions = getActionsByLocation(
     mobileButtonComponents,
     ButtonLocation.TOOL,
     [...app.plugins].map((p) => p.name),
-  )?.filter((action) => action.name !== toolboxToggleAction.name);
+  )?.filter((action) => action.name !== toolboxToggleAction?.name);
 
   const mobileMenuActions = [
     ...getActionsByLocation(
