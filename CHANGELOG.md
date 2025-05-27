@@ -1,3 +1,7 @@
+# 6.1.12
+
+- Added new uiConfig options: `hideShareButton` and `hideMenuButton`
+
 # 6.1.11
 
 ### Fixes

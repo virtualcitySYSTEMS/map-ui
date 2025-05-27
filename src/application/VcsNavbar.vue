@@ -79,7 +79,9 @@
                 class="mx-2"
               />
               <div class="d-flex gc-2">
-                <v-menu v-if="shareActions.length > 0">
+                <v-menu
+                  v-if="!config.hideShareButton && shareActions.length > 0"
+                >
                   <template #activator="{ props }">
                     <VcsToolButton
                       v-bind="props"
@@ -105,7 +107,7 @@
                   @click.stop="searchAction.callback($event)"
                   v-bind="{ ...$attrs }"
                 />
-                <v-menu v-if="menuActions.length > 0">
+                <v-menu v-if="!config.hideMenuButton && menuActions.length > 0">
                   <template #activator="{ props }">
                     <VcsToolButton
                       v-bind="props"
