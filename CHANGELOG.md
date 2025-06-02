@@ -1,6 +1,7 @@
 # 6.1.12
 
 - Added new uiConfig options: `hideShareButton` and `hideMenuButton`
+- fixed a bug in the Markdown Template renderer where the context was given as a proxy
 
 # 6.1.11
 
