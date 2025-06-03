@@ -328,8 +328,8 @@
         items: collectionComponent.items,
         draggable: collectionComponent.draggable,
         actions: collectionComponent.getActions(),
-        move({ item, targetIndex }) {
-          moveItem(collectionComponent, item, targetIndex);
+        move(event) {
+          moveItem(collectionComponent, event);
         },
         durationRule,
         showDuration(index) {

@@ -1,6 +1,7 @@
 <script setup>
   /* eslint-disable no-console */
   import { reactive } from 'vue';
+  import { moveDraggableItems } from '../../../src/components/lists/dragHelper.js';
   import { getStoryState } from '../../setup.js';
   import GlobalControls from '../../controls/GlobalControls.vue';
   import VcsList from '../../../src/components/lists/VcsList.vue';
@@ -110,18 +111,6 @@
     renamableItem,
   ]);
 
-  function move({ item, targetIndex }) {
-    let target = targetIndex;
-    target = target >= 0 ? target : 0;
-    target = target < items.length ? target : items.length - 1;
-    const itemIndex = items.findIndex((i) => i.name === item.name);
-    if (itemIndex !== target) {
-      items.splice(itemIndex, 1);
-      items.splice(target, 0, item);
-    }
-    return target;
-  }
-
   const state = getStoryState('$vcs3d');
 </script>
 
@@ -131,7 +120,7 @@
       :items="items"
       v-bind="{ ...state.bind }"
       title="foo - bar"
-      @item-moved="move"
+      @item-moved="moveDraggableItems(items, $event)"
     />
     <template #controls>
       <GlobalControls v-model="state" with-icon></GlobalControls>

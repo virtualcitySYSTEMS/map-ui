@@ -1,4 +1,5 @@
 import { computed, isReactive, reactive, ref, shallowRef, watch } from 'vue';
+import { getLogger } from '@vcsuite/logger';
 
 /**
  * @param {import("vue").Ref<import("./VcsListItemComponent.vue").VcsListItem[]>} items
@@ -229,10 +230,16 @@ export function setupSelectableList(props, renderingItems, emit) {
  * This requires VcsListItems with unique keys (name property).
  * @param {Object & { draggable: boolean }} props
  * @param {import("vue").Ref<string>} query
- * @param {(event: 'itemMoved', value: import("./VcsList.vue").ItemMovedEvent) => void} emit
+ * @param {(event: 'itemMoved', value: import("./dragHelper.js").ItemMovedEvent) => void} emit
  * @returns {DraggableListSetup}
+ * @deprecated This function is deprecated and will be removed in version 7. Use setupDraggableListOrTree from dragHelper.js instead.
  */
 export function setupDraggableList(props, query, emit) {
+  getLogger('listHelper.js').deprecate(
+    'setupDraggableList',
+    'Use setupDraggableListOrTree instead.',
+  );
+
   /** @type {import("vue").Ref<number|undefined>} */
   const hovering = ref(undefined);
   /** @type {import("vue").Ref<number|undefined>} */

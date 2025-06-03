@@ -45,6 +45,11 @@ const messages = {
       name: 'Zoom to extent',
       title: 'Zoom to layer extent',
     },
+    layerRenderOrder: {
+      name: 'Rendering order',
+      title: 'Change rendering order of active layers',
+      help: 'Drag & drop items to change their rendering order. The last item in the tree will appear on top. Grouped items can only be swapped within the group. Please note that 3D content can come with configured rendering settings that have greater impact than the rendering order.',
+    },
   },
   navigation: {
     rotateButton: 'Rotate view',

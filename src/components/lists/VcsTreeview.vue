@@ -4,21 +4,39 @@
       v-if="showSearchbar"
       :placeholder="searchbarPlaceholder"
       v-model="localSearchValue"
-    />
+    >
+      <template #prepend="searchPrepend">
+        <slot name="search-prepend" v-bind="searchPrepend" />
+      </template>
+      <template #append="searchAppend">
+        <slot name="search-append" v-bind="searchAppend" />
+      </template>
+    </VcsTreeviewSearchbar>
     <div
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="item.name"
       class="vcs-treeitem"
       :class="{ 'mobile-spacing': xs }"
     >
       <VcsTreeNode
         class="root-node"
+        :class="{
+          'vcs-draggable-item': isDraggable,
+        }"
         :item="item"
+        :path="[index]"
         :search="localSearchValue"
         v-model:opened="localOpenedItems"
         :custom-filter="customFilter"
         :open-on-click="openOnClick"
         :item-children="itemChildren"
+        :draggable="isDraggable"
+        @mousedown.shift="$event.preventDefault()"
+        @dragstart="dragStart"
+        @dragover="dragOver"
+        @dragend="dragEnd"
+        @drop="drop"
+        @dragleave="dragLeave"
         @item-toggled="itemToggled"
         @click="itemClicked"
       >
@@ -34,6 +52,7 @@
   import { watch } from 'vue';
   import { useDisplay } from 'vuetify';
   import { getLogger } from '@vcsuite/logger';
+  import { setupDraggableListOrTree } from './dragHelper.js';
   import {
     useProxiedAtomicModel,
     useProxiedComplexModel,
@@ -48,14 +67,16 @@
    * Exposes the `opened` model-value for controlling the opened state of the treeview.
    * Forwards the `prepend`, `title` and `append` slots to the VcsTreeNode component.
    * @vue-prop {Array<import("./VcsTreeNode.vue").VcsTreeNodeItem>} items.
-   * @vue-prop {Array<import("./VcsTreeNode.vue").VcsTreeNodeItem>} opened - Array of name of opened nodes.
    * @vue-prop {string} [itemChildren='children'] - The property key of the children.
+   * @vue-prop {boolean} [draggable=false] - Whether the tree is draggable.
+   * @vue-prop {Array<import("./VcsTreeNode.vue").VcsTreeNodeItem>} opened - Array of name of opened nodes.
    * @vue-prop {boolean} [openAll=false] - Whether to open all root items on startup.
    * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click.
    * @vue-prop {string} [search=''] - The value used to filter the items.
    * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview.
-   * @vue-prop {function(import("./VcsTreeNode.vue").VcsTreeNodeItem, string|undefined):boolean}} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated.
+   * @vue-prop {function(arg0: import("./VcsTreeNode.vue").VcsTreeNodeItem, arg1: string|undefined):boolean} [customFilter] - a function to customize filtering when searching.
+   * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
    */
   export default {
     name: 'VcsTreeview',
@@ -68,13 +89,17 @@
         type: Array,
         default: () => [],
       },
-      opened: {
-        type: Array,
-        default: () => [],
-      },
       itemChildren: {
         type: String,
         default: 'children',
+      },
+      draggable: {
+        type: Boolean,
+        default: false,
+      },
+      opened: {
+        type: Array,
+        default: () => [],
       },
       openAll: {
         type: Boolean,
@@ -104,8 +129,12 @@
         type: Function,
         default: undefined,
       },
+      dropTargetZones: {
+        type: Function,
+        default: undefined,
+      },
     },
-    emits: ['update:search', 'update:opened'],
+    emits: ['update:search', 'update:opened', 'itemMoved'],
     setup(props, { emit, slots }) {
       const forwardSlots = getForwardSlots(slots);
       const localSearchValue = useProxiedAtomicModel(props, 'search', emit);
@@ -137,7 +166,16 @@
 
       const { xs } = useDisplay();
 
+      const { isDraggable, dragStart, dragOver, dragLeave, dragEnd, drop } =
+        setupDraggableListOrTree(props, localSearchValue, emit);
+
       return {
+        isDraggable,
+        dragStart,
+        dragOver,
+        dragLeave,
+        dragEnd,
+        drop,
         localSearchValue,
         localOpenedItems,
         forwardSlots,
@@ -207,5 +245,9 @@
     > :deep(.group) {
       font-weight: 700 !important;
     }
+  }
+  .vcs-draggable-item:hover {
+    cursor: grab;
+    user-select: none;
   }
 </style>

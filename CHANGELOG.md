@@ -1,3 +1,10 @@
+# 6.2.0
+
+- introduce `draggable` prop to `VcsTreeView.vue`, which adds drag&drop behaviour to the tree.
+- deprecate `setupDraggableList` and replace by new logic `setupDraggableListOrTree`
+- Add new action in content tree to open a window, where the temporary rendering order can be adapted
+- Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
+
 # 6.1.6
 
 - updated @vcmap/core to fix a bug in the tileProvider

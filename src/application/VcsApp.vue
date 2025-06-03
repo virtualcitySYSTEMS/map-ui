@@ -404,6 +404,7 @@
           app.navbarManager.remove(customScreenComponentId);
         }
         if (newCustomScreen) {
+          customScreen?.();
           customScreen = setupCustomScreenAction();
         }
       },

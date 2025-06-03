@@ -45,6 +45,11 @@ const messages = {
       name: 'Auf Ebene zoomen',
       title: 'Auf Ebenenausdehnung zoomen',
     },
+    layerRenderOrder: {
+      name: 'Zeichenreihenfolge',
+      title: 'Zeichenreihenfolge aktiver Ebenen ändern',
+      help: 'Ziehen Sie die Elemente, um die Reihenfolge ihrer Darstellung zu ändern. Das letzte Element in der Liste wird zuoberst angezeigt. Gruppierte Elemente können nur innerhalb der Gruppe ausgetauscht werden. Bitte beachten Sie, dass 3D-Inhalte über konfigurierte Rendering-Einstellungen verfügen können, die größere Auswirkungen als die Rendering-Reihenfolge haben.',
+    },
   },
   navigation: {
     rotateButton: 'Ansicht drehen',

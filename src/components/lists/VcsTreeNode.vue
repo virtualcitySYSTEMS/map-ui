@@ -3,8 +3,15 @@
     class="vcs-tree-node"
     v-if="matchFilter"
     :data-tree-item-name="item.name"
+    :draggable="draggable"
+    @dragstart="$emit('dragstart', $event, item)"
+    @dragover="$emit('dragover', $event, item, treenodeRef.$el, true, isOpen)"
+    @dragend="$emit('dragend', $event)"
+    @drop="$emit('drop', $event, item)"
+    @dragleave="$emit('dragleave', $event)"
   >
     <v-row
+      ref="treenodeRef"
       no-gutters
       class="treenode flex-nowrap text-truncate"
       :class="`level-${level} ${children.length ? 'group' : 'item'}`"
@@ -52,31 +59,62 @@
       </slot>
     </v-row>
     <v-expand-transition>
-      <div v-if="isOpen && children.length" class="children">
-        <VcsTreeNode
-          v-for="child in children"
-          :key="child.name"
-          :item="child"
-          :search="search"
-          :custom-filter="customFilter"
-          :level="level + 1"
-          :open-on-click="openOnClick"
-          :item-children="itemChildren"
-          :opened="opened"
-          @item-toggled="bubbleItemToggled"
-          @click="bubbleItemClicked"
+      <div v-if="isOpen && children.length">
+        <div class="children">
+          <VcsTreeNode
+            v-for="child in children"
+            :key="child.name"
+            :item="child"
+            :search="search"
+            :custom-filter="customFilter"
+            :level="level + 1"
+            :open-on-click="openOnClick"
+            :item-children="itemChildren"
+            :opened="opened"
+            :draggable="draggable"
+            @item-toggled="bubbleItemToggled"
+            @click="bubbleItemClicked"
+            @dragstart="bubbleDragStart"
+            @dragover="bubbleDragOver"
+            @dragend="bubbleDragEnd"
+            @drop="bubbleDrop"
+            @dragleave="bubbleDragLeave"
+          >
+            <template v-for="slot of forwardSlots" #[slot]="scope">
+              <slot :name="slot" v-bind="scope ?? {}" />
+            </template>
+          </VcsTreeNode>
+        </div>
+        <div
+          v-if="draggable"
+          class="vcs-tree-node"
+          @dragstart="$emit('dragstart', $event, item)"
+          @dragover="
+            $emit(
+              'dragover',
+              $event,
+              item,
+              treenodeRef.$el,
+              { before: false, into: false, after: true },
+              false, // mock closed group to allow insert after
+            )
+          "
+          @dragend="$emit('dragend', $event)"
+          @drop="$emit('drop', $event, item)"
+          @dragleave="$emit('dragleave', $event)"
         >
-          <template v-for="slot of forwardSlots" #[slot]="scope">
-            <slot :name="slot" v-bind="scope ?? {}" />
-          </template>
-        </VcsTreeNode>
+          <v-row
+            no-gutters
+            class="treenode-bottom-drop flex-nowrap text-truncate"
+          ></v-row>
+        </div>
       </div>
     </v-expand-transition>
   </div>
 </template>
 
 <script>
-  import { computed, getCurrentInstance } from 'vue';
+  import { computed, ref, getCurrentInstance } from 'vue';
   import { VBtn, VExpandTransition, VIcon, VRow } from 'vuetify/components';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
   import { getForwardSlots } from '../composables.js';
@@ -103,10 +141,11 @@
    * Exposes the `prepend`, `title` and `append` slots for customization.
    * Emits `itemToggled` and `click` events.
    * @vue-prop {VcsTreeNodeItem} item - The item to render.
-   * @vue-prop {Array<string>} opened - Names of the opened items.
-   * @vue-prop {number} [level=0] - The level of the item
    * @vue-prop {string} [itemChildren='children'] - The property key of the children.
-   * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click..
+   * @vue-prop {boolean} [draggable=false] - Whether the tree node is draggable.
+   * @vue-prop {number} [level=0] - The level of the item
+   * @vue-prop {Array<string>} opened - Names of the opened items.
+   * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click.
    * @vue-prop {string} [search] - The search string to filter the tree.
    * @vue-prop {function(VcsTreeNodeItem, string|undefined):boolean}} [customFilter] - a function to customize filtering when searching.
    * @vue-data {slot} [#prepend] - A slot prepended to the item, binding the item. Default fallback renders an image.
@@ -130,21 +169,25 @@
         type: Object,
         required: true,
       },
-      opened: {
-        type: Array,
-        required: true,
+      itemChildren: {
+        type: String,
+        default: 'children',
+      },
+      draggable: {
+        type: Boolean,
+        default: false,
       },
       level: {
         type: Number,
         default: 0,
       },
+      opened: {
+        type: Array,
+        required: true,
+      },
       openOnClick: {
         type: Boolean,
         default: false,
-      },
-      itemChildren: {
-        type: String,
-        default: 'children',
       },
       search: {
         type: String,
@@ -159,13 +202,26 @@
         default: undefined,
       },
     },
-    emits: ['itemToggled', 'click'],
+    emits: [
+      'itemToggled',
+      'click',
+      'dragstart',
+      'dragover',
+      'dragend',
+      'drop',
+      'dragleave',
+    ],
     setup(props, { emit, slots }) {
       const vm = getCurrentInstance().proxy;
       const iconSize = useIconSize();
       const forwardSlots = getForwardSlots(slots);
+      const treenodeRef = ref(null);
 
-      const isOpen = computed(() => props.opened.includes(props.item.name));
+      const isOpen = computed(
+        () =>
+          props.opened.includes(props.item.name) &&
+          props.item[props.itemChildren]?.length,
+      );
       const children = computed(() => props.item[props.itemChildren] ?? []);
 
       const matchFilter = computed(() => {
@@ -187,20 +243,27 @@
         return hasText(props.item);
       });
 
+      function bubbleEvent(eventName) {
+        return (...args) => {
+          emit(eventName, ...args);
+        };
+      }
+
       return {
         forwardSlots,
+        treenodeRef,
         isOpen,
         matchFilter,
         iconSize,
         children,
-
         // Bubble up events for the nested tree-items
-        bubbleItemToggled: (itemName) => {
-          emit('itemToggled', itemName);
-        },
-        bubbleItemClicked: (item, event) => {
-          emit('click', item, event);
-        },
+        bubbleItemToggled: bubbleEvent('itemToggled'),
+        bubbleItemClicked: bubbleEvent('click'),
+        bubbleDragStart: bubbleEvent('dragstart'),
+        bubbleDragOver: bubbleEvent('dragover'),
+        bubbleDragEnd: bubbleEvent('dragend'),
+        bubbleDrop: bubbleEvent('drop'),
+        bubbleDragLeave: bubbleEvent('dragleave'),
       };
     },
   };
@@ -213,7 +276,7 @@
   }
   @for $i from 0 through 6 {
     .level-#{$i} {
-      padding-left: calc(var(--v-vcs-font-size) * $i + 2px);
+      margin-left: calc(var(--v-vcs-font-size) * $i + 2px);
       &.item {
         & > .prepend:not(:has(.v-icon)) {
           margin-left: calc(var(--v-vcs-font-size) * 2);
@@ -249,5 +312,42 @@
   // remove hover shadow over button
   :deep(.v-btn__overlay) {
     --v-hover-opacity: 0;
+  }
+
+  .treenode-bottom-drop {
+    height: 5px;
+  }
+
+  .treenode,
+  .treenode-bottom-drop {
+    box-sizing: border-box;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+  }
+
+  .drop-target-before > .treenode-bottom-drop,
+  .drop-target-before > .treenode {
+    border-top: 2px solid rgb(var(--v-theme-primary-lighten-1));
+  }
+  .drop-target-after > .treenode-bottom-drop,
+  .drop-target-after > .treenode {
+    border-bottom: 2px solid rgb(var(--v-theme-primary-darken-1));
+  }
+
+  .drop-target-into {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      outline: 2px dashed rgb(var(--v-theme-primary));
+      background: rgba(var(--v-theme-primary), 0.1);
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 </style>

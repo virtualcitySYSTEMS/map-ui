@@ -75,8 +75,8 @@
           }
           return actions.value;
         }),
-        move({ item, targetIndex }) {
-          moveItem(collectionComponent, item, targetIndex);
+        move(event) {
+          moveItem(collectionComponent, event);
         },
         openCollectionComponentList() {
           emit('openList', collectionComponent.id);

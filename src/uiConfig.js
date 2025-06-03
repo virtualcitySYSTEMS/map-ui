@@ -77,6 +77,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {boolean} [hideFooter] - can be used to hide the footer
  * @property {boolean} [hideMyWorkspace] - can be used to hide the myWorkspace button
  * @property {boolean} [hideContentTree] - can be used to hide the contentTree
+ * @property {boolean} [hideContentTreeRenderingOrder] - can be used to hide the rendering order action in the contentTree, which allows for temporary changes of rendering order
  * @property {boolean} [hideLegend] - can be used to hide the legend
  * @property {boolean} [hideSettings] - can be used to hide the settings Window
  * @property {boolean} [hideObliqueFooter] - can be used to hide the oblique name in the footer
@@ -85,7 +86,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings
  * @property {import("./vuetifyPlugins/vuetify.js").VcsThemes} [vuetifyTheme] - Vuetify Theming, also see vuetify configuraton https://vuetifyjs.com/en/features/theme/
  * @property {boolean} [openLegendOnAdd] - open the legend window, if new layer has a config
- * @property {number} [overviewMapScaleFactor] - can be used to apply a scale factor the the overviewMap
+ * @property {number} [overviewMapScaleFactor] - can be used to apply a scale factor to the overviewMap
  */
 
 /**

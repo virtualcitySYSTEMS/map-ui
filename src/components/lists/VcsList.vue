@@ -34,26 +34,24 @@
       <template v-for="(item, index) in renderingItems">
         <VcsListItemComponent
           v-if="item"
-          :dragging="dragging === index"
+          :dragging="dragging"
           :item="item"
           :key="`item-${index}`"
           :active="selected.includes(item)"
           @mousedown.shift="$event.preventDefault()"
           :draggable="isDraggable"
-          @dragstart="dragStart($event, item, index)"
-          @dragover.prevent="dragOver($event, index)"
+          @dragstart="dragStart($event, item)"
+          @dragover.prevent="
+            dragOver($event, item, $event.currentTarget, { into: false })
+          "
           @dragend="dragEnd($event)"
-          @drop="drop($event, index)"
-          @dragleave="dragLeave($event, index)"
+          @drop="drop($event, item)"
+          @dragleave="dragLeave($event)"
           :class="{
             'v-list-item__selected': selected.includes(item),
             'v-list-item__lighten_even': lightenEven,
             'v-list-item__lighten_odd': !lightenEven,
             'vcs-draggable-item': isDraggable,
-            'v-list-item__dragged': dragging === index,
-            'v-list-item__dragged_over': dragging !== undefined,
-            'border-bottom': borderBottom(index),
-            'border-top': borderTop(index),
             'cursor-pointer': selectable && !isDraggable,
           }"
           @click="select(item, $event)"
@@ -90,17 +88,12 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
-  import { setupDraggableList, setupSelectableList } from './listHelper.js';
+  import { setupDraggableListOrTree } from './dragHelper.js';
+  import { setupSelectableList } from './listHelper.js';
   import VcsListItemComponent from './VcsListItemComponent.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import { createEllipseTooltip } from '../composables.js';
-
-  /**
-   * @typedef {Object} ItemMovedEvent
-   * @property {import("./VcsListItemComponent.vue").VcsListItem} item
-   * @property {number} targetIndex
-   */
 
   /**
    * @description
@@ -116,6 +109,7 @@
    * or the last normally selected item (not the last item clicked with CTRL for instance).
    * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} items
    * @vue-prop {boolean} [draggable=false]
+   * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
    * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
@@ -128,7 +122,7 @@
    * @vue-prop {string} [icon] - icon to prepend to the list title
    * @vue-prop {string} [tooltip] - tooltip to render on the list title
    * @vue-prop {Array<import("../../actions/actionHelper.js").VcsAction>} [actions] - actions to render in the list title
-   * @vue-event {ItemMovedEvent} itemMoved - event triggered after item was dragged and is dropped
+   * @vue-event {import("./dragHelper.js").ItemMovedEvent} itemMoved - event triggered after item was dragged and is dropped
    * @vue-data {slot} [#item.prepend] - A slot that forwads to v-list-item prepend slot. Binds v-list-item append slot props, item and item index.
    * @vue-data {slot} [#item.title] - A slot that forwards to v-list-item title slot. Binds v-list-item title slot props, item and item index.
    * @vue-data {slot} [#item.subtitle] - A slot that forwards to v-list-item subtitle slot. Binds v-list-item subtitle slot props, item and item index.
@@ -144,6 +138,10 @@
     draggable: {
       type: Boolean,
       default: false,
+    },
+    dropTargetZones: {
+      type: Function,
+      default: undefined,
     },
     selectable: {
       type: Boolean,
@@ -251,14 +249,20 @@
   const {
     dragging,
     isDraggable,
-    borderBottom,
-    borderTop,
     dragStart,
     dragOver,
     dragLeave,
     dragEnd,
     drop,
-  } = setupDraggableList(props, query, emit);
+  } = setupDraggableListOrTree(props, query, (e, value) =>
+    emit(e, {
+      ...value,
+      // @deprecate: targetIndex will be removed on next mayor release
+      targetIndex: props.items.findIndex(
+        (i) => i.name === value.targetItem.name,
+      ),
+    }),
+  );
 
   const { select, selected, selectionActions } = setupSelectableList(
     props,

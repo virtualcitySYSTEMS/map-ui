@@ -48,19 +48,20 @@
    * New position is derived from a target item in the collection.
    * This ensures correct movement, if rendered list is only a subset of the collection.
    * @param {import("./collectionComponentClass.js").default<Object>} collectionComponent
-   * @param {import("../../components/lists/VcsListItemComponent.vue").VcsListItem} item
-   * @param {number} targetIndex
+   * @param {import("../../components/lists/dragHelper.js").ItemMovedEvent} event
    */
-  export function moveItem(collectionComponent, item, targetIndex) {
+  export function moveItem(
+    collectionComponent,
+    { item, targetItem, position },
+  ) {
     const { collection } = collectionComponent;
     if (collection instanceof IndexedCollection) {
       const collectionItem = collection.getByKey(item.name);
       const keyProperty = collection.uniqueKey;
-      const targetItem = collectionComponent.items.value[targetIndex];
       const targetIndexCol = [...collection].findIndex(
         (i) => i[keyProperty] === targetItem.name,
       );
-      collection.moveTo(collectionItem, targetIndexCol);
+      collection.moveTo(collectionItem, targetIndexCol + position);
     }
   }
 
@@ -122,8 +123,8 @@
           }
           return actions.value;
         }),
-        move({ item, targetIndex }) {
-          moveItem(collectionComponent, item, targetIndex);
+        move(event) {
+          moveItem(collectionComponent, event);
         },
         closeList() {
           emit('closeList', collectionComponent.id);
