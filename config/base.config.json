@@ -959,20 +959,7 @@
       "name": "building.texturedBuildings",
       "layerName": "buildings",
       "type": "LayerContentTreeItem",
-      "tooltip": "Textured buildings",
-      "onActivate": [
-        {
-          "type": "DeactivateLayersCallback",
-          "layerNames": ["mesh_surface", "buildings_untextured"]
-        },
-        { "type": "GoToViewpointCallback", "viewpoint": "alexanderplatz" }
-      ],
-      "onDeactivate": [
-        {
-          "type": "ActivateLayersCallback",
-          "layerNames": ["buildings_untextured"]
-        }
-      ]
+      "tooltip": "Textured buildings"
     },
     {
       "name": "building.untexturedBuildings",
@@ -1167,6 +1154,29 @@
     }
   ],
   "plugins": [
+    {
+      "name": "@vcmap/event-control",
+      "entry": "plugins/@vcmap/event-control/index.js",
+      "actions": [
+        {
+          "type": "layer",
+          "targetName": "buildings",
+          "onActivate": [
+            {
+              "type": "DeactivateLayersCallback",
+              "layerNames": ["mesh_surface", "buildings_untextured"]
+            },
+            { "type": "GoToViewpointCallback", "viewpoint": "alexanderplatz" }
+          ],
+          "onDeactivate": [
+            {
+              "type": "ActivateLayersCallback",
+              "layerNames": ["buildings_untextured"]
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"

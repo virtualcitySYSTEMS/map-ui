@@ -27,7 +27,9 @@
     "@vcmap/list-view": "^1.0.0",
     "@vcmap/pointcloud-settings": "^1.0.0",
     "@vcmap/gamepad": "^1.0.0",
-    "@vcmap/sensorthings": "^1.0.0"
+    "@vcmap/sensorthings": "^1.0.0",
+    "@vcmap/cesium-inspector": "^2.0.0",
+    "@vcmap/event-control": "^1.0.1"
   },
   "optionalDependencies": {
     "@vcmap/planning": "^6.0.0"

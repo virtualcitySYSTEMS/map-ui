@@ -51,7 +51,7 @@
         </v-col>
         <v-col class="d-flex justify-center flex-grow-2 mx-2">
           <div class="d-flex align-center">
-            <template v-if="!smAndDown">
+            <template v-if="!smAndDown && logo">
               <img class="logo" :src="logo" draggable="false" alt="Logo" />
             </template>
             <div
@@ -79,7 +79,9 @@
                 class="mx-2"
               />
               <div class="d-flex gc-2">
-                <v-menu v-if="shareActions.length > 0">
+                <v-menu
+                  v-if="!config.hideShareButton && shareActions.length > 0"
+                >
                   <template #activator="{ props }">
                     <VcsToolButton
                       v-bind="props"
@@ -105,7 +107,7 @@
                   @click.stop="searchAction.callback($event)"
                   v-bind="{ ...$attrs }"
                 />
-                <v-menu v-if="menuActions.length > 0">
+                <v-menu v-if="!config.hideMenuButton && menuActions.length > 0">
                   <template #activator="{ props }">
                     <VcsToolButton
                       v-bind="props"
@@ -150,7 +152,6 @@
   import VcsActionList from '../components/lists/VcsActionList.vue';
   import VcsToolButton from '../components/buttons/VcsToolButton.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
-  import VcsDefaultLogo from '../logo.svg';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**
@@ -200,9 +201,7 @@
       const logo = computed(() => {
         const { config } = app.uiConfig;
         const isDark = app.vuetify.theme.current.value.dark;
-        return isDark
-          ? (config.logoDark ?? config.logo ?? VcsDefaultLogo)
-          : (config.logo ?? VcsDefaultLogo);
+        return isDark ? (config.logoDark ?? config.logo) : config.logo;
       });
 
       const { searchAction, destroy: destroySearchAction } =

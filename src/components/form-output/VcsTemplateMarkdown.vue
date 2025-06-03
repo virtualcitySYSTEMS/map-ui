@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, inject } from 'vue';
+  import { computed, inject, toRaw } from 'vue';
   import { renderTemplate } from '@vcmap/core';
   import VcsMarkdown from './VcsMarkdown.vue';
 
@@ -28,7 +28,7 @@
     return renderTemplate(
       props.template,
       {
-        ...props.context,
+        ...toRaw(props.context),
         currentVcsAppLocale: app.vueI18n.locale.value,
       },
       (key) => app.vueI18n.t(key),

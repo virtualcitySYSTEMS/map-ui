@@ -71,6 +71,8 @@ import { reactive, readonly, ref } from 'vue';
  * @property {number} [timePerRotation] - an optional flag that describes the time per rotation in seconds.
  * @property {boolean} [hideHeader] - can be used to hide the default Header of the map
  * @property {boolean} [hideSearch] - can be used to hide the integrated Search bar
+ * @property {boolean} [hideShareButton] - can be used to hide the sharee button
+ * @property {boolean} [hideMenuButton] - can be used to hide the menu button
  * @property {boolean} [hideMapButtons] - can be used to hide the default Map Buttons
  * @property {boolean} [hideToolbox] - can be used to hide the toolbox
  * @property {boolean} [hideMapNavigation] - can be used to hide the navigation

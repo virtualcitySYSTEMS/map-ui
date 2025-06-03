@@ -111,17 +111,6 @@ Plugins designed for a major version should seamlessly function with any new min
 
 We will offer bugfix support for the current major version and the one preceding it.
 
-# Roadmap / Future Development
-
-### Core
-
-- Clustering Prio 4
-- Style Refactoring Prio 4
-
-### Ui
-
-- Overlay API Support
-
 # Plugins
 
 [Drawing](https://github.com/virtualcitySYSTEMS/map-draw)
@@ -133,25 +122,16 @@ We will offer bugfix support for the current major version and the one preceding
 [Search Nominatim](https://github.com/virtualcitySYSTEMS/map-search-nominatim)
 [Cesium Filters](https://github.com/virtualcitySYSTEMS/map-cesium-filters)
 [MultiView](https://github.com/virtualcitySYSTEMS/map-multi-view)
-
-### Plugins in Development
-
-|       Plugin       | Dev Prio | Proj Prio |
-| :----------------: | :------: | :-------: |
-|    Measurement     |    1     |     1     |
-|      Planning      |    1     |     1     |
-|   HeightProfile    |    4     |     2     |
-|       Flight       |    4     |     2     |
-|      ViewShed      |    4     |     2     |
-| TransparentTerrain |    4     |     3     |
-|      Walkmode      |    4     |     3     |
-|    ClippingTool    |    4     |     3     |
-|  AttributeEditor   |    4     |     3     |
-|       Query        |    4     |     3     |
-|      Locator       |    4     |     4     |
-|   DisplayQuality   |    4     |     4     |
-|    Search esri     |    4     |     4     |
-|     Search WFS     |    4     |     4     |
+[Link Button](https://github.com/virtualcitySYSTEMS/map-link-button)
+[Walk Mode](https://github.com/virtualcitySYSTEMS/map-walk)
+[HeightProfile](https://github.com/virtualcitySYSTEMS/map-heightprofile)
+[Measurement](https://github.com/virtualcitySYSTEMS/map-measurement)
+[Search Coordinate](https://github.com/virtualcitySYSTEMS/map-search-coordinate)
+[Search WFS](https://github.com/virtualcitySYSTEMS/map-search-wfs)
+[Viewshed](https://github.com/virtualcitySYSTEMS/map-viewshed)
+[Clipping Tool](https://github.com/virtualcitySYSTEMS/map-clipping-tool)
+[Transparent Terrain](https://github.com/virtualcitySYSTEMS/map-transparent-terrain)
+[Flight](https://github.com/virtualcitySYSTEMS/map-flight)
 
 # Getting started
 

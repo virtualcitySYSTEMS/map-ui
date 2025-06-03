@@ -10,9 +10,8 @@
     fluid
     absolute
   >
-    <template v-if="smAndDown">
+    <template v-if="smAndDown && mobileLogo">
       <img
-        v-if="mobileLogo"
         :src="mobileLogo"
         alt="Logo"
         draggable="false"

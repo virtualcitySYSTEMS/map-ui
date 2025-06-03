@@ -1,5 +1,4 @@
 import { computed } from 'vue';
-import VcsDefaultLogoMobile from '../logo-mobile.svg';
 
 /**
  * Creates a computed property for data protection configuration.
@@ -51,8 +50,7 @@ export function getMobileLogo(app) {
       ? (config.mobileLogoDark ??
           config.logoDark ??
           config.mobileLogo ??
-          config.logo ??
-          VcsDefaultLogoMobile)
-      : (config.mobileLogo ?? config.logo ?? VcsDefaultLogoMobile);
+          config.logo)
+      : (config.mobileLogo ?? config.logo);
   });
 }

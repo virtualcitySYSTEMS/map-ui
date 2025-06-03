@@ -77,7 +77,7 @@
       grid-row-start: 1;
       grid-row-end: 3;
       align-self: start;
-      font-size: var(--v-vcs-font-size);
+      font-size: calc(var(--v-vcs-font-size) + 4px);
     }
   }
   :deep(.v-snackbar__actions) {

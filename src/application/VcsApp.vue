@@ -88,11 +88,7 @@
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
-  import {
-    getDataProtection,
-    getImprint,
-    getMobileLogo,
-  } from './uiConfigHelper.js';
+  import { getDataProtection, getImprint } from './uiConfigHelper.js';
 
   /**
    * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
@@ -870,7 +866,6 @@
           () => !app.uiConfig.config.hideFooter && smAndUp.value,
         ),
         footerHeight,
-        mobileLogo: getMobileLogo(app),
         imprint: getImprint(app.uiConfig.config),
         dataProtection: getDataProtection(app.uiConfig.config),
         showSplashScreen,

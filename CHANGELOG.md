@@ -4,11 +4,83 @@
 - deprecate `setupDraggableList` and replace by new logic `setupDraggableListOrTree`
 - Add new action in content tree to open a window, where the temporary rendering order can be adapted
 - Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
+- added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
+
+# 6.1.12
+
+### Fixes
+
+- Added new uiConfig options: `hideShareButton` and `hideMenuButton`
+- fixed a bug in the Markdown Template renderer where the context was given as a proxy
+- fixed notifier icon size
+
+### Plugin Bundle updates
+
+- @vcmap/link-button
+  - Added a new config option to show the buttons in the mobile menu
+
+# 6.1.11
+
+### Fixes
+
+- fixes a bug where the mobile menu would not show, if no toolbox item was configured
+- updates @vcmap/core to 6.1.9 to fix a bug with WMSGetFeatureInfo and Mapserver GML format
+
+### Plugin Bundle updates
+
+- @vcmap/event-control
+  - Added the plugin, which allows to trigger actions on events like layer/module/map/planning/window activate and deactivate
+
+# 6.1.10
+
+### Fixes
+
+- fixed a bug where point featureInfo for WMS Layers would not render
+- fixed a bug where the flight anchor duration field would not show, if the title was too long
+- fixed a bug in the @vcmap/core where clearing the feature on a geometry editing session would not properly reset the picking
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - fixed a bug, where configuring export of multiple Oblique sources would block their export.
+  - fixed a bug, where a GeoJSON export would fail when no terms of use are configured.
+  - fixed a bug, where enabling local coordinates for a city model export would then block any CRS selection.
+- @vcmap/search-nominatim
+  - fixed an issue where some OSM Nominatim responses would not return a geojson Feature.
+- @vcmap/measurement
+  - added the possibility to disable the measurements for specified maps.
+  - added the possibility to configure the shown decimal places for the measurements.
+- @vcmap/heightProfile
+  - changed the tooltip to show more decimal places, this can be configured.
+- @vcmap/shadow
+  - changed the date when the shadow plugin is activated to the current year.
+- @vcmap/planning
+  - show the planningId in the planning edit view
+  - show the supported file types in the file import window
+  - fixed a bug where legacy flight anchors would not display the correct anchor title
+- @vcmap/multi-view
+  - fixed a bug where initializing the state from an url parameter would not work correctly
+- @vcmap/list-view
+  - fixed several styling issues
+- @vcmap/cesium-inspector
+  - Added the plugin, which allows to use cesium Tools to inspect the scene.
+
+# 6.1.9
+
+- update @vcmap/core to fix a bug in the FeatureProvider code
+
+# 6.1.8
+
+- updated plugin dependencies
+
+# 6.1.7
+
+- removed default VCS Logo, now a logo is only shown if configured.
+- fixed vuetify dependency to not include vuetify 3.8.
 
 # 6.1.6
 
 - updated @vcmap/core to fix a bug in the tileProvider
-- added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
 
 # 6.1.5
 
