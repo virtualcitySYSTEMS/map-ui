@@ -1,8 +1,15 @@
 # 6.1.12
 
+### Fixes
+
 - Added new uiConfig options: `hideShareButton` and `hideMenuButton`
 - fixed a bug in the Markdown Template renderer where the context was given as a proxy
 - fixed notifier icon size
+
+### Plugin Bundle updates
+
+- @vcmap/link-button
+  - Added a new config option to show the buttons in the mobile menu
 
 # 6.1.11
 
