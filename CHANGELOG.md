@@ -6,6 +6,21 @@
 - Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
 - added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
 
+# 6.1.13
+
+### Fixes
+
+- fixed a bug in the @vcmap/core where the vectorTileLayer.toJson function would not save the highlightStyle
+- added GML3.2 support to the WMSGetFeatureInfo in the @vcmap/core
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixed a typo
+  - Fixed a bug where the share dialog would filter the user invites
+- @vcmap/print
+  - Updated the jsPDF version to 3.0.1
+
 # 6.1.12
 
 ### Fixes
