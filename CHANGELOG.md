@@ -5,6 +5,7 @@
 - Add new action in content tree to open a window, where the temporary rendering order can be adapted
 - Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
 - added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
+- fixed a bug where Vuetify would return an error in the AppConfigurator
 
 # 6.1.13
 

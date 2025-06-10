@@ -95,13 +95,19 @@
    * @param {import("../vcsUiApp.js").default} app
    * @param {(import("../vcsUiApp.js").default) => () => void} setupFunction
    * @param {string} configOption parameter name of a uiConfig parameter, for example `app.uiConfig.config.hideContentTree`
+   * @param {Array<any>} [additionalOptions] Additional options to pass to the setup function
    * @returns {function():void} - cleanup function
    */
-  export function setupUIConfigDependency(app, setupFunction, configOption) {
+  export function setupUIConfigDependency(
+    app,
+    setupFunction,
+    configOption,
+    additionalOptions = [],
+  ) {
     let destroyFunction = null;
     function handler() {
       if (!app.uiConfig.config[configOption] && !destroyFunction) {
-        destroyFunction = setupFunction(app);
+        destroyFunction = setupFunction(app, ...additionalOptions);
       } else if (app.uiConfig.config[configOption] && destroyFunction) {
         destroyFunction();
         destroyFunction = null;
@@ -223,9 +229,10 @@
    * This helper function will add a legend action button to the apps NavbarManager TOOL location, if legend entries are available.
    * Watches number of legend entries.
    * @param {import("../vcsUiApp.js").default} app
+   * @param {import("vue").Ref<boolean>} xs - Whether the screen size is extra small
    * @returns {function():void}
    */
-  export function setupLegendWindow(app) {
+  export function setupLegendWindow(app, xs) {
     const { entries, destroy } = getLegendEntries(app);
 
     const { action: legendAction, destroy: legendDestroy } = createToggleAction(
@@ -287,7 +294,6 @@
       }
     };
 
-    const { xs } = useDisplay();
     let currentEntryLength = entries.length;
     const watchEntries = watch(entries, (newValue) => {
       if (newValue.length > currentEntryLength) {
@@ -780,6 +786,7 @@
       /** @type {import("../vcsUiApp.js").default} */
       const app = getVcsAppById(props.appId);
       provide('vcsApp', app);
+      const { smAndUp, xs } = useDisplay();
       const mapNavbarListener = setupUIConfigDependency(
         app,
         setupMapNavbar,
@@ -789,6 +796,7 @@
         app,
         setupLegendWindow,
         'hideLegend',
+        [xs],
       );
       const settingsDestroy = setupUIConfigDependency(
         app,
@@ -850,8 +858,6 @@
         destroyAttributions();
         destroyDeepPicking();
       });
-
-      const { smAndUp, xs } = useDisplay();
 
       const mobileLandscape = isMobileLandscape();
 
