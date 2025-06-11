@@ -104,29 +104,27 @@ function getMaxWidth(main, side, targetSize) {
  */
 function handleSidePanel(key, panel, main, side, targetSize) {
   const toUpdate = {};
-  if (panel.state.resizable) {
-    const position = percentageFromPanelOptions(
-      getPanelPosition(panel),
-      targetSize,
-    );
-    if (side.maxWidth !== position.maxWidth) {
-      position.maxWidth = side.maxWidth;
-      toUpdate.maxWidth = `${side.maxWidth}%`;
-    }
+  const position = percentageFromPanelOptions(
+    getPanelPosition(panel),
+    targetSize,
+  );
+  if (side.maxWidth !== position.maxWidth) {
+    position.maxWidth = side.maxWidth;
+    toUpdate.maxWidth = `${side.maxWidth}%`;
+  }
 
-    const width = Math.max(
-      position.minWidth,
-      Math.min(position.width, position.maxWidth),
-    );
-    main.width -= width;
-    main[key] = width;
+  const width = Math.max(
+    position.minWidth,
+    Math.min(position.width, position.maxWidth),
+  );
+  main.width -= width;
+  main[key] = width;
 
-    if (width !== position.width) {
-      toUpdate.width = `${width}%`;
-    }
-    if (position.height !== side.height) {
-      toUpdate.height = `${side.height}%`;
-    }
+  if (width !== position.width) {
+    toUpdate.width = `${width}%`;
+  }
+  if (position.height !== side.height) {
+    toUpdate.height = `${side.height}%`;
   }
   return toUpdate;
 }

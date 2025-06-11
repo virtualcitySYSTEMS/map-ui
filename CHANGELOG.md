@@ -8,6 +8,7 @@
 - fixed a bug where Vuetify would return an error in the AppConfigurator
 - added clippingPolygons as new parameter of the App State
 - changed behaviour of VcsDataTable component: footer is now visible as long as number of items > min(itemsPerPageArray)
+- fixed a bug where a panel added to the PanelManager with `resizable:false` would appear on top of the map instead of besides it
 
 # 6.1.13
 
