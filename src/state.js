@@ -37,6 +37,18 @@ import {
  */
 
 /**
+ * @typedef {Object} ClippingPolygonState
+ * @property {string} name
+ * @property {boolean} active
+ */
+
+/**
+ * The URL state of a ClippingPolygon is an array. The first entry is the ClippingPolygon name,
+ * the second its active state encoded in an integer (1 active, 0 inactive).
+ * @typedef {[string,number]} UrlClippingPolygonState
+ */
+
+/**
  * The URL state of a viewpoint is an array, the first entry is the camera position (or 0)
  * the second is the ground position (or 0), the third is the distance, the last three are
  * heading, pitch, roll in that order follow by an optional projection code
@@ -57,6 +69,7 @@ import {
  * @property {Array<LayerState>} layers
  * @property {Array<PluginState<unknown>>} plugins
  * @property {string} [activeObliqueCollection]
+ * @property {Array<ClippingPolygonState>} clippingPolygons
  */
 
 /**
@@ -72,7 +85,8 @@ import {
  * the fourth is an array of layer states
  * the fifth is an array of plugin states
  * the sixth is the currently active oblique collection or 0 if not applicable
- * @typedef {[UrlViewpointState|UrlExtentState,string,Array<string>,Array<UrlLayerState>,Array<UrlPluginState>,(string|0)]} UrlAppState
+ * the seventh is an array of ClippingPolygons states
+ * @typedef {[UrlViewpointState|UrlExtentState,string,Array<string>,Array<UrlLayerState>,Array<UrlPluginState>,(string|0), Array<UrlClippingPolygonState>]} UrlAppState
  */
 
 /**
@@ -88,6 +102,7 @@ export function createEmptyState() {
     moduleIds: [],
     layers: [],
     plugins: [],
+    clippingPolygons: [],
   };
 }
 
@@ -231,6 +246,22 @@ function writeUrlPluginState(state) {
 }
 
 /**
+ * @param {UrlClippingPolygonState} state
+ * @returns {ClippingPolygonState}
+ */
+function parseUrlClippingPolygonState(state) {
+  return { name: state[0], active: !!state[1] };
+}
+
+/**
+ * @param {ClippingPolygonState} state
+ * @returns {UrlClippingPolygonState}
+ */
+function writeUrlClippingPolygonState(state) {
+  return [state.name, state.active ? 1 : 0];
+}
+
+/**
  * @param {UrlAppState} urlState
  * @returns {AppState}
  */
@@ -270,6 +301,15 @@ function parseUrlAppState(urlState) {
   if (typeof urlState[5] === 'string') {
     state.activeObliqueCollection = urlState[5];
   }
+  if (Array.isArray(urlState[6])) {
+    urlState[6].forEach((urlClippingPolygonState) => {
+      if (Array.isArray(urlClippingPolygonState)) {
+        state.clippingPolygons.push(
+          parseUrlClippingPolygonState(urlClippingPolygonState),
+        );
+      }
+    });
+  }
   return state;
 }
 
@@ -282,7 +322,7 @@ function writeUrlAppState(state, maxLength) {
   /**
    * @type {UrlAppState}
    */
-  const urlState = new Array(6).fill(0);
+  const urlState = new Array(7).fill(0);
   if (state.activeViewpoint) {
     urlState[0] = [
       state.activeViewpoint.cameraPosition?.slice() ?? 0,
@@ -301,6 +341,7 @@ function writeUrlAppState(state, maxLength) {
   urlState[2] = state.moduleIds.slice();
   urlState[3] = [];
   urlState[4] = [];
+  urlState[6] = [];
 
   if (state.activeObliqueCollection) {
     urlState[5] = state.activeObliqueCollection;
@@ -316,6 +357,18 @@ function writeUrlAppState(state, maxLength) {
     }
   });
 
+  state.clippingPolygons.forEach((clippingPolygonState) => {
+    const clippingPolygonUrlState =
+      writeUrlClippingPolygonState(clippingPolygonState);
+    if (
+      JSON.stringify(urlState).length +
+        JSON.stringify(clippingPolygonUrlState).length <
+      maxLength
+    ) {
+      urlState[6].push(clippingPolygonUrlState);
+    }
+  });
+
   state.plugins.forEach((pluginState) => {
     const urlPluginState = writeUrlPluginState(pluginState);
     if (
@@ -328,10 +381,11 @@ function writeUrlAppState(state, maxLength) {
 
   if (
     urlState[3].length !== state.layers.length ||
-    urlState[4].length !== state.plugins.length
+    urlState[4].length !== state.plugins.length ||
+    urlState[6].length !== state.clippingPolygons.length
   ) {
     getLogger('StateManagement').warning(
-      'State too large for URL: Not all layers and plugins are represented',
+      'State too large for URL: Not all layers, clipping polygons and plugins are represented',
     );
   }
 
@@ -368,6 +422,7 @@ export function setStateToUrl(state, url) {
     activeObliqueCollection: optional(String),
     layers: Array,
     plugins: Array,
+    clippingPolygons: Array,
     moduleIds: [String],
   });
   check(url, URL);

@@ -7,19 +7,19 @@ Additionally, a simple Extent with an EPSG Code of the default coordinate system
 The URL generated for this purpose includes several parameters in a json format, which are explained below.
 
 The URL looks like this example:
-https://www.virtualcitymap.de/?state=%5B%5B%5B13.38353617980784%2C52.48478489765%2C4485.669126988868%5D%2C%5B13.374295459096624%2C52.501788790079296%2C34.67348112592285%5D%2C4877.323844315262%2C341.6527146904639%2C-65.87455219323445%2C0.00019392617134003342%5D%2C%22cesium%22%2C%5B%22VC+Map+Demo%22%5D%2C%5B%5D%2C%5B%5B%22%40vcmap%2Fmulti-view%22%2C%7B%22active%22%3Afalse%7D%5D%2C%5B%22%40vcmap%2Fviewshed%22%2C%7B%22mode%22%3Anull%7D%5D%2C%5B%22%40vcmap%2Fcesium-filters%22%2C%7B%22lig%22%3A%7B%7D%7D%5D%5D%2C0%5D
+https://www.virtualcitymap.de/?state=%5B%5B%5B13.38353617980784%2C52.48478489765%2C4485.669126988868%5D%2C%5B13.374295459096624%2C52.501788790079296%2C34.67348112592285%5D%2C4877.323844315262%2C341.6527146904639%2C-65.87455219323445%2C0.00019392617134003342%5D%2C%22cesium%22%2C%5B%22VC+Map+Demo%22%5D%2C%5B%5D%2C%5B%5B%22%40vcmap%2Fmulti-view%22%2C%7B%22active%22%3Afalse%7D%5D%2C%5B%22%40vcmap%2Fviewshed%22%2C%7B%22mode%22%3Anull%7D%5D%2C%5B%22%40vcmap%2Fcesium-filters%22%2C%7B%22lig%22%3A%7B%7D%7D%5D%5D%2C0%2C%5B%5D%5D
 
 It uses regular URL encoding to describe the state of the Map. Here is the example in a decoded format:
 
-https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0]
+https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0,[]]
 
 Alternatively, a second example with a EPSG Code in the URL:
 
-https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514,4326],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0]
+https://dev.virtualcitymap.de/?state=[[[13.374111020006039,52.5126411114975,1039.4376606886788],[13.371271496304264,52.52529109057904,31.074206921777545],1742.3485377927661,352.2041224093141,-35.3681884544751,359.9689882100514,4326],"cesium",["VC+Map+Demo"],[],[["@vcmap/multi-view",{"active":false}],["@vcmap/viewshed",{"mode":null}],["@vcmap/cesium-filters",{"lig":{}}]],0,[]]
 
 This is how the URL looks schematically:
 
-https://dev.virtualcitymap.de/?state=[[[longitude,latitude,altitude],[longitude,latitude,altitude],distance,heading,pitch,roll],"map_type",[modules],[layers],[plugins],other_parameters]
+https://dev.virtualcitymap.de/?state=[[[longitude,latitude,altitude],[longitude,latitude,altitude],distance,heading,pitch,roll],"map_type",[modules],[layers],[plugins],obliqueMap,[clippingPolygons]]
 
 If one of the names contains empty spaces they are connected via `+`.
 
@@ -130,7 +130,7 @@ To describe this an array is used. The first places describes the name of the la
 
 The following section of the URL specifies settings for certain Plugins. These Parameters are plugin-specific. First the plugin name is specified and then an object defines the information for the plugin.
 
-- Example: `["@vcmap/cesium-filters",
+- Example: `json ["@vcmap/cesium-filters",
 {
 "baw":{
 "enabled":true
@@ -143,6 +143,12 @@ The following section of the URL specifies settings for certain Plugins. These P
 
 ## Oblique Collection
 
-The last parameter in the URL describes the currently active Oblique Collection. If the Oblique Map is not selected the standard value is `0` otherwise it is a string of the name of the oblique collection.
+The following parameter in the URL describes the currently active Oblique Collection. If the Oblique Map is not selected the standard value is `0` otherwise it is a string of the name of the oblique collection.
 
 - Example: `"obliques"`
+
+## Clipping Polygons
+
+The last parameter in the URL describes the currently active Clipping Polygons. If no clipping polygon is active the value defaults to an empty array `[]` otherwise it is an array of string of the names of the clipping polygons.
+
+- Example: `["clippingPolygon"]`

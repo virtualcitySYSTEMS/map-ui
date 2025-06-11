@@ -27,6 +27,9 @@ describe('URL state IO', () => {
         styleName: 'foo',
       });
 
+      originalState.clippingPolygons.push({ name: 'foo', active: true });
+      originalState.clippingPolygons.push({ name: 'bar', active: false });
+
       originalState.activeObliqueCollection = 'foo';
       originalState.activeMap = 'bar';
       originalState.activeViewpoint = {
@@ -54,6 +57,12 @@ describe('URL state IO', () => {
     it('should recreate activeObliqueCollection', () => {
       expect(recreatedState.activeObliqueCollection).to.equal(
         originalState.activeObliqueCollection,
+      );
+    });
+
+    it('should recreate clipping polygons', () => {
+      expect(recreatedState.clippingPolygons).to.deep.eql(
+        originalState.clippingPolygons,
       );
     });
 
@@ -93,6 +102,9 @@ describe('URL state IO', () => {
           styleName: 'foo',
         });
 
+        originalState.clippingPolygons.push({ name: 'foo', active: true });
+        originalState.clippingPolygons.push({ name: 'bar', active: false });
+
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
         originalState.activeViewpoint = {
@@ -118,6 +130,12 @@ describe('URL state IO', () => {
 
       it('should recreate layers', () => {
         expect(recreatedState.layers).to.deep.eql(originalState.layers);
+      });
+
+      it('should recreate clipping polygons', () => {
+        expect(recreatedState.clippingPolygons).to.deep.eql(
+          originalState.clippingPolygons,
+        );
       });
 
       it('should recreate activeObliqueCollection', () => {
@@ -161,6 +179,9 @@ describe('URL state IO', () => {
           styleName: 'foo',
         });
 
+        originalState.clippingPolygons.push({ name: 'foo', active: true });
+        originalState.clippingPolygons.push({ name: 'bar', active: false });
+
         originalState.activeObliqueCollection = 'foo';
         originalState.activeMap = 'bar';
         originalState.activeViewpoint = {
@@ -186,6 +207,12 @@ describe('URL state IO', () => {
           originalState.layers[0],
           originalState.layers[2],
         ]);
+      });
+
+      it('should recreate clipping polygons', () => {
+        expect(recreatedState.clippingPolygons).to.deep.eql(
+          originalState.clippingPolygons,
+        );
       });
 
       it('should recreate activeObliqueCollection', () => {

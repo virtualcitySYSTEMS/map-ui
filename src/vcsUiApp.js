@@ -595,6 +595,16 @@ class VcsUiApp extends VcsApp {
         return layerState;
       });
 
+    state.clippingPolygons = [...this.clippingPolygons]
+      .filter(
+        (p) =>
+          p[moduleIdSymbol] !== defaultDynamicModuleId &&
+          p[moduleIdSymbol] !== volatileModuleId &&
+          ((p.active && !p.activeOnStartup) ||
+            (!p.active && p.activeOnStartup)),
+      )
+      .map((p) => ({ name: p.name, active: p.active }));
+
     const plugins = await Promise.all(
       [...this.plugins]
         .filter(
@@ -703,6 +713,16 @@ class VcsUiApp extends VcsApp {
           new Viewpoint(viewpointOptions),
         );
       }
+      this._cachedAppState.clippingPolygons.forEach((cpState) => {
+        const clippingPolygon = this.clippingPolygons.getByKey(cpState.name);
+        if (clippingPolygon) {
+          if (cpState.active) {
+            clippingPolygon.activate();
+          } else {
+            clippingPolygon.deactivate();
+          }
+        }
+      });
       this._cachedAppState.moduleIds.splice(
         this._cachedAppState.moduleIds.indexOf(module._id),
         1,

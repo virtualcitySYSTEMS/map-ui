@@ -16,6 +16,7 @@ import {
   VectorLayer,
   VectorStyleItem,
   Viewpoint,
+  ClippingPolygonObject,
 } from '@vcmap/core';
 import { setObliqueMap } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
@@ -29,6 +30,29 @@ async function setupApp(app) {
   const module = new VcsModule({ _id: 'foo' });
   await app.addModule(module);
   await app.setDynamicModule(module);
+
+  const activeClippingPolygon = new ClippingPolygonObject({
+    name: 'activeClippingPolygon',
+    coordinates: [
+      [0, 0],
+      [1, 1],
+      [1, 0],
+    ],
+    activeOnStartup: false,
+  });
+  await activeClippingPolygon.activate();
+  app.clippingPolygons.add(activeClippingPolygon);
+
+  const inactiveClippingPolygon = new ClippingPolygonObject({
+    name: 'inactiveClippingPolygon',
+    coordinates: [
+      [0, 0],
+      [1, 1],
+      [1, 0],
+    ],
+    activeOnStartup: false,
+  });
+  app.clippingPolygons.add(inactiveClippingPolygon);
 
   const activeLayer = new VectorLayer({
     name: 'activeLayer',
@@ -259,6 +283,23 @@ describe('VcsUiApp', () => {
         });
       });
 
+      describe('clipping polygon handling', () => {
+        it('should add active clipping polygons', () => {
+          expect(state.clippingPolygons).to.deep.include({
+            name: 'activeClippingPolygon',
+            active: true,
+          });
+        });
+
+        it('should not add inactive clipping polygons', () => {
+          expect(
+            state.clippingPolygons.find(
+              (s) => s.name === 'inactiveClippingPolygon',
+            ),
+          ).to.be.undefined;
+        });
+      });
+
       describe('plugin handling', () => {
         it('should add plugins with a getState function', () => {
           expect(state.plugins).to.deep.include({
@@ -364,6 +405,12 @@ describe('VcsUiApp', () => {
         expect(app.layers.hasKey('activeLayer')).to.be.true;
         const layer = app.layers.getByKey('activeLayer');
         expect(layer.active || layer.loading).to.be.true;
+      });
+
+      it('should activate the states active clipping polygon', () => {
+        expect(app.clippingPolygons.hasKey('activeClippingPolygon')).to.be.true;
+        const polygon = app.clippingPolygons.getByKey('activeClippingPolygon');
+        expect(polygon.active || polygon.loading).to.be.true;
       });
 
       it('should deactivate the states deactivated active on startup layers', () => {

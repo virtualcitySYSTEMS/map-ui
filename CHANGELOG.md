@@ -6,6 +6,7 @@
 - Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
 - added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
 - fixed a bug where Vuetify would return an error in the AppConfigurator
+- added clippingPolygons as new parameter of the App State
 
 # 6.1.13
 
