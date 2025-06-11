@@ -397,8 +397,8 @@
 
       const showFooter = computed(
         () =>
-          props.items.length > itemsPerPageRef.value ||
-          props.serverItemsLength > itemsPerPageRef.value,
+          props.items.length > Math.min(...props.itemsPerPageArray) ||
+          props.serverItemsLength > Math.min(...props.itemsPerPageArray),
       );
 
       const forwardSlots = getForwardSlots(slots, [

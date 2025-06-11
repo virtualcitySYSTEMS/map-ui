@@ -7,6 +7,7 @@
 - added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
 - fixed a bug where Vuetify would return an error in the AppConfigurator
 - added clippingPolygons as new parameter of the App State
+- changed behaviour of VcsDataTable component: footer is now visible as long as number of items > min(itemsPerPageArray)
 
 # 6.1.13
 
