@@ -4,7 +4,7 @@
       transform: `rotate(${compassRotation}deg)`,
       transition: 'transform 0.2s ease',
     }"
-    @click="$emit('update:modelValue', 0)"
+    @click="alignNorth"
     class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none vcs-compass"
     elevation="1"
     :height="height"
@@ -13,16 +13,18 @@
     <span>N</span>
     <MapNavCompass
       class="position-absolute top-0 bottom-0 right-0 left-0 text-primary"
-      @click="$event.stopPropagation()"
+      @click="!xs && $event.stopPropagation()"
       @direction-click="$emit('update:modelValue', $event)"
-      :can-emit="!disabled && (viewMode === '3d' || viewMode === 'oblique')"
+      :can-emit="
+        !disabled && !xs && (viewMode === '3d' || viewMode === 'oblique')
+      "
       :hide-ticks="viewMode === 'oblique'"
     />
   </v-sheet>
 </template>
 <script>
   import { computed, ref } from 'vue';
-
+  import { useDisplay } from 'vuetify';
   import { VSheet } from 'vuetify/components';
   import MapNavCompass from './MapNavCompass.vue';
   import { useFontSize } from '../vuePlugins/vuetify.js';
@@ -55,23 +57,25 @@
       },
     },
     emits: ['update:modelValue'],
-    setup(props) {
+    setup(props, { emit }) {
       const rotationValue = ref(props.modelValue);
 
+      const { xs } = useDisplay();
       const fontSize = useFontSize();
-      const height = computed(() => {
-        return fontSize.value * 5;
-      });
-
-      const width = computed(() => {
-        return fontSize.value * 5;
-      });
+      const height = computed(() => fontSize.value * 5);
+      const width = computed(() => fontSize.value * 5);
 
       return {
+        xs,
         rotationValue,
         compassRotation: computed(() => -1 * rotationValue.value),
         height,
         width,
+        alignNorth() {
+          if (props.modelValue % 360 !== 0) {
+            emit('update:modelValue', 0);
+          }
+        },
       };
     },
     watch: {

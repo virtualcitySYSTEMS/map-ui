@@ -9,6 +9,7 @@
 - added clippingPolygons as new parameter of the App State
 - changed behaviour of VcsDataTable component: footer is now visible as long as number of items > min(itemsPerPageArray)
 - fixed a bug where a panel added to the PanelManager with `resizable:false` would appear on top of the map instead of besides it
+- changed behaviour of compass on mobile: click now aligns map to the North
 
 # 6.1.13
 
