@@ -41,7 +41,7 @@ For each event, one or more callbacks can be configured:
 
 [VcsCallback](../src/callback/vcsCallback.js) is an abstract class to be extended for specific use cases.
 
-Per default eleven extensions are available:
+Per default, the folllowing extensions are available:
 
 - [ActivateLayersCallback](../src/callback/activateLayersCallback.js) - activates one or more layers
 - [DeactivateLayersCallback](../src/callback/deactivateLayersCallback.js) - deactivates one or more layers
@@ -55,7 +55,8 @@ Per default eleven extensions are available:
 - [RemoveModuleCallback](../src/callback/removeModuleCallback.js) - removes a module
 - [OpenSplashScreenCallback](../src/callback/openSplashScreenCallback.js) - opens the SplashScreen if defined
 - [CloseSplashScreenCallback](../src/callback/closeSplashScreenCallback.js) - closes the SplashScreen
-- [ToggleNavbarButtonCallback](../src/callback/ToggleNavbarButtonCallback.js) - calls the callback of a registered navbar action
+- [ToggleNavbarButtonCallback](../src/callback/toggleNavbarButtonCallback.js) - calls the callback of a registered navbar action
+- [ToggleToolbarButtonCallback](../src/callback/toggleToolbarButtonCallback.js) - calls the callback of a registered toolbar component
 
 ## CallbackClassRegistry
 

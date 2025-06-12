@@ -65,6 +65,7 @@ export { default as DeactivateClippingPolygonCallback } from './src/callback/dea
 export { default as OpenSplashScreenCallback } from './src/callback/openSplashScreenCallback.js';
 export { default as CloseSplashScreenCallback } from './src/callback/closeSplashScreenCallback.js';
 export { default as ToggleNavbarButtonCallback } from './src/callback/toggleNavbarButtonCallback.js';
+export { default as ToggleToolbarButtonCallback } from './src/callback/toggleToolbarButtonCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
