@@ -72,11 +72,15 @@
       const wmsGroupItemsMap = getWmsGroupItemsMap(app);
 
       /**
-       * @param {import("@vcmap/core").Layer}l
+       * @param {import("@vcmap/core").Layer} l
        * @returns {boolean}
        */
       const layerFilter = (l) => {
-        return l.active && l[moduleIdSymbol] !== volatileModuleId;
+        return (
+          l.active &&
+          l[moduleIdSymbol] !== volatileModuleId &&
+          l.isSupported(app.maps.activeMap)
+        );
       };
 
       function getLayerTreeItems() {
@@ -101,11 +105,16 @@
 
       const items = shallowRef(getLayerTreeItems());
 
-      const listener = app.layers.stateChanged.addEventListener(() => {
-        items.value = getLayerTreeItems();
-      });
+      const listeners = [
+        app.layers.stateChanged.addEventListener(() => {
+          items.value = getLayerTreeItems();
+        }),
+        app.maps.mapActivated.addEventListener(() => {
+          items.value = getLayerTreeItems();
+        }),
+      ];
 
-      onUnmounted(() => listener());
+      onUnmounted(() => listeners.forEach((l) => l()));
 
       return {
         items,
