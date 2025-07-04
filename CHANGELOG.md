@@ -1,3 +1,7 @@
+# 6.1.14
+
+- fixed a bug where using the Search would deactivate FeatureInfo
+
 # 6.1.13
 
 ### Fixes
