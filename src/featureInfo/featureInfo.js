@@ -229,10 +229,7 @@ export function getGroupedFeatureList(app, features, position = undefined) {
     if (layerName) {
       if (!groups[layerName]) {
         const title = app.layers.getByKey(layerName)?.properties?.title;
-        groups[layerName] = {
-          name: layerName,
-          title: title || layerName,
-        };
+        groups[layerName] = { name: layerName, title: title || layerName };
       }
       listItem.group = layerName;
     }
@@ -265,10 +262,7 @@ export function createFeatureInfoSession(app) {
     stopped.destroy();
   };
 
-  return {
-    stopped,
-    stop,
-  };
+  return { stopped, stop };
 }
 
 /**
@@ -302,16 +296,15 @@ function setupFeatureInfoTool(app) {
   });
 
   function addFeatureInfoButton() {
-    if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
+    if (
+      app.uiConfig.getByKey('startingFeatureInfo')?.value !== false &&
+      !action.active
+    ) {
       action.callback();
     }
     if (!app.toolboxManager.has('featureInfo')) {
       app.toolboxManager.add(
-        {
-          id: 'featureInfo',
-          type: ToolboxType.SINGLE,
-          action,
-        },
+        { id: 'featureInfo', type: ToolboxType.SINGLE, action },
         vcsAppSymbol,
         { desktop: true, tablet: true, mobile: true },
       );
@@ -743,11 +736,7 @@ class FeatureInfo extends Collection {
         }
       }
       this._app.windowManager.add(
-        {
-          id: this._windowId,
-          ...windowComponentOptions,
-          props,
-        },
+        { id: this._windowId, ...windowComponentOptions, props },
         vcsAppSymbol,
       );
 
@@ -821,13 +810,8 @@ class FeatureInfo extends Collection {
       {
         id,
         component: ClusterFeatureComponent,
-        props: reactive({
-          items,
-          groups,
-        }),
-        state: {
-          headerTitle: 'featureInfo.cluster.headerTitle',
-        },
+        props: reactive({ items, groups }),
+        state: { headerTitle: 'featureInfo.cluster.headerTitle' },
         slot: WindowSlot.DYNAMIC_LEFT,
       },
       vcsAppSymbol,

@@ -12,6 +12,10 @@
 - changed behaviour of compass on mobile: click now aligns map to the North
 - added a new callback: `ToggleToolbarButtonCallback`
 
+# 6.1.14
+
+- fixed a bug where using the Search would deactivate FeatureInfo
+
 # 6.1.13
 
 ### Fixes
