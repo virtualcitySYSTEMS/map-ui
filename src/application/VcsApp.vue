@@ -322,6 +322,14 @@
           vcsAppSymbol,
         );
       }
+
+      if (
+        app.uiConfig.config.autoCloseLegend &&
+        newValue.length === 0 &&
+        app.windowManager.has(legendComponentId)
+      ) {
+        app.windowManager.remove(legendComponentId);
+      }
       currentEntryLength = newValue.length;
     });
 

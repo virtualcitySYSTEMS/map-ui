@@ -9,7 +9,7 @@ import {
   VectorStyleItem,
   Viewpoint,
 } from '@vcmap/core';
-import { shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { check, oneOf } from '@vcsuite/check';
 import { Icon } from 'ol/style.js';
 import { getLogger } from '@vcsuite/logger';
@@ -114,6 +114,12 @@ class Search extends IndexedCollection {
     this._app = app;
 
     /**
+     * @type {import("vue").Ref<string>}
+     * @private
+     */
+    this._query = ref('');
+
+    /**
      * An event triggered every time the currentResults array changes,
      * either by a new search providing the new results or
      * on clearing, if the results array has not been empty already.
@@ -150,6 +156,12 @@ class Search extends IndexedCollection {
     return this._resultsChanged;
   }
 
+  /**
+   * @type {import("vue").Ref<string>}
+   */
+  get query() {
+    return this._query;
+  }
   /**
    * @type {import("vue").Ref<Array<ResultItem>>}
    */
@@ -307,6 +319,14 @@ class Search extends IndexedCollection {
     ) {
       this._app.featureInfo.clearSelection();
     }
+  }
+
+  /**
+   * Clears the search query, the results and aborts running request
+   */
+  clearSearch() {
+    this.clearResults();
+    this._query.value = '';
   }
 
   /**

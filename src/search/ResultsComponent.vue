@@ -64,8 +64,15 @@
         }));
       });
       const selectedRef = ref([]);
-      /** @type {import("@src/vcsUiApp.js").default} */
+      /** @type {import("../vcsUiApp.js").default} */
       const app = inject('vcsApp');
+
+      const selectedIndex = items.value.findIndex(
+        (r) => r.feature === app.featureInfo.selectedFeature,
+      );
+      if (selectedIndex !== -1) {
+        selectedRef.value = [selectedIndex];
+      }
       const selectedListener = app.featureInfo.featureChanged.addEventListener(
         (feature) => {
           if (selectedRef.value.length > 0) {

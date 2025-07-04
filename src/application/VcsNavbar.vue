@@ -104,6 +104,7 @@
                   :tooltip="searchAction.title"
                   :icon="searchAction.icon"
                   :active="searchAction.active"
+                  :background="searchAction.background"
                   @click.stop="searchAction.callback($event)"
                   v-bind="{ ...$attrs }"
                 />

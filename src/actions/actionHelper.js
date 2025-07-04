@@ -146,6 +146,64 @@ export function createToggleAction(
 export const searchComponentId = 'searchId';
 
 /**
+ * @param {import("../vcsUiApp.js").default} app
+ * @returns {{action: import("vue").UnwrapRef<VcsAction>, destroy: function():void}}
+ */
+function createSearchAction(app) {
+  const windowComponent = {
+    id: searchComponentId,
+    component: SearchComponent,
+    position: { width: 440 },
+    state: { hideHeader: true },
+    slot: WindowSlot.DYNAMIC_RIGHT,
+  };
+  const action = reactive({
+    name: 'search.title',
+    icon: '$vcsSearch',
+    title: 'search.tooltip',
+    active: false,
+    background: false,
+    callback() {
+      if (this.active && !this.background) {
+        app.windowManager.remove(searchComponentId);
+        this.active = false;
+        app.search.clearSearch();
+      } else {
+        app.windowManager.add(windowComponent, vcsAppSymbol);
+      }
+    },
+  });
+  const addedListener = app.windowManager.added.addEventListener(({ id }) => {
+    if (id === searchComponentId) {
+      action.active = true;
+      action.background = false;
+    }
+  });
+  const removedListener = app.windowManager.removed.addEventListener(
+    ({ id }) => {
+      if (id === searchComponentId) {
+        if (app.search.currentResults.value.length) {
+          action.active = true;
+          action.background = true;
+        } else {
+          action.active = false;
+          action.background = false;
+          app.search.clearSearch();
+        }
+      }
+    },
+  );
+
+  return {
+    action,
+    destroy: () => {
+      addedListener();
+      removedListener();
+    },
+  };
+}
+
+/**
  * Creates a toggle button for the search tool, which is only available, if at least one search implementation is registered.
  * @param {import("../vcsUiApp.js").default} app
  * @returns {{ searchAction: import("vue").Ref<import("vue").UnwrapRef<VcsAction>|null>, destroy: function():void }}
@@ -156,38 +214,21 @@ export function createSearchButtonAction(app) {
   const uiConfig = app.uiConfig.config;
 
   const determineAction = () => {
-    if (app.windowManager.has(searchComponentId)) {
-      app.windowManager.remove(searchComponentId);
-    }
     if (
       !uiConfig.hideSearch &&
       app.search.size > 0 &&
       searchAction.value === null
     ) {
-      const action = createToggleAction(
-        {
-          name: 'search.title',
-          icon: '$vcsSearch',
-          title: 'search.tooltip',
-        },
-        {
-          id: searchComponentId,
-          component: SearchComponent,
-          state: { hideHeader: true },
-          slot: WindowSlot.DYNAMIC_RIGHT,
-          position: {
-            width: 440,
-          },
-        },
-        app.windowManager,
-        vcsAppSymbol,
-      );
-      destroyAction = action.destroy;
-      searchAction.value = reactive(action.action);
+      const { action, destroy } = createSearchAction(app);
+      destroyAction = destroy;
+      searchAction.value = action;
     } else if (
       (uiConfig.hideSearch || app.search.size === 0) &&
       searchAction.value !== null
     ) {
+      if (app.windowManager.has(searchComponentId)) {
+        app.windowManager.remove(searchComponentId);
+      }
       destroyAction();
       destroyAction = () => {};
       searchAction.value = null;

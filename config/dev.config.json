@@ -868,6 +868,10 @@
       "value": true
     },
     {
+      "name": "autoCloseLegend",
+      "value": true
+    },
+    {
       "name": "appTitle",
       "value": "DEV"
     },

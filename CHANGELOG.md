@@ -4,13 +4,15 @@
 - deprecate `setupDraggableList` and replace by new logic `setupDraggableListOrTree`
 - Add new action in content tree to open a window, where the temporary rendering order can be adapted
 - Add new uiConfig option `hideContentTreeRenderingOrder` to hide rendering order window action in content tree
-- added new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
+- Add new uiConfig options `logoDark` and `mobileLogoDark` to set specific logos when the darkMode is active
+- Add a new uiConfig option: `autoCloseLegend`, to automatically close the Legend window when no legend is available
 - fixed a bug where Vuetify would return an error in the AppConfigurator
 - added clippingPolygons as new parameter of the App State
 - changed behaviour of VcsDataTable component: footer is now visible as long as number of items > min(itemsPerPageArray)
 - fixed a bug where a panel added to the PanelManager with `resizable:false` would appear on top of the map instead of besides it
 - changed behaviour of compass on mobile: click now aligns map to the North
 - added a new callback: `ToggleToolbarButtonCallback`
+- changed behavior of Search: results are kept in memory while the window is not manually closed
 
 # 6.1.14
 

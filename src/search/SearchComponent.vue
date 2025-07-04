@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import { inject, onUnmounted, ref, computed } from 'vue';
+  import { inject, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
   import { v4 as uuid } from 'uuid';
   import { VSheet, VDivider, VIcon, VRow, VCol } from 'vuetify/components';
@@ -87,11 +87,11 @@
       VCol,
     },
     setup() {
-      /** @type {import("@src/vcsUiApp.js").default} */
+      /** @type {import("../vcsUiApp.js").default} */
       const app = inject('vcsApp');
       const searching = ref(false);
       const suggesting = ref('');
-      const query = ref(null);
+      const { query } = app.search;
       const suggestions = ref([]);
       const selectedSuggestion = ref(-1);
       const results = app.search.currentResults;
@@ -143,15 +143,6 @@
         showSelectedOnly.value = false;
       };
 
-      const clear = () => {
-        reset();
-        searching.value = false;
-        suggestions.value = [];
-        query.value = null;
-        queryPreSuggestion = '';
-        showSelectedOnly.value = false;
-      };
-
       const search = async () => {
         reset();
         searching.value = true;
@@ -167,10 +158,6 @@
         app.search.zoomToAll();
       };
 
-      onUnmounted(() => {
-        clear();
-      });
-
       const fontSize = useFontSize();
       const searchIconSize = computed(() => {
         return fontSize.value + 11;
@@ -182,7 +169,6 @@
         searching,
         results,
         reset,
-        clear,
         search,
         zoomToAll,
         searchIconSize,

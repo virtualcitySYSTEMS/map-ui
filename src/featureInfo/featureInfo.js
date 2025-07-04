@@ -296,10 +296,7 @@ function setupFeatureInfoTool(app) {
   });
 
   function addFeatureInfoButton() {
-    if (
-      app.uiConfig.getByKey('startingFeatureInfo')?.value !== false &&
-      !action.active
-    ) {
+    if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
       action.callback();
     }
     if (!app.toolboxManager.has('featureInfo')) {
