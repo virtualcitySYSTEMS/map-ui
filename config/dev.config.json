@@ -92,6 +92,23 @@
           ]
         }
       }
+    },
+    {
+      "type": "VectorStyleItem",
+      "name": "anotherVectorStyle",
+      "fill": { "color": "#ff00ff" },
+      "stroke": {
+        "color": "#000000",
+        "width": 2
+      },
+      "image": {
+        "radius": 5,
+        "fill": { "color": "#ff0000" },
+        "stroke": {
+          "color": "#00ff00",
+          "width": 1
+        }
+      }
     }
   ],
   "layers": [
@@ -389,7 +406,8 @@
               }
             ]
           }
-        ]
+        ],
+        "availableStyles": ["anotherVectorStyle"]
       }
     },
     {
