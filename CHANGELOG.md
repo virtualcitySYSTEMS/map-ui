@@ -1,6 +1,18 @@
 # 6.1.14
 
+### Fixes
+
 - fixed a bug where using the Search would deactivate FeatureInfo
+- fixed a bug in the @vcmap/core where changing a style on a vectorLayer would not work correctly
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Made fmeSecurityToken optional in the plugin's config
+  - Fix a bug, where the hiddenObjects array would be empty
+  - Adds dataProjection option to config editor
+- @vcmap/list-view
+  - added links to the documentation for the list view
 
 # 6.1.13
 
