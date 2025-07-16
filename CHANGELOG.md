@@ -13,6 +13,7 @@
 - changed behaviour of compass on mobile: click now aligns map to the North
 - added a new callback: `ToggleToolbarButtonCallback`
 - changed behavior of Search: results are kept in memory while the window is not manually closed
+- added a new `AbstractWorkspaceItemCreator` component, to wrap components used to create MyWorkspace items.
 
 # 6.1.14
 

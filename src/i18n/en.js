@@ -93,8 +93,10 @@ const messages = {
     pin: 'Dock window',
     close: 'Close window',
     add: 'Add',
+    new: 'New',
     apply: 'Apply',
     cancel: 'Cancel',
+    addToMyWorkspace: 'Add to My Workspace',
     import: {
       submit: 'Import',
       fileDrop: 'Drop files here',

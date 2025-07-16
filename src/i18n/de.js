@@ -93,8 +93,10 @@ const messages = {
     pin: 'Fenster andocken',
     close: 'Fenster schließen',
     add: 'Hinzufügen',
+    new: 'Neu',
     apply: 'Anwenden',
     cancel: 'Abbrechen',
+    addToMyWorkspace: 'Zu Mein Arbeitsbereich hinzufügen',
     import: {
       submit: 'Importieren',
       fileDrop: 'Dateien hierher ziehen',

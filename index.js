@@ -358,6 +358,7 @@ export { default as VcsFeatureTransforms } from './src/components/vector-propert
 export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
+export { default as AbstractWorkspaceItemCreator } from './src/components/plugins/AbstractWorkspaceItemCreator.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
 export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.vue';
