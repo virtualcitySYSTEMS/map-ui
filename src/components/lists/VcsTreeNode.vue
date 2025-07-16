@@ -307,6 +307,9 @@
     &.chevron-btn {
       margin-left: 4px;
       margin-right: 8px;
+      > span > i {
+        font-size: calc(var(--v-icon-size-multiplier) * 1.25em);
+      }
     }
   }
   // remove hover shadow over button

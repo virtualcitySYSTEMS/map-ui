@@ -4,8 +4,8 @@
     VExpansionPanelText,
     VExpansionPanelTitle,
     VIcon,
-    VTooltip,
     VListItemTitle,
+    VTooltip,
   } from 'vuetify/components';
   import { computed, ref, useSlots } from 'vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
@@ -96,7 +96,9 @@
     line-height: 1.2;
     padding: 0 8px;
   }
-
+  :deep(.v-list-item-title) > span {
+    font-weight: bold;
+  }
   .vcs-panel-title__append {
     width: 90%;
     display: inline-block;
@@ -104,8 +106,16 @@
     text-overflow: ellipsis;
     vertical-align: bottom;
   }
-
   :deep(.v-expansion-panel-text__wrapper) {
     padding: 0 0;
+  }
+</style>
+
+<style lang="scss">
+  .v-expansion-panels {
+    z-index: auto;
+    > div:not(:last-child):has(.vcs-expansion-panel) {
+      border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
+    }
   }
 </style>

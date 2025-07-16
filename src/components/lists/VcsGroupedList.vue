@@ -150,9 +150,10 @@
     />
     <v-expansion-panels
       variant="accordion"
+      flat
       multiple
       v-model="localOpenedGroups"
-      class="rounded-0"
+      class="rounded-0 panels"
     >
       <vcs-expansion-panel
         v-for="(group, i) in groups"
@@ -176,4 +177,11 @@
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .panels .vcs-expansion-panel:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
+  }
+  :deep(.v-list-item-title) > span {
+    font-weight: bold;
+  }
+</style>

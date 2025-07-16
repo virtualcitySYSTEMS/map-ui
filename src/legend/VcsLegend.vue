@@ -2,10 +2,11 @@
   <v-sheet class="overflow-y-auto vcs-legend">
     <v-expansion-panels
       variant="accordion"
+      flat
       multiple
       v-if="entries.length > 0"
       v-model="panels"
-      class="rounded-0"
+      class="rounded-0 legend-panels"
     >
       <vcs-expansion-panel
         v-for="(entry, i) in entries"
@@ -141,5 +142,8 @@
     right: 8px;
     background-color: rgb(var(--v-theme-base-lighten-2));
     z-index: 1;
+  }
+  .legend-panels .vcs-expansion-panel:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--v-theme-base-lighten-2));
   }
 </style>
