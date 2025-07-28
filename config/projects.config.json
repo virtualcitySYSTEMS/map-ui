@@ -25,9 +25,9 @@
           "modules": ["config/www.config.json"]
         },
         {
-          "name": "Hannover Panorama Map",
-          "description": "Hannover Panorama Map",
-          "modules": ["config/pano.config.json"]
+          "name": "Geoportal 3D Luxembourg",
+          "description": "map.geoportail.lu",
+          "modules": ["config/lux.config.json"]
         }
       ],
       "modules": [
