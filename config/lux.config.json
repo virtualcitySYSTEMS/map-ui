@@ -1,0 +1,1185 @@
+{
+  "name": "VcsBaseConfig",
+  "mapcontainer": "vcs_map_container",
+  "_id": "VcsBaseConfig",
+  "startingViewpointName": "berlin",
+  "startingMapName": "cesium",
+  "startingObliqueCollectionName": "obliques",
+  "projection": {
+    "epsg": "25833",
+    "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+  },
+  "uiConfig": [
+    {
+      "name": "imprint",
+      "value": {
+        "content": "MyImpressum.content"
+      }
+    },
+    {
+      "name": "dataProtection",
+      "value": {
+        "url": "https://vc.systems/datenschutz/"
+      }
+    },
+    {
+      "name": "obliqueFooterTemplate",
+      "value": "MyObliqueFooter.content"
+    },
+    {
+      "name": "customScreen",
+      "value": {
+        "content": "MyCustomScreen.content",
+        "icon": "mdi-information",
+        "name": "MyCustomScreen.name",
+        "title": "MyCustomScreen.title",
+        "windowPosition": {
+          "left": "30%",
+          "right": "30%",
+          "top": "10%",
+          "bottom": "20%"
+        }
+      }
+    },
+    {
+      "name": "displayQuality",
+      "value": {
+        "startingQualityLevel": "medium",
+        "low": {
+          "sse": 4,
+          "fxaa": false,
+          "fogEnabled": true,
+          "resolutionScale": 0.9,
+          "layerSSEFactor": 2
+        },
+        "medium": {
+          "sse": 2,
+          "fxaa": false,
+          "fogEnabled": true,
+          "resolutionScale": 1,
+          "layerSSEFactor": 1
+        },
+        "high": {
+          "sse": 1.3333333333333333,
+          "fxaa": true,
+          "fogEnabled": true,
+          "fogDensity": 0,
+          "fogScreenSpaceErrorFactor": 0,
+          "resolutionScale": 1,
+          "layerSSEFactor": 0.5
+        }
+      }
+    }
+  ],
+  "i18n": [
+    {
+      "name": "base",
+      "de": {
+        "layers": {
+          "pointcloud": {
+            "title": "Tiergarten"
+          },
+          "osmBuildingFootprints": {
+            "title": "OSM Gebäude Grundflächen"
+          }
+        },
+        "style": {
+          "buildingFunction": "Gebäudefunktion",
+          "transparentBuildings": "Transparente Gebäude"
+        },
+        "contentTree": {
+          "building": {
+            "title": "3D Gebäude"
+          }
+        },
+        "MyImpressum": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n**Firmierung:** \nMusterfirma GmbH\n\n**Sitz:**\nMusterstadt\n\n**Adresse:**\nMusterstraße 1 a\n12345 Musterstadt\nDeutschland\n\n **Telefon:** +49 (0) 00 . 0000 . 000 . 00\n\n **Telefax:** +49 (0) 00 . 0000 . 000 . 00\n\n **E-Mail:** [info&commat;musterfirma.de](mailto:info&commat;musterfirma.de)\n\n**Geschäftsführer:**\nMax Mustermann\n\n**Registergericht:**\nMusterstadt 1234567\n\n**Steuernummer:**\n11/222/33333\n\n**Umsatzsteuer-ID:**\nDE1234567890\n\n**Copyright:**\n\nAlle Rechte vorbehalten. Sämtliche Inhalte (Texte, Bilder, Grafiken, Animationen) sind urheberrechtlich geschützt. Sie dürfen ohne Zustimmung der Musterfirma GmbH zu kommerziellen Zwecken weder kopiert, verbreitet noch verändert werden.\n\n(Copyright 2023 Musterfirma GmbH)\n\n**Inhalte:**\n\nTrotz sorgfältiger Bearbeitung kann die Musterfirma GmbH für die Fehlerfreiheit und Genauigkeit der angebotenen Informationen auf [www.musterfirma.de](http://www.musterfirma.de) nicht garantieren. Jegliche Haftung für Schäden, die direkt oder indirekt aus der Benutzung von [www.musterfirma.de](http://www.musterfirma.de) entstehen und nicht auf Vorsatz oder grober Fahrlässigkeit der Musterfirma GmbH beruhen, ist ausgeschlossen. Für die Inhalte von mit [www.musterfirma.de](http://www.musterfirma.de) verlinkter Websites ist grundsätzlich jede Haftung ausgeschlossen.\n\n**Datenschutz:**\n\nDie Musterfirma GmbH nimmt den Schutz Ihrer persönlichen Daten sehr ernst. Wir halten uns strikt an die Regeln der Datenschutzgesetze. Personenbezogene Daten werden auf dieser Webseite nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder aus anderen Gründen an Dritte weitergegeben. Unsere vollständige Datenschutzerklärung können Sie [hier](#) nachlesen.\n"
+        },
+        "MyCustomScreen": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\nProjekt: \n--------\n\nErste Schritte\n\nZusammenfassung:\n--------\nDies ist ein **Beispieltext**, der Ihnen den Einstieg erleichtern soll. **Marked** wird verwendet, um Ihren Text _von Markdown nach HTML_ zu konvertieren. Um mehr über die __*korrekte Syntax*__ zu erfahren, besuchen Sie bitte diesen [Link](https://marked.js.org/demo/) für eine Demo.  \n \nInhalt:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Punkt 1: einer Liste mit Aufzählungspunkten.\n- Punkt 2: einer Liste mit Aufzählungspunkten.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
+          "name": "Meine benutzerdefinierte Anzeige",
+          "title": "Meine benutzerdefinierte Anzeige"
+        },
+        "MyObliqueFooter": {
+          "content": "Mein Bildtitel: {{ name }} {{ viewDirection }}"
+        }
+      },
+      "en": {
+        "layers": {
+          "pointcloud": {
+            "title": "Zoological garden"
+          },
+          "osmBuildingFootprints": {
+            "title": "OSM Building Footprints"
+          }
+        },
+        "style": {
+          "buildingFunction": "Building function",
+          "transparentBuildings": "Transparent Buildings"
+        },
+        "contentTree": {
+          "building": {
+            "title": "3D buildings"
+          }
+        },
+        "MyImpressum": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n**Company name:** \n\nMusterfirma GmbH\n\n**Company headquarters:**\n\nMusterstadt\n\n\n\n**Address:**\n\nMusterstraße 1 a\n\n12345 Musterstadt\n\nGermany\n\n **Phone:** +49 (0) 00 . 0000 . 000 . 00\n\n **Fax:** +49 (0) 00 . 0000 . 000 . 00\n\n **E-Mail:** [info@musterfirma.de](mailto:info@musterfirma.de)\n\n\n\n**Managing Director:**\n\n- Max Mustermann\n\n\n\n**Registry court:**\n\nMusterstadt 1234567\n\n\n\n**Tax number:**\n\n11/222/33333\n\n\n\n**VAT ID:**\n\nDE1234567890\n\n\n\n**Copyright:**\n\nAll rights reserved. All contents (texts, images, graphics, animations) are protected by copyright. They may not be copied, distributed or modified for commercial purposes without the consent of Musterfirma GmbH.\n\n(Copyright 2023 Musterfirma GmbH)\n\n\n\n**Contents:**\n\nDespite careful editing, Musterfirma GmbH cannot guarantee the correctness and accuracy of the information provided on [www.musterfirma.de](http://www.musterfirma.de). Any liability for damages arising directly or indirectly from the use of [www.musterfirma.de](http://www.musterfirma.de) and which are not based on intent or gross negligence on the part of Musterfirma GmbH is excluded. No liability is accepted for the content of websites linked to [www.musterfirma.de](http://www.musterfirma.de).\n\n\n\n**Data protection:**\n\nMusterfirma GmbH takes the protection of your personal data very seriously. We adhere strictly to the rules of the data protection laws. Personal data is only collected on this website to the extent that is technically necessary. Under no circumstances will the data collected be sold or passed on to third parties for other reasons. You can read our complete privacy policy [here](#).\n\n"
+        },
+        "MyCustomScreen": {
+          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n\n\nProject: \n--------\n\nGetting started\n\nSummary:\n--------\nThis is a sample text to help you get started. **Marked** is used to convert your text _from Markdown to HTML_. To learn more about the __*correct syntax*__, please visit this [link](https://marked.js.org/demo/) for a demo.\n \nContent:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Bullet Point 1: Lorem ipsum dolor sit amet.\n- Bullet Point 2: Lorem ipsum dolor sit amet.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
+          "name": "My Custom Screen",
+          "title": "My Custom Screen"
+        },
+        "MyObliqueFooter": {
+          "content": "My Oblique Title: {{ name }} {{ viewDirection }}"
+        }
+      }
+    }
+  ],
+  "styles": [
+    {
+      "name": "lineColor",
+      "type": "DeclarativeStyleItem",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${olcs_geometryType} === 2", "color('#49eb34')"],
+            ["true", "color('#707070')"]
+          ]
+        }
+      }
+    },
+    {
+      "name": "MeasuredHeightGreen",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (green)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.measuredHeight} === undefined", "color('#006d2c')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 5", "color('#edf8e9')"],
+            ["${attributes.measuredHeight} < 15", "color('#bae4b3')"],
+            ["${attributes.measuredHeight} < 30", "color('#74c476')"],
+            ["${attributes.measuredHeight} < 65", "color('#31a354')"],
+            ["true", "color('#006d2c')"]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#edf8e9"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bae4b3"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74c476"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#31a354"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#006d2c"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "MeasuredHeightBrown",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (brown)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.measuredHeight} === undefined", "color('#993404')"],
+            ["${attributes.measuredHeight} < 5", "color('#ffffd4')"],
+            ["${attributes.measuredHeight} < 15", "color('#fed98e')"],
+            ["${attributes.measuredHeight} < 30", "color('#fe9929')"],
+            ["${attributes.measuredHeight} < 65", "color('#d95f0e')"],
+            ["true", "color('#993404')"]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffd4"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fed98e"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fe9929"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d95f0e"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#993404"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "MeasuredHeightBlue",
+      "type": "DeclarativeStyleItem",
+      "title": "Measured Height (blue)",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.measuredHeight} === undefined", "color('#045a8d')"],
+            ["${attributes.measuredHeight} < 5", "color('#f1eef6')"],
+            ["${attributes.measuredHeight} < 15", "color('#bdc9e1')"],
+            ["${attributes.measuredHeight} < 30", "color('#74a9cf')"],
+            ["${attributes.measuredHeight} < 65", "color('#2b8cbe')"],
+            ["true", "color('#045a8d')"]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#f1eef6"
+                },
+                "title": "< 5 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bdc9e1"
+                },
+                "title": "< 15 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#74a9cf"
+                },
+                "title": "< 30 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#2b8cbe"
+                },
+                "title": "< 65 m"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#045a8d"
+                },
+                "title": "> 65 m"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "title": "Classified by Roof Type",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.roofType} === undefined", "color('#cccccc')"],
+            ["${attributes.roofType} === '1000' ", "color('#91cf60')"],
+            ["${attributes.roofType} === '2100' ", "color('#fee08b')"],
+            ["${attributes.roofType} === '2200' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3100' ", "color('#8dd3c7')"],
+            ["${attributes.roofType} === '3200' ", "color('#fc8d59')"],
+            ["${attributes.roofType} === '3300' ", "color('#ffffb3')"],
+            ["${attributes.roofType} === '3400' ", "color('#bebada')"],
+            ["${attributes.roofType} === '3500' ", "color('#ffffbf')"],
+            ["${attributes.roofType} === '3600' ", "color('#fdb462')"],
+            ["${attributes.roofType} === '3700' ", "color('#b3de69')"],
+            ["${attributes.roofType} === '3800' ", "color('#ecc34e')"],
+            ["${attributes.roofType} === '3900' ", "color('#fccde5')"],
+            ["${attributes.roofType} === '4000' ", "color('#d590b3')"],
+            ["${attributes.roofType} === '5000' ", "color('#888888')"],
+            ["${attributes.roofType} === '9999' ", "color('#cccccc')"],
+            ["true", "color('#cccccc')"]
+          ]
+        }
+      },
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#91cf60"
+                },
+                "title": "Flachdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fee08b"
+                },
+                "title": "Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Versetztes Pultdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#8dd3c7"
+                },
+                "title": "Satteldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fc8d59"
+                },
+                "title": "Walmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffb3"
+                },
+                "title": "Krüppelwalmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#bebada"
+                },
+                "title": "Mansardendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffffbf"
+                },
+                "title": "Zeltdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "Kegeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#b3de69"
+                },
+                "title": "Kuppeldach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ecc34e"
+                },
+                "title": "Sheddach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fccde5"
+                },
+                "title": "Bogendach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#d590b3"
+                },
+                "title": "Turmdach"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#888888"
+                },
+                "title": "Mischform"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Sonstiges"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "ClassifiedbyRoofType"
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "title": "Einfärbung nach Gebäudefunktion",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.function} === undefined", "color('#d9d9d9')"],
+            ["${attributes.function} === '1121' ", "color('#7fc97f')"],
+            ["${attributes.function} === '1004' ", "color('#beaed4')"],
+            ["${attributes.function} === '1799' ", "color('#fdc086')"],
+            ["${attributes.function} === '1231' ", "color('#ffff99')"],
+            ["true", "color('#d9d9d9')"]
+          ]
+        }
+      },
+      "properties": {
+        "title": "style.buildingFunction",
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#7fc97f"
+                },
+                "title": "1121"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdb462"
+                },
+                "title": "1004"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#fdc086"
+                },
+                "title": "1799"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#ffff99"
+                },
+                "title": "1231"
+              },
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "other function"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "BuildingFunction"
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "Transparentbuildings",
+      "title": "Transparent buildings",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [["true", "color('#cccccc', 0.7)"]]
+        }
+      },
+      "properties": {
+        "title": "style.transparentBuildings",
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "fill": {
+                  "color": "#cccccc"
+                },
+                "title": "Transparent buildings"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableAllWithTemplateHeader",
+      "keyMapping": {
+        "roofType": "codeLists.keys.roofType",
+        "function": "codeLists.keys.function",
+        "featureId": "Feature ID"
+      },
+      "valueMapping": {
+        "roofType": "codeLists.values.roofType.${value}",
+        "function": {
+          "1000": "codeLists.values.function.1000",
+          "1111": "myOwnMapping1111"
+        }
+      },
+      "window": {
+        "state": {
+          "headerTitle": ["{{layer}}", ": ", "{{osm_id}}"]
+        }
+      }
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "tableAll",
+      "keyMapping": {
+        "roofType": "codeLists.keys.roofType",
+        "function": "codeLists.keys.function"
+      },
+      "valueMapping": {
+        "roofType": "codeLists.values.roofType.${value}",
+        "function": {
+          "1000": "codeLists.values.function.1000",
+          "1111": "myOwnMapping1111"
+        }
+      },
+      "window": {
+        "state": {
+          "headerTitle": ["{{layerName}}", ": ", "{{gml:name}}"]
+        }
+      }
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "filteredTable",
+      "attributeKeys": ["gml:name", "function"],
+      "keyMapping": {
+        "function": "codeLists.keys.function"
+      },
+      "valueMapping": {
+        "function": "codeLists.values.function.${value}"
+      }
+    },
+    {
+      "type": "AddressBalloonFeatureInfoView",
+      "name": "addressBalloon",
+      "balloonSubtitle": "",
+      "addressName": "name"
+    }
+  ],
+  "maps": [
+    {
+      "type": "OpenlayersMap",
+      "name": "ol3"
+    },
+    {
+      "type": "CesiumMap",
+      "name": "cesium",
+      "debugging": false,
+      "fxaa": false,
+      "enableLightning": true,
+      "allowSoftwareRendering": false,
+      "maximumScreenSpaceError": 2,
+      "fogEnabled": true,
+      "fogEnabledMobile": true,
+      "fogDensity": 0.0002,
+      "fogDensityMobile": 0.0004,
+      "fogScreenSpaceError": 2,
+      "fogScreenSpaceErrorMobile": 4,
+      "useOriginalCesiumShader": false
+    },
+    {
+      "name": "Oblique Map",
+      "showObliqueImageName": true,
+      "obliqueImageNameTemplate": "Oblique Image Name : {0}",
+      "type": "ObliqueMap",
+      "maintainViewpointOnCollectionChange": true,
+      "fallbackToCurrentMap": true
+    }
+  ],
+  "layers": [
+    {
+      "projection": {
+        "epsg": 4326
+      },
+      "type": "WFSLayer",
+      "name": "WFSLayer",
+      "url": "https://service.pdok.nl/lv/bag/wfs/v2_0",
+      "featureNS": "http://bag.geonovum.nl",
+      "featurePrefix": "bag",
+      "featureType": "pand",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "properties": {
+        "title": "WFS Layer (next to Groningen in the Netherlands)",
+        "featureInfo": "tableAll"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "mesh_surface",
+      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2023/",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true,
+        "enableCollision": true
+      },
+      "exclusiveGroups": ["bldg"],
+      "properties": {
+        "title": "3D-Mesh 2020",
+        "attributions": {
+          "provider": "Berlin Partner für Wirtschaft und Technologie",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "buildings",
+      "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": ["bldg"],
+      "properties": {
+        "title": "Gebäude texturiert 2013",
+        "featureInfo": "filteredTable"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "buildings_untextured",
+      "url": "https://www.virtualcitymap.de/datasource-data/72fa3c14-03bc-4c26-a4ac-8c6dec37e65a/tileset.json",
+      "activeOnStartup": true,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "exclusiveGroups": ["bldg"],
+      "properties": {
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "ClassifiedbyRoofType",
+          "BuildingFunction",
+          "Transparentbuildings"
+        ],
+        "title": "Berlin - LOD2",
+        "featureInfo": "addressBalloon"
+      }
+    },
+    {
+      "name": "osmBuildingFootprints",
+      "type": "VectorTileLayer",
+      "minLevel": 18,
+      "maxLevel": 18,
+      "zIndex": 11,
+      "tileProvider": {
+        "baseLevels": [14],
+        "idProperty": "osm_id",
+        "useSpatialIndex": false,
+        "type": "MVTTileProvider",
+        "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
+      },
+      "activeOnStartup": false,
+      "debug": false,
+      "properties": {
+        "featureInfo": "tableAllWithTemplateHeader",
+        "title": "layers.osmBuildingFootprints.title",
+        "tooltip": "OpenStreetMap Building Polygons",
+        "availableStyles": ["Transparentbuildings"]
+      }
+    },
+    {
+      "name": "Openstreetmap OSM Cache",
+      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "type": "WMTSLayer",
+      "datasourceId": "2jEtgBemjJaSNx3AH",
+      "activeOnStartup": true,
+      "layer": "osm",
+      "wmtsStyle": "default",
+      "format": "image/png",
+      "tileMatrixSetID": "osm_grid",
+      "tileMatrixPrefix": "",
+      "maxLevel": 19,
+      "tilingSchema": "mercator",
+      "extent": {
+        "coordinates": [-180, -85, 180, 85],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "opacity": "1",
+      "hiddenObjectIds": [],
+      "numberOfLevelZeroTilesX": 1,
+      "numberOfLevelZeroTilesY": 1,
+      "exclusiveGroups": ["base"],
+      "properties": {
+        "title": "OpenStreetMap",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "OpenStreetMap contributors",
+          "url": "http://www.openstreetmap.org/",
+          "year": "2019"
+        }
+      }
+    },
+    {
+      "type": "TerrainLayer",
+      "name": "GermanyBaseTerrain",
+      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
+      "activeOnStartup": true,
+      "requestVertexNormals": true,
+      "exclusiveGroups": ["terrain"],
+      "properties": {
+        "title": "Deutschland Gelände"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Bäume",
+      "url": "https://www.virtualcitymap.de/datasource-data/f764ffb4-723d-429f-b797-5ca4c1061201/tileset.json",
+      "activeOnStartup": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "properties": {
+        "title": "Sommerbäume",
+        "featureInfo": "tableTrees",
+        "defaultViewpoint": "berlin"
+      }
+    }
+  ],
+  "viewpoints": [
+    {
+      "name": "berlin",
+      "cameraPosition": [
+        13.370550000000003, 52.51230000000001, 677.0294500017116
+      ],
+      "groundPosition": [
+        13.377973747219107, 52.51718187188212, 34.500300497361984
+      ],
+      "distance": 980.8215342887953,
+      "heading": 42.84999999999993,
+      "pitch": -40.93,
+      "roll": 360,
+      "animate": false,
+      "type": "Viewpoint",
+      "properties": {
+        "title": "Berlin"
+      }
+    },
+    {
+      "name": "alexanderplatz",
+      "distance": 1027.743747894252,
+      "cameraPosition": [
+        13.410279816026053, 52.52102244255272, 1064.4366076344213
+      ],
+      "groundPosition": [
+        13.410279818110775, 52.52102207564875, 36.69286055319397
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "properties": {
+        "title": "Alexanderplatz"
+      }
+    },
+    {
+      "name": "brandenburger_tor",
+      "distance": 663.6051001967426,
+      "cameraPosition": [
+        13.37790869834864, 52.51627705004426, 698.3750083957117
+      ],
+      "groundPosition": [
+        13.37790869845283, 52.516277047668844, 34.76990820023149
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "Viewpoint"
+    },
+    {
+      "name": "potsdamer_platz",
+      "distance": 730.0034266375318,
+      "cameraPosition": [
+        13.375567390072897, 52.50932719713967, 765.2515153338176
+      ],
+      "groundPosition": [
+        13.375567390058034, 52.50932719590491, 35.24808869690339
+      ],
+      "heading": 360,
+      "pitch": -90,
+      "roll": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "properties": {
+        "title": "Potsdamer Platz"
+      }
+    },
+    {
+      "groundPosition": [13.35948, 52.51442, 33.35758],
+      "pitch": -46.14,
+      "type": "Viewpoint",
+      "heading": 359.84,
+      "distance": 3267.86,
+      "name": "pointcloud",
+      "animate": true
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "baseMap",
+      "type": "SubContentTreeItem",
+      "icon": "$vcsPoi",
+      "title": "Base Maps"
+    },
+    {
+      "name": "baseMap.trees",
+      "type": "LayerContentTreeItem",
+      "layerName": "Bäume"
+    },
+    {
+      "name": "baseMap.terrain",
+      "type": "LayerContentTreeItem",
+      "layerName": "GermanyBaseTerrain.4"
+    },
+    {
+      "name": "baseMap.openStreetMap",
+      "type": "LayerContentTreeItem",
+      "layerName": "Openstreetmap OSM Cache"
+    },
+    {
+      "name": "baseMap.aerialImage2015",
+      "type": "LayerContentTreeItem",
+      "layerName": "fisbroker-dop-2015"
+    },
+    {
+      "name": "baseMap.places",
+      "type": "NodeContentTreeItem",
+      "title": "Places",
+      "weight": 2
+    },
+    {
+      "name": "baseMap.places.alexanderplatz",
+      "viewpointName": "alexanderplatz",
+      "type": "ViewpointContentTreeItem"
+    },
+    {
+      "name": "baseMap.places.potsdamerPlatz",
+      "viewpointName": "potsdamer_platz",
+      "type": "ViewpointContentTreeItem"
+    },
+    {
+      "name": "building",
+      "initOpen": true,
+      "type": "NodeContentTreeItem",
+      "infoUrl": "https://vc.systems",
+      "title": "contentTree.building.title"
+    },
+    {
+      "name": "terrain",
+      "type": "LayerContentTreeItem",
+      "layerName": "GermanyBaseTerrain"
+    },
+    {
+      "name": "building.texturedBuildings",
+      "layerName": "buildings",
+      "type": "LayerContentTreeItem",
+      "tooltip": "Textured buildings"
+    },
+    {
+      "name": "building.untexturedBuildings",
+      "infoUrl": "https://vc.systems",
+      "layerName": "buildings_untextured",
+      "type": "LayerContentTreeItem",
+      "onActivate": [
+        {
+          "type": "DeactivateLayersCallback",
+          "layerNames": ["buildings", "mesh_surface"]
+        },
+        {
+          "type": "ApplyLayerStyleCallback",
+          "layerName": "buildings_untextured",
+          "styleName": "MeasuredHeightGreen"
+        }
+      ],
+      "onDeactivate": [
+        { "type": "ActivateLayersCallback", "layerNames": ["buildings"] }
+      ]
+    },
+    {
+      "name": "viewpoints.startRotation",
+      "title": "Start rotation",
+      "infoUrl": "https://vc.systems",
+      "type": "ContentTreeItem",
+      "onClick": [
+        {
+          "type": "StartRotationCallback"
+        }
+      ]
+    },
+    {
+      "name": "viewpoints.stopRotation",
+      "title": "Stop rotation",
+      "infoUrl": "https://vc.systems",
+      "type": "ContentTreeItem",
+      "onClick": [
+        {
+          "type": "StopRotationCallback"
+        }
+      ]
+    },
+    {
+      "name": "building.osmBuildingFootprints",
+      "layerName": "osmBuildingFootprints",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.wfsLayer",
+      "layerName": "WFSLayer",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "building.meshSurface",
+      "layerName": "mesh_surface",
+      "type": "LayerContentTreeItem",
+      "title": "3D-Mesh",
+      "tooltip": "3D-Mesh Surface"
+    },
+    {
+      "name": "pointcloud",
+      "type": "NodeContentTreeItem",
+      "title": "Point Cloud"
+    },
+    {
+      "name": "pointcloud.tiergarten",
+      "layerName": "pointcloud",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "pointcloud.berlinBuch",
+      "type": "LayerContentTreeItem",
+      "layerName": "PointCloud Changedetection"
+    },
+    {
+      "name": "viewpoints",
+      "type": "NodeContentTreeItem",
+      "title": "Viewpoints"
+    },
+    {
+      "name": "viewpoints.berlin",
+      "viewpointName": "berlin",
+      "type": "ViewpointContentTreeItem",
+      "title": "Berlin"
+    },
+    {
+      "name": "viewpoints.brandenburgerTor",
+      "viewpointName": "brandenburger_tor",
+      "type": "ViewpointContentTreeItem",
+      "title": "Brandenburg Gate"
+    },
+    {
+      "name": "viewpoints.places",
+      "type": "NodeContentTreeItem",
+      "title": "Places",
+      "icon": "mdi-map-marker-star",
+      "weight": 1
+    },
+    {
+      "name": "viewpoints.places.alexanderplatz",
+      "viewpointName": "alexanderplatz",
+      "type": "ViewpointContentTreeItem"
+    },
+    {
+      "name": "viewpoints.places.potsdamerPlatz",
+      "viewpointName": "potsdamer_platz",
+      "type": "ViewpointContentTreeItem"
+    },
+    {
+      "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
+      "viewpointName": "kaiser_wilhelm_gedächtniskirche",
+      "type": "ViewpointContentTreeItem",
+      "title": "Kaiser Wilhelm Memorial Church"
+    },
+    {
+      "name": "viewpoints.oberbaumbruecke",
+      "viewpointName": "oberbaumbrücke",
+      "type": "ViewpointContentTreeItem",
+      "title": "Oberbaum Bridge"
+    },
+    {
+      "name": "emptyGroup",
+      "type": "GroupContentTreeItem",
+      "title": "Empty Group",
+      "icon": "mdi-star"
+    },
+    {
+      "name": "reasonableGroup",
+      "type": "GroupContentTreeItem",
+      "title": "Textured Berlin",
+      "icon": "mdi-star"
+    },
+    {
+      "name": "reasonableGroup.trees",
+      "type": "LayerContentTreeItem",
+      "layerName": "Bäume"
+    },
+    {
+      "name": "reasonableGroup.texturedBuildings",
+      "layerName": "buildings",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "reasonableGroup.berlin",
+      "viewpointName": "berlin",
+      "type": "ViewpointContentTreeItem"
+    },
+    {
+      "name": "reasonableLayerGroup",
+      "type": "LayerGroupContentTreeItem",
+      "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain"],
+      "title": "Buildings - Trees - Terrain. A Layer Group Item",
+      "availableStyles": [
+        "MeasuredHeightGreen",
+        "MeasuredHeightBrown",
+        "MeasuredHeightBlue"
+      ]
+    },
+    {
+      "name": "berlin_obliques",
+      "type": "ObliqueCollectionContentTreeItem",
+      "collectionName": "obliques",
+      "title": "Berlin Obliques"
+    }
+  ],
+  "obliqueCollections": [
+    {
+      "name": "obliques",
+      "activeOnStartup": true,
+      "dataSets": [
+        {
+          "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/obliques_2020/image_tiled.json",
+          "terrainProvider": {
+            "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/"
+          },
+          "projection": {
+            "epsg": "25833",
+            "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+          }
+        }
+      ],
+
+      "hideLevels": null,
+      "properties:": {
+        "attributions": {
+          "provider": "Berlin Partner / Senat von Berlin",
+          "url": "https://www.berlin-partner.de",
+          "year": "2020"
+        }
+      }
+    }
+  ],
+  "plugins": [
+    {
+      "name": "@vcmap/event-control",
+      "entry": "plugins/@vcmap/event-control/index.js",
+      "actions": [
+        {
+          "type": "layer",
+          "targetName": "buildings",
+          "onActivate": [
+            {
+              "type": "DeactivateLayersCallback",
+              "layerNames": ["mesh_surface", "buildings_untextured"]
+            },
+            { "type": "GoToViewpointCallback", "viewpoint": "alexanderplatz" }
+          ],
+          "onDeactivate": [
+            {
+              "type": "ActivateLayersCallback",
+              "layerNames": ["buildings_untextured"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@vcmap/create-link",
+      "entry": "plugins/@vcmap/create-link/index.js"
+    }
+  ]
+}
