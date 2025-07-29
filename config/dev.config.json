@@ -5,6 +5,10 @@
   "startingViewpointName": "potsdamer_platz",
   "featureInfo": [
     {
+      "type": "IframeWmsFeatureInfoView",
+      "name": "testIframeWMS"
+    },
+    {
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloon",
       "balloonTitle": "This is a Balloon Title",
@@ -472,6 +476,21 @@
       }
     },
     {
+      "name": "testWmsHtmlFeatureInfo",
+      "type": "WMSLayer",
+      "url": "https://geoservices.bayern.de/od/wms/atkis/v1/freizeitwege",
+      "activeOnStartup": false,
+      "layers": "by_fzw_bfr",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "featureInfo": { "responseType": "text/html" },
+      "tilingSchema": "geographic",
+      "zIndex": 13,
+      "properties": {
+        "featureInfo": "testIframeWMS",
+        "title": "Test WMS text/html FeatureInfo"
+      }
+    },
+    {
       "name": "wmsStadtstruktur",
       "type": "WMSLayer",
       "url": "https://gdi.berlin.de/services/wms/ua_stadtstruktur_2020",
@@ -826,6 +845,11 @@
       "name": "FlatGeobufLayers",
       "type": "LayerContentTreeItem",
       "layerName": "FlatGeobufLayer"
+    },
+    {
+      "name": "testWmsHtmlFeatureInfo",
+      "type": "LayerContentTreeItem",
+      "layerName": "testWmsHtmlFeatureInfo"
     },
     {
       "name": "building.myTest",

@@ -19,8 +19,9 @@
   - a new map type has been added to the maps, expanding the number of map buttons rendered by default to 4.
   - a new showcase plugin `@vcmap-showcase/panorama-inspector` to debug the panorama map has been created.
 - adds new `ActivagteMap` callback to activate a map of a given name.
-- adds enw `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
+- adds new `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
 - Fixes an issue where custom shading would not properly work for I3S datasets.
+- Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
 
 # 6.1.14
 

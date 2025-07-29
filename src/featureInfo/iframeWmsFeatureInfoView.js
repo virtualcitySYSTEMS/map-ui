@@ -6,6 +6,8 @@ import IframeComponent from './IframeComponent.vue';
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { infoFormat: string, title?: string }} IframeWmsFeatureInfoViewOptions
  * @property {string} infoFormat - Specifies the response format of WMS GetFeatureInfo
  * @property {string} [title] - optional title for the <iframe>
+ * @property {string} [sandbox] - optional sandbox attribute for the <iframe>
+ * @property {boolean} [disableSandbox] - optional flag to disable the sandbox attribute for the <iframe>
  */
 
 /**
@@ -35,6 +37,39 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
      * @type {string|undefined}
      */
     this.title = options.title || undefined;
+    /**
+     * @type {string}
+     */
+    this.sandbox = options.sandbox || '';
+    /**
+     * @type {boolean}
+     */
+    this.disableSandbox = options.disableSandbox || false;
+  }
+
+  /**
+   * @param {import("../vcsUiApp.js").default} app
+   * @param {import("./featureInfo.js").FeatureInfoEvent} featureInfo
+   * @param {import("@vcmap/core").Layer} layer
+   * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
+   */
+  getWindowComponentOptions(app, featureInfo, layer) {
+    const componentOptions = super.getWindowComponentOptions(
+      app,
+      featureInfo,
+      layer,
+    );
+    const resolution = app.maps.activeMap.getCurrentResolution(
+      featureInfo.position,
+    );
+    componentOptions.props.src =
+      layer.featureProvider.wmsSource.getFeatureInfoUrl(
+        featureInfo.position,
+        resolution,
+        getOlProj('EPSG:3857'),
+        { INFO_FORMAT: this.infoFormat },
+      );
+    return componentOptions;
   }
 
   /**
@@ -52,6 +87,7 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
         { INFO_FORMAT: this.infoFormat },
       ),
       title: this.title,
+      ...(!this.disableSandbox && { sandbox: this.sandbox }),
     };
   }
 
@@ -65,6 +101,12 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
     }
     if (this.title) {
       config.title = this.title;
+    }
+    if (this.sandbox) {
+      config.sandbox = this.sandbox;
+    }
+    if (this.disableSandbox) {
+      config.disableSandbox = this.disableSandbox;
     }
     return config;
   }
