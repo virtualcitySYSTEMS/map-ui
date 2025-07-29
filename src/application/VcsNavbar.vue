@@ -14,7 +14,7 @@
             <div class="d-flex">
               <VcsActionButtonList
                 :actions="mapActions"
-                :overflow-count="smAndDown ? 2 : 3"
+                :overflow-count="smAndDown ? 2 : 4"
                 :force-overflow="false"
                 button="VcsToolButton"
               />

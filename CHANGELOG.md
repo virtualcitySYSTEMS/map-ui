@@ -15,6 +15,12 @@
 - changed behavior of Search: results are kept in memory while the window is not manually closed
 - added a new `AbstractWorkspaceItemCreator` component, to wrap components used to create MyWorkspace items.
 - updated the style of the `VcsExpansionPanel` and `VcsGroupedList` compononents to harmonize them with the `VcsTreeview` component
+- adds `PanoramaMap` support.
+  - a new map type has been added to the maps, expanding the number of map buttons rendered by default to 4.
+  - a new showcase plugin `@vcmap-showcase/panorama-inspector` to debug the panorama map has been created.
+- adds new `ActivagteMap` callback to activate a map of a given name.
+- adds enw `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
+- Fixes an issue where custom shading would not properly work for I3S datasets.
 
 # 6.1.14
 

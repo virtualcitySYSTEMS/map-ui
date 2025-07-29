@@ -35,8 +35,13 @@
           :disabled="movementApiCallsDisabled"
         />
       </v-row>
-      <v-row justify="center" v-if="is3D">
-        <TiltSlider v-model="tilt" :disabled="movementApiCallsDisabled" />
+      <v-row justify="center" v-if="is3D || isPanorama">
+        <TiltSlider
+          v-model="tilt"
+          :disabled="movementApiCallsDisabled"
+          :max-tilt="isPanorama ? 89 : undefined"
+          :min-tilt="isPanorama ? -89 : undefined"
+        />
       </v-row>
       <v-row v-if="!hideRotationButton && is3D" justify="center">
         <OrientationToolsButton
@@ -79,6 +84,7 @@
     ObliqueViewDirection,
     startRotation,
     rotationMapControlSymbol,
+    PanoramaMap,
   } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
@@ -207,6 +213,7 @@
     THREE_D: '3d',
     TWO_D: '2d',
     OBLIQUE: 'oblique',
+    PANORAMA: 'panorama',
   };
 
   function getViewModeForMap(map) {
@@ -214,6 +221,8 @@
       return OrientationToolsViewMode.OBLIQUE;
     } else if (map instanceof CesiumMap) {
       return OrientationToolsViewMode.THREE_D;
+    } else if (map instanceof PanoramaMap) {
+      return OrientationToolsViewMode.PANORAMA;
     }
     return OrientationToolsViewMode.TWO_D;
   }
@@ -225,16 +234,24 @@
    * @returns {Promise<void>}
    */
   async function zoom(map, out = false, zoomFactor = 2) {
-    const viewpoint = await map.getViewpoint();
-    if (out) {
-      viewpoint.distance *= zoomFactor;
+    if (map instanceof PanoramaMap) {
+      if (out) {
+        map.panoramaCameraController.zoomOut();
+      } else {
+        map.panoramaCameraController.zoomIn();
+      }
     } else {
-      viewpoint.distance /= zoomFactor;
+      const viewpoint = await map.getViewpoint();
+      if (out) {
+        viewpoint.distance *= zoomFactor;
+      } else {
+        viewpoint.distance /= zoomFactor;
+      }
+      viewpoint.animate = true;
+      viewpoint.duration = 0.5;
+      viewpoint.cameraPosition = null;
+      await map.gotoViewpoint(viewpoint);
     }
-    viewpoint.animate = true;
-    viewpoint.duration = 0.5;
-    viewpoint.cameraPosition = null;
-    await map.gotoViewpoint(viewpoint);
   }
 
   /**
@@ -314,11 +331,22 @@
           return headingRef.value;
         },
         async set(headingValue) {
-          const vp = await app.maps.activeMap.getViewpoint();
-          delete vp.cameraPosition;
-          vp.heading = headingValue;
-          vp.animate = true;
-          app.maps.activeMap.gotoViewpoint(vp);
+          if (app.maps.activeMap instanceof PanoramaMap) {
+            const { camera } = app.maps.activeMap.getCesiumWidget();
+            camera.setView({
+              orientation: {
+                heading: CesiumMath.toRadians(headingValue),
+                pitch: camera.pitch,
+                roll: camera.roll,
+              },
+            });
+          } else {
+            const vp = await app.maps.activeMap.getViewpoint();
+            delete vp.cameraPosition;
+            vp.heading = headingValue;
+            vp.animate = true;
+            app.maps.activeMap.gotoViewpoint(vp);
+          }
         },
       });
 
@@ -327,9 +355,20 @@
           return tiltRef.value;
         },
         set(tiltValue) {
-          const vp = app.maps.activeMap.getViewpointSync(); // XXX make async and debounce
-          vp.pitch = tiltValue;
-          app.maps.activeMap.gotoViewpoint(vp);
+          if (app.maps.activeMap instanceof PanoramaMap) {
+            const { camera } = app.maps.activeMap.getCesiumWidget();
+            camera.setView({
+              orientation: {
+                heading: camera.heading,
+                pitch: CesiumMath.toRadians(tiltValue),
+                roll: camera.roll,
+              },
+            });
+          } else {
+            const vp = app.maps.activeMap.getViewpointSync(); // XXX make async and debounce
+            vp.pitch = tiltValue;
+            app.maps.activeMap.gotoViewpoint(vp);
+          }
         },
       });
 
@@ -419,6 +458,9 @@
         ),
         isOblique: computed(
           () => viewMode.value === OrientationToolsViewMode.OBLIQUE,
+        ),
+        isPanorama: computed(
+          () => viewMode.value === OrientationToolsViewMode.PANORAMA,
         ),
         zoomIn() {
           zoom(app.maps.activeMap);

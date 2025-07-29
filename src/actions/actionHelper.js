@@ -6,6 +6,7 @@ import {
   Extent,
   MapCollection,
   mercatorProjection,
+  PanoramaMap,
   Viewpoint,
 } from '@vcmap/core';
 import { Feature } from 'ol';
@@ -57,6 +58,64 @@ export function getActionFromOptions(options) {
 }
 
 /**
+ * @param {import("@vcmap/core").PanoramaMap} map
+ * @param {import("../actions/actionHelper.js").VcsAction} action
+ * @returns {() => void}
+ */
+function setupDisablePanorama(map, action) {
+  const datasetListeners = new Map();
+
+  action.disabled = true;
+  const setupDataset = (dataset) => {
+    datasetListeners.get(dataset.name)?.();
+    if (dataset.active) {
+      action.disabled = false;
+    }
+
+    const listener = dataset.stateChanged.addEventListener(() => {
+      if (!dataset.active) {
+        action.disabled = ![...map.layerCollection].find(
+          (d) => d.active && d.className === 'PanoramaDatasetLayer',
+        );
+      } else if (dataset.active) {
+        action.disabled = false;
+      }
+    });
+
+    datasetListeners.set(dataset.name, () => {
+      listener();
+      action.disabled = ![...map.layerCollection].find(
+        (d) => d.active && d.className === 'PanoramaDatasetLayer',
+      );
+    });
+  };
+
+  let datasetCollectionListeners = [];
+  const setupDatasets = () => {
+    datasetCollectionListeners.forEach((cb) => cb());
+    datasetListeners.forEach((cb) => cb());
+    datasetListeners.clear();
+
+    [...map.layerCollection].forEach(setupDataset);
+
+    datasetCollectionListeners = [
+      map.layerCollection.added.addEventListener(setupDataset),
+      map.layerCollection.removed.addEventListener((removedDataset) => {
+        datasetListeners.get(removedDataset.name)?.();
+        datasetListeners.delete(removedDataset.name);
+      }),
+    ];
+  };
+  setupDatasets();
+
+  return () => {
+    datasetCollectionListeners.forEach((cb) => cb());
+    datasetListeners.forEach((cb) => cb());
+    datasetListeners.clear();
+  };
+}
+
+/**
  * @param {ActionOptions} actionOptions
  * @param {string} mapName
  * @param {import("@vcmap/core").OverrideCollection<import("@vcmap/core").VcsMap, import("@vcmap/core").MapCollection>} maps
@@ -79,11 +138,23 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
       maps.setActiveMap(mapName);
     },
   });
-  const destroyListener = maps.mapActivated.addEventListener((map) => {
-    action.active = map?.name === mapName;
+
+  const map = maps.getByKey(mapName);
+  let datasetListener;
+  if (map instanceof PanoramaMap) {
+    datasetListener = setupDisablePanorama(map, action);
+  }
+  const destroyListener = maps.mapActivated.addEventListener((activatedMap) => {
+    action.active = activatedMap?.name === mapName;
   });
 
-  return { action, destroy: destroyListener };
+  return {
+    action,
+    destroy() {
+      datasetListener?.();
+      destroyListener();
+    },
+  };
 }
 
 /**

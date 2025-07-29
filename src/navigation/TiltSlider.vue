@@ -12,8 +12,8 @@
       :track-color="'base-lighten-3'"
       thumb-color="base-darken-4"
       track-fill-color="'base-darken-4'"
-      :max="0"
-      :min="-90"
+      :max="maxTilt"
+      :min="minTilt"
       direction="vertical"
       hide-details
       class="vcs-tilt-slider"
@@ -50,6 +50,14 @@
         type: Boolean,
         required: false,
         default: false,
+      },
+      minTilt: {
+        type: Number,
+        default: -90,
+      },
+      maxTilt: {
+        type: Number,
+        default: 0,
       },
     },
     setup(props, { emit }) {

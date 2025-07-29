@@ -66,6 +66,9 @@ export { default as OpenSplashScreenCallback } from './src/callback/openSplashSc
 export { default as CloseSplashScreenCallback } from './src/callback/closeSplashScreenCallback.js';
 export { default as ToggleNavbarButtonCallback } from './src/callback/toggleNavbarButtonCallback.js';
 export { default as ToggleToolbarButtonCallback } from './src/callback/toggleToolbarButtonCallback.js';
+export { default as ActivateMapCallback } from './src/callback/activateMapCallback.js';
+export { default as ActivateOverviewMapCallback } from './src/callback/activateOverviewMapCallback.js';
+export { default as DeactivateOverviewMapCallback } from './src/callback/deactivateOverviewMapCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,

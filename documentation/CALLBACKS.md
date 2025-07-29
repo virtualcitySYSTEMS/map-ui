@@ -57,6 +57,9 @@ Per default, the folllowing extensions are available:
 - [CloseSplashScreenCallback](../src/callback/closeSplashScreenCallback.js) - closes the SplashScreen
 - [ToggleNavbarButtonCallback](../src/callback/toggleNavbarButtonCallback.js) - calls the callback of a registered navbar action
 - [ToggleToolbarButtonCallback](../src/callback/toggleToolbarButtonCallback.js) - calls the callback of a registered toolbar component
+- [ActivateMapCallback](../src/callback/activateMapCallback.js) - activates the map
+- [ActivateOverviewMapCallback](../src/callback/activateOverviewMapCallback.js) - activates the overview map
+- [DeactivateOverviewMapCallback](../src/callback/deactivateOverviewMapCallback.js) - deactivates the overview map
 
 ## CallbackClassRegistry
 

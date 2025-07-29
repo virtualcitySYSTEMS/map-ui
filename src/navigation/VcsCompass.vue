@@ -16,7 +16,9 @@
       @click="!xs && $event.stopPropagation()"
       @direction-click="$emit('update:modelValue', $event)"
       :can-emit="
-        !disabled && !xs && (viewMode === '3d' || viewMode === 'oblique')
+        !disabled &&
+        !xs &&
+        (viewMode === '3d' || viewMode === 'oblique' || viewMode === 'panorama')
       "
       :hide-ticks="viewMode === 'oblique'"
     />

@@ -1,6 +1,9 @@
-import path from 'path';
-import fs from 'fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { existsSync } from 'node:fs';
+import { readFile, writeFile, cp, readdir, rm, mkdir } from 'node:fs/promises';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 import { v4 as uuid } from 'uuid';
 
@@ -16,6 +19,7 @@ import {
   libraries,
 } from './buildHelpers.js';
 
+const execPromise = promisify(exec);
 /**
  * @typedef {Object} LibraryBuildOption
  * @property {string} lib
@@ -55,6 +59,9 @@ function hashLibraries() {
     '@vcmap/core': {
       entry: path.join('lib', 'core.js'),
       rollupOptions: {
+        output: {
+          manualChunks: () => 'core.js', // this is needed, otherwise vitejs will create multiple chunks.
+        },
         plugins: [vcsOl()],
       },
     },
@@ -125,10 +132,10 @@ const distFolder = path.join(process.cwd(), 'dist');
 const assetsFolder = path.join(distFolder, 'assets');
 
 /** Cleaning/recreating Dist Folder */
-if (await fs.existsSync(distFolder)) {
-  await fs.promises.rm(distFolder, { recursive: true });
+if (existsSync(distFolder)) {
+  await rm(distFolder, { recursive: true });
 }
-await fs.promises.mkdir(assetsFolder, { recursive: true });
+await mkdir(assetsFolder, { recursive: true });
 
 /**
  * Prepare and Copy Public folder to dist Folder. This Process will also hash the static files using a MD5 File hash.
@@ -196,7 +203,7 @@ for await (const filePath of getFilesInDirectory(publicAssetsFolder)) {
 }
 
 for await (const [originalFilePath, newFilePath] of filesToCopy) {
-  await fs.promises.cp(originalFilePath, newFilePath);
+  await cp(originalFilePath, newFilePath);
 }
 
 console.log('Building app');
@@ -215,6 +222,9 @@ const match = indexHTMLContent.match(scriptRegex);
 if (match && match[1]) {
   let scriptContent = match[1].trim();
   scriptContent = scriptContent.replace(/@vcmap\/ui/, './ui.js');
+  scriptContent = `${scriptContent}
+  window.vcs.workerBase = './assets/core-workers/';
+  `;
   await writeFile(path.join(assetsFolder, 'start.js'), scriptContent, {
     encoding: 'utf8',
   });
@@ -312,6 +322,41 @@ await Promise.all(
     await build(libraryEntryConfig);
   }),
 );
+
+/**
+ * copy and hash the core workers
+ */
+console.log('Hashing core workers');
+async function hashWorkers() {
+  const coreFileUrl = await import.meta.resolve('@vcmap/core');
+  const corePath = path.join(path.dirname(fileURLToPath(coreFileUrl)), '..');
+  const coreWorkerDirectory = path.join(corePath, 'dist', 'src', 'workers');
+  if (!existsSync(coreWorkerDirectory)) {
+    console.log('Found unbuilt core workers, building them');
+    await execPromise('npm run build', { cwd: corePath });
+  }
+  const workers = await readdir(coreWorkerDirectory);
+  await Promise.all(
+    workers.map(async (worker) => {
+      if (worker.endsWith('.js')) {
+        const workerPath = path.join(coreWorkerDirectory, worker);
+        const hash = uuid().substring(0, 8);
+        const newWorkerPath = path.join(
+          assetsFolder,
+          'core-workers',
+          `${worker}-${hash}.js`,
+        );
+        await cp(workerPath, newWorkerPath);
+        await writeFile(
+          path.join(assetsFolder, 'core-workers', worker),
+          `import './${worker}-${hash}.js';`,
+        );
+      }
+    }),
+  );
+}
+await hashWorkers();
+
 /**
  * Copy Cesium Static Assets to the dist/assets folder
  */

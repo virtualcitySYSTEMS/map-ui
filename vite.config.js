@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import { HstVue as hstVue } from '@histoire/plugin-vue';
+import { join, resolve, dirname, posix, basename } from 'node:path';
+import { lstat, readlink } from 'node:fs/promises';
 import commonViteConfig from './build/commonViteConfig.js';
 import getPluginProxies from './build/getPluginProxies.js';
 import { determineHostFromArgv } from './build/determineHost.js';
@@ -19,6 +21,24 @@ const configMain = defineConfig(async ({ mode }) => {
     proxy['/node_modules/@vcmap-cesium/engine/Build/ThirdParty'] = {
       target: host,
       rewrite: (path) => path.replace(/Build/, 'Source'),
+    };
+    proxy['/node_modules/.vite/workers'] = {
+      target: host,
+      rewrite: (path) =>
+        posix.resolve(
+          path,
+          join(
+            '..',
+            '..',
+            '..',
+            '@vcmap',
+            'core',
+            'dist',
+            'src',
+            'workers',
+            basename(path),
+          ),
+        ),
     };
   } else {
     const pluginRegistryIndex = process.argv.indexOf('--plugin-registry');
@@ -50,6 +70,27 @@ const configMain = defineConfig(async ({ mode }) => {
     };
   }
 
+  // we need to ensure that we still serve web-workers, even if the core is symlinked
+  let fs;
+  const coreModule = join(process.cwd(), 'node_modules', '@vcmap', 'core');
+  const coreStats = await lstat(coreModule);
+  if (coreStats.isSymbolicLink()) {
+    const linkPath = await readlink(coreModule);
+    fs = {
+      allow: [
+        '.',
+        resolve(dirname(coreModule), join(linkPath, 'dist', 'src', 'workers')),
+      ],
+    };
+  } else {
+    fs = {
+      allow: [
+        '.',
+        resolve(dirname(coreModule), join('dist', 'src', 'workers')),
+      ],
+    };
+  }
+
   const config = {
     ...commonViteConfig,
     server: {
@@ -57,6 +98,7 @@ const configMain = defineConfig(async ({ mode }) => {
       strictPort: true,
       port,
       proxy,
+      fs,
     },
     optimizeDeps: {
       include: ['vuetify'],

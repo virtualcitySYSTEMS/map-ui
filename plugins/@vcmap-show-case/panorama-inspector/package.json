@@ -1,0 +1,10 @@
+{
+  "name": "@vcmap-show-case/panorama-inspector",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "mapVersion": "^6.2"
+}

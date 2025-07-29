@@ -13,6 +13,8 @@ import {
   deserializeLayer,
   maxZIndex,
   CesiumMap,
+  PanoramaMap,
+  PanoramaImageSelection,
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
 import Feature from 'ol/Feature.js';
@@ -86,6 +88,12 @@ function getCameraIcon(color) {
     anchor: [0.5, 0.87],
   };
 }
+
+/**
+ * panorama behavior
+ * 1. in panorama, only allow clicking on a footprint
+ * 2. in other maps, if you click directly on a panorama footprint, switch maps and go to image (same as clicking on the footprint in the main map)
+ */
 
 /**
  * A 2D OverviewMap for cesium, openlayers and oblique map.
@@ -206,6 +214,9 @@ class OverviewMap {
     this._eventHandler = new EventHandler();
     const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
     this._eventHandler.addPersistentInteraction(overviewMapClickedInteraction);
+    this._eventHandler.addPersistentInteraction(
+      new PanoramaImageSelection(this._app.maps),
+    );
 
     /**
      *
@@ -253,6 +264,8 @@ class OverviewMap {
             this._map.layerCollection.remove(clone);
             this._map.layerCollection.add(clone, idx);
           }
+        } else if (layer.className === 'PanoramaDatasetLayer') {
+          this._map.layerCollection.add(layer);
         }
       }),
       this._app.maps.layerCollection.removed.addEventListener((layer) => {
@@ -553,6 +566,10 @@ class OverviewMap {
    * @private
    */
   _addNavigationListener(activeMap) {
+    if (activeMap instanceof PanoramaMap) {
+      return () => {};
+    }
+
     return this._mapClicked.addEventListener((e) => {
       const vp = activeMap.getViewpointSync();
       const newPosition = Projection.mercatorToWgs84(e.positionOrPixel);

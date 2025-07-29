@@ -170,11 +170,14 @@
       OpenlayersMap: '$vcs2d',
       CesiumMap: '$vcs3d',
       ObliqueMap: '$vcsObliqueView',
+      PanoramaMap: 'mdi-image',
     };
+
     const mapBtnWeight = {
       OpenlayersMap: 3,
       CesiumMap: 2,
       ObliqueMap: 1,
+      PanoramaMap: 0,
     };
 
     const mapButtonActionDestroy = {};

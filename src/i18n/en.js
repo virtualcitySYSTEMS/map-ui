@@ -14,6 +14,7 @@ const messages = {
       CesiumMap: '3D map',
       OpenlayersMap: '2D map',
       ObliqueMap: 'Oblique imagery map',
+      PanoramaMap: 'Panorama imagery map',
     },
     menu: {
       tooltip: 'Menu',
