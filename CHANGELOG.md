@@ -23,6 +23,12 @@
 - Fixes an issue where custom shading would not properly work for I3S datasets.
 - Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
 
+### Plugin Bundle updates
+
+- @vcmap/module-selector
+  - Fixed a style issue
+  - Makes module selector in mobile view available
+
 # 6.1.14
 
 - fixed a bug where using the Search would deactivate FeatureInfo
