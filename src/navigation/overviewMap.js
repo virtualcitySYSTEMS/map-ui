@@ -22,40 +22,15 @@ import { Math as CesiumMath, Color, Cartographic } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
-import { watch } from 'vue';
-import { WindowSlot } from '../manager/window/windowManager.js';
+import { computed, ref, watch } from 'vue';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
 import {
   getDefaultPrimaryColor,
   getColorByKey,
 } from '../vuePlugins/vuetify.js';
-import { vcsAppSymbol } from '../pluginHelper.js';
-import VcsMap from '../application/VcsMap.vue';
 
-export const overviewMapWindowId = 'overview-map-container';
+export const overviewMapContainerId = 'overview-map-container';
 export const overviewMapLayerSymbol = Symbol('overviewMapLayerSymbol');
-
-/**
- * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
- */
-export function getWindowComponentOptions() {
-  return {
-    component: VcsMap,
-    props: { mapId: 'overview-map-container' },
-    slot: WindowSlot.DETACHED,
-    id: overviewMapWindowId,
-    state: {
-      hideHeader: true,
-      classes: ['overview-map'],
-    },
-    position: {
-      right: '100px',
-      bottom: '25px',
-      width: '300px',
-      height: '240px',
-    },
-  };
-}
 
 /**
  * @param {string} color
@@ -112,17 +87,17 @@ class OverviewMap {
     this._app = app;
 
     /**
-     * @type {boolean}
+     * @type {import("vue").Ref<boolean>}
      * @private
      */
-    this._active = false;
+    this._active = ref(false);
 
     /**
      * @type {import("@vcmap/core").OpenlayersMap||null}
      * @private
      */
     this._map = new OpenlayersMap({
-      target: 'overview-map-container',
+      target: overviewMapContainerId,
     });
 
     /**
@@ -284,30 +259,50 @@ class OverviewMap {
       ),
     ];
 
-    this._uiConfigWatcher = watch(
-      () => [
-        this._app.uiConfig.config.hideMapNavigation,
-        this._app.uiConfig.config.overviewMapActiveOnStartup,
-        this._app.uiConfig.config.overviewMapScaleFactor,
-      ],
-      async ([hide, activeOnStartup, scaleFactor]) => {
-        if (activeOnStartup && !hide && !this._active) {
-          await this.activate();
-        } else if (hide && this._active) {
-          this.deactivate();
-        }
-        if (scaleFactor) {
-          this._scaleFactor = scaleFactor;
-        }
-      },
-    );
+    this._uiConfigWatchers = [
+      watch(
+        () => this._app.uiConfig.config.hideMapNavigation,
+        (hide) => {
+          if (hide && this._active.value) {
+            this.deactivate();
+          }
+        },
+      ),
+      watch(
+        () => this._app.uiConfig.config.overviewMapActiveOnStartup,
+        async (activeOnStartup) => {
+          if (
+            activeOnStartup &&
+            !this._active.value &&
+            !this._app.uiConfig.config.hideMapNavigation
+          ) {
+            await this.activate();
+          } else if (!activeOnStartup && this._active.value) {
+            this.deactivate();
+          }
+        },
+      ),
+      watch(
+        () => this._app.uiConfig.config.overviewMapScaleFactor,
+        (scaleFactor) => {
+          if (scaleFactor) {
+            this._scaleFactor = scaleFactor;
+          }
+        },
+      ),
+    ];
+
+    /**
+     * @type {import("vue").ComputedRef<boolean>}
+     */
+    this.currentState = computed(() => this._active.value);
   }
 
   /**
    * @type {boolean}
    */
   get active() {
-    return this._active;
+    return this._active.value;
   }
 
   /**
@@ -362,9 +357,9 @@ class OverviewMap {
    */
   async _activate() {
     await this._map.activate();
-    this._map.setTarget('overview-map-container');
+    this._map.setTarget(overviewMapContainerId);
     this._map.target?.firstChild?.classList?.add('overviewMapElement');
-    if (!this._active) {
+    if (!this._active.value) {
       this._mapActivatedListener = this._app.maps.mapActivated.addEventListener(
         () => {
           this._clearListeners();
@@ -373,7 +368,7 @@ class OverviewMap {
         },
       );
     }
-    this._active = true;
+    this._active.value = true;
     const { activeMap } = this._app.maps;
     if (activeMap instanceof ObliqueMap) {
       await this._initializeForOblique(activeMap);
@@ -387,23 +382,20 @@ class OverviewMap {
    * @returns {Promise<void>}
    */
   async activate() {
-    if (!this._app.windowManager.has(overviewMapWindowId)) {
-      this._app.windowManager.add(getWindowComponentOptions(), vcsAppSymbol);
-    }
     await this._activate();
   }
 
   /**
-   * closes window and clears all listeners
+   * clears all listeners
    */
   deactivate() {
-    this._app.windowManager.remove(overviewMapWindowId);
+    this.map.deactivate();
     this._clearListeners();
     if (this._mapActivatedListener) {
       this._mapActivatedListener();
       this._mapActivatedListener = null;
     }
-    this._active = false;
+    this._active.value = false;
   }
 
   /**
@@ -690,7 +682,7 @@ class OverviewMap {
     this._clearListeners();
     this._collectionListeners.forEach((cb) => cb());
     this._collectionListeners = [];
-    this._uiConfigWatcher();
+    this._uiConfigWatchers.forEach((cb) => cb());
     if (this._mapPointerListener) {
       this._mapPointerListener();
       this._mapPointerListener = null;

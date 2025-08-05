@@ -2,14 +2,23 @@
   <div class="vcs-main-map">
     <VcsMap :map-id="mapId" />
     <MapNavigation v-if="showMapNavigation" />
+    <div
+      :id="overviewMapContainerId"
+      class="overviewmap-container"
+      :class="xs || mobileLandscape ? 'mobile' : ''"
+      :style="{ display: overviewMapState ? 'block' : 'none' }"
+    />
   </div>
 </template>
 
 <script>
   import { inject, onMounted, onUnmounted, ref, computed } from 'vue';
   import { v4 as uuid } from 'uuid';
-  import MapNavigation from '../navigation/MapNavigation.vue';
+  import { useDisplay } from 'vuetify';
   import VcsMap from './VcsMap.vue';
+  import MapNavigation from '../navigation/MapNavigation.vue';
+  import { overviewMapContainerId } from '../navigation/overviewMap.js';
+  import { isMobileLandscape } from '../vuePlugins/vuetify.js';
 
   export function setupMapNavigation(app) {
     const mapSize = ref(app.maps.size);
@@ -48,6 +57,9 @@
       const id = uuid();
       const mapId = `mapCollection-${id}`;
 
+      const mobileLandscape = isMobileLandscape();
+      const { xs } = useDisplay();
+
       const { showMapNavigation, destroy: destroyMapNavigationListener } =
         setupMapNavigation(app);
 
@@ -63,9 +75,35 @@
       return {
         mapId,
         showMapNavigation,
+        overviewMapContainerId,
+        overviewMapState: app.overviewMap.currentState,
+        mobileLandscape,
+        xs,
       };
     },
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .overviewmap-container {
+    position: absolute;
+    right: 100px;
+    bottom: 25px;
+    width: 300px;
+    height: 240px;
+    background: rgb(var(--v-theme-surface));
+    border: 3px solid rgb(var(--v-theme-surface));
+    border-radius: 3px;
+    &.mobile {
+      width: 100%;
+      right: 0px;
+      bottom: 0px;
+      border-radius: 0px;
+    }
+  }
+
+  :deep(.overviewMapElement) {
+    width: 100%;
+    height: 100%;
+  }
+</style>

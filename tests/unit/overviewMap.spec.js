@@ -446,11 +446,13 @@ describe('OverviewMap', () => {
   describe('handling uiConfig options', () => {
     let overviewMap;
     let activeOnStartup;
+    let inactiveOnStartup;
     let hideMapNavigation;
 
     beforeAll(async () => {
       overviewMap = new OverviewMap(app);
       activeOnStartup = { name: 'overviewMapActiveOnStartup', value: true };
+      inactiveOnStartup = { name: 'overviewMapActiveOnStartup', value: false };
       hideMapNavigation = { name: 'hideMapNavigation', value: true };
     });
 
@@ -475,6 +477,15 @@ describe('OverviewMap', () => {
           [activeOnStartup, hideMapNavigation],
           'test',
         );
+        await sleep();
+        expect(overviewMap.active).to.be.false;
+      });
+
+      it('should deactivate overviewmap if active and the option is set to false', async () => {
+        expect(overviewMap.active).to.be.false;
+        await overviewMap.activate();
+        expect(overviewMap.active).to.be.true;
+        await app.uiConfig.parseItems([inactiveOnStartup], 'test');
         await sleep();
         expect(overviewMap.active).to.be.false;
       });

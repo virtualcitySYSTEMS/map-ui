@@ -66,10 +66,10 @@
       <v-row justify="center">
         <OrientationToolsButton
           v-if="showOverviewButton"
-          :icon="overviewAction.icon"
-          :tooltip="overviewAction.title"
-          :color="overviewAction.active ? 'primary' : undefined"
-          @click.stop="overviewAction.callback($event)"
+          icon="$vcsMap"
+          tooltip="navigation.overviewMapTooltip"
+          :color="overviewMapState ? 'primary' : undefined"
+          @click.stop="toggleOverviewMap"
         />
       </v-row>
     </template>
@@ -89,12 +89,8 @@
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
   import { Math as CesiumMath } from '@vcmap-cesium/engine';
-  import { createOverviewMapAction } from '../actions/actionHelper.js';
   import { createLocatorAction } from './locatorHelper.js';
-  import {
-    getWindowComponentOptions,
-    overviewMapLayerSymbol,
-  } from './overviewMap.js';
+  import { overviewMapLayerSymbol } from './overviewMap.js';
   import VcsCompass from './VcsCompass.vue';
   import VcsZoomButton from './VcsZoomButton.vue';
   import TiltSlider from './TiltSlider.vue';
@@ -372,23 +368,16 @@
         },
       });
 
-      const { action: overviewAction, destroy: overviewDestroy } =
-        createOverviewMapAction(
-          app.overviewMap,
-          getWindowComponentOptions(),
-          app.windowManager,
-        );
       const showOverviewButton = ref(
         app.overviewMap.map.layerCollection.size > 0,
       );
-
-      // Locator
-      const { action: locatorAction, destroy: destroyLocator } =
-        createLocatorAction(app);
-
-      const showLocatorButton = computed(() => {
-        return app.uiConfig.config.showLocator ?? true;
-      });
+      const toggleOverviewMap = async () => {
+        if (app.overviewMap.currentState.value) {
+          app.overviewMap.deactivate();
+        } else {
+          await app.overviewMap.activate();
+        }
+      };
 
       const overviewMapListeners = [
         app.overviewMap.map.layerCollection.added.addEventListener(() => {
@@ -406,6 +395,14 @@
           }
         }),
       ];
+
+      // Locator
+      const { action: locatorAction, destroy: destroyLocator } =
+        createLocatorAction(app);
+
+      const showLocatorButton = computed(() => {
+        return app.uiConfig.config.showLocator ?? true;
+      });
 
       const movementApiCallsDisabled = ref(
         !!app.maps.activeMap?.movementApiCallsDisabled,
@@ -429,9 +426,6 @@
       });
 
       onUnmounted(() => {
-        if (overviewDestroy) {
-          overviewDestroy();
-        }
         if (destroyLocator) {
           destroyLocator();
         }
@@ -468,7 +462,6 @@
         zoomOut() {
           zoom(app.maps.activeMap, true);
         },
-        overviewAction: reactive(overviewAction),
         locatorAction: reactive(locatorAction),
         showOverviewButton,
         showLocatorButton,
@@ -477,6 +470,8 @@
         rotationAction,
         movementApiCallsDisabled,
         mobileLandscape,
+        overviewMapState: app.overviewMap.currentState,
+        toggleOverviewMap,
       };
     },
   };

@@ -23,6 +23,7 @@
 - Fixes an issue where custom shading would not properly work for I3S datasets.
 - Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
 - Fixes a bug where a module with `contentTreeActiveOnStartup: false` would not overwrite `true` of underlying module
+- Inlined overviewMap in the MapNavigation component, avoiding the map to overflow on panels, and removed `createOverviewMapAction`, `getWindowComponentOptions` and `overviewMapWindowId`
 
 ### Plugin Bundle updates
 

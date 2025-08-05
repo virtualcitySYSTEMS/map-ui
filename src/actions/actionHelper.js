@@ -323,57 +323,6 @@ export function createSearchButtonAction(app) {
 }
 
 /**
- * Creates an action which will toggle the overview map (opening & closing the window and activating/ deactivating the overview map).
- * @param {import("../navigation/overviewMap.js").default} overviewMap
- * @param {import("../manager/window/windowManager.js").WindowComponentOptions} windowComponent
- * @param {import("../manager/window/windowManager.js").default}  windowManager
- * @returns {{action: VcsAction, destroy: function(): void}}
- */
-export function createOverviewMapAction(
-  overviewMap,
-  windowComponent,
-  windowManager,
-) {
-  const { action, destroy } = createToggleAction(
-    {
-      name: 'overviewMapToggle',
-      icon: '$vcsMap',
-      title: 'navigation.overviewMapTooltip',
-    },
-    windowComponent,
-    windowManager,
-    vcsAppSymbol,
-  );
-
-  const listeners = [
-    windowManager.added.addEventListener(({ id }) => {
-      if (id === windowComponent.id) {
-        overviewMap.activate().catch((e) => {
-          getLogger('createOverviewMapAction').error(
-            'failed to activate overview map',
-            e,
-          );
-          windowManager.remove(windowComponent.id);
-        });
-      }
-    }),
-    windowManager.removed.addEventListener(({ id }) => {
-      if (id === windowComponent.id) {
-        overviewMap.deactivate();
-      }
-    }),
-  ];
-
-  const destroyAction = () => {
-    destroy();
-    listeners.forEach((cb) => {
-      cb();
-    });
-  };
-  return { action, destroy: destroyAction };
-}
-
-/**
  * Creates a header less window which will close if anything outside of the window is clicked. The window will open
  * at the clicked position (the actions position) by default, unless the window component already has a position set.
  * @param {ActionOptions} actionOptions

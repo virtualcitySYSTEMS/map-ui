@@ -36,15 +36,6 @@
     overflow: hidden; /* Fix for iFrame content */
   }
 
-  :deep(.overviewMapElement) {
-    position: absolute;
-    top: 3px;
-    bottom: 3px;
-    left: 3px;
-    right: 3px;
-    overflow: hidden; /* Fix for iFrame content */
-  }
-
   :deep(.cesium-widget),
   :deep(.cesium-widget canvas) {
     width: 100%;

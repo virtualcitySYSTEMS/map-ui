@@ -6,7 +6,6 @@ export {
   callSafeAction,
   createMapButtonAction,
   createToggleAction,
-  createOverviewMapAction,
   createModalAction,
   createLinkAction,
   createGoToViewpointAction,
@@ -211,11 +210,7 @@ export { default as MapNavCompass } from './src/navigation/MapNavCompass.vue';
 export { default as MapNavigation } from './src/navigation/MapNavigation.vue';
 export { default as ObliqueRotation } from './src/navigation/ObliqueRotation.vue';
 export { default as OrientationToolsButton } from './src/navigation/OrientationToolsButton.vue';
-export {
-  getWindowComponentOptions,
-  default as OverviewMap,
-  overviewMapWindowId,
-} from './src/navigation/overviewMap.js';
+export { default as OverviewMap } from './src/navigation/overviewMap.js';
 export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.js';
 export { default as TiltSlider } from './src/navigation/TiltSlider.vue';
 export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
