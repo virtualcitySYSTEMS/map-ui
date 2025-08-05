@@ -19,6 +19,7 @@
     "lint": "npm run lint:js && npm run lint:prettier && npm run lint:types",
     "format": "prettier --write --list-different . && npm run lint:js -- --fix",
     "prepack": "node build/build.js && node build/buildTypes.js",
+    "postinstall": "node build/postInstall.js",
     "install-plugins": "cd plugins && npm i --omit peer --no-package-lock --force",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
@@ -57,7 +58,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^11.0.3",
-    "@vcmap/core": "6.2.0-rc.1",
+    "@vcmap/core": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/core.git#main",
     "ol": "^10.4.0",
     "vue": "~3.4.38",
     "vuetify": "~3.7.14"

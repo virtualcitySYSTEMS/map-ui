@@ -96,6 +96,13 @@
   ],
   "layers": [
     {
+      "name": "testGeotiffLayer",
+      "type": "COGLayer",
+      "url": "https://dev.virtualcitymap.de/exampleData/berlin_3857.tif",
+      "zIndex": 12,
+      "tilingSchema": "mercator"
+    },
+    {
       "name": "testGeojsonVectorTile",
       "type": "VectorTileLayer",
       "minLevel": 18,
@@ -777,6 +784,11 @@
     {
       "name": "geojson vector tile",
       "layerName": "testGeojsonVectorTile",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "cloud optimized geotiff",
+      "layerName": "testGeotiffLayer",
       "type": "LayerContentTreeItem"
     },
     {
