@@ -206,17 +206,22 @@ class OverviewMap {
      */
     this.minimumHeight = 150;
 
+    const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
+
+    /**
+     * Handles image selection on panorama features
+     * @type {import("@vcmap/core").PanoramaImageSelection}
+     */
+    this._panoramaImageSelection = new PanoramaImageSelection(this._app.maps);
+
     /**
      * Handles the events from the overview map.
      * @type {EventHandler}
      * @private
      */
     this._eventHandler = new EventHandler();
-    const overviewMapClickedInteraction = new OverviewMapClickedInteraction();
     this._eventHandler.addPersistentInteraction(overviewMapClickedInteraction);
-    this._eventHandler.addPersistentInteraction(
-      new PanoramaImageSelection(this._app.maps),
-    );
+    this._eventHandler.addPersistentInteraction(this._panoramaImageSelection);
 
     /**
      *
@@ -317,6 +322,13 @@ class OverviewMap {
    */
   get eventHandler() {
     return this._eventHandler;
+  }
+
+  /**
+   * @type {import("@vcmap/core").PanoramaImageSelection}
+   */
+  get panoramaImageSelection() {
+    return this._panoramaImageSelection;
   }
 
   /**
