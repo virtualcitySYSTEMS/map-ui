@@ -13,7 +13,7 @@
 - changed behaviour of compass on mobile: click now aligns map to the North
 - added a new callback: `ToggleToolbarButtonCallback`
 - changed behavior of Search: results are kept in memory while the window is not manually closed
-- added a new `AbstractWorkspaceItemCreator` component, to wrap components used to create MyWorkspace items.
+- added a new `VcsWorkspaceWrapper` component, to wrap components used to create MyWorkspace items.
 - updated the style of the `VcsExpansionPanel` and `VcsGroupedList` compononents to harmonize them with the `VcsTreeview` component
 - adds `PanoramaMap` support.
   - a new map type has been added to the maps, expanding the number of map buttons rendered by default to 4.

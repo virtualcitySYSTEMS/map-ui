@@ -50,7 +50,7 @@
    * @vue-slot secondaryButton An optionnal named slot to add a secondary button to the footer, rendered filled on the left of the new button.
    */
   export default {
-    name: 'AbstractWorkspaceItemCreator',
+    name: 'VcsWorkspaceWrapper',
     components: {
       VContainer,
       VDivider,
