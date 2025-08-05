@@ -75,13 +75,13 @@ class ContentTreeCollection extends IndexedCollection {
         'contentTreeActiveOnStartup',
       );
       if (
-        contentTreeActiveOnStartup?.value &&
+        contentTreeActiveOnStartup?.value != null &&
         contentTreeActiveOnStartup[moduleIdSymbol] !== this._app.dynamicModuleId
       ) {
         const action = this._app.navbarManager.get(
           defaultContentTreeComponentId,
         )?.action;
-        if (action && !action.active) {
+        if (action && action.active !== contentTreeActiveOnStartup.value) {
           action.callback();
         }
       }

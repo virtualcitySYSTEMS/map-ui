@@ -22,6 +22,7 @@
 - adds new `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
 - Fixes an issue where custom shading would not properly work for I3S datasets.
 - Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
+- Fixes a bug where a module with `contentTreeActiveOnStartup: false` would not overwrite `true` of underlying module
 
 ### Plugin Bundle updates
 
