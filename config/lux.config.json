@@ -1,45 +1,24 @@
 {
-  "name": "VcsBaseConfig",
+  "name": "LuxConfig",
   "mapcontainer": "vcs_map_container",
-  "_id": "VcsBaseConfig",
-  "startingViewpointName": "berlin",
+  "_id": "LuxConfig",
+  "startingViewpointName": "luxembourg",
   "startingMapName": "cesium",
   "startingObliqueCollectionName": "obliques",
   "projection": {
-    "epsg": "25833",
-    "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
+    "epsg": "2169",
+    "proj4": "+proj=tmerc +lat_0=49.83333333333334 +lon_0=6.166666666666667 +k=1 +x_0=80000 +y_0=100000 +ellps=intl +towgs84=-189.681,18.3463,-42.7695,-0.33746,-3.09264,2.53861,0.4598 +units=m +no_defs"
   },
   "uiConfig": [
     {
       "name": "imprint",
       "value": {
-        "content": "MyImpressum.content"
+        "url": "https://www.geoportail.lu/fr/propos/"
       }
     },
     {
-      "name": "dataProtection",
-      "value": {
-        "url": "https://vc.systems/datenschutz/"
-      }
-    },
-    {
-      "name": "obliqueFooterTemplate",
-      "value": "MyObliqueFooter.content"
-    },
-    {
-      "name": "customScreen",
-      "value": {
-        "content": "MyCustomScreen.content",
-        "icon": "mdi-information",
-        "name": "MyCustomScreen.name",
-        "title": "MyCustomScreen.title",
-        "windowPosition": {
-          "left": "30%",
-          "right": "30%",
-          "top": "10%",
-          "bottom": "20%"
-        }
-      }
+      "name": "logo",
+      "value": "data:image/png;base64,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"
     },
     {
       "name": "displayQuality",
@@ -75,61 +54,17 @@
     {
       "name": "base",
       "de": {
-        "layers": {
-          "pointcloud": {
-            "title": "Tiergarten"
-          },
-          "osmBuildingFootprints": {
-            "title": "OSM Gebäude Grundflächen"
-          }
-        },
-        "style": {
-          "buildingFunction": "Gebäudefunktion",
-          "transparentBuildings": "Transparente Gebäude"
-        },
-        "contentTree": {
-          "building": {
-            "title": "3D Gebäude"
-          }
-        },
-        "MyImpressum": {
-          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n**Firmierung:** \nMusterfirma GmbH\n\n**Sitz:**\nMusterstadt\n\n**Adresse:**\nMusterstraße 1 a\n12345 Musterstadt\nDeutschland\n\n **Telefon:** +49 (0) 00 . 0000 . 000 . 00\n\n **Telefax:** +49 (0) 00 . 0000 . 000 . 00\n\n **E-Mail:** [info&commat;musterfirma.de](mailto:info&commat;musterfirma.de)\n\n**Geschäftsführer:**\nMax Mustermann\n\n**Registergericht:**\nMusterstadt 1234567\n\n**Steuernummer:**\n11/222/33333\n\n**Umsatzsteuer-ID:**\nDE1234567890\n\n**Copyright:**\n\nAlle Rechte vorbehalten. Sämtliche Inhalte (Texte, Bilder, Grafiken, Animationen) sind urheberrechtlich geschützt. Sie dürfen ohne Zustimmung der Musterfirma GmbH zu kommerziellen Zwecken weder kopiert, verbreitet noch verändert werden.\n\n(Copyright 2023 Musterfirma GmbH)\n\n**Inhalte:**\n\nTrotz sorgfältiger Bearbeitung kann die Musterfirma GmbH für die Fehlerfreiheit und Genauigkeit der angebotenen Informationen auf [www.musterfirma.de](http://www.musterfirma.de) nicht garantieren. Jegliche Haftung für Schäden, die direkt oder indirekt aus der Benutzung von [www.musterfirma.de](http://www.musterfirma.de) entstehen und nicht auf Vorsatz oder grober Fahrlässigkeit der Musterfirma GmbH beruhen, ist ausgeschlossen. Für die Inhalte von mit [www.musterfirma.de](http://www.musterfirma.de) verlinkter Websites ist grundsätzlich jede Haftung ausgeschlossen.\n\n**Datenschutz:**\n\nDie Musterfirma GmbH nimmt den Schutz Ihrer persönlichen Daten sehr ernst. Wir halten uns strikt an die Regeln der Datenschutzgesetze. Personenbezogene Daten werden auf dieser Webseite nur im technisch notwendigen Umfang erhoben. In keinem Fall werden die erhobenen Daten verkauft oder aus anderen Gründen an Dritte weitergegeben. Unsere vollständige Datenschutzerklärung können Sie [hier](#) nachlesen.\n"
-        },
-        "MyCustomScreen": {
-          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\nProjekt: \n--------\n\nErste Schritte\n\nZusammenfassung:\n--------\nDies ist ein **Beispieltext**, der Ihnen den Einstieg erleichtern soll. **Marked** wird verwendet, um Ihren Text _von Markdown nach HTML_ zu konvertieren. Um mehr über die __*korrekte Syntax*__ zu erfahren, besuchen Sie bitte diesen [Link](https://marked.js.org/demo/) für eine Demo.  \n \nInhalt:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Punkt 1: einer Liste mit Aufzählungspunkten.\n- Punkt 2: einer Liste mit Aufzählungspunkten.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
-          "name": "Meine benutzerdefinierte Anzeige",
-          "title": "Meine benutzerdefinierte Anzeige"
-        },
+        "layers": {},
+        "style": {},
+        "contentTree": {},
         "MyObliqueFooter": {
           "content": "Mein Bildtitel: {{ name }} {{ viewDirection }}"
         }
       },
       "en": {
-        "layers": {
-          "pointcloud": {
-            "title": "Zoological garden"
-          },
-          "osmBuildingFootprints": {
-            "title": "OSM Building Footprints"
-          }
-        },
-        "style": {
-          "buildingFunction": "Building function",
-          "transparentBuildings": "Transparent Buildings"
-        },
-        "contentTree": {
-          "building": {
-            "title": "3D buildings"
-          }
-        },
-        "MyImpressum": {
-          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n**Company name:** \n\nMusterfirma GmbH\n\n**Company headquarters:**\n\nMusterstadt\n\n\n\n**Address:**\n\nMusterstraße 1 a\n\n12345 Musterstadt\n\nGermany\n\n **Phone:** +49 (0) 00 . 0000 . 000 . 00\n\n **Fax:** +49 (0) 00 . 0000 . 000 . 00\n\n **E-Mail:** [info@musterfirma.de](mailto:info@musterfirma.de)\n\n\n\n**Managing Director:**\n\n- Max Mustermann\n\n\n\n**Registry court:**\n\nMusterstadt 1234567\n\n\n\n**Tax number:**\n\n11/222/33333\n\n\n\n**VAT ID:**\n\nDE1234567890\n\n\n\n**Copyright:**\n\nAll rights reserved. All contents (texts, images, graphics, animations) are protected by copyright. They may not be copied, distributed or modified for commercial purposes without the consent of Musterfirma GmbH.\n\n(Copyright 2023 Musterfirma GmbH)\n\n\n\n**Contents:**\n\nDespite careful editing, Musterfirma GmbH cannot guarantee the correctness and accuracy of the information provided on [www.musterfirma.de](http://www.musterfirma.de). Any liability for damages arising directly or indirectly from the use of [www.musterfirma.de](http://www.musterfirma.de) and which are not based on intent or gross negligence on the part of Musterfirma GmbH is excluded. No liability is accepted for the content of websites linked to [www.musterfirma.de](http://www.musterfirma.de).\n\n\n\n**Data protection:**\n\nMusterfirma GmbH takes the protection of your personal data very seriously. We adhere strictly to the rules of the data protection laws. Personal data is only collected on this website to the extent that is technically necessary. Under no circumstances will the data collected be sold or passed on to third parties for other reasons. You can read our complete privacy policy [here](#).\n\n"
-        },
-        "MyCustomScreen": {
-          "content": "![image](https://vc.systems/wp-content/uploads/2020/07/vcs_logo.png)\n\n\n\nProject: \n--------\n\nGetting started\n\nSummary:\n--------\nThis is a sample text to help you get started. **Marked** is used to convert your text _from Markdown to HTML_. To learn more about the __*correct syntax*__, please visit this [link](https://marked.js.org/demo/) for a demo.\n \nContent:\n-------\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n \nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.\n \nHow to add lists:\n-----------------\n\n\n\n1. Enumeration, lorem ipsum dolor sit amet.\n2. Enumeration, lorem ipsum dolor sit amet.\n\n\n- Bullet Point 1: Lorem ipsum dolor sit amet.\n- Bullet Point 2: Lorem ipsum dolor sit amet.\n\n\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.",
-          "name": "My Custom Screen",
-          "title": "My Custom Screen"
-        },
+        "layers": {},
+        "style": {},
+        "contentTree": {},
         "MyObliqueFooter": {
           "content": "My Oblique Title: {{ name }} {{ viewDirection }}"
         }
@@ -637,10 +572,6 @@
   ],
   "maps": [
     {
-      "type": "OpenlayersMap",
-      "name": "ol3"
-    },
-    {
       "type": "CesiumMap",
       "name": "cesium",
       "debugging": false,
@@ -666,101 +597,6 @@
     }
   ],
   "layers": [
-    {
-      "projection": {
-        "epsg": 4326
-      },
-      "type": "WFSLayer",
-      "name": "WFSLayer",
-      "url": "https://service.pdok.nl/lv/bag/wfs/v2_0",
-      "featureNS": "http://bag.geonovum.nl",
-      "featurePrefix": "bag",
-      "featureType": "pand",
-      "activeOnStartup": false,
-      "allowPicking": false,
-      "properties": {
-        "title": "WFS Layer (next to Groningen in the Netherlands)",
-        "featureInfo": "tableAll"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "mesh_surface",
-      "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/mesh_2023/",
-      "activeOnStartup": false,
-      "allowPicking": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "tilesetOptions": {
-        "skipLevelOfDetail": true,
-        "enableCollision": true
-      },
-      "exclusiveGroups": ["bldg"],
-      "properties": {
-        "title": "3D-Mesh 2020",
-        "attributions": {
-          "provider": "Berlin Partner für Wirtschaft und Technologie",
-          "url": "https://www.berlin-partner.de",
-          "year": "2020"
-        }
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "buildings",
-      "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": ["bldg"],
-      "properties": {
-        "title": "Gebäude texturiert 2013",
-        "featureInfo": "filteredTable"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "buildings_untextured",
-      "url": "https://www.virtualcitymap.de/datasource-data/72fa3c14-03bc-4c26-a4ac-8c6dec37e65a/tileset.json",
-      "activeOnStartup": true,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "exclusiveGroups": ["bldg"],
-      "properties": {
-        "availableStyles": [
-          "MeasuredHeightGreen",
-          "MeasuredHeightBrown",
-          "MeasuredHeightBlue",
-          "ClassifiedbyRoofType",
-          "BuildingFunction",
-          "Transparentbuildings"
-        ],
-        "title": "Berlin - LOD2",
-        "featureInfo": "addressBalloon"
-      }
-    },
-    {
-      "name": "osmBuildingFootprints",
-      "type": "VectorTileLayer",
-      "minLevel": 18,
-      "maxLevel": 18,
-      "zIndex": 11,
-      "tileProvider": {
-        "baseLevels": [14],
-        "idProperty": "osm_id",
-        "useSpatialIndex": false,
-        "type": "MVTTileProvider",
-        "url": "https://www.virtualcitymap.de/datasource-data/BerlinFootprintsMVT/{z}/{x}/{y}.pbf"
-      },
-      "activeOnStartup": false,
-      "debug": false,
-      "properties": {
-        "featureInfo": "tableAllWithTemplateHeader",
-        "title": "layers.osmBuildingFootprints.title",
-        "tooltip": "OpenStreetMap Building Polygons",
-        "availableStyles": ["Transparentbuildings"]
-      }
-    },
     {
       "name": "Openstreetmap OSM Cache",
       "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
@@ -794,392 +630,72 @@
           "year": "2019"
         }
       }
-    },
-    {
-      "type": "TerrainLayer",
-      "name": "GermanyBaseTerrain",
-      "url": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
-      "activeOnStartup": true,
-      "requestVertexNormals": true,
-      "exclusiveGroups": ["terrain"],
-      "properties": {
-        "title": "Deutschland Gelände"
-      }
-    },
-    {
-      "type": "CesiumTilesetLayer",
-      "name": "Bäume",
-      "url": "https://www.virtualcitymap.de/datasource-data/f764ffb4-723d-429f-b797-5ca4c1061201/tileset.json",
-      "activeOnStartup": false,
-      "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32,
-      "properties": {
-        "title": "Sommerbäume",
-        "featureInfo": "tableTrees",
-        "defaultViewpoint": "berlin"
-      }
     }
   ],
   "viewpoints": [
     {
-      "name": "berlin",
-      "cameraPosition": [
-        13.370550000000003, 52.51230000000001, 677.0294500017116
-      ],
-      "groundPosition": [
-        13.377973747219107, 52.51718187188212, 34.500300497361984
-      ],
-      "distance": 980.8215342887953,
-      "heading": 42.84999999999993,
-      "pitch": -40.93,
+      "name": "luxembourg",
+      "cameraPosition": [6.131935, 49.611622, 180000],
+      "groundPosition": [6, 49, 300],
+      "distance": 1980.8215342887953,
+      "heading": 0,
+      "pitch": -85,
       "roll": 360,
       "animate": false,
       "type": "Viewpoint",
       "properties": {
-        "title": "Berlin"
-      }
-    },
-    {
-      "name": "alexanderplatz",
-      "distance": 1027.743747894252,
-      "cameraPosition": [
-        13.410279816026053, 52.52102244255272, 1064.4366076344213
-      ],
-      "groundPosition": [
-        13.410279818110775, 52.52102207564875, 36.69286055319397
-      ],
-      "heading": 360,
-      "pitch": -90,
-      "roll": 0,
-      "animate": true,
-      "type": "Viewpoint",
-      "properties": {
-        "title": "Alexanderplatz"
-      }
-    },
-    {
-      "name": "brandenburger_tor",
-      "distance": 663.6051001967426,
-      "cameraPosition": [
-        13.37790869834864, 52.51627705004426, 698.3750083957117
-      ],
-      "groundPosition": [
-        13.37790869845283, 52.516277047668844, 34.76990820023149
-      ],
-      "heading": 360,
-      "pitch": -90,
-      "roll": 0,
-      "animate": true,
-      "type": "Viewpoint"
-    },
-    {
-      "name": "potsdamer_platz",
-      "distance": 730.0034266375318,
-      "cameraPosition": [
-        13.375567390072897, 52.50932719713967, 765.2515153338176
-      ],
-      "groundPosition": [
-        13.375567390058034, 52.50932719590491, 35.24808869690339
-      ],
-      "heading": 360,
-      "pitch": -90,
-      "roll": 0,
-      "animate": true,
-      "type": "Viewpoint",
-      "properties": {
-        "title": "Potsdamer Platz"
-      }
-    },
-    {
-      "groundPosition": [13.35948, 52.51442, 33.35758],
-      "pitch": -46.14,
-      "type": "Viewpoint",
-      "heading": 359.84,
-      "distance": 3267.86,
-      "name": "pointcloud",
-      "animate": true
-    }
-  ],
-  "contentTree": [
-    {
-      "name": "baseMap",
-      "type": "SubContentTreeItem",
-      "icon": "$vcsPoi",
-      "title": "Base Maps"
-    },
-    {
-      "name": "baseMap.trees",
-      "type": "LayerContentTreeItem",
-      "layerName": "Bäume"
-    },
-    {
-      "name": "baseMap.terrain",
-      "type": "LayerContentTreeItem",
-      "layerName": "GermanyBaseTerrain.4"
-    },
-    {
-      "name": "baseMap.openStreetMap",
-      "type": "LayerContentTreeItem",
-      "layerName": "Openstreetmap OSM Cache"
-    },
-    {
-      "name": "baseMap.aerialImage2015",
-      "type": "LayerContentTreeItem",
-      "layerName": "fisbroker-dop-2015"
-    },
-    {
-      "name": "baseMap.places",
-      "type": "NodeContentTreeItem",
-      "title": "Places",
-      "weight": 2
-    },
-    {
-      "name": "baseMap.places.alexanderplatz",
-      "viewpointName": "alexanderplatz",
-      "type": "ViewpointContentTreeItem"
-    },
-    {
-      "name": "baseMap.places.potsdamerPlatz",
-      "viewpointName": "potsdamer_platz",
-      "type": "ViewpointContentTreeItem"
-    },
-    {
-      "name": "building",
-      "initOpen": true,
-      "type": "NodeContentTreeItem",
-      "infoUrl": "https://vc.systems",
-      "title": "contentTree.building.title"
-    },
-    {
-      "name": "terrain",
-      "type": "LayerContentTreeItem",
-      "layerName": "GermanyBaseTerrain"
-    },
-    {
-      "name": "building.texturedBuildings",
-      "layerName": "buildings",
-      "type": "LayerContentTreeItem",
-      "tooltip": "Textured buildings"
-    },
-    {
-      "name": "building.untexturedBuildings",
-      "infoUrl": "https://vc.systems",
-      "layerName": "buildings_untextured",
-      "type": "LayerContentTreeItem",
-      "onActivate": [
-        {
-          "type": "DeactivateLayersCallback",
-          "layerNames": ["buildings", "mesh_surface"]
-        },
-        {
-          "type": "ApplyLayerStyleCallback",
-          "layerName": "buildings_untextured",
-          "styleName": "MeasuredHeightGreen"
-        }
-      ],
-      "onDeactivate": [
-        { "type": "ActivateLayersCallback", "layerNames": ["buildings"] }
-      ]
-    },
-    {
-      "name": "viewpoints.startRotation",
-      "title": "Start rotation",
-      "infoUrl": "https://vc.systems",
-      "type": "ContentTreeItem",
-      "onClick": [
-        {
-          "type": "StartRotationCallback"
-        }
-      ]
-    },
-    {
-      "name": "viewpoints.stopRotation",
-      "title": "Stop rotation",
-      "infoUrl": "https://vc.systems",
-      "type": "ContentTreeItem",
-      "onClick": [
-        {
-          "type": "StopRotationCallback"
-        }
-      ]
-    },
-    {
-      "name": "building.osmBuildingFootprints",
-      "layerName": "osmBuildingFootprints",
-      "type": "LayerContentTreeItem"
-    },
-    {
-      "name": "building.wfsLayer",
-      "layerName": "WFSLayer",
-      "type": "LayerContentTreeItem"
-    },
-    {
-      "name": "building.meshSurface",
-      "layerName": "mesh_surface",
-      "type": "LayerContentTreeItem",
-      "title": "3D-Mesh",
-      "tooltip": "3D-Mesh Surface"
-    },
-    {
-      "name": "pointcloud",
-      "type": "NodeContentTreeItem",
-      "title": "Point Cloud"
-    },
-    {
-      "name": "pointcloud.tiergarten",
-      "layerName": "pointcloud",
-      "type": "LayerContentTreeItem"
-    },
-    {
-      "name": "pointcloud.berlinBuch",
-      "type": "LayerContentTreeItem",
-      "layerName": "PointCloud Changedetection"
-    },
-    {
-      "name": "viewpoints",
-      "type": "NodeContentTreeItem",
-      "title": "Viewpoints"
-    },
-    {
-      "name": "viewpoints.berlin",
-      "viewpointName": "berlin",
-      "type": "ViewpointContentTreeItem",
-      "title": "Berlin"
-    },
-    {
-      "name": "viewpoints.brandenburgerTor",
-      "viewpointName": "brandenburger_tor",
-      "type": "ViewpointContentTreeItem",
-      "title": "Brandenburg Gate"
-    },
-    {
-      "name": "viewpoints.places",
-      "type": "NodeContentTreeItem",
-      "title": "Places",
-      "icon": "mdi-map-marker-star",
-      "weight": 1
-    },
-    {
-      "name": "viewpoints.places.alexanderplatz",
-      "viewpointName": "alexanderplatz",
-      "type": "ViewpointContentTreeItem"
-    },
-    {
-      "name": "viewpoints.places.potsdamerPlatz",
-      "viewpointName": "potsdamer_platz",
-      "type": "ViewpointContentTreeItem"
-    },
-    {
-      "name": "viewpoints.kaiserWilhelmGedaechtniskirche",
-      "viewpointName": "kaiser_wilhelm_gedächtniskirche",
-      "type": "ViewpointContentTreeItem",
-      "title": "Kaiser Wilhelm Memorial Church"
-    },
-    {
-      "name": "viewpoints.oberbaumbruecke",
-      "viewpointName": "oberbaumbrücke",
-      "type": "ViewpointContentTreeItem",
-      "title": "Oberbaum Bridge"
-    },
-    {
-      "name": "emptyGroup",
-      "type": "GroupContentTreeItem",
-      "title": "Empty Group",
-      "icon": "mdi-star"
-    },
-    {
-      "name": "reasonableGroup",
-      "type": "GroupContentTreeItem",
-      "title": "Textured Berlin",
-      "icon": "mdi-star"
-    },
-    {
-      "name": "reasonableGroup.trees",
-      "type": "LayerContentTreeItem",
-      "layerName": "Bäume"
-    },
-    {
-      "name": "reasonableGroup.texturedBuildings",
-      "layerName": "buildings",
-      "type": "LayerContentTreeItem"
-    },
-    {
-      "name": "reasonableGroup.berlin",
-      "viewpointName": "berlin",
-      "type": "ViewpointContentTreeItem"
-    },
-    {
-      "name": "reasonableLayerGroup",
-      "type": "LayerGroupContentTreeItem",
-      "layerNames": ["buildings", "Bäume", "GermanyBaseTerrain"],
-      "title": "Buildings - Trees - Terrain. A Layer Group Item",
-      "availableStyles": [
-        "MeasuredHeightGreen",
-        "MeasuredHeightBrown",
-        "MeasuredHeightBlue"
-      ]
-    },
-    {
-      "name": "berlin_obliques",
-      "type": "ObliqueCollectionContentTreeItem",
-      "collectionName": "obliques",
-      "title": "Berlin Obliques"
-    }
-  ],
-  "obliqueCollections": [
-    {
-      "name": "obliques",
-      "activeOnStartup": true,
-      "dataSets": [
-        {
-          "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/obliques_2020/image_tiled.json",
-          "terrainProvider": {
-            "url": "https://berlin-wab.virtualcitymap.de/datasource-data/baselayer/terrain_2016/"
-          },
-          "projection": {
-            "epsg": "25833",
-            "proj4": "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs"
-          }
-        }
-      ],
-
-      "hideLevels": null,
-      "properties:": {
-        "attributions": {
-          "provider": "Berlin Partner / Senat von Berlin",
-          "url": "https://www.berlin-partner.de",
-          "year": "2020"
-        }
+        "title": "Luxembourg"
       }
     }
   ],
+  "contentTree": [],
+  "obliqueCollections": [],
   "plugins": [
     {
-      "name": "@vcmap/event-control",
-      "entry": "plugins/@vcmap/event-control/index.js",
-      "actions": [
-        {
-          "type": "layer",
-          "targetName": "buildings",
-          "onActivate": [
-            {
-              "type": "DeactivateLayersCallback",
-              "layerNames": ["mesh_surface", "buildings_untextured"]
-            },
-            { "type": "GoToViewpointCallback", "viewpoint": "alexanderplatz" }
-          ],
-          "onDeactivate": [
-            {
-              "type": "ActivateLayersCallback",
-              "layerNames": ["buildings_untextured"]
-            }
-          ]
-        }
-      ]
+      "name": "@vcmap/walk",
+      "entry": "plugins/@vcmap/walk/index.js"
+    },
+    {
+      "name": "@vcmap/print",
+      "entry": "plugins/@vcmap/print/index.js",
+      "contactDetails": {
+        "department": "Entwicklung",
+        "name": "Virtual City Systems",
+        "streetAddress": "Tauentzienstr. 7 b/c",
+        "zipAndCity": "10789 Berlin",
+        "country": "Germany",
+        "mail": "info@vc.systems",
+        "phone": "+49 (0) 30 . 8904 . 871 . 0",
+        "fax": "+49 (0) 30 . 8904 . 871 . 0"
+      }
+    },
+    {
+      "name": "@vcmap/multi-view",
+      "entry": "plugins/@vcmap/multi-view/index.js"
+    },
+    {
+      "name": "@vcmap/transparent-terrain",
+      "entry": "plugins/@vcmap/transparent-terrain/index.js"
+    },
+    {
+      "name": "@vcmap/clipping-tool",
+      "entry": "plugins/@vcmap/clipping-tool/index.js"
     },
     {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
+    },
+    {
+      "name": "@vcmap/shadow",
+      "entry": "plugins/@vcmap/shadow/index.js"
+    },
+    {
+      "name": "@vcmap/draw",
+      "entry": "plugins/@vcmap/draw/index.js"
+    },
+    {
+      "name": "@vcmap/measurement",
+      "entry": "plugins/@vcmap/measurement/index.js"
     }
   ]
 }
