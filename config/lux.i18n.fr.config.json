@@ -1,0 +1,21 @@
+{
+  "name": "FR translations",
+  "i18n": [
+    {
+      "name": "FR base",
+      "fr": {
+        "featureInfo": {
+          "waterSpeed": "Vélocité [m/s]",
+          "waterHeight": "Hauteur de l'eau [m]"
+        },
+        "footer": {
+          "title": "Pied de page",
+          "imprint": {
+            "title": "À propos",
+            "tooltip": ""
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "LB translations",
+  "i18n": [
+    {
+      "name": "LB base",
+      "lb": {
+        "featureInfo": {
+          "waterSpeed": "Velocity [m/s]",
+          "waterHeight": "Water height [m]"
+        },
+        "footer": {
+          "title": "Footer",
+          "imprint": {
+            "title": "Iwwert Eis",
+            "tooltip": ""
+          }
+        }
+      }
+    }
+  ]
+}
