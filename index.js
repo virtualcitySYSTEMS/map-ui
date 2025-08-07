@@ -3,6 +3,7 @@ import './src/styles/main.scss';
 
 export { default as StyleSelector } from './src/actions/StyleSelector.vue';
 export {
+  addLoadingOverlay,
   callSafeAction,
   createMapButtonAction,
   createToggleAction,
@@ -37,6 +38,7 @@ export {
   setupFlightListItemPlayer,
   createZoomToFlightAction,
   createFlightVisualizationAction,
+  createFlightMovieActions,
   createExportFlightAction,
   importFlights,
 } from './src/actions/flightActions.js';
@@ -357,6 +359,7 @@ export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnap
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.vue';
+export { default as VcsLoadingOverlay } from './src/components/plugins/VcsLoadingOverlay.vue';
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
 export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.vue';

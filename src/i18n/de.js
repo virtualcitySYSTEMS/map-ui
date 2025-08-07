@@ -175,6 +175,12 @@ const messages = {
       zoom: 'Auf Ausdehnung zoomen',
       export: 'Flug exportieren',
       exportPath: 'Flugpfad exportieren',
+      record: {
+        standard: 'Flug mit Standardauflösung aufzeichnen',
+        high: 'Flug mit hoher Auflösung aufzeichnen',
+        inProgress: 'Aufzeichnung läuft',
+        success: 'Aufzeichnung erfolgreich, der Download startet in Kürze',
+      },
     },
     splashScreen: {
       name: 'Splash Screen',

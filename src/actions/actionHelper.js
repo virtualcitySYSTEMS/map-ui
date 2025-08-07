@@ -19,6 +19,7 @@ import {
   getTargetSize,
 } from '../manager/window/windowHelper.js';
 import SearchComponent from '../search/SearchComponent.vue';
+import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.vue';
 
 /**
  * @typedef {Omit<VcsAction, 'callback'>} ActionOptions
@@ -367,10 +368,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
       width,
       height,
     );
-    const position = {
-      ...fittedPosition,
-      ...windowPositionOptions,
-    };
+    const position = { ...fittedPosition, ...windowPositionOptions };
     const targetSize = getTargetSize(app.maps.target);
     if (contentHeight) {
       if (position.bottom) {
@@ -400,12 +398,7 @@ export function createModalAction(actionOptions, modalComponent, app, owner) {
         clickedWindowPosition = { x: event.x, y: event.y };
         const state = { ...modalComponent?.state, hideHeader: true };
         app.windowManager.add(
-          {
-            position: getPositionOptions(),
-            ...component,
-            id,
-            state,
-          },
+          { position: getPositionOptions(), ...component, id, state },
           owner,
         );
         document.addEventListener('mousedown', handleMouseDown);
@@ -586,4 +579,53 @@ export function callSafeAction(action, p) {
   } catch (e) {
     logError(e);
   }
+}
+
+/**
+ * Adds a loading overlay to the application.
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {string|symbol} owner The owner of the loading overlay.
+ * @param {string} id The ID of the loading overlay.
+ * @param {{progress?:import('vue').Ref<number>|undefined, title?:string, text?:string, cancel?:Function,  maxWidth?:number|string, persistent?:boolean}} [options] The options for the loading overlay, passed as props.
+ * @returns {Function} A function to remove the loading overlay.
+ */
+export function addLoadingOverlay(app, owner, id, options) {
+  check(owner, oneOf(String, Symbol));
+  check(id, String);
+  check(options?.progress?.value, optional(Number));
+  check(
+    options,
+    optional({
+      title: optional(String),
+      text: optional(String),
+      cancel: optional(Function),
+      maxWidth: optional(oneOf(Number, String)),
+      persistent: optional(Boolean),
+    }),
+  );
+
+  const removeWindow = () => {
+    if (app.windowManager.has(id)) {
+      app.windowManager.remove(id);
+    }
+  };
+
+  app.windowManager.add(
+    {
+      component: VcsLoadingOverlay,
+      id,
+      state: { hideHeader: true, styles: { display: 'none !important' } },
+      props: {
+        ...options,
+        cancellable: !!options.cancel,
+        onCancel: () => {
+          options?.cancel?.();
+          removeWindow();
+        },
+      },
+    },
+    owner,
+  );
+
+  return removeWindow;
 }

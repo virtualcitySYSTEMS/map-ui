@@ -175,6 +175,12 @@ const messages = {
       zoom: 'Zoom to extent',
       export: 'Export flight',
       exportPath: 'Export flight path',
+      record: {
+        standard: 'Record standard resolution flight',
+        high: 'Record high resolution flight',
+        inProgress: 'Recording in progress',
+        success: 'Recording successful, the download will start shortly',
+      },
     },
     splashScreen: {
       name: 'Splash Screen',

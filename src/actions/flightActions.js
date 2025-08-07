@@ -1,16 +1,21 @@
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { check, maybe, ofEnum } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import {
   createFlightVisualization,
+  createFlightMovie,
   exportFlightAsGeoJson,
   exportFlightPathAsGeoJson,
   FlightInstance,
   moduleIdSymbol,
   parseFlightOptionsFromGeoJson,
+  createFlightPlayer,
+  LayerState,
 } from '@vcmap/core';
 import { NotificationType } from '../notifier/notifier.js';
-import { downloadText } from '../downloadHelper.js';
+import { downloadBlob, downloadText } from '../downloadHelper.js';
+import { addLoadingOverlay, callSafeAction } from './actionHelper.js';
+import { vcsAppSymbol } from '../pluginHelper.js';
 
 /**
  * @param {import("../vcsUiApp.js").default} app
@@ -97,10 +102,7 @@ export function createPlayAction(app, instance) {
 /**
  * @enum {string}
  */
-export const PlayerDirection = {
-  Forward: 'forward',
-  Backward: 'backward',
-};
+export const PlayerDirection = { Forward: 'forward', Backward: 'backward' };
 
 /**
  * @param {import("../vcsUiApp.js").default} app
@@ -365,18 +367,32 @@ export async function createFlightVisualizationAction(
   instance,
   active = true,
 ) {
-  let flightVis = await createFlightVisualization(instance, app);
+  let flightVis;
+  let flightVisListener;
+  let flightVisStateListener;
 
   const action = reactive({
     name: 'components.flight.hidePath',
     title: 'components.flight.hidePath',
     icon: '$vcsEye',
-    active,
+    active: false,
     async callback() {
       if (!flightVis) {
         flightVis = await createFlightVisualization(instance, app);
+        flightVisListener?.();
+        flightVisListener = flightVis.destroyed.addEventListener(() => {
+          flightVis = undefined;
+          flightVisListener?.();
+          flightVisStateListener?.();
+        });
+        flightVisStateListener?.();
+        flightVisStateListener = flightVis.stateChanged.addEventListener(
+          (state) => {
+            action.active = state === LayerState.ACTIVE;
+          },
+        );
       }
-      if (this.active) {
+      if (flightVis.state === LayerState.ACTIVE) {
         flightVis.deactivate();
       } else {
         flightVis.activate().catch(() => {
@@ -384,20 +400,100 @@ export async function createFlightVisualizationAction(
           this.active = false;
         });
       }
-      this.active = !this.active;
+      this.active = flightVis.state === LayerState.ACTIVE;
     },
   });
 
   if (active) {
-    await flightVis.activate();
+    callSafeAction(action);
   }
 
   const destroy = () => {
-    flightVis.deactivate();
-    flightVis.destroy();
+    flightVis?.deactivate?.();
+    flightVis?.destroy?.();
   };
 
   return { action, destroy };
+}
+
+/**
+ *
+ * @param {import("../vcsUiApp.js").default} app
+ * @param {import("@vcmap/core").FlightInstance} instance
+ * @returns {{actions: import("./actionHelper.js").VcsAction[], destroy: function(): void}}
+ */
+export function createFlightMovieActions(app, instance) {
+  const progress = ref(0);
+
+  function updateProgress(playerClock) {
+    const duration = playerClock.endTime - playerClock.startTime;
+    const currentTime = playerClock.currentTime - playerClock.startTime;
+    progress.value = currentTime / duration;
+  }
+
+  async function recordFlight(options = {}) {
+    let player;
+    let flightVis;
+    let playerListener = () => {};
+    let removeLoadingOverlay = () => {};
+    try {
+      flightVis = await createFlightVisualization(instance, app);
+      if (flightVis.state === LayerState.ACTIVE) {
+        flightVis.deactivate();
+      }
+      player = await createFlightPlayer(instance, app);
+      playerListener = player.clock.changed.addEventListener(updateProgress);
+      const { start, cancel } = createFlightMovie(app, player, options);
+      removeLoadingOverlay = addLoadingOverlay(
+        app,
+        vcsAppSymbol,
+        'flight-recording',
+        {
+          progress,
+          title: 'components.flight.record.inProgress',
+          cancellable: true,
+          cancel,
+        },
+      );
+      const blob = await start();
+      removeLoadingOverlay?.();
+      app.notifier.add({
+        type: NotificationType.SUCCESS,
+        message: app.vueI18n.t('components.flight.record.success'),
+      });
+      const title = instance.properties?.title || 'flight';
+      downloadBlob(blob, `${title}.webm`);
+    } catch (e) {
+      getLogger('flightActions').error('Error while creating flight movie', e);
+    } finally {
+      player?.destroy();
+      flightVis?.destroy();
+      playerListener?.();
+      removeLoadingOverlay?.();
+    }
+  }
+
+  const actions = [
+    reactive({
+      name: 'components.flight.record.standard',
+      callback: recordFlight,
+    }),
+    reactive({
+      name: 'components.flight.record.high',
+      callback: recordFlight.bind(null, {
+        fps: 60,
+        highDefinition: true,
+      }),
+    }),
+  ];
+
+  const destroy = instance.anchorsChanged.addEventListener(() => {
+    actions.forEach((action) => {
+      action.disabled = !instance.isValid();
+    });
+  });
+
+  return { actions, destroy };
 }
 
 /**

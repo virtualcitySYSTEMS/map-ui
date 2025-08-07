@@ -1,6 +1,15 @@
 <template>
   <v-container class="py-0 px-1 vcs-flight-player">
-    <VcsLabel html-for="player">{{ $t('flight.player') }}</VcsLabel>
+    <v-row no-gutters class="d-flex align-center">
+      <VcsLabel html-for="player">{{ $t('flight.player') }}</VcsLabel>
+      <v-row class="d-flex justify-end px-1 gc-2" no-gutters>
+        <VcsActionButtonList
+          overflow-icon="$vcsShare"
+          :actions="recordingActions"
+          :disabled="!isCurrentPlayer || disabled"
+        />
+      </v-row>
+    </v-row>
     <VcsSlider
       v-if="clock"
       type="number"
@@ -32,22 +41,22 @@
     </div>
   </v-container>
 </template>
+
 <script>
   import { inject, onMounted, onUnmounted, ref } from 'vue';
-  import { VContainer } from 'vuetify/components';
+  import { VContainer, VRow } from 'vuetify/components';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsButton from '../buttons/VcsButton.vue';
-  import { createFlightPlayerActions } from '../../actions/flightActions.js';
+  import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
+  import {
+    createFlightMovieActions,
+    createFlightPlayerActions,
+  } from '../../actions/flightActions.js';
   import { getProvidedFlightInstance } from './composables.js';
 
   function getDefaultClock() {
-    return {
-      startTime: 0,
-      endTime: 0,
-      currentTime: 0,
-      times: [],
-    };
+    return { startTime: 0, endTime: 0, currentTime: 0, times: [] };
   }
 
   /**
@@ -70,18 +79,18 @@
   export default {
     name: 'VcsFlightPlayer',
     components: {
-      VcsLabel,
-      VcsButton,
       VContainer,
+      VRow,
+      VcsActionButtonList,
+      VcsButton,
+      VcsLabel,
       VcsSlider,
     },
-    props: {
-      disabled: {
-        type: Boolean,
-        default: false,
-      },
-    },
+    props: { disabled: { type: Boolean, default: false } },
     setup() {
+      /**
+       * @type {import("../../vcsUiApp.js").default}
+       */
       const app = inject('vcsApp');
       const flightInstance = getProvidedFlightInstance();
       const clock = ref(getDefaultClock());
@@ -113,6 +122,9 @@
         }
       }
 
+      const { actions: recordingActions, destroy: destroyRecordingActions } =
+        createFlightMovieActions(app, flightInstance);
+
       onMounted(async () => {
         flightInstancePlayer =
           await app.flights.setPlayerForFlight(flightInstance);
@@ -129,12 +141,14 @@
       onUnmounted(() => {
         destroy();
         playerChangedListener();
+        destroyRecordingActions();
       });
 
       return {
         clock,
         actions,
         isCurrentPlayer,
+        recordingActions,
         clockTime(seconds) {
           const mins = Math.floor(seconds / 60);
           const secs = Math.floor(seconds % 60);

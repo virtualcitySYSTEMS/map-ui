@@ -26,6 +26,8 @@
 - Inlined overviewMap in the MapNavigation component, avoiding the map to overflow on panels, and removed `createOverviewMapAction`, `getWindowComponentOptions` and `overviewMapWindowId`
 - Fixed a bug where the overviewMap would not synchronize on activate in 2D
 - Fixed a bug where the WMSGroupContentTreeItem would throw an error when the WMSLayer was not available anymore
+- added a new recording option to the FlightPlayer, and export `createFlightMovieActions`
+- added a new `VcsLoadingOverlay`component to render a progress bar and an `addLoadingOverlay` action to handle the component
 
 ### Plugin Bundle updates
 
