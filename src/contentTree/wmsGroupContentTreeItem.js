@@ -522,6 +522,10 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
           this._layer.url,
           this._layer.parameters,
         );
+        // check if the layer still exists, it can happen that the layer was removed while fetching the capabilities.
+        if (!this._layer) {
+          return;
+        }
         this._availableWMSEntries = availableWMSEntries.filter((wmsEntry) => {
           return this._allowedWMSLayers
             ? this._allowedWMSLayers.includes(wmsEntry.name)
@@ -558,9 +562,12 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
         this._setState();
         this._setLegend();
       } catch (e) {
-        this._layer.deactivate();
-        this.visible = false;
-        this._invalid = true;
+        // if the layer is not there it has been removed while fetching the capabilities.
+        if (this._layer) {
+          this._layer.deactivate();
+          this.visible = false;
+          this._invalid = true;
+        }
         getLogger(this.className).error(
           `An error occured while fetching the ${this._layerName} capabilities:`,
           e,

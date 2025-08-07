@@ -170,7 +170,7 @@
       OpenlayersMap: '$vcs2d',
       CesiumMap: '$vcs3d',
       ObliqueMap: '$vcsObliqueView',
-      PanoramaMap: 'mdi-image',
+      PanoramaMap: 'mdi-panorama-variant-outline',
     };
 
     const mapBtnWeight = {

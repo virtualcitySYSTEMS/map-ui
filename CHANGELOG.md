@@ -24,6 +24,8 @@
 - Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
 - Fixes a bug where a module with `contentTreeActiveOnStartup: false` would not overwrite `true` of underlying module
 - Inlined overviewMap in the MapNavigation component, avoiding the map to overflow on panels, and removed `createOverviewMapAction`, `getWindowComponentOptions` and `overviewMapWindowId`
+- Fixed a bug where the overviewMap would not synchronize on activate in 2D
+- Fixed a bug where the WMSGroupContentTreeItem would throw an error when the WMSLayer was not available anymore
 
 ### Plugin Bundle updates
 

@@ -22,7 +22,7 @@ import { Math as CesiumMath, Color, Cartographic } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
 import { Icon } from 'ol/style.js';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import OverviewMapClickedInteraction from './overviewMapClickedInteraction.js';
 import {
   getDefaultPrimaryColor,
@@ -369,6 +369,7 @@ class OverviewMap {
       );
     }
     this._active.value = true;
+    await nextTick();
     const { activeMap } = this._app.maps;
     if (activeMap instanceof ObliqueMap) {
       await this._initializeForOblique(activeMap);
@@ -406,8 +407,8 @@ class OverviewMap {
   async _initializePostRenderHandler(map) {
     if (!this._cameraIconLayer) {
       this._setupCameraIconLayer();
-      this._syncCameraViewAndFeature();
     }
+    this._syncCameraViewAndFeature();
     const navRemover = this._addNavigationListener(map);
     const prRemover = map.postRender.addEventListener(
       this._syncCameraViewAndFeature.bind(this),
