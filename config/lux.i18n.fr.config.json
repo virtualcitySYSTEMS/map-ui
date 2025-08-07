@@ -258,6 +258,77 @@
           "backwardFastTooltip": "Reculer rapidement",
           "forwardStepTooltip": "Avancer d’une position",
           "backwardStepTooltip": "Reculer d’une position"
+        },
+        "measurement": {
+          "header": {
+            "title": "Mesures"
+          },
+          "create": {
+            "new": "Nouvelle mesure",
+            "Position2D": "Point 2D",
+            "Position3D": "Point 3D",
+            "Distance2D": "Distance 2D",
+            "Distance3D": "Distance 3D",
+            "Area2D": "Surface 2D",
+            "Area3D": "Surface 3D",
+            "ObliqueHeight2D": "Hauteur 2D",
+            "Height3D": "Hauteur 3D",
+            "tooltip": {
+              "addToWorkspace": "Ajouter à Mon Espace de travail",
+              "Position2D": "Mesurer un point 2D",
+              "Position3D": "Mesurer un point 3D",
+              "Distance2D": "Mesurer une distance 2D",
+              "Distance3D": "Mesurer une distance 3D",
+              "Area2D": "Mesurer une surface 2D",
+              "Area3D": "Mesurer une surface 3D",
+              "ObliqueHeight2D": "Mesurer une hauteur 2D",
+              "Height3D": "Mesurer une hauteur 3D"
+            }
+          },
+          "value": {
+            "point": "Point",
+            "points": "Points de mesure",
+            "distance": "Distance",
+            "area": "Surface",
+            "circumference": "Circonférence",
+            "height": "Hauteur",
+            "groundPoint": "Point au sol",
+            "heightPoint": "Point de hauteur",
+            "horizontalDistance": "Distance horizontale",
+            "beta": "Bêta",
+            "alpha": "Alpha"
+          },
+          "edit": "Modifier la mesure",
+          "select": "Sélectionner des mesures",
+          "category": {
+            "title": "Mesures",
+            "selectAll": "Tout sélectionner",
+            "hideSelected": "Masquer les mesures",
+            "hideAll": "Tout masquer",
+            "showAll": "Tout afficher",
+            "zoomTo": "Zoomer sur",
+            "rename": "Renommer",
+            "edit": "Modifier",
+            "remove": "Supprimer",
+            "removeSelected": "Supprimer la sélection",
+            "exportSelected": "Exporter la sélection",
+            "import": "Importer"
+          },
+          "config": {
+            "title": "Éditeur de configuration des mesures",
+            "decimalPlaces": "Nombre de décimales",
+            "decimalPlacesZ": "Nombre de décimales altimétriques",
+            "decimalPlacesAngle": "Nombre de décimales pour les angles",
+            "disable": "Désactiver les mesures pour cette carte",
+            "enable": "Activer les mesures pour cette carte",
+            "errorInput": "La valeur doit être un nombre positif"
+          },
+          "hint": {
+            "oblique": {
+              "distance": "Veuillez noter que les mesures ne fournissent des résultats corrects que si elles sont effectuées sur le sol.",
+              "height": "Veuillez noter que les mesures ne fournissent des résultats corrects que si le point de départ est au sol. Comme cette mesure dépend du système de coordonnées local de l'image, elle ne peut pas être modifiée ni ajoutée à Mon Espace de travail."
+            }
+          }
         }
       }
     }

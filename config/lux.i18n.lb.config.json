@@ -258,6 +258,77 @@
           "backwardFastTooltip": "Séier zeréck spulen",
           "forwardStepTooltip": "Eng Positioun no vir",
           "backwardStepTooltip": "Eng Positioun zeréck"
+        },
+        "measurement": {
+          "header": {
+            "title": "Miessungen"
+          },
+          "create": {
+            "new": "Nei Miessung",
+            "Position2D": "2D-Punkt",
+            "Position3D": "3D-Punkt",
+            "Distance2D": "2D-Distanz",
+            "Distance3D": "3D-Distanz",
+            "Area2D": "2D-Fläch",
+            "Area3D": "3D-Fläch",
+            "ObliqueHeight2D": "2D-Héicht",
+            "Height3D": "3D-Héicht",
+            "tooltip": {
+              "addToWorkspace": "Zu mengem Aarbechtsberäich bäisetzen",
+              "Position2D": "2D-Punkt miessen",
+              "Position3D": "3D-Punkt miessen",
+              "Distance2D": "2D-Distanz miessen",
+              "Distance3D": "3D-Distanz miessen",
+              "Area2D": "2D-Fläch miessen",
+              "Area3D": "3D-Fläch miessen",
+              "ObliqueHeight2D": "2D-Héicht miessen",
+              "Height3D": "3D-Héicht miessen"
+            }
+          },
+          "value": {
+            "point": "Punkt",
+            "points": "Miesspunkten",
+            "distance": "Distanz",
+            "area": "Fläch",
+            "circumference": "Ëmfang",
+            "height": "Héicht",
+            "groundPoint": "Buedempunkt",
+            "heightPoint": "Héichtepunkt",
+            "horizontalDistance": "Horizontal Distanz",
+            "beta": "Beta",
+            "alpha": "Alpha"
+          },
+          "edit": "Miessung änneren",
+          "select": "Miessungen auswielen",
+          "category": {
+            "title": "Miessungen",
+            "selectAll": "All auswielen",
+            "hideSelected": "Ausgewielte Miessungen verstoppen",
+            "hideAll": "All verstoppen",
+            "showAll": "All weisen",
+            "zoomTo": "Zoom op",
+            "rename": "Ëmbenennen",
+            "edit": "Änneren",
+            "remove": "Läschen",
+            "removeSelected": "Auswiel läschen",
+            "exportSelected": "Auswiel exportéieren",
+            "import": "Importéieren"
+          },
+          "config": {
+            "title": "Miessungs-Konfiguratiouns Editor",
+            "decimalPlaces": "Zuel vun Dezimalstellen",
+            "decimalPlacesZ": "Zuel vun Héichten-Dezimalstellen",
+            "decimalPlacesAngle": "Zuel vun Wénkel-Dezimalstellen",
+            "disable": "Miessungen fir dës Kaart desaktivéieren",
+            "enable": "Miessungen fir dës Kaart aktivéieren",
+            "errorInput": "Input muss eng positiv Zuel sinn"
+          },
+          "hint": {
+            "oblique": {
+              "distance": "Notéiert w.e.g. datt Miessungen nëmme korrekt Resultater ginn wann se um Buedem gemaach ginn.",
+              "height": "Notéiert w.e.g. datt d'Miessung nëmme korrekt Resultater gitt wann de Startpunkt um Buedem ass. Well d'Miessung vum lokale Bildkoordinatesystem ofhänkt, kann se weder geännert nach zu mengem Aarbechtsberäich bäigesat ginn."
+            }
+          }
         }
       }
     }
