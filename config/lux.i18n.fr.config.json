@@ -329,6 +329,24 @@
               "height": "Veuillez noter que les mesures ne fournissent des résultats corrects que si le point de départ est au sol. Comme cette mesure dépend du système de coordonnées local de l'image, elle ne peut pas être modifiée ni ajoutée à Mon Espace de travail."
             }
           }
+        },
+        "shadow": {
+          "title": "Simuler les ombres",
+          "date": "Date",
+          "time": "Heure",
+          "animateDay": "Animer l'ombre sur une journée",
+          "animateYear": "Animer l'ombre sur une année",
+          "pause": "Pause",
+          "speed": "Durée de l'animation",
+          "speedUnit": "Seconde(s)",
+          "speedTooltip": "Détermine la durée totale de l'animation en secondes pour une boucle journalière ou annuelle",
+          "length": "Longueur",
+          "for": "pour",
+          "hours": "heures",
+          "hoursFormat": "Heure de la journée (00 à 23)",
+          "minutesFormat": "Minutes de l'heure (00 à 59)",
+          "days": "jours",
+          "units": "unités"
         }
       }
     }
