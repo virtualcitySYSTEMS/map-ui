@@ -329,6 +329,24 @@
               "height": "Notéiert w.e.g. datt d'Miessung nëmme korrekt Resultater gitt wann de Startpunkt um Buedem ass. Well d'Miessung vum lokale Bildkoordinatesystem ofhänkt, kann se weder geännert nach zu mengem Aarbechtsberäich bäigesat ginn."
             }
           }
+        },
+        "shadow": {
+          "title": "Schied simuléieren",
+          "date": "Datum",
+          "time": "Zäit",
+          "animateDay": "Schied iwwer en Dag animéieren",
+          "animateYear": "Schied iwwer e Joer animéieren",
+          "pause": "Paus",
+          "speed": "Animatiounsdauer",
+          "speedUnit": "Sekonn(en)",
+          "speedTooltip": "Bestëmmt d'Gesamtdauer vun der Animatioun a Sekonne fir en dagdeeglechen oder jäerleche Loop",
+          "length": "Längt",
+          "for": "fir",
+          "hours": "Stonnen",
+          "hoursFormat": "Stonn vum Dag (00 bis 23)",
+          "minutesFormat": "Minutte vun der Stonn (00 bis 59)",
+          "days": "Deeg",
+          "units": "Eenheeten"
         }
       }
     }
