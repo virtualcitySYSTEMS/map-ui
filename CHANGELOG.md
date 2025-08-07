@@ -28,6 +28,7 @@
 - Fixed a bug where the WMSGroupContentTreeItem would throw an error when the WMSLayer was not available anymore
 - added a new recording option to the FlightPlayer, and export `createFlightMovieActions`
 - added a new `VcsLoadingOverlay`component to render a progress bar and an `addLoadingOverlay` action to handle the component
+- added a `showInputEditor` prop to VcsFeatureEditingWindow, allowing direct edition of points coordinates
 
 ### Plugin Bundle updates
 

@@ -13,7 +13,12 @@
           :feature-properties="featureProperties"
           :allow-z-input="is3D"
         />
-        <div v-else class="px-1 py-1">
+        <div v-else-if="showInputs" class="py-1">
+          <VcsFeatureInputEditor
+            :is3-d="is3D && featureProperties.altitudeMode === 'absolute'"
+          />
+        </div>
+        <div v-else class="py-1">
           {{ $t('components.editor.modifyInfo') }}
         </div>
       </div>
@@ -67,6 +72,7 @@
   } from './VcsVectorPropertiesComponent.vue';
   import VcsFormSection from '../section/VcsFormSection.vue';
   import VcsSnapTo from './VcsSnapTo.vue';
+  import VcsFeatureInputEditor from './VcsFeatureInputEditor.vue';
 
   /**
    * @typedef {Object} EditorManager
@@ -150,6 +156,7 @@
       VSheet,
       VcsFormSection,
       VcsVectorPropertiesComponent,
+      VcsFeatureInputEditor,
       VcsFeatureStyleComponent,
     },
     props: {
@@ -185,6 +192,10 @@
       showSnapping: {
         type: Boolean,
         default: true,
+      },
+      showInputEditor: {
+        type: Boolean,
+        default: false,
       },
     },
     setup(props) {
@@ -463,8 +474,16 @@
         availableVectorProperties,
         is3D,
         is2DFeature,
+        isGeometryEditing,
         updateFeatureProperties,
         defaultVectorProperties: VectorProperties.getDefaultOptions(),
+        showInputs: computed(
+          () =>
+            !currentTransformationMode.value &&
+            props.showInputEditor &&
+            features.value.length === 1 &&
+            features.value[0]?.getGeometry()?.getType() === 'Point',
+        ),
       };
     },
   };

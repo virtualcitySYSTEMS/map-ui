@@ -254,6 +254,11 @@ const messages = {
       modifyInfo:
         'Klicke die Symbole in der Überschrift um die selektierten Geometrien zu editieren.',
       styleHeader: 'Stil',
+      position: {
+        x: 'Position X',
+        y: 'Position Y',
+        z: 'Position Z',
+      },
       snapping: {
         title: 'Fang',
         help: 'Durch STRG gedrückt halten lässt sich der Fang temporär unterdrücken.',

@@ -254,6 +254,11 @@ const messages = {
       modifyInfo:
         'For modifying the selected feature(s), click on one of the icons in the header above.',
       styleHeader: 'Style',
+      position: {
+        x: 'Position X',
+        y: 'Position Y',
+        z: 'Position Z',
+      },
       snapping: {
         title: 'Snapping',
         help: 'Snapping can be temporarily disabled by holding the CTRL key.',
