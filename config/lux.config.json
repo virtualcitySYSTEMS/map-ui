@@ -696,6 +696,10 @@
     {
       "name": "@vcmap/measurement",
       "entry": "plugins/@vcmap/measurement/index.js"
+    },
+    {
+      "name": "catalog",
+      "entry": "plugins/catalog/index.js"
     }
   ]
 }
