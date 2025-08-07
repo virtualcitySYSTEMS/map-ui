@@ -4,16 +4,260 @@
     {
       "name": "FR base",
       "fr": {
+        "navbar": {
+          "maps": {
+            "CesiumMap": "Carte 3D",
+            "OpenlayersMap": "Carte 2D",
+            "ObliqueMap": "Carte en imagerie oblique"
+          },
+          "menu": {
+            "tooltip": "Menu"
+          },
+          "share": {
+            "tooltip": "Partager la vue actuelle de la carte"
+          }
+        },
+        "mobileMenu": {
+          "title": "Menu"
+        },
+        "content": {
+          "title": "Contenu",
+          "empty": "Il n’y a actuellement aucune entrée disponible.",
+          "search": {
+            "placeholder": "Rechercher des éléments"
+          },
+          "helpAction": {
+            "title": "Ouvrir l’aide"
+          },
+          "infoAction": {
+            "title": "Informations complémentaires"
+          },
+          "viewpointAction": {
+            "title": "Aller au point de vue"
+          },
+          "styleAction": {
+            "title": "Ouvrir le sélecteur de style"
+          },
+          "layerExtentAction": {
+            "name": "Zoom sur l’étendue",
+            "title": "Zoom sur l’étendue de la couche"
+          }
+        },
+        "navigation": {
+          "rotateButton": "Faire pivoter la vue",
+          "obliqueLeftTooltip": "Faire pivoter la vue vers la gauche",
+          "obliqueRightTooltip": "Faire pivoter la vue vers la droite",
+          "zoomInTooltip": "Zoom avant",
+          "zoomOutTooltip": "Zoom arrière",
+          "pitchTooltip": "Inclinaison de la caméra : {0}°",
+          "overviewMapTooltip": "Carte de situation",
+          "homeButton": "Retour à la vue d’accueil",
+          "compass": {
+            "alignEast": "Aligner à l’est",
+            "alignNorth": "Aligner au nord",
+            "alignSouth": "Aligner au sud",
+            "alignWest": "Aligner à l’ouest"
+          },
+          "locator": {
+            "errorAccess": "L’accès à votre position a été refusé",
+            "errorCurrentPosition": "Impossible de déterminer votre position actuelle",
+            "errorConnection": "Connexion perdue lors de la détermination de la position",
+            "errorPosition": "Impossible d’enregistrer votre position"
+          },
+          "obliqueFallback": {
+            "message": "Aucune donnée disponible pour la position et l’ensemble de données sélectionnés.",
+            "title": "Données manquantes"
+          }
+        },
+        "categoryManager": {
+          "title": "Mon espace de travail",
+          "tooltip": "Mon espace de travail"
+        },
+        "collectionManager": {
+          "more": "Afficher tout...",
+          "less": "Afficher moins...",
+          "empty": "Aucune entrée pour le moment."
+        },
+        "components": {
+          "pin": "Épingler la fenêtre",
+          "close": "Fermer la fenêtre",
+          "add": "Ajouter",
+          "apply": "Appliquer",
+          "cancel": "Annuler",
+          "import": {
+            "submit": "Importer",
+            "fileDrop": "Déposez les fichiers ici",
+            "failure": "Le fichier {fileName} n'a pas pu être analysé.",
+            "predicateFailure": "{0} entités ne remplissent pas les conditions requises.",
+            "addFailure": "{0} entités existent déjà.",
+            "featuresAdded": "{0} entités importées.",
+            "nothingAdded": "Aucune entité n'a pu être importée."
+          },
+          "vcsFormSection": {
+            "help": "Afficher le texte d'aide"
+          },
+          "vcsTable": {
+            "key": "Nom",
+            "value": "Valeur"
+          },
+          "vcsDataTable": {
+            "searchbarPlaceholder": "Nom, valeur, ...",
+            "itemsPerPage": "par page",
+            "ofItems": "sur",
+            "nextPage": "Page suivante",
+            "formerPage": "Page précédente",
+            "noDataPlaceholder": "Aucune donnée disponible",
+            "noResultsPlaceholder": "Aucun résultat trouvé"
+          },
+          "style": {
+            "fill": "Remplissage",
+            "stroke": "Contour",
+            "reset": "Réinitialiser",
+            "lineWidth": "Épaisseur de ligne",
+            "type": "Type",
+            "points": "Points",
+            "radius": "Rayon",
+            "radius2": "Rayon2",
+            "angle": "Angle",
+            "rotation": "Rotation",
+            "scale": "Échelle",
+            "opacity": "Opacité",
+            "image": "Symbole",
+            "icon": "Icône",
+            "shape": "Forme",
+            "presets": "Préréglages",
+            "circle": "Cercle",
+            "square": "Carré",
+            "rectangle": "Rectangle",
+            "triangle": "Triangle",
+            "star": "Étoile",
+            "cross": "Croix",
+            "x": "X",
+            "custom": "Personnalisé",
+            "bold": "Gras",
+            "italic": "Italique",
+            "text": "Texte",
+            "enterText": "Saisir le texte ici",
+            "offset": "Décalage"
+          }
+        },
+        "settings": {
+          "title": "Paramètres",
+          "tooltip": "",
+          "languageSelector": "Langue",
+          "displayQuality": {
+            "title": "Paramètres d’affichage",
+            "level": {
+              "low": "Faible",
+              "medium": "Moyenne",
+              "high": "Élevée"
+            }
+          },
+          "theme": {
+            "title": "Thème de couleur",
+            "dark": "Sombre",
+            "light": "Clair"
+          }
+        },
+        "help": {
+          "title": "Aide",
+          "tooltip": ""
+        },
         "featureInfo": {
-          "waterSpeed": "Vélocité [m/s]",
-          "waterHeight": "Hauteur de l'eau [m]"
+          "activateToolTitle": "Interroger des informations",
+          "deactivateToolTitle": "Interroger des informations",
+          "cluster": {
+            "headerTitle": "Informations groupées",
+            "expand": "Afficher la liste d'informations",
+            "collapse": "Réduire la liste d'informations",
+            "empty": "Aucune information disponible"
+          },
+          "deepPicking": {
+            "title": "Qu’y a-t-il ici ?",
+            "headerTitle": "Informations disponibles"
+          }
+        },
+        "legend": {
+          "title": "Légende",
+          "tooltip": "Légende",
+          "empty": "Aucune entrée de légende disponible pour le moment.",
+          "openInNew": "Ouvrir dans un nouvel onglet",
+          "defaultLabelText": "Texte"
+        },
+        "search": {
+          "title": "Recherche",
+          "tooltip": "Recherche",
+          "select": "Sélectionner le résultat",
+          "placeholder": "Rechercher une adresse ou un point d’intérêt",
+          "zoomToFeatureAction": "Zoomer sur le résultat",
+          "zoomToAllMobile": "Zoomer sur tout",
+          "zoomToAll": "Zoomer sur tout"
+        },
+        "toolbox": {
+          "title": "Boîte à outils",
+          "flight": "vol",
+          "miscellaneous": "divers"
         },
         "footer": {
           "title": "Pied de page",
+          "attributions": {
+            "title": "Attributions",
+            "tooltip": "Afficher les attributions",
+            "empty": "Aucune attribution disponible pour le moment."
+          },
           "imprint": {
-            "title": "À propos",
+            "title": "Mentions légales",
             "tooltip": ""
+          },
+          "dataProtection": {
+            "title": "Protection des données",
+            "tooltip": ""
+          },
+          "positionDisplay": {
+            "title": "Interroger les coordonnées de la carte",
+            "projection": "Sélectionner le système de coordonnées"
+          },
+          "oblique": {
+            "template": "Image oblique : {{ name }} - {{ viewDirection }}",
+            "north": "nord",
+            "east": "est",
+            "south": "sud",
+            "west": "ouest",
+            "nadir": "nadir"
+          },
+          "mobile": {
+            "rotationWarning": "Tournez votre appareil pour utiliser toutes les fonctionnalités"
           }
+        },
+        "notification": {
+          "error": "Erreur",
+          "warning": "Avertissement",
+          "information": "Information",
+          "success": "Succès"
+        },
+        "datePicker": {
+          "today": "Aujourd’hui"
+        },
+        "list": {
+          "selectAll": "Tout sélectionner",
+          "clearSelection": "Effacer la sélection",
+          "renameItem": "Renommer l’élément",
+          "deleteItem": "Supprimer l’élément",
+          "editItem": "Modifier l’élément",
+          "import": "Importer",
+          "export": "Exporter la sélection",
+          "delete": "Supprimer la sélection",
+          "edit": "Modifier la sélection"
+        },
+        "flight": {
+          "player": "Lecteur",
+          "playTooltip": "Lire ce vol",
+          "pauseTooltip": "Mettre ce vol en pause à la position actuelle",
+          "stopTooltip": "Arrêter la lecture de ce vol",
+          "forwardFastTooltip": "Avancer rapidement",
+          "backwardFastTooltip": "Reculer rapidement",
+          "forwardStepTooltip": "Avancer d’une position",
+          "backwardStepTooltip": "Reculer d’une position"
         }
       }
     }
