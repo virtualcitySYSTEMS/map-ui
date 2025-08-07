@@ -3,7 +3,7 @@ import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
 
 /**
- * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { infoFormat: string, title?: string }} IframeWmsFeatureInfoViewOptions
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { infoFormat: string, title?: string, sandbox?:string, disableSandbox?: boolean }} IframeWmsFeatureInfoViewOptions
  * @property {string} infoFormat - Specifies the response format of WMS GetFeatureInfo
  * @property {string} [title] - optional title for the <iframe>
  * @property {string} [sandbox] - optional sandbox attribute for the <iframe>

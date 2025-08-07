@@ -3,13 +3,15 @@ import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
 
 /**
- * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { src: string, title?: string }} IframeFeatureInfoViewOptions
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { src: string, title?: string, sandbox?:string, disableSandbox?: boolean }} IframeFeatureInfoViewOptions
  * @property {string} src - Specifies the address of the document to embed in the <iframe>. Variables wrapped in `${}` are replaced by their values, e.g. `${featureId}` or `${gml:name}`
  * @property {string} [title] - optional title for the <iframe>
+ * @property {string} [sandbox] - optional sandbox attribute for the <iframe>
+ * @property {boolean} [disableSandbox] - optional flag to disable the sandbox attribute for the <iframe>
  */
 
 /**
- * @typedef {import("./abstractFeatureInfoView.js.js").FeatureInfoProps & { src: string, title?: string }} IframeFeatureInfoViewProps
+ * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoProps & { src: string, title?: string, sandbox?:string }} IframeFeatureInfoViewProps
  */
 
 /**
@@ -39,6 +41,14 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
      * @type {string|undefined}
      */
     this.title = options.title || undefined;
+    /**
+     * @type {string}
+     */
+    this.sandbox = options.sandbox || '';
+    /**
+     * @type {boolean}
+     */
+    this.disableSandbox = options.disableSandbox || false;
   }
 
   /**
@@ -65,6 +75,7 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
         ...properties.attributes,
       }),
       title: this.title,
+      ...(!this.disableSandbox && { sandbox: this.sandbox }),
     };
   }
 
@@ -78,6 +89,12 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
     }
     if (this.title) {
       config.title = this.title;
+    }
+    if (this.sandbox) {
+      config.sandbox = this.sandbox;
+    }
+    if (this.disableSandbox) {
+      config.disableSandbox = this.disableSandbox;
     }
     return config;
   }

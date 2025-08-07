@@ -21,7 +21,7 @@
 - adds new `ActivagteMap` callback to activate a map of a given name.
 - adds new `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
 - Fixes an issue where custom shading would not properly work for I3S datasets.
-- Added `sandbox` and `disableSandbox` options to iFrameWMSFeatureInfoView
+- Added `sandbox` and `disableSandbox` options to IframeFeatureInfoView and iFrameWMSFeatureInfoView
 - Fixes a bug where a module with `contentTreeActiveOnStartup: false` would not overwrite `true` of underlying module
 - Inlined overviewMap in the MapNavigation component, avoiding the map to overflow on panels, and removed `createOverviewMapAction`, `getWindowComponentOptions` and `overviewMapWindowId`
 - Fixed a bug where the overviewMap would not synchronize on activate in 2D
