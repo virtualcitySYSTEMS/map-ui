@@ -4,16 +4,260 @@
     {
       "name": "LB base",
       "lb": {
+        "navbar": {
+          "maps": {
+            "CesiumMap": "3D-kaart",
+            "OpenlayersMap": "2D-kaart",
+            "ObliqueMap": "Schuine beeldkaart"
+          },
+          "menu": {
+            "tooltip": "Menu"
+          },
+          "share": {
+            "tooltip": "De huidige kaartweergave delen"
+          }
+        },
+        "mobileMenu": {
+          "title": "Menu"
+        },
+        "content": {
+          "title": "Inhoud",
+          "empty": "Er zijn momenteel geen items beschikbaar.",
+          "search": {
+            "placeholder": "Zoek naar items"
+          },
+          "helpAction": {
+            "title": "Hulp openen"
+          },
+          "infoAction": {
+            "title": "Aanvullende informatie"
+          },
+          "viewpointAction": {
+            "title": "Ga naar gezichtspunt"
+          },
+          "styleAction": {
+            "title": "Stijlkiezer openen"
+          },
+          "layerExtentAction": {
+            "name": "Zoom naar bereik",
+            "title": "Zoom naar de laagomvang"
+          }
+        },
+        "navigation": {
+          "rotateButton": "Weergave roteren",
+          "obliqueLeftTooltip": "Draai weergave naar links",
+          "obliqueRightTooltip": "Draai weergave naar rechts",
+          "zoomInTooltip": "Inzoomen",
+          "zoomOutTooltip": "Uitzoomen",
+          "pitchTooltip": "Camerahelling: {0}°",
+          "overviewMapTooltip": "Overzichtskaart",
+          "homeButton": "Terug naar startweergave",
+          "compass": {
+            "alignEast": "Uitlijnen naar oosten",
+            "alignNorth": "Uitlijnen naar noorden",
+            "alignSouth": "Uitlijnen naar zuiden",
+            "alignWest": "Uitlijnen naar westen"
+          },
+          "locator": {
+            "errorAccess": "Toegang tot uw locatie geweigerd",
+            "errorCurrentPosition": "Huidige locatie kan niet worden bepaald",
+            "errorConnection": "Verbinding verbroken tijdens positiebepaling",
+            "errorPosition": "Uw positie kon niet worden opgeslagen"
+          },
+          "obliqueFallback": {
+            "message": "Geen gegevens beschikbaar voor de geselecteerde positie en dataset.",
+            "title": "Ontbrekende gegevens"
+          }
+        },
+        "categoryManager": {
+          "title": "Mijn werkruimte",
+          "tooltip": "Mijn werkruimte"
+        },
+        "collectionManager": {
+          "more": "Alles weergeven...",
+          "less": "Minder weergeven...",
+          "empty": "Momenteel geen items."
+        },
+        "components": {
+          "pin": "Venster vastzetten",
+          "close": "Venster sluiten",
+          "add": "Toevoegen",
+          "apply": "Toepassen",
+          "cancel": "Annuleren",
+          "import": {
+            "submit": "Importeren",
+            "fileDrop": "Sleep bestanden hierheen",
+            "failure": "Het bestand {fileName} kon niet worden geanalyseerd.",
+            "predicateFailure": "{0} entiteiten voldoen niet aan de vereisten.",
+            "addFailure": "{0} entiteiten bestaan al.",
+            "featuresAdded": "{0} entiteiten geïmporteerd.",
+            "nothingAdded": "Geen entiteiten konden worden geïmporteerd."
+          },
+          "vcsFormSection": {
+            "help": "Hulptekst weergeven"
+          },
+          "vcsTable": {
+            "key": "Naam",
+            "value": "Waarde"
+          },
+          "vcsDataTable": {
+            "searchbarPlaceholder": "Naam, waarde, ...",
+            "itemsPerPage": "per pagina",
+            "ofItems": "van",
+            "nextPage": "Volgende pagina",
+            "formerPage": "Vorige pagina",
+            "noDataPlaceholder": "Geen gegevens beschikbaar",
+            "noResultsPlaceholder": "Geen resultaten gevonden"
+          },
+          "style": {
+            "fill": "Vulling",
+            "stroke": "Rand",
+            "reset": "Resetten",
+            "lineWidth": "Lijndikte",
+            "type": "Type",
+            "points": "Punten",
+            "radius": "Straal",
+            "radius2": "Straal2",
+            "angle": "Hoek",
+            "rotation": "Rotatie",
+            "scale": "Schaal",
+            "opacity": "Dekking",
+            "image": "Symbool",
+            "icon": "Icoon",
+            "shape": "Vorm",
+            "presets": "Voorinstellingen",
+            "circle": "Cirkel",
+            "square": "Vierkant",
+            "rectangle": "Rechthoek",
+            "triangle": "Driehoek",
+            "star": "Ster",
+            "cross": "Kruis",
+            "x": "X",
+            "custom": "Aangepast",
+            "bold": "Vet",
+            "italic": "Cursief",
+            "text": "Tekst",
+            "enterText": "Voer hier tekst in",
+            "offset": "Offset"
+          }
+        },
+        "settings": {
+          "title": "Instellingen",
+          "tooltip": "",
+          "languageSelector": "Taal",
+          "displayQuality": {
+            "title": "Beeldinstellingen",
+            "level": {
+              "low": "Laag",
+              "medium": "Gemiddeld",
+              "high": "Hoog"
+            }
+          },
+          "theme": {
+            "title": "Kleurenthema",
+            "dark": "Donker",
+            "light": "Licht"
+          }
+        },
+        "help": {
+          "title": "Hulp",
+          "tooltip": ""
+        },
         "featureInfo": {
-          "waterSpeed": "Velocity [m/s]",
-          "waterHeight": "Water height [m]"
+          "activateToolTitle": "Informatie opvragen",
+          "deactivateToolTitle": "Informatie opvragen",
+          "cluster": {
+            "headerTitle": "Gegroepeerde informatie",
+            "expand": "Toon informatielijst",
+            "collapse": "Verberg informatielijst",
+            "empty": "Geen informatie beschikbaar"
+          },
+          "deepPicking": {
+            "title": "Wat is hier?",
+            "headerTitle": "Beschikbare informatie"
+          }
+        },
+        "legend": {
+          "title": "Legenda",
+          "tooltip": "Legenda",
+          "empty": "Er zijn momenteel geen legenda-items beschikbaar.",
+          "openInNew": "Openen in nieuw tabblad",
+          "defaultLabelText": "Tekst"
+        },
+        "search": {
+          "title": "Zoeken",
+          "tooltip": "Zoeken",
+          "select": "Resultaat selecteren",
+          "placeholder": "Zoek een adres of bezienswaardigheid",
+          "zoomToFeatureAction": "Inzoomen op resultaat",
+          "zoomToAllMobile": "Alles inzoomen",
+          "zoomToAll": "Alles inzoomen"
+        },
+        "toolbox": {
+          "title": "Gereedschapskist",
+          "flight": "vlucht",
+          "miscellaneous": "diversen"
         },
         "footer": {
-          "title": "Footer",
+          "title": "Voettekst",
+          "attributions": {
+            "title": "Bronvermeldingen",
+            "tooltip": "Toon bronvermeldingen",
+            "empty": "Er zijn momenteel geen bronvermeldingen beschikbaar."
+          },
           "imprint": {
-            "title": "Iwwert Eis",
+            "title": "Colofon",
             "tooltip": ""
+          },
+          "dataProtection": {
+            "title": "Gegevensbescherming",
+            "tooltip": ""
+          },
+          "positionDisplay": {
+            "title": "Coördinaten van de kaart opvragen",
+            "projection": "Selecteer het coördinatensysteem"
+          },
+          "oblique": {
+            "template": "Schuine afbeelding: {{ name }} - {{ viewDirection }}",
+            "north": "noord",
+            "east": "oost",
+            "south": "zuid",
+            "west": "west",
+            "nadir": "nadir"
+          },
+          "mobile": {
+            "rotationWarning": "Draai je apparaat om alle functies te gebruiken"
           }
+        },
+        "notification": {
+          "error": "Fout",
+          "warning": "Waarschuwing",
+          "information": "Informatie",
+          "success": "Succes"
+        },
+        "datePicker": {
+          "today": "Vandaag"
+        },
+        "list": {
+          "selectAll": "Alles selecteren",
+          "clearSelection": "Selectie wissen",
+          "renameItem": "Item hernoemen",
+          "deleteItem": "Item verwijderen",
+          "editItem": "Item bewerken",
+          "import": "Importeren",
+          "export": "Selectie exporteren",
+          "delete": "Selectie verwijderen",
+          "edit": "Selectie bewerken"
+        },
+        "flight": {
+          "player": "Speler",
+          "playTooltip": "Deze vlucht afspelen",
+          "pauseTooltip": "Deze vlucht pauzeren op de huidige positie",
+          "stopTooltip": "Deze vlucht stoppen",
+          "forwardFastTooltip": "Snel vooruitspoelen",
+          "backwardFastTooltip": "Snel terugspoelen",
+          "forwardStepTooltip": "Eén positie vooruit",
+          "backwardStepTooltip": "Eén positie terug"
         }
       }
     }
