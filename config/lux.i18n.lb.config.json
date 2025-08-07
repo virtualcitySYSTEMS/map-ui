@@ -496,6 +496,41 @@
           "minutesFormat": "Minutte vun der Stonn (00 bis 59)",
           "days": "Deeg",
           "units": "Eenheeten"
+        },
+        "drawing": {
+          "create": {
+            "Point": "Punkten zeechnen",
+            "Polygon": "Polygonen zeechnen",
+            "LineString": "Linnen zeechnen",
+            "BBox": "Bounding Box zeechnen",
+            "Circle": "Kreesser zeechnen"
+          },
+          "geometry": {
+            "edit": "Geometrie änneren"
+          },
+          "transform": {
+            "translate": "Elementer verschieben",
+            "rotate": "Elementer dréinen",
+            "scale": "Elementer skaléieren",
+            "extrude": "Elementer extrudéieren"
+          },
+          "select": "Gezeichnet Objete auswielen",
+          "category": {
+            "shape": "Formen",
+            "hideAll": "All verstoppen",
+            "showAll": "All weisen",
+            "zoomTo": "Zoom op",
+            "edit": "Geometrie änneren"
+          },
+          "contextMenu": {
+            "editProperties": "Eegeschaften änneren",
+            "removeSelection": "Auswiel läschen",
+            "exportSelection": "Auswiel exportéieren"
+          },
+          "config": {
+            "title": "Zeechnungs Astellungen",
+            "altitudeModes": "Héichtemodusen"
+          }
         }
       }
     }

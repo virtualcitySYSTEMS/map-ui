@@ -496,6 +496,41 @@
           "minutesFormat": "Minutes de l'heure (00 à 59)",
           "days": "jours",
           "units": "unités"
+        },
+        "drawing": {
+          "create": {
+            "Point": "Dessiner des points",
+            "Polygon": "Dessiner des polygones",
+            "LineString": "Dessiner des lignes",
+            "BBox": "Dessiner une boîte englobante",
+            "Circle": "Dessiner des cercles"
+          },
+          "geometry": {
+            "edit": "Modifier la géométrie"
+          },
+          "transform": {
+            "translate": "Déplacer les éléments",
+            "rotate": "Pivoter les éléments",
+            "scale": "Mettre à l'échelle les éléments",
+            "extrude": "Extruder les éléments"
+          },
+          "select": "Sélectionner les objets dessinés",
+          "category": {
+            "shape": "Formes",
+            "hideAll": "Tout masquer",
+            "showAll": "Tout afficher",
+            "zoomTo": "Zoomer sur",
+            "edit": "Modifier la géométrie"
+          },
+          "contextMenu": {
+            "editProperties": "Modifier les propriétés",
+            "removeSelection": "Supprimer la sélection",
+            "exportSelection": "Exporter la sélection"
+          },
+          "config": {
+            "title": "Configuration du dessin",
+            "altitudeModes": "Modes d'altitude"
+          }
         }
       }
     }
