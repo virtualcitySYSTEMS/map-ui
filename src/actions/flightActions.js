@@ -444,17 +444,11 @@ export function createFlightMovieActions(app, instance) {
       player = await createFlightPlayer(instance, app);
       playerListener = player.clock.changed.addEventListener(updateProgress);
       const { start, cancel } = createFlightMovie(app, player, options);
-      removeLoadingOverlay = addLoadingOverlay(
-        app,
-        vcsAppSymbol,
-        'flight-recording',
-        {
-          progress,
-          title: 'components.flight.record.inProgress',
-          cancellable: true,
-          cancel,
-        },
-      );
+      removeLoadingOverlay = addLoadingOverlay(app, vcsAppSymbol, {
+        progress,
+        title: 'components.flight.record.inProgress',
+        cancel,
+      });
       const blob = await start();
       removeLoadingOverlay?.();
       app.notifier.add({

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 abstract-workspace-item-creator">
+  <v-container class="pa-0 vcs-workspace-wrapper">
     <slot />
     <div v-if="showFooter">
       <v-divider class="mt-3" />
@@ -42,7 +42,7 @@
    * @vue-prop {boolean} [disableAdd=false] - Flag to render add button disabled.
    * @vue-prop {boolean} [tooltipAdd='components.addToMyWorkspace'] - Option to change the add button tooltip.
    * @vue-prop {boolean} [disableNew=false] - Flag to render new button disabled.
-   * @vue-prop {boolean} [tooltipNew''] - Option to change the add a tooltip to the new button.
+   * @vue-prop {boolean} [tooltipNew=''] - Option to change the add a tooltip to the new button.
    * @vue-prop {Array<VcsAction>} [actions] - Optional actions rendered as ActionButtonList in the footer.
    * @vue-prop {string} [newButtonTitle='components.new'] - Option to change the new button title, e.g. to 'components.apply'.
    * @vue-event {Event} addClicked - Event fired on clicking the reset button.

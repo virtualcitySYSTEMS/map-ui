@@ -585,17 +585,16 @@ export function callSafeAction(action, p) {
  * Adds a loading overlay to the application.
  * @param {import("../vcsUiApp.js").default} app
  * @param {string|symbol} owner The owner of the loading overlay.
- * @param {string} id The ID of the loading overlay.
- * @param {{progress?:import('vue').Ref<number>|undefined, title?:string, text?:string, cancel?:Function,  maxWidth?:number|string, persistent?:boolean}} [options] The options for the loading overlay, passed as props.
- * @returns {Function} A function to remove the loading overlay.
+ * @param {{id?:string, progress?:import('vue').Ref<number>|undefined, title?:string, text?:string, cancel?:Function,  maxWidth?:number|string, persistent?:boolean}} [options] The options for the loading overlay, passed as props.
+ * @returns {function(): void} A function to remove the loading overlay.
  */
-export function addLoadingOverlay(app, owner, id, options) {
+export function addLoadingOverlay(app, owner, options) {
   check(owner, oneOf(String, Symbol));
-  check(id, String);
   check(options?.progress?.value, optional(Number));
   check(
     options,
     optional({
+      id: optional(String),
       title: optional(String),
       text: optional(String),
       cancel: optional(Function),
@@ -604,12 +603,12 @@ export function addLoadingOverlay(app, owner, id, options) {
     }),
   );
 
+  const id = options?.id || `loading-overlay-${uuid()}`;
   const removeWindow = () => {
     if (app.windowManager.has(id)) {
       app.windowManager.remove(id);
     }
   };
-
   app.windowManager.add(
     {
       component: VcsLoadingOverlay,
@@ -626,6 +625,5 @@ export function addLoadingOverlay(app, owner, id, options) {
     },
     owner,
   );
-
   return removeWindow;
 }
