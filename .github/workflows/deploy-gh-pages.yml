@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
-      - run: npm run build
+      - run: npm run build-preview
 
       - name: deploy to gh pages
         run: |
