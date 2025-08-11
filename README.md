@@ -146,3 +146,18 @@ Further Information see [GET_STARTED](documentation/GET_STARTED.md) and [Plugin-
 
 The included datasets for Berlin and Osnabrück in the app configurations in the project can only be used for Development.
 For further usage of the datasets please contact [Virtual City Systems](https://vc.systems).
+
+# Luxembourg-geoportal 3DViewer
+
+### Build and deploy
+
+Don't forget to install node modules for plugin first.
+
+```sh
+$ cd plugins
+$ npm ci --force # force option is needed here!
+$ cd ../
+$ npm ci
+$ npm run build-preview
+```
+
