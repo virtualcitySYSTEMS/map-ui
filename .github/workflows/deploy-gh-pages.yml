@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - release-v6.1
 jobs:
   lux-deploy:
     runs-on: ubuntu-latest
