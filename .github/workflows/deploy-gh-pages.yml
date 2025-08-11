@@ -21,7 +21,17 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
+
+      - name: Install plugins
+        working-directory: ./plugins
+        run: |
+          echo "Installing plugins..."
+          npm ci --force
+
+      - name: Install VCMap-ui
+        run: |
+          echo "Installing VCMap-ui..."
+          npm ci
 
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
