@@ -1,0 +1,30 @@
+{
+  "name": "EN translations",
+  "i18n": [
+    {
+      "name": "EN base",
+      "en": {
+        "layers": {
+          "basemap": {
+            "title": "Base map"
+          },
+          "basemap_2015_global": {
+            "title": "Road map"
+          },
+          "topo_bw_jpeg": {
+            "title": "Topographic map B/W"
+          },
+          "topogr_global": {
+            "title": "Topographic map"
+          },
+          "orthogr_2013_global": {
+            "title": "Aerial Imagery"
+          },
+          "streets_jpeg": {
+            "title": "Hybrid map"
+          }
+        }
+      }
+    }
+  ]
+}
