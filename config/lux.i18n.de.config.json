@@ -1,0 +1,30 @@
+{
+  "name": "DE translations",
+  "i18n": [
+    {
+      "name": "DE base",
+      "de": {
+        "layers": {
+          "basemap": {
+            "title": "Kartenhintergrund"
+          },
+          "basemap_2015_global": {
+            "title": "Straßenkarte"
+          },
+          "topo_bw_jpeg": {
+            "title": "Topographische Karte SW"
+          },
+          "topogr_global": {
+            "title": "Topographische Karte"
+          },
+          "orthogr_2013_global": {
+            "title": "Luftbild"
+          },
+          "streets_jpeg": {
+            "title": "Hybride Karte"
+          }
+        }
+      }
+    }
+  ]
+}

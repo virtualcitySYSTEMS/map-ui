@@ -4,6 +4,26 @@
     {
       "name": "LB base",
       "lb": {
+        "layers": {
+          "basemap": {
+            "title": "Kaartenhannergrond"
+          },
+          "basemap_2015_global": {
+            "title": "Stroossekaart"
+          },
+          "topo_bw_jpeg": {
+            "title": "Topografesch Kaart S/W"
+          },
+          "topogr_global": {
+            "title": "Topografesch Kaart"
+          },
+          "orthogr_2013_global": {
+            "title": "Loftbild"
+          },
+          "streets_jpeg": {
+            "title": "Hybrid Kaart"
+          }
+        },
         "navbar": {
           "maps": {
             "CesiumMap": "3D-Kaart",

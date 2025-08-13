@@ -620,7 +620,7 @@
       "hiddenObjectIds": [],
       "numberOfLevelZeroTilesX": 1,
       "numberOfLevelZeroTilesY": 1,
-      "exclusiveGroups": ["base"],
+      "exclusiveGroups": ["Basemaps"],
       "properties": {
         "title": "OpenStreetMap",
         "showInOverviewMap": true,
@@ -630,6 +630,127 @@
           "year": "2019"
         }
       }
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "basemap_2015_global",
+      "activeOnStartup": false,
+      "format": "image/png",
+      "properties": {
+        "title": "lux.basemap.basemap_2015_global",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg",
+          "year": "2015"
+        }
+      },
+      "allowPicking": false,
+      "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/basemap_2015_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "extent": {
+        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "topo_bw_jpeg",
+      "activeOnStartup": false,
+      "format": "image/jpeg",
+      "properties": {
+        "title": "lux.basemap.topo_bw_jpeg",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+        }
+      },
+      "allowPicking": false,
+      "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topo_bw_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
+      "extent": {
+        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "topogr_global",
+      "activeOnStartup": false,
+      "format": "image/png",
+      "properties": {
+        "title": "lux.basemap.topogr_global",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+        }
+      },
+      "allowPicking": false,
+      "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topogr_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "extent": {
+        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "orthogr_2013_global",
+      "activeOnStartup": false,
+      "format": "image/jpeg",
+      "properties": {
+        "title": "lux.basemap.orthogr_2013_global",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+        }
+      },
+      "allowPicking": false,
+      "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/orthogr_2013_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
+      "extent": {
+        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMTSLayer",
+      "name": "streets_jpeg",
+      "activeOnStartup": false,
+      "format": "image/png",
+      "properties": {
+        "title": "lux.basemap.streets_jpeg",
+        "showInOverviewMap": true,
+        "attributions": {
+          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+        }
+      },
+      "allowPicking": false,
+      "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/streets_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
+      "extent": {
+        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "zIndex": 0
     }
   ],
   "viewpoints": [
@@ -648,7 +769,50 @@
       }
     }
   ],
-  "contentTree": [],
+  "contentTree": [
+    {
+      "name": "baseMap",
+      "type": "NodeContentTreeItem",
+      "icon": "$vcsGround",
+      "title": "layers.basemap.title",
+      "tooltip": "Select base map"
+    },
+    {
+      "name": "baseMap.Openstreetmap OSM Cache",
+      "type": "LayerContentTreeItem",
+      "layerName": "Openstreetmap OSM Cache"
+    },
+    {
+      "name": "baseMap.basemap_2015_global",
+      "type": "LayerContentTreeItem",
+      "layerName": "basemap_2015_global",
+      "title": "layers.basemap_2015_global.title"
+    },
+    {
+      "name": "baseMap.topo_bw_jpeg",
+      "type": "LayerContentTreeItem",
+      "layerName": "topo_bw_jpeg",
+      "title": "layers.topo_bw_jpeg.title"
+    },
+    {
+      "name": "baseMap.topogr_global",
+      "type": "LayerContentTreeItem",
+      "layerName": "topogr_global",
+      "title": "layers.topogr_global.title"
+    },
+    {
+      "name": "baseMap.orthogr_2013_global",
+      "type": "LayerContentTreeItem",
+      "layerName": "orthogr_2013_global",
+      "title": "layers.orthogr_2013_global.title"
+    },
+    {
+      "name": "baseMap.streets_jpeg",
+      "type": "LayerContentTreeItem",
+      "layerName": "streets_jpeg",
+      "title": "layers.streets_jpeg.title"
+    }
+  ],
   "obliqueCollections": [],
   "plugins": [
     {

@@ -4,6 +4,26 @@
     {
       "name": "FR base",
       "fr": {
+        "layers": {
+          "basemap": {
+            "title": "Fond de carte"
+          },
+          "basemap_2015_global": {
+            "title": "Carte routière"
+          },
+          "topo_bw_jpeg": {
+            "title": "Carte topographique N/B"
+          },
+          "topogr_global": {
+            "title": "Carte topographique"
+          },
+          "orthogr_2013_global": {
+            "title": "Images aériennes"
+          },
+          "streets_jpeg": {
+            "title": "Carte hybride"
+          }
+        },
         "navbar": {
           "maps": {
             "CesiumMap": "Carte 3D",
