@@ -700,6 +700,12 @@
     {
       "name": "catalog",
       "entry": "plugins/catalog/index.js"
+    },
+    {
+      "name": "3dviewer-back2D",
+      "entry": "plugins/3dviewer-back2D/index.js",
+      "pathTo2dGeoportal": "https://map.geoportail.lu/theme/main",
+      "tabId": "lux2d"
     }
   ]
 }
