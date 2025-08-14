@@ -807,10 +807,6 @@
       "entry": "plugins/@vcmap/print/index.js"
     },
     {
-      "name": "@vcmap/multi-view",
-      "entry": "plugins/@vcmap/multi-view/index.js"
-    },
-    {
       "name": "@vcmap/transparent-terrain",
       "entry": "plugins/@vcmap/transparent-terrain/index.js"
     },
