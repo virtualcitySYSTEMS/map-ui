@@ -800,17 +800,7 @@
     },
     {
       "name": "@vcmap/print",
-      "entry": "plugins/@vcmap/print/index.js",
-      "contactDetails": {
-        "department": "Entwicklung",
-        "name": "Virtual City Systems",
-        "streetAddress": "Tauentzienstr. 7 b/c",
-        "zipAndCity": "10789 Berlin",
-        "country": "Germany",
-        "mail": "info@vc.systems",
-        "phone": "+49 (0) 30 . 8904 . 871 . 0",
-        "fax": "+49 (0) 30 . 8904 . 871 . 0"
-      }
+      "entry": "plugins/@vcmap/print/index.js"
     },
     {
       "name": "@vcmap/multi-view",
@@ -839,6 +829,10 @@
     {
       "name": "@vcmap/measurement",
       "entry": "plugins/@vcmap/measurement/index.js"
+    },
+    {
+      "name": "@vcmap/viewshed",
+      "entry": "plugins/@vcmap/viewshed/index.js"
     },
     {
       "name": "catalog",
