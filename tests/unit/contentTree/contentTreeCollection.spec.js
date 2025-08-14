@@ -10,6 +10,7 @@ import {
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import SubContentTreeItem from '../../../src/contentTree/subContentTreeItem.js';
 import VcsUiApp from '../../../src/vcsUiApp.js';
+import { sleep } from '../../helpers.js';
 
 /**
  * @param {ContentTreeItemOptions} options
@@ -305,12 +306,13 @@ describe('ContentTreeCollection', () => {
       expect(subTree[0]).to.have.property('name', 'sub.base');
     });
 
-    it('should recreate the tree if an item is removed', () => {
+    it('should recreate the tree if an item is removed', async () => {
       const foo = collection.getByKey('foo');
       const subFoo = collection.getByKey('sub.base.foo');
 
       collection.remove(foo);
       collection.remove(subFoo);
+      await sleep();
 
       const [id, subTreeId] = collection.subTreeIds;
 
@@ -322,9 +324,10 @@ describe('ContentTreeCollection', () => {
       expect(subBase.children).to.have.lengthOf(1);
     });
 
-    it('should recreate the tree if a subtree is removed', () => {
+    it('should recreate the tree if a subtree is removed', async () => {
       const subTree = collection.getByKey('sub');
       collection.remove(subTree);
+      await sleep();
       expect(collection.subTreeIds).to.have.lengthOf(1);
     });
   });
@@ -381,9 +384,10 @@ describe('ContentTreeCollection', () => {
       expect(subBase.children[0]).to.have.property('name', 'sub.base.foo');
     });
 
-    it('should no longer recreate the tree, if the item was removed', () => {
+    it('should no longer recreate the tree, if the item was removed', async () => {
       const foo = collection.getByKey('foo');
       collection.remove(foo);
+      await sleep();
       const [id] = collection.subTreeIds;
       const tree = collection.getComputedVisibleTree(id).value;
 

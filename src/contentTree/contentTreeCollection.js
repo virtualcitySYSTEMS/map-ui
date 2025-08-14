@@ -32,6 +32,11 @@ export const defaultContentTreeComponentId = 'Content';
  */
 class ContentTreeCollection extends IndexedCollection {
   /**
+   * @type {string|undefined}
+   * @private
+   */
+  _removedListenerTimeoutId;
+  /**
    * @param {import("@src/vcsUiApp.js").default} app
    */
   constructor(app) {
@@ -107,7 +112,10 @@ class ContentTreeCollection extends IndexedCollection {
         }
       }),
       this.removed.addEventListener((child) => {
-        recreateTree();
+        clearTimeout(this._removedListenerTimeoutId);
+        this._removedListenerTimeoutId = setTimeout(() => {
+          recreateTree();
+        }, 0);
         if (this._weightListeners.has(child.name)) {
           this._weightListeners.get(child.name)();
           this._weightListeners.delete(child.name);
