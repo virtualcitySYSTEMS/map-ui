@@ -50,27 +50,6 @@
       }
     }
   ],
-  "i18n": [
-    {
-      "name": "base",
-      "de": {
-        "layers": {},
-        "style": {},
-        "contentTree": {},
-        "MyObliqueFooter": {
-          "content": "Mein Bildtitel: {{ name }} {{ viewDirection }}"
-        }
-      },
-      "en": {
-        "layers": {},
-        "style": {},
-        "contentTree": {},
-        "MyObliqueFooter": {
-          "content": "My Oblique Title: {{ name }} {{ viewDirection }}"
-        }
-      }
-    }
-  ],
   "styles": [
     {
       "name": "lineColor",
@@ -640,7 +619,7 @@
         "title": "lux.basemap.basemap_2015_global",
         "showInOverviewMap": true,
         "attributions": {
-          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg",
+          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg",
           "year": "2015"
         }
       },
@@ -665,7 +644,7 @@
         "title": "lux.basemap.topo_bw_jpeg",
         "showInOverviewMap": true,
         "attributions": {
-          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
         }
       },
       "allowPicking": false,
@@ -689,7 +668,7 @@
         "title": "lux.basemap.topogr_global",
         "showInOverviewMap": true,
         "attributions": {
-          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
         }
       },
       "allowPicking": false,
@@ -713,7 +692,7 @@
         "title": "lux.basemap.orthogr_2013_global",
         "showInOverviewMap": true,
         "attributions": {
-          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
         }
       },
       "allowPicking": false,
@@ -737,7 +716,7 @@
         "title": "lux.basemap.streets_jpeg",
         "showInOverviewMap": true,
         "attributions": {
-          "provider": "&copy; MapTiler - &copy; OpenStreetMap contributors for data outside of Luxembourg"
+          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
         }
       },
       "allowPicking": false,
