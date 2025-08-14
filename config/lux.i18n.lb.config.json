@@ -551,6 +551,20 @@
             "title": "Zeechnungs Astellungen",
             "altitudeModes": "Héichtemodusen"
           }
+        },
+        "walk": {
+          "headerTitle": "Fussgänger Modus",
+          "viewingHeight": "Kuckhéicht",
+          "viewingAngle": "Kuckwénkel",
+          "stop": "Verloossen",
+          "stopMode": "Fussgänger Modus verloossen",
+          "start": "Fussgänger Modus starten",
+          "openSettings": "Astellungen vum Fussgänger Modus",
+          "navigation": {
+            "move": "Benotzt d'Pfeiltasten (oder alternativ \"W\"/\"A\"/\"S\"/\"D\") fir Iech ze beweegen.",
+            "boost": "Hält d'link Shift-Tast gedréckt fir méi séier ze goen.",
+            "look": "Zitt mat der linker Maustast fir d'Sicht ze dréinen."
+          }
         }
       }
     }
