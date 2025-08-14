@@ -601,6 +601,80 @@
             "shadowColor": "Couleur d'ombre",
             "tools": "Outils"
           }
+        },
+        "clippingTool": {
+          "clippingPlanes": "Plans de découpe",
+          "clippingPlane": "Plan de découpe",
+          "temporary": "Temporaire",
+          "horizontal": "Horizontal",
+          "vertical": "Vertical",
+          "isInfinite": "Est infini",
+          "cutsGlobe": "Coupe le globe",
+          "isInverted": "Est inversé",
+          "showFeature": "Afficher l'élément",
+          "new": "Nouveau",
+          "addToMyWorkspace": "Ajouter à Mon Espace de Travail",
+          "create": "Créer un plan de découpe",
+          "createVertical": "Créer un plan de découpe vertical",
+          "createHorizontal": "Créer un plan de découpe horizontal",
+          "layerNames": "Couche",
+          "createDescription": "Définissez le squelette de découpe en cliquant sur la carte.",
+          "zoomTo": "Zoomer sur l'élément",
+          "export": "Exporter",
+          "delete": "Supprimer"
+        },
+        "transparentTerrain": {
+          "header": {
+            "title": "Terrain transparent"
+          },
+          "create": {
+            "new": "Nouveau",
+            "tooltip": {
+              "addToWorkspace": "Ajouter à Mon Espace de Travail",
+              "Box": "Créer une zone d'excavation du sol",
+              "Rectangle": "Créer un rectangle transparent",
+              "Global": "Créer un globe transparent"
+            },
+            "title": {
+              "Box": "Terrain en boîte temporaire",
+              "Rectangle": "Terrain rectangulaire temporaire",
+              "Global": "Terrain global temporaire"
+            }
+          },
+          "category": {
+            "zoomTo": "Zoomer sur l'étendue de l'élément"
+          },
+          "settings": {
+            "modify": "Modifier",
+            "geometry": "Géométrie",
+            "length": "Longueur",
+            "width": "Largeur",
+            "depth": "Profondeur",
+            "position": "Position",
+            "box": {
+              "edit": "Modifier la boîte",
+              "translate": "Déplacer la boîte",
+              "scale": "Redimensionner la boîte",
+              "showTexture": "Afficher la texture",
+              "hint": "Cliquez sur la boîte pour la relâcher et la déplacer."
+            },
+            "global": {
+              "camera": "Déplacer la caméra sous le terrain",
+              "opacity": "Opacité",
+              "nearFar": "Échelle Proche/Lointain",
+              "distanceOpacity": "Alpha, échelonné en fonction de la distance",
+              "near": "Proche",
+              "nearOpacity": "Opacité proche",
+              "far": "Lointain",
+              "farOpacity": "Opacité lointaine"
+            },
+            "rectangle": {
+              "extent": {
+                "remove": "Supprimer l'étendue"
+              },
+              "hint": "Cliquez sur la carte pour définir la position du rectangle. Déplacez la souris pour inspecter plus loin."
+            }
+          }
         }
       }
     }
