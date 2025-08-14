@@ -31,7 +31,7 @@
     "@vcmap/cesium-inspector": "^2.0.0",
     "@vcmap/event-control": "^1.0.1",
     "@vcmap/dynamic-layer": "^1.0.0",
-    "catalog": "github:tkohr/catalog.git#catalog",
+    "@tkohr/catalog": "^0.0.1",
     "3dviewer-back2D": "github:AlitaBernachot/3dviewer-back2D.git#2d-back-button"
   },
   "optionalDependencies": {
