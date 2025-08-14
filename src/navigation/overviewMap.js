@@ -93,7 +93,7 @@ class OverviewMap {
     this._active = ref(false);
 
     /**
-     * @type {import("@vcmap/core").OpenlayersMap||null}
+     * @type {import("@vcmap/core").OpenlayersMap}
      * @private
      */
     this._map = new OpenlayersMap({
@@ -306,14 +306,14 @@ class OverviewMap {
   }
 
   /**
-   * @type {import("@vcmap/core").OpenlayersMap|null}
+   * @type {import("@vcmap/core").OpenlayersMap}
    */
   get map() {
     return this._map;
   }
 
   /**
-   * @type {EventHandler|null}
+   * @type {EventHandler}
    */
   get eventHandler() {
     return this._eventHandler;
@@ -692,9 +692,7 @@ class OverviewMap {
       this._mapActivatedListener();
       this._mapActivatedListener = null;
     }
-    if (this._map) {
-      this._map.destroy();
-    }
+    this._map.destroy();
     if (this._obliqueTileLayer) {
       this._obliqueTileLayer.source = new VectorSource({});
       this._obliqueTileLayer.destroy();
@@ -710,9 +708,7 @@ class OverviewMap {
     if (this._cameraIconLayer) {
       this._cameraIconLayer.destroy();
     }
-    if (this._eventHandler) {
-      this._eventHandler.destroy();
-    }
+    this._eventHandler.destroy();
     this.cameraIconStyle.destroy();
     this.obliqueSelectedStyle.destroy();
     this._cachedViewpoint = null;
