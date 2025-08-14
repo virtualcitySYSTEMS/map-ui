@@ -601,6 +601,80 @@
             "shadowColor": "Schiet Faarf",
             "tools": "Geschir"
           }
+        },
+        "clippingTool": {
+          "clippingPlanes": "Schniddeplangen",
+          "clippingPlane": "Schniddeplang",
+          "temporary": "Temporär",
+          "horizontal": "Horizontal",
+          "vertical": "Vertikal",
+          "isInfinite": "Ass onendlech",
+          "cutsGlobe": "Schneidet de Globus",
+          "isInverted": "Ass ëmgedréint",
+          "showFeature": "Element weisen",
+          "new": "Nei",
+          "addToMyWorkspace": "Zu mengem Aarbechtsberäich bäisetzen",
+          "create": "Schniddeplang maachen",
+          "createVertical": "Vertikale Schniddeplang maachen",
+          "createHorizontal": "Horizontale Schniddeplang maachen",
+          "layerNames": "Couche",
+          "createDescription": "Setzt de Schniddeplang-Squelette andeems Dir op d'Kaart klickt.",
+          "zoomTo": "Op den Element zoomen",
+          "export": "Exportéieren",
+          "delete": "Läschen"
+        },
+        "transparentTerrain": {
+          "header": {
+            "title": "Duerchsichtegen Terrain"
+          },
+          "create": {
+            "new": "Nei",
+            "tooltip": {
+              "addToWorkspace": "Zu mengem Aarbechtsberäich bäisetzen",
+              "Box": "Buedemausgruewungszon erstellen",
+              "Rectangle": "Duerchsichtegt Rechteck erstellen",
+              "Global": "Duerchsichtegen Globus erstellen"
+            },
+            "title": {
+              "Box": "Temporär Këschtenterrain",
+              "Rectangle": "Temporär Rechteckterrain",
+              "Global": "Temporär globale Terrain"
+            }
+          },
+          "category": {
+            "zoomTo": "Op d'Gréisst vum Element zoomen"
+          },
+          "settings": {
+            "modify": "Änneren",
+            "geometry": "Geometrie",
+            "length": "Längt",
+            "width": "Breet",
+            "depth": "Déift",
+            "position": "Positioun",
+            "box": {
+              "edit": "Këscht änneren",
+              "translate": "Këscht réckelen",
+              "scale": "Këscht reskaléieren",
+              "showTexture": "Textur weisen",
+              "hint": "Klickt op d'Këscht fir se ze loosselen an ze réckelen."
+            },
+            "global": {
+              "camera": "Kamera ënner dem Terrain réckelen",
+              "opacity": "Opazitéit",
+              "nearFar": "No/Distanz Skalar",
+              "distanceOpacity": "Alpha, ofhängeg vun der Distanz",
+              "near": "No",
+              "nearOpacity": "No Opazitéit",
+              "far": "Wäit",
+              "farOpacity": "Wäit Opazitéit"
+            },
+            "rectangle": {
+              "extent": {
+                "remove": "Gréisst ewechhuelen"
+              },
+              "hint": "Klickt op d'Kaart fir d'Positioun vum Rechteck ze setzen. Bewegt d'Maus fir méi ze inspectéieren."
+            }
+          }
         }
       }
     }
