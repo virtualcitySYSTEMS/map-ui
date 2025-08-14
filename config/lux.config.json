@@ -11,6 +11,10 @@
   },
   "uiConfig": [
     {
+      "name": "hideLegend",
+      "value": "true"
+    },
+    {
       "name": "imprint",
       "value": {
         "url": "https://www.geoportail.lu/fr/propos/"
