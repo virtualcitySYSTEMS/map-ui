@@ -551,6 +551,20 @@
             "title": "Configuration du dessin",
             "altitudeModes": "Modes d'altitude"
           }
+        },
+        "walk": {
+          "headerTitle": "Mode piéton",
+          "viewingHeight": "Hauteur de vue",
+          "viewingAngle": "Angle de vue",
+          "stop": "Quitter",
+          "stopMode": "Quitter le mode piéton",
+          "start": "Démarrer le mode piéton",
+          "openSettings": "Paramètres du mode piéton",
+          "navigation": {
+            "move": "Utilisez les touches fléchées (ou alternativement \"W\"/\"A\"/\"S\"/\"D\") pour vous déplacer.",
+            "boost": "Maintenez la touche Maj gauche enfoncée pour augmenter la vitesse de marche.",
+            "look": "Faites glisser avec le bouton gauche de la souris pour pivoter la vue."
+          }
         }
       }
     }
