@@ -565,6 +565,42 @@
             "boost": "Maintenez la touche Maj gauche enfoncée pour augmenter la vitesse de marche.",
             "look": "Faites glisser avec le bouton gauche de la souris pour pivoter la vue."
           }
+        },
+        "viewshed": {
+          "distance": "Distance",
+          "fov": "Champ de vision",
+          "heading": "Orientation",
+          "pitch": "Inclinaison",
+          "position": "Position",
+          "showPrimitive": "Afficher le point de vue",
+          "viewpoint": "Point de vue",
+          "viewshedCategory": "Zones de visibilité",
+          "heightMode": "Mode de hauteur",
+          "relative": "Relatif au sol",
+          "absolute": "Absolu",
+          "new": "Nouveau",
+          "cancel": "Annuler",
+          "cone": "Analyse de zone de visibilité conique",
+          "360": "Analyse de zone de visibilité 360°",
+          "create": {
+            "cone": "Créer une analyse de zone de visibilité conique",
+            "360": "Créer une analyse de zone de visibilité 360°"
+          },
+          "addToMyWorkspace": "Ajouter à Mon Espace de Travail",
+          "temporary": "Temporaire",
+          "jumpToViewpoint": "Aller au point de vue",
+          "returnToViewpoint": "Retour au point de vue précédent",
+          "move": "Déplacer le point de vue",
+          "createDescription": "Cliquez deux fois sur la carte. Le premier clic place l'origine, le second définit la distance et la direction de la zone de visibilité.",
+          "createThreeSixtyDescription": "Cliquez deux fois sur la carte. Le premier clic place l'origine, le second définit la distance de la zone de visibilité.",
+          "remove": "Supprimer",
+          "editor": {
+            "title": "Éditeur de zones de visibilité",
+            "general": "Paramètres généraux",
+            "visibleColor": "Couleur visible",
+            "shadowColor": "Couleur d'ombre",
+            "tools": "Outils"
+          }
         }
       }
     }
