@@ -1,3 +1,10 @@
 {
-  "modules": ["config/projects.config.json"]
+  "modules": [
+    "config/lux.config.json",
+    "config/lux.theming.config.json",
+    "config/lux.i18n.fr.config.json",
+    "config/lux.i18n.lb.config.json",
+    "config/lux.i18n.en.config.json",
+    "config/lux.i18n.de.config.json"
+  ]
 }
