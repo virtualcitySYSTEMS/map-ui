@@ -1,5 +1,49 @@
 # 6.2.0
 
+### Highlights
+
+#### Panorama Map
+
+The VCMap now supports a new Panorama Map for viewing of 360° images.
+To configure a dataset the new `PanoramaDatasetLayer` https://lib.virtualcitymap.de/core/6.2/docs/classes/PanoramaDatasetLayer.html can be used.
+The following data format is supported: https://github.com/virtualcitySYSTEMS/map-core/blob/main/documentation/panorama.md#data-structure--format
+
+#### Layer Rendering Order
+
+The ContentTree now supports a new view to change the rendering order of active layers. The view can be opened by
+activating the new action next to the contentTree search bar. The new button can be hidden by setting `hideContentTreeRenderingOrder`.
+
+#### Dynamic Layer Plugin
+
+The Dynamic Layer Plugin can be used to dynamically add layers to the map without editing its configuration.
+By providing a link to the data the following layers can be added:
+3D Tiles, Cesium Pointcloud, Cesium Terrain, CZML, GeoJSON, WFS, WMS, WMTS
+
+The plugin can also be configured to allow users to browse, search catalogue services.
+The following catalogues are supported
+
+- GeoNetwork
+- Idra
+- NBS Registry
+- Piveau
+
+#### Cloud Optimized Geotiff Layer
+
+The `@vcmap/core` now supports Cloud Optimized Geotiff Layers. See: https://lib.virtualcitymap.de/core/6.2/docs/classes/COGLayer.html
+or https://cogeo.org/
+
+#### Multiview Plugin
+
+The `@vcmap/multi-view` plugin has been updated to support the new Panorama Map. The Multi-view Plugin now supports changing
+the sidemap to every configured map (2D/3D/Oblique/Panorama). This allows for example to show the 3D and 2D Map next to each other.
+
+#### Flight export
+
+Flights can now be exported as a video file. The client will play the flight and record a video. This function is available
+in the Flight Plugin and the Planning Plugin. The function is also available as a `@vcmap/core` function `createFlightMovie`
+
+### Changes
+
 - introduce `draggable` prop to `VcsTreeView.vue`, which adds drag&drop behaviour to the tree.
 - deprecate `setupDraggableList` and replace by new logic `setupDraggableListOrTree`
 - Add new action in content tree to open a window, where the temporary rendering order can be adapted
@@ -14,11 +58,11 @@
 - added a new callback: `ToggleToolbarButtonCallback`
 - changed behavior of Search: results are kept in memory while the window is not manually closed
 - added a new `VcsWorkspaceWrapper` component, to wrap components used to create MyWorkspace items.
-- updated the style of the `VcsExpansionPanel` and `VcsGroupedList` compononents to harmonize them with the `VcsTreeview` component
+- updated the style of the `VcsExpansionPanel` and `VcsGroupedList` components to harmonize them with the `VcsTreeview` component
 - adds `PanoramaMap` support.
   - a new map type has been added to the maps, expanding the number of map buttons rendered by default to 4.
   - a new showcase plugin `@vcmap-showcase/panorama-inspector` to debug the panorama map has been created.
-- adds new `ActivagteMap` callback to activate a map of a given name.
+- adds new `ActivateMap` callback to activate a map of a given name.
 - adds new `ActivateOverviewMap` & `DeactivateOverviewMap` callbacks to toggle the active state of the overview map.
 - Fixes an issue where custom shading would not properly work for I3S datasets.
 - Added `sandbox` and `disableSandbox` options to IframeFeatureInfoView and iFrameWMSFeatureInfoView
@@ -36,6 +80,27 @@
 - @vcmap/module-selector
   - Fixed a style issue
   - Makes module selector in mobile view available
+- @vcmap/flight
+  - Added new video export
+- @vcmap/planning
+  - Added new video export to flights
+  - Added the possibility to directly edit the coordinates of a point feature
+  - Fixed a bug where the viewpoint title could not be saved.
+- @vcmap/dynamic-layer
+  - New Plugin
+- @vcmap/multi-view
+  - Added support for several more SideMaps `2D`, `3D`, `Oblique`, `Panorama`
+  - Added configuration options for `activeOnStartup`, `startingSideMap`, `allowedSideMaps`, `obliqueCollectionName`
+- @vcmap/export
+  - Fixed a bug where changing config editor could not save changes in the LoD
+    level or formats
+- @vcmap/swipe-tool
+  - Fixed the behaviour to only activate on supported maps
+- @vcmap/clipping-tool
+- @vcmap/transparent-terrain
+- @vcmap/height-profile
+- @vcmap/line-of-sight
+  - Fixed a bug where the `add To MyWorkspace` Button would not respect the config setting to hide MyWorkspace
 
 # 6.1.14
 

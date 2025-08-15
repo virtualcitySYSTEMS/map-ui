@@ -46,7 +46,7 @@ dynamically to an existing map application using the Plugin API. Plugin develope
 
 Provides an abstraction layer around 2D, 3D and oblique Maps. Provides the following components:
 
-- map abstraction for Cesium, Openlayers and Oblique Images
+- map abstraction for Cesium, Openlayers and Oblique Images and Panorama Images
 - layers
 - interactions
 - styles
