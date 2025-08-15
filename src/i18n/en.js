@@ -176,8 +176,8 @@ const messages = {
       export: 'Export flight',
       exportPath: 'Export flight path',
       record: {
-        standard: 'Record standard resolution flight',
-        high: 'Record high resolution flight',
+        standard: 'Record standard quality flight',
+        high: 'Record high quality flight',
         inProgress: 'Recording in progress',
         success: 'Recording successful, the download will start shortly',
       },

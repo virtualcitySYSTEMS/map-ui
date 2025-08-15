@@ -176,8 +176,8 @@ const messages = {
       export: 'Flug exportieren',
       exportPath: 'Flugpfad exportieren',
       record: {
-        standard: 'Flug mit Standardauflösung aufzeichnen',
-        high: 'Flug mit hoher Auflösung aufzeichnen',
+        standard: 'Flug in Standardqualität aufzeichnen',
+        high: 'Flug in hoher Qualität aufzeichnen',
         inProgress: 'Aufzeichnung läuft',
         success: 'Aufzeichnung erfolgreich, der Download startet in Kürze',
       },
