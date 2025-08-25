@@ -1,3 +1,18 @@
+# 6.2.1
+
+### Fixes
+
+- updated @vcmap/core to 6.2.2
+  - fixes problems in the panoramaMap
+  - allows renderScreenshot for PanoramaMap
+
+### Plugin Bundle updates
+
+- @vcmap/multi-view
+  - fixed several problems
+- @vcmap/print
+  - allow creating screenshots/pdfs of the panoramaMap
+
 # 6.2.0
 
 ### Highlights
