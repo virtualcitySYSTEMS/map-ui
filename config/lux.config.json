@@ -11,10 +11,6 @@
   },
   "uiConfig": [
     {
-      "name": "hideLegend",
-      "value": "true"
-    },
-    {
       "name": "imprint",
       "value": {
         "url": "https://www.geoportail.lu/fr/propos/"
@@ -649,7 +645,13 @@
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        }
+        },
+        "legend": [
+          {
+            "type": "IframeLegendItem",
+            "src": "https://map.geoportail.lu/legends/get_html?lang=fr&name=act_topovt_bw&id=502"
+          }
+        ]
       },
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topo_bw_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
@@ -673,7 +675,13 @@
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        }
+        },
+        "legend": [
+          {
+            "type": "IframeLegendItem",
+            "src": "https://map.geoportail.lu/legends/get_html?lang=fr&name=act_topovt&id=529"
+          }
+        ]
       },
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topogr_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
@@ -721,7 +729,13 @@
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        }
+        },
+        "legend": [
+          {
+            "type": "IframeLegendItem",
+            "src": "https://map.geoportail.lu/legends/get_html?lang=en&name=act%3Aroadmap_vt&id=556"
+          }
+        ]
       },
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/streets_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
