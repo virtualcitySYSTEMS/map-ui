@@ -810,7 +810,24 @@
       "title": "layers.streets_jpeg.title"
     }
   ],
-  "obliqueCollections": [],
+  "obliqueCollections": [
+    {
+      "name": "obliques",
+      "activeOnStartup": true,
+      "dataSets": [
+        {
+          "url": "https://acts3.geoportail.lu/3d-data/imagesObliquesVCS/act2023/image.json",
+          "projection": {
+            "epsg": "2169",
+            "proj4": "+proj=tmerc +lat_0=49.8333333333333 +lon_0=6.16666666666667 +k=1 +x_0=80000 +y_0=100000 +ellps=intl +towgs84=-265.8867,76.9851,20.2667,0.33746,3.09264,-2.53861,0.4598 +units=m +no_defs +type=crs"
+          }
+        }
+      ],
+      "maxZoom": 7,
+      "minZoom": 4,
+      "hideLevels": null
+    }
+  ],
   "plugins": [
     {
       "name": "@vcmap/walk",
