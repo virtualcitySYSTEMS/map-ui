@@ -705,6 +705,32 @@
         }
       },
       "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "mesh_2020",
+      "url": "https://acts3.geoportail.lu/3d-data/3d-tiles/mesh3D/mesh3D_2020_v2/Cesium/pyramid/",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true,
+        "enableCollision": true
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "mesh_2019",
+      "url": "https://3dtiles.geoportail.lu/3dtiles/wintermesh/tileset.json",
+      "activeOnStartup": false,
+      "allowPicking": false,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32,
+      "tilesetOptions": {
+        "skipLevelOfDetail": true,
+        "enableCollision": true
+      }
     }
   ],
   "viewpoints": [
@@ -765,6 +791,26 @@
       "type": "LayerContentTreeItem",
       "layerName": "streets_jpeg",
       "title": "layers.streets_jpeg.title"
+    },
+        {
+      "name": "mesh",
+      "type": "NodeContentTreeItem",
+      "title": "layers.mesh.title",
+      "tooltip": "Select mesh layer"
+    },
+    {
+      "name": "mesh.mesh2020",
+      "layerName": "mesh_2020",
+      "type": "LayerContentTreeItem",
+      "title": "layers.mesh_2020.title",
+      "tooltip": "layers.mesh_2020.title"
+    },
+        {
+      "name": "mesh.mesh2019",
+      "layerName": "mesh_2019",
+      "type": "LayerContentTreeItem",
+      "title": "layers.mesh_2019.title",
+      "tooltip": "layers.mesh_2019.title"
     }
   ],
   "obliqueCollections": [

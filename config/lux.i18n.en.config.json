@@ -22,6 +22,15 @@
           },
           "streets_jpeg": {
             "title": "Hybrid map"
+          },
+          "mesh": {
+            "title": "3D Models"
+          },
+          "mesh_2020": {
+            "title": "3D Model 2020"
+          },
+          "mesh_2019": {
+            "title": "3D Model 2019"
           }
         }
       }
