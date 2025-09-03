@@ -582,7 +582,7 @@
       "activeOnStartup": true,
       "format": "image/png",
       "properties": {
-        "title": "lux.basemap.basemap_2015_global",
+        "title": "layers.basemap_2015_global.title",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg",
@@ -605,7 +605,7 @@
       "activeOnStartup": false,
       "format": "image/jpeg",
       "properties": {
-        "title": "lux.basemap.topo_bw_jpeg",
+        "title": "layers.topo_bw_jpeg.title",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
@@ -633,7 +633,7 @@
       "activeOnStartup": false,
       "format": "image/png",
       "properties": {
-        "title": "lux.basemap.topogr_global",
+        "title": "layers.topogr_global.title",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
@@ -661,7 +661,7 @@
       "activeOnStartup": false,
       "format": "image/jpeg",
       "properties": {
-        "title": "lux.basemap.orthogr_2013_global",
+        "title": "layers.orthogr_2013_global.title",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
@@ -683,7 +683,7 @@
       "activeOnStartup": false,
       "format": "image/png",
       "properties": {
-        "title": "lux.basemap.streets_jpeg",
+        "title": "layers.streets_jpeg.title",
         "showInOverviewMap": true,
         "attributions": {
           "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
