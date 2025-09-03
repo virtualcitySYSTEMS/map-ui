@@ -22,6 +22,15 @@
           },
           "streets_jpeg": {
             "title": "Hybrid Kaart"
+          },
+          "mesh": {
+            "title": "3D Modeller"
+          },
+          "mesh_2020": {
+            "title": "3D Modell 2020"
+          },
+          "mesh_2019": {
+            "title": "3D Modell 2019"
           }
         },
         "navbar": {

@@ -22,6 +22,15 @@
           },
           "streets_jpeg": {
             "title": "Hybride Karte"
+          },
+          "mesh": {
+            "title": "3D Modelle"
+          },
+          "mesh_2020": {
+            "title": "3D Modell 2020"
+          },
+          "mesh_2019": {
+            "title": "3D Modell 2019"
           }
         }
       }
