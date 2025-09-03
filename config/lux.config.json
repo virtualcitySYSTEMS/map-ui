@@ -577,43 +577,9 @@
   ],
   "layers": [
     {
-      "name": "Openstreetmap OSM Cache",
-      "url": "https://osm.virtualcitymap.de/mapproxy/wmts/osm/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png",
-      "type": "WMTSLayer",
-      "datasourceId": "2jEtgBemjJaSNx3AH",
-      "activeOnStartup": true,
-      "layer": "osm",
-      "wmtsStyle": "default",
-      "format": "image/png",
-      "tileMatrixSetID": "osm_grid",
-      "tileMatrixPrefix": "",
-      "maxLevel": 19,
-      "tilingSchema": "mercator",
-      "extent": {
-        "coordinates": [-180, -85, 180, 85],
-        "projection": {
-          "epsg": "EPSG:4326"
-        }
-      },
-      "opacity": "1",
-      "hiddenObjectIds": [],
-      "numberOfLevelZeroTilesX": 1,
-      "numberOfLevelZeroTilesY": 1,
-      "exclusiveGroups": ["Basemaps"],
-      "properties": {
-        "title": "OpenStreetMap",
-        "showInOverviewMap": true,
-        "attributions": {
-          "provider": "OpenStreetMap contributors",
-          "url": "http://www.openstreetmap.org/",
-          "year": "2019"
-        }
-      }
-    },
-    {
       "type": "WMTSLayer",
       "name": "basemap_2015_global",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "format": "image/png",
       "properties": {
         "title": "lux.basemap.basemap_2015_global",
@@ -626,12 +592,10 @@
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/basemap_2015_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
       "extent": {
-        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
-          "type": "Projection",
           "epsg": "EPSG:4326"
-        },
-        "type": "Extent"
+        }
       },
       "zIndex": 0
     },
@@ -656,12 +620,10 @@
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topo_bw_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
       "extent": {
-        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
-          "type": "Projection",
           "epsg": "EPSG:4326"
-        },
-        "type": "Extent"
+        }
       },
       "zIndex": 0
     },
@@ -686,12 +648,10 @@
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/topogr_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
       "extent": {
-        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
-          "type": "Projection",
           "epsg": "EPSG:4326"
-        },
-        "type": "Extent"
+        }
       },
       "zIndex": 0
     },
@@ -710,12 +670,10 @@
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/orthogr_2013_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
       "extent": {
-        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
-          "type": "Projection",
           "epsg": "EPSG:4326"
-        },
-        "type": "Extent"
+        }
       },
       "zIndex": 0
     },
@@ -737,15 +695,14 @@
           }
         ]
       },
+      "tilingSchema": "mercator",
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/streets_jpeg/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.png",
       "extent": {
-        "coordinates": [5.7357, 49.4478, 6.5286, 50.1826],
+        "coordinates": [-180, -85, 180, 85],
         "projection": {
-          "type": "Projection",
           "epsg": "EPSG:4326"
-        },
-        "type": "Extent"
+        }
       },
       "zIndex": 0
     }
