@@ -20,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
           persist-credentials: false
           fetch-depth: 0
       - uses: actions/setup-node@v3
