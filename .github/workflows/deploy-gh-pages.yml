@@ -4,15 +4,9 @@ on:
     tags:
       - '*'
     branches:
-      - main
-      - release-v6.1
-      - release-v6.2
       - lux
   pull_request:
     branches:
-      - main
-      - release-v6.1
-      - release-v6.2
       - lux
 jobs:
   lux-deploy:
@@ -26,6 +20,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+
+      - name: Debug commit info
+        run: |
+          echo "Current commit: $(git rev-parse HEAD)"
+          echo "Branch: $(git branch --show-current)"
 
       - name: Install plugins
         working-directory: ./plugins
@@ -49,6 +48,18 @@ jobs:
         run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
 
       - run: npm run build
+
+      - run: npm run build-preview
+
+      - name: Remove .htaccess before deployment
+        run: |
+          rm -f dist/.htaccess
+          rm -f dist/**/.htaccess
+
+      - name: Debug build output
+        run: |
+          ls -la dist/ || echo "dist/ n'existe pas"
+          echo ""
 
       - name: deploy to gh pages
         run: |
