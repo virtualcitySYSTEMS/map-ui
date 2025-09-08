@@ -792,7 +792,7 @@
       "layerName": "streets_jpeg",
       "title": "layers.streets_jpeg.title"
     },
-        {
+    {
       "name": "mesh",
       "type": "NodeContentTreeItem",
       "title": "layers.mesh.title",
@@ -805,7 +805,7 @@
       "title": "layers.mesh_2020.title",
       "tooltip": "layers.mesh_2020.title"
     },
-        {
+    {
       "name": "mesh.mesh2019",
       "layerName": "mesh_2019",
       "type": "LayerContentTreeItem",
@@ -832,6 +832,10 @@
     }
   ],
   "plugins": [
+    {
+      "name": "@vcmap/multi-view",
+      "entry": "plugins/@vcmap/multi-view/index.js"
+    },
     {
       "name": "@vcmap/walk",
       "entry": "plugins/@vcmap/walk/index.js"
