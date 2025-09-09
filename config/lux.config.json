@@ -4,7 +4,7 @@
   "_id": "LuxConfig",
   "startingViewpointName": "luxembourg",
   "startingMapName": "cesium",
-  "startingObliqueCollectionName": "obliques",
+  "startingObliqueCollectionName": "ACT2023_ImagesObliques_all",
   "projection": {
     "epsg": "2169",
     "proj4": "+proj=tmerc +lat_0=49.83333333333334 +lon_0=6.166666666666667 +k=1 +x_0=80000 +y_0=100000 +ellps=intl +towgs84=-189.681,18.3463,-42.7695,-0.33746,-3.09264,2.53861,0.4598 +units=m +no_defs"
@@ -815,20 +815,22 @@
   ],
   "obliqueCollections": [
     {
-      "name": "obliques",
-      "activeOnStartup": true,
+      "datasourceId": "MhKZrKhBLkwWEB6XY",
+      "name": "ACT2023_ImagesObliques_all",
+      "activeOnStartup": false,
       "dataSets": [
         {
           "url": "https://acts3.geoportail.lu/3d-data/imagesObliquesVCS/act2023/image.json",
           "projection": {
             "epsg": "2169",
             "proj4": "+proj=tmerc +lat_0=49.8333333333333 +lon_0=6.16666666666667 +k=1 +x_0=80000 +y_0=100000 +ellps=intl +towgs84=-265.8867,76.9851,20.2667,0.33746,3.09264,-2.53861,0.4598 +units=m +no_defs +type=crs"
-          }
+          },
+          "terrainUrl": "https://acts3.geoportail.lu/3d-data/3d-tiles/ACT2024_LiDAR_Terrain"
         }
       ],
-      "maxZoom": 7,
-      "minZoom": 4,
-      "hideLevels": null
+      "maxZoom": null,
+      "minZoom": null,
+      "hideLevels": "0"
     }
   ],
   "plugins": [
