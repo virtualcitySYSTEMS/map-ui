@@ -61,12 +61,12 @@ jobs:
           ls -la dist/ || echo "dist/ n'existe pas"
           echo ""
 
-      - name: deploy to gh pages
-        run: |
-          echo "Deploying to directory: ${{env.BRANCH_NAME}}"
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          npx gh-pages --dist dist/ --dest ${{env.BRANCH_NAME}} --remove "${{env.BRANCH_NAME}}/**" --no-history --dotfiles --repo "https://${GITHUB_ACTOR}:${{secrets.GITHUB_TOKEN}}@github.com/${GITHUB_REPOSITORY}.git"
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/${{env.BRANCH_NAME}}'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
 
       - name: add PR comment
         uses: thollander/actions-comment-pull-request@v1
