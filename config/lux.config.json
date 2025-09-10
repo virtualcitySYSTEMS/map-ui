@@ -742,9 +742,9 @@
   "viewpoints": [
     {
       "name": "luxembourg",
-      "cameraPosition": [6.131935, 49.611622, 180000],
-      "groundPosition": [6, 49, 300],
-      "distance": 1980.8215342887953,
+      "cameraPosition": [6.05889,48.510272,179592.620559],
+      "groundPosition": [6.05889,49.648840,-0.029335],
+      "distance":200000,
       "heading": 0,
       "pitch": -55,
       "roll": 360,
