@@ -580,7 +580,7 @@
     {
       "type": "WMTSLayer",
       "name": "basemap_2015_global",
-      "activeOnStartup": true,
+      "activeOnStartup": false,
       "format": "image/png",
       "properties": {
         "title": "layers.basemap_2015_global.title",
@@ -662,7 +662,7 @@
     {
       "type": "WMTSLayer",
       "name": "orthogr_2013_global",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "format": "image/jpeg",
       "properties": {
         "title": "layers.orthogr_2013_global.title",
@@ -746,7 +746,7 @@
       "groundPosition": [6, 49, 300],
       "distance": 1980.8215342887953,
       "heading": 0,
-      "pitch": -85,
+      "pitch": -55,
       "roll": 360,
       "animate": false,
       "type": "Viewpoint",
