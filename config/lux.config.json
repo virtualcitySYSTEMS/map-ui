@@ -23,7 +23,7 @@
     {
       "name": "displayQuality",
       "value": {
-        "startingQualityLevel": "medium",
+        "startingQualityLevel": "high",
         "low": {
           "sse": 4,
           "fxaa": false,
