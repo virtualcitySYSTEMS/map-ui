@@ -746,9 +746,9 @@
   "viewpoints": [
     {
       "name": "luxembourg",
-      "cameraPosition": [6.05889,48.510272,179592.620559],
-      "groundPosition": [6.05889,49.648840,-0.029335],
-      "distance":200000,
+      "cameraPosition": [6.05889, 48.510272, 179592.620559],
+      "groundPosition": [6.05889, 49.64884, -0.029335],
+      "distance": 200000,
       "heading": 0,
       "pitch": -55,
       "roll": 360,
@@ -846,6 +846,11 @@
     }
   ],
   "plugins": [
+    {
+      "name": "@vcmap/search-nominatim",
+      "entry": "plugins/@vcmap/search-nominatim/index.js",
+      "countrycode": "lu"
+    },
     {
       "name": "@vcmap/multi-view",
       "entry": "plugins/@vcmap/multi-view/index.js"
