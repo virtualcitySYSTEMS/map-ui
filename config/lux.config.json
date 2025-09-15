@@ -901,6 +901,18 @@
       "entry": "plugins/@vcmap/viewshed/index.js"
     },
     {
+      "name": "@vcmap/swipe-tool",
+      "entry": "plugins/@vcmap/swipe-tool/index.js"
+    },
+    {
+      "name": "@vcmap/flight",
+      "entry": "plugins/@vcmap/flight/index.js"
+    },
+    {
+      "name": "@vcmap/height-profile",
+      "entry": "plugins/@vcmap/height-profile/index.js"
+    },
+    {
       "name": "@geoportallux/lux-3dviewer-themesync",
       "entry": "plugins/@geoportallux/lux-3dviewer-themesync/index.js",
       "luxThemesUrl": "https://migration.geoportail.lu/themes?limit=30&partitionlimit=5&interface=main&cache_version=0&background=background",
