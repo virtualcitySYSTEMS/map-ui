@@ -573,7 +573,17 @@
       "fogDensityMobile": 0.0004,
       "fogScreenSpaceError": 2,
       "fogScreenSpaceErrorMobile": 4,
-      "useOriginalCesiumShader": false
+      "useOriginalCesiumShader": false,
+      "properties": {
+        "attributions": [{
+          "provider": "MapTiler",
+          "url": "https://www.maptiler.com/copyright/"
+        },
+        {
+          "provider": "OpenStreetMap contributors for data outside of Luxembourg",
+          "url": "https://openstreetmap.org/copyright"
+        }]
+      }
     },
     {
       "name": "Oblique Map",
@@ -593,11 +603,7 @@
       "format": "image/png",
       "properties": {
         "title": "layers.basemap_2015_global.title",
-        "showInOverviewMap": true,
-        "attributions": {
-          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg",
-          "year": "2015"
-        }
+        "showInOverviewMap": true
       },
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/roadmap/GLOBAL_WEBMERCATOR/{TileMatrix}/{TileCol}/{TileRow}.png",
@@ -618,9 +624,6 @@
       "properties": {
         "title": "layers.topo_bw_jpeg.title",
         "showInOverviewMap": true,
-        "attributions": {
-          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        },
         "legend": [
           {
             "type": "IframeLegendItem",
@@ -647,9 +650,6 @@
       "properties": {
         "title": "layers.topogr_global.title",
         "showInOverviewMap": true,
-        "attributions": {
-          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        },
         "legend": [
           {
             "type": "IframeLegendItem",
@@ -675,10 +675,7 @@
       "format": "image/jpeg",
       "properties": {
         "title": "layers.orthogr_2013_global.title",
-        "showInOverviewMap": true,
-        "attributions": {
-          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        }
+        "showInOverviewMap": true
       },
       "allowPicking": false,
       "url": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts/orthogr_2013_global/GLOBAL_WEBMERCATOR_4_V3/{TileMatrix}/{TileCol}/{TileRow}.jpeg",
@@ -699,9 +696,6 @@
       "properties": {
         "title": "layers.streets_jpeg.title",
         "showInOverviewMap": true,
-        "attributions": {
-          "provider": "MapTiler - OpenStreetMap contributors for data outside of Luxembourg"
-        },
         "legend": [
           {
             "type": "IframeLegendItem",
