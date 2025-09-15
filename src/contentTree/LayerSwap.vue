@@ -100,7 +100,7 @@
             };
           }
           return item;
-        });
+        }).toReversed();
       }
 
       const items = shallowRef(getLayerTreeItems());
