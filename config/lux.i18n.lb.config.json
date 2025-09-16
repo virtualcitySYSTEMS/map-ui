@@ -4,35 +4,6 @@
     {
       "name": "LB base",
       "lb": {
-        "layers": {
-          "basemap": {
-            "title": "Kaartenhannergrond"
-          },
-          "basemap_2015_global": {
-            "title": "Stroossekaart"
-          },
-          "topo_bw_jpeg": {
-            "title": "Topografesch Kaart S/W"
-          },
-          "topogr_global": {
-            "title": "Topografesch Kaart"
-          },
-          "orthogr_2013_global": {
-            "title": "Loftbild"
-          },
-          "streets_jpeg": {
-            "title": "Hybrid Kaart"
-          },
-          "mesh": {
-            "title": "3D Modeller"
-          },
-          "mesh_2020": {
-            "title": "3D Modell 2020"
-          },
-          "mesh_2019": {
-            "title": "3D Modell 2019"
-          }
-        },
         "navbar": {
           "maps": {
             "CesiumMap": "3D-Kaart",

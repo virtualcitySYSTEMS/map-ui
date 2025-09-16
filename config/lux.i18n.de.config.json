@@ -3,37 +3,7 @@
   "i18n": [
     {
       "name": "DE base",
-      "de": {
-        "layers": {
-          "basemap": {
-            "title": "Kartenhintergrund"
-          },
-          "basemap_2015_global": {
-            "title": "Straßenkarte"
-          },
-          "topo_bw_jpeg": {
-            "title": "Topographische Karte SW"
-          },
-          "topogr_global": {
-            "title": "Topographische Karte"
-          },
-          "orthogr_2013_global": {
-            "title": "Luftbild"
-          },
-          "streets_jpeg": {
-            "title": "Hybride Karte"
-          },
-          "mesh": {
-            "title": "3D Modelle"
-          },
-          "mesh_2020": {
-            "title": "3D Modell 2020"
-          },
-          "mesh_2019": {
-            "title": "3D Modell 2019"
-          }
-        }
-      }
+      "de": {}
     }
   ]
 }

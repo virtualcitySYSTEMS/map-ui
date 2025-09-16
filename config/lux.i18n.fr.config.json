@@ -4,35 +4,6 @@
     {
       "name": "FR base",
       "fr": {
-        "layers": {
-          "basemap": {
-            "title": "Fond de carte"
-          },
-          "basemap_2015_global": {
-            "title": "Carte routière"
-          },
-          "topo_bw_jpeg": {
-            "title": "Carte topographique N/B"
-          },
-          "topogr_global": {
-            "title": "Carte topographique"
-          },
-          "orthogr_2013_global": {
-            "title": "Images aériennes"
-          },
-          "streets_jpeg": {
-            "title": "Carte hybride"
-          },
-          "mesh": {
-            "title": "Maquettes 3D"
-          },
-          "mesh_2020": {
-            "title": "Maquette 3D 2020"
-          },
-          "mesh_2019": {
-            "title": "Maquette 3D 2019"
-          }
-        },
         "navbar": {
           "maps": {
             "CesiumMap": "Carte 3D",
