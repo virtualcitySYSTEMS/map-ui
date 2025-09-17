@@ -564,7 +564,8 @@
       "name": "cesium",
       "debugging": false,
       "fxaa": false,
-      "enableLightning": true,
+      "enableLightning": false,
+      "globeColor": "#ffffff",
       "allowSoftwareRendering": false,
       "maximumScreenSpaceError": 2,
       "fogEnabled": true,
@@ -575,14 +576,16 @@
       "fogScreenSpaceErrorMobile": 4,
       "useOriginalCesiumShader": false,
       "properties": {
-        "attributions": [{
-          "provider": "MapTiler",
-          "url": "https://www.maptiler.com/copyright/"
-        },
-        {
-          "provider": "OpenStreetMap contributors for data outside of Luxembourg",
-          "url": "https://openstreetmap.org/copyright"
-        }]
+        "attributions": [
+          {
+            "provider": "MapTiler",
+            "url": "https://www.maptiler.com/copyright/"
+          },
+          {
+            "provider": "OpenStreetMap contributors for data outside of Luxembourg",
+            "url": "https://openstreetmap.org/copyright"
+          }
+        ]
       }
     },
     {
