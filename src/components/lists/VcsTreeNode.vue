@@ -53,7 +53,7 @@
           :disabled="item.disabled"
           right
           tooltip-position="right"
-          block-overflow
+          :block-overflow="item.blockOverflow ?? true"
           class="col-4 pa-0 ml-auto pr-4"
         />
       </slot>

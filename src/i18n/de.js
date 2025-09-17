@@ -320,6 +320,9 @@ const messages = {
       notValid: 'Eingabe nicht gültig',
       required: 'Eingabe ist erforderlich',
     },
+    layerSwap: {
+      deleteButton: 'Ebene von der Karte entfernen',
+    },
   },
   settings: {
     title: 'Einstellungen',
