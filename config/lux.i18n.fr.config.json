@@ -288,6 +288,9 @@
             "allowedRange": "Plage de valeurs autorisées",
             "notValid": "Entrée non valide",
             "required": "Entrée requise"
+          },
+          "layerSwap": {
+            "deleteButton": "Supprimer la couche de la carte"
           }
         },
         "settings": {

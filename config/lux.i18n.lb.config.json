@@ -288,6 +288,9 @@
             "allowedRange": "Erlaabte Wäerteberäich",
             "notValid": "Ongülteg Input",
             "required": "Input erfuerderlech"
+          },
+          "layerSwap": {
+            "deleteButton": "D'Layer aus der Kaart entfernen"
           }
         },
         "settings": {
