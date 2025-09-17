@@ -320,6 +320,9 @@ const messages = {
       notValid: 'Input not valid',
       required: 'Input is required',
     },
+    layerSwap: {
+      deleteButton: 'Remove layer from the map',
+    },
   },
   settings: {
     title: 'Settings',
