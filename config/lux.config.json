@@ -664,7 +664,8 @@
     },
     {
       "name": "@vcmap/print",
-      "entry": "plugins/@vcmap/print/index.js"
+      "entry": "plugins/@vcmap/print/index.js",
+      "printLegend": false
     },
     {
       "name": "@vcmap/transparent-terrain",
