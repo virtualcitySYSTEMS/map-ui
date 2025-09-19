@@ -64,7 +64,8 @@
     "vuetify": "~3.7.14"
   },
   "overrides": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "@zip.js/zip.js": "2.7.68"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",

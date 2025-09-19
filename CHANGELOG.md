@@ -5,6 +5,8 @@
 - updated @vcmap/core to 6.2.2
   - fixes problems in the panoramaMap
   - allows renderScreenshot for PanoramaMap
+- Fix panel component to actually support vue provide
+- Fixes an error with cesium's @zip.js/zip.js dependency by pinning the version: https://github.com/CesiumGS/cesium/pull/12881
 
 ### Plugin Bundle updates
 

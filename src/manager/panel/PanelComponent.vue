@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import { computed, getCurrentInstance } from 'vue';
+  import { computed, inject, provide, getCurrentInstance } from 'vue';
   import { PanelLocation } from './panelManager.js';
 
   export default {
@@ -31,6 +31,14 @@
     },
     emits: ['resize'],
     setup(props, { emit }) {
+      const app = inject('vcsApp');
+      const panel = app.panelManager.get(props.panelState.id);
+      if (panel?.provides) {
+        Object.entries(panel.provides).forEach(([key, value]) => {
+          provide(key, value);
+        });
+      }
+
       return {
         appIsDark: computed(() => {
           return getCurrentInstance().proxy.$vuetify.theme.dark || !1;
