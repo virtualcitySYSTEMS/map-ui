@@ -731,6 +731,12 @@
       "entry": "plugins/@geoportallux/lux-3dviewer-plugin-back-to-2d-portal/index.js",
       "pathTo2dGeoportal": "https://map.geoportail.lu/theme/main",
       "tabId": "lux2d"
+    },
+    {
+      "name": "@geoportallux/lux-3dviewer-plugin-create-link",
+      "entry": "plugins/@geoportallux/lux-3dviewer-plugin-create-link/index.js",
+      "pathTo3dGeoportal": "https://migration.geoportail.lu",
+      "pathToUrlShortenerApi": "https://migration.geoportail.lu/short/create"
     }
   ]
 }
