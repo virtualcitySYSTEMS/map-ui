@@ -708,6 +708,14 @@
       "entry": "plugins/@vcmap/height-profile/index.js"
     },
     {
+      "name": "@vcmap/line-of-sight",
+      "entry": "plugins/@vcmap/line-of-sight/index.js"
+    },
+    {
+      "name": "@vcmap/cesium-filters",
+      "entry": "plugins/@vcmap/cesium-filters/index.js"
+    },
+    {
       "name": "@geoportallux/lux-3dviewer-themesync",
       "entry": "plugins/@geoportallux/lux-3dviewer-themesync/index.js",
       "luxThemesUrl": "https://migration.geoportail.lu/themes?limit=30&partitionlimit=5&interface=main&cache_version=0&background=background",
