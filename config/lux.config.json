@@ -731,7 +731,7 @@
     {
       "name": "@geoportallux/lux-3dviewer-plugin-create-link",
       "entry": "plugins/@geoportallux/lux-3dviewer-plugin-create-link/index.js",
-      "pathToUrlShortenerApi": "https://map.geoportail.lu/short/create"
+      "pathToUrlShortenerApi": "https://migration.geoportail.lu/short/create"
     }
   ]
 }
