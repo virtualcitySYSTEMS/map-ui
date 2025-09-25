@@ -725,7 +725,7 @@
     {
       "name": "@geoportallux/lux-3dviewer-plugin-back-to-2d-portal",
       "entry": "plugins/@geoportallux/lux-3dviewer-plugin-back-to-2d-portal/index.js",
-      "pathTo2dGeoportal": "https://map.geoportail.lu/theme/main",
+      "pathTo2dGeoportal": "https://geoportail-luxembourg.github.io/luxembourg-geoportail/vcs-gh-pages/",
       "tabId": "lux2d"
     },
     {
