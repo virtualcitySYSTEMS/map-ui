@@ -41,7 +41,10 @@ class FeatureInfoInteraction extends AbstractInteraction {
           featureId !== this._featureInfo.selectedClusterFeatureId
         ) {
           event.stopPropagation = true;
-          await this._featureInfo.selectClusterFeature(event.feature);
+          await this._featureInfo.selectClusterFeature(
+            event.feature,
+            event.position,
+          );
         }
       } else if (
         !this._featureInfo.selectedFeature ||

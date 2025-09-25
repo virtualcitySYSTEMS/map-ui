@@ -1,3 +1,11 @@
+# 6.2.2
+
+### Fixes
+
+- fixes a bug where clicked position of an IframeWmsFeatureInfoView was not forwarded when opened from GroupFeatureList
+- exports `getPositionFromFeature` function with optional clickedPosition
+- fixes a bug where feauteInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
+
 # 6.2.1
 
 ### Fixes

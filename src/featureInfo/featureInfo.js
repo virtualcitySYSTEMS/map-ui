@@ -296,7 +296,10 @@ function setupFeatureInfoTool(app) {
   });
 
   function addFeatureInfoButton() {
-    if (app.uiConfig.getByKey('startingFeatureInfo')?.value !== false) {
+    if (
+      app.uiConfig.getByKey('startingFeatureInfo')?.value !== false &&
+      !action.active
+    ) {
       action.callback();
     }
     if (!app.toolboxManager.has('featureInfo')) {
@@ -754,9 +757,10 @@ class FeatureInfo extends Collection {
    * The cluster feature will be cloned, highlighted and added on an internal scratch layer to ensure availability until deselection.
    * The original cluster feature will be hidden until deselection.
    * @param {import("ol").Feature} clusterFeature
+   * @param {import("ol/coordinate.js").Coordinate} position
    * @returns {Promise<void>}
    */
-  async selectClusterFeature(clusterFeature) {
+  async selectClusterFeature(clusterFeature, position) {
     this.clearFeature();
     this._clearClusterInternal();
     const id = `cluster-at-${clusterFeature.getGeometry().getCoordinates().join('-')}`;
@@ -800,7 +804,11 @@ class FeatureInfo extends Collection {
     this._scratchLayer.addFeatures([clonedFeature]);
 
     const features = clusterFeature.get('features');
-    const { items, groups } = getGroupedFeatureList(this._app, features);
+    const { items, groups } = getGroupedFeatureList(
+      this._app,
+      features,
+      position,
+    );
 
     this._clusterWindowId = id;
     this._app.windowManager.add(

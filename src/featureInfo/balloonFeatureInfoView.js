@@ -1,24 +1,8 @@
-import { Feature } from 'ol';
-import { getCenter } from 'ol/extent.js';
-import Point from 'ol/geom/Point.js';
-import {
-  Cartographic,
-  Entity,
-  HeightReference,
-  Math as CesiumMath,
-} from '@vcmap-cesium/engine';
-import {
-  getGeometryHeight,
-  getHeightInfo,
-  isAbsoluteHeightReference,
-  isRelativeHeightReference,
-  Projection,
-  VectorProperties,
-} from '@vcmap/core';
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import BalloonComponent from './BalloonComponent.vue';
+import { getBalloonPositionFromFeature } from './balloonHelper.js';
 
 /**
  * derive value from attributes
@@ -47,90 +31,10 @@ export function extractNestedKey(key, attrs, defaultValue = null) {
  *   balloonTitle: string,
  *   balloonSubtitle: string,
  *   position: import("ol/coordinate.js").Coordinate
- *   heightReference: HeightReference,
+ *   heightReference: import("@vcmap-cesium/engine").HeightReference,
  *   heightOffset: number
  * }} BalloonFeatureInfoViewProps
  */
-
-/**
- * @param {import("@vcmap/core").Cartesian3} cartesian
- * @returns {import("ol/coordinate.js").Coordinate}
- */
-function cartesian3ToCoordinate(cartesian) {
-  const cartographic = Cartographic.fromCartesian(cartesian);
-  const wgs84position = [
-    CesiumMath.toDegrees(cartographic.longitude),
-    CesiumMath.toDegrees(cartographic.latitude),
-    cartographic.height,
-  ];
-  return Projection.wgs84ToMercator(wgs84position);
-}
-
-/**
- * @param {FeatureType} feature
- * @param {import("@vcmap/core").Layer} layer
- * @param {import("ol/coordinate.js").Coordinate|undefinded} clickedPosition
- * @returns {{position?: import("ol/coordinate.js").Coordinate, heightReference: HeightReference, heightOffset: number}}
- */
-function getPositionFromFeature(feature, layer, clickedPosition) {
-  let heightReference = HeightReference.NONE;
-  let heightOffset = 0;
-  let position = null;
-  if (feature instanceof Feature && feature.getGeometry() instanceof Point) {
-    const point = feature.getGeometry();
-    const vectorProperties =
-      layer.vectorProperties ??
-      layer.featureProvider?.vectorProperties ??
-      new VectorProperties();
-    const renderAs = vectorProperties.renderAs(feature);
-    if (renderAs === 'geometry') {
-      // special case where we do not want to use the clickedPosition but the exact Position of the Point
-      const heightInfo = getHeightInfo(feature, point, vectorProperties);
-      ({ heightReference } = heightInfo);
-      let height = clickedPosition?.[2] ?? 0;
-      position = point.getCoordinates();
-      // if clamped, do nothing
-      if (isRelativeHeightReference(heightReference)) {
-        height = getGeometryHeight(point, heightInfo);
-        if (heightInfo.groundLevel != null) {
-          // we have a groundLevel, so no need to clamp the point
-          heightReference = HeightReference.NONE;
-        }
-        if (heightInfo.heightAboveGround != null) {
-          heightOffset += heightInfo.heightAboveGround;
-        }
-        const extrudedHeight = heightInfo.storeyHeightsAboveGround.reduce(
-          (acc, storeyHeight) => acc + storeyHeight,
-          0,
-        );
-        heightOffset += extrudedHeight;
-        height += extrudedHeight;
-        position = [position[0], position[1], height];
-      } else if (isAbsoluteHeightReference(heightReference)) {
-        const extrudedHeight = heightInfo.storeyHeightsAboveGround.reduce(
-          (acc, storeyHeight) => acc + storeyHeight,
-          0,
-        );
-        position = [
-          position[0],
-          position[1],
-          heightInfo.groundLevelOrMinHeight + extrudedHeight,
-        ];
-      }
-      return { position, heightOffset, heightReference };
-    }
-  }
-  if (clickedPosition) {
-    position = clickedPosition.slice();
-  } else if (feature instanceof Feature && feature.getGeometry()) {
-    position = getCenter(feature.getGeometry().getExtent());
-  } else if (feature instanceof Entity) {
-    position = cartesian3ToCoordinate(feature.position);
-  } else if (feature?.primitive?.boundingSphere?.center) {
-    position = cartesian3ToCoordinate(feature.primitive.boundingSphere.center);
-  }
-  return { position, heightReference, heightOffset };
-}
 
 /**
  * @class
@@ -170,11 +74,12 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
    */
   getProperties(featureInfo, layer) {
     const properties = super.getProperties(featureInfo, layer);
-    const { position, heightReference, heightOffset } = getPositionFromFeature(
-      featureInfo.feature,
-      layer,
-      featureInfo.position,
-    );
+    const { position, heightReference, heightOffset } =
+      getBalloonPositionFromFeature(
+        featureInfo.feature,
+        layer,
+        featureInfo.position,
+      );
     return {
       ...properties,
       position,
