@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@vcmap/print": "^3.0.0",
+    "@vcmap/print": "^4.0.0",
     "@vcmap/walk": "^2.0.0",
     "@vcmap/clipping-tool": "^3.0.0",
     "@vcmap/transparent-terrain": "^3.0.0",

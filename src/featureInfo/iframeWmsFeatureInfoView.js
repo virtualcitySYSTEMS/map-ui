@@ -1,6 +1,7 @@
 import { get as getOlProj } from 'ol/proj.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
+import { getBalloonPositionFromFeature } from './balloonHelper.js';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { infoFormat: string, title?: string, sandbox?:string, disableSandbox?: boolean }} IframeWmsFeatureInfoViewOptions
@@ -54,17 +55,22 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
    * @returns {import("../manager/window/windowManager.js").WindowComponentOptions}
    */
   getWindowComponentOptions(app, featureInfo, layer) {
+    const position = getBalloonPositionFromFeature(
+      featureInfo.feature,
+      layer,
+      featureInfo.position,
+    );
     const componentOptions = super.getWindowComponentOptions(
       app,
       featureInfo,
       layer,
     );
     const resolution = app.maps.activeMap.getCurrentResolution(
-      featureInfo.position,
+      position.position,
     );
     componentOptions.props.src =
       layer.featureProvider.wmsSource.getFeatureInfoUrl(
-        featureInfo.position,
+        position.position,
         resolution,
         getOlProj('EPSG:3857'),
         { INFO_FORMAT: this.infoFormat },
@@ -79,9 +85,13 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
    * @returns {import("./iframeFeatureInfoView.js").IframeFeatureInfoViewProps}
    */
   getProperties(featureInfo, layer) {
+    const properties = super.getProperties(featureInfo, layer);
     return {
+      ...properties,
       src: layer.featureProvider.wmsSource.getFeatureInfoUrl(
         featureInfo.position,
+        // no correct resolution available due to missing app.
+        // Thats why same is done in `getWindowComponentOptions` to override the src with correct url
         1,
         getOlProj('EPSG:3857'),
         { INFO_FORMAT: this.infoFormat },

@@ -191,6 +191,7 @@ export {
   getBalloonPosition,
   setBalloonPosition,
   setupBalloonPositionListener,
+  getBalloonPositionFromFeature,
 } from './src/featureInfo/balloonHelper.js';
 export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
 export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';

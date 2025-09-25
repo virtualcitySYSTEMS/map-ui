@@ -1,3 +1,28 @@
+# 6.2.2
+
+### Fixes
+
+- fixes a bug where clicked position of an IframeWmsFeatureInfoView was not forwarded when opened from GroupFeatureList
+- exports `getPositionFromFeature` function with optional clickedPosition
+- fixes a bug where feauteInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
+
+# 6.2.1
+
+### Fixes
+
+- updated @vcmap/core to 6.2.2
+  - fixes problems in the panoramaMap
+  - allows renderScreenshot for PanoramaMap
+- Fix panel component to actually support vue provide
+- Fixes an error with cesium's @zip.js/zip.js dependency by pinning the version: https://github.com/CesiumGS/cesium/pull/12881
+
+### Plugin Bundle updates
+
+- @vcmap/multi-view
+  - fixed several problems
+- @vcmap/print
+  - allow creating screenshots/pdfs of the panoramaMap
+
 # 6.2.0
 
 ### Highlights
