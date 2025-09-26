@@ -496,8 +496,13 @@
   "featureInfo": [
     {
       "type": "BalloonFeatureInfoView",
-      "name": "balloon3d",
+      "name": "featureInfo3d",
       "attributeKeys": ["BUILDINGID"]
+    },
+    {
+      "type": "IframeWmsFeatureInfoView",
+      "name": "featureInfo2d",
+      "sandbox": "allow-scripts allow-same-origin"
     },
     {
       "type": "TableFeatureInfoView",
@@ -716,7 +721,7 @@
       "entry": "plugins/@geoportallux/lux-3dviewer-themesync/index.js",
       "luxThemesUrl": "https://migration.geoportail.lu/themes?limit=30&partitionlimit=5&interface=main&cache_version=0&background=background",
       "luxI18nUrl": "https://map.geoportail.lu/static/0",
-      "luxOwsUrl": "https://wmsproxy.geoportail.lu/ogcproxywms",
+      "luxOwsUrl": "https://wms.geoportail.lu/public_map_layers/service",
       "luxWmtsUrl": "https://wmts3.geoportail.lu/mapproxy_4_v3/wmts",
       "lux3dUrl": "https://acts3.geoportail.lu/3d-data/3d-tiles",
       "luxLegendUrl": "https://map.geoportail.lu/legends/get_html",
