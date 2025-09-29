@@ -32,7 +32,7 @@
     "@vcmap/event-control": "^1.0.1",
     "@vcmap/dynamic-layer": "^1.0.0",
     "@geoportallux/lux-3dviewer-themesync": "^1.3.0",
-    "@geoportallux/lux-3dviewer-plugin-back-to-2d-portal": "^1.1.0",
+    "@geoportallux/lux-3dviewer-plugin-back-to-2d-portal": "^1.2.1-alpha",
     "@geoportallux/lux-3dviewer-plugin-create-link": "^1.0.0"
   },
   "optionalDependencies": {
