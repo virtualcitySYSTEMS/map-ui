@@ -136,7 +136,7 @@ stopEnvironment:
   variables:
     GIT_STRATEGY: none
   image:
-    name: bitnami/kubectl:latest
+    name: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/kubectl:latest
     entrypoint: ['']
   tags:
     - linux-2.0
