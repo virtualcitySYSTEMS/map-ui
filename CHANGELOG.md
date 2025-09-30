@@ -6,6 +6,7 @@
 - exports `getPositionFromFeature` function with optional clickedPosition
 - fixes a bug where featureInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
 - updates styles of SplshScreen: checkbox are now always visible
+- fixes a bug where added layers with legend would not trigger legend update
 
 # 6.2.1
 

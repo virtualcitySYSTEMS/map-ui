@@ -233,6 +233,10 @@ export function getLegendEntries(app) {
       syncVectorClusterGroups([...app.layers]);
     },
   );
+  const destroyAddedListener = app.layers.added.addEventListener((l) => {
+    syncLayerLegendEntries(l);
+    syncVectorClusterGroups([...app.layers]);
+  });
   const destroyRemovedListener = app.layers.removed.addEventListener((l) => {
     removeEntryForLayer(l);
     syncVectorClusterGroups([...app.layers]);
@@ -246,6 +250,7 @@ export function getLegendEntries(app) {
   const destroy = () => {
     destroyMapListener();
     destroyChangedListener();
+    destroyAddedListener();
     destroyRemovedListener();
     Object.values(styleChangedListener).forEach((cb) => cb());
   };
