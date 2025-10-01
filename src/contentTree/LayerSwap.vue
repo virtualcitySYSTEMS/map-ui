@@ -84,34 +84,32 @@
       };
 
       function getLayerTreeItems() {
-        return [...app.layers]
-          .filter(layerFilter)
-          .map((l) => {
-            const item = {
-              name: l.name,
-              title: l.properties?.title || l.name,
-              index: app.layers.indexOf(l),
-              actions: [
-                {
-                  name: 'layer-swap.delete',
-                  icon: 'mdi-delete',
-                  title: 'components.layerSwap.deleteButton',
-                  callback: () => l.deactivate(),
-                },
-              ],
-              blockOverflow: false,
+        return [...app.layers].filter(layerFilter).map((l) => {
+          const item = {
+            name: l.name,
+            title: l.properties?.title || l.name,
+            index: app.layers.indexOf(l),
+            actions: [
+              {
+                name: 'layer-swap.delete',
+                icon: 'mdi-delete',
+                title: 'components.layerSwap.deleteButton',
+                callback: () => l.deactivate(),
+              },
+            ],
+            blockOverflow: false,
+          };
+          if (wmsGroupItemsMap[l.name]) {
+            return {
+              ...item,
+              children: getWmsChildren(
+                l,
+                app.contentTree.getByKey(wmsGroupItemsMap[l.name]),
+              ),
             };
-            if (wmsGroupItemsMap[l.name]) {
-              return {
-                ...item,
-                children: getWmsChildren(
-                  l,
-                  app.contentTree.getByKey(wmsGroupItemsMap[l.name]),
-                ),
-              };
-            }
-            return item;
-          });
+          }
+          return item;
+        });
       }
 
       const items = shallowRef(getLayerTreeItems());

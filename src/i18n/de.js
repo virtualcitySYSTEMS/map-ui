@@ -321,7 +321,7 @@ const messages = {
       required: 'Eingabe ist erforderlich',
     },
     layerSwap: {
-      deleteButton: 'Ebene von der Karte entfernen',
+      deleteButton: 'Ebene deaktivieren',
     },
   },
   settings: {

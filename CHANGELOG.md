@@ -8,6 +8,10 @@
 - updates styles of SplshScreen: checkbox are now always visible
 - fixes a bug where added layers with legend would not trigger legend update
 
+### Changes
+
+- added a remove button to the Layer Rendering Order component, to allow for quick deactivation of layers https://github.com/virtualcitySYSTEMS/map-ui/pull/5
+
 # 6.2.1
 
 ### Fixes

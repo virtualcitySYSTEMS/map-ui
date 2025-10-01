@@ -321,7 +321,7 @@ const messages = {
       required: 'Input is required',
     },
     layerSwap: {
-      deleteButton: 'Remove layer from the map',
+      deleteButton: 'Deactivate layer',
     },
   },
   settings: {
