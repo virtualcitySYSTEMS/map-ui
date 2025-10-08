@@ -11,6 +11,7 @@
 ### Changes
 
 - added a remove button to the Layer Rendering Order component, to allow for quick deactivation of layers https://github.com/virtualcitySYSTEMS/map-ui/pull/5
+- shortens State length by setting the decimal parts of numerical values of the viewpoint
 
 # 6.2.1
 

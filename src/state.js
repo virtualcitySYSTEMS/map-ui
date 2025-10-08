@@ -324,13 +324,26 @@ function writeUrlAppState(state, maxLength) {
    */
   const urlState = new Array(7).fill(0);
   if (state.activeViewpoint) {
+    const { cameraPosition, groundPosition, distance, heading, pitch, roll } =
+      state.activeViewpoint;
+    function toFixed(num, digits) {
+      return Math.round(num * 10 ** digits) / 10 ** digits;
+    }
+    function formatCoord(coord) {
+      if (coord[2] === undefined) {
+        return [toFixed(coord[0], 6), toFixed(coord[1], 6)];
+      }
+      return [toFixed(coord[0], 6), toFixed(coord[1], 6), toFixed(coord[2], 2)];
+    }
+    const overwriteRoll =
+      !roll || Math.abs(roll - 360) < 1e-4 || Math.abs(roll) < 1e-4;
     urlState[0] = [
-      state.activeViewpoint.cameraPosition?.slice() ?? 0,
-      state.activeViewpoint.groundPosition?.slice() ?? 0,
-      state.activeViewpoint.distance ?? 0,
-      state.activeViewpoint.heading,
-      state.activeViewpoint.pitch,
-      state.activeViewpoint.roll,
+      cameraPosition ? formatCoord(cameraPosition) : 0,
+      groundPosition ? formatCoord(groundPosition) : 0,
+      distance ? toFixed(distance, 2) : 0,
+      heading ? toFixed(heading, 4) : 0,
+      pitch ? toFixed(pitch, 4) : -90,
+      overwriteRoll ? 0 : toFixed(roll, 4),
     ];
   }
 
