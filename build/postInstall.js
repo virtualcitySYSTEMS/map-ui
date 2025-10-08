@@ -17,7 +17,7 @@ async function fixGeotiff() {
 
     const fixedContent = content.replace(
       /worker\.worker\.postMessage\(\{\s*fileDirectory,\s*buffer,\s*id\s*\},\s*\[buffer\]\);/g,
-      'worker.worker.postMessage({ fileDirectory: { ...fileDirectory, TileOffsets: undefined }, buffer, id }, [buffer]);',
+      'worker.worker.postMessage({ fileDirectory: { ...fileDirectory, TileOffsets: undefined, TileByteCounts: undefined }, buffer, id }, [buffer]);',
     );
     await writeFile(fileName, fixedContent);
   } else {
