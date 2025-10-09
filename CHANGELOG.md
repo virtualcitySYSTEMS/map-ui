@@ -18,6 +18,7 @@
 - changed the behaviour of the COG Layer to have better performance for large COG files
 - added a remove button to the Layer Rendering Order component, to allow for quick deactivation of layers https://github.com/virtualcitySYSTEMS/map-ui/pull/5
 - shortens State length by setting the decimal parts of numerical values of the viewpoint
+- adds a new pagination api to `CollectionComponentClass` and a pagination UI component to `CollectionComponentContent`.
 
 ### Plugin Bundle updates
 
