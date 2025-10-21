@@ -12,6 +12,9 @@
     <v-card>
       <v-card-text class="pb-0 overflow-y-auto">
         <VcsMarkdown :content="$st(options.content)" />
+      </v-card-text>
+
+      <div class="vcs-splash-screen-checkboxes px-8">
         <VcsCheckbox v-if="options.acceptInput" v-model="checkBox">
           <template #label>
             <VcsMarkdown
@@ -32,7 +35,7 @@
             </div>
           </template>
         </VcsCheckbox>
-      </v-card-text>
+      </div>
 
       <v-card-actions class="vcs-splash-screen-actions">
         <div class="d-flex gc-2 w-100 justify-end">
@@ -194,6 +197,11 @@
     margin-left: -5px !important;
   }
   .vcs-splash-screen-actions {
+    position: sticky !important;
+    bottom: 0;
+  }
+  .vcs-splash-screen-checkboxes {
+    background-color: rgb(var(--v-theme-surface));
     position: sticky !important;
     bottom: 0;
   }

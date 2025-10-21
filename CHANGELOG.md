@@ -2,9 +2,40 @@
 
 ### Fixes
 
+- updated @vcmap/core to 6.2.3
+  - Updates getFeaturesByCoordinate in wmsFeatureProvider to consider the extent and to respect the tilingSchema in the bbox calculation
+  - adds htmlPositionFeatureTitle to wmsFeatureProvider which is added as to the point feature created if (responseType === 'text/html').
+  - Fixes an issue with COG layers, where there would be stripes in 3D.
+  - Added option sourceOptions to COGLayer to forward options to the Openlayers source: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF-GeoTIFFSource.html
 - fixes a bug where clicked position of an IframeWmsFeatureInfoView was not forwarded when opened from GroupFeatureList
 - exports `getPositionFromFeature` function with optional clickedPosition
-- fixes a bug where feauteInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
+- fixes a bug where featureInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
+- updates styles of SplashScreen: checkbox are now always visible
+- fixes a bug where added layers with legend would not trigger legend update
+
+### Changes
+
+- changed the behaviour of the COG Layer to have better performance for large COG files
+- added a remove button to the Layer Rendering Order component, to allow for quick deactivation of layers https://github.com/virtualcitySYSTEMS/map-ui/pull/5
+- shortens State length by setting the decimal parts of numerical values of the viewpoint
+- adds a new pagination api to `CollectionComponentClass` and a pagination UI component to `CollectionComponentContent`.
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Fixed an issue where VC Plannings version 7.0 would not be exportable
+- @vcmap/dynamic-layer
+  - Fixed a bug where fetching a WMS service would fail because of a missing GetFeatureInfo description in its capabilities
+  - Fixed a bug where the BBOX would be wrong for WMS layers
+  - Fixed a bug where the legend of an added layer would not appear immediately
+  - Fixed a bug where clicking on the 'Catalogue' tab would open catalogues overview even when only one catalogue is configured
+  - Added a missing translation key
+  - Added prefiltering options to Piveau and GeoNetwork catalogues
+  - Fixed a bug where a NBS Registry would not load because of an invalid dataset
+  - Fixed a pagination bug for NBS Registry catalogues
+  - Fixed a bug where all entries were not shown for GeoNetwork catalogues
+- @vcmap/multi-view
+  - changed the name of the sideMaps, they now are called ${className}-multi-view This can be used together with layer.mapNames, to show a layer just in the sideMap.
 
 # 6.2.1
 

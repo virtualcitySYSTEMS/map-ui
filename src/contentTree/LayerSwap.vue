@@ -89,6 +89,15 @@
             name: l.name,
             title: l.properties?.title || l.name,
             index: app.layers.indexOf(l),
+            actions: [
+              {
+                name: 'layer-swap.delete',
+                icon: 'mdi-delete',
+                title: 'components.layerSwap.deleteButton',
+                callback: () => l.deactivate(),
+              },
+            ],
+            blockOverflow: false,
           };
           if (wmsGroupItemsMap[l.name]) {
             return {

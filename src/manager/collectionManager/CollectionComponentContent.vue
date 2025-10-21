@@ -9,7 +9,15 @@
       :show-title="false"
       @item-moved="move"
     />
-    <v-sheet v-if="items.length > limit" class="ma-2 pl-2">
+    <v-sheet v-if="page && pageSize && totalCount && items.length !== 0">
+      <v-pagination
+        class="px-2"
+        v-model="page"
+        :length="Math.ceil(totalCount / pageSize)"
+        density="compact"
+      ></v-pagination>
+    </v-sheet>
+    <v-sheet v-else-if="items.length > limit" class="ma-2 pl-2">
       <VcsButton @click="openCollectionComponentList">
         {{ $t('collectionManager.more') }}
       </VcsButton>
@@ -21,8 +29,9 @@
 </template>
 
 <script>
-  import { computed, inject } from 'vue';
-  import { VSheet, VContainer } from 'vuetify/components';
+  import { computed, inject, onUnmounted, ref, watch } from 'vue';
+  import { VSheet, VContainer, VPagination } from 'vuetify/components';
+  import { getLogger } from '@vcsuite/logger';
   import { createSelectionActions } from '../../components/lists/listHelper.js';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
@@ -41,6 +50,7 @@
       VcsList,
       VSheet,
       VContainer,
+      VPagination,
     },
     emits: ['openList'],
     setup(_props, { emit }) {
@@ -56,6 +66,57 @@
       );
 
       const actions = collectionComponent.getActions();
+
+      const { pagination } = collectionComponent;
+      const page = ref();
+      const pageSize = ref();
+      const totalCount = ref();
+      let destroyPaginationListeners;
+
+      async function updatePagination() {
+        destroyPaginationListeners?.();
+        if (pagination.value && !pagination.value.initialized) {
+          await pagination.value.initialize();
+        }
+
+        page.value = pagination.value?.getPage();
+        pageSize.value = pagination.value?.getPageSize();
+        totalCount.value = pagination.value?.totalCount;
+        const listeners = [
+          pagination.value?.pageChanged.addEventListener((newPage) => {
+            page.value = newPage;
+          }),
+          pagination.value?.pageSizeChanged.addEventListener((newPageSize) => {
+            pageSize.value = newPageSize;
+          }),
+        ];
+        destroyPaginationListeners = () => {
+          listeners.forEach((l) => l?.());
+        };
+      }
+
+      if (pagination.value) {
+        updatePagination().catch((e) => {
+          getLogger('CollectionComponentContent').error(
+            'setting up pagination failed',
+            e,
+          );
+        });
+      }
+
+      onUnmounted(() => {
+        destroyPaginationListeners?.();
+      });
+
+      watch(pagination, async () => {
+        await updatePagination();
+      });
+
+      watch(page, async () => {
+        if (pagination.value && page.value !== pagination.value.getPage()) {
+          await pagination.value.setPage(page.value);
+        }
+      });
 
       return {
         title: collectionComponent.title,
@@ -81,6 +142,9 @@
         openCollectionComponentList() {
           emit('openList', collectionComponent.id);
         },
+        page,
+        pageSize,
+        totalCount,
       };
     },
   };

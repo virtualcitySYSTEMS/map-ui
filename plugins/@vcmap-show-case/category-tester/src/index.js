@@ -54,6 +54,7 @@ export default async function categoryTest() {
           singleSelect: 'Einfachauswahl',
           renamable: 'umbenennbar',
           removable: 'löschbar',
+          pagination: 'Pagination',
           fooEditor: {
             name: 'Name',
             title: 'Titel',
@@ -70,6 +71,7 @@ export default async function categoryTest() {
           singleSelect: 'single select',
           renamable: 'renamable',
           removable: 'removable',
+          pagination: 'Pagination',
           fooEditor: {
             name: 'Name',
             title: 'Title',

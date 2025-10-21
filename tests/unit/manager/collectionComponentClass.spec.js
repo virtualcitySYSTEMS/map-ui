@@ -639,6 +639,215 @@ describe('CollectionComponentClass', () => {
     });
   });
 
+  describe('pagination', () => {
+    /**
+     * Helper to create a fake async loader.
+     * @param {number} total
+     * @returns {(start:number,count:number)=>Promise<{items: any[], total:number}>}
+     */
+    function createLoader(total) {
+      const items = Array.from({ length: total }).map((_, i) => ({
+        name: `item-${i + 1}`,
+      }));
+      return async (start, count) => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 0);
+        });
+        return {
+          items: items.slice(start, start + count),
+          total: items.length,
+        };
+      };
+    }
+
+    let collection;
+
+    beforeEach(() => {
+      collection = new Collection();
+    });
+
+    afterEach(() => {
+      collection?.destroy();
+    });
+
+    it('should not expose totalCount, page or pageSize before initialize', () => {
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: createLoader(25) } },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      expect(p.initialized).to.be.false;
+      expect(() => p.totalCount).to.throw();
+      expect(() => p.getPage()).to.throw();
+      component.destroy();
+    });
+
+    it('should initialize and load first page with default settings', async () => {
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: createLoader(25) } },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      await p.initialize();
+      expect(p.initialized).to.be.true;
+      expect(p.getPage()).to.equal(1);
+      expect(p.getPageSize()).to.equal(10); // defaultPageSize
+      expect(p.totalCount).to.equal(25);
+      expect(p.getPageItems().length).to.equal(10);
+      component.destroy();
+    });
+
+    it('should honor initialPage and defaultPageSize', async () => {
+      const component = new CollectionComponentClass(
+        {
+          collection,
+          pagination: {
+            getItems: createLoader(50),
+            defaultPageSize: 5,
+            initialPage: 3,
+          },
+        },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      await p.initialize();
+      expect(p.getPage()).to.equal(3);
+      expect(p.getPageSize()).to.equal(5);
+      expect(p.getPageItems().length).to.equal(5);
+      expect(p.getPageItems().map((i) => i.name)).to.have.ordered.members([
+        'item-11',
+        'item-12',
+        'item-13',
+        'item-14',
+        'item-15',
+      ]);
+      component.destroy();
+    });
+
+    it('should change page and reload items, firing pageChanged', async () => {
+      const pageChanged = vi.fn();
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: createLoader(30) } },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      p.pageChanged.addEventListener(pageChanged);
+      await p.initialize();
+      await p.setPage(2);
+      expect(p.getPage()).to.equal(2);
+      expect(pageChanged).toHaveBeenCalledTimes(2); // initial + page 2
+      expect(p.getPageItems().map((i) => i.name)[0]).to.equal('item-11');
+      component.destroy();
+    });
+
+    it('should change pageSize, reset to page 1 and fire pageSizeChanged with new size', async () => {
+      const pageSizeChanged = vi.fn();
+      const component = new CollectionComponentClass(
+        {
+          collection,
+          pagination: { getItems: createLoader(40), defaultPageSize: 8 },
+        },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      await p.initialize();
+      p.pageSizeChanged.addEventListener(pageSizeChanged);
+      await p.setPage(3); // move away from page 1
+      expect(p.getPage()).to.equal(3);
+      await p.setPageSize(5); // should reset to page 1
+      expect(p.getPage()).to.equal(1);
+      expect(p.getPageSize()).to.equal(5);
+      expect(pageSizeChanged).toHaveBeenCalledWith(5);
+      expect(p.getPageItems().map((i) => i.name)).to.have.ordered.members([
+        'item-1',
+        'item-2',
+        'item-3',
+        'item-4',
+        'item-5',
+      ]);
+      component.destroy();
+    });
+
+    it('setPagination(undefined) should clear collection and remove pagination instance', async () => {
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: createLoader(12) } },
+        'test',
+      );
+      const p = component.pagination.value;
+      expect(p).to.not.be.undefined;
+      await p.initialize();
+      expect(p.getPageItems().length).to.equal(10);
+      component.setPagination(undefined);
+      expect(component.pagination.value).to.be.undefined;
+      expect(p.getPageItems().length).to.equal(0);
+      component.destroy();
+    });
+
+    it('should handle concurrent setPage calls and only apply the latest resolved result', async () => {
+      // create a loader we can control for page > 1 while letting initialization resolve immediately
+      /** @type {Array<() => void>} */
+      const pendingResolvers = [];
+      /**
+       * @param {number} start
+       * @param {number} count
+       * @returns {Promise<{items:any[], total:number}>}
+       */
+      const loader = (start, count) => {
+        const total = 30;
+        const allItems = Array.from({ length: total }).map((_, i) => ({
+          name: `item-${i + 1}`,
+        }));
+        return new Promise((resolve) => {
+          pendingResolvers.push(() => {
+            resolve({
+              items: allItems.slice(start, start + count),
+              total,
+            });
+          });
+        });
+      };
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: loader } },
+        'test',
+      );
+      const p = /** @type {any} */ (component.pagination.value);
+      // fire two page changes quickly (both will stay pending until we resolve)
+      const setPage2Promise = p.setPage(2);
+      const setPage3Promise = p.setPage(3);
+      expect(pendingResolvers).to.have.length(2);
+      const [resolvePage2, resolvePage3] = pendingResolvers; // order they were queued
+      // Resolve last request (page3) first so it should win
+      resolvePage3();
+      await setPage3Promise;
+      // Resolve stale page2 afterwards
+      resolvePage2();
+      await setPage2Promise;
+      expect(p.getPage()).to.equal(3); // should remain page 3
+      component.destroy();
+    });
+
+    it('should only fire pageChanged once when initialize is called twice', async () => {
+      const pageChanged = vi.fn();
+      const component = new CollectionComponentClass(
+        { collection, pagination: { getItems: createLoader(10) } },
+        'test',
+      );
+      const p = /** @type {any} */ (component.pagination.value);
+      p.pageChanged.addEventListener(pageChanged);
+      const init1 = p.initialize();
+      const init2 = p.initialize();
+      await Promise.all([init1, init2]);
+      expect(pageChanged).toHaveBeenCalledTimes(1);
+      expect(p.initialized).to.be.true;
+      component.destroy();
+    });
+  });
+
   describe('createSupportedMapMappingFunction', () => {
     let mapCollection;
     let collectionComponent;

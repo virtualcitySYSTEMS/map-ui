@@ -53,7 +53,7 @@
           :disabled="item.disabled"
           right
           tooltip-position="right"
-          block-overflow
+          :block-overflow="item.blockOverflow ?? true"
           class="col-4 pa-0 ml-auto pr-4"
         />
       </slot>
@@ -133,6 +133,7 @@
    * @property {Array<VcsTreeNodeItem>} [children] - An optional array of children. Can be binded to another key, using the `item-children` attributes of the VcsTreeview component.
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
    * @property {function(string):void} [clicked] - A callback called when the item is clicked.
+   * @property {boolean} [blockOverflow=true] - Forwards the blockOverflow setting to the ActionButtonList, if true will reserve some space for an overflow.
    */
 
   /**

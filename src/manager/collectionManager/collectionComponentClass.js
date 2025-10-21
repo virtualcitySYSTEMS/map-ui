@@ -1,4 +1,4 @@
-import { IndexedCollection, isOverrideCollection } from '@vcmap/core';
+import { IndexedCollection, isOverrideCollection, VcsEvent } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, reactive, ref, shallowRef, watch } from 'vue';
@@ -13,10 +13,138 @@ import {
 import { sortByOwner } from '../navbarManager.js';
 
 /**
+ * @template T
+ * @typedef {Object} Pagination
+ * @property {() => Promise<void>} initialize
+ * @property {boolean} initialized
+ * @property {number} totalCount - Total number of items.
+ * @property {() => number} getPage
+ * @property {(page: number) => Promise<void>} setPage
+ * @property {() => number} getPageSize
+ * @property {(pageSize: number) => Promise<void>} setPageSize
+ * @property {() => T[]} getPageItems
+ * @property {VcsEvent<number>} pageChanged
+ * @property {VcsEvent<number>} pageSizeChanged
+ */
+
+/**
+ * @template T
+ * @typedef {Object} PaginationOptions
+ * @property {(startIndex: number, count: number) => Promise<{ items: T[], total: number }>} getItems - Async loader returning items slice and total count.
+ * @property {number} [defaultPageSize=10] - Initial page size.
+ * @property {number} [initialPage=1] - Initial page which is applied on initialize.
+ */
+
+/**
+ * Create a simple pagination helper that loads items into the provided collection.
+ * The collection is cleared and refilled whenever the page (or page size) changes.
+ * @template {Object} T
+ * @param {import("@vcmap/core").Collection<T>} collection - Target collection to populate.
+ * @param {PaginationOptions<T>} options - Pagination options.
+ * @returns {Promise<Pagination<T>>}
+ */
+function createPagination(
+  collection,
+  { getItems, defaultPageSize = 10, initialPage = 1 },
+) {
+  let initialized = false;
+  let initializePromise;
+  let totalCount;
+  let currentPage;
+  let currentPageSize = defaultPageSize;
+
+  const pageChanged = new VcsEvent();
+  const pageSizeChanged = new VcsEvent();
+
+  /**
+   * @param {number} page
+   * @param {number} [size]
+   * @returns {Promise<void>}
+   */
+  async function setPage(page, size) {
+    const pageSize = size || currentPageSize;
+
+    if (currentPage === page && currentPageSize === pageSize) {
+      return;
+    }
+
+    const prevPage = currentPage;
+    const prevPageSize = currentPageSize;
+
+    const result = await getItems((page - 1) * pageSize, pageSize);
+    // If another request finished in the meantime, ignore the result (stale)
+    if (currentPage !== prevPage || currentPageSize !== prevPageSize) {
+      return;
+    }
+    const { items, total } = result;
+    totalCount = total;
+    collection.clear();
+    items.forEach((i) => {
+      collection.add(i);
+    });
+
+    currentPage = page;
+    pageChanged.raiseEvent(currentPage);
+    if (pageSize && pageSize !== currentPageSize) {
+      currentPageSize = pageSize;
+      pageSizeChanged.raiseEvent(currentPageSize);
+    }
+    if (!initialized) {
+      initialized = true;
+    }
+  }
+
+  return {
+    initialize() {
+      if (!initializePromise) {
+        initializePromise = setPage(initialPage, defaultPageSize);
+      }
+      return initializePromise;
+    },
+    get initialized() {
+      return initialized;
+    },
+    get totalCount() {
+      if (!initialized) {
+        throw new Error(
+          'No initial request send yet. Please initialize/setPage first',
+        );
+      }
+      return totalCount;
+    },
+    getPage() {
+      if (!initialized) {
+        throw new Error(
+          'No initial request send yet. Please initialize/setPage first',
+        );
+      }
+      return currentPage;
+    },
+    setPage,
+    getPageSize() {
+      return currentPageSize;
+    },
+    async setPageSize(size) {
+      await setPage(1, size);
+    },
+    getPageItems() {
+      if (!initialized) {
+        throw new Error(
+          'No initial request send yet. Please initialize/setPage first',
+        );
+      }
+      return [...collection];
+    },
+    pageChanged,
+    pageSizeChanged,
+  };
+}
+
+/**
  * @typedef {Object} CollectionComponentUiOptions
  * @property {string} [id]
  * @property {string} [title]
- * @property {boolean} [draggable=false] - only supported for IndexedCollections
+ * @property {boolean} [draggable=false] - only supported for IndexedCollections.
  * @property {boolean} [renamable=false] - adds actions to rename items from list. Sets a default titleChanged callback on all list items, which can be overwritten in the mapping function, if necessary.
  * @property {boolean} [removable=false] - adds actions to remove items from list. Also adds a header action to delete selected, if selectable is set to true.
  * @property {boolean} [selectable=false]
@@ -26,6 +154,7 @@ import { sortByOwner } from '../navbarManager.js';
  * @property {string} [removeTitle="list.deleteItem"]
  * @property {string} [bulkRemoveTitle="list.delete"]
  * @property {string} [renameTitle="list.renameItem"]
+ * @property {PaginationOptions<unknown>} [pagination]
  */
 
 /**
@@ -204,6 +333,15 @@ class CollectionComponentClass {
       bulkRemoveTitle: options.bulkRemoveTitle ?? 'list.delete',
       renameTitle: options.renameTitle ?? 'list.renameItem',
     };
+
+    /**
+     * @type {import("vue").ShallowRef<Pagination<T> | undefined>}
+     * @readonly
+     */
+    this.pagination = shallowRef();
+    if (options.pagination) {
+      this.setPagination(options.pagination);
+    }
 
     /**
      * @tyep {() => void}
@@ -649,6 +787,18 @@ class CollectionComponentClass {
     this._itemMappings = itemMappings;
     this._itemFilters = itemFilters;
     this._actions.value = actions;
+  }
+
+  /**
+   * @param {PaginationOptions<T> | undefined} options
+   */
+  setPagination(options) {
+    if (options) {
+      this.pagination.value = createPagination(this.collection, options);
+    } else {
+      this.pagination.value = undefined;
+      this.collection.clear();
+    }
   }
 
   /**
