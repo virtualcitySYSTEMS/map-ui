@@ -99,6 +99,10 @@
       };
       setupI18n();
       const setLocale = () => {
+        if (!languages.value.includes(app.locale)) {
+          localLanguage.value = 'en';
+          return;
+        }
         localLanguage.value = app.locale;
       };
       setLocale();

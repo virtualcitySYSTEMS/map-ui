@@ -12,6 +12,7 @@
 - fixes a bug where featureInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
 - updates styles of SplashScreen: checkbox are now always visible
 - fixes a bug where added layers with legend would not trigger legend update
+- fixes an issue, where if the fallback locale is being used (because the current locale is not available) the setting shows the navigator locale instead of the fallback value which is actually applied
 
 ### Changes
 
