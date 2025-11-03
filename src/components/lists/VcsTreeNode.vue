@@ -14,12 +14,13 @@
       ref="treenodeRef"
       no-gutters
       class="treenode flex-nowrap text-truncate"
-      :class="`level-${level} ${children.length ? 'group' : 'item'}`"
+      :class="`level-${level} ${isGroup ? 'group' : 'item'}`"
     >
       <VBtn
-        v-if="children.length"
+        v-if="isGroup"
         class="chevron-btn"
         variant="text"
+        :disabled="item.children.length === 0"
         :icon="isOpen ? 'mdi-chevron-down' : 'mdi-chevron-right'"
         @click="bubbleItemToggled(item.name)"
       />
@@ -41,7 +42,7 @@
       <slot name="title" v-bind="{ item }">
         <VcsTreeviewTitle
           :item="item"
-          :cursor-pointer="item.clickable || (openOnClick && !!children.length)"
+          :cursor-pointer="item.clickable || (openOnClick && isGroup)"
           @click="(event) => $emit('click', item, event)"
         />
       </slot>
@@ -134,6 +135,7 @@
    * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be a URL or HTMLElement.
    * @property {function(string):void} [clicked] - A callback called when the item is clicked.
    * @property {boolean} [blockOverflow=true] - Forwards the blockOverflow setting to the ActionButtonList, if true will reserve some space for an overflow.
+   * @property {boolean} [forceNodeDisplay] - Forces the item to display as a node (with chevron) even when it has no children.
    */
 
   /**
@@ -254,6 +256,9 @@
         forwardSlots,
         treenodeRef,
         isOpen,
+        isGroup: computed(
+          () => children.value.length > 0 || props.item.forceNodeDisplay,
+        ),
         matchFilter,
         iconSize,
         children,

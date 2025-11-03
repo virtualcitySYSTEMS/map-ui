@@ -1,3 +1,10 @@
+# 6.2.3
+
+### Changes
+
+- Added a `loadOnStartup` flag to wmsGroupContentTreeItem allowing to load capabilities on click instead of doing so on startup
+- Added an optional `forceNodeDisplay` flag to VcsTreeNodeItem, allowing to render a Node item even when the item has no children
+
 # 6.2.2
 
 ### Fixes
