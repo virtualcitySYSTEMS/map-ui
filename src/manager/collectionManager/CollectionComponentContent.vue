@@ -9,9 +9,9 @@
       :show-title="false"
       @item-moved="move"
     />
-    <v-sheet v-if="page && pageSize && totalCount && items.length !== 0">
+    <v-sheet v-if="page && pageSize && totalCount > pageSize">
       <v-pagination
-        class="px-2"
+        class="px-4"
         v-model="page"
         :length="Math.ceil(totalCount / pageSize)"
         density="compact"

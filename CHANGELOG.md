@@ -6,6 +6,10 @@
 - Added an optional `forceNodeDisplay` flag to VcsTreeNodeItem, allowing to render a Node item even when the item has no children
 - Links now respect altered WMS layer layers and styles & correclty recreate said state.
 
+### Fixes
+
+- fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+
 # 6.2.2
 
 ### Fixes
