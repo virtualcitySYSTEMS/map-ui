@@ -204,6 +204,47 @@ export function parseUrlExtentState(state, moduleId) {
 }
 
 /**
+ * @param {string} style
+ * @returns {{layers: string, styles: string}}
+ */
+export function parseWMSStyle(style) {
+  const [layerLengthString, parts] = style.split(';');
+  const layerLength = parseInt(layerLengthString, 10);
+  return {
+    layers: parts.substring(0, layerLength),
+    styles: parts.substring(layerLength),
+  };
+}
+
+/**
+ * @param {import("@vcmap/core").WMSLayer} layer
+ * @param {import("@vcmap/core").VcsModuleConfig=} moduleConfig
+ * @returns {string|undefined}
+ */
+export function writeWMSStyleForLayer(layer, moduleConfig) {
+  const config = moduleConfig?.layers?.find((m) => m.name === layer.name) ?? {
+    layers: '',
+    parameters: {},
+  };
+  let currentLayers = layer.getLayers().join(',');
+  if (currentLayers === config.layers) {
+    currentLayers = '';
+  }
+
+  let currentStyle = layer.parameters.STYLES || '';
+  if (
+    currentStyle === config.parameters.STYLES ||
+    currentStyle === config.parameters.styles
+  ) {
+    currentStyle = '';
+  }
+  if (currentLayers || currentStyle) {
+    return `${currentLayers.length};${currentLayers}${currentStyle}`;
+  }
+  return undefined;
+}
+
+/**
  * @param {UrlLayerState} state
  * @returns {LayerState}
  */

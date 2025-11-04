@@ -17,6 +17,8 @@ import {
   VectorStyleItem,
   Viewpoint,
   ClippingPolygonObject,
+  LayerState,
+  WMSLayer,
 } from '@vcmap/core';
 import { setObliqueMap } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
@@ -81,6 +83,15 @@ async function setupApp(app) {
     activeOnStartup: true,
   });
   app.layers.add(deactivatedActiveOnStartupLayer);
+  const wmsLayer = new WMSLayer({
+    name: 'wmsLayer',
+    layers: 'foo,bar',
+    parameters: {
+      STYLES: 'foo,baz',
+    },
+  });
+  wmsLayer._state = LayerState.ACTIVE;
+  app.layers.add(wmsLayer);
 
   const unsupportedLayer = new VectorLayer({
     name: 'unsupportedLayer',
@@ -279,6 +290,14 @@ describe('VcsUiApp', () => {
           expect(state.layers).to.deep.include({
             name: 'layerStyledByVolatileStyle',
             active: true,
+          });
+        });
+
+        it('should encode WMS layers and styles correctly', () => {
+          expect(state.layers).to.deep.include({
+            name: 'wmsLayer',
+            active: true,
+            styleName: '7;foo,barfoo,baz',
           });
         });
       });

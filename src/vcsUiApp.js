@@ -11,6 +11,7 @@ import {
   VcsEvent,
   Viewpoint,
   volatileModuleId,
+  WMSLayer,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import { deserializePlugin, serializePlugin } from './pluginHelper.js';
@@ -36,7 +37,12 @@ import FeatureInfo, {
   featureInfoClassRegistry,
 } from './featureInfo/featureInfo.js';
 import UiConfig from './uiConfig.js';
-import { createEmptyState, getStateFromURL } from './state.js';
+import {
+  createEmptyState,
+  getStateFromURL,
+  parseWMSStyle,
+  writeWMSStyleForLayer,
+} from './state.js';
 import { version } from '../package.json';
 import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
@@ -591,6 +597,12 @@ class VcsUiApp extends VcsApp {
           l.style[moduleIdSymbol] !== volatileModuleId
         ) {
           layerState.styleName = l.style.name;
+        } else if (l instanceof WMSLayer) {
+          const module = this.getModuleById(l[moduleIdSymbol]);
+          const styleName = writeWMSStyleForLayer(l, module?.config);
+          if (styleName) {
+            layerState.styleName = styleName;
+          }
         }
         return layerState;
       });
@@ -677,12 +689,21 @@ class VcsUiApp extends VcsApp {
             layer.deactivate();
           }
 
-          if (
-            layerState.styleName &&
-            this.styles.hasKey(layerState.styleName) &&
-            layer.setStyle
-          ) {
-            layer.setStyle(this.styles.getByKey(layerState.styleName));
+          if (layerState.styleName) {
+            if (this.styles.hasKey(layerState.styleName) && layer.setStyle) {
+              layer.setStyle(this.styles.getByKey(layerState.styleName));
+            } else if (layer instanceof WMSLayer) {
+              const { layers, styles } = parseWMSStyle(layerState.styleName);
+              if (styles) {
+                layer.parameters.STYLES = styles;
+              }
+              layer.setLayers(layers || layer.getLayers()).catch((err) => {
+                this.getLogger().warn(
+                  `Failed to set WMS layers ${layers} on layer ${layer.name}`,
+                  err,
+                );
+              });
+            }
           }
         }
       });

@@ -123,8 +123,17 @@ These parameters control which map layers are visible when the scene is loaded. 
 
 To describe this an array is used. The first places describes the name of the layer, the second is either `0` (for inactive) or `1` (for active) and the third place describes the name of the active Style (if there is no style it is `0`).
 
+The style element typically refers to a style name which should be applied to the layer. This
+does not hold for WMS layers, where the style refers to the WMS layer & style parameter, which is an
+encoded string for layers and styles which should be set on the layer. The encoding
+is as follows: the string length of the layer parameter is given first, followed by a semi colon. then
+the layer string is given, then the style string after the offset.
+`7;foo,barbaz,foobar` would set the layer parameter to `foo,bar` (7 characters) and the style parameter to `baz,foobar`.
+
 - Example:
-  `["osmBuildingFootprints",1, 0 ]`
+  `["osmBuildingFootprints",1,0]`
+- Example:
+  `["some_wms",0,"7;foo,barbaz"]`
 
 ## Plugin Parameters
 
