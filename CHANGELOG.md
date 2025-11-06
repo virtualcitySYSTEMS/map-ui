@@ -4,11 +4,12 @@
 
 - Added a `loadOnStartup` flag to wmsGroupContentTreeItem allowing to load capabilities on click instead of doing so on startup
 - Added an optional `forceNodeDisplay` flag to VcsTreeNodeItem, allowing to render a Node item even when the item has no children
-- Links now respect altered WMS layer layers and styles & correclty recreate said state.
+- Links now respect altered WMS layer layers and styles & correctly recreate said state.
 
 ### Fixes
 
-- fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+- Fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+- The user will be warned when trying to create a link while a module with an unstable \_id is loaded.
 
 # 6.2.2
 

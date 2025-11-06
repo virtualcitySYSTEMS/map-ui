@@ -563,9 +563,17 @@ class VcsUiApp extends VcsApp {
    */
   async getState(forUrl) {
     const state = createEmptyState();
-    state.moduleIds = this.modules
-      .filter(({ _id }) => _id !== defaultDynamicModuleId)
-      .map(({ _id }) => _id);
+    const nonDynamicModules = this.modules.filter(
+      ({ _id }) => _id !== defaultDynamicModuleId,
+    );
+
+    if (nonDynamicModules.some((m) => !m.config._id)) {
+      getLogger().warning(
+        'Some modules you are creating are missing a stable _id property. This may lead to issues while restoring application state.',
+      );
+    }
+
+    state.moduleIds = nonDynamicModules.map(({ _id }) => _id);
 
     state.activeMap = this.maps.activeMap.name;
     const viewpoint = await this.maps.activeMap.getViewpoint();
@@ -654,6 +662,11 @@ class VcsUiApp extends VcsApp {
    */
   async _parseModule(module) {
     const { config } = module;
+    if (!config._id) {
+      getLogger().warning(
+        'A module is missing a stable _id property. This may lead to issues while restoring application state.',
+      );
+    }
     if (Array.isArray(config.plugins)) {
       await this._plugins.parseItems(config.plugins, module._id);
     }
@@ -679,7 +692,7 @@ class VcsUiApp extends VcsApp {
         if (layer) {
           if (layerState.active) {
             layer.activate().catch((e) => {
-              getLogger().warn(
+              getLogger().warning(
                 'Failed to activate cached app state. layer failed: ',
                 layer.name,
               );
@@ -698,7 +711,7 @@ class VcsUiApp extends VcsApp {
                 layer.parameters.STYLES = styles;
               }
               layer.setLayers(layers || layer.getLayers()).catch((err) => {
-                this.getLogger().warn(
+                getLogger().warning(
                   `Failed to set WMS layers ${layers} on layer ${layer.name}`,
                   err,
                 );
