@@ -73,7 +73,7 @@
   import VcsList from '../lists/VcsList.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsButton from '../buttons/VcsButton.vue';
-  import { moveItem } from '../../manager/collectionManager/CollectionComponentList.vue';
+  import { moveItem } from '../lists/dragHelper.js';
   import CollectionComponentClass from '../../manager/collectionManager/collectionComponentClass.js';
   import { WindowSlot } from '../../manager/window/windowManager.js';
   import VcsViewpointEditor from '../viewpoint/VcsViewpointEditor.vue';
@@ -330,7 +330,7 @@
         draggable: collectionComponent.draggable,
         actions: collectionComponent.getActions(),
         move(event) {
-          moveItem(collectionComponent, event);
+          moveItem(collectionComponent.collection, event);
         },
         durationRule,
         showDuration(index) {

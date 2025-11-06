@@ -10,6 +10,8 @@
 
 - Fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
 - The user will be warned when trying to create a link while a module with an unstable \_id is loaded.
+- fixes a bug where in firefox the css classes of `dragHelper.js` are not removed correctly
+- fixes a bug where drag and drop did not work correctly in `LayerSwap.vue`, `CollectionComponentList.vue`, `CollectionComponentContent.vue` and `VcsFlightAnchorsComponent`
 
 # 6.2.2
 

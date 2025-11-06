@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 import { reactive, ref } from 'vue';
 import {
@@ -91,6 +92,12 @@ function doDrop(items, draggableSetup) {
   return event;
 }
 
+function doDragEnd(draggableSetup) {
+  const event = createMouseEvent('dragend');
+  draggableSetup.dragEnd(event);
+  return event;
+}
+
 describe('drag helper', () => {
   describe('setupDraggableListOrTree', () => {
     describe('draggable VcsList', () => {
@@ -140,6 +147,17 @@ describe('drag helper', () => {
           expect(event.currentTarget.classList.contains('drop-target-after')).to
             .be.false;
           expect(event.dataTransfer).to.have.property('dropEffect', 'none');
+        });
+
+        it('should remove css classes from first element, if dragover emitted from second element', () => {
+          doDragStart(items, draggableList);
+          const event = doDragOver(items, draggableList, 30);
+          const { currentTarget } = event;
+          expect(currentTarget.classList.contains('drop-target-after')).to.be
+            .true;
+          doDragOver(items, draggableList, 34);
+          expect(currentTarget.classList.contains('drop-target-after')).to.be
+            .false;
         });
 
         describe('dropTargetZones', () => {
@@ -236,15 +254,16 @@ describe('drag helper', () => {
         });
       });
 
-      it('should clear css drop target classes on drag leave', () => {
-        const event = createMouseEvent('dragleave');
-        event.currentTarget.classList.add('drop-target-before');
-        draggableList.dragLeave(event);
+      it('should clear css drop target classes on drag end', () => {
+        doDragStart(items, draggableList);
+        const event = doDragOver(items, draggableList, 2);
+        expect(event.currentTarget.classList.contains('drop-target-before')).to
+          .be.true;
+        doDragEnd(draggableList);
         expect(event.currentTarget.classList.contains('drop-target-before')).to
           .be.false;
         expect(event.currentTarget.classList.contains('drop-target-after')).to
           .be.false;
-        expect(event.dataTransfer).to.have.property('dropEffect', 'none');
       });
 
       it('should emit itemMoved on drop over upper half', () => {
@@ -489,19 +508,6 @@ describe('drag helper', () => {
             expect(event2.dataTransfer).to.have.property('dropEffect', 'move');
           });
         });
-      });
-
-      it('should clear css drop target classes on drag leave', () => {
-        const event = createMouseEvent('dragleave');
-        event.currentTarget.classList.add('drop-target-before');
-        draggableTree.dragLeave(event);
-        expect(event.currentTarget.classList.contains('drop-target-before')).to
-          .be.false;
-        expect(event.currentTarget.classList.contains('drop-target-into')).to.be
-          .false;
-        expect(event.currentTarget.classList.contains('drop-target-after')).to
-          .be.false;
-        expect(event.dataTransfer).to.have.property('dropEffect', 'none');
       });
 
       it('should emit itemMoved on drop over upper quarter', () => {

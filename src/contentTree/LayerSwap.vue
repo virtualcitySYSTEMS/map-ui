@@ -29,6 +29,10 @@
   import VcsHelp from '../components/notification/VcsHelp.vue';
   import VcsTreeview from '../components/lists/VcsTreeview.vue';
   import WMSGroupContentTreeItem from './wmsGroupContentTreeItem.js';
+  import {
+    moveItem,
+    moveDraggableItems,
+  } from '../components/lists/dragHelper.js';
 
   export const layerSwapId = 'layer-swap-window';
 
@@ -143,16 +147,23 @@
           }
           return { into: false };
         },
-        move({ item, targetItem }) {
+        /**
+         * @param {import("../components/lists/dragHelper.js").ItemMovedEvent} event
+         */
+        move(event) {
+          const { item, targetItem, position } = event;
           const layer = app.layers.getByKey(item.name);
           if (layer && !targetItem[vcsLayerName]) {
-            app.layers.moveTo(layer, targetItem.index);
+            moveItem(app.layers, event);
           } else if (item[vcsLayerName] === targetItem[vcsLayerName]) {
             const wmsLayer = app.layers.getByKey(item[vcsLayerName]);
             if (wmsLayer instanceof WMSLayer) {
               const newLayerNames = wmsLayer.getLayers();
-              newLayerNames.splice(item.index, 1);
-              newLayerNames.splice(targetItem.index, 0, item[wmsLayerName]);
+              moveDraggableItems(newLayerNames, {
+                item: item[wmsLayerName],
+                targetItem: targetItem[wmsLayerName],
+                position,
+              });
               wmsLayer
                 .setLayers(newLayerNames)
                 .catch((e) => getLogger('LayerSwap.vue').error(e));

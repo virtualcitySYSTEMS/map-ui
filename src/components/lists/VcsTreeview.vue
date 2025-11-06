@@ -36,7 +36,6 @@
         @dragover="dragOver"
         @dragend="dragEnd"
         @drop="drop"
-        @dragleave="dragLeave"
         @item-toggled="itemToggled"
         @click="itemClicked"
       >
@@ -164,14 +163,13 @@
 
       const { xs } = useDisplay();
 
-      const { isDraggable, dragStart, dragOver, dragLeave, dragEnd, drop } =
+      const { isDraggable, dragStart, dragOver, dragEnd, drop } =
         setupDraggableListOrTree(props, localSearchValue, emit);
 
       return {
         isDraggable,
         dragStart,
         dragOver,
-        dragLeave,
         dragEnd,
         drop,
         localSearchValue,

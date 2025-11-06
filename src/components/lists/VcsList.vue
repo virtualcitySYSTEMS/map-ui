@@ -46,7 +46,6 @@
           "
           @dragend="dragEnd($event)"
           @drop="drop($event, item)"
-          @dragleave="dragLeave($event)"
           :class="{
             'v-list-item__selected': selected.includes(item),
             'v-list-item__lighten_even': lightenEven,
@@ -246,23 +245,16 @@
     return items;
   });
 
-  const {
-    dragging,
-    isDraggable,
-    dragStart,
-    dragOver,
-    dragLeave,
-    dragEnd,
-    drop,
-  } = setupDraggableListOrTree(props, query, (e, value) =>
-    emit(e, {
-      ...value,
-      // @deprecate: targetIndex will be removed on next mayor release
-      targetIndex: props.items.findIndex(
-        (i) => i.name === value.targetItem.name,
-      ),
-    }),
-  );
+  const { dragging, isDraggable, dragStart, dragOver, dragEnd, drop } =
+    setupDraggableListOrTree(props, query, (e, value) =>
+      emit(e, {
+        ...value,
+        // @deprecate: targetIndex will be removed on next mayor release
+        targetIndex: props.items.findIndex(
+          (i) => i.name === value.targetItem.name,
+        ),
+      }),
+    );
 
   const { select, selected, selectionActions } = setupSelectableList(
     props,

@@ -36,34 +36,12 @@
 
 <script>
   import { computed, inject } from 'vue';
-  import { IndexedCollection } from '@vcmap/core';
   import { VSheet } from 'vuetify/components';
   import { createSelectionActions } from '../../components/lists/listHelper.js';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
-
-  /**
-   * Moves an item to a new position.
-   * New position is derived from a target item in the collection.
-   * This ensures correct movement, if rendered list is only a subset of the collection.
-   * @param {import("./collectionComponentClass.js").default<Object>} collectionComponent
-   * @param {import("../../components/lists/dragHelper.js").ItemMovedEvent} event
-   */
-  export function moveItem(
-    collectionComponent,
-    { item, targetItem, position },
-  ) {
-    const { collection } = collectionComponent;
-    if (collection instanceof IndexedCollection) {
-      const collectionItem = collection.getByKey(item.name);
-      const keyProperty = collection.uniqueKey;
-      const targetIndexCol = [...collection].findIndex(
-        (i) => i[keyProperty] === targetItem.name,
-      );
-      collection.moveTo(collectionItem, targetIndexCol + position);
-    }
-  }
+  import { moveItem } from '../../components/lists/dragHelper.js';
 
   /**
    * @description
@@ -124,7 +102,7 @@
           return actions.value;
         }),
         move(event) {
-          moveItem(collectionComponent, event);
+          moveItem(collectionComponent.collection, event);
         },
         closeList() {
           emit('closeList', collectionComponent.id);

@@ -313,6 +313,7 @@ export { default as VcsList } from './src/components/lists/VcsList.vue';
 export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
 export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.vue';
 export * from './src/components/lists/listHelper.js';
+export { moveDraggableItems } from './src/components/lists/dragHelper.js';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
 export { default as VcsTreeNode } from './src/components/lists/VcsTreeNode.vue';
 export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.vue';

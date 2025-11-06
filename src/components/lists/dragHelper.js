@@ -43,7 +43,6 @@ export const InsertMode = {
  *     dropTargetZones?: DropZones,
  *     isOpen?: boolean,
  *   ) => void;
- *   dragLeave: (e: MouseEvent) => void;
  *   dragEnd: (e: MouseEvent) => void;
  *   drop: (
  *     e: MouseEvent,
@@ -101,6 +100,11 @@ export function setupDraggableListOrTree(props, query, emit) {
   });
 
   /**
+   * @type {HTMLElement | undefined}
+   */
+  let lastDropTarget;
+
+  /**
    *
    * @param {HTMLElement} target
    */
@@ -148,7 +152,7 @@ export function setupDraggableListOrTree(props, query, emit) {
     ) {
       dropPosition = InsertMode.AFTER;
       currentTarget.classList.add('drop-target-after');
-    } else if (dropTargetZones === true || dropTargetZones.into === true) {
+    } else if (isIntoAllowed) {
       dropPosition = InsertMode.INTO;
       currentTarget.classList.add('drop-target-into');
       e.dataTransfer.dropEffect = 'copy';
@@ -158,7 +162,7 @@ export function setupDraggableListOrTree(props, query, emit) {
   }
 
   /**
-   * @param {MouseEvent} e
+   * @param {DragEvent} e
    * @param {VcsDraggableItem} item
    */
   function drop(e, item) {
@@ -178,7 +182,7 @@ export function setupDraggableListOrTree(props, query, emit) {
   }
 
   /**
-   * @param {MouseEvent} e
+   * @param {DragEvent} e
    * @param {VcsDraggableItem} item
    */
   function dragStart(e, item) {
@@ -191,7 +195,7 @@ export function setupDraggableListOrTree(props, query, emit) {
   }
 
   /**
-   * @param {MouseEvent} e
+   * @param {DragEvent} e
    * @param {VcsDraggableItem} item
    * @param {HTMLElement} dropTarget
    * @param {DropZones} [dropTargetZones=true]
@@ -207,12 +211,20 @@ export function setupDraggableListOrTree(props, query, emit) {
     e.stopPropagation();
     e.preventDefault();
     if (
-      !isDraggable.value ||
-      !dragging.value ||
-      draggedItem?.name === item.name
+      (!isDraggable.value ||
+        !dragging.value ||
+        draggedItem?.name === item.name) &&
+      e.dataTransfer
     ) {
       e.dataTransfer.dropEffect = 'none';
       return;
+    }
+
+    if (lastDropTarget !== e.currentTarget) {
+      if (lastDropTarget) {
+        clearDropTargetClasses(lastDropTarget);
+      }
+      lastDropTarget = e.currentTarget;
     }
 
     clearDropTargetClasses(e.currentTarget);
@@ -227,22 +239,16 @@ export function setupDraggableListOrTree(props, query, emit) {
   }
 
   /**
-   * @param {MouseEvent} e
-   */
-  function dragLeave(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    dropPosition = null;
-    clearDropTargetClasses(e.currentTarget);
-  }
-
-  /**
-   * @param {MouseEvent} e
+   * @param {DragEvent} e
    */
   function dragEnd(e) {
     e.stopPropagation();
     dropPosition = null;
     dragging.value = false;
+    if (lastDropTarget) {
+      clearDropTargetClasses(lastDropTarget);
+      lastDropTarget = null;
+    }
   }
 
   return {
@@ -250,7 +256,6 @@ export function setupDraggableListOrTree(props, query, emit) {
     isDraggable,
     dragStart,
     dragOver,
-    dragLeave,
     dragEnd,
     drop,
   };
@@ -272,7 +277,7 @@ function findAndSplice(
   insertPosition,
   ...itemsToInsert
 ) {
-  const index = array.findIndex((i) => i === item);
+  const index = array.indexOf(item);
 
   if (index !== -1) {
     if (insertPosition === InsertMode.AFTER) {
@@ -322,4 +327,25 @@ function findAndSplice(
 export function moveDraggableItems(items, { item, targetItem, position }) {
   findAndSplice(items, item, 1);
   findAndSplice(items, targetItem, 0, position, item);
+}
+
+/**
+ * Moves an item to a new position.
+ * New position is derived from a target item in the collection.
+ * This ensures correct movement, if rendered list is only a subset of the collection.
+ * @template T
+ * @param {import("@vcmap/core").IndexedCollection<T>} collection
+ * @param {import("../../components/lists/dragHelper.js").ItemMovedEvent} event
+ */
+export function moveItem(collection, event) {
+  if (collection.moveTo) {
+    const item = collection.getByKey(event.item.name);
+    const target = collection.getByKey(event.targetItem.name);
+
+    const itemIndex = collection.indexOf(item);
+    const targetIndex = collection.indexOf(target);
+    const relativePosition = itemIndex < targetIndex ? -1 : 1;
+    const offset = relativePosition === event.position ? event.position : 0;
+    collection.moveTo(item, targetIndex + offset);
+  }
 }
