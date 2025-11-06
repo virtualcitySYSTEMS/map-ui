@@ -1,0 +1,19 @@
+{
+  "name": "Geofence",
+  "_id": "geofence",
+  "description": "module adding Geofence plugin, restricting the view to Berlin area",
+  "plugins": [
+    {
+      "name": "@vcmap/geofence",
+      "entry": "plugins/@vcmap/geofence/index.js",
+      "extentOptions": {
+        "coordinates": [13.35, 52.49, 13.43, 52.53],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      }
+    }
+  ]
+}

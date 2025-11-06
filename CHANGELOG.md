@@ -1,3 +1,10 @@
+# 6.3.0
+
+### Plugin Bundle updates
+
+- @vcmap/geofence
+  - Added to the dev environment
+
 # 6.2.3
 
 ### Changes
