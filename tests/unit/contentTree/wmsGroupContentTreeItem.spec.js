@@ -58,7 +58,7 @@ describe('WMSGroupContentTreeItem', () => {
       app.layers.add(layer);
       await layer.activate();
       wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
-        { name: 'test', layerName: 'foo' },
+        { name: 'test', layerName: 'foo', loadOnStartup: true },
         app,
       );
       app.contentTree.add(wmsGroupContentTreeItem);
@@ -232,7 +232,7 @@ describe('WMSGroupContentTreeItem', () => {
         layers: 'flughaefen',
       });
       wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
-        { name: 'test', layerName: 'foo' },
+        { name: 'test', layerName: 'foo', loadOnStartup: true },
         app,
       );
       app.contentTree.add(wmsGroupContentTreeItem);
@@ -342,7 +342,12 @@ describe('WMSGroupContentTreeItem', () => {
       app.layers.add(layer);
       await layer.activate();
       wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
-        { name: 'test', layerName: 'foo', setWMSLayersExclusive: true },
+        {
+          name: 'test',
+          layerName: 'foo',
+          setWMSLayersExclusive: true,
+          loadOnStartup: true,
+        },
         app,
       );
       app.contentTree.add(wmsGroupContentTreeItem);
@@ -382,6 +387,78 @@ describe('WMSGroupContentTreeItem', () => {
           expect(child.state).to.equal(StateActionState.INACTIVE);
         }
       });
+    });
+  });
+
+  describe('initOpen and loadOnStartup options', () => {
+    let layer;
+    let wmsGroupContentTreeItem;
+
+    beforeAll(async () => {
+      app = new VcsUiApp();
+      layer = new WMSLayer({
+        name: 'foo',
+        url: 'http://sgx.geodatenzentrum.de/wms_poi_open',
+        layers: 'flughaefen,haltestellen',
+      });
+      app.layers.add(layer);
+    });
+
+    afterAll(() => {
+      app.destroy();
+    });
+
+    it('capabilities should not be fetched if loadOnStartup is false', async () => {
+      wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
+        {
+          name: 'test',
+          layerName: 'foo',
+          loadOnStartup: false,
+        },
+        app,
+      );
+      app.contentTree.add(wmsGroupContentTreeItem);
+      // WMSGroupContentTreeItem calls async setup where we parse the Capabilities
+      await awaitStateChange(wmsGroupContentTreeItem._state);
+
+      expect(wmsGroupContentTreeItem._availableWMSEntries.length > 0).to.be
+        .false;
+    });
+
+    it('capabilities should be fetched if loadOnStartup is true', async () => {
+      wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
+        { name: 'test', layerName: 'foo', loadOnStartup: true },
+        app,
+      );
+      app.contentTree.add(wmsGroupContentTreeItem);
+      // WMSGroupContentTreeItem calls async setup where we parse the Capabilities
+      await awaitStateChange(wmsGroupContentTreeItem._state);
+
+      expect(wmsGroupContentTreeItem._availableWMSEntries.length > 0).to.be
+        .true;
+    });
+
+    it('should be open and have children when initOpen and loadOnStartup are true', async () => {
+      wmsGroupContentTreeItem = new WMSGroupContentTreeItem(
+        {
+          name: 'test',
+          layerName: 'foo',
+          initOpen: true,
+          loadOnStartup: true,
+        },
+        app,
+      );
+      app.contentTree.add(wmsGroupContentTreeItem);
+      // WMSGroupContentTreeItem calls async setup where we parse the Capabilities
+      await awaitStateChange(wmsGroupContentTreeItem._state);
+
+      expect(
+        app.contentTree
+          .getTreeOpenState('Content')
+          .includes(wmsGroupContentTreeItem.name),
+      ).to.be.true;
+      expect(wmsGroupContentTreeItem._availableWMSEntries.length > 0).to.be
+        .true;
     });
   });
 });

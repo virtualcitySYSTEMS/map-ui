@@ -1,11 +1,13 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { setDefaultProjectionOptions, Viewpoint } from '@vcmap/core';
+import { setDefaultProjectionOptions, Viewpoint, WMSLayer } from '@vcmap/core';
 import {
   createEmptyState,
   getStateFromURL,
   parseUrlExtentState,
   parseUrlProjectedViewpointState,
+  parseWMSStyle,
   setStateToUrl,
+  writeWMSStyleForLayer,
 } from '../../src/state.js';
 
 describe('URL state IO', () => {
@@ -290,6 +292,85 @@ describe('URL state IO', () => {
         expectedViewpoint.groundPosition,
       );
       expect(result.distance).to.equal(expectedViewpoint.distance);
+    });
+  });
+
+  describe('handling of WMS layers', () => {
+    let layerConfig;
+    let layer;
+    let layerWithOnlyStyle;
+    let layerWithOnlyLayers;
+
+    beforeAll(() => {
+      layerConfig = {
+        name: 'wmsLayer',
+        layers: 'foo,bar',
+        parameters: {
+          styles: 'foo,baz',
+        },
+      };
+      layer = new WMSLayer(layerConfig);
+      layerWithOnlyStyle = new WMSLayer({
+        name: 'wmsLayerWithOnlyStyle',
+        parameters: {
+          styles: 'foo,baz',
+        },
+      });
+      layerWithOnlyLayers = new WMSLayer({
+        name: 'wmsLayerWithOnlyLayers',
+        layers: 'foo,bar',
+      });
+    });
+
+    describe('writing a WMS layer state', () => {
+      it('should write layers and styles for WMS layers with both', () => {
+        const layerState = writeWMSStyleForLayer(layer, {});
+        expect(layerState).to.equal('7;foo,barfoo,baz');
+      });
+
+      it('should not write a style, if the layers config already has these styles', () => {
+        const layerState = writeWMSStyleForLayer(layer, {
+          layers: [layerConfig],
+        });
+        expect(layerState).to.be.undefined;
+      });
+
+      it('should write only styles for WMS layers with only styles', () => {
+        const layerState = writeWMSStyleForLayer(layerWithOnlyStyle, {
+          layers: [],
+        });
+        expect(layerState).to.equal('0;foo,baz');
+      });
+
+      it('should write only layers for WMS layers with only layers', () => {
+        const layerState = writeWMSStyleForLayer(layerWithOnlyLayers, {
+          layers: [],
+        });
+        expect(layerState).to.equal('7;foo,bar');
+      });
+    });
+
+    describe('parsing WMS styles', () => {
+      it('should parse layers and styles from a WMS layer state', () => {
+        const layerState = writeWMSStyleForLayer(layer, {});
+        const parsedState = parseWMSStyle(layerState);
+        expect(parsedState.layers).to.equal('foo,bar');
+        expect(parsedState.styles).to.equal('foo,baz');
+      });
+
+      it('should parse only styles from a WMS layer state with only styles', () => {
+        const layerState = writeWMSStyleForLayer(layerWithOnlyStyle, {});
+        const parsedState = parseWMSStyle(layerState);
+        expect(parsedState.layers).to.be.empty;
+        expect(parsedState.styles).to.equal('foo,baz');
+      });
+
+      it('should parse only layers from a WMS layer state with only layers', () => {
+        const layerState = writeWMSStyleForLayer(layerWithOnlyLayers, {});
+        const parsedState = parseWMSStyle(layerState);
+        expect(parsedState.layers).to.equal('foo,bar');
+        expect(parsedState.styles).to.be.empty;
+      });
     });
   });
 });

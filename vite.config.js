@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { HstVue as hstVue } from '@histoire/plugin-vue';
-import { join, resolve, dirname, posix, basename } from 'node:path';
+import { join, resolve, dirname } from 'node:path';
 import { lstat, readlink } from 'node:fs/promises';
 import commonViteConfig from './build/commonViteConfig.js';
 import getPluginProxies from './build/getPluginProxies.js';
@@ -25,20 +25,7 @@ const configMain = defineConfig(async ({ mode }) => {
     proxy['/node_modules/.vite/workers'] = {
       target: host,
       rewrite: (path) =>
-        posix.resolve(
-          path,
-          join(
-            '..',
-            '..',
-            '..',
-            '@vcmap',
-            'core',
-            'dist',
-            'src',
-            'workers',
-            basename(path),
-          ),
-        ),
+        path.replace(/\/\.vite\/workers/, '/@vcmap/core/dist/src/workers'),
     };
   } else {
     const pluginRegistryIndex = process.argv.indexOf('--plugin-registry');

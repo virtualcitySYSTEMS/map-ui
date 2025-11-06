@@ -833,13 +833,13 @@
       "type": "WMSGroupContentTreeItem",
       "setWMSLayersExclusive": true,
       "initOpen": true,
+      "loadOnStartup": true,
       "showWhenNotSupported": true
     },
     {
       "name": "nasa",
       "layerName": "nasa",
       "type": "WMSGroupContentTreeItem",
-      "initOpen": true,
       "showWhenNotSupported": true,
       "allowedWMSLayers": [
         "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",

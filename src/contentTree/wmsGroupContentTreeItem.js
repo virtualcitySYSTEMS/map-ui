@@ -112,12 +112,13 @@ function createWMSChildContentTreeItem(
 
 /**
  * @typedef {import('./contentTreeItem.js').ContentTreeItemOptions &
- * { layerName: string, showWhenNotSupported?: boolean, setWMSLayersExclusive?:boolean, hideStyleSelector?:boolean, allowedWMSLayers?:string[]}} WMSGroupContentTreeItemOptions
- * @property {boolean} showWhenNotSupported - optional flag to show the item even if it is not supported by the activeMap.
+ * { layerName: string, loadOnStartup?: boolean, showWhenNotSupported?: boolean, setWMSLayersExclusive?:boolean, hideStyleSelector?:boolean, allowedWMSLayers?:string[]}} WMSGroupContentTreeItemOptions
  * @property {string} layerName - The name of the WMSLayer to show the children of.
+ * @property {boolean} [loadOnStartup=false] - optional flag to load the capabilities on startup, will be loaded on click otherwise. Leads to an inherent "initOpen" flag  if not true.
+ * @property {boolean} [showWhenNotSupported=false] - optional flag to show the item even if it is not supported by the activeMap.
  * @property {boolean} [setWMSLayersExclusive=false] - Whether the WMSlayers are mutually exclusive.
  * @property {boolean} [hideStyleSelector=false] - Whether the layer style can be selected. Will add a StyleSelector action to compatible items if the Layer has more than one style.
- * @property {string[]} allowedWMSLayers - The list of layers to be shown, other available layers will not be shown.
+ * @property {string[]} [allowedWMSLayers] - The list of layers to be shown, other available layers will not be shown.
  */
 
 /**
@@ -154,13 +155,19 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
    * @param {import("../vcsUiApp.js").default} app
    */
   constructor(options, app) {
-    super(options, app);
+    super({ initOpen: !options.loadOnStartup, ...options }, app);
 
     /**
      * @type {string}
      * @private
      */
     this._layerName = options.layerName;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._loadOnStartup = parseBoolean(options.loadOnStartup, false);
 
     /**
      * @type {boolean}
@@ -180,7 +187,7 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
       false,
     );
     // if WMSLayers should be handled exclusive, the item should handle like a NodeContentTreeItem.
-    this.clickable = !this._setWMSLayersExclusive;
+    this.clickable = !this._setWMSLayersExclusive || !this._loadOnStartup;
 
     /**
      * @type {boolean}
@@ -188,9 +195,10 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
      */
     this._hideStyleSelector = parseBoolean(options.hideStyleSelector, false);
 
-    this.state = this._setWMSLayersExclusive
-      ? StateActionState.NONE
-      : StateActionState.INACTIVE;
+    this.state =
+      this._setWMSLayersExclusive || !this._loadOnStartup
+        ? StateActionState.NONE
+        : StateActionState.INACTIVE;
 
     /**
      * @type {boolean}
@@ -237,6 +245,13 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
      * @private
      */
     this._pauseStateChangedListener = false;
+
+    /**
+     * Flag to track if children have been loaded
+     * @type {boolean}
+     * @private
+     */
+    this._childrenLoaded = false;
 
     this._setup();
   }
@@ -421,6 +436,10 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
     this._listeners.splice(0);
     this._availableWMSEntries = [];
     this._legendSet = false;
+    this._childrenLoaded = false;
+
+    // Reset clickable state based on initial configuration
+    this.clickable = !this._setWMSLayersExclusive || !this._loadOnStartup;
   }
 
   /**
@@ -464,6 +483,83 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   /**
+   * Loads WMS entries and creates child items
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _loadWMSChildren() {
+    if (this._childrenLoaded || !this._layer) {
+      return;
+    }
+
+    this.state = StateActionState.LOADING;
+    this.clickable = !this._setWMSLayersExclusive;
+
+    try {
+      const availableWMSEntries = await getWMSEntries(
+        this._layer.url,
+        this._layer.parameters,
+      );
+      // check if the layer still exists, it can happen that the layer was removed while fetching the capabilities.
+      if (!this._layer) {
+        return;
+      }
+      this._availableWMSEntries = availableWMSEntries.filter((wmsEntry) => {
+        return this._allowedWMSLayers
+          ? this._allowedWMSLayers.includes(wmsEntry.name)
+          : true;
+      });
+      const childItems = this._availableWMSEntries.map((wmsEntry) =>
+        createWMSChildContentTreeItem(
+          this._app,
+          wmsEntry,
+          this.name,
+          this._hideStyleSelector,
+        ),
+      );
+      childItems.forEach((childItem) => {
+        this._app.contentTree.add(childItem);
+        childItem.disabled = this.disabled;
+        this._listeners.push(
+          childItem.clickedEvent.addEventListener(() => {
+            this._handleChildClickedEvent(childItem);
+          }),
+          childItem.styleSelected.addEventListener((style) => {
+            this._handleStyleSelectedEvent(childItem, style);
+          }),
+        );
+      });
+      this._childItems = childItems;
+      // check if we do have a legend already configured, if yes we set a flag, that we do not need to set the legend.
+      if (this._layer.properties.legend) {
+        this._legendSet = true;
+      }
+      // we need to get the Initial State from the Layer, to set the correct State to the children.
+      this._setStateFromLayer();
+      // the layer State maybe incomplete or does not fit to the wmsGroupContentTreeItem, so we need to set the State to the Layer.
+      this._setState();
+      this._setLegend();
+      this._childrenLoaded = true;
+
+      // Update clickable state after children are loaded
+      if (!this._setWMSLayersExclusive) {
+        this.clickable = true;
+      }
+    } catch (e) {
+      // if the layer is not there it has been removed while fetching the capabilities.
+      if (this._layer) {
+        this._layer.deactivate();
+        this.visible = false;
+        this._invalid = true;
+      }
+      getLogger(this.className).error(
+        `An error occured while fetching the ${this._layerName} capabilities:`,
+        e,
+      );
+    }
+  }
+
+  /**
    * @returns {Promise<void>}
    * @private
    */
@@ -489,7 +585,6 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
       if (this._showWhenNotSupported) {
         this.disabled = !isSupported;
       }
-      this.state = StateActionState.LOADING;
       this.setPropertiesFromObject(this._layer);
 
       this._listeners.push(
@@ -517,67 +612,18 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
           }
         }),
       );
-      try {
-        const availableWMSEntries = await getWMSEntries(
-          this._layer.url,
-          this._layer.parameters,
-        );
-        // check if the layer still exists, it can happen that the layer was removed while fetching the capabilities.
-        if (!this._layer) {
-          return;
-        }
-        this._availableWMSEntries = availableWMSEntries.filter((wmsEntry) => {
-          return this._allowedWMSLayers
-            ? this._allowedWMSLayers.includes(wmsEntry.name)
-            : true;
-        });
-        const childItems = this._availableWMSEntries.map((wmsEntry) => {
-          return createWMSChildContentTreeItem(
-            this._app,
-            wmsEntry,
-            this.name,
-            this._hideStyleSelector,
-          );
-        });
-        childItems.forEach((childItem) => {
-          this._app.contentTree.add(childItem);
-          childItem.disabled = this.disabled;
-          this._listeners.push(
-            childItem.clickedEvent.addEventListener(() => {
-              this._handleChildClickedEvent(childItem);
-            }),
-            childItem.styleSelected.addEventListener((style) => {
-              this._handleStyleSelectedEvent(childItem, style);
-            }),
-          );
-        });
-        this._childItems = childItems;
-        // check if we do have a legend already configured, if yes we set a flag, that we do not need to set the legend.
-        if (this._layer.properties.legend) {
-          this._legendSet = true;
-        }
-        // we need to get the Initial State from the Layer, to set the correct State to the children.
-        this._setStateFromLayer();
-        // the layer State maybe incomplete or does not fit to the wmsGroupContentTreeItem, so we need to set the State to the Layer.
-        this._setState();
-        this._setLegend();
-      } catch (e) {
-        // if the layer is not there it has been removed while fetching the capabilities.
-        if (this._layer) {
-          this._layer.deactivate();
-          this.visible = false;
-          this._invalid = true;
-        }
-        getLogger(this.className).error(
-          `An error occured while fetching the ${this._layerName} capabilities:`,
-          e,
-        );
+      if (this._loadOnStartup) {
+        await this._loadWMSChildren();
       }
     }
   }
 
   async clicked() {
     await super.clicked();
+    if (!this._childrenLoaded) {
+      await this._loadWMSChildren();
+      return;
+    }
     if (this.state === StateActionState.NONE || this._setWMSLayersExclusive) {
       return;
     }
@@ -592,11 +638,27 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
   }
 
   /**
+   * Returns a readonly TreeViewItem used for rendering the current item.
+   * @returns {import('./contentTreeItem.js').TreeViewItem}
+   */
+  getTreeViewItem() {
+    const item = super.getTreeViewItem();
+    item.forceNodeDisplay = !this._loadOnStartup;
+    return item;
+  }
+  /**
    * @returns {WMSGroupContentTreeItemOptions}
    */
   toJSON() {
     const config = super.toJSON();
     config.layerName = this._layerName;
+    const defaultInitOpen = !this._loadOnStartup;
+    if (this.initOpen !== defaultInitOpen) {
+      config.initOpen = this.initOpen;
+    }
+    if (this._loadOnStartup) {
+      config.loadOnStartup = this._loadOnStartup;
+    }
     if (this._showWhenNotSupported) {
       config.showWhenNotSupported = this._showWhenNotSupported;
     }

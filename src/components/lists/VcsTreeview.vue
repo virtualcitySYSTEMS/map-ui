@@ -150,9 +150,7 @@
             localOpenedItems.value.push(...newItems);
           }
         },
-        {
-          immediate: true,
-        },
+        { immediate: true },
       );
 
       function itemToggled(itemName) {

@@ -1,3 +1,15 @@
+# 6.2.3
+
+### Changes
+
+- Added a `loadOnStartup` flag to wmsGroupContentTreeItem allowing to load capabilities on click instead of doing so on startup
+- Added an optional `forceNodeDisplay` flag to VcsTreeNodeItem, allowing to render a Node item even when the item has no children
+- Links now respect altered WMS layer layers and styles & correclty recreate said state.
+
+### Fixes
+
+- fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+
 # 6.2.2
 
 ### Fixes
@@ -12,6 +24,7 @@
 - fixes a bug where featureInfo was toggled when `startingFeatureInfo` was true and a layer with featureInfo was added
 - updates styles of SplashScreen: checkbox are now always visible
 - fixes a bug where added layers with legend would not trigger legend update
+- fixes an issue, where if the fallback locale is being used (because the current locale is not available) the setting shows the navigator locale instead of the fallback value which is actually applied
 
 ### Changes
 
