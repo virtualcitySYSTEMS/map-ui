@@ -13,6 +13,17 @@
 - fixes a bug where in firefox the css classes of `dragHelper.js` are not removed correctly
 - fixes a bug where drag and drop did not work correctly in `LayerSwap.vue`, `CollectionComponentList.vue`, `CollectionComponentContent.vue` and `VcsFlightAnchorsComponent`
 
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Add new Area Selection option: file import
+  - Auto select Data selection mode when only one is available
+- @vcmap/multi-view
+  - fixes a bug where the switch button would not be shown.
+- @vcmap/sensorthings
+  - Fixes chart bug with locales other than `de` and `en`.
+  - Changes timeout of notifications from no timeout to 10 seconds.
+
 # 6.2.2
 
 ### Fixes
