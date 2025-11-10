@@ -436,7 +436,7 @@ class ContentTreeItem {
   removeAction(actionName) {
     const index = this._getActionIndex(actionName);
     if (index > -1) {
-      this._actions.value.splice(index, 1);
+      this._actions.value = this._actions.value.filter((_, i) => i !== index);
     }
   }
 

@@ -1,3 +1,9 @@
+# 6.2.4
+
+### Fixes
+
+- Fixes a bug in ContentTreeItem where the `removeAction` function would not trigger reactivity, resulting in removed actions being visible
+
 # 6.2.3
 
 ### Changes
