@@ -3,6 +3,7 @@
 ### Fixes
 
 - Fixes a bug in ContentTreeItem where the `removeAction` function would not trigger reactivity, resulting in removed actions being visible
+- Fixes a bug in CollectionManager where `CollectionComponentList` was still shown even after underlying collectionComponentClass was removed from collectionManager
 
 # 6.2.3
 

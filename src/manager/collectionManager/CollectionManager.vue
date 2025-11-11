@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import { computed, inject, ref } from 'vue';
+  import { computed, inject, onUnmounted, ref } from 'vue';
   import { VExpansionPanels, VContainer } from 'vuetify/components';
   import CollectionComponentProvider from './CollectionComponentProvider.vue';
   import CollectionComponentList from './CollectionComponentList.vue';
@@ -57,6 +57,19 @@
        * @type {import("vue").Ref<string|null>}
        */
       const componentView = ref(null);
+
+      const removedListener = collectionManager.removed.addEventListener(
+        (collectionComponent) => {
+          if (componentView.value === collectionComponent.id) {
+            componentView.value = null;
+          }
+        },
+      );
+
+      onUnmounted(() => {
+        removedListener();
+      });
+
       /**
        * @type {import("vue").WritableComputedRef<number[]>}
        */
