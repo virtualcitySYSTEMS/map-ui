@@ -35,7 +35,7 @@
   import { createSelectionActions } from '../../components/lists/listHelper.js';
   import VcsList from '../../components/lists/VcsList.vue';
   import VcsButton from '../../components/buttons/VcsButton.vue';
-  import { moveItem } from './CollectionComponentList.vue';
+  import { moveItem } from '../../components/lists/dragHelper.js';
 
   /**
    * @description
@@ -137,7 +137,7 @@
           return actions.value;
         }),
         move(event) {
-          moveItem(collectionComponent, event);
+          moveItem(collectionComponent.collection, event);
         },
         openCollectionComponentList() {
           emit('openList', collectionComponent.id);

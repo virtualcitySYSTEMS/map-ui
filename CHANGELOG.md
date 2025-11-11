@@ -1,3 +1,10 @@
+# 6.2.4
+
+### Fixes
+
+- Fixes a bug in ContentTreeItem where the `removeAction` function would not trigger reactivity, resulting in removed actions being visible
+- Fixes a bug in CollectionManager where `CollectionComponentList` was still shown even after underlying collectionComponentClass was removed from collectionManager
+
 # 6.3.0
 
 ### Plugin Bundle updates
@@ -11,11 +18,25 @@
 
 - Added a `loadOnStartup` flag to wmsGroupContentTreeItem allowing to load capabilities on click instead of doing so on startup
 - Added an optional `forceNodeDisplay` flag to VcsTreeNodeItem, allowing to render a Node item even when the item has no children
-- Links now respect altered WMS layer layers and styles & correclty recreate said state.
+- Links now respect altered WMS layer layers and styles & correctly recreate said state.
 
 ### Fixes
 
-- fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+- Fixes padding of pagination bar and makes sure that the bar is only shown when there is more than one page
+- The user will be warned when trying to create a link while a module with an unstable \_id is loaded.
+- fixes a bug where in firefox the css classes of `dragHelper.js` are not removed correctly
+- fixes a bug where drag and drop did not work correctly in `LayerSwap.vue`, `CollectionComponentList.vue`, `CollectionComponentContent.vue` and `VcsFlightAnchorsComponent`
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Add new Area Selection option: file import
+  - Auto select Data selection mode when only one is available
+- @vcmap/multi-view
+  - fixes a bug where the switch button would not be shown.
+- @vcmap/sensorthings
+  - Fixes chart bug with locales other than `de` and `en`.
+  - Changes timeout of notifications from no timeout to 10 seconds.
 
 # 6.2.2
 
