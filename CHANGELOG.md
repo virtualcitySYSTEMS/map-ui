@@ -1,3 +1,10 @@
+# 6.3.0
+
+### Plugin Bundle updates
+
+- @vcmap/geofence
+  - Added to the dev environment
+
 # 6.2.4
 
 ### Fixes
@@ -10,13 +17,6 @@
 
 - @vcmap-show-case/extent-example
   - Add a second example using mercator projection
-
-# 6.3.0
-
-### Plugin Bundle updates
-
-- @vcmap/geofence
-  - Added to the dev environment
 
 # 6.2.3
 
