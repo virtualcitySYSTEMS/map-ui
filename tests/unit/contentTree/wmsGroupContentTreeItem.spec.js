@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import nock from 'nock';
 import { watch } from 'vue';
-import { WMSLayer } from '@vcmap/core';
+import { OpenlayersMap, WMSLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.js';
@@ -46,10 +46,14 @@ describe('WMSGroupContentTreeItem', () => {
 
   describe('setup with already existing Layer', () => {
     let layer;
+    let map;
     let wmsGroupContentTreeItem;
 
     beforeAll(async () => {
       app = new VcsUiApp();
+      map = new OpenlayersMap({});
+      app.maps.add(map);
+      await app.maps.setActiveMap(map.name);
       layer = new WMSLayer({
         name: 'foo',
         url: 'http://sgx.geodatenzentrum.de/wms_poi_open',
@@ -216,6 +220,47 @@ describe('WMSGroupContentTreeItem', () => {
 
       it('should set the layer state', () => {
         expect(layer.active).to.be.true;
+      });
+    });
+
+    describe('support changes on map', () => {
+      let otherMap;
+
+      beforeAll(() => {
+        otherMap = new OpenlayersMap({ name: 'otherMap' });
+        app.maps.add(otherMap);
+      });
+
+      afterAll(() => {
+        app.maps.remove(otherMap);
+      });
+
+      afterEach(async () => {
+        await app.maps.setActiveMap(map.name);
+        map.layerTypes = [];
+      });
+
+      it('should be invisible, if not supported', () => {
+        map.layerTypes = ['notSupported'];
+        expect(wmsGroupContentTreeItem.visible).to.be.false;
+      });
+
+      it('should become visible again, after support changes', () => {
+        map.layerTypes = ['notSupported'];
+        map.layerTypes = [];
+        expect(wmsGroupContentTreeItem.visible).to.be.true;
+      });
+
+      it('should become visible, if the map changes', async () => {
+        map.layerTypes = ['notSupported'];
+        await app.maps.setActiveMap(otherMap.name);
+        expect(wmsGroupContentTreeItem.visible).to.be.true;
+      });
+
+      it('should no longer listen to changes on the old map', async () => {
+        await app.maps.setActiveMap(otherMap.name);
+        map.layerTypes = ['notSupported'];
+        expect(wmsGroupContentTreeItem.visible).to.be.true;
       });
     });
   });

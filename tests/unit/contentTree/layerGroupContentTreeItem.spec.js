@@ -28,19 +28,25 @@ describe('LayerGroupContentTreeItem', () => {
 
   describe('if layers are present', () => {
     let app;
+    let map;
     let item;
     let itemToShowWhenNotSupported;
     let layers;
 
     beforeEach(async () => {
       app = new VcsUiApp();
-      app.maps.add(new OpenlayersMap({ name: 'ol' }));
+      map = new OpenlayersMap({ name: 'ol' });
+      app.maps.add(map);
       app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
       layers = [
-        { mapNames: ['ol'], properties: { availableStyles: ['foo', 'bar'] } },
-        { mapNames: ['ol'] },
-        { mapNames: ['bar'] },
+        {
+          mapNames: ['ol', 'otherMap'],
+          properties: { availableStyles: ['foo', 'bar'] },
+          ignoreMapLayerTypes: false,
+        },
+        { mapNames: ['ol'], ignoreMapLayerTypes: false },
+        { mapNames: ['bar'], ignoreMapLayerTypes: false },
       ].map((config) => new VectorLayer(config));
 
       layers.forEach((l) => {
@@ -168,6 +174,38 @@ describe('LayerGroupContentTreeItem', () => {
 
       it('should add a style action', () => {
         expect(item.actions.some((a) => a.name === 'StyleSelector')).to.be.true;
+      });
+    });
+
+    describe('support changes on map', () => {
+      let otherMap;
+
+      beforeEach(() => {
+        otherMap = new OpenlayersMap({ name: 'otherMap' });
+        app.maps.add(otherMap);
+      });
+
+      it('should be invisible, if not supported', () => {
+        map.layerTypes = ['notSupported'];
+        expect(item.visible).to.be.false;
+      });
+
+      it('should become visible again, after support changes', () => {
+        map.layerTypes = ['notSupported'];
+        map.layerTypes = [];
+        expect(item.visible).to.be.true;
+      });
+
+      it('should become visible, if the map changes', async () => {
+        map.layerTypes = ['notSupported'];
+        await app.maps.setActiveMap(otherMap.name);
+        expect(item.visible).to.be.true;
+      });
+
+      it('should no longer listen to changes on the old map', async () => {
+        await app.maps.setActiveMap(otherMap.name);
+        map.layerTypes = ['notSupported'];
+        expect(item.visible).to.be.true;
       });
     });
   });

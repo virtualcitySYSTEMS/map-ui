@@ -17,7 +17,7 @@
   } from '@vcmap/core';
   import {
     createMapMarkerAction,
-    createOsmGlobeAction,
+    createGlobeToggleAction,
     setupClickedPrimitive,
   } from './api.js';
   import { name } from '../package.json';
@@ -51,7 +51,7 @@
     }
   });
 
-  const { action, destroy } = createOsmGlobeAction(app);
+  const action = createGlobeToggleAction(app);
   const { action: hideMarker, destroy: destroyMarker } =
     createMapMarkerAction(app);
 
@@ -70,6 +70,16 @@
   );
   watch(overlayOpacity, (newOverlayOpacity) => {
     map.panoramaView.tilePrimitiveCollection.overlayOpacity = newOverlayOpacity;
+  });
+
+  const contrast = ref(map.panoramaView.tilePrimitiveCollection.contrast);
+  watch(contrast, (newContrast) => {
+    map.panoramaView.tilePrimitiveCollection.contrast = newContrast;
+  });
+
+  const brightness = ref(map.panoramaView.tilePrimitiveCollection.brightness);
+  watch(brightness, (newBrightness) => {
+    map.panoramaView.tilePrimitiveCollection.brightness = newBrightness;
   });
 
   const overlayNaNColor = shallowRef(
@@ -132,7 +142,6 @@
 
   onUnmounted(() => {
     clickedPrimitive.destroy();
-    destroy();
     destroyMarker();
     map.panoramaView.tilePrimitiveCollection.opacity = 1;
   });
@@ -161,6 +170,22 @@
       <v-row no-gutters>
         <v-col>
           <VcsCheckbox label="Show Depth" v-model="showDepth"></VcsCheckbox>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="4">
+          <vcs-label>Brightness</vcs-label>
+        </v-col>
+        <v-col>
+          <vcs-slider v-model="brightness" :min="-1" :max="1" :step="0.001" />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="4">
+          <vcs-label>Contrast</vcs-label>
+        </v-col>
+        <v-col>
+          <vcs-slider v-model="contrast" :min="0" :max="20" :step="0.01" />
         </v-col>
       </v-row>
       <template v-if="showDepth || showIntensity">

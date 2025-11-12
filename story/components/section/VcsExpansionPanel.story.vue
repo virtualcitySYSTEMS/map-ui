@@ -1,21 +1,24 @@
 <script setup>
-  import { VExpansionPanels } from 'vuetify/components';
+  import { VExpansionPanels, VContainer, VRow, VCol } from 'vuetify/components';
   import { ref } from 'vue';
   import { getStoryState } from '../../setup.js';
   import { createActions } from '../../storyHelper.js';
   import VcsExpansionPanel from '../../../src/components/section/VcsExpansionPanel.vue';
   import GlobalControls from '../../controls/GlobalControls.vue';
+  import VcsLabel from '../../../src/components/form-inputs-controls/VcsLabel.vue';
+  import VcsTextField from '../../../src/components/form-inputs-controls/VcsFileInput.vue';
 
   const state = getStoryState();
   const heading = ref('Heading');
   const disabled = ref(false);
   const overflowCount = ref(undefined);
   const actions = createActions();
+  const text = ref('');
 </script>
 
 <template>
   <Story title="VcsExpansionPanel" :meta="{ wrapper: { ...state.wrapper } }">
-    <v-expansion-panels>
+    <v-expansion-panels variant="accordion" multiple>
       <VcsExpansionPanel
         :heading="heading"
         :header-actions="actions"
@@ -31,6 +34,18 @@
           ipsum dolor sit amet.
         </p>
       </VcsExpansionPanel>
+      <vcs-expansion-panel heading="With container">
+        <v-container>
+          <v-row no-gutters>
+            <v-col cols="4">
+              <vcs-label>Label</vcs-label>
+            </v-col>
+            <v-col>
+              <vcs-text-field v-model="text" />
+            </v-col>
+          </v-row>
+        </v-container>
+      </vcs-expansion-panel>
     </v-expansion-panels>
 
     <template #controls>

@@ -59,6 +59,7 @@
     CesiumMap,
     GeometryType,
     is2DLayout,
+    PanoramaMap,
     SessionType,
     TransformationMode,
     VectorProperties,
@@ -280,12 +281,21 @@
         }),
       );
 
-      function updateIs3D() {
-        is3D.value = vcsApp.maps.activeMap instanceof CesiumMap;
+      const defaultVectorProperties = reactive(
+        VectorProperties.getDefaultOptions(),
+      );
+      function activeMapHandler() {
+        const isPanorama = vcsApp.maps.activeMap instanceof PanoramaMap;
+        is3D.value = vcsApp.maps.activeMap instanceof CesiumMap || isPanorama;
+
+        defaultVectorProperties.altitudeMode = isPanorama
+          ? 'absolute'
+          : 'clampToGround';
       }
+
       const mapActivatedListener =
-        vcsApp.maps.mapActivated.addEventListener(updateIs3D);
-      updateIs3D();
+        vcsApp.maps.mapActivated.addEventListener(activeMapHandler);
+      activeMapHandler();
 
       const isGeometryEditing = computed(
         () => editSession.value?.type === SessionType.EDIT_GEOMETRY,
@@ -476,7 +486,7 @@
         is2DFeature,
         isGeometryEditing,
         updateFeatureProperties,
-        defaultVectorProperties: VectorProperties.getDefaultOptions(),
+        defaultVectorProperties,
         showInputs: computed(
           () =>
             !currentTransformationMode.value &&

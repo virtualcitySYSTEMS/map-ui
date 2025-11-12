@@ -4,7 +4,7 @@ import {
   OpenlayersMap,
   VectorLayer,
 } from '@vcmap/core';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
 import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.js';
@@ -21,17 +21,26 @@ describe('LayerContentTreeItem', () => {
     let itemToDisabled;
     /** @type {VcsUiApp} */
     let app;
+    let map;
 
     beforeAll(async () => {
       app = new VcsUiApp();
-      app.maps.add(new OpenlayersMap({ name: 'ol' }));
+      map = new OpenlayersMap({ name: 'ol' });
+      app.maps.add(map);
       app.maps.add(new ObliqueMap({ name: 'obl' }));
       await app.maps.setActiveMap('ol');
-      layer = new VectorLayer({ mapNames: ['ol'] });
-      layerToDeactivate = new VectorLayer({ name: 'layerToDeactivate' });
+      layer = new VectorLayer({
+        mapNames: ['ol', 'otherMap'],
+        ignoreMapLayerTypes: false,
+      });
+      layerToDeactivate = new VectorLayer({
+        name: 'layerToDeactivate',
+        ignoreMapLayerTypes: false,
+      });
       layerToShowWhenNotSupported = new VectorLayer({
         name: 'layerToShowWhenNotSupported',
         mapNames: ['ol'],
+        ignoreMapLayerTypes: false,
       });
       app.layers.add(layer);
       app.layers.add(layerToDeactivate);
@@ -133,6 +142,47 @@ describe('LayerContentTreeItem', () => {
         await layer.activate();
         expect(item.state).to.equal(StateActionState.INACTIVE);
         layer.deactivate();
+      });
+    });
+
+    describe('support changes on map', () => {
+      let otherMap;
+
+      beforeAll(() => {
+        otherMap = new OpenlayersMap({ name: 'otherMap' });
+        app.maps.add(otherMap);
+      });
+
+      afterAll(() => {
+        app.maps.remove(otherMap);
+      });
+
+      afterEach(async () => {
+        await app.maps.setActiveMap(map.name);
+        map.layerTypes = [];
+      });
+
+      it('should be invisible, if not supported', () => {
+        map.layerTypes = ['notSupported'];
+        expect(item.visible).to.be.false;
+      });
+
+      it('should become visible again, after support changes', () => {
+        map.layerTypes = ['notSupported'];
+        map.layerTypes = [];
+        expect(item.visible).to.be.true;
+      });
+
+      it('should become visible, if the map changes', async () => {
+        map.layerTypes = ['notSupported'];
+        await app.maps.setActiveMap(otherMap.name);
+        expect(item.visible).to.be.true;
+      });
+
+      it('should no longer listen to changes on the old map', async () => {
+        await app.maps.setActiveMap(otherMap.name);
+        map.layerTypes = ['notSupported'];
+        expect(item.visible).to.be.true;
       });
     });
   });

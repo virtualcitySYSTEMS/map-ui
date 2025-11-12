@@ -7,9 +7,6 @@ import {
   SphereGeometry,
   Color,
   Cartesian3,
-  Globe,
-  ImageryLayer as CesiumImageryLayer,
-  OpenStreetMapImageryProvider,
 } from '@vcmap-cesium/engine';
 import {
   mercatorToCartesian,
@@ -80,42 +77,30 @@ export function setupClickedPrimitive(map, clickedInteraction) {
 
 /**
  * @param {import("@vcmap/core").VcsApp} app
- * @returns {{ action: import("@vcmap/ui").Action, destroy: () => void }}
+ * @returns {import("@vcmap/ui").Action}
  */
-export function createOsmGlobeAction(app) {
+export function createGlobeToggleAction(app) {
   /** @type {import("@vcmap/core").PanoramaMap} */
   const map = app.maps.getByType(PanoramaMap.className)[0];
+  const cachedLayerTypes = map.layerTypes.slice();
 
   const action = reactive({
-    name: 'OSM Globe',
+    name: 'globeToggle',
     icon: 'mdi-earth',
-    title: 'Open Street Map Globe',
+    title: 'Toggle additional layers',
     active: false,
     callback() {
       if (action.active) {
-        map.getCesiumWidget().scene.globe = undefined;
+        map.layerTypes = cachedLayerTypes;
         action.active = false;
       } else {
-        const { scene } = map.getCesiumWidget();
-        scene.globe = new Globe();
-        scene.imageryLayers.add(
-          new CesiumImageryLayer(
-            new OpenStreetMapImageryProvider({ maximumLevel: 18 }),
-          ),
-        );
+        map.layerTypes = [];
         action.active = true;
       }
     },
   });
 
-  return {
-    action,
-    destroy: () => {
-      if (map.initialized) {
-        map.getCesiumWidget().scene.globe = undefined;
-      }
-    },
-  };
+  return action;
 }
 
 /**

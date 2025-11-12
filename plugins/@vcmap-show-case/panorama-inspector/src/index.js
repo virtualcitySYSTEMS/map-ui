@@ -27,7 +27,7 @@ export default function panoramaInspector() {
         {
           id: 'panorama-inspector',
           state: {
-            headerTitle: 'panoramaInspector.title',
+            headerTitle: 'Panorama Inspector',
           },
           component: PanoramaInspector,
           slot: WindowSlot.DYNAMIC_RIGHT,

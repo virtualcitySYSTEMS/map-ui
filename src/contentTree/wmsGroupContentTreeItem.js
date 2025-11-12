@@ -482,6 +482,14 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
     }
   }
 
+  _determineSupport() {
+    const isSupported = this._layer.isSupported(this._app.maps.activeMap);
+    this.visible = isSupported || this._showWhenNotSupported;
+    if (this._showWhenNotSupported) {
+      this.disabled = !isSupported;
+    }
+  }
+
   /**
    * Loads WMS entries and creates child items
    * @returns {Promise<void>}
@@ -574,26 +582,31 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
         this._setup();
       }
     };
+
+    let supportedLayersListener = () => {};
+
+    const setActiveMap = (map) => {
+      supportedLayersListener();
+      this._determineSupport();
+      supportedLayersListener = map
+        ? map.layerTypesChanged.addEventListener(() => {
+            this._determineSupport();
+          })
+        : () => {};
+    };
+
     if (!this._layer) {
       this.visible = false;
       this._listeners.push(
         this._app.layers.added.addEventListener(resetHandler),
       );
     } else {
-      let isSupported = this._layer.isSupported(this._app.maps.activeMap);
-      this.visible = isSupported || this._showWhenNotSupported;
-      if (this._showWhenNotSupported) {
-        this.disabled = !isSupported;
-      }
       this.setPropertiesFromObject(this._layer);
+      setActiveMap(this._app.maps.activeMap);
 
       this._listeners.push(
         this._app.layers.removed.addEventListener(resetHandler),
-      );
-      this._listeners.push(
         this._app.layers.added.addEventListener(resetHandler),
-      );
-      this._listeners.push(
         this._layer.stateChanged.addEventListener(() => {
           if (!this._pauseStateChangedListener) {
             this._setStateFromLayer();
@@ -601,17 +614,12 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
             this._setLegend();
           }
         }),
+        this._app.maps.mapActivated.addEventListener(setActiveMap),
+        () => {
+          supportedLayersListener();
+        },
       );
-      this._listeners.push(
-        this._app.maps.mapActivated.addEventListener(() => {
-          isSupported = this._layer.isSupported(this._app.maps.activeMap);
-          this.visible =
-            (isSupported || this._showWhenNotSupported) && !this._invalid;
-          if (this._showWhenNotSupported) {
-            this.disabled = !isSupported;
-          }
-        }),
-      );
+
       if (this._loadOnStartup) {
         await this._loadWMSChildren();
       }

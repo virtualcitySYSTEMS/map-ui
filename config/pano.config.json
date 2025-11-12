@@ -71,6 +71,11 @@
       "name": "Basiskarten",
       "title": "Basiskarten",
       "initOpen": true
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Test POI",
+      "layerName": "Test POI"
     }
   ],
   "featureInfo": [
@@ -101,7 +106,7 @@
         "title": "Geländemodell"
       },
       "activeOnStartup": true,
-      "url": "https://demo.virtualcitymap.de/datasource-data/c65244e3-0860-47f3-b382-57a7d33a2581/",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/c65244e3-0860-47f3-b382-57a7d33a2581/",
       "extent": {
         "coordinates": [
           9.73114013671875, 52.36289978027344, 9.744873046875, 52.37251281738281
@@ -118,6 +123,7 @@
     {
       "type": "OpenStreetMapLayer",
       "name": "OpenStreetMapLayer",
+      "mapTypes": ["CesiumMap", "PanoramaMap", "OpenlayersMap"],
       "properties": {
         "attributions": {
           "provider": "OpenStreetMap contributors",
@@ -142,7 +148,7 @@
         "title": "Orthofoto"
       },
       "activeOnStartup": true,
-      "url": "https://demo.virtualcitymap.de/datasource-data/20e0b107-17e7-46d6-876f-07e3c54fd107/",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/20e0b107-17e7-46d6-876f-07e3c54fd107/",
       "extent": {
         "coordinates": [
           9.73135348054305, 52.36323195355867, 9.74471966259939,
@@ -162,6 +168,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Kunst_LHH",
+      "mapTypes": ["CesiumMap", "PanoramaMap"],
       "properties": {
         "defaultViewpoint": "Kunst",
         "attributions": {
@@ -172,7 +179,7 @@
         "title": "Kunstobjekte"
       },
       "activeOnStartup": true,
-      "url": "https://demo.virtualcitymap.de/datasource-data/88403a53-e3c8-4eb9-b510-bc982ba03bc9/tileset.json",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/88403a53-e3c8-4eb9-b510-bc982ba03bc9/tileset.json",
       "extent": {
         "coordinates": [
           9.733886703948508, 52.36633299737816, 9.739379879513546,
@@ -193,6 +200,7 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Gebauede_LLH",
+      "mapTypes": ["CesiumMap", "PanoramaMap"],
       "properties": {
         "featureInfo": "Building_info",
         "attributions": {
@@ -203,7 +211,7 @@
         "title": "Gebäude"
       },
       "activeOnStartup": true,
-      "url": "https://demo.virtualcitymap.de/datasource-data/e1976b1d-6bb6-48a1-96ea-425384666138/tileset.json",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/e1976b1d-6bb6-48a1-96ea-425384666138/tileset.json",
       "extent": {
         "coordinates": [
           9.72839352838347, 52.36083982181312, 9.75036617334784,
@@ -224,12 +232,13 @@
     {
       "type": "CesiumTilesetLayer",
       "name": "Kugel Beaume",
+      "mapTypes": ["CesiumMap", "PanoramaMap"],
       "properties": {
         "featureInfo": "Kugel Baum",
         "title": "Bäume"
       },
       "activeOnStartup": true,
-      "url": "https://demo.virtualcitymap.de/datasource-data/c5cd63b7-29de-40fd-a04a-a29696fc965b/tileset.json",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/c5cd63b7-29de-40fd-a04a-a29696fc965b/tileset.json",
       "extent": {
         "coordinates": [
           9.72839352838347, 52.36083982181312, 9.744872997782803,
@@ -250,6 +259,7 @@
     {
       "type": "PointCloudLayer",
       "name": "Pointcloud_Data",
+      "mapTypes": ["CesiumMap", "PanoramaMap"],
       "properties": {
         "title": "Laserscan-Punktwolke",
         "attributions": {
@@ -258,7 +268,7 @@
           "year": 2025
         }
       },
-      "url": "https://demo.virtualcitymap.de/datasource-data/777237e0-dc0a-4504-a844-afb64f9212d2/tileset.json",
+      "url": "https://demo.virtualcitymap.de/panorama/datasource-data/777237e0-dc0a-4504-a844-afb64f9212d2/tileset.json",
       "extent": {
         "coordinates": [
           9.732694422208846, 52.36247033672282, 9.752475282831645,
@@ -293,6 +303,299 @@
       "properties": {
         "title": "Hannover Daten V13"
       }
+    },
+    {
+      "type": "GeoJSONLayer",
+      "name": "Test POI",
+      "activeOnStartup": true,
+      "vectorProperties": {
+        "heightAboveGround": 20,
+        "altitudeMode": "relativeToGround"
+      },
+      "style": {
+        "type": "VectorStyleItem",
+        "image": {
+          "radius": 15,
+          "fill": { "color": "#ff00ff" }
+        }
+      },
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-1"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.736276948687891, 52.368106079695536]
+          },
+          "id": "2e6b86ef-d433-42c2-991f-a53224c77d69"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-2"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735145521837863, 52.367993931256365]
+          },
+          "id": "6f2598a7-0440-449c-a754-2e287cb2552a"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-3"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735494500898747, 52.367406268780314]
+          },
+          "id": "53c83947-8b13-4015-aa82-469dfd1fa6a7"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-4"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.736636948140177, 52.36746907277683]
+          },
+          "id": "d61e3470-f87e-4004-90b7-49f3f8b9af1c"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-5"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.737227846331793, 52.36698068278895]
+          },
+          "id": "042e2554-d44c-4c7d-971b-dcdb2a8ce89a"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-6"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.737470294942513, 52.36750106107806]
+          },
+          "id": "9462606a-c54e-47e3-b4a4-992465217dad"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-7"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.737709070089435, 52.36750554707115]
+          },
+          "id": "6b560bff-125e-401b-a952-7af75a160968"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-8"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.740423842681349, 52.36731807969508]
+          },
+          "id": "b9c4cca9-012d-4d25-8c05-8e22e5934bcc"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-9"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.74062955665408, 52.367113965682364]
+          },
+          "id": "4233e191-b2e0-451b-9016-e1cdf95d8d82"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-10"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.741426698298422, 52.36758723958869]
+          },
+          "id": "949763ab-bd0a-452d-bb66-66e205376218"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-11"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.740284251056991, 52.36676629678618]
+          },
+          "id": "ac3b9418-7701-4693-b761-75a626171678"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-12"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.74059649547989, 52.36660704108772]
+          },
+          "id": "2e269d78-9905-47f0-a7eb-e8000add7d1b"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-13"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.739166404025626, 52.36576625003789]
+          },
+          "id": "a02dc28c-8b46-4b17-a52a-b284874561ef"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-14"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.740176606570296, 52.36545446015887]
+          },
+          "id": "3aec3ff2-4329-45d6-ba3e-741eacdeadcc"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-15"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.740388932631056, 52.36421864457819]
+          },
+          "id": "7dcf7c19-a5f1-44d1-bed4-1e2cd7dcc55e"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-16"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.739768117249058, 52.36388665516006]
+          },
+          "id": "f20949a3-dfc0-413e-b748-8beeb9d6e370"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-17"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.738361180614117, 52.363868709715064]
+          },
+          "id": "2e429843-9972-4183-8c9b-68f9becb518a"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-18"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.7378028141167, 52.364184997115615]
+          },
+          "id": "b60e7d33-ff88-4863-939f-a1dfd0b998ee"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-19"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.737343978017737, 52.36454960715423]
+          },
+          "id": "404d668c-b7f3-4e53-abc0-fd723efa159d"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-20"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735999490267375, 52.365276380646264]
+          },
+          "id": "b198bf5f-9ac9-4ab8-8964-c209c3ab861a"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-21"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735804796686038, 52.3657048125047]
+          },
+          "id": "9dbdc7b6-ada8-4b45-aedc-4b8730adcd65"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-22"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.73577908243945, 52.36649437237534]
+          },
+          "id": "ea48f387-dd21-4f5c-857c-d3633388253d"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-23"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735676225453082, 52.366754565150416]
+          },
+          "id": "bc2a986e-4472-4dec-bc9f-8b3f1c9ff038"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-24"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735426081570864, 52.36727805926239]
+          },
+          "id": "b185a710-d526-4f4c-9c16-45d65cc238a6"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "Point-25"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [9.735187306423942, 52.36746647153083]
+          },
+          "id": "4f531ee2-75aa-427c-aaff-45bc58841bdd"
+        }
+      ]
     }
   ],
   "maps": [
@@ -309,7 +612,6 @@
       "name": "PanoramaMap"
     }
   ],
-  "obliqueCollections": [],
   "plugins": [
     {
       "name": "@vcmap-show-case/panorama-inspector",
@@ -358,6 +660,10 @@
     {
       "name": "@vcmap/pointcloud-settings",
       "entry": "plugins/@vcmap/pointcloud-settings/index.js"
+    },
+    {
+      "name": "@vcmap/multi-view",
+      "entry": "plugins/@vcmap/multi-view/index.js"
     }
   ],
   "startingMapName": "CesiumMap",

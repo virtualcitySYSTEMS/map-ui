@@ -17,6 +17,7 @@
     >
       <VcsPositionDisplay />
       <VcsObliqueFooter />
+      <vcs-panorama-footer />
       <VcsTextPageFooter
         v-if="imprint"
         :text-page="imprint"
@@ -89,6 +90,7 @@
   import { getAttributions } from './attributionsHelper.js';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
   import { getDataProtection, getImprint } from './uiConfigHelper.js';
+  import VcsPanoramaFooter from './VcsPanoramaFooter.vue';
 
   /**
    * This helper checks the uiConfig and depending on the value will setup/teardown the providedSetupFunction
@@ -775,6 +777,7 @@
    */
   export default {
     components: {
+      VcsPanoramaFooter,
       VcsContainer,
       VcsPositionDisplay,
       VcsAttributionsFooter,

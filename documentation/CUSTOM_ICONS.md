@@ -35,6 +35,8 @@ const vcsAction = {
 
 The **svgString** prefix allows to render the content of a SVG file.
 The file needs to be imported first or hardcoded to a variable in the code as string.
+When using svg icons, make sure you assign `currentColor` to the `fill` or `stroke`
+attributes of the svg elements you want to be colored according to the current text color.
 
 Here are some examples:
 

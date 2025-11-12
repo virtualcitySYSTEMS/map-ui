@@ -208,6 +208,17 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
   /**
    * @private
    */
+  _determineSupport() {
+    const isSupported = this._layer.isSupported(this._app.maps.activeMap);
+    this.visible = isSupported || this._showWhenNotSupported;
+    if (this._showWhenNotSupported) {
+      this.disabled = !isSupported;
+    }
+  }
+
+  /**
+   * @private
+   */
   _setup() {
     this._clearListeners();
     /**
@@ -220,42 +231,37 @@ class LayerContentTreeItem extends VcsObjectContentTreeItem {
       }
     };
 
+    let supportedLayersListener = () => {};
+    const setActiveMap = (map) => {
+      supportedLayersListener();
+      this._determineSupport();
+      supportedLayersListener = map
+        ? map.layerTypesChanged.addEventListener(() => {
+            this._determineSupport();
+          })
+        : () => {};
+    };
     if (!this._layer) {
       this.visible = false;
       this._listeners.push(
         this._app.layers.added.addEventListener(resetHandler),
       );
     } else {
-      let isSupported = this._layer.isSupported(this._app.maps.activeMap);
-      this.visible = isSupported || this._showWhenNotSupported;
-      if (this._showWhenNotSupported) {
-        this.disabled = !isSupported;
-      }
+      setActiveMap(this._app.maps.activeMap);
       this.state = getStateFromLayer(this._layer);
       this._setLayerExtentAction();
       this.setPropertiesFromObject(this._layer);
 
       this._listeners.push(
         this._app.layers.removed.addEventListener(resetHandler),
-      );
-      this._listeners.push(
         this._app.layers.added.addEventListener(resetHandler),
-      );
-
-      this._listeners.push(
         this._layer.stateChanged.addEventListener(() => {
           this.state = getStateFromLayer(this._layer);
         }),
-      );
-
-      this._listeners.push(
-        this._app.maps.mapActivated.addEventListener(() => {
-          isSupported = this._layer.isSupported(this._app.maps.activeMap);
-          this.visible = isSupported || this._showWhenNotSupported;
-          if (this._showWhenNotSupported) {
-            this.disabled = !isSupported;
-          }
-        }),
+        this._app.maps.mapActivated.addEventListener(setActiveMap),
+        () => {
+          supportedLayersListener();
+        },
       );
     }
   }
