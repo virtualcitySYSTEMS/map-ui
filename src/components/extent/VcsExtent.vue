@@ -18,6 +18,7 @@
       hide-z
       v-model="min"
       :disabled="disabled"
+      :extent="extent"
       :axis-rules="[
         [(v) => checkInput(v, max[0])],
         [(v) => checkInput(v, max[1])],
@@ -35,6 +36,7 @@
       hide-z
       v-model="max"
       :disabled="disabled"
+      :extent="extent"
       :axis-rules="[
         [(v) => checkInput(min[0], v)],
         [(v) => checkInput(min[1], v)],
@@ -54,7 +56,7 @@
 <script>
   import { computed, toRaw } from 'vue';
   import { VCol, VContainer, VRow } from 'vuetify/components';
-  import { Extent } from '@vcmap/core';
+  import { Extent, Projection } from '@vcmap/core';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
@@ -100,6 +102,14 @@
     setup(props, { emit }) {
       const localValue = useProxiedComplexModel(props, 'modelValue', emit);
 
+      const { proj } = new Projection(localValue.value.projection);
+      const extent = proj.getExtent() || [
+        -Infinity,
+        -Infinity,
+        Infinity,
+        Infinity,
+      ];
+
       const getCoordinate = (start, end = 4) =>
         computed({
           get() {
@@ -121,6 +131,7 @@
         min: getCoordinate(0, 2),
         max: getCoordinate(2),
         checkInput,
+        extent,
         cid,
       };
     },

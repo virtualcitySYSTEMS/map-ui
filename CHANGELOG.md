@@ -4,6 +4,12 @@
 
 - Fixes a bug in ContentTreeItem where the `removeAction` function would not trigger reactivity, resulting in removed actions being visible
 - Fixes a bug in CollectionManager where `CollectionComponentList` was still shown even after underlying collectionComponentClass was removed from collectionManager
+- Fixes a bug where the VcsExtent component would show input as wrong when out of the WGS84 range, even when using another CRS
+
+### Plugin Bundle updates
+
+- @vcmap-show-case/extent-example
+  - Add a second example using mercator projection
 
 # 6.2.3
 
