@@ -1,19 +1,11 @@
-import {
-  ButtonLocation,
-  createToggleAction,
-  WindowSlot,
-  VcsExtentEditor,
-} from '@vcmap/ui';
-import { Extent } from '@vcmap/core';
-import { reactive } from 'vue';
+import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
 import packageJSON from '../package.json';
+import ExtentExample from './ExtentExample.vue';
 
 /**
  * @returns {VcsPlugin}
  */
 export default async function extentExample() {
-  const modelValue = reactive(new Extent().toJSON());
-
   return {
     get name() {
       return packageJSON.name;
@@ -33,14 +25,11 @@ export default async function extentExample() {
         },
         {
           id: 'extent-example',
-          component: VcsExtentEditor,
+          component: ExtentExample,
           slot: WindowSlot.DYNAMIC_LEFT,
           state: {
             headerTitle: 'Extent Example',
             headerIcon: '$vcsBoundingBox',
-          },
-          props: {
-            modelValue,
           },
         },
         app.windowManager,
