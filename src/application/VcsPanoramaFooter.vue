@@ -1,10 +1,15 @@
 <script setup>
-  import { computed, ref, inject, onUnmounted } from 'vue';
+  import { ref, inject, onUnmounted, computed } from 'vue';
   import { PanoramaMap } from '@vcmap/core';
 
+  /** @type {import('../vcsUiApp').default} */
   const app = inject('vcsApp');
   const name = ref();
   const time = ref();
+  const hasLinks = computed(
+    () =>
+      !!app.uiConfig.config?.dataProtection || !!app.uiConfig.config?.imprint,
+  );
 
   const showPanoramaFooter = computed(
     () => !app.uiConfig.config.hidePanoramaFooter,
@@ -46,11 +51,20 @@
 </script>
 
 <template>
-  <span
-    v-if="showPanoramaFooter && name && time"
-    class="d-flex align-center overflow-hidden vcs-panorama-footer"
-    >{{ time }} - {{ name }}
+  <span v-if="showPanoramaFooter && name && time" class="vcs-panorama-footer">
+    <span class="overflow-hidden"> {{ time }} - {{ name }} </span>
+    <span v-if="hasLinks" class="ml-1">|</span>
   </span>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .vcs-panorama-footer {
+    display: flex;
+    align-items: center;
+    & > span {
+      display: inline-flex;
+      font-size: smaller;
+      align-items: center;
+    }
+  }
+</style>

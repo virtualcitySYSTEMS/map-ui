@@ -85,8 +85,12 @@
 <style lang="scss" scoped>
   .text-page-footer {
     font-size: smaller;
+    display: flex;
+    align-items: center;
     a {
       color: var(--v-text-color);
+      display: flex;
+      align-items: center;
     }
   }
 </style>

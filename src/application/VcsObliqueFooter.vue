@@ -1,10 +1,9 @@
 <template>
-  <!-- eslint-disable vue/no-v-html -->
-  <span
-    v-if="content"
-    class="d-flex align-center overflow-hidden vcs-oblique-footer"
-    v-html="content"
-  />
+  <span v-if="content" class="vcs-oblique-footer">
+    <!-- eslint-disable vue/no-v-html -->
+    <span class="overflow-hidden" v-html="content" />
+    <div v-if="hasLinks" class="ml-1">|</div>
+  </span>
 </template>
 
 <script>
@@ -85,6 +84,12 @@
         mapChangedListener();
       });
 
+      const hasLinks = computed(
+        () =>
+          !!app.uiConfig.config?.dataProtection ||
+          !!app.uiConfig.config?.imprint,
+      );
+
       const content = computed(() => {
         if (!app.uiConfig.config.hideObliqueFooter && currentImage.value) {
           const template =
@@ -102,6 +107,7 @@
 
       return {
         content,
+        hasLinks,
       };
     },
   };
@@ -109,8 +115,14 @@
 
 <style lang="scss" scoped>
   .vcs-oblique-footer {
+    display: flex;
+    align-items: center;
+    > div {
+      font-size: smaller;
+    }
     :deep(p) {
       font-size: smaller;
+      display: inline;
       margin: 0;
     }
   }
