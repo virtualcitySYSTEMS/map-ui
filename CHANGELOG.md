@@ -1,5 +1,10 @@
 # 6.3.0
 
+### Changes
+
+- Changes default pitch angle of Search result viewpoint to -35 and add a new uiConfig option to override it: `searchViewpointPitch`.
+- Added a config option to hide panorama footer: `hidePanoramaFooter`
+
 ### Plugin Bundle updates
 
 - @vcmap/geofence

@@ -234,6 +234,8 @@ class Search extends IndexedCollection {
             this._resultLayer.addFeatures([item.feature]);
             if (!item.clicked) {
               const viewpoint = getViewpointFromFeature(item.feature);
+              viewpoint.pitch =
+                this._app.uiConfig.config?.searchViewpointPitch ?? -35;
               item.clicked = () => {
                 this._app.maps.activeMap.gotoViewpoint(viewpoint);
                 return this._app.featureInfo.selectFeature(item.feature);

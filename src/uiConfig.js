@@ -71,6 +71,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {number} [timePerRotation] - an optional flag that describes the time per rotation in seconds.
  * @property {boolean} [hideHeader] - can be used to hide the default Header of the map
  * @property {boolean} [hideSearch] - can be used to hide the integrated Search bar
+ * @property {number} [searchViewpointPitch] - can be used to set the pitch angle of the viewpoint of features zoomed to from Search, in degrees. Defaults to -35 degrees.
  * @property {boolean} [hideShareButton] - can be used to hide the sharee button
  * @property {boolean} [hideMenuButton] - can be used to hide the menu button
  * @property {boolean} [hideMapButtons] - can be used to hide the default Map Buttons
@@ -83,6 +84,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {boolean} [hideLegend] - can be used to hide the legend
  * @property {boolean} [hideSettings] - can be used to hide the settings Window
  * @property {boolean} [hideObliqueFooter] - can be used to hide the oblique name in the footer
+ * @property {boolean} [hidePanoramaFooter] - can be used to hide the panorama name in the footer
  * @property {boolean} [overviewMapActiveOnStartup] - can be used to activate the overviewMap on startup
  * @property {boolean} [contentTreeActiveOnStartup] - can be used to activate a contentTree on startup
  * @property {import("@vcmap/core").DisplayQualityOptions} [displayQuality] - the display quality settings

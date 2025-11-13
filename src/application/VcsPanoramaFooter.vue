@@ -1,10 +1,14 @@
 <script setup>
-  import { ref, inject, onUnmounted } from 'vue';
+  import { computed, ref, inject, onUnmounted } from 'vue';
   import { PanoramaMap } from '@vcmap/core';
 
   const app = inject('vcsApp');
   const name = ref();
   const time = ref();
+
+  const showPanoramaFooter = computed(
+    () => !app.uiConfig.config.hidePanoramaFooter,
+  );
 
   let imageChangedListener = () => {};
   const setImage = (image) => {
@@ -43,7 +47,7 @@
 
 <template>
   <span
-    v-if="name && time"
+    v-if="showPanoramaFooter && name && time"
     class="d-flex align-center overflow-hidden vcs-panorama-footer"
     >{{ time }} - {{ name }}
   </span>
