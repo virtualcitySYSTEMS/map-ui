@@ -7,6 +7,7 @@
 - Fixes Oblique footer style to match links next to it
 - Fixes a bug where resizing panels would be unreliable, espcially with iFrames
 - Fixes a bug where the position of a BalloonFeatureInfo would be incrorrect when a left panel is active
+- added an `icon` property to the attributions
 
 ### Plugin Bundle updates
 

@@ -11,7 +11,11 @@
           v-for="attribution in attributions"
           :key="attribution.provider"
           :title="`${$st(attribution.provider)} ${attribution.year}`"
+          class="d-inline-flex align-end"
         >
+          <v-icon v-if="attribution.icon" class="mr-2 attribution-icon">
+            {{ attribution.icon }}
+          </v-icon>
           <a :href="attribution.url ? attribution.url : null" target="_blank">
             {{ $st(attribution.provider) }} {{ attribution.year }}
           </a>
@@ -26,6 +30,7 @@
 
 <script>
   import {
+    VIcon,
     VList,
     VListItem,
     VListItemTitle,
@@ -40,6 +45,7 @@
   export default {
     name: 'VcsAttributions',
     components: {
+      VIcon,
       VList,
       VListItem,
       VListItemTitle,
@@ -64,5 +70,8 @@
     &:before {
       content: '\00a9';
     }
+  }
+  .attribution-icon {
+    max-width: 30px;
   }
 </style>

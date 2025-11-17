@@ -6,6 +6,7 @@ import { ObliqueMap } from '@vcmap/core';
  * @property {string} provider - name of the data provider
  * @property {number} [year] - year of dataset
  * @property {string} url - link to data provider
+ * @property {string} [icon] - provider logo
  */
 
 /**
@@ -18,12 +19,12 @@ import { ObliqueMap } from '@vcmap/core';
 /**
  * merges attribution entries of same providers
  * @param {Array<AttributionEntry>} entries
- * @returns {Array<{provider: string, years: string, url: string}>}
+ * @returns {Array<{provider: string, years: string, url: string, icon?:string}>}
  */
 export function mergeAttributions(entries) {
   const providers = {};
   entries.forEach(({ attributions }) => {
-    attributions.forEach(({ provider, year, url }) => {
+    attributions.forEach(({ provider, year, url, icon }) => {
       const providerObject = providers[provider];
       if (providerObject) {
         if (year) {
@@ -36,12 +37,16 @@ export function mergeAttributions(entries) {
               const set = new Set([...providerObject.years, Number(year)]);
               providerObject.years = [...set].sort((a, b) => a - b);
             }
+            if (icon && !providerObject.icon) {
+              providerObject.icon = icon;
+            }
           }
         }
       } else {
         providers[provider] = {
           years: year ? [Number(year)] : [],
           url,
+          ...(icon && { icon }),
         };
       }
     });

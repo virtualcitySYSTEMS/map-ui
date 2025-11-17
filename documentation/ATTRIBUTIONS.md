@@ -16,6 +16,7 @@ The entry options are defined as:
  * @property {string} provider - name of the data provider
  * @property {number} [year] - year of dataset
  * @property {URL} url - link to data provider
+ * @property {string} [icon] - provider logo. Can be an URL or a custom icon, see [CUSTOM_ICONS.md](./CUSTOM_ICONS.md)
  */
 ```
 

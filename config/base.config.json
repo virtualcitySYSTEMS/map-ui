@@ -701,7 +701,8 @@
         "attributions": {
           "provider": "Berlin Partner für Wirtschaft und Technologie",
           "url": "https://www.berlin-partner.de",
-          "year": "2020"
+          "year": "2020",
+          "icon": "imageUrl:https://www.berlin-partner.de/typo3conf/ext/berlinpartner/Resources/Public/Images/logo.svg"
         }
       }
     },
@@ -791,7 +792,8 @@
         "attributions": {
           "provider": "OpenStreetMap contributors",
           "url": "http://www.openstreetmap.org/",
-          "year": "2019"
+          "year": "2019",
+          "icon": "imageUrl:https://wiki.openstreetmap.org/w/images/7/79/Public-images-osm_logo.svg"
         }
       }
     },
@@ -1148,7 +1150,8 @@
         "attributions": {
           "provider": "Berlin Partner / Senat von Berlin",
           "url": "https://www.berlin-partner.de",
-          "year": "2020"
+          "year": "2020",
+          "icon": "imageUrl:https://www.berlin-partner.de/typo3conf/ext/berlinpartner/Resources/Public/Images/logo.svg"
         }
       }
     }
