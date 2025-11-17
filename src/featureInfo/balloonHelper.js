@@ -91,10 +91,16 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
   }
 
   const { width, height, maxWidth, maxHeight } = windowManager.get(id).position;
+
+  // Get the actual map target bounding rect to account for panel offsets
+  const targetRect = target?.getBoundingClientRect();
+  const offsetX = targetRect ? targetRect.left : 0;
+  const offsetY = targetRect ? targetRect.top : 0;
+
   const mapWindowPosition = getWindowPositionOptionsFromMapEvent(
     new Cartesian2(
-      windowPosition.x - balloonOffset.x,
-      windowPosition.y - balloonOffset.y,
+      windowPosition.x - balloonOffset.x + offsetX,
+      windowPosition.y - balloonOffset.y + offsetY,
     ),
     target,
     WindowAlignment.BOTTOM_LEFT,

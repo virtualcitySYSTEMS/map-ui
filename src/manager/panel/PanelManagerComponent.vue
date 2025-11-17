@@ -1,14 +1,19 @@
 <template>
   <div
     class="vcs-panel-frame panel-manager-component"
-    @mouseup="setResizing(undefined)"
-    @mouseleave="setResizing(undefined)"
+    @pointerup="setResizing(undefined)"
+    @pointerleave="setResizing(undefined)"
     ref="panelFrameRef"
   >
+    <div
+      v-if="resizing"
+      class="resize-overlay"
+      :style="{ cursor: resizeCursor }"
+      @pointermove="resizingFunction"
+    ></div>
     <PanelComponent
       :panel-state="mainPanel.state"
       :style="getPosition(mainPanel)"
-      class="overflow-auto"
     >
       <VcsMainMap />
     </PanelComponent>
@@ -18,7 +23,6 @@
       :panel-state="getState(id)"
       :style="getStyles(id).value"
       :class="getState(id).classes"
-      class="overflow-auto"
       @resize="setResizing"
     >
       <component
@@ -36,6 +40,7 @@
     computed,
     getCurrentInstance,
     inject,
+    onUnmounted,
     reactive,
     ref,
     watch,
@@ -84,7 +89,7 @@
       const { componentIds } = panelManager;
       const panelFrameRef = ref();
       const resizing = ref(undefined);
-      let resizingFunction = () => {};
+      const resizingFunction = ref(() => {});
 
       /**
        * @param {string} id
@@ -126,12 +131,13 @@
         if (panel) {
           let resizeKey;
           if (panel[panelLocationSymbol] === PanelLocation.BOTTOM) {
+            const frameRect = panelFrameRef.value.getBoundingClientRect();
             const height =
-              ((panelFrameRef.value.offsetTop + e.y) /
+              ((frameRect.bottom - e.clientY) /
                 panelFrameRef.value.parentElement.offsetHeight) *
               100;
             setPanelPosition(panelManager, panel, {
-              height: `${Math.round(100 - height)}%`,
+              height: `${Math.round(height)}%`,
             });
           } else {
             const width =
@@ -160,24 +166,20 @@
       const setResizing = (id) => {
         if (id) {
           resizing.value = id;
-          resizingFunction = (e) => {
+          resizingFunction.value = (e) => {
             e.preventDefault();
             resize(panelManager.get(id), e);
           };
-          panelFrameRef.value.addEventListener(
-            'mousemove',
-            resizingFunction,
-            false,
-          );
         } else {
           resizing.value = undefined;
-          panelFrameRef.value.removeEventListener(
-            'mousemove',
-            resizingFunction,
-            false,
-          );
+          resizingFunction.value = () => {};
         }
       };
+
+      // Clean up resizing state on unmount
+      onUnmounted(() => {
+        setResizing(undefined);
+      });
 
       watch(
         () => [...componentIds],
@@ -197,6 +199,17 @@
         );
       });
 
+      const resizeCursor = computed(() => {
+        if (!resizing.value) {
+          return 'default';
+        }
+        const panel = panelManager.get(resizing.value);
+        if (panel && panel[panelLocationSymbol] === PanelLocation.BOTTOM) {
+          return 'n-resize';
+        }
+        return 'ew-resize';
+      });
+
       return {
         mainPanel,
         componentIds,
@@ -205,13 +218,15 @@
         getStyles,
         getState,
         getProps,
+        addMobileClass,
         panelFrameRef,
+        resizing,
+        resizeCursor,
         setResizing,
         resizingFunction,
         close: (id) => {
           panelManager.remove(id);
         },
-        addMobileClass,
       };
     },
   };
@@ -227,5 +242,13 @@
   }
   .vcs-panel-border {
     padding: 5px;
+  }
+  .resize-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
   }
 </style>

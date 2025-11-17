@@ -3,7 +3,7 @@
     <h1>{{ $attrs['panel-state'].location }}</h1>
     <p>{{ $attrs['panel-state'].id }}</p>
     <div class="d-flex flex-column overflow-hidden w-full h-full pa-1">
-      <p>
+      <p v-for="a in [...Array(5).keys()]" :key="a">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
         voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet

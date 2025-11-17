@@ -5,6 +5,8 @@
 - Changes default pitch angle of Search result viewpoint to -35 and add a new uiConfig option to override it: `searchViewpointPitch`.
 - Added a config option to hide panorama footer: `hidePanoramaFooter`
 - Fixes Oblique footer style to match links next to it
+- Fixes a bug where resizing panels would be unreliable, espcially with iFrames
+- Fixes a bug where the position of a BalloonFeatureInfo would be incrorrect when a left panel is active
 
 ### Plugin Bundle updates
 

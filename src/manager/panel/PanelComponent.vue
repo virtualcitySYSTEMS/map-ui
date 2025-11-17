@@ -10,10 +10,20 @@
       'theme--dark': appIsDark,
       resizable: panelState.resizable,
     }"
-    @mousedown="startResize"
-    @mouseup="stopResize"
   >
-    <slot />
+    <div class="panel-content">
+      <slot />
+    </div>
+    <div
+      class="resize-handle"
+      :class="{
+        'resize-handle-left': isLeft,
+        'resize-handle-right': isRight,
+        'resize-handle-bottom': isBottom,
+        'resize-handle-resizable': panelState.resizable,
+      }"
+      @pointerdown="startResize"
+    ></div>
   </div>
 </template>
 
@@ -53,19 +63,12 @@
           () => props.panelState.location === PanelLocation.BOTTOM,
         ),
         startResize(e) {
-          const { resizable, location } = props.panelState;
-          if (
-            resizable &&
-            ((location === PanelLocation.LEFT &&
-              e.currentTarget.clientWidth - e.offsetX < 4) ||
-              (location === PanelLocation.RIGHT && e.offsetX < 4) ||
-              (location === PanelLocation.BOTTOM && e.offsetY < 4))
-          ) {
-            emit('resize', props.panelState.id);
+          if (!props.panelState.resizable) {
+            return;
           }
-        },
-        stopResize() {
-          emit('resize', undefined);
+          e.preventDefault();
+          e.stopPropagation();
+          emit('resize', props.panelState.id);
         },
       };
     },
@@ -74,39 +77,57 @@
 
 <style scoped lang="scss">
   .panel-component {
-    padding: 0 4px;
+    display: flex;
+    flex-direction: column;
   }
-  .panel-component::after {
-    content: '';
+
+  .theme--light {
+    background: rgb(var(--v-theme-surface));
+  }
+
+  .theme--dark {
+    background: rgb(var(--v-theme-surface));
+  }
+
+  .panel-content {
+    flex: 1;
+    overflow: auto;
+    padding: 0 4px;
+    min-height: 0; /* Important for flex children to be scrollable */
+  }
+
+  .resize-handle {
     position: absolute;
     background: rgb(var(--v-theme-surface-light));
   }
 
-  .panel-component-left::after {
+  .resize-handle-left {
     width: 4px;
     top: 0;
     bottom: 0;
     right: 0;
   }
-  .panel-component-left.resizable::after {
-    cursor: ew-resize;
-  }
-  .panel-component-right::after {
+
+  .resize-handle-right {
     width: 4px;
     top: 0;
     bottom: 0;
     left: 0;
   }
-  .panel-component-right.resizable::after {
-    cursor: ew-resize;
-  }
-  .panel-component-bottom::after {
+
+  .resize-handle-bottom {
     left: 0;
     right: 0;
     top: 0;
     height: 4px;
   }
-  .panel-component-bottom.resizable::after {
+
+  .resize-handle-resizable.resize-handle-left,
+  .resize-handle-resizable.resize-handle-right {
+    cursor: ew-resize;
+  }
+
+  .resize-handle-resizable.resize-handle-bottom {
     cursor: n-resize;
   }
 </style>
