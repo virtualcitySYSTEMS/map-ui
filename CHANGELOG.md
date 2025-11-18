@@ -1,5 +1,9 @@
 # 6.2.4
 
+### Changes
+
+- New behavior for Search: the `showSelectedOnly` button now sets the search window in background
+
 ### Fixes
 
 - Fixes a bug in ContentTreeItem where the `removeAction` function would not trigger reactivity, resulting in removed actions being visible
