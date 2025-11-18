@@ -3,6 +3,7 @@
 ### Changes
 
 - New behavior for Search: the `showSelectedOnly` button now sets the search window in background
+- Extends wmsGroupContentTreeItem to take capabilities set in the property bag of the layer into account
 
 ### Fixes
 
