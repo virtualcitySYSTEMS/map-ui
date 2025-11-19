@@ -28,6 +28,12 @@
         :text-page="dataProtection"
         :window-id="'dataProtectionWindow'"
       />
+      <VcsTextPageFooter
+        v-for="(info, idx) in footerInformation"
+        :key="idx"
+        :text-page="info"
+        :window-id="'footerInfoWindow_' + idx"
+      />
       <v-spacer />
       <VcsAttributionsFooter
         :entries="attributionEntries"
@@ -89,7 +95,11 @@
   import VcsAttributions from './VcsAttributions.vue';
   import { getAttributions } from './attributionsHelper.js';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
-  import { getDataProtection, getImprint } from './uiConfigHelper.js';
+  import {
+    getDataProtection,
+    getImprint,
+    getFooterInformation,
+  } from './uiConfigHelper.js';
   import VcsPanoramaFooter from './VcsPanoramaFooter.vue';
 
   /**
@@ -888,6 +898,7 @@
         footerHeight,
         imprint: getImprint(app.uiConfig.config),
         dataProtection: getDataProtection(app.uiConfig.config),
+        footerInformation: getFooterInformation(app.uiConfig.config),
         showSplashScreen,
         splashScreen,
         attributionEntries,

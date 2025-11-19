@@ -8,6 +8,7 @@
 - Fixes a bug where resizing panels would be unreliable, espcially with iFrames
 - Fixes a bug where the position of a BalloonFeatureInfo would be incrorrect when a left panel is active
 - added an `icon` property to the attributions
+- Added `footerInformation` to uiConfig options, to allow adding additional links to the footer of the application
 
 ### Plugin Bundle updates
 

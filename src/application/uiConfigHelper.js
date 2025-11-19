@@ -1,3 +1,4 @@
+import { getLogger } from '@vcsuite/logger';
 import { computed } from 'vue';
 
 /**
@@ -31,6 +32,33 @@ export function getImprint(uiConfig) {
         tooltip: 'footer.imprint.tooltip',
         ...uiConfig.imprint,
       };
+    }
+    return undefined;
+  });
+}
+/**
+ * Creates a computed property for additional footer information configuration.
+ * @param {import("../uiConfig.js").UiConfigObject} uiConfig - The UI configuration object from the app.
+ * @returns {import('vue').ComputedRef<import('../uiConfig.js').TextPageType[]|undefined>}
+ */
+export function getFooterInformation(uiConfig) {
+  return computed(() => {
+    if (uiConfig?.footerInformation) {
+      return uiConfig.footerInformation
+        .filter((info) => {
+          if (!info.title && !info.url) {
+            getLogger('uiConfigHelper').warn(
+              'Footer information item skipped, missing title or url',
+              info,
+            );
+            return false;
+          }
+          return true;
+        })
+        .map((info) => ({
+          title: info.title || new URL(info.url, window.location.href).hostname,
+          ...info,
+        }));
     }
     return undefined;
   });

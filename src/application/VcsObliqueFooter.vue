@@ -87,7 +87,8 @@
       const hasLinks = computed(
         () =>
           !!app.uiConfig.config?.dataProtection ||
-          !!app.uiConfig.config?.imprint,
+          !!app.uiConfig.config?.imprint ||
+          app.uiConfig.config?.footerInformation?.length > 0,
       );
 
       const content = computed(() => {

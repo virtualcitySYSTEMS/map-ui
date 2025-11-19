@@ -62,6 +62,7 @@ import { reactive, readonly, ref } from 'vue';
  * @property {string} [helpBaseUrl='https://help.vc.systems/'] - an optional URL to a help landing page
  * @property {TextPageType} [imprint] - an option imprint, will show a link in the footer. Default title is 'footer.imprint.title'.
  * @property {TextPageType} [dataProtection] - an option dataProtection, will show a link in the footer. Default title is 'footer.dataProtection.title'.
+ * @property {TextPageType[]} [footerInformation] - optionnal, additional information to show in the footer as links or dialogs
  * @property {SplashScreen} [splashScreen] - an option splashScreen, will show a splash Screen on Map Load.
  * @property {CustomScreen} [customScreen] - an option customScreen, will show a Custom Menu Point that opens a window with custom content.
  * @property {string} [favicon] - the favicon to set

@@ -7,7 +7,11 @@
     getActionsByLocation,
   } from '../manager/navbarManager.js';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
-  import { getDataProtection, getImprint } from './uiConfigHelper.js';
+  import {
+    getDataProtection,
+    getImprint,
+    getFooterInformation,
+  } from './uiConfigHelper.js';
   import { toolboxComponentId } from '../manager/toolbox/ToolboxManagerComponent.vue';
 
   const app = inject('vcsApp');
@@ -55,6 +59,7 @@
 
   const dataProtection = getDataProtection(app.uiConfig?.config);
   const imprint = getImprint(app.uiConfig?.config);
+  const footerInformation = getFooterInformation(app.uiConfig?.config);
 </script>
 
 <template>
@@ -85,6 +90,16 @@
           class="plainStyle"
           :text-page="dataProtection"
           :window-id="'dataProtectionWindow'"
+        />
+      </v-list-item>
+    </template>
+    <template v-for="(info, idx) in footerInformation" :key="idx">
+      <v-divider></v-divider>
+      <v-list-item v-if="info">
+        <VcsTextPageFooter
+          class="plainStyle"
+          :text-page="info"
+          :window-id="'footerInfoWindow_' + idx"
         />
       </v-list-item>
     </template>
