@@ -14,6 +14,12 @@
 
 - @vcmap/geofence
   - Added to the dev environment
+- @vcmap/draw
+  - Added panorama support
+- @vcmap/measurement
+  - Added panorama support
+- @vcmap/panorama
+  - New plugin for advanced settings of panorama images
 
 # 6.2.4
 

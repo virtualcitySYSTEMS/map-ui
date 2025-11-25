@@ -9,9 +9,9 @@
     "@vcmap/swipe-tool": "^4.0.0",
     "@vcmap/export": "^2.0.0",
     "@vcmap/viewshed": "^3.0.0",
-    "@vcmap/measurement": "^4.0.0",
+    "@vcmap/measurement": "^5.0.0",
     "@vcmap/multi-view": "^3.0.0",
-    "@vcmap/draw": "^4.0.0",
+    "@vcmap/draw": "^5.0.0",
     "@vcmap/shadow": "^3.0.0",
     "@vcmap/search-wfs": "^2.0.0",
     "@vcmap/search-esri": "^2.0.0",
@@ -31,7 +31,8 @@
     "@vcmap/cesium-inspector": "^2.0.0",
     "@vcmap/event-control": "^1.0.1",
     "@vcmap/dynamic-layer": "^1.0.0",
-    "@vcmap/geofence": "^1.0.2"
+    "@vcmap/geofence": "^1.0.2",
+    "@vcmap/panorama": "^1.0.0"
   },
   "optionalDependencies": {
     "@vcmap/planning": "^7.0.0"
