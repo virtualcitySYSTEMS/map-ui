@@ -18,7 +18,9 @@ import {
   getFittedWindowPositionOptions,
   getTargetSize,
 } from '../manager/window/windowHelper.js';
-import SearchComponent from '../search/SearchComponent.vue';
+import SearchComponent, {
+  searchComponentId,
+} from '../search/SearchComponent.vue';
 import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.vue';
 
 /**
@@ -214,8 +216,6 @@ export function createToggleAction(
   };
   return { action, destroy };
 }
-
-export const searchComponentId = 'searchId';
 
 /**
  * @param {import("../vcsUiApp.js").default} app

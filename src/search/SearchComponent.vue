@@ -21,11 +21,7 @@
     </span>
     <template v-if="results.length > 0">
       <v-divider class="mt-1 base-darken-1" />
-      <ResultsComponent
-        :query="query"
-        :results="results"
-        :show-selected-only="showSelectedOnly"
-      />
+      <ResultsComponent :query="query" :results="results" />
       <v-divider />
 
       <v-row no-gutters>
@@ -33,9 +29,10 @@
           <div class="button-container d-flex align-center px-2 pt-2 pb-1">
             <VcsFormButton
               class="fixed-button"
-              @click="showSelectedOnly = !showSelectedOnly"
+              tooltip="search.hideWindow"
+              @click="closeWindow"
             >
-              <v-icon icon="mdi-arrow-collapse-vertical" />
+              <v-icon icon="mdi-minus-box-multiple-outline" />
             </VcsFormButton>
             <VcsFormButton
               @click="zoomToAll"
@@ -71,6 +68,8 @@
   import VcsFormButton from '../components/buttons/VcsFormButton.vue';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 
+  export const searchComponentId = 'searchId';
+
   /**
    * @description Stylized search component providing an input field for search inputs.
    * Renders a list of results using {@link ResultsComponent }
@@ -97,8 +96,6 @@
       const results = app.search.currentResults;
       const { xs } = useDisplay();
       let queryPreSuggestion = '';
-
-      const showSelectedOnly = ref(false);
 
       let suggestionTimeout;
 
@@ -140,7 +137,6 @@
         suggesting.value = '';
         suggestions.value = [];
         queryPreSuggestion = '';
-        showSelectedOnly.value = false;
       };
 
       const search = async () => {
@@ -163,7 +159,6 @@
         return fontSize.value + 11;
       });
       return {
-        showSelectedOnly,
         xs,
         query,
         searching,
@@ -192,6 +187,9 @@
             selectedSuggestion.value = -1;
             query.value = queryPreSuggestion;
           }
+        },
+        closeWindow() {
+          app.windowManager.remove(searchComponentId);
         },
       };
     },

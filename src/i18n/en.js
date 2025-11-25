@@ -372,6 +372,7 @@ const messages = {
     tooltip: 'Search',
     select: 'Select result item',
     placeholder: 'Search for address or landmark/point of interest',
+    hideWindow: 'Hide search',
     zoomToFeatureAction: 'Zoom to result',
     zoomToAllMobile: 'Zoom to all',
     zoomToAll: 'Zoom to all',

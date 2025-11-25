@@ -11,7 +11,6 @@ export {
   createLinkAction,
   createGoToViewpointAction,
   createZoomToFeatureAction,
-  searchComponentId,
 } from './src/actions/actionHelper.js';
 export {
   createDeepPickingAction,
@@ -377,6 +376,7 @@ export {
   getLegendEntries,
 } from './src/legend/legendHelper.js';
 export { default as Search } from './src/search/search.js';
+export { searchComponentId } from './src/search/SearchComponent.vue';
 export { markText } from './src/search/markText.js';
 export { default as ResultItemComponent } from './src/search/ResultItem.vue';
 export { default as ResultsComponent } from './src/search/ResultsComponent.vue';

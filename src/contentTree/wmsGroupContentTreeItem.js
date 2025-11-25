@@ -2,6 +2,7 @@ import { markVolatile } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { ref } from 'vue';
 import { parseBoolean } from '@vcsuite/parsers';
+import { is } from '@vcsuite/check';
 import deepEqual from 'fast-deep-equal';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { StateActionState } from '../actions/stateRefAction.js';
@@ -9,6 +10,90 @@ import { contentTreeClassRegistry } from './contentTreeItem.js';
 import WmsChildContentTreeItem from './wmsChildContentTreeItem.js';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { legendSymbol } from '../legend/legendHelper.js';
+
+/**
+ *
+ * @param {string} src The OnlineRessource property of the legend
+ * @param {number} width The width of the image
+ * @param {string} title The title of the layer.
+ * @returns {import('../legend/legendHelper.js').StyleLegendItem}
+ */
+function parseLegend(src, width, title) {
+  if (width < 25) {
+    return {
+      type: 'StyleLegendItem',
+      colNr: 1,
+      rows: [{ type: 'IconLegendRow', title, image: { src } }],
+    };
+  }
+  return { type: 'ImageLegendItem', popoutBtn: true, src };
+}
+
+/**
+ *
+ * @param {SerializedWMSCapabilities} capabilities
+ * @returns {WMSEntry[]}
+ */
+function parseSerializedCapabilities(capabilities) {
+  if (capabilities?.layers?.length > 0) {
+    return capabilities.layers
+      .filter((layer) => {
+        if (!is(layer, { name: String })) {
+          getLogger(this.className).warn(
+            `Ignoring WMS Layer without name in layer ${this._layerName}`,
+          );
+          return false;
+        }
+        return true;
+      })
+      .map((layer) => {
+        const styles = layer.styles
+          ?.filter((s) => {
+            if (!is(s, { name: String })) {
+              getLogger(this.className).warn(
+                `Ignoring WMS Style without name in layer ${this._layerName}`,
+              );
+              return false;
+            }
+            return true;
+          })
+          .map((s) => ({
+            name: s.name,
+            title: s.title,
+            legend:
+              s.legend
+                ?.filter((l) => {
+                  if (!is(l, { url: String, width: Number, height: Number })) {
+                    getLogger(this.className).warn(
+                      `Ignoring invalid WMS Legend in style ${s.name} in layer ${this._layerName}`,
+                    );
+                    return false;
+                  }
+                  return true;
+                })
+                .map((l) => parseLegend(l.url, l.width, s.title || '')) || [],
+          }));
+
+        const wmsEntry = {
+          name: layer.name,
+          active: ref(false),
+          activeStyle: ref(''),
+        };
+        if (layer.title) {
+          wmsEntry.title = layer.title;
+        }
+        if (layer.extent) {
+          wmsEntry.extent = layer.extent;
+        }
+        if (styles?.length > 0) {
+          wmsEntry.styles = styles;
+        }
+        return wmsEntry;
+      });
+  } else {
+    return [];
+  }
+}
 
 /**
  * @param {string} rawUrl
@@ -49,27 +134,9 @@ async function getWMSEntries(rawUrl, parameters) {
             title: style.Title,
             legend: style.LegendURL?.filter(
               (legend) => legend.OnlineResource,
-            ).map((legend) => {
-              const src = legend.OnlineResource;
-              if (legend.size[0] < 25) {
-                return {
-                  type: 'StyleLegendItem',
-                  colNr: 1,
-                  rows: [
-                    {
-                      type: 'IconLegendRow',
-                      title: layer.Title,
-                      image: { src },
-                    },
-                  ],
-                };
-              }
-              return {
-                type: 'ImageLegendItem',
-                src,
-                popoutBtn: true,
-              };
-            }),
+            ).map((legend) =>
+              parseLegend(legend.OnlineResource, legend.size[0], layer.Title),
+            ),
           };
         }) ?? [];
       return {
@@ -133,9 +200,34 @@ function createWMSChildContentTreeItem(
  * @property {string} name
  * @property {import("vue").Ref<boolean>} active
  * @property {import("vue").Ref<string>} activeStyle
- * @property {string} title
- * @property {import("@vcmap/core").Extent} extent
- * @property {Array<WMSStyleEntry>} styles
+ * @property {string} [title]
+ * @property {import("@vcmap/core").Extent} [extent]
+ * @property {Array<WMSStyleEntry>} [styles]
+ */
+
+/**
+ * @typedef {Object} SerializedWMSLegend
+ * @property {string} url
+ * @property {number} width
+ * @property {number} height
+ */
+/**
+ * @typedef {Object} SerializedWMSStyle
+ * @property {string} name
+ * @property {string} [title]
+ * @property {SerializedWMSLegend[]} [legend]
+ */
+/**
+ * @typedef {Object} SerializedWMSLayer
+ * @property {string} name
+ * @property {string} [title]
+ * @property {number[]} [extent] Layer extent, in WGS84 coordinates
+ * @property {SerializedWMSStyle[]} [styles]
+ */
+/**
+ * @description The serialized form of WMS Capabilities are used in the configuration to avoid fetching the capabilities on every startup.
+ * @typedef {Object} SerializedWMSCapabilities
+ * @property {Array<SerializedWMSLayer>} layers
  */
 
 /**
@@ -504,10 +596,17 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
     this.clickable = !this._setWMSLayersExclusive;
 
     try {
-      const availableWMSEntries = await getWMSEntries(
-        this._layer.url,
-        this._layer.parameters,
-      );
+      let availableWMSEntries = [];
+      if (this._layer.properties.capabilities) {
+        availableWMSEntries = parseSerializedCapabilities(
+          this._layer.properties.capabilities,
+        );
+      } else {
+        availableWMSEntries = await getWMSEntries(
+          this._layer.url,
+          this._layer.parameters,
+        );
+      }
       // check if the layer still exists, it can happen that the layer was removed while fetching the capabilities.
       if (!this._layer) {
         return;

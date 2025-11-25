@@ -372,6 +372,7 @@ const messages = {
     tooltip: 'Suche',
     select: 'Suchergebnis auswählen',
     placeholder: 'Suche nach Adresse oder Ort/Sehenswürdigkeit',
+    hideWindow: 'Suche ausblenden',
     zoomToFeatureAction: 'Auf Ergebnis zoomen',
     zoomToAll: 'Auf alle Ergebnisse zoomen',
     zoomToAllMobile: 'Auf alle zoomen',
