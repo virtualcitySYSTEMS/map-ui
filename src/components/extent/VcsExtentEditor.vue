@@ -3,7 +3,7 @@
     class="vcs-extent-editor"
     :heading="heading"
     :header-actions="actions"
-    :action-button-list-overflow-count="2"
+    :action-button-list-overflow-count="3"
     :disabled="disabled"
     expandable
     start-open
@@ -27,6 +27,7 @@
    * @vue-prop {import("@vcmap/core").ExtentOptions} [modelValue] - the extent options to be modeled.
    * @vue-prop {boolean} [disabled=false] - Disable coordinate input.
    * @vue-prop {string} [heading='component.extent.title] - Header of the form section
+   * @vue-prop {boolean} [showExtentOnStartup=false] - Whether to activate the extent layer on startup
    */
   export default {
     name: 'VcsExtentEditor',
@@ -48,6 +49,10 @@
         type: String,
         default: 'components.extent.title',
       },
+      showExtentOnStartup: {
+        type: Boolean,
+        default: false,
+      },
     },
     emits: ['update:modelValue'],
     setup(props, { emit }) {
@@ -63,7 +68,11 @@
         },
       });
 
-      const { actions, destroy } = setupExtentComponentActions(app, extent);
+      const { actions, destroy } = setupExtentComponentActions(
+        app,
+        extent,
+        props.showExtentOnStartup,
+      );
 
       onUnmounted(() => {
         destroy();

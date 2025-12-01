@@ -10,6 +10,7 @@
 - added an `icon` property to the attributions
 - Added `footerInformation` to uiConfig options, to allow adding additional links to the footer of the application
 - Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
+- Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
 
 ### Plugin Bundle updates
 

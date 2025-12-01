@@ -223,6 +223,7 @@ const messages = {
       show: 'Ausdehnung in Karte anzeigen',
       hide: 'Ausdehnung in Karte ausblenden',
       create: 'Neue Ausdehnung in Karte zeichnen',
+      reset: 'Ausdehnung zurücksetzen',
       zoom: 'Auf Ausdehnung zoomen',
       invalid: 'Koordinaten ergeben keine valide Ausdehnung!',
       editVertices: 'Ecken bearbeiten',

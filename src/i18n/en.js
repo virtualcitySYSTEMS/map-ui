@@ -223,6 +223,7 @@ const messages = {
       show: 'Show extent in map',
       hide: 'Hide extent in map',
       create: 'Draw new extent in map',
+      reset: 'Reset extent',
       zoom: 'Zoom to extent',
       invalid: 'Coordinates do not result in a valid extent!',
       editVertices: 'Edit extent corners',

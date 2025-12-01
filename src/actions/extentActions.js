@@ -21,6 +21,7 @@ import { createOrUpdateFromCoordinates } from 'ol/extent.js';
 import { Polygon } from 'ol/geom.js';
 import { unByKey } from 'ol/Observable.js';
 import { getLogger } from '@vcsuite/logger';
+import { callSafeAction } from './actionHelper.js';
 
 /**
  * @param {import("@src/vcsUiApp.js").default} app
@@ -144,6 +145,23 @@ export function createExtentFeatureAction(
         session.stop();
         session = null;
       }
+    },
+  };
+}
+
+/**
+ * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {import("@vcmap/core").Extent} initialExtent
+ * @returns {import("./actionHelper.js").VcsAction}
+ */
+export function createResetExtentAction(extent, initialExtent) {
+  return {
+    name: 'components.extent.reset',
+    title: 'components.extent.reset',
+    icon: '$vcsReturn',
+    active: false,
+    callback() {
+      extent.value = initialExtent.clone();
     },
   };
 }
@@ -318,9 +336,14 @@ function syncExtentFeature(extent, layer, featureId) {
 /**
  * @param {import("@src/vcsUiApp.js").default} app
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>|import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
+ * @param {boolean} [showExtentOnStartup=false]
  * @returns {{ actions: Array<import("./actionHelper.js").VcsAction>, destroy: () => void, layer: import("@vcmap/core").VectorLayer, featureId: string }}
  */
-export function setupExtentComponentActions(app, extent) {
+export function setupExtentComponentActions(
+  app,
+  extent,
+  showExtentOnStartup = false,
+) {
   const layer = new VectorLayer({
     projection: mercatorProjection.toJSON(),
     zIndex: maxZIndex - 1,
@@ -352,6 +375,10 @@ export function setupExtentComponentActions(app, extent) {
     createLayerToggleAction(layer, false);
   const { action: createExtentAction, destroy: destroyCreateExtent } =
     createExtentFeatureAction(app, layer, extent, featureId, false);
+  const resetExtentAction = createResetExtentAction(
+    extent,
+    extent.value.clone(),
+  );
   const zoomToExtentAction = createZoomToExtentAction(app, extent);
   zoomToExtentAction.title = 'components.extent.zoom';
   const { action: translateAction, destroy: destroyTranslate } =
@@ -363,11 +390,15 @@ export function setupExtentComponentActions(app, extent) {
     extent,
     suspendFeatureUpdate,
   );
+  if (showExtentOnStartup) {
+    callSafeAction(showExtentAction);
+  }
 
   return {
     actions: [
       showExtentAction,
       createExtentAction,
+      resetExtentAction,
       vertexAction,
       translateAction,
       zoomToExtentAction,

@@ -1,6 +1,10 @@
 <template>
   <v-container class="pa-0">
-    <VcsExtentEditor heading="Default WGS84 projection" v-model="wgs84Extent" />
+    <VcsExtentEditor
+      heading="Default WGS84 projection"
+      v-model="wgs84Extent"
+      show-extent-on-startup
+    />
     <VcsExtentEditor
       heading="Mercator projection example"
       v-model="mercatorExtent"
