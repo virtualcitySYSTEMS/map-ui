@@ -1,3 +1,10 @@
+# 6.2.6
+
+### Plugin Bundle updates
+
+- @vcmap/dynamic-layer
+  Updated to correct version
+
 # 6.2.5
 
 ### Fixes
