@@ -23,6 +23,13 @@
 - @vcmap/panorama
   - New plugin for advanced settings of panorama images
 
+# 6.2.6
+
+### Plugin Bundle updates
+
+- @vcmap/dynamic-layer
+  Updated to correct version
+
 # 6.2.5
 
 ### Fixes

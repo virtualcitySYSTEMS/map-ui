@@ -30,7 +30,7 @@
     "@vcmap/sensorthings": "^1.0.0",
     "@vcmap/cesium-inspector": "^2.0.0",
     "@vcmap/event-control": "^1.0.1",
-    "@vcmap/dynamic-layer": "^1.0.0",
+    "@vcmap/dynamic-layer": "^2.0.0",
     "@vcmap/geofence": "^1.0.2",
     "@vcmap/panorama": "^1.0.0"
   },
