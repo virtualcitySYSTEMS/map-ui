@@ -1,5 +1,6 @@
+.vcs_pipeline_version: '1.0'
 default:
-  image: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/node:20-bullseye
+  image: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/node:20-bookworm
 
 variables:
   GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_COMMIT_REF_SLUG
@@ -14,26 +15,24 @@ stages:
   - publish
   - docs
 
-.template: &job_definition
+.branch_restriction: &branch_restriction
   only:
     - /^(feature-.*|hotfix-.*|main|release-.*)$/
+
+.template: &job_definition
+  <<: *branch_restriction
   tags:
     - linux-2.0
+  before_script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/".insteadOf "ssh://git@gitlab.virtualcitysystems.de/"
+    - git config --global user.email "gitlab-ci@virtualcitysystems.de"
+    - git config --global user.name "Gitlab CI"
 
 build:
   <<: *job_definition
   script:
     - npm set registry 'http://npmregistry:4873'
     - npm ci
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_RUNNER_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan gitlab.virtualcitysystems.de >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - git config user.name "Gitlab Runner"
-    - git config user.email "gitlab-runner@vc.systems"
   stage: build
 
 .after_build_template: &after_build_definition
@@ -72,15 +71,6 @@ audit:
 bundle:
   <<: *after_build_definition
   stage: bundle
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_RUNNER_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan gitlab.virtualcitysystems.de >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - git config user.name "Gitlab Runner"
-    - git config user.email "gitlab-runner@vc.systems"
   script:
     - npm set registry 'http://npmregistry:4873'
     - cd plugins
@@ -102,20 +92,14 @@ version:
     - LEVEL=$([ $CI_COMMIT_REF_NAME == "main" ] && echo "prerelease" || echo "patch")
     - npm version $LEVEL -m "%s [skip-ci]"
     - TAG=`git describe --abbrev=0`
-    - git push git@gitlab:vcsuite/npm/vcmap/ui.git $TAG
-    - git push git@gitlab:vcsuite/npm/vcmap/ui.git HEAD:$CI_COMMIT_REF_NAME
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_RUNNER_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan gitlab >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - git config user.name "Gitlab Runner"
-    - git config user.email "gitlab-runner@vc.systems"
+    - git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/"$CI_PROJECT_PATH".git $TAG
+    - git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/"$CI_PROJECT_PATH".git HEAD:$CI_COMMIT_REF_NAME
 
 deployStaging:
   <<: *after_build_definition
+  except:
+    variables:
+      - $PUBLISH
   stage: deploy
   environment:
     name: staging/$CI_COMMIT_REF_SLUG
@@ -132,6 +116,10 @@ deployStaging:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
 
 stopEnvironment:
+  <<: *branch_restriction
+  except:
+    variables:
+      - $PUBLISH
   stage: deploy
   variables:
     GIT_STRATEGY: none
@@ -151,6 +139,10 @@ stopEnvironment:
     action: stop
 
 deployStagingCluster:
+  <<: *branch_restriction
+  except:
+    variables:
+      - $PUBLISH
   stage: deployCluster
   inherit:
     variables: false
@@ -162,17 +154,6 @@ deployStagingCluster:
   trigger:
     project: vcsuite/devops/manifests
     branch: main
-
-deployNew:
-  <<: *after_build_definition
-  stage: publish
-  only:
-    variables:
-      - $DEPLOY
-  script:
-    - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
-    - echo "{\"modules\":[\"config/www.config.json\"]}" > ./dist/app.config.json
-    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/dev hostingsftp.virtualcitypublisher.de --cores 4 -s ./dist -d .
 
 publish:
   <<: *after_build_definition
