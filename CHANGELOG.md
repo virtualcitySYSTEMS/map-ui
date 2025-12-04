@@ -1,3 +1,25 @@
+# 6.2.5
+
+### Fixes
+
+- updated @vcmap/core to 6.2.4
+  - Fixes an issue where `getAttributes` of cesium3DTileFeature did not return anything if the attributes where not defined in attributes bag and version was not set on 1.1
+  - Fixes a bug in CesiumTilesetCesiumImpl where a hidden feature could reappear on style update of the layer, or would have its style not updated as the other features of the layer
+
+### Plugin Bundle updates
+
+- @vcmap/create-link
+  - Fixes an issue with the clipboard being suppressed via CSP in some environments.
+- @vcmap/search-wfs
+  - Update default `regEx`
+  - Fix a bug where the configuration of the Projection would not be possible
+- @vcmap/dynamic-layer
+  - Changed `filter` property of catalogues presets: a JSON object can now be passed to prefilter catalogue entries, using all available filtering options
+  - Added `defaultSorting` option to catalogue configuration, allowing to set a sorting option per catalogue
+  - Added an Authentication inputfield in the Webdata tab
+  - Fixed a bug where the default tab selector in the ConfigEditor would not work properly
+  - Fixed a bug where setting `defaultSorting` for a catalogue preset would not be reflected in the UI
+
 # 6.2.4
 
 ### Changes
