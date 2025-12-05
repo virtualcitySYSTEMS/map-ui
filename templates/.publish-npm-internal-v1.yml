@@ -1,0 +1,15 @@
+include:
+  - local: 'templates/.templates-v1.yml'
+
+publish_npm_internal:
+  extends: .after_build_template
+  stage: publish_npm
+  only:
+    refs:
+      - /^(main|release-v.*)$/
+    variables:
+      - $PUBLISH
+  script:
+    - npm config set '//npmregistry:4873/:_authToken' "${VERDACCIO_TOKEN}"
+    - NPM_TAG=$([ $PUBLISH == "prerelease" ] && echo "dev" || echo "latest")
+    - npm publish --registry http://npmregistry:4873 --tag $NPM_TAG

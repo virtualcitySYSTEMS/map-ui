@@ -1,0 +1,157 @@
+include:
+  - local: 'templates/.templates-v1.yml'
+
+default:
+  image: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/node:20-bookworm
+
+variables:
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_COMMIT_REF_SLUG
+
+stages:
+  - build
+  - test
+  - bundle
+  - deploy
+  - prepublish
+  - version
+  - publish_npm
+  - publish_package
+  - deployCluster
+
+build:
+  extends: .job_template
+  script:
+    - npm ci
+  stage: build
+
+lint:
+  extends: .after_build_template
+  stage: test
+  script:
+    - npm run lint
+
+test:
+  extends: .after_build_template
+  stage: test
+  script:
+    - npm run coverage -- --reporter junit --outputFile test-report.xml
+  coverage: '/^Statements\s*:\s*([^%]+)/'
+  artifacts:
+    reports:
+      junit: test-report.xml
+
+audit:
+  extends: .after_build_template
+  stage: test
+  script:
+    - npm audit --production --audit-level=low
+
+buildPreview:
+  extends: .staging_build_template
+  stage: bundle
+  script:
+    - npm run buildStagingApp
+
+bundle:
+  extends: .after_build_template
+  stage: bundle
+  only:
+    variables:
+      - $PUBLISH
+    refs:
+      - /^(main|release-v.*)$/
+  script:
+    - npm run build
+
+deployStaging:
+  extends: .staging_build_template
+  except:
+    variables:
+      - $PUBLISH
+  stage: deploy
+  environment:
+    name: staging/$CI_COMMIT_REF_SLUG
+    url: http://$CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG.stagingcluster.intern.virtualcitysystems.de
+    on_stop: stopEnvironment
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: ['']
+  script:
+    - /kaniko/executor --context dist/ --dockerfile node_modules/@vcmap/plugin-cli/assets/build/staging/Dockerfile --destination $CI_REGISTRY_IMAGE/staging:$CI_COMMIT_REF_SLUG
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+
+stopEnvironment:
+  extends: .branch_restriction
+  except:
+    variables:
+      - $PUBLISH
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  image:
+    name: gitlab.virtualcitysystems.de:5050/vcsuite/devops/gitlabrunner/kubectl:latest
+    entrypoint: ['']
+  tags:
+    - linux-2.0
+  script:
+    - echo "Stop environment staging/$CI_COMMIT_REF_NAME"
+    - echo "Delete namespace on k9s $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG"
+    - kubectl config use-context vcsuite/cluster-management:agent
+    - kubectl delete namespace $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG
+  when: manual
+  environment:
+    name: staging/$CI_COMMIT_REF_SLUG
+    action: stop
+
+deployStagingCluster:
+  extends: .branch_restriction
+  stage: deployCluster
+  except:
+    variables:
+      - $PUBLISH
+  inherit:
+    variables: false
+  variables:
+    STAGE_BRANCH: $CI_COMMIT_REF_SLUG
+    STAGE_PROJECT_NAME: $CI_PROJECT_PATH_SLUG
+    STAGE_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+    STAGE_NAMESPACE: $CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG
+  trigger:
+    project: vcsuite/devops/manifests
+    branch: main
+
+sshDependenciesCheck:
+  extends: .after_build_template
+  stage: prepublish
+  only:
+    variables:
+      - $PUBLISH
+    refs:
+      - /^(main|release-v.*)$/
+  script:
+    - echo "Checking for SSH dependencies in package.json..."
+    - |
+      if grep -E "git(\+ssh)?://git@gitlab|ssh://git@gitlab:|gitlab:" package.json; then
+        echo "Error: SSH link dependencies found in package.json."
+        exit 1
+      else
+        echo "No SSH link dependencies found."
+      fi
+
+version:
+  extends: .after_build_template
+  stage: version
+  only:
+    variables:
+      - $PUBLISH
+    refs:
+      - /^(main|release-v.*)$/
+  script:
+    - LEVEL=$([ $PUBLISH == "prerelease" ] && echo "prerelease" || echo "patch")
+    - npm version $LEVEL -m "%s [skip-ci]"
+    - TAG=`git describe --abbrev=0`
+    - echo git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/"$CI_PROJECT_PATH".git
+    - git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/"$CI_PROJECT_PATH".git $TAG
+    - git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/"$CI_PROJECT_PATH".git HEAD:$CI_COMMIT_REF_NAME

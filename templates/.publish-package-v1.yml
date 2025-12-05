@@ -1,0 +1,16 @@
+include:
+  - local: 'templates/.templates-v1.yml'
+
+publish_package:
+  extends: .after_build_template
+  stage: publish_package
+  only:
+    refs:
+      - /^(main|release-v.*)$/
+    variables:
+      - $PUBLISH
+  script:
+    - VERSION=$(node -pe "require('./package.json').version")
+    - NAME=$(node -pe "require('./package.json').name.replace('/', '-').replace('@', '')")
+    - npm run bundle
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/@${NAME}.tar.gz "${CI_API_V4_URL}/projects/317/packages/generic/${NAME}/${VERSION}/${NAME}-${VERSION}.tar.gz"'

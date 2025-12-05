@@ -1,0 +1,14 @@
+include:
+  - local: 'templates/.templates-v1.yml'
+
+build:
+  script:
+    - npm ci
+    - npm run ensure-types
+  stage: build
+
+type-check:
+  extends: .after_build_template
+  stage: test
+  script:
+    - npm run type-check

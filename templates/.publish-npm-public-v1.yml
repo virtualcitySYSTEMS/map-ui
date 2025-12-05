@@ -1,0 +1,15 @@
+include:
+  - local: 'templates/.templates-v1.yml'
+
+publish_npm_public:
+  extends: .after_build_template
+  stage: publish_npm
+  only:
+    refs:
+      - /^(main|release-v.*)$/
+    variables:
+      - $PUBLISH
+  script:
+    - npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+    - NPM_TAG=$([ $PUBLISH == "prerelease" ] && echo "dev" || echo "latest")
+    - npm publish --registry https://registry.npmjs.org --access public --tag $NPM_TAG

@@ -1,0 +1,24 @@
+.branch_restriction:
+  only:
+    - /^(feature-.*|hotfix-.*|main|release-.*)$/
+
+.job_template:
+  extends: .branch_restriction
+  tags:
+    - linux-2.0
+  before_script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.virtualcitysystems.de/".insteadOf "ssh://git@gitlab.virtualcitysystems.de/"
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - npm set registry 'http://npmregistry:4873'
+
+.after_build_template:
+  extends: .job_template
+  variables:
+    GIT_STRATEGY: none
+
+.staging_build_template:
+  extends: .after_build_template
+  except:
+    variables:
+      - $PUBLISH
