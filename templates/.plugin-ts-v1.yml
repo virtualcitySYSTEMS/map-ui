@@ -4,7 +4,7 @@ include:
 build:
   script:
     - npm ci
-    - npm run ensure-types
+    - npx vcmplugin ensure-types
   stage: build
 
 type-check:
