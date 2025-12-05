@@ -22,6 +22,10 @@
   - Added panorama support
 - @vcmap/panorama
   - New plugin for advanced settings of panorama images
+- @vcmap/layer-settings
+  - Added the plugin, which allows to edit layers at runtime via an action in the content tree
+- @vcmap/pointcloud-settings
+  The pointcloud-settings plugin is deprecated, as the layer-settings plugin contains the full features of the old pointcloud-settings plugin
 
 # 6.2.6
 

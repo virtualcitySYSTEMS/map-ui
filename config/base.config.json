@@ -1181,6 +1181,10 @@
       ]
     },
     {
+      "name": "@vcmap/layer-settings",
+      "entry": "plugins/@vcmap/layer-settings/index.js"
+    },
+    {
       "name": "@vcmap/create-link",
       "entry": "plugins/@vcmap/create-link/index.js"
     }
