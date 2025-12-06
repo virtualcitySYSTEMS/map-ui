@@ -146,6 +146,7 @@ deployStagingCluster:
   stage: deployCluster
   inherit:
     variables: false
+  allow_failure: true
   variables:
     STAGE_BRANCH: $CI_COMMIT_REF_SLUG
     STAGE_PROJECT_NAME: $CI_PROJECT_PATH_SLUG
@@ -154,6 +155,7 @@ deployStagingCluster:
   trigger:
     project: vcsuite/devops/manifests
     branch: main
+    strategy: mirror
 
 publish:
   <<: *after_build_definition
