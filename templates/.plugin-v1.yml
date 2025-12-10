@@ -21,6 +21,8 @@ stages:
 build:
   extends: .job_template
   script:
+    - NAMESPACE="$CI_PROJECT_PATH_SLUG-$CI_COMMIT_REF_SLUG"
+    - '[ ${#NAMESPACE} -le 63 ] || (echo "Error: Namespace name too long $NAMESPACE" && exit 1)'
     - npm ci
   stage: build
 
