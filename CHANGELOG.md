@@ -13,6 +13,7 @@
 - Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
 - Correctly uses global vcs style nonce for vuetify.
 - Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
+- Fixes a bug where switching a flight interpolation from spline to linear and then back to spline would not be taken into account
 
 ### Plugin Bundle updates
 

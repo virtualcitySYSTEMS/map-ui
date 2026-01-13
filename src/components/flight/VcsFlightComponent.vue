@@ -202,16 +202,21 @@
       const app = inject('vcsApp');
       const flightInstance = getProvidedFlightInstance();
       const loop = ref(flightInstance.loop);
+      const interpolationValue = ref(flightInstance.interpolation);
       const flightDuration = ref(getFlightDuration(flightInstance));
       const disablePlayer = ref(!(flightDuration.value > 0));
-      const flightDurationListener = [
+      const flightInstanceListeners = [
         flightInstance.anchorsChanged.addEventListener(() => {
           flightDuration.value = getFlightDuration(flightInstance);
           disablePlayer.value = !(flightDuration.value > 0);
         }),
         flightInstance.propertyChanged.addEventListener((prop) => {
           if (prop === 'loop') {
+            loop.value = flightInstance.loop;
             flightDuration.value = getFlightDuration(flightInstance);
+          }
+          if (prop === 'interpolation') {
+            interpolationValue.value = flightInstance.interpolation;
           }
         }),
       ];
@@ -221,7 +226,7 @@
       );
 
       onUnmounted(() => {
-        flightDurationListener.forEach((cb) => cb());
+        flightInstanceListeners.forEach((cb) => cb());
         editingListener();
       });
 
@@ -243,9 +248,10 @@
         }),
         interpolation: computed({
           get() {
-            return flightInstance?.interpolation;
+            return interpolationValue.value;
           },
           set(value) {
+            interpolationValue.value = value;
             flightInstance.interpolation = value;
           },
         }),
