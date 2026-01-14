@@ -1,3 +1,18 @@
+# 6.2.7
+
+### Plugin Bundle updates
+
+- @vcmap/list-view
+  - Update jsPDF to 4.0.0
+  - Fix a bug where the search would fail when an item of the list does not have the expected properties
+  - Fix a bug where the Config Editor would freeze when defining multiple templates in Chrome
+- @vcmap/multi-view
+  - fixes a bug where oblique multiview images were not updated when the active map's collection changed and obliqueCollectionName not set
+- @vcmap/search-nominatim
+  - converts plugin to TypeScript
+  - adds county option to the config
+  - fixes a bug where URL query parameter would be overrriden
+
 # 6.2.6
 
 ### Plugin Bundle updates
