@@ -1,3 +1,10 @@
+# 6.2.8
+
+### Plugin Bundle updates
+
+- @vcmap/search-nominatim
+  - fixed a bug where the AbortController was already aborted on use.
+
 # 6.2.7
 
 ### Plugin Bundle updates
