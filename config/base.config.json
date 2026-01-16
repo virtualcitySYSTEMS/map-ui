@@ -138,6 +138,26 @@
   ],
   "styles": [
     {
+      "name": "fruitStyle",
+      "type": "DeclarativeStyleItem",
+      "declarativeStyle": {
+        "show": "true",
+        "color": {
+          "conditions": [
+            ["${attributes.fruit} === 'apple'", "color('#ff0000')"],
+            ["${attributes.fruit} === 'banana'", "color('#ffff00')"],
+            ["${attributes.fruit} === 'kiwi'", "color('#00ff00')"],
+            ["${attributes.fruit} === 'gooseberry'", "color('#ffa500')"],
+            ["${attributes.fruit} === 'pear'", "color('#0000ff')"],
+            ["true", "color('#ffffff')"]
+          ]
+        }
+      },
+      "properties": {
+        "title": "Fruit Salad"
+      }
+    },
+    {
       "name": "lineColor",
       "type": "DeclarativeStyleItem",
       "declarativeStyle": {
@@ -727,6 +747,10 @@
       "screenSpaceError": 16,
       "screenSpaceErrorMobile": 32,
       "exclusiveGroups": ["bldg"],
+      "attributeProvider": {
+        "type": "CsvAttributeProvider",
+        "data": "exampleData/fruit.csv"
+      },
       "properties": {
         "availableStyles": [
           "MeasuredHeightGreen",
@@ -734,7 +758,8 @@
           "MeasuredHeightBlue",
           "ClassifiedbyRoofType",
           "BuildingFunction",
-          "Transparentbuildings"
+          "Transparentbuildings",
+          "fruitStyle"
         ],
         "title": "Berlin - LOD2",
         "featureInfo": "addressBalloon"
@@ -755,11 +780,18 @@
       },
       "activeOnStartup": false,
       "debug": false,
+      "attributeProvider": {
+        "type": "CsvAttributeProvider",
+        "data": "exampleData/osmFruit.csv",
+        "idColumn": "osm_id",
+        "keyProperty": "osm_id",
+        "headers": ["osm_id", "fruit"]
+      },
       "properties": {
         "featureInfo": "tableAllWithTemplateHeader",
         "title": "layers.osmBuildingFootprints.title",
         "tooltip": "OpenStreetMap Building Polygons",
-        "availableStyles": ["Transparentbuildings"]
+        "availableStyles": ["Transparentbuildings", "fruitStyle"]
       }
     },
     {
