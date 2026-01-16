@@ -42,7 +42,8 @@
         "config/clipping.config.json",
         "config/cluster.config.json",
         "config/vectorTile.config.json",
-        "config/geofence.config.json"
+        "config/geofence.config.json",
+        "config/i3s.config.json"
       ]
     }
   ]
