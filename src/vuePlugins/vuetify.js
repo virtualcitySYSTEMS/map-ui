@@ -207,6 +207,7 @@ export function createVcsVuetify(i18n) {
     options: {
       customProperties: true,
     },
+    cspNonce: window.vcs?.styleNonce,
     themes: createVcsThemes(),
     variations: {
       colors: ['primary'],

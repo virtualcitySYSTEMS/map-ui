@@ -57,8 +57,8 @@
     "vue-i18n": "^9.13.1"
   },
   "peerDependencies": {
-    "@vcmap-cesium/engine": "^11.0.3",
-    "@vcmap/core": "^6.3.0-rc.1",
+    "@vcmap-cesium/engine": "^11.0.4",
+    "@vcmap/core": "^6.3.0-rc.2",
     "ol": "^10.4.0",
     "vue": "~3.4.38",
     "vuetify": "~3.7.14"
