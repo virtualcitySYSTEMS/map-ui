@@ -12,6 +12,7 @@
 - Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
 - Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
 - Correctly uses global vcs style nonce for vuetify.
+- Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
 
 ### Plugin Bundle updates
 

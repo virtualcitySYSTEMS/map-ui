@@ -1,4 +1,4 @@
-import { markVolatile } from '@vcmap/core';
+import { getInitForUrl, markVolatile } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import { ref } from 'vue';
 import { parseBoolean } from '@vcsuite/parsers';
@@ -98,9 +98,10 @@ function parseSerializedCapabilities(capabilities) {
 /**
  * @param {string} rawUrl
  * @param {Record<string, string>} parameters
+ * @param {Record<string, string>} headers
  * @returns {Promise<Array<WMSEntry>>} The fetched capabilities.
  */
-async function getWMSEntries(rawUrl, parameters) {
+async function getWMSEntries(rawUrl, parameters, headers) {
   const url = new URL(rawUrl);
   const excludedParameters = [
     'LAYERS',
@@ -117,7 +118,8 @@ async function getWMSEntries(rawUrl, parameters) {
   url.searchParams.set('SERVICE', 'WMS');
   url.searchParams.set('REQUEST', 'GetCapabilities');
 
-  const res = await fetch(url.toString());
+  const init = getInitForUrl(url.toString(), headers);
+  const res = await fetch(url.toString(), init);
   if (!res.ok) {
     throw new Error(`Failed to fetch capabilities: ${res.statusText}`);
   }
@@ -605,6 +607,7 @@ class WMSGroupContentTreeItem extends VcsObjectContentTreeItem {
         availableWMSEntries = await getWMSEntries(
           this._layer.url,
           this._layer.parameters,
+          this._layer.headers,
         );
       }
       // check if the layer still exists, it can happen that the layer was removed while fetching the capabilities.
