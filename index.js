@@ -51,6 +51,7 @@ export {
 export {
   default as VcsCallback,
   executeCallbacks,
+  executeAsyncCallbacks,
 } from './src/callback/vcsCallback.js';
 export { default as ActivateLayersCallback } from './src/callback/activateLayersCallback.js';
 export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.js';
@@ -69,6 +70,12 @@ export { default as ToggleToolbarButtonCallback } from './src/callback/toggleToo
 export { default as ActivateMapCallback } from './src/callback/activateMapCallback.js';
 export { default as ActivateOverviewMapCallback } from './src/callback/activateOverviewMapCallback.js';
 export { default as DeactivateOverviewMapCallback } from './src/callback/deactivateOverviewMapCallback.js';
+export { default as HighlightObjectsCallback } from './src/callback/highlightObjectsCallback.js';
+export { default as ShowObjectsCallback } from './src/callback/showObjectsCallback.js';
+export { default as StartFlightCallback } from './src/callback/startFlightCallback.js';
+export { default as StopFlightCallback } from './src/callback/stopFlightCallback.js';
+export { default as UnHighlightObjectsCallback } from './src/callback/unHighlightObjectsCallback.js';
+export { default as HideObjectsCallback } from './src/callback/hideObjectsCallback.js';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,

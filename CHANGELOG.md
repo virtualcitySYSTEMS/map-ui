@@ -14,6 +14,9 @@
 - Correctly uses global vcs style nonce for vuetify.
 - Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
 - Fixes a bug where switching a flight interpolation from spline to linear and then back to spline would not be taken into account
+- Added new callbacks: `HideObjectsCallback`, `ShowObjectsCallback`, `HighlightObjectsCallback`, `UnHighlightObjectsCallback`, `StartFlightCallback`, `StopFlightCallback`.
+- change `VcsCallback`s `callback()` return type to allow also Promises.
+- add new `executeAsyncCallbacks` to execute async callback asynchronously
 
 ### Plugin Bundle updates
 

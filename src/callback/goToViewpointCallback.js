@@ -30,10 +30,10 @@ class GoToViewpointCallback extends VcsCallback {
     this._viewpoint = options.viewpoint;
   }
 
-  callback() {
+  async callback() {
     const vp = this._app.viewpoints.getByKey(this._viewpoint);
     if (this._app.maps.activeMap && vp) {
-      this._app.maps.activeMap.gotoViewpoint(vp);
+      await this._app.maps.activeMap.gotoViewpoint(vp);
     }
   }
 

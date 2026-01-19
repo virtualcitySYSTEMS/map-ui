@@ -5,6 +5,7 @@ The callback class is instantiated from its options directly before [executing](
 
 In contrary to [VcsAction](./ACTIONS.md)s [VcsCallback](#vcscallback) have no state.
 In general the callback execution is not asynchronous awaited.
+If you need callbacks to be executed sequentially and await promise-returning callbacks, use `executeAsyncCallbacks`.
 
 ## Use case and configuration
 
@@ -60,6 +61,12 @@ Per default, the folllowing extensions are available:
 - [ActivateMapCallback](../src/callback/activateMapCallback.js) - activates the map
 - [ActivateOverviewMapCallback](../src/callback/activateOverviewMapCallback.js) - activates the overview map
 - [DeactivateOverviewMapCallback](../src/callback/deactivateOverviewMapCallback.js) - deactivates the overview map
+- [HighlightObjectsCallback](../src/callback/highlightObjectsCallback.js) - highlights objects on a feature layer
+- [UnHighlightObjectsCallback](../src/callback/unHighlightObjectsCallback.js) - removes object highlighting on a feature layer
+- [HideObjectsCallback](../src/callback/hideObjectsCallback.js) - hides objects on a feature layer or globally
+- [ShowObjectsCallback](../src/callback/showObjectsCallback.js) - shows previously hidden objects on a feature layer or globally
+- [StartFlightCallback](../src/callback/startFlightCallback.js) - starts a flight by name or inline options
+- [StopFlightCallback](../src/callback/stopFlightCallback.js) - stops the currently running flight by name
 
 ## CallbackClassRegistry
 
@@ -120,11 +127,14 @@ export default function myPlugin() {
 ## Execution
 
 VcsCallbacks are executed on certain events. The instance should be created right before execution.
-You can use the `executeCallbacks` helper function to instantiated and execute a list of callbacks.
+You can use the `executeCallbacks` helper function to instantiate and execute a list of callbacks.
+This helper does not await promise-returning callbacks.
+
+If you need sequential execution and want to await promise-returning callbacks before continuing with the next one, use `executeAsyncCallbacks`.
 Imagine you have a item, which provides a click method:
 
 ```js
-import { executeCallbacks } from '@vcmap/ui';
+import { executeAsyncCallbacks, executeCallbacks } from '@vcmap/ui';
 
 class MyItem {
   constructor(app, options) {
@@ -142,10 +152,20 @@ class MyItem {
 
   /**
    * A callback called once the item is clicked.
+   * Executes callbacks, but does not await promise-returning callbacks.
+   * @returns {void}
+   */
+  clicked() {
+    executeCallbacks(this._app, this._callbacks);
+  }
+
+  /**
+   * A callback called once the item is clicked.
+   * Executes callbacks sequentially and awaits promise-returning callbacks.
    * @returns {Promise<void>}
    */
-  async clicked() {
-    executeCallbacks(this._app, this._callbacks);
+  async clickedAsync() {
+    await executeAsyncCallbacks(this._app, this._callbacks);
   }
 }
 ```
