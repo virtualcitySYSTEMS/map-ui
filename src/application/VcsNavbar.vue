@@ -17,6 +17,7 @@
                 :overflow-count="smAndDown ? 2 : 4"
                 :force-overflow="false"
                 button="VcsToolButton"
+                :data-vcs-button-location="ButtonLocation.MAP"
               />
               <v-divider
                 v-if="
@@ -32,6 +33,7 @@
                 :overflow-count="smAndDown ? 2 : 3"
                 :force-overflow="false"
                 button="VcsToolButton"
+                :data-vcs-button-location="ButtonLocation.CONTENT"
               />
               <v-divider
                 v-if="contentActions.length > 0 && toolActions.length > 0"
@@ -45,6 +47,7 @@
                 :force-overflow="false"
                 v-if="smAndUp"
                 button="VcsToolButton"
+                :data-vcs-button-location="ButtonLocation.TOOL"
               />
             </div>
           </v-toolbar-items>
@@ -71,6 +74,7 @@
                 :overflow-count="smAndDown ? 1 : 2"
                 :force-overflow="false"
                 button="VcsToolButton"
+                :data-vcs-button-location="ButtonLocation.PROJECT"
               />
               <v-divider
                 v-if="projectActions.length > 0 && menuActions.length > 0"
@@ -78,7 +82,7 @@
                 inset
                 class="mx-2"
               />
-              <div class="d-flex gc-2">
+              <div class="d-flex gc-2" data-vcs-nav-general-buttons>
                 <v-menu
                   v-if="!config.hideShareButton && shareActions.length > 0"
                 >
@@ -94,6 +98,7 @@
                     :actions="shareActions"
                     tooltip-position="left"
                     :show-icon="true"
+                    :data-vcs-button-location="ButtonLocation.SHARE"
                   />
                 </v-menu>
                 <VcsToolButton
@@ -121,6 +126,7 @@
                     :actions="menuActions"
                     tooltip-position="left"
                     :show-icon="true"
+                    :data-vcs-button-location="ButtonLocation.MENU"
                   />
                 </v-menu>
               </div>
@@ -237,6 +243,7 @@
         mdAndUp,
         smAndUp,
         toolbarHeight,
+        ButtonLocation,
       };
     },
   };
