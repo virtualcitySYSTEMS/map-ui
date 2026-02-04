@@ -19,7 +19,7 @@
       return {};
     }
 
-    const match = epsg.match(epsgRegex);
+    const match = String(epsg).match(epsgRegex);
     if (!match) {
       return {};
     }

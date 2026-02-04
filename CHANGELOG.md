@@ -19,6 +19,10 @@
 - add new `executeAsyncCallbacks` to execute async callback asynchronously
 - adds data attributes to navbar containers with corresponding button location as value in `VcsNavbar.vue`. This makes selecting these elements with css selectors easier.
 
+### Fixes
+
+- Fixes an issue, where projection input could not handle a number EPSG code, but the type allowed it.
+
 ### Plugin Bundle updates
 
 - @vcmap/geofence
