@@ -18,6 +18,8 @@
 - change `VcsCallback`s `callback()` return type to allow also Promises.
 - add new `executeAsyncCallbacks` to execute async callback asynchronously
 - adds data attributes to navbar containers with corresponding button location as value in `VcsNavbar.vue`. This makes selecting these elements with css selectors easier.
+- export `locationSymbol` and `deviceSymbol`
+- add `data-action-name` attributes to buttons in `VcsNavbarMobile.vue`
 
 ### Fixes
 

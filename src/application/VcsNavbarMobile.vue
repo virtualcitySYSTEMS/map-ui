@@ -41,6 +41,7 @@
                   :tooltip="action.title"
                   :icon="action.icon"
                   :active="action.active"
+                  :data-action-name="action.name"
                   @click.stop="action.callback($event)"
                   v-bind="{ ...$attrs }"
                 />
@@ -51,6 +52,7 @@
                 :tooltip="toolboxToggleAction.title"
                 :icon="toolboxToggleAction.icon"
                 :active="toolboxToggleAction.active"
+                :data-action-name="toolboxToggleAction.name"
                 @click.stop="toolboxToggleAction.callback($event)"
                 v-bind="{ ...$attrs }"
               />

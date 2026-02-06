@@ -33,10 +33,10 @@ export function sortByOwner(ownerA, ownerB, order = []) {
 
 /**
  * filters actions by button location and returns actions (optionally sorted)
- * @param {Array<import("./buttonManager.js").ButtonComponent>} buttonComponents
+ * @param {Array<NavbarButtonComponent>} buttonComponents
  * @param {ButtonLocation} location Button render position
  * @param {string[]} [order] optional order to sort by (plugin names)
- * @param {function(import("./buttonManager.js").ButtonComponent, import("./buttonManager.js").ButtonComponent):number} [compareFn=sortByOwner] Per default components are sorted by weight (highest first) and owner (app first, then plugins)
+ * @param {function(NavbarButtonComponent, NavbarButtonComponent):number} [compareFn=sortByOwner] Per default components are sorted by weight (highest first) and owner (app first, then plugins)
  * @returns {Array<import("../actions/actionHelper.js").VcsAction>}
  */
 export function getActionsByLocation(
@@ -72,14 +72,22 @@ export const ButtonLocation = {
 };
 
 /**
- * @typedef {import("../vcsUiApp.js").VcsComponentManager<import("./buttonManager.js").ButtonComponent,import("./buttonManager.js").ButtonComponentOptions>} INavbarManager
+ * @typedef {import("../vcsUiApp.js").VcsComponentManager<NavbarButtonComponent,import("./buttonManager.js").ButtonComponentOptions>} INavbarManager
  */
 
 /**
- * @typedef {Object} DeviceOptions
- * @property {boolean?} desktop
- * @property {boolean?} tablet
- * @property {boolean?} mobile
+ * @typedef {'desktop' | 'tablet' | 'mobile'} Device
+ */
+
+/**
+ * @typedef {Partial<Record<Device, boolean>>} DeviceOptions
+ */
+
+/**
+ * @typedef {import("./buttonManager.js").ButtonComponent & {
+ *   [locationSymbol]: ButtonLocation,
+ *   [deviceSymbol]: DeviceOptions,
+ * }} NavbarButtonComponent
  */
 
 /**
@@ -95,7 +103,7 @@ class NavbarManager extends ButtonManager {
    * @param {ButtonLocation} location Button render position
    * @param {DeviceOptions} [device={destop: true, tablet: true}] Device - optional device configuration
    * @throws {Error} if a buttonComponent with the same ID has already been added
-   * @returns {import("./buttonManager.js").ButtonComponent}
+   * @returns {NavbarButtonComponent}
    */
   add(
     buttonComponentOptions,
@@ -113,6 +121,14 @@ class NavbarManager extends ButtonManager {
     buttonComponent[locationSymbol] = location;
     buttonComponent[deviceSymbol] = device;
     return buttonComponent;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {NavbarButtonComponent}
+   */
+  get(id) {
+    return this._buttonComponents.get(id);
   }
 
   /**

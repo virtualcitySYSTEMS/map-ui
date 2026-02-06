@@ -154,6 +154,8 @@ export {
   default as NavbarManager,
   ButtonLocation,
   getActionsByLocation,
+  locationSymbol,
+  deviceSymbol,
 } from './src/manager/navbarManager.js';
 export {
   default as ToolboxManager,
