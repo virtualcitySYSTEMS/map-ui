@@ -98,7 +98,7 @@
       "showFeatures": true,
       "applySymbology": true,
       "calculateNormals": true,
-      "lightColor": { "x": 100, "y": 100, "z": 100 },
+      "lightColor": "#666666",
       "outlineColor": "#696969",
       "cesium3dTilesetOptions": {
         "showOutline": true,
