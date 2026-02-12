@@ -43,6 +43,7 @@
         "config/cluster.config.json",
         "config/vectorTile.config.json",
         "config/geofence.config.json",
+        "config/wms-layers.config.json",
         "config/i3s.config.json"
       ]
     }

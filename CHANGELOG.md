@@ -11,6 +11,7 @@
 - Added `footerInformation` to uiConfig options, to allow adding additional links to the footer of the application
 - Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
 - Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
+- Added `clusterFeatureTitleProperty` support to `properties` bag of layers, allowing to pass a feature key to be used as feature title in the Cluster window
 - Correctly uses global vcs style nonce for vuetify.
 - Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
 - Fixes a bug where switching a flight interpolation from spline to linear and then back to spline would not be taken into account

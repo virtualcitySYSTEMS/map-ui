@@ -1,5 +1,6 @@
 {
   "name": "Cluster Example",
+  "_id": "clusterConfig",
   "layers": [
     {
       "type": "GeoJSONLayer",
@@ -85,13 +86,19 @@
   ],
   "contentTree": [
     {
-      "type": "LayerContentTreeItem",
       "name": "cluster",
+      "type": "NodeContentTreeItem",
+      "initOpen": true,
+      "title": "Clustering demo"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "cluster.cluster",
       "layerName": "12de4200e2e76f756e06da59c07eae3a1760acdd"
     },
     {
       "type": "LayerContentTreeItem",
-      "name": "cluster2",
+      "name": "cluster.cluster2",
       "layerName": "b408b454472a5ce5dfb44bb57afe8da1baeeb6cf"
     }
   ]

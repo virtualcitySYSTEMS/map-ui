@@ -5,10 +5,6 @@
   "startingViewpointName": "potsdamer_platz",
   "featureInfo": [
     {
-      "type": "IframeWmsFeatureInfoView",
-      "name": "testIframeWMS"
-    },
-    {
       "type": "BalloonFeatureInfoView",
       "name": "genericBalloon",
       "balloonTitle": "This is a Balloon Title",
@@ -115,7 +111,6 @@
         "type": "StaticGeoJSONTileProvider",
         "url": "exampleData/perFeature.json"
       },
-      "activeOnStartup": false,
       "debug": false,
       "renderer": "primitive",
       "properties": {
@@ -395,6 +390,15 @@
     {
       "name": "geojsonClassification",
       "type": "GeoJSONLayer",
+      "projection": { "epsg": 4326 },
+      "vectorProperties": {
+        "altitudeMode": "clampToGround",
+        "classificationType": "both"
+      },
+      "properties": {
+        "title": "GeoJSON Classification",
+        "featureInfo": "genericBalloon"
+      },
       "features": [
         {
           "type": "Feature",
@@ -427,19 +431,7 @@
             }
           }
         }
-      ],
-      "projection": {
-        "epsg": 4326
-      },
-      "activeOnStartup": false,
-      "vectorProperties": {
-        "altitudeMode": "clampToGround",
-        "classificationType": "both"
-      },
-      "properties": {
-        "title": "GeoJSON Classification",
-        "featureInfo": "genericBalloon"
-      }
+      ]
     },
     {
       "type": "CzmlLayer",
@@ -483,530 +475,14 @@
       }
     },
     {
-      "name": "testWmsHtmlFeatureInfo",
-      "type": "WMSLayer",
-      "url": "https://geoservices.bayern.de/od/wms/atkis/v1/freizeitwege",
-      "activeOnStartup": false,
-      "layers": "by_fzw_bfr",
-      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "featureInfo": { "responseType": "text/html" },
-      "tilingSchema": "geographic",
-      "zIndex": 13,
-      "properties": {
-        "featureInfo": "testIframeWMS",
-        "title": "Test WMS text/html FeatureInfo"
-      }
-    },
-    {
-      "name": "wmsStadtstruktur",
-      "type": "WMSLayer",
-      "url": "https://gdi.berlin.de/services/wms/ua_stadtstruktur_2020",
-      "activeOnStartup": false,
-      "version": "1.3.0",
-      "layers": "ua_stadtstruktur_2020",
-      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "featureInfo": {
-        "showFeature": true,
-        "responseType": "application/json",
-        "style": {
-          "type": "VectorStyleItem",
-          "stroke": {
-            "color": "#FF00FF",
-            "width": 2
-          }
-        }
-      },
-      "tilingSchema": "geographic",
-      "zIndex": 12,
-      "properties": {
-        "title": "WMS Stadtstruktur Berlin",
-        "featureInfo": "tableAll",
-        "legend": [
-          {
-            "type": "ImageLegendItem",
-            "src": "https://gdi.berlin.de/services/wms/ua_stadtstruktur_2020?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=500&height=875&layer=ua_stadtstruktur_2020"
-          }
-        ]
-      }
-    },
-    {
-      "name": "wmsLayerPOI",
-      "type": "WMSLayer",
-      "url": "https://sgx.geodatenzentrum.de/wms_poi_open",
-      "activeOnStartup": false,
-      "version": "1.3.0",
-      "layers": "flughaefen,grenzuebergaenge,heliports,kilometrierungen_bab,seehaefen",
-      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "featureInfo": {
-        "showFeature": true,
-        "responseType": "application/json",
-        "vectorProperties": {
-          "extrudedHeight": 20
-        },
-        "style": {
-          "type": "VectorStyleItem",
-          "stroke": {
-            "color": "#FF00FF",
-            "width": 2
-          }
-        }
-      },
-      "tilingSchema": "geographic",
-      "zIndex": 13,
-      "properties": {
-        "title": "WMS POI Open",
-        "featureInfo": "tableLink",
-        "legend": [
-          {
-            "type": "StyleLegendItem",
-            "rows": [
-              {
-                "type": "IconLegendRow",
-                "title": "Flughäfen",
-                "image": {
-                  "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=flughaefen",
-                  "scale": 0.2
-                }
-              },
-              {
-                "type": "IconLegendRow",
-                "title": "Grenzübergänge",
-                "image": {
-                  "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=grenzuebergaenge",
-                  "scale": 0.2
-                }
-              },
-              {
-                "type": "IconLegendRow",
-                "title": "Heliports",
-                "image": {
-                  "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=heliports",
-                  "scale": 0.2
-                }
-              },
-              {
-                "type": "IconLegendRow",
-                "title": "Kilometrierungen BAB",
-                "image": {
-                  "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=kilometrierungen_bab",
-                  "scale": 0.2
-                }
-              },
-              {
-                "type": "IconLegendRow",
-                "title": "Seehäfen",
-                "image": {
-                  "src": "https://sgx.geodatenzentrum.de/wms_poi_open?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=seehaefen",
-                  "scale": 0.2
-                }
-              }
-            ]
-          }
-        ]
-      }
-    },
-
-    {
-      "name": "wmsTopplus",
-      "type": "WMSLayer",
-      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
-      "activeOnStartup": false,
-      "version": "1.3.0",
-      "layers": "web",
-      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "tilingSchema": "geographic",
-      "zIndex": 13,
-      "properties": { "title": "WMS TopPlus Open" }
-    },
-    {
-      "name": "nasa",
-      "type": "WMSLayer",
-      "url": "https://maps.eatlas.org.au/maps/wms",
-      "activeOnStartup": false,
-      "version": "1.3.0",
-      "tilingSchema": "geographic",
-      "zIndex": 13,
-      "layers": "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
-      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true&styles=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Depth",
-      "properties": {
-        "title": "NASA WMS",
-        "capabilities": {
-          "layers": [
-            {
-              "name": "ea-be:World_Bright-Earth-e-Atlas-basemap",
-              "title": "World: Bright Earth e-Atlas Basemap",
-              "extent": [-180, -90, 180.00000000000023, 90.00000000000009],
-              "styles": [
-                {
-                  "name": "default-style-ea-be:World_Bright-Earth-e-Atlas-basemap",
-                  "title": "ea-be:World_Bright-Earth-e-Atlas-basemap style",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=ea-be%3AWorld_Bright-Earth-e-Atlas-basemap",
-                      "width": 233,
-                      "height": 889
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
-              "title": "GBR: Seagrass site surveys 1984-2018 (NESP TWQ 3.2.1 and NESP TWQ 5.4, JCU)",
-              "extent": [142.52026, -24.49939, 153.10113, -10.70632],
-              "styles": [
-                {
-                  "name": "GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Presence",
-                  "title": "Seagrass Presence/Absence",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
-                      "width": 74,
-                      "height": 80
-                    }
-                  ]
-                },
-                {
-                  "name": "GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Depth",
-                  "title": "Seagrass Depth",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Depth",
-                      "width": 91,
-                      "height": 120
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-tiny-black-circle",
-                  "title": "Tiny black point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=Generic-point-tiny-black-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Sediment",
-                  "title": "Sediment type at Survey site",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Sediment",
-                      "width": 108,
-                      "height": 320
-                    }
-                  ]
-                },
-                {
-                  "name": "GBR_NESP-TWQ-3.1.2_JCU_Seagrass_Light-logger-sites",
-                  "title": "Light logger site",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=GBR_NESP-TWQ-3.1.2_JCU_Seagrass_Light-logger-sites",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-yellow-square",
-                  "title": "Yellow point (square)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=Generic-point-yellow-square",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Year",
-                  "title": "Survey year",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Year",
-                      "width": 101,
-                      "height": 100
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-red-circle",
-                  "title": "Red point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=Generic-point-red-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-orange-circle",
-                  "title": "Orange point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=Generic-point-orange-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Subtidal-Intertidal",
-                  "title": "Seagrass Subtidal/Intertidal",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=GBR_NESP-TWQ-3-2-1_JCU_Seagrass_1984-2018_Subtidal-Intertidal",
-                      "width": 81,
-                      "height": 40
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-green-triangle",
-                  "title": "Green point (triangle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys&style=Generic-point-green-triangle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "nesp5:GBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites",
-              "title": "GBR: Diver logger sites (NESP TWQ 3.3.2 and NESP TWQ 5.13, JCU)",
-              "extent": [145.953, -24.231239, 151.833374, -17.3358],
-              "styles": [
-                {
-                  "name": "point",
-                  "title": "Default point",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-site-label-Name",
-                  "title": "Point - label name",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-site-label-Name",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-label-name",
-                  "title": "Point - label name",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-label-name",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-blue-diamond",
-                  "title": "Blue point (diamond)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-blue-diamond",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-yellow-square",
-                  "title": "Yellow point (square)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-yellow-square",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-orange-circle",
-                  "title": "Orange point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-orange-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-green-triangle",
-                  "title": "Green point (triangle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp5%3AGBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites&style=Generic-point-green-triangle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "nesp3:GBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites",
-              "title": "GBR: Fish survey sites (NESP TWQ 3.3.2,JCU)",
-              "extent": [147.085603, -24.610656, 152.125369, -19.502724],
-              "styles": [
-                {
-                  "name": "Generic-point-orange-circle",
-                  "title": "Orange point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-site-label-Name",
-                  "title": "Point - label name",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-site-label-Name",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-small-round-circle",
-                  "title": "Black point (small circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-small-round-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-tiny-black-circle",
-                  "title": "Tiny black point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-tiny-black-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "point",
-                  "title": "Default point",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=point",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-label-name",
-                  "title": "Point - label name",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-label-name",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-blue-diamond",
-                  "title": "Blue point (diamond)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-blue-diamond",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-yellow-square",
-                  "title": "Yellow point (square)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-yellow-square",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-red-circle",
-                  "title": "Red point (circle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-red-circle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-red-circle-transparent",
-                  "title": "Red point (circle) 20% fill transparency",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-red-circle-transparent",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                },
-                {
-                  "name": "Generic-point-green-triangle",
-                  "title": "Green point (triangle)",
-                  "legend": [
-                    {
-                      "url": "https://maps.eatlas.org.au/maps/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=nesp3%3AGBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites&style=Generic-point-green-triangle",
-                      "width": 20,
-                      "height": 20
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "FlatGeobufLayer",
       "type": "FlatGeobufLayer",
       "style": "streetStyle",
       "url": "exampleData/flatGeobuf/berlin-classified-level-2.fgb",
       "zIndex": 11,
       "exclusiveGroups": ["streets"],
-      "projection": {
-        "epsg": 4326
-      },
-      "properties": {
-        "title": "Berlin Streets Class 0-II"
-      }
+      "projection": { "epsg": 4326 },
+      "properties": { "title": "Berlin Streets Class 0-II" }
     }
   ],
   "flights": [
@@ -1136,17 +612,22 @@
       "tooltip": "This is a flight. Its flight 2, actually."
     },
     {
-      "name": "geojsonClassification",
-      "layerName": "geojsonClassification",
-      "type": "LayerContentTreeItem"
+      "name": "geojson",
+      "title": "GeoJSON examples",
+      "type": "NodeContentTreeItem"
     },
     {
-      "name": "geojson",
+      "name": "geojson.geojson",
       "layerName": "testGeojson",
       "type": "LayerContentTreeItem"
     },
     {
-      "name": "geojson vector tile",
+      "name": "geojson.geojsonClassification",
+      "layerName": "geojsonClassification",
+      "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "geojson.geojson vector tile",
       "layerName": "testGeojsonVectorTile",
       "type": "LayerContentTreeItem"
     },
@@ -1187,45 +668,9 @@
       "type": "LayerContentTreeItem"
     },
     {
-      "name": "wmsLayerPOI",
-      "layerName": "wmsLayerPOI",
-      "type": "WMSGroupContentTreeItem"
-    },
-    {
-      "name": "wmsTopplus",
-      "layerName": "wmsTopplus",
-      "type": "WMSGroupContentTreeItem",
-      "setWMSLayersExclusive": true,
-      "initOpen": true,
-      "loadOnStartup": true,
-      "showWhenNotSupported": true
-    },
-    {
-      "name": "nasa",
-      "layerName": "nasa",
-      "type": "WMSGroupContentTreeItem",
-      "showWhenNotSupported": true,
-      "allowedWMSLayers": [
-        "nesp3:GBR_NESP-TWQ-3.2.1-5.4_JCU_Seagrass_1984-2018_Site-surveys",
-        "nesp5:GBR_NESP-TWQ-3.3.2-5.13_JCU_Diver-logger-sites",
-        "nesp3:GBR_NESP-TWQ-3.3.2_JCU_Fish-survey-sites",
-        "ea-be:World_Bright-Earth-e-Atlas-basemap"
-      ]
-    },
-    {
-      "name": "wmsStadtstruktur",
-      "layerName": "wmsStadtstruktur",
-      "type": "LayerContentTreeItem"
-    },
-    {
       "name": "FlatGeobufLayers",
       "type": "LayerContentTreeItem",
       "layerName": "FlatGeobufLayer"
-    },
-    {
-      "name": "testWmsHtmlFeatureInfo",
-      "type": "LayerContentTreeItem",
-      "layerName": "testWmsHtmlFeatureInfo"
     },
     {
       "name": "building.myTest",

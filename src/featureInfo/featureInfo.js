@@ -195,8 +195,13 @@ export function getFeatureInfoViewForFeature(app, feature) {
 export function getGroupedFeatureList(app, features, position = undefined) {
   const groups = {};
   const items = features.map((f) => {
-    const oFeature = f[originalFeatureSymbol] ?? f;
     let actions;
+    const oFeature = f[originalFeatureSymbol] ?? f;
+    const layerName = oFeature[vcsLayerName];
+    const attributes = oFeature.getAttributes();
+    const layer = app.layers.getByKey(layerName);
+    const titlePropName = layer?.properties?.clusterFeatureTitleProperty;
+
     if (oFeature instanceof Feature) {
       actions = [
         createZoomToFeatureAction(
@@ -210,8 +215,9 @@ export function getGroupedFeatureList(app, features, position = undefined) {
     const listItem = reactive({
       name: oFeature.getId(),
       title:
-        oFeature.getAttributes()?.title ||
-        oFeature.getAttributes()?.name ||
+        attributes?.[titlePropName] ||
+        attributes?.title ||
+        attributes?.name ||
         oFeature.getId(),
       disabled: !getFeatureInfoViewForFeature(app, oFeature),
       selectionChanged: (value) => {
@@ -225,10 +231,9 @@ export function getGroupedFeatureList(app, features, position = undefined) {
       },
       actions,
     });
-    const layerName = oFeature[vcsLayerName];
     if (layerName) {
       if (!groups[layerName]) {
-        const title = app.layers.getByKey(layerName)?.properties?.title;
+        const title = layer?.properties?.title;
         groups[layerName] = { name: layerName, title: title || layerName };
       }
       listItem.group = layerName;

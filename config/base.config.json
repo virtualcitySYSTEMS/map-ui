@@ -761,6 +761,7 @@
           "Transparentbuildings",
           "fruitStyle"
         ],
+        "clusterFeatureTitleProperty": "gml:name",
         "title": "Berlin - LOD2",
         "featureInfo": "addressBalloon"
       }

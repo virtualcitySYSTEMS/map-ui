@@ -1,5 +1,6 @@
 {
   "name": "Theming Examples",
+  "_id": "themingConfig",
   "plugins": [
     {
       "name": "@vcmap-show-case/theming-example",

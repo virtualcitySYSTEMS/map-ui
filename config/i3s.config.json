@@ -1,5 +1,6 @@
 {
   "name": "I3S Showcase",
+  "_id": "i3sConfig",
   "startingViewpointName": "madrid",
   "viewpoints": [
     {
@@ -80,7 +81,7 @@
   ],
   "layers": [
     {
-      "name": "TestI3SLayerMadrid",
+      "name": "I3SLayerMadrid",
       "type": "I3SLayer",
       "activeOnStartup": true,
       "properties": {
@@ -108,7 +109,7 @@
       }
     },
     {
-      "name": "TestI3SLayerF",
+      "name": "I3SLayerFrankfurt",
       "type": "I3SLayer",
       "activeOnStartup": false,
       "allowPicking": false,
@@ -129,7 +130,7 @@
       }
     },
     {
-      "name": "TestI3SLayerNYC",
+      "name": "I3SLayerNYC",
       "type": "I3SLayer",
       "activeOnStartup": false,
       "hasBatchTable": false,
@@ -150,7 +151,7 @@
       }
     },
     {
-      "name": "TestI3SLayerSF",
+      "name": "I3SLayerSF",
       "type": "I3SLayer",
       "activeOnStartup": false,
       "hasBatchTable": false,
@@ -171,7 +172,7 @@
       }
     },
     {
-      "name": "TestI3SLayerLibrary",
+      "name": "I3SLayerLibrary",
       "type": "I3SLayer",
       "activeOnStartup": false,
       "hasBatchTable": false,
@@ -202,16 +203,16 @@
     },
     {
       "name": "demoI3S.madrid",
-      "layerName": "TestI3SLayerMadrid",
+      "layerName": "I3SLayerMadrid",
       "type": "LayerContentTreeItem",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
           "layerNames": [
-            "TestI3SLayerF",
-            "TestI3SLayerNYC",
-            "TestI3SLayerSF",
-            "TestI3SLayerLibrary"
+            "I3SLayerFrankfurt",
+            "I3SLayerNYC",
+            "I3SLayerSF",
+            "I3SLayerLibrary"
           ]
         },
         { "type": "GoToViewpointCallback", "viewpoint": "madrid" }
@@ -219,16 +220,16 @@
     },
     {
       "name": "demoI3S.frankfurt",
-      "layerName": "TestI3SLayerF",
+      "layerName": "I3SLayerFrankfurt",
       "type": "LayerContentTreeItem",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
           "layerNames": [
-            "TestI3SLayerMadrid",
-            "TestI3SLayerNYC",
-            "TestI3SLayerSF",
-            "TestI3SLayerLibrary"
+            "I3SLayerMadrid",
+            "I3SLayerNYC",
+            "I3SLayerSF",
+            "I3SLayerLibrary"
           ]
         },
         { "type": "GoToViewpointCallback", "viewpoint": "frankfurt" }
@@ -236,16 +237,16 @@
     },
     {
       "name": "demoI3S.nyc",
-      "layerName": "TestI3SLayerNYC",
+      "layerName": "I3SLayerNYC",
       "type": "LayerContentTreeItem",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
           "layerNames": [
-            "TestI3SLayerF",
-            "TestI3SLayerMadrid",
-            "TestI3SLayerSF",
-            "TestI3SLayerLibrary"
+            "I3SLayerFrankfurt",
+            "I3SLayerMadrid",
+            "I3SLayerSF",
+            "I3SLayerLibrary"
           ]
         },
         { "type": "GoToViewpointCallback", "viewpoint": "nyc" }
@@ -253,16 +254,16 @@
     },
     {
       "name": "demoI3S.sf",
-      "layerName": "TestI3SLayerSF",
+      "layerName": "I3SLayerSF",
       "type": "LayerContentTreeItem",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
           "layerNames": [
-            "TestI3SLayerF",
-            "TestI3SLayerNYC",
-            "TestI3SLayerMadrid",
-            "TestI3SLayerLibrary"
+            "I3SLayerFrankfurt",
+            "I3SLayerNYC",
+            "I3SLayerMadrid",
+            "I3SLayerLibrary"
           ]
         },
         { "type": "GoToViewpointCallback", "viewpoint": "sf" }
@@ -270,16 +271,16 @@
     },
     {
       "name": "demoI3S.library",
-      "layerName": "TestI3SLayerLibrary",
+      "layerName": "I3SLayerLibrary",
       "type": "LayerContentTreeItem",
       "onActivate": [
         {
           "type": "DeactivateLayersCallback",
           "layerNames": [
-            "TestI3SLayerF",
-            "TestI3SLayerNYC",
-            "TestI3SLayerSF",
-            "TestI3SLayerMadrid"
+            "I3SLayerFrankfurt",
+            "I3SLayerNYC",
+            "I3SLayerSF",
+            "I3SLayerMadrid"
           ]
         },
         { "type": "GoToViewpointCallback", "viewpoint": "library" }

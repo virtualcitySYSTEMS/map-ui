@@ -1,5 +1,6 @@
 {
   "name": "Dynamic-Layer",
+  "_id": "dynamicLayerConfig",
   "plugins": [
     {
       "name": "@vcmap/dynamic-layer",

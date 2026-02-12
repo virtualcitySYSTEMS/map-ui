@@ -20,7 +20,7 @@
    */
 
   /**
-   * @typedef {import("./VcsListItemComponent.vue").VcsListItem & { group: string } VcsGroupedListItem
+   * @typedef {import("./VcsListItemComponent.vue").VcsListItem & { group: string }} VcsGroupedListItem
    * @property {string} group
    */
 

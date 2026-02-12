@@ -1,5 +1,6 @@
 {
   "name": "Vector tile config",
+  "_id": "vectorTileConfig",
   "description": "Vector tile config for the 2024 UC",
   "startingViewpointName": "wittenbergplatz",
   "viewpoints": [
