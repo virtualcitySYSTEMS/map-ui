@@ -295,6 +295,7 @@ export { default as VcsHelpTooltip } from './src/components/notification/VcsHelp
 export { default as VcsTable } from './src/components/tables/VcsTable.vue';
 export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vue';
 export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
+export { default as VcsLabeledSlider } from './src/components/form-inputs-controls/VcsLabeledSlider.vue';
 export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
 export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
 export { default as VcsFormSection } from './src/components/section/VcsFormSection.vue';

@@ -5,13 +5,14 @@
 - Changes default pitch angle of Search result viewpoint to -35 and add a new uiConfig option to override it: `searchViewpointPitch`.
 - Added a config option to hide panorama footer: `hidePanoramaFooter`
 - Fixes Oblique footer style to match links next to it
-- Fixes a bug where resizing panels would be unreliable, espcially with iFrames
+- Fixes a bug where resizing panels would be unreliable, especially with iFrames
 - Fixes a bug where the position of a BalloonFeatureInfo would be incrorrect when a left panel is active
 - added an `icon` property to the attributions
 - Added `footerInformation` to uiConfig options, to allow adding additional links to the footer of the application
 - Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
 - Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
 - Added `clusterFeatureTitleProperty` support to `properties` bag of layers, allowing to pass a feature key to be used as feature title in the Cluster window
+- Added a new component: `VcsLabeledSlider`, which renders a slider with a title and it's numerical value.
 - Correctly uses global vcs style nonce for vuetify.
 - Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
 - Fixes a bug where switching a flight interpolation from spline to linear and then back to spline would not be taken into account

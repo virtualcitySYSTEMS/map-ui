@@ -225,6 +225,16 @@
               />
             </v-col>
           </v-row>
+          <VcsLabeledSlider
+            label="Labeled Slider with Input"
+            v-model.number="state.numberInput"
+            :disabled="disabled"
+            unit="cm"
+            :min="0"
+            :max="100"
+            :step="0.001"
+            allow-text-input
+          />
           <v-row no-gutters>
             <v-col>
               <VcsLabel :disabled="disabled" html-for="formattedNumber">
@@ -498,6 +508,7 @@
     VcsFormattedNumber,
     VcsFormSection,
     VcsLabel,
+    VcsLabeledSlider,
     VcsTextArea,
     VcsDatePicker,
     VcsSlider,
@@ -524,6 +535,7 @@
       VcsFormattedNumber,
       VcsFormSection,
       VcsLabel,
+      VcsLabeledSlider,
       VcsTextArea,
       VcsChipArrayInput,
       VcsCoordinate,

@@ -125,41 +125,18 @@
         </template>
         <template v-if="isCesiumMap">
           <div v-for="key in ['heading', 'pitch', 'roll']" :key="key">
-            <v-row no-gutters>
-              <v-col cols="9">
-                <VcsLabel :html-for="`${cid}-${key}`">
-                  {{ $st(`components.viewpoint.${key}`) }}
-                </VcsLabel>
-              </v-col>
-              <v-col cols="3">
-                <VcsTextField
-                  :id="`${cid}-${key}`"
-                  :hide-spin-buttons="true"
-                  type="number"
-                  unit="°"
-                  :disabled="editAction.active"
-                  :decimals="0"
-                  v-model.number="localValue[key]"
-                  @blur="gotoViewpoint"
-                  @update:model-value="gotoViewpoint"
-                  :rules="[isFiniteNumber]"
-                  class="pr-0 ml-6"
-                />
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col cols="12">
-                <VcsSlider
-                  height="32"
-                  hide-details
-                  :step="0.1"
-                  :disabled="editAction.active"
-                  v-bind="hprSliderOptions[key]"
-                  v-model="localValue[key]"
-                  @update:model-value="gotoViewpoint"
-                />
-              </v-col>
-            </v-row>
+            <VcsLabeledSlider
+              :disabled="editAction.active"
+              :label="`components.viewpoint.${key}`"
+              unit="°"
+              allow-text-input
+              text-input-cols="3"
+              hide-spin-buttons
+              v-bind="hprSliderOptions[key]"
+              v-model="localValue[key]"
+              @blur="gotoViewpoint"
+              @update:model-value="gotoViewpoint"
+            />
           </div>
         </template>
       </v-container>
@@ -185,7 +162,7 @@
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.vue';
-  import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
+  import VcsLabeledSlider from '../form-inputs-controls/VcsLabeledSlider.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';
   import { useComponentId } from '../composables.js';
 
@@ -348,7 +325,7 @@
       VcsTextField,
       VcsCoordinate,
       VcsCheckbox,
-      VcsSlider,
+      VcsLabeledSlider,
     },
     props: {
       modelValue: {
