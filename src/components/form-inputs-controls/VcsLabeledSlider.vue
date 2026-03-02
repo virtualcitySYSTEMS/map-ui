@@ -18,7 +18,11 @@
           v-bind="$attrs"
           v-model.number="localValue"
         />
-        <div v-else class="d-flex align-center justify-end">
+        <div
+          v-else
+          class="visible-value pt-1"
+          :class="{ 'vcs-disabled': $attrs.disabled }"
+        >
           {{ getVisibleValue(localValue) }}
         </div>
       </v-col>
@@ -95,5 +99,15 @@
     :deep(.vcs-slider) {
       overflow: visible !important;
     }
+  }
+  .visible-value {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: calc(var(--v-vcs-font-size) * 2 - 2px);
+  }
+  .vcs-disabled {
+    opacity: var(--v-disabled-opacity);
   }
 </style>
