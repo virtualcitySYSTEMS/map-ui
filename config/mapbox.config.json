@@ -1,0 +1,174 @@
+{
+  "name": "MapBox Style Showcase",
+  "_id": "mapbox-style",
+  "layers": [
+    {
+      "name": "basemap.de",
+      "type": "MapboxStyleLayer",
+      "url": "https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/styles/bm_web_wld_col.json",
+      "sources": ["smarttiles_de"],
+      "exclusiveGroups": ["mapboxDemo"],
+      "excludeLayerFromPicking": ["Hintergrund"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "basemap.de",
+            "year": "2025",
+            "url": "https://www.basemap.de/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "basemap.de/worldwide",
+      "type": "MapboxStyleLayer",
+      "url": "https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/styles/bm_web_wld_col.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "basemap.de",
+            "year": "2025",
+            "url": "https://www.basemap.de/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "basemap.de/dark",
+      "type": "MapboxStyleLayer",
+      "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_drk.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "basemap.de",
+            "year": "2025",
+            "url": "https://www.basemap.de/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "basemap.de/binary",
+      "type": "MapboxStyleLayer",
+      "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_bin.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "basemap.de",
+            "year": "2025",
+            "url": "https://www.basemap.de/"
+          }
+        ]
+      }
+    },
+    {
+      "name": "bayernwolke",
+      "type": "MapboxStyleLayer",
+      "url": "https://vtod1.bayernwolke.de/styles/by_style_standard.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "Landesamt für Digitalisierung, Breitband und Vermessung Bayern",
+            "year": "2025",
+            "url": "https://www.ldbv.bayern.de/produkte/karten/webvektor.html"
+          }
+        ]
+      }
+    },
+    {
+      "name": "bayernwolke/dark",
+      "type": "MapboxStyleLayer",
+      "url": "https://vtod1.bayernwolke.de/styles/by_style_nacht.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "klasse",
+        "featureInfo": "tableAll",
+        "attributions": [
+          {
+            "provider": "Landesamt für Digitalisierung, Breitband und Vermessung Bayern",
+            "year": "2025",
+            "url": "https://www.ldbv.bayern.de/produkte/karten/webvektor.html"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Plan.IGN",
+      "type": "MapboxStyleLayer",
+      "url": "https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/standard.json",
+      "exclusiveGroups": ["mapboxDemo"],
+      "properties": {
+        "clusterFeatureTitleProperty": "layer",
+        "featureInfo": "tableAll",
+        "attributions": [
+          { "provider": "IGN", "year": "2025", "url": "https://www.ign.fr" }
+        ]
+      }
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "demoMapbox",
+      "type": "NodeContentTreeItem",
+      "title": "MapBox Style demo",
+      "initOpen": true,
+      "weight": 1
+    },
+    {
+      "name": "demoMapbox.basemapde",
+      "title": "basemap.de",
+      "type": "LayerContentTreeItem",
+      "layerName": "basemap.de"
+    },
+    {
+      "name": "demoMapbox.basemapde_worldwde",
+      "title": "basemap.de, worldwide",
+      "type": "LayerContentTreeItem",
+      "layerName": "basemap.de/worldwide"
+    },
+    {
+      "name": "demoMapbox.basemapde_dark",
+      "title": "basemap.de, dark",
+      "type": "LayerContentTreeItem",
+      "layerName": "basemap.de/dark"
+    },
+    {
+      "name": "demoMapbox.basemapde_binary",
+      "title": "basemap.de, binary",
+      "type": "LayerContentTreeItem",
+      "layerName": "basemap.de/binary"
+    },
+    {
+      "name": "demoMapbox.bayernwolke",
+      "title": "Webkarte Vektor Bayern",
+      "type": "LayerContentTreeItem",
+      "layerName": "bayernwolke"
+    },
+    {
+      "name": "demoMapbox.bayernwolke_dark",
+      "title": "Webkarte Vektor Bayern, dark",
+      "type": "LayerContentTreeItem",
+      "layerName": "bayernwolke/dark"
+    },
+    {
+      "name": "demoMapbox.ign",
+      "title": "Worldwide IGN Style",
+      "type": "LayerContentTreeItem",
+      "layerName": "Plan.IGN"
+    }
+  ]
+}
