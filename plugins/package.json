@@ -36,6 +36,7 @@
     "@vcmap/layer-settings": "^1.0.1"
   },
   "optionalDependencies": {
+    "@vcmap/guided-tour": "^1.0.5",
     "@vcmap/planning": "^7.0.0"
   }
 }

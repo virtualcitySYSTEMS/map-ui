@@ -41,6 +41,8 @@
   - Added the plugin, which allows to edit layers at runtime via an action in the content tree
 - @vcmap/pointcloud-settings
   The pointcloud-settings plugin is deprecated, as the layer-settings plugin contains the full features of the old pointcloud-settings plugin
+- @vcmap/guided-tour
+  - New interactive onboarding plugin that provides a story-based guided tour for VC Map applications
 
 # 6.2.8
 

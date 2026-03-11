@@ -1,0 +1,12 @@
+{
+  "name": "guided-tour",
+  "_id": "guided-tour-demo",
+  "description": "module adding the guided-tour plugin",
+  "plugins": [
+    {
+      "name": "@vcmap/guided-tour",
+      "entry": "plugins/@vcmap/guided-tour/index.js",
+      "activeOnStartup": true
+    }
+  ]
+}
