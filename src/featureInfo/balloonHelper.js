@@ -31,7 +31,7 @@ import {
  * balloon offset from location or click position in pixel
  * @type {{x: number, y: number}}
  */
-export const balloonOffset = { x: 55, y: 25 };
+export const balloonOffset = { x: 50, y: 20 };
 
 /**
  * @param {import("@vcmap-cesium/engine").Scene} scene
@@ -92,15 +92,10 @@ export function setBalloonPosition(windowManager, id, windowPosition, target) {
 
   const { width, height, maxWidth, maxHeight } = windowManager.get(id).position;
 
-  // Get the actual map target bounding rect to account for panel offsets
-  const targetRect = target?.getBoundingClientRect();
-  const offsetX = targetRect ? targetRect.left : 0;
-  const offsetY = targetRect ? targetRect.top : 0;
-
   const mapWindowPosition = getWindowPositionOptionsFromMapEvent(
     new Cartesian2(
-      windowPosition.x - balloonOffset.x + offsetX,
-      windowPosition.y - balloonOffset.y + offsetY,
+      windowPosition.x - balloonOffset.x,
+      windowPosition.y - balloonOffset.y,
     ),
     target,
     WindowAlignment.BOTTOM_LEFT,

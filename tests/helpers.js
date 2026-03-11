@@ -15,12 +15,14 @@ export async function sleep(ms = 0) {
  */
 export function setupMapTarget(targetRect = {}) {
   const vcsContainer = document.createElement('div');
+  const panelContent = document.createElement('div');
   const panel = document.createElement('div');
   const vcsMainMap = document.createElement('div');
-  const target = document.createElement('div');
+  const target = document.createElement('div'); // mapContainer
   vcsMainMap.appendChild(target);
   panel.appendChild(vcsMainMap);
-  vcsContainer.appendChild(panel);
+  panelContent.appendChild(panel);
+  vcsContainer.appendChild(panelContent);
   document.body.appendChild(vcsContainer);
   vcsContainer.getBoundingClientRect = () => targetRect;
   return {

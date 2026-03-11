@@ -33,14 +33,29 @@ export const WindowAlignment = {
 
 /**
  *
- * @param {HTMLElement} target
+ * returns the targetSize of the div element of the panel where the Map is rendered.
+ * This is the base for calculating the position of the windows on the map, as the window position is relative to this element.
+ * @param {HTMLElement} target The map Target of the mapCollection
+ * @returns {DOMRect|null}
+ */
+export function getPanelTargetSize(target) {
+  if (!target) {
+    return null;
+  }
+  return target.parentElement?.parentElement?.getBoundingClientRect();
+}
+
+/**
+ *
+ * returns the targetSize of the windowManager div element.
+ * @param {HTMLElement} target The map Target of the mapCollection
  * @returns {DOMRect|null}
  */
 export function getTargetSize(target) {
   if (!target) {
     return null;
   }
-  return target.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
+  return target.parentElement?.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
 }
 
 /**
@@ -95,7 +110,7 @@ export function getWindowPositionOptionsFromMapEvent(
   target,
   alignment,
 ) {
-  const targetSize = getTargetSize(target);
+  const targetSize = getPanelTargetSize(target);
   if (!targetSize) {
     return { left: windowPosition.x, top: windowPosition.y };
   }
@@ -166,7 +181,7 @@ export function getFittedWindowPositionOptionsFromMapEvent(
   height,
   target,
 ) {
-  const targetSize = getTargetSize(target);
+  const targetSize = getPanelTargetSize(target);
   if (!targetSize) {
     return { left: windowPosition.x, top: windowPosition.y };
   }
