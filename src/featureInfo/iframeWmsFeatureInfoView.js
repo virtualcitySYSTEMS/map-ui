@@ -1,4 +1,8 @@
-import { get as getOlProj } from 'ol/proj.js';
+import {
+  getMetersPerDegreeAtCoordinate,
+  mercatorProjection,
+} from '@vcmap/core';
+import { get as getOlProj, getTransform } from 'ol/proj.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
 import { getBalloonPositionFromFeature } from './balloonHelper.js';
@@ -68,11 +72,20 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
     const resolution = app.maps.activeMap.getCurrentResolution(
       position.position,
     );
+
+    let res = resolution;
+    const projection = layer.featureProvider.wmsSource.getProjection();
+    const transform = getTransform(mercatorProjection.proj, projection);
+    const coords = transform(position.position.slice());
+    if (projection.getUnits() === 'degrees') {
+      const metersPerDegree = getMetersPerDegreeAtCoordinate(coords);
+      res = resolution / metersPerDegree;
+    }
     componentOptions.props.src =
       layer.featureProvider.wmsSource.getFeatureInfoUrl(
-        position.position,
-        resolution,
-        getOlProj('EPSG:3857'),
+        coords,
+        res,
+        projection,
         { INFO_FORMAT: this.infoFormat },
       );
     return componentOptions;

@@ -4,28 +4,29 @@
 
 - Changes default pitch angle of Search result viewpoint to -35 and add a new uiConfig option to override it: `searchViewpointPitch`.
 - Added a config option to hide panorama footer: `hidePanoramaFooter`
-- Fixes Oblique footer style to match links next to it
-- Fixes a bug where resizing panels would be unreliable, especially with iFrames
-- Fixes a bug where the position of a BalloonFeatureInfo would be incrorrect when a left panel is active
-- added an `icon` property to the attributions
+- Added an `icon` property to the attributions
 - Added `footerInformation` to uiConfig options, to allow adding additional links to the footer of the application
-- Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
 - Added `showExtentOnStartup` property and a reset extent action to VcsExtentEditor, which allows to show the current extent when opening the editor.
 - Added `clusterFeatureTitleProperty` support to `properties` bag of layers, allowing to pass a feature key to be used as feature title in the Cluster window
 - Added a new component: `VcsLabeledSlider`, which renders a slider with a title and it's numerical value.
 - Correctly uses global vcs style nonce for vuetify.
 - Ensures wms layers headers are sent on fetching capabilities for `wmsGroupContentTreeItem`s
-- Fixes a bug where switching a flight interpolation from spline to linear and then back to spline would not be taken into account
 - Added new callbacks: `HideObjectsCallback`, `ShowObjectsCallback`, `HighlightObjectsCallback`, `UnHighlightObjectsCallback`, `StartFlightCallback`, `StopFlightCallback`.
 - change `VcsCallback`s `callback()` return type to allow also Promises.
-- add new `executeAsyncCallbacks` to execute async callback asynchronously
-- adds data attributes to navbar containers with corresponding button location as value in `VcsNavbar.vue`. This makes selecting these elements with css selectors easier.
+- Added new `executeAsyncCallbacks` to execute async callback asynchronously
+- Added data attributes to navbar containers with corresponding button location as value in `VcsNavbar.vue`. This makes selecting these elements with css selectors easier.
 - export `locationSymbol` and `deviceSymbol`
-- add `data-action-name` attributes to buttons in `VcsNavbarMobile.vue`
+- Added `data-action-name` attributes to buttons in `VcsNavbarMobile.vue`
 
 ### Fixes
 
-- Fixes an issue, where projection input could not handle a number EPSG code, but the type allowed it.
+- Fixes an issue, where projection input could not handle a number EPSG code, but the type allowed it
+- Fixes an issue, where the panorama image selection would be rendered underneath the camera icon in the overview map
+- Fixes Oblique footer style to match links next to it
+- Fixes a bug, where switching a flight interpolation from spline to linear and then back to spline would not be taken into account
+- Fixes a bug, where resizing panels would be unreliable, especially with iFrames
+- Fixes a bug, where the position of a BalloonFeatureInfo would be incorrect when a left panel is active
+- Fixes a bug, where iFrameWmsFeatureInfoView would not request feature info the same way as @vcmap/core interactions do
 
 ### Plugin Bundle updates
 

@@ -82,12 +82,15 @@
     },
 
     {
-      "name": "wmsHtmlFeatureInfo",
+      "name": "wmsHtmlFeatureInfo_bayern",
       "type": "WMSLayer",
       "url": "https://geoservices.bayern.de/od/wms/atkis/v1/freizeitwege",
       "layers": "by_fzw_bfr",
       "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
-      "featureInfo": { "responseType": "text/html" },
+      "featureInfo": {
+        "textHTMLEvaluator": "Keine\\s+Informationen",
+        "responseType": "text/html"
+      },
       "tilingSchema": "geographic",
       "zIndex": 13,
       "extent": {
@@ -99,7 +102,7 @@
       },
       "properties": {
         "featureInfo": "wmsIframeFeatureInfo",
-        "title": "WMS text/html FeatureInfo",
+        "title": "Bayernnetz für Radler",
         "attributions": {
           "provider": "Bayerisches Landesamt für Digitalisierung, Breitband und Vermessung",
           "url": "https://geodaten.bayern.de"
@@ -110,6 +113,58 @@
             "src": "https://geodaten.bayern.de/wms/legend/by_fzw_bfr.png"
           }
         ]
+      }
+    },
+
+    {
+      "name": "wmsHtmlFeatureInfo_rostock_wgs84",
+      "type": "WMSLayer",
+      "url": "https://geo.sv.rostock.de/geodienste/apotheken/wms",
+      "layers": "hro.apotheken.apotheken",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "featureInfo": { "responseType": "text/html", "textHTMLEvaluator": "^$" },
+      "tilingSchema": "geographic",
+      "zIndex": 13,
+      "extent": {
+        "coordinates": [
+          12.043429659817345, 54.06857915653396, 12.17311698898485,
+          54.18172442922884
+        ],
+        "projection": { "epsg": "EPSG:4326" }
+      },
+      "properties": {
+        "featureInfo": "wmsIframeFeatureInfo",
+        "title": "Rostock's Pharmacy WMS (WGS84)",
+        "attributions": {
+          "provider": "Hanse- und Universitätsstadt Rostock ",
+          "url": "https://www.opendata-hro.de/dataset/apotheken"
+        }
+      }
+    },
+
+    {
+      "name": "wmsHtmlFeatureInfo_rostock_mercator",
+      "type": "WMSLayer",
+      "url": "https://geo.sv.rostock.de/geodienste/apotheken/wms",
+      "layers": "hro.apotheken.apotheken",
+      "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
+      "featureInfo": { "responseType": "text/html", "textHTMLEvaluator": "^$" },
+      "tilingSchema": "mercator",
+      "zIndex": 13,
+      "extent": {
+        "coordinates": [
+          12.043429659817345, 54.06857915653396, 12.17311698898485,
+          54.18172442922884
+        ],
+        "projection": { "epsg": "EPSG:4326" }
+      },
+      "properties": {
+        "featureInfo": "wmsIframeFeatureInfo",
+        "title": "Rostock's Pharmacy WMS (Mercator)",
+        "attributions": {
+          "provider": "Hanse- und Universitätsstadt Rostock ",
+          "url": "https://www.opendata-hro.de/dataset/apotheken"
+        }
       }
     },
 
@@ -614,10 +669,25 @@
       "layerName": "berlinStadtStruktur"
     },
     {
-      "name": "wmsShowcases.wmsHtmlFeatureInfo",
+      "name": "wmsShowcases.textHtml",
+      "type": "NodeContentTreeItem",
+      "title": "WMS text/html FeatureInfo",
+      "tooltip": "Showcases text/html response handling for WMS GetFeatureInfo requests, including custom textHTMLEvaluator regex to detect empty responses"
+    },
+    {
+      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_bayern",
       "type": "LayerContentTreeItem",
-      "layerName": "wmsHtmlFeatureInfo",
-      "tooltip": "Showcases HTML feature info from WMS"
+      "layerName": "wmsHtmlFeatureInfo_bayern"
+    },
+    {
+      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_rostock_wgs84",
+      "type": "LayerContentTreeItem",
+      "layerName": "wmsHtmlFeatureInfo_rostock_wgs84"
+    },
+    {
+      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_rostock_mercator",
+      "type": "LayerContentTreeItem",
+      "layerName": "wmsHtmlFeatureInfo_rostock_mercator"
     },
     {
       "name": "wmsShowcases.wmsPoiOpen",
