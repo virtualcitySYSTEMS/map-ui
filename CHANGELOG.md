@@ -1,5 +1,38 @@
 # 6.3.0
 
+## Highlights
+
+#### Mapbox Style Layer
+
+The VC Map now supports the `MapboxStyleLayer` — a new layer type that reads configuration from a Mapbox Style and renders the corresponding layers in 2D and 3D.
+See: https://docs.mapbox.com/style-spec/guides/
+This is implemented using: https://github.com/openlayers/ol-mapbox-style
+
+#### I3S Layer
+
+The VC Map now supports ESRI Indexed 3D Scene (I3S) layers. I3S is supported when provided as a service in WGS84.
+
+#### Guided Tour Plugin
+
+A new Guided Tour Plugin has been implemented to improve onboarding. It guides new users through the main features and navigation options of the VC Map interactively.
+
+#### Panorama Support
+
+Several panorama-related bugs have been fixed, and support for panorama images has been added to the Drawing and Measurement plugins. A new Panorama plugin is available for configuring panorama-specific options and displaying panorama-related information
+
+#### FeatureProvider and Attribute Provider
+
+Attribute providers can now augment features with additional attributes for the featureInfo display.
+`CesiumTilesetLayer` and `VectorTileLayer` can also be configured with an Attribute provider to add attributes to features on tile load, enabling use of these attributes for styling.
+
+The following default Attribute providers have been added:
+
+- CSVAttributeProvider: can be used to add attributes from a csv file
+- JsonAttributeProvider: can be used to add attributes from a json file
+- UrlIdAttributeProvider: can be used to add an attribute from a json based service
+
+Plugins can also implement custom Attribute providers.
+
 ### Changes
 
 - Changes default pitch angle of Search result viewpoint to -35 and add a new uiConfig option to override it: `searchViewpointPitch`.
@@ -17,6 +50,28 @@
 - Added data attributes to navbar containers with corresponding button location as value in `VcsNavbar.vue`. This makes selecting these elements with css selectors easier.
 - export `locationSymbol` and `deviceSymbol`
 - Added `data-action-name` attributes to buttons in `VcsNavbarMobile.vue`
+- @vcmap/core
+  - Introduces I3SLayer support to the VC Map, enabling integration and visualization of 3D scene layers. Extended getFeatureFromPickObject to handle I3S features.
+  - Beta: introduces MapboxStyleLayer support to the VC Map, enabling visualization of Mapbox Styles in all maps.
+  - Adds the layerTypes concept to the VcsMap. This allows to restrict layer types to be supported on certain maps.
+  - Adds the preloadAncestors option for Cesium and Panorama maps, which will result in less tiles loaded.
+  - Made the mapNames concept reactive on Layer. Changing the mapNames of a layer will now add or remove the layer from maps automatically.
+  - Added a EnsurePositionInteraction to the event handler. This will stop propagation on any events after
+    coordinate at pixel & feature interactions, which do not have a position set.
+  - All 3D layers now also support PanoramaMap.
+  - PanoramaMap renders in HDR by default.
+  - The maps collection has a convenience API to pause panorama image selection & highlighting: `app.maps.pausePanoramaSelection = true;` turns off panorama image selection & highlighting for all panorama maps.
+  - `getInitForUrl` is properly documented and exported for use in plugins.
+  - `getMetersPerDegreeAtCoordinate` is now exported
+  - PanoramaDatasetLayer has a new option panoramaVectorProperties to override the default vector properties for panorama images.
+  - WMSFeatureProvider has a new textHTMLEvaluator option (string RegExp) used to test text/html FeatureInfo responses; matches are treated as empty and no features are returned
+  - Adds inRenderingOrder option to Feature Providers, and FeatureProviderInteraction can be set to respect it (new respectOrderingOrder option), in which case only one feature is added to the event.
+  - Attribute & feature provider changes:
+    - All layers may now have a feature provider assigned.
+    - Introducing the attribute provider concept. An attribute provider can augment existing features.
+      Attribute providers can be configured on a layer as a feature provider and are evaluated on click (analog to the feature provider).
+    - Introducing a CompositeFeatureProvider, which can combine multiple feature providers and attribute providers.
+    - For CesiumTilesetLayer and VectorTileLayer an attribute provider can be configured to augment features on tile load.
 
 ### Fixes
 
@@ -27,11 +82,52 @@
 - Fixes a bug, where resizing panels would be unreliable, especially with iFrames
 - Fixes a bug, where the position of a BalloonFeatureInfo would be incorrect when a left panel is active
 - Fixes a bug, where iFrameWmsFeatureInfoView would not request feature info the same way as @vcmap/core interactions do
+- @vcmap/core
+  - Fixes an issue in panorama, where the sRGB color space was not correctly handled for panorama images.
+  - Panorama maps properly hide cesium credits container.
+  - Panorama image names derived from URLs are properly decoded.
+  - Fixes an issue with VectorProperties where getVcsMeta would not return modelOptions, primitiveOptions & modelAutoScale.
+  - Fixes an issue where declarative styles would re-use the same color object.
+  - Fixes an issue, where undefined min/max levels would break vector tile implementations.
+  - Fixes viewpoint creation for ObliqueMap, allowing to preserve view orientation when switching from Oblique to 3D map.
 
 ### Plugin Bundle updates
 
+- @vcmap/planning
+  - Added dialog to create new plannings
+  - Fixed saving module by ignoring invalid vector geometries
+  - Removing hard-coded LightingModel from custom shader to fix problems with UNLIT models.
+- @vcmap/dynamic-layer
+  - Added support for GeoNetwork 4, dropping support of previous versions
+  - Redesigned the UI for small screens by making the sidebar collapsible
+  - Enforced catalogues URL, allowing simpler configuration using only the host name
+  - Changed catalogue tab behavior to display title of catalogue when only one is configured
+  - Added aggregationKeys option to GeoNetwork catalogue presets, to overwrite the default keys requested and used as filters
+  - Added a missing translation key in the Catalogue section
+  - Added format to non supported catalogue dataset distributions
+  - Fixed a bug in fetching and accessing NBS Registries
+  - Fixed a bug where clearing search field in catalogue would not reset the results
+- @vcmap/search-wfs
+  - Adds an option to use a different balloon.
+  - Adds an option to provide a display name template.
+- @vcmap/multi-view
+  - adds support for Create Link, allowing to share a link reopening the same multiview side map
+  - fixes sync issue between 2D main map and side maps during programmatic viewpoint changes
+  - fixes a bug where oblique side map would not be updated when jumping to a search result in 2D
+- @vcmap/viewshed
+  - Changed slider inputs to also allow for directly editing the numerical values.
+- @vcmap/export
+  - Fixed a bug where export would fail when Planning features have no style defined
+  - Added new config options: `exportFormatConfigurable`, `lodConfigurable` and `thematicClassConfigurable` allowing to present
+    the parameters of the export and therefore not offering the choice to the user
+- @vcmap/print
+  - Added new configuration options extending the Map Information section of the PDF:
+  - printObliqueName, printing the name of the current oblique image;
+  - printCoordinates, printing the coordinates of the center of the map or of the camera in PanoramaMap;
+  - coordinatesProj, allowing to print the coordinates in another CRS than the default WGS84
+  - printLinkToMap, allowing to print a link to the map
 - @vcmap/geofence
-  - Added to the dev environment
+  - New geofence-plugin, can be used to restrict the view to a given extent.
 - @vcmap/draw
   - Added panorama support
 - @vcmap/measurement
@@ -40,8 +136,10 @@
   - New plugin for advanced settings of panorama images
 - @vcmap/layer-settings
   - Added the plugin, which allows to edit layers at runtime via an action in the content tree
+  - Opacity for Rasterlayer
+  - pointSize for PointcloudLayer
 - @vcmap/pointcloud-settings
-  The pointcloud-settings plugin is deprecated, as the layer-settings plugin contains the full features of the old pointcloud-settings plugin
+  - The pointcloud-settings plugin is deprecated, as the layer-settings plugin contains the full features of the old pointcloud-settings plugin
 - @vcmap/guided-tour
   - New interactive onboarding plugin that provides a story-based guided tour for VC Map applications
 
