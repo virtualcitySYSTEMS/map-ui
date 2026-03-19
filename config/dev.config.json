@@ -99,6 +99,31 @@
       "tilingSchema": "mercator"
     },
     {
+      "type": "VectorTileLayer",
+      "name": "worldVectorTile",
+      "datasourceId": "808a12f7-bc72-44e2-93ac-92e2f11fe4f6",
+      "maxLevel": 12,
+      "minLevel": 0,
+      "style": {
+        "type": "VectorStyleItem",
+        "stroke": {
+          "width": 5,
+          "color": "#FF69B4"
+        },
+        "fill": false
+      },
+      "tileProvider": {
+        "type": "StaticGeoJSONTileProvider",
+        "name": "fce5c3c2-abeb-4299-8ba5-43e7dffab2e6",
+        "baseLevels": [0],
+        "url": "https://raw.githubusercontent.com/datasets/geo-countries/b0b7794e15e7ec4374bf183dd73cce5b92e1c0ae/data/countries.geojson"
+      },
+      "zIndex": 15,
+      "properties": {
+        "title": "World GeoJSON VectorTile"
+      }
+    },
+    {
       "name": "testGeojsonVectorTile",
       "type": "VectorTileLayer",
       "minLevel": 18,
@@ -632,6 +657,11 @@
       "type": "LayerContentTreeItem"
     },
     {
+      "name": "geojson.geojson vector tile world",
+      "layerName": "worldVectorTile",
+      "type": "LayerContentTreeItem"
+    },
+    {
       "name": "cloud optimized geotiff",
       "layerName": "testGeotiffLayer",
       "type": "LayerContentTreeItem"
@@ -705,6 +735,10 @@
     {
       "name": "@vcmap-show-case/dev-tools",
       "entry": "plugins/@vcmap-show-case/dev-tools/index.js"
+    },
+    {
+      "name": "@vcmap/cesium-inspector",
+      "entry": "plugins/@vcmap/cesium-inspector/index.js"
     }
   ],
   "uiConfig": [
