@@ -1,3 +1,33 @@
+# 6.3.1
+
+### Fixes
+
+- Fixed the display of the panorama image time, to react to locale changes.
+- @vcmap/core
+  - Fixes an issue, where vector tiles would be rendered wrong in 3D on lower levels.
+  - Fixes an issue, where COGs with differing tile sizes would not be rendered in 3D.
+
+### Plugin Bundle updates
+
+- @vcmap/search-esri
+  - Updated to work with Esri 11.5
+- @vcmap/panorama
+  - Changed the time display.
+- @vcmap/swipe-tool
+  - Fixed the create link behaviour to work better with many layers.
+- @vcmap/layer-settings
+  - Fixed link to documentation
+- @vcmap/layer-geofence
+  - Fixed link to documentation
+- @vcmap/planning
+  - Added dialog to create new plannings
+  - Fixed saving module by ignoring invalid vector geometries
+  - Removing hard-coded LightingModel from custom shader to fix problems with UNLIT models.
+  - Added a new overrideBaseUrl option, when activated will override the stored baseUrl for
+    all persisted vector-layers with the current planning serviceUrl
+  - Added support for relative service URL
+  - fixed an issue where catalog i18n entries would be overwritten on loading additional modules.
+
 # 6.3.0
 
 ## Highlights

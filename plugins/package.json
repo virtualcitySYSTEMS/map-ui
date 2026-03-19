@@ -14,7 +14,7 @@
     "@vcmap/draw": "^5.0.0",
     "@vcmap/shadow": "^3.0.0",
     "@vcmap/search-wfs": "^2.1.0",
-    "@vcmap/search-esri": "^2.0.0",
+    "@vcmap/search-esri": "^3.0.0",
     "@vcmap/search-coordinate": "^2.0.0",
     "@vcmap/link-button": "^2.0.0",
     "@vcmap/cesium-filters": "^2.0.0",
