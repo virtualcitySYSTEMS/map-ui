@@ -1,11 +1,13 @@
 <script setup>
   import { ref, inject, onUnmounted, computed } from 'vue';
   import { PanoramaMap } from '@vcmap/core';
+  import { useI18n } from 'vue-i18n';
 
   /** @type {import('../vcsUiApp').default} */
   const app = inject('vcsApp');
   const name = ref();
-  const time = ref();
+  const currentImageTime = ref();
+  const i18n = useI18n();
   const hasLinks = computed(
     () =>
       !!app.uiConfig.config?.dataProtection ||
@@ -17,17 +19,22 @@
     () => !app.uiConfig.config.hidePanoramaFooter,
   );
 
+  const formattedImageTime = computed(() => {
+    if (!currentImageTime.value) return '';
+    return new Intl.DateTimeFormat(i18n.locale.value, {
+      dateStyle: 'short',
+      timeStyle: 'short',
+    }).format(currentImageTime.value);
+  });
+
   let imageChangedListener = () => {};
   const setImage = (image) => {
     if (image) {
       name.value = image.name;
       if (image.time) {
-        time.value = new Intl.DateTimeFormat(app.locale, {
-          dateStyle: 'short',
-          timeStyle: 'short',
-        }).format(image.time);
+        currentImageTime.value = image.time;
       } else {
-        time.value = undefined;
+        currentImageTime.value = undefined;
       }
     }
   };
@@ -38,7 +45,7 @@
       imageChangedListener = map.currentImageChanged.addEventListener(setImage);
     } else {
       name.value = undefined;
-      time.value = undefined;
+      currentImageTime.value = undefined;
       imageChangedListener = () => {};
     }
   };
@@ -53,8 +60,11 @@
 </script>
 
 <template>
-  <span v-if="showPanoramaFooter && name && time" class="vcs-panorama-footer">
-    <span class="overflow-hidden"> {{ time }} - {{ name }} </span>
+  <span
+    v-if="showPanoramaFooter && name && currentImageTime"
+    class="vcs-panorama-footer"
+  >
+    <span class="overflow-hidden"> {{ formattedImageTime }} - {{ name }} </span>
     <span v-if="hasLinks" class="ml-1">|</span>
   </span>
 </template>
