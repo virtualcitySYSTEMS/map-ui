@@ -299,6 +299,9 @@ export function createDeepPickingAction(app, layer, collectFeatures, event) {
         app,
         features.filter((f) => featurePredicate(app, f)),
         event.position,
+        () => {
+          app.windowManager.remove(deepPickingWindowId);
+        },
       );
 
       if (app.windowManager.has(deepPickingWindowId)) {
