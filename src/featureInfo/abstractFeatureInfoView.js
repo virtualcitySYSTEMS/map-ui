@@ -1,3 +1,4 @@
+import { parseBoolean } from '@vcsuite/parsers';
 import { renderTemplate, VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { defaultTagOptions } from '../components/tables/VcsTable.vue';
@@ -22,12 +23,16 @@ import { defaultTagOptions } from '../components/tables/VcsTable.vue';
  *   attributeKeys?: string[],
  *   keyMapping?: Record<string,string>,
  *   valueMapping?: Record<string, string|Record<string,string>>,
+ *   mergeParentAttributes?: boolean,
+ *   removeNoDataAttributes?: boolean,
  *   tags?: Record<string, HTMLTagOptions>,
  *   window?: Pick<import("../manager/window/windowManager.js").WindowComponentOptions,'state'|'slot'|'position'>
  * }} FeatureInfoViewOptions
  * @property {Array<string>} [attributeKeys] - list of keys to filter attributes of selected feature
  * @property {Object<string,string>} [keyMapping] - object providing text replacements or i18n strings for attribute keys
  * @property {Object<string, string|Object<string,string>>} [valueMapping] - object providing text replacements or i18n strings for attribute values
+ * @property {boolean} [mergeParentAttributes] - if true, will merge attributes from parent features, if __PARENT_FEATURE is set on the feature. Child attributes will overwrite parent attributes in case of identical keys.
+ * @property {boolean} [removeNoDataAttributes] - if true, will remove all attributes with no data values
  * @property {Object<string,HTMLTagOptions>} [tags] - object with keys rendered as special html element. Value contains html options
  * @property {Pick<import("../manager/window/windowManager.js").WindowComponentOptions,'state'|'slot'|'position'>} [window] - state, slot, position can be set. Other options are predefined. headerTitle of window state can be a template string, e.g. "{{myAttribute}}" or ["{{layerName}}", " - ", "{{myAttribute}}"]
  */
@@ -238,14 +243,17 @@ export function applyDoubleUnderscoreFilter(attributes, keys = []) {
 /**
  * Filters attributes having an empty object as value
  * @param {Object<string, unknown>} attributes
+ * @param {boolean} removeAllEmpty - if true, will remove all empty attributes, otherwise only empty objects
  * @returns {Object}
  */
-export function applyEmptyAttributesFilter(attributes) {
+export function applyEmptyAttributesFilter(attributes, removeAllEmpty = false) {
   return Object.keys(attributes).reduce((obj, key) => {
     if (
-      attributes[key] !== null &&
-      typeof attributes[key] === 'object' &&
-      Object.keys(attributes[key]).length === 0
+      (attributes[key] !== null &&
+        typeof attributes[key] === 'object' &&
+        Object.keys(attributes[key]).length === 0) ||
+      (removeAllEmpty &&
+        (attributes[key] === undefined || attributes[key] === null))
     ) {
       return obj;
     }
@@ -279,6 +287,41 @@ function getWindowState(app, state, attributes) {
 }
 
 /**
+ * Recursively searches for parent feature attributes, if __PARENT_FEATURE property is set. Parent feature is searched in the batchTable of the content of the given feature.
+ * @param {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
+ * @param {Array<object>} records - array of parent feature attributes
+ * @returns {Array<object>} record of parent feature ids and their attributes
+ */
+function getParentFeatureAttributes(feature, records = []) {
+  const parentId = feature.getProperty('__PARENT_FEATURE');
+  if (parentId !== 'null' && feature.content?.batchTable) {
+    for (let i = 0; i < feature.content.batchTable.featuresLength; i++) {
+      const batchTableFeature = feature.content.batchTable.getFeature(i);
+      if (batchTableFeature.getProperty('id') === parentId) {
+        records.push(batchTableFeature.getAttributes());
+        return getParentFeatureAttributes(batchTableFeature, records);
+      }
+    }
+  }
+  return records;
+}
+
+/**
+ * Merges two objects by preventing the overwriting of existing keys with undefined values.
+ * @param {Object} target
+ * @param {Object} source
+ * @returns {Object}
+ */
+function safeMerge(target, source) {
+  Object.entries(source).forEach(([key, value]) => {
+    if (value !== undefined || !(key in target)) {
+      target[key] = value;
+    }
+  });
+  return target;
+}
+
+/**
  * Abstract class to be extended by FeatureInfoView classes
  * Subclasses must always provide a component and may overwrite class methods.
  * @abstract
@@ -300,6 +343,8 @@ class AbstractFeatureInfoView extends VcsObject {
       keyMapping: undefined,
       valueMapping: undefined,
       tags: undefined,
+      mergeParentAttributes: true,
+      removeNoDataAttributes: false,
       window: {},
     };
   }
@@ -323,6 +368,20 @@ class AbstractFeatureInfoView extends VcsObject {
      * @type {null|Object<string, string|Object<string,string>>}
      */
     this.valueMapping = options.valueMapping || defaultOptions.valueMapping;
+    /**
+     * @type {boolean}
+     */
+    this.mergeParentAttributes = parseBoolean(
+      options.mergeParentAttributes,
+      defaultOptions.mergeParentAttributes,
+    );
+    /**
+     * @type {boolean}
+     */
+    this.removeNoDataAttributes = parseBoolean(
+      options.removeNoDataAttributes,
+      defaultOptions.removeNoDataAttributes,
+    );
     /**
      * @type {null|Object<string,HTMLTagOptions>}
      */
@@ -360,9 +419,17 @@ class AbstractFeatureInfoView extends VcsObject {
    * @returns {Object}
    * @protected
    */
-  // eslint-disable-next-line class-methods-use-this
   _getAttributesFromFeature(feature) {
-    return feature?.getAttributes() || {};
+    const attributes = feature?.getAttributes() || {};
+    if (this.mergeParentAttributes) {
+      const parentAttributes = getParentFeatureAttributes(feature);
+      // Merge parent with child (child overwrites parent)
+      return [...parentAttributes, attributes].reduce(
+        (acc, source) => safeMerge(acc, source),
+        {},
+      );
+    }
+    return attributes;
   }
 
   /**
@@ -386,7 +453,7 @@ class AbstractFeatureInfoView extends VcsObject {
     }
     attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
     attributes = applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
-    return applyEmptyAttributesFilter(attributes);
+    return applyEmptyAttributesFilter(attributes, this.removeNoDataAttributes);
   }
 
   /**
@@ -463,6 +530,7 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   toJSON() {
     const config = super.toJSON();
+    const defaultOptions = AbstractFeatureInfoView.getDefaultOptions();
     if (this.attributeKeys.length > 0) {
       config.attributeKeys = this.attributeKeys.slice(0);
     }
@@ -471,6 +539,12 @@ class AbstractFeatureInfoView extends VcsObject {
     }
     if (this.valueMapping) {
       config.valueMapping = JSON.parse(JSON.stringify(this.valueMapping));
+    }
+    if (this.mergeParentAttributes !== defaultOptions.mergeParentAttributes) {
+      config.mergeParentAttributes = this.mergeParentAttributes;
+    }
+    if (this.removeNoDataAttributes !== defaultOptions.removeNoDataAttributes) {
+      config.removeNoDataAttributes = this.removeNoDataAttributes;
     }
     if (this.tags) {
       config.tags = JSON.parse(JSON.stringify(this.tags));

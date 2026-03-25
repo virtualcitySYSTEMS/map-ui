@@ -639,6 +639,11 @@
     },
     {
       "type": "TableFeatureInfoView",
+      "name": "tableNoEmptyValues",
+      "removeNoDataAttributes": true
+    },
+    {
+      "type": "TableFeatureInfoView",
       "name": "filteredTable",
       "attributeKeys": ["gml:name", "function"],
       "keyMapping": {
@@ -728,6 +733,30 @@
     },
     {
       "type": "CesiumTilesetLayer",
+      "name": "semantic parent id",
+      "activeOnStartup": true,
+      "url": "exampleData/3dtiles/tileset.json",
+      "extent": {
+        "coordinates": [
+          13.374270027115022, 52.508274026937485, 13.375908144173225,
+          52.50925354738402
+        ],
+        "projection": {
+          "type": "Projection",
+          "epsg": "EPSG:4326"
+        },
+        "type": "Extent"
+      },
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0,
+      "properties": {
+        "featureInfo": "tableNoEmptyValues"
+      }
+    },
+    {
+      "type": "CesiumTilesetLayer",
       "name": "buildings",
       "url": "https://www.virtualcitymap.de/datasource-data/698513e2-a34c-4f38-bb93-629ff4c9e0c0",
       "activeOnStartup": false,
@@ -736,7 +765,7 @@
       "exclusiveGroups": ["bldg"],
       "properties": {
         "title": "Gebäude texturiert 2013",
-        "featureInfo": "filteredTable"
+        "featureInfo": "tableAll"
       }
     },
     {
@@ -997,6 +1026,11 @@
       "tooltip": "Textured buildings"
     },
     {
+      "name": "semantic parent id",
+      "layerName": "semantic parent id",
+      "type": "LayerContentTreeItem"
+    },
+    {
       "name": "building.untexturedBuildings",
       "infoUrl": "https://vc.systems",
       "layerName": "buildings_untextured",
@@ -1011,9 +1045,6 @@
           "layerName": "buildings_untextured",
           "styleName": "MeasuredHeightGreen"
         }
-      ],
-      "onDeactivate": [
-        { "type": "ActivateLayersCallback", "layerNames": ["buildings"] }
       ]
     },
     {
