@@ -1,10 +1,23 @@
 # 6.3.2
 
+### Changes
+
 - Extend `AbstractFeatureInfoView`
   - Add new option `mergeParentAttributes`, which will merge attributes from parent features, if attribute `__PARENT_FEATURE` is set on the feature. Child attributes will overwrite parent attributes in case of identical keys.
   - Add new option `removeNoDataAttributes` to `AbstractFeatureInfoView`, which filters all attributes with no data values (undefined).
 - Add recursive attribute fetching for child features having a `__PARENT_FEATURE`. Found parent feature attributes are merged.
 - Feature info handles panorama dataset features properly in clusters, you are now able to zoom to & select a feature from the cluster window.
+- @vcmap/core
+  - Panorama cesium implementation is now decluttered in 3D.
+  - Changes the way panorama features are selected, allowing to jump into the first panorama image feature of a cluster directly.
+  - Fixes undefined state of picked feature when highlighting on mouse over in Panorama Map
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixed the config editor: style, catalogs and vector properties now work as expected.
+- @vcmap/export
+  - Fixes an issue where the configuration could destroy the plugin, if not set correctly.
 
 # 6.3.1
 
