@@ -49,6 +49,15 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     return 'BalloonFeatureInfoView';
   }
 
+  /** @returns {BalloonFeatureInfoViewOptions} */
+  static getDefaultOptions() {
+    return {
+      ...AbstractFeatureInfoView.getDefaultOptions(),
+      balloonTitle: undefined,
+      balloonSubtitle: undefined,
+    };
+  }
+
   /**
    * @param {BalloonFeatureInfoViewOptions} options
    * @param {import("vue").Component<BalloonFeatureInfoViewProps, unknown, unknown>} [component=BalloonComponent]
@@ -120,14 +129,15 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {BalloonFeatureInfoViewOptions} defaultOptions
    * @returns {BalloonFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    if (this.balloonTitle) {
+  toJSON(defaultOptions = BalloonFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
+    if (this.balloonTitle !== defaultOptions.balloonTitle) {
       config.balloonTitle = this.balloonTitle;
     }
-    if (this.balloonSubtitle) {
+    if (this.balloonSubtitle !== defaultOptions.balloonSubtitle) {
       config.balloonSubtitle = this.balloonSubtitle;
     }
     return config;

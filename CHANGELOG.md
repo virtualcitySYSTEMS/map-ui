@@ -1,3 +1,9 @@
+# 6.3.3
+
+### Changes
+
+- Fix `getDefaultOptions` and `toJSON` of all `AbstractFeatureInfoView` and all child classes
+
 # 6.3.2
 
 ### Changes

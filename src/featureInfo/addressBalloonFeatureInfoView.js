@@ -20,6 +20,17 @@ import AddressBalloonComponent from './AddressBalloonComponent.vue';
  * @property {string|null} [country='Address.Country'] key to evaluate for country. Use null to suppress
  */
 
+function getAddressBalloonFeatureInfoViewDefaultOptions() {
+  return {
+    addressName: 'gml:name',
+    street: 'Address.Street',
+    number: 'Address.HouseNumber',
+    city: 'Address.City',
+    zip: 'Address.ZipCode',
+    country: 'Address.Country',
+  };
+}
+
 /**
  * @class
  * @description An balloon view.
@@ -36,12 +47,8 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
   /** @returns {AddressBalloonFeatureInfoViewOptions} */
   static getDefaultOptions() {
     return {
-      addressName: 'gml:name',
-      street: 'Address.Street',
-      number: 'Address.HouseNumber',
-      city: 'Address.City',
-      zip: 'Address.ZipCode',
-      country: 'Address.Country',
+      ...BalloonFeatureInfoView.getDefaultOptions(),
+      ...getAddressBalloonFeatureInfoViewDefaultOptions(),
     };
   }
 
@@ -100,18 +107,18 @@ class AddressBalloonFeatureInfoView extends BalloonFeatureInfoView {
         }
       }
     };
-    Object.keys(AddressBalloonFeatureInfoView.getDefaultOptions()).forEach(
+    Object.keys(getAddressBalloonFeatureInfoViewDefaultOptions()).forEach(
       (key) => applyAddressKeys(key),
     );
     return obj;
   }
 
   /**
+   * @param {AddressBalloonFeatureInfoViewOptions} defaultOptions
    * @returns {AddressBalloonFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    const defaultOptions = AddressBalloonFeatureInfoView.getDefaultOptions();
+  toJSON(defaultOptions = AddressBalloonFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
     if (this.addressName !== defaultOptions.addressName) {
       config.addressName = this.addressName;
     }

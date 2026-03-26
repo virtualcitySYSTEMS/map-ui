@@ -23,6 +23,14 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
     return 'MarkdownFeatureInfoView';
   }
 
+  /** @returns {MarkdownFeatureInfoViewOptions} */
+  static getDefaultOptions() {
+    return {
+      ...AbstractFeatureInfoView.getDefaultOptions(),
+      template: '',
+    };
+  }
+
   /**
    * @param {MarkdownFeatureInfoViewOptions} options
    */
@@ -56,13 +64,16 @@ class MarkdownFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {MarkdownFeatureInfoViewOptions} defaultOptions
    * @returns {MarkdownFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    config.template = Array.isArray(this.template)
-      ? this.template.slice()
-      : this.template;
+  toJSON(defaultOptions = MarkdownFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
+    if (this.template !== defaultOptions.template) {
+      config.template = Array.isArray(this.template)
+        ? this.template.slice()
+        : this.template;
+    }
     return config;
   }
 }

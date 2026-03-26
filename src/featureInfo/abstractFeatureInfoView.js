@@ -526,11 +526,11 @@ class AbstractFeatureInfoView extends VcsObject {
   }
 
   /**
+   * @param {FeatureInfoViewOptions} defaultOptions
    * @returns {FeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    const defaultOptions = AbstractFeatureInfoView.getDefaultOptions();
+  toJSON(defaultOptions = AbstractFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
     if (this.attributeKeys.length > 0) {
       config.attributeKeys = this.attributeKeys.slice(0);
     }
