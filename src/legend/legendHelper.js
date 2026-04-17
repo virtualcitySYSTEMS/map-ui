@@ -1,4 +1,9 @@
-import { getShapeFromOptions } from '@vcmap/core';
+import {
+  getShapeFromOptions,
+  PatternType,
+  parseColor,
+  getStringColor,
+} from '@vcmap/core';
 import { reactive } from 'vue';
 
 /**
@@ -68,7 +73,7 @@ export const StyleRowType = {
 
 /**
  * @typedef {StyleLegendRow & {
- *   fill: import("ol/style/Fill.js").Options,
+ *   fill: import("ol/style/Fill.js").Options | import("@vcmap/core").VectorStyleItemFill,
  *   stroke?: import("ol/style/Stroke.js").Options
  * }} FillLegendRow
  */
@@ -93,6 +98,64 @@ export const StyleRowType = {
  * @property {import("ol/style/Text.js").Options} text
  * @property {string} [label='Text']
  */
+
+/**
+ * @typedef {{ x1: number, y1: number, x2: number, y2: number }} PatternLine
+ */
+
+/**
+ * @typedef {{ size: number, bgColor: string, lineColor: string, lineWidth: number, lines: PatternLine[] }} PatternSvgData
+ */
+
+/**
+ * Computes the SVG data needed to render an inline pattern for a legend row.
+ * @param {import("@vcmap/core").VectorStyleItemFill} fill
+ * @returns {PatternSvgData}
+ */
+export function getPatternSvgData(fill) {
+  const size = fill.pattern.size || 10;
+  const bgColor = getStringColor(parseColor(fill.color));
+  const lineColor = getStringColor(fill.pattern.color);
+  const lineWidth = fill.pattern.width;
+
+  /** @type {PatternLine[]} */
+  const lines = [];
+
+  function addLine(x1, y1, x2, y2) {
+    lines.push({ x1, y1, x2, y2 });
+  }
+
+  switch (fill.pattern.type) {
+    case PatternType.NWSE:
+      addLine(size / 2, size, size, size / 2);
+      addLine(0, size / 2, size / 2, 0);
+      break;
+    case PatternType.SWNE:
+      addLine(size / 2, size, 0, size / 2);
+      addLine(size, size / 2, size / 2, 0);
+      break;
+    case PatternType.DIAGONALCROSS:
+      addLine(size / 2, size, size, size / 2);
+      addLine(0, size / 2, size / 2, 0);
+      addLine(size / 2, size, 0, size / 2);
+      addLine(size, size / 2, size / 2, 0);
+      break;
+    case PatternType.NS:
+      addLine(size / 2, 0, size / 2, size);
+      break;
+    case PatternType.WE:
+      addLine(0, size / 2, size, size / 2);
+      break;
+    case PatternType.CROSS:
+      addLine(size / 2, 0, size / 2, size);
+      addLine(0, size / 2, size, size / 2);
+      break;
+    default:
+      break;
+  }
+
+  return { size, bgColor, lineColor, lineWidth, lines };
+}
 
 /**
  * @param {import("ol/style/Image.js").Options} image

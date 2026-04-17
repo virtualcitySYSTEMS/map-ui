@@ -1,6 +1,9 @@
-# 6.3.3
+# 6.3.5
 
-### Changes
+- Add support for pattern styles in legend for `FillLegendRow` type.
+- Update vite to version 6, update vitest to version 4
+
+# 6.3.3
 
 - Fix `getDefaultOptions` and `toJSON` of all `AbstractFeatureInfoView` and all child classes
 

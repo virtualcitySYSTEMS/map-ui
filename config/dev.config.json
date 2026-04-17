@@ -459,6 +459,351 @@
       ]
     },
     {
+      "type": "GeoJSONLayer",
+      "name": "patternedPolygons",
+      "projection": {
+        "epsg": 4326
+      },
+      "activeOnStartup": false,
+      "zIndex": 20,
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "NWSE pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.36, 52.5],
+                [13.365, 52.5],
+                [13.365, 52.505],
+                [13.36, 52.505],
+                [13.36, 52.5]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [255, 0, 0, 0.5],
+                "pattern": {
+                  "type": 1,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "SWNE pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.367, 52.5],
+                [13.372, 52.5],
+                [13.372, 52.505],
+                [13.367, 52.505],
+                [13.367, 52.5]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [0, 0, 255, 0.5],
+                "pattern": {
+                  "type": 2,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "DIAGONALCROSS pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.374, 52.5],
+                [13.379, 52.5],
+                [13.379, 52.505],
+                [13.374, 52.505],
+                [13.374, 52.5]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [0, 255, 0, 0.5],
+                "pattern": {
+                  "type": 3,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "NS pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.36, 52.493],
+                [13.365, 52.493],
+                [13.365, 52.498],
+                [13.36, 52.498],
+                [13.36, 52.493]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [255, 255, 0, 0.5],
+                "pattern": {
+                  "type": 4,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "WE pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.367, 52.493],
+                [13.372, 52.493],
+                [13.372, 52.498],
+                [13.367, 52.498],
+                [13.367, 52.493]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [255, 0, 255, 0.5],
+                "pattern": {
+                  "type": 5,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "title": "CROSS pattern"
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [13.374, 52.493],
+                [13.379, 52.493],
+                [13.379, 52.498],
+                [13.374, 52.498],
+                [13.374, 52.493]
+              ]
+            ]
+          },
+          "vcsMeta": {
+            "version": "2.1",
+            "style": {
+              "stroke": {
+                "color": [0, 0, 0, 1],
+                "width": 2
+              },
+              "fill": {
+                "color": [255, 165, 0, 0.5],
+                "pattern": {
+                  "type": 6,
+                  "color": [255, 255, 255, 1],
+                  "width": 2,
+                  "size": 10
+                }
+              }
+            }
+          }
+        }
+      ],
+      "style": {
+        "type": "VectorStyleItem",
+        "fill": { "color": [255, 0, 0, 0.5] },
+        "stroke": { "color": [0, 0, 0, 1], "width": 2 }
+      },
+      "properties": {
+        "title": "Patterned Polygons",
+        "featureInfo": "tableAll",
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "title": "NWSE pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [255, 0, 0, 0.5],
+                  "pattern": {
+                    "type": 1,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "SWNE pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [0, 0, 255, 0.5],
+                  "pattern": {
+                    "type": 2,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "DIAGONALCROSS pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [0, 255, 0, 0.5],
+                  "pattern": {
+                    "type": 3,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "NS pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [255, 255, 0, 0.5],
+                  "pattern": {
+                    "type": 4,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "WE pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [255, 0, 255, 0.5],
+                  "pattern": {
+                    "type": 5,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "CROSS pattern",
+                "stroke": {
+                  "color": [0, 0, 0, 1],
+                  "width": 2
+                },
+                "fill": {
+                  "color": [255, 165, 0, 0.5],
+                  "pattern": {
+                    "type": 6,
+                    "color": [255, 255, 255, 1],
+                    "width": 2,
+                    "size": 10
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "type": "CzmlLayer",
       "name": "czmlPoint",
       "activeOnStartup": false,
@@ -665,6 +1010,11 @@
       "name": "cloud optimized geotiff",
       "layerName": "testGeotiffLayer",
       "type": "LayerContentTreeItem"
+    },
+    {
+      "name": "geojson.patternedPolygons",
+      "type": "LayerContentTreeItem",
+      "layerName": "patternedPolygons"
     },
     {
       "name": "czml",
