@@ -4,9 +4,12 @@ import commonViteConfig from './build/commonViteConfig.js';
 const configTest = defineConfig({
   ...commonViteConfig,
   test: {
-    deps: {
-      inline: ['vuetify'],
+    server: {
+      deps: {
+        inline: ['vuetify'],
+      },
     },
+    css: true,
     environment: 'jsdom',
     setupFiles: ['tests/setup.js'],
     pool: 'forks',

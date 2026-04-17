@@ -3,6 +3,7 @@ import {
   beforeAll,
   afterAll,
   beforeEach,
+  afterEach,
   expect,
   it,
   vi,
@@ -307,6 +308,10 @@ describe('OverviewMap', () => {
       overviewMap.destroy();
     });
 
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
     it('should set the image name, if the feature is an image feature', () => {
       const feature = new Feature();
       feature.setId('test');
@@ -392,6 +397,10 @@ describe('OverviewMap', () => {
 
     afterAll(() => {
       overviewMap.destroy();
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
     });
 
     it('should not longer listen to overview map clicked events', () => {

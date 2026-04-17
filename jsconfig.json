@@ -3,7 +3,7 @@
     "module": "es6",
     "target": "es6",
     "baseUrl": "./",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "paths": {
       "@vcmap/ui": ["index.js"]
     }

@@ -622,6 +622,10 @@ describe('CollectionComponentClass', () => {
       collection.destroy();
     });
 
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
     it('should remove all itemMapping, itemFilter and actions of provided owner', () => {
       expect(collectionComponent._itemMappings).to.have.length(0);
       expect(collectionComponent._itemFilters).to.have.length(0);
