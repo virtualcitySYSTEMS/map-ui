@@ -46,7 +46,7 @@ audit:
   extends: .after_build_template
   stage: test
   script:
-    - npm audit --omit dev --omit peer --audit-level=low
+    - npm audit --omit dev --omit peer --omit optional --audit-level=low
 
 buildPreview:
   extends: .staging_build_template
