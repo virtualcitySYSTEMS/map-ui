@@ -1,3 +1,22 @@
+# 6.3.6
+
+### Changes
+
+- Updated @vcmap/core to 6.3.5
+  - Fixes a MapboxStyleLayer multi-map rendering bug by using per-map styled OpenLayers layer groups
+  - Fixes repeated layer implementation initialization on rapid activation
+
+### Plugin Bundle updates
+
+- @vcmap/height-profile, @vcmap/solar-balloon, @vcmap/sensorthings
+  - Fixed CSS Incompatibility with new Publisher 6 CSP Rules, by adding nounce to apexcharts.
+- @vcmap/swipe-tool
+  - Adds ActivateSwipeToolCallback and DeactivateSwipeToolCallback to activate and deactivate the swipe tool via the VcsCallback system
+  - Adds activeOnStartup config option to activate the swipe tool automatically on startup when no saved state is present
+- @vcmap/print
+  - Included Swipe Tool overlay (divider line and labels) in exported PDF and JPG when active
+  - Fixed copyright symbol on PDF
+
 # 6.3.5
 
 - Add support for pattern styles in legend for `FillLegendRow` type.
