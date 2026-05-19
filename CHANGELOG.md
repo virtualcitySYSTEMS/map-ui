@@ -1,3 +1,9 @@
+# 6.3.7
+
+### Changes
+
+- Changed the detection of the mobile landscape mode. This now only depends on the android or ios flag and ignores touch capabilities.
+
 # 6.3.6
 
 ### Changes

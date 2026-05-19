@@ -358,11 +358,9 @@ export function useFontSize() {
 export function isMobileLandscape() {
   const display = useDisplay();
   return computed(() => {
-    // Check if the device is a mobile platform (e.g., Android, iOS, or touch-based)
+    // Check if the device is a mobile platform (e.g., Android, iOS)
     const isMobilePlatform =
-      display.platform.value.android ||
-      display.platform.value.ios ||
-      display.platform.value.touch;
+      display.platform.value.android || display.platform.value.ios;
 
     // Check if the device height is less than the threshold for SM
     const isHeightXs = display.height.value <= display.thresholds.value.sm;
