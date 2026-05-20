@@ -85,7 +85,8 @@
         },
         "style": {
           "buildingFunction": "Gebäudefunktion",
-          "transparentBuildings": "Transparente Gebäude"
+          "transparentBuildings": "Transparente Gebäude",
+          "hideSmallBuildings": "Kleine Gebäude ausblenden"
         },
         "contentTree": {
           "building": {
@@ -115,7 +116,8 @@
         },
         "style": {
           "buildingFunction": "Building function",
-          "transparentBuildings": "Transparent Buildings"
+          "transparentBuildings": "Transparent Buildings",
+          "hideSmallBuildings": "Hide small buildings"
         },
         "contentTree": {
           "building": {
@@ -593,6 +595,22 @@
           }
         ]
       }
+    },
+    {
+      "type": "DeclarativeStyleItem",
+      "name": "HideSmallBuildings",
+      "title": "Hide buildings < 30 m",
+      "declarativeStyle": {
+        "show": {
+          "conditions": [
+            ["${attributes.measuredHeight} === undefined", "true"],
+            ["${attributes.measuredHeight} < 30", "false"]
+          ]
+        }
+      },
+      "properties": {
+        "title": "style.hideSmallBuildings"
+      }
     }
   ],
   "featureInfo": [
@@ -788,7 +806,8 @@
           "ClassifiedbyRoofType",
           "BuildingFunction",
           "Transparentbuildings",
-          "fruitStyle"
+          "fruitStyle",
+          "HideSmallBuildings"
         ],
         "clusterFeatureTitleProperty": "gml:name",
         "title": "Berlin - LOD2",
