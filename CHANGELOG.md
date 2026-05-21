@@ -3,6 +3,37 @@
 ### Changes
 
 - Changed the detection of the mobile landscape mode. This now only depends on the android or ios flag and ignores touch capabilities.
+- Updated @vcmap/core to 6.3.7
+  - Adds support for I3SLayer to ClippingObject
+  - Fixes a bug in CesiumTilesetCesiumImpl which caused highlighted features to loose the highlighting when new features where highlighted
+  - Fixes an issue, where the heading applied in panorama would not be the expected value.
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Fixes a bug where configs using removed export formats (VRML, FMEAR) would fail validation
+- @vcmap/search-wfs
+  - Fixed default displayNameTemplate generation to handle empty addressMapping fields
+- @vcmap/layer-settings
+  - Fixed a bug where default config would override user-config in the ConfigEditor
+- @vcmap/planning
+  - Fixes an issue, where observing the status of an object could block the application.
+  - Fixes an issue, where the application would hang if feature store layers could be missing server side.
+- @vcmap/clipping-tool
+  - Updated @vcmap/core and @vcmap/ui to 6.3
+  - Added clipping support for I3SLayer
+  - Added config options, allowing to set default settings for new clipping planes.
+- @vcmap/dynamic-layer
+  - Fixed a bug where defaultSorting config option for catalogue presets would not be taken into account
+  - Fixed some styling issues
+  - Fixed some translation errors
+  - Enhanced parsing of GeoNetwork aggregation keys
+- @vcmap/shadow
+  - Added ActivateShadowCallback and DeactivateShadowCallback to activate and deactivate the Shadow tool via the VcsCallback system
+- @vcmap/viewshed
+  - Added ActivateViewshedCallback and DeactivateViewshedCallback to activate and deactivate the Viewshed tool via the VcsCallback system
+- @vcmap/sensorthings
+  - Changed request URLs to be encoded
 
 # 6.3.6
 
