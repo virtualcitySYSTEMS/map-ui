@@ -243,6 +243,7 @@
             :max="100"
             :step="0.001"
             allow-text-input
+            text-input-cols="3"
           />
           <v-row no-gutters>
             <v-col>

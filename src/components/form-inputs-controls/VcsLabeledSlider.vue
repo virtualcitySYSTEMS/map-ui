@@ -47,11 +47,11 @@
 
   /**
    * @description stylized component, rendering a row with a label and an inputfield, and another with a slider.
-   * @vue-prop {number} modelValue - The value modeled by the slider and inputfield.
+   * @vue-prop {number} [modelValue=0] - The value modeled by the slider and inputfield.
    * @vue-prop {string} label - The title of the value to be modeled. Will be translated.
    * @vue-prop {string} [tooltip] - An optional tooltip for the label.
    * @vue-prop {boolean} [allowTextInput=false] - Whether to allow the value to be manually set in an inputfield.
-   * @vue-prop {number} [textInputCols=6] - The number of columns the text input should take (out of 12).
+   * @vue-prop {number | string | boolean} [textInputCols=6] - The number of columns the text input should take (out of 12).
    * All other props will be forwarded to the slider and inputfield (if allowTextInput is true). E.g. min, max, step, disabled and unit can be provided to the component.
    */
   export default {
@@ -64,11 +64,11 @@
       VcsTextField,
     },
     props: {
-      modelValue: { type: Number, required: true },
+      modelValue: { type: [Number, String], default: 0 },
       label: { type: String, required: true },
       tooltip: { type: String, default: undefined },
       allowTextInput: { type: Boolean, default: false },
-      textInputCols: { type: Number, default: 6 },
+      textInputCols: { type: [Number, String, Boolean], default: 6 },
     },
     emits: ['update:modelValue'],
     setup(props, { attrs, emit }) {
