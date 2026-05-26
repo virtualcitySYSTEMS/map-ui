@@ -28,14 +28,16 @@ class ActivateMapCallback extends VcsCallback {
   /**
    * Activates the map with the given name.
    */
-  callback() {
+  async callback() {
     if (this._mapName) {
-      this._app.maps.setActiveMap(this._mapName).catch((error) => {
+      try {
+        await this._app.maps.setActiveMap(this._mapName);
+      } catch (error) {
         getLogger(ActivateMapCallback.className).error(
           `Failed to activate map "${this._mapName}":`,
           error,
         );
-      });
+      }
     }
   }
 

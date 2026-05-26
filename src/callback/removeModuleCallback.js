@@ -30,9 +30,9 @@ class RemoveModuleCallback extends VcsCallback {
     this._moduleId = options.moduleId;
   }
 
-  callback() {
+  async callback() {
     if (this._app.getModuleById(this._moduleId)) {
-      this._app.removeModule(this._moduleId);
+      await this._app.removeModule(this._moduleId);
     }
   }
 

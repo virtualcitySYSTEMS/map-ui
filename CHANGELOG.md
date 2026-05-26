@@ -1,3 +1,9 @@
+# 6.3.8
+
+### Changes
+
+- change async callbacks to be truly asynchronous by properly awaiting callback execution in `ActivateLayersCallback`, `ActivateMapCallback`, `ActivateOverviewMapCallback`, `AddModuleCallback` and `RemoveModuleCallback`
+
 # 6.3.7
 
 ### Changes

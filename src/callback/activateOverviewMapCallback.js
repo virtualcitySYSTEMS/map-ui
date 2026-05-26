@@ -9,13 +9,15 @@ class ActivateOverviewMapCallback extends VcsCallback {
     return 'ActivateOverviewMapCallback';
   }
 
-  callback() {
-    this._app.overviewMap.activate().catch((error) => {
+  async callback() {
+    try {
+      await this._app.overviewMap.activate();
+    } catch (error) {
       getLogger(ActivateOverviewMapCallback.className).error(
         'Failed to activate overview map:',
         error,
       );
-    });
+    }
   }
 }
 
