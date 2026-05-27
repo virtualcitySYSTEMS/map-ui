@@ -3,6 +3,19 @@
 ### Changes
 
 - change async callbacks to be truly asynchronous by properly awaiting callback execution in `ActivateLayersCallback`, `ActivateMapCallback`, `ActivateOverviewMapCallback`, `AddModuleCallback` and `RemoveModuleCallback`
+- Updated @vcmap/core to 6.3.8
+  - Fixes an issue, where the heading applied in panorama would not be the expected value.
+  - More natural zoom handling in panorama.
+  - Pinch zoom enabled in panorama.
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixes an issue where config editor checkboxes would not update or save
+  - Fixes an issue where password validation would not enforce username/email exclusion
+  - Fixes an issue where the cancel button of the Upload File window would not close the window
+  - Fixes an issue where failed tasks would show no generic error notification
+  - Fixes an issue where @ would not be allowed in passwords
 
 # 6.3.7
 
