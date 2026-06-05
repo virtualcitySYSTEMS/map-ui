@@ -1,3 +1,4 @@
+import { getLogger } from '@vcsuite/logger';
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
 
 /**
@@ -30,9 +31,13 @@ class RemoveModuleCallback extends VcsCallback {
     this._moduleId = options.moduleId;
   }
 
-  callback() {
-    if (this._app.getModuleById(this._moduleId)) {
-      this._app.removeModule(this._moduleId);
+  async callback() {
+    try {
+      if (this._app.getModuleById(this._moduleId)) {
+        await this._app.removeModule(this._moduleId);
+      }
+    } catch (e) {
+      getLogger('removeModuleCallback').error('Error removing module', e);
     }
   }
 

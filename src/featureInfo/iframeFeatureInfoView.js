@@ -1,4 +1,5 @@
 import { renderTemplate } from '@vcmap/core';
+import { parseBoolean } from '@vcsuite/parsers';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
 
@@ -27,28 +28,43 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
     return 'IframeFeatureInfoView';
   }
 
+  /** @returns {IframeFeatureInfoViewOptions} */
+  static getDefaultOptions() {
+    return {
+      ...AbstractFeatureInfoView.getDefaultOptions(),
+      src: '',
+      title: undefined,
+      sandbox: '',
+      disableSandbox: false,
+    };
+  }
+
   /**
    * @param {IframeFeatureInfoViewOptions} options
    */
   constructor(options) {
     super(options, IframeComponent);
+    const defaultOptions = IframeFeatureInfoView.getDefaultOptions();
 
     /**
      * @type {string}
      */
-    this.src = options.src;
+    this.src = options.src || defaultOptions.src;
     /**
      * @type {string|undefined}
      */
-    this.title = options.title || undefined;
+    this.title = options.title;
     /**
      * @type {string}
      */
-    this.sandbox = options.sandbox || '';
+    this.sandbox = options.sandbox || defaultOptions.sandbox;
     /**
      * @type {boolean}
      */
-    this.disableSandbox = options.disableSandbox || false;
+    this.disableSandbox = parseBoolean(
+      options.disableSandbox,
+      defaultOptions.disableSandbox,
+    );
   }
 
   /**
@@ -80,20 +96,21 @@ class IframeFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {IframeFeatureInfoViewOptions} defaultOptions
    * @returns {IframeFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    if (this.src) {
+  toJSON(defaultOptions = IframeFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
+    if (this.src !== defaultOptions.src) {
       config.src = this.src;
     }
-    if (this.title) {
+    if (this.title !== defaultOptions.title) {
       config.title = this.title;
     }
-    if (this.sandbox) {
+    if (this.sandbox !== defaultOptions.sandbox) {
       config.sandbox = this.sandbox;
     }
-    if (this.disableSandbox) {
+    if (this.disableSandbox !== defaultOptions.disableSandbox) {
       config.disableSandbox = this.disableSandbox;
     }
     return config;

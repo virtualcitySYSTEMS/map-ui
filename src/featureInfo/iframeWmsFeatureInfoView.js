@@ -2,6 +2,7 @@ import {
   getMetersPerDegreeAtCoordinate,
   mercatorProjection,
 } from '@vcmap/core';
+import { parseBoolean } from '@vcsuite/parsers';
 import { get as getOlProj, getTransform } from 'ol/proj.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import IframeComponent from './IframeComponent.vue';
@@ -9,7 +10,7 @@ import { getBalloonPositionFromFeature } from './balloonHelper.js';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & { infoFormat: string, title?: string, sandbox?:string, disableSandbox?: boolean }} IframeWmsFeatureInfoViewOptions
- * @property {string} infoFormat - Specifies the response format of WMS GetFeatureInfo
+ * @property {string} [infoFormat='text/html'] - Specifies the response format of WMS GetFeatureInfo
  * @property {string} [title] - optional title for the <iframe>
  * @property {string} [sandbox] - optional sandbox attribute for the <iframe>
  * @property {boolean} [disableSandbox] - optional flag to disable the sandbox attribute for the <iframe>
@@ -28,28 +29,43 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
     return 'IframeWmsFeatureInfoView';
   }
 
+  /** @returns {IframeWmsFeatureInfoViewOptions} */
+  static getDefaultOptions() {
+    return {
+      ...AbstractFeatureInfoView.getDefaultOptions(),
+      infoFormat: 'text/html',
+      title: undefined,
+      sandbox: '',
+      disableSandbox: false,
+    };
+  }
+
   /**
    * @param {IframeWmsFeatureInfoViewOptions} options
    */
   constructor(options) {
     super(options, IframeComponent);
+    const defaultOptions = IframeWmsFeatureInfoView.getDefaultOptions();
 
     /**
      * @type {string}
      */
-    this.infoFormat = options.infoFormat || 'text/html';
+    this.infoFormat = options.infoFormat || defaultOptions.infoFormat;
     /**
      * @type {string|undefined}
      */
-    this.title = options.title || undefined;
+    this.title = options.title;
     /**
      * @type {string}
      */
-    this.sandbox = options.sandbox || '';
+    this.sandbox = options.sandbox || defaultOptions.sandbox;
     /**
      * @type {boolean}
      */
-    this.disableSandbox = options.disableSandbox || false;
+    this.disableSandbox = parseBoolean(
+      options.disableSandbox,
+      defaultOptions.disableSandbox,
+    );
   }
 
   /**
@@ -115,20 +131,21 @@ class IframeWmsFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {IframeWmsFeatureInfoViewOptions} defaultOptions
    * @returns {IframeWmsFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    if (this.infoFormat) {
+  toJSON(defaultOptions = IframeWmsFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
+    if (this.infoFormat !== defaultOptions.infoFormat) {
       config.infoFormat = this.infoFormat;
     }
-    if (this.title) {
+    if (this.title !== defaultOptions.title) {
       config.title = this.title;
     }
-    if (this.sandbox) {
+    if (this.sandbox !== defaultOptions.sandbox) {
       config.sandbox = this.sandbox;
     }
-    if (this.disableSandbox) {
+    if (this.disableSandbox !== defaultOptions.disableSandbox) {
       config.disableSandbox = this.disableSandbox;
     }
     return config;

@@ -13,7 +13,6 @@ stages:
   - deploy
   - deployCluster
   - publish
-  - docs
 
 .branch_restriction: &branch_restriction
   only:
@@ -80,7 +79,6 @@ bundle:
     - cd ..
     - npm run build
     - npm run build-preview
-    - npm run story:build
 
 version:
   <<: *after_build_definition
@@ -111,7 +109,6 @@ deployStaging:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: ['']
   script:
-    - mv .histoire/dist dist/story
     - /kaniko/executor --context dist/ --dockerfile build/staging/Dockerfile --destination $CI_REGISTRY_IMAGE/staging:$CI_COMMIT_REF_SLUG
   before_script:
     - mkdir -p /kaniko/.docker
@@ -177,20 +174,3 @@ publish:
     - tar -tf vcmap-ui-*.tgz | sed s/package/./ | zip -@ vcmap-ui.zip
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file vcmap-ui.zip "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-ui-${VERSION}.zip"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file dist/vcmap-bundle.tar.gz "${CI_API_V4_URL}/projects/317/packages/generic/VCMapUI/${VERSION}/vcmap-bundle-${VERSION}.tar.gz"'
-
-deployDocs:
-  <<: *after_build_definition
-  stage: docs
-  only:
-    variables:
-      - $PUBLISH
-    refs:
-      - /^(main|release-v.*)$/
-  script:
-    - VERSION=$(node -pe "const version = require('./package.json').version; /\d*\.\d*/.exec(version)[0]")
-    - HISTOIRE_DEPLOYMENT="/ui/${VERSION}/story/"
-    - npm run story:build
-    - npm i -D @vcsuite/publishtox --registry http://npmregistry:4873
-    - echo "Uploading documentation to /lib/ui/${VERSION}/story"
-
-    - node_modules/.bin/publishToX sftp --prefix /map/virtualcitymap.de/lib/ui/ hostingsftp.virtualcitypublisher.de --cores 4 -s ./.histoire/dist -d "${VERSION}/story/"

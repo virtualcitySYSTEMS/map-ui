@@ -55,19 +55,51 @@
                 :stroke-miterlimit="row.stroke?.miterLimit"
                 :stroke-width="row.stroke?.width"
               />
-              <rect
-                v-else-if="row.type === StyleRowType.Fill"
-                width="32"
-                height="24"
-                :stroke="getColor(row.stroke?.color)"
-                :stroke-linecap="row.stroke?.lineCap"
-                :stroke-linejoin="row.stroke?.lineJoin"
-                :stroke-dasharray="row.stroke?.lineDash"
-                :stroke-dashoffset="row.stroke?.lineDashOffset"
-                :stroke-miterlimit="row.stroke?.miterLimit"
-                :stroke-width="row.stroke?.width"
-                :fill="getColor(row.fill?.color) || 'rgba(255,255,255,0)'"
-              />
+              <template v-else-if="row.type === StyleRowType.Fill">
+                <defs v-if="row.fill?.pattern">
+                  <pattern
+                    :id="`legend-fill-pattern-${idx}`"
+                    x="0"
+                    y="0"
+                    :width="patterns[idx].size"
+                    :height="patterns[idx].size"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <rect
+                      :width="patterns[idx].size"
+                      :height="patterns[idx].size"
+                      :fill="patterns[idx].bgColor"
+                    />
+                    <line
+                      v-for="(line, lineIdx) in patterns[idx].lines"
+                      :key="lineIdx"
+                      :x1="line.x1"
+                      :y1="line.y1"
+                      :x2="line.x2"
+                      :y2="line.y2"
+                      :stroke="patterns[idx].lineColor"
+                      :stroke-width="patterns[idx].lineWidth"
+                      stroke-linecap="square"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width="32"
+                  height="24"
+                  :stroke="getColor(row.stroke?.color)"
+                  :stroke-linecap="row.stroke?.lineCap"
+                  :stroke-linejoin="row.stroke?.lineJoin"
+                  :stroke-dasharray="row.stroke?.lineDash"
+                  :stroke-dashoffset="row.stroke?.lineDashOffset"
+                  :stroke-miterlimit="row.stroke?.miterLimit"
+                  :stroke-width="row.stroke?.width"
+                  :fill="
+                    row.fill?.pattern
+                      ? `url(#legend-fill-pattern-${idx})`
+                      : getColor(row.fill?.color) || 'rgba(255,255,255,0)'
+                  "
+                />
+              </template>
               <circle
                 v-else-if="row.type === StyleRowType.Circle"
                 cx="16"
@@ -110,7 +142,11 @@
     VListItemTitle,
   } from 'vuetify/components';
   import { computed } from 'vue';
-  import { StyleRowType, getImageSrcFromShape } from './legendHelper.js';
+  import {
+    StyleRowType,
+    getImageSrcFromShape,
+    getPatternSvgData,
+  } from './legendHelper.js';
 
   /**
    * @description A component rendering vector styles as list using {@link https://vuetifyjs.com/en/api/v-list-row v-list-row}
@@ -150,6 +186,17 @@
         }
         return '';
       }
+
+      const patterns = computed(() => {
+        const cache = {};
+        props.item.rows.forEach((row, idx) => {
+          if (row.fill?.pattern) {
+            cache[idx] = getPatternSvgData(row.fill);
+          }
+        });
+        return cache;
+      });
+
       return {
         StyleRowType,
         getImageSrcFromShape,
@@ -160,6 +207,7 @@
           return null;
         },
         determineInnerPadding,
+        patterns,
         cols: computed(() => {
           return props.item.colNr === 1 ? 12 : 6;
         }),

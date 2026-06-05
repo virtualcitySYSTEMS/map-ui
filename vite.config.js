@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import { HstVue as hstVue } from '@histoire/plugin-vue';
 import { join, resolve, dirname } from 'node:path';
 import { lstat, readlink } from 'node:fs/promises';
 import commonViteConfig from './build/commonViteConfig.js';
@@ -89,21 +88,6 @@ const configMain = defineConfig(async ({ mode }) => {
     },
     optimizeDeps: {
       include: ['vuetify'],
-    },
-    histoire: {
-      plugins: [hstVue()],
-      setupFile: {
-        browser: './story/setup.js',
-      },
-      viteNodeInlineDeps: ['uuid'],
-      vite: {
-        base: process.env.HISTOIRE_DEPLOYMENT
-          ? process.env.HISTOIRE_DEPLOYMENT
-          : './',
-        server: {
-          host: process.argv.includes('--host'),
-        },
-      },
     },
   };
 

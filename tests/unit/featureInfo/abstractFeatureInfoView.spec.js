@@ -239,7 +239,7 @@ describe('AbstractFeatureInfoView', () => {
     });
   });
 
-  describe('filter attributes having empty objects as value', () => {
+  describe('filter empty attributes', () => {
     let attributes;
 
     beforeAll(() => {
@@ -249,13 +249,21 @@ describe('AbstractFeatureInfoView', () => {
         baz: true,
         'foo.bar': { foo: true, bar: true },
         emptyObject: {},
+        emptyString: '',
+        undefinedField: undefined,
       };
     });
 
     it('should filter empty object values', () => {
       const filtered = applyEmptyAttributesFilter(attributes);
       expect(filtered).to.not.have.property('emptyObject');
-      expect(Object.keys(filtered)).to.have.length(4);
+      expect(Object.keys(filtered)).to.have.length(6);
+    });
+
+    it('should remove no data values when removeNoDataAttributes is true', () => {
+      const filtered = applyEmptyAttributesFilter(attributes, true);
+      expect(filtered).to.not.have.property('undefinedField');
+      expect(Object.keys(filtered)).to.have.length(5);
     });
   });
 
@@ -291,6 +299,29 @@ describe('AbstractFeatureInfoView', () => {
       expect(
         abstractFeatureInfoView.getAttributes(feature),
       ).to.not.have.property('function');
+    });
+
+    it('should remove no data attributes when removeNoDataAttributes is true', () => {
+      const featureWithNoData = new Feature();
+      featureWithNoData.setGeometry(new Point([1, 1]));
+      featureWithNoData.setProperties({
+        name: 'testFeature',
+        emptyField: '',
+        undefinedField: undefined,
+      });
+      const viewWithRemoveNoData = new AbstractFeatureInfoView(
+        {
+          name: 'TestViewRemoveNoData',
+          attributeKeys: ['name', 'emptyField', 'undefinedField'],
+          removeNoDataAttributes: true,
+        },
+        { name: 'VueComponent' },
+      );
+      const attrs = viewWithRemoveNoData.getAttributes(featureWithNoData);
+      expect(attrs).to.have.property('name', 'testFeature');
+      expect(attrs).to.have.property('emptyField');
+      expect(attrs).to.not.have.property('undefinedField', undefined);
+      viewWithRemoveNoData.destroy();
     });
   });
 
@@ -418,6 +449,8 @@ describe('AbstractFeatureInfoView', () => {
             // eslint-disable-next-line no-template-curly-in-string
             function: 'codeLists.values.function.${value}',
           },
+          mergeParentAttributes: false,
+          removeNoDataAttributes: true,
           window: {
             position: [0, 0],
           },
@@ -451,6 +484,14 @@ describe('AbstractFeatureInfoView', () => {
           'function',
           inputConfig.valueMapping.function,
         );
+      });
+
+      it('should configure mergeParentAttributes', () => {
+        expect(outputConfig).to.have.property('mergeParentAttributes', false);
+      });
+
+      it('should configure removeNoDataAttributes', () => {
+        expect(outputConfig).to.have.property('removeNoDataAttributes', true);
       });
 
       it('should configure window', () => {

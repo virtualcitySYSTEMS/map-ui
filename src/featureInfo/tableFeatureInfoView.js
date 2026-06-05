@@ -41,6 +41,7 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   /** @returns {TableFeatureInfoViewOptions} */
   static getDefaultOptions() {
     return {
+      ...AbstractFeatureInfoView.getDefaultOptions(),
       itemsPerPageArray: [5, 10, 15],
       itemsPerPage: 10,
       showSearchbar: true,
@@ -109,11 +110,11 @@ class TableFeatureInfoView extends AbstractFeatureInfoView {
   }
 
   /**
+   * @param {TableFeatureInfoViewOptions} defaultOptions
    * @returns {TableFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    const defaultOptions = TableFeatureInfoView.getDefaultOptions();
+  toJSON(defaultOptions = TableFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
     if (
       this.itemsPerPageArray.length !==
         defaultOptions.itemsPerPageArray.length ||

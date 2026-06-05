@@ -21,6 +21,8 @@ import {
   mercatorToCartesian,
   cartesianToMercator,
   CesiumMap,
+  panoramaFeature,
+  PanoramaMap,
 } from '@vcmap/core';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 import {
@@ -187,12 +189,18 @@ export function getFeatureInfoViewForFeature(app, feature) {
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").EventFeature[]} features
  * @param {import("ol/coordinate.js").Coordinate?} position
+ * @param {() => void} [close] function to close the window or selection
  * @returns {{
  *   groups: import("../components/lists/VcsGroupedList.vue").VcsListGroup,
  *   items: import("../components/lists/VcsGroupedList.vue").VcsGroupedListItem,
  * }}
  */
-export function getGroupedFeatureList(app, features, position = undefined) {
+export function getGroupedFeatureList(
+  app,
+  features,
+  position = undefined,
+  close = undefined,
+) {
   const groups = {};
   const items = features.map((f) => {
     let actions;
@@ -211,26 +219,62 @@ export function getGroupedFeatureList(app, features, position = undefined) {
         ),
       ];
     }
+
     /** @type {import("../components/lists/VcsListItemComponent.vue").VcsListItem} */
-    const listItem = reactive({
-      name: oFeature.getId(),
-      title:
-        attributes?.[titlePropName] ||
-        attributes?.title ||
-        attributes?.name ||
-        oFeature.getId(),
-      disabled: !getFeatureInfoViewForFeature(app, oFeature),
-      selectionChanged: (value) => {
-        if (value) {
-          app.featureInfo
-            .selectFeature(oFeature, position)
-            .catch((e) => getLogger().error(e));
-        } else {
-          app.featureInfo.clearFeature();
-        }
-      },
-      actions,
-    });
+    let listItem;
+
+    if (oFeature[panoramaFeature]) {
+      listItem = reactive({
+        name: oFeature.getId(),
+        title:
+          attributes?.[titlePropName] ||
+          attributes?.title ||
+          attributes?.name ||
+          oFeature.getId(),
+        clickedCallbacks: [
+          async () => {
+            close?.();
+            const { dataset, name, time } = oFeature[panoramaFeature];
+            const panoramaImage = await dataset.createPanoramaImage(name, time);
+            if (app.maps.activeMap instanceof PanoramaMap) {
+              app.maps.activeMap.setCurrentImage(panoramaImage);
+            } else {
+              const firstPanoramaMap = app.maps.getByType(
+                PanoramaMap.className,
+              )[0];
+              if (firstPanoramaMap) {
+                await app.maps.activatePanoramaMap(
+                  firstPanoramaMap,
+                  panoramaImage,
+                );
+              }
+            }
+          },
+        ],
+        actions,
+      });
+    } else {
+      listItem = reactive({
+        name: oFeature.getId(),
+        title:
+          attributes?.[titlePropName] ||
+          attributes?.title ||
+          attributes?.name ||
+          oFeature.getId(),
+        disabled: !getFeatureInfoViewForFeature(app, oFeature),
+        selectionChanged: (value) => {
+          if (value) {
+            app.featureInfo
+              .selectFeature(oFeature, position)
+              .catch((e) => getLogger().error(e));
+          } else {
+            app.featureInfo.clearFeature();
+          }
+        },
+        actions,
+      });
+    }
+
     if (layerName) {
       if (!groups[layerName]) {
         const title = layer?.properties?.title;
@@ -240,6 +284,7 @@ export function getGroupedFeatureList(app, features, position = undefined) {
     }
     return listItem;
   });
+
   return { groups: Object.values(groups), items };
 }
 
@@ -813,6 +858,7 @@ class FeatureInfo extends Collection {
       this._app,
       features,
       position,
+      () => this.clearCluster(),
     );
 
     this._clusterWindowId = id;

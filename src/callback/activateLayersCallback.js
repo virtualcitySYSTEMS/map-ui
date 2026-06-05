@@ -31,11 +31,11 @@ class ActivateLayersCallback extends VcsCallback {
     this._layerNames = options.layerNames;
   }
 
-  callback() {
-    this._layerNames
+  async callback() {
+    const layerPromises = this._layerNames
       .map((n) => this._app.layers.getByKey(n))
       .filter((l) => l)
-      .forEach((l) =>
+      .map((l) =>
         l.activate().catch((e) => {
           getLogger('ActivateLayersCallback').error(
             `Could not activate layer: ${l.name}`,
@@ -43,6 +43,8 @@ class ActivateLayersCallback extends VcsCallback {
           );
         }),
       );
+
+    await Promise.all(layerPromises);
   }
 
   /**

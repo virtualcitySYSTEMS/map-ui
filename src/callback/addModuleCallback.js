@@ -32,17 +32,15 @@ class AddModuleCallback extends VcsCallback {
     this._module = options.module;
   }
 
-  callback() {
-    createModuleFromObjectOrUrl(this._module)
-      .then((module) => {
-        if (module) {
-          return this._app.addModule(module);
-        }
-        return undefined;
-      })
-      .catch((e) => {
-        getLogger('addModuleCallback').error('Error adding module', e);
-      });
+  async callback() {
+    try {
+      const module = await createModuleFromObjectOrUrl(this._module);
+      if (module) {
+        await this._app.addModule(module);
+      }
+    } catch (e) {
+      getLogger('addModuleCallback').error('Error adding module', e);
+    }
   }
 
   /**

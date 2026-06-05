@@ -23,6 +23,14 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
     return 'MarkdownBalloonFeatureInfoView';
   }
 
+  /** @returns {MarkdownBalloonFeatureInfoViewOptions} */
+  static getDefaultOptions() {
+    return {
+      ...BalloonFeatureInfoView.getDefaultOptions(),
+      template: '',
+    };
+  }
+
   /**
    * @param {MarkdownBalloonFeatureInfoViewOptions} options
    */
@@ -56,13 +64,16 @@ class MarkdownBalloonFeatureInfoView extends BalloonFeatureInfoView {
   }
 
   /**
+   * @param {MarkdownBalloonFeatureInfoViewOptions} defaultOptions
    * @returns {MarkdownBalloonFeatureInfoViewOptions}
    */
-  toJSON() {
-    const config = super.toJSON();
-    config.template = Array.isArray(this.template)
-      ? this.template.slice()
-      : this.template;
+  toJSON(defaultOptions = MarkdownBalloonFeatureInfoView.getDefaultOptions()) {
+    const config = super.toJSON(defaultOptions);
+    if (this.template) {
+      config.template = Array.isArray(this.template)
+        ? this.template.slice()
+        : this.template;
+    }
     return config;
   }
 }

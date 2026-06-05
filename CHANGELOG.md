@@ -1,3 +1,138 @@
+# 6.3.8
+
+### Changes
+
+- change async callbacks to be truly asynchronous by properly awaiting callback execution in `ActivateLayersCallback`, `ActivateMapCallback`, `ActivateOverviewMapCallback`, `AddModuleCallback` and `RemoveModuleCallback`
+- Updated @vcmap/core to 6.3.8
+  - Fixes an issue, where the heading applied in panorama would not be the expected value.
+  - More natural zoom handling in panorama.
+  - Pinch zoom enabled in panorama.
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixes an issue where config editor checkboxes would not update or save
+  - Fixes an issue where password validation would not enforce username/email exclusion
+  - Fixes an issue where the cancel button of the Upload File window would not close the window
+  - Fixes an issue where failed tasks would show no generic error notification
+  - Fixes an issue where @ would not be allowed in passwords
+
+# 6.3.7
+
+### Changes
+
+- Changed the detection of the mobile landscape mode. This now only depends on the android or ios flag and ignores touch capabilities.
+- Updated @vcmap/core to 6.3.7
+  - Adds support for I3SLayer to ClippingObject
+  - Fixes a bug in CesiumTilesetCesiumImpl which caused highlighted features to loose the highlighting when new features where highlighted
+  - Fixes an issue, where the heading applied in panorama would not be the expected value.
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Fixes a bug where configs using removed export formats (VRML, FMEAR) would fail validation
+- @vcmap/search-wfs
+  - Fixed default displayNameTemplate generation to handle empty addressMapping fields
+- @vcmap/layer-settings
+  - Fixed a bug where default config would override user-config in the ConfigEditor
+- @vcmap/planning
+  - Fixes an issue, where observing the status of an object could block the application.
+  - Fixes an issue, where the application would hang if feature store layers could be missing server side.
+- @vcmap/clipping-tool
+  - Updated @vcmap/core and @vcmap/ui to 6.3
+  - Added clipping support for I3SLayer
+  - Added config options, allowing to set default settings for new clipping planes.
+- @vcmap/dynamic-layer
+  - Fixed a bug where defaultSorting config option for catalogue presets would not be taken into account
+  - Fixed some styling issues
+  - Fixed some translation errors
+  - Enhanced parsing of GeoNetwork aggregation keys
+- @vcmap/shadow
+  - Added ActivateShadowCallback and DeactivateShadowCallback to activate and deactivate the Shadow tool via the VcsCallback system
+- @vcmap/viewshed
+  - Added ActivateViewshedCallback and DeactivateViewshedCallback to activate and deactivate the Viewshed tool via the VcsCallback system
+- @vcmap/sensorthings
+  - Changed request URLs to be encoded
+
+# 6.3.6
+
+### Changes
+
+- Updated @vcmap/core to 6.3.5
+  - Fixes a MapboxStyleLayer multi-map rendering bug by using per-map styled OpenLayers layer groups
+  - Fixes repeated layer implementation initialization on rapid activation
+
+### Plugin Bundle updates
+
+- @vcmap/height-profile, @vcmap/solar-balloon, @vcmap/sensorthings
+  - Fixed CSS Incompatibility with new Publisher 6 CSP Rules, by adding nounce to apexcharts.
+- @vcmap/swipe-tool
+  - Adds ActivateSwipeToolCallback and DeactivateSwipeToolCallback to activate and deactivate the swipe tool via the VcsCallback system
+  - Adds activeOnStartup config option to activate the swipe tool automatically on startup when no saved state is present
+- @vcmap/print
+  - Included Swipe Tool overlay (divider line and labels) in exported PDF and JPG when active
+  - Fixed copyright symbol on PDF
+
+# 6.3.5
+
+- Add support for pattern styles in legend for `FillLegendRow` type.
+- Update vite to version 6, update vitest to version 4
+
+# 6.3.3
+
+- Fix `getDefaultOptions` and `toJSON` of all `AbstractFeatureInfoView` and all child classes
+
+# 6.3.2
+
+### Changes
+
+- Extend `AbstractFeatureInfoView`
+  - Add new option `mergeParentAttributes`, which will merge attributes from parent features, if attribute `__PARENT_FEATURE` is set on the feature. Child attributes will overwrite parent attributes in case of identical keys.
+  - Add new option `removeNoDataAttributes` to `AbstractFeatureInfoView`, which filters all attributes with no data values (undefined).
+- Add recursive attribute fetching for child features having a `__PARENT_FEATURE`. Found parent feature attributes are merged.
+- Feature info handles panorama dataset features properly in clusters, you are now able to zoom to & select a feature from the cluster window.
+- @vcmap/core
+  - Panorama cesium implementation is now decluttered in 3D.
+  - Changes the way panorama features are selected, allowing to jump into the first panorama image feature of a cluster directly.
+  - Fixes undefined state of picked feature when highlighting on mouse over in Panorama Map
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixed the config editor: style, catalogs and vector properties now work as expected.
+- @vcmap/export
+  - Fixes an issue where the configuration could destroy the plugin, if not set correctly.
+
+# 6.3.1
+
+### Fixes
+
+- Fixed the display of the panorama image time, to react to locale changes.
+- @vcmap/core
+  - Fixes an issue, where vector tiles would be rendered wrong in 3D on lower levels.
+  - Fixes an issue, where COGs with differing tile sizes would not be rendered in 3D.
+
+### Plugin Bundle updates
+
+- @vcmap/search-esri
+  - Updated to work with Esri 11.5
+- @vcmap/panorama
+  - Changed the time display.
+- @vcmap/swipe-tool
+  - Fixed the create link behaviour to work better with many layers.
+- @vcmap/layer-settings
+  - Fixed link to documentation
+- @vcmap/layer-geofence
+  - Fixed link to documentation
+- @vcmap/planning
+  - Added dialog to create new plannings
+  - Fixed saving module by ignoring invalid vector geometries
+  - Removing hard-coded LightingModel from custom shader to fix problems with UNLIT models.
+  - Added a new overrideBaseUrl option, when activated will override the stored baseUrl for
+    all persisted vector-layers with the current planning serviceUrl
+  - Added support for relative service URL
+  - fixed an issue where catalog i18n entries would be overwritten on loading additional modules.
+
 # 6.3.0
 
 ## Highlights

@@ -8,7 +8,6 @@ export default [
       '**/*.d.ts',
       'dist/',
       'exampleData/',
-      '.histoire/',
       'lib/',
       'coverage/',
       'docs/',

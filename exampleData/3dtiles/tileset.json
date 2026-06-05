@@ -1,0 +1,70 @@
+{
+  "asset" : {
+    "version" : "1.1",
+    "tilesetVersion" : "287114470070"
+  },
+  "geometricError" : 2.147483647E9,
+  "root" : {
+    "boundingVolume" : {
+      "region" : [ 0.23342504702394842, 0.9164422663094808, 0.23345363756014717, 0.9164593621663635, 33.49000167660415, 140.31826609000564 ]
+    },
+    "geometricError" : 56192.46908732494,
+    "refine" : "REPLACE",
+    "transform" : [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 3312274.0244560996, 1704854.0016768232, 4993865.231521922, 1.0 ],
+    "content" : {
+      "uri" : "3/4/2.json"
+    }
+  },
+  "vcsMeta" : {
+    "generatorVersion" : "1.3.36",
+    "maxFeatureDepth" : 2,
+    "numFeatures" : 97,
+    "numMeshPrimitives" : 1,
+    "numTriangles" : 593,
+    "numImages" : 0,
+    "numPixels" : 0,
+    "minTileLevel" : 15,
+    "maxTileLevel" : 15,
+    "maxTileSetLevel" : 12,
+    "featureClassCounters" : {
+      "Building" : 2,
+      "RoofSurface" : 14,
+      "GroundSurface" : 2,
+      "WallSurface" : 79
+    },
+    "tileLevelMeta" : {
+      "15" : {
+        "numTiles" : 1,
+        "totalByteSize" : 113856,
+        "averageByteSizePerTile" : 113856,
+        "minByteSize" : 113856,
+        "maxByteSize" : 113856,
+        "totalNumTriangles" : 593,
+        "averageNumTrianglesPerTile" : 593,
+        "maxNumTriangles" : 143601,
+        "totalNumPixels" : 0,
+        "averageNumPixelsPerTile" : 0,
+        "maxNumPixels" : 0,
+        "averageGeometricError" : 12.20908959146105,
+        "averageGeneralizationTolerance" : 0.0,
+        "averageTexelSize" : 0.0,
+        "averageObjectSizeFilterThresholdValue" : 0.0
+      }
+    },
+    "numTiles" : 1,
+    "totalByteSize" : 113856,
+    "averageByteSizePerTile" : 113856,
+    "minByteSize" : 113856,
+    "maxByteSize" : 113856,
+    "evaluation" : {
+      "ratings" : [ {
+        "title" : "Maximum byte size per tile",
+        "humanReadableValue" : "111.187 KB",
+        "ratingLevel" : "FINE",
+        "reason" : null
+      } ],
+      "recommendations" : [ ],
+      "involvedConfigValues" : [ ]
+    }
+  }
+}

@@ -67,9 +67,6 @@ bundle:
 
 deployStaging:
   extends: .staging_build_template
-  except:
-    variables:
-      - $PUBLISH
   stage: deploy
   environment:
     name: staging/$CI_COMMIT_REF_SLUG

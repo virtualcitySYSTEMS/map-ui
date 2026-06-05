@@ -38,6 +38,10 @@
     {
       "name": "window-tester",
       "entry": "plugins/@vcmap-show-case/window-tester/index.js"
+    },
+    {
+      "name": "@vcmap-show-case/tileset-feature-visibility",
+      "entry": "plugins/@vcmap-show-case/tileset-feature-visibility/index.js"
     }
   ]
 }
