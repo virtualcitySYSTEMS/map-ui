@@ -1,3 +1,15 @@
+# 6.3.9
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Adds callbacks to activate and deactivate planning instances
+  - Adds property planningId to all planning layers, viewpoints and flights
+  - Added a fallback generic message to Error Messages of failed tasks
+  - Reordered configuration options in the Advanced Settings section of the ConfigEditor for an improved clarity
+  - Improved some translations
+  - Fixed some styling issues
+
 # 6.3.8
 
 ### Changes

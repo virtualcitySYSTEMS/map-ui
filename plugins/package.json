@@ -37,6 +37,6 @@
   },
   "optionalDependencies": {
     "@vcmap/guided-tour": "^1.0.6",
-    "@vcmap/planning": "^7.0.0"
+    "@vcmap/planning": "^7.1.0"
   }
 }
