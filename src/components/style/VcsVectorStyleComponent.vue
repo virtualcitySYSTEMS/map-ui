@@ -7,7 +7,7 @@
       :value-default="valueDefault[key]"
       v-bind="specificProps[key]"
       v-model="localValue[key]"
-      @update:model-value="(v) => $emit(`update:${key}`, v)"
+      @update:model-value="(v) => updateSection(key, v)"
     />
   </v-sheet>
 </template>
@@ -97,6 +97,12 @@
         localValue,
         specificProps,
         componentMap,
+        updateSection(key, value) {
+          if (key === 'text') {
+            localValue.value.label = value?.text;
+          }
+          emit(`update:${key}`, value);
+        },
       };
     },
   };

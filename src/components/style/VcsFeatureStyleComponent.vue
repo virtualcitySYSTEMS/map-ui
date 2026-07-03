@@ -66,9 +66,6 @@
     feature.setStyle(style);
     feature[originalStyle] = style;
     const styleOptions = getStyleOptions(style);
-    if (styleOptions.text?.text) {
-      styleOptions.label = styleOptions.text.text;
-    }
     feature[vectorStyleSymbol] = new VectorStyleItem(styleOptions);
   }
 

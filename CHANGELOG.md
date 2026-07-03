@@ -1,3 +1,9 @@
+# 6.3.10
+
+### Fixes
+
+- Fixed a bug in VcsVectorStyleComponent, where the `text` property would not be serialized
+
 # 6.3.9
 
 ### Plugin Bundle updates
