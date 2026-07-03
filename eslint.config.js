@@ -1,7 +1,8 @@
 import { configs } from '@vcsuite/eslint-config';
+import globals from 'globals';
 
 export default [
-  ...configs.vue,
+  ...configs.vueHybrid,
   {
     ignores: [
       'node_modules/',
@@ -29,10 +30,15 @@ export default [
     },
   },
   {
-    files: ['build/*.js', 'vite.config.js', 'vitest.config.js'],
+    files: ['build/**/*.js', 'vite.config.js', 'vitest.config.js'],
     rules: {
       'import/no-unresolved': 'off',
       'no-console': 'off',
+    },
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
   },
   {

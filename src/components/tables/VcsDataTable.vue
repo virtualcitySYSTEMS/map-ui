@@ -137,7 +137,7 @@
     VIcon,
   } from 'vuetify/components';
   import VcsTreeviewSearchbar from '../lists/VcsTreeviewSearchbar.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
   import { getForwardSlots } from '../composables.js';
 

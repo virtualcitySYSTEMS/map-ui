@@ -7,7 +7,7 @@
   } from '../modelHelper.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import VcsExpansionPanel from '../section/VcsExpansionPanel.vue';
-  import VcsList from './VcsList.vue';
+  import VcsList from './VcsList.ts.vue';
   import { setupSelectableList } from './listHelper.js';
 
   /**

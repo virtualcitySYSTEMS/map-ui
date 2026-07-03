@@ -21,7 +21,7 @@ If the tool's WindowComponent is closed, the tool remains active, now running in
  */
 ```
 
-An object implementing VcsAction can be used inside a [VcsActionButtonList](../src/components/buttons/VcsActionButtonList.vue) or on a [VcsButton](../src/components/buttons/VcsButton.vue):
+An object implementing VcsAction can be used inside a [VcsActionButtonList](../src/components/buttons/VcsActionButtonList.vue) or on a [VcsButton](../src/components/buttons/VcsButton.ts.vue):
 
 ```js
 const action = {

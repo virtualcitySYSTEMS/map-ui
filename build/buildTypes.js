@@ -109,26 +109,6 @@ async function fixTemplateFunctions() {
   );
 }
 
-async function vueAugmentations() {
-  let content = await readFile('./index.d.ts', 'utf-8');
-  content = `${content}
-declare module 'vue' {
-  interface ComponentCustomProperties {
-    $st(key: string | number | undefined | null): string;
-    $st(key: string | number | undefined | null, plural: number, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
-    $st(key: string | number | undefined | null, defaultMsg: string, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
-    $st(key: string | number | undefined | null, list: unknown[], options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
-    $st(key: string | number | undefined | null, list: unknown[], plural: number): string;
-    $st(key: string | number | undefined | null, list: unknown[], defaultMsg: string): string;
-    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, options?: import("vue-i18n").TranslateOptions<import("vue-i18n").Locale>): string;
-    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, plural: number): string;
-    $st(key: string | number | undefined | null, named: import("vue-i18n").NamedValue, defaultMsg: string): string;
-  }
-}
-`;
-  await writeFile('./index.d.ts', content);
-}
-
 function printTypeErrors(stdout) {
   let withinNodeModule = false;
   const lines = stdout.split(EOL).filter((line) => {
@@ -176,8 +156,6 @@ async function run() {
   await fixTemplateFunctions();
   console.log('exporting types');
   await addTypeExports();
-  console.log('augmenting vue');
-  await vueAugmentations();
   if (process.argv.includes('--skipValidation')) {
     return;
   }

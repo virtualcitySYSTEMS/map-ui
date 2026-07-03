@@ -29,7 +29,7 @@
 <script>
   import { computed } from 'vue';
   import { mergeAttributions } from './attributionsHelper.js';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsButton from '../components/buttons/VcsButton.ts.vue';
 
   /**
    * @description Lists attributions of maps, layers and oblique collections within the footer

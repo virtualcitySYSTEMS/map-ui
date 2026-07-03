@@ -1,12 +1,19 @@
-import { createI18n } from 'vue-i18n';
+/* eslint-disable @typescript-eslint/unified-signatures */
+import {
+  createI18n,
+  type I18n,
+  type TranslateOptions,
+  type NamedValue,
+} from 'vue-i18n';
 import { is } from '@vcsuite/check';
 import { resolveValue } from '@intlify/core-base';
+import type { Plugin } from 'vue';
+import type VcsUiApp from '../vcsUiApp.js';
 
 /**
  * creates a new VueI18n Instance.
- * @returns {import("vue-i18n").I18n}
  */
-export function createVueI18n() {
+export function createVueI18n(): I18n {
   return createI18n({
     legacy: false,
     globalInjection: true,
@@ -27,15 +34,63 @@ export function createVueI18n() {
   });
 }
 
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $st(key: string | number | undefined | null): string;
+    $st(
+      key: string | number | undefined | null,
+      plural: number,
+      options?: TranslateOptions,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      defaultMsg: string,
+      options?: TranslateOptions,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      list: unknown[],
+      options?: TranslateOptions,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      list: unknown[],
+      plural: number,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      list: unknown[],
+      defaultMsg: string,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      named: NamedValue,
+      options?: TranslateOptions,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      named: NamedValue,
+      plural: number,
+    ): string;
+    $st(
+      key: string | number | undefined | null,
+      named: NamedValue,
+      defaultMsg: string,
+    ): string;
+  }
+}
+
 /**
  * creates a Vue Plugin with a new $st template helper which can handle undefined. Will just redirect to vueI18n,
  * if key is a string
- * @returns {import("vue").Plugin}
  */
-export function createSafeI18n() {
+export function createSafeI18n(): Plugin {
   return {
-    install: (vApp) => {
-      vApp.config.globalProperties.$st = (key, ...args) => {
+    install: (vApp): void => {
+      vApp.config.globalProperties.$st = (
+        key: string | number | undefined | null,
+        ...args: unknown[]
+      ): string => {
         if (!is(key, String)) {
           if (key !== null && key !== undefined) {
             return String(key);
@@ -45,14 +100,14 @@ export function createSafeI18n() {
         return vApp.config.globalProperties.$t(key, ...args);
       };
     },
-  };
+  } satisfies Plugin;
 }
 
 /**
  * sets the messages to the app's I18n Instance;
  * @param {import("../vcsUiApp.js").default} app
  */
-function setI18nMessages(app) {
+function setI18nMessages(app: VcsUiApp): void {
   app.vueI18n.availableLocales.forEach((locale) => {
     app.vueI18n.setLocaleMessage(locale, {});
   });
@@ -63,11 +118,7 @@ function setI18nMessages(app) {
   );
 }
 
-/**
- * @param {import("../vcsUiApp.js").default} app
- * @returns {function():void} returns a destroy function
- */
-export function setupI18n(app) {
+export function setupI18n(app: VcsUiApp): () => void {
   setI18nMessages(app);
   app.vueI18n.locale.value = app.locale;
   const destroyFunctions = [

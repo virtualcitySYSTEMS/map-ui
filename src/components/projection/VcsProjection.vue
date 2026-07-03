@@ -5,7 +5,7 @@
   import deepEqual from 'fast-deep-equal';
   import { getLogger } from '@vcsuite/logger';
   import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';

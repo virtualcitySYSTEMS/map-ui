@@ -545,6 +545,7 @@ export async function importFlights(app, files, moduleId, importSuccessCb) {
       try {
         return parseFlightOptionsFromGeoJson(JSON.parse(text));
       } catch (e) {
+        getLogger().error(e.message);
         app.notifier.add({
           type: NotificationType.ERROR,
           message: vueI18n.t('components.import.failure', {

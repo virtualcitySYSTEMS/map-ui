@@ -127,7 +127,7 @@
   } from '@vcmap/core';
   import { VSheet, VContainer, VRow, VCol, VIcon } from 'vuetify/components';
   import { inject, ref, watch } from 'vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
 
   /**

@@ -191,7 +191,7 @@ listeners on the `i18n` Collection and the `localeChanged` event are set up to s
 with the VueI18n instance.
 The last step is binding the VueI18n instance of the VcsUiApp to the Vue instance.
 
-Example setup to init a VcsApp, setup Vue and VueI18n (see [initApp](../src/init.js) and [i18n](../src/vuePlugins/i18n.js)):
+Example setup to init a VcsApp, setup Vue and VueI18n (see [initApp](../src/init.js) and [i18n](../src/vuePlugins/i18n.ts)):
 
 ```javascript
 import {

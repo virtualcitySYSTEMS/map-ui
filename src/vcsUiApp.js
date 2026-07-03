@@ -21,11 +21,11 @@ import ToolboxManager, {
 import WindowManager from './manager/window/windowManager.js';
 import PanelManager from './manager/panel/panelManager.js';
 import NavbarManager from './manager/navbarManager.js';
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import ContentTreeCollection, { // imported for type
   createContentTreeCollection,
 } from './contentTree/contentTreeCollection.js';
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import ContentTreeItem, { // imported for type
   contentTreeClassRegistry,
 } from './contentTree/contentTreeItem.js';
@@ -47,9 +47,9 @@ import { version } from '../package.json';
 import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
 import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
-import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
+import { createVueI18n, setupI18n } from './vuePlugins/i18n.ts';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
-import createSiteConfig from './siteConfig.js';
+import createSiteConfig from './siteConfig.ts';
 import { createVcsVuetify } from './vuePlugins/vuetify.js';
 import createObliqueFallbackWarnings from './obliqueFallbackWarnings.js';
 

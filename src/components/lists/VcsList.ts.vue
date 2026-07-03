@@ -42,7 +42,11 @@
           :draggable="isDraggable"
           @dragstart="dragStart($event, item)"
           @dragover.prevent="
-            dragOver($event, item, $event.currentTarget, { into: false })
+            dragOver($event, item, $event.currentTarget, {
+              into: false,
+              before: true,
+              after: true,
+            })
           "
           @dragend="dragEnd($event)"
           @drop="drop($event, item)"
@@ -78,7 +82,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+  import type { PropType } from 'vue';
   import { computed, getCurrentInstance, ref, useSlots, watch } from 'vue';
   import {
     VIcon,
@@ -87,13 +92,15 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
+  import type { DropTargetZonesFunction } from './dragHelper.js';
   import { setupDraggableListOrTree } from './dragHelper.js';
   import { setupSelectableList } from './listHelper.js';
+  import type { VcsListItem } from './VcsListItemComponent.vue';
   import VcsListItemComponent from './VcsListItemComponent.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
   import { createEllipseTooltip } from '../composables.js';
-
+  import type { VcsAction } from '../../actions/actionHelper.js';
   /**
    * @description
    * The VcsList is intended to render items. Items can be selectable (by default, more than one) or only a single item can
@@ -131,7 +138,7 @@
 
   const props = defineProps({
     items: {
-      type: Array,
+      type: Array as PropType<VcsListItem[]>,
       required: true,
     },
     draggable: {
@@ -139,7 +146,7 @@
       default: false,
     },
     dropTargetZones: {
-      type: Function,
+      type: Function as PropType<DropTargetZonesFunction | undefined>,
       default: undefined,
     },
     selectable: {
@@ -151,11 +158,11 @@
       default: false,
     },
     selectFunction: {
-      type: Function,
+      type: Function as PropType<(item: VcsListItem) => boolean>,
       default: undefined,
     },
     modelValue: {
-      type: Array,
+      type: Array as PropType<VcsListItem[]>,
       default: () => [],
     },
     searchable: {
@@ -163,7 +170,9 @@
       default: false,
     },
     customFilter: {
-      type: Function,
+      type: Function as PropType<
+        (item: VcsListItem, queryString: string) => boolean
+      >,
       default: undefined,
     },
     searchbarPlaceholder: {
@@ -195,7 +204,7 @@
       default: '',
     },
     actions: {
-      type: Array,
+      type: Array as PropType<VcsAction[]>,
       required: false,
       default: () => [],
     },
@@ -209,7 +218,6 @@
     return !(!props.searchable && !props.showTitle);
   });
 
-  /** @type {import("vue").Ref<string>} */
   const query = ref('');
 
   watch(
@@ -222,22 +230,18 @@
     { immediate: true },
   );
 
-  const vm = getCurrentInstance().proxy;
-  /** @type {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} */
-  const filterPredicate = (item, queryString = '') => {
+  const vm = getCurrentInstance()?.proxy;
+  const filterPredicate = (item: VcsListItem, queryString = ''): boolean => {
     if (props.customFilter) {
       return props.customFilter(item, queryString);
     }
-    const translatedTitle = vm.$st(item.title);
+    const translatedTitle = vm?.$st(item.title) as string;
     return translatedTitle
       .toLocaleLowerCase()
       .includes(queryString.toLocaleLowerCase());
   };
 
-  /**
-   * @type {import("vue").ComputedRef<Array<import("./VcsListItemComponent.vue").VcsListItem>>}
-   */
-  const renderingItems = computed(() => {
+  const renderingItems = computed<VcsListItem[]>(() => {
     let items = props.items.filter((i) => i.visible !== false);
     if (query.value) {
       items = items.filter((i) => filterPredicate(i, query.value));
@@ -246,15 +250,15 @@
   });
 
   const { dragging, isDraggable, dragStart, dragOver, dragEnd, drop } =
-    setupDraggableListOrTree(props, query, (e, value) =>
+    setupDraggableListOrTree(props, query, (e, value) => {
       emit(e, {
         ...value,
-        // @deprecate: targetIndex will be removed on next mayor release
+        // @deprecated: targetIndex will be removed on next major release
         targetIndex: props.items.findIndex(
           (i) => i.name === value.targetItem.name,
         ),
-      }),
-    );
+      });
+    });
 
   const { select, selected, selectionActions } = setupSelectableList(
     props,
@@ -262,10 +266,7 @@
     emit,
   );
 
-  /**
-   * @type {import("vue").ComputedRef<Array<import("../../actions/actionHelper.js").VcsAction>>}
-   */
-  const renderingActions = computed(() => {
+  const renderingActions = computed<VcsAction[]>(() => {
     if (props.selectable && !props.singleSelect) {
       return [...selectionActions, ...props.actions];
     }

@@ -344,7 +344,7 @@
               category.collection.add(config);
             }
           } catch (e) {
-            console.error('invalid JSON');
+            console.error('invalid JSON', e);
           }
           newItem.value.dialog = false;
           newItem.value.categoryName = undefined;

@@ -11,7 +11,7 @@
     size="small"
     v-bind="{ ...$attrs }"
   >
-    <template #default="scope">
+    <template #default>
       <v-tooltip
         activator="parent"
         v-if="tooltip"
@@ -26,7 +26,7 @@
         :color="'bg-warning'"
         class="position-absolute badge"
       />
-      <slot name="default" v-bind="scope ?? {}" />
+      <slot name="default" v-bind="{}" />
     </template>
     <template v-for="slot of forwardSlots" #[slot]="scope">
       <slot :name="slot" v-bind="scope ?? {}" />
@@ -34,8 +34,8 @@
   </v-btn>
 </template>
 
-<script>
-  import { computed } from 'vue';
+<script lang="ts">
+  import { computed, defineComponent, type PropType } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.vue';
   import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
@@ -51,7 +51,7 @@
    * @vue-prop {string}                                 tooltip - Text content of a tooltip which appears on hover with default delay.
    * @vue-prop {('bottom' | 'left' | 'top' | 'right')}  tooltipPosition - Position of the tooltip.
    */
-  export default {
+  export default defineComponent({
     name: 'VcsButton',
     components: {
       VTooltip,
@@ -86,7 +86,7 @@
         default: undefined,
       },
       tooltipPosition: {
-        type: String,
+        type: String as PropType<'bottom' | 'top' | 'left' | 'right'>,
         default: 'bottom',
       },
     },
@@ -95,7 +95,7 @@
         if (props.active && !props.disabled) {
           return props.color ? props.color : 'primary';
         } else {
-          return null;
+          return undefined;
         }
       });
       const forwardSlots = getForwardSlots(slots, ['default']);
@@ -115,7 +115,7 @@
         minHeight,
       };
     },
-  };
+  });
 </script>
 
 <style lang="scss" scoped>

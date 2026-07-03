@@ -1,4 +1,5 @@
 /* eslint-disable import/first */
+/* global global */
 import { vi } from 'vitest';
 
 vi.hoisted(() => {

@@ -1,5 +1,6 @@
 import './src/setup.js';
 import './src/styles/main.scss';
+import './src/vuePlugins/i18n.ts';
 
 export { default as StyleSelector } from './src/actions/StyleSelector.vue';
 export {
@@ -227,7 +228,7 @@ export { default as TiltSlider } from './src/navigation/TiltSlider.vue';
 export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
 export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.vue';
 //
-export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
+export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.ts';
 export {
   default as I18nCollection,
   i18nPluginSymbol,
@@ -286,7 +287,7 @@ export {
   getColoredMapIcon,
 } from './src/components/icons/+all.js';
 
-export { default as VcsButton } from './src/components/buttons/VcsButton.vue';
+export { default as VcsButton } from './src/components/buttons/VcsButton.ts.vue';
 export { default as VcsToolButton } from './src/components/buttons/VcsToolButton.vue';
 export { default as VcsFormButton } from './src/components/buttons/VcsFormButton.vue';
 export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
@@ -318,7 +319,7 @@ export {
   validateAction,
   validateActions,
 } from './src/components/lists/VcsActionList.vue';
-export { default as VcsList } from './src/components/lists/VcsList.vue';
+export { default as VcsList } from './src/components/lists/VcsList.ts.vue';
 export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
 export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.vue';
 export * from './src/components/lists/listHelper.js';
@@ -366,7 +367,7 @@ export {
   getAllowedEditorTransformationModes,
 } from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
-export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.vue';
+export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.ts.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
 export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.vue';

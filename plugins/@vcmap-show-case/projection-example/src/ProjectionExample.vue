@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
   import { ref, toRaw } from 'vue';
   import { mercatorProjection } from '@vcmap/core';
   import { VContainer, VCol, VRow, VSwitch } from 'vuetify/components';

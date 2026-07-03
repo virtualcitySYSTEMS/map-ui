@@ -70,9 +70,9 @@
   import { Cartesian3 } from '@vcmap-cesium/engine';
   import { createToggleAction } from '../../actions/actionHelper.js';
   import VcsFormSection from '../section/VcsFormSection.vue';
-  import VcsList from '../lists/VcsList.vue';
+  import VcsList from '../lists/VcsList.ts.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import { moveItem } from '../lists/dragHelper.js';
   import CollectionComponentClass from '../../manager/collectionManager/collectionComponentClass.js';
   import { WindowSlot } from '../../manager/window/windowManager.js';

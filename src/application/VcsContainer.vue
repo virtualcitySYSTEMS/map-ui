@@ -41,7 +41,7 @@
   import { useDisplay } from 'vuetify';
   import { VContainer } from 'vuetify/components';
   import { getMobileLogo } from './uiConfigHelper.js';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';

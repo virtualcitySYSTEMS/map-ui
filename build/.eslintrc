@@ -1,9 +1,0 @@
-{
-  "extends": ["@vcsuite/eslint-config/node"],
-  "env": {
-    "node": true
-  },
-  "rules": {
-    "import/no-extraneous-dependencies": "off"
-  }
-}

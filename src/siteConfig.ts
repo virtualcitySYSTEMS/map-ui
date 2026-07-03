@@ -1,9 +1,7 @@
 import { check } from '@vcsuite/check';
+import type UiConfig from './uiConfig.js';
 
-/**
- * @param {string} src
- */
-function setFavicon(src) {
+function setFavicon(src: string): void {
   check(src, String);
 
   const link = document.createElement('link');
@@ -14,7 +12,7 @@ function setFavicon(src) {
     toRemove.push(oldLinks.item(i));
   }
   toRemove.forEach((elem) => {
-    document.head.removeChild(elem);
+    document.head.removeChild(elem!);
   });
   link.id = 'dynamic-favicon';
   link.rel = 'shortcut icon';
@@ -22,10 +20,7 @@ function setFavicon(src) {
   document.head.appendChild(link);
 }
 
-/**
- * @param {string} title
- */
-function setHeaderTitle(title) {
+function setHeaderTitle(title: string): void {
   const titleElement = document.createElement('title');
   titleElement.innerText = title;
   const oldTitle = document.getElementsByTagName('title').item(0);
@@ -43,7 +38,7 @@ const defaultHeaderTitle = 'VC Map';
  * @param {import("./uiConfig.js").default} uiConfig
  * @returns {() => void}
  */
-export default function createSiteConfig(uiConfig) {
+export default function createSiteConfig(uiConfig: UiConfig): () => void {
   if (typeof uiConfig.config.favicon === 'string') {
     setFavicon(uiConfig.config.favicon);
   }
@@ -52,7 +47,7 @@ export default function createSiteConfig(uiConfig) {
     setHeaderTitle(uiConfig.config.headerTitle);
   }
 
-  const updateFavicon = () => {
+  const updateFavicon = (): void => {
     if (typeof uiConfig.config.favicon === 'string') {
       setFavicon(uiConfig.config.favicon);
     } else {
@@ -60,7 +55,7 @@ export default function createSiteConfig(uiConfig) {
     }
   };
 
-  const updateHeaderTitle = () => {
+  const updateHeaderTitle = (): void => {
     if (typeof uiConfig.config.headerTitle === 'string') {
       setHeaderTitle(uiConfig.config.headerTitle);
     } else {

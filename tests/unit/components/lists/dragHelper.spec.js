@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 import { reactive, ref } from 'vue';
 import {

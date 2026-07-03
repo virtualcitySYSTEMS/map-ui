@@ -75,7 +75,7 @@
     wgs84Projection,
   } from '@vcmap/core';
   import { VMenu, VList, VListItem, VListItemTitle } from 'vuetify/components';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import VcsFormattedNumber from '../components/form-output/VcsFormattedNumber.vue';
   import PositionDisplayInteraction from './positionDisplayInteraction.js';
 

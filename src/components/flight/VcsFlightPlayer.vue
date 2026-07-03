@@ -47,7 +47,7 @@
   import { VContainer, VRow } from 'vuetify/components';
   import VcsSlider from '../form-inputs-controls/VcsSlider.vue';
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
   import {
     createFlightMovieActions,

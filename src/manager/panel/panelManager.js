@@ -244,6 +244,7 @@ class PanelManager {
     check(id, String);
     const panelComponent = this._panelComponents.get(id);
     if (panelComponent) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { left, right, top, bottom, ...widthAndHeightOptions } =
         getPanelPosition(panelComponent);
       this._panelPositionsCache.set(panelComponent.id, {

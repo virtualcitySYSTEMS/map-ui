@@ -19,7 +19,7 @@ The repository provides a set of generic UI components based on Vuetify:
 
 The ui provides three kinds of buttons:
 
-#### [VcsButton](../src/components/buttons/VcsButton.vue)
+#### [VcsButton](../src/components/buttons/VcsButton.ts.vue)
 
 An action item button to be used in form sections, content tree or at similar usages.
 

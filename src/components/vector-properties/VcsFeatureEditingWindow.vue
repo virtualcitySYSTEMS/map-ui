@@ -72,7 +72,7 @@
     nonPointVectorProperties,
   } from './VcsVectorPropertiesComponent.vue';
   import VcsFormSection from '../section/VcsFormSection.vue';
-  import VcsSnapTo from './VcsSnapTo.vue';
+  import VcsSnapTo from './VcsSnapTo.ts.vue';
   import VcsFeatureInputEditor from './VcsFeatureInputEditor.vue';
 
   /**

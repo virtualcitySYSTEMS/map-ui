@@ -44,7 +44,7 @@
 </template>
 <script>
   import { VIcon, VMenu, VSpacer } from 'vuetify/components';
-  import VcsButton from './VcsButton.vue';
+  import VcsButton from './VcsButton.ts.vue';
   import VcsToolButton from './VcsToolButton.vue';
   import VcsFormButton from './VcsFormButton.vue';
   import VcsActionList, { validateActions } from '../lists/VcsActionList.vue';

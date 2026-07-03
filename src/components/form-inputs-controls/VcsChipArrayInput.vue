@@ -90,7 +90,7 @@
   import { VChip, VIcon } from 'vuetify/components';
   import { v4 as uuid } from 'uuid';
   import { usePadding } from '../composables.js';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsTextField from './VcsTextField.vue';
   import { removeListenersFromAttrs } from '../attrsHelpers.js';
 

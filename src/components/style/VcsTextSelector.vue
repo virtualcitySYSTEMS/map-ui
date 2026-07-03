@@ -107,7 +107,7 @@
   import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
   import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
-  import VcsButton from '../buttons/VcsButton.vue';
+  import VcsButton from '../buttons/VcsButton.ts.vue';
   import VcsFillMenu from './VcsFillMenu.vue';
   import VcsStrokeMenu from './VcsStrokeMenu.vue';
   import { useProxiedComplexModel } from '../modelHelper.js';

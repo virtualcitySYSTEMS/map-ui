@@ -4,7 +4,7 @@ import { VcsModule } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
 import VcsUiApp from './vcsUiApp.js';
-import { createSafeI18n } from './vuePlugins/i18n.js';
+import { createSafeI18n } from './vuePlugins/i18n.ts';
 
 /**
  * Base pattern to check VcsObjects

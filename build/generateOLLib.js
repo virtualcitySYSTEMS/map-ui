@@ -19,8 +19,9 @@ function parseOutput(output) {
   try {
     info = JSON.parse(String(output));
   } catch (err) {
-    throw new Error(`Failed to parse output as JSON: ${output}`);
+    throw new Error(`Failed to parse output as JSON: ${output} ${err.message}`);
   }
+
   if (!Array.isArray(info.symbols)) {
     throw new Error(`Expected symbols array: ${output}`);
   }

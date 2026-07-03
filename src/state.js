@@ -459,6 +459,7 @@ export function getStateFromURL(url) {
     } catch (e) {
       getLogger('StateManager').error(
         'failed to parse the state URL parameter',
+        e.message,
       );
     }
   }

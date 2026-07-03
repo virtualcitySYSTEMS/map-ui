@@ -1,10 +1,12 @@
-<script setup>
-  import { computed, defineModel, reactive } from 'vue';
+<script setup lang="ts">
+  import { computed, reactive } from 'vue';
+  import type { PropType } from 'vue';
   import { snapTypes } from '@vcmap/core';
+  import type { VcsAction } from '../../actions/actionHelper.js';
   import VcsFormSection from '../section/VcsFormSection.vue';
 
   const model = defineModel({
-    type: Array,
+    type: Array as PropType<string[]>,
     required: false,
     default: () => snapTypes.slice(),
   });
@@ -16,7 +18,7 @@
     edge: 'mdi-circle-outline',
   };
 
-  function createToggleAction(key) {
+  function createToggleAction(key: keyof typeof keyIcons): VcsAction {
     const keyComputed = computed({
       get() {
         return model.value.includes(key);
@@ -31,7 +33,7 @@
     });
 
     return reactive({
-      name: `toggele${key}`,
+      name: `toggle${key}`,
       icon: keyIcons[key],
       title: `components.editor.snapping.${key}Tooltip`,
       active: keyComputed,
@@ -56,7 +58,7 @@
     :action-button-list-overflow-count="4"
   >
     <div class="px-1 py-1">
-      {{ $t('components.editor.snapping.help') }}
+      {{ $st('components.editor.snapping.help') }}
     </div>
   </vcs-form-section>
 </template>

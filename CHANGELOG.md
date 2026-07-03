@@ -1,3 +1,21 @@
+# 7.0.0
+
+### Updated peer dependencies
+
+- Updated @vcmap/core to 7.0.0
+  - Updated Cesium to 1.142
+  - Updated OpenLayers to 10.9.0
+
+### Breaking Changes
+
+- Changed CI/CD from Node 20 to 24
+
+### Changes
+
+- Added support for TypeScript files, and started migration
+
+### Fixes
+
 # 6.3.9
 
 ### Plugin Bundle updates
@@ -1167,7 +1185,7 @@ A new plugin @vcmap/sensorthings is available. The plugin allows to show sensor 
 - Changed representation of units on `VcsTextField.vue`. Units are now rendered in append slot, the value is not mutated anymore.
 - Adds the functionality to create and display Imprint and Data Protection Information as Link or Markdown Text
 - Adds `markdownHelper.js` to translate markdown into Html
-- Change style of `VcsList.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.vue` changes.
+- Change style of `VcsList.ts.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.ts.vue` changes.
 - Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
 - Adds hasUpdate to `category-manager` button, in case an item from the dynamic module is added to any category while `category-manager` window is closed.
 - Adds some components to help with feature editing, such as `VcsFeatureStyleComponent`, `VcsFeatureTransform` and `VcsFeatureEditingWindow`.

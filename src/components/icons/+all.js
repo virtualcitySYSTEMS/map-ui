@@ -500,7 +500,7 @@ export default Icons;
 
 /**
  * @param {string} color
- * @returns {import("ol/style/Icon").Options}
+ * @returns {import("ol/style/Icon.js").Options}
  */
 export function getColoredMapIcon(color) {
   return {

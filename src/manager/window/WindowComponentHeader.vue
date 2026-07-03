@@ -63,7 +63,7 @@
   import { computed, getCurrentInstance, ref } from 'vue';
   import { useDisplay } from 'vuetify';
   import { createEllipseTooltip } from '../../components/composables.js';
-  import VcsButton from '../../components/buttons/VcsButton.vue';
+  import VcsButton from '../../components/buttons/VcsButton.ts.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
   import { createLinkAction } from '../../actions/actionHelper.js';
   import { useIconSize } from '../../vuePlugins/vuetify.js';

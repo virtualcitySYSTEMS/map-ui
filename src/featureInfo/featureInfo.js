@@ -510,12 +510,12 @@ class FeatureInfo extends Collection {
      */
     this._selectedFeatureId = null;
     /**
-     * @type {VcsEvent<import("ol").Feature|null>}
+     * @type {VcsEvent<import("ol").Feature<import("ol/geom").Point>|null>}
      * @private
      */
     this._clusterFeatureChanged = new VcsEvent();
     /**
-     * @type {import("ol").Feature|null}
+     * @type {import("ol").Feature<import("ol/geom").Point>|null}
      * @private
      */
     this._selectedClusterFeature = null;
@@ -609,14 +609,14 @@ class FeatureInfo extends Collection {
 
   /**
    * Emitted whenever a cluster feature is selected or cleared.
-   * @type {import("@vcmap/core").VcsEvent<null|import("ol").Feature>}
+   * @type {import("@vcmap/core").VcsEvent<null|import("ol").Feature<import("ol/geom/Point.js").default, Record<string, unknown>>>}
    */
   get clusterFeatureChanged() {
     return this._clusterFeatureChanged;
   }
 
   /**
-   * @type {null|import("ol").Feature}
+   * @type {null|import("ol").Feature<import("ol/geom/Point.js").default, Record<string, unknown>>}
    */
   get selectedClusterFeature() {
     return this._selectedClusterFeature;

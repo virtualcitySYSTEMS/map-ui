@@ -4,8 +4,8 @@ import { reactive } from 'vue';
 import {
   createSafeI18n,
   createVueI18n,
-} from '../../../../src/vuePlugins/i18n.js';
-import VcsList from '../../../../src/components/lists/VcsList.vue';
+} from '../../../../src/vuePlugins/i18n.ts';
+import VcsList from '../../../../src/components/lists/VcsList.ts.vue';
 
 describe('VcsList', () => {
   describe('items which are rendered', () => {

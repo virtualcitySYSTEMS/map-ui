@@ -29,7 +29,7 @@
 <script>
   import { VSnackbar, VIcon } from 'vuetify/components';
   import { inject } from 'vue';
-  import VcsButton from '../components/buttons/VcsButton.vue';
+  import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import { NotificationType } from './notifier.js';
 
   /**

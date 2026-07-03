@@ -10,7 +10,7 @@ import {
   expect,
 } from 'vitest';
 import { createVuetify } from 'vuetify';
-import { createSafeI18n, createVueI18n } from '../../../src/vuePlugins/i18n.js';
+import { createSafeI18n, createVueI18n } from '../../../src/vuePlugins/i18n.ts';
 import { ClusterFeatureComponent, VcsUiApp } from '../../../index.js';
 import Icons from '../../../src/components/icons/+all.js';
 

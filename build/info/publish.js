@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /**
  * @file Generates JSON output based on exportable symbols.
  */

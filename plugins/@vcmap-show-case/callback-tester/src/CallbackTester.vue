@@ -31,6 +31,7 @@
           try {
             JSON.parse(str);
           } catch (e) {
+            console.error(e.message);
             return false;
           }
           return true;

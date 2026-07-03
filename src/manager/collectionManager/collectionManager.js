@@ -157,11 +157,13 @@ class CollectionManager {
 
     this._itemMappings
       .filter(filterIds)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(({ collectionComponentIds, ...itemMapping }) =>
         collectionComponent.addItemMapping(itemMapping),
       );
     this._itemFilters
       .filter(filterIds)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(({ collectionComponentIds, ...itemFilter }) =>
         collectionComponent.addItemFilter(itemFilter),
       );
