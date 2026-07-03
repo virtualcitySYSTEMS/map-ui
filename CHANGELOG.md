@@ -4,6 +4,22 @@
 
 - Fixed a bug in VcsVectorStyleComponent, where the `text` property would not be serialized
 
+### Changes
+
+- Updated @vcmap/core to 6.3.9
+  - Fixed a bug where WMS FeatureInfo would not stay in sync with the WMSLayer when the layer parameters is changed at runtime.
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixed a bug where Administration panel layout would break when browser's zoom is less than 100%
+  - Fixed an issue where password-reset auto-login could fail for emails containing +
+- @vcmap/transparent-terrain
+  - fix a bug where CollisionDetection would not be reset on deactivation
+  - fix a bug where rectangle feature would not be classified as Terrain
+- @vcmap/dynamic-layer
+  - Fixed a bug where right column would disappear when browser's zoom is set to less than 100%
+
 # 6.3.9
 
 ### Plugin Bundle updates

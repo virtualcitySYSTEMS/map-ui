@@ -3,7 +3,7 @@
     "@vcmap/print": "^4.0.0",
     "@vcmap/walk": "^2.0.0",
     "@vcmap/clipping-tool": "^4.0.0",
-    "@vcmap/transparent-terrain": "^3.0.0",
+    "@vcmap/transparent-terrain": "^4.0.0",
     "@vcmap/height-profile": "^3.0.0",
     "@vcmap/flight": "^3.0.0",
     "@vcmap/swipe-tool": "^4.0.0",
