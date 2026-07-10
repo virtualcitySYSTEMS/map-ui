@@ -1,7 +1,7 @@
 <template>
   <div>
     <VcsHelp
-      text="Below all config editors provided by plugins are listed. Important Note: Changes made in editors are not applied!"
+      text="Below all config editors provided by plugins are listed. Changes made in editors are applied by removing and re-adding the plugin with the new config."
     ></VcsHelp>
     <VcsList :items="plugins" :show-title="false" />
   </div>
@@ -10,6 +10,7 @@
 <script>
   import { inject, onUnmounted, ref } from 'vue';
   import { VcsList, createToggleAction, WindowSlot, VcsHelp } from '@vcmap/ui';
+  import deepEqual from 'fast-deep-equal';
   import { name } from '../package.json';
 
   export default {
@@ -42,14 +43,35 @@
                     getConfig: () => {
                       return vcsApp.plugins.getSerializedByKey(plugin.name);
                     },
-                    setConfig(config) {
+                    async setConfig(config) {
                       if (config) {
-                        vcsApp.notifier.add({
-                          type: 'info',
-                          title: plugin.name,
-                          message: JSON.stringify(config, null, 2),
-                        });
-                        console.log(config);
+                        const currentPlugin = vcsApp.plugins.getByKey(
+                          plugin.name,
+                        );
+                        const oldSerialized = currentPlugin?.toJSON?.() ?? {};
+                        if (currentPlugin) {
+                          currentPlugin.destroy?.();
+                          vcsApp.plugins.remove(currentPlugin);
+                        }
+                        await vcsApp.plugins.parseItems(
+                          [config],
+                          vcsApp.dynamicModuleId,
+                        );
+                        const newPlugin = vcsApp.plugins.getByKey(config.name);
+                        const serialized = newPlugin?.toJSON?.() ?? {};
+                        if (!deepEqual(oldSerialized, serialized)) {
+                          vcsApp.notifier.add({
+                            type: 'info',
+                            title: plugin.name,
+                            message: JSON.stringify(serialized, null, 2),
+                          });
+                          console.log(serialized);
+                        } else {
+                          vcsApp.notifier.add({
+                            type: 'warning',
+                            message: `${plugin.name}: no config changes were made. Did you implement toJSON correctly?`,
+                          });
+                        }
                       } else {
                         vcsApp.notifier.add({
                           type: 'warning',
