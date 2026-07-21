@@ -22,7 +22,7 @@
         variant="text"
         :disabled="item.children.length === 0"
         :icon="isOpen ? 'mdi-chevron-down' : 'mdi-chevron-right'"
-        @click="bubbleItemToggled(item.name)"
+        @click="toggleCurrentItem"
       />
       <slot name="prepend" v-bind="{ item }">
         <span
@@ -43,7 +43,7 @@
         <VcsTreeviewTitle
           :item="item"
           :cursor-pointer="item.clickable || (openOnClick && isGroup)"
-          @click="(event) => $emit('click', item, event)"
+          @click="handleTitleClick"
         />
       </slot>
       <slot name="append" v-bind="{ item }">
@@ -68,6 +68,9 @@
             :item="child"
             :search="search"
             :custom-filter="customFilter"
+            :show-all-children="
+              showAllChildren || (isGroup && matchesSelf && !hasDescendantMatch)
+            "
             :level="level + 1"
             :open-on-click="openOnClick"
             :item-children="itemChildren"
@@ -115,7 +118,7 @@
 </template>
 
 <script>
-  import { computed, ref, getCurrentInstance } from 'vue';
+  import { computed, ref, getCurrentInstance, watch } from 'vue';
   import { VBtn, VExpandTransition, VIcon, VRow } from 'vuetify/components';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
   import { getForwardSlots } from '../composables.js';
@@ -204,6 +207,10 @@
         type: Function,
         default: undefined,
       },
+      showAllChildren: {
+        type: Boolean,
+        default: false,
+      },
     },
     emits: [
       'itemToggled',
@@ -219,32 +226,84 @@
       const iconSize = useIconSize();
       const forwardSlots = getForwardSlots(slots);
       const treenodeRef = ref(null);
-
-      const isOpen = computed(
-        () =>
-          props.opened.includes(props.item.name) &&
-          props.item[props.itemChildren]?.length,
-      );
+      const searchOpenOverride = ref(undefined);
       const children = computed(() => props.item[props.itemChildren] ?? []);
 
-      const matchFilter = computed(() => {
+      const translatedTitle = (item) =>
+        item.title ? vm.$t(item.title) : item.name;
+
+      const doesItemMatch = (item) => {
         if (!props.search) {
           return true;
         }
         if (props.customFilter) {
-          return props.customFilter(props.item, props.search);
+          return props.customFilter(item, props.search);
         }
-        const translatedTitle = (item) =>
-          item.title ? vm.$t(item.title) : item.name;
 
-        const hasText = (item) =>
+        return (
           translatedTitle(item)
             .toLocaleLowerCase()
-            .indexOf(props.search.toLocaleLowerCase()) > -1 ||
-          item[props.itemChildren]?.some(hasText);
+            .indexOf(props.search.toLocaleLowerCase()) > -1
+        );
+      };
 
-        return hasText(props.item);
+      const doesDescendantMatch = (item) =>
+        item[props.itemChildren]?.some(
+          (child) => doesItemMatch(child) || doesDescendantMatch(child),
+        );
+
+      const matchesSelf = computed(() => doesItemMatch(props.item));
+      const hasDescendantMatch = computed(() =>
+        doesDescendantMatch(props.item),
+      );
+
+      const matchFilter = computed(() => {
+        if (!props.search || props.showAllChildren) {
+          return true;
+        }
+        return matchesSelf.value || hasDescendantMatch.value;
       });
+
+      const searchOpen = computed(
+        () => searchOpenOverride.value ?? hasDescendantMatch.value,
+      );
+
+      const isOpen = computed(
+        () =>
+          children.value.length > 0 &&
+          (props.search
+            ? searchOpen.value
+            : props.opened.includes(props.item.name)),
+      );
+
+      watch(
+        () => props.search,
+        () => {
+          searchOpenOverride.value = undefined;
+        },
+      );
+
+      function toggleCurrentItem() {
+        if (props.search) {
+          searchOpenOverride.value = !isOpen.value;
+          return;
+        }
+        emit('itemToggled', props.item.name);
+      }
+
+      function handleTitleClick(event) {
+        emit('click', props.item, event);
+
+        if (
+          props.search &&
+          !props.item?.clickable &&
+          props.openOnClick &&
+          !props.item?.disabled &&
+          (children.value.length > 0 || props.item.forceNodeDisplay)
+        ) {
+          toggleCurrentItem();
+        }
+      }
 
       function bubbleEvent(eventName) {
         return (...args) => {
@@ -259,7 +318,11 @@
         isGroup: computed(
           () => children.value.length > 0 || props.item.forceNodeDisplay,
         ),
+        matchesSelf,
+        hasDescendantMatch,
         matchFilter,
+        toggleCurrentItem,
+        handleTitleClick,
         iconSize,
         children,
         // Bubble up events for the nested tree-items

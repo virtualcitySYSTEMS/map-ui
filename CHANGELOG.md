@@ -1,3 +1,7 @@
+# 6.3.11
+
+- Changed `VcsTreeNode` and `VcsTreeview` search behavior: groups with matching children get opened and those matching but without matching children can still show all children
+
 # 6.3.10
 
 ### Fixes
