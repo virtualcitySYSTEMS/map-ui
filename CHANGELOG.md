@@ -1,6 +1,20 @@
 # 6.3.11
 
+### Changes
+
 - Changed `VcsTreeNode` and `VcsTreeview` search behavior: groups with matching children get opened and those matching but without matching children can still show all children
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Fixes the `SELECTION` FME export query parameter so it is always set correctly for both area and object selection exports
+- @vcmap/measurement
+  - Fixes an issue where last clicked point in 3D Distance mode would not be shown
+- @vcmap/dynamic-layer: 4.0.0
+  - Breaking change: Removed catalogues URL enforcing, see readme for required catalogue endpoints
+    - Urls must now include the full link to the catalogue service, including the path to the catalogue endpoint.
+  - Added support for OGC API Records Collections
+  - Enabled HTML rendering in datasets descriptions
 
 # 6.3.10
 
