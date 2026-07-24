@@ -105,7 +105,7 @@ export function createGlobeToggleAction(app) {
 
 /**
  * @param {import("@vcmap/core").VcsApp} app
- * @returns {{action: import("@vcmap/ui").VcsAction, destroy(): void}}
+ * @returns {import("@vcmap/ui").DestroyableAction}
  */
 export function createMapMarkerAction(app) {
   const hideFootprint = ref(false);

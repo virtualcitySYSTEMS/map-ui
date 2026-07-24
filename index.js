@@ -17,7 +17,7 @@ export {
   createDeepPickingAction,
   deepPickingWindowId,
 } from './src/actions/deepPickingAction.js';
-export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.js';
+export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.ts';
 export { renderTemplate } from '@vcmap/core';
 export {
   createStateRefAction,
@@ -288,79 +288,79 @@ export {
 } from './src/components/icons/+all.js';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.ts.vue';
-export { default as VcsToolButton } from './src/components/buttons/VcsToolButton.vue';
-export { default as VcsFormButton } from './src/components/buttons/VcsFormButton.vue';
-export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.vue';
-export { default as VcsHelp } from './src/components/notification/VcsHelp.vue';
-export { default as VcsHelpTooltip } from './src/components/notification/VcsHelpTooltip.vue';
-export { default as VcsTable } from './src/components/tables/VcsTable.vue';
-export { default as VcsDataTable } from './src/components/tables/VcsDataTable.vue';
-export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.vue';
-export { default as VcsLabeledSlider } from './src/components/form-inputs-controls/VcsLabeledSlider.vue';
-export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.vue';
-export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.vue';
-export { default as VcsFormSection } from './src/components/section/VcsFormSection.vue';
-export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.vue';
-export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.vue';
-export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.vue';
-export { default as VcsFileInput } from './src/components/form-inputs-controls/VcsFileInput.vue';
-export { default as VcsChipArrayInput } from './src/components/form-inputs-controls/VcsChipArrayInput.vue';
-export { default as VcsCoordinate } from './src/components/form-inputs-controls/VcsCoordinate.vue';
-export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.vue';
-export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.vue';
-export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.vue';
-export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.vue';
-export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.vue';
-export { default as VcsMarkdown } from './src/components/form-output/VcsMarkdown.vue';
+export { default as VcsToolButton } from './src/components/buttons/VcsToolButton.ts.vue';
+export { default as VcsFormButton } from './src/components/buttons/VcsFormButton.ts.vue';
+export { default as VcsActionButtonList } from './src/components/buttons/VcsActionButtonList.ts.vue';
+export { default as VcsHelp } from './src/components/notification/VcsHelp.ts.vue';
+export { default as VcsHelpTooltip } from './src/components/notification/VcsHelpTooltip.ts.vue';
+export { default as VcsTable } from './src/components/tables/VcsTable.ts.vue';
+export { default as VcsDataTable } from './src/components/tables/VcsDataTable.ts.vue';
+export { default as VcsLabel } from './src/components/form-inputs-controls/VcsLabel.ts.vue';
+export { default as VcsLabeledSlider } from './src/components/form-inputs-controls/VcsLabeledSlider.ts.vue';
+export { default as VcsCheckbox } from './src/components/form-inputs-controls/VcsCheckbox.ts.vue';
+export { default as VcsRadio } from './src/components/form-inputs-controls/VcsRadio.ts.vue';
+export { default as VcsFormSection } from './src/components/section/VcsFormSection.ts.vue';
+export { default as VcsSelect } from './src/components/form-inputs-controls/VcsSelect.ts.vue';
+export { default as VcsSlider } from './src/components/form-inputs-controls/VcsSlider.ts.vue';
+export { default as VcsTextField } from './src/components/form-inputs-controls/VcsTextField.ts.vue';
+export { default as VcsFileInput } from './src/components/form-inputs-controls/VcsFileInput.ts.vue';
+export { default as VcsChipArrayInput } from './src/components/form-inputs-controls/VcsChipArrayInput.ts.vue';
+export { default as VcsCoordinate } from './src/components/form-inputs-controls/VcsCoordinate.ts.vue';
+export { default as VcsTextArea } from './src/components/form-inputs-controls/VcsTextArea.ts.vue';
+export { default as VcsWizard } from './src/components/form-inputs-controls/VcsWizard.ts.vue';
+export { default as VcsWizardStep } from './src/components/form-inputs-controls/VcsWizardStep.ts.vue';
+export { default as VcsDatePicker } from './src/components/form-inputs-controls/VcsDatePicker.ts.vue';
+export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.ts.vue';
+export { default as VcsMarkdown } from './src/components/form-output/VcsMarkdown.ts.vue';
 export { default as VcsTemplateMarkdown } from './src/components/form-output/VcsTemplateMarkdown.vue';
 export { default as VcsTextPage } from './src/application/VcsTextPage.vue';
 export {
   default as VcsActionList,
   validateAction,
   validateActions,
-} from './src/components/lists/VcsActionList.vue';
+} from './src/components/lists/VcsActionList.ts.vue';
 export { default as VcsList } from './src/components/lists/VcsList.ts.vue';
-export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.vue';
-export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.vue';
-export * from './src/components/lists/listHelper.js';
+export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.ts.vue';
+export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.ts.vue';
+export * from './src/components/lists/listHelper.ts';
 export { moveDraggableItems } from './src/components/lists/dragHelper.js';
-export { default as VcsTreeview } from './src/components/lists/VcsTreeview.vue';
-export { default as VcsTreeNode } from './src/components/lists/VcsTreeNode.vue';
-export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.vue';
-export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.vue';
-export { default as VcsBadge } from './src/components/notification/VcsBadge.vue';
+export { default as VcsTreeview } from './src/components/lists/VcsTreeview.ts.vue';
+export { default as VcsTreeNode } from './src/components/lists/VcsTreeNode.ts.vue';
+export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.ts.vue';
+export { default as VcsTreeviewSearchbar } from './src/components/lists/VcsTreeviewSearchbar.ts.vue';
+export { default as VcsBadge } from './src/components/notification/VcsBadge.ts.vue';
 export { default as VcsDefaultLogo } from './src/logo.svg';
 export { default as VcsDefaultMobileLogo } from './src/logo-mobile.svg';
-export { default as StyleMenuWrapper } from './src/components/style/StyleMenuWrapper.vue';
-export { default as VcsFillSelector } from './src/components/style/VcsFillSelector.vue';
-export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.vue';
-export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.vue';
-export { default as VcsStrokeMenu } from './src/components/style/VcsStrokeMenu.vue';
-export { default as VcsImageSelector } from './src/components/style/VcsImageSelector.vue';
-export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.vue';
-export { default as VcsTextSelector } from './src/components/style/VcsTextSelector.vue';
-export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.vue';
-export { default as VcsExtent } from './src/components/extent/VcsExtent.vue';
-export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.vue';
-export { default as VcsProjection } from './src/components/projection/VcsProjection.vue';
+export { default as StyleMenuWrapper } from './src/components/style/StyleMenuWrapper.ts.vue';
+export { default as VcsFillSelector } from './src/components/style/VcsFillSelector.ts.vue';
+export { default as VcsFillMenu } from './src/components/style/VcsFillMenu.ts.vue';
+export { default as VcsStrokeSelector } from './src/components/style/VcsStrokeSelector.ts.vue';
+export { default as VcsStrokeMenu } from './src/components/style/VcsStrokeMenu.ts.vue';
+export { default as VcsImageSelector } from './src/components/style/VcsImageSelector.ts.vue';
+export { default as VcsImageMenu } from './src/components/style/VcsImageMenu.ts.vue';
+export { default as VcsTextSelector } from './src/components/style/VcsTextSelector.ts.vue';
+export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.ts.vue';
+export { default as VcsExtent } from './src/components/extent/VcsExtent.ts.vue';
+export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.ts.vue';
+export { default as VcsProjection } from './src/components/projection/VcsProjection.ts.vue';
 export {
   default as VcsVectorStyleComponent,
   VectorStyleMenus,
-} from './src/components/style/VcsVectorStyleComponent.vue';
+} from './src/components/style/VcsVectorStyleComponent.ts.vue';
 export {
   default as VcsVectorPropertiesComponent,
   vectorProperties,
 } from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
-export { default as VcsViewpointComponent } from './src/components/viewpoint/VcsViewpointComponent.vue';
-export { default as VcsViewpointEditor } from './src/components/viewpoint/VcsViewpointEditor.vue';
-export { default as VcsFlightComponent } from './src/components/flight/VcsFlightComponent.vue';
-export { default as VcsFlightAnchorsComponent } from './src/components/flight/VcsFlightAnchorsComponent.vue';
-export { default as VcsFlightPlayer } from './src/components/flight/VcsFlightPlayer.vue';
-export { default as VcsFlightEditor } from './src/components/flight/VcsFlightEditor.vue';
+export { default as VcsViewpointComponent } from './src/components/viewpoint/VcsViewpointComponent.ts.vue';
+export { default as VcsViewpointEditor } from './src/components/viewpoint/VcsViewpointEditor.ts.vue';
+export { default as VcsFlightComponent } from './src/components/flight/VcsFlightComponent.ts.vue';
+export { default as VcsFlightAnchorsComponent } from './src/components/flight/VcsFlightAnchorsComponent.ts.vue';
+export { default as VcsFlightPlayer } from './src/components/flight/VcsFlightPlayer.ts.vue';
+export { default as VcsFlightEditor } from './src/components/flight/VcsFlightEditor.ts.vue';
 export {
   getProvidedFlightInstance,
   setupFlightAnchorEditingListener,
-} from './src/components/flight/composables.js';
+} from './src/components/flight/composables.ts';
 export {
   default as VcsFeatureEditingWindow,
   EditorTransformationIcons,
@@ -369,17 +369,17 @@ export {
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
 export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.ts.vue';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
-export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.vue';
-export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.vue';
-export { default as VcsLoadingOverlay } from './src/components/plugins/VcsLoadingOverlay.vue';
-export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.vue';
-export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.vue';
-export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.vue';
+export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.ts.vue';
+export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.ts.vue';
+export { default as VcsLoadingOverlay } from './src/components/plugins/VcsLoadingOverlay.ts.vue';
+export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.ts.vue';
+export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.ts.vue';
+export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.ts.vue';
 export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
 export * from './src/application/attributionsHelper.js';
-export * from './src/components/attrsHelpers.js';
-export * from './src/components/modelHelper.js';
-export * from './src/components/composables.js';
+export * from './src/components/attrsHelpers.ts';
+export * from './src/components/modelHelper.ts';
+export * from './src/components/composables.ts';
 export {
   legendSymbol,
   LegendType,

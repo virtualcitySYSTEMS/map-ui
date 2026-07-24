@@ -3,7 +3,7 @@ import { unByKey } from 'ol/Observable.js';
 import { check, oneOf } from '@vcsuite/check';
 import ContextMenuInteraction from './contextMenuInteraction.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
-import { validateAction } from '../../components/lists/VcsActionList.vue';
+import { validateAction } from '../../components/lists/VcsActionList.ts.vue';
 import { WindowSlot } from '../window/windowManager.js';
 import { getFittedWindowPositionOptionsFromMapEvent } from '../window/windowHelper.js';
 import ContextMenuComponent, {

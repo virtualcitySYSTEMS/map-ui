@@ -21,7 +21,7 @@ If the tool's WindowComponent is closed, the tool remains active, now running in
  */
 ```
 
-An object implementing VcsAction can be used inside a [VcsActionButtonList](../src/components/buttons/VcsActionButtonList.vue) or on a [VcsButton](../src/components/buttons/VcsButton.ts.vue):
+An object implementing VcsAction can be used inside a [VcsActionButtonList](../src/components/buttons/VcsActionButtonList.ts.vue) or on a [VcsButton](../src/components/buttons/VcsButton.ts.vue):
 
 ```js
 const action = {
@@ -48,7 +48,7 @@ const action = {
 />
 ```
 
-VcsAction can be validated using [validateAction()](../src/components/lists/VcsActionList.vue).
+VcsAction can be validated using [validateAction()](../src/components/lists/VcsActionList.ts.vue).
 There is a set of helper functions providing standard user interactions. See [actionHelper.js](../src/actions/actionHelper.js) for more information.
 Action should be discoverable via the `data-action-name` HTML attribute. This is applied
 to buttons automatically when using a VcsActionList to render an action.

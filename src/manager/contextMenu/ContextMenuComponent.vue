@@ -6,7 +6,7 @@
 
 <script>
   import { inject } from 'vue';
-  import VcsActionList from '../../components/lists/VcsActionList.vue';
+  import VcsActionList from '../../components/lists/VcsActionList.ts.vue';
 
   /**
    * @type {string}

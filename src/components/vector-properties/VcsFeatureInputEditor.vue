@@ -65,9 +65,9 @@
     Projection,
   } from '@vcmap/core';
   import { getLogger } from '@vcsuite/logger';
-  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
-  import VcsToolButton from '../buttons/VcsToolButton.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.ts.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
+  import VcsToolButton from '../buttons/VcsToolButton.ts.vue';
 
   /**
    * @description Component to edit the position of a feature in a vector layer. Currently

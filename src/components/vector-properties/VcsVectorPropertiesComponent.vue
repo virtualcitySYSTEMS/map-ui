@@ -480,14 +480,14 @@
   import {
     useProxiedComplexModel,
     useModelHasProperty,
-  } from '../modelHelper.js';
-  import VcsFormSection from '../section/VcsFormSection.vue';
-  import VcsLabel from '../form-inputs-controls/VcsLabel.vue';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.vue';
-  import VcsSelect from '../form-inputs-controls/VcsSelect.vue';
-  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.vue';
-  import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.vue';
-  import { useComponentId } from '../composables.js';
+  } from '../modelHelper.ts';
+  import VcsFormSection from '../section/VcsFormSection.ts.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.ts.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
+  import VcsSelect from '../form-inputs-controls/VcsSelect.ts.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.ts.vue';
+  import VcsChipArrayInput from '../form-inputs-controls/VcsChipArrayInput.ts.vue';
+  import { useComponentId } from '../composables.ts';
 
   export const genericVectorProperties = [
     'altitudeMode',

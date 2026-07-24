@@ -26,8 +26,8 @@
     WMSLayer,
   } from '@vcmap/core';
   import { getLogger } from '@vcsuite/logger';
-  import VcsHelp from '../components/notification/VcsHelp.vue';
-  import VcsTreeview from '../components/lists/VcsTreeview.vue';
+  import VcsHelp from '../components/notification/VcsHelp.ts.vue';
+  import VcsTreeview from '../components/lists/VcsTreeview.ts.vue';
   import WMSGroupContentTreeItem from './wmsGroupContentTreeItem.js';
   import {
     moveItem,

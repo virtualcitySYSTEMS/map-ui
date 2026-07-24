@@ -20,7 +20,7 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 /**
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: () => void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createPlayAction(app, instance) {
   let stateListener = () => {};
@@ -108,7 +108,7 @@ export const PlayerDirection = { Forward: 'forward', Backward: 'backward' };
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @param {PlayerDirection} direction
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: () => void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createStepAction(app, instance, direction) {
   check(direction, ofEnum(PlayerDirection));
@@ -202,7 +202,7 @@ export function createFastAction(app, instance, direction) {
  *
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
- * @returns {{destroy: (() => void), actions: Array<import("./actionHelper.js").VcsAction> }}
+ * @returns {{destroy: (() => void), actions: Array<action: import("./actionHelper.js").VcsAction & { listeners:Object<string,()=>void>> }}}
  */
 export function createFlightPlayerActions(app, instance) {
   const array = [
@@ -327,7 +327,7 @@ export function setupFlightListItemPlayer(app, instance, actions) {
  *
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: function(): void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createZoomToFlightAction(app, instance) {
   let flightVis;
@@ -360,7 +360,7 @@ export function createZoomToFlightAction(app, instance) {
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
  * @param {boolean} [active=true]
- * @returns {Promise<{action: import("./actionHelper.js").VcsAction, destroy:()=>void}>}
+ * @returns {Promise<import("./actionHelper.js").DestroyableAction>}
  */
 export async function createFlightVisualizationAction(
   app,
@@ -420,7 +420,7 @@ export async function createFlightVisualizationAction(
  *
  * @param {import("../vcsUiApp.js").default} app
  * @param {import("@vcmap/core").FlightInstance} instance
- * @returns {{actions: import("./actionHelper.js").VcsAction[], destroy: function(): void}}
+ * @returns {{actions: import("./actionHelper.js").VcsAction[], destroy: () => void }}
  */
 export function createFlightMovieActions(app, instance) {
   const progress = ref(0);
@@ -494,7 +494,7 @@ export function createFlightMovieActions(app, instance) {
  *
  * @param {import("@vcmap/core").FlightInstance} instance
  * @param {boolean} [isPathExport=false] - Set to true to export flight path. Per default flight is exported
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: function(): void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createExportFlightAction(instance, isPathExport = false) {
   const exportFunction = (i) =>

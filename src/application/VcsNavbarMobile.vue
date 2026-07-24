@@ -78,7 +78,7 @@
     deviceSymbol,
     getActionsByLocation,
   } from '../manager/navbarManager.js';
-  import VcsToolButton from '../components/buttons/VcsToolButton.vue';
+  import VcsToolButton from '../components/buttons/VcsToolButton.ts.vue';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import {
     createSearchButtonAction,

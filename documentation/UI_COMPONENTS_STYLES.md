@@ -33,7 +33,7 @@ An action item button to be used in form sections, content tree or at similar us
 />
 ```
 
-#### [VcsFormButton](../src/components/buttons/VcsFormButton.vue)
+#### [VcsFormButton](../src/components/buttons/VcsFormButton.ts.vue)
 
 A button to be used within windows or form fields.
 The VcsFormButton has two variants to differentiate the importance of buttons used in a row and put emphasis on primary actions:
@@ -58,7 +58,7 @@ The following example shows a row of buttons with secondary and primary actions:
 </div>
 ```
 
-#### [VcsToolButton](../src/components/buttons/VcsToolButton.vue)
+#### [VcsToolButton](../src/components/buttons/VcsToolButton.ts.vue)
 
 A button to be used as Tool button. Its main usage is within the Navbar using the [NavbarManager](./BUTTONS.md#navbarmanager).
 

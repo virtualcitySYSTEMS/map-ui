@@ -32,7 +32,7 @@
   import { computed, defineComponent } from 'vue';
   import { VCard, VSlider, VTooltip } from 'vuetify/components';
   import { useFontSize } from '../vuePlugins/vuetify.js';
-  import { useProxiedAtomicModel } from '../components/modelHelper.js';
+  import { useProxiedAtomicModel } from '../components/modelHelper.ts';
 
   export default defineComponent({
     name: 'TiltSlider',

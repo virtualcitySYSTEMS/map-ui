@@ -3,7 +3,7 @@ import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, maybe, oneOf } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { ActionPattern } from '../components/lists/VcsActionList.vue';
+import { actionPattern } from '../components/lists/VcsActionList.ts.vue';
 import { getActionFromOptions } from '../actions/actionHelper.js';
 
 /**
@@ -103,7 +103,7 @@ class ButtonManager {
   add(buttonComponentOptions, owner) {
     check(buttonComponentOptions.id, maybe(String));
     check(buttonComponentOptions.weight, maybe(Number));
-    check(buttonComponentOptions.action, ActionPattern);
+    check(buttonComponentOptions.action, actionPattern);
     check(owner, oneOf(String, vcsAppSymbol));
 
     if (buttonComponentOptions.id && this.has(buttonComponentOptions.id)) {

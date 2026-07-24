@@ -63,9 +63,9 @@
   import { v4 as uuid } from 'uuid';
   import { VSheet, VDivider, VIcon, VRow, VCol } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
-  import VcsTextField from '../components/form-inputs-controls/VcsTextField.vue';
+  import VcsTextField from '../components/form-inputs-controls/VcsTextField.ts.vue';
   import ResultsComponent from './ResultsComponent.vue';
-  import VcsFormButton from '../components/buttons/VcsFormButton.vue';
+  import VcsFormButton from '../components/buttons/VcsFormButton.ts.vue';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 
   export const searchComponentId = 'searchId';

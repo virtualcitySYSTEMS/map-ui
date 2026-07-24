@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { reactive, ref, shallowReactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager from '../buttonManager.js';
-import { ActionPattern } from '../../components/lists/VcsActionList.vue';
+import { actionPattern } from '../../components/lists/VcsActionList.ts.vue';
 import { getActionFromOptions } from '../../actions/actionHelper.js';
 import { deviceSymbol } from '../navbarManager.js';
 
@@ -337,7 +337,7 @@ class ToolboxManager {
     };
 
     if (type === ToolboxType.SINGLE) {
-      check(toolboxComponentOptions.action, ActionPattern);
+      check(toolboxComponentOptions.action, actionPattern);
       const action = getActionFromOptions(toolboxComponentOptions.action);
       /**
        * @type {SingleToolboxComponent}
@@ -350,7 +350,7 @@ class ToolboxManager {
       };
     } else if (type === ToolboxType.SELECT) {
       check(toolboxComponentOptions.action, {
-        ...ActionPattern,
+        ...actionPattern,
         selected: Function,
         currentIndex: Number,
         disabled: optional(Boolean),

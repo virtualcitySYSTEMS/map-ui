@@ -3,7 +3,7 @@
   import type { PropType } from 'vue';
   import { snapTypes } from '@vcmap/core';
   import type { VcsAction } from '../../actions/actionHelper.js';
-  import VcsFormSection from '../section/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.ts.vue';
 
   const model = defineModel({
     type: Array as PropType<string[]>,

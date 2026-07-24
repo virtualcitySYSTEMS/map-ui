@@ -55,11 +55,11 @@
 <script>
   import { VExpansionPanels, VList, VSheet } from 'vuetify/components';
   import { ref, watch } from 'vue';
-  import { useComponentId } from '../components/composables.js';
+  import { useComponentId } from '../components/composables.ts';
   import { LegendType } from './legendHelper.js';
   import StyleLegendItem from './StyleLegendItem.vue';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
-  import VcsExpansionPanel from '../components/section/VcsExpansionPanel.vue';
+  import VcsExpansionPanel from '../components/section/VcsExpansionPanel.ts.vue';
 
   /**
    * @description A component rendering configured legend information for active layers.

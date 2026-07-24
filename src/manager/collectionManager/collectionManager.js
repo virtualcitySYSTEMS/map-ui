@@ -1,7 +1,7 @@
 import { VcsEvent, Collection } from '@vcmap/core';
 import { reactive } from 'vue';
 import { check, maybe, oneOf } from '@vcsuite/check';
-import { validateActions } from '../../components/lists/VcsActionList.vue';
+import { validateActions } from '../../components/lists/VcsActionList.ts.vue';
 import CollectionComponentClass from './collectionComponentClass.js';
 
 /**

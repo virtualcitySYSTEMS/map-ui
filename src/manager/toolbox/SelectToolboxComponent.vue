@@ -74,7 +74,7 @@
   import { ref, computed } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
-  import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
+  import VcsToolButton from '../../components/buttons/VcsToolButton.ts.vue';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**

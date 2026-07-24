@@ -83,8 +83,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { PropType } from 'vue';
   import { computed, getCurrentInstance, ref, useSlots, watch } from 'vue';
+  import type { PropType } from 'vue';
   import {
     VIcon,
     VList,
@@ -92,15 +92,16 @@
     VListItemTitle,
     VTooltip,
   } from 'vuetify/components';
-  import type { DropTargetZonesFunction } from './dragHelper.js';
-  import { setupDraggableListOrTree } from './dragHelper.js';
-  import { setupSelectableList } from './listHelper.js';
-  import type { VcsListItem } from './VcsListItemComponent.vue';
-  import VcsListItemComponent from './VcsListItemComponent.vue';
-  import VcsActionButtonList from '../buttons/VcsActionButtonList.vue';
-  import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.vue';
-  import { createEllipseTooltip } from '../composables.js';
   import type { VcsAction } from '../../actions/actionHelper.js';
+  import { createEllipseTooltip } from '../composables.js';
+  import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.ts.vue';
+  import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';
+  import VcsListItemComponent from './VcsListItemComponent.ts.vue';
+  import type { VcsListItem } from './VcsListItemComponent.ts.vue';
+  import { setupSelectableList } from './listHelper.js';
+  import { setupDraggableListOrTree } from './dragHelper.js';
+  import type { DropTargetZonesFunction } from './dragHelper.js';
+
   /**
    * @description
    * The VcsList is intended to render items. Items can be selectable (by default, more than one) or only a single item can
@@ -113,14 +114,14 @@
    * Clicking with CTRL adds or removes to a selection set.
    * Clicking with SHIFT will create a selection range, starting or ending with the first item in the list
    * or the last normally selected item (not the last item clicked with CTRL for instance).
-   * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} items
+   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} items
    * @vue-prop {boolean} [draggable=false]
    * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
-   * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
+   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
    * @vue-prop {boolean} [searchable=false] - if this list can have its items searched.
-   * @vue-prop {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
+   * @vue-prop {function(import("./VcsListItemComponent.ts.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    * @vue-prop {boolean} [showTitle=true] - show the title component
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items
@@ -158,11 +159,13 @@
       default: false,
     },
     selectFunction: {
-      type: Function as PropType<(item: VcsListItem) => boolean>,
+      type: Function as PropType<
+        (item: VcsListItem, event: PointerEvent) => void
+      >,
       default: undefined,
     },
     modelValue: {
-      type: Array as PropType<VcsListItem[]>,
+      type: Array as PropType<Array<VcsListItem>>,
       default: () => [],
     },
     searchable: {
@@ -170,9 +173,7 @@
       default: false,
     },
     customFilter: {
-      type: Function as PropType<
-        (item: VcsListItem, queryString: string) => boolean
-      >,
+      type: Function as PropType<(item: VcsListItem, query: string) => boolean>,
       default: undefined,
     },
     searchbarPlaceholder: {
@@ -185,22 +186,18 @@
     },
     actionButtonListOverflowCount: {
       type: Number,
-      required: false,
       default: undefined,
     },
     title: {
       type: String,
-      required: false,
       default: '',
     },
     icon: {
       type: String,
-      required: false,
       default: undefined,
     },
     tooltip: {
       type: String,
-      required: false,
       default: '',
     },
     actions: {
@@ -211,13 +208,8 @@
   });
 
   const emit = defineEmits(['update:modelValue', 'itemMoved']);
-
   const slots = useSlots();
-
-  const lightenEven = computed(() => {
-    return !(!props.searchable && !props.showTitle);
-  });
-
+  const lightenEven = computed(() => !(!props.searchable && !props.showTitle));
   const query = ref('');
 
   watch(

@@ -9,6 +9,8 @@
 ### Breaking Changes
 
 - Changed CI/CD from Node 20 to 24
+- Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
+- Removed deprecated `draggable` property of the CollectionComponentClass
 
 ### Changes
 

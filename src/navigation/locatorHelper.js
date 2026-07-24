@@ -163,7 +163,7 @@ const geolocationOptions = {
 /**
  *
  * @param {import("../vcsUiApp.js").default} app
- * @returns {{ action: import("../actions/actionHelper.js").VcsAction, destroy: Function }}
+ * @returns {import("../actions/actionHelper.js").DestroyableAction}
  */
 
 export function createLocatorAction(app) {

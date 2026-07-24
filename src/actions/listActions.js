@@ -2,7 +2,7 @@ import { reactive, watch } from 'vue';
 import { check, oneOf, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import { parseGeoJSON } from '@vcmap/core';
-import VcsImportComponent from '../components/import/VcsImportComponent.vue';
+import VcsImportComponent from '../components/import/VcsImportComponent.ts.vue';
 import { createToggleAction } from './actionHelper.js';
 import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
@@ -34,7 +34,7 @@ export function createListItemDeleteAction(
 
 /**
  * Creates an action based on a provided selection
- * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.vue").VcsListItem>>} selection
+ * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.ts.vue").VcsListItem>>} selection
  * @param {import("./actionHelper.js").ActionOptions & {callback:import("./actionHelper.js").ActionCallback}} [actionOptions]
  * @returns {{action: import("vue").UnwrapRef<import("./actionHelper.js").VcsAction>, destroy: import("vue").WatchStopHandle}}
  */
@@ -59,7 +59,7 @@ export function createListItemBulkAction(selection, actionOptions) {
 }
 
 /**
- * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.vue").VcsListItem>>} selection
+ * @param {import("vue").Ref<Array<import("../components/lists/VcsListItemComponent.ts.vue").VcsListItem>>} selection
  * @param {import("./actionHelper.js").ActionCallback} exportCallback
  * @param {string|symbol} owner
  * @returns {{action: import("../manager/collectionManager/collectionManager.js").OwnedAction, destroy: (function(): void)}}
@@ -244,7 +244,7 @@ export function createListImportAction(
  * @param {string} multiEditorId
  * @param {string} [name="list.edit"]
  * @template {Object} T
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: function(): void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createListEditAction(
   selection,

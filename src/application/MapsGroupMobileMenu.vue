@@ -43,7 +43,7 @@
 <script>
   import { computed, ref, inject } from 'vue';
   import { VMenu, VIcon, VToolbar, VToolbarItems } from 'vuetify/components';
-  import VcsToolButton from '../components/buttons/VcsToolButton.vue';
+  import VcsToolButton from '../components/buttons/VcsToolButton.ts.vue';
   import { useFontSize } from '../vuePlugins/vuetify.js';
   import {
     ButtonLocation,

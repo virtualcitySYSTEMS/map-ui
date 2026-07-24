@@ -21,7 +21,7 @@ import {
 import SearchComponent, {
   searchComponentId,
 } from '../search/SearchComponent.vue';
-import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.vue';
+import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.ts.vue';
 
 /**
  * @typedef {Omit<VcsAction, 'callback'>} ActionOptions
@@ -41,6 +41,12 @@ import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.vue';
  * @property {boolean} [hasUpdate=false] - optional hasUpdate of button. If true, a yellow notification is rendered next to the button
  * @property {boolean} [background=false] - optional background state. If active and background, button is rendered in primary color outlined
  * @property {boolean} [disabled=false] - optional flag to indicate that the action is disabled
+ */
+
+/**
+ * @typedef {Object} DestroyableAction
+ * @property {VcsAction} action
+ * @property {() => void} destroy
  */
 
 /**
@@ -122,7 +128,7 @@ function setupDisablePanorama(map, action) {
  * @param {ActionOptions} actionOptions
  * @param {string} mapName
  * @param {import("@vcmap/core").OverrideCollection<import("@vcmap/core").VcsMap, import("@vcmap/core").MapCollection>} maps
- * @returns {{action: VcsAction, destroy: () => void}}
+ * @returns {DestroyableAction}
  */
 export function createMapButtonAction(actionOptions, mapName, maps) {
   check(actionOptions, {
@@ -166,7 +172,7 @@ export function createMapButtonAction(actionOptions, mapName, maps) {
  * @param {import("../manager/window/windowManager.js").WindowComponentOptions} windowComponent
  * @param {import("../manager/window/windowManager.js").default}  windowManager
  * @param {string|symbol} owner
- * @returns {{action: VcsAction, destroy: function(): void}}
+ * @returns {DestroyableAction}
  */
 export function createToggleAction(
   actionOptions,
@@ -219,7 +225,7 @@ export function createToggleAction(
 
 /**
  * @param {import("../vcsUiApp.js").default} app
- * @returns {{action: import("vue").UnwrapRef<VcsAction>, destroy: function():void}}
+ * @returns {DestroyableAction}
  */
 function createSearchAction(app) {
   const windowComponent = {
@@ -330,7 +336,7 @@ export function createSearchButtonAction(app) {
  * @param {import("../manager/window/windowManager.js").WindowComponentOptions} modalComponent
  * @param {import("../vcsUiApp.js").default}  app
  * @param {string|symbol} owner
- * @returns {{action: VcsAction, destroy: function(): void}}
+ * @returns {DestroyableAction}
  */
 export function createModalAction(actionOptions, modalComponent, app, owner) {
   check(actionOptions, {

@@ -58,10 +58,10 @@
   import { ref, inject, onUnmounted, computed } from 'vue';
   import { useTheme } from 'vuetify';
   import { VCol, VContainer, VRow } from 'vuetify/components';
-  import VcsLabel from '../components/form-inputs-controls/VcsLabel.vue';
-  import VcsSelect from '../components/form-inputs-controls/VcsSelect.vue';
-  import VcsRadio from '../components/form-inputs-controls/VcsRadio.vue';
-  import VcsSlider from '../components/form-inputs-controls/VcsSlider.vue';
+  import VcsLabel from '../components/form-inputs-controls/VcsLabel.ts.vue';
+  import VcsSelect from '../components/form-inputs-controls/VcsSelect.ts.vue';
+  import VcsRadio from '../components/form-inputs-controls/VcsRadio.ts.vue';
+  import VcsSlider from '../components/form-inputs-controls/VcsSlider.ts.vue';
 
   /**
    * @description The settings window of a VcsMap application

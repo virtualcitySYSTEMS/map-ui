@@ -45,7 +45,7 @@ export function createZoomToExtentAction(app, extent) {
 /**
  * @param {import("@vcmap/core").Layer} layer
  * @param {boolean} disabled
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy: (function(): void)}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createLayerToggleAction(layer, disabled) {
   const action = reactive({
@@ -82,7 +82,7 @@ export function createLayerToggleAction(layer, disabled) {
  * @param {import("vue").ComputedRef<import("@vcmap/core").Extent>|import("vue").Ref<import("@vcmap/core").Extent>} extent
  * @param {string} featureId
  * @param {boolean} disabled
- * @returns {{ action: import("./actionHelper.js").VcsAction, destroy:()=>void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 export function createExtentFeatureAction(
   app,
@@ -187,7 +187,7 @@ function updateExtentFromFeature(feature, extent) {
  * @param {string} featureId
  * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
  * @param {import("vue").Ref<boolean>} suspendFeatureUpdate
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy(): void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 function setupTranslateAction(
   app,
@@ -246,7 +246,7 @@ function setupTranslateAction(
  * @param {string} featureId
  * @param {import("vue").WritableComputedRef<import("@vcmap/core").Extent>} extent
  * @param {import("vue").Ref<boolean>} suspendFeatureUpdate
- * @returns {{action: import("./actionHelper.js").VcsAction, destroy(): void}}
+ * @returns {import("./actionHelper.js").DestroyableAction}
  */
 function setupVertexAction(
   app,

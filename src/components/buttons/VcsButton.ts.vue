@@ -37,7 +37,7 @@
 <script lang="ts">
   import { computed, defineComponent, type PropType } from 'vue';
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
-  import VcsBadge from '../notification/VcsBadge.vue';
+  import VcsBadge from '../notification/VcsBadge.ts.vue';
   import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
   import { getForwardSlots } from '../composables.js';
 

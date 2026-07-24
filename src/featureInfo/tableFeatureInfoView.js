@@ -1,6 +1,6 @@
 import { parseBoolean } from '@vcsuite/parsers';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-import VcsTable from '../components/tables/VcsTable.vue';
+import VcsTable from '../components/tables/VcsTable.ts.vue';
 
 /**
  * @typedef {import("./abstractFeatureInfoView.js").FeatureInfoViewOptions & {

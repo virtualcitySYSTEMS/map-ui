@@ -1,7 +1,7 @@
 import { parseBoolean } from '@vcsuite/parsers';
 import { renderTemplate, VcsObject } from '@vcmap/core';
 import { WindowSlot } from '../manager/window/windowManager.js';
-import { defaultTagOptions } from '../components/tables/VcsTable.vue';
+import { defaultTagOptions } from '../components/tables/VcsTable.ts.vue';
 
 /**
  * @typedef {Object} FeatureInfoProps

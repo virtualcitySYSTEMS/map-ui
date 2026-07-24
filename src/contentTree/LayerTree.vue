@@ -29,7 +29,7 @@
   import { inject, computed, onUnmounted } from 'vue';
   import { VSheet } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
-  import VcsTreeview from '../components/lists/VcsTreeview.vue';
+  import VcsTreeview from '../components/lists/VcsTreeview.ts.vue';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import LayerSwap, { layerSwapId } from './LayerSwap.vue';
   import { createToggleAction } from '../actions/actionHelper.js';

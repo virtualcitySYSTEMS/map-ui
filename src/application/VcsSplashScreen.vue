@@ -79,10 +79,10 @@
     setToLocalStorage,
   } from '../localStorage.js';
   import { executeCallbacks } from '../callback/vcsCallback.js';
-  import VcsFormButton from '../components/buttons/VcsFormButton.vue';
-  import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.vue';
-  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
-  import { useProxiedAtomicModel } from '../components/modelHelper.js';
+  import VcsFormButton from '../components/buttons/VcsFormButton.ts.vue';
+  import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.ts.vue';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.ts.vue';
+  import { useProxiedAtomicModel } from '../components/modelHelper.ts';
   import { name } from '../../package.json';
 
   /**

@@ -1,15 +1,15 @@
 <script setup>
   import { ref, shallowRef, inject, onUnmounted, watch } from 'vue';
   import { LayerState } from '@vcmap/core';
-  import VcsGroupedList from '../components/lists/VcsGroupedList.vue';
+  import VcsGroupedList from '../components/lists/VcsGroupedList.ts.vue';
 
   const props = defineProps({
-    /** @type {import("../components/lists/VcsGroupedList.vue").VcsGroupedListItem} */
+    /** @type {import("../components/lists/VcsGroupedList.ts.vue").VcsGroupedListItem} */
     items: {
       type: Array,
       default: () => [],
     },
-    /** @type {import("../components/lists/VcsGroupedList.vue").VcsListGroup} */
+    /** @type {import("../components/lists/VcsGroupedList.ts.vue").VcsListGroup} */
     groups: {
       type: Array,
       default: () => [],

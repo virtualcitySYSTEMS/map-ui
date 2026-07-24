@@ -67,7 +67,7 @@
   } from './toolboxManager.js';
   import ToolboxActionSelect from './SelectToolboxComponent.vue';
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
-  import VcsToolButton from '../../components/buttons/VcsToolButton.vue';
+  import VcsToolButton from '../../components/buttons/VcsToolButton.ts.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { ButtonLocation, deviceSymbol } from '../navbarManager.js';
   import { useFontSize } from '../../vuePlugins/vuetify.js';

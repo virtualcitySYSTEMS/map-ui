@@ -155,9 +155,9 @@
     deviceSymbol,
     getActionsByLocation,
   } from '../manager/navbarManager.js';
-  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
-  import VcsActionList from '../components/lists/VcsActionList.vue';
-  import VcsToolButton from '../components/buttons/VcsToolButton.vue';
+  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.ts.vue';
+  import VcsActionList from '../components/lists/VcsActionList.ts.vue';
+  import VcsToolButton from '../components/buttons/VcsToolButton.ts.vue';
   import { createSearchButtonAction } from '../actions/actionHelper.js';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 

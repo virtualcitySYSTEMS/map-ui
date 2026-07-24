@@ -4,7 +4,7 @@ import { sleep } from '../../helpers.js';
 import {
   useProxiedAtomicModel,
   useProxiedComplexModel,
-} from '../../../src/components/modelHelper.js';
+} from '../../../src/components/modelHelper.ts';
 
 describe('modelHelper', () => {
   describe('atomics', () => {

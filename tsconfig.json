@@ -25,6 +25,7 @@
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "paths": {
       "@src/*": ["./src/*"]
     },

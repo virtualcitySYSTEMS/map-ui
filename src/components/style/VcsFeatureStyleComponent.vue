@@ -30,7 +30,7 @@
   import { inject, onUnmounted, ref, watch } from 'vue';
   import VcsVectorStyleComponent, {
     VectorStyleMenus,
-  } from './VcsVectorStyleComponent.vue';
+  } from './VcsVectorStyleComponent.ts.vue';
 
   /**
    * @typedef {Object} StyleOptions

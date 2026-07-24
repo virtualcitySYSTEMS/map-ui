@@ -6,7 +6,7 @@
 
 <script>
   import { VContainer } from 'vuetify/components';
-  import VcsMarkdown from '../components/form-output/VcsMarkdown.vue';
+  import VcsMarkdown from '../components/form-output/VcsMarkdown.ts.vue';
 
   /**
    * @description Container wrapper around VcsMarkdown

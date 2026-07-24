@@ -26,7 +26,7 @@
   import { computed } from 'vue';
   import { VIcon, VListItem, VListItemTitle } from 'vuetify/components';
   import DOMPurify from 'dompurify';
-  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.vue';
+  import VcsActionButtonList from '../components/buttons/VcsActionButtonList.ts.vue';
   import { markText } from './markText.js';
 
   /**

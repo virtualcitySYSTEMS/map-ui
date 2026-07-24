@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
   import { computed, inject, toRaw } from 'vue';
   import { renderTemplate } from '@vcmap/core';
-  import VcsMarkdown from './VcsMarkdown.vue';
+  import VcsMarkdown from './VcsMarkdown.ts.vue';
+  import type VcsUiApp from '../../vcsUiApp.js';
 
-  const app = inject('vcsApp');
+  const app = inject('vcsApp') as VcsUiApp;
 
   const props = defineProps({
     /**

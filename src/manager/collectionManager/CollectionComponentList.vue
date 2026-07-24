@@ -37,9 +37,9 @@
 <script>
   import { computed, inject } from 'vue';
   import { VSheet } from 'vuetify/components';
-  import { createSelectionActions } from '../../components/lists/listHelper.js';
+  import { createSelectionActions } from '../../components/lists/listHelper.ts';
   import VcsList from '../../components/lists/VcsList.ts.vue';
-  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
+  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.ts.vue';
   import VcsButton from '../../components/buttons/VcsButton.ts.vue';
   import { moveItem } from '../../components/lists/dragHelper.js';
 

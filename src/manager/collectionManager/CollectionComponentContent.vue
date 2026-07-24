@@ -32,7 +32,7 @@
   import { computed, inject, onUnmounted, ref, watch } from 'vue';
   import { VSheet, VContainer, VPagination } from 'vuetify/components';
   import { getLogger } from '@vcsuite/logger';
-  import { createSelectionActions } from '../../components/lists/listHelper.js';
+  import { createSelectionActions } from '../../components/lists/listHelper.ts';
   import VcsList from '../../components/lists/VcsList.ts.vue';
   import VcsButton from '../../components/buttons/VcsButton.ts.vue';
   import { moveItem } from '../../components/lists/dragHelper.js';

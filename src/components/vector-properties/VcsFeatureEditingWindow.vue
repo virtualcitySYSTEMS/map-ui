@@ -71,7 +71,7 @@
     pointVectorProperties,
     nonPointVectorProperties,
   } from './VcsVectorPropertiesComponent.vue';
-  import VcsFormSection from '../section/VcsFormSection.vue';
+  import VcsFormSection from '../section/VcsFormSection.ts.vue';
   import VcsSnapTo from './VcsSnapTo.ts.vue';
   import VcsFeatureInputEditor from './VcsFeatureInputEditor.vue';
 

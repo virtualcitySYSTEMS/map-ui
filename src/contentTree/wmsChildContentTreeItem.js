@@ -6,7 +6,7 @@ import {
 } from '../actions/actionHelper.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 import ContentTreeItem from './contentTreeItem.js';
-import VcsActionList from '../components/lists/VcsActionList.vue';
+import VcsActionList from '../components/lists/VcsActionList.ts.vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
 
 /**

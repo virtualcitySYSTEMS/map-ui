@@ -17,8 +17,8 @@
 
 <script>
   import { computed, getCurrentInstance, inject, ref } from 'vue';
-  import { createSelectionActions } from '../../components/lists/listHelper.js';
-  import VcsFormSection from '../../components/section/VcsFormSection.vue';
+  import { createSelectionActions } from '../../components/lists/listHelper.ts';
+  import VcsFormSection from '../../components/section/VcsFormSection.ts.vue';
   import CollectionComponentList from './CollectionComponentList.vue';
   import CollectionComponentContent from './CollectionComponentContent.vue';
 

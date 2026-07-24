@@ -191,8 +191,8 @@ export function getFeatureInfoViewForFeature(app, feature) {
  * @param {import("ol/coordinate.js").Coordinate?} position
  * @param {() => void} [close] function to close the window or selection
  * @returns {{
- *   groups: import("../components/lists/VcsGroupedList.vue").VcsListGroup,
- *   items: import("../components/lists/VcsGroupedList.vue").VcsGroupedListItem,
+ *   groups: import("../components/lists/VcsGroupedList.ts.vue").VcsListGroup,
+ *   items: import("../components/lists/VcsGroupedList.ts.vue").VcsGroupedListItem,
  * }}
  */
 export function getGroupedFeatureList(
@@ -220,7 +220,7 @@ export function getGroupedFeatureList(
       ];
     }
 
-    /** @type {import("../components/lists/VcsListItemComponent.vue").VcsListItem} */
+    /** @type {import("../components/lists/VcsListItemComponent.ts.vue").VcsListItem} */
     let listItem;
 
     if (oFeature[panoramaFeature]) {

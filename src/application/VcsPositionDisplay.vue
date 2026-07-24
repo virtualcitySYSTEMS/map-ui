@@ -76,7 +76,7 @@
   } from '@vcmap/core';
   import { VMenu, VList, VListItem, VListItemTitle } from 'vuetify/components';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
-  import VcsFormattedNumber from '../components/form-output/VcsFormattedNumber.vue';
+  import VcsFormattedNumber from '../components/form-output/VcsFormattedNumber.ts.vue';
   import PositionDisplayInteraction from './positionDisplayInteraction.js';
 
   /**

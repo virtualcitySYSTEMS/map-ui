@@ -1,0 +1,149 @@
+<template>
+  <v-container class="py-0 px-1 vcs-extent">
+    <v-row no-gutters v-if="modelValue.projection">
+      <v-col :cols="firstCols">
+        <VcsLabel :html-for="`${cid}-projection`">
+          {{ $st('components.extent.projection') }}
+        </VcsLabel>
+      </v-col>
+      <v-col>
+        <VcsTextField
+          :id="`${cid}-projection`"
+          disabled
+          :model-value="modelValue.projection.epsg"
+        />
+      </v-col>
+    </v-row>
+    <VcsCoordinate
+      hide-z
+      v-model="min"
+      :disabled="disabled"
+      :extent="extent"
+      :axis-rules="[
+        [(v: number) => checkInput(v, max[0])],
+        [(v: number) => checkInput(v, max[1])],
+      ]"
+    >
+      <template #prepend>
+        <v-col :cols="firstCols">
+          <VcsLabel>
+            {{ $st('components.extent.min') }}
+          </VcsLabel>
+        </v-col>
+      </template>
+    </VcsCoordinate>
+    <VcsCoordinate
+      hide-z
+      v-model="max"
+      :disabled="disabled"
+      :extent="extent"
+      :axis-rules="[
+        [(v: number) => checkInput(min[0], v)],
+        [(v: number) => checkInput(min[1], v)],
+      ]"
+    >
+      <template #prepend>
+        <v-col :cols="firstCols">
+          <VcsLabel>
+            {{ $st('components.extent.max') }}
+          </VcsLabel>
+        </v-col>
+      </template>
+    </VcsCoordinate>
+  </v-container>
+</template>
+
+<script lang="ts">
+  import type { PropType, WritableComputedRef } from 'vue';
+  import { computed, toRaw, defineComponent } from 'vue';
+  import { VCol, VContainer, VRow } from 'vuetify/components';
+  import type { ExtentOptions } from '@vcmap/core';
+  import { Extent, Projection } from '@vcmap/core';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.ts.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
+  import VcsCoordinate from '../form-inputs-controls/VcsCoordinate.ts.vue';
+  import { useProxiedComplexModel } from '../modelHelper.js';
+  import { useComponentId } from '../composables.js';
+
+  function checkInput(min: number, max: number): boolean | string {
+    return min < max || 'components.extent.invalid';
+  }
+
+  /**
+   * An input for modelling @vcmap/core ExtentOptions
+   * @vue-prop {import("@vcmap/core").ExtentOptions} [modelValue] - the extent options to be modeled.
+   * @vue-prop {boolean} [disabled=false] - Disable coordinate input.
+   * @vue-prop {number} [firstCols=4] - Property to set the column distribution. Default is 4 (one-third/two-third). Use 6 for half-half.
+   */
+  export default defineComponent({
+    name: 'VcsExtent',
+    components: {
+      VcsCoordinate,
+      VContainer,
+      VRow,
+      VCol,
+      VcsLabel,
+      VcsTextField,
+    },
+    inheritAttrs: false,
+    props: {
+      modelValue: {
+        type: Object as PropType<ExtentOptions>,
+        default: () => new Extent().toJSON(),
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
+      firstCols: {
+        type: Number,
+        default: 4,
+      },
+    },
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+      const localValue = useProxiedComplexModel(props, 'modelValue', emit);
+
+      const { proj } = new Projection(localValue.value.projection);
+      const extent = proj.getExtent() || [
+        -Infinity,
+        -Infinity,
+        Infinity,
+        Infinity,
+      ];
+
+      const getCoordinate = (
+        start: number,
+        end = 4,
+      ): WritableComputedRef<number[]> =>
+        computed<number[]>({
+          get() {
+            const coordinates = localValue.value.coordinates ?? [0, 0, 0, 0];
+            return coordinates.slice(start, end);
+          },
+          set(value) {
+            const clone = structuredClone(toRaw(localValue.value));
+            const coordinates = [...(clone.coordinates ?? [0, 0, 0, 0])];
+            coordinates[start] = value[0];
+            coordinates[end - 1] = value[1];
+            clone.coordinates = coordinates;
+            if (Extent.validateOptions(clone)) {
+              localValue.value = clone;
+            }
+          },
+        });
+
+      const cid = useComponentId();
+
+      return {
+        min: getCoordinate(0, 2),
+        max: getCoordinate(2),
+        checkInput,
+        extent,
+        cid,
+      };
+    },
+  });
+</script>
+
+<style scoped></style>

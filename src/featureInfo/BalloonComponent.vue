@@ -71,7 +71,7 @@
   } from 'vuetify/components';
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
-  import { getTag, getTagOptions } from '../components/tables/VcsTable.vue';
+  import { getTag, getTagOptions } from '../components/tables/VcsTable.ts.vue';
   import { useIconSize } from '../vuePlugins/vuetify.js';
 
   /**

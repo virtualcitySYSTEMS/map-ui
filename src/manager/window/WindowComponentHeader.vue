@@ -62,9 +62,9 @@
   import { VIcon, VDivider, VTooltip } from 'vuetify/components';
   import { computed, getCurrentInstance, ref } from 'vue';
   import { useDisplay } from 'vuetify';
-  import { createEllipseTooltip } from '../../components/composables.js';
+  import { createEllipseTooltip } from '../../components/composables.ts';
   import VcsButton from '../../components/buttons/VcsButton.ts.vue';
-  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.vue';
+  import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.ts.vue';
   import { createLinkAction } from '../../actions/actionHelper.js';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
 

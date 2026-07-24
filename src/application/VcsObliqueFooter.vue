@@ -13,7 +13,7 @@
     ObliqueViewDirection,
     renderTemplate,
   } from '@vcmap/core';
-  import { parseAndSanitizeMarkdown } from '../components/form-output/markdownHelper.js';
+  import { parseAndSanitizeMarkdown } from '../components/form-output/markdownHelper.ts';
 
   const i18nViewDirection = {
     [ObliqueViewDirection.NORTH]: 'footer.oblique.north',
