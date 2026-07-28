@@ -1,3 +1,10 @@
+# 6.3.12
+
+### Changes
+
+- Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
+
+
 # 6.3.11
 
 ### Changes
