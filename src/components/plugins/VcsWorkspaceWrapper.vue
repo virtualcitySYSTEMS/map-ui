@@ -14,6 +14,7 @@
         <div class="d-flex gc-2 w-100 justify-end">
           <slot name="secondaryButton" />
           <VcsFormButton
+            v-if="showNew"
             variant="filled"
             :disabled="disableNew"
             :tooltip="tooltipNew"
@@ -39,6 +40,7 @@
    * Providing a footer with add and new buttons.
    * @vue-prop {boolean} [showFooter=true] - Flag to hide the footer.
    * @vue-prop {boolean} [showAdd=true] - Flag to show an add button in the footer. You need to handle @addClicked in a child component.
+   * @vue-prop {boolean} [showNew=true] - Flag to show a new button in the footer.
    * @vue-prop {boolean} [disableAdd=false] - Flag to render add button disabled.
    * @vue-prop {boolean} [tooltipAdd='components.addToMyWorkspace'] - Option to change the add button tooltip.
    * @vue-prop {boolean} [disableNew=false] - Flag to render new button disabled.
@@ -63,6 +65,10 @@
         default: true,
       },
       showAdd: {
+        type: Boolean,
+        default: true,
+      },
+      showNew: {
         type: Boolean,
         default: true,
       },
