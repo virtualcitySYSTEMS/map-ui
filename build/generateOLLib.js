@@ -6,9 +6,22 @@ const isWindows = process.platform.indexOf('win') === 0;
 const sourceDir = path.join('node_modules', 'ol');
 
 /**
+ * @typedef {Object} JSDocSymbol
+ * @property {string} name Symbol name.
+ * @property {string} kind Symbol kind.
+ * @property {string} [exports] Exported name.
+ */
+
+/**
+ * @typedef {Object} JSDocInfo
+ * @property {JSDocSymbol[]} symbols List of symbols.
+ * @property {JSDocSymbol[]} defines List of defines.
+ */
+
+/**
  * Parse the JSDoc output.
  * @param {string} output JSDoc output
- * @returns {Object} Symbol and define info.
+ * @returns {JSDocInfo} Symbol and define info.
  */
 function parseOutput(output) {
   if (!output) {
@@ -18,8 +31,10 @@ function parseOutput(output) {
   let info;
   try {
     info = JSON.parse(String(output));
-  } catch (err) {
-    throw new Error(`Failed to parse output as JSON: ${output} ${err.message}`);
+  } catch (e) {
+    throw new Error(
+      `Failed to parse output as JSON: ${output} ${e instanceof Error ? e.message : String(e)}`,
+    );
   }
 
   if (!Array.isArray(info.symbols)) {
@@ -53,13 +68,13 @@ function getBinaryPath(binaryName) {
   }
 
   throw Error(
-    `JsDoc binary was not found in any of the expected paths: ${expectedPaths}`,
+    `JsDoc binary was not found in any of the expected paths: ${expectedPaths.join(', ')}`,
   );
 }
 
 /**
  * Spawn JSDoc.
- * @returns {Promise<Object>} Resolves with the JSDoc output (new metadata).
+ * @returns {Promise<JSDocInfo>} Resolves with the JSDoc output (new metadata).
  *     If provided with an empty list of paths, resolves with null.
  */
 function spawnJSDoc() {
@@ -91,8 +106,8 @@ function spawnJSDoc() {
       let info;
       try {
         info = parseOutput(output);
-      } catch (err) {
-        reject(err);
+      } catch (e) {
+        reject(e instanceof Error ? e : new Error(String(e)));
         return;
       }
       resolve(info);
@@ -102,7 +117,7 @@ function spawnJSDoc() {
 
 /**
  * Read the symbols from info file.
- * @returns {Promise<Array>} Resolves with an array of symbol objects.
+ * @returns {Promise<JSDocSymbol[]>} Resolves with an array of symbol objects.
  */
 async function getSymbols() {
   const info = await spawnJSDoc();
@@ -115,8 +130,8 @@ const exported = new Set();
 
 /**
  * Generate an import statement.
- * @param {Object} symbol Symbol.
- * @param {string} member Member.
+ * @param {JSDocSymbol} symbol Symbol.
+ * @param {string} [member] Member.
  * @returns {string|null} An import statement.
  */
 function getImport(symbol, member) {
@@ -147,11 +162,10 @@ function getImport(symbol, member) {
 
 /**
  * Generate code to export a named symbol.
- * @param {Object} symbol Symbol.
- * @param {Object<string, string>} namespaces Already defined namespaces.
- * @param {Object} imports Imports.
+ * @param {JSDocSymbol} symbol Symbol.
+ * @param {Record<string, boolean>} imports Imports.
  */
-function formatSymbolExport(symbol, namespaces, imports) {
+function formatSymbolExport(symbol, imports) {
   const { name } = symbol;
   const parts = name.split('~');
   const nsParts = parts[0].replace(/^module:/, '').split(/[/.]/);
@@ -163,12 +177,12 @@ function formatSymbolExport(symbol, namespaces, imports) {
 
 /**
  * Generate export code given a list symbol names.
- * @param {Array<Object>} symbols List of symbols.
+ * @param {Array<JSDocSymbol>} symbols List of symbols.
  * @returns {string} Export code.
  */
 function generateExports(symbols) {
-  const namespaces = {};
-  const imports = [];
+  /** @type {Record<string, boolean>} */
+  const imports = {};
   symbols.forEach((symbol) => {
     const { name } = symbol;
     if (name.indexOf('#') === -1) {
@@ -176,7 +190,7 @@ function generateExports(symbols) {
       if (imp) {
         imports[imp] = true;
       }
-      formatSymbolExport(symbol, namespaces, imports);
+      formatSymbolExport(symbol, imports);
     }
   });
   const source = Object.keys(imports)
@@ -188,7 +202,7 @@ function generateExports(symbols) {
 
 /**
  * Generate the exports code.
- * @returns {Promise<string>} Resolves with the exports code.
+ * @returns {Promise<void>} Resolves with the exports code.
  */
 export default async function main() {
   const symbols = await getSymbols();

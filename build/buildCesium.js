@@ -3,7 +3,7 @@ import path from 'path';
 
 /**
  * copies Cesium Assets and Workers to dist folder
- * @returns {Promise<void>}
+ * @returns {Promise<[void, void, void]>} Promise that resolves when the copy is complete
  */
 export default async function buildCesium() {
   const cesiumPath = path.join(

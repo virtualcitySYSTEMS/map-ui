@@ -4,12 +4,15 @@ import { getFilesInDirectory } from './buildHelpers.js';
 
 const anyRegex = /:[^\n,;]+\bany\b/;
 
+/**
+ * @returns {Promise<number>}
+ */
 async function lintTypes() {
   let errors = 0;
 
   for await (const path of getFilesInDirectory('./src')) {
     if (path.endsWith('.d.ts') && !path.endsWith('vue.d.ts')) {
-      const content = await readFile(path, 'utf8');
+      const content = await readFile(path, { encoding: 'utf8' });
       if (path.endsWith('vcsUiApp.d.ts')) {
         // we do not check the vcsUiApp.d.ts, because the vuetify return Type has several occurances of any
         // eslint-disable-next-line no-continue

@@ -5,10 +5,11 @@ import { cp, rm } from 'fs/promises';
 import { createGzip } from 'zlib';
 import { pipeline } from 'stream';
 import { createReadStream, createWriteStream } from 'fs';
+import { inspect } from 'util';
 import { buildPluginsForBundle, getProjectPath } from './buildHelpers.js';
 
 await import('./build.js');
-console.log('ui built');
+console.log('UI built');
 
 await buildPluginsForBundle({
   configFile: './build/commonViteConfig.js',
@@ -24,21 +25,14 @@ await Promise.all(
 
 const file = joinPath(distDir, 'vcmap-bundle.tar');
 
-await tar.c(
-  {
-    file,
-    cwd: distDir,
-    prefix: '@vcmap/ui',
-  },
-  ['index.html', 'assets', ...rootFiles],
-);
+await tar.c({ file, cwd: distDir, prefix: '@vcmap/ui' }, [
+  'index.html',
+  'assets',
+  ...rootFiles,
+]);
 
 await tar.u(
-  {
-    file,
-    cwd: joinPath(distDir, 'plugins', '@vcmap'),
-    prefix: '@vcmap',
-  },
+  { file, cwd: joinPath(distDir, 'plugins', '@vcmap'), prefix: '@vcmap' },
   ['.'],
 );
 
@@ -47,7 +41,13 @@ await new Promise((resolve, reject) => {
     [createReadStream(file), createGzip(), createWriteStream(`${file}.gz`)],
     (err) => {
       if (err) {
-        reject(err);
+        reject(
+          err instanceof Error
+            ? err
+            : new Error(
+                typeof err === 'string' ? err : inspect(err, { depth: null }),
+              ),
+        );
       } else {
         resolve();
       }

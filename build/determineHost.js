@@ -21,7 +21,7 @@ export function determineHostIpFromInterfaces() {
 /**
  * @param {number} [defaultPort=8080]
  * @param {boolean} [defaultHttps=false]
- * @param {string} [defaultHost='127.0.0.1']
+ * @param {string} [defaultHost='localhost']
  * @returns {string}
  */
 export function determineHostFromArgv(

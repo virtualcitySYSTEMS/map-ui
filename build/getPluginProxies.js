@@ -7,7 +7,7 @@ import {
   getPluginNames,
 } from './buildHelpers.js';
 
-async function getTsPlugins(pluginsDir, plugins) {
+function getTsPlugins(pluginsDir, plugins) {
   return plugins.filter((plugin) =>
     existsSync(
       path.join(pluginsDir, 'node_modules', plugin, 'src', 'index.ts'),
@@ -17,9 +17,9 @@ async function getTsPlugins(pluginsDir, plugins) {
 
 /**
  * Determines the proxy setting to serve plugins referrenced in the package.json in the plugins directory
- * @param {string} [target=http://localhost:8080]
+ * @param {string} [target='http://localhost:8080']
  * @param {boolean} [production=false]
- * @returns {Promise<Record<string, string | import("vite").ProxyOptions>>}
+ * @returns {Promise<Record<string, string|import('vite').ProxyOptions>>}
  */
 export default async function getPluginProxies(
   target = 'http://localhost:8080',
@@ -28,9 +28,8 @@ export default async function getPluginProxies(
   const root = process.cwd();
   const pluginsDir = getPluginDirectory();
   const plugins = await getPluginNames();
-  const tsPlugins = await getTsPlugins(pluginsDir, plugins);
+  const tsPlugins = getTsPlugins(pluginsDir, plugins);
   const proxies = {};
-
   plugins.forEach((plugin) => {
     const indexJs = tsPlugins.includes(plugin) ? 'index.ts' : 'index.js';
     proxies[`^/plugins/${plugin}/.*`] = {
@@ -40,7 +39,6 @@ export default async function getPluginProxies(
           .replace(new RegExp(`^/plugins/${plugin}/`), '')
           .split('?');
         let file = rest || indexJs;
-
         if (file === 'index.js' && tsPlugins.includes(plugin)) {
           file = indexJs;
         }
@@ -62,9 +60,7 @@ export default async function getPluginProxies(
       },
     };
   });
-
   const inlinePlugins = await getInlinePlugins();
-
   inlinePlugins.forEach((inlinePlugin) => {
     proxies[`/plugins/${inlinePlugin}/index.js`] = {
       target,
@@ -73,6 +69,5 @@ export default async function getPluginProxies(
       },
     };
   });
-
   return proxies;
 }

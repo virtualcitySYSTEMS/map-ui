@@ -7,27 +7,16 @@ import { libraries } from './buildHelpers.js';
 const configMain = defineConfig({
   resolve: {
     alias: {
-      '@vcmap/ui': `${path.resolve(process.cwd(), 'index.js')}`,
+      '@vcmap/ui': path.resolve(process.cwd(), 'index.js'),
+
       '@cesium/engine': '@vcmap-cesium/engine',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
     dedupe: Object.keys(libraries),
   },
-  define: {
-    'process.env.NODE_ENV': '"development"',
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler', // or "modern", "legacy"
-      },
-    },
-  },
-  plugins: [
-    vue3({
-      template: { transformAssetUrls },
-    }),
-  ],
+
+  define: { 'process.env.NODE_ENV': '"development"' },
+  plugins: [vue3({ template: { transformAssetUrls } })],
 });
 
 export default configMain;

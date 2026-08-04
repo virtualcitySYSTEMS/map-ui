@@ -16,19 +16,25 @@ export function getProjectPath(...pathSegments) {
   );
 }
 
+/**
+ * @param {string} filePath
+ * @returns {Promise<string>}
+ */
 export async function getFileMd5(filePath) {
   const hash = createHash('md5');
   const stream = fs.createReadStream(filePath);
-
   for await (const chunk of stream) {
     hash.update(chunk);
   }
   return hash.digest('hex');
 }
 
+/**
+ * @param {string} filePath
+ * @returns {AsyncGenerator<string>}
+ */
 export async function* getFilesInDirectory(filePath) {
   const entries = await fs.promises.readdir(filePath, { withFileTypes: true });
-
   for (const file of entries) {
     if (file.isDirectory()) {
       yield* getFilesInDirectory(path.join(filePath, file.name));
@@ -51,7 +57,7 @@ export function getPluginDirectory() {
  * @param {boolean} [noOptional=false]
  * @returns {Promise<Array<string>>}
  */
-export async function getPluginNames(noOptional) {
+export async function getPluginNames(noOptional = false) {
   const pluginsDir = getPluginDirectory();
   const packageJsonContent = await fs.promises.readFile(
     path.join(pluginsDir, 'package.json'),
@@ -94,7 +100,6 @@ export async function getInlinePlugins() {
       plugins.push(d.name);
     }
   });
-
   await Promise.all(
     scopes.map(async (scope) => {
       const scopeDirs = await fs.promises.readdir(
@@ -108,7 +113,6 @@ export async function getInlinePlugins() {
         });
     }),
   );
-
   return plugins;
 }
 
@@ -116,11 +120,11 @@ export async function getInlinePlugins() {
  * Writes content in the file and replaces references to public assets with the hashed url.
  * @param {string} filePath
  * @param {string} content
- * @param {Map<string, string>?} rewrittenPublicAssets
- * @param {string?} assetsPrefix prefixes the hashed asset url with this string
+ * @param {Map<string, string>} [rewrittenPublicAssets]
+ * @param {string} [assetsPrefix] prefixes the hashed asset url with this string
  * @returns {Promise<void>}
  */
-export async function writeRewrittenFile(
+function writeRewrittenFile(
   filePath,
   content,
   rewrittenPublicAssets,
@@ -138,15 +142,19 @@ export async function writeRewrittenFile(
   return fs.promises.writeFile(filePath, fileContent);
 }
 
+function isRolldownOutput(output) {
+  return output.output !== undefined;
+}
+
 /**
  * builds the given configuration and writes the library to the provided outputFolder. If the build contains css a .css
  * file will also be written and injected into the .js file.
- * @param {Object} libraryConfig Vitejs InlineConfig
+ * @param {import('vite').InlineConfig} libraryConfig Vitejs InlineConfig
  * @param {string} outputFolder
  * @param {string} library
- * @param {string} [hash]
- * @param {boolean} [base64Css = false] inline css. must be true for plugins
- * @param {undefined|Map} [rewrittenPublicAssets=undefined] rewrittenPublicAssets Map of original filename to Hashed Filename in public folder
+ * @param {string} [hash='']
+ * @param {boolean} [base64Css=false] inline css. must be true for plugins
+ * @param {Map<string, string>} [rewrittenPublicAssets] Map of original filename to Hashed Filename in public folder
  * @returns {Promise<void>}
  */
 export async function buildLibrary(
@@ -170,15 +178,12 @@ function loadCss(href) {
     document.head.appendChild(elem);
   });
 }`;
-
   const write = async (output) => {
     const addedHash = hash ? `-${hash}` : '';
     let css = false;
     if (output[1] && output[1].type === 'asset') {
       if (base64Css) {
-        css = `data:text/css;base64,${Buffer.from(output[1].source).toString(
-          'base64',
-        )}`;
+        css = `data:text/css;base64,${Buffer.from(output[1].source).toString('base64')}`;
       } else {
         await writeRewrittenFile(
           path.join(
@@ -201,12 +206,11 @@ function loadCss(href) {
       let code = css ? `${cssInjectorCode} await loadCss('${css}');` : '';
       // inject materialDesignIcons here. We removed it earlier from the index.html
       if (library === 'ui') {
-        const hashedPath = rewrittenPublicAssets.get(
+        const hashedPath = rewrittenPublicAssets?.get(
           'assets/@mdi/font/css/materialdesignicons.min.css',
         );
         code += `await loadCss('./${path.posix.join('assets', hashedPath)}');`;
       }
-
       code += output[0].code;
       await writeRewrittenFile(
         path.join(
@@ -220,38 +224,92 @@ function loadCss(href) {
       );
     }
   };
-
   const libraryBuilds = await build(libraryConfig);
   if (Array.isArray(libraryBuilds)) {
     await write(libraryBuilds[0].output);
-  } else if (libraryBuilds.output) {
+  } else if (isRolldownOutput(libraryBuilds)) {
     await write(libraryBuilds.output);
   } else {
     /**
-     * This is used by the plugin-cli. If the libraryConfic includes watch: { }
-     * Rollup will start in Watch Mode. So we restart the browser on filechanges in the plugin-cli preview mode.
-     * See: https://rollupjs.org/javascript-api/#rollup-watch
-     * Also we need to add our BUNDLE_END event onCurrentRun, otherwise the bundle is already closed by vitejs.
-     * See: https://github.com/vitejs/vite/blob/main/packages/vite/src/node/build.ts#L674
+     * This is used by the plugin-cli. If the libraryConfig includes watch: { }
+     * Rolldown will start in Watch Mode, so we restart the browser on filechanges in the plugin-cli preview mode.
+     * See: https://rolldown.rs/apis/bundler-api#watch
+     *
+     * Unlike Rollup, Rolldown's watcher does not expose `onCurrentRun` and the
+     * `result` passed with the `BUNDLE_END` event only exposes `close()` (no more
+     * `generate()`). The `event.output` array does *not* contain the emitted file
+     * paths either (it only contains the configured output directory), so we
+     * cannot discover the emitted files from the event itself. Instead we compute
+     * the raw file paths Rolldown writes ourselves (they match the `outDir` /
+     * `fileName` of the config, i.e. the same location `write()` uses below) and
+     * read them back from disk, so post-processing (css injection / asset
+     * rewriting) keeps working. This requires the caller to *not* set
+     * `watch.skipWrite`, otherwise Rolldown never writes the raw files for us to
+     * read. We must call `result.close()` ourselves to avoid resource leaks.
+     *
+     * IMPORTANT: unlike the non-watch branches above, `build()` resolves as soon as
+     * the watcher is created, not once the first bundle has actually been written.
+     * Callers (e.g. the plugin-cli, which builds the plugin under development with
+     * watch: true before building the other @vcmap/ui preview plugins) rely on
+     * `buildLibrary()` only resolving once the initial build is written to disk.
+     * Without waiting for the first `BUNDLE_END`, subsequent steps that write into
+     * the same `dist` folder can race with Rolldown's own first write and end up
+     * with their freshly written files removed/overwritten. We therefore await the
+     * first `BUNDLE_END` (or bail out on an `ERROR` event) before resolving, while
+     * still keeping the listener alive to handle subsequent rebuilds.
      */
-    libraryBuilds.on('event', (event) => {
-      if (event.code === 'START') {
-        libraryBuilds.onCurrentRun('event', async (innerEvent) => {
-          if (innerEvent.code === 'BUNDLE_END') {
-            const res = await innerEvent.result.generate(
-              libraryConfig?.build?.rollupOptions?.output ?? {},
-            );
-            await write(res.output);
-          }
-        });
-      }
+    const addedHash = hash ? `-${hash}` : '';
+    const rawOutputDir = path.join(process.cwd(), 'dist', outputFolder);
+    const rawJsFile = path.join(rawOutputDir, `${library}${addedHash}.js`);
+    const rawCssFile = path.join(rawOutputDir, `${library}${addedHash}.css`);
+    await new Promise((resolve, reject) => {
+      let settled = false;
+      libraryBuilds.on('event', (event) => {
+        if (event.code === 'BUNDLE_END') {
+          // eslint-disable-next-line no-void
+          void (async () => {
+            try {
+              const outputEntries = [];
+              if (fs.existsSync(rawJsFile)) {
+                outputEntries.push({
+                  type: 'chunk',
+                  code: await fs.promises.readFile(rawJsFile, 'utf8'),
+                });
+              }
+              if (fs.existsSync(rawCssFile)) {
+                outputEntries.push({
+                  type: 'asset',
+                  source: await fs.promises.readFile(rawCssFile, 'utf8'),
+                });
+              }
+              if (outputEntries.length) {
+                await write(outputEntries);
+              }
+              if (!settled) {
+                settled = true;
+                resolve();
+              }
+            } catch (e) {
+              if (!settled) {
+                settled = true;
+                reject(e);
+              }
+            } finally {
+              await event.result.close();
+            }
+          })();
+        } else if (event.code === 'ERROR' && !settled) {
+          settled = true;
+          reject(event.error ?? new Error('Rolldown watch build failed'));
+        }
+      });
     });
   }
 }
 
 /**
  * A map, mapping external module name to output library name.
- * @enum {string}
+ * @type {Record<string, string>}
  */
 export const libraries = {
   vue: 'vue',
@@ -294,21 +352,15 @@ async function buildInlinePlugin(
       .split(path.sep)
       .join(path.posix.sep);
   });
-
   const pluginDir = isDependend
     ? getProjectPath('plugins', 'node_modules', plugin)
     : getProjectPath('plugins', plugin);
-
   const isTs = fs.existsSync(path.join(pluginDir, 'src', 'index.ts'));
   const entry = isTs
     ? path.join(pluginDir, 'src', 'index.ts')
     : path.join(pluginDir, 'src', 'index.js');
-
   const pluginConfig = {
     ...baseConfig,
-    esbuild: {
-      minify,
-    },
     build: {
       write: false,
       emptyOutDir: false,
@@ -316,12 +368,13 @@ async function buildInlinePlugin(
       lib: {
         entry,
         formats: ['es'],
-        fileName: 'index',
+        fileName: () => 'index.js', // Vite 8+ Rolldown: must be function returning filename with extension
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: Object.keys(libraries),
         output: {
-          manualChunks: () => 'index.js',
+          minify,
+          codeSplitting: false, // Vite 8+ Rolldown: force single chunk instead of deprecated manualChunks
           paths: relativePluginPaths,
         },
       },
@@ -356,13 +409,11 @@ async function buildDependentPlugin(pluginName) {
   if (pluginName.startsWith('@')) {
     [scope, name] = pluginName.split('/');
   }
-
   await fs.promises.cp(
     path.join(pluginsDirectory, 'node_modules', scope, name, 'dist'),
     path.join(process.cwd(), 'dist', 'plugins', scope, name),
     { recursive: true, force: true },
   );
-
   // must be copied one after the other to avoid race conditions
   await Promise.all(
     toCopy.map(async (entry) => {
@@ -396,7 +447,7 @@ function filterDependentPlugins(dependentPlugins, pluginIsBuild = true) {
 
 /**
  * Will build a preview of all the current plugins & inline plugins
- * @param {import("vite").InlineConfig} [baseConfig={}] - the base config to use. build & esbuild will be completely overwritten
+ * @param {import('vite').InlineConfig} [baseConfig] - the base config to use. build & esbuild will be completely overwritten
  * @param {boolean} [minify=true]
  * @returns {Promise<void>}
  */
@@ -411,11 +462,9 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
     dependentPlugins,
     false,
   );
-
   const promises = inlinePlugins.map((plugin) =>
     buildInlinePlugin(plugin, baseConfig, minify),
   );
-
   promises.push(
     ...buildDependentPlugins.map(async (pluginName) =>
       buildDependentPlugin(pluginName),
@@ -427,6 +476,10 @@ export async function buildPluginsForPreview(baseConfig = {}, minify = true) {
   await Promise.all(promises);
 }
 
+/**
+ * @param {import('vite').InlineConfig} [baseConfig]
+ * @returns {Promise<void>}
+ */
 export async function buildPluginsForBundle(baseConfig = {}) {
   const inlinePlugins = await getInlinePlugins();
   const dependentPlugins = await getPluginNames(false);
@@ -438,7 +491,6 @@ export async function buildPluginsForBundle(baseConfig = {}) {
   const promises = inlinePlugins
     .filter((plugin) => plugin.startsWith('@vcmap/'))
     .map((plugin) => buildInlinePlugin(plugin, baseConfig, true));
-
   promises.push(
     ...buildDependentPlugins.map(async (pluginName) =>
       buildDependentPlugin(pluginName),

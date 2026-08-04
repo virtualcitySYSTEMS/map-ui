@@ -4,11 +4,12 @@
 
 - Updated @vcmap/core to 7.0.0
   - Updated Cesium to 1.142
-  - Updated OpenLayers to 10.9.0
+  - Updated OpenLayers to 10.10.0
 
 ### Breaking Changes
 
 - Changed CI/CD from Node 20 to 24
+- Updated vite to version 8.2
 - Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
 - Removed deprecated `draggable` property of the CollectionComponentClass
 

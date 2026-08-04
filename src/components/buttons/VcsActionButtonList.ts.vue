@@ -45,7 +45,8 @@
 
 <script lang="ts">
   import { VIcon, VMenu, VSpacer } from 'vuetify/components';
-  import { defineComponent, type PropType } from 'vue';
+  import { computed, defineComponent, inject, type PropType } from 'vue';
+  import type VcsUiApp from '../../vcsUiApp.js';
   import VcsButton from './VcsButton.ts.vue';
   import VcsToolButton from './VcsToolButton.ts.vue';
   import VcsFormButton from './VcsFormButton.ts.vue';
@@ -131,50 +132,56 @@
         default: 'bottom',
       },
     },
-    computed: {
-      right(): boolean {
-        return this.$attrs.right !== undefined && this.$attrs.right !== false;
-      },
-      computedCount(): number {
+    setup(props, { attrs }) {
+      const app = inject('vcsApp') as VcsUiApp;
+      const right = computed(
+        () => attrs.right !== undefined && attrs.right !== false,
+      );
+      const computedCount = computed(() => {
         if (
-          !this.forceOverflow &&
-          this.actions.length === this.overflowCount + 1
+          !props.forceOverflow &&
+          props.actions.length === props.overflowCount + 1
         ) {
-          return this.actions.length;
+          return props.actions.length;
         }
-        return this.overflowCount;
-      },
-      buttons(): VcsAction[] {
-        const buttons = this.actions
+        return props.overflowCount;
+      });
+      const buttons = computed(() => {
+        const b = props.actions
           .filter((i) => i.icon)
-          .slice(0, this.computedCount);
-        if (this.right) {
-          return buttons.reverse();
+          .slice(0, computedCount.value);
+        if (right.value) {
+          return b.reverse();
         }
-        return buttons;
-      },
-      overflowButtons(): VcsAction[] {
-        const buttonsNames = this.buttons.map((i) => i.name);
-        return this.actions
-          .filter((i) => !buttonsNames.includes(i.name))
-          .map((i) => {
-            const { title, ...button } = i;
-            if (
-              title &&
-              jaccardSimilarity(this.$st(i.name), this.$st(title)) > 0.5
-            ) {
-              return button;
-            }
-            return i;
-          });
-      },
-      classes(): string[] {
-        const classes = ['d-flex', 'align-center', 'action-btn-wrap'];
-        if (this.right) {
-          classes.push('justify-end');
-        }
-        return classes;
-      },
+        return b;
+      });
+
+      return {
+        buttons,
+        overflowButtons: computed(() => {
+          const buttonsNames = buttons.value.map((i) => i.name);
+          return props.actions
+            .filter((i) => !buttonsNames.includes(i.name))
+            .map((i) => {
+              const { title, ...button } = i;
+              if (
+                title &&
+                jaccardSimilarity(app.vueI18n.t(i.name), app.vueI18n.t(title)) >
+                  0.5
+              ) {
+                return button;
+              }
+              return i;
+            });
+        }),
+        classes: computed(() => {
+          const classes = ['d-flex', 'align-center', 'action-btn-wrap'];
+          if (right.value) {
+            classes.push('justify-end');
+          }
+          return classes;
+        }),
+      };
     },
   });
 </script>

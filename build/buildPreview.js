@@ -3,7 +3,7 @@ import path from 'path';
 import vcsOl from '@vcmap/rollup-plugin-vcs-ol';
 import { buildPluginsForPreview, getProjectPath } from './buildHelpers.js';
 
-console.log('Building Plugins');
+console.log('Building plugins');
 await Promise.all([
   buildPluginsForPreview(
     {

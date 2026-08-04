@@ -20,26 +20,28 @@ import {
 } from './buildHelpers.js';
 
 const execPromise = promisify(exec);
+
 /**
- * @typedef {Object} LibraryBuildOption
+ *  @typedef LibraryBuildOption
  * @property {string} lib
  * @property {string} entry
+ * @property {string} hash
  * @property {string} [libraryEntry]
- * @property {import("rollup").RollupOptions} [rollupOptions]
+ * @property {import('vite').Rolldown.RolldownOptions} [rolldownOptions]
  */
 
 /**
- * @returns {{ libraryBuildOptions: Object<string, LibraryBuildOption>, libraryPaths: Object<string, string> }}
+ * @returns {{ libraryBuildOptions: Record<string, LibraryBuildOption>, libraryPaths: Record<string, string> }}
  */
 function hashLibraries() {
-  /** @type {Object<string, LibraryBuildOption>} */
-  const libraryBuildOptions = {
+  /** @type {Record<string, Omit<LibraryBuildOption, 'lib' | 'hash'>>} */
+  const libraryBuildOptionsInput = {
     vue: {
       entry: path.join('lib', 'vue.js'),
     },
     '@vcmap-cesium/engine': {
       entry: path.join('lib', 'cesium.js'),
-      rollupOptions: {
+      rolldownOptions: {
         plugins: [
           rollupPluginStripPragma({
             pragmas: ['debug'],
@@ -50,26 +52,27 @@ function hashLibraries() {
     ol: {
       entry: path.join('lib', 'olLib.js'),
       libraryEntry: path.join('lib', 'ol.js'), // openlayers special case, the entry to compile is the olLib, but the public entry must be ol.js
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: () => 'ol.js', // this is needed, otherwise vitejs will create multiple chunks for openlayers.
+          codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
         },
       },
     },
     '@vcmap/core': {
       entry: path.join('lib', 'core.js'),
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: () => 'core.js', // this is needed, otherwise vitejs will create multiple chunks.
+          codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
         },
         plugins: [vcsOl()],
       },
     },
     '@vcmap/ui': {
-      rollupOptions: {
+      rolldownOptions: {
         plugins: [
           vcsOl(),
           {
+            name: 'replace-cesium-build-path',
             transform(source, sid) {
               if (/src(\/|\\)setup.js/.test(sid)) {
                 return source.replace(
@@ -90,23 +93,31 @@ function hashLibraries() {
       // vuetifyLib will reexport the nested vuetify namespace as a flat namespace, so we can easily point all
       // nested namespaces to the vuetify entry file.
       libraryEntry: path.join('lib', 'vuetify.js'),
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: () => 'vuetify.js', // this is needed, otherwise vitejs will create multiple chunks.
+          codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
         },
       },
     },
   };
 
+  /** @type {Record<string, string>} */
   const libraryPaths = {};
-  Object.entries(libraryBuildOptions).forEach(([key, value]) => {
+  /** @type {Record<string, LibraryBuildOption>} */
+  const libraryBuildOptions = {};
+  Object.entries(libraryBuildOptionsInput).forEach(([key, value]) => {
     if (!libraries[key]) {
       throw new Error(`Trying to build unexported library ${key}`);
     }
-    value.lib = libraries[key];
-    value.hash = `${uuid().substring(0, 8)}`;
-    libraryPaths[key] = `./${value.lib}-${value.hash}.js`;
-    value.rollupOptions = value.rollupOptions ? value.rollupOptions : {};
+    const lib = libraries[key];
+    const hash = uuid().substring(0, 8);
+    libraryPaths[key] = `./${lib}-${hash}.js`;
+    libraryBuildOptions[key] = {
+      ...value,
+      lib,
+      hash,
+      rolldownOptions: value.rolldownOptions ?? {},
+    };
   });
 
   // Handle extended Vuetify libraries
@@ -125,7 +136,7 @@ function hashLibraries() {
 }
 
 const { libraryBuildOptions, libraryPaths } = hashLibraries();
-console.log('Building ol dump file');
+console.log('Building OL dump file');
 await generateOLLib();
 
 const distFolder = path.join(process.cwd(), 'dist');
@@ -261,10 +272,12 @@ await Promise.all(
       return key !== library && !library.startsWith(key);
     });
 
+    /** @type {import('vite').Rolldown.RolldownOutput} */
     const output = {
-      ...value.rollupOptions?.output,
+      ...value.rolldownOptions?.output,
       paths: libraryPaths,
     };
+    /** @type {import('vite').Rolldown.InlineConfig} */
     const libraryConfig = {
       configFile: './build/commonViteConfig.js',
       define: {
@@ -276,10 +289,10 @@ await Promise.all(
         lib: {
           entry: path.resolve(process.cwd(), value.entry),
           formats: ['es'],
-          fileName: `${value.lib}-${value.hash}`,
+          fileName: () => `${value.lib}-${value.hash}.js`,
         },
-        rollupOptions: {
-          ...value.rollupOptions,
+        rolldownOptions: {
+          ...value.rolldownOptions,
           output,
           external,
         },
@@ -293,29 +306,25 @@ await Promise.all(
       false,
       hashedPublicFiles,
     );
+
     console.log('Building Library Entry: ', key);
 
+    /** @type {import('vite').Rolldown.InlineConfig} */
     const libraryEntryConfig = {
       configFile: false,
-      define: {
-        'process.env.NODE_ENV': '"production"',
-      },
+      define: { 'process.env.NODE_ENV': '"production"' },
       build: {
         emptyOutDir: false,
         copyPublicDir: false,
         lib: {
           entry: path.resolve(process.cwd(), value.libraryEntry || value.entry),
           formats: ['es'],
-          fileName: () => {
-            return `assets/${value.lib}.js`;
-          },
+          fileName: () => `assets/${value.lib}.js`,
         },
-        rollupOptions: {
-          ...value.rollupOptions,
+        rolldownOptions: {
+          ...value.rolldownOptions,
           external: [key],
-          output: {
-            paths: libraryPaths,
-          },
+          output: { paths: libraryPaths },
         },
       },
     };
@@ -323,10 +332,11 @@ await Promise.all(
   }),
 );
 
+console.log('Hashing core workers');
 /**
  * copy and hash the core workers
+ * @returns {Promise<void>}
  */
-console.log('Hashing core workers');
 async function hashWorkers() {
   const coreFileUrl = await import.meta.resolve('@vcmap/core');
   const corePath = path.join(path.dirname(fileURLToPath(coreFileUrl)), '..');
@@ -335,6 +345,7 @@ async function hashWorkers() {
     console.log('Found unbuilt core workers, building them');
     await execPromise('npm run build', { cwd: corePath });
   }
+  /** @type {string[]} */
   const workers = await readdir(coreWorkerDirectory);
   await Promise.all(
     workers.map(async (worker) => {
@@ -361,4 +372,4 @@ await hashWorkers();
  * Copy Cesium Static Assets to the dist/assets folder
  */
 await buildCesium();
-console.log('Finished Building vcMap');
+console.log('Finished building vcMap');
