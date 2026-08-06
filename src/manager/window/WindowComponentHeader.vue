@@ -65,7 +65,7 @@
   import { createEllipseTooltip } from '../../components/composables.ts';
   import VcsButton from '../../components/buttons/VcsButton.ts.vue';
   import VcsActionButtonList from '../../components/buttons/VcsActionButtonList.ts.vue';
-  import { createLinkAction } from '../../actions/actionHelper.js';
+  import { createLinkAction } from '../../actions/actionHelper.ts';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
 
   /**

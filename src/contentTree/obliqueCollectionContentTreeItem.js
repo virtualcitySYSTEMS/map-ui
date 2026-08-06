@@ -2,9 +2,9 @@ import { ObliqueMap, DefaultObliqueCollection } from '@vcmap/core';
 import { parseBoolean } from '@vcsuite/parsers';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { setViewpointAction } from './layerContentTreeItem.js';
-import { StateActionState } from '../actions/stateRefAction.js';
+import { StateActionState } from '../actions/stateRefAction.ts';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
-import { executeCallbacks } from '../callback/vcsCallback.js';
+import { executeCallbacks } from '../callback/vcsCallback.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { collectionName: string, showWhenNotSupported?: boolean }} ObliqueCollectionContentTreeItemOptions

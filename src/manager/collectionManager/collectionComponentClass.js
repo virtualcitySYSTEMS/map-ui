@@ -5,12 +5,12 @@ import { computed, reactive, ref, shallowRef, watch } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { check, oneOf } from '@vcsuite/check';
 import { validateAction } from '../../components/lists/VcsActionList.ts.vue';
-import { sortByWeight } from '../buttonManager.js';
+import { sortByWeight } from '../buttonManager.ts';
 import {
   createListItemBulkAction,
   createListItemDeleteAction,
-} from '../../actions/listActions.js';
-import { sortByOwner } from '../navbarManager.js';
+} from '../../actions/listActions.ts';
+import { sortByOwner } from '../navbarManager.ts';
 
 /**
  * @template T
@@ -165,7 +165,7 @@ function createPagination(
  */
 
 /**
- * @typedef {import("../../components/lists/VcsListItemComponent.ts.vue").VcsListItem & {
+ * @typedef {import("../../components/lists/listHelper.js").VcsListItem & {
  *   actions: Array<import("../../actions/actionHelper.js").VcsAction & { weight?: number }>,
  *   clickedCallbacks: Array<function(PointerEvent):void>,
  *   destroy: function():void|undefined
@@ -184,7 +184,7 @@ function destroyListItem(listItem) {
 /**
  * Renames the title of an item for VcsObject based items.
  * @param {import("@vcmap/core").VcsObject} item
- * @param {import("../../components/lists/VcsListItemComponent.ts.vue").VcsListItem} listItem
+ * @param {import("../../components/lists/listHelper.js").VcsListItem} listItem
  * @param {string} newTitle
  */
 function titleChanged(item, listItem, newTitle) {
@@ -434,7 +434,7 @@ class CollectionComponentClass {
   }
 
   /**
-   * @returns {import("vue").ComputedRef<import("../../actions/actionHelper.js").VcsAction[]>}
+   * @returns {import("vue").ComputedRef<import("../../actions/actionHelper.ts").VcsAction[]>}
    */
   getActions() {
     return computed(() => this._actions.value.map(({ action }) => action));

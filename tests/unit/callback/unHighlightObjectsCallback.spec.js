@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FeatureLayer, Layer, VectorStyleItem } from '@vcmap/core';
-import UnHighlightObjectsCallback from '../../../src/callback/unHighlightObjectsCallback.js';
+import UnHighlightObjectsCallback from '../../../src/callback/unHighlightObjectsCallback.ts';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import { executeCallbacks } from '../../../src/callback/vcsCallback.js';
+import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 
 describe('UnHighlightObjectsCallback', () => {
   /** @type {VcsUiApp} */

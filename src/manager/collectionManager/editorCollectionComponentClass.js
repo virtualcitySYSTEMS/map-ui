@@ -2,7 +2,7 @@ import { nextTick, reactive, watch } from 'vue';
 import { check, maybe, oneOf } from '@vcsuite/check';
 import { WindowSlot } from '../window/windowManager.js';
 import CollectionComponentClass from './collectionComponentClass.js';
-import { createListEditAction } from '../../actions/listActions.js';
+import { createListEditAction } from '../../actions/listActions.ts';
 import { categoryManagerWindowId } from '../../application/VcsApp.vue';
 
 /**
@@ -268,7 +268,6 @@ export function makeEditorCollectionComponentClass(
       editorCollectionComponent.selection,
       openMultiEditorWindow,
       app.windowManager,
-      editorCollectionComponent.owner,
       getMultiEditorWindowId(),
       editingOptions.bulkEditTitle,
     );

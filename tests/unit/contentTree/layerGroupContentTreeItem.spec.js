@@ -10,7 +10,7 @@ import {
 import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerGroupContentTreeItem from '../../../src/contentTree/layerGroupContentTreeItem.js';
-import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 
 describe('LayerGroupContentTreeItem', () => {
   describe('if no layers are present', () => {

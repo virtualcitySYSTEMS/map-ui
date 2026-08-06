@@ -25,8 +25,8 @@ import { reactive, readonly, ref } from 'vue';
  * @property {string} [checkBoxText]
  * @property {string} [buttonTitle]
  * @property {string} [secondaryButtonTitle]
- * @property {Array<import("./callback/vcsCallback.js").VcsCallbackOptions>} [exitCallbackOptions]
- * @property {Array<import("./callback/vcsCallback.js").VcsCallbackOptions>} [secondaryCallbackOptions]
+ * @property {Array<import("./callback/vcsCallback.ts").VcsCallbackOptions>} [exitCallbackOptions]
+ * @property {Array<import("./callback/vcsCallback.ts").VcsCallbackOptions>} [secondaryCallbackOptions]
  * @property {boolean} [menuEntry]
  * @property {boolean} [acceptInput]
  * @property {boolean} [requireInputForSecondary] Whether the Secondary Button is disabled as well as long as the checkbox is not checked.

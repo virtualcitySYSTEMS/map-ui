@@ -3,7 +3,7 @@ import { parseBoolean } from '@vcsuite/parsers';
 import { reactive } from 'vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
-import { executeCallbacks } from '../callback/vcsCallback.js';
+import { executeCallbacks } from '../callback/vcsCallback.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { flightName: string, showWhenNotSupported?: boolean }} FlightContentTreeItemOptions

@@ -1,0 +1,96 @@
+<template>
+  <v-sheet
+    :style="{
+      transform: `rotate(${compassRotation}deg)`,
+      transition: 'transform 0.2s ease',
+    }"
+    @click="alignNorth"
+    class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none vcs-compass"
+    elevation="1"
+    :height="height"
+    :width="width"
+  >
+    <span>N</span>
+    <MapNavCompass
+      class="position-absolute top-0 bottom-0 right-0 left-0 text-primary"
+      @click="!xs && $event.stopPropagation()"
+      @direction-click="$emit('update:modelValue', $event)"
+      :can-emit="
+        !disabled &&
+        !xs &&
+        (viewMode === '3d' || viewMode === 'oblique' || viewMode === 'panorama')
+      "
+      :hide-ticks="viewMode === 'oblique'"
+    />
+  </v-sheet>
+</template>
+
+<script lang="ts">
+  import { defineComponent, computed, ref } from 'vue';
+  import { useDisplay } from 'vuetify';
+  import { VSheet } from 'vuetify/components';
+  import MapNavCompass from './MapNavCompass.ts.vue';
+  import { useFontSize } from '../vuePlugins/vuetify.js';
+
+  /**
+   * @description Compass component to be shown on the map.
+   * @vue-prop {OrientationToolsViewMode}  viewMode  - Mode of the map. Defines the behaviour of the compass.
+   * @vue-prop {number}                     modelValue     - Number of degrees of the compass rotation.
+   * @vue-prop {boolean} disabled - whether compass should be disabled
+   */
+  export default defineComponent({
+    name: 'VcsCompass',
+    components: {
+      MapNavCompass,
+      VSheet,
+    },
+    props: {
+      viewMode: {
+        type: String,
+        required: true,
+      },
+      modelValue: {
+        type: Number,
+        default: 0,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+      const rotationValue = ref(props.modelValue);
+
+      const { xs } = useDisplay();
+      const fontSize = useFontSize();
+      const height = computed(() => fontSize.value * 5);
+      const width = computed(() => fontSize.value * 5);
+
+      return {
+        xs,
+        rotationValue,
+        compassRotation: computed(() => -1 * rotationValue.value),
+        height,
+        width,
+        alignNorth(): void {
+          if (props.modelValue % 360 !== 0) {
+            emit('update:modelValue', 0);
+          }
+        },
+      };
+    },
+    watch: {
+      modelValue(newValue, oldValue) {
+        let diff = newValue - oldValue;
+        if (diff > 180) {
+          diff -= 360;
+        } else if (diff < -180) {
+          diff += 360;
+        }
+        this.rotationValue += diff;
+      },
+    },
+  });
+</script>
+<style lang="scss" scoped></style>

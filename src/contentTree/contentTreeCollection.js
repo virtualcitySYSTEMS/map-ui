@@ -10,8 +10,8 @@ import { vcsAppSymbol } from '../pluginHelper.js';
 import SubContentTreeItem, { subTreeSymbol } from './subContentTreeItem.js';
 import LayerTree from './LayerTree.vue';
 import { WindowSlot } from '../manager/window/windowManager.js';
-import { createToggleAction } from '../actions/actionHelper.js';
-import { ButtonLocation } from '../manager/navbarManager.js';
+import { createToggleAction } from '../actions/actionHelper.ts';
+import { ButtonLocation } from '../manager/navbarManager.ts';
 
 /**
  * @type {symbol}

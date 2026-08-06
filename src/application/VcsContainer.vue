@@ -45,7 +45,7 @@
   import PanelManagerComponent from '../manager/panel/PanelManagerComponent.vue';
   import WindowManagerComponent from '../manager/window/WindowManager.vue';
   import ToolboxManagerComponent from '../manager/toolbox/ToolboxManagerComponent.vue';
-  import NotifierComponent from '../notifier/NotifierComponent.vue';
+  import NotifierComponent from '../notifier/NotifierComponent.ts.vue';
   import { isMobileLandscape } from '../vuePlugins/vuetify.js';
 
   /**

@@ -5,8 +5,8 @@ import { watch } from 'vue';
 import { OpenlayersMap, WMSLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.js';
-import { StateActionState } from '../../../src/actions/stateRefAction.js';
-import { legendSymbol } from '../../../src/legend/legendHelper.js';
+import { StateActionState } from '../../../src/actions/stateRefAction.ts';
+import { legendSymbol } from '../../../src/legend/legendHelper.ts';
 
 async function getWMSPoiXML() {
   const wmsPOIXML = await fs.promises.readFile('./tests/data/wms_poi_open.xml');

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { FeatureLayer } from '@vcmap/core';
-import HideObjectsCallback from '../../../src/callback/hideObjectsCallback.js';
+import HideObjectsCallback from '../../../src/callback/hideObjectsCallback.ts';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import { executeCallbacks } from '../../../src/callback/vcsCallback.js';
+import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 
 describe('HideObjectsCallback', () => {
   /** @type {VcsUiApp} */

@@ -136,7 +136,7 @@ export function isSlotPosition(windowPosition) {
  * @property {OptionsOrRef<boolean>} [hidePin] be used to not show the pin button.
  * @property {OptionsOrRef<string|string[]>} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
  * @property {OptionsOrRef<string>} [headerIcon]
- * @property {OptionsOrRef<Array<import("../../actions/actionHelper.js").VcsAction>>} [headerActions]
+ * @property {OptionsOrRef<Array<import("../../actions/actionHelper.ts").VcsAction>>} [headerActions]
  * @property {OptionsOrRef<number>} [headerActionsOverflow]
  * @property {OptionsOrRef<string>} [infoUrl] An optional url referencing help or further information on the window's content.
  * @property {OptionsOrRef<function():string>} [infoUrlCallback] An optional function returning an url referencing help or further information. Can be used for urls depending on the app's locale, e.g. app.getHelpUrl()
@@ -153,7 +153,7 @@ export function isSlotPosition(windowPosition) {
  * @property {boolean} [hidePin] be used to not show the pin button.
  * @property {string|string[]} [headerTitle] An optional translatable header. If an array is provided all elements are translated and joined afterward.
  * @property {string} [headerIcon]
- * @property {Array<import("../../actions/actionHelper.js").VcsAction>} [headerActions]
+ * @property {Array<import("../../actions/actionHelper.ts").VcsAction>} [headerActions]
  * @property {number} [headerActionsOverflow]
  * @property {string} [infoUrl] An optional url referencing help or further information on the window's content.
  * @property {function():string} [infoUrlCallback] An optional function returning an url referencing help or further information. Can be used for urls depending on the app's locale, e.g. app.getHelpUrl()

@@ -16,8 +16,8 @@
   import { v4 as uuid } from 'uuid';
   import { useDisplay } from 'vuetify';
   import VcsMap from './VcsMap.vue';
-  import MapNavigation from '../navigation/MapNavigation.vue';
-  import { overviewMapContainerId } from '../navigation/overviewMap.js';
+  import MapNavigation from '../navigation/MapNavigation.ts.vue';
+  import { overviewMapContainerId } from '../navigation/overviewMap.ts';
   import { isMobileLandscape } from '../vuePlugins/vuetify.js';
 
   export function setupMapNavigation(app) {

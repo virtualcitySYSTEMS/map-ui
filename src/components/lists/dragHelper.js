@@ -11,7 +11,7 @@ export const InsertMode = {
 
 /**
  * @typedef { Object &
- *   (import('./VcsTreeNode.vue').VcsTreeNodeItem | import('./VcsListItemComponent.vue').VcsListItem)
+ *   (import('./VcsTreeNode.vue').VcsTreeNodeItem | import('./listHelper.js').VcsListItem)
  * } VcsDraggableItem
  */
 

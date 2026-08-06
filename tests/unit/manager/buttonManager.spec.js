@@ -9,7 +9,7 @@ import {
   vi,
 } from 'vitest';
 import { isReactive } from 'vue';
-import ButtonManager from '../../../src/manager/buttonManager.js';
+import ButtonManager from '../../../src/manager/buttonManager.ts';
 import { vcsAppSymbol } from '../../../src/pluginHelper.js';
 
 describe('ButtonManager', () => {

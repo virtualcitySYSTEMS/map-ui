@@ -32,7 +32,7 @@
   import VcsTreeview from '../components/lists/VcsTreeview.ts.vue';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import LayerSwap, { layerSwapId } from './LayerSwap.vue';
-  import { createToggleAction } from '../actions/actionHelper.js';
+  import { createToggleAction } from '../actions/actionHelper.ts';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import { WindowSlot } from '../manager/window/windowManager.js';
 

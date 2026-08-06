@@ -154,11 +154,11 @@
     ButtonLocation,
     deviceSymbol,
     getActionsByLocation,
-  } from '../manager/navbarManager.js';
+  } from '../manager/navbarManager.ts';
   import VcsActionButtonList from '../components/buttons/VcsActionButtonList.ts.vue';
   import VcsActionList from '../components/lists/VcsActionList.ts.vue';
   import VcsToolButton from '../components/buttons/VcsToolButton.ts.vue';
-  import { createSearchButtonAction } from '../actions/actionHelper.js';
+  import { createSearchButtonAction } from '../actions/actionHelper.ts';
   import { useFontSize } from '../vuePlugins/vuetify.js';
 
   /**

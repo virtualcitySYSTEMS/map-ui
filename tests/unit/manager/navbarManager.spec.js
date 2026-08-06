@@ -12,7 +12,7 @@ import NavbarManager, {
   ButtonLocation,
   locationSymbol,
   getActionsByLocation,
-} from '../../../src/manager/navbarManager.js';
+} from '../../../src/manager/navbarManager.ts';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import { vcsAppSymbol } from '../../../src/pluginHelper.js';
 

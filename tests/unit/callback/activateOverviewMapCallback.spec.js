@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import ActivateOverviewMapCallback from '../../../src/callback/activateOverviewMapCallback.js';
+import ActivateOverviewMapCallback from '../../../src/callback/activateOverviewMapCallback.ts';
 import VcsUiApp from '../../../src/vcsUiApp.js';
-import { executeCallbacks } from '../../../src/callback/vcsCallback.js';
+import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 import { sleep } from '../../helpers.js';
 
 describe('ActivateOverviewMapCallback', () => {

@@ -2,7 +2,7 @@ import './src/setup.js';
 import './src/styles/main.scss';
 import './src/vuePlugins/i18n.ts';
 
-export { default as StyleSelector } from './src/actions/StyleSelector.vue';
+export { default as StyleSelector } from './src/actions/StyleSelector.ts.vue';
 export {
   addLoadingOverlay,
   callSafeAction,
@@ -12,23 +12,23 @@ export {
   createLinkAction,
   createGoToViewpointAction,
   createZoomToFeatureAction,
-} from './src/actions/actionHelper.js';
+} from './src/actions/actionHelper.ts';
 export {
   createDeepPickingAction,
   deepPickingWindowId,
-} from './src/actions/deepPickingAction.js';
+} from './src/actions/deepPickingAction.ts';
 export { parseAndSanitizeMarkdown } from './src/components/form-output/markdownHelper.ts';
 export { renderTemplate } from '@vcmap/core';
 export {
   createStateRefAction,
   StateActionState,
-} from './src/actions/stateRefAction.js';
+} from './src/actions/stateRefAction.ts';
 export {
   createLayerToggleAction,
   createZoomToExtentAction,
   createExtentFeatureAction,
   setupExtentComponentActions,
-} from './src/actions/extentActions.js';
+} from './src/actions/extentActions.ts';
 export {
   createPlayAction,
   PlayerDirection,
@@ -41,42 +41,42 @@ export {
   createFlightMovieActions,
   createExportFlightAction,
   importFlights,
-} from './src/actions/flightActions.js';
+} from './src/actions/flightActions.ts';
 export {
   createListItemDeleteAction,
   createListItemBulkAction,
   createListExportAction,
   createListImportAction,
   importIntoLayer,
-} from './src/actions/listActions.js';
+} from './src/actions/listActions.ts';
 export {
   default as VcsCallback,
   executeCallbacks,
   executeAsyncCallbacks,
-} from './src/callback/vcsCallback.js';
-export { default as ActivateLayersCallback } from './src/callback/activateLayersCallback.js';
-export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.js';
-export { default as GoToViewpointCallback } from './src/callback/goToViewpointCallback.js';
-export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.js';
-export { default as StopRotationCallback } from './src/callback/stopRotationCallback.js';
-export { default as StartRotationCallback } from './src/callback/startRotationCallback.js';
-export { default as AddModuleCallback } from './src/callback/addModuleCallback.js';
-export { default as RemoveModuleCallback } from './src/callback/removeModuleCallback.js';
-export { default as ActivateClippingPolygonCallback } from './src/callback/activateClippingPolygonCallback.js';
-export { default as DeactivateClippingPolygonCallback } from './src/callback/deactivateClippingPolygonCallback.js';
-export { default as OpenSplashScreenCallback } from './src/callback/openSplashScreenCallback.js';
-export { default as CloseSplashScreenCallback } from './src/callback/closeSplashScreenCallback.js';
-export { default as ToggleNavbarButtonCallback } from './src/callback/toggleNavbarButtonCallback.js';
-export { default as ToggleToolbarButtonCallback } from './src/callback/toggleToolbarButtonCallback.js';
-export { default as ActivateMapCallback } from './src/callback/activateMapCallback.js';
-export { default as ActivateOverviewMapCallback } from './src/callback/activateOverviewMapCallback.js';
-export { default as DeactivateOverviewMapCallback } from './src/callback/deactivateOverviewMapCallback.js';
-export { default as HighlightObjectsCallback } from './src/callback/highlightObjectsCallback.js';
-export { default as ShowObjectsCallback } from './src/callback/showObjectsCallback.js';
-export { default as StartFlightCallback } from './src/callback/startFlightCallback.js';
-export { default as StopFlightCallback } from './src/callback/stopFlightCallback.js';
-export { default as UnHighlightObjectsCallback } from './src/callback/unHighlightObjectsCallback.js';
-export { default as HideObjectsCallback } from './src/callback/hideObjectsCallback.js';
+} from './src/callback/vcsCallback.ts';
+export { default as ActivateLayersCallback } from './src/callback/activateLayersCallback.ts';
+export { default as DeactivateLayersCallback } from './src/callback/deactivateLayersCallback.ts';
+export { default as GoToViewpointCallback } from './src/callback/goToViewpointCallback.ts';
+export { default as ApplyLayerStyleCallback } from './src/callback/applyLayerStyleCallback.ts';
+export { default as StopRotationCallback } from './src/callback/stopRotationCallback.ts';
+export { default as StartRotationCallback } from './src/callback/startRotationCallback.ts';
+export { default as AddModuleCallback } from './src/callback/addModuleCallback.ts';
+export { default as RemoveModuleCallback } from './src/callback/removeModuleCallback.ts';
+export { default as ActivateClippingPolygonCallback } from './src/callback/activateClippingPolygonCallback.ts';
+export { default as DeactivateClippingPolygonCallback } from './src/callback/deactivateClippingPolygonCallback.ts';
+export { default as OpenSplashScreenCallback } from './src/callback/openSplashScreenCallback.ts';
+export { default as CloseSplashScreenCallback } from './src/callback/closeSplashScreenCallback.ts';
+export { default as ToggleNavbarButtonCallback } from './src/callback/toggleNavbarButtonCallback.ts';
+export { default as ToggleToolbarButtonCallback } from './src/callback/toggleToolbarButtonCallback.ts';
+export { default as ActivateMapCallback } from './src/callback/activateMapCallback.ts';
+export { default as ActivateOverviewMapCallback } from './src/callback/activateOverviewMapCallback.ts';
+export { default as DeactivateOverviewMapCallback } from './src/callback/deactivateOverviewMapCallback.ts';
+export { default as HighlightObjectsCallback } from './src/callback/highlightObjectsCallback.ts';
+export { default as ShowObjectsCallback } from './src/callback/showObjectsCallback.ts';
+export { default as StartFlightCallback } from './src/callback/startFlightCallback.ts';
+export { default as StopFlightCallback } from './src/callback/stopFlightCallback.ts';
+export { default as UnHighlightObjectsCallback } from './src/callback/unHighlightObjectsCallback.ts';
+export { default as HideObjectsCallback } from './src/callback/hideObjectsCallback.ts';
 export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
 export {
   default as VcsApp,
@@ -150,14 +150,14 @@ export {
 } from './src/manager/panel/panelManager.js';
 export { default as PanelManagerComponent } from './src/manager/panel/PanelManagerComponent.vue';
 export { default as PanelComponent } from './src/manager/panel/PanelComponent.vue';
-export { default as ButtonManager } from './src/manager/buttonManager.js';
+export { default as ButtonManager } from './src/manager/buttonManager.ts';
 export {
   default as NavbarManager,
   ButtonLocation,
   getActionsByLocation,
   locationSymbol,
   deviceSymbol,
-} from './src/manager/navbarManager.js';
+} from './src/manager/navbarManager.ts';
 export {
   default as ToolboxManager,
   ToolboxType,
@@ -183,9 +183,9 @@ export { default as CollectionComponent } from './src/manager/collectionManager/
 export { default as CollectionComponentStandalone } from './src/manager/collectionManager/CollectionComponentStandalone.vue';
 export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
 export { default as CollectionComponentContent } from './src/manager/collectionManager/CollectionComponentContent.vue';
-export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.js';
-export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.vue';
-export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.js';
+export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.ts';
+export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.ts.vue';
+export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.ts';
 export {
   applyKeyMapping,
   applyValueMapping,
@@ -218,15 +218,15 @@ export {
 } from './src/featureInfo/featureInfo.js';
 export { default as ClusterFeatureComponent } from './src/featureInfo/ClusterFeatureComponent.vue';
 
-export { default as MapNavCompass } from './src/navigation/MapNavCompass.vue';
-export { default as MapNavigation } from './src/navigation/MapNavigation.vue';
-export { default as ObliqueRotation } from './src/navigation/ObliqueRotation.vue';
-export { default as OrientationToolsButton } from './src/navigation/OrientationToolsButton.vue';
-export { default as OverviewMap } from './src/navigation/overviewMap.js';
-export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.js';
-export { default as TiltSlider } from './src/navigation/TiltSlider.vue';
-export { default as VcsCompass } from './src/navigation/VcsCompass.vue';
-export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.vue';
+export { default as MapNavCompass } from './src/navigation/MapNavCompass.ts.vue';
+export { default as MapNavigation } from './src/navigation/MapNavigation.ts.vue';
+export { default as ObliqueRotation } from './src/navigation/ObliqueRotation.ts.vue';
+export { default as OrientationToolsButton } from './src/navigation/OrientationToolsButton.ts.vue';
+export { default as OverviewMap } from './src/navigation/overviewMap.ts';
+export { default as OverviewMapClickedInteraction } from './src/navigation/overviewMapClickedInteraction.ts';
+export { default as TiltSlider } from './src/navigation/TiltSlider.ts.vue';
+export { default as VcsCompass } from './src/navigation/VcsCompass.ts.vue';
+export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.ts.vue';
 //
 export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.ts';
 export {
@@ -247,20 +247,20 @@ export {
   downloadBlob,
   downloadText,
   downloadCanvas,
-} from './src/downloadHelper.js';
+} from './src/downloadHelper.ts';
 export {
   getFromLocalStorage,
   setToLocalStorage,
   removeFromLocalStorage,
   hideSplashScreenKey,
-} from './src/localStorage.js';
+} from './src/localStorage.ts';
 export {
   default as initApp,
-  VcsUiAppConfigPattern,
+  vcsUiAppConfigPattern,
   initAppFromModule,
   initAppFromAppConfig,
   createModuleFromObjectOrUrl,
-} from './src/init.js';
+} from './src/init.ts';
 export {
   vcsAppSymbol,
   pluginFactorySymbol,
@@ -281,7 +281,7 @@ export { default as VcsUiApp } from './src/vcsUiApp.js';
 export {
   default as Notifier,
   NotificationType,
-} from './src/notifier/notifier.js';
+} from './src/notifier/notifier.ts';
 export {
   default as Icons,
   getColoredMapIcon,
@@ -385,9 +385,9 @@ export {
   LegendType,
   StyleRowType,
   getLegendEntries,
-} from './src/legend/legendHelper.js';
-export { default as Search } from './src/search/search.js';
-export { searchComponentId } from './src/search/SearchComponent.vue';
-export { markText } from './src/search/markText.js';
-export { default as ResultItemComponent } from './src/search/ResultItem.vue';
-export { default as ResultsComponent } from './src/search/ResultsComponent.vue';
+} from './src/legend/legendHelper.ts';
+export { default as Search } from './src/search/search.ts';
+export { searchComponentId } from './src/search/SearchComponent.ts.vue';
+export { markText } from './src/search/markText.ts';
+export { default as ResultItemComponent } from './src/search/ResultItem.ts.vue';
+export { default as ResultsComponent } from './src/search/ResultsComponent.ts.vue';

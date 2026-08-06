@@ -12,7 +12,7 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
 import { OpenlayersMap } from '@vcmap/core';
 import VcsUiApp from '../../src/vcsUiApp.js';
-import { createSearchButtonAction } from '../../src/actions/actionHelper.js';
+import { createSearchButtonAction } from '../../src/actions/actionHelper.ts';
 
 describe('search', () => {
   /** @type {VcsUiApp} */

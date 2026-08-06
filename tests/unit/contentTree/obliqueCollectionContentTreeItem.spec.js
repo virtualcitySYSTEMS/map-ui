@@ -6,7 +6,7 @@ import {
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import ObliqueCollectionContentTreeItem from '../../../src/contentTree/obliqueCollectionContentTreeItem.js';
-import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 
 describe('ObliqueCollectionContentTreeItem', () => {
   describe('if there is a collection', () => {

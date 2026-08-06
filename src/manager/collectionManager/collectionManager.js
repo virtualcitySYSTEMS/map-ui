@@ -33,7 +33,7 @@ import CollectionComponentClass from './collectionComponentClass.js';
 
 /**
  * @typedef {Object} OwnedAction
- * @property {import("../../actions/actionHelper.js").VcsAction} action
+ * @property {import("../../actions/actionHelper.ts").VcsAction} action
  * @property {number} [weight=0] Optional weight affecting the displaying order
  * @property {string | symbol} owner
  */
@@ -80,7 +80,7 @@ class CollectionManager {
      */
     this._itemFilters = [];
     /**
-     * @type {Array<{ownedActions:Array<OwnedAction>,actions:Array<import("../../actions/actionHelper.js").VcsAction>,owner:string|symbol,collectionComponentIds:Array<string>}>}
+     * @type {Array<{ownedActions:Array<OwnedAction>,actions:Array<import("../../actions/actionHelper.ts").VcsAction>,owner:string|symbol,collectionComponentIds:Array<string>}>}
      * @private
      */
     this._itemActions = [];
@@ -331,7 +331,7 @@ class CollectionManager {
 
   /**
    * add multiple actions owned by the same owner
-   * @param {Array<import("../../actions/actionHelper.js").VcsAction>} actions
+   * @param {Array<import("../../actions/actionHelper.ts").VcsAction>} actions
    * @param {string | symbol} owner
    * @param {Array<string>} [collectionComponentIds] list of collectionComponents this mappingFunction should be used on. If empty, actions are applied to all managed collectionComponents.
    */
@@ -365,7 +365,7 @@ class CollectionManager {
   }
 
   /**
-   * @param {Array<import("../../actions/actionHelper.js").VcsAction>} actions
+   * @param {Array<import("../../actions/actionHelper.ts").VcsAction>} actions
    * @param {string | symbol} owner
    */
   removeActions(actions, owner) {

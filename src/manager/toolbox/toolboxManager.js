@@ -3,10 +3,10 @@ import { check, maybe, ofEnum, oneOf, optional } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
 import { reactive, ref, shallowReactive } from 'vue';
 import { vcsAppSymbol } from '../../pluginHelper.js';
-import ButtonManager from '../buttonManager.js';
+import ButtonManager from '../buttonManager.ts';
 import { actionPattern } from '../../components/lists/VcsActionList.ts.vue';
-import { getActionFromOptions } from '../../actions/actionHelper.js';
-import { deviceSymbol } from '../navbarManager.js';
+import { getActionFromOptions } from '../../actions/actionHelper.ts';
+import { deviceSymbol } from '../navbarManager.ts';
 
 /**
  * Possible group types. Define behaviour of group:
@@ -29,7 +29,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponentOptions & { action: import("../../actions/actionHelper.js").VcsAction }} SingleToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions & { action: import("../../actions/actionHelper.ts").VcsAction }} SingleToolboxComponentOptions
  * @property {VcsAction} action - An action of a single tool
  */
 
@@ -58,7 +58,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {ToolboxComponent & { action: import("vue").UnwrapRef<import("../../actions/actionHelper.js").VcsAction> }} SingleToolboxComponent
+ * @typedef {ToolboxComponent & { action: import("vue").UnwrapRef<import("../../actions/actionHelper.ts").VcsAction> }} SingleToolboxComponent
  */
 
 /**
@@ -76,7 +76,7 @@ export const ToolboxType = {
  */
 
 /**
- * @typedef {import("../../actions/actionHelper.js").VcsAction & {
+ * @typedef {import("../../actions/actionHelper.ts").VcsAction & {
  *   selected: function(number):void,
  *   tools: ToolboxSelectItem[],
  *   currentIndex: number
@@ -128,8 +128,8 @@ export const defaultToolboxName = Symbol('defaultToolboxName');
 /**
  * sorts by owner and optionally plugin order
  * If both components are owned by vcsApp, defaultOrder is used to compare
- * @param {ToolboxComponent|import("../buttonManager.js").ButtonComponent} compA
- * @param {ToolboxComponent|import("../buttonManager.js").ButtonComponent} compB
+ * @param {ToolboxComponent|import("../buttonManager.ts").ButtonComponent} compA
+ * @param {ToolboxComponent|import("../buttonManager.ts").ButtonComponent} compB
  * @param {string[]} [order] order of owners to sort by
  * @returns {number}
  */
@@ -159,10 +159,10 @@ function sortByOwner(compA, compB, order = []) {
 
 /**
  * returns ToolboxComponents sorted by owner (or other sort function)
- * @param {Array<ToolboxComponent|import("../buttonManager.js").ButtonComponent>} components
+ * @param {Array<ToolboxComponent|import("../buttonManager.ts").ButtonComponent>} components
  * @param {string[]} [order] optional order to sort by (plugin names)
  * @param {function(ownerA:string, ownerB:string, order: string[]):number} [compareFn=sortByOwner] Per default components are sorted by owner: app first, then plugins
- * @returns {Array<ToolboxComponent|import("../buttonManager.js").ButtonComponent>}
+ * @returns {Array<ToolboxComponent|import("../buttonManager.ts").ButtonComponent>}
  */
 export function getComponentsByOrder(
   components,
@@ -288,7 +288,7 @@ class ToolboxManager {
    * adds a ToolboxComponent
    * @param {SingleToolboxComponentOptions|SelectToolboxComponentOptions|GroupToolboxComponentOptions} toolboxComponentOptions
    * @param {string|symbol} owner pluginName or vcsAppSymbol
-   * @param {import('../navbarManager.js').DeviceOptions} [device={destop: true, tablet: true}] Device - optional device configuration
+   * @param {import('../navbarManager.ts').DeviceOptions} [device={destop: true, tablet: true}] Device - optional device configuration
    * @throws {Error} if a toolboxComponent with the same ID has already been added
    * @returns {SingleToolboxComponent|SelectToolboxComponent|import("vue").ShallowReactive<GroupToolboxComponent>}
    */

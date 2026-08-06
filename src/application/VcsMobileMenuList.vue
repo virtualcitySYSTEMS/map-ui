@@ -5,7 +5,7 @@
     ButtonLocation,
     deviceSymbol,
     getActionsByLocation,
-  } from '../manager/navbarManager.js';
+  } from '../manager/navbarManager.ts';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';
   import {
     getDataProtection,

@@ -1,16 +1,16 @@
 import { Viewpoint } from '@vcmap/core';
 import { parseBoolean } from '@vcsuite/parsers';
 import { reactive } from 'vue';
-import { StateActionState } from '../actions/stateRefAction.js';
+import { StateActionState } from '../actions/stateRefAction.ts';
 import {
   createGoToViewpointAction,
   createModalAction,
-} from '../actions/actionHelper.js';
-import component from '../actions/StyleSelector.vue';
+} from '../actions/actionHelper.ts';
+import component from '../actions/StyleSelector.ts.vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
-import { executeCallbacks } from '../callback/vcsCallback.js';
+import { executeCallbacks } from '../callback/vcsCallback.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerName: string, showWhenNotSupported?: boolean }} LayerContentTreeItemOptions

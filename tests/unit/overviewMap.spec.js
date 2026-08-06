@@ -23,7 +23,7 @@ import { getObliqueCollection } from '@vcmap/core/dist/tests/unit/helpers/obliqu
 import { getCenter } from 'ol/extent.js';
 import Feature from 'ol/Feature.js';
 import VcsUiApp from '../../src/vcsUiApp.js';
-import OverviewMap from '../../src/navigation/overviewMap.js';
+import OverviewMap from '../../src/navigation/overviewMap.ts';
 import { sleep } from '../helpers.js';
 
 describe('OverviewMap', () => {

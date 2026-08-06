@@ -146,7 +146,7 @@
     StyleRowType,
     getImageSrcFromShape,
     getPatternSvgData,
-  } from './legendHelper.js';
+  } from './legendHelper.ts';
 
   /**
    * @description A component rendering vector styles as list using {@link https://vuetifyjs.com/en/api/v-list-row v-list-row}

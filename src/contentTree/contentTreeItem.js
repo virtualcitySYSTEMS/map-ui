@@ -2,12 +2,12 @@ import { ref, reactive, computed, shallowRef } from 'vue';
 import { check, maybe, ofEnum, oneOf } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
-import { createLinkAction } from '../actions/actionHelper.js';
+import { createLinkAction } from '../actions/actionHelper.ts';
 import {
   createStateRefAction,
   StateActionState,
-} from '../actions/stateRefAction.js';
-import { executeCallbacks } from '../callback/vcsCallback.js';
+} from '../actions/stateRefAction.ts';
+import { executeCallbacks } from '../callback/vcsCallback.ts';
 
 /**
  * @typedef {Object} ContentTreeItemOptions
@@ -19,9 +19,9 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
  * @property {number} [weight] - optional weighting of the item. higher weights come first.
  * @property {string} [infoUrl] - optional info url providing link with additional information.
  * @property {boolean} [initOpen=false] - groups being initially open or not.
- * @property {import("../callback/vcsCallback.js").VcsCallbackOptions} [onClick] - optional callback actions executed on click
- * @property {import("../callback/vcsCallback.js").VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
- * @property {import("../callback/vcsCallback.js").VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
+ * @property {import("../callback/vcsCallback.ts").VcsCallbackOptions} [onClick] - optional callback actions executed on click
+ * @property {import("../callback/vcsCallback.ts").VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
+ * @property {import("../callback/vcsCallback.ts").VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
  */
 
 /**
@@ -35,7 +35,7 @@ import { executeCallbacks } from '../callback/vcsCallback.js';
  * @property {string} title - The title to be displayed
  * @property {string} [tooltip]
  * @property {string|HTMLCanvasElement|HTMLImageElement|undefined} [icon] - An optional icon to display with this item. Can be an URL or HTMLElement.
- * @property {Array<import("../actions/actionHelper.js").VcsAction>} actions
+ * @property {Array<import("../actions/actionHelper.ts").VcsAction>} actions
  * @property {Array<TreeViewItem>} children
  * @property {Array<TreeViewItem>} [visibleChildren] - computed property
  * @property {function(PointerEvent):Promise<void>} clicked - A callback called once the item is clicked.
@@ -75,7 +75,7 @@ class ContentTreeItem {
     this._app = app;
 
     /**
-     * @type {import("vue").ShallowRef<Array<import("../actions/actionHelper.js").VcsAction>>}
+     * @type {import("vue").ShallowRef<Array<import("../actions/actionHelper.ts").VcsAction>>}
      * @private
      */
     this._actions = shallowRef([]);
@@ -163,17 +163,17 @@ class ContentTreeItem {
      */
     this.initOpen = parseBoolean(options.initOpen, false);
     /**
-     * @type {Array<import("../callback/vcsCallback.js").VcsCallbackOptions>}
+     * @type {Array<import("../callback/vcsCallback.ts").VcsCallbackOptions>}
      * @protected
      */
     this._onClick = options.onClick ?? [];
     /**
-     * @type {Array<import("../callback/vcsCallback.js").VcsCallbackOptions>}
+     * @type {Array<import("../callback/vcsCallback.ts").VcsCallbackOptions>}
      * @protected
      */
     this._onActivate = options.onActivate ?? [];
     /**
-     * @type {Array<import("../callback/vcsCallback.js").VcsCallbackOptions>}
+     * @type {Array<import("../callback/vcsCallback.ts").VcsCallbackOptions>}
      * @protected
      */
     this._onDeactivate = options.onDeactivate ?? [];
@@ -199,7 +199,7 @@ class ContentTreeItem {
 
   /**
    * A slice of the underlying actions array. Use add/removeAction to manipulate the actions array.
-   * @type {Array<import("../actions/actionHelper.js").VcsAction>}
+   * @type {Array<import("../actions/actionHelper.ts").VcsAction>}
    */
   get actions() {
     return this._actions.value.slice();
@@ -406,7 +406,7 @@ class ContentTreeItem {
    * InfoUrl: 6
    * GoToExtent: 8
    * The default weight is set to always push new actions past these.
-   * @param {import("../actions/actionHelper.js").VcsAction} action
+   * @param {import("../actions/actionHelper.ts").VcsAction} action
    * @param {number} [weight=11]
    */
   addAction(action, weight = 11) {

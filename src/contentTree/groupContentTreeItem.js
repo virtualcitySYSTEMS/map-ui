@@ -3,7 +3,7 @@ import { parseBoolean } from '@vcsuite/parsers';
 import ContentTreeItem, {
   contentTreeClassRegistry,
 } from './contentTreeItem.js';
-import { StateActionState } from '../actions/stateRefAction.js';
+import { StateActionState } from '../actions/stateRefAction.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { disableIfChildrenDisabled?: boolean }} GroupContentTreeItemOptions

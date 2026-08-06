@@ -10,7 +10,7 @@
   import VcsExpansionPanel from '../section/VcsExpansionPanel.ts.vue';
   import VcsList from './VcsList.ts.vue';
   import { setupSelectableList } from './listHelper.js';
-  import type { VcsListItem } from './VcsListItemComponent.ts.vue';
+  import type { VcsListItem } from './listHelper.js';
   import type { VcsAction } from '../../actions/actionHelper.js';
 
   export type VcsListGroup = {
@@ -29,12 +29,12 @@
    * Items not belonging to one of the provided groups are neglected.
    * Per group a sub list is rendered, which behaves just like a { @link VcsList }.
    * Only differences: The search and selection behaviour are cross group and items are not draggable.
-   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} items
+   * @vue-prop {Array<import("./listHelper.js").VcsListItem>} items
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
-   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
+   * @vue-prop {Array<import("./listHelper.js").VcsListItem>} [modelValue=[]] - the initial items to be selected.
    * @vue-prop {boolean} [searchable=false] - if this list can have its items searched.
-   * @vue-prop {function(import("./VcsListItemComponent.ts.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
+   * @vue-prop {function(import("./listHelper.js").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    */
 

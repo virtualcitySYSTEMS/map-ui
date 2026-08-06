@@ -8,8 +8,8 @@ import {
   setStyleAction,
   setViewpointAction,
 } from './layerContentTreeItem.js';
-import { StateActionState } from '../actions/stateRefAction.js';
-import { executeCallbacks } from '../callback/vcsCallback.js';
+import { StateActionState } from '../actions/stateRefAction.ts';
+import { executeCallbacks } from '../callback/vcsCallback.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions & { layerNames: string[], showWhenNotSupported?: boolean, defaultViewpoint?: string, availableStyles?: string[] }} LayerGroupContentTreeItemOptions

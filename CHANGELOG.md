@@ -12,6 +12,8 @@
 - Updated vite to version 8.2
 - Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
 - Removed deprecated `draggable` property of the CollectionComponentClass
+- Changed `createFlightVisualizationAction` to a sync function
+- Changed casing of `VcsUiAppConfigPattern` to `vcsUiAppConfigPattern`
 
 ### Changes
 

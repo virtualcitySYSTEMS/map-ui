@@ -77,8 +77,8 @@
     getFromLocalStorage,
     removeFromLocalStorage,
     setToLocalStorage,
-  } from '../localStorage.js';
-  import { executeCallbacks } from '../callback/vcsCallback.js';
+  } from '../localStorage.ts';
+  import { executeCallbacks } from '../callback/vcsCallback.ts';
   import VcsFormButton from '../components/buttons/VcsFormButton.ts.vue';
   import VcsCheckbox from '../components/form-inputs-controls/VcsCheckbox.ts.vue';
   import VcsMarkdown from '../components/form-output/VcsMarkdown.ts.vue';

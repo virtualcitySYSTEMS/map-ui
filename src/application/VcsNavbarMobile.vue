@@ -77,13 +77,13 @@
     ButtonLocation,
     deviceSymbol,
     getActionsByLocation,
-  } from '../manager/navbarManager.js';
+  } from '../manager/navbarManager.ts';
   import VcsToolButton from '../components/buttons/VcsToolButton.ts.vue';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import {
     createSearchButtonAction,
     createToggleAction,
-  } from '../actions/actionHelper.js';
+  } from '../actions/actionHelper.ts';
   import { useFontSize } from '../vuePlugins/vuetify.js';
   import VcsMobileMenuList from './VcsMobileMenuList.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';

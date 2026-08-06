@@ -60,7 +60,7 @@
   import { VContainer, VFooter, VSpacer } from 'vuetify/components';
   import { getLogger } from '@vcsuite/logger';
   import VcsContainer from './VcsContainer.vue';
-  import { ButtonLocation } from '../manager/navbarManager.js';
+  import { ButtonLocation } from '../manager/navbarManager.ts';
   import { vcsAppSymbol } from '../pluginHelper.js';
   import VcsNavbar from './VcsNavbar.vue';
   import VcsNavbarMobile from './VcsNavbarMobile.vue';
@@ -68,8 +68,8 @@
     createLinkAction,
     createMapButtonAction,
     createToggleAction,
-  } from '../actions/actionHelper.js';
-  import { setupDeepPicking } from '../actions/deepPickingAction.js';
+  } from '../actions/actionHelper.ts';
+  import { setupDeepPicking } from '../actions/deepPickingAction.ts';
   import VcsSettings from './VcsSettings.vue';
   import { WindowSlot } from '../manager/window/windowManager.js';
   import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
@@ -79,12 +79,12 @@
     useFontSize,
     isMobileLandscape,
   } from '../vuePlugins/vuetify.js';
-  import VcsLegend from '../legend/VcsLegend.vue';
+  import VcsLegend from '../legend/VcsLegend.ts.vue';
   import {
     getLayerLegend,
     getLegendEntries,
     getStyleLegend,
-  } from '../legend/legendHelper.js';
+  } from '../legend/legendHelper.ts';
   import VcsAttributionsFooter from './VcsAttributionsFooter.vue';
   import VcsObliqueFooter from './VcsObliqueFooter.vue';
   import VcsTextPageFooter from './VcsTextPageFooter.vue';

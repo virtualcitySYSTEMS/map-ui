@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { VcsEvent, FlightInstance } from '@vcmap/core';
-import StartFlightCallback from '../../../src/callback/startFlightCallback.js';
+import StartFlightCallback from '../../../src/callback/startFlightCallback.ts';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 
 describe('StartFlightCallback', () => {

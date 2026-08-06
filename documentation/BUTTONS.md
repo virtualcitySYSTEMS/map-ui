@@ -1,7 +1,7 @@
 # Buttons
 
 The map user interface has at various places buttons arranged in groups.
-The [ButtonManager](../src/manager/buttonManager.js) and its specialisation the [NavbarManager](../src/manager/navbarManager.js) take care of a reactive list of buttons.
+The [ButtonManager](../src/manager/buttonManager.ts) and its specialisation the [NavbarManager](../src/manager/navbarManager.ts) take care of a reactive list of buttons.
 Both implement the `VcsComponentManager` interface:
 
 ```js

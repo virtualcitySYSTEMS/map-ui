@@ -18,7 +18,7 @@ import { getPanoramaMap } from '@vcmap/core/dist/tests/unit/helpers/panoramaHelp
 import {
   callSafeAction,
   createMapButtonAction,
-} from '../../src/actions/actionHelper.js';
+} from '../../src/actions/actionHelper.ts';
 import { sleep } from '../helpers.js';
 
 describe('actionHelpers', () => {

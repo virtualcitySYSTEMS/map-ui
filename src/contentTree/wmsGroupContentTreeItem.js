@@ -5,11 +5,11 @@ import { parseBoolean } from '@vcsuite/parsers';
 import { is } from '@vcsuite/check';
 import deepEqual from 'fast-deep-equal';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
-import { StateActionState } from '../actions/stateRefAction.js';
+import { StateActionState } from '../actions/stateRefAction.ts';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import WmsChildContentTreeItem from './wmsChildContentTreeItem.js';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
-import { legendSymbol } from '../legend/legendHelper.js';
+import { legendSymbol } from '../legend/legendHelper.ts';
 
 /**
  *

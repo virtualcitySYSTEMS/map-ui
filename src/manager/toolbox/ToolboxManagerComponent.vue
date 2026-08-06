@@ -69,7 +69,7 @@
   import ToolboxActionGroup from './GroupToolboxComponent.vue';
   import VcsToolButton from '../../components/buttons/VcsToolButton.ts.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
-  import { ButtonLocation, deviceSymbol } from '../navbarManager.js';
+  import { ButtonLocation, deviceSymbol } from '../navbarManager.ts';
   import { useFontSize } from '../../vuePlugins/vuetify.js';
 
   /**
@@ -78,7 +78,7 @@
    * @property {string} type
    * @property {string} icon
    * @property {string} title
-   * @property {Array<import("../buttonManager.js").ButtonComponent>} buttons
+   * @property {Array<import("../buttonManager.ts").ButtonComponent>} buttons
    * @property {string} [selected]
    * @property {function(number):void} [selectCb]
    */

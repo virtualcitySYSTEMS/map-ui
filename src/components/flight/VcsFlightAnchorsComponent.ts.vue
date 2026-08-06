@@ -93,7 +93,7 @@
   import VcsButton from '../buttons/VcsButton.ts.vue';
   import { moveItem } from '../lists/dragHelper.js';
   import type { ItemMovedEvent } from '../lists/dragHelper.js';
-  import type { VcsListItem } from '../lists/VcsListItemComponent.ts.vue';
+  import type { VcsListItem } from '../lists/listHelper.js';
   import CollectionComponentClass from '../../manager/collectionManager/collectionComponentClass.js';
   import { WindowSlot } from '../../manager/window/windowManager.js';
   import VcsViewpointEditor from '../viewpoint/VcsViewpointEditor.ts.vue';
@@ -347,9 +347,8 @@
         owner,
       });
 
-      onMounted(async () => {
-        flightVis = await createFlightVisualizationAction(app, flightInstance);
-
+      onMounted(() => {
+        flightVis = createFlightVisualizationAction(app, flightInstance);
         collectionComponent.addActions([{ action: flightVis.action, owner }]);
       });
 

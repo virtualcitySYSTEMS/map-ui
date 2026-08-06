@@ -49,7 +49,7 @@
     ButtonLocation,
     deviceSymbol,
     getActionsByLocation,
-  } from '../manager/navbarManager.js';
+  } from '../manager/navbarManager.ts';
 
   export default {
     name: 'MapsGroupMobileMenu',

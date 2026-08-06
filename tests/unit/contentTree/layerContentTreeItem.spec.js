@@ -7,9 +7,9 @@ import {
 import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.js';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
-import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.js';
-import DeactivateLayersCallback from '../../../src/callback/deactivateLayersCallback.js';
-import { StateActionState } from '../../../src/actions/stateRefAction.js';
+import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.ts';
+import DeactivateLayersCallback from '../../../src/callback/deactivateLayersCallback.ts';
+import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import { sleep } from '../../helpers.js';
 
 describe('LayerContentTreeItem', () => {

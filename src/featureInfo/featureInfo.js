@@ -51,7 +51,7 @@ import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
 import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
 import ClusterFeatureComponent from './ClusterFeatureComponent.vue';
-import { createZoomToFeatureAction } from '../actions/actionHelper.js';
+import { createZoomToFeatureAction } from '../actions/actionHelper.ts';
 
 /** @typedef {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature|import("@vcmap-cesium/engine").Entity} FeatureType */
 
@@ -220,7 +220,7 @@ export function getGroupedFeatureList(
       ];
     }
 
-    /** @type {import("../components/lists/VcsListItemComponent.ts.vue").VcsListItem} */
+    /** @type {import("../components/lists/listHelper.js").VcsListItem} */
     let listItem;
 
     if (oFeature[panoramaFeature]) {

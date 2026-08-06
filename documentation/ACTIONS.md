@@ -49,7 +49,7 @@ const action = {
 ```
 
 VcsAction can be validated using [validateAction()](../src/components/lists/VcsActionList.ts.vue).
-There is a set of helper functions providing standard user interactions. See [actionHelper.js](../src/actions/actionHelper.js) for more information.
+There is a set of helper functions providing standard user interactions. See [actionHelper.ts](../src/actions/actionHelper.ts) for more information.
 Action should be discoverable via the `data-action-name` HTML attribute. This is applied
 to buttons automatically when using a VcsActionList to render an action.
 
@@ -61,7 +61,7 @@ You may provide a name, icon and title as `ActionOptions`. You must provide an i
 As 3rd parameter the windowManager of the app has to be provided, as 4th parameter the owner of the window being created.
 
 ```js
-import { createToggleAction } from '@vcmap/ui'; // (../src/actions/actionHelper.js)
+import { createToggleAction } from '@vcmap/ui'; // (../src/actions/actionHelper.ts)
 
 const { action, destroy } = createToggleAction(
   {

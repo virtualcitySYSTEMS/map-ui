@@ -3,8 +3,8 @@ import { reactive, computed, watch } from 'vue';
 import {
   createGoToViewpointAction,
   createModalAction,
-} from '../actions/actionHelper.js';
-import { StateActionState } from '../actions/stateRefAction.js';
+} from '../actions/actionHelper.ts';
+import { StateActionState } from '../actions/stateRefAction.ts';
 import ContentTreeItem from './contentTreeItem.js';
 import VcsActionList from '../components/lists/VcsActionList.ts.vue';
 import { vcsAppSymbol } from '../pluginHelper.js';

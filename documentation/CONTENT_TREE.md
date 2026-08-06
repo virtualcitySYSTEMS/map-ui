@@ -55,9 +55,9 @@ The options are defined by `ContentTreeItemOptions`:
  * @property {number} [weight] - optional weighting of the item. higher weights come first.
  * @property {string} [infoUrl] - optional info url providing link with additional information.
  * @property {boolean} [initOpen=false] - groups being initially open or not.
- * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onClick] - optional callback actions executed on click
- * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
- * @property {import("@vcmap/ui/src/callback/vcsCallback.js").VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.ts").VcsCallbackOptions} [onClick] - optional callback actions executed on click
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.ts").VcsCallbackOptions} [onActivate] - optional callback actions executed on activation of the item
+ * @property {import("@vcmap/ui/src/callback/vcsCallback.ts").VcsCallbackOptions} [onDeactivate] - optional callback actions executed on deactivation of the item
  */
 ```
 

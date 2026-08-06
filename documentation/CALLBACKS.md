@@ -40,33 +40,33 @@ For each event, one or more callbacks can be configured:
 
 ## VcsCallback
 
-[VcsCallback](../src/callback/vcsCallback.js) is an abstract class to be extended for specific use cases.
+[VcsCallback](../src/callback/vcsCallback.ts) is an abstract class to be extended for specific use cases.
 
 Per default, the folllowing extensions are available:
 
-- [ActivateLayersCallback](../src/callback/activateLayersCallback.js) - activates one or more layers
-- [DeactivateLayersCallback](../src/callback/deactivateLayersCallback.js) - deactivates one or more layers
-- [GoToViewpointCallback](../src/callback/goToViewpointCallback.js) - jumps to a provided viewpoint
-- [ApplyLayerStyleCallback](../src/callback/applyLayerStyleCallback.js) - applies a provided style on a layer
-- [StartRotationCallback](../src/callback/startRotationCallback.js) - rotates around a given or the current viewpoint
-- [StopRotationCallback](../src/callback/stopRotationCallback.js) - stops the rotation
-- [ActivateClippingPolygonCallback](../src/callback/activateClippingPolygonCallback.js) - activates one or more Clipping Polygon
-- [DeactivateClippingPolygonCallback](../src/callback/deactivateClippingPolygonCallback.js) - deactivates one or more Clipping Polygon
-- [AddModuleCallback](../src/callback/addModuleCallback.js) - adds a module
-- [RemoveModuleCallback](../src/callback/removeModuleCallback.js) - removes a module
-- [OpenSplashScreenCallback](../src/callback/openSplashScreenCallback.js) - opens the SplashScreen if defined
-- [CloseSplashScreenCallback](../src/callback/closeSplashScreenCallback.js) - closes the SplashScreen
-- [ToggleNavbarButtonCallback](../src/callback/toggleNavbarButtonCallback.js) - calls the callback of a registered navbar action
-- [ToggleToolbarButtonCallback](../src/callback/toggleToolbarButtonCallback.js) - calls the callback of a registered toolbar component
-- [ActivateMapCallback](../src/callback/activateMapCallback.js) - activates the map
-- [ActivateOverviewMapCallback](../src/callback/activateOverviewMapCallback.js) - activates the overview map
-- [DeactivateOverviewMapCallback](../src/callback/deactivateOverviewMapCallback.js) - deactivates the overview map
-- [HighlightObjectsCallback](../src/callback/highlightObjectsCallback.js) - highlights objects on a feature layer
-- [UnHighlightObjectsCallback](../src/callback/unHighlightObjectsCallback.js) - removes object highlighting on a feature layer
-- [HideObjectsCallback](../src/callback/hideObjectsCallback.js) - hides objects on a feature layer or globally
-- [ShowObjectsCallback](../src/callback/showObjectsCallback.js) - shows previously hidden objects on a feature layer or globally
-- [StartFlightCallback](../src/callback/startFlightCallback.js) - starts a flight by name or inline options
-- [StopFlightCallback](../src/callback/stopFlightCallback.js) - stops the currently running flight by name
+- [ActivateLayersCallback](../src/callback/activateLayersCallback.ts) - activates one or more layers
+- [DeactivateLayersCallback](../src/callback/deactivateLayersCallback.ts) - deactivates one or more layers
+- [GoToViewpointCallback](../src/callback/goToViewpointCallback.ts) - jumps to a provided viewpoint
+- [ApplyLayerStyleCallback](../src/callback/applyLayerStyleCallback.ts) - applies a provided style on a layer
+- [StartRotationCallback](../src/callback/startRotationCallback.ts) - rotates around a given or the current viewpoint
+- [StopRotationCallback](../src/callback/stopRotationCallback.ts) - stops the rotation
+- [ActivateClippingPolygonCallback](../src/callback/activateClippingPolygonCallback.ts) - activates one or more Clipping Polygon
+- [DeactivateClippingPolygonCallback](../src/callback/deactivateClippingPolygonCallback.ts) - deactivates one or more Clipping Polygon
+- [AddModuleCallback](../src/callback/addModuleCallback.ts) - adds a module
+- [RemoveModuleCallback](../src/callback/removeModuleCallback.ts) - removes a module
+- [OpenSplashScreenCallback](../src/callback/openSplashScreenCallback.ts) - opens the SplashScreen if defined
+- [CloseSplashScreenCallback](../src/callback/closeSplashScreenCallback.ts) - closes the SplashScreen
+- [ToggleNavbarButtonCallback](../src/callback/toggleNavbarButtonCallback.ts) - calls the callback of a registered navbar action
+- [ToggleToolbarButtonCallback](../src/callback/toggleToolbarButtonCallback.ts) - calls the callback of a registered toolbar component
+- [ActivateMapCallback](../src/callback/activateMapCallback.ts) - activates the map
+- [ActivateOverviewMapCallback](../src/callback/activateOverviewMapCallback.ts) - activates the overview map
+- [DeactivateOverviewMapCallback](../src/callback/deactivateOverviewMapCallback.ts) - deactivates the overview map
+- [HighlightObjectsCallback](../src/callback/highlightObjectsCallback.ts) - highlights objects on a feature layer
+- [UnHighlightObjectsCallback](../src/callback/unHighlightObjectsCallback.ts) - removes object highlighting on a feature layer
+- [HideObjectsCallback](../src/callback/hideObjectsCallback.ts) - hides objects on a feature layer or globally
+- [ShowObjectsCallback](../src/callback/showObjectsCallback.ts) - shows previously hidden objects on a feature layer or globally
+- [StartFlightCallback](../src/callback/startFlightCallback.ts) - starts a flight by name or inline options
+- [StopFlightCallback](../src/callback/stopFlightCallback.ts) - stops the currently running flight by name
 
 ## CallbackClassRegistry
 

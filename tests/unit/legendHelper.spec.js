@@ -8,7 +8,7 @@ import {
 import {
   getLegendEntries,
   legendSymbol,
-} from '../../src/legend/legendHelper.js';
+} from '../../src/legend/legendHelper.ts';
 import VcsUiApp from '../../src/vcsUiApp.js';
 
 const legend = [

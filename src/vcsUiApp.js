@@ -20,7 +20,7 @@ import ToolboxManager, {
 } from './manager/toolbox/toolboxManager.js';
 import WindowManager from './manager/window/windowManager.js';
 import PanelManager from './manager/panel/panelManager.js';
-import NavbarManager from './manager/navbarManager.js';
+import NavbarManager from './manager/navbarManager.ts';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import ContentTreeCollection, { // imported for type
   createContentTreeCollection,
@@ -29,10 +29,10 @@ import ContentTreeCollection, { // imported for type
 import ContentTreeItem, { // imported for type
   contentTreeClassRegistry,
 } from './contentTree/contentTreeItem.js';
-import OverviewMap from './navigation/overviewMap.js';
+import OverviewMap from './navigation/overviewMap.ts';
 import I18nCollection from './i18n/i18nCollection.js';
 import CategoryManager from './manager/collectionManager/categoryManager.js';
-import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
+import ContextMenuManager from './manager/contextMenu/contextMenuManager.ts';
 import FeatureInfo, {
   featureInfoClassRegistry,
 } from './featureInfo/featureInfo.js';
@@ -44,14 +44,14 @@ import {
   writeWMSStyleForLayer,
 } from './state.js';
 import { version } from '../package.json';
-import Search from './search/search.js';
-import Notifier from './notifier/notifier.js';
+import Search from './search/search.ts';
+import Notifier from './notifier/notifier.ts';
 import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.ts';
-import { callbackClassRegistry } from './callback/vcsCallback.js';
+import { callbackClassRegistry } from './callback/vcsCallback.ts';
 import createSiteConfig from './siteConfig.ts';
 import { createVcsVuetify } from './vuePlugins/vuetify.js';
-import createObliqueFallbackWarnings from './obliqueFallbackWarnings.js';
+import createObliqueFallbackWarnings from './obliqueFallbackWarnings.ts';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
@@ -267,7 +267,7 @@ class VcsUiApp extends VcsApp {
     this._vueI18nDestroy = setupI18n(this);
 
     /**
-     * @type {OverrideClassRegistry<import("./callback/vcsCallback.js").default>}
+     * @type {OverrideClassRegistry<import("./callback/vcsCallback.ts").default>}
      * @private
      */
     this._callbackClassRegistry = new OverrideClassRegistry(
@@ -400,7 +400,7 @@ class VcsUiApp extends VcsApp {
   }
 
   /**
-   * @type {import("@vcmap/core").OverrideClassRegistry<typeof import("./callback/vcsCallback.js").default>}
+   * @type {import("@vcmap/core").OverrideClassRegistry<typeof import("./callback/vcsCallback.ts").default>}
    */
   get callbackClassRegistry() {
     return this._callbackClassRegistry;

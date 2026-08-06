@@ -97,8 +97,8 @@
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.ts.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';
   import VcsListItemComponent from './VcsListItemComponent.ts.vue';
-  import type { VcsListItem } from './VcsListItemComponent.ts.vue';
   import { setupSelectableList } from './listHelper.js';
+  import type { VcsListItem } from './listHelper.js';
   import { setupDraggableListOrTree } from './dragHelper.js';
   import type { DropTargetZonesFunction } from './dragHelper.js';
 
@@ -114,14 +114,14 @@
    * Clicking with CTRL adds or removes to a selection set.
    * Clicking with SHIFT will create a selection range, starting or ending with the first item in the list
    * or the last normally selected item (not the last item clicked with CTRL for instance).
-   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} items
+   * @vue-prop {Array<import("./listHelper.js").VcsListItem>} items
    * @vue-prop {boolean} [draggable=false]
    * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
    * @vue-prop {boolean} [selectable=false]
    * @vue-prop {boolean} [singleSelect=false]
-   * @vue-prop {Array<import("./VcsListItemComponent.ts.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
+   * @vue-prop {Array<import("./listHelper.js").VcsListItem>} [modelValue=[]] - the initial items to be selected.
    * @vue-prop {boolean} [searchable=false] - if this list can have its items searched.
-   * @vue-prop {function(import("./VcsListItemComponent.ts.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
+   * @vue-prop {function(import("./listHelper.js").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    * @vue-prop {boolean} [showTitle=true] - show the title component
    * @vue-prop {number} [actionButtonListOverflowCount] - overflow count to use for action lists in the title and items

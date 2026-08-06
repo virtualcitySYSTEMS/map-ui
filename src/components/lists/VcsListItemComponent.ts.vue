@@ -12,33 +12,7 @@
   import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';
   import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
   import { createEllipseTooltip } from '../composables.js';
-  import type { ActionOptions, VcsAction } from '../../actions/actionHelper.js';
-
-  export type VcsListItem = {
-    name: string;
-    /** Whether to display this item or not. */
-    visible?: boolean;
-    /** Whether this item should be displayed as disabled. */
-    disabled?: boolean;
-    /** Whether the title of can be edited. will add a rename action to the end of the action list. This action will call titleChanged with the new title, you must provide the callback yourself, otherwise this does not work as expeted. */
-    renamable?: boolean | ActionOptions;
-    /** The title to be displayed */
-    title: string;
-    /** An optional tooltip for the item. */
-    tooltip?: string;
-    /** An optional icon for the item. Can be a string, HTMLCanvasElement, or HTMLImageElement. */
-    icon?: string | HTMLCanvasElement | HTMLImageElement | undefined;
-    /** Whether the item has an update. */
-    hasUpdate?: boolean;
-    /** An array of actions associated with this item. */
-    actions?: Array<VcsAction>;
-    /** An array of callbacks called on item click. called before selection update */
-    clickedCallbacks?: Array<(event: PointerEvent) => void> | undefined;
-    /** A callback called if the selection changes with the current selection status. called before value update */
-    selectionChanged?: (selected: boolean) => void;
-    /** A callback called if the title changes via rename action. only usable with renamble true. */
-    titleChanged?: (newTitle: string) => void;
-  };
+  import type { VcsListItem } from './listHelper.js';
 
   const props = defineProps({
     item: {

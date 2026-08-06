@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { markText } from '../../../src/search/markText.js';
+import { markText } from '../../../src/search/markText.ts';
 
 describe('marked text', () => {
   it('should highlight the search term in the text', () => {
