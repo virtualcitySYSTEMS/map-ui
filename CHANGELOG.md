@@ -3,6 +3,7 @@
 ### Changes
 
 - Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
+- Fixed a bug in `AbstractFeatureInfoView` where empty attributes were filtered after mapping, leading to mapped empty attributes to be visible
 
 # 6.3.11
 

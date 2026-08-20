@@ -442,6 +442,10 @@ class AbstractFeatureInfoView extends VcsObject {
    */
   getAttributes(feature) {
     let attributes = this._getAttributesFromFeature(feature);
+    attributes = applyEmptyAttributesFilter(
+      attributes,
+      this.removeNoDataAttributes,
+    );
     if (this.attributeKeys.length > 0) {
       attributes = applyAttributeFilter(attributes, this.attributeKeys);
     }
@@ -452,8 +456,7 @@ class AbstractFeatureInfoView extends VcsObject {
       applyKeyMapping(attributes, this.keyMapping);
     }
     attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
-    attributes = applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
-    return applyEmptyAttributesFilter(attributes, this.removeNoDataAttributes);
+    return applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
   }
 
   /**
