@@ -27,7 +27,7 @@
       },
     },
     setup() {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
 
       const close = (): void => {
         app.windowManager.remove(contextMenuWindowId);

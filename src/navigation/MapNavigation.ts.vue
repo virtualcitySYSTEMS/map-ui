@@ -16,7 +16,7 @@
       <ObliqueRotation v-model="heading" :disabled="movementApiCallsDisabled" />
     </v-row>
     <template v-if="mobile">
-      <v-row justify="center">
+      <v-row class="justify-center">
         <OrientationToolsButton
           v-if="showLocatorButton"
           :icon="locatorAction.icon!"
@@ -28,14 +28,14 @@
       </v-row>
     </template>
     <template v-if="smAndUp && !mobileLandscape">
-      <v-row justify="center">
+      <v-row class="justify-center">
         <VcsZoomButton
           @zoom-out="zoomOut()"
           @zoom-in="zoomIn()"
           :disabled="movementApiCallsDisabled"
         />
       </v-row>
-      <v-row justify="center" v-if="is3D || isPanorama">
+      <v-row class="justify-center" v-if="is3D || isPanorama">
         <TiltSlider
           v-model="tilt"
           :disabled="movementApiCallsDisabled"
@@ -43,7 +43,7 @@
           :min-tilt="isPanorama ? -89 : undefined"
         />
       </v-row>
-      <v-row v-if="!hideRotationButton && is3D" justify="center">
+      <v-row v-if="!hideRotationButton && is3D" class="justify-center">
         <OrientationToolsButton
           :icon="rotationAction.icon!"
           :tooltip="rotationAction.title!"
@@ -53,7 +53,7 @@
         />
       </v-row>
     </template>
-    <v-row justify="center">
+    <v-row class="justify-center">
       <OrientationToolsButton
         v-if="homeAction.icon"
         :icon="homeAction.icon"
@@ -63,7 +63,7 @@
       />
     </v-row>
     <template v-if="!mobileLandscape">
-      <v-row justify="center">
+      <v-row class="justify-center">
         <OrientationToolsButton
           v-if="showOverviewButton"
           icon="$vcsMap"
@@ -217,7 +217,7 @@
     };
   }
 
-  enum OrientationToolsViewMode {
+  export enum OrientationToolsViewMode {
     THREE_D = '3d',
     TWO_D = '2d',
     OBLIQUE = 'oblique',
@@ -299,7 +299,7 @@
       VRow,
     },
     setup() {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const viewMode = ref(OrientationToolsViewMode.TWO_D);
       const headingRef = ref(0);
       const tiltRef = ref(0);
@@ -499,7 +499,7 @@
     bottom: 13px;
     // bottom: 13px --> the 1rem were 13px in the old map, now 16px ?Important?
     width: unset;
-    padding: 12px;
+    padding: 12px 0;
     &.mobile {
       // same height as mobile Icon
       padding-top: 0px;

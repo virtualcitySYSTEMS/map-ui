@@ -75,7 +75,7 @@
     align-items: center;
     & > span {
       display: inline-flex;
-      font-size: smaller;
+      font-size: smaller !important;
       align-items: center;
     }
   }

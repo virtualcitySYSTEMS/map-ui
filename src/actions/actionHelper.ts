@@ -25,9 +25,8 @@ import {
   getFittedWindowPositionOptions,
   getTargetSize,
 } from '../manager/window/windowHelper.js';
-import SearchComponent, {
-  searchComponentId,
-} from '../search/SearchComponent.ts.vue';
+import SearchComponent from '../search/SearchComponent.ts.vue';
+import { searchComponentId } from '../search/helper.js';
 import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.ts.vue';
 import type VcsUiApp from '../vcsUiApp.js';
 

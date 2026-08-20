@@ -5,7 +5,7 @@
       :placeholder="searchbarPlaceholder"
       v-model="query"
     />
-    <v-list>
+    <v-list :class="{ 'vcs-list__selectable': selectable }">
       <v-list-item v-if="showTitle && title">
         <template #prepend>
           <v-icon v-if="icon">

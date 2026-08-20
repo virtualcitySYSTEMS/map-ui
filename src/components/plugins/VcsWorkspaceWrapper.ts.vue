@@ -96,7 +96,7 @@
     },
     emits: ['addClicked', 'newClicked'],
     setup() {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       return {
         workspaceHidden: computed(() => !!app.uiConfig.config.workspaceHidden),
       };

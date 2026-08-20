@@ -50,8 +50,7 @@
 <script lang="ts">
   import type { PropType } from 'vue';
   import { computed, defineComponent, reactive, watch } from 'vue';
-  import { VStepperVerticalItem } from 'vuetify/labs/VStepperVertical';
-  import { VSpacer } from 'vuetify/components';
+  import { VSpacer, VStepperVerticalItem } from 'vuetify/components';
   import { useProxiedComplexModel } from '../modelHelper.js';
   import { getForwardSlots } from '../composables.js';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';

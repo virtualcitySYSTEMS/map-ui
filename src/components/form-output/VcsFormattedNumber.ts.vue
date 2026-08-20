@@ -127,7 +127,7 @@
       },
     },
     setup(props, { attrs }) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const formatted = computed((): string | number =>
         numberToLocaleString(
           props.modelValue,

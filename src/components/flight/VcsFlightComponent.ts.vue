@@ -1,3 +1,174 @@
+<script setup lang="ts">
+  import type { PropType } from 'vue';
+  import { computed, onUnmounted, ref, inject } from 'vue';
+  import { VSheet, VContainer, VRow, VCol, VDivider } from 'vuetify/components';
+  import type { FlightInstance } from '@vcmap/core';
+  import { getSplineAndTimesForInstance } from '@vcmap/core';
+  import VcsFormSection from '../section/VcsFormSection.ts.vue';
+  import VcsLabel from '../form-inputs-controls/VcsLabel.ts.vue';
+  import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
+  import VcsSelect from '../form-inputs-controls/VcsSelect.ts.vue';
+  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.ts.vue';
+  import VcsFlightAnchorsComponent from './VcsFlightAnchorsComponent.ts.vue';
+  import VcsFlightPlayer from './VcsFlightPlayer.ts.vue';
+  import { vcsAppSymbol } from '../../pluginHelper.js';
+  import {
+    durationRule,
+    getProvidedFlightInstance,
+    setupFlightAnchorEditingListener,
+  } from './composables.js';
+  import { useComponentId } from '../composables.js';
+  import type VcsUiApp from '../../vcsUiApp.js';
+
+  /**
+   * @description A component to model @vcmap/core/FlightInstanceOptions.
+   * Requires a flightInstance to be provided via vue-provide.
+   * If a reset functionality is required use shallowRef to provide the flightInstance.
+   * @vue-prop {string} heading - Title of flight settings.
+   * @vue-prop {boolean} [expandable] - Expandable sections.
+   * @vue-prop {boolean} hideName - Hide name input.
+   * @vue-prop {boolean} hideTitle - Hide title input.
+   * @vue-prop {boolean} hideInterpolation - Hide select interpolation input.
+   * @vue-prop {boolean} hideLoop - Hide loop input.
+   * @vue-prop {boolean} hideGeneral - Hide all general settings (name, title, animate).
+   * @vue-prop {string} [parentId] - id of the window, the VcsFlightComponent is used in
+   * @vue-prop {string} [owner] - owner of the window, e.g. a plugin name
+   */
+
+  defineProps({
+    heading: {
+      type: String,
+      default: 'components.flight.general',
+    },
+    expandable: {
+      type: Boolean,
+      default: false,
+    },
+    hideName: {
+      type: Boolean,
+      default: false,
+    },
+    hideTitle: {
+      type: Boolean,
+      default: false,
+    },
+    hideInterpolation: {
+      type: Boolean,
+      default: false,
+    },
+    hideDuration: {
+      type: Boolean,
+      default: false,
+    },
+    hideLoop: {
+      type: Boolean,
+      default: false,
+    },
+    hideGeneral: {
+      type: Boolean,
+      default: false,
+    },
+    parentId: {
+      type: String,
+      default: undefined,
+    },
+    owner: {
+      type: [String, Symbol] as PropType<string | typeof vcsAppSymbol>,
+      default: vcsAppSymbol,
+    },
+  });
+  defineEmits(['update:modelValue']);
+
+  function getFlightDuration(instance: FlightInstance): number {
+    if (instance.isValid()) {
+      const { times } = getSplineAndTimesForInstance(instance);
+      const lastTime = times.at(-1);
+      return lastTime !== undefined ? Math.round(lastTime * 100) / 100 : 0;
+    }
+    return 0;
+  }
+
+  const app = inject<VcsUiApp>('vcsApp')!;
+  const flightInstance = getProvidedFlightInstance();
+  const isLoop = ref(flightInstance.loop);
+  const interpolationValue = ref(flightInstance.interpolation);
+  const flightDuration = ref(getFlightDuration(flightInstance));
+  const disablePlayer = ref(!(flightDuration.value > 0));
+  const flightInstanceListeners = [
+    flightInstance.anchorsChanged.addEventListener(() => {
+      flightDuration.value = getFlightDuration(flightInstance);
+      disablePlayer.value = !(flightDuration.value > 0);
+    }),
+    flightInstance.propertyChanged.addEventListener((prop) => {
+      if (prop === 'loop') {
+        isLoop.value = flightInstance.loop;
+        flightDuration.value = getFlightDuration(flightInstance);
+      }
+      if (prop === 'interpolation') {
+        interpolationValue.value = flightInstance.interpolation;
+      }
+    }),
+  ];
+  const editingListener = setupFlightAnchorEditingListener(
+    app.windowManager,
+    disablePlayer,
+  );
+
+  onUnmounted(() => {
+    flightInstanceListeners.forEach((cb) => {
+      cb();
+    });
+    editingListener();
+  });
+
+  const cid = useComponentId();
+
+  const title = computed<string>({
+    get() {
+      return flightInstance?.properties?.title as string;
+    },
+    set(value) {
+      if (flightInstance.properties) {
+        flightInstance.properties.title = value;
+      } else {
+        flightInstance.properties = { title: value };
+      }
+    },
+  });
+  const interpolation = computed({
+    get() {
+      return interpolationValue.value;
+    },
+    set(value) {
+      interpolationValue.value = value;
+      flightInstance.interpolation = value;
+    },
+  });
+  const duration = computed({
+    get() {
+      return flightDuration.value;
+    },
+    set(value) {
+      const v = parseFloat(String(value));
+      if (Number.isFinite(v) && v > 0 && flightDuration.value > 0) {
+        const factor = v / flightDuration.value;
+        [...flightInstance.anchors].forEach((anchor) => {
+          anchor.duration *= factor;
+        });
+      }
+    },
+  });
+  const loop = computed({
+    get() {
+      return isLoop.value;
+    },
+    set(value) {
+      isLoop.value = value;
+      flightInstance.loop = value;
+    },
+  });
+</script>
+
 <template>
   <v-sheet class="vcs-flight-component">
     <VcsFormSection
@@ -23,7 +194,11 @@
             </VcsLabel>
           </v-col>
           <v-col>
-            <VcsTextField :id="`${cid}-name`" clearable v-model="name" />
+            <VcsTextField
+              :id="`${cid}-name`"
+              clearable
+              v-model="flightInstance.name"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters v-if="!hideTitle">
@@ -93,196 +268,3 @@
     <VcsFlightPlayer :disabled="disablePlayer" />
   </v-sheet>
 </template>
-
-<script lang="ts">
-  import { computed, defineComponent, onUnmounted, ref, inject } from 'vue';
-  import { VSheet, VContainer, VRow, VCol, VDivider } from 'vuetify/components';
-  import type { FlightInstance } from '@vcmap/core';
-  import { getSplineAndTimesForInstance } from '@vcmap/core';
-  import VcsFormSection from '../section/VcsFormSection.ts.vue';
-  import VcsLabel from '../form-inputs-controls/VcsLabel.ts.vue';
-  import VcsTextField from '../form-inputs-controls/VcsTextField.ts.vue';
-  import VcsSelect from '../form-inputs-controls/VcsSelect.ts.vue';
-  import VcsCheckbox from '../form-inputs-controls/VcsCheckbox.ts.vue';
-  import VcsFlightAnchorsComponent, {
-    durationRule,
-  } from './VcsFlightAnchorsComponent.ts.vue';
-  import VcsFlightPlayer from './VcsFlightPlayer.ts.vue';
-  import { vcsAppSymbol } from '../../pluginHelper.js';
-  import {
-    getProvidedFlightInstance,
-    setupFlightAnchorEditingListener,
-  } from './composables.js';
-  import { useComponentId } from '../composables.js';
-  import type VcsUiApp from '../../vcsUiApp.js';
-
-  function getFlightDuration(instance: FlightInstance): number {
-    if (instance.isValid()) {
-      const { times } = getSplineAndTimesForInstance(instance);
-      const lastTime = times.at(-1);
-      return lastTime !== undefined ? Math.round(lastTime * 100) / 100 : 0;
-    }
-    return 0;
-  }
-
-  /**
-   * @description A component to model @vcmap/core/FlightInstanceOptions.
-   * Requires a flightInstance to be provided via vue-provide.
-   * If a reset functionality is required use shallowRef to provide the flightInstance.
-   * @vue-prop {string} heading - Title of flight settings.
-   * @vue-prop {boolean} [expandable] - Expandable sections.
-   * @vue-prop {boolean} hideName - Hide name input.
-   * @vue-prop {boolean} hideTitle - Hide title input.
-   * @vue-prop {boolean} hideInterpolation - Hide select interpolation input.
-   * @vue-prop {boolean} hideLoop - Hide loop input.
-   * @vue-prop {boolean} hideGeneral - Hide all general settings (name, title, animate).
-   * @vue-prop {string} [parentId] - id of the window, the VcsFlightComponent is used in
-   * @vue-prop {string} [owner] - owner of the window, e.g. a plugin name
-   */
-  export default defineComponent({
-    name: 'VcsFlightComponent',
-    components: {
-      VcsFlightPlayer,
-      VcsFlightAnchorsComponent,
-      VSheet,
-      VContainer,
-      VRow,
-      VCol,
-      VDivider,
-      VcsFormSection,
-      VcsLabel,
-      VcsTextField,
-      VcsSelect,
-      VcsCheckbox,
-    },
-    props: {
-      heading: {
-        type: String,
-        default: 'components.flight.general',
-      },
-      expandable: {
-        type: Boolean,
-        default: false,
-      },
-      hideName: {
-        type: Boolean,
-        default: false,
-      },
-      hideTitle: {
-        type: Boolean,
-        default: false,
-      },
-      hideInterpolation: {
-        type: Boolean,
-        default: false,
-      },
-      hideDuration: {
-        type: Boolean,
-        default: false,
-      },
-      hideLoop: {
-        type: Boolean,
-        default: false,
-      },
-      hideGeneral: {
-        type: Boolean,
-        default: false,
-      },
-      parentId: {
-        type: String,
-        default: undefined,
-      },
-      owner: {
-        type: [String, Symbol],
-        default: vcsAppSymbol,
-      },
-    },
-    setup() {
-      const app = inject('vcsApp') as VcsUiApp;
-      const flightInstance = getProvidedFlightInstance();
-      const loop = ref(flightInstance.loop);
-      const interpolationValue = ref(flightInstance.interpolation);
-      const flightDuration = ref(getFlightDuration(flightInstance));
-      const disablePlayer = ref(!(flightDuration.value > 0));
-      const flightInstanceListeners = [
-        flightInstance.anchorsChanged.addEventListener(() => {
-          flightDuration.value = getFlightDuration(flightInstance);
-          disablePlayer.value = !(flightDuration.value > 0);
-        }),
-        flightInstance.propertyChanged.addEventListener((prop) => {
-          if (prop === 'loop') {
-            loop.value = flightInstance.loop;
-            flightDuration.value = getFlightDuration(flightInstance);
-          }
-          if (prop === 'interpolation') {
-            interpolationValue.value = flightInstance.interpolation;
-          }
-        }),
-      ];
-      const editingListener = setupFlightAnchorEditingListener(
-        app.windowManager,
-        disablePlayer,
-      );
-
-      onUnmounted(() => {
-        flightInstanceListeners.forEach((cb) => {
-          cb();
-        });
-        editingListener();
-      });
-
-      const cid = useComponentId();
-
-      return {
-        name: flightInstance.name,
-        title: computed<string>({
-          get() {
-            return flightInstance?.properties?.title as string;
-          },
-          set(value) {
-            if (flightInstance.properties) {
-              flightInstance.properties.title = value;
-            } else {
-              flightInstance.properties = { title: value };
-            }
-          },
-        }),
-        interpolation: computed({
-          get() {
-            return interpolationValue.value;
-          },
-          set(value) {
-            interpolationValue.value = value;
-            flightInstance.interpolation = value;
-          },
-        }),
-        duration: computed({
-          get() {
-            return flightDuration.value;
-          },
-          set(value) {
-            const v = parseFloat(String(value));
-            if (Number.isFinite(v) && v > 0 && flightDuration.value > 0) {
-              const factor = v / flightDuration.value;
-              [...flightInstance.anchors].forEach((anchor) => {
-                anchor.duration *= factor;
-              });
-            }
-          },
-        }),
-        durationRule,
-        loop: computed({
-          get() {
-            return loop.value;
-          },
-          set(value) {
-            loop.value = value;
-            flightInstance.loop = value;
-          },
-        }),
-        disablePlayer,
-        cid,
-      };
-    },
-  });
-</script>

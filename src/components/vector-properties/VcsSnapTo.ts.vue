@@ -1,13 +1,12 @@
 <script setup lang="ts">
-  import { computed, reactive } from 'vue';
+  import { reactive, watch } from 'vue';
   import type { PropType } from 'vue';
   import { snapTypes } from '@vcmap/core';
   import type { VcsAction } from '../../actions/actionHelper.js';
   import VcsFormSection from '../section/VcsFormSection.ts.vue';
 
-  const model = defineModel({
+  const model = defineModel<string[]>({
     type: Array as PropType<string[]>,
-    required: false,
     default: () => snapTypes.slice(),
   });
 
@@ -19,28 +18,33 @@
   };
 
   function createToggleAction(key: keyof typeof keyIcons): VcsAction {
-    const keyComputed = computed({
-      get() {
-        return model.value.includes(key);
-      },
-      set(value) {
-        if (value && !keyComputed.value) {
-          model.value = [...model.value, key];
-        } else {
-          model.value = model.value.filter((i) => i !== key);
-        }
-      },
-    });
+    function setActive(value: boolean): void {
+      if (value && !model.value.includes(key)) {
+        model.value = [...model.value, key];
+      } else if (!value && model.value.includes(key)) {
+        model.value = model.value.filter((i) => i !== key);
+      }
+    }
 
-    return reactive({
+    const action = reactive<VcsAction>({
       name: `toggle${key}`,
       icon: keyIcons[key],
       title: `components.editor.snapping.${key}Tooltip`,
-      active: keyComputed,
+      active: model.value.includes(key),
       callback() {
-        keyComputed.value = !keyComputed.value;
+        setActive(!action.active);
       },
     });
+
+    watch(
+      () => model.value.includes(key),
+      (value) => {
+        action.active = value;
+      },
+      { immediate: true },
+    );
+
+    return action;
   }
 
   const headerActions = [

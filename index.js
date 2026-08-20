@@ -343,10 +343,7 @@ export { default as VcsTextMenu } from './src/components/style/VcsTextMenu.ts.vu
 export { default as VcsExtent } from './src/components/extent/VcsExtent.ts.vue';
 export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.ts.vue';
 export { default as VcsProjection } from './src/components/projection/VcsProjection.ts.vue';
-export {
-  default as VcsVectorStyleComponent,
-  VectorStyleMenus,
-} from './src/components/style/VcsVectorStyleComponent.ts.vue';
+export { default as VcsVectorStyleComponent } from './src/components/style/VcsVectorStyleComponent.ts.vue';
 export {
   default as VcsVectorPropertiesComponent,
   vectorProperties,
@@ -368,6 +365,7 @@ export {
 } from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
 export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
 export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.ts.vue';
+export { VectorStyleMenus } from './src/components/style/composables.ts';
 export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.ts.vue';
 export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.ts.vue';
@@ -387,7 +385,7 @@ export {
   getLegendEntries,
 } from './src/legend/legendHelper.ts';
 export { default as Search } from './src/search/search.ts';
-export { searchComponentId } from './src/search/SearchComponent.ts.vue';
+export { searchComponentId } from './src/search/helper.ts';
 export { markText } from './src/search/markText.ts';
 export { default as ResultItemComponent } from './src/search/ResultItem.ts.vue';
 export { default as ResultsComponent } from './src/search/ResultsComponent.ts.vue';

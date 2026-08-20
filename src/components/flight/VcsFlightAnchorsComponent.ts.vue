@@ -1,75 +1,6 @@
-<template>
-  <VcsFormSection
-    class="vcs-flight-anchors-component"
-    :heading="title"
-    :expandable="expandable"
-    start-open
-    :header-actions="actions"
-  >
-    <v-container class="py-0 px-0">
-      <v-sheet v-if="items.length < 1" class="ma-2 pl-2">
-        <p>{{ $st('components.flight.noAnchor') }}</p>
-        <div class="d-flex justify-center">
-          <VcsButton
-            :icon="addAnchorAction.icon"
-            :tooltip="addAnchorAction.title"
-            @click.stop="addAnchorAt()"
-          />
-        </div>
-      </v-sheet>
-      <VcsList
-        v-else
-        :items="items"
-        :draggable="draggable"
-        :show-title="false"
-        @item-moved="move"
-      >
-        <template #item.title="{ item, index }">
-          <div class="d-flex align-center">
-            <span class="anchorTitle">{{ $st(item.title) }}</span>
-            <v-spacer />
-            <div class="duration-input">
-              <VcsTextField
-                v-if="showDuration(index)"
-                v-model="(item as FlightDurationListItem).duration as number"
-                :hide-spin-buttons="true"
-                type="number"
-                unit="s"
-                step="1"
-                :decimals="2"
-                :rules="[durationRule]"
-                no-padding
-                class="ml-auto"
-              />
-            </div>
-          </div>
-        </template>
-        <template #item.intermediate="{ index }">
-          <div class="d-flex justify-center h-0">
-            <VcsButton
-              :icon="addAnchorAction.icon"
-              :tooltip="addAnchorAction.title"
-              @click.stop="addAnchorAt(index + 1)"
-              class="z-index-99 mx-auto add-in-button"
-            />
-          </div>
-        </template>
-      </VcsList>
-    </v-container>
-  </VcsFormSection>
-</template>
-
-<script lang="ts">
-  import type { WritableComputedRef } from 'vue';
-  import {
-    computed,
-    defineComponent,
-    inject,
-    onMounted,
-    onUnmounted,
-    reactive,
-    ref,
-  } from 'vue';
+<script setup lang="ts">
+  import type { PropType, WritableComputedRef } from 'vue';
+  import { computed, inject, onMounted, onUnmounted, reactive, ref } from 'vue';
   import { VContainer, VSheet, VSpacer } from 'vuetify/components';
   import {
     anchorFromViewpoint,
@@ -99,8 +30,31 @@
   import VcsViewpointEditor from '../viewpoint/VcsViewpointEditor.ts.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { createFlightVisualizationAction } from '../../actions/flightActions.js';
-  import { getProvidedFlightInstance } from './composables.js';
+  import { durationRule, getProvidedFlightInstance } from './composables.js';
   import type VcsUiApp from '../../vcsUiApp.js';
+
+  /**
+   * @description A component for editing flight anchors.
+   * Requires a flightInstance to be provided via vue-provide.
+   * @vue-prop {string} [expandable=false] - anchors section expandable
+   * @vue-prop {string} [parentId] - id of the window, the VcsFlightComponent is used in
+   * @vue-prop {string} [owner] - owner of the window, e.g. a plugin name
+   */
+  const props = defineProps({
+    expandable: {
+      type: Boolean,
+      default: false,
+    },
+    parentId: {
+      type: String,
+      default: undefined,
+    },
+    owner: {
+      type: [String, Symbol] as PropType<string | typeof vcsAppSymbol>,
+      default: vcsAppSymbol,
+    },
+  });
+  defineEmits(['update:anchors']);
 
   type FlightDurationListItem = VcsListItem & {
     duration?: number | WritableComputedRef<number>;
@@ -241,152 +195,162 @@
     });
   }
 
-  export function durationRule(value: number | string): boolean | string {
-    const v = Number.parseFloat(String(value));
-    if (Number.isFinite(v) && v > 0) {
-      return true;
-    }
-    return 'components.flight.invalidDuration';
-  }
+  const app = inject<VcsUiApp>('vcsApp')!;
+  const flightInstance = getProvidedFlightInstance();
+  const loop = ref(flightInstance.loop);
+  const loopChangedListener = flightInstance.propertyChanged.addEventListener(
+    (prop) => {
+      if (prop === 'loop') {
+        loop.value = flightInstance.loop;
+        // update last anchor's duration
+        const lastAnchor = flightInstance.anchors.get(
+          flightInstance.anchors.size - 1,
+        );
+        lastAnchor.duration = calculateDuration(
+          lastAnchor,
+          flightInstance.anchors.get(0),
+        );
+      }
+    },
+  );
 
-  /**
-   * @description A component for editing flight anchors.
-   * Requires a flightInstance to be provided via vue-provide.
-   * @vue-prop {string} [expandable=false] - anchors section expandable
-   * @vue-prop {string} [parentId] - id of the window, the VcsFlightComponent is used in
-   * @vue-prop {string} [owner] - owner of the window, e.g. a plugin name
-   */
-  export default defineComponent({
-    name: 'VcsFlightAnchorsComponent',
-    components: {
-      VcsButton,
-      VcsTextField,
-      VContainer,
-      VSheet,
-      VSpacer,
-      VcsFormSection,
-      VcsList,
+  let flightVis: DestroyableAction | undefined;
+
+  const collectionComponent = new CollectionComponentClass(
+    {
+      title: 'components.flight.anchors',
+      draggable: true,
+      collection: flightInstance.anchors,
     },
-    props: {
-      expandable: {
-        type: Boolean,
-        default: false,
-      },
-      parentId: {
-        type: String,
-        default: undefined,
-      },
-      owner: {
-        type: [String, Symbol],
-        default: vcsAppSymbol,
-      },
-    },
-    setup({ parentId, owner }) {
-      const app = inject('vcsApp') as VcsUiApp;
-      const flightInstance = getProvidedFlightInstance();
-      const loop = ref(flightInstance.loop);
-      const loopChangedListener =
-        flightInstance.propertyChanged.addEventListener((prop) => {
-          if (prop === 'loop') {
-            loop.value = flightInstance.loop;
-            // update last anchor's duration
-            const lastAnchor = flightInstance.anchors.get(
-              flightInstance.anchors.size - 1,
-            );
-            lastAnchor.duration = calculateDuration(
-              lastAnchor,
-              flightInstance.anchors.get(0),
-            );
+    props.owner,
+  );
+
+  collectionComponent.addItemMapping({
+    mappingFunction: (item, _c, listItem) => {
+      const { action: editAction, destroy: editDestroy } =
+        createEditAnchorAction(
+          app,
+          item,
+          flightInstance.anchors,
+          props.parentId,
+          props.owner,
+        );
+      listItem.actions = [
+        editAction,
+        createZoomToAnchorAction(app, item),
+        createRemoveAnchorAction(item, flightInstance.anchors),
+      ];
+      const localDuration = ref(item.duration);
+      (listItem as FlightDurationListItem).duration = computed({
+        get: () => localDuration.value,
+        set(value: number | string) {
+          const v = Number.parseFloat(String(value));
+          if (Number.isFinite(v) && v > 0) {
+            item.duration = v;
+            localDuration.value = v;
           }
-        });
-
-      let flightVis: DestroyableAction | undefined;
-
-      const collectionComponent = new CollectionComponentClass(
-        {
-          title: 'components.flight.anchors',
-          draggable: true,
-          collection: flightInstance.anchors,
         },
-        owner,
-      );
-
-      collectionComponent.addItemMapping({
-        mappingFunction: (item, _c, listItem) => {
-          const { action: editAction, destroy: editDestroy } =
-            createEditAnchorAction(
-              app,
-              item,
-              flightInstance.anchors,
-              parentId,
-              owner,
-            );
-          listItem.actions = [
-            editAction,
-            createZoomToAnchorAction(app, item),
-            createRemoveAnchorAction(item, flightInstance.anchors),
-          ];
-          const localDuration = ref(item.duration);
-
-          (listItem as FlightDurationListItem).duration = computed({
-            get: () => localDuration.value,
-            set(value: number | string) {
-              const v = Number.parseFloat(String(value));
-              if (Number.isFinite(v) && v > 0) {
-                item.duration = v;
-                localDuration.value = v;
-              }
-            },
-          });
-          const durationListener = item.changed.addEventListener(() => {
-            localDuration.value = item.duration;
-          });
-          listItem.title = item.title ?? item.name;
-          listItem.destroyFunctions.push(editDestroy, durationListener);
-        },
-        owner,
       });
-
-      onMounted(() => {
-        flightVis = createFlightVisualizationAction(app, flightInstance);
-        collectionComponent.addActions([{ action: flightVis.action, owner }]);
+      const durationListener = item.changed.addEventListener(() => {
+        localDuration.value = item.duration;
       });
-
-      onUnmounted(() => {
-        loopChangedListener();
-        flightVis?.destroy();
-        collectionComponent.destroy();
-      });
-
-      const addAnchorAction = createAddAnchorAction(
-        app,
-        flightInstance.anchors,
-      );
-      const addAnchorAt = (index = 0): void => {
-        addAnchorToCollection(flightInstance.anchors, app, index);
-      };
-
-      return {
-        addAnchorAction,
-        addAnchorAt,
-        title: collectionComponent.title,
-        items: collectionComponent.items,
-        draggable: collectionComponent.draggable,
-        actions: collectionComponent.getActions(),
-        move(event: ItemMovedEvent): void {
-          moveItem(flightInstance.anchors, event);
-        },
-        durationRule,
-        showDuration(index: number): boolean {
-          if (collectionComponent.items.value.length - 1 === index) {
-            return loop.value;
-          }
-          return true;
-        },
-      };
+      listItem.title = item.title ?? item.name;
+      listItem.destroyFunctions.push(editDestroy, durationListener);
     },
+    owner: props.owner,
   });
+
+  onMounted(() => {
+    flightVis = createFlightVisualizationAction(app, flightInstance);
+    collectionComponent.addActions([
+      { action: flightVis.action, owner: props.owner },
+    ]);
+  });
+
+  onUnmounted(() => {
+    loopChangedListener();
+    flightVis?.destroy();
+    collectionComponent.destroy();
+  });
+
+  const addAnchorAction = createAddAnchorAction(app, flightInstance.anchors);
+  const addAnchorAt = (index = 0): void => {
+    addAnchorToCollection(flightInstance.anchors, app, index);
+  };
+
+  const { title, items, draggable } = collectionComponent;
+  const actions = collectionComponent.getActions();
+  const move = (event: ItemMovedEvent): void => {
+    moveItem(flightInstance.anchors, event);
+  };
+  const showDuration = (index: number): boolean => {
+    if (collectionComponent.items.value.length - 1 === index) {
+      return loop.value;
+    }
+    return true;
+  };
 </script>
+
+<template>
+  <VcsFormSection
+    class="vcs-flight-anchors-component"
+    :heading="title"
+    :expandable="expandable"
+    start-open
+    :header-actions="actions"
+  >
+    <v-container class="py-0 px-0">
+      <v-sheet v-if="items.length < 1" class="ma-2 pl-2">
+        <p>{{ $st('components.flight.noAnchor') }}</p>
+        <div class="d-flex justify-center">
+          <VcsButton
+            :icon="addAnchorAction.icon"
+            :tooltip="addAnchorAction.title"
+            @click.stop="addAnchorAt()"
+          />
+        </div>
+      </v-sheet>
+      <VcsList
+        v-else
+        :items="items"
+        :draggable="draggable"
+        :show-title="false"
+        @item-moved="move"
+      >
+        <template #item.title="{ item, index }">
+          <div class="d-flex align-center">
+            <span class="anchorTitle">{{ $st(item.title) }}</span>
+            <v-spacer />
+            <div class="duration-input">
+              <VcsTextField
+                v-if="showDuration(index)"
+                v-model="(item as FlightDurationListItem).duration as number"
+                :hide-spin-buttons="true"
+                type="number"
+                unit="s"
+                step="1"
+                :decimals="2"
+                :rules="[durationRule]"
+                no-padding
+                class="ml-auto"
+              />
+            </div>
+          </div>
+        </template>
+        <template #item.intermediate="{ index }">
+          <div class="d-flex justify-center h-0">
+            <VcsButton
+              :icon="addAnchorAction.icon"
+              :tooltip="addAnchorAction.title"
+              @click.stop="addAnchorAt(index + 1)"
+              class="z-index-99 mx-auto add-in-button"
+            />
+          </div>
+        </template>
+      </VcsList>
+    </v-container>
+  </VcsFormSection>
+</template>
 
 <style scoped lang="scss">
   :deep(.v-list-item) {

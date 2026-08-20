@@ -11,8 +11,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { VStepperVertical } from 'vuetify/labs/VStepperVertical';
-  import { VIcon } from 'vuetify/components';
+  import { VIcon, VStepperVertical } from 'vuetify/components';
   import { getForwardSlots } from '../composables.js';
 
   /**
@@ -40,15 +39,15 @@
     padding: 0 8px;
   }
   :deep(.v-expansion-panel-title.v-expansion-panel-title--active) {
-    background-color: rgba(
-      var(--v-theme-base-darken-4),
-      var(--v-selected-opacity)
+    background-color: rgb(
+      from rgb(var(--v-theme-base-darken-4)) / var(--v-selected-opacity)
     );
-
     color: rgb(var(--v-theme-primary));
 
     .action-btn-wrap {
-      color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+      color: rgb(
+        from rgb(var(--v-theme-on-surface)) / var(--v-high-emphasis-opacity)
+      );
     }
 
     .v-expansion-panel-title__overlay:hover,
@@ -67,6 +66,7 @@
     color: rgb(var(--v-theme-background)) !important;
     width: calc(var(--v-vcs-font-size) - 1px) !important;
     height: calc(var(--v-vcs-font-size) - 1px) !important;
+    align-self: center;
     z-index: 2;
   }
   :deep(
@@ -97,7 +97,7 @@
   }
   /* button on disabled shouldn't still contain the .bg-primary class! */
   :deep(.v-btn--disabled.v-btn--variant-flat.bg-primary) {
-    color: rgba(var(--v-theme-on-surface), 0.26) !important;
+    color: rgb(from rgb(var(--v-theme-on-surface)) / 0.26) !important;
   }
   :deep(.v-expansion-panel__shadow) {
     box-shadow: unset;

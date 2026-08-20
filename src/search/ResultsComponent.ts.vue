@@ -60,7 +60,7 @@
       },
     },
     setup(props) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const items = computed(() => {
         return props.results.map((item, index) => ({
           ...item,

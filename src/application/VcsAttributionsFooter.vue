@@ -71,7 +71,7 @@
     text-overflow: ellipsis;
   }
   .attribution {
-    font-size: smaller;
+    font-size: smaller !important;
     &:before {
       content: '\00a0\007c\00a0';
     }

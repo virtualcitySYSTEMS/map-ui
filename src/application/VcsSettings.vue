@@ -147,10 +147,10 @@
       const theme = useTheme();
       const themeMode = computed({
         get() {
-          return theme.global.current.value.dark;
+          return theme.current.value.dark;
         },
         set(value) {
-          theme.global.name.value = value ? 'dark' : 'light';
+          theme.change(value ? 'dark' : 'light');
         },
       });
 

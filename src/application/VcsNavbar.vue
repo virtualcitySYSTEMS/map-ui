@@ -59,7 +59,7 @@
             </template>
             <div
               v-if="mdAndUp && config.appTitle"
-              class="ml-4 text-h6 font-weight-bold"
+              class="ml-4 text-title-large font-weight-bold vcs-vuetify-typography"
               style="line-height: 1.1"
             >
               {{ $st(config.appTitle) }}

@@ -28,9 +28,8 @@
   } from '@vcmap/core';
   import { Fill, Stroke } from 'ol/style.js';
   import { inject, onUnmounted, ref, watch } from 'vue';
-  import VcsVectorStyleComponent, {
-    VectorStyleMenus,
-  } from './VcsVectorStyleComponent.ts.vue';
+  import VcsVectorStyleComponent from './VcsVectorStyleComponent.ts.vue';
+  import { VectorStyleMenus } from './composables.ts';
 
   /**
    * @typedef {Object} StyleOptions

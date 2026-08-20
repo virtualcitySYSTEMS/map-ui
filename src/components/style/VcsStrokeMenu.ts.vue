@@ -1,28 +1,5 @@
-<template>
-  <StyleMenuWrapper
-    class="vcs-stroke-menu"
-    :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
-    name="components.style.stroke"
-    v-bind="{ ...$attrs, ...$props }"
-  >
-    <template #preview>
-      <v-sheet
-        class="stroke-box"
-        :style="{
-          borderColor: rgbaString,
-        }"
-        width="100%"
-        height="100%"
-      />
-    </template>
-    <template #content>
-      <VcsStrokeSelector v-bind="{ ...$attrs, ...$props }" />
-    </template>
-  </StyleMenuWrapper>
-</template>
-
-<script lang="ts">
-  import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+  import { computed } from 'vue';
   import type { PropType } from 'vue';
   import { VSheet } from 'vuetify/components';
   import type { Options as StrokeOptions } from 'ol/style/Stroke.js';
@@ -37,28 +14,43 @@
    * If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [0, 0, 0, 1], width: 1 } is emitted.
    * @vue-prop {import("ol/style/Stroke").Options} [modelValue] - The Stroke Options
    */
-  export default defineComponent({
-    name: 'VcsStrokeMenu',
-    components: {
-      VSheet,
-      VcsStrokeSelector,
-      StyleMenuWrapper,
-    },
-    props: {
-      modelValue: {
-        type: Object as PropType<StrokeOptions>,
-        default: undefined,
-      },
-    },
-    setup(props, { emit }) {
-      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
-      const rgbaObject = useColorObject(() => localValue.value?.color);
-      return {
-        rgbaString: computed(() => rgbaObjectToString(rgbaObject.value)),
-      };
+
+  const props = defineProps({
+    modelValue: {
+      type: Object as PropType<StrokeOptions>,
+      default: undefined,
     },
   });
+  const emit = defineEmits(['update:modelValue']);
+
+  const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
+  const rgbaObject = useColorObject(() => localValue.value?.color);
+  const rgbaString = computed(() => rgbaObjectToString(rgbaObject.value));
 </script>
+
+<template>
+  <StyleMenuWrapper
+    class="vcs-stroke-menu"
+    :value-fallback="{ color: [0, 0, 0, 1], width: 1 }"
+    name="components.style.stroke"
+    v-bind="$attrs"
+    v-model="localValue"
+  >
+    <template #preview>
+      <v-sheet
+        class="stroke-box"
+        :style="{
+          borderColor: rgbaString,
+        }"
+        width="100%"
+        height="100%"
+      />
+    </template>
+    <template #content>
+      <VcsStrokeSelector v-bind="$attrs" v-model="localValue" />
+    </template>
+  </StyleMenuWrapper>
+</template>
 
 <style scoped>
   .stroke-box {

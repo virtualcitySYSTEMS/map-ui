@@ -241,10 +241,10 @@
   .vcs-toolbox__secondary {
     &.vcs-toolbox.v-theme {
       &--light {
-        background-color: rgba(var(--v-theme-primary-lighten-3));
+        background-color: rgb(var(--v-theme-primary-lighten-3));
       }
       &--dark {
-        background-color: rgba(var(--v-theme-primary-darken-4));
+        background-color: rgb(var(--v-theme-primary-darken-4));
       }
     }
   }

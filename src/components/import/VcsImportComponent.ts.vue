@@ -67,7 +67,7 @@
     },
     emits: ['close'],
     setup(props, { attrs, emit }) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const localFiles = ref<File[]>([]);
       const loading = ref(false);
       const files = computed<File[]>({

@@ -41,7 +41,6 @@
     VcsImageSelector,
     VcsTextSelector,
     VcsVectorStyleComponent,
-    VectorStyleMenus,
   } from '@vcmap/ui';
   import { getStyleOptions } from '@vcmap/core';
   import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style.js';
@@ -108,7 +107,6 @@
       return {
         styleOptions,
         defaultStyleOptions,
-        VectorStyleMenus,
         resetExample: {
           name: 'resetExample',
           icon: 'mdi-sync',

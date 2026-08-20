@@ -223,6 +223,8 @@ export function createVcsVuetify(i18n) {
     treeShake: false,
     defaults: {
       VBtn: {
+        class: 'text-uppercase',
+        style: { 'letter-spacing': '.0892857143em' },
         ripple: false,
       },
       VList: {
@@ -282,25 +284,17 @@ export function createVcsVuetify(i18n) {
         maxWidth: 480,
       },
     },
-    defaultAssets: {
-      font: {
-        family: 'titillium-web',
-      },
-    },
+    defaultAssets: { font: { family: 'titillium-web' } },
     theme,
     icons: {
-      aliases: {
-        ...Icons,
-      },
+      aliases: { ...Icons },
       sets: {
         imageUrl: imageUrlSet,
         svgString: svgStringSet,
         svgPathData: svgPathDataSet,
       },
     },
-    locale: {
-      adapter: createVueI18nAdapter({ i18n, useI18n }),
-    },
+    locale: { adapter: createVueI18nAdapter({ i18n, useI18n }) },
   });
 }
 

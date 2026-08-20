@@ -88,7 +88,7 @@ export function createLayerToggleAction(
 export function createExtentFeatureAction(
   app: VcsUiApp,
   layer: VectorLayer,
-  extent: ComputedRef<Extent> | Ref<Extent>,
+  extent: WritableComputedRef<Extent> | Ref<Extent>,
   featureId: string,
   disabled: boolean,
 ): DestroyableAction {
@@ -119,7 +119,9 @@ export function createExtentFeatureAction(
                 mercatorProjection.proj,
                 extent.value.projection.epsg,
               );
-              extent.value.extent = newExtent;
+              const options = extent.value.toJSON();
+              options.coordinates = newExtent;
+              extent.value = new Extent(options);
               session?.stop();
             } else if (feature) {
               // reset feature, if creation is canceled

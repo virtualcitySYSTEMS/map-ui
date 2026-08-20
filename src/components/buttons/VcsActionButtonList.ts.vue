@@ -133,7 +133,7 @@
       },
     },
     setup(props, { attrs }) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const right = computed(
         () => attrs.right !== undefined && attrs.right !== false,
       );

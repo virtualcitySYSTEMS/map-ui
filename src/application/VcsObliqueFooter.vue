@@ -119,10 +119,10 @@
     display: flex;
     align-items: center;
     > div {
-      font-size: smaller;
+      font-size: smaller !important;
     }
     :deep(p) {
-      font-size: smaller;
+      font-size: smaller !important;
       display: inline;
       margin: 0;
     }

@@ -117,6 +117,9 @@
   :deep(.v-slider-track__tick) {
     background-color: rgb(var(--v-theme-base-darken-1));
   }
+  :deep(.v-input__control) {
+    margin-inline: 0px;
+  }
   .remove-append-margin {
     :deep(.v-input__append) {
       margin-inline-start: 0px;

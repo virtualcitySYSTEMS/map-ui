@@ -128,7 +128,7 @@
     { immediate: true },
   );
 
-  const app = inject('vcsApp') as VcsUiApp;
+  const app = inject<VcsUiApp>('vcsApp')!;
 
   const requesting = ref(false);
 

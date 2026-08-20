@@ -19,11 +19,7 @@
       <v-icon :size="iconSize" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
       </v-icon>
-      <VcsBadge
-        v-if="hasUpdate"
-        :color="'bg-warning'"
-        class="position-absolute badge"
-      />
+      <VcsBadge v-if="hasUpdate" class="position-absolute badge" />
       <slot name="default" v-bind="{}" />
     </template>
     <template v-for="slot of forwardSlots" #[slot]="scope">

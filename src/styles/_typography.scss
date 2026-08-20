@@ -6,8 +6,8 @@
   h4,
   h5,
   h6,
-  div,
-  span,
+  div:not(.vcs-vuetify-typography),
+  span:not(.vcs-vuetify-typography),
   button,
   input,
   textarea,
@@ -38,5 +38,11 @@
   }
   .v-tooltip > .v-overlay__content {
     font-size: var(--v-vcs-font-size);
+  }
+
+  .vcs-vuetify-typography {
+    &:not(.v-icon) {
+      font-family: var(--v-vcs-font-family), sans-serif !important;
+    }
   }
 }

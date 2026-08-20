@@ -9,6 +9,7 @@
 ### Breaking Changes
 
 - Changed CI/CD from Node 20 to 24
+- Updated Vuetify to version 4.1
 - Updated vite to version 8.2
 - Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
 - Removed deprecated `draggable` property of the CollectionComponentClass

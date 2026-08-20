@@ -42,3 +42,11 @@ export function setupFlightAnchorEditingListener(
     });
   };
 }
+
+export function durationRule(value: number | string): boolean | string {
+  const v = Number.parseFloat(String(value));
+  if (Number.isFinite(v) && v > 0) {
+    return true;
+  }
+  return 'components.flight.invalidDuration';
+}

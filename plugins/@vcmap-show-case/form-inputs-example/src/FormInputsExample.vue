@@ -396,7 +396,7 @@
     </VcsFormSection>
     <VcsFormSection heading="VcsFormSection Mixed Inputs">
       <template #header="{ heading }">
-        <article class="pa-2 text--primary">
+        <article class="pa-2 text-primary text-title-medium">
           {{ heading }}
           <h3>This is a custom header using header slot</h3>
         </article>
@@ -404,14 +404,8 @@
       <template #default>
         <v-container class="py-0 px-1">
           <v-row>
-            <v-col cols="1">
-              <VcsLabel
-                :disabled="disabled"
-                html-for="textInput"
-                class="text-caption"
-              >
-                1
-              </VcsLabel>
+            <v-col cols="2">
+              <VcsLabel :disabled="disabled" html-for="textInput">1</VcsLabel>
             </v-col>
             <v-col>
               <VcsSelect

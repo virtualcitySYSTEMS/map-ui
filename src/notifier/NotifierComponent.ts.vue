@@ -44,7 +44,7 @@
       VIcon,
     },
     setup() {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
 
       return {
         notifications: app.notifier.notifications,

@@ -84,7 +84,7 @@
 
 <style lang="scss" scoped>
   .text-page-footer {
-    font-size: smaller;
+    font-size: smaller !important;
     display: flex;
     align-items: center;
     a {

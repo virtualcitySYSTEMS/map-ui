@@ -14,10 +14,10 @@
     v-bind="$attrs"
     v-model="localModelValue"
   >
-    <template #selection="{ item, index }">
-      <slot name="selection" v-bind="{ item, index }">
+    <template #selection="{ internalItem, index }">
+      <slot name="selection" v-bind="{ internalItem, index }">
         <span v-if="index === 0" class="text-truncate w-100">
-          {{ $st(getTitle(item.raw)) }}
+          {{ $st(getTitle(internalItem.raw)) }}
         </span>
         <span v-if="index === 1" class="text-no-wrap">
           (+{{ additionalItems }})

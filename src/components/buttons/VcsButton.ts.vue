@@ -6,6 +6,7 @@
     :color="appliedColor"
     :disabled="disabled"
     class="vcs-button"
+    :class="{ 'pa-0': !paddingProvided }"
     elevation="0"
     density="compact"
     size="small"
@@ -21,11 +22,7 @@
       <v-icon :size="iconSize" v-if="icon" :class="{ 'mr-2': hasDefaultSlot }">
         {{ icon }}
       </v-icon>
-      <VcsBadge
-        v-if="hasUpdate"
-        :color="'bg-warning'"
-        class="position-absolute badge"
-      />
+      <VcsBadge v-if="hasUpdate" class="position-absolute badge" />
       <slot name="default" v-bind="{}" />
     </template>
     <template v-for="slot of forwardSlots" #[slot]="scope">
@@ -39,7 +36,7 @@
   import { VBtn, VIcon, VTooltip } from 'vuetify/components';
   import VcsBadge from '../notification/VcsBadge.ts.vue';
   import { useFontSize, useIconSize } from '../../vuePlugins/vuetify.js';
-  import { getForwardSlots } from '../composables.js';
+  import { getForwardSlots, usePadding } from '../composables.js';
 
   /**
    * @description a button with tooltip extending {@link https://vuetifyjs.com/en/api/v-btn/|vuetify v-btn}.
@@ -90,7 +87,7 @@
         default: 'bottom',
       },
     },
-    setup(props, { slots }) {
+    setup(props, { attrs, slots }) {
       const appliedColor = computed(() => {
         if (props.active && !props.disabled) {
           return props.color ? props.color : 'primary';
@@ -98,21 +95,20 @@
           return undefined;
         }
       });
+      const paddingProvided = usePadding(attrs);
       const forwardSlots = getForwardSlots(slots, ['default']);
-      const hasDefaultSlot = computed(() => {
-        return !!slots?.default;
-      });
+      const hasDefaultSlot = computed(() => !!slots?.default);
       const fontSize = useFontSize();
-      const minHeight = computed(() => {
-        return fontSize.value * 1.5;
-      });
+      const minHeight = computed(() => fontSize.value * 1.5);
       const iconSize = useIconSize();
+
       return {
         forwardSlots,
         hasDefaultSlot,
         appliedColor,
         iconSize,
         minHeight,
+        paddingProvided,
       };
     },
   });
@@ -124,7 +120,6 @@
     right: -3px;
   }
   .v-btn {
-    padding: 0px;
     &.vcs-button {
       &:hover {
         color: rgb(var(--v-theme-primary-lighten-1)) !important;

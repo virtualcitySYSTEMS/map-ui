@@ -49,7 +49,7 @@
       },
     },
     setup(props, { attrs }) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
       const layers = props.layerNames
         .map((name) => app.layers.getByKey(name))
         .filter((layer) => layer instanceof FeatureLayer);

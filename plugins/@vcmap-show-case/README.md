@@ -16,8 +16,6 @@ This directory contains show-case plugins demonstrating the usage of VC Map UI c
 - [wizard-example](./wizard-example/README.md)
 - [projection-example](./projection-example/README.md)
 
-For base components see [stories](../../story), which can be run with `npm run story:dev`.
-
 > All components showcase plugins are part of the [components-show-case.config.json](../../config/components-show-case.config.json)
 
 ## concepts

@@ -124,7 +124,7 @@
     position: fixed;
     right: 32px;
     bottom: 67px;
-    background-color: rgba(var(--v-theme-surface-light), 0.5);
+    background-color: rgb(from rgb(var(--v-theme-surface-light)) / 0.5);
     color: rgb(var(--v-theme-on-surface));
     backdrop-filter: blur(1px);
     -webkit-backdrop-filter: blur(1px);

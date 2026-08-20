@@ -1,22 +1,6 @@
-<template>
-  <StyleMenuWrapper
-    class="vcs-fill-menu"
-    :value-fallback="{ color: [255, 255, 255, 1] }"
-    name="components.style.fill"
-    v-bind="{ ...$attrs, ...$props }"
-  >
-    <template #preview>
-      <v-sheet :color="rgbaString" width="100%" height="100%" />
-    </template>
-    <template #content>
-      <VcsFillSelector v-bind="{ ...$attrs, ...$props }" />
-    </template>
-  </StyleMenuWrapper>
-</template>
-
-<script lang="ts">
+<script setup lang="ts">
   import type { PropType } from 'vue';
-  import { computed, defineComponent } from 'vue';
+  import { computed } from 'vue';
   import { VSheet } from 'vuetify/components';
   import type { Options as FillOptions } from 'ol/style/Fill.js';
   import { useProxiedAtomicModel } from '../modelHelper.js';
@@ -30,27 +14,34 @@
    * If it is checked again, valueDefault is emitted. If the valueDefault is undefined or null, { color: [255, 255, 255, 1] } is emitted.
    * @vue-prop {import("ol/style/Fill").Options} [modelValue] - The Fill Options
    */
-  export default defineComponent({
-    name: 'VcsFillMenu',
-    components: {
-      VSheet,
-      VcsFillSelector,
-      StyleMenuWrapper,
-    },
-    props: {
-      modelValue: {
-        type: Object as PropType<FillOptions>,
-        default: undefined,
-      },
-    },
-    setup(props, { emit }) {
-      const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
-      const rgbaObject = useColorObject(() => localValue.value?.color);
-      return {
-        rgbaString: computed(() => rgbaObjectToString(rgbaObject.value)),
-      };
+  const props = defineProps({
+    modelValue: {
+      type: Object as PropType<FillOptions>,
+      default: undefined,
     },
   });
+
+  const emit = defineEmits(['update:modelValue']);
+  const localValue = useProxiedAtomicModel(props, 'modelValue', emit);
+  const rgbaObject = useColorObject(() => localValue.value?.color);
+  const rgbaString = computed(() => rgbaObjectToString(rgbaObject.value));
 </script>
+
+<template>
+  <StyleMenuWrapper
+    class="vcs-fill-menu"
+    :value-fallback="{ color: [255, 255, 255, 1] }"
+    name="components.style.fill"
+    v-bind="$attrs"
+    v-model="localValue"
+  >
+    <template #preview>
+      <v-sheet :color="rgbaString" width="100%" height="100%" />
+    </template>
+    <template #content>
+      <VcsFillSelector v-bind="$attrs" v-model="localValue" />
+    </template>
+  </StyleMenuWrapper>
+</template>
 
 <style scoped></style>

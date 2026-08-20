@@ -4,7 +4,7 @@
   import VcsMarkdown from './VcsMarkdown.ts.vue';
   import type VcsUiApp from '../../vcsUiApp.js';
 
-  const app = inject('vcsApp') as VcsUiApp;
+  const app = inject<VcsUiApp>('vcsApp');
 
   const props = defineProps({
     /**
@@ -30,9 +30,9 @@
       props.template,
       {
         ...toRaw(props.context),
-        currentVcsAppLocale: app.vueI18n.locale.value,
+        currentVcsAppLocale: app?.vueI18n.locale.value,
       },
-      (key) => app.vueI18n.t(key),
+      (key) => app?.vueI18n.t(key) ?? key,
     );
   });
 </script>

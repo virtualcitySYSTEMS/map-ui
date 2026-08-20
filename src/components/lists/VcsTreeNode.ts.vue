@@ -371,7 +371,7 @@
       right: 2px;
       bottom: 2px;
       outline: 2px dashed rgb(var(--v-theme-primary));
-      background: rgba(var(--v-theme-primary), 0.1);
+      background: rgb(from rgb(var(--v-theme-primary)) / 0.1);
       pointer-events: none;
       z-index: 1;
     }

@@ -19,7 +19,7 @@
       :header-actions="actions.second"
       heading="This is the second step"
       v-model.number="step"
-      :rules="[(v) => !!formValid]"
+      :rules="[() => formValid !== false]"
     >
       <template #help>
         Allowed options:
@@ -29,7 +29,7 @@
           <li>test</li>
         </ol>
       </template>
-      <v-form ref="formRef" v-model="formValid" lazy-validation>
+      <v-form ref="formRef" v-model="formValid" validate-on="input lazy">
         <VcsSelect
           :items="['this', 'is', 'a', 'test']"
           v-model="selection"
@@ -79,7 +79,7 @@
       const step = ref(0);
       const selection = ref(undefined);
       const formRef = ref(null);
-      const formValid = ref(false);
+      const formValid = ref(undefined);
       const actions = {
         second: [
           {

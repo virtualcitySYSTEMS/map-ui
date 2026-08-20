@@ -73,7 +73,7 @@
     },
     emits: ['submit', 'cancel', 'reset'],
     setup(props, { attrs, emit }) {
-      const app = inject('vcsApp') as VcsUiApp;
+      const app = inject<VcsUiApp>('vcsApp')!;
 
       const close = (): void => {
         const windowState = attrs['window-state'] as WindowState;
