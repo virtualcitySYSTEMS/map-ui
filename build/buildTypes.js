@@ -12,16 +12,19 @@ const execPromisify = promisify(exec);
 
 const exportFromJSPattern = /export.*(from.*["'].*)\.js(["'])/;
 const exportFromVuePattern = /export.*(from.*["'].*\.vue)(["'])/;
+const exportFromTSPattern = /export.*(from.*["'].*\.ts)(["'])/;
 
 /**
  * @param {string} line
- * @param {RegExp} pattern
  * @returns {string|undefined}
  */
-function getExportFromLine(line, pattern) {
-  if (pattern.test(line)) {
-    const newLine = line.replace(pattern, 'export type * $1.d.ts$2');
-    return newLine;
+function getExportFromLine(line) {
+  if (exportFromTSPattern.test(line)) {
+    return line.replace(exportFromTSPattern, 'export type * $1$2');
+  } else if (exportFromJSPattern.test(line)) {
+    return line.replace(exportFromJSPattern, 'export type * $1.d.ts$2');
+  } else if (exportFromVuePattern.test(line)) {
+    return line.replace(exportFromVuePattern, 'export type * $1.d.ts$2');
   }
   return undefined;
 }
@@ -35,8 +38,7 @@ async function addTypeExports() {
   const newContent = content
     .split(';')
     .flatMap((line, index) => {
-      let newLine = getExportFromLine(line, exportFromJSPattern);
-      newLine = newLine ?? getExportFromLine(line, exportFromVuePattern);
+      let newLine = getExportFromLine(line);
 
       if (newLine) {
         if (index === 0) {

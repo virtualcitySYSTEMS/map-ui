@@ -4,7 +4,7 @@ import { getCesiumMap } from '@vcmap/core/dist/tests/unit/helpers/cesiumHelpers.
 import { getObliqueCollection } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import { ObliqueMap, OpenlayersMap } from '@vcmap/core';
 import { Cartesian2, SceneTransforms } from '@vcmap-cesium/engine';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import {
   balloonOffset,
   setupBalloonPositionListener,

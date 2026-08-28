@@ -13,8 +13,8 @@ import NavbarManager, {
   locationSymbol,
   getActionsByLocation,
 } from '../../../src/manager/navbarManager.ts';
-import VcsUiApp from '../../../src/vcsUiApp.js';
-import { vcsAppSymbol } from '../../../src/pluginHelper.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
+import { vcsAppSymbol } from '../../../src/pluginHelper.ts';
 
 describe('NavbarManager', () => {
   describe('adding buttonComponents', () => {

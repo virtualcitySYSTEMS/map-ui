@@ -1,9 +1,8 @@
 import { nextTick, reactive, watch } from 'vue';
 import { check, maybe, oneOf } from '@vcsuite/check';
-import { WindowSlot } from '../window/windowManager.js';
 import CollectionComponentClass from './collectionComponentClass.js';
 import { createListEditAction } from '../../actions/listActions.ts';
-import { categoryManagerWindowId } from '../../application/VcsApp.vue';
+import { categoryManagerWindowId } from '../../application/vcsAppHelper.ts';
 
 /**
  * @typedef {Omit<import("../window/windowManager.js").WindowComponentOptions,"id"|"parentId"|"slot">} EditorWindowComponentOptions
@@ -168,7 +167,7 @@ export function makeEditorCollectionComponentClass(
           {
             ...editorOptions,
             id,
-            slot: WindowSlot.DYNAMIC_CHILD,
+            slot: 'dynamicChild',
             parentId,
           },
           editorCollectionComponent.owner,
@@ -187,7 +186,7 @@ export function makeEditorCollectionComponentClass(
           {
             ...multiEditor,
             id: multiEditorId,
-            slot: WindowSlot.DYNAMIC_CHILD,
+            slot: 'dynamicChild',
             parentId,
           },
           editorCollectionComponent.owner,

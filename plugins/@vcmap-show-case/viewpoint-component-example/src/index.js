@@ -1,4 +1,4 @@
-import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
+import { createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import component from './ViewpointExample.vue';
 
@@ -26,7 +26,7 @@ export default function viewpointExamplePlugin() {
             headerIcon: '$vcsPoi',
           },
           component,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         vcsApp.windowManager,
         packageJSON.name,

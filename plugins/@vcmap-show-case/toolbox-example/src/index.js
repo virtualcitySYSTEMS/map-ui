@@ -97,7 +97,7 @@ export default async function toolboxExample() {
       /**
        * A toolbox button with toggle state
        * Toggles disabled state of the other toolbox elements below (see watch)
-       * @type {import("@vcmap/ui").SingleToolboxComponentOptions}
+       * @type {import("@vcmap/ui").ToolboxComponentOptions<ToolboxType.SINGLE>}
        */
       const singleToolboxComponentExampleOptions = {
         id: 'singleToolboxExample',
@@ -145,7 +145,7 @@ export default async function toolboxExample() {
 
       /**
        * A select toolbox button with two tools
-       * @type {import("@vcmap/ui").SelectToolboxComponentOptions}
+       * @type {import("@vcmap/ui").ToolboxComponentOptions<ToolboxType.SELECT>}
        */
       const selectToolboxComponent = {
         id: 'selectToolboxExample',
@@ -156,7 +156,7 @@ export default async function toolboxExample() {
 
       /**
        * A group toolbox button with three group items
-       * @type {import("@vcmap/ui").GroupToolboxComponentOptions}
+       * @type {import("@vcmap/ui").ToolboxComponentOptions<ToolboxType.GROUP>}
        */
       const groupToolboxComponentExampleOptions = {
         id: 'groupToolboxExample',
@@ -238,7 +238,7 @@ export default async function toolboxExample() {
       const { action, destroy } = createDummyTriStateAction(app);
       /**
        * A toolbox button with tristate
-       * @type {import("@vcmap/ui").SingleToolboxComponentOptions}
+       * @type {import("@vcmap/ui").ToolboxComponentOptions<ToolboxType.SINGLE>}
        */
       const tristateButton = {
         id: 'tristateExample',

@@ -20,7 +20,6 @@ import type {
   WindowPositionOptions,
 } from '../manager/window/windowManager.js';
 import type WindowManager from '../manager/window/windowManager.js';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import {
   getFittedWindowPositionOptions,
   getTargetSize,
@@ -179,7 +178,7 @@ export function createToggleAction(
   actionOptions: ActionOptions,
   windowComponent: WindowComponentOptions,
   windowManager: WindowManager,
-  owner: string | symbol,
+  owner: string | typeof vcsAppSymbol,
 ): DestroyableAction {
   check(actionOptions, {
     name: String,
@@ -224,12 +223,12 @@ export function createToggleAction(
 }
 
 function createSearchAction(app: VcsUiApp): DestroyableAction {
-  const windowComponent = {
+  const windowComponent: WindowComponentOptions = {
     id: searchComponentId,
     component: SearchComponent,
     position: { width: 440 },
     state: { hideHeader: true },
-    slot: WindowSlot.DYNAMIC_RIGHT,
+    slot: 'dynamicRight',
   };
   const action = reactive({
     name: 'search.title',
@@ -332,7 +331,7 @@ export function createModalAction(
   actionOptions: ActionOptions,
   modalComponent: WindowComponentOptions,
   app: VcsUiApp,
-  owner: string | symbol,
+  owner: string | typeof vcsAppSymbol,
 ): DestroyableAction {
   check(actionOptions, {
     name: String,
@@ -369,12 +368,12 @@ export function createModalAction(
       clickedWindowPosition!.y,
       Number(windowPositionOptions?.width) || 320,
       Number(windowPositionOptions?.height) || contentHeight,
-      app.maps.target!,
+      app.maps.target,
       width,
       height,
     );
     const position = { ...fittedPosition, ...windowPositionOptions };
-    const targetSize = getTargetSize(app.maps.target!);
+    const targetSize = getTargetSize(app.maps.target);
     if (contentHeight) {
       if (position.bottom) {
         position.maxHeight = Math.min(
@@ -586,7 +585,7 @@ type LoadingOverlayOptions = {
  */
 export function addLoadingOverlay(
   app: VcsUiApp,
-  owner: string | symbol,
+  owner: string | typeof vcsAppSymbol,
   options?: LoadingOverlayOptions,
 ): () => void {
   check(owner, oneOf(String, Symbol));

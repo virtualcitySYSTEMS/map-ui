@@ -2,8 +2,8 @@
 
 This is a show-case plugin demonstrating the concept of [TOOLBOX](../../../documentation/TOOLBOX.md) including:
 
-- SingleToolboxComponent
-- SelectToolboxComponent
-- GroupToolboxComponent
+- ToolboxComponent<ToolboxType.SINGLE>
+- ToolboxComponent<ToolboxType.SELECT>
+- ToolboxComponent<ToolboxType.GROUP>
   and
 - Toolbox changing via toolbox names

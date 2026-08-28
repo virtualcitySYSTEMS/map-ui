@@ -42,7 +42,7 @@ export type VcsCallbackOptions = {
   type: string;
 };
 
-export default abstract class VcsCallback {
+export default class VcsCallback {
   static get className(): string {
     return 'VcsCallback';
   }
@@ -53,7 +53,10 @@ export default abstract class VcsCallback {
     this._app = app;
   }
 
-  abstract callback(): void | Promise<void>;
+  // eslint-disable-next-line class-methods-use-this
+  callback(): void | Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   toJSON(): VcsCallbackOptions {
     return {

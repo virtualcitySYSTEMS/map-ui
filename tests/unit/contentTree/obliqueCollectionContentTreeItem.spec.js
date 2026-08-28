@@ -4,7 +4,7 @@ import {
   OpenlayersMap,
 } from '@vcmap/core';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import ObliqueCollectionContentTreeItem from '../../../src/contentTree/obliqueCollectionContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 

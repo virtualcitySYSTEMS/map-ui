@@ -1,5 +1,5 @@
 import { markVolatile, VectorLayer, wgs84Projection } from '@vcmap/core';
-import { WindowSlot, createToggleAction, ButtonLocation } from '@vcmap/ui';
+import { createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import component from './VectorPropertiesExample.vue';
 import {
@@ -43,7 +43,7 @@ export default function createVectorPropertiesExamplePlugin() {
             headerTitle: 'Vector Properties Example',
           },
           component,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         vcsApp.windowManager,
         packageJSON.name,

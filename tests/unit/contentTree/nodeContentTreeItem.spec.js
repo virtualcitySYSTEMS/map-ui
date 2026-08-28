@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import NodeContentTreeItem from '../../../src/contentTree/nodeContentTreeItem.js';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { sleep } from '../../helpers.js';
 
 describe('GroupContentTreeItem', () => {

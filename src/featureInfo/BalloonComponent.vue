@@ -72,7 +72,7 @@
   import { setupBalloonPositionListener } from './balloonHelper.js';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import { getTag, getTagOptions } from '../components/tables/VcsTable.ts.vue';
-  import { useIconSize } from '../vuePlugins/vuetify.js';
+  import { useIconSize } from '../vuePlugins/vuetify.ts';
 
   /**
    * @description A balloon viewing feature attributes. Size dynamic dependent on number of attributes.

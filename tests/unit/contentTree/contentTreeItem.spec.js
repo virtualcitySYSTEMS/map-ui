@@ -4,7 +4,7 @@ import { VectorLayer } from '@vcmap/core';
 import ActivateLayersCallback from '../../../src/callback/activateLayersCallback.ts';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { sleep } from '../../helpers.js';
 
 describe('ContentTreeItem', () => {

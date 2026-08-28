@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import { name, version, mapVersion } from '../package.json';
 import TilesetFeatureVisibilityComponent, {
   windowId,
@@ -111,7 +111,7 @@ export default function tilesetFeatureVisibilityPlugin() {
             headerIcon: 'mdi-layers-search',
           },
           component: TilesetFeatureVisibilityComponent,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         app.windowManager,
         name,

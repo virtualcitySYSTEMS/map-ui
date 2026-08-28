@@ -1,6 +1,5 @@
 import { parseBoolean } from '@vcsuite/parsers';
 import { renderTemplate, VcsObject } from '@vcmap/core';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import { defaultTagOptions } from '../components/tables/VcsTable.ts.vue';
 
 /**
@@ -518,7 +517,7 @@ class AbstractFeatureInfoView extends VcsObject {
         ...props.attributes,
         layerName: layer.properties?.title || layer.name,
       }),
-      slot: this.window.slot ?? WindowSlot.DYNAMIC_RIGHT,
+      slot: this.window.slot ?? 'dynamicRight',
       component: this.component,
       position: this.window.position,
       props,

@@ -2,14 +2,9 @@ import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
 import type { VcsCallbackOptions } from './vcsCallback.js';
 import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
-import type {
-  GroupToolboxComponent,
-  SelectToolboxComponent,
-  SingleToolboxComponent,
-  ToolboxComponent,
-} from '../manager/toolbox/toolboxManager.js';
-import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 import { callSafeAction } from '../actions/actionHelper.js';
+import type { ToolboxComponent } from '../manager/toolbox/toolboxManager.js';
+import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
 
 type ToggleToolbarButtonOptions = VcsCallbackOptions & {
   /** ID of the Toolbar button */
@@ -22,20 +17,20 @@ type ToggleToolbarButtonOptions = VcsCallbackOptions & {
   activeState?: boolean;
 };
 
-function isGroupComponent(
-  component: ToolboxComponent,
-): component is GroupToolboxComponent {
-  return component.type === ToolboxType.GROUP;
+export function isSingleComponent(
+  component?: ToolboxComponent,
+): component is ToolboxComponent<ToolboxType.SINGLE> {
+  return !!component && component.type === ToolboxType.SINGLE;
 }
-function isSelectComponent(
-  component: ToolboxComponent,
-): component is SelectToolboxComponent {
-  return component.type === ToolboxType.SELECT;
+export function isSelectComponent(
+  component?: ToolboxComponent,
+): component is ToolboxComponent<ToolboxType.SELECT> {
+  return !!component && component.type === ToolboxType.SELECT;
 }
-function isSingleComponent(
-  component: ToolboxComponent,
-): component is SingleToolboxComponent {
-  return component.type === ToolboxType.SINGLE;
+export function isGroupComponent(
+  component?: ToolboxComponent,
+): component is ToolboxComponent<ToolboxType.GROUP> {
+  return !!component && component.type === ToolboxType.GROUP;
 }
 
 export default class ToggleToolbarButtonCallback extends VcsCallback {
@@ -71,7 +66,7 @@ export default class ToggleToolbarButtonCallback extends VcsCallback {
       try {
         const { tools } = component.action;
         const toolIndex = tools.findIndex((t) => t.name === this._toolName);
-        if (toolIndex) {
+        if (toolIndex !== -1) {
           component.action.selected(toolIndex);
           ({ action } = component);
         }

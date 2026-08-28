@@ -33,8 +33,7 @@
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import LayerSwap, { layerSwapId } from './LayerSwap.vue';
   import { createToggleAction } from '../actions/actionHelper.ts';
-  import { vcsAppSymbol } from '../pluginHelper.js';
-  import { WindowSlot } from '../manager/window/windowManager.js';
+  import { vcsAppSymbol } from '../pluginHelper.ts';
 
   /**
    * @description
@@ -76,7 +75,7 @@
           id: layerSwapId,
           parentId: props.windowState.id,
           component: LayerSwap,
-          slot: WindowSlot.DYNAMIC_CHILD,
+          slot: 'dynamicChild',
           state: {
             headerIcon: 'mdi-swap-vertical',
             headerTitle: 'content.layerRenderOrder.name',

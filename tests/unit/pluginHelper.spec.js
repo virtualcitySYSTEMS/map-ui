@@ -1,11 +1,11 @@
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 import {
   getModuleUrl,
   getPluginAssetUrl,
   getPluginEntry,
   pluginBaseUrlSymbol,
-} from '../../src/pluginHelper.js';
+} from '../../src/pluginHelper.ts';
 
 describe('plugin helpers', () => {
   describe('getPluginAssetUrl', () => {

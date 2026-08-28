@@ -4,7 +4,7 @@ import type { Pattern } from '@vcsuite/check';
 import type { VcsModuleConfig } from '@vcmap/core';
 import { VcsModule } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
-import VcsAppComponentWrapper from './application/VcsAppWrapper.vue';
+import VcsAppComponentWrapper from './application/VcsAppWrapper.ts.vue';
 import VcsUiApp from './vcsUiApp.js';
 import { createSafeI18n } from './vuePlugins/i18n.js';
 

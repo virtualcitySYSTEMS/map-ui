@@ -1,16 +1,16 @@
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { setupMapTarget } from '../../helpers.js';
-import { getTargetSize } from '../../../src/manager/window/windowHelper.js';
+import { getTargetSize } from '../../../src/manager/window/windowHelper.ts';
 import PanelManager, {
   getPanelPosition,
   PanelLocation,
-} from '../../../src/manager/panel/panelManager.js';
+} from '../../../src/manager/panel/panelManager.ts';
 import {
   percentageFromPanelOptions,
   posToRelativeTarget,
   updatePanelSizes,
-} from '../../../src/manager/panel/panelHelper.js';
-import { createMainPanel } from '../../../src/manager/panel/PanelManagerComponent.vue';
+} from '../../../src/manager/panel/panelHelper.ts';
+import { createMainPanel } from '../../../src/manager/panel/PanelManagerComponent.ts.vue';
 
 const targetRect = {
   top: 20,

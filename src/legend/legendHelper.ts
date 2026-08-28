@@ -190,7 +190,7 @@ export type LegendEntry = {
 export function getStyleLegend(
   style: StyleItem | undefined,
 ): Array<LegendItem> | undefined {
-  // @ts-expect-error symbol property is not typed on StyleItem
+  // @ts-expect-error legendSymbol is not a property of VectorClusterGroup
   return style?.[legendSymbol] ?? style?.properties?.legend;
 }
 
@@ -199,7 +199,7 @@ export function getLayerLegend(
 ): Array<LegendItem> | undefined {
   return (
     getStyleLegend((layer as VectorLayer)?.style) ??
-    // @ts-expect-error symbol property is not typed on StyleItem
+    // @ts-expect-error legendSymbol is not a property of VectorClusterGroup
     layer?.[legendSymbol] ??
     layer?.properties?.legend
   );
@@ -272,7 +272,7 @@ export function getLegendEntries(app: VcsUiApp): {
     const uniqueVectorClusterGroups = [...new Set(vectorClusterGroups)];
     uniqueVectorClusterGroups.forEach((groupName) => {
       const group = app.vectorClusterGroups.getByKey(groupName);
-      // @ts-expect-error symbol property is not typed on StyleItem
+      // @ts-expect-error legendSymbol is not a property of VectorClusterGroup
       if (group?.[legendSymbol] ?? group?.properties?.legend) {
         const title = (group.properties.title as string) || group.name;
         const { legend } = group.properties as { legend: LegendItem[] };

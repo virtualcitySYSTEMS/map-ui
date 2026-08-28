@@ -25,7 +25,7 @@ import { getCenter } from 'ol/extent.js';
 import {
   getWindowPositionOptionsFromMapEvent,
   WindowAlignment,
-} from '../manager/window/windowHelper.js';
+} from '../manager/window/windowHelper.ts';
 
 /**
  * balloon offset from location or click position in pixel

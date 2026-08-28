@@ -397,7 +397,7 @@
         app.overviewMap.map.layerCollection.removed.addEventListener(() => {
           if (
             [...app.overviewMap.map.layerCollection].filter(
-              // @ts-expect-error symbol not declared
+              // @ts-expect-error overviewMapLayerSymbol is not a property of VectorLayer
               (l) => !l[overviewMapLayerSymbol],
             ).length < 1 &&
             app.overviewMap.active

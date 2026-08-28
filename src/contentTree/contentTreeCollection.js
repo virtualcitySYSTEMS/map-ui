@@ -6,10 +6,9 @@ import {
 } from '@vcmap/core';
 import { computed, ref } from 'vue';
 import ContentTreeItem from './contentTreeItem.js';
-import { vcsAppSymbol } from '../pluginHelper.js';
+import { vcsAppSymbol } from '../pluginHelper.ts';
 import SubContentTreeItem, { subTreeSymbol } from './subContentTreeItem.js';
 import LayerTree from './LayerTree.vue';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import { createToggleAction } from '../actions/actionHelper.ts';
 import { ButtonLocation } from '../manager/navbarManager.ts';
 
@@ -186,7 +185,7 @@ class ContentTreeCollection extends IndexedCollection {
    * @returns {function():void}
    * @private
    */
-  _createSubtreeActionButton(subTreeViewItem, slot = WindowSlot.STATIC) {
+  _createSubtreeActionButton(subTreeViewItem, slot = 'static') {
     // TODO make configurable?
     const id = subTreeViewItem.name;
     const app = this._app;

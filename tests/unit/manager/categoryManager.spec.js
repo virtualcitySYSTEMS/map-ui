@@ -9,7 +9,7 @@ import {
   vi,
 } from 'vitest';
 import { VcsModule } from '@vcmap/core';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import CategoryManager from '../../../src/manager/collectionManager/categoryManager.js';
 
 describe('categoryManager', () => {

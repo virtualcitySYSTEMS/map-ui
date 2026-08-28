@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 
 describe('setupI18n', () => {
   let app;

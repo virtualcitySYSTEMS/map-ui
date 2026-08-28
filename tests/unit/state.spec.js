@@ -8,7 +8,7 @@ import {
   parseWMSStyle,
   setStateToUrl,
   writeWMSStyleForLayer,
-} from '../../src/state.js';
+} from '../../src/state.ts';
 
 describe('URL state IO', () => {
   describe('normal state', () => {

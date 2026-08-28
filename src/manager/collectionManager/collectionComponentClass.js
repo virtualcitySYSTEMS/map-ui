@@ -757,7 +757,7 @@ class CollectionComponentClass {
 
   /**
    * removes itemMapping, itemFilter and actions of provided owner and resets all list items
-   * @param {string | symbol} owner
+   * @param {string | typeof vcsAppSymbol} owner
    */
   removeOwner(owner) {
     const itemMappings = this._itemMappings.filter((itemMapping) => {

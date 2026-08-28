@@ -13,8 +13,10 @@
 - Updated vite to version 8.2
 - Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
 - Removed deprecated `draggable` property of the CollectionComponentClass
+- Removed `WindowSlot` enum, use litteral keys instead (`static`, `dynamicLeft`, `dynamicRight`, `dynamicChild` or `detached`)
 - Changed `createFlightVisualizationAction` to a sync function
 - Changed casing of `VcsUiAppConfigPattern` to `vcsUiAppConfigPattern`
+- Changed `url` parameter of `getStateFromURL` to required
 
 ### Changes
 

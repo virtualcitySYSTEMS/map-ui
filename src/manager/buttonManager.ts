@@ -23,7 +23,7 @@ export type ButtonComponentOptions = {
 
 export type ButtonComponent = {
   id: string;
-  owner: string | symbol;
+  owner: string | typeof vcsAppSymbol;
   action: VcsAction;
   weight: number;
 };
@@ -74,7 +74,7 @@ class ButtonManager implements IButtonManager {
    */
   add(
     buttonComponentOptions: ButtonComponentOptions,
-    owner: string | symbol,
+    owner: string | typeof vcsAppSymbol,
   ): ButtonComponent {
     check(buttonComponentOptions.id, maybe(String));
     check(buttonComponentOptions.weight, maybe(Number));
@@ -95,7 +95,7 @@ class ButtonManager implements IButtonManager {
       get id(): string {
         return id;
       },
-      get owner(): string | symbol {
+      get owner(): string | typeof vcsAppSymbol {
         return owner;
       },
       get action(): VcsAction {
@@ -119,7 +119,7 @@ class ButtonManager implements IButtonManager {
   /**
    * removes all buttonComponents of a specific owner and fires removed Events
    */
-  removeOwner(owner: string | symbol): void {
+  removeOwner(owner: string | typeof vcsAppSymbol): void {
     const componentIds = [...this.componentIds];
     componentIds.forEach((id) => {
       if (owner === this.get(id)?.owner) {

@@ -9,7 +9,7 @@
 
 <script>
   import { inject, onUnmounted, ref } from 'vue';
-  import { VcsList, createToggleAction, WindowSlot, VcsHelp } from '@vcmap/ui';
+  import { VcsList, createToggleAction, VcsHelp } from '@vcmap/ui';
   import { name } from '../package.json';
 
   export default {
@@ -37,7 +37,7 @@
                   id: `${plugin.name}-editor-${index}`,
                   component: e.component,
                   parentId: name,
-                  slot: WindowSlot.DYNAMIC_CHILD,
+                  slot: 'dynamicChild',
                   props: {
                     getConfig: () => {
                       return vcsApp.plugins.getSerializedByKey(plugin.name);

@@ -9,7 +9,7 @@ import {
 } from 'vitest';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
 import SubContentTreeItem from '../../../src/contentTree/subContentTreeItem.js';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { sleep } from '../../helpers.js';
 
 /**

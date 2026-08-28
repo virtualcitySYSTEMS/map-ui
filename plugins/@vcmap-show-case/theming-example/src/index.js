@@ -1,4 +1,4 @@
-import { createToggleAction, ButtonLocation, WindowSlot } from '@vcmap/ui';
+import { createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import ThemingExample from './ThemingExample.vue';
 
@@ -26,7 +26,7 @@ export default async () => {
         {
           id: 'theming-example',
           component: ThemingExample,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'Theming Example',
             headerIcon: '$vcsWand',

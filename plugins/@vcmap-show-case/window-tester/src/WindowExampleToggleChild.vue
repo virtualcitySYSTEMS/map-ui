@@ -12,7 +12,7 @@
 
 <script>
   import { VContainer } from 'vuetify/components';
-  import { VcsFormButton, WindowSlot } from '@vcmap/ui';
+  import { VcsFormButton } from '@vcmap/ui';
   import { inject } from 'vue';
   import WindowExampleContent from './WindowExampleContent.vue';
   import { name as owner } from '../package.json';
@@ -40,7 +40,7 @@
                   headerIcon: 'mdi-human-child',
                 },
                 component: WindowExampleContent,
-                slot: WindowSlot.DYNAMIC_CHILD,
+                slot: 'dynamicChild',
               },
               owner,
             );

@@ -16,9 +16,9 @@ Each registered `ToolboxComponent` has an id, a type and an owner:
 
 This basic ToolboxComponent schema is extended by three different types:
 
-- [SingleToolboxComponent](#SingleToolboxComponent)
-- [SelectToolboxComponent](#SelectToolboxComponent)
-- [GroupToolboxComponent](#GroupToolboxComponent)
+- [ToolboxComponent<ToolboxType.SINGLE>](#SingleToolboxComponent)
+- [ToolboxComponent<ToolboxType.SELECT>](#SelectToolboxComponent)
+- [ToolboxComponent<ToolboxType.GROUP>](#GroupToolboxComponent)
 
 To add a new ToolboxComponent, you have to provide `ToolboxComponentOptions` (again extended by options for three different types):
 
@@ -35,16 +35,16 @@ Important notes on ToolboxComponents:
 
 - ToolboxComponents are static. Once added, they cannot be changed or updated.
 - ToolboxComponents of plugins are removed from the app, when the plugin is removed.
-- GroupToolboxComponent is a special case. It can be changed by adding or removing buttons.
+- ToolboxComponent<ToolboxType.GROUP> is a special case. It can be changed by adding or removing buttons.
 
-> Avoid adding buttons to groups owned by other plugin, since this may lead to unexpected behaviour (see [GroupToolboxComponent](#GroupToolboxComponent)).
+> Avoid adding buttons to groups owned by other plugin, since this may lead to unexpected behaviour (see [ToolboxComponent<ToolboxType.GROUP>](#ToolboxComponent<ToolboxType.GROUP>)).
 
 The `ToolboxComponents` are sorted by owner and plugin order. For VcsApp owned app a predefined defaultOrder exists.
 To be rendered in Toolbox components must meet certain conditions:
 
-- SingleToolboxComponent: no further conditions
-- SelectToolboxComponent: must have at least two tools
-- GroupToolboxComponent: must have at least one member (button)
+- ToolboxComponent<ToolboxType.SINGLE>: no further conditions
+- ToolboxComponent<ToolboxType.SELECT>: must have at least two tools
+- ToolboxComponent<ToolboxType.GROUP>: must have at least one member (button)
 
 > As a plugin developer you need to make sure, that buttons in the toolbox are disabled, if not compatible.
 > See [Disabling Actions](./ACTIONS.md#disabling-actions) for more information.
@@ -57,9 +57,9 @@ The ToolboxManager supports three different `ToolboxType`s with different behavi
 ```js
 /**
  * Possible group types. Define behaviour of group:
- * @property {number} SINGLE - SingleToolboxComponent with single toggle action rendered as VcsButton
- * @property {number} SELECT - SelectToolboxComponent with one selected item of a list of items
- * @property {number} GROUP - GroupToolboxComponent with multiple non-exclusive items rendered as VcsButton
+ * @property {number} SINGLE - ToolboxComponent<ToolboxType.SINGLE> with single toggle action rendered as VcsButton
+ * @property {number} SELECT - ToolboxComponent<ToolboxType.SELECT> with one selected item of a list of items
+ * @property {number} GROUP - ToolboxComponent<ToolboxType.GROUP> with multiple non-exclusive items rendered as VcsButton
  * @enum {number}
  */
 ```
@@ -75,7 +75,7 @@ Additionally, it can be defined if the ToolboxComponent should be displayed on d
  */
 ```
 
-The `data-toolbox-id` attribute is used to identify the toolbox in the DOM. Actions within gorup or select components
+The `data-toolbox-id` attribute is used to identify the toolbox in the DOM. Actions within group or select components
 are identifiable with the `data-action-name` attribute.
 
 ### SingleToolboxComponent
@@ -84,16 +84,16 @@ Renders one **single** toggle button.
 
 ```js
 /**
- * @typedef {ToolboxComponent} SingleToolboxComponent
+ * @typedef {ToolboxComponent} ToolboxComponent<ToolboxType.SINGLE>
  * @property {VcsAction} action
  */
 ```
 
-To add a SingleToolboxComponent, use `add()` method of ToolboxManager providing `SingleToolboxComponentOptions`:
+To add a ToolboxComponent<ToolboxType.SINGLE>, use `add()` method of ToolboxManager providing `ToolboxComponentOptions<ToolboxType.SINGLE>`:
 
 ```js
 /**
- * @typedef {ToolboxComponentOptions} SingleToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions} ToolboxComponentOptions<ToolboxType.SINGLE>
  * @property {VcsAction} action - An action of a single tool
  */
 
@@ -128,7 +128,7 @@ It is proposed `callback` activates or deactivates the tool, e.g. by starting or
 
 ```js
 /**
- * @typedef {ToolboxComponent} SelectToolboxComponent
+ * @typedef {ToolboxComponent} ToolboxComponent<ToolboxType.SELECT>
  * @property {ToolboxSelectAction} action
  */
 
@@ -148,12 +148,12 @@ It is proposed `callback` activates or deactivates the tool, e.g. by starting or
  */
 ```
 
-To add a SelectToolboxComponent with tools, use `add()` method of ToolboxManager providing `SelectToolboxComponentOptions`.
+To add a ToolboxComponent<ToolboxType.SELECT> with tools, use `add()` method of ToolboxManager providing `ToolboxComponentOptions<ToolboxType.SELECT>`.
 Snippet shows a dummy ToolboxSelectAction, starting and stopping a session on toggle. On select the session is updated:
 
 ```js
 /**
- * @typedef {ToolboxComponentOptions} SelectToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions} ToolboxComponentOptions<ToolboxType.SELECT>
  * @property {ToolboxSelectAction} action - An action determining the behaviour of the select group
  */
 
@@ -219,7 +219,7 @@ Multiple group items can be activated. The group button shows an active state, a
 
 ```js
 /**
- * @typedef {ToolboxComponent} GroupToolboxComponent
+ * @typedef {ToolboxComponent} ToolboxComponent<ToolboxType.GROUP>
  * @property {string|undefined} icon
  * @property {string|undefined} title
  * @property {ButtonManager} buttonManager
@@ -227,11 +227,11 @@ Multiple group items can be activated. The group button shows an active state, a
  */
 ```
 
-To add a GroupToolboxComponent, use `add()` method of ToolboxManager providing `GroupToolboxComponentOptions`:
+To add a ToolboxComponent<ToolboxType.GROUP>, use `add()` method of ToolboxManager providing `ToolboxComponentOptions<ToolboxType.GROUP>`:
 
 ```js
 /**
- * @typedef {ToolboxComponentOptions} GroupToolboxComponentOptions
+ * @typedef {ToolboxComponentOptions} ToolboxComponentOptions<ToolboxType.GROUP>
  * @property {string} icon - Group icon
  * @property {string} [title] - Optional group title, for dropdown
  */

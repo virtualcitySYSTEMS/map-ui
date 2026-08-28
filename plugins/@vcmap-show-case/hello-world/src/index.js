@@ -1,4 +1,3 @@
-import { WindowSlot } from '@vcmap/ui';
 import { name, version, mapVersion } from '../package.json';
 import getDefaultOptions from './defaultOptions.js';
 import HelloWorld, { windowId } from './helloWorld.vue';
@@ -66,7 +65,7 @@ export default function helloWorldPlugin(config, baseUrl) {
           {
             id: windowId,
             component: HelloWorld,
-            WindowSlot: WindowSlot.DETACHED,
+            WindowSlot: 'detached',
             position: {
               left: '40%',
               right: '40%',

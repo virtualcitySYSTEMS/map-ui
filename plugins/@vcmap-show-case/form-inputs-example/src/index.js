@@ -1,7 +1,7 @@
 import { ref, reactive, watch } from 'vue';
 import { getLogger as getLoggerByName } from '@vcsuite/logger';
 
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import defaultConfig from '../config.json';
 import { conditionalTest, isValidEmail, isValidText } from './validation.js';
@@ -189,7 +189,7 @@ export default function formInputsExample(config) {
         {
           id: 'formInputsExample',
           component: FormInputsExample,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'form-inputs-example.title',
             headerIcon: '$vcsCircle',

@@ -1,4 +1,4 @@
-import './src/setup.js';
+import './src/setup.ts';
 import './src/styles/main.scss';
 import './src/vuePlugins/i18n.ts';
 
@@ -77,12 +77,9 @@ export { default as StartFlightCallback } from './src/callback/startFlightCallba
 export { default as StopFlightCallback } from './src/callback/stopFlightCallback.ts';
 export { default as UnHighlightObjectsCallback } from './src/callback/unHighlightObjectsCallback.ts';
 export { default as HideObjectsCallback } from './src/callback/hideObjectsCallback.ts';
-export { default as VcsNavbar } from './src/application/VcsNavbar.vue';
+export { default as VcsNavbar } from './src/application/VcsNavbar.ts.vue';
+export { default as VcsApp } from './src/application/VcsApp.ts.vue';
 export {
-  default as VcsApp,
-  setupMapNavbar,
-  setupPluginMountedListeners,
-  setupCategoryManagerWindow,
   attributionsComponentId,
   categoryManagerWindowId,
   customScreenComponentId,
@@ -90,9 +87,12 @@ export {
   legendComponentId,
   settingsComponentId,
   splashScreenComponentId,
-} from './src/application/VcsApp.vue';
-export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.vue';
-export { default as VcsMap } from './src/application/VcsMap.vue';
+  setupCategoryManagerWindow,
+  setupMapNavbar,
+  setupPluginMountedListeners,
+} from './src/application/vcsAppHelper.ts';
+export { default as VcsAppWrapper } from './src/application/VcsAppWrapper.ts.vue';
+export { default as VcsMap } from './src/application/VcsMap.ts.vue';
 export {
   default as ContentTreeCollection,
   createContentTreeCollection,
@@ -118,16 +118,15 @@ export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/o
 export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.js';
 export { default as VcsObjectContentTreeItem } from './src/contentTree/vcsObjectContentTreeItem.js';
 export { default as ViewpointContentTreeItem } from './src/contentTree/viewpointContentTreeItem.js';
-export { default as WindowComponent } from './src/manager/window/WindowComponent.vue';
-export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.vue';
-export { default as VcsWindowManager } from './src/manager/window/WindowManager.vue';
+export { default as WindowComponent } from './src/manager/window/WindowComponent.ts.vue';
+export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.ts.vue';
+export { default as VcsWindowManager } from './src/manager/window/WindowManager.ts.vue';
 export {
   default as WindowManager,
-  WindowSlot,
   WindowPositions,
   posToPixel,
   windowPositionFromOptions,
-} from './src/manager/window/windowManager.js';
+} from './src/manager/window/windowManager.ts';
 export {
   WindowAlignment,
   getFittedWindowPositionOptions,
@@ -143,13 +142,13 @@ export {
   moveWindow,
   applyParentPosition,
   getPositionAppliedOnTarget,
-} from './src/manager/window/windowHelper.js';
+} from './src/manager/window/windowHelper.ts';
 export {
   default as PanelManager,
   PanelLocation,
-} from './src/manager/panel/panelManager.js';
-export { default as PanelManagerComponent } from './src/manager/panel/PanelManagerComponent.vue';
-export { default as PanelComponent } from './src/manager/panel/PanelComponent.vue';
+} from './src/manager/panel/panelManager.ts';
+export { default as PanelManagerComponent } from './src/manager/panel/PanelManagerComponent.ts.vue';
+export { default as PanelComponent } from './src/manager/panel/PanelComponent.ts.vue';
 export { default as ButtonManager } from './src/manager/buttonManager.ts';
 export {
   default as NavbarManager,
@@ -162,11 +161,11 @@ export {
   default as ToolboxManager,
   ToolboxType,
   defaultToolboxName,
-} from './src/manager/toolbox/toolboxManager.js';
+} from './src/manager/toolbox/toolboxManager.ts';
 export {
   default as ToolboxManagerComponent,
   toolboxComponentId,
-} from './src/manager/toolbox/ToolboxManagerComponent.vue';
+} from './src/manager/toolbox/ToolboxManagerComponent.ts.vue';
 export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
 export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
 export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
@@ -232,8 +231,8 @@ export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.ts';
 export {
   default as I18nCollection,
   i18nPluginSymbol,
-} from './src/i18n/i18nCollection.js';
-export { default as UiConfig } from './src/uiConfig.js'; // export UiConfig types
+} from './src/i18n/i18nCollection.ts';
+export { default as UiConfig } from './src/uiConfig.ts'; // export UiConfig types
 export {
   createVcsThemes,
   createVcsVuetify,
@@ -241,7 +240,7 @@ export {
   getDefaultPrimaryColor,
   getColorByKey,
   useFontSize,
-} from './src/vuePlugins/vuetify.js';
+} from './src/vuePlugins/vuetify.ts';
 export {
   downloadURI,
   downloadBlob,
@@ -271,13 +270,13 @@ export {
   loadPlugin,
   serializePlugin,
   deserializePlugin,
-} from './src/pluginHelper.js';
+} from './src/pluginHelper.ts';
 export {
   getStateFromURL,
   createEmptyState,
   setStateToUrl,
-} from './src/state.js';
-export { default as VcsUiApp } from './src/vcsUiApp.js';
+} from './src/state.ts';
+export { default as VcsUiApp } from './src/vcsUiApp.ts';
 export {
   default as Notifier,
   NotificationType,
@@ -285,7 +284,7 @@ export {
 export {
   default as Icons,
   getColoredMapIcon,
-} from './src/components/icons/+all.js';
+} from './src/components/icons/+all.ts';
 
 export { default as VcsButton } from './src/components/buttons/VcsButton.ts.vue';
 export { default as VcsToolButton } from './src/components/buttons/VcsToolButton.ts.vue';
@@ -313,7 +312,7 @@ export { default as VcsDatePicker } from './src/components/form-inputs-controls/
 export { default as VcsFormattedNumber } from './src/components/form-output/VcsFormattedNumber.ts.vue';
 export { default as VcsMarkdown } from './src/components/form-output/VcsMarkdown.ts.vue';
 export { default as VcsTemplateMarkdown } from './src/components/form-output/VcsTemplateMarkdown.vue';
-export { default as VcsTextPage } from './src/application/VcsTextPage.vue';
+export { default as VcsTextPage } from './src/application/VcsTextPage.ts.vue';
 export {
   default as VcsActionList,
   validateAction,
@@ -373,8 +372,8 @@ export { default as VcsLoadingOverlay } from './src/components/plugins/VcsLoadin
 export { default as VcsFileDrop } from './src/components/import/VcsFileDrop.ts.vue';
 export { default as VcsImportComponent } from './src/components/import/VcsImportComponent.ts.vue';
 export { default as VcsExpansionPanel } from './src/components/section/VcsExpansionPanel.ts.vue';
-export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.vue';
-export * from './src/application/attributionsHelper.js';
+export { default as VcsSplashScreen } from './src/application/VcsSplashScreen.ts.vue';
+export * from './src/application/attributionsHelper.ts';
 export * from './src/components/attrsHelpers.ts';
 export * from './src/components/modelHelper.ts';
 export * from './src/components/composables.ts';

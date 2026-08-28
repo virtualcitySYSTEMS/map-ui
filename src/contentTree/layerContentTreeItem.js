@@ -8,7 +8,7 @@ import {
 } from '../actions/actionHelper.ts';
 import component from '../actions/StyleSelector.ts.vue';
 import VcsObjectContentTreeItem from './vcsObjectContentTreeItem.js';
-import { vcsAppSymbol } from '../pluginHelper.js';
+import { vcsAppSymbol } from '../pluginHelper.ts';
 import { contentTreeClassRegistry } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.ts';
 

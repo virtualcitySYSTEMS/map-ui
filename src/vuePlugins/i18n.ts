@@ -113,7 +113,10 @@ function setI18nMessages(app: VcsUiApp): void {
   });
   Object.entries(app.i18n.getMergedMessages()).forEach(
     ([locale, localeMessages]) => {
-      app.vueI18n.setLocaleMessage(locale, localeMessages);
+      app.vueI18n.setLocaleMessage(
+        locale,
+        localeMessages as Record<string, unknown>,
+      );
     },
   );
 }

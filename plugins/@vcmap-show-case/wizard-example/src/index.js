@@ -1,4 +1,4 @@
-import { createToggleAction, ButtonLocation, WindowSlot } from '@vcmap/ui';
+import { createToggleAction, ButtonLocation } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import WizardExample from './WizardExample.vue';
 
@@ -26,7 +26,7 @@ export default async () => {
         {
           id: 'wizard-example',
           component: WizardExample,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'VCS Wizard',
             headerIcon: '$vcsWand',

@@ -1,6 +1,6 @@
 import { defaultDynamicModuleId, moduleIdSymbol } from '@vcmap/core';
 import { check } from '@vcsuite/check';
-import { vcsAppSymbol } from '../../pluginHelper.js';
+import { vcsAppSymbol } from '../../pluginHelper.ts';
 import CollectionManager from './collectionManager.js';
 
 /**

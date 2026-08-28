@@ -36,6 +36,10 @@ export type ResultItem = {
   feature?: Feature | undefined;
 };
 
+/**
+ * Symbol added to search implementations to specify the implementation's owner
+ */
+const searchImplOwnerSymbol = Symbol('featureInfoView');
 export type SearchImpl = {
   /** Name of the implementation. Must be unique, best practice is to prefix with your plugin name to ensure uniqueness or use a uuid. */
   name: string;
@@ -45,6 +49,7 @@ export type SearchImpl = {
   /** Should abort any ongoing requests to search or suggest without throwing an error */
   abort?: () => void;
   destroy: () => void;
+  [searchImplOwnerSymbol]?: string | typeof vcsAppSymbol;
 };
 
 /**
@@ -97,11 +102,6 @@ function setupSearchResultLayer(app: VcsUiApp): {
 }
 
 /**
- * Symbol added to search implementations to specify the implementation's owner
- */
-const searchImplOwnerSymbol = Symbol('featureInfoView');
-
-/**
  * Collection of SearchImpl
  */
 class Search extends IndexedCollection<SearchImpl> {
@@ -146,21 +146,23 @@ class Search extends IndexedCollection<SearchImpl> {
   }
 
   // @ts-expect-error not the same signature
-  add(item: SearchImpl, owner: string | symbol, index?: number): void {
+  add(
+    item: SearchImpl,
+    owner: string | typeof vcsAppSymbol,
+    index?: number | null,
+  ): number | null {
     check(owner, oneOf(String, vcsAppSymbol));
     check(item.search, Function);
 
-    // @ts-expect-error missing searchImplOwnerSymbol property
     item[searchImplOwnerSymbol] = owner;
-    super.add(item, index);
+    return super.add(item, index);
   }
 
   /**
    * removes all search implementations of a specific owner (plugin) and fires removed Events
    */
-  removeOwner(owner: string | symbol): void {
+  removeOwner(owner: string | typeof vcsAppSymbol): void {
     this._array.forEach((impl) => {
-      // @ts-expect-error missing searchImplOwnerSymbol property
       if (impl[searchImplOwnerSymbol] === owner) {
         super.remove(impl);
       }

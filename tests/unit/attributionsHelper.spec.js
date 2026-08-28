@@ -5,11 +5,11 @@ import {
   OpenlayersMap,
   VectorLayer,
 } from '@vcmap/core';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 import {
   getAttributions,
   mergeAttributions,
-} from '../../src/application/attributionsHelper.js';
+} from '../../src/application/attributionsHelper.ts';
 
 const getKey = (object) => `${object.className}_${object.name}`;
 

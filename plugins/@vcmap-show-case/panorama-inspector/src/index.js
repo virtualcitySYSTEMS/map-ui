@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import { name, version, mapVersion } from '../package.json';
 import PanoramaInspector from './PanoramaInspector.vue';
 import ShowClickInteraction from './showClickInteraction.js';
@@ -30,7 +30,7 @@ export default function panoramaInspector() {
             headerTitle: 'Panorama Inspector',
           },
           component: PanoramaInspector,
-          slot: WindowSlot.DYNAMIC_RIGHT,
+          slot: 'dynamicRight',
         },
         app.windowManager,
         name,

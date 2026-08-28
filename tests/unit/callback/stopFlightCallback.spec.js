@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import StopFlightCallback from '../../../src/callback/stopFlightCallback.ts';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 
 describe('StopFlightCallback', () => {
   /** @type {VcsUiApp} */

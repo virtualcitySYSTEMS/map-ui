@@ -17,7 +17,7 @@ import {
   beforeEach,
   afterEach,
 } from 'vitest';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { contextMenuWindowId } from '../../../src/manager/contextMenu/ContextMenuComponent.ts.vue';
 import { setupMapTarget } from '../../helpers.js';
 

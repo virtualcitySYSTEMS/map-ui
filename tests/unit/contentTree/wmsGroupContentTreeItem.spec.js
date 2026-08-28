@@ -3,7 +3,7 @@ import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import nock from 'nock';
 import { watch } from 'vue';
 import { OpenlayersMap, WMSLayer } from '@vcmap/core';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import { legendSymbol } from '../../../src/legend/legendHelper.ts';

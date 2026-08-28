@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import AllIconsComponent from './AllIconsComponent.vue';
 
@@ -25,7 +25,7 @@ export default async function iconsExample() {
         {
           id: 'icons-example',
           component: AllIconsComponent,
-          slot: WindowSlot.DETACHED,
+          slot: 'detached',
           state: {
             headerTitle: 'Icons Example',
           },

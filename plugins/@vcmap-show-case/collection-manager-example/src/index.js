@@ -1,7 +1,6 @@
 import {
   ButtonLocation,
   createToggleAction,
-  WindowSlot,
   CollectionManager,
 } from '@vcmap/ui';
 import packageJSON from '../package.json';
@@ -37,7 +36,7 @@ export default async function collectionManagerExample() {
         {
           id: 'collection-editor',
           component: CollectionManagerExample,
-          slot: WindowSlot.DETACHED,
+          slot: 'detached',
           state: {
             headerTitle: 'Collection Manager Tester',
             headerIcon: '$vcsPen',

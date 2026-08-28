@@ -3,7 +3,7 @@ import { Collection } from '@vcmap/core';
 import I18nCollection, {
   mergeDeep,
   isObject,
-} from '../../src/i18n/i18nCollection.js';
+} from '../../src/i18n/i18nCollection.ts';
 
 describe('i18nCollection', () => {
   describe('isObject', () => {

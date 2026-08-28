@@ -12,8 +12,8 @@ import { isReactive } from 'vue';
 import ToolboxManager, {
   getComponentsByOrder,
   ToolboxType,
-} from '../../../src/manager/toolbox/toolboxManager.js';
-import { vcsAppSymbol } from '../../../src/pluginHelper.js';
+} from '../../../src/manager/toolbox/toolboxManager.ts';
+import { vcsAppSymbol } from '../../../src/pluginHelper.ts';
 
 const components = {
   single: {
@@ -61,7 +61,7 @@ describe('toolboxManager', () => {
     /** @type {ToolboxManager} */
     let toolboxManager;
 
-    describe('adding SingleToolboxComponent', () => {
+    describe('adding ToolboxComponent<ToolboxType.SINGLE>', () => {
       let toolboxComponent;
       let addedSpy;
 
@@ -118,7 +118,7 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      describe('returns a SingleToolboxComponent', () => {
+      describe('returns a ToolboxComponent<ToolboxType.SINGLE>', () => {
         it('id should have an id, type and owner', () => {
           expect(toolboxComponent).to.have.property('id');
           expect(toolboxComponent).to.have.property('type', ToolboxType.SINGLE);
@@ -131,7 +131,7 @@ describe('toolboxManager', () => {
       });
     });
 
-    describe('adding SelectToolboxComponent', () => {
+    describe('adding ToolboxComponent<ToolboxType.SELECT>', () => {
       let toolboxComponent;
       let addedSpy;
 
@@ -188,7 +188,7 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      describe('returns a SelectToolboxComponent', () => {
+      describe('returns a ToolboxComponent<ToolboxType.SELECT>', () => {
         it('id should have an id, type and owner', () => {
           expect(toolboxComponent).to.have.property('id');
           expect(toolboxComponent).to.have.property('type', ToolboxType.SELECT);
@@ -205,7 +205,7 @@ describe('toolboxManager', () => {
       });
     });
 
-    describe('adding GroupToolboxComponent', () => {
+    describe('adding ToolboxComponent<ToolboxType.GROUP>', () => {
       let toolboxComponent;
       let addedSpy;
 
@@ -262,7 +262,7 @@ describe('toolboxManager', () => {
         ]);
       });
 
-      describe('returns a GroupToolboxComponent', () => {
+      describe('returns a ToolboxComponent<ToolboxType.GROUP>', () => {
         it('id should have an id, type, owner, icon, title, buttonManager and disabled', () => {
           expect(toolboxComponent).to.have.property('id');
           expect(toolboxComponent).to.have.property('type', ToolboxType.GROUP);
@@ -293,7 +293,7 @@ describe('toolboxManager', () => {
 
     it('should return toolboxComponent, if existing', () => {
       /**
-       * @type {SingleToolboxComponent}
+       * @type {ToolboxComponent<ToolboxType.SINGLE>}
        */
       const comp = toolboxManager.get(components.single.id);
       expect(comp.id).to.equal(components.single.id);

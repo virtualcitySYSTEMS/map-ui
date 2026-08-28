@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import component from './PluginEditors.vue';
 /**
@@ -24,7 +24,7 @@ export default function pluginEditors() {
         {
           id: packageJSON.name,
           component,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'Plugin Editors',
           },

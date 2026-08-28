@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { FeatureLayer, Layer } from '@vcmap/core';
 import HighlightObjectsCallback from '../../../src/callback/highlightObjectsCallback.ts';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 
 describe('HighlightObjectsCallback', () => {

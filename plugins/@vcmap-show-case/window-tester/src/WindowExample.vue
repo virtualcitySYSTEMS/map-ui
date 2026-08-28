@@ -21,7 +21,7 @@
   import { inject, onUnmounted, ref, computed } from 'vue';
   import { getLogger } from '@vcsuite/logger';
 
-  import { WindowSlot, VcsFormButton } from '@vcmap/ui';
+  import { VcsFormButton } from '@vcmap/ui';
   import WindowExampleContent from './WindowExampleContent.vue';
   import WindowExampleToggleChild from './WindowExampleToggleChild.vue';
   import MyCustomHeader from './MyCustomHeader.vue';
@@ -42,7 +42,7 @@
             headerTitle: ['windowTester.title', '-', 'Example dynamicLeft'],
           },
           component: WindowExampleToggleChild,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         {
           id: 'dynamicLeft2',
@@ -50,7 +50,7 @@
             headerTitle: ['windowTester.title', '-', 'Example dynamicLeft2'],
           },
           component: WindowExampleToggleChild,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         {
           id: 'dynamicLeft2 large',
@@ -62,7 +62,7 @@
             ],
           },
           component: WindowExampleToggleChild,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           position: {
             width: '1000px',
           },
@@ -74,7 +74,7 @@
           },
           component: WindowExampleContent,
           headerComponent: MyCustomHeader,
-          slot: WindowSlot.DYNAMIC_RIGHT,
+          slot: 'dynamicRight',
           props: {
             sample: 'A window property',
           },
@@ -85,7 +85,7 @@
             headerTitle: ['windowTester.title', '-', 'Example dynamicRight2'],
           },
           component: WindowExampleContent,
-          slot: WindowSlot.DYNAMIC_RIGHT,
+          slot: 'dynamicRight',
         },
         {
           id: 'static',
@@ -94,7 +94,7 @@
             styles: { 'background-color': 'red' },
           },
           component: WindowExampleToggleChild,
-          slot: WindowSlot.STATIC,
+          slot: 'static',
         },
         {
           id: 'static2',
@@ -111,7 +111,7 @@
             },
           },
           component: EmptyComponent,
-          slot: WindowSlot.STATIC,
+          slot: 'static',
         },
         {
           id: 'position1',
@@ -158,7 +158,7 @@
             headerIcon: 'mdi-human-child',
           },
           component: WindowExampleContent,
-          slot: WindowSlot.DYNAMIC_CHILD,
+          slot: 'dynamicChild',
         },
         {
           id: 'child-dynamicLeft',
@@ -168,7 +168,7 @@
             headerIcon: 'mdi-human-child',
           },
           component: WindowExampleContent,
-          slot: WindowSlot.DYNAMIC_CHILD,
+          slot: 'dynamicChild',
         },
         {
           id: 'child-dynamicLeft2',
@@ -178,7 +178,7 @@
             headerIcon: 'mdi-human-child',
           },
           component: WindowExampleContent,
-          slot: WindowSlot.DYNAMIC_CHILD,
+          slot: 'dynamicChild',
         },
         {
           id: 'broken',
@@ -187,7 +187,7 @@
             headerIcon: 'mdi-human-child',
           },
           component: Broken,
-          slot: WindowSlot.DETACHED,
+          slot: 'detached',
         },
       ];
 

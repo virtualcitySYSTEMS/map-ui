@@ -100,7 +100,7 @@ class NavbarManager extends ButtonManager {
    */
   add(
     buttonComponentOptions: ButtonComponentOptions,
-    owner: string | symbol,
+    owner: string | typeof vcsAppSymbol,
     location: ButtonLocation = ButtonLocation.TOOL,
     device: DeviceOptions = { desktop: true, tablet: true },
   ): NavbarButtonComponent {
@@ -121,6 +121,14 @@ class NavbarManager extends ButtonManager {
 
   get(id: string): NavbarButtonComponent | undefined {
     return super.get(id) as NavbarButtonComponent | undefined;
+  }
+
+  getAllForDevice(device: Device): NavbarButtonComponent[] {
+    return this.componentIds
+      .map((id) => this.get(id))
+      .filter(
+        (nbc): nbc is NavbarButtonComponent => !!nbc?.[deviceSymbol]?.[device],
+      );
   }
 
   /**

@@ -8,7 +8,7 @@ import {
   afterEach,
 } from 'vitest';
 import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import LayerGroupContentTreeItem from '../../../src/contentTree/layerGroupContentTreeItem.js';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 

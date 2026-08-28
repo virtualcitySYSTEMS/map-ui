@@ -9,7 +9,7 @@ import {
   getLegendEntries,
   legendSymbol,
 } from '../../src/legend/legendHelper.ts';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 
 const legend = [
   {

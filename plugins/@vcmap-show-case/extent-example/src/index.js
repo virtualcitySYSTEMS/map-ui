@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import ExtentExample from './ExtentExample.vue';
 
@@ -26,7 +26,7 @@ export default async function extentExample() {
         {
           id: 'extent-example',
           component: ExtentExample,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'Extent Example',
             headerIcon: '$vcsBoundingBox',

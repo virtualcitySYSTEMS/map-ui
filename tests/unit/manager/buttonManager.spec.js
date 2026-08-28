@@ -10,7 +10,7 @@ import {
 } from 'vitest';
 import { isReactive } from 'vue';
 import ButtonManager from '../../../src/manager/buttonManager.ts';
-import { vcsAppSymbol } from '../../../src/pluginHelper.js';
+import { vcsAppSymbol } from '../../../src/pluginHelper.ts';
 
 describe('ButtonManager', () => {
   describe('adding buttonComponents', () => {

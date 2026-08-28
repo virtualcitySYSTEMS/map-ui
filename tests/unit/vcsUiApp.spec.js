@@ -21,8 +21,8 @@ import {
   WMSLayer,
 } from '@vcmap/core';
 import { setObliqueMap } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
-import VcsUiApp from '../../src/vcsUiApp.js';
-import { pluginModuleUrlSymbol } from '../../src/pluginHelper.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
+import { pluginModuleUrlSymbol } from '../../src/pluginHelper.ts';
 
 /**
  * @param {VcsUiApp} app

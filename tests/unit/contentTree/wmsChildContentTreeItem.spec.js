@@ -1,7 +1,7 @@
 import { nextTick, ref } from 'vue';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { StateActionState } from '@vcmap/ui';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import WMSChildContentTreeItem from '../../../src/contentTree/wmsChildContentTreeItem.js';
 
 describe('ContentTreeItem', () => {

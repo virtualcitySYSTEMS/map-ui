@@ -14,7 +14,6 @@ import type {
 } from './actionHelper.ts';
 import { createToggleAction } from './actionHelper.js';
 import type WindowManager from '../manager/window/windowManager.js';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { NotificationType } from '../notifier/notifier.js';
 import type { VcsListItem } from '../components/lists/listHelper.js';
@@ -66,7 +65,7 @@ export function createListItemBulkAction(
 export function createListExportAction(
   selection: Ref<Array<VcsListItem>>,
   exportCallback: ActionCallback,
-  owner: string | symbol,
+  owner: string | typeof vcsAppSymbol,
 ): { action: OwnedAction; destroy: () => void } {
   const { action, destroy } = createListItemBulkAction(selection, {
     name: 'list.export',
@@ -192,7 +191,7 @@ export async function importIntoLayer(
 export function createListImportAction(
   importCallback: (files: File[]) => boolean | Promise<boolean>,
   windowManager: WindowManager,
-  owner: string | symbol,
+  owner: string | typeof vcsAppSymbol,
   parentId: string,
 ): { action: OwnedAction; destroy: () => void } {
   check(importCallback, Function);
@@ -205,7 +204,7 @@ export function createListImportAction(
       id: `list-import`,
       parentId,
       component: VcsImportComponent,
-      slot: WindowSlot.DYNAMIC_CHILD,
+      slot: 'dynamicChild',
       state: { headerTitle: `list.import`, headerIcon: '$vcsPlus' },
       props: { importFiles: importCallback },
     },

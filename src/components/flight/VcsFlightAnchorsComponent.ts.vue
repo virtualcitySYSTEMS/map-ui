@@ -26,7 +26,6 @@
   import type { ItemMovedEvent } from '../lists/dragHelper.js';
   import type { VcsListItem } from '../lists/listHelper.js';
   import CollectionComponentClass from '../../manager/collectionManager/collectionComponentClass.js';
-  import { WindowSlot } from '../../manager/window/windowManager.js';
   import VcsViewpointEditor from '../viewpoint/VcsViewpointEditor.ts.vue';
   import { vcsAppSymbol } from '../../pluginHelper.js';
   import { createFlightVisualizationAction } from '../../actions/flightActions.js';
@@ -127,7 +126,7 @@
     item: FlightAnchor,
     collection: IndexedCollection<FlightAnchor>,
     parentId: string | undefined,
-    owner: string | symbol,
+    owner: string | typeof vcsAppSymbol,
   ): DestroyableAction {
     const { action, destroy } = createToggleAction(
       {
@@ -139,7 +138,7 @@
         id: `edit-anchor-${item.name}`,
         parentId,
         component: VcsViewpointEditor,
-        slot: WindowSlot.DYNAMIC_CHILD,
+        slot: 'dynamicChild',
         state: {
           headerTitle: 'components.flight.editAnchor',
           headerIcon: '$vcsEdit',

@@ -10,7 +10,7 @@ import {
 } from 'vitest';
 import GroupContentTreeItem from '../../../src/contentTree/groupContentTreeItem.js';
 import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import { sleep } from '../../helpers.js';
 

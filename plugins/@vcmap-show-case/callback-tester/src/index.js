@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import CallbackTester from './CallbackTester.vue';
 import packageJSON from '../package.json';
 
@@ -26,7 +26,7 @@ export default function callbackTester() {
         {
           id: 'callback-tester',
           component: CallbackTester,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'Callback Tester',
             headerIcon: 'mdi-phone-return-outline',

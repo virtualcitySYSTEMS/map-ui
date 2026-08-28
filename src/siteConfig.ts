@@ -1,5 +1,7 @@
 import { check } from '@vcsuite/check';
 import type UiConfig from './uiConfig.js';
+import type { UiConfigurationItem } from './uiConfig.js';
+import { isUiConfigurationItem } from './uiConfig.js';
 
 function setFavicon(src: string): void {
   check(src, String);
@@ -63,21 +65,17 @@ export default function createSiteConfig(uiConfig: UiConfig): () => void {
     }
   };
 
+  const updateSiteConfig = (item: UiConfigurationItem<unknown>): void => {
+    if (isUiConfigurationItem(item, 'favicon')) {
+      updateFavicon();
+    } else if (isUiConfigurationItem(item, 'headerTitle')) {
+      updateHeaderTitle();
+    }
+  };
+
   const listeners = [
-    uiConfig.added.addEventListener(({ name }) => {
-      if (name === 'favicon') {
-        updateFavicon();
-      } else if (name === 'headerTitle') {
-        updateHeaderTitle();
-      }
-    }),
-    uiConfig.removed.addEventListener(({ name }) => {
-      if (name === 'favicon') {
-        updateFavicon();
-      } else if (name === 'headerTitle') {
-        updateHeaderTitle();
-      }
-    }),
+    uiConfig.added.addEventListener(updateSiteConfig),
+    uiConfig.removed.addEventListener(updateSiteConfig),
   ];
 
   return () => {

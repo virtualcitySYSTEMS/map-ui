@@ -37,8 +37,7 @@ import { Feature } from 'ol';
 import { check, maybe, oneOf } from '@vcsuite/check';
 
 import { reactive } from 'vue';
-import { WindowSlot } from '../manager/window/windowManager.js';
-import { vcsAppSymbol } from '../pluginHelper.js';
+import { vcsAppSymbol } from '../pluginHelper.ts';
 import FeatureInfoInteraction from './featureInfoInteraction.js';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
 import TableFeatureInfoView from './tableFeatureInfoView.js';
@@ -46,8 +45,8 @@ import IframeFeatureInfoView from './iframeFeatureInfoView.js';
 import AddressBalloonFeatureInfoView from './addressBalloonFeatureInfoView.js';
 import BalloonFeatureInfoView from './balloonFeatureInfoView.js';
 import MarkdownFeatureInfoView from './markdownFeatureInfoView.js';
-import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
-import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
+import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.ts';
+import { ToolboxType } from '../manager/toolbox/toolboxManager.ts';
 import MarkdownBalloonFeatureInfoView from './markdownBalloonFeatureInfoView.js';
 import IframeWmsFeatureInfoView from './iframeWmsFeatureInfoView.js';
 import ClusterFeatureComponent from './ClusterFeatureComponent.vue';
@@ -868,7 +867,7 @@ class FeatureInfo extends Collection {
         component: ClusterFeatureComponent,
         props: reactive({ items, groups }),
         state: { headerTitle: 'featureInfo.cluster.headerTitle' },
-        slot: WindowSlot.DYNAMIC_LEFT,
+        slot: 'dynamicLeft',
       },
       vcsAppSymbol,
     );

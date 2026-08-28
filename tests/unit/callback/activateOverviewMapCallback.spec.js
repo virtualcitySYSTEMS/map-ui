@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import ActivateOverviewMapCallback from '../../../src/callback/activateOverviewMapCallback.ts';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 import { sleep } from '../../helpers.js';
 

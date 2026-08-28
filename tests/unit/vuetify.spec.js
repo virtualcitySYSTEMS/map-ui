@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   defaultPrimaryColor,
   getColorByKey,
-} from '../../src/vuePlugins/vuetify.js';
+} from '../../src/vuePlugins/vuetify.ts';
 import { VcsUiApp } from '../../index.js';
 
 /**

@@ -288,15 +288,15 @@ The dynamic child slot binds a window to a parent window, which is defined by a 
 ```js
 const parentWindowComponentOptions = {
   id: 'parent',
-  componet: ParentComponent,
-  slot: WindowSlot.DYNAMIC_LEFT,
+  component: ParentComponent,
+  slot: 'dynamicLeft',
 };
 
 const childWindowComponentOptions = {
   id: 'child',
   parentId: 'parent',
   component: ChildComponent,
-  slot: WindowSlot.DYNAMIC_CHILD,
+  slot: 'dynamicChild',
   position: {
     width: '200px',
     // left and top will be overwritten by the derived child position next to its parent

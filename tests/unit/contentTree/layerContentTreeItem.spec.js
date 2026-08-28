@@ -5,7 +5,7 @@ import {
   VectorLayer,
 } from '@vcmap/core';
 import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import LayerContentTreeItem from '../../../src/contentTree/layerContentTreeItem.js';
 import ApplyLayerStyleCallback from '../../../src/callback/applyLayerStyleCallback.ts';
 import DeactivateLayersCallback from '../../../src/callback/deactivateLayersCallback.ts';

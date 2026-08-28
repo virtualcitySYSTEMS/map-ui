@@ -20,13 +20,12 @@ import {
   updateWindowPosition,
   WindowAlignment,
   windowMoveMargin,
-} from '../../../src/manager/window/windowHelper.js';
+} from '../../../src/manager/window/windowHelper.ts';
 import WindowManager, {
   posToPixel,
   windowPositionFromOptions,
   WindowPositions,
-  WindowSlot,
-} from '../../../src/manager/window/windowManager.js';
+} from '../../../src/manager/window/windowManager.ts';
 import { setupMapTarget } from '../../helpers.js';
 
 const targetRect = {
@@ -372,7 +371,7 @@ describe('windowHelper', () => {
         windowComponent = windowManager.add(
           {
             id: 'test',
-            slot: WindowSlot.DYNAMIC_LEFT,
+            slot: 'dynamicLeft',
           },
           'plugin',
         );

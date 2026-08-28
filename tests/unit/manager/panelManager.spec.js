@@ -13,9 +13,9 @@ import PanelManager, {
   getPanelPosition,
   PanelLocation,
   setPanelPosition,
-} from '../../../src/manager/panel/panelManager.js';
-import { updatePanelSizes } from '../../../src/manager/panel/panelHelper.js';
-import { createMainPanel } from '../../../src/manager/panel/PanelManagerComponent.vue';
+} from '../../../src/manager/panel/panelManager.ts';
+import { updatePanelSizes } from '../../../src/manager/panel/panelHelper.ts';
+import { createMainPanel } from '../../../src/manager/panel/PanelManagerComponent.ts.vue';
 
 const targetRect = {
   top: 20,
@@ -255,7 +255,7 @@ describe('panelManager', () => {
       const spy = vi.fn();
       panelManager.positionChanged.addEventListener(spy);
       const leftPanel = panelManager.add({}, 'plugin', PanelLocation.LEFT);
-      // normally called by PanelManagerComponent.vue
+      // normally called by PanelManagerComponent.ts.vue
       updatePanelSizes(panelManager, mainPanel, targetRect);
       expect(spy).toHaveBeenNthCalledWith(
         1,
@@ -272,7 +272,7 @@ describe('panelManager', () => {
       const spy = vi.fn();
       panelManager.positionChanged.addEventListener(spy);
       panelManager.remove(panelComponent.id);
-      // normally called by PanelManagerComponent.vue
+      // normally called by PanelManagerComponent.ts.vue
       updatePanelSizes(panelManager, mainPanel, targetRect);
       expect(spy).toHaveBeenCalledWith(
         expect.objectContaining({ panelId: 'vcs-main' }),
@@ -286,7 +286,7 @@ describe('panelManager', () => {
       panelManager.positionChanged.addEventListener(spy);
       setPanelPosition(panelManager, bottomPanel, { height: '500px' });
 
-      // normally called by PanelManagerComponent.vue
+      // normally called by PanelManagerComponent.ts.vue
       updatePanelSizes(panelManager, mainPanel, targetRect);
       expect(spy).toHaveBeenNthCalledWith(
         1,

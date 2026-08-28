@@ -1,6 +1,5 @@
 import { check } from '@vcsuite/check';
 import AbstractFeatureInfoView from './abstractFeatureInfoView.js';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import BalloonComponent from './BalloonComponent.vue';
 import { getBalloonPositionFromFeature } from './balloonHelper.js';
 
@@ -123,7 +122,7 @@ class BalloonFeatureInfoView extends AbstractFeatureInfoView {
     const options = super.getWindowComponentOptions(app, featureInfo, layer);
     options.state.hideHeader = true;
     options.state.classes = ['balloon'];
-    options.slot = WindowSlot.DETACHED;
+    options.slot = 'detached';
     // windowPosition is handled by next render
     return options;
   }

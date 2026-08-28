@@ -35,7 +35,6 @@ import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
 import { getColorByKey } from '../vuePlugins/vuetify.js';
 import ClusterFeatureComponent from '../featureInfo/ClusterFeatureComponent.vue';
-import { WindowSlot } from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import {
   featureInfoViewSymbol,
@@ -325,7 +324,7 @@ export function createDeepPickingAction(
             headerTitle: 'featureInfo.deepPicking.headerTitle',
             headerIcon: '$vcsInfo',
           },
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
         },
         vcsAppSymbol,
       );

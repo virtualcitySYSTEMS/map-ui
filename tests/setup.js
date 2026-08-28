@@ -11,4 +11,4 @@ import ResizeObserver from 'resize-observer-polyfill';
 global.ResizeObserver = ResizeObserver;
 
 import 'jest-canvas-mock';
-import '../src/setup.js';
+import '../src/setup.ts';

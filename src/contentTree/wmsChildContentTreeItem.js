@@ -7,7 +7,7 @@ import {
 import { StateActionState } from '../actions/stateRefAction.ts';
 import ContentTreeItem from './contentTreeItem.js';
 import VcsActionList from '../components/lists/VcsActionList.ts.vue';
-import { vcsAppSymbol } from '../pluginHelper.js';
+import { vcsAppSymbol } from '../pluginHelper.ts';
 
 /**
  * @typedef {import("./contentTreeItem.js").ContentTreeItemOptions &

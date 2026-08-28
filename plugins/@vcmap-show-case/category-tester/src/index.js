@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import Categories from './CategoriesExample.vue';
 
@@ -26,7 +26,7 @@ export default async function categoryTest() {
         {
           id: 'category-editor',
           component: Categories,
-          slot: WindowSlot.DETACHED,
+          slot: 'detached',
           state: {
             headerTitle: 'Category Tester',
             headerIcon: '$vcsPen',

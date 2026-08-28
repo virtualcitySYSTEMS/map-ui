@@ -1,4 +1,4 @@
-import { ButtonLocation, createToggleAction, WindowSlot } from '@vcmap/ui';
+import { ButtonLocation, createToggleAction } from '@vcmap/ui';
 import packageJSON from '../package.json';
 import ProjectionExample from './ProjectionExample.vue';
 
@@ -26,7 +26,7 @@ export default async function projectionExample() {
         {
           id: 'projection-example',
           component: ProjectionExample,
-          slot: WindowSlot.DYNAMIC_LEFT,
+          slot: 'dynamicLeft',
           state: {
             headerTitle: 'Projection Example',
             headerIcon: '$vcsBoundingBox',

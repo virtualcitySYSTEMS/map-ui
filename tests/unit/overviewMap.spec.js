@@ -22,7 +22,7 @@ import {
 import { getObliqueCollection } from '@vcmap/core/dist/tests/unit/helpers/obliqueHelpers.js';
 import { getCenter } from 'ol/extent.js';
 import Feature from 'ol/Feature.js';
-import VcsUiApp from '../../src/vcsUiApp.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 import OverviewMap from '../../src/navigation/overviewMap.ts';
 import { sleep } from '../helpers.js';
 

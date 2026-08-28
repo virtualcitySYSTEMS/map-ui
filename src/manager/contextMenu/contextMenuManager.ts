@@ -6,7 +6,6 @@ import type VcsUiApp from '../../vcsUiApp.js';
 import ContextMenuInteraction from './contextMenuInteraction.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import { validateAction } from '../../components/lists/VcsActionList.ts.vue';
-import { WindowSlot } from '../window/windowManager.js';
 import { getFittedWindowPositionOptionsFromMapEvent } from '../window/windowHelper.js';
 import ContextMenuComponent, {
   contextMenuWindowId,
@@ -15,7 +14,7 @@ import { sortByOwner } from '../navbarManager.js';
 import type { VcsAction } from '../../actions/actionHelper.js';
 
 type ContextMenuEventHandler = {
-  owner: string | symbol;
+  owner: string | typeof vcsAppSymbol;
   handler: (
     event: InteractionEvent,
   ) => Promise<Array<VcsAction>> | Array<VcsAction>;
@@ -102,7 +101,7 @@ class ContextMenuManager {
         event.windowPosition,
         320,
         actions.length * 32,
-        this._app.maps.target!,
+        this._app.maps.target,
       );
       if (position.left) {
         // ensure we nudge the window, so it does not trigger the default right click.
@@ -119,7 +118,7 @@ class ContextMenuManager {
           component: ContextMenuComponent,
           state: { hideHeader: true },
           props: { actions, showIcon: true },
-          slot: WindowSlot.DETACHED,
+          slot: 'detached',
           position,
         },
         vcsAppSymbol,
@@ -137,7 +136,7 @@ class ContextMenuManager {
     handler: (
       event: InteractionEvent,
     ) => Promise<Array<VcsAction>> | Array<VcsAction>,
-    owner: string | symbol,
+    owner: string | typeof vcsAppSymbol,
   ): void {
     check(handler, Function);
     check(owner, oneOf(String, vcsAppSymbol));
@@ -170,7 +169,7 @@ class ContextMenuManager {
   /**
    * Remove all handlers associated with this owner
    */
-  removeOwner(owner: string | symbol): void {
+  removeOwner(owner: string | typeof vcsAppSymbol): void {
     this._eventHandlers = this._eventHandlers.filter(
       ({ owner: handlerOwner }) => handlerOwner !== owner,
     );

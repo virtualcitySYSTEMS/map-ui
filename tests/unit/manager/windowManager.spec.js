@@ -11,10 +11,9 @@ import {
 import { computed, isReactive, isRef } from 'vue';
 import WindowManager, {
   WindowPositions,
-  WindowSlot,
   windowPositionFromOptions,
   isSlotPosition,
-} from '../../../src/manager/window/windowManager.js';
+} from '../../../src/manager/window/windowManager.ts';
 
 describe('windowManager', () => {
   describe('windowPosition Options parser', () => {
@@ -99,7 +98,7 @@ describe('windowManager', () => {
     beforeAll(() => {
       windowComponentOptions = {
         id: 'test',
-        slot: WindowSlot.DYNAMIC_LEFT,
+        slot: 'dynamicLeft',
         state: {
           hideHeader: true,
           headerTitle: 'test',
@@ -166,7 +165,7 @@ describe('windowManager', () => {
         expect(
           windowManager.add.bind(
             windowManager,
-            { id: 'testDynamicChild', slot: WindowSlot.DYNAMIC_CHILD },
+            { id: 'testDynamicChild', slot: 'dynamicChild' },
             'plugin',
           ),
         ).to.throw();
@@ -243,71 +242,41 @@ describe('windowManager', () => {
       });
 
       it('should remove windowComponent at DYNAMIC_LEFT slot on adding a new DYNAMIC_LEFT windowComponent', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_LEFT },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_LEFT },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'dynamicLeft' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'dynamicLeft' }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at DYNAMIC_RIGHT slot on adding a new DYNAMIC_RIGHT windowComponent', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_RIGHT },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_RIGHT },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'dynamicRight' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'dynamicRight' }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should remove windowComponent at STATIC slot on adding a new STATIC windowComponent', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.STATIC },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.STATIC },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'static' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'static' }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.false;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(1);
       });
 
       it('should allow several windowComponents at the DETACHED slot', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'detached' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'detached' }, 'plugin');
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
         expect(windowManager.componentIds).to.have.lengthOf(2);
       });
 
       it('should move dynamicLeft Slot to TOP_LEFT2 if a STATIC Slot is added', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_LEFT },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'dynamicLeft' }, 'plugin');
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
-        const window2 = windowManager.add(
-          { slot: WindowSlot.STATIC },
-          'plugin',
-        );
+        const window2 = windowManager.add({ slot: 'static' }, 'plugin');
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
@@ -316,14 +285,11 @@ describe('windowManager', () => {
 
       it('should move parentless child to TOP_LEFT2 if a STATIC Slot is added', () => {
         const window1 = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_CHILD, parentId: 'foo' },
+          { slot: 'dynamicChild', parentId: 'foo' },
           'plugin',
         );
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT.left);
-        const window2 = windowManager.add(
-          { slot: WindowSlot.STATIC },
-          'plugin',
-        );
+        const window2 = windowManager.add({ slot: 'static' }, 'plugin');
         expect(window1.position.left).to.equal(WindowPositions.TOP_LEFT2.left);
         expect(windowManager.has(window1.id)).to.be.true;
         expect(windowManager.has(window2.id)).to.be.true;
@@ -345,14 +311,8 @@ describe('windowManager', () => {
       });
 
       it('should add new Components at the end of the array', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'detached' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'detached' }, 'plugin');
         expect(windowManager.componentIds.length).to.be.equal(2);
         expect(windowManager.componentIds).to.have.ordered.members([
           window1.id,
@@ -361,14 +321,8 @@ describe('windowManager', () => {
       });
 
       it('should update zIndex, if a window is put on top with bringWindowToTop', () => {
-        const window1 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
-        const window2 = windowManager.add(
-          { slot: WindowSlot.DETACHED },
-          'plugin',
-        );
+        const window1 = windowManager.add({ slot: 'detached' }, 'plugin');
+        const window2 = windowManager.add({ slot: 'detached' }, 'plugin');
         expect(window1.zIndex.value).to.equal(0);
         expect(window2.zIndex.value).to.equal(1);
         windowManager.bringWindowToTop(window1.id);
@@ -389,8 +343,8 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-      window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
+      window1 = windowManager.add({ slot: 'detached' }, 'plugin');
+      window2 = windowManager.add({ slot: 'detached' }, 'plugin');
     });
 
     afterEach(() => {
@@ -424,7 +378,7 @@ describe('windowManager', () => {
 
     it('should remove child windows, when removing the parent', () => {
       const window3 = windowManager.add(
-        { slot: WindowSlot.DYNAMIC_CHILD, parentId: window2.id },
+        { slot: 'dynamicChild', parentId: window2.id },
         'plugin',
       );
       expect(windowManager.has(window2.id)).to.be.true;
@@ -445,7 +399,7 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+      window1 = windowManager.add({ slot: 'dynamicLeft' }, 'plugin');
     });
 
     afterEach(() => {
@@ -515,13 +469,10 @@ describe('windowManager', () => {
 
     beforeEach(() => {
       windowComponentLeft = windowManager.add(
-        { slot: WindowSlot.DYNAMIC_LEFT },
+        { slot: 'dynamicLeft' },
         'plugin',
       );
-      windowComponentStatic = windowManager.add(
-        { slot: WindowSlot.STATIC },
-        'plugin',
-      );
+      windowComponentStatic = windowManager.add({ slot: 'static' }, 'plugin');
     });
 
     afterEach(() => {
@@ -554,8 +505,8 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      window1 = windowManager.add({ slot: WindowSlot.DETACHED }, 'plugin');
-      window2 = windowManager.add({ slot: WindowSlot.DETACHED }, 'app');
+      window1 = windowManager.add({ slot: 'detached' }, 'plugin');
+      window2 = windowManager.add({ slot: 'detached' }, 'app');
       windowManager.addExternalIdToZIndex('external', 'plugin');
     });
 
@@ -577,7 +528,7 @@ describe('windowManager', () => {
 
     it('should remove parent and child windows of supplied owner', () => {
       const child = windowManager.add(
-        { slot: WindowSlot.DYNAMIC_CHILD, parentId: window1.id },
+        { slot: 'dynamicChild', parentId: window1.id },
         'plugin',
       );
       windowManager.removeOwner('plugin');
@@ -598,12 +549,12 @@ describe('windowManager', () => {
     });
 
     beforeEach(() => {
-      window1 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'plugin');
+      window1 = windowManager.add({ slot: 'dynamicLeft' }, 'plugin');
       windowManager.setWindowPositionOptions(window1.id, {
         left: 500,
         top: 40,
       });
-      window2 = windowManager.add({ slot: WindowSlot.DYNAMIC_LEFT }, 'app');
+      window2 = windowManager.add({ slot: 'dynamicLeft' }, 'app');
       windowManager.pinWindow(window1.id);
     });
 
@@ -616,7 +567,7 @@ describe('windowManager', () => {
     });
 
     it('should reset the slot to the windows initial slot', () => {
-      expect(window1.slot.value).to.eq(WindowSlot.DYNAMIC_LEFT);
+      expect(window1.slot.value).to.eq('dynamicLeft');
     });
 
     it('should reset the position to the windows initial position', () => {
@@ -648,7 +599,7 @@ describe('windowManager', () => {
 
     beforeEach(() => {
       windowComponentLeft = windowManager.add(
-        { slot: WindowSlot.DYNAMIC_LEFT },
+        { slot: 'dynamicLeft' },
         'plugin',
       );
       windowManager.setWindowPositionOptions(windowComponentLeft.id, {
@@ -671,7 +622,7 @@ describe('windowManager', () => {
     });
 
     it('should Detach a Window if a new Position is set which is not a default POSITION', () => {
-      expect(windowComponentLeft.slot.value).to.be.equal(WindowSlot.DETACHED);
+      expect(windowComponentLeft.slot.value).to.be.equal('detached');
     });
 
     it('should update the dockable state', () => {
@@ -680,9 +631,7 @@ describe('windowManager', () => {
 
     it('should reset the initial slot, if window returned to initial position', () => {
       windowManager.pinWindow(windowComponentLeft.id);
-      expect(windowComponentLeft.slot.value).to.be.equal(
-        WindowSlot.DYNAMIC_LEFT,
-      );
+      expect(windowComponentLeft.slot.value).to.be.equal('dynamicLeft');
     });
   });
 
@@ -696,13 +645,13 @@ describe('windowManager', () => {
       windowManager = new WindowManager();
       parentOptions = {
         id: 'test',
-        slot: WindowSlot.DYNAMIC_LEFT,
+        slot: 'dynamicLeft',
       };
 
       childOptions = {
         id: 'childTest',
         parentId: parentOptions.id,
-        slot: WindowSlot.DYNAMIC_CHILD,
+        slot: 'dynamicChild',
       };
     });
 
@@ -718,7 +667,7 @@ describe('windowManager', () => {
 
       it('should override a dynamic left component', () => {
         const dynamicLeft = windowManager.add(
-          { slot: WindowSlot.DYNAMIC_LEFT },
+          { slot: 'dynamicLeft' },
           'plugin',
         );
         windowManager.add(childOptions, 'plugin');
@@ -727,7 +676,7 @@ describe('windowManager', () => {
 
       it('should override another parent-less child component', () => {
         const otherChild = windowManager.add(
-          { parentId: 'foo', slot: WindowSlot.DYNAMIC_CHILD },
+          { parentId: 'foo', slot: 'dynamicChild' },
           'plugin',
         );
         windowManager.add(childOptions, 'plugin');
@@ -749,7 +698,7 @@ describe('windowManager', () => {
 
       it('should overwrite children of the same parent on pin', () => {
         const child = windowManager.add(childOptions, 'plugin');
-        child.slot.value = WindowSlot.DETACHED;
+        child.slot.value = 'detached';
         child.state.dockable = true;
         const child2 = windowManager.add(
           { ...childOptions, id: 'child2' },
@@ -774,14 +723,11 @@ describe('windowManager', () => {
       });
 
       it('should not overwrite other children', () => {
-        windowManager.add(
-          { id: 'otherParent', slot: WindowSlot.DETACHED },
-          'plugin',
-        );
+        windowManager.add({ id: 'otherParent', slot: 'detached' }, 'plugin');
         const otherChild = windowManager.add(
           {
             parentId: 'otherParent',
-            slot: WindowSlot.DYNAMIC_CHILD,
+            slot: 'dynamicChild',
           },
           'plugin',
         );
@@ -795,7 +741,7 @@ describe('windowManager', () => {
         const otherChild = windowManager.add(
           {
             parentId: parentOptions.id,
-            slot: WindowSlot.DYNAMIC_CHILD,
+            slot: 'dynamicChild',
           },
           'plugin',
         );
@@ -806,7 +752,7 @@ describe('windowManager', () => {
 
       it('should not remove itself when pinning', () => {
         const child = windowManager.add(childOptions, 'plugin');
-        child.slot.value = WindowSlot.DETACHED;
+        child.slot.value = 'detached';
         child.state.dockable = true;
         windowManager.pinWindow(child.id);
         expect(windowManager.has(child.id)).to.be.true;
@@ -814,7 +760,7 @@ describe('windowManager', () => {
 
       it('should overwrite children of the same parent on pin', () => {
         const child = windowManager.add(childOptions, 'plugin');
-        child.slot.value = WindowSlot.DETACHED;
+        child.slot.value = 'detached';
         child.state.dockable = true;
         const child2 = windowManager.add(
           { ...childOptions, id: 'child2' },
@@ -833,7 +779,7 @@ describe('windowManager', () => {
     beforeAll(() => {
       windowComponentOptions = {
         id: 'test',
-        slot: WindowSlot.DYNAMIC_LEFT,
+        slot: 'dynamicLeft',
         state: {
           hideHeader: true,
           headerTitle: 'test',

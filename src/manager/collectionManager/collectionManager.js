@@ -18,7 +18,7 @@ import CollectionComponentClass from './collectionComponentClass.js';
  * @typedef {{
  *   predicate?: PredicateFunction<T>,
  *   mappingFunction: MappingFunction<T>,
- *   owner: string | symbol,
+ *   owner: string | typeof vcsAppSymbol,
  * }} ItemMapping
  * @template {Object} T
  */
@@ -26,7 +26,7 @@ import CollectionComponentClass from './collectionComponentClass.js';
 /**
  * @typedef {{
  *   filterFunction: PredicateFunction<T>,
- *   owner: string | symbol
+ *   owner: string | typeof vcsAppSymbol
  * }} ItemFilter
  * @template {Object} T
  */

@@ -8,7 +8,7 @@ import {
   vi,
 } from 'vitest';
 import { watch } from 'vue';
-import UiConfig from '../../src/uiConfig.js';
+import UiConfig from '../../src/uiConfig.ts';
 import { sleep } from '../helpers.js';
 
 describe('UiConfig', () => {

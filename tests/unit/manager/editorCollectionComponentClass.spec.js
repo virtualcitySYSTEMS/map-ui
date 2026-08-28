@@ -1,6 +1,6 @@
 import { describe, beforeAll, afterAll, expect, it } from 'vitest';
 import { IndexedCollection } from '@vcmap/core';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
 import {
   isEditorCollectionComponentClass,

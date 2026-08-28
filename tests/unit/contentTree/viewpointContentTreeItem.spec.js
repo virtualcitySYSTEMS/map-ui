@@ -8,7 +8,7 @@ import {
   beforeAll,
   afterAll,
 } from 'vitest';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import ViewpointContentTreeItem from '../../../src/contentTree/viewpointContentTreeItem.js';
 
 describe('ViewpointContentTreeItem', () => {

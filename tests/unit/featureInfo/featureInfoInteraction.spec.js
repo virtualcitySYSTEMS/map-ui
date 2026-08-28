@@ -18,7 +18,7 @@ import {
 } from '@vcmap/core';
 
 import { Feature } from 'ol';
-import VcsUiApp from '../../../src/vcsUiApp.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
 import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
 
