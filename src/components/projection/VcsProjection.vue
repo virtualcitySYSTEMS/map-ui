@@ -38,6 +38,9 @@
    * @returns {Promise<string>}
    */
   function getProj4FromEPSGIo(epsgCode) {
+    if (!/^\d{4,6}$/.test(String(epsgCode))) {
+      return Promise.reject(new Error('Invalid EPSG Code'));
+    }
     return fetch(`https://epsg.io/${epsgCode}.proj4`)
       .then((response) => {
         if (!response.ok) {
