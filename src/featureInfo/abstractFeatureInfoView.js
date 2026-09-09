@@ -287,19 +287,20 @@ function getWindowState(app, state, attributes) {
 }
 
 /**
- * Recursively searches for parent feature attributes, if __PARENT_FEATURE property is set. Parent feature is searched in the batchTable of the content of the given feature.
+ * Recursively searches for parent feature attributes, if __PARENT_FEATURE property is set. Parent feature is searched in the content of the given feature.
  * @param {import("ol").Feature|import("@vcmap-cesium/engine").Cesium3DTileFeature|import("@vcmap-cesium/engine").Cesium3DTilePointFeature} feature
  * @param {Array<object>} records - array of parent feature attributes
  * @returns {Array<object>} record of parent feature ids and their attributes
  */
 function getParentFeatureAttributes(feature, records = []) {
   const parentId = feature.getProperty('__PARENT_FEATURE');
-  if (parentId !== 'null' && feature.content?.batchTable) {
-    for (let i = 0; i < feature.content.batchTable.featuresLength; i++) {
-      const batchTableFeature = feature.content.batchTable.getFeature(i);
-      if (batchTableFeature.getProperty('id') === parentId) {
-        records.push(batchTableFeature.getAttributes());
-        return getParentFeatureAttributes(batchTableFeature, records);
+  if (parentId !== undefined && parentId !== 'null' && feature.content) {
+    const { content } = feature;
+    for (let i = 0; i < content.featuresLength; i++) {
+      const contentFeature = content.getFeature(i);
+      if (contentFeature.getProperty('id') === parentId) {
+        records.push(contentFeature.getAttributes());
+        return getParentFeatureAttributes(contentFeature, records);
       }
     }
   }

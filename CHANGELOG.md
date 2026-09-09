@@ -4,6 +4,7 @@
 
 - Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
 - Fixed a bug in `AbstractFeatureInfoView` where empty attributes were filtered after mapping, leading to mapped empty attributes to be visible
+- Fixed a bug in `AbstractFeatureInfoView` where parent attribute merging threw an error for tile contents whose batch table does not provide feature access
 
 # 6.3.11
 
