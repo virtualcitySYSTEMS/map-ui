@@ -5,6 +5,24 @@
 - Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
 - Fixed a bug in `AbstractFeatureInfoView` where empty attributes were filtered after mapping, leading to mapped empty attributes to be visible
 - Fixed a bug in `AbstractFeatureInfoView` where parent attribute merging threw an error for tile contents whose batch table does not provide feature access
+- Updated @vcmap/core to 6.3.9
+  - Fixes CsvAttributeProvider serializing headers extracted from CSV data.
+
+### Plugin Bundle updates
+
+- @vcmap/module-selector: 4.0.0
+  - Preserve module `id`s when switching between modules
+- @vcmap/viewshed
+  - improves viewshed terrain visibility by correcting shadow-map depth precision
+- @vcmap/panorama
+  - Added id `panorama-toolbox` to toolbox button, enabling usage of Toolbar callbacks
+- @vcmap/layer-settings
+  - Added support for CesiumTilesetLayers' screenSpaceError setting
+- @vcmap/shadow
+  - add activeOnStartup config option to activate the shadow tool automatically on startup when no saved state is present
+  - add a config editor for the activeOnStartup option
+- @vcmap/export
+  - Fixes an issue where exports started from the context menu could fail with an “invalid inputs” validation error.
 
 # 6.3.11
 
