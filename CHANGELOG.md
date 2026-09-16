@@ -28,6 +28,54 @@
 
 ### Fixes
 
+# 6.3.12
+
+### Changes
+
+- Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
+- Fixed a bug in `AbstractFeatureInfoView` where empty attributes were filtered after mapping, leading to mapped empty attributes to be visible
+- Fixed a bug in `AbstractFeatureInfoView` where parent attribute merging threw an error for tile contents whose batch table does not provide feature access
+
+# 6.3.11
+
+### Changes
+
+- Changed `VcsTreeNode` and `VcsTreeview` search behavior: groups with matching children get opened and those matching but without matching children can still show all children
+
+### Plugin Bundle updates
+
+- @vcmap/export
+  - Fixes the `SELECTION` FME export query parameter so it is always set correctly for both area and object selection exports
+- @vcmap/measurement
+  - Fixes an issue where last clicked point in 3D Distance mode would not be shown
+- @vcmap/dynamic-layer: 4.0.0
+  - Breaking change: Removed catalogues URL enforcing, see readme for required catalogue endpoints
+    - Urls must now include the full link to the catalogue service, including the path to the catalogue endpoint.
+  - Added support for OGC API Records Collections
+  - Enabled HTML rendering in datasets descriptions
+
+# 6.3.10
+
+### Fixes
+
+- Fixed a bug in VcsVectorStyleComponent, where the `text` property would not be serialized
+
+### Changes
+
+- Updated @vcmap/core to 6.3.9
+  - Fixed a bug where WMS FeatureInfo would not stay in sync with the WMSLayer when the layer parameters is changed at runtime.
+
+### Plugin Bundle updates
+
+- @vcmap/planning
+  - Fixed a bug where Administration panel layout would break when browser's zoom is less than 100%
+  - Fixed an issue where password-reset auto-login could fail for emails containing +
+- @vcmap/transparent-terrain
+  - fix a bug where CollisionDetection would not be reset on deactivation
+  - fix a bug where rectangle feature would not be classified as Terrain
+- @vcmap/dynamic-layer
+  - Fixed a bug where right column would disappear when browser's zoom is set to less than 100%
+
 # 6.3.9
 
 ### Plugin Bundle updates
@@ -1197,7 +1245,7 @@ A new plugin @vcmap/sensorthings is available. The plugin allows to show sensor 
 - Changed representation of units on `VcsTextField.vue`. Units are now rendered in append slot, the value is not mutated anymore.
 - Adds the functionality to create and display Imprint and Data Protection Information as Link or Markdown Text
 - Adds `markdownHelper.js` to translate markdown into Html
-- Change style of `VcsList.ts.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.ts.vue` changes.
+- Change style of `VcsList.vue` and move select all as action to overflow. Add clear selection action. Update `CollectionComponent.vue` and `CollectionComponentList.vue` according to `VcsList.vue` changes.
 - Adds disabled prop to `VcsLabel.vue` which marks label as disabled by adding transparency.
 - Adds hasUpdate to `category-manager` button, in case an item from the dynamic module is added to any category while `category-manager` window is closed.
 - Adds some components to help with feature editing, such as `VcsFeatureStyleComponent`, `VcsFeatureTransform` and `VcsFeatureEditingWindow`.

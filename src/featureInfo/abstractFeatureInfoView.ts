@@ -311,7 +311,7 @@ function getWindowState(
 }
 
 /**
- * Recursively searches for parent feature attributes, if __PARENT_FEATURE property is set. Parent feature is searched in the batchTable of the content of the given feature.
+ * Recursively searches for parent feature attributes, if __PARENT_FEATURE property is set. Parent feature is searched in the content of the given feature.
  * @param records - array of parent feature attributes
  * @returns a record of parent feature ids and their attributes
  */
@@ -321,16 +321,19 @@ function getParentFeatureAttributes(
 ): Record<string, unknown>[] {
   const parentId = feature.getProperty('__PARENT_FEATURE');
   if (
+    parentId !== undefined &&
     parentId !== 'null' &&
     (feature instanceof Cesium3DTileFeature ||
-      feature instanceof Cesium3DTilePointFeature) &&
-    feature.content?.batchTable
+      feature instanceof Cesium3DTilePointFeature)
   ) {
-    for (let i = 0; i < feature.content.batchTable.featuresLength; i++) {
-      const batchTableFeature = feature.content.batchTable.getFeature(i);
-      if (batchTableFeature.getProperty('id') === parentId) {
-        records.push(batchTableFeature.getAttributes());
-        return getParentFeatureAttributes(batchTableFeature, records);
+    const { content } = feature;
+    if (content) {
+      for (let i = 0; i < content.featuresLength; i++) {
+        const contentFeature = content.getFeature(i);
+        if (contentFeature.getProperty('id') === parentId) {
+          records.push(contentFeature.getAttributes());
+          return getParentFeatureAttributes(contentFeature, records);
+        }
       }
     }
   }
@@ -446,6 +449,10 @@ class AbstractFeatureInfoView<
    */
   getAttributes(feature: EventFeature): Record<string, unknown> {
     let attributes = this._getAttributesFromFeature(feature);
+    attributes = applyEmptyAttributesFilter(
+      attributes,
+      this.removeNoDataAttributes,
+    );
     if (this.attributeKeys.length > 0) {
       attributes = applyAttributeFilter(attributes, this.attributeKeys);
     }
@@ -456,8 +463,7 @@ class AbstractFeatureInfoView<
       applyKeyMapping(attributes, this.keyMapping);
     }
     attributes = applyOlcsAttributeFilter(attributes, this.attributeKeys);
-    attributes = applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
-    return applyEmptyAttributesFilter(attributes, this.removeNoDataAttributes);
+    return applyDoubleUnderscoreFilter(attributes, this.attributeKeys);
   }
 
   /**

@@ -20,9 +20,9 @@
         v-if="isGroup"
         class="chevron-btn"
         variant="text"
-        :disabled="(item.children as VcsTreeNodeItem[]).length === 0"
+        :disabled="children.length === 0"
         :icon="isOpen ? 'mdi-chevron-down' : 'mdi-chevron-right'"
-        @click="bubbleItemToggled(item.name)"
+        @click="toggleCurrentItem"
       />
       <slot name="prepend" v-bind="{ item }">
         <span class="prepend" :class="{ 'text-disabled': item.disabled }">
@@ -38,7 +38,7 @@
         <VcsTreeviewTitle
           :item="item"
           :cursor-pointer="item.clickable || (openOnClick && isGroup)"
-          @click="(event: MouseEvent) => $emit('click', item, event)"
+          @click="handleTitleClick"
         />
       </slot>
       <slot name="append" v-bind="{ item }">
@@ -55,14 +55,17 @@
       </slot>
     </v-row>
     <v-expand-transition>
-      <div v-if="isOpen && (children as VcsTreeNodeItem[]).length">
+      <div v-if="isOpen && children.length">
         <div class="children">
           <VcsTreeNode
             v-for="child in children"
-            :item="child as VcsTreeNodeItem"
-            :key="(child as VcsTreeNodeItem).name"
+            :item="child"
+            :key="child.name"
             :search="search"
             :custom-filter="customFilter"
+            :show-all-children="
+              showAllChildren || (isGroup && matchesSelf && !hasDescendantMatch)
+            "
             :level="level + 1"
             :open-on-click="openOnClick"
             :item-children="itemChildren"
@@ -76,7 +79,7 @@
             @drop="bubbleDrop"
             @dragleave="bubbleDragLeave"
           >
-            <template v-for="slot of forwardSlots" #[slot]="scope: any">
+            <template v-for="slot of forwardSlots" #[slot]="scope">
               <slot :name="slot" v-bind="scope ?? {}" />
             </template>
           </VcsTreeNode>
@@ -110,7 +113,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, computed, getCurrentInstance, ref } from 'vue';
+  import {
+    defineComponent,
+    computed,
+    getCurrentInstance,
+    ref,
+    watch,
+  } from 'vue';
   import type { PropType } from 'vue';
   import { VBtn, VExpandTransition, VIcon, VRow } from 'vuetify/components';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
@@ -119,6 +128,14 @@
   import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';
   import VcsTreeviewTitle from './VcsTreeviewTitle.ts.vue';
   import type { VcsTreeNodeItem } from './treeHelper.js';
+
+  function getTreeNodeChildren(
+    item: VcsTreeNodeItem,
+    childrenKey: string = 'children',
+  ): VcsTreeNodeItem[] {
+    const value = (item as Record<string, unknown>)[childrenKey];
+    return Array.isArray(value) ? (value as VcsTreeNodeItem[]) : [];
+  }
 
   /**
    * @description
@@ -187,6 +204,10 @@
         >,
         default: undefined,
       },
+      showAllChildren: {
+        type: Boolean,
+        default: false,
+      },
     },
     emits: [
       'itemToggled',
@@ -202,32 +223,83 @@
       const iconSize = useIconSize();
       const forwardSlots = getForwardSlots(slots);
       const treenodeRef = ref<InstanceType<typeof VRow> | null>(null);
-
-      const isOpen = computed(
-        () =>
-          props.opened.includes(props.item.name) &&
-          (props.item[props.itemChildren] as VcsTreeNodeItem[])?.length,
+      const searchOpenOverride = ref<boolean | undefined>(undefined);
+      const children = computed(() =>
+        getTreeNodeChildren(props.item, props.itemChildren),
       );
-      const children = computed(() => props.item[props.itemChildren] ?? []);
 
-      const matchFilter = computed(() => {
+      const translatedTitle = (item: VcsTreeNodeItem): string =>
+        item.title ? vm!.$st(item.title) : item.name;
+
+      const doesItemMatch = (item: VcsTreeNodeItem): boolean => {
         if (!props.search) {
           return true;
         }
         if (props.customFilter) {
-          return props.customFilter(props.item, props.search);
+          return props.customFilter(item, props.search);
         }
-        const translatedTitle = (item: VcsTreeNodeItem): string =>
-          item.title ? vm!.$st(item.title) : item.name;
-
-        const hasText = (item: VcsTreeNodeItem): boolean =>
+        return (
           translatedTitle(item)
             .toLocaleLowerCase()
-            .indexOf(props.search!.toLocaleLowerCase()) > -1 ||
-          (item[props.itemChildren] as VcsTreeNodeItem[])?.some(hasText);
+            .indexOf(props.search.toLocaleLowerCase()) > -1
+        );
+      };
 
-        return hasText(props.item);
+      const doesDescendantMatch = (item: VcsTreeNodeItem): boolean =>
+        getTreeNodeChildren(item, props.itemChildren).some(
+          (child) => doesItemMatch(child) || doesDescendantMatch(child),
+        );
+
+      const matchesSelf = computed(() => doesItemMatch(props.item));
+      const hasDescendantMatch = computed(() =>
+        doesDescendantMatch(props.item),
+      );
+      const matchFilter = computed(() => {
+        if (!props.search || props.showAllChildren) {
+          return true;
+        }
+        return matchesSelf.value || hasDescendantMatch.value;
       });
+      const searchOpen = computed(
+        () => searchOpenOverride.value ?? hasDescendantMatch.value,
+      );
+
+      const isOpen = computed(
+        () =>
+          children.value.length > 0 &&
+          (props.search
+            ? searchOpen.value
+            : props.opened.includes(props.item.name)),
+      );
+
+      watch(
+        () => props.search,
+        () => {
+          searchOpenOverride.value = undefined;
+        },
+      );
+
+      function toggleCurrentItem(): void {
+        if (props.search) {
+          searchOpenOverride.value = !isOpen.value;
+          return;
+        }
+        emit('itemToggled', props.item.name);
+      }
+
+      function handleTitleClick(event: MouseEvent): void {
+        emit('click', props.item, event);
+
+        if (
+          props.search &&
+          !props.item?.clickable &&
+          props.openOnClick &&
+          !props.item?.disabled &&
+          (children.value.length > 0 || props.item.forceNodeDisplay)
+        ) {
+          toggleCurrentItem();
+        }
+      }
 
       function bubbleEvent(
         eventName:
@@ -249,11 +321,13 @@
         treenodeRef,
         isOpen,
         isGroup: computed(
-          () =>
-            (children.value as VcsTreeNodeItem[]).length > 0 ||
-            props.item.forceNodeDisplay,
+          () => children.value.length > 0 || props.item.forceNodeDisplay,
         ),
+        matchesSelf,
+        hasDescendantMatch,
         matchFilter,
+        toggleCurrentItem,
+        handleTitleClick,
         iconSize,
         children,
         // Bubble up events for the nested tree-items
