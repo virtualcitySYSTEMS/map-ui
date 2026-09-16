@@ -131,7 +131,7 @@
 
   function getTreeNodeChildren(
     item: VcsTreeNodeItem,
-    childrenKey: string = 'children',
+    childrenKey = 'children',
   ): VcsTreeNodeItem[] {
     const value = (item as Record<string, unknown>)[childrenKey];
     return Array.isArray(value) ? (value as VcsTreeNodeItem[]) : [];

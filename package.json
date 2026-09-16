@@ -54,7 +54,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^26.0.1",
-    "@vcmap/core": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/core.git#feature-tsUiTypes",
+    "@vcmap/core": "^7.0.0-rc.3",
     "ol": "^10.10.0",
     "vue": "^3.5.40",
     "vuetify": "^4.1.11"
