@@ -8,14 +8,16 @@ const configMain = defineConfig({
   resolve: {
     alias: {
       '@vcmap/ui': path.resolve(process.cwd(), 'index.js'),
-
       '@cesium/engine': '@vcmap-cesium/engine',
       tinyqueue: 'tinyqueue/tinyqueue.js',
     },
     dedupe: Object.keys(libraries),
   },
 
-  define: { 'process.env.NODE_ENV': '"development"' },
+  define: {
+    'process.env.NODE_ENV': '"development"',
+    'process.env.VITE_LOGGER_ENABLED': 'false',
+  },
   plugins: [vue3({ template: { transformAssetUrls } })],
 });
 

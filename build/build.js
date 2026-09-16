@@ -74,7 +74,7 @@ function hashLibraries() {
           {
             name: 'replace-cesium-build-path',
             transform(source, sid) {
-              if (/src(\/|\\)setup.js/.test(sid)) {
+              if (/src(\/|\\)setup\.(js|ts)/.test(sid)) {
                 return source.replace(
                   '/node_modules/@vcmap-cesium/engine/Build/',
                   './assets/cesium/',
@@ -282,6 +282,7 @@ await Promise.all(
       configFile: './build/commonViteConfig.js',
       define: {
         'process.env.NODE_ENV': '"production"',
+        'process.env.VITE_LOGGER_ENABLED': 'false',
       },
       build: {
         write: false,
@@ -312,7 +313,10 @@ await Promise.all(
     /** @type {import('vite').Rolldown.InlineConfig} */
     const libraryEntryConfig = {
       configFile: false,
-      define: { 'process.env.NODE_ENV': '"production"' },
+      define: {
+        'process.env.NODE_ENV': '"production"',
+        'process.env.VITE_LOGGER_ENABLED': 'false',
+      },
       build: {
         emptyOutDir: false,
         copyPublicDir: false,

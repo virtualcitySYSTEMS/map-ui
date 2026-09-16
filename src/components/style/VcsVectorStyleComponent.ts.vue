@@ -2,7 +2,11 @@
   import { computed } from 'vue';
   import type { Component, PropType } from 'vue';
   import { VSheet } from 'vuetify/components';
-  import type { ImageStyleOptions, VectorStyleItemOptions } from '@vcmap/core';
+  import type {
+    ImageStyleOptions,
+    VectorStyleItemOptions,
+    VectorStyleItemText,
+  } from '@vcmap/core';
   import type { Options as IconOptions } from 'ol/style/Icon.js';
   import type { Options as FillOptions } from 'ol/style/Fill.js';
   import type { Options as StrokeOptions } from 'ol/style/Stroke.js';
@@ -85,6 +89,10 @@
     value: VectorStyleItemOptions[K],
   ): void {
     localValue.value[key] = value;
+    if (key === 'text') {
+      const text = (value as VectorStyleItemText)?.text;
+      localValue.value.label = text as string | undefined;
+    }
     emit(`update:${key}`, value);
   }
 </script>
