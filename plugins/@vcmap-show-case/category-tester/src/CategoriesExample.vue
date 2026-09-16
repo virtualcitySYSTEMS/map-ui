@@ -48,8 +48,8 @@
       <v-card class="pa-2">
         <v-card-title>{{ newItem.categoryName }}</v-card-title>
         <v-form @submit.prevent="addItem">
-          <vcs-text-area v-model="newItem.config" />
-          <vcs-form-button type="submit"> Add Item </vcs-form-button>
+          <VcsTextArea v-model="newItem.config" />
+          <VcsFormButton type="submit"> Add Item </VcsFormButton>
         </v-form>
       </v-card>
     </v-dialog>

@@ -4,7 +4,7 @@ import nock from 'nock';
 import { watch } from 'vue';
 import { OpenlayersMap, WMSLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.js';
+import WMSGroupContentTreeItem from '../../../src/contentTree/wmsGroupContentTreeItem.ts';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import { legendSymbol } from '../../../src/legend/legendHelper.ts';
 

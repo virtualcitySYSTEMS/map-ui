@@ -1,5 +1,8 @@
-import type { InteractionEvent } from '@vcmap/core';
-import { AbstractInteraction, EventType } from '@vcmap/core';
+import {
+  AbstractInteraction,
+  EventType,
+  type InteractionEvent,
+} from '@vcmap/core';
 import { parseBoolean } from '@vcsuite/parsers';
 import { check } from '@vcsuite/check';
 import type { Ref } from 'vue';

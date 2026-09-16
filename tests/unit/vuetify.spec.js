@@ -56,11 +56,11 @@ describe('vuetify', () => {
       });
 
       it('should consider dark mode', () => {
-        app.vuetify.theme.global.name.value = 'dark';
+        app.vuetify.theme.change('dark');
         expect(getColorByKey(app, 'primary')).to.equal(
           defaultPrimaryColor.dark,
         );
-        app.vuetify.theme.global.name.value = 'light';
+        app.vuetify.theme.change('light');
       });
 
       it('should return primary variations', () => {

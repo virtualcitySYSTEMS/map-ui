@@ -1,25 +1,26 @@
 import { v4 as uuid } from 'uuid';
 import { check, maybe, oneOf, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
-import type { Layer, OverrideCollection, VcsMap } from '@vcmap/core';
 import {
   Collection,
   Extent,
+  type Layer,
   MapCollection,
-  mercatorProjection,
+  type OverrideCollection,
   PanoramaMap,
+  type VcsMap,
   Viewpoint,
+  mercatorProjection,
 } from '@vcmap/core';
 import { Feature } from 'ol';
-import type { Ref } from 'vue';
-import { nextTick, reactive, ref } from 'vue';
+import { type Ref, nextTick, reactive, ref } from 'vue';
 import { parseBoolean } from '@vcsuite/parsers';
 import { vcsAppSymbol } from '../pluginHelper.js';
+import type WindowManager from '../manager/window/windowManager.js';
 import type {
   WindowComponentOptions,
   WindowPositionOptions,
 } from '../manager/window/windowManager.js';
-import type WindowManager from '../manager/window/windowManager.js';
 import {
   getFittedWindowPositionOptions,
   getTargetSize,
@@ -28,6 +29,8 @@ import SearchComponent from '../search/SearchComponent.ts.vue';
 import { searchComponentId } from '../search/helper.js';
 import VcsLoadingOverlay from '../components/plugins/VcsLoadingOverlay.ts.vue';
 import type VcsUiApp from '../vcsUiApp.js';
+
+export const actionWeightSymbol = Symbol('ActionWeight');
 
 export type ActionOptions = Omit<VcsAction, 'callback'>;
 

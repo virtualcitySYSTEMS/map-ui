@@ -2,7 +2,7 @@ import { describe, beforeAll, expect, it, afterAll } from 'vitest';
 import { VectorLayer } from '@vcmap/core';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom.js';
-import IframeFeatureInfoView from '../../../src/featureInfo/iframeFeatureInfoView.js';
+import IframeFeatureInfoView from '../../../src/featureInfo/iframeFeatureInfoView.ts';
 
 describe('IframeFeatureInfoView', () => {
   describe('getting config', () => {

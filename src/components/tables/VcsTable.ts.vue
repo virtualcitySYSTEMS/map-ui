@@ -7,14 +7,14 @@
   >
     <template #item="{ index, item }">
       <tr class="v-data-table__tr" :key="`row-${index}`">
-        <vcs-table-cell :title="item.key" :width="keyHeader.width" />
-        <vcs-table-cell
+        <VcsTableCell :title="item.key" :width="keyHeader.width" />
+        <VcsTableCell
           :title="item.value"
           :width="valueHeader.width"
           :tag="getTag(tags!, item.key)"
           :tag-options="getTagOptions(tags!, item.key)"
         >
-        </vcs-table-cell>
+        </VcsTableCell>
       </tr>
     </template>
   </VcsDataTable>
@@ -38,7 +38,7 @@
     items: TableItem[] = [],
     parent?: string,
   ): TableItem[] {
-    const nestedKey = (key: string, nested: string | undefined): string =>
+    const nestedKey = (key: string, nested?: string): string =>
       nested ? `${nested}.${key}` : key;
     Object.entries(attributes).forEach(([key, value]) => {
       if (value instanceof Object) {

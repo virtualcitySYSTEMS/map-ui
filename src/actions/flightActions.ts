@@ -1,30 +1,32 @@
 import { reactive, ref } from 'vue';
 import type { GeoJsonFeatureCollection } from '@vcmap-cesium/engine';
-import { check, maybe, ofEnum } from '@vcsuite/check';
+import { check, maybe, oneOf } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
 import {
-  createFlightVisualization,
+  FlightInstance,
+  type FlightPathRecorderOptions,
+  type FlightPlayer,
+  type FlightPlayerClock,
+  type FlightPlayerState,
+  type FlightVisualization,
+  LayerState,
   createFlightMovie,
+  createFlightPlayer,
+  createFlightVisualization,
   exportFlightAsGeoJson,
   exportFlightPathAsGeoJson,
-  FlightInstance,
+  getCaughtError,
   moduleIdSymbol,
   parseFlightOptionsFromGeoJson,
-  createFlightPlayer,
-  LayerState,
-  getCaughtError,
-} from '@vcmap/core';
-import type {
-  FlightPathRecorderOptions,
-  FlightPlayer,
-  FlightPlayerClock,
-  FlightPlayerState,
-  FlightVisualization,
 } from '@vcmap/core';
 import { NotificationType } from '../notifier/notifier.js';
 import { downloadBlob, downloadText } from '../downloadHelper.js';
-import type { VcsAction, DestroyableAction } from './actionHelper.js';
-import { addLoadingOverlay, callSafeAction } from './actionHelper.js';
+import {
+  type DestroyableAction,
+  type VcsAction,
+  addLoadingOverlay,
+  callSafeAction,
+} from './actionHelper.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import type VcsUiApp from '../vcsUiApp.js';
 
@@ -73,9 +75,9 @@ export function createPlayAction(
     destroyListener?.();
   }
 
-  function checkPlayer(_player: FlightPlayer | undefined): void {
-    if (_player?.flightInstanceName === instance.name) {
-      player = _player;
+  function checkPlayer(playerToCheck?: FlightPlayer): void {
+    if (playerToCheck?.flightInstanceName === instance.name) {
+      player = playerToCheck;
       updateAction(player.state);
       stateListener = player.stateChanged.addEventListener((state) => {
         updateAction(state);
@@ -87,11 +89,8 @@ export function createPlayAction(
       destroyPlayer();
     }
   }
-  const playerListener = app.flights.playerChanged.addEventListener(
-    (_player: FlightPlayer | undefined) => {
-      checkPlayer(_player);
-    },
-  );
+  const playerListener =
+    app.flights.playerChanged.addEventListener(checkPlayer);
   checkPlayer(app.flights.player);
 
   return {
@@ -107,17 +106,34 @@ export function createPlayAction(
   };
 }
 
-export enum PlayerDirection {
-  Forward = 'forward',
-  Backward = 'backward',
-}
+type PlayerDirectionType = 'forward' | 'backward';
+
+/** @deprecated Use literal string keys instead. */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const PlayerDirection: Readonly<Record<string, PlayerDirectionType>> = {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  get Forward(): 'forward' {
+    getLogger('flightActions').deprecate(
+      'PlayerDirection.Forward',
+      "Use the literal string 'forward' instead.",
+    );
+    return 'forward';
+  }, // eslint-disable-next-line @typescript-eslint/naming-convention
+  get Backward(): 'backward' {
+    getLogger('flightActions').deprecate(
+      'PlayerDirection.Backward',
+      "Use the literal string 'backward' instead.",
+    );
+    return 'backward';
+  },
+} as const;
 
 export function createStepAction(
   app: VcsUiApp,
   instance: FlightInstance,
-  direction: PlayerDirection,
+  direction: PlayerDirectionType,
 ): DestroyableAction {
-  check(direction, ofEnum(PlayerDirection));
+  check(direction, oneOf('forward', 'backward'));
 
   let player: FlightPlayer | undefined;
   const action = reactive({
@@ -133,7 +149,7 @@ export function createStepAction(
   });
 
   const playerChangedListener = app.flights.playerChanged.addEventListener(
-    (activePlayer: FlightPlayer | undefined) => {
+    (activePlayer?: FlightPlayer) => {
       if (activePlayer?.flightInstanceName === instance.name) {
         player = activePlayer;
         action.disabled = false;
@@ -149,17 +165,16 @@ export function createStepAction(
 export function createFastAction(
   app: VcsUiApp,
   instance: FlightInstance,
-  direction: PlayerDirection,
+  direction: PlayerDirectionType,
 ): {
   action: VcsAction & { listeners: Record<string, () => void> };
   destroy: () => void;
 } {
-  check(direction, ofEnum(PlayerDirection));
+  check(direction, oneOf('forward', 'backward'));
 
   let player: FlightPlayer | undefined;
-  const sign = direction === PlayerDirection.Forward ? 1 : -1;
-  const icon =
-    direction === PlayerDirection.Forward ? 'mdi-fast-forward' : 'mdi-rewind';
+  const sign = direction === 'forward' ? 1 : -1;
+  const icon = direction === 'forward' ? 'mdi-fast-forward' : 'mdi-rewind';
   const { multiplier } = instance;
 
   function accelerate(): void {
@@ -213,11 +228,11 @@ export function createFlightPlayerActions(
   destroy: () => void;
 } {
   const array = [
-    createStepAction(app, instance, PlayerDirection.Backward),
-    createFastAction(app, instance, PlayerDirection.Backward),
+    createStepAction(app, instance, 'backward'),
+    createFastAction(app, instance, 'backward'),
     createPlayAction(app, instance),
-    createFastAction(app, instance, PlayerDirection.Forward),
-    createStepAction(app, instance, PlayerDirection.Forward),
+    createFastAction(app, instance, 'forward'),
+    createStepAction(app, instance, 'forward'),
   ];
 
   return {
@@ -314,7 +329,7 @@ export function setupFlightListItemPlayer(
   }
 
   const playerChangedListener = app.flights.playerChanged.addEventListener(
-    (flightPlayer: FlightPlayer | undefined) => {
+    (flightPlayer?: FlightPlayer) => {
       if (!player && flightPlayer?.flightInstanceName === instance.name) {
         player = flightPlayer;
         setupListener(playAction, stopAction);

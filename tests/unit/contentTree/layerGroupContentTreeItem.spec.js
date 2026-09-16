@@ -9,7 +9,7 @@ import {
 } from 'vitest';
 import { ObliqueMap, OpenlayersMap, VectorLayer } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import LayerGroupContentTreeItem from '../../../src/contentTree/layerGroupContentTreeItem.js';
+import LayerGroupContentTreeItem from '../../../src/contentTree/layerGroupContentTreeItem.ts';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 
 describe('LayerGroupContentTreeItem', () => {

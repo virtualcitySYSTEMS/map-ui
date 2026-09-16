@@ -170,4 +170,4 @@ class MyItem {
 }
 ```
 
-> See [ContentTreeItem](../src/contentTree/contentTreeItem.js) for a full example.
+> See [ContentTreeItem](../src/contentTree/contentTreeItem.ts) for a full example.

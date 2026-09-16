@@ -51,7 +51,7 @@
   import type VcsUiApp from '../../vcsUiApp.js';
   import WindowComponent from './WindowComponent.ts.vue';
   import WindowComponentHeader from './WindowComponentHeader.ts.vue';
-  import BalloonComponent from '../../featureInfo/BalloonComponent.vue';
+  import BalloonComponent from '../../featureInfo/BalloonComponent.ts.vue';
   import {
     getPositionAppliedOnTarget,
     getTargetSize,
@@ -62,7 +62,7 @@
   import type {
     WindowComponent as WindowComponentType,
     WindowPosition,
-    WindowSlot,
+    WindowSlotType,
     WindowState,
   } from './windowManager.js';
 
@@ -305,7 +305,8 @@
         getProps,
         getZIndex,
         isOnTop,
-        getSlot: (id: string): Ref<WindowSlot> => windowManager.get(id).slot,
+        getSlot: (id: string): Ref<WindowSlotType> =>
+          windowManager.get(id).slot,
         close: (id: string): void => {
           windowManager.remove(id);
         },

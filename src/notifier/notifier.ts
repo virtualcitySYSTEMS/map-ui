@@ -1,5 +1,4 @@
-import type { Ref } from 'vue';
-import { isRef, ref, shallowRef } from 'vue';
+import { type Ref, isRef, ref, shallowRef } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 
 type NotificationOptions = {

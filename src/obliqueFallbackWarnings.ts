@@ -1,5 +1,4 @@
-import type { VcsMap } from '@vcmap/core';
-import { ObliqueMap } from '@vcmap/core';
+import { ObliqueMap, type VcsMap } from '@vcmap/core';
 import type VcsUiApp from './vcsUiApp.js';
 import { NotificationType } from './notifier/notifier.js';
 

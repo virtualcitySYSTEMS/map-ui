@@ -57,7 +57,7 @@
   let clockChangedListener = (): void => {};
   let playerChangedListener = (): void => {};
 
-  function syncPlayer(player: FlightPlayer | undefined): void {
+  function syncPlayer(player?: FlightPlayer): void {
     if (player?.flightInstanceName === flightInstance.name) {
       isCurrentPlayer.value = true;
       flightInstancePlayer = player;

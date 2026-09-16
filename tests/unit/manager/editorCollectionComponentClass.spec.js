@@ -1,11 +1,11 @@
 import { describe, beforeAll, afterAll, expect, it } from 'vitest';
 import { IndexedCollection } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.js';
+import CollectionComponentClass from '../../../src/manager/collectionManager/collectionComponentClass.ts';
 import {
   isEditorCollectionComponentClass,
   makeEditorCollectionComponentClass,
-} from '../../../src/manager/collectionManager/editorCollectionComponentClass.js';
+} from '../../../src/manager/collectionManager/editorCollectionComponentClass.ts';
 import { sleep } from '../../helpers.js';
 
 const parentId = 'testParentWindow';

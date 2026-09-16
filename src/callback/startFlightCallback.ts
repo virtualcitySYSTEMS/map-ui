@@ -1,8 +1,9 @@
-import { FlightInstance } from '@vcmap/core';
-import type { FlightInstanceOptions } from '@vcmap/core';
+import { FlightInstance, type FlightInstanceOptions } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type StartFlightCallbackOptions = VcsCallbackOptions & {
   /** Name of an existing flight or an inline flight instance config */

@@ -1,26 +1,31 @@
 import { v4 as uuid } from 'uuid';
-import type {
-  CreateFeatureSession,
-  EditFeaturesSession,
-  EditGeometrySession,
-  Layer,
-} from '@vcmap/core';
 import {
+  type CreateFeatureSession,
+  type EditFeaturesSession,
+  type EditGeometrySession,
   Extent,
   GeometryType,
+  type Layer,
   LayerState,
+  VectorLayer,
+  Viewpoint,
   markVolatile,
   maxZIndex,
   mercatorProjection,
   startCreateFeatureSession,
   startEditFeaturesSession,
   startEditGeometrySession,
-  VectorLayer,
-  Viewpoint,
   wgs84Projection,
 } from '@vcmap/core';
-import type { ComputedRef, Ref, WritableComputedRef } from 'vue';
-import { reactive, ref, watch, nextTick } from 'vue';
+import {
+  type ComputedRef,
+  type Ref,
+  type WritableComputedRef,
+  nextTick,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import { Feature } from 'ol';
 import { transformExtent } from 'ol/proj.js';
 import { fromExtent } from 'ol/geom/Polygon.js';
@@ -29,8 +34,11 @@ import { Polygon } from 'ol/geom.js';
 import { unByKey } from 'ol/Observable.js';
 import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsAction, DestroyableAction } from './actionHelper.js';
-import { callSafeAction } from './actionHelper.js';
+import {
+  type DestroyableAction,
+  type VcsAction,
+  callSafeAction,
+} from './actionHelper.js';
 
 export function createZoomToExtentAction(
   app: VcsUiApp,

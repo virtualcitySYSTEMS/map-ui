@@ -9,7 +9,7 @@ import {
   afterEach,
 } from 'vitest';
 import { IndexedCollection } from '@vcmap/core';
-import CollectionManager from '../../../src/manager/collectionManager/collectionManager.js';
+import CollectionManager from '../../../src/manager/collectionManager/collectionManager.ts';
 
 describe('CollectionManager', () => {
   describe('adding collectionComponents', () => {

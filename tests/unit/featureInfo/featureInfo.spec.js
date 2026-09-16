@@ -36,13 +36,13 @@ import { Color } from '@vcmap-cesium/engine';
 
 import { sleep } from '../../helpers.js';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
+import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.ts';
 import { getDefaultPrimaryColor } from '../../../src/vuePlugins/vuetify.ts';
-import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.js';
+import AbstractFeatureInfoView from '../../../src/featureInfo/abstractFeatureInfoView.ts';
 import FeatureInfo, {
   featureInfoViewSymbol,
-} from '../../../src/featureInfo/featureInfo.js';
-import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
+} from '../../../src/featureInfo/featureInfo.ts';
+import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.ts';
 
 function setupTestFeatureAndVectorLayer(app) {
   const layer = new VectorLayer({

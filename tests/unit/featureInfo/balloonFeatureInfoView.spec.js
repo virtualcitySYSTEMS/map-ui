@@ -1,5 +1,5 @@
 import { describe, beforeAll, expect, it } from 'vitest';
-import BalloonFeatureInfoView from '../../../src/featureInfo/balloonFeatureInfoView.js';
+import BalloonFeatureInfoView from '../../../src/featureInfo/balloonFeatureInfoView.ts';
 
 describe('BalloonFeatureInfoView', () => {
   describe('getting config', () => {

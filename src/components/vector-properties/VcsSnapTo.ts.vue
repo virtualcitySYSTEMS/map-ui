@@ -56,7 +56,7 @@
 </script>
 
 <template>
-  <vcs-form-section
+  <VcsFormSection
     heading="components.editor.snapping.title"
     :header-actions="headerActions"
     :action-button-list-overflow-count="4"
@@ -64,7 +64,7 @@
     <div class="px-1 py-1">
       {{ $st('components.editor.snapping.help') }}
     </div>
-  </vcs-form-section>
+  </VcsFormSection>
 </template>
 
 <style scoped lang="scss"></style>

@@ -7,8 +7,8 @@ import {
   beforeEach,
   afterEach,
 } from 'vitest';
-import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
-import SubContentTreeItem from '../../../src/contentTree/subContentTreeItem.js';
+import ContentTreeItem from '../../../src/contentTree/contentTreeItem.ts';
+import SubContentTreeItem from '../../../src/contentTree/subContentTreeItem.ts';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { sleep } from '../../helpers.js';
 

@@ -23,14 +23,14 @@
 </script>
 
 <template>
-  <vcs-form-section heading="Information">
+  <VcsFormSection heading="Information">
     <v-container class="py-0 px-1">
       <v-row no-gutters>
         <v-col>
-          <vcs-label>Image Name</vcs-label>
+          <VcsLabel>Image Name</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-text-field
+          <VcsTextField
             readonly
             :disabled="true"
             :model-value="image?.name ?? 'No Image'"
@@ -39,10 +39,10 @@
       </v-row>
       <v-row no-gutters>
         <v-col>
-          <vcs-label>Levels</vcs-label>
+          <VcsLabel>Levels</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-text-field
+          <VcsTextField
             readonly
             :disabled="true"
             :model-value="`${image?.minLevel ?? '0'} - ${image?.maxLevel ?? '0'}`"
@@ -51,10 +51,10 @@
       </v-row>
       <v-row no-gutters>
         <v-col>
-          <vcs-label>Tile Size</vcs-label>
+          <VcsLabel>Tile Size</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-text-field
+          <VcsTextField
             readonly
             :disabled="true"
             :model-value="image.tileSize.join(' x ') ?? 'No Tile Size'"
@@ -62,25 +62,25 @@
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col> <vcs-label>Has Intensity</vcs-label> </v-col>
+        <v-col> <VcsLabel>Has Intensity</VcsLabel> </v-col>
         <v-col>
-          <vcs-checkbox
+          <VcsCheckbox
             :disabled="true"
             :model-value="image?.hasIntensity ?? false"
           />
         </v-col>
       </v-row>
       <v-row no-gutters v-if="image">
-        <v-col> <vcs-label>Has Depth</vcs-label> </v-col>
+        <v-col> <VcsLabel>Has Depth</VcsLabel> </v-col>
         <v-col>
-          <vcs-checkbox
+          <VcsCheckbox
             :disabled="true"
             :model-value="image?.hasDepth ?? false"
           />
         </v-col>
       </v-row>
     </v-container>
-  </vcs-form-section>
+  </VcsFormSection>
 </template>
 
 <style scoped lang="scss"></style>

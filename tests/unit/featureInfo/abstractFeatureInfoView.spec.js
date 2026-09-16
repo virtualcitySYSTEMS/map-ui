@@ -9,7 +9,7 @@ import AbstractFeatureInfoView, {
   applyKeyMapping,
   applyOlcsAttributeFilter,
   applyValueMapping,
-} from '../../../src/featureInfo/abstractFeatureInfoView.js';
+} from '../../../src/featureInfo/abstractFeatureInfoView.ts';
 
 describe('AbstractFeatureInfoView', () => {
   let abstractFeatureInfoView;

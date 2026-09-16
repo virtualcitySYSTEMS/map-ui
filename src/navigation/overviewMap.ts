@@ -1,36 +1,33 @@
-import type {
-  ObliqueViewDirection,
-  InteractionEvent,
-  VcsEvent,
-  VcsMap,
-  ObliqueCollection,
-  ObliqueImage,
-} from '@vcmap/core';
 import {
-  OpenlayersMap,
+  CesiumMap,
+  DataState,
+  EventHandler,
+  Extent,
+  type InteractionEvent,
+  type ObliqueCollection,
+  type ObliqueImage,
   ObliqueMap,
+  type ObliqueViewDirection,
+  OpenlayersMap,
+  PanoramaImageSelection,
+  PanoramaMap,
+  Projection,
+  type VcsEvent,
+  type VcsMap,
   VectorLayer,
   VectorStyleItem,
-  Projection,
-  mercatorProjection,
-  EventHandler,
-  DataState,
-  emptyStyle,
-  Extent,
   Viewpoint,
   deserializeLayer,
-  CesiumMap,
-  PanoramaMap,
-  PanoramaImageSelection,
+  emptyStyle,
   maxZIndexMin50,
+  mercatorProjection,
 } from '@vcmap/core';
 import Point from 'ol/geom/Point.js';
 import Feature from 'ol/Feature.js';
 import { Math as CesiumMath, Color, Cartographic } from '@vcmap-cesium/engine';
 import { unByKey } from 'ol/Observable.js';
 import VectorSource from 'ol/source/Vector.js';
-import type { Style } from 'ol/style.js';
-import { Icon } from 'ol/style.js';
+import { Icon, type Style } from 'ol/style.js';
 import type { Options as IconOptions } from 'ol/style/Icon.js';
 import { computed, nextTick, ref, watch } from 'vue';
 import type VcsUiApp from '../vcsUiApp.js';
@@ -42,6 +39,8 @@ import {
 
 export const overviewMapContainerId = 'overview-map-container';
 export const overviewMapLayerSymbol = Symbol('overviewMapLayerSymbol');
+
+type OverviewMapLayer = VectorLayer & { [overviewMapLayerSymbol]?: boolean };
 
 function getCameraIcon(color: string): IconOptions {
   return {
@@ -87,9 +86,9 @@ class OverviewMap {
   private _active = ref(false);
   private _map = new OpenlayersMap({ target: overviewMapContainerId });
   private _cachedViewpoint: Viewpoint | null = null;
-  private _obliqueTileLayer: VectorLayer | null = null;
-  private _obliqueImageLayer: VectorLayer | null = null;
-  private _obliqueSelectedImageLayer: VectorLayer | null = null;
+  private _obliqueTileLayer: OverviewMapLayer | null = null;
+  private _obliqueImageLayer: OverviewMapLayer | null = null;
+  private _obliqueSelectedImageLayer: OverviewMapLayer | null = null;
   obliqueSelectedStyle: VectorStyleItem;
 
   /**
@@ -104,7 +103,7 @@ class OverviewMap {
 
   private _obliqueViewDirection: ObliqueViewDirection | null = null;
 
-  private _cameraIconLayer: VectorLayer | null = null;
+  private _cameraIconLayer: OverviewMapLayer | null = null;
 
   /**
    * The style of the camera icon in 2D and 3D
@@ -441,7 +440,6 @@ class OverviewMap {
       style: obliqueTileStyle,
       zIndex: maxZIndexMin50 - 4,
     });
-    // @ts-expect-error overviewMapLayerSymbol is not a property of VectorLayer
     this._obliqueTileLayer[overviewMapLayerSymbol] = true;
 
     const obliqueImageStyle = new VectorStyleItem({});
@@ -457,14 +455,12 @@ class OverviewMap {
       style: obliqueImageStyle,
       zIndex: maxZIndexMin50 - 3,
     });
-    // @ts-expect-error overviewMapLayerSymbol is not a property of VectorLayer
     this._obliqueImageLayer[overviewMapLayerSymbol] = true;
     this._obliqueSelectedImageLayer = new VectorLayer({
       projection: mercatorProjection.toJSON(),
       style: this.obliqueSelectedStyle,
       zIndex: maxZIndexMin50 - 2,
     });
-    // @ts-expect-error overviewMapLayerSymbol is not a property of VectorLayer
     this._obliqueSelectedImageLayer[overviewMapLayerSymbol] = true;
     this._map.layerCollection.add(this._obliqueImageLayer);
     this._map.layerCollection.add(this._obliqueSelectedImageLayer);
@@ -513,7 +509,6 @@ class OverviewMap {
         // pretty far at the top, but not above panoramas
         zIndex: maxZIndexMin50 - 1,
       });
-      // @ts-expect-error overviewMapLayerSymbol is not a property of VectorLayer
       this._cameraIconLayer[overviewMapLayerSymbol] = true;
       this._map.layerCollection.add(this._cameraIconLayer);
     }

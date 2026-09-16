@@ -8,8 +8,8 @@ import {
   afterEach,
   vi,
 } from 'vitest';
-import GroupContentTreeItem from '../../../src/contentTree/groupContentTreeItem.js';
-import ContentTreeItem from '../../../src/contentTree/contentTreeItem.js';
+import GroupContentTreeItem from '../../../src/contentTree/groupContentTreeItem.ts';
+import ContentTreeItem from '../../../src/contentTree/contentTreeItem.ts';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import { sleep } from '../../helpers.js';

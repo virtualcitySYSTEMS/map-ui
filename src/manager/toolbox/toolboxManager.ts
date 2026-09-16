@@ -1,17 +1,16 @@
 import { VcsEvent } from '@vcmap/core';
 import { check, maybe, ofEnum, oneOf, optional } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
-import type { Reactive } from 'vue';
-import { reactive, ref, shallowReactive } from 'vue';
-import type { VcsComponentManager } from '@src/vcsUiApp.js';
+import { type Reactive, reactive, ref, shallowReactive } from 'vue';
+import type { VcsComponentManager } from '../../vcsUiApp.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
-import ButtonManager from '../buttonManager.js';
-import type { ButtonComponent } from '../buttonManager.js';
+import ButtonManager, { type ButtonComponent } from '../buttonManager.js';
 import { actionPattern } from '../../components/lists/VcsActionList.ts.vue';
-import type { VcsAction } from '../../actions/actionHelper.js';
-import { getActionFromOptions } from '../../actions/actionHelper.js';
-import type { DeviceOptions } from '../navbarManager.js';
-import { deviceSymbol } from '../navbarManager.js';
+import {
+  type VcsAction,
+  getActionFromOptions,
+} from '../../actions/actionHelper.js';
+import { type DeviceOptions, deviceSymbol } from '../navbarManager.js';
 
 export enum ToolboxType {
   /** ToolboxComponent<ToolboxType.SINGLE> with single toggle action rendered as VcsButton */
@@ -23,8 +22,7 @@ export enum ToolboxType {
 }
 
 export type ToolboxComponentOptions<T extends ToolboxType = ToolboxType> = {
-  /** Optional ID, If not provided an uuid will be generated. */
-  id?: string;
+  id: string;
   /** Group type, defining the behaviour of the group */
   type: ToolboxType;
   /** optional specific toolboxes to render this component in. */
@@ -142,7 +140,7 @@ function isSelectToolboxComponentOptions(
 }
 
 function isGroupToolboxComponent(
-  toolboxComponent: ToolboxComponent | undefined,
+  toolboxComponent?: ToolboxComponent,
 ): toolboxComponent is ToolboxComponent<ToolboxType.GROUP> {
   return !!toolboxComponent && toolboxComponent.type === ToolboxType.GROUP;
 }
@@ -275,7 +273,7 @@ class ToolboxManager implements IToolboxManager {
   add(
     toolboxComponentOptions: ToolboxComponentOptions,
     owner: string | typeof vcsAppSymbol,
-    device = { desktop: true, tablet: true },
+    device: DeviceOptions = { desktop: true, tablet: true },
   ): ToolboxComponent {
     check(toolboxComponentOptions.id, maybe(String));
     check(toolboxComponentOptions.type, ofEnum(ToolboxType));
@@ -291,6 +289,7 @@ class ToolboxManager implements IToolboxManager {
         `A toolGroup with id ${toolboxComponentOptions.id} has already been registered.`,
       );
     }
+    // keep fallback to uuid for non TS plugins
     const id = toolboxComponentOptions.id || uuidv4();
     const { type, toolboxNames: toolboxNamesOptions } = toolboxComponentOptions;
 

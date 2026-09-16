@@ -8,8 +8,8 @@ import VcsUiApp from '../../../src/vcsUiApp.ts';
 import {
   balloonOffset,
   setupBalloonPositionListener,
-} from '../../../src/featureInfo/balloonHelper.js';
-import BalloonComponent from '../../../src/featureInfo/BalloonComponent.vue';
+} from '../../../src/featureInfo/balloonHelper.ts';
+import BalloonComponent from '../../../src/featureInfo/BalloonComponent.ts.vue';
 import { setupMapTarget, sleep } from '../../helpers.js';
 
 const clickedPosition = [

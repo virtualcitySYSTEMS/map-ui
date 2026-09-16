@@ -4,7 +4,7 @@ import {
   createToggleAction,
 } from '../actions/actionHelper.js';
 import type CollectionComponentClass from '../manager/collectionManager/collectionComponentClass.js';
-import CollectionManager from '../manager/collectionManager/CollectionManager.vue';
+import CollectionManager from '../manager/collectionManager/CollectionManager.ts.vue';
 import { ButtonLocation } from '../manager/navbarManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import type VcsUiApp from '../vcsUiApp.js';

@@ -5,7 +5,7 @@ The content tree maintains items like layers or viewpoints and creates a hierarc
 ## Configuration
 
 The content tree is configured within its own section of the map config.
-It is defined as a flat array of objects containing item options, which are deserialized to [ContentTreeItem](../src/contentTree/contentTreeItem.js)s.
+It is defined as a flat array of objects containing item options, which are deserialized to [ContentTreeItem](../src/contentTree/contentTreeItem.ts)s.
 
 Example content tree config:
 
@@ -66,8 +66,8 @@ The `type` option defines the item type. Following types with specific behaviour
 
 ### Groups
 
-- [GroupContentTreeItem](../src/contentTree/groupContentTreeItem.js): A clickable group item. When clicked, every child with a state not NONE will also be clicked. The group will only forward click events to visible and not disabled children.
-- [NodeContentTreeItem](../src/contentTree/nodeContentTreeItem.js): A group item which has _no click handler_ and does not show the state of the children.
+- [GroupContentTreeItem](../src/contentTree/groupContentTreeItem.ts): A clickable group item. When clicked, every child with a state not NONE will also be clicked. The group will only forward click events to visible and not disabled children.
+- [NodeContentTreeItem](../src/contentTree/nodeContentTreeItem.ts): A group item which has _no click handler_ and does not show the state of the children.
 
 ```js
 /**
@@ -76,7 +76,7 @@ The `type` option defines the item type. Following types with specific behaviour
  */
 ```
 
-- [LayerGroupContentTreeItem](../src/contentTree/layerGroupContentTreeItem.js): A layer group. When clicked will try to activate all layers in the group or deactivate all layer in the group if all are active.
+- [LayerGroupContentTreeItem](../src/contentTree/layerGroupContentTreeItem.ts): A layer group. When clicked will try to activate all layers in the group or deactivate all layer in the group if all are active.
 
 ```js
 /**
@@ -89,9 +89,9 @@ The `type` option defines the item type. Following types with specific behaviour
 
 ### VcsObject
 
-[VcsObjectContentTreeItem](../src/contentTree/vcsObjectContentTreeItem.js): An abstract class for VcsObject based items. It handles the overriding/setting of its own values based on the VcsObjects properties bag.
+[VcsObjectContentTreeItem](../src/contentTree/vcsObjectContentTreeItem.ts): An abstract class for VcsObject based items. It handles the overriding/setting of its own values based on the VcsObjects properties bag.
 
-- [LayerContentTreeItem](../src/contentTree/layerContentTreeItem.js): A layer item. Activates/deactivates the layer when clicked.
+- [LayerContentTreeItem](../src/contentTree/layerContentTreeItem.ts): A layer item. Activates/deactivates the layer when clicked.
 
 ```js
 /**
@@ -101,7 +101,7 @@ The `type` option defines the item type. Following types with specific behaviour
  */
 ```
 
-- [ObliqueCollectionContentTreeItem](../src/contentTree/obliqueCollectionContentTreeItem.js): An oblique collection item. Sets/unsets the oblique collection when clicked.
+- [ObliqueCollectionContentTreeItem](../src/contentTree/obliqueCollectionContentTreeItem.ts): An oblique collection item. Sets/unsets the oblique collection when clicked.
 
 ```js
 /**
@@ -120,7 +120,7 @@ The `type` option defines the item type. Following types with specific behaviour
  */
 ```
 
-- [FlightContentTreeItem](../src/contentTree/flightContentTreeItem.js): A flight item. Allows for playing a flight from the content tree. Callbacks for onActivate are called on play, when playing from a paused state and onDeactivate are called on stop. Pausing and continueing a flight does not trigger any callbacks.
+- [FlightContentTreeItem](../src/contentTree/flightContentTreeItem.ts): A flight item. Allows for playing a flight from the content tree. Callbacks for onActivate are called on play, when playing from a paused state and onDeactivate are called on stop. Pausing and continueing a flight does not trigger any callbacks.
 
 ```js
 /**
@@ -132,13 +132,13 @@ The `type` option defines the item type. Following types with specific behaviour
 
 ### Subtree
 
-- [SubContentTreeItem](../src/contentTree/subContentTreeItem.js): A subtree item. Subtrees are rendered in their own (not the main content tree).
+- [SubContentTreeItem](../src/contentTree/subContentTreeItem.ts): A subtree item. Subtrees are rendered in their own (not the main content tree).
   They will receive their own toggle button in the nav bar.
   Only toplevel items can be content tree items (with a name which does not have a .)
 
 ## ContentTreeCollection
 
-The [ContentTreeCollection](../src/contentTree/contentTreeCollection.js) is an overridable indexed collection of [ContentTreeItem](../src/contentTree/contentTreeItem.js)s.
+The [ContentTreeCollection](../src/contentTree/contentTreeCollection.ts) is an overridable indexed collection of [ContentTreeItem](../src/contentTree/contentTreeItem.ts)s.
 
 The ContentTreeCollection maintains its items and creates a sorted, hierarchical tree view.
 The tree gets updated, if an item is added or removed or if weight of an item changes.
@@ -146,7 +146,7 @@ For each subtree an action button is added to the navbar.
 
 ## ContentTreeItem
 
-Each [ContentTreeItem](../src/contentTree/contentTreeItem.js) in the [ContentTreeCollection](../src/contentTree/contentTreeCollection.js) must implement the `TreeViewItem` interface:
+Each [ContentTreeItem](../src/contentTree/contentTreeItem.ts) in the [ContentTreeCollection](../src/contentTree/contentTreeCollection.ts) must implement the `TreeViewItem` interface:
 
 ```js
 /**

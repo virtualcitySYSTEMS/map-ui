@@ -1,5 +1,4 @@
-import type { Component } from 'vue';
-import { reactive } from 'vue';
+import { type Component, reactive } from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { check, ofEnum, oneOf } from '@vcsuite/check';
 import { v4 as uuidv4 } from 'uuid';
@@ -83,7 +82,7 @@ export const DefaultPanelPositions: Record<PanelLocation, PanelPosition> = {
   },
 };
 
-type PanelComponentOptions = {
+export type PanelComponentOptions = {
   /** Optional id, which will be set as HTML container ID. If not provided an uuid will be generated. */
   id?: string;
   /** Optional component to be rendered in the panel. */

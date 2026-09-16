@@ -9,7 +9,7 @@ import {
   afterAll,
 } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import ViewpointContentTreeItem from '../../../src/contentTree/viewpointContentTreeItem.js';
+import ViewpointContentTreeItem from '../../../src/contentTree/viewpointContentTreeItem.ts';
 
 describe('ViewpointContentTreeItem', () => {
   describe('if there is a viewpoint', () => {

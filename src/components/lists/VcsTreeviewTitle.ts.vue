@@ -3,7 +3,7 @@
   import type { PropType } from 'vue';
   import { VTooltip } from 'vuetify/components';
   import { createEllipseTooltip } from '../composables.js';
-  import type { VcsTreeNodeItem } from './VcsTreeNode.ts.vue';
+  import type { VcsTreeNodeItem } from './treeHelper.js';
 
   const props = defineProps({
     item: {

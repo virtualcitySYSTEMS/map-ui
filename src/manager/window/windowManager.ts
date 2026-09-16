@@ -1,13 +1,21 @@
-import type { Component, ComputedRef, Ref } from 'vue';
-import { computed, isRef, reactive, ref } from 'vue';
+import {
+  type Component,
+  type ComputedRef,
+  type Ref,
+  computed,
+  isRef,
+  reactive,
+  ref,
+} from 'vue';
 import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, oneOf } from '@vcsuite/check';
+import { getLogger } from '@vcsuite/logger';
 import type { VcsAction } from '../../actions/actionHelper.js';
 import type { VcsComponentManager } from '../../vcsUiApp.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 
-export type WindowSlot =
+export type WindowSlotType =
   /** Static windows cannot be moved and will be positioned top-left. */
   | 'static'
   /** Dynamic windows positioned top-left, if no static window is present. Can be moved by user interaction. */
@@ -18,6 +26,46 @@ export type WindowSlot =
   | 'dynamicChild'
   /** Dynamic windows positioned at initial provided position. Can be moved by user interaction. */
   | 'detached';
+
+/** @deprecated Use literal string keys instead. */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const WindowSlot: Readonly<Record<string, WindowSlotType>> = {
+  get STATIC(): 'static' {
+    getLogger('windowManager').deprecate(
+      'WindowSlot.STATIC',
+      "Use the literal string 'static' instead.",
+    );
+    return 'static';
+  },
+  get DYNAMIC_LEFT(): 'dynamicLeft' {
+    getLogger('windowManager').deprecate(
+      'WindowSlot.DYNAMIC_LEFT',
+      "Use the literal string 'dynamicLeft' instead.",
+    );
+    return 'dynamicLeft';
+  },
+  get DYNAMIC_RIGHT(): 'dynamicRight' {
+    getLogger('windowManager').deprecate(
+      'WindowSlot.DYNAMIC_RIGHT',
+      "Use the literal string 'dynamicRight' instead.",
+    );
+    return 'dynamicRight';
+  },
+  get DYNAMIC_CHILD(): 'dynamicChild' {
+    getLogger('windowManager').deprecate(
+      'WindowSlot.DYNAMIC_CHILD',
+      "Use the literal string 'dynamicChild' instead.",
+    );
+    return 'dynamicChild';
+  },
+  get DETACHED(): 'detached' {
+    getLogger('windowManager').deprecate(
+      'WindowSlot.DETACHED',
+      "Use the literal string 'detached' instead.",
+    );
+    return 'detached';
+  },
+} as const;
 
 /**
  * Template for window position properties. `T` is the raw value type, defaults to `string`.
@@ -110,12 +158,12 @@ export type WindowComponentOptions<T = Record<string, unknown>> = {
   state?: WindowStateOptions;
   /** Window position options, will be merged with default position for slot */
   position?: Partial<WindowPositionOptions>;
-  slot?: WindowSlot;
+  slot?: WindowSlotType;
   props?: T;
   provides?: Record<string, unknown>;
 };
 
-type OptionOrRef<T> = T | Ref<T> | ComputedRef<T>;
+export type OptionOrRef<T> = T | Ref<T> | ComputedRef<T>;
 
 export type WindowStateOptions = {
   hideHeader?: OptionOrRef<boolean>;
@@ -169,16 +217,14 @@ export type WindowComponent<T = Record<string, unknown>> = {
   state: WindowState;
   position: WindowPosition;
   initialPositionOptions: WindowPositionOptions;
-  slot: Ref<WindowSlot>;
-  initialSlot: WindowSlot;
+  slot: Ref<WindowSlotType>;
+  initialSlot: WindowSlotType;
   props: T;
   provides: Record<string, unknown>;
   zIndex: ComputedRef<number>;
 };
 
-export function posToPixel(
-  pos: string | number | undefined,
-): string | undefined {
+export function posToPixel(pos?: string | number): string | undefined {
   if (typeof pos === 'number') {
     return `${pos}px`;
   }
@@ -350,7 +396,7 @@ class WindowManager implements IWindowManager {
    * If a STATIC Window is removed again, the DYNAMIC_LEFT will be moved back.
    */
   private _handleSlotsChanged(
-    changedSlot: WindowSlot,
+    changedSlot: WindowSlotType,
     parentId?: string,
   ): void {
     if (
@@ -380,7 +426,7 @@ class WindowManager implements IWindowManager {
   }
 
   private _findWindowBySlot(
-    slot: WindowSlot,
+    slot: WindowSlotType,
     parentId?: string,
     id?: string,
   ): WindowComponent | undefined {
@@ -416,7 +462,7 @@ class WindowManager implements IWindowManager {
   }
 
   private _getPositionOptionsForSlot(
-    slot: WindowSlot,
+    slot: WindowSlotType,
     position?: WindowPositionOptions,
     parentId?: string,
   ): WindowPositionOptions {
@@ -447,7 +493,7 @@ class WindowManager implements IWindowManager {
    * removes the window at the given slot if it exists (not for DETACHED)
    */
   private _removeWindowAtSlot(
-    slot: WindowSlot,
+    slot: WindowSlotType,
     parentId?: string,
     id?: string,
   ): void {

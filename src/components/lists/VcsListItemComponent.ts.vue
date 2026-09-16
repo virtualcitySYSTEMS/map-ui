@@ -93,7 +93,7 @@
           ref="title"
           :class="{ 'vcs-list-item__rename': rename }"
         >
-          <vcs-text-field
+          <VcsTextField
             v-if="rename"
             :model-value="item.title"
             autofocus
@@ -129,8 +129,8 @@
           actionButtonListOverflowCount,
         }"
       >
-        <vcs-badge v-if="item.hasUpdate" class="mr-1" />
-        <vcs-action-button-list
+        <VcsBadge v-if="item.hasUpdate" class="mr-1" />
+        <VcsActionButtonList
           v-if="actions.length > 0"
           :actions="actions"
           :disabled="item.disabled"

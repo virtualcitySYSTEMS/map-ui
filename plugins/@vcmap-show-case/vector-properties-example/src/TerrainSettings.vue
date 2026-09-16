@@ -10,10 +10,7 @@
   /** @type {import("@vcmap/ui").VcsUiApp} */
   const vcsApp = inject('vcsApp');
   const terrainLayerItem = new LayerContentTreeItem(
-    {
-      name: 'terrain',
-      layerName: 'GermanyBaseTerrain',
-    },
+    { name: 'terrain', layerName: 'GermanyBaseTerrain' },
     vcsApp,
   );
 
@@ -49,17 +46,17 @@
 </script>
 
 <template>
-  <vcs-form-section heading="Terrain Settings" expandable>
+  <VcsFormSection heading="Terrain Settings" expandable>
     <v-container class="pa-2">
       <v-row no-gutters>
         <v-col>
-          <vcs-treeview
+          <VcsTreeview
             :items="[
               terrainLayerItem.getTreeViewItem(),
               meshLayerItem.getTreeViewItem(),
             ]"
             item-children="visibleChildren"
-          ></vcs-treeview>
+          />
         </v-col>
       </v-row>
       <template v-if="transparency !== null">
@@ -69,7 +66,7 @@
             <v-switch v-model="transparencyEnabled" />
           </v-col>
           <v-col>
-            <vcs-slider
+            <VcsSlider
               :disabled="!transparencyEnabled"
               :step="0.01"
               type="number"
@@ -84,7 +81,7 @@
         </v-row>
       </template>
     </v-container>
-  </vcs-form-section>
+  </VcsFormSection>
 </template>
 
 <style scoped lang="scss"></style>

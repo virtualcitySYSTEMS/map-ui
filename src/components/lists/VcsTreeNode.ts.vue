@@ -118,30 +118,7 @@
   import ImageElementInjector from '../ImageElementInjector.ts.vue';
   import VcsActionButtonList from '../buttons/VcsActionButtonList.ts.vue';
   import VcsTreeviewTitle from './VcsTreeviewTitle.ts.vue';
-  import type { VcsAction } from '../../actions/actionHelper.js';
-
-  export type VcsTreeNodeItem = {
-    name: string;
-    /** An optional translatable title. */
-    title?: string;
-    tooltip?: string;
-    /** Whether this item reacts to click events. */
-    clickable?: boolean;
-    /** Whether this item should be displayed as disabled. */
-    disabled?: boolean;
-    /** An array of actions associated with this item. */
-    actions?: VcsAction[];
-    /** An array of child items. */
-    children?: VcsTreeNodeItem[];
-    /** An optional icon for the item. Can be a string, HTMLCanvasElement, or HTMLImageElement. */
-    icon?: string | HTMLCanvasElement | HTMLImageElement | undefined;
-    /** A callback called when the item is clicked. */
-    clicked?: (event: Event) => void | Promise<void>;
-    /** Forwards the blockOverflow setting to the ActionButtonList, if true will reserve some space for an overflow. */
-    blockOverflow?: boolean;
-    /** Forces the item to display as a node (with chevron) even when it has no children. */
-    forceNodeDisplay?: boolean;
-  };
+  import type { VcsTreeNodeItem } from './treeHelper.js';
 
   /**
    * @description

@@ -9,8 +9,7 @@ import {
   VectorStyleItem,
   Viewpoint,
 } from '@vcmap/core';
-import type { Ref } from 'vue';
-import { ref, shallowRef } from 'vue';
+import { type Ref, ref, shallowRef } from 'vue';
 import { check, oneOf } from '@vcsuite/check';
 import type Feature from 'ol/Feature.js';
 import { Icon } from 'ol/style.js';
@@ -22,8 +21,10 @@ import {
   getColorByKey,
 } from '../vuePlugins/vuetify.js';
 import { getColoredMapIcon } from '../components/icons/+all.js';
-import type { VcsAction } from '../actions/actionHelper.js';
-import { getViewpointFromFeature } from '../actions/actionHelper.js';
+import {
+  type VcsAction,
+  getViewpointFromFeature,
+} from '../actions/actionHelper.js';
 
 /** A ResultItem must provide either a feature, a clicked handler or both. */
 export type ResultItem = {
@@ -33,7 +34,7 @@ export type ResultItem = {
   /** Obligatory, if no feature is provided. Can overwrite default zoom to feature behaviour. */
   clicked?: () => Promise<void>;
   /** If a feature (in web mercator) is provided, the feature is added to the result layer and search zooms to the layer's extent. Default clicked handler is zoom to and highlight feature and select feature, if feature has a FeatureInfoView. */
-  feature?: Feature | undefined;
+  feature?: Feature;
 };
 
 /**
@@ -206,7 +207,8 @@ class Search extends IndexedCollection<SearchImpl> {
                 this._app.maps.activeMap
                   ?.gotoViewpoint(viewpoint)
                   .catch(() => {});
-                return this._app.featureInfo.selectFeature(item.feature!);
+                this._app.featureInfo.selectFeature(item.feature!);
+                return Promise.resolve();
               };
             }
           }

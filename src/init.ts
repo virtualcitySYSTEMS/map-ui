@@ -1,8 +1,13 @@
 import { createApp } from 'vue';
-import { check, is, maybe, oneOf, optional } from '@vcsuite/check';
-import type { Pattern } from '@vcsuite/check';
-import type { VcsModuleConfig } from '@vcmap/core';
-import { VcsModule } from '@vcmap/core';
+import {
+  type Pattern,
+  check,
+  is,
+  maybe,
+  oneOf,
+  optional,
+} from '@vcsuite/check';
+import { VcsModule, type VcsModuleConfig } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.ts.vue';
 import VcsUiApp from './vcsUiApp.js';

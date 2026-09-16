@@ -1,7 +1,9 @@
 import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type RemoveModuleCallbackOptions = VcsCallbackOptions & {
   /** ID of the module to be removed */

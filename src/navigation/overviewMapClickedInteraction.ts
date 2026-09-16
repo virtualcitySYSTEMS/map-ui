@@ -1,9 +1,9 @@
-import type { InteractionEvent } from '@vcmap/core';
 import {
-  VcsEvent,
-  EventType,
-  ModificationKeyType,
   AbstractInteraction,
+  EventType,
+  type InteractionEvent,
+  ModificationKeyType,
+  VcsEvent,
 } from '@vcmap/core';
 
 class OverviewMapClickedInteraction extends AbstractInteraction {

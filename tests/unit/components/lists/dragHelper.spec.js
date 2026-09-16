@@ -4,22 +4,11 @@ import {
   InsertMode,
   moveDraggableItems,
   setupDraggableListOrTree,
-} from '../../../../src/components/lists/dragHelper.js';
+} from '../../../../src/components/lists/dragHelper.ts';
 
 function createListItems() {
   const selectionChanged = vi.fn();
-  return [
-    {
-      name: 'foo',
-    },
-    {
-      name: 'bar',
-      selectionChanged,
-    },
-    {
-      name: 'baz',
-    },
-  ];
+  return [{ name: 'foo' }, { name: 'bar', selectionChanged }, { name: 'baz' }];
 }
 
 function createTreeItems() {

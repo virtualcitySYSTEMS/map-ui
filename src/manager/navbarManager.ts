@@ -1,12 +1,11 @@
 import { check, ofEnum, optional } from '@vcsuite/check';
-import type {
-  ButtonComponent,
-  ButtonComponentOptions,
+import ButtonManager, {
+  type ButtonComponent,
+  type ButtonComponentOptions,
+  sortByWeight,
 } from './buttonManager.js';
-import ButtonManager, { sortByWeight } from './buttonManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import type { VcsAction } from '../actions/actionHelper.js';
-import { callSafeAction } from '../actions/actionHelper.js';
+import { type VcsAction, callSafeAction } from '../actions/actionHelper.js';
 
 export const locationSymbol = Symbol('location');
 export const deviceSymbol = Symbol('device');

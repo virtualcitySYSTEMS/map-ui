@@ -31,7 +31,6 @@ export {
 } from './src/actions/extentActions.ts';
 export {
   createPlayAction,
-  PlayerDirection,
   createStepAction,
   createFastAction,
   createFlightPlayerActions,
@@ -41,6 +40,7 @@ export {
   createFlightMovieActions,
   createExportFlightAction,
   importFlights,
+  PlayerDirection,
 } from './src/actions/flightActions.ts';
 export {
   createListItemDeleteAction,
@@ -97,32 +97,33 @@ export {
   default as ContentTreeCollection,
   createContentTreeCollection,
   defaultContentTreeComponentId,
-} from './src/contentTree/contentTreeCollection.js';
-export { default as ContentTreeItem } from './src/contentTree/contentTreeItem.js';
-export { default as GroupContentTreeItem } from './src/contentTree/groupContentTreeItem.js';
-export { default as WMSGroupContentTreeItem } from './src/contentTree/wmsGroupContentTreeItem.js';
+} from './src/contentTree/contentTreeCollection.ts';
+export { default as ContentTreeItem } from './src/contentTree/contentTreeItem.ts';
+export { default as GroupContentTreeItem } from './src/contentTree/groupContentTreeItem.ts';
+export { default as WMSGroupContentTreeItem } from './src/contentTree/wmsGroupContentTreeItem.ts';
 export {
   default as LayerContentTreeItem,
   setViewpointAction,
   getStateFromLayer,
-} from './src/contentTree/layerContentTreeItem.js';
-export { default as LayerGroupContentTreeItem } from './src/contentTree/layerGroupContentTreeItem.js';
-export { default as FlightContentTreeItem } from './src/contentTree/flightContentTreeItem.js';
-export { default as LayerTree } from './src/contentTree/LayerTree.vue';
+} from './src/contentTree/layerContentTreeItem.ts';
+export { default as LayerGroupContentTreeItem } from './src/contentTree/layerGroupContentTreeItem.ts';
+export { default as FlightContentTreeItem } from './src/contentTree/flightContentTreeItem.ts';
+export { default as LayerTree } from './src/contentTree/LayerTree.ts.vue';
 export {
   default as LayerSwap,
   layerSwapId,
-} from './src/contentTree/LayerSwap.vue';
-export { default as NodeContentTreeItem } from './src/contentTree/nodeContentTreeItem.js';
-export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/obliqueCollectionContentTreeItem.js';
-export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.js';
-export { default as VcsObjectContentTreeItem } from './src/contentTree/vcsObjectContentTreeItem.js';
-export { default as ViewpointContentTreeItem } from './src/contentTree/viewpointContentTreeItem.js';
+} from './src/contentTree/LayerSwap.ts.vue';
+export { default as NodeContentTreeItem } from './src/contentTree/nodeContentTreeItem.ts';
+export { default as ObliqueCollectionContentTreeItem } from './src/contentTree/obliqueCollectionContentTreeItem.ts';
+export { default as SubContentTreeItem } from './src/contentTree/subContentTreeItem.ts';
+export { default as VcsObjectContentTreeItem } from './src/contentTree/vcsObjectContentTreeItem.ts';
+export { default as ViewpointContentTreeItem } from './src/contentTree/viewpointContentTreeItem.ts';
 export { default as WindowComponent } from './src/manager/window/WindowComponent.ts.vue';
 export { default as WindowComponentHeader } from './src/manager/window/WindowComponentHeader.ts.vue';
 export { default as VcsWindowManager } from './src/manager/window/WindowManager.ts.vue';
 export {
   default as WindowManager,
+  WindowSlot,
   WindowPositions,
   posToPixel,
   windowPositionFromOptions,
@@ -166,22 +167,22 @@ export {
   default as ToolboxManagerComponent,
   toolboxComponentId,
 } from './src/manager/toolbox/ToolboxManagerComponent.ts.vue';
-export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.js';
-export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.js';
-export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.vue';
-export { default as CollectionComponentProvider } from './src/manager/collectionManager/CollectionComponentProvider.vue';
+export { default as CategoryManager } from './src/manager/collectionManager/categoryManager.ts';
+export { default as CollectionManager } from './src/manager/collectionManager/collectionManager.ts';
+export { default as CollectionManagerComponent } from './src/manager/collectionManager/CollectionManager.ts.vue';
+export { default as CollectionComponentProvider } from './src/manager/collectionManager/CollectionComponentProvider.ts.vue';
 export {
   default as CollectionComponentClass,
   createSupportedMapMappingFunction,
-} from './src/manager/collectionManager/collectionComponentClass.js';
+} from './src/manager/collectionManager/collectionComponentClass.ts';
 export {
   makeEditorCollectionComponentClass,
   isEditorCollectionComponentClass,
-} from './src/manager/collectionManager/editorCollectionComponentClass.js';
-export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.vue';
-export { default as CollectionComponentStandalone } from './src/manager/collectionManager/CollectionComponentStandalone.vue';
-export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.vue';
-export { default as CollectionComponentContent } from './src/manager/collectionManager/CollectionComponentContent.vue';
+} from './src/manager/collectionManager/editorCollectionComponentClass.ts';
+export { default as CollectionComponent } from './src/manager/collectionManager/CollectionComponent.ts.vue';
+export { default as CollectionComponentStandalone } from './src/manager/collectionManager/CollectionComponentStandalone.ts.vue';
+export { default as CollectionComponentList } from './src/manager/collectionManager/CollectionComponentList.ts.vue';
+export { default as CollectionComponentContent } from './src/manager/collectionManager/CollectionComponentContent.ts.vue';
 export { default as ContextMenuManager } from './src/manager/contextMenu/contextMenuManager.ts';
 export { default as ContextMenuComponent } from './src/manager/contextMenu/ContextMenuComponent.ts.vue';
 export { default as ContextMenuInteraction } from './src/manager/contextMenu/contextMenuInteraction.ts';
@@ -189,33 +190,33 @@ export {
   applyKeyMapping,
   applyValueMapping,
   default as AbstractFeatureInfoView,
-} from './src/featureInfo/abstractFeatureInfoView.js';
+} from './src/featureInfo/abstractFeatureInfoView.ts';
 export {
   extractNestedKey,
   default as BalloonFeatureInfoView,
-} from './src/featureInfo/balloonFeatureInfoView.js';
-export { default as AddressBalloonFeatureInfoView } from './src/featureInfo/addressBalloonFeatureInfoView.js';
+} from './src/featureInfo/balloonFeatureInfoView.ts';
+export { default as AddressBalloonFeatureInfoView } from './src/featureInfo/addressBalloonFeatureInfoView.ts';
 export {
   getBalloonPosition,
   setBalloonPosition,
   setupBalloonPositionListener,
   getBalloonPositionFromFeature,
-} from './src/featureInfo/balloonHelper.js';
-export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.vue';
-export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.vue';
-export { default as IframeComponent } from './src/featureInfo/IframeComponent.vue';
-export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.js';
-export { default as IframeWmsFeatureInfoView } from './src/featureInfo/iframeWmsFeatureInfoView.js';
-export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.js';
-export { default as MarkdownFeatureInfoView } from './src/featureInfo/markdownFeatureInfoView.js';
-export { default as MarkdownBalloonFeatureInfoView } from './src/featureInfo/markdownBalloonFeatureInfoView.js';
+} from './src/featureInfo/balloonHelper.ts';
+export { default as BalloonComponent } from './src/featureInfo/BalloonComponent.ts.vue';
+export { default as AddressBalloonComponent } from './src/featureInfo/AddressBalloonComponent.ts.vue';
+export { default as IframeComponent } from './src/featureInfo/IframeComponent.ts.vue';
+export { default as IframeFeatureInfoView } from './src/featureInfo/iframeFeatureInfoView.ts';
+export { default as IframeWmsFeatureInfoView } from './src/featureInfo/iframeWmsFeatureInfoView.ts';
+export { default as TableFeatureInfoView } from './src/featureInfo/tableFeatureInfoView.ts';
+export { default as MarkdownFeatureInfoView } from './src/featureInfo/markdownFeatureInfoView.ts';
+export { default as MarkdownBalloonFeatureInfoView } from './src/featureInfo/markdownBalloonFeatureInfoView.ts';
 export {
   getHighlightStyleFromStyle,
   getHighlightStyle,
   getClusterHighlightStyle,
   featureInfoViewSymbol,
-} from './src/featureInfo/featureInfo.js';
-export { default as ClusterFeatureComponent } from './src/featureInfo/ClusterFeatureComponent.vue';
+} from './src/featureInfo/featureInfo.ts';
+export { default as ClusterFeatureComponent } from './src/featureInfo/ClusterFeatureComponent.ts.vue';
 
 export { default as MapNavCompass } from './src/navigation/MapNavCompass.ts.vue';
 export { default as MapNavigation } from './src/navigation/MapNavigation.ts.vue';
@@ -322,7 +323,7 @@ export { default as VcsList } from './src/components/lists/VcsList.ts.vue';
 export { default as VcsListItemComponent } from './src/components/lists/VcsListItemComponent.ts.vue';
 export { default as VcsGroupedList } from './src/components/lists/VcsGroupedList.ts.vue';
 export * from './src/components/lists/listHelper.ts';
-export { moveDraggableItems } from './src/components/lists/dragHelper.js';
+export { moveDraggableItems } from './src/components/lists/dragHelper.ts';
 export { default as VcsTreeview } from './src/components/lists/VcsTreeview.ts.vue';
 export { default as VcsTreeNode } from './src/components/lists/VcsTreeNode.ts.vue';
 export { default as VcsTreeviewTitle } from './src/components/lists/VcsTreeviewTitle.ts.vue';
@@ -343,10 +344,6 @@ export { default as VcsExtent } from './src/components/extent/VcsExtent.ts.vue';
 export { default as VcsExtentEditor } from './src/components/extent/VcsExtentEditor.ts.vue';
 export { default as VcsProjection } from './src/components/projection/VcsProjection.ts.vue';
 export { default as VcsVectorStyleComponent } from './src/components/style/VcsVectorStyleComponent.ts.vue';
-export {
-  default as VcsVectorPropertiesComponent,
-  vectorProperties,
-} from './src/components/vector-properties/VcsVectorPropertiesComponent.vue';
 export { default as VcsViewpointComponent } from './src/components/viewpoint/VcsViewpointComponent.ts.vue';
 export { default as VcsViewpointEditor } from './src/components/viewpoint/VcsViewpointEditor.ts.vue';
 export { default as VcsFlightComponent } from './src/components/flight/VcsFlightComponent.ts.vue';
@@ -357,15 +354,17 @@ export {
   getProvidedFlightInstance,
   setupFlightAnchorEditingListener,
 } from './src/components/flight/composables.ts';
+export { default as VcsFeatureEditingWindow } from './src/components/vector-properties/VcsFeatureEditingWindow.ts.vue';
+export { default as VcsVectorPropertiesComponent } from './src/components/vector-properties/VcsVectorPropertiesComponent.ts.vue';
 export {
-  default as VcsFeatureEditingWindow,
-  EditorTransformationIcons,
+  editorTransformationIcons,
   getAllowedEditorTransformationModes,
-} from './src/components/vector-properties/VcsFeatureEditingWindow.vue';
-export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.vue';
+  vectorProperties,
+} from './src/components/vector-properties/vectorPropertiesHelper.ts';
+export { default as VcsFeatureTransforms } from './src/components/vector-properties/VcsFeatureTransforms.ts.vue';
 export { default as VcsSnapTo } from './src/components/vector-properties/VcsSnapTo.ts.vue';
 export { VectorStyleMenus } from './src/components/style/composables.ts';
-export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.vue';
+export { default as VcsFeatureStyleComponent } from './src/components/style/VcsFeatureStyleComponent.ts.vue';
 export { default as AbstractConfigEditor } from './src/components/plugins/AbstractConfigEditor.ts.vue';
 export { default as VcsWorkspaceWrapper } from './src/components/plugins/VcsWorkspaceWrapper.ts.vue';
 export { default as VcsLoadingOverlay } from './src/components/plugins/VcsLoadingOverlay.ts.vue';
@@ -379,9 +378,9 @@ export * from './src/components/modelHelper.ts';
 export * from './src/components/composables.ts';
 export {
   legendSymbol,
+  getLegendEntries,
   LegendType,
   StyleRowType,
-  getLegendEntries,
 } from './src/legend/legendHelper.ts';
 export { default as Search } from './src/search/search.ts';
 export { searchComponentId } from './src/search/helper.ts';

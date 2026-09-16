@@ -17,7 +17,7 @@
 
   const epsgRegex = /^([a-zA-Z]+:)*(\d{4,6})$/i;
 
-  function parseEPSGCode(epsg: string | number | undefined): {
+  function parseEPSGCode(epsg?: string | number): {
     prefix?: string | null;
     code?: string;
   } {
@@ -153,14 +153,14 @@
     }
   }
 
-  function validateProj4(proj4: string | undefined): true | string {
+  function validateProj4(proj4?: string): true | string {
     return (
       Projection.validateOptions({ ...localValue.value, proj4 }) ||
       'components.projection.invalidProj4'
     );
   }
 
-  function validateEpsg(epsg: string | undefined): true | string {
+  function validateEpsg(epsg?: string): true | string {
     return /^\d{4,6}$/.test(epsg ?? '') || 'components.projection.invalidProj4';
   }
 

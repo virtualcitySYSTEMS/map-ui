@@ -1,5 +1,11 @@
-import type { Ref, WritableComputedRef } from 'vue';
-import { computed, ref, toRaw, watch } from 'vue';
+import {
+  type Ref,
+  type WritableComputedRef,
+  computed,
+  ref,
+  toRaw,
+  watch,
+} from 'vue';
 import deepEqual from 'fast-deep-equal';
 import { getLogger } from '@vcsuite/logger';
 

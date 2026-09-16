@@ -1,6 +1,6 @@
 import { describe, beforeAll, afterAll, expect, it } from 'vitest';
 import { VcsObject } from '@vcmap/core';
-import VcsObjectContentTreeItem from '../../../src/contentTree/vcsObjectContentTreeItem.js';
+import VcsObjectContentTreeItem from '../../../src/contentTree/vcsObjectContentTreeItem.ts';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
 
 describe('VcsObjectContentTreeItem', () => {

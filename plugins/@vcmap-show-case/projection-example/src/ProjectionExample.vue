@@ -49,23 +49,23 @@
       </v-row>
       <v-row no-gutters>
         <v-col>
-          <vcs-form-button @click="reset" class="w-100"
-            >Reset Web Mercator</vcs-form-button
-          >
+          <VcsFormButton @click="reset" class="w-100">
+            Reset Web Mercator
+          </VcsFormButton>
         </v-col>
       </v-row>
     </v-container>
-    <vcs-projection
+    <VcsProjection
       v-model="projectionOptions"
       :required="required"
       :hide-request-button="hideRequestButton"
       :hide-alias="hideAlias"
       class="pa-1"
-    ></vcs-projection>
+    />
     <div class="d-flex gc-2 justify-end mr-2">
-      <vcs-form-button @click="console.log(toRaw(projectionOptions))">{{
-        $t('projectionExample.log')
-      }}</vcs-form-button>
+      <VcsFormButton @click="console.log(toRaw(projectionOptions))">
+        {{ $t('projectionExample.log') }}
+      </VcsFormButton>
     </div>
   </div>
 </template>

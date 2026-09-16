@@ -2,7 +2,7 @@ import { nextTick, ref } from 'vue';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { StateActionState } from '@vcmap/ui';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import WMSChildContentTreeItem from '../../../src/contentTree/wmsChildContentTreeItem.js';
+import WMSChildContentTreeItem from '../../../src/contentTree/wmsChildContentTreeItem.ts';
 
 describe('ContentTreeItem', () => {
   let app;

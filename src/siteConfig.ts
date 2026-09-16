@@ -1,7 +1,6 @@
 import { check } from '@vcsuite/check';
 import type UiConfig from './uiConfig.js';
-import type { UiConfigurationItem } from './uiConfig.js';
-import { isUiConfigurationItem } from './uiConfig.js';
+import { type UiConfigurationItem, isUiConfigurationItem } from './uiConfig.js';
 
 function setFavicon(src: string): void {
   check(src, String);

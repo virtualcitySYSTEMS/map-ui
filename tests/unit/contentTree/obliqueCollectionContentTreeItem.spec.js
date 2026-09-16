@@ -5,7 +5,7 @@ import {
 } from '@vcmap/core';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import ObliqueCollectionContentTreeItem from '../../../src/contentTree/obliqueCollectionContentTreeItem.js';
+import ObliqueCollectionContentTreeItem from '../../../src/contentTree/obliqueCollectionContentTreeItem.ts';
 import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 
 describe('ObliqueCollectionContentTreeItem', () => {

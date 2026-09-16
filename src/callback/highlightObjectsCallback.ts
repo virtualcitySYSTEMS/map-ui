@@ -1,8 +1,13 @@
-import { FeatureLayer, VectorStyleItem } from '@vcmap/core';
-import type { VectorStyleItemOptions } from '@vcmap/core';
+import {
+  FeatureLayer,
+  VectorStyleItem,
+  type VectorStyleItemOptions,
+} from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type HighlightObjectsCallbackOptions = VcsCallbackOptions & {
   /** Name of the layer containing the objects to highlight */

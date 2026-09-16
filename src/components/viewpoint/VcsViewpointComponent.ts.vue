@@ -264,7 +264,7 @@
 
   async function handleInput(
     key: 'groundPosition' | 'cameraPosition',
-    value: Coordinate | undefined,
+    value?: Coordinate,
   ): Promise<void> {
     localValue.value[key] = value;
     if (app.maps.activeMap) {

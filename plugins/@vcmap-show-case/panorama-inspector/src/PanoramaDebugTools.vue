@@ -148,7 +148,7 @@
 </script>
 
 <template>
-  <vcs-form-section
+  <VcsFormSection
     heading="Tools"
     expandable
     :header-actions="[action, hideMarker]"
@@ -174,27 +174,27 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="4">
-          <vcs-label>Brightness</vcs-label>
+          <VcsLabel>Brightness</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-slider v-model="brightness" :min="-1" :max="1" :step="0.001" />
+          <VcsSlider v-model="brightness" :min="-1" :max="1" :step="0.001" />
         </v-col>
       </v-row>
       <v-row no-gutters>
         <v-col cols="4">
-          <vcs-label>Contrast</vcs-label>
+          <VcsLabel>Contrast</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-slider v-model="contrast" :min="0" :max="20" :step="0.01" />
+          <VcsSlider v-model="contrast" :min="0" :max="20" :step="0.01" />
         </v-col>
       </v-row>
       <template v-if="showDepth || showIntensity">
         <v-row no-gutters>
           <v-col cols="4">
-            <vcs-label>Overlay Opacity</vcs-label>
+            <VcsLabel>Overlay Opacity</VcsLabel>
           </v-col>
           <v-col>
-            <vcs-slider
+            <VcsSlider
               v-model="overlayOpacity"
               :min="0"
               :max="1"
@@ -204,7 +204,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <vcs-label>Overlay NaN Color</vcs-label>
+            <VcsLabel>Overlay NaN Color</VcsLabel>
           </v-col>
           <v-col>
             <v-menu :close-on-content-click="false">
@@ -228,7 +228,7 @@
       </template>
       <v-row no-gutters>
         <v-col>
-          <vcs-label>Cursor Color</vcs-label>
+          <VcsLabel>Cursor Color</VcsLabel>
         </v-col>
         <v-col>
           <v-menu :close-on-content-click="false">
@@ -271,14 +271,14 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="4">
-          <vcs-label>Opacity</vcs-label>
+          <VcsLabel>Opacity</VcsLabel>
         </v-col>
         <v-col>
-          <vcs-slider v-model="opacity" :min="0" :max="1" :step="0.01" />
+          <VcsSlider v-model="opacity" :min="0" :max="1" :step="0.01" />
         </v-col>
       </v-row>
     </v-container>
-  </vcs-form-section>
+  </VcsFormSection>
 </template>
 
 <style scoped lang="scss"></style>

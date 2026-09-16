@@ -1,7 +1,7 @@
-import type { InteractionEvent } from '@vcmap/core';
 import {
   AbstractInteraction,
   EventType,
+  type InteractionEvent,
   ModificationKeyType,
   PointerKeyType,
 } from '@vcmap/core';

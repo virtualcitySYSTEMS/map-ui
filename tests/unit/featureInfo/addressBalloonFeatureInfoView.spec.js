@@ -1,7 +1,7 @@
 import { describe, beforeAll, expect, it } from 'vitest';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point.js';
-import AddressBalloonFeatureInfoView from '../../../src/featureInfo/addressBalloonFeatureInfoView.js';
+import AddressBalloonFeatureInfoView from '../../../src/featureInfo/addressBalloonFeatureInfoView.ts';
 
 describe('AddressBalloonFeatureInfoView', () => {
   describe('getting attributes', () => {

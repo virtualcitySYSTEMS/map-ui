@@ -1,7 +1,6 @@
 import { getCaughtError } from '@vcmap/core';
 import { check } from '@vcsuite/check';
-import type { Logger } from '@vcsuite/logger';
-import { getLogger as getLoggerByName } from '@vcsuite/logger';
+import { type Logger, getLogger as getLoggerByName } from '@vcsuite/logger';
 import { satisfies } from 'semver';
 import type VcsUiApp from './vcsUiApp.js';
 import packageJson from '../package.json' with { type: 'json' };

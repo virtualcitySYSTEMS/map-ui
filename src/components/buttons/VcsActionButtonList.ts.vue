@@ -97,7 +97,7 @@
     },
     props: {
       actions: {
-        type: Array as PropType<VcsAction[]>,
+        type: Array as PropType<ReadonlyArray<Readonly<VcsAction>>>,
         required: true,
         validator: validateActions,
       },

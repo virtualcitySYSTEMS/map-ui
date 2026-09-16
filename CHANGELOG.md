@@ -13,14 +13,18 @@
 - Updated vite to version 8.2
 - Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
 - Removed deprecated `draggable` property of the CollectionComponentClass
-- Removed `WindowSlot` enum, use litteral keys instead (`static`, `dynamicLeft`, `dynamicRight`, `dynamicChild` or `detached`)
+- Changed `ToolboxComponentOptions` and `ToolboxComponent` to generic types over `ToolboxType` (e.g. `ToolboxComponentOptions<ToolboxType.SINGLE>` and `ToolboxComponent<ToolboxType.GROUP>`)
+- Removed deprecated `targetIndex` property from ItemMovedEvent type, use `targetItem` instead
 - Changed `createFlightVisualizationAction` to a sync function
 - Changed casing of `VcsUiAppConfigPattern` to `vcsUiAppConfigPattern`
+- Changed casing of `EditorTransformationIcons` to `editorTransformationIcons`
 - Changed `url` parameter of `getStateFromURL` to required
+- Changed `id` property of `ToolboxComponentOptions` to required
 
 ### Changes
 
 - Added support for TypeScript files, and started migration
+- Deprecated enums `LegendType`, `PlayerDirection`, `StyleRowType` and `WindowSlot`; use literal string keys instead
 
 ### Fixes
 

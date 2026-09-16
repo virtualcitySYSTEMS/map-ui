@@ -1,7 +1,9 @@
 import { FeatureLayer } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type UnHighlightObjectsCallbackOptions = VcsCallbackOptions & {
   /** Name of the layer containing the objects to unhighlight */

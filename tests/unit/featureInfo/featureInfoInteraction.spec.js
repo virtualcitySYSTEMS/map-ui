@@ -19,8 +19,8 @@ import {
 
 import { Feature } from 'ol';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.js';
-import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
+import FeatureInfoInteraction from '../../../src/featureInfo/featureInfoInteraction.ts';
+import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.ts';
 
 describe('FeatureInfoInteraction', () => {
   let interaction;

@@ -61,7 +61,7 @@
   import { getForwardSlots, usePadding } from '../composables.js';
   import { useProxiedAtomicModel } from '../modelHelper.js';
 
-  function countDecimalPlaces(value: number | string | undefined): number {
+  function countDecimalPlaces(value?: number | string): number {
     if (value) {
       const str = value.toString();
       const decimalIndex = str.indexOf('.');

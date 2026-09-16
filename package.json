@@ -54,7 +54,7 @@
   },
   "peerDependencies": {
     "@vcmap-cesium/engine": "^26.0.1",
-    "@vcmap/core": "^7.0.0-rc.2",
+    "@vcmap/core": "git+ssh://git@gitlab.virtualcitysystems.de/vcsuite/npm/vcmap/core.git#feature-tsUiTypes",
     "ol": "^10.10.0",
     "vue": "^3.5.40",
     "vuetify": "^4.1.11"
@@ -70,7 +70,7 @@
     "jsdoc": "^4.0.3",
     "jsdoc-plugin-intersection": "^1.0.4",
     "jsdoc-plugin-typescript": "^2.2.1",
-    "jsdom": "^25.0.1",
+    "jsdom": "^30.0.1",
     "nock": "^14.0.1",
     "resize-observer-polyfill": "1.5.1",
     "rollup-plugin-strip-pragma": "^1.0.0",

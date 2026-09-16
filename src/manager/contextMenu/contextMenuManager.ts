@@ -1,5 +1,10 @@
-import type { InteractionEvent, VcsMap } from '@vcmap/core';
-import { CesiumMap, BaseOLMap, VcsEvent } from '@vcmap/core';
+import {
+  BaseOLMap,
+  CesiumMap,
+  type InteractionEvent,
+  VcsEvent,
+  type VcsMap,
+} from '@vcmap/core';
 import { unByKey } from 'ol/Observable.js';
 import { check, oneOf } from '@vcsuite/check';
 import type VcsUiApp from '../../vcsUiApp.js';

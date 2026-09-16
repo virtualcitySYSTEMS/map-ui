@@ -1,5 +1,5 @@
 import { describe, beforeAll, expect, it } from 'vitest';
-import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.js';
+import TableFeatureInfoView from '../../../src/featureInfo/tableFeatureInfoView.ts';
 
 describe('TableFeatureInfoView', () => {
   describe('getting config', () => {

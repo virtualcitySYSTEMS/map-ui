@@ -1,11 +1,12 @@
-import type { PanelComponent, PanelPosition } from './panelManager.js';
-import type PanelManager from './panelManager.js';
 import {
+  DefaultPanelPositions,
+  type PanelComponent,
   PanelLocation,
+  type PanelPosition,
   getPanelPosition,
   setPanelPosition,
-  DefaultPanelPositions,
 } from './panelManager.js';
+import type PanelManager from './panelManager.js';
 
 export const defaultMainPanelPosition: PanelPosition = {
   top: '0px',

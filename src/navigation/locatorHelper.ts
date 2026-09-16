@@ -17,9 +17,9 @@ import { getDefaultPrimaryColor } from '../vuePlugins/vuetify.js';
 import type { DestroyableAction } from '../actions/actionHelper.js';
 
 type LocatorState = {
-  coordinates: GeolocationCoordinates | undefined;
-  prevCoordinates: GeolocationCoordinates | undefined;
-  id: number | undefined;
+  coordinates?: GeolocationCoordinates;
+  prevCoordinates?: GeolocationCoordinates;
+  id?: number;
 };
 
 /**

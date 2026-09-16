@@ -1,6 +1,6 @@
 <template>
   <div class="d-contents vcs-list">
-    <vcs-treeview-searchbar
+    <VcsTreeviewSearchbar
       v-if="searchable"
       :placeholder="searchbarPlaceholder"
       v-model="query"
@@ -24,7 +24,7 @@
           </span>
         </v-list-item-title>
         <template #append>
-          <vcs-action-button-list
+          <VcsActionButtonList
             v-if="renderingActions?.length > 0"
             :actions="renderingActions"
             :overflow-count="actionButtonListOverflowCount"

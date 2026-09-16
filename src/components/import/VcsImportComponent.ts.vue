@@ -1,11 +1,11 @@
 <template>
   <v-card flat class="pa-2 vcs-import-component">
-    <vcs-file-drop
+    <VcsFileDrop
       :height="dropElementHeight"
       :multiple="multiple"
       v-model="files"
     />
-    <vcs-file-input
+    <VcsFileInput
       :loading="loading"
       :multiple="multiple"
       :accept="fileTypes.join(',')"
@@ -14,16 +14,16 @@
     />
     <slot />
     <div class="d-flex justify-end gc-1 mx-3 pt-2 pb-1">
-      <vcs-form-button
+      <VcsFormButton
         variant="filled"
         :disabled="files.length === 0"
         @click="doImport"
       >
         {{ $st('components.import.submit') }}
-      </vcs-form-button>
-      <vcs-form-button @click="$emit('close')">
+      </VcsFormButton>
+      <VcsFormButton @click="$emit('close')">
         {{ $st('components.cancel') }}
-      </vcs-form-button>
+      </VcsFormButton>
     </div>
   </v-card>
 </template>

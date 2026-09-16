@@ -2,8 +2,10 @@ import { getLogger } from '@vcsuite/logger';
 import type { VcsModuleConfig } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
 import { createModuleFromObjectOrUrl } from '../init.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type AddModuleCallbackOptions = VcsCallbackOptions & {
   /** Config or url to a config file */

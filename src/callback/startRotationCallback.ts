@@ -1,7 +1,9 @@
 import { CesiumMap, startRotation } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 
 type StartRotationOptions = VcsCallbackOptions & {
   /** Name of the viewpoint to start rotation from */

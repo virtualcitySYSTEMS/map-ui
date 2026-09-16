@@ -1,9 +1,13 @@
-import type { Ref } from 'vue';
-import { reactive, watch } from 'vue';
+import { type Ref, reactive, watch } from 'vue';
 import { check, oneOf, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
-import type { Collection, GeoJSONreadOptions, VectorLayer } from '@vcmap/core';
-import { getCaughtError, parseGeoJSON } from '@vcmap/core';
+import {
+  type Collection,
+  type GeoJSONreadOptions,
+  type VectorLayer,
+  getCaughtError,
+  parseGeoJSON,
+} from '@vcmap/core';
 import type Feature from 'ol/Feature.js';
 import VcsImportComponent from '../components/import/VcsImportComponent.ts.vue';
 import type {
@@ -219,7 +223,7 @@ export function createListEditAction(
   selection: Ref<Array<CollectionComponentListItem>>,
   editCallback: () => void,
   windowManager: WindowManager,
-  multiEditorId: string,
+  multiEditorId?: string,
   name = 'list.edit',
 ): DestroyableAction {
   const { action, destroy: destroyEditSelected } = createListItemBulkAction(
@@ -228,7 +232,7 @@ export function createListEditAction(
   );
 
   function handleWindowChanged(): void {
-    action.active = windowManager.has(multiEditorId);
+    action.active = multiEditorId ? windowManager.has(multiEditorId) : false;
   }
 
   const editorStateListener = [

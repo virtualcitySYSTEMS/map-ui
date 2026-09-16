@@ -1,5 +1,14 @@
-import { computed, isReactive, reactive, shallowRef, watch } from 'vue';
-import type { ComputedRef, Ref, ShallowRef, UnwrapNestedRefs } from 'vue';
+import {
+  type ComputedRef,
+  type Ref,
+  type ShallowRef,
+  type UnwrapNestedRefs,
+  computed,
+  isReactive,
+  reactive,
+  shallowRef,
+  watch,
+} from 'vue';
 import type { ActionOptions, VcsAction } from '../../actions/actionHelper.js';
 
 export type VcsListItem = {
@@ -15,13 +24,13 @@ export type VcsListItem = {
   /** An optional tooltip for the item. */
   tooltip?: string;
   /** An optional icon for the item. Can be a string, HTMLCanvasElement, or HTMLImageElement. */
-  icon?: string | HTMLCanvasElement | HTMLImageElement | undefined;
+  icon?: string | HTMLCanvasElement | HTMLImageElement;
   /** Whether the item has an update. */
   hasUpdate?: boolean;
   /** An array of actions associated with this item. */
   actions?: Array<VcsAction>;
   /** An array of callbacks called on item click. called before selection update */
-  clickedCallbacks?: Array<(event: PointerEvent) => void> | undefined;
+  clickedCallbacks?: Array<(event: PointerEvent) => void>;
   /** A callback called if the selection changes with the current selection status. called before value update */
   selectionChanged?: (selected: boolean) => void;
   /** A callback called if the title changes via rename action. only usable with renamble true. */

@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="overflow-auto icons-window">
-    <vcs-list :items="icons" :searchable="true" :show-title="false" />
+    <VcsList :items="icons" :searchable="true" :show-title="false" />
   </v-sheet>
 </template>
 

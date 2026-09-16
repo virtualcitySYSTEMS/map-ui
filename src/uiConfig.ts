@@ -1,11 +1,18 @@
 import {
   Collection,
+  type DisplayQualityOptions,
   defaultDynamicModuleId,
   makeOverrideCollection,
+  type moduleIdSymbol,
 } from '@vcmap/core';
-import type { DeepReadonly, Reactive, Ref } from 'vue';
-import { reactive, readonly, ref } from 'vue';
-import type { DisplayQualityOptions, moduleIdSymbol } from '@vcmap/core';
+import {
+  type DeepReadonly,
+  type Reactive,
+  type Ref,
+  reactive,
+  readonly,
+  ref,
+} from 'vue';
 import type { VcsCallbackOptions } from './callback/vcsCallback.js';
 import type { WindowPositionOptions } from './manager/window/windowManager.js';
 import type { VcsThemes } from './vuePlugins/vuetify.js';

@@ -4,8 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { check, maybe, oneOf } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import { actionPattern } from '../components/lists/VcsActionList.ts.vue';
-import type { VcsAction } from '../actions/actionHelper.js';
-import { getActionFromOptions } from '../actions/actionHelper.js';
+import {
+  type VcsAction,
+  getActionFromOptions,
+} from '../actions/actionHelper.js';
 import type { VcsComponentManager } from '../vcsUiApp.js';
 
 export function sortByWeight(weightA = 0, weightB = 0): number {

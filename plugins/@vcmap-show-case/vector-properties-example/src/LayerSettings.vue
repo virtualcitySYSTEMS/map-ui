@@ -10,30 +10,30 @@
 
   const { layer } = plugin;
   const featureInfo = getBalloonFeatureInfo(vcsApp);
-  const hasBallon = ref(layer.properties.featureInfo === featureInfo.name);
-  const useBallon = computed({
-    get: () => hasBallon.value,
+  const hasBalloon = ref(layer.properties.featureInfo === featureInfo.name);
+  const useBalloon = computed({
+    get: () => hasBalloon.value,
     set: (value) => {
       if (value) {
         layer.properties.featureInfo = featureInfo.name;
       } else {
         layer.properties.featureInfo = undefined;
       }
-      hasBallon.value = layer.properties.featureInfo === featureInfo.name;
+      hasBalloon.value = layer.properties.featureInfo === featureInfo.name;
     },
   });
 </script>
 
 <template>
-  <vcs-form-section heading="Layer Settings" expandable>
+  <VcsFormSection heading="Layer Settings" expandable>
     <v-container class="pa-2">
       <v-row no-gutters>
         <v-col>
-          <vcs-checkbox v-model="useBallon" label="Ballon Feature Info" />
+          <VcsCheckbox v-model="useBalloon" label="Balloon Feature Info" />
         </v-col>
       </v-row>
     </v-container>
-  </vcs-form-section>
+  </VcsFormSection>
 </template>
 
 <style scoped lang="scss"></style>

@@ -8,7 +8,7 @@
       v-model="panels"
       class="rounded-0 legend-panels"
     >
-      <vcs-expansion-panel
+      <VcsExpansionPanel
         v-for="(entry, i) in entries"
         :key="i"
         :value="entry.key"
@@ -41,10 +41,10 @@
                 @load="setIframeHeight(`${cid}-legendIframe${idx}`)"
               />
             </div>
-            <style-legend-item v-else :item="item" />
+            <StyleLegendItem v-else-if="isStyle(item)" :item="item" />
           </div>
         </v-list>
-      </vcs-expansion-panel>
+      </VcsExpansionPanel>
     </v-expansion-panels>
     <v-sheet v-else class="ma-2">
       {{ $st('legend.empty') }}
@@ -61,9 +61,10 @@
     IframeLegendItem,
     ImageLegendItem,
     LegendEntry,
+    LegendItem,
+    StyleLegendItem as StyleLegendItemType,
   } from './legendHelper.js';
-  import { LegendType } from './legendHelper.js';
-  import StyleLegendItem from './StyleLegendItem.vue';
+  import StyleLegendItem from './StyleLegendItem.ts.vue';
   import VcsButton from '../components/buttons/VcsButton.ts.vue';
   import VcsExpansionPanel from '../components/section/VcsExpansionPanel.ts.vue';
 
@@ -122,17 +123,17 @@
       const cid = useComponentId();
 
       return {
-        LegendType,
         setIframeHeight,
         panels,
         cid,
-        isIframe: (
-          item: LegendEntry['legend'][0],
-        ): item is IframeLegendItem => {
-          return item.type === LegendType.Iframe;
+        isIframe: (item: LegendItem): item is IframeLegendItem => {
+          return item.type === 'IframeLegendItem';
         },
-        isImage: (item: LegendEntry['legend'][0]): item is ImageLegendItem => {
-          return item.type === LegendType.Image;
+        isImage: (item: LegendItem): item is ImageLegendItem => {
+          return item.type === 'ImageLegendItem';
+        },
+        isStyle: (item: LegendItem): item is StyleLegendItemType => {
+          return item.type === 'StyleLegendItem';
         },
         openInNew(src: string): void {
           window.open(src, '_blank');

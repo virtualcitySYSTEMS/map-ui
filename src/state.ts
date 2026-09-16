@@ -1,19 +1,17 @@
 import { check, optional } from '@vcsuite/check';
 import { getLogger } from '@vcsuite/logger';
-import type {
-  ViewpointOptions,
-  ExtentOptions,
-  VcsModuleConfig,
-  WMSLayer,
-  WMSOptions,
-} from '@vcmap/core';
 import {
-  Viewpoint,
   Extent,
+  type ExtentOptions,
+  Projection,
+  type VcsModuleConfig,
+  Viewpoint,
+  type ViewpointOptions,
+  type WMSLayer,
+  type WMSOptions,
+  getCaughtError,
   getDefaultProjection,
   wgs84Projection,
-  Projection,
-  getCaughtError,
 } from '@vcmap/core';
 import type { Extent as OLExtent } from 'ol/extent.js';
 

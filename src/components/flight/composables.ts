@@ -1,6 +1,5 @@
 import type { FlightInstance } from '@vcmap/core';
-import type { Ref } from 'vue';
-import { inject, isRef, unref } from 'vue';
+import { type Ref, inject, isRef, unref } from 'vue';
 import VcsViewpointEditor from '../viewpoint/VcsViewpointEditor.ts.vue';
 import type WindowManager from '../../manager/window/windowManager.js';
 

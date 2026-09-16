@@ -38,7 +38,7 @@
 </script>
 
 <template>
-  <vcs-markdown :content="content" />
+  <VcsMarkdown :content="content" />
 </template>
 
 <style scoped lang="scss"></style>

@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { IconProps, IconSet, VuetifyOptions } from 'vuetify';
-import { createVuetify, useDisplay, useTheme } from 'vuetify';
+import {
+  type IconProps,
+  type IconSet,
+  type VuetifyOptions,
+  createVuetify,
+  useDisplay,
+  useTheme,
+} from 'vuetify';
 import { VSvgIcon } from 'vuetify/components';
-import type { I18n } from 'vue-i18n';
-import { useI18n } from 'vue-i18n';
+import { type I18n, useI18n } from 'vue-i18n';
 import 'vuetify/styles';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
-import type { ComputedRef, VNode } from 'vue';
-import { computed, h } from 'vue';
+import { type ComputedRef, type VNode, computed, h } from 'vue';
 import DOMPurify from 'dompurify';
 import type VcsUiApp from '../vcsUiApp.js';
 import Icons from '../components/icons/+all.js';

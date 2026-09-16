@@ -1,6 +1,5 @@
 import { getLogger } from '@vcsuite/logger';
-import type { ComputedRef } from 'vue';
-import { computed } from 'vue';
+import { type ComputedRef, computed } from 'vue';
 import type VcsUiApp from '../vcsUiApp.js';
 import type { TextPageType, UiConfigObject } from '../uiConfig.js';
 

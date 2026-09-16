@@ -10,7 +10,7 @@ import {
 } from 'vitest';
 import { VcsModule } from '@vcmap/core';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
-import CategoryManager from '../../../src/manager/collectionManager/categoryManager.js';
+import CategoryManager from '../../../src/manager/collectionManager/categoryManager.ts';
 
 describe('categoryManager', () => {
   let app;

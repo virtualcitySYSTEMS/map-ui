@@ -1,5 +1,4 @@
-import type { Ref } from 'vue';
-import { reactive, watch } from 'vue';
+import { type Ref, reactive, watch } from 'vue';
 import { check, ofEnum } from '@vcsuite/check';
 import type { DestroyableAction } from './actionHelper.ts';
 

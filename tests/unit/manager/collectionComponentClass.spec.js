@@ -20,7 +20,7 @@ import {
 import { toRaw } from 'vue';
 import CollectionComponentClass, {
   createSupportedMapMappingFunction,
-} from '../../../src/manager/collectionManager/collectionComponentClass.js';
+} from '../../../src/manager/collectionManager/collectionComponentClass.ts';
 import { sleep } from '../../helpers.js';
 
 describe('CollectionComponentClass', () => {

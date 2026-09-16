@@ -248,10 +248,7 @@
         adding.value = false;
       }
 
-      async function add(
-        e: Event,
-        v: string | number | undefined,
-      ): Promise<void> {
+      async function add(e: Event, v?: string | number): Promise<void> {
         e.stopPropagation();
         e.preventDefault();
 

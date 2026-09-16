@@ -1,11 +1,12 @@
 import type { Cartesian2 } from '@vcmap-cesium/engine';
-import type { WindowPosition, WindowPositionOptions } from './windowManager.js';
-import type WindowManager from './windowManager.js';
 import {
+  type WindowPosition,
+  type WindowPositionOptions,
   WindowPositions,
   posToPixel,
   windowPositionFromOptions,
 } from './windowManager.js';
+import type WindowManager from './windowManager.js';
 
 /**
  * margin in px at the border of the map target
@@ -444,7 +445,7 @@ export function applyParentPosition(
   targetSize: DOMRect,
   parentPosition: WindowPositionOptions,
 ): void {
-  const asNumber = (value: string | number | undefined): number | undefined => {
+  const asNumber = (value?: string | number): number | undefined => {
     if (typeof value === 'number' && Number.isFinite(value)) {
       return value;
     }

@@ -1,37 +1,36 @@
 import type { Component, Reactive } from 'vue';
-import type {
-  OverrideCollection,
-  VcsModuleConfig,
-  VcsModule,
-} from '@vcmap/core';
 import {
   Collection,
+  ObliqueMap,
+  OverrideClassRegistry,
+  type OverrideCollection,
+  VcsApp,
+  VcsEvent,
+  type VcsModule,
+  type VcsModuleConfig,
+  type VcsObject,
+  Viewpoint,
+  WMSLayer,
   defaultDynamicModuleId,
   destroyCollection,
+  getCaughtError,
   getObjectFromClassRegistry,
   makeOverrideCollection,
   moduleIdSymbol,
-  ObliqueMap,
-  OverrideClassRegistry,
-  VcsApp,
-  VcsEvent,
-  Viewpoint,
   volatileModuleId,
-  WMSLayer,
-  getCaughtError,
 } from '@vcmap/core';
-import type { Logger } from '@vcsuite/logger';
-import { getLogger as getLoggerByName } from '@vcsuite/logger';
+import { type Logger, getLogger as getLoggerByName } from '@vcsuite/logger';
 import type { Composer, I18n } from 'vue-i18n';
 import type { createVuetify } from 'vuetify';
-import type {
-  pluginBaseUrlSymbol,
-  pluginFactorySymbol,
-  pluginModuleUrlSymbol,
-  pluginVersionRangeSymbol,
-  vcsAppSymbol,
+import {
+  deserializePlugin,
+  type pluginBaseUrlSymbol,
+  type pluginFactorySymbol,
+  type pluginModuleUrlSymbol,
+  type pluginVersionRangeSymbol,
+  serializePlugin,
+  type vcsAppSymbol,
 } from './pluginHelper.js';
-import { deserializePlugin, serializePlugin } from './pluginHelper.js';
 import ToolboxManager, {
   setupDefaultGroups,
 } from './manager/toolbox/toolboxManager.js';
@@ -54,26 +53,24 @@ import ContextMenuManager from './manager/contextMenu/contextMenuManager.js';
 import FeatureInfo, {
   featureInfoClassRegistry,
 } from './featureInfo/featureInfo.js';
-import type { UiConfigurationItem } from './uiConfig.js';
-import UiConfig from './uiConfig.js';
+import UiConfig, { type UiConfigurationItem } from './uiConfig.js';
 import {
+  type AppState,
+  type CachedAppState,
+  type ClippingPolygonState,
+  type LayerState,
+  type PluginState,
   createEmptyState,
   getStateFromURL,
   parseWMSStyle,
   writeWMSStyleForLayer,
 } from './state.js';
-import type {
-  AppState,
-  CachedAppState,
-  ClippingPolygonState,
-  LayerState,
-  PluginState,
-} from './state.js';
 import packageJson from '../package.json' with { type: 'json' };
 import Search from './search/search.js';
 import Notifier from './notifier/notifier.js';
-import type { FeatureInfoViewOptions } from './featureInfo/abstractFeatureInfoView.js';
-import AbstractFeatureInfoView from './featureInfo/abstractFeatureInfoView.js';
+import AbstractFeatureInfoView, {
+  type FeatureInfoViewOptions,
+} from './featureInfo/abstractFeatureInfoView.js';
 import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
 import type VcsCallback from './callback/vcsCallback.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
@@ -149,7 +146,10 @@ export type VcsPlugin<
   [moduleIdSymbol]?: string;
 };
 
-export type VcsComponentManager<T extends object, O extends object> = {
+export type VcsComponentManager<
+  T extends object | VcsObject,
+  O extends object,
+> = {
   added: VcsEvent<T>;
   removed: VcsEvent<T>;
   /** all registered component ids as a reactive array */
@@ -252,7 +252,11 @@ class VcsUiApp extends VcsApp {
     typeof AbstractFeatureInfoView
   >(featureInfoClassRegistry);
 
-  private _featureInfo = makeOverrideCollection(
+  private _featureInfo = makeOverrideCollection<
+    AbstractFeatureInfoView,
+    FeatureInfo,
+    FeatureInfoViewOptions
+  >(
     new FeatureInfo(this),
     () => this.dynamicModuleId,
     undefined,

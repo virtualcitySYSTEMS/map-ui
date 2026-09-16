@@ -123,19 +123,19 @@ app.featureInfoClassRegistry.registerClass(
 By passing a Vue Component to your view class constructor, you actually register a pair containing the API within the view class and the user interface within the vue component.
 A couple of default views are already registered on the VcsApp:
 
-| View class                                                                             | VueComponent                                                              | description                                                                |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                     | [TableComponent](../src/components/tables/VcsTable.ts.vue)                | A sortable table view showing key value pairs of feature properties.       |
-| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                   | [IframeComponent](../src/featureInfo/IframeComponent.vue)                 | An iframe view with templatable url.                                       |
-| [IframeWmsFeatureInfoView](../src/featureInfo/iframeWmsFeatureInfoView.js)             | [IframeComponent](../src/featureInfo/IframeComponent.vue)                 | An iframe view for text/html feature info responses of WMS layer           |
-| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)                 | [BalloonComponent](../src/featureInfo/BalloonComponent.vue)               | A balloon view rendering feature properties.                               |
-| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js)   | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.vue) | A balloon view rendering address information of a feature.                 |
-| [MarkdownBalloonFeatureInfoView](../src/featureInfo/markdownBalloonFeatureInfoView.js) | Inline rendered markdown template as a balloon                            | A markdown based view, see [this section](#Markdown-Rendering) for details |
-| [MarkdownFeatureInfoView](../src/featureInfo/markdownFeatureInfoView.js)               | Inline rendered markdown template                                         | A markdown based view, see [this section](#Markdown-Rendering) for details |
+| View class                                                                             | VueComponent                                                                 | description                                                                |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [TableFeatureInfoView](../src/featureInfo/tableFeatureInfoView.js)                     | [TableComponent](../src/components/tables/VcsTable.ts.vue)                   | A sortable table view showing key value pairs of feature properties.       |
+| [IframeFeatureInfoView](../src/featureInfo/iframeFeatureInfoView.js)                   | [IframeComponent](../src/featureInfo/IframeComponent.ts.vue)                 | An iframe view with templatable url.                                       |
+| [IframeWmsFeatureInfoView](../src/featureInfo/iframeWmsFeatureInfoView.js)             | [IframeComponent](../src/featureInfo/IframeComponent.ts.vue)                 | An iframe view for text/html feature info responses of WMS layer           |
+| [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js)                 | [BalloonComponent](../src/featureInfo/BalloonComponent.ts.vue)               | A balloon view rendering feature properties.                               |
+| [AddressBalloonFeatureInfoView](../src/featureInfo/addressBalloonFeatureInfoView.js)   | [AddressBalloonComponent](../src/featureInfo/AddressBalloonComponent.ts.vue) | A balloon view rendering address information of a feature.                 |
+| [MarkdownBalloonFeatureInfoView](../src/featureInfo/markdownBalloonFeatureInfoView.js) | Inline rendered markdown template as a balloon                               | A markdown based view, see [this section](#Markdown-Rendering) for details |
+| [MarkdownFeatureInfoView](../src/featureInfo/markdownFeatureInfoView.js)               | Inline rendered markdown template                                            | A markdown based view, see [this section](#Markdown-Rendering) for details |
 
 > **Balloon** Views are a special type of view. In contrast to the other view classes, the balloon is rendered at a certain position in the map. The balloon position is updated on scene render.
 > To write a custom balloon view, simply extend [BalloonFeatureInfoView](../src/featureInfo/balloonFeatureInfoView.js).
-> To change the balloon's design you should use the two slots (#balloon-header & #default) provided by [BalloonComponent](../src/featureInfo/BalloonComponent.vue).
+> To change the balloon's design you should use the two slots (#balloon-header & #default) provided by [BalloonComponent](../src/featureInfo/BalloonComponent.ts.vue).
 > This will ensure the correct positioning of the balloon.
 
 Other views for images, movies, links, etc. can be implemented and registered on the VcsApp's FeatureInfo through a map plugin.

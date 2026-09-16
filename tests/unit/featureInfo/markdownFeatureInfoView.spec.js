@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import MarkdownFeatureInfoView from '../../../src/featureInfo/markdownFeatureInfoView.js';
+import MarkdownFeatureInfoView from '../../../src/featureInfo/markdownFeatureInfoView.ts';
 
 describe('MarkdownFeatureInfoView', () => {
   describe('getting config', () => {

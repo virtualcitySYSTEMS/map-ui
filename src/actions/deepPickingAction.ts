@@ -1,14 +1,14 @@
-import type {
-  AbstractInteraction,
-  CesiumMap,
-  EventFeature,
-  InteractionEvent,
-  ObliqueMap,
-  OpenlayersMap,
-} from '@vcmap/core';
 import {
-  cartesianToMercator,
+  type AbstractInteraction,
+  type CesiumMap,
+  type EventFeature,
   FeatureProviderInteraction,
+  type InteractionEvent,
+  type ObliqueMap,
+  type OpenlayersMap,
+  VectorLayer,
+  VectorStyleItem,
+  cartesianToMercator,
   getFeatureFromPickObject,
   isProvidedClusterFeature,
   isProvidedFeature,
@@ -20,21 +20,17 @@ import {
   originalFeatureSymbol,
   vcsLayerName,
   vectorClusterGroupName,
-  VectorLayer,
-  VectorStyleItem,
   volatileModuleId,
 } from '@vcmap/core';
-import { Feature } from 'ol';
-import type { Map as OLMap } from 'ol';
+import { Feature, type Map as OLMap } from 'ol';
 import { Point, LineString } from 'ol/geom.js';
 import { Icon } from 'ol/style.js';
-import type { Scene } from '@vcmap-cesium/engine';
-import { Cartesian3, Ray } from '@vcmap-cesium/engine';
+import { Cartesian3, Ray, type Scene } from '@vcmap-cesium/engine';
 import { watch } from 'vue';
 import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
 import { getColorByKey } from '../vuePlugins/vuetify.js';
-import ClusterFeatureComponent from '../featureInfo/ClusterFeatureComponent.vue';
+import ClusterFeatureComponent from '../featureInfo/ClusterFeatureComponent.ts.vue';
 import { vcsAppSymbol } from '../pluginHelper.js';
 import {
   featureInfoViewSymbol,

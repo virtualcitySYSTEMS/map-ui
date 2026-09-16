@@ -11,7 +11,7 @@
   } from '../modelHelper.js';
   import { getForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.ts.vue';
-  import type { VcsTreeNodeItem } from './VcsTreeNode.ts.vue';
+  import type { VcsTreeNodeItem } from './treeHelper.ts';
   import VcsTreeNode from './VcsTreeNode.ts.vue';
 
   /**
@@ -28,7 +28,7 @@
    * @vue-prop {string} [search=''] - The value used to filter the items.
    * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview.
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated.
-   * @vue-prop {function(arg0: import("./VcsTreeNode.ts.vue").VcsTreeNodeItem, arg1: string|undefined):boolean} [customFilter] - a function to customize filtering when searching.
+   * @vue-prop {function(arg0: import("./VcsTreeNode.ts.vue").VcsTreeNodeItem, arg1?: string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
    */
   const props = defineProps({
@@ -113,7 +113,7 @@
   const { isDraggable, dragStart, dragOver, dragEnd, drop } =
     setupDraggableListOrTree(props, localSearchValue, emit);
 
-  function itemClicked(item: VcsTreeNodeItem, event: Event): void {
+  function itemClicked(item: VcsTreeNodeItem, event: PointerEvent): void {
     if (item?.clickable) {
       if (item?.clicked && !item?.disabled) {
         const p = item.clicked(event);

@@ -17,9 +17,9 @@
         :text="$st(labelTooltip)"
       ></v-tooltip>
     </span>
-    <vcs-help-tooltip :text="helpText" v-if="helpText || $slots.help">
+    <VcsHelpTooltip :text="helpText" v-if="helpText || $slots.help">
       <slot name="help" />
-    </vcs-help-tooltip>
+    </VcsHelpTooltip>
   </label>
 </template>
 

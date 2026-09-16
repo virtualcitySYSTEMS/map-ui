@@ -1,10 +1,14 @@
 import { getLogger } from '@vcsuite/logger';
 import type VcsUiApp from '../vcsUiApp.js';
-import type { VcsCallbackOptions } from './vcsCallback.js';
-import VcsCallback, { callbackClassRegistry } from './vcsCallback.js';
+import VcsCallback, {
+  type VcsCallbackOptions,
+  callbackClassRegistry,
+} from './vcsCallback.js';
 import { callSafeAction } from '../actions/actionHelper.js';
-import type { ToolboxComponent } from '../manager/toolbox/toolboxManager.js';
-import { ToolboxType } from '../manager/toolbox/toolboxManager.js';
+import {
+  type ToolboxComponent,
+  ToolboxType,
+} from '../manager/toolbox/toolboxManager.js';
 
 type ToggleToolbarButtonOptions = VcsCallbackOptions & {
   /** ID of the Toolbar button */

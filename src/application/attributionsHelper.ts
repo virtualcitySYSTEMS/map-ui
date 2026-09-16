@@ -1,7 +1,10 @@
-import type { Reactive } from 'vue';
-import { reactive } from 'vue';
-import type { Layer, ObliqueCollection, VcsMap } from '@vcmap/core';
-import { ObliqueMap } from '@vcmap/core';
+import { type Reactive, reactive } from 'vue';
+import {
+  type Layer,
+  type ObliqueCollection,
+  ObliqueMap,
+  type VcsMap,
+} from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
 
 type AttributionOptions = {

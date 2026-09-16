@@ -1,7 +1,5 @@
-import type { ImageStyleOptions } from '@vcmap/core';
-import { getImageStyleFromOptions } from '@vcmap/core';
-import type { ComputedRef } from 'vue';
-import { computed } from 'vue';
+import { type ImageStyleOptions, getImageStyleFromOptions } from '@vcmap/core';
+import { type ComputedRef, computed } from 'vue';
 import type { Color } from 'ol/color.js';
 import { Icon, Style } from 'ol/style.js';
 import { toContext } from 'ol/render.js';
