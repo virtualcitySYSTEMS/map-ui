@@ -6,6 +6,7 @@ const configTest = defineConfig({
   test: {
     server: { deps: { inline: ['vuetify'] } },
     css: false,
+    clearMocks: false,
     environment: 'jsdom',
     setupFiles: ['tests/setup.js'],
     pool: 'forks',
