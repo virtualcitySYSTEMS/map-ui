@@ -14,7 +14,7 @@ on Click of a ContentTreeItem.
       "onClick": [
         {
           "type": "SwitchMapCallback",
-          "mapName": "ol3"
+          "mapName": "OpenlayersMap"
         }
       ]
     },

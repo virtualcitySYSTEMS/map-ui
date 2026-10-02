@@ -237,6 +237,11 @@ await writeFile(path.join(distFolder, 'index.html'), indexHTMLContent, {
   encoding: 'utf8',
 });
 const htaccessContent = `
+  RewriteEngine On
+  RewriteRule ^datasource-data/(.*)$ https://www.virtualcitymap.de/datasource-data/$1 [P,L]
+  RewriteRule ^intern/(.*)$ https://www.virtualcitymap.de/intern/$1 [P,L]
+  RewriteRule ^configs/(.*)$ https://www.virtualcitymap.de/intern/configs/$1 [P,L]
+
     <FilesMatch "-[\\w\\d]{8}\\.(js|css)$">
         Header set Cache-Control "public, max-age=31540000, immutable"
     </FilesMatch>

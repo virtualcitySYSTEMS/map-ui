@@ -86,3 +86,12 @@
     },
   };
 </script>
+<style scoped lang="scss">
+  :deep(.v-card-actions) {
+    padding: 0px;
+    min-height: 40px;
+  }
+  :deep(.v-card-item) {
+    padding: 0.5rem 1rem;
+  }
+</style>

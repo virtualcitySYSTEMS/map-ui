@@ -1,6 +1,6 @@
 {
-  "name": "Cluster Example",
-  "_id": "clusterConfig",
+  "name": "Cluster Showcase",
+  "_id": "cluster-config",
   "layers": [
     {
       "type": "GeoJSONLayer",

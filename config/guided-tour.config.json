@@ -1,6 +1,6 @@
 {
-  "name": "guided-tour",
-  "_id": "guided-tour-demo",
+  "name": "Guided Tour Showcase",
+  "_id": "guided-tour-config",
   "description": "module adding the guided-tour plugin",
   "plugins": [
     {

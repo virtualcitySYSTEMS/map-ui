@@ -1,0 +1,1244 @@
+{
+  "_id": "climate-environment",
+  "old_id": "524316b1-e29c-4d3c-b770-27615e493b30",
+  "properties": {},
+  "name": "Klima und Umwelt",
+  "description": "Eingebunden in Module Selektor offen und intern ",
+  "createdAt": "2026-07-21T13:15:58.502Z",
+  "updatedAt": "2026-09-10T09:56:33.336Z",
+  "createdBy": "v6WEM2A92ozfZaAu5",
+  "updatedBy": "v6WEM2A92ozfZaAu5",
+  "projectId": "Tfy62pdpXuTHH4smE",
+  "categories": [],
+  "clippingPolygons": [
+    {
+      "type": "ClippingPolygonObject",
+      "name": "Salzstadl",
+      "coordinates": [
+        [12.128077084320566, 47.85668411513626, 449.5470617913531],
+        [12.128277845779754, 47.85678698250601, 449.2854909708273],
+        [12.128446856281311, 47.85703511796146, 448.69800142045375],
+        [12.128304320560833, 47.85758385151024, 447.71723803149126],
+        [12.128284116257722, 47.85855858321327, 444.77058349879275],
+        [12.127297434526202, 47.85866004071255, 444.7936619747676],
+        [12.127219032907707, 47.858498803414705, 445.20183215961225],
+        [12.127030042753281, 47.85851823673863, 445.2108044783981],
+        [12.126570379450628, 47.85823336894174, 445.821004649438],
+        [12.126408374336123, 47.85815036211366, 445.9592841922921],
+        [12.126394849973872, 47.85808664259025, 446.10262666817215],
+        [12.12606098584705, 47.857909867616655, 446.0743483311363],
+        [12.126017219333974, 47.85795348700856, 454.8868207515383],
+        [12.125800066320462, 47.85784412039007, 446.04135990082017],
+        [12.125535612965074, 47.85772278625211, 445.89598333465904],
+        [12.125404746264714, 47.85765419062051, 445.94829421847635],
+        [12.125439931493204, 47.85752542362951, 446.31297069446083],
+        [12.125504733017378, 47.857440189099634, 446.57311985356654],
+        [12.125562687471007, 47.85735044209923, 446.8423802707366],
+        [12.125769369502368, 47.857227407501995, 446.97194899183876],
+        [12.126123466290474, 47.85718366215917, 447.5328041911039],
+        [12.127119894797707, 47.8569169758475, 448.9987216294236]
+      ],
+      "layerNames": ["Solar buildings Rosenheim"]
+    }
+  ],
+  "contentTree": [
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Klima & Umwelt",
+      "title": "Klima & Umwelt",
+      "icon": "mdi-leaf",
+      "initOpen": true
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Klima & Umwelt.3D",
+      "title": "3D-Daten",
+      "initOpen": true
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Klima & Umwelt.Simulation",
+      "title": "Simulationsergebnisse",
+      "infoUrl": "https://vc.systems/erkunden/forschungsprojekte/buolus/",
+      "initOpen": true
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.Simulation.LayerContentTreeItem(23)",
+      "layerName": "palm4u_day_utci_utm_child-color"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.Simulation.LayerContentTreeItem(24)",
+      "layerName": "palm4u_night_ta2m_utm_child-color"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.Simulation.LayerContentTreeItem(25)",
+      "layerName": "palm4u_night_wind_wspeed_utm_child-color"
+    },
+    {
+      "type": "SliderContentTreeItem",
+      "name": "Klima & Umwelt.Hochwasser.Hochwassergefahrenflächen",
+      "title": "Hochwassergefahrenflächen",
+      "windowOptions": {
+        "id": "Klima & Umwelt.Hochwasser.Hochwassergefahrenflächen",
+        "slot": "dynamicLeft",
+        "position": {
+          "width": "300px",
+          "height": "120px"
+        },
+        "state": {
+          "headerTitle": "layerSlider.title",
+          "headerIcon": "mdi-tune-variant"
+        }
+      },
+      "layerNames": ["HQ extrem", "HQ 100", "HQ häufig"],
+      "labels": ["HQextrem", "HQ100", "HQhäufig"]
+    },
+    {
+      "type": "SliderContentTreeItem",
+      "name": "Klima & Umwelt.Hochwasser.Brückenstatus",
+      "title": "Brückenstatus",
+      "windowOptions": {
+        "id": "Klima & Umwelt.Hochwasser.Brückenstatus",
+        "slot": "dynamicLeft",
+        "position": {
+          "width": "300px",
+          "height": "120px"
+        },
+        "state": {
+          "headerTitle": "layerSlider.title",
+          "headerIcon": "mdi-tune-variant"
+        }
+      },
+      "layerNames": [
+        "Brückenstatus HQextrem",
+        "Brückenstatus HQ100",
+        "Brückenstatus HQhäufig"
+      ],
+      "labels": ["HQextrem", "HQ100", "HQhäufig"]
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.Hochwasser.Festgesetzte Überschwemmungsgebiete",
+      "title": "Festgesetzte Überschwemmungsgebiete",
+      "layerName": "Festgesetzte Überschwemmungsgebiete"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.Hochwasser.Vorläufig gesicherte Überschwemmungsgebiete",
+      "title": "Vorläufig gesicherte Überschwemmungsgebiete",
+      "layerName": "Vorläufig gesicherte Überschwemmungsgebiete"
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Klima & Umwelt.Hochwasser",
+      "title": "Hochwasser",
+      "infoUrl": "https://www.lfu.bayern.de",
+      "initOpen": true
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.3D.Rosenheim_pointcloud_salzstadel",
+      "title": "Punktwolke",
+      "layerName": "Rosenheim_pointcloud_salzstadel"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.3D.Salzstadl Modell",
+      "title": "Salzstadl Modell",
+      "layerName": "Salzstadl Modell"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.3D.Rosenheim_trees_summer_2021",
+      "title": "Sommerbäume",
+      "layerName": "Sommerbäume Rosenheim"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.3D.Solar.Solar buildings Rosenheim",
+      "title": "Gebäudeflächen",
+      "layerName": "Solar buildings Rosenheim"
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Klima & Umwelt.3D.Solar",
+      "title": "Solarpotential",
+      "initOpen": true
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Klima & Umwelt.3D.Solar.Solarpotential Rosenheim Gesamtgebäude",
+      "title": "Gesamtgebäude",
+      "layerName": "Solarpotential Rosenheim Gesamtgebäude"
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "Ueberschwemmungsgebiete",
+      "valueMapping": {},
+      "removeNoDataAttributes": true,
+      "tags": {
+        "link_Zuständiges Wasserwirtschaftsamt": {
+          "tag": "a",
+          "href": "${value}",
+          "target": "_blank"
+        }
+      },
+      "balloonSubtitle": " "
+    },
+    {
+      "type": "TableFeatureInfoView",
+      "name": "palm4u_scenario_featureInfo",
+      "attributeKeys": ["t1", "bh", "t2", "t3", "t4", "t5", "t6"],
+      "keyMapping": {
+        "t1": "palm4u.palmLookUp.keys.t1",
+        "bh": "palm4u.palmLookUp.keys.bh",
+        "t2": "palm4u.palmLookUp.keys.t2",
+        "t3": "palm4u.palmLookUp.keys.t3",
+        "t4": "palm4u.palmLookUp.keys.t4",
+        "t5": "palm4u.palmLookUp.keys.t5",
+        "t6": "palm4u.palmLookUp.keys.t6"
+      },
+      "valueMapping": {
+        "t1": "palm4u.palmLookUp.1.${value}",
+        "t2": "palm4u.palmLookUp.2.${value}",
+        "t3": "palm4u.palmLookUp.3.${value}",
+        "t4": "palm4u.palmLookUp.4.${value}",
+        "t5": "palm4u.palmLookUp.5.${value}",
+        "t6": "palm4u.palmLookUp.6.${value}"
+      }
+    },
+    {
+      "type": "SolarFeatureInfo",
+      "name": "SolarFeatureInfo(1)"
+    }
+  ],
+  "flights": [],
+  "hiddenObjects": [],
+  "i18n": [
+    {
+      "name": "Klima i18n",
+      "de": {
+        "Hochwassergefahrenflächen": "Hochwassergefahrenflächen",
+        "Punktwolke": "Punktwolke",
+        "Digitaler Zwilling - Klima & Umwelt": "Digitaler Zwilling - Klima & Umwelt",
+        "Klima & Umwelt": "Klima & Umwelt",
+        "3D-Daten": "3D-Daten",
+        "Sommerbäume": "Sommerbäume",
+        "Solarpotential": "Solarpotential",
+        "Gebäudeflächen": "Gebäudeflächen",
+        "Gesamtgebäude": "Gesamtgebäude",
+        "Simulationsergebnisse": "Simulationsergebnisse",
+        "Hitzebelastung Sommertag (UTCI)": "Hitzebelastung Sommertag (UTCI)",
+        "Nachtsituation Temperatur (2 m)": "Nachtsituation Temperatur (2 m)",
+        "Nachtsituation Windgeschwindigkeit": "Nachtsituation Windgeschwindigkeit",
+        "Hochwasser": "Hochwasser",
+        "HQ 100": "HQ 100",
+        "Brückenstatus HQ100": "Brückenstatus HQ100",
+        "Brückenstatus HQextrem": "Brückenstatus HQextrem",
+        "Brückenstatus": "Brückenstatus",
+        "Festgesetzte Überschwemmungsgebiete": "Festgesetzte Überschwemmungsgebiete",
+        "Vorläufig gesicherte Überschwemmungsgebiete": "Vorläufig gesicherte Überschwemmungsgebiete",
+        "HQ Häufig": "HQ Häufig",
+        "Solarpotential Gesamtgebäude": "Solarpotential Gesamtgebäude",
+        "Solarpotential Gebäudeflächen": "Solarpotential Gebäudeflächen"
+      },
+      "en": {
+        "Hochwassergefahrenflächen": "flood risk areas",
+        "Punktwolke": "Pointclouds",
+        "Digitaler Zwilling - Klima & Umwelt": "Digital Twin – Climate & Environment",
+        "Klima & Umwelt": "Climate & Environment",
+        "3D-Daten": "3D-Data",
+        "Sommerbäume": "Summer Trees",
+        "Solarpotential": "Solar Potential",
+        "Gebäudeflächen": "Building Surfaces",
+        "Gesamtgebäude": "Total Building",
+        "Simulationsergebnisse": "Simulation Results",
+        "Hitzebelastung Sommertag (UTCI)": "Heat Stress on a Summer Day",
+        "Nachtsituation Temperatur (2 m)": "Nighttime Temperature Situation",
+        "Nachtsituation Windgeschwindigkeit": "Nighttime Wind Speed",
+        "Hochwasser": "Flooding",
+        "HQ 100": "100-year flood (HQ100)",
+        "Brückenstatus HQ100": "Bridge Status – 100-Year Flood (HQ100)",
+        "Brückenstatus HQextrem": "Bridge Status – HQextrem",
+        "Brückenstatus": "Bridge Status",
+        "Festgesetzte Überschwemmungsgebiete": "Designated Flood Risk Areas",
+        "Vorläufig gesicherte Überschwemmungsgebiete": "Provisionally Flood Risk Areas",
+        "HQ Häufig": "HQ Frequency",
+        "HQhäufig": "HQ Frequency",
+        "Solarpotential Gesamtgebäude": "Total Solar Potential of the Building",
+        "Solarpotential Gebäudeflächen": "Solar Potential of Building Surfaces"
+      }
+    }
+  ],
+  "layers": [
+    {
+      "type": "OpenStreetMapLayer",
+      "name": "OpenStreetMapLayer(1)",
+      "properties": {
+        "attributions": {
+          "provider": "OpenStreetMap contributors",
+          "url": "http://www.openstreetmap.org/",
+          "year": "2026"
+        }
+      },
+      "activeOnStartup": true,
+      "zIndex": 0
+    },
+    {
+      "type": "SingleImageLayer",
+      "name": "palm4u_day_utci_utm_child-color",
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "title": "Keine Wärmebelastung",
+                "fill": {
+                  "color": "#6e9a76"
+                },
+                "stroke": {
+                  "color": "#6e9a76",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Mäßige Wärmebelastung",
+                "fill": {
+                  "color": "#f3a845"
+                },
+                "stroke": {
+                  "color": "#f3a845",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Starke Wärmebelastung",
+                "fill": {
+                  "color": "#ff333a"
+                },
+                "stroke": {
+                  "color": "#ff333a",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "Sehr starke Wärmebelastung",
+                "fill": {
+                  "color": "#b12b17"
+                },
+                "stroke": {
+                  "color": "#b12b17",
+                  "width": 1
+                }
+              }
+            ]
+          }
+        ],
+        "title": "Hitzebelastung Sommertag (UTCI)"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/INTERN-virtualcitymap/rosenheim/klima/map_day_utci_utm_child-color.png",
+      "extent": {
+        "coordinates": [12.1247805, 47.8561316, 12.1292206, 47.8591141],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["palmResult", "Kunden"],
+      "zIndex": 0
+    },
+    {
+      "type": "SingleImageLayer",
+      "name": "palm4u_night_ta2m_utm_child-color",
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "title": "19,0 - 19,5 °C",
+                "fill": {
+                  "color": "#82bcd9"
+                },
+                "stroke": {
+                  "color": "#82bcd9",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "19,5 - 20,0 °C",
+                "fill": {
+                  "color": "#b4d6e6"
+                },
+                "stroke": {
+                  "color": "#b4d6e6",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "20,0 - 20,5 °C",
+                "fill": {
+                  "color": "#e1ecf1"
+                },
+                "stroke": {
+                  "color": "#e1ecf1",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "20,5 - 21,0 °C",
+                "fill": {
+                  "color": "#f6e5dd"
+                },
+                "stroke": {
+                  "color": "#f6e5dd",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "21,0 - 21,5 °C",
+                "fill": {
+                  "color": "#f5c0a9"
+                },
+                "stroke": {
+                  "color": "#f5c0a9",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "21,5 - 22,0 °C",
+                "fill": {
+                  "color": "#ef9377"
+                },
+                "stroke": {
+                  "color": "#ef9377",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "22,0 - 22,5 °C",
+                "fill": {
+                  "color": "#dd494c"
+                },
+                "stroke": {
+                  "color": "#dd494c",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "> 22,5 °C",
+                "fill": {
+                  "color": "#ca0020"
+                },
+                "stroke": {
+                  "color": "#ca0020",
+                  "width": 1
+                }
+              }
+            ]
+          }
+        ],
+        "title": "Nachtsituation Temperatur (2 m)"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/INTERN-virtualcitymap/rosenheim/klima/map_night_ta2m_utm_child-color.png",
+      "extent": {
+        "coordinates": [12.1247805, 47.8561316, 12.1292206, 47.8591141],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["palmResult"],
+      "zIndex": 0
+    },
+    {
+      "type": "SingleImageLayer",
+      "name": "palm4u_night_wind_wspeed_utm_child-color",
+      "properties": {
+        "legend": [
+          {
+            "type": "StyleLegendItem",
+            "colNr": 1,
+            "rows": [
+              {
+                "type": "FillLegendRow",
+                "title": "0,0 m/s",
+                "fill": {
+                  "color": "#440154"
+                },
+                "stroke": {
+                  "color": "#440154",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "0,2 m/s",
+                "fill": {
+                  "color": "#31688e"
+                },
+                "stroke": {
+                  "color": "#31688e",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "0,4 m/s",
+                "fill": {
+                  "color": "#35b779"
+                },
+                "stroke": {
+                  "color": "#35b779",
+                  "width": 1
+                }
+              },
+              {
+                "type": "FillLegendRow",
+                "title": "0,6 m/s",
+                "fill": {
+                  "color": "#fde725"
+                },
+                "stroke": {
+                  "color": "#fde725",
+                  "width": 1
+                }
+              }
+            ]
+          }
+        ],
+        "title": "Nachtsituation Windgeschwindigkeit"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/INTERN-virtualcitymap/rosenheim/klima/map_night_wind_wspeed_utm_child-color.png",
+      "extent": {
+        "coordinates": [12.1247805, 47.8561316, 12.1292206, 47.8591141],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["palmResult"],
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "HQ 100",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/hwgf_hq100.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "f729f546-e0bd-41cc-be20-2868150a8777",
+      "tilingSchema": "mercator",
+      "opacity": 0.6,
+      "layers": "hwgf_hq100",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "HQ extrem",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/hwgf_hqextrem.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "f729f546-e0bd-41cc-be20-2868150a8777",
+      "tilingSchema": "mercator",
+      "opacity": 0.6,
+      "layers": "hwgf_hqextrem",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "HQ häufig",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/hwgf_hqhaeufig.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "f729f546-e0bd-41cc-be20-2868150a8777",
+      "tilingSchema": "mercator",
+      "opacity": 0.6,
+      "layers": "hwgf_hqhaeufig",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Festgesetzte Überschwemmungsgebiete",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/festsetzung.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "4cbebced-8d79-4b8b-958a-b64315458eb0",
+      "tilingSchema": "mercator",
+      "layers": "festsetzung",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Vorläufig gesicherte Überschwemmungsgebiete",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/sicherung.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "4cbebced-8d79-4b8b-958a-b64315458eb0",
+      "tilingSchema": "mercator",
+      "layers": "sicherung",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Brückenstatus HQ100",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/bruecke_hq100.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "6a5df1a4-1f8c-4e12-9b0c-46a50c4829bf",
+      "tilingSchema": "mercator",
+      "layers": "bruecke_hq100",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Brückenstatus HQextrem",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/bruecke_hqextrem.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "6a5df1a4-1f8c-4e12-9b0c-46a50c4829bf",
+      "tilingSchema": "mercator",
+      "layers": "bruecke_hqextrem",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "Brückenstatus HQhäufig",
+      "properties": {
+        "featureInfo": "Ueberschwemmungsgebiete",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.lfu.bayern.de/gdi/legende/wasser/ueberschwemmungsgebiete/bruecke_hqhaeufig.png",
+            "popoutBtn": true
+          }
+        ],
+        "attributions": {
+          "provider": "Bayerisches Landesamt für Umwelt",
+          "url": "https://www.lfu.bayern.de",
+          "year": 2026,
+          "icon": ""
+        }
+      },
+      "url": "https://www.lfu.bayern.de/gdi/wms/wasser/ueberschwemmungsgebiete",
+      "extent": {
+        "coordinates": [
+          11.996401475054133, 47.78926256309501, 12.253632279631727,
+          47.94074133781234
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "6a5df1a4-1f8c-4e12-9b0c-46a50c4829bf",
+      "tilingSchema": "mercator",
+      "layers": "bruecke_hqhaeufig",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "featureInfo": {
+        "responseType": "application/geojson"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "PointCloudLayer",
+      "name": "Rosenheim_pointcloud_salzstadel",
+      "hiddenObjectIds": [
+        "DEBY_LOD2_107207555",
+        "DEBY_LOD2_6360239",
+        "DEBY_LOD2_6360240",
+        "DEBY_LOD2_6360238",
+        "DEBY_LOD2_6360237",
+        "DEBY_LOD2_6360236",
+        "DEBY_LOD2_6360235",
+        "DEBY_LOD2_6360234",
+        "DEBY_LOD2_6360233",
+        "DEBY_LOD2_108817080",
+        "DEBY_LOD2_108817191",
+        "DEBY_LOD2_108817082",
+        "DEBY_LOD2_6360232",
+        "DEBY_LOD2_6360230",
+        "DEBY_LOD2_6360389",
+        "DEBY_LOD2_6360394",
+        "DEBY_LOD2_6360991",
+        "DEBY_LOD2_6360971",
+        "DEBY_LOD2_6360973",
+        "DEBY_LOD2_104875532",
+        "DEBY_LOD2_6361089",
+        "DEBY_LOD2_6361091",
+        "DEBY_LOD2_6361090",
+        "DEBY_LOD2_6361092",
+        "DEBY_LOD2_6361093",
+        "DEBY_LOD2_108110968",
+        "DEBY_LOD2_6361088",
+        "DEBY_LOD2_6361087",
+        "DEBY_LOD2_6360387",
+        "DEBY_LOD2_6360992",
+        "DEBY_LOD2_79412",
+        "DEBY_LOD2_6360969",
+        "DEBY_LOD2_79408",
+        "DEBY_LOD2_6360226",
+        "DEBY_LOD2_6360223",
+        "DEBY_LOD2_6360227",
+        "DEBY_LOD2_6360970",
+        "DEBY_LOD2_6360229",
+        "DEBY_LOD2_79404",
+        "DEBY_LOD2_107568261",
+        "DEBY_LOD2_6360945",
+        "DEBY_LOD2_107568249",
+        "DEBY_LOD2_104875568",
+        "DEBY_LOD2_107568246",
+        "DEBY_LOD2_104875570",
+        "DEBY_LOD2_104875535",
+        "DEBY_LOD2_42289720",
+        "DEBY_LOD2_22756685",
+        "DEBY_LOD2_22756683",
+        "DEBY_LOD2_22756687",
+        "DEBY_LOD2_6361081",
+        "DEBY_LOD2_6361082",
+        "DEBY_LOD2_6360162",
+        "DEBY_LOD2_6360163",
+        "DEBY_LOD2_6360164",
+        "DEBY_LOD2_6360165",
+        "DEBY_LOD2_6360166",
+        "DEBY_LOD2_6360167",
+        "DEBY_LOD2_6360168",
+        "DEBY_LOD2_6360169",
+        "DEBY_LOD2_6360206",
+        "DEBY_LOD2_6360207",
+        "DEBY_LOD2_6360212",
+        "DEBY_LOD2_6360211",
+        "DEBY_LOD2_6360210",
+        "DEBY_LOD2_6360213",
+        "DEBY_LOD2_6360961",
+        "DEBY_LOD2_6360209",
+        "DEBY_LOD2_6360208",
+        "DEBY_LOD2_6360214",
+        "DEBY_LOD2_107568294",
+        "DEBY_LOD2_79407",
+        "DEBY_LOD2_107568293",
+        "DEBY_LOD2_6360215",
+        "DEBY_LOD2_6360216",
+        "DEBY_LOD2_6360217",
+        "DEBY_LOD2_6360966",
+        "DEBY_LOD2_6360221",
+        "DEBY_LOD2_6360218",
+        "DEBY_LOD2_6360219",
+        "DEBY_LOD2_6360967",
+        "DEBY_LOD2_6360220",
+        "DEBY_LOD2_6360222",
+        "DEBY_LOD2_6360228"
+      ],
+      "url": "https://www.virtualcitymap.de/datasource-data/9c97911c-3c22-4e2e-bff7-a90550271346/tileset.json",
+      "datasourceId": "676e3165-453d-4a6a-bd8f-cf63bddfd459",
+      "pointSize": 2,
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Solar buildings Rosenheim",
+      "properties": {
+        "featureInfo": "SolarFeatureInfo(1)",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.virtualcitymap.de/global/Solar_legend.png",
+            "popoutBtn": true
+          }
+        ],
+        "title": "Solarpotential Gebäudeflächen"
+      },
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/86807bee-4c62-4b6d-98aa-0c153d42677a/tileset.json",
+      "extent": {
+        "coordinates": [
+          12.101203383867931, 47.845543517952756, 12.15560383456839,
+          47.866337500371785
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["Bayern", "Kunden"],
+      "datasourceId": "86807bee-4c62-4b6d-98aa-0c153d42677a",
+      "screenSpaceError": 6,
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Solarpotential Rosenheim Gesamtgebäude",
+      "properties": {
+        "featureInfo": "SolarFeatureInfo(1)",
+        "legend": [
+          {
+            "type": "ImageLegendItem",
+            "src": "https://www.virtualcitymap.de/global/Solar_legend.png",
+            "popoutBtn": true
+          }
+        ],
+        "title": "Solarpotential Gesamtgebäude"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/1aa29975-2260-4d87-88bf-fee47b93e131/tileset.json",
+      "extent": {
+        "coordinates": [
+          12.101203383867931, 47.845543517952756, 12.15560383456839,
+          47.866337500371785
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["Bayern"],
+      "datasourceId": "1aa29975-2260-4d87-88bf-fee47b93e131",
+      "screenSpaceError": 6,
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Sommerbäume Rosenheim",
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/46c11ad7-3a76-41d4-a772-7f14e95fdd69/tileset.json",
+      "extent": {
+        "coordinates": [
+          12.078760525663075, 47.81550205136667, 12.15130387925996,
+          47.88208343255267
+        ],
+        "projection": {
+          "epsg": 4326
+        }
+      },
+      "datasourceId": "46c11ad7-3a76-41d4-a772-7f14e95fdd69",
+      "zIndex": 0,
+      "screenSpaceError": 16,
+      "screenSpaceErrorMobile": 32
+    },
+    {
+      "type": "GeoJSONLayer",
+      "name": "Salzstadl Modell",
+      "hiddenObjectIds": [
+        "DEBY_LOD2_107207555",
+        "DEBY_LOD2_6360239",
+        "DEBY_LOD2_6360240",
+        "DEBY_LOD2_6360238",
+        "DEBY_LOD2_6360237",
+        "DEBY_LOD2_6360236",
+        "DEBY_LOD2_6360235",
+        "DEBY_LOD2_6360234",
+        "DEBY_LOD2_6360233",
+        "DEBY_LOD2_108817080",
+        "DEBY_LOD2_108817191",
+        "DEBY_LOD2_108817082",
+        "DEBY_LOD2_6360232",
+        "DEBY_LOD2_6360230",
+        "DEBY_LOD2_6360389",
+        "DEBY_LOD2_6360394",
+        "DEBY_LOD2_6360991",
+        "DEBY_LOD2_6360971",
+        "DEBY_LOD2_6360973",
+        "DEBY_LOD2_104875532",
+        "DEBY_LOD2_6361089",
+        "DEBY_LOD2_6361091",
+        "DEBY_LOD2_6361090",
+        "DEBY_LOD2_6361092",
+        "DEBY_LOD2_6361093",
+        "DEBY_LOD2_108110968",
+        "DEBY_LOD2_6361088",
+        "DEBY_LOD2_6361087",
+        "DEBY_LOD2_6360387",
+        "DEBY_LOD2_6360992",
+        "DEBY_LOD2_79412",
+        "DEBY_LOD2_6360969",
+        "DEBY_LOD2_79408",
+        "DEBY_LOD2_6360226",
+        "DEBY_LOD2_6360223",
+        "DEBY_LOD2_6360227",
+        "DEBY_LOD2_6360970",
+        "DEBY_LOD2_6360229",
+        "DEBY_LOD2_79404",
+        "DEBY_LOD2_107568261",
+        "DEBY_LOD2_6360945",
+        "DEBY_LOD2_107568249",
+        "DEBY_LOD2_104875568",
+        "DEBY_LOD2_107568246",
+        "DEBY_LOD2_104875570",
+        "DEBY_LOD2_104875535",
+        "DEBY_LOD2_42289720",
+        "DEBY_LOD2_22756685",
+        "DEBY_LOD2_22756683",
+        "DEBY_LOD2_22756687",
+        "DEBY_LOD2_6361081",
+        "DEBY_LOD2_6361082",
+        "DEBY_LOD2_6360162",
+        "DEBY_LOD2_6360163",
+        "DEBY_LOD2_6360164",
+        "DEBY_LOD2_6360165",
+        "DEBY_LOD2_6360166",
+        "DEBY_LOD2_6360167",
+        "DEBY_LOD2_6360168",
+        "DEBY_LOD2_6360169",
+        "DEBY_LOD2_6360206",
+        "DEBY_LOD2_6360207",
+        "DEBY_LOD2_6360212",
+        "DEBY_LOD2_6360211",
+        "DEBY_LOD2_6360210",
+        "DEBY_LOD2_6360213",
+        "DEBY_LOD2_6360961",
+        "DEBY_LOD2_6360209",
+        "DEBY_LOD2_6360208",
+        "DEBY_LOD2_6360214",
+        "DEBY_LOD2_107568294",
+        "DEBY_LOD2_79407",
+        "DEBY_LOD2_107568293",
+        "DEBY_LOD2_6360215",
+        "DEBY_LOD2_6360216",
+        "DEBY_LOD2_6360217",
+        "DEBY_LOD2_6360966",
+        "DEBY_LOD2_6360221",
+        "DEBY_LOD2_6360218",
+        "DEBY_LOD2_6360219",
+        "DEBY_LOD2_6360967",
+        "DEBY_LOD2_6360220",
+        "DEBY_LOD2_6360222",
+        "DEBY_LOD2_6360228"
+      ],
+      "extent": {
+        "coordinates": [
+          12.124265291126191, 47.856202313537096, 12.129639808628642,
+          47.8591484210518
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "c7886f03-840c-4c22-bb1f-647a3e74c744",
+      "vectorProperties": {
+        "altitudeMode": "absolute"
+      },
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "olcs_modelUrl": "https://www.virtualcitymap.de/datasource-data/INTERN-virtualcitymap/rosenheim/CRnXh4kcbbNbPZ6R.glb",
+            "olcs_modelHeading": 88.9,
+            "olcs_modelPitch": 0,
+            "olcs_modelRoll": 0,
+            "olcs_modelScaleX": 1,
+            "olcs_modelScaleY": 1,
+            "olcs_modelScaleZ": 1,
+            "name": "Salzstadl"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              12.126916539732719, 47.85779531192449, 445.0400000928835
+            ]
+          },
+          "id": "MzmWnYt3ae6S5DSzP",
+          "vcsMeta": {
+            "version": "2.1"
+          }
+        }
+      ],
+      "zIndex": 0
+    }
+  ],
+  "maps": [],
+  "obliqueCollections": [],
+  "plugins": [
+    {
+      "name": "@vcmap/layer-slider",
+      "entry": "plugins/@vcmap/layer-slider/index.js"
+    },
+    {
+      "name": "@vcmap/solar-revenue",
+      "entry": "plugins/@vcmap/solar-revenue/index.js"
+    },
+    {
+      "name": "@vcmap/palm4u",
+      "entry": "plugins/@vcmap/palm4u/index.js"
+    },
+    {
+      "name": "@vcmap/vcs-solar-balloon",
+      "entry": "plugins/@vcmap/vcs-solar-balloon/index.js"
+    }
+  ],
+  "styles": [],
+  "uiConfig": [
+    {
+      "name": "appTitle",
+      "value": "Digitaler Zwilling - Klima & Umwelt"
+    },
+    {
+      "name": "headerTitle",
+      "value": "Digitaler Zwilling - Klima & Umwelt"
+    },
+    {
+      "name": "primaryColor",
+      "value": "#016544"
+    }
+  ],
+  "vectorClusterGroups": [],
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "Rosenheim",
+      "distance": 2013.4844027393065,
+      "cameraPosition": [
+        12.124139108967691, 47.84031343169207, 1534.4548242187936
+      ],
+      "groundPosition": [
+        12.124139108967691, 47.855557988007114, 448.0877458080452
+      ],
+      "heading": 359.9999999999998,
+      "pitch": -32.6603015311681,
+      "roll": 0.0014749124452889965,
+      "animate": false
+    }
+  ],
+  "startingViewpointName": "Rosenheim",
+  "startingMapName": "CesiumMap"
+}

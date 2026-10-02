@@ -1,5 +1,5 @@
 {
-  "name": "hello-world",
+  "name": "Hello World",
   "_id": "hello-world",
   "description": "module adding hello-world showcase plugin",
   "plugins": [

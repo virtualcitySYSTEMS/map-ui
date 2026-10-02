@@ -1,0 +1,632 @@
+{
+  "_id": "soest",
+  "old_id": "d03eb9dd-e02b-434c-9baf-22f796c062c6",
+  "properties": {},
+  "name": "Soest",
+  "description": "Eingebunden in Module Selektor offen und intern",
+  "createdAt": "2026-09-02T13:34:45.450Z",
+  "updatedAt": "2026-09-07T12:05:25.801Z",
+  "createdBy": "v6WEM2A92ozfZaAu5",
+  "updatedBy": "v6WEM2A92ozfZaAu5",
+  "projectId": "Tfy62pdpXuTHH4smE",
+  "categories": [],
+  "clippingPolygons": [],
+  "contentTree": [
+    {
+      "type": "ObliqueCollectionContentTreeItem",
+      "name": "Schrägluftbilder 2023",
+      "tooltip": "Schrägluftbilder 2023",
+      "collectionName": "Schrägluftbilder 2023"
+    },
+    {
+      "type": "ObliqueCollectionContentTreeItem",
+      "name": "Schrägluftbilder 2021",
+      "tooltip": "Schrägluftbilder 2021",
+      "collectionName": "Schrägluftbilder 2021"
+    },
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "Soest.Topografie.Gebäude und Mauern (texturiert)",
+      "title": "Gebäude und Mauern (texturiert)",
+      "tooltip": "Gebäude und Mauern (texturiert)",
+      "layerNames": [
+        "Gebäude texturiert LoD2",
+        "Stadtmauern 2024",
+        "Mauern 2024"
+      ]
+    },
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "Soest.Topografie.Gebäude und Mauern (untexturiert)",
+      "title": "Gebäude und Mauern (untexturiert)",
+      "tooltip": "Gebäude und Mauern (untexturiert)",
+      "layerNames": [
+        "Gebäude untexturiert LoD2",
+        "Stadtmauern untexturiert 2024",
+        "Mauern untexturiert 2024"
+      ]
+    },
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "Soest.Topografie.Mesh",
+      "title": "Oberflächenmodell (Mesh)",
+      "layerNames": ["Ebenen Klassifizierung Soest Mesh", "3D-Mesh 2023"]
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Topografie.SummerTrees_2021",
+      "title": "Sommerbäume",
+      "tooltip": "Sommerbäume",
+      "layerName": "SummerTrees_2021"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Topografie.WinterTrees_2021",
+      "title": "Winterbäume",
+      "tooltip": "Winterbäume",
+      "layerName": "WinterTrees_2021"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Basisdaten.ALKIS_WMS_NRW",
+      "title": "Liegenschaftskarte",
+      "tooltip": "Liegenschaftskarte",
+      "layerName": "ALKIS_WMS_NRW"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Basisdaten.TopPlus",
+      "title": "Topografische Karte",
+      "tooltip": "Topografische Karte",
+      "layerName": "TopPlus"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Basisdaten.LayerContentTreeItem(32)",
+      "title": "Luftbild",
+      "tooltip": "Luftbild",
+      "layerName": "True Orthophoto 2023"
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "Soest.Basisdaten.Gelände 2023",
+      "title": "Gelände",
+      "tooltip": "Gelände",
+      "layerName": "Gelände 2023"
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Soest.Basisdaten",
+      "title": "Basisdaten",
+      "tooltip": "Basisdaten",
+      "initOpen": true
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Soest.Topografie",
+      "title": "Topografie",
+      "tooltip": "Topografie",
+      "initOpen": true
+    },
+    {
+      "type": "NodeContentTreeItem",
+      "name": "Soest",
+      "title": "Soest",
+      "icon": "mdi-city",
+      "initOpen": true
+    }
+  ],
+  "featureInfo": [
+    {
+      "type": "BalloonFeatureInfoView",
+      "name": "Mesh",
+      "attributeKeys": [
+        "name",
+        "funnktion",
+        "lagebeztxt",
+        "gebnutzbez",
+        "aktualit"
+      ],
+      "removeNoDataAttributes": true,
+      "balloonSubtitle": " "
+    }
+  ],
+  "flights": [],
+  "hiddenObjects": [],
+  "i18n": [
+    {
+      "name": "Mesh",
+      "de": {
+        "name": "Name",
+        "funktion": "Gebäudefunktion",
+        "lagebeztxt": "Adresse",
+        "aktualit": "Aktualität",
+        "gebnutzbez": "Objektklasse"
+      },
+      "en": {
+        "name": "Name",
+        "funktion": "Building Function",
+        "lagebeztxt": "Address",
+        "aktualit": "Currency Date",
+        "gebnutzbez": "Object Class"
+      }
+    },
+    {
+      "name": "Soest i18n",
+      "de": {
+        "3D-Stadtmodell der Stadt Soest": "3D-Stadtmodell der Stadt Soest",
+        "Basisdaten": "Basisdaten",
+        "Liegenschaftskarte": "Liegenschaftskarte",
+        "Topografische Karte": "Topografische Karte",
+        "Luftbild": "Luftbild",
+        "Gelände": "Gelände",
+        "Gebäude und Mauern (texturiert)": "Gebäude und Mauern (texturiert)",
+        "Gebäude und Mauern (untexturiert)": "Gebäude und Mauern (untexturiert)",
+        "Oberflächenmodell (Mesh)": "Oberflächenmodell (Mesh)",
+        "Sommerbäume": "Sommerbäume",
+        "Winterbäume": "Winterbäume"
+      },
+      "en": {
+        "3D-Stadtmodell der Stadt Soest": "3D City Model of the City of Soest",
+        "Basisdaten": "Base Data",
+        "Liegenschaftskarte": "Cadastral Map",
+        "Topografische Karte": "Topographic Map",
+        "Luftbild": "Aerial Imagery",
+        "Gelände": "Terrain",
+        "Gebäude und Mauern (texturiert)": "Textured Buildings and Walls",
+        "Gebäude und Mauern (untexturiert)": "Untextured Buildings and Walls",
+        "Oberflächenmodell (Mesh)": "Surface Model (Mesh)",
+        "Sommerbäume": "Summer Trees",
+        "Winterbäume": "Winter Trees"
+      }
+    }
+  ],
+  "layers": [
+    {
+      "type": "WMSLayer",
+      "name": "TopPlus",
+      "properties": {
+        "showInOverviewMap": true
+      },
+      "activeOnStartup": true,
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_web_open",
+      "extent": {
+        "coordinates": [
+          7.97417622873206, 51.51865338852523, 8.17845515837889,
+          51.63262315030298
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "QibPhBiX85NfB7i4Y",
+      "layers": "web",
+      "version": "1.3.0",
+      "parameters": {
+        "FORMAT": "image/png",
+        "TRANSPARENT": "false"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Mauern untexturiert 2024",
+      "url": "https://www.virtualcitymap.de/datasource-data/abce57f9-4f87-48a4-9b94-b2a2f8e47fab/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.987060541196551, 51.52038573653159, 8.17382810933736,
+          51.62475584308417
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["mauern"],
+      "datasourceId": "abce57f9-4f87-48a4-9b94-b2a2f8e47fab",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Stadtmauern untexturiert 2024",
+      "url": "https://www.virtualcitymap.de/datasource-data/14b4db19-4421-45a4-a037-658f9c698d8d/tileset.json",
+      "extent": {
+        "coordinates": [
+          8.096923823314178, 51.56433102646032, 8.118896468278546,
+          51.575577213950496
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["stadtmauern"],
+      "datasourceId": "14b4db19-4421-45a4-a037-658f9c698d8d",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Mauern 2024",
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/5f3ee78c-f9fc-4432-b9b4-e9766cbdfbfd/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.987060541196551, 51.52038573653159, 8.17382810933736,
+          51.62475584308417
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["mauern"],
+      "datasourceId": "5f3ee78c-f9fc-4432-b9b4-e9766cbdfbfd",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Stadtmauern 2024",
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/aaec8875-98fb-4be2-bf54-09d0f6687a8c/tileset.json",
+      "extent": {
+        "coordinates": [
+          8.096923823314178, 51.56433102646032, 8.118896468278546,
+          51.575577213950496
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["stadtmauern"],
+      "datasourceId": "aaec8875-98fb-4be2-bf54-09d0f6687a8c",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Gebäude untexturiert LoD2",
+      "properties": {
+        "title": "Gebäude untexturiert",
+        "exportWorkbench": "https://warehouse.virtualcitymap.de/hosting-soest/MultiExporter.fmw"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/3c7bf6a4-0122-464d-99b6-e048e8c12232/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.981567365631514, 51.52038573653159, 8.17382810933736,
+          51.63024901864922
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["buildings"],
+      "datasourceId": "3c7bf6a4-0122-464d-99b6-e048e8c12232",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Gebäude texturiert LoD2",
+      "properties": {
+        "title": "Gebäude texturiert",
+        "exportWorkbench": "https://warehouse.virtualcitymap.de/hosting-soest/MultiExporter.fmw",
+        "featureInfo": null
+      },
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/b84d50c8-7a11-4ec5-9c1d-be10e0c16af8/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.981567365631514, 51.52038573653159, 8.17382810933736,
+          51.63024901864922
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["buildings", "Kunden", "3D"],
+      "datasourceId": "b84d50c8-7a11-4ec5-9c1d-be10e0c16af8",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "3D-Mesh 2023",
+      "url": "https://www.virtualcitymap.de/datasource-data/HOSTING-Soest/3D-Mesh_2023",
+      "extent": {
+        "coordinates": [-180, -90, 180, 90],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["buildings", "mauern"],
+      "datasourceId": "bab59bc6-14aa-4f6c-9b73-a0912055f2e9",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "TMSLayer",
+      "name": "True Orthophoto 2023",
+      "activeOnStartup": true,
+      "url": "https://www.virtualcitymap.de/datasource-data/513ad413-ee34-4d12-b476-b2cd36dd2fd1/",
+      "extent": {
+        "coordinates": [
+          7.97417622873206, 51.51865338852523, 8.17845515837889,
+          51.63262315030298
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["TMS"],
+      "datasourceId": "513ad413-ee34-4d12-b476-b2cd36dd2fd1",
+      "minLevel": 10,
+      "maxLevel": 20,
+      "format": "png",
+      "zIndex": 0
+    },
+    {
+      "type": "TerrainLayer",
+      "name": "Gelände 2023",
+      "url": "https://www.virtualcitymap.de/datasource-data/e38b3afa-6e44-4641-8c66-d0ae676aa8fa/",
+      "extent": {
+        "coordinates": [
+          7.95684814453125, 51.5093994140625, 8.20953369140625, 51.646728515625
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "e38b3afa-6e44-4641-8c66-d0ae676aa8fa",
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "SummerTrees_2021",
+      "properties": {
+        "featureInfo": "BaumFeatureInfo"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/50d31a53-abe0-4244-86cf-00d7b9ccd8f6/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.97417622873206, 51.51865338852523, 8.17845515837889,
+          51.63262315030298
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["trees"],
+      "datasourceId": "mR5MH2Ws2QMj2Cwnr",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "WinterTrees_2021",
+      "properties": {
+        "featureInfo": "BaumFeatureInfo"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/7cf9aa56-fe28-4456-a8a3-d9afee29f3d9/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.97417622873206, 51.51865338852523, 8.17845515837889,
+          51.63262315030298
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["trees"],
+      "datasourceId": "bc9zySu2M9scuNtKw",
+      "tilesetOptions": {
+        "useSRGBColorFactors": true
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "ALKIS_WMS_NRW",
+      "url": "https://www.wms.nrw.de/geobasis/wms_nw_alkis",
+      "extent": {
+        "coordinates": [
+          7.9741762287324, 51.51865338759099, 8.17845515837786,
+          51.63262314937031
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "8fHJbYKSQi5t6cpgE",
+      "layers": "adv_alkis_gebaeude,adv_alkis_flurstuecke",
+      "parameters": {
+        "FORMAT": "image/jpeg",
+        "TRANSPARENT": "true"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "Ebenen Klassifizierung Soest Mesh",
+      "properties": {
+        "featureInfo": "Mesh",
+        "title": "Gebäudeangaben"
+      },
+      "url": "https://www.virtualcitymap.de/datasource-data/a30b10be-cb03-445f-b680-1c5cc27533de/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.832034908199998, 51.389900259300006, 8.581952007600002,
+          51.72508289449999
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "a30b10be-cb03-445f-b680-1c5cc27533de",
+      "style": "Klassifizierung",
+      "tilesetOptions": {
+        "classificationType": 2
+      },
+      "zIndex": 0
+    }
+  ],
+  "maps": [
+    {
+      "type": "ObliqueMap",
+      "name": "ObliqueMap"
+    },
+    {
+      "type": "OpenlayersMap",
+      "name": "OpenlayersMap"
+    },
+    {
+      "type": "CesiumMap",
+      "name": "CesiumMap",
+      "globeColor": "#6a6a6a"
+    }
+  ],
+  "obliqueCollections": [
+    {
+      "type": "ObliqueCollection",
+      "name": "Schrägluftbilder 2021",
+      "minZoom": 2,
+      "datasourceId": "oyu3kjBZXQ6hRZdBd",
+      "dataSets": [
+        {
+          "url": "https://www.virtualcitymap.de/datasource-data/c5016b65-759e-4778-8575-b55a4ae6711e/image.json",
+          "projection": {
+            "epsg": "EPSG:25832",
+            "proj4": "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+          },
+          "terrainProvider": {
+            "url": "https://www.virtualcitymap.de/datasource-data/e38b3afa-6e44-4641-8c66-d0ae676aa8fa/"
+          }
+        }
+      ]
+    },
+    {
+      "type": "ObliqueCollection",
+      "name": "Schrägluftbilder 2023",
+      "minZoom": 2,
+      "datasourceId": "bb21c7b6-a6f4-4c3e-bcab-df581e9e7b33",
+      "dataSets": [
+        {
+          "url": "https://www.virtualcitymap.de/datasource-data/bb21c7b6-a6f4-4c3e-bcab-df581e9e7b33/image.json",
+          "projection": {
+            "epsg": "EPSG:25832",
+            "proj4": "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
+          },
+          "terrainProvider": {
+            "url": "https://www.virtualcitymap.de/datasource-data/e38b3afa-6e44-4641-8c66-d0ae676aa8fa/"
+          }
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "styles": [
+    {
+      "type": "VectorStyleItem",
+      "name": "Klassifizierung",
+      "fill": {
+        "color": [255, 255, 255, 0.01]
+      }
+    }
+  ],
+  "uiConfig": [
+    {
+      "name": "startingFeatureInfo",
+      "value": true,
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.startingFeatureInfo"
+      }
+    },
+    {
+      "name": "positionDisplayEventType",
+      "value": "click",
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.positionDisplayEventType"
+      }
+    },
+    {
+      "name": "logo",
+      "value": "data:image/png;base64,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",
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.logo"
+      }
+    },
+    {
+      "name": "imprint",
+      "value": {
+        "title": "footer.imprint.title",
+        "content": "**Kontakt Soest**<br>\nBei Fragen wenden Sie sich bitte an:\nDipl.-Geogr. Jürgen Treptow\nStadt Soest\nAbt. Innovation und Digitaler Wandel\nDatenmanagement und Kommunalstatistik\nMarkt 13\n59494 Soest\nTel: +49 2921 103-5401<br>\nE-Mail: [j.treptow@soest.de](mailto:j.treptow@soest.de)<br>\n\nDie Anwendungen wird in Kooperation mit Aerowest bereitgestellt und betrieben durch virtualcitysystems. \nBei technischen Problemen oder Fragen wenden Sie sich bitte an:<br><br>\n\n\n**Kontakt virtualcitysystems GmbH**<br>\nBei technischen Problemen oder Fragen zur Anwendung wenden Sie sich bitte an:\nvirtualcitysystems GmbH\nTauentzienstr. 7b/c\n10789 Berlin\nTel: +49 30 8904871-10\nE-Mail: [support@vc.systems](support@vc.systems)<br>\n[www.vc.systems](https://www.vc.systems)<br><br>\n\n**Kontakt AEROWEST GmbH**<br>\nBei technischen Problemen oder Fragen zu den Daten wenden Sie sich bitte an:\nAEROWEST GmbH\nFlughafenring 11\n44319 Dortmund\nTel: + 49 (231) 5 57 12 10\nE-Mail: [info@aerowest.de](info@aerowest.de)<br>\n[www.aerowest.de](https://www.aerowest.de)\n<br>"
+      }
+    },
+    {
+      "name": "dataProtection",
+      "value": {
+        "content": "**Nutzungshinweise**<br>\nFür die Datensätze gilt die **Datenlizenz Deutschland Zero, Version 2.0** (siehe [www.govdata.de/dl-de/zero-2-0](https://www.govdata.de/dl-de/zero-2-0)). \nDiese gilt sowohl für die abgebildeten als auch für die herunter geladenen Daten.<br>\nDiese Lizenz ermöglicht *nicht* die Nutzung von Hoheits- und Wahrzeichen der Stadt Soest.  Wir möchten hiermit über neue Anwendungen und Services informieren, die Daten dieser Plattform verwenden:<br>\n\nDie Stadt Soest ist berechtigt, Informationen über solche Anwendungen und Services zu veröffentlichen und für eine Berichterstattung zu verwenden.<br>\n\nDer Stadt Soest ist eine Veröffentlichung (Verlinkung) der Anwendungen und Services auf dieser Internetseite gestattet.<br>\n\nEs gelten die allgemeinen Regeln, dass Daten und Informationen dieser Plattform nicht für Anwendungen oder Veröffentlichungen verwendet werden, \ndie kriminelle, illegale, rassistische, diskriminierende, verleumderische, pornographische, sexistische oder homophobe Aktivitäten unterstützen, \nzu solchen Aktivitäten anstiften oder gegen geltendes Recht verstößt.<br>\n\nEs wird vorbehaltlos akzeptiert, dass die Geodaten bei technischen Problemen oder in notwendigen Wartungsfenstern nicht verfügbar sind.<br>\n\nAlle Informationen zu und aus diesem Service erfolgen ohne jegliche Gewähr und Haftungsansprüche.<br>\n\nDie Stadt Soest garantiert nicht die Aktualität und Vollständigkeit der aufgeführten Datensätze.<br>\n\nAnwendungs- und Dienste-Anbieter, die Daten von dieser Internetseite nutzen, dürfen nicht, weder ausdrücklich noch indirekt, angeben oder den \nEindruck vermitteln, dass eine Anwendung oder ein Dienst Dritter die Bewilligung, Zugehörigkeit oder Unterstützung der Stadt Soest hat.<br>\n\nDie Stadt Soest ist berechtigt, nach eigenem Ermessen Datensätze wieder zu entfernen oder die Aktualisierung von Datensätzen einzustellen.<br>\n\nDer Stadt Soest ist der Schutz personenbezogener Daten wichtig. Die Bereitstellung der Luftbilddaten erfolgt nach den Empfehlungen gemäß dem Behördenleitfaden zum Datenschutz bei Geodaten und –diensten des Interministeriellen Ausschusses für Geoinformation (IMAGI), 2013. Sollten Sie Fragen zum  Datenschutz haben,  wenden sie sich bitte an die Stadt Soest<br>\nAbt. Innovation und Digitaler Wandel\nHerrn Treptow\nTel. 02921-103 5401\nE-Mail: [gis@soest.de](mailto:gis@soest.de)<br>\n\n\n**Hinweise für Grundstückseigentümer:** Bestehen Ihrerseits als Grundstückseigentümer Bedenken gegen die bildhafte Abbildung Ihres Grundstücks im 3D-Stadtmodell,  besteht grundsätzlich die Möglichkeit Bildelemente und/oder -ausschnitte in ihrer Auflösung zu reduzieren oder unkenntlich zu machen.  Bitte nehmen Sie in diesem Fall gerne Kontakt mit uns auf und wenden Sie sich schriftlich per E-Mail an \n[gis@soest.de](mailto:gis@soest.de)<br><br>",
+        "title": "Datenschutzhinweise"
+      }
+    },
+    {
+      "name": "openLegendOnAdd",
+      "value": true
+    },
+    {
+      "name": "favicon",
+      "value": "https://www.soest.de/typo3conf/ext/configsoest/Resources/Public/Icons/favicon.ico"
+    },
+    {
+      "name": "mobileLogo",
+      "value": "data:image/png;base64,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"
+    },
+    {
+      "name": "appTitle",
+      "value": "3D-Stadtmodell der Stadt Soest"
+    },
+    {
+      "name": "headerTitle",
+      "value": "3D-Stadtmodell Soest",
+      "properties": {
+        "title": "appConfigurator.editors.uiConfig.headerTitle"
+      }
+    },
+    {
+      "name": "primaryColor",
+      "value": "#E20A16"
+    }
+  ],
+  "vectorClusterGroups": [],
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "Viewpoint(1)",
+      "distance": 2150.42,
+      "cameraPosition": [8.11106, 51.55983, 1840.34929],
+      "groundPosition": [8.10904, 51.57103, 93.9186],
+      "heading": 353.6,
+      "pitch": -54.31,
+      "roll": 359.96,
+      "animate": false
+    }
+  ],
+  "startingViewpointName": "Viewpoint(1)",
+  "startingObliqueCollectionName": "Schrägluftbilder 2023",
+  "startingMapName": "CesiumMap"
+}

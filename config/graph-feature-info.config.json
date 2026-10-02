@@ -1,0 +1,84 @@
+{
+  "name": "Graph FeatureInfo Showcase",
+  "_id": "graph-feature-info",
+  "description": "module adding a graph Feature Info view",
+  "startingViewpointName": "rosenheim",
+  "featureInfo": [
+    {
+      "type": "SimpleGraphView",
+      "name": "graphTrend",
+      "attributeKeys": [
+        "globalRadMonths_1",
+        "globalRadMonths_2",
+        "globalRadMonths_3",
+        "globalRadMonths_4",
+        "globalRadMonths_5",
+        "globalRadMonths_6",
+        "globalRadMonths_7",
+        "globalRadMonths_8",
+        "globalRadMonths_9",
+        "globalRadMonths_10",
+        "globalRadMonths_11",
+        "globalRadMonths_12"
+      ],
+      "labels": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "color": "secondary",
+      "window": {
+        "slot": "detached",
+        "position": { "left": "20%", "right": "20%", "bottom": "0%" }
+      }
+    }
+  ],
+  "layers": [
+    {
+      "name": "lod2_solar_year",
+      "url": "https://www.virtualcitymap.de/datasource-data/86807bee-4c62-4b6d-98aa-0c153d42677a/tileset.json",
+      "type": "CesiumTilesetLayer",
+      "datasourceId": "86807bee-4c62-4b6d-98aa-0c153d42677a",
+      "activeOnStartup": true,
+      "allowPicking": true,
+      "copyright": {
+        "provider": "virtualcitySOLAR",
+        "url": "https://www.virtualcitysystems.de/citygml-solarpotenzialanalyse-3d-stadtmodell",
+        "year": "2018"
+      },
+      "exclusiveGroups": ["bldg"],
+      "properties": {
+        "title": "Solar potential buildings Rosenheim",
+        "featureInfo": "graphTrend"
+      }
+    }
+  ],
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "rosenheim",
+      "cameraPosition": [12.123136, 47.852378, 986.09891],
+      "groundPosition": [12.124817, 47.857747, 445.72321],
+      "distance": 815,
+      "heading": 11.89,
+      "pitch": -41.53,
+      "roll": 0,
+      "animate": false
+    }
+  ],
+  "plugins": [
+    {
+      "name": "simple-graph",
+      "entry": "plugins/@vcmap-show-case/simple-graph/index.js"
+    }
+  ]
+}

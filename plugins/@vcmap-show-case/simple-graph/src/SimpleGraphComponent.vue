@@ -9,15 +9,22 @@
     :gradient="gradient"
     :fill="fill"
     :smooth="smooth"
-    :value="values"
-  />
+    :tooltip="{ class: ' bg-grey-darken-4' }"
+    auto-draw
+    interactive
+    :model-value="values"
+  >
+    <template #tooltip="{ index }">
+      {{ values[index] }}
+    </template>
+  </v-sparkline>
 </template>
 <script>
   import { VSparkline } from 'vuetify/components';
 
   export default {
     name: 'SimpleGraphComponent',
-    components: [VSparkline],
+    components: { VSparkline },
     props: {
       attributes: {
         type: Object,
