@@ -1,3 +1,4 @@
+import { moduleIdSymbol } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import {
   createMapButtonAction,
