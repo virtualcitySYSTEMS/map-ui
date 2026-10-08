@@ -4,6 +4,18 @@ Attributions are listed within the VC Map's footer. The component has an overflo
 The attributions window lists entries per layer, whereas in the footer attributions with same provider are merged.
 Only attributions of active objects are shown.
 
+Plugins that display an additional map can include it in the footer and attribution window by registering it with the app's attribution registry. Registration returns a function to call when the map is no longer displayed:
+
+```js
+const unregister = app.attributions.registerMap(sideMap, pluginName);
+// When the side map is closed or replaced:
+unregister();
+```
+
+Pass the optional layer collection as a third argument when the displayed map uses a shared collection that is not assigned to the map instance. The registry includes active, supported layers and oblique collection attributions, and deduplicates objects visible in multiple maps.
+
+The required second argument is the owner (a plugin name or symbol). Registrations owned by a plugin are automatically removed when that plugin is removed or replaced. Other owners' registrations of the same map are preserved. Call `app.attributions.removeOwner(owner)` to remove all registrations for an owner manually. This only unregisters attributions; it does not destroy the map instance.
+
 ## Configuration
 
 Attributions can be added to maps, layers and oblique collections.

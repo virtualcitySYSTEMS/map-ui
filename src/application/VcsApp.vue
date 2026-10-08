@@ -93,7 +93,6 @@
   } from './VcsSplashScreen.vue';
   import VcsTextPage from './VcsTextPage.vue';
   import VcsAttributions from './VcsAttributions.vue';
-  import { getAttributions } from './attributionsHelper.js';
   import VcsPositionDisplay from './VcsPositionDisplay.vue';
   import {
     getDataProtection,
@@ -747,9 +746,9 @@
    * @returns {{ attributionEntries: import("vue").Ref<Array<import("./attributionsHelper.js").AttributionEntry>>, attributionAction: import("../actions/actionHelper.js").VcsAction, destroyAttributions: function():void }}
    */
   export function setupAttributions(app) {
-    const { entries, destroy } = getAttributions(app);
+    const { entries } = app.attributions;
 
-    const { action: attributionAction, destroy: attributionDestroy } =
+    const { action: attributionAction, destroy: destroyAttributions } =
       createToggleAction(
         {
           name: 'attributionToggle',
@@ -773,10 +772,7 @@
     return {
       attributionEntries: entries,
       attributionAction,
-      destroyAttributions: () => {
-        destroy();
-        attributionDestroy();
-      },
+      destroyAttributions,
     };
   }
 

@@ -52,6 +52,7 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
 import createSiteConfig from './siteConfig.js';
 import { createVcsVuetify } from './vuePlugins/vuetify.js';
 import createObliqueFallbackWarnings from './obliqueFallbackWarnings.js';
+import { getAttributions } from './application/attributionsHelper.js';
 
 /**
  * @typedef {import("@vcmap/core").VcsModuleConfig & {
@@ -210,6 +211,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
+        this.attributions.removeOwner(plugin.name);
         // i18n messages of the plugin are added by the i18n collection
         if (plugin.initialize) {
           let state;
@@ -236,6 +238,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
+        this.attributions.removeOwner(plugin.name);
         // i18n messages of the plugin are removed by the i18n collection
       }),
     ];
@@ -351,6 +354,12 @@ class VcsUiApp extends VcsApp {
     this._overviewMap = new OverviewMap(this);
 
     /**
+     * @type {import("./application/attributionsHelper.js").Attributions}
+     * @private
+     */
+    this._attributions = getAttributions(this);
+
+    /**
      * @type {CategoryManager}
      * @private
      */
@@ -460,6 +469,13 @@ class VcsUiApp extends VcsApp {
    */
   get overviewMap() {
     return this._overviewMap;
+  }
+
+  /**
+   * @type {import("./application/attributionsHelper.js").Attributions}
+   */
+  get attributions() {
+    return this._attributions;
   }
 
   /**
@@ -804,6 +820,7 @@ class VcsUiApp extends VcsApp {
     this.toolboxManager.destroy();
     this.categoryManager.destroy();
     this.contextMenuManager.destroy();
+    this.attributions.destroy();
     this._overviewMap.destroy();
     this._pluginListeners.forEach((cb) => {
       cb();

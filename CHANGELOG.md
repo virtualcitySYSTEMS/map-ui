@@ -1,3 +1,7 @@
+# 6.3.13
+
+- Added support for registering additional maps with the attribution registry, including automatic updates while registered.
+
 # 6.3.12
 
 ### Changes
