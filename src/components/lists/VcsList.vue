@@ -1,5 +1,10 @@
 <template>
-  <div class="d-contents vcs-list">
+  <div
+    class="vcs-list"
+    :class="{
+      'sticky-searchbar': stickySearchbar && searchable,
+    }"
+  >
     <vcs-treeview-searchbar
       v-if="searchable"
       :placeholder="searchbarPlaceholder"
@@ -113,6 +118,7 @@
    * @vue-prop {boolean} [singleSelect=false]
    * @vue-prop {Array<import("./VcsListItemComponent.vue").VcsListItem>} [modelValue=[]] - the initial items to be selected.
    * @vue-prop {boolean} [searchable=false] - if this list can have its items searched.
+   * @vue-prop {boolean} [stickySearchbar=false] - Keeps the searchbar at the top of the scroll container.
    * @vue-prop {function(import("./VcsListItemComponent.vue").VcsListItem, string):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {string} [searchbarPlaceholder] - placeholder to render inside the search field
    * @vue-prop {boolean} [showTitle=true] - show the title component
@@ -159,6 +165,10 @@
       default: () => [],
     },
     searchable: {
+      type: Boolean,
+      default: false,
+    },
+    stickySearchbar: {
       type: Boolean,
       default: false,
     },
@@ -282,6 +292,30 @@
 </script>
 
 <style lang="scss" scoped>
+  .vcs-list {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .vcs-list > .v-list {
+    overflow: visible;
+  }
+
+  .vcs-list.sticky-searchbar {
+    --searchbar-height: calc(var(--v-vcs-font-size) * 2 + 18px);
+    margin-top: var(--searchbar-height);
+
+    > .vcs-treeview-searchbar {
+      width: 100%;
+      position: absolute !important;
+      margin-top: calc(var(--searchbar-height) * -1);
+      z-index: 2;
+    }
+  }
+
   :deep(.v-list) {
     .v-list-item__lighten_even:nth-child(even) {
       background-color: rgb(var(--v-theme-base-lighten-4));
@@ -338,8 +372,5 @@
         }
       }
     }
-  }
-  .d-contents {
-    display: contents;
   }
 </style>

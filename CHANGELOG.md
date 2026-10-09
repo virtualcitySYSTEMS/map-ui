@@ -1,6 +1,8 @@
 # 6.3.13
 
 - Added support for registering additional maps with the attribution registry, including automatic updates while registered.
+- Added an opt-in `stickySearchbar` prop to `VcsTreeview`, `VcsList` and `VcsGroupedList` using CSS-only reserved searchbar space in positioned, height-constrained windows
+- Enabled the sticky searchbar in `AllIconsComponent`, `ClusterFeatureComponent` and `LayerTree`
 
 # 6.3.12
 

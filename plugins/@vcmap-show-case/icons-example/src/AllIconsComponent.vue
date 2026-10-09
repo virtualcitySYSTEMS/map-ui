@@ -1,19 +1,21 @@
 <template>
-  <v-sheet class="overflow-auto icons-window">
-    <vcs-list :items="icons" :searchable="true" :show-title="false" />
-  </v-sheet>
+  <vcs-list
+    class="icons-window"
+    :items="icons"
+    searchable
+    sticky-searchbar
+    :show-title="false"
+  />
 </template>
 
 <script>
   import { Icons, VcsList } from '@vcmap/ui';
-  import { VSheet } from 'vuetify/components';
   import { computed } from 'vue';
 
   export default {
     name: 'AllIconsComponent',
     components: {
       VcsList,
-      VSheet,
     },
     setup() {
       const createListItem = (icon) => {

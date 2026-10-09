@@ -1,5 +1,8 @@
 <template>
-  <div class="vcs-treeview">
+  <div
+    class="vcs-treeview"
+    :class="{ 'sticky-searchbar': stickySearchbar && showSearchbar }"
+  >
     <VcsTreeviewSearchbar
       v-if="showSearchbar"
       :placeholder="searchbarPlaceholder"
@@ -12,37 +15,39 @@
         <slot name="search-append" v-bind="searchAppend" />
       </template>
     </VcsTreeviewSearchbar>
-    <div
-      v-for="(item, index) in items"
-      :key="item.name"
-      class="vcs-treeitem"
-      :class="{ 'mobile-spacing': xs }"
-    >
-      <VcsTreeNode
-        class="root-node"
-        :class="{
-          'vcs-draggable-item': isDraggable,
-        }"
-        :item="item"
-        :path="[index]"
-        :search="localSearchValue"
-        v-model:opened="localOpenedItems"
-        :custom-filter="customFilter"
-        :open-on-click="openOnClick"
-        :item-children="itemChildren"
-        :draggable="isDraggable"
-        @mousedown.shift="$event.preventDefault()"
-        @dragstart="dragStart"
-        @dragover="dragOver"
-        @dragend="dragEnd"
-        @drop="drop"
-        @item-toggled="itemToggled"
-        @click="itemClicked"
+    <div class="treeview-items">
+      <div
+        v-for="(item, index) in items"
+        :key="item.name"
+        class="vcs-treeitem"
+        :class="{ 'mobile-spacing': xs }"
       >
-        <template v-for="slot of forwardSlots" #[slot]="scope">
-          <slot :name="slot" v-bind="scope ?? {}" />
-        </template>
-      </VcsTreeNode>
+        <VcsTreeNode
+          class="root-node"
+          :class="{
+            'vcs-draggable-item': isDraggable,
+          }"
+          :item="item"
+          :path="[index]"
+          :search="localSearchValue"
+          v-model:opened="localOpenedItems"
+          :custom-filter="customFilter"
+          :open-on-click="openOnClick"
+          :item-children="itemChildren"
+          :draggable="isDraggable"
+          @mousedown.shift="$event.preventDefault()"
+          @dragstart="dragStart"
+          @dragover="dragOver"
+          @dragend="dragEnd"
+          @drop="drop"
+          @item-toggled="itemToggled"
+          @click="itemClicked"
+        >
+          <template v-for="slot of forwardSlots" #[slot]="scope">
+            <slot :name="slot" v-bind="scope ?? {}" />
+          </template>
+        </VcsTreeNode>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +78,7 @@
    * @vue-prop {boolean} [openOnClick=false] - Whether to open items on title click.
    * @vue-prop {string} [search=''] - The value used to filter the items.
    * @vue-prop {boolean} [showSearchbar=false] - Whether there is a searchbar for this treeview.
+   * @vue-prop {boolean} [stickySearchbar=false] - Keeps the searchbar at the top of the scroll container.
    * @vue-prop {string}  [searchbarPlaceholder] - Placeholder text for the searchbar, will be translated.
    * @vue-prop {function(arg0: import("./VcsTreeNode.vue").VcsTreeNodeItem, arg1: string|undefined):boolean} [customFilter] - a function to customize filtering when searching.
    * @vue-prop {import("./dragHelper.js").DropTargetZonesFunction} [dropTargetZones] - a function to define allowed drop target zones per item.
@@ -113,6 +119,10 @@
         default: '',
       },
       showSearchbar: {
+        type: Boolean,
+        default: false,
+      },
+      stickySearchbar: {
         type: Boolean,
         default: false,
       },
@@ -203,6 +213,28 @@
 </script>
 
 <style lang="scss" scoped>
+  .vcs-treeview {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .treeview-items {
+    display: block;
+  }
+  .vcs-treeview.sticky-searchbar {
+    --searchbar-height: calc(var(--v-vcs-font-size) * 2 + 18px);
+    margin-top: var(--searchbar-height);
+
+    > .vcs-treeview-searchbar {
+      width: 100%;
+      position: absolute !important;
+      margin-top: calc(var(--searchbar-height) * -1);
+      z-index: 2;
+    }
+  }
   // Hide node component when not rendered (e.g. filtered by search)
   .vcs-treeitem:not(:has(.vcs-tree-node)) {
     display: none;

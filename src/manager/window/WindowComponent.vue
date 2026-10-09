@@ -28,7 +28,7 @@
     </div>
     <v-divider v-if="!windowState.hideHeader" />
     <div
-      class="overflow-x-hidden overflow-y-auto mb-1 d-flex flex-grow-1 flex-column"
+      class="window-content overflow-x-hidden overflow-y-auto mb-1 d-flex flex-grow-1 flex-column"
       :class="{
         rounded: !isDocked,
       }"
@@ -169,6 +169,10 @@
 </script>
 
 <style scoped>
+  .window-content > :deep(:has(> .sticky-searchbar:only-child)) {
+    display: contents;
+  }
+
   .marginToTop {
     margin-top: 2px;
   }

@@ -3,9 +3,10 @@
     <VcsTreeview
       v-if="tree && tree.length"
       :items="tree"
-      :show-searchbar="true"
-      v-model:opened="open"
+      show-searchbar
+      sticky-searchbar
       open-on-click
+      v-model:opened="open"
       :searchbar-placeholder="'content.search.placeholder'"
       item-children="visibleChildren"
     >
@@ -103,3 +104,13 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .layer-tree {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+</style>
