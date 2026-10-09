@@ -1,8 +1,22 @@
 # 6.3.13
 
+### Changes
+
+- Updated Developer configuration
 - Added support for registering additional maps with the attribution registry, including automatic updates while registered.
 - Added an opt-in `stickySearchbar` prop to `VcsTreeview`, `VcsList` and `VcsGroupedList` using CSS-only reserved searchbar space in positioned, height-constrained windows
 - Enabled the sticky searchbar in `AllIconsComponent`, `ClusterFeatureComponent` and `LayerTree`
+
+### Fixes
+
+- Fixed that the attributions of the layers used in the overviewmap would not be shown in the attributions
+- Updated @vcmap/core to 6.3.11
+  - Fixes a bug where ClippingObject could add an undefined target for unsupported layer visualizations
+
+### Plugin Bundle updates
+
+- @vcmap/ladder-reachability: 1.0.2
+  - New Plugin to simulate a fire engine ladder reachability on a 3D map
 
 # 6.3.12
 

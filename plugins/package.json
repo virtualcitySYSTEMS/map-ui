@@ -33,7 +33,8 @@
     "@vcmap/dynamic-layer": "^4.0.0",
     "@vcmap/geofence": "^1.0.2",
     "@vcmap/panorama": "^1.0.0",
-    "@vcmap/layer-settings": "^1.0.1"
+    "@vcmap/layer-settings": "^1.0.1",
+    "@vcmap/ladder-reachability": "^1.0.2"
   },
   "optionalDependencies": {
     "@vcmap/guided-tour": "^1.0.6",
