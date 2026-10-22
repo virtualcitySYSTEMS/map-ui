@@ -1,3 +1,9 @@
+# 6.3.14
+
+### Changes
+
+- Change `AbstractFeatureInfoView` to also remove attributes with empty string when `removeNoDataAttributes` is set to true
+
 # 6.3.13
 
 ### Changes

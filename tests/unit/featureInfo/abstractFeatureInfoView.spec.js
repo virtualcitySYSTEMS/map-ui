@@ -263,7 +263,8 @@ describe('AbstractFeatureInfoView', () => {
     it('should remove no data values when removeNoDataAttributes is true', () => {
       const filtered = applyEmptyAttributesFilter(attributes, true);
       expect(filtered).to.not.have.property('undefinedField');
-      expect(Object.keys(filtered)).to.have.length(5);
+      expect(filtered).to.not.have.property('emptyString');
+      expect(Object.keys(filtered)).to.have.length(4);
     });
   });
 
@@ -319,7 +320,7 @@ describe('AbstractFeatureInfoView', () => {
       );
       const attrs = viewWithRemoveNoData.getAttributes(featureWithNoData);
       expect(attrs).to.have.property('name', 'testFeature');
-      expect(attrs).to.have.property('emptyField');
+      expect(attrs).to.not.have.property('emptyField');
       expect(attrs).to.not.have.property('undefinedField', undefined);
       viewWithRemoveNoData.destroy();
     });
