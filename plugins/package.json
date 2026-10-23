@@ -10,7 +10,7 @@
     "@vcmap/export": "^2.1.0",
     "@vcmap/viewshed": "^4.1.0",
     "@vcmap/measurement": "^5.0.0",
-    "@vcmap/multi-view": "^3.0.0",
+    "@vcmap/multi-view": "^4.0.0",
     "@vcmap/draw": "^5.0.0",
     "@vcmap/shadow": "^3.3.0",
     "@vcmap/search-wfs": "^2.1.0",
@@ -34,7 +34,8 @@
     "@vcmap/geofence": "^1.0.2",
     "@vcmap/panorama": "^1.0.0",
     "@vcmap/layer-settings": "^1.0.1",
-    "@vcmap/ladder-reachability": "^1.0.2"
+    "@vcmap/ladder-reachability": "^1.0.2",
+    "@vcmap/shadow-map": "^1.0.1"
   },
   "optionalDependencies": {
     "@vcmap/guided-tour": "^1.0.6",

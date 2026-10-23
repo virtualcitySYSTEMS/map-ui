@@ -2,7 +2,39 @@
 
 ### Changes
 
+- Updated @vcmap/core to 6.3.13
+  - Added horizontal panorama image flipping based on PANORAMA_FLIP meta tag.
 - Change `AbstractFeatureInfoView` to also remove attributes with empty string when `removeNoDataAttributes` is set to true
+
+### Fixes
+
+- Fixed that the attributions of the layers used in the overviewmap would not be shown in the attributions
+- Updated @vcmap/core to 6.3.13
+  - Allows overwriting the content-type for WFS Requests. Also changed the default content-type to text/xml
+  - Added horizontal panorama image flipping based on PANORAMA_FLIP meta tag.
+  - Fixes an issue, where the panorama highlighting would not work for images without depth.
+  - Correctly places persistent interactions after the feature provider interaction, even if an interaction has been inserted before.
+  - Change `CsvAttributeProvider` to set empty CSV values to `null` instead of an empty string
+
+### Plugin Bundle updates
+
+- @vcmap/shadow-map: 1.0.1
+  - New Plugin to simulate shadow for a given rectangle over a day.
+- @vcmap/multi-view: 4.0.0
+  - Fixed a bug where layers shown in the multi-view would not show up in the attributions
+- @vcmap/layer-slider: 2.0.1
+  - add defaults to the slider configuration and improve the editor for layer and label ticks
+  - add support for standard onActivate and onDeactivate callbacks on slider content-tree items
+  - add configuration options for the content-tree action tooltip and icon
+  - fix a bug where title and labels were not localized correctly
+  - enforce uniqueness of layer names and their corresponding labels
+  - allow optional tick labels, falling back to the layer title or name
+  - hide slider items without layers and only show the slider action for at least two layers
+- @vcmap/planning: 7.1.2
+  - Fixed a bug where the label of points would not correctly persist.
+- @vcmap/guided-tour: 1.0.9
+  - Fix plugin destroy function
+  - Pass the plugin instance directly to chapter builders to avoid fragile collection lookups during initialization that can break tour setup.
 
 # 6.3.13
 
