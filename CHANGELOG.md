@@ -1,3 +1,9 @@
+# 6.3.15
+
+### Changes
+
+- Fixed a styling issue with the scrollbar of the `VcsTreeview`, `VcsList` and `VcsGroupedList` components
+
 # 6.3.14
 
 ### Changes

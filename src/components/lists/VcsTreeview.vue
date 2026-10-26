@@ -218,7 +218,6 @@
     flex: 1 1 auto;
     min-height: 0;
     overflow: auto;
-    scrollbar-gutter: stable;
   }
 
   .treeview-items {
