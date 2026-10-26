@@ -4,6 +4,14 @@
 
 - Fixed a styling issue with the scrollbar of the `VcsTreeview`, `VcsList` and `VcsGroupedList` components
 
+### Plugin Bundle updates
+
+- @vcmap/dynamic-layer
+  - Improved GeoNetwork and Piveau distributions' type detection
+  - Fixed a bug where parsing WMS and WMTS styles without legendURL would fail
+  - Fixed a bug where relative catalogues URLs would not be correctly loaded
+  - Fixed empty default catalogue title when the catalogue host has no subdomain
+
 # 6.3.14
 
 ### Changes
