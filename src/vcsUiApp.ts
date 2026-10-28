@@ -77,6 +77,10 @@ import { callbackClassRegistry } from './callback/vcsCallback.js';
 import createSiteConfig from './siteConfig.js';
 import { createVcsVuetify } from './vuePlugins/vuetify.js';
 import createObliqueFallbackWarnings from './obliqueFallbackWarnings.js';
+import {
+  type Attributions,
+  getAttributions,
+} from './application/attributionsHelper.js';
 
 type VcsUiModuleConfig = VcsModuleConfig & {
   plugins?: SerializedPluginConfig[];
@@ -267,6 +271,8 @@ class VcsUiApp extends VcsApp {
 
   private _overviewMap = new OverviewMap(this);
 
+  private _attributions: Attributions = getAttributions(this);
+
   private _categoryManager = new CategoryManager(this);
 
   private _contextMenuManager = new ContextMenuManager(this);
@@ -300,6 +306,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
+        this._attributions.removeOwner(plugin.name);
         // i18n messages of the plugin are added by the i18n collection
         if (plugin.initialize) {
           let state: PluginState<unknown> | undefined;
@@ -340,6 +347,7 @@ class VcsUiApp extends VcsApp {
         this._categoryManager.removeOwner(plugin.name);
         this._contextMenuManager.removeOwner(plugin.name);
         this._search.removeOwner(plugin.name);
+        this._attributions.removeOwner(plugin.name);
         // i18n messages of the plugin are removed by the i18n collection
       }),
     ];
@@ -387,6 +395,9 @@ class VcsUiApp extends VcsApp {
   }
   get overviewMap(): OverviewMap {
     return this._overviewMap;
+  }
+  get attributions(): Attributions {
+    return this._attributions;
   }
   get i18n(): I18nCollection {
     return this._i18n;
@@ -706,6 +717,7 @@ class VcsUiApp extends VcsApp {
     this.toolboxManager.destroy();
     this.categoryManager.destroy();
     this.contextMenuManager.destroy();
+    this._attributions.destroy();
     this._overviewMap.destroy();
     this._pluginListeners.forEach((cb: () => void) => {
       cb();

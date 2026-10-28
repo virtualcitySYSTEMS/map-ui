@@ -3,6 +3,108 @@
 ### Updated peer dependencies
 
 - Updated @vcmap/core to 7.0.0
+    - Updated Cesium to 1.142
+    - Updated OpenLayers to 10.10.0
+
+### Breaking Changes
+
+- Changed CI/CD from Node 20 to 24
+- Updated Vuetify to version 4.2
+- Updated vite to version 8.2
+- Removed `setupDraggableList`, use new logic `setupDraggableListOrTree`
+- Removed deprecated `draggable` property of the CollectionComponentClass
+- Changed `ToolboxComponentOptions` and `ToolboxComponent` to generic types over `ToolboxType` (e.g. `ToolboxComponentOptions<ToolboxType.SINGLE>` and `ToolboxComponent<ToolboxType.GROUP>`)
+- Removed deprecated `targetIndex` property from ItemMovedEvent type, use `targetItem` instead
+- Changed `createFlightVisualizationAction` to a sync function
+- Changed casing of `VcsUiAppConfigPattern` to `vcsUiAppConfigPattern`
+- Changed casing of `EditorTransformationIcons` to `editorTransformationIcons`
+- Changed `url` parameter of `getStateFromURL` to required
+- Changed `id` property of `ToolboxComponentOptions` to required
+
+### Changes
+
+- Added support for TypeScript files, and started migration
+- Deprecated enums `LegendType`, `PlayerDirection`, `StyleRowType` and `WindowSlot`; use literal string keys instead
+
+### Fixes
+
+# 6.3.15
+
+### Changes
+
+- Fixed a styling issue with the scrollbar of the `VcsTreeview`, `VcsList` and `VcsGroupedList` components
+
+### Plugin Bundle updates
+
+- @vcmap/dynamic-layer
+  - Improved GeoNetwork and Piveau distributions' type detection
+  - Fixed a bug where parsing WMS and WMTS styles without legendURL would fail
+  - Fixed a bug where relative catalogues URLs would not be correctly loaded
+  - Fixed empty default catalogue title when the catalogue host has no subdomain
+
+# 6.3.14
+
+### Changes
+
+- Updated @vcmap/core to 6.3.13
+  - Added horizontal panorama image flipping based on PANORAMA_FLIP meta tag.
+- Change `AbstractFeatureInfoView` to also remove attributes with empty string when `removeNoDataAttributes` is set to true
+
+### Fixes
+
+- Fixed that the attributions of the layers used in the overviewmap would not be shown in the attributions
+- Updated @vcmap/core to 6.3.13
+  - Allows overwriting the content-type for WFS Requests. Also changed the default content-type to text/xml
+  - Added horizontal panorama image flipping based on PANORAMA_FLIP meta tag.
+  - Fixes an issue, where the panorama highlighting would not work for images without depth.
+  - Correctly places persistent interactions after the feature provider interaction, even if an interaction has been inserted before.
+  - Change `CsvAttributeProvider` to set empty CSV values to `null` instead of an empty string
+
+### Plugin Bundle updates
+
+- @vcmap/shadow-map: 1.0.1
+  - New Plugin to simulate shadow for a given rectangle over a day.
+- @vcmap/multi-view: 4.0.0
+  - Fixed a bug where layers shown in the multi-view would not show up in the attributions
+- @vcmap/layer-slider: 2.0.1
+  - add defaults to the slider configuration and improve the editor for layer and label ticks
+  - add support for standard onActivate and onDeactivate callbacks on slider content-tree items
+  - add configuration options for the content-tree action tooltip and icon
+  - fix a bug where title and labels were not localized correctly
+  - enforce uniqueness of layer names and their corresponding labels
+  - allow optional tick labels, falling back to the layer title or name
+  - hide slider items without layers and only show the slider action for at least two layers
+- @vcmap/planning: 7.1.2
+  - Fixed a bug where the label of points would not correctly persist.
+- @vcmap/guided-tour: 1.0.9
+  - Fix plugin destroy function
+  - Pass the plugin instance directly to chapter builders to avoid fragile collection lookups during initialization that can break tour setup.
+
+# 6.3.13
+
+### Changes
+
+- Updated Developer configuration
+- Added support for registering additional maps with the attribution registry, including automatic updates while registered.
+- Added an opt-in `stickySearchbar` prop to `VcsTreeview`, `VcsList` and `VcsGroupedList` using CSS-only reserved searchbar space in positioned, height-constrained windows
+- Enabled the sticky searchbar in `AllIconsComponent`, `ClusterFeatureComponent` and `LayerTree`
+
+### Fixes
+
+- Fixed that the attributions of the layers used in the overviewmap would not be shown in the attributions
+- Updated @vcmap/core to 6.3.11
+  - Fixes a bug where ClippingObject could add an undefined target for unsupported layer visualizations
+
+### Plugin Bundle updates
+
+- @vcmap/ladder-reachability: 1.0.2
+  - New Plugin to simulate a fire engine ladder reachability on a 3D map
+
+# 7.0.0
+
+### Updated peer dependencies
+
+- Updated @vcmap/core to 7.0.0
   - Updated Cesium to 1.142
   - Updated OpenLayers to 10.10.0
 
@@ -35,6 +137,24 @@
 - Extended the configuration options in `VcsWorkspaceWrapper.vue` to allow the **New** button to be hidden optionally.
 - Fixed a bug in `AbstractFeatureInfoView` where empty attributes were filtered after mapping, leading to mapped empty attributes to be visible
 - Fixed a bug in `AbstractFeatureInfoView` where parent attribute merging threw an error for tile contents whose batch table does not provide feature access
+- Updated @vcmap/core to 6.3.9
+  - Fixes CsvAttributeProvider serializing headers extracted from CSV data.
+
+### Plugin Bundle updates
+
+- @vcmap/module-selector: 4.0.0
+  - Preserve module `id`s when switching between modules
+- @vcmap/viewshed
+  - improves viewshed terrain visibility by correcting shadow-map depth precision
+- @vcmap/panorama
+  - Added id `panorama-toolbox` to toolbox button, enabling usage of Toolbar callbacks
+- @vcmap/layer-settings
+  - Added support for CesiumTilesetLayers' screenSpaceError setting
+- @vcmap/shadow
+  - add activeOnStartup config option to activate the shadow tool automatically on startup when no saved state is present
+  - add a config editor for the activeOnStartup option
+- @vcmap/export
+  - Fixes an issue where exports started from the context menu could fail with an “invalid inputs” validation error.
 
 # 6.3.11
 

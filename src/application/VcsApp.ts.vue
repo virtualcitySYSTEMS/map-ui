@@ -39,7 +39,6 @@
   import { isUiConfigurationItem } from '../uiConfig.js';
   import type VcsUiApp from '../vcsUiApp.js';
   import type { AttributionEntry } from './attributionsHelper.js';
-  import { getAttributions } from './attributionsHelper.js';
   import {
     getDataProtection,
     getImprint,
@@ -80,9 +79,9 @@
     attributionAction: VcsAction;
     destroyAttributions: () => void;
   } {
-    const { entries, destroy } = getAttributions(app);
+    const { entries } = app.attributions;
 
-    const { action: attributionAction, destroy: attributionDestroy } =
+    const { action: attributionAction, destroy: destroyAttributions } =
       createToggleAction(
         {
           name: 'attributionToggle',
@@ -106,10 +105,7 @@
     return {
       attributionEntries: entries,
       attributionAction,
-      destroyAttributions: (): void => {
-        destroy();
-        attributionDestroy();
-      },
+      destroyAttributions,
     };
   }
 

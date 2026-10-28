@@ -26,6 +26,17 @@ const configMain = defineConfig(async ({ mode }) => {
       rewrite: (path) =>
         path.replace(/\/\.vite\/workers/, '/@vcmap/core/dist/src/workers'),
     };
+
+    const internProxy = {
+      target: 'https://www.virtualcitymap.de',
+      changeOrigin: true,
+    };
+    proxy['/datasource-data'] = internProxy;
+    proxy['/intern'] = internProxy;
+    proxy['/configs'] = {
+      target: 'https://www.virtualcitymap.de/intern',
+      changeOrigin: true,
+    };
   } else {
     const pluginRegistryIndex = process.argv.indexOf('--plugin-registry');
     if (pluginRegistryIndex > -1 && process.argv[pluginRegistryIndex + 1]) {

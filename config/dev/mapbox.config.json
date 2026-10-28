@@ -1,6 +1,7 @@
 {
-  "name": "MapBox Style Showcase",
-  "_id": "mapbox-style",
+  "name": "MapboxStyle Showcase",
+  "_id": "mapbox-config",
+  "comment": "Module synchronised with the dev module using the event-control plugin",
   "layers": [
     {
       "name": "basemap.de",
@@ -9,6 +10,10 @@
       "sources": ["smarttiles_de"],
       "exclusiveGroups": ["mapboxDemo"],
       "excludeLayerFromPicking": ["Hintergrund"],
+      "extent": {
+        "coordinates": [6.01149, 47.43169, 14.88644, 54.85087],
+        "projection": { "epsg": "EPSG:4326" }
+      },
       "properties": {
         "clusterFeatureTitleProperty": "klasse",
         "featureInfo": "tableAll",
@@ -43,6 +48,10 @@
       "type": "MapboxStyleLayer",
       "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_drk.json",
       "exclusiveGroups": ["mapboxDemo"],
+      "extent": {
+        "coordinates": [6.01149, 47.43169, 14.88644, 54.85087],
+        "projection": { "epsg": "EPSG:4326" }
+      },
       "properties": {
         "clusterFeatureTitleProperty": "klasse",
         "featureInfo": "tableAll",
@@ -60,6 +69,10 @@
       "type": "MapboxStyleLayer",
       "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_bin.json",
       "exclusiveGroups": ["mapboxDemo"],
+      "extent": {
+        "coordinates": [6.01149, 47.43169, 14.88644, 54.85087],
+        "projection": { "epsg": "EPSG:4326" }
+      },
       "properties": {
         "clusterFeatureTitleProperty": "klasse",
         "featureInfo": "tableAll",
@@ -68,40 +81,6 @@
             "provider": "basemap.de",
             "year": "2025",
             "url": "https://www.basemap.de/"
-          }
-        ]
-      }
-    },
-    {
-      "name": "bayernwolke",
-      "type": "MapboxStyleLayer",
-      "url": "https://vtod1.bayernwolke.de/styles/by_style_standard.json",
-      "exclusiveGroups": ["mapboxDemo"],
-      "properties": {
-        "clusterFeatureTitleProperty": "klasse",
-        "featureInfo": "tableAll",
-        "attributions": [
-          {
-            "provider": "Landesamt für Digitalisierung, Breitband und Vermessung Bayern",
-            "year": "2025",
-            "url": "https://www.ldbv.bayern.de/produkte/karten/webvektor.html"
-          }
-        ]
-      }
-    },
-    {
-      "name": "bayernwolke/dark",
-      "type": "MapboxStyleLayer",
-      "url": "https://vtod1.bayernwolke.de/styles/by_style_nacht.json",
-      "exclusiveGroups": ["mapboxDemo"],
-      "properties": {
-        "clusterFeatureTitleProperty": "klasse",
-        "featureInfo": "tableAll",
-        "attributions": [
-          {
-            "provider": "Landesamt für Digitalisierung, Breitband und Vermessung Bayern",
-            "year": "2025",
-            "url": "https://www.ldbv.bayern.de/produkte/karten/webvektor.html"
           }
         ]
       }
@@ -122,50 +101,37 @@
   ],
   "contentTree": [
     {
-      "name": "demoMapbox",
+      "name": "layersExamples.mapbox",
       "type": "NodeContentTreeItem",
-      "title": "MapBox Style demo",
-      "initOpen": true,
+      "title": "MapboxStyleLayer",
       "weight": 1
     },
     {
-      "name": "demoMapbox.basemapde",
+      "name": "layersExamples.mapbox.basemapde",
       "title": "basemap.de",
       "type": "LayerContentTreeItem",
       "layerName": "basemap.de"
     },
     {
-      "name": "demoMapbox.basemapde_worldwde",
-      "title": "basemap.de, worldwide",
-      "type": "LayerContentTreeItem",
-      "layerName": "basemap.de/worldwide"
-    },
-    {
-      "name": "demoMapbox.basemapde_dark",
+      "name": "layersExamples.mapbox.basemapde_dark",
       "title": "basemap.de, dark",
       "type": "LayerContentTreeItem",
       "layerName": "basemap.de/dark"
     },
     {
-      "name": "demoMapbox.basemapde_binary",
+      "name": "layersExamples.mapbox.basemapde_binary",
       "title": "basemap.de, binary",
       "type": "LayerContentTreeItem",
       "layerName": "basemap.de/binary"
     },
     {
-      "name": "demoMapbox.bayernwolke",
-      "title": "Webkarte Vektor Bayern",
+      "name": "layersExamples.mapbox.basemapde_worldwde",
+      "title": "basemap.de, worldwide",
       "type": "LayerContentTreeItem",
-      "layerName": "bayernwolke"
+      "layerName": "basemap.de/worldwide"
     },
     {
-      "name": "demoMapbox.bayernwolke_dark",
-      "title": "Webkarte Vektor Bayern, dark",
-      "type": "LayerContentTreeItem",
-      "layerName": "bayernwolke/dark"
-    },
-    {
-      "name": "demoMapbox.ign",
+      "name": "layersExamples.mapbox.ign",
       "title": "Worldwide IGN Style",
       "type": "LayerContentTreeItem",
       "layerName": "Plan.IGN"

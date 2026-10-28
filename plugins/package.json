@@ -10,9 +10,9 @@
     "@vcmap/export": "^2.1.0",
     "@vcmap/viewshed": "^4.1.0",
     "@vcmap/measurement": "^5.0.0",
-    "@vcmap/multi-view": "^3.0.0",
+    "@vcmap/multi-view": "^4.0.0",
     "@vcmap/draw": "^5.0.0",
-    "@vcmap/shadow": "^3.1.0",
+    "@vcmap/shadow": "^3.3.0",
     "@vcmap/search-wfs": "^2.1.0",
     "@vcmap/search-esri": "^3.0.0",
     "@vcmap/search-coordinate": "^2.0.0",
@@ -20,7 +20,7 @@
     "@vcmap/cesium-filters": "^2.0.0",
     "@vcmap/search-nominatim": "^2.0.0",
     "@vcmap/create-link": "^3.0.0",
-    "@vcmap/module-selector": "^3.0.0",
+    "@vcmap/module-selector": "^4.0.0",
     "@vcmap/line-of-sight": "^2.0.0",
     "@vcmap/layer-slider": "^2.0.0",
     "@vcmap/vcs-solar-balloon": "^2.0.0",
@@ -33,7 +33,9 @@
     "@vcmap/dynamic-layer": "^4.0.0",
     "@vcmap/geofence": "^1.0.2",
     "@vcmap/panorama": "^1.0.0",
-    "@vcmap/layer-settings": "^1.0.1"
+    "@vcmap/layer-settings": "^1.0.1",
+    "@vcmap/ladder-reachability": "^1.0.2",
+    "@vcmap/shadow-map": "^1.0.1"
   },
   "optionalDependencies": {
     "@vcmap/guided-tour": "^1.0.6",

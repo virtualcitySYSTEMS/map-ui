@@ -1,6 +1,7 @@
 {
-  "name": "WMSLayer Examples",
-  "_id": "wmsLayersConfig",
+  "name": "WMSLayer Showcase",
+  "_id": "wms-config",
+  "comment": "Module synchronised with the dev module using the event-control plugin",
   "description": "Various examples of WMS layers with different configurations and feature info setups.",
   "featureInfo": [
     {
@@ -19,10 +20,7 @@
       "tilingSchema": "geographic",
       "zIndex": 12,
       "extent": {
-        "coordinates": [
-          13.086171185192569, 52.33695782771426, 13.764035088296197,
-          52.678047957512774
-        ],
+        "coordinates": [13.086171, 52.336958, 13.764035, 52.678048],
         "projection": { "epsg": "EPSG:4326" }
       },
       "featureInfo": {
@@ -59,10 +57,7 @@
       "version": "1.3.0",
       "zIndex": 12,
       "extent": {
-        "coordinates": [
-          13.086171185192569, 52.33695782771426, 13.764035088296197,
-          52.678047957512774
-        ],
+        "coordinates": [13.086171, 52.336958, 13.764035, 52.678048],
         "projection": { "epsg": "EPSG:4326" }
       },
       "parameters": "TRANSPARENT=TRUE&format=image/png&transparent=true",
@@ -94,10 +89,7 @@
       "tilingSchema": "geographic",
       "zIndex": 13,
       "extent": {
-        "coordinates": [
-          8.942719437634453, 47.38138219888387, 13.84146949537307,
-          50.54970314935966
-        ],
+        "coordinates": [8.942719, 47.381382, 13.841469, 50.549703],
         "projection": { "epsg": "EPSG:4326" }
       },
       "properties": {
@@ -126,10 +118,7 @@
       "tilingSchema": "geographic",
       "zIndex": 13,
       "extent": {
-        "coordinates": [
-          12.043429659817345, 54.06857915653396, 12.17311698898485,
-          54.18172442922884
-        ],
+        "coordinates": [12.04343, 54.068579, 12.173117, 54.181724],
         "projection": { "epsg": "EPSG:4326" }
       },
       "properties": {
@@ -152,10 +141,7 @@
       "tilingSchema": "mercator",
       "zIndex": 13,
       "extent": {
-        "coordinates": [
-          12.043429659817345, 54.06857915653396, 12.17311698898485,
-          54.18172442922884
-        ],
+        "coordinates": [12.04343, 54.068579, 12.173117, 54.181724],
         "projection": { "epsg": "EPSG:4326" }
       },
       "properties": {
@@ -178,10 +164,7 @@
       "tilingSchema": "geographic",
       "zIndex": 13,
       "extent": {
-        "coordinates": [
-          3.8995076364861645, 46.977344337168944, 15.104210190290265,
-          55.86246702017854
-        ],
+        "coordinates": [3.899508, 46.977344, 15.10421, 55.862467],
         "projection": { "epsg": "EPSG:4326" }
       },
       "featureInfo": {
@@ -291,7 +274,7 @@
             {
               "name": "ea-be:World_Bright-Earth-e-Atlas-basemap",
               "title": "World: Bright Earth e-Atlas Basemap",
-              "extent": [-180, -90, 180.00000000000023, 90.00000000000009],
+              "extent": [-180, -90, 180, 90],
               "styles": [
                 {
                   "name": "default-style-ea-be:World_Bright-Earth-e-Atlas-basemap",
@@ -653,50 +636,50 @@
   ],
   "contentTree": [
     {
-      "name": "wmsShowcases",
+      "name": "layersExamples.wms",
       "type": "NodeContentTreeItem",
-      "title": "WMS Showcases",
-      "initOpen": true
+      "title": "WMSLayer",
+      "weight": 0
     },
     {
-      "name": "wmsShowcases.berlinAlkisFlurstuecke",
+      "name": "layersExamples.wms.berlinAlkisFlurstuecke",
       "type": "LayerContentTreeItem",
       "layerName": "berlinAlkisFlurstuecke"
     },
     {
-      "name": "wmsShowcases.berlinStadtStruktur",
+      "name": "layersExamples.wms.berlinStadtStruktur",
       "type": "LayerContentTreeItem",
       "layerName": "berlinStadtStruktur"
     },
     {
-      "name": "wmsShowcases.textHtml",
+      "name": "layersExamples.wms.textHtml",
       "type": "NodeContentTreeItem",
       "title": "WMS text/html FeatureInfo",
       "tooltip": "Showcases text/html response handling for WMS GetFeatureInfo requests, including custom textHTMLEvaluator regex to detect empty responses"
     },
     {
-      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_bayern",
+      "name": "layersExamples.wms.textHtml.wmsHtmlFeatureInfo_bayern",
       "type": "LayerContentTreeItem",
       "layerName": "wmsHtmlFeatureInfo_bayern"
     },
     {
-      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_rostock_wgs84",
+      "name": "layersExamples.wms.textHtml.wmsHtmlFeatureInfo_rostock_wgs84",
       "type": "LayerContentTreeItem",
       "layerName": "wmsHtmlFeatureInfo_rostock_wgs84"
     },
     {
-      "name": "wmsShowcases.textHtml.wmsHtmlFeatureInfo_rostock_mercator",
+      "name": "layersExamples.wms.textHtml.wmsHtmlFeatureInfo_rostock_mercator",
       "type": "LayerContentTreeItem",
       "layerName": "wmsHtmlFeatureInfo_rostock_mercator"
     },
     {
-      "name": "wmsShowcases.wmsPoiOpen",
+      "name": "layersExamples.wms.wmsPoiOpen",
       "type": "WMSGroupContentTreeItem",
       "layerName": "wmsPoiOpen",
       "tooltip": "Showcases load on click and predefined legend"
     },
     {
-      "name": "wmsShowcases.wmsTopplus",
+      "name": "layersExamples.wms.wmsTopplus",
       "type": "WMSGroupContentTreeItem",
       "layerName": "wmsTopplus",
       "setWMSLayersExclusive": true,
@@ -706,7 +689,7 @@
       "tooltip": "Showcases WMSGroupContentTreeItem with exclusive layer selection and load on startup"
     },
     {
-      "name": "wmsShowcases.eAtlas",
+      "name": "layersExamples.wms.eAtlas",
       "type": "WMSGroupContentTreeItem",
       "layerName": "eAtlas",
       "showWhenNotSupported": true,

@@ -1,0 +1,215 @@
+{
+  "_id": "city-planning",
+  "old_id": "bd5197a4-49e2-4565-8649-3a5fd8b48f1b",
+  "properties": {},
+  "name": "Stadtplanung",
+  "description": "Eingebunden in Module Selektor offen und intern ",
+  "createdAt": "2026-07-21T13:16:09.697Z",
+  "updatedAt": "2026-09-11T14:07:17.666Z",
+  "createdBy": "v6WEM2A92ozfZaAu5",
+  "updatedBy": "v6WEM2A92ozfZaAu5",
+  "projectId": "Tfy62pdpXuTHH4smE",
+  "categories": [],
+  "clippingPolygons": [],
+  "contentTree": [
+    {
+      "type": "LayerGroupContentTreeItem",
+      "name": "3D-Daten.3D-Mesh_DOP",
+      "title": "3D-Mesh Bochum",
+      "layerNames": ["DOP Buchum", "3D-Mesh Bochum"]
+    },
+    {
+      "type": "LayerContentTreeItem",
+      "name": "2D-Layer.spw2 graublau",
+      "title": "SPW2 GrauBlau",
+      "layerName": "spw2 graublau"
+    }
+  ],
+  "featureInfo": [],
+  "flights": [],
+  "hiddenObjects": [],
+  "i18n": [
+    {
+      "name": "Stadtplanung i18n",
+      "de": {
+        "Stadtplanung": "Stadtplanung",
+        "Gemeinsame Flächennutzungsplan (GFNP)": "Gemeinsame Flächennutzungsplan (GFNP)",
+        "TopPlus grau": "TopPlus grau"
+      },
+      "en": {
+        "Stadtplanung": "Urban Planning",
+        "Gemeinsame Flächennutzungsplan (GFNP)": "Joint Land Use Plan",
+        "TopPlus grau": "TopPlus grey"
+      }
+    }
+  ],
+  "layers": [
+    {
+      "type": "WMSLayer",
+      "name": "spw2 graublau",
+      "activeOnStartup": true,
+      "exclusiveGroups": ["Kunden"],
+      "url": "https://geodaten.metropoleruhr.de/spw2",
+      "extent": {
+        "coordinates": [
+          7.065075711321616, 51.416035645760644, 7.34389409256506,
+          51.5482733291133
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "35cce244-475d-4a4e-aa5b-3a2694b59d83",
+      "maxLevel": 29,
+      "tilingSchema": "mercator",
+      "layers": "spw2_graublau",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "WMSLayer",
+      "name": "DOP Buchum",
+      "url": "https://geodaten.metropoleruhr.de/dop/dop_2025",
+      "extent": {
+        "coordinates": [
+          7.073604040609234, 51.406446813532796, 7.355753327624799,
+          51.52611926971292
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "datasourceId": "81aefc19-7aa2-47d1-8dbf-22787e4d0905",
+      "tilingSchema": "mercator",
+      "layers": "dop_2025",
+      "version": "1.3.0",
+      "parameters": {
+        "UNDEFINED": "",
+        "FORMAT": "image/png",
+        "TRANSPARENT": "true"
+      },
+      "zIndex": 0
+    },
+    {
+      "type": "CesiumTilesetLayer",
+      "name": "3D-Mesh Bochum",
+      "url": "https://3d.ruhr/datasource-data/2024_Mesh_Bochum/tileset.json",
+      "extent": {
+        "coordinates": [
+          7.141998976299943, 51.44285204707347, 7.30463129381424,
+          51.521625702987876
+        ],
+        "projection": {
+          "epsg": "EPSG:4326"
+        }
+      },
+      "exclusiveGroups": ["3D"],
+      "datasourceId": "b9f27021-fe01-4843-ad8a-75445f40e275",
+      "zIndex": 0
+    }
+  ],
+  "maps": [],
+  "obliqueCollections": [],
+  "plugins": [
+    {
+      "xplanBoxUrl": "https://xplanbox.geoportal.ruhr/",
+      "xplanBoxVersion": "9",
+      "name": "@vcmap/xplan",
+      "entry": "plugins/@vcmap/xplan/index.js"
+    },
+    {
+      "serviceUrl": "https://service.virtualcityplanner.de/",
+      "projectId": "Hf9JogxP3bYEdQWwh",
+      "mapId": "3S8EhkfT55CPX78As",
+      "terrainUrl": "https://www.virtualcitymap.de/datasource-data/globalterrain_5_9",
+      "defaultFeatureStoreVcsMeta": {
+        "version": "2.1",
+        "screenSpaceError": 4,
+        "altitudeMode": "clampToGround"
+      },
+      "name": "@vcmap/planning",
+      "entry": "plugins/@vcmap/planning/index.js"
+    },
+    {
+      "name": "@vcmap/solar-revenue",
+      "entry": "plugins/@vcmap/solar-revenue/index.js"
+    }
+  ],
+  "styles": [],
+  "uiConfig": [
+    {
+      "name": "appTitle",
+      "value": "Digitaler Zwilling - Stadtplanung"
+    },
+    {
+      "name": "headerTitle",
+      "value": "Digitaler Zwilling - Stadtplanung"
+    },
+    {
+      "name": "primaryColor",
+      "value": "#FFDE00"
+    },
+    {
+      "name": "displayQuality",
+      "value": {
+        "startingQualityLevel": "medium",
+        "startingMobileQualityLevel": "low",
+        "low": {
+          "sse": 4,
+          "fxaa": false,
+          "fogEnabled": true,
+          "fogDensity": 0.0009,
+          "fogScreenSpaceErrorFactor": 6,
+          "resolutionScale": 0.9,
+          "layerSSEFactor": 2,
+          "msaa": 1
+        },
+        "medium": {
+          "sse": 1.1,
+          "fxaa": false,
+          "fogEnabled": true,
+          "fogDensity": 0.0005,
+          "fogScreenSpaceErrorFactor": 4,
+          "resolutionScale": 1.5,
+          "layerSSEFactor": 1.1,
+          "msaa": 1
+        },
+        "high": {
+          "sse": 1.3333333333333333,
+          "fxaa": true,
+          "fogEnabled": false,
+          "fogDensity": 0,
+          "fogScreenSpaceErrorFactor": 0,
+          "resolutionScale": 1,
+          "layerSSEFactor": 0.5,
+          "msaa": 4
+        }
+      }
+    }
+  ],
+  "vectorClusterGroups": [],
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "Bochum Stadtplanung",
+      "distance": 14147.887546267011,
+      "cameraPosition": [
+        7.212913823292086, 51.483915196866256, 14242.294133139158
+      ],
+      "groundPosition": [
+        7.212913823292086, 51.48398770771389, 94.40889212759654
+      ],
+      "heading": 2.0355549961366507e-13,
+      "pitch": -89.96691010504968,
+      "roll": 0,
+      "animate": false
+    }
+  ],
+  "startingViewpointName": "Bochum Stadtplanung",
+  "startingMapName": "CesiumMap"
+}

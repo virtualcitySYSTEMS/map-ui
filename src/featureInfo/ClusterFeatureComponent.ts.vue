@@ -81,6 +81,7 @@
         v-model="selected"
         selectable
         single-select
+        sticky-searchbar
         searchable
         open-all
       />

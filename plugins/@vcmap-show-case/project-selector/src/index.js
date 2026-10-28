@@ -13,8 +13,10 @@ import en from './en.json';
  * @property {string} _id
  * @property {string} [name]
  * @property {string} [description]
- * @property {string} configUrl
+ * @property {string} [configUrl]
+ * @property {Object} [config]
  * @property {boolean} active
+ * @property {Array<VcsModuleState>} [modules]
  */
 
 /**
@@ -37,6 +39,7 @@ import en from './en.json';
  * @property {boolean} [open=false] - open plugin on startup
  * @property {Array<Project>} projects
  * @property {Array<string>} modules
+ * @property {Record<string, Array<string>>} [additionalModules] - child module URLs by parent module ID
  */
 
 /**
@@ -50,6 +53,7 @@ export default async function projectSelector(config) {
     open,
     projects = [],
     modules = [],
+    additionalModules = {},
   } = config;
 
   const pluginConfig = reactive({
@@ -70,6 +74,17 @@ export default async function projectSelector(config) {
     projects: /** @type {Array<Project>} */ [],
     modules: /** @type {Array<VcsModuleState>} */ [],
   });
+  const additionalModuleStates = new Map(
+    Object.entries(additionalModules).map(([moduleId, configUrls]) => [
+      moduleId,
+      configUrls.map((configUrl) => ({
+        _id: undefined,
+        configUrl,
+        active: false,
+      })),
+    ]),
+  );
+  let removeModuleRemovedListener;
 
   /**
    * @param {string} configUrl
@@ -118,25 +133,24 @@ export default async function projectSelector(config) {
    * @param {VcsModuleState} moduleState
    * @returns {Promise<void>}
    */
-  async function loadModule(app, moduleState) {
-    try {
-      const response = await fetch(moduleState.configUrl);
-      if (response.ok) {
-        const configJson = await response.json();
-        const module = new VcsModule(configJson);
-        if (!app.getModuleById(module._id)) {
-          await app.addModule(module);
-          moduleState._id = module._id;
-          moduleState.name = module.name;
-          moduleState.description = module.description;
-          moduleState.active = true;
-        }
-      }
-    } catch (err) {
-      getLogger().error(
-        `Failed loading module from ${moduleState.configUrl}`,
-        err,
+  async function unloadModule(app, moduleState) {
+    if (moduleState.modules) {
+      await Promise.all(
+        moduleState.modules.map((state) => unloadModule(app, state)),
       );
+      moduleState.modules = undefined;
+      moduleState.active = false;
+      return;
+    }
+    if (app.getModuleById(moduleState._id)) {
+      await Promise.all(
+        (additionalModuleStates.get(moduleState._id) || []).map((state) =>
+          unloadModule(app, state),
+        ),
+      );
+      await app.removeModule(moduleState._id);
+      moduleState.active = false;
+      moduleState._id = undefined;
     }
   }
 
@@ -145,11 +159,46 @@ export default async function projectSelector(config) {
    * @param {VcsModuleState} moduleState
    * @returns {Promise<void>}
    */
-  async function unloadModule(app, moduleState) {
-    if (app.getModuleById(moduleState._id)) {
-      await app.removeModule(moduleState._id);
-      moduleState.active = false;
-      moduleState._id = undefined;
+  async function loadModule(app, moduleState) {
+    try {
+      const response = await fetch(moduleState.configUrl);
+      if (response.ok) {
+        const configJson = await response.json();
+        if (Array.isArray(configJson.modules)) {
+          moduleState.modules = configJson.modules.map((moduleConfig) =>
+            typeof moduleConfig === 'string'
+              ? { _id: undefined, active: false, configUrl: moduleConfig }
+              : { _id: undefined, active: false, config: moduleConfig },
+          );
+          await Promise.all(
+            moduleState.modules.map((state) => loadModule(app, state)),
+          );
+          moduleState.name = configJson.name;
+          moduleState.description = configJson.description;
+          moduleState.active = moduleState.modules.every(
+            (state) => state.active,
+          );
+          return;
+        }
+        const module = new VcsModule(configJson);
+        if (!app.getModuleById(module._id)) {
+          await app.addModule(module);
+          moduleState._id = module._id;
+          moduleState.name = module.name;
+          moduleState.description = module.description;
+          moduleState.active = true;
+          await Promise.all(
+            (additionalModuleStates.get(module._id) || []).map((state) =>
+              loadModule(app, state),
+            ),
+          );
+        }
+      }
+    } catch (err) {
+      getLogger().error(
+        `Failed loading module from ${moduleState.configUrl}`,
+        err,
+      );
     }
   }
 
@@ -214,21 +263,11 @@ export default async function projectSelector(config) {
       const windowComponent = {
         id: 'project-selector',
         component: ProjectsComponent,
-        state: {
-          headerTitle: 'Project Selector',
-        },
-        position: {
-          left: '30%',
-          right: '30%',
-          top: '20%',
-          bottom: '20%',
-        },
+        state: { headerTitle: 'Project Selector' },
+        position: { left: '30%', right: '30%', top: '10%' },
       };
       const { action, destroy } = createToggleAction(
-        {
-          name: 'VC Map HOSTING',
-          icon: 'mdi-chevron-down',
-        },
+        { name: 'VC Map HOSTING', icon: 'mdi-chevron-down' },
         windowComponent,
         app.windowManager,
         packageJSON.name,
@@ -239,6 +278,23 @@ export default async function projectSelector(config) {
         ButtonLocation.PROJECT,
       );
       this._destroyAction = destroy;
+      removeModuleRemovedListener = app.moduleRemoved.addEventListener(
+        (module) => {
+          const moduleStates = [
+            ...pluginState.modules,
+            ...[...additionalModuleStates.values()].flat(),
+            ...pluginState.projects.flatMap(
+              ({ modules: projectModules }) => projectModules,
+            ),
+          ];
+          moduleStates.forEach((moduleState) => {
+            if (moduleState._id === module._id) {
+              moduleState.active = false;
+              moduleState._id = undefined;
+            }
+          });
+        },
+      );
 
       pluginConfig.modules.forEach((c) => addModule(c));
       pluginConfig.projects.forEach((p) => addProject(p));
@@ -260,6 +316,10 @@ export default async function projectSelector(config) {
       en,
     },
     destroy() {
+      if (removeModuleRemovedListener) {
+        removeModuleRemovedListener();
+        removeModuleRemovedListener = undefined;
+      }
       if (this._destroyAction) {
         this._destroyAction();
         this._destroyAction = null;

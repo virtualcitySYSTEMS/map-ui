@@ -1,7 +1,7 @@
 <template>
-  <v-sheet>
-    <v-text-field v-model="message" label="Message" />
-    <v-text-field v-model.number="timeout" label="Timeout" />
+  <v-sheet class="pa-1">
+    <VcsTextField class="py-2" v-model="message" label="Message" />
+    <VcsTextField class="py-2" v-model.number="timeout" label="Timeout" />
     <VcsCheckbox v-model="hasTimeout" label="Toggle Timeout" />
     <v-list>
       <v-list-item v-for="type in types" :key="type">
@@ -23,12 +23,11 @@
     VSheet,
     VList,
     VListItem,
-    VTextField,
     VIcon,
     VCard,
     VDivider,
   } from 'vuetify/components';
-  import { NotificationType, VcsCheckbox } from '@vcmap/ui';
+  import { NotificationType, VcsCheckbox, VcsTextField } from '@vcmap/ui';
   import { computed, inject, ref } from 'vue';
 
   export default {
@@ -37,11 +36,11 @@
       VSheet,
       VList,
       VListItem,
-      VTextField,
       VIcon,
       VCard,
       VDivider,
       VcsCheckbox,
+      VcsTextField,
     },
     setup() {
       const app = inject('vcsApp');

@@ -20,6 +20,83 @@ const getDummyAttribution = (provider, year) => ({
 });
 
 describe('createAttributionEntries', () => {
+  describe('registered maps', () => {
+    it('unregisters maps on plugin removal without removing other owners', async () => {
+      const app = new VcsUiApp();
+      const sideMap = new OpenlayersMap({
+        name: 'side',
+        properties: { attributions: getDummyAttribution('side', 2023) },
+      });
+      await sideMap.activate();
+
+      const { entries, registerMap } = app.attributions;
+      const unregister = registerMap(sideMap, 'first');
+      registerMap(sideMap, 'first');
+      registerMap(sideMap, 'second');
+      expect(entries).to.have.length(1);
+
+      app.plugins.removed.raiseEvent({ name: 'first' });
+      expect(entries).to.have.length(1);
+      unregister();
+      expect(entries).to.have.length(1);
+
+      app.plugins.removed.raiseEvent({ name: 'second' });
+      expect(entries).to.have.length(0);
+
+      const unregisterAgain = registerMap(sideMap, 'first');
+      unregister();
+      expect(entries).to.have.length(1);
+      unregisterAgain();
+      expect(entries).to.have.length(0);
+
+      sideMap.destroy();
+      app.destroy();
+    });
+
+    it('keeps shared layers until all visible maps are unregistered', async () => {
+      const app = new VcsUiApp();
+      const mainMap = new OpenlayersMap({ name: 'main' });
+      const sideMap = new OpenlayersMap({
+        name: 'side',
+        properties: { attributions: getDummyAttribution('side', 2023) },
+      });
+      const layer = new VectorLayer({
+        name: 'shared',
+        properties: { attributions: getDummyAttribution('shared', 2022) },
+      });
+      app.maps.add(mainMap);
+      app.layers.add(layer);
+      await layer.activate();
+      await app.maps.setActiveMap(mainMap.name);
+      sideMap.layerCollection = mainMap.layerCollection;
+      await sideMap.activate();
+
+      const { entries, registerMap } = app.attributions;
+      const unregister = registerMap(sideMap, 'test');
+      expect(entries.map(({ key }) => key)).to.have.members([
+        getKey(layer),
+        getKey(sideMap),
+      ]);
+
+      const unregisterAgain = registerMap(sideMap, 'test');
+      expect(entries).to.have.length(2);
+
+      mainMap.layerCollection.remove(layer);
+      expect(entries.map(({ key }) => key)).to.deep.equal([getKey(sideMap)]);
+      mainMap.layerCollection.add(layer);
+      expect(entries).to.have.length(2);
+
+      unregister();
+      expect(entries).to.have.length(2);
+      unregisterAgain();
+      unregisterAgain();
+      expect(entries.map(({ key }) => key)).to.deep.equal([getKey(layer)]);
+
+      sideMap.destroy();
+      app.destroy();
+    });
+  });
+
   describe('adding attribution entries', () => {
     /** @type {VcsUiApp} */
     let app;

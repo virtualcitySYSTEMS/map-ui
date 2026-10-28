@@ -1,11 +1,13 @@
-import { type Reactive, reactive } from 'vue';
+import { type Reactive, reactive, watch } from 'vue';
 import {
   type Layer,
+  type LayerCollection,
   type ObliqueCollection,
   ObliqueMap,
   type VcsMap,
 } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
+import type { vcsAppSymbol } from '../pluginHelper.js';
 
 type AttributionOptions = {
   /** name of the data provider */
@@ -77,18 +79,34 @@ export function mergeAttributions(entries: Array<AttributionEntry>): Array<{
   }));
 }
 
+export type Attributions = {
+  /** reactive array of attribution entries */
+  entries: Reactive<AttributionEntry[]>;
+  /** registers a map and its layer collection for an owner, returns a function to unregister it */
+  registerMap: (map: VcsMap, owner: string | typeof vcsAppSymbol) => () => void;
+  /** unregister all maps registered by an owner */
+  removeOwner: (owner: string | typeof vcsAppSymbol) => void;
+  /** clears all listeners and cleans up attributions */
+  destroy: () => void;
+};
+
 /**
  * Gets attributions of all active maps, layers and oblique collections and returns an array of entries.
  * Each entry is defined by a key derived from the object's className and name, and it's associated attributions.
  * Listens to state changes of maps, layers and oblique collections and synchronizes the entries array correspondingly.
  * Returns a destroy function to clear listeners.
  */
-export function getAttributions(app: VcsUiApp): {
-  entries: Reactive<AttributionEntry[]>;
-  destroy: () => void;
-} {
+export function getAttributions(app: VcsUiApp): Attributions {
   const entries = reactive<AttributionEntry[]>([]);
-  let obliqueListener = (): void => {};
+  const registeredMaps = new Map<
+    VcsMap,
+    {
+      collection: LayerCollection;
+      registrations: Map<() => void, string | typeof vcsAppSymbol>;
+      removeListeners: Array<() => void>;
+    }
+  >();
+  const obliqueListeners = new Map<ObliqueMap, () => void>();
 
   /**
    * Adds an entry for an object using a combination of the object's className and name as key.
@@ -113,72 +131,121 @@ export function getAttributions(app: VcsUiApp): {
     }
   }
 
-  function removeAttributions(
-    object: VcsMap | Layer | ObliqueCollection,
-  ): void {
-    const idx = entries.findIndex(
-      (e) => e.key === `${object.className}_${object.name}`,
-    );
-    if (idx >= 0) {
-      entries.splice(idx, 1);
-    }
-  }
-
-  /**
-   * adds or removes a AttributionEntry for layers or maps
-   */
-  function syncAttributions(object: VcsMap | Layer): void {
-    if (object?.properties?.attributions === undefined) {
-      return;
-    }
-    if (object.active) {
-      addAttributions(object);
-    } else {
-      removeAttributions(object);
-    }
-  }
-
-  function initAttributions(map: VcsMap): void {
-    if (!map) {
-      return;
-    }
-    obliqueListener();
+  function updateAttributions(): void {
     entries.splice(0);
-    syncAttributions(map);
-    [...map.layerCollection].forEach((layer) => {
-      if (layer.isSupported(map)) {
-        syncAttributions(layer);
+    const visibleMaps = new Map<VcsMap, LayerCollection>();
+    if (app.maps.activeMap) {
+      visibleMaps.set(app.maps.activeMap, app.maps.activeMap.layerCollection);
+    }
+    if (app.overviewMap.active) {
+      const overviewMap = app.overviewMap.map;
+      visibleMaps.set(overviewMap, overviewMap.layerCollection);
+    }
+    registeredMaps.forEach(({ collection }, map) => {
+      if (map.active) {
+        visibleMaps.set(map, collection);
       }
     });
-    if (map instanceof ObliqueMap && map.collection) {
-      addAttributions(map.collection);
-      obliqueListener = map.collectionChanged.addEventListener(
-        (obliqueCollection) => {
-          [...app.obliqueCollections].forEach(removeAttributions);
-          addAttributions(obliqueCollection);
-        },
-      );
-    }
+    obliqueListeners.forEach((removeListener, map) => {
+      if (!visibleMaps.has(map)) {
+        removeListener();
+        obliqueListeners.delete(map);
+      }
+    });
+    visibleMaps.forEach((collection, map) => {
+      if (map.active) {
+        addAttributions(map);
+      }
+      [...collection].forEach((layer) => {
+        if (layer.active && layer.isSupported(map)) {
+          addAttributions(layer);
+        }
+      });
+      if (map instanceof ObliqueMap) {
+        if (map.collection) {
+          addAttributions(map.collection);
+        }
+        if (!obliqueListeners.has(map)) {
+          obliqueListeners.set(
+            map,
+            map.collectionChanged.addEventListener(updateAttributions),
+          );
+        }
+      }
+    });
   }
 
   const listeners = [
-    app.maps.mapActivated.addEventListener(initAttributions),
-    app.layers.stateChanged.addEventListener(syncAttributions),
-    app.layers.removed.addEventListener(removeAttributions),
-    app.maps.removed.addEventListener(removeAttributions),
+    app.maps.mapActivated.addEventListener(updateAttributions),
+    app.layers.stateChanged.addEventListener(updateAttributions),
+    app.layers.added.addEventListener(updateAttributions),
+    app.layers.removed.addEventListener(updateAttributions),
+    app.maps.removed.addEventListener(updateAttributions),
+    watch(app.overviewMap.currentState, updateAttributions),
   ];
 
-  // Setup may run before a map is activated; mapActivated initializes entries later.
-  if (app.maps.activeMap) {
-    initAttributions(app.maps.activeMap);
+  updateAttributions();
+
+  function registerMap(
+    map: VcsMap,
+    owner: string | typeof vcsAppSymbol,
+  ): () => void {
+    let registered = registeredMaps.get(map);
+    if (!registered) {
+      registered = {
+        collection: map.layerCollection,
+        registrations: new Map(),
+        removeListeners: [
+          map.stateChanged.addEventListener(updateAttributions),
+          map.layerCollection.added.addEventListener(updateAttributions),
+          map.layerCollection.removed.addEventListener(updateAttributions),
+        ],
+      };
+      registeredMaps.set(map, registered);
+    }
+    const unregister = (): void => {
+      const current = registeredMaps.get(map);
+      if (!current?.registrations.delete(unregister)) {
+        return;
+      }
+      if (current.registrations.size === 0) {
+        current.removeListeners.forEach((removeListener) => {
+          removeListener();
+        });
+        registeredMaps.delete(map);
+      }
+      updateAttributions();
+    };
+    registered.registrations.set(unregister, owner);
+    updateAttributions();
+    return unregister;
+  }
+
+  function removeOwner(owner: string | typeof vcsAppSymbol): void {
+    registeredMaps.forEach(({ registrations }) => {
+      registrations.forEach((registrationOwner, unregister) => {
+        if (registrationOwner === owner) {
+          unregister();
+        }
+      });
+    });
   }
 
   const destroy = (): void => {
     listeners.forEach((cb) => {
       cb();
     });
-    obliqueListener();
+    obliqueListeners.forEach((removeListener) => {
+      removeListener();
+    });
+    obliqueListeners.clear();
+    registeredMaps.forEach(({ removeListeners }) => {
+      removeListeners.forEach((removeListener) => {
+        removeListener();
+      });
+    });
+    registeredMaps.clear();
   };
 
-  return { entries, destroy };
+  return { entries, registerMap, removeOwner, destroy };
 }

@@ -273,7 +273,9 @@ export function applyEmptyAttributesFilter(
         typeof attributes[key] === 'object' &&
         Object.keys(attributes[key]).length === 0) ||
       (removeAllEmpty &&
-        (attributes[key] === undefined || attributes[key] === null))
+        (attributes[key] === undefined ||
+          attributes[key] === null ||
+          attributes[key] === ''))
     ) {
       return obj;
     }

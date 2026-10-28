@@ -1,0 +1,218 @@
+{
+  "name": "I3S Showcase",
+  "_id": "i3s-config",
+  "comment": "Module synchronised with the dev module using the event-control plugin",
+  "layers": [
+    {
+      "name": "I3SLayerMadrid",
+      "type": "I3SLayer",
+      "exclusiveGroups": ["i3s"],
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "Madrid, Spain",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "Transparentbuildings"
+        ]
+      },
+      "url": "https://tiles-eu1.arcgis.com/UrtTdLP2PYSxwtI6/arcgis/rest/services/MODELADO_3D_MADRID/SceneServer",
+      "adjustMaterialAlphaMode": true,
+      "showFeatures": true,
+      "applySymbology": true,
+      "calculateNormals": true,
+      "lightColor": "#666666",
+      "outlineColor": "#696969",
+      "cesium3dTilesetOptions": {
+        "showOutline": true,
+        "backFaceCulling": false,
+        "shadows": 1,
+        "enablePick": true
+      }
+    },
+    {
+      "name": "I3SLayerFrankfurt",
+      "type": "I3SLayer",
+      "exclusiveGroups": ["i3s"],
+      "allowPicking": false,
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "Frankfurt, Germany",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "Transparentbuildings"
+        ]
+      },
+      "url": "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Frankfurt2017_vi3s_18/SceneServer",
+      "cesium3dTilesetOptions": {
+        "showOutline": true,
+        "enablePick": true
+      }
+    },
+    {
+      "name": "I3SLayerNYC",
+      "type": "I3SLayer",
+      "exclusiveGroups": ["i3s"],
+      "hasBatchTable": false,
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "New York City, USA",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "Transparentbuildings"
+        ]
+      },
+      "url": "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/NYC_Attributed_v17/SceneServer",
+      "cesium3dTilesetOptions": {
+        "showOutline": true,
+        "allowPick": true
+      }
+    },
+    {
+      "name": "I3SLayerSF",
+      "type": "I3SLayer",
+      "exclusiveGroups": ["i3s"],
+      "hasBatchTable": false,
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "San Francisco, USA",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "Transparentbuildings"
+        ]
+      },
+      "url": "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_3DObjects_1_7/SceneServer",
+      "cesium3dTilesetOptions": {
+        "showOutline": true,
+        "enablePick": true
+      }
+    },
+    {
+      "name": "I3SLayerLibrary",
+      "type": "I3SLayer",
+      "exclusiveGroups": ["i3s"],
+      "hasBatchTable": false,
+      "properties": {
+        "featureInfo": "tableAll",
+        "title": "Turanga Library, New Zealand",
+        "availableStyles": [
+          "MeasuredHeightGreen",
+          "MeasuredHeightBrown",
+          "MeasuredHeightBlue",
+          "Transparentbuildings"
+        ]
+      },
+      "url": "https://tiles.arcgis.com/tiles/cFEFS0EWrhfDeVw9/arcgis/rest/services/Turanga_Library/SceneServer",
+      "cesium3dTilesetOptions": {
+        "showOutline": true,
+        "enablePick": true
+      }
+    }
+  ],
+  "contentTree": [
+    {
+      "name": "layersExamples.i3s",
+      "type": "NodeContentTreeItem",
+      "title": "I3SLayer",
+      "weight": 2
+    },
+    {
+      "name": "layersExamples.i3s.frankfurt",
+      "layerName": "I3SLayerFrankfurt",
+      "type": "LayerContentTreeItem",
+      "onActivate": [
+        { "type": "GoToViewpointCallback", "viewpoint": "frankfurt" }
+      ]
+    },
+    {
+      "name": "layersExamples.i3s.madrid",
+      "layerName": "I3SLayerMadrid",
+      "type": "LayerContentTreeItem",
+      "onActivate": [{ "type": "GoToViewpointCallback", "viewpoint": "madrid" }]
+    },
+    {
+      "name": "layersExamples.i3s.nyc",
+      "layerName": "I3SLayerNYC",
+      "type": "LayerContentTreeItem",
+      "onActivate": [{ "type": "GoToViewpointCallback", "viewpoint": "nyc" }]
+    },
+    {
+      "name": "layersExamples.i3s.sf",
+      "layerName": "I3SLayerSF",
+      "type": "LayerContentTreeItem",
+      "onActivate": [{ "type": "GoToViewpointCallback", "viewpoint": "sf" }]
+    },
+    {
+      "name": "layersExamples.i3s.library",
+      "layerName": "I3SLayerLibrary",
+      "type": "LayerContentTreeItem",
+      "onActivate": [
+        { "type": "GoToViewpointCallback", "viewpoint": "library" }
+      ]
+    }
+  ],
+  "viewpoints": [
+    {
+      "type": "Viewpoint",
+      "name": "madrid",
+      "distance": 385.65,
+      "cameraPosition": [-3.707495, 40.414476, 998.46],
+      "groundPosition": [-3.706078, 40.415537, 651.48],
+      "heading": 45.63,
+      "pitch": -64.12,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "type": "Viewpoint",
+      "name": "frankfurt",
+      "distance": 412.4,
+      "cameraPosition": [8.699818, 50.106111, 306.955868],
+      "groundPosition": [8.697964, 50.109091, 100.513964],
+      "heading": 338.19,
+      "pitch": -30.04,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "type": "Viewpoint",
+      "name": "nyc",
+      "distance": 3042.32,
+      "cameraPosition": [-74.019422, 40.688794, 1569.409329],
+      "groundPosition": [-74.010806, 40.711373, 8.47274],
+      "heading": 16.19,
+      "pitch": -30.88,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "type": "Viewpoint",
+      "name": "sf",
+      "distance": 4135.0,
+      "cameraPosition": [-122.375118, 37.810676, 1604.493326],
+      "groundPosition": [-122.408456, 37.788673, 20.313176],
+      "heading": 230.26,
+      "pitch": -22.54,
+      "roll": 0,
+      "animate": true
+    },
+    {
+      "type": "Viewpoint",
+      "name": "library",
+      "distance": 133.0,
+      "cameraPosition": [172.636418, -43.52936, 66.097554],
+      "groundPosition": [172.637444, -43.530168, 13.478787],
+      "heading": 137.27,
+      "pitch": -23.31,
+      "roll": 0,
+      "animate": true
+    }
+  ]
+}

@@ -67,7 +67,7 @@ audit:
   <<: *after_build_definition
   stage: test
   script:
-    - npm audit --production --audit-level=low
+    - npm audit --omit=dev --audit-level=critical
 
 bundle:
   <<: *after_build_definition

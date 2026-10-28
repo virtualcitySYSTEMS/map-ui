@@ -1,6 +1,6 @@
 {
-  "name": "projectsDemo",
-  "_id": "projectsConfig",
+  "name": "Projects Showcase Demo",
+  "_id": "projects-config",
   "plugins": [
     {
       "name": "@vcmap-show-case/project-selector",
@@ -8,46 +8,45 @@
       "selected": "",
       "selectedModules": [
         "config/dev.config.json",
-        "config/codes.config.json",
         "config/components-show-case.config.json",
         "config/concepts-show-case.config.json",
-        "config/cluster.config.json"
+        "config/codes.config.json"
       ],
       "projects": [
-        {
-          "name": "VC Map HOSTING",
-          "description": "AEROWEST DEMO (Standard Hosting Layout)",
-          "modules": ["config/aerowest.config.json"]
-        },
         {
           "name": "VC Map Demo",
           "description": "VC Map Demo www.virtualcitymap.de",
           "modules": ["config/www.config.json"]
         },
         {
-          "name": "Hannover Panorama Map",
-          "description": "Hannover Panorama Map",
-          "modules": ["config/pano.config.json"]
+          "name": "VC Map Demo Intern",
+          "description": "VC Map Demo Intern",
+          "modules": ["/intern/app.config.json"]
         }
       ],
       "modules": [
         "config/dev.config.json",
-        "config/codes.config.json",
         "config/components-show-case.config.json",
         "config/concepts-show-case.config.json",
-        "config/graphFeatureInfo.config.json",
-        "config/splashscreen.config.json",
+        "config/codes.config.json",
         "config/hello-world.config.json",
+        "config/graph-feature-info.config.json",
+        "config/splashscreen.config.json",
         "config/theming.config.json",
         "config/clipping.config.json",
         "config/cluster.config.json",
-        "config/vectorTile.config.json",
         "config/geofence.config.json",
-        "config/wms-layers.config.json",
-        "config/i3s.config.json",
-        "config/mapbox.config.json",
         "config/guided-tour.config.json"
-      ]
+      ],
+      "additionalModules": {
+        "dev": [
+          "config/dev/geojson.config.json",
+          "config/dev/i3s.config.json",
+          "config/dev/mapbox.config.json",
+          "config/dev/vector-tile.config.json",
+          "config/dev/wms.config.json"
+        ]
+      }
     }
   ]
 }
