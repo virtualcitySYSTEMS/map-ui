@@ -3,8 +3,8 @@
 ### Updated peer dependencies
 
 - Updated @vcmap/core to 7.0.0
-    - Updated Cesium to 1.142
-    - Updated OpenLayers to 10.10.0
+  - Updated Cesium to 1.142
+  - Updated OpenLayers to 10.10.0
 
 ### Breaking Changes
 

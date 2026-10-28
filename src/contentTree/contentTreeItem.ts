@@ -1,6 +1,7 @@
 import { type Ref, computed, reactive, ref, shallowRef } from 'vue';
 import { check, maybe, ofEnum, oneOf } from '@vcsuite/check';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
+import { getLogger } from '@vcsuite/logger';
 import { ClassRegistry, VcsEvent } from '@vcmap/core';
 import type VcsUiApp from '../vcsUiApp.js';
 import {
@@ -245,8 +246,17 @@ class ContentTreeItem {
   private _setStateAction(): void {
     const name = 'stateAction';
     if (this.state !== StateActionState.NONE && !this._stateActionListener) {
-      const { action, destroy } = createStateRefAction(name, this._state, () =>
-        this.clicked.bind(this),
+      const { action, destroy } = createStateRefAction(
+        name,
+        this._state,
+        () => {
+          this.clicked().catch((e: unknown) => {
+            getLogger(this.className).error(
+              `Failed to click content tree item ${this.name}`,
+              e,
+            );
+          });
+        },
       );
       this.addAction(action, 0);
       this._stateActionListener = (): void => {

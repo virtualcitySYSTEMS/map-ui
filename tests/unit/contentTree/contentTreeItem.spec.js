@@ -42,6 +42,19 @@ describe('ContentTreeItem', () => {
       expect(item.actions).to.be.empty;
       item.destroy();
     });
+
+    it('should call clicked, if the state action is executed', () => {
+      const item = new ContentTreeItem({ name: 'foo' }, app);
+      let called = false;
+      item.clicked = () => {
+        called = true;
+        return Promise.resolve();
+      };
+      item.state = StateActionState.ACTIVE;
+      item.actions[0].callback();
+      expect(called).to.be.true;
+      item.destroy();
+    });
   });
 
   describe('infoUrl action handling', () => {
