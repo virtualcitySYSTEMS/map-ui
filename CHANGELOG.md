@@ -3,6 +3,7 @@
 ### Fixes
 
 - Fixed unwanted scrolling and clipped add-anchor buttons in the flight anchor list after the sticky-searchbar layout change
+- Fixed an issue where the label of features would not correctly persist when using `VcsFeatureStyleComponent`
 
 # 6.3.15
 

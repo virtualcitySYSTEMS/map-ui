@@ -66,6 +66,12 @@
     feature.setStyle(style);
     feature[originalStyle] = style;
     const styleOptions = getStyleOptions(style);
+    const text = styleOptions.text?.text;
+    if (text) {
+      styleOptions.label = Array.isArray(text)
+        ? text.filter((_, index) => index % 2 === 0).join('')
+        : text;
+    }
     feature[vectorStyleSymbol] = new VectorStyleItem(styleOptions);
   }
 
