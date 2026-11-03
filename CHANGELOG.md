@@ -1,3 +1,9 @@
+# 6.3.16
+
+### Fixes
+
+- Fixed unwanted scrolling and clipped add-anchor buttons in the flight anchor list after the sticky-searchbar layout change
+
 # 6.3.15
 
 ### Changes
