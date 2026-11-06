@@ -25,7 +25,7 @@
   } from '@vcmap/core';
   import { getLogger } from '@vcsuite/logger';
   import type Feature from 'ol/Feature.js';
-  import type { VcsAction } from '@src/actions/actionHelper.js';
+  import type { VcsAction } from '../../actions/actionHelper.js';
   import type VcsUiApp from '../../vcsUiApp.js';
   import VcsFeatureStyleComponent from '../style/VcsFeatureStyleComponent.ts.vue';
   import VcsFeatureTransforms from './VcsFeatureTransforms.ts.vue';

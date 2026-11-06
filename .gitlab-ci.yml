@@ -51,7 +51,8 @@ type-check:
   <<: *after_build_definition
   stage: test
   script:
-    - npm run build-types
+    - npm run type-check
+    - npm run build-library
 
 test:
   <<: *after_build_definition

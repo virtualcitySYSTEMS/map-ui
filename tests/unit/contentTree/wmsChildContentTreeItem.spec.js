@@ -1,6 +1,6 @@
 import { nextTick, ref } from 'vue';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { StateActionState } from '@vcmap/ui';
+import { StateActionState } from '../../../src/actions/stateRefAction.ts';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
 import WMSChildContentTreeItem from '../../../src/contentTree/wmsChildContentTreeItem.ts';
 

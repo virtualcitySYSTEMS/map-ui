@@ -102,12 +102,13 @@ export type PluginConfig = {
 export type SerializedPluginConfig = PluginConfig &
   Record<string | symbol, unknown>;
 
-type PluginConfigEditorComponent<C extends object = PluginConfig> = Component<{
-  getConfig(): C;
-  setConfig(config?: C): void;
-}>;
+export type PluginConfigEditorComponent<C extends object = PluginConfig> =
+  Component<{
+    getConfig(): C;
+    setConfig(config?: C): void;
+  }>;
 
-type PluginConfigEditor<C extends object = PluginConfig> = {
+export type PluginConfigEditor<C extends object = PluginConfig> = {
   /** an editor component for the plugin or item */
   component: PluginConfigEditorComponent<C>;
   /** optional title to render in the window header & actions of this editor */

@@ -5,7 +5,7 @@ import { type Reactive, reactive, ref, shallowReactive } from 'vue';
 import type { VcsComponentManager } from '../../vcsUiApp.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
 import ButtonManager, { type ButtonComponent } from '../buttonManager.js';
-import { actionPattern } from '../../components/lists/VcsActionList.ts.vue';
+import { actionPattern } from '../../actions/actionValidation.js';
 import {
   type VcsAction,
   getActionFromOptions,

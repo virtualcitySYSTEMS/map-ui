@@ -10,7 +10,7 @@ import { check, oneOf } from '@vcsuite/check';
 import type VcsUiApp from '../../vcsUiApp.js';
 import ContextMenuInteraction from './contextMenuInteraction.js';
 import { vcsAppSymbol } from '../../pluginHelper.js';
-import { validateAction } from '../../components/lists/VcsActionList.ts.vue';
+import { validateAction } from '../../actions/actionValidation.js';
 import { getFittedWindowPositionOptionsFromMapEvent } from '../window/windowHelper.js';
 import ContextMenuComponent, {
   contextMenuWindowId,

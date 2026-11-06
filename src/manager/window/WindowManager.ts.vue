@@ -90,7 +90,7 @@
         return windowManager.get(id)?.props ?? {};
       };
       const getZIndex = (id: string): number => {
-        return windowManager.get(id).zIndex.value;
+        return windowManager.get(id)!.zIndex.value;
       };
       const isOnTop = (id: string): boolean => {
         return windowManager.get(id)?.zIndex.value === windowManager.maxZIndex;
@@ -158,7 +158,7 @@
           const zIndexOffset =
             Number(display.sm.value) || Number(display.xs.value); // add z-Index Offset for Tablet View to keep the windows above the detached Icon
           return {
-            zIndex: `${windowComponent.zIndex.value + zIndexOffset} !important`,
+            zIndex: `${windowComponent!.zIndex.value + zIndexOffset} !important`,
             ...getPosition(windowComponent),
             ...(windowComponent?.state?.styles || {}),
           };
@@ -297,16 +297,16 @@
       return {
         componentIds,
         getComponent: (id: string): Component =>
-          windowManager.get(id).component,
+          windowManager.get(id)!.component,
         getHeaderComponent: (id: string): Component =>
-          windowManager.get(id).headerComponent || WindowComponentHeader,
+          windowManager.get(id)!.headerComponent || WindowComponentHeader,
         getStyles,
         getState,
         getProps,
         getZIndex,
         isOnTop,
         getSlot: (id: string): Ref<WindowSlotType> =>
-          windowManager.get(id).slot,
+          windowManager.get(id)!.slot,
         close: (id: string): void => {
           windowManager.remove(id);
         },

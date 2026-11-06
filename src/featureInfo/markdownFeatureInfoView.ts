@@ -3,7 +3,7 @@ import AbstractFeatureInfoView, {
   type FeatureInfoProps,
   type FeatureInfoViewOptions,
 } from './abstractFeatureInfoView.js';
-import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.vue';
+import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.ts.vue';
 import type { FeatureInfoEvent } from './featureInfo.js';
 
 type MarkdownFeatureInfoViewOptions = FeatureInfoViewOptions & {

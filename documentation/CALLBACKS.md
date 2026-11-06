@@ -97,7 +97,7 @@ Also, make sure to unregister the class, when you're plugin is destroyed.
 
 ```js
 /**
- * @returns {import("@vcmap/ui/src/vcsUiApp").VcsPlugin<T>}
+ * @returns {import("@vcmap/ui").VcsPlugin<T>}
  * @template {Object} T
  */
 export default function myPlugin() {

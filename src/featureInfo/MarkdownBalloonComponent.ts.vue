@@ -12,7 +12,7 @@
   import { defineComponent, type PropType } from 'vue';
   import BalloonComponent from './BalloonComponent.ts.vue';
   import type { HTMLTagOptions } from './abstractFeatureInfoView.js';
-  import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.vue';
+  import VcsTemplateMarkdown from '../components/form-output/VcsTemplateMarkdown.ts.vue';
 
   /**
    * @description A balloon showing markdown content

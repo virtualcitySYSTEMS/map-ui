@@ -37,10 +37,10 @@ function hashLibraries() {
   /** @type {Record<string, Omit<LibraryBuildOption, 'lib' | 'hash'>>} */
   const libraryBuildOptionsInput = {
     vue: {
-      entry: path.join('lib', 'vue.js'),
+      entry: path.join('build', 'lib', 'vue.js'),
     },
     '@vcmap-cesium/engine': {
-      entry: path.join('lib', 'cesium.js'),
+      entry: path.join('build', 'lib', 'cesium.js'),
       rolldownOptions: {
         plugins: [
           rollupPluginStripPragma({
@@ -50,8 +50,8 @@ function hashLibraries() {
       },
     },
     ol: {
-      entry: path.join('lib', 'olLib.js'),
-      libraryEntry: path.join('lib', 'ol.js'), // openlayers special case, the entry to compile is the olLib, but the public entry must be ol.js
+      entry: path.join('build', 'lib', 'olLib.js'),
+      libraryEntry: path.join('build', 'lib', 'ol.js'), // openlayers special case, the entry to compile is the olLib, but the public entry must be ol.js
       rolldownOptions: {
         output: {
           codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
@@ -59,7 +59,7 @@ function hashLibraries() {
       },
     },
     '@vcmap/core': {
-      entry: path.join('lib', 'core.js'),
+      entry: path.join('build', 'lib', 'core.js'),
       rolldownOptions: {
         output: {
           codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
@@ -85,14 +85,14 @@ function hashLibraries() {
           },
         ],
       },
-      entry: path.join('lib', 'ui.js'),
+      entry: path.join('build', 'lib', 'ui.js'),
     },
     vuetify: {
-      entry: path.join('lib', 'vuetifyLib.js'),
+      entry: path.join('build', 'lib', 'vuetifyLib.js'),
       // vuetify special case, the entry to compile is the vuetifyLib, but the public entry must be vuetify.js
       // vuetifyLib will reexport the nested vuetify namespace as a flat namespace, so we can easily point all
       // nested namespaces to the vuetify entry file.
-      libraryEntry: path.join('lib', 'vuetify.js'),
+      libraryEntry: path.join('build', 'lib', 'vuetify.js'),
       rolldownOptions: {
         output: {
           codeSplitting: false, // Rolldown: prevent dynamic chunks with wrong MIME types
@@ -269,10 +269,10 @@ await writeFile(path.join(distFolder, '.htaccess'), htaccessContent, {
  * file and a second one library.js which will reexport all ES6 Modules. All references to these librarys will be
  * set as externals while building these libraries or later the plugins.
  */
-console.log('Building Libraries');
+console.log('Building libraries');
 await Promise.all(
   Object.entries(libraryBuildOptions).map(async ([key, value]) => {
-    console.log('Building Library: ', key);
+    console.log('Building library: ', key);
     const external = Object.keys(libraries).filter((library) => {
       return key !== library && !library.startsWith(key);
     });
@@ -313,7 +313,7 @@ await Promise.all(
       hashedPublicFiles,
     );
 
-    console.log('Building Library Entry: ', key);
+    console.log('Building library entry: ', key);
 
     /** @type {import('vite').Rolldown.InlineConfig} */
     const libraryEntryConfig = {

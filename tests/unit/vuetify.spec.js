@@ -3,7 +3,7 @@ import {
   defaultPrimaryColor,
   getColorByKey,
 } from '../../src/vuePlugins/vuetify.ts';
-import { VcsUiApp } from '../../index.js';
+import VcsUiApp from '../../src/vcsUiApp.ts';
 
 /**
  * copied from browser

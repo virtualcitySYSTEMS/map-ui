@@ -9,7 +9,8 @@ export default [
       '**/*.d.ts',
       'dist/',
       'exampleData/',
-      'lib/',
+      'lib/**',
+      'build/lib/**',
       'coverage/',
       'docs/',
       '**/*timestamp-*.mjs',
@@ -19,7 +20,7 @@ export default [
     settings: {
       'import/resolver': {
         alias: {
-          map: [['@vcmap/ui', './index.js']],
+          map: [['@vcmap/ui', './index.ts']],
         },
       },
     },

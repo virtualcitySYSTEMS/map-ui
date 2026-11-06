@@ -19,9 +19,77 @@ import {
   callSafeAction,
   createMapButtonAction,
 } from '../../src/actions/actionHelper.ts';
+import {
+  validateAction,
+  validateActions,
+} from '../../src/actions/actionValidation.ts';
 import { sleep } from '../helpers.js';
 
 describe('actionHelpers', () => {
+  describe('validateAction', () => {
+    it('accepts an action with only required properties', () => {
+      expect(validateAction({ name: 'action', callback: vi.fn() })).to.be.true;
+    });
+
+    it('accepts valid optional properties', () => {
+      expect(
+        validateAction({
+          name: 'action',
+          callback: vi.fn(),
+          title: 'Action title',
+          icon: '$vcsInfo',
+          active: true,
+          background: false,
+          hasUpdate: true,
+          disabled: false,
+        }),
+      ).to.be.true;
+    });
+
+    it('rejects missing properties and invalid property types', () => {
+      const callback = vi.fn();
+      const invalidActions = [
+        { callback },
+        { name: 'action' },
+        { name: 1, callback },
+        { name: 'action', callback: 'invalid' },
+        { name: 'action', callback, title: false },
+        { name: 'action', callback, icon: false },
+        { name: 'action', callback, active: 'invalid' },
+        { name: 'action', callback, background: 'invalid' },
+        { name: 'action', callback, hasUpdate: 'invalid' },
+        { name: 'action', callback, disabled: 'invalid' },
+      ];
+      for (const action of invalidActions) {
+        expect(validateAction(action)).to.be.false;
+      }
+    });
+  });
+
+  describe('validateActions', () => {
+    it('accepts an empty array', () => {
+      expect(validateActions([])).to.be.true;
+    });
+
+    it('accepts an array of valid actions', () => {
+      expect(
+        validateActions([
+          { name: 'first', callback: vi.fn() },
+          { name: 'second', callback: vi.fn(), disabled: true },
+        ]),
+      ).to.be.true;
+    });
+
+    it('rejects an array containing an invalid action', () => {
+      expect(
+        validateActions([
+          { name: 'valid', callback: vi.fn() },
+          { name: 'invalid' },
+        ]),
+      ).to.be.false;
+    });
+  });
+
   describe('callSafeAction helper', () => {
     it('should call the callback and log no error when the callback is synchronous and succeeds', () => {
       const action = {

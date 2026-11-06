@@ -5,10 +5,10 @@
     "baseUrl": "./",
     "moduleResolution": "nodenext",
     "paths": {
-      "@vcmap/ui": ["index.js"]
+      "@vcmap/ui": ["index.ts"]
     }
   },
-  "include": ["./src/**/*", "./plugins/**/*", "index.js"],
+  "include": ["./src/**/*", "./plugins/**/*", "index.ts"],
   "typeAcquisition": {
     "exclude": ["dotenv", "js2xmlparser"]
   }

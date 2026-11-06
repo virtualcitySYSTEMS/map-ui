@@ -25,7 +25,7 @@ export function helloWorld() {
 /**
  * @param {PluginConfig} config - the configuration of this plugin instance, passed in from the app.
  * @param {string} baseUrl - the absolute URL from which the plugin was loaded (without filename, ending on /)
- * @returns {import("@vcmap/ui/src/vcsUiApp").VcsPlugin<PluginConfig, PluginState>}
+ * @returns {import("@vcmap/ui").VcsPlugin<PluginConfig, PluginState>}
  */
 export default function helloWorldPlugin(config, baseUrl) {
   console.log(config, baseUrl);

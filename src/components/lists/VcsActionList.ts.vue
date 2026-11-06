@@ -27,8 +27,6 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import type { PropType } from 'vue';
-  import { is, optional } from '@vcsuite/check';
-  import type { Pattern } from '@vcsuite/check';
   import {
     VIcon,
     VList,
@@ -38,26 +36,7 @@
   } from 'vuetify/components';
   import { useIconSize } from '../../vuePlugins/vuetify.js';
   import type { VcsAction } from '../../actions/actionHelper.js';
-
-  /** pattern to check actions */
-  export const actionPattern: Pattern = {
-    name: String,
-    title: optional(String),
-    icon: optional(String),
-    callback: Function,
-    active: optional(Boolean),
-    background: optional(Boolean),
-    hasUpdate: optional(Boolean),
-    disabled: optional(Boolean),
-  };
-
-  export function validateAction(action: VcsAction): boolean {
-    return is(action, actionPattern);
-  }
-
-  export function validateActions(actions: VcsAction[]): boolean {
-    return actions.every(validateAction);
-  }
+  import { validateActions } from '../../actions/actionValidation.js';
 
   /**
    * @description

@@ -3,7 +3,7 @@ import { VcsEvent } from '@vcmap/core';
 import { v4 as uuidv4 } from 'uuid';
 import { check, maybe, oneOf } from '@vcsuite/check';
 import { vcsAppSymbol } from '../pluginHelper.js';
-import { actionPattern } from '../components/lists/VcsActionList.ts.vue';
+import { actionPattern } from '../actions/actionValidation.js';
 import {
   type VcsAction,
   getActionFromOptions,

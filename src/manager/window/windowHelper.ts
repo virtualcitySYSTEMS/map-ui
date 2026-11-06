@@ -305,7 +305,7 @@ export function moveWindow(
   targetSize: DOMRect | null,
   windowPosition?: WindowPosition,
 ): void {
-  const { position, slot } = windowManager.get(id);
+  const { position, slot } = windowManager.get(id)!;
   if (slot.value === 'static') {
     return;
   }

@@ -11,7 +11,7 @@
   } from '../modelHelper.js';
   import { getForwardSlots } from '../composables.js';
   import VcsTreeviewSearchbar from './VcsTreeviewSearchbar.ts.vue';
-  import type { VcsTreeNodeItem } from './treeHelper.ts';
+  import type { VcsTreeNodeItem } from './treeHelper.js';
   import VcsTreeNode from './VcsTreeNode.ts.vue';
 
   /**

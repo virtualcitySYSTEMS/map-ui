@@ -2,6 +2,14 @@
 
 See [changelog](./CHANGELOG.md) for a detailed list of changes.
 
+## Compiled npm library (7.0.0-rc.3)
+
+- Requires `@vcmap/plugin-cli` 5 with Vue 3.5 / Vuetify 4 support
+  (5.0.0-rc.1 still needs dependency updates).
+- Remove the `ensure-types` script and all `vcmplugin ensure-types` calls from
+  setup and CI; declarations are included in the package.
+- Import types from `@vcmap/ui`, not deep paths under `@vcmap/ui/src/`.
+
 # Typical Migrations
 
 - call `createFlightVisualizationAction` synchronously

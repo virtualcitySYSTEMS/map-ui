@@ -345,11 +345,8 @@ class WindowManager implements IWindowManager {
     return [...this._externalZIndexIds.keys()];
   }
 
-  get(id: string): WindowComponent {
-    if (this.has(id)) {
-      return this._windowComponents.get(id)!;
-    }
-    throw new Error(`Window with id ${id} does not exist`);
+  get(id: string): WindowComponent | undefined {
+    return this._windowComponents.get(id);
   }
 
   has(id: string): boolean {

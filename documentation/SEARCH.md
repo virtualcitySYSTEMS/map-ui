@@ -39,7 +39,7 @@ import MySearchImplementation from './mySearchImplemenation.js';
 
 /**
  * @param {Object} config - the configuration of this plugin instance, passed in from the app.
- * @returns {import("@vcmap/ui/src/vcsUiApp").VcsPlugin<T>}
+ * @returns {import("@vcmap/ui").VcsPlugin<T>}
  * @template {Object} T
  * @template {Object} S
  */

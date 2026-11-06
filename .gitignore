@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-lib/olLib.js
+/lib/
+build/lib/olLib.js
 test-report.xml
 *.d.ts
 

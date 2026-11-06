@@ -81,7 +81,7 @@
     emits: ['mousedown', 'moved'],
     setup(props, { emit }) {
       const app = inject('vcsApp') as VcsUiApp;
-      const { provides } = app.windowManager.get(props.windowState.id);
+      const { provides } = app.windowManager.get(props.windowState.id)!;
       Object.entries(provides).forEach(([key, value]) => {
         provide(key, value);
       });

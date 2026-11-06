@@ -1,6 +1,6 @@
 import { type Ref, reactive, watch } from 'vue';
 import { check, ofEnum } from '@vcsuite/check';
-import type { DestroyableAction } from './actionHelper.ts';
+import type { DestroyableAction } from './actionHelper.js';
 
 export enum StateActionState {
   NONE = 0,

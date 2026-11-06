@@ -11,7 +11,8 @@ import {
 } from 'vitest';
 import { createVuetify } from 'vuetify';
 import { createSafeI18n, createVueI18n } from '../../../src/vuePlugins/i18n.ts';
-import { ClusterFeatureComponent, VcsUiApp } from '../../../index.js';
+import ClusterFeatureComponent from '../../../src/featureInfo/ClusterFeatureComponent.ts.vue';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
 import Icons from '../../../src/components/icons/+all.ts';
 
 describe('ClusterFeatureComponent', () => {

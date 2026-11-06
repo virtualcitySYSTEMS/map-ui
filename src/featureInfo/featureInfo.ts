@@ -483,7 +483,7 @@ class FeatureInfo extends Collection<AbstractFeatureInfoView> {
         if (this._windowId && this._app.windowManager.has(this._windowId)) {
           const { layerName } = this._app.windowManager.get(
             this._windowId,
-          ).props;
+          )!.props;
           const layer = this._app.layers.getByKey(layerName);
           if (layer && !layer.isSupported(map)) {
             this._app.windowManager.remove(this._windowId);
@@ -494,7 +494,7 @@ class FeatureInfo extends Collection<AbstractFeatureInfoView> {
         if (
           this._windowId &&
           this._app.windowManager.has(this._windowId) &&
-          this._app.windowManager.get(this._windowId).props.layerName ===
+          this._app.windowManager.get(this._windowId)!.props.layerName ===
             layer.name
         ) {
           this._app.windowManager.remove(this._windowId);

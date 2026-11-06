@@ -1,6 +1,7 @@
 dist/
 exampleData/
 lib/
+build/lib/
 public/
 test-report.xml
 *.d.ts

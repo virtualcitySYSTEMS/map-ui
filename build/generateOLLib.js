@@ -207,6 +207,6 @@ function generateExports(symbols) {
 export default async function main() {
   const symbols = await getSymbols();
   const code = generateExports(symbols);
-  const filepath = path.join('lib', 'olLib.js');
+  const filepath = path.join('build', 'lib', 'olLib.js');
   await fs.promises.writeFile(filepath, `/* eslint-disable */\n${code}`);
 }

@@ -113,7 +113,8 @@ export function setBalloonPosition(
     return;
   }
 
-  const { width, height, maxWidth, maxHeight } = windowManager.get(id).position;
+  const { width, height, maxWidth, maxHeight } =
+    windowManager.get(id)!.position;
 
   const mapWindowPosition = getWindowPositionOptionsFromMapEvent(
     new Cartesian2(

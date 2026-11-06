@@ -31,6 +31,6 @@
     },
     "maxNodeModuleJsDepth": 0
   },
-  "exclude": ["dist/", "build/", ".tests/", "node_modules/"],
-  "include": ["index.js", "*.d.ts", "src/"]
+  "exclude": ["dist/", "lib/", "build/", ".tests/", "node_modules/"],
+  "include": ["index.ts", "src/"]
 }

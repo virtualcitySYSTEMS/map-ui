@@ -13,7 +13,7 @@ import { is } from '@vcsuite/check';
 import deepEqual from 'fast-deep-equal';
 import type { Extent as OLExtent } from 'ol/extent.js';
 import WMSCapabilities from 'ol/format/WMSCapabilities.js';
-import type { VcsTreeNodeItem } from '../components/lists/treeHelper.ts';
+import type { VcsTreeNodeItem } from '../components/lists/treeHelper.js';
 import type VcsUiApp from '../vcsUiApp.js';
 import { StateActionState } from '../actions/stateRefAction.js';
 import {

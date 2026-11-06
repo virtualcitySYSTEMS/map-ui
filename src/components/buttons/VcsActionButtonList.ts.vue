@@ -50,9 +50,8 @@
   import VcsButton from './VcsButton.ts.vue';
   import VcsToolButton from './VcsToolButton.ts.vue';
   import VcsFormButton from './VcsFormButton.ts.vue';
-  import VcsActionList, {
-    validateActions,
-  } from '../lists/VcsActionList.ts.vue';
+  import VcsActionList from '../lists/VcsActionList.ts.vue';
+  import { validateActions } from '../../actions/actionValidation.js';
   import type { VcsAction } from '../../actions/actionHelper.js';
 
   /**

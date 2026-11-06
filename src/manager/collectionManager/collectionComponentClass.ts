@@ -21,7 +21,7 @@ import {
 } from 'vue';
 import { parseBoolean, parseNumber } from '@vcsuite/parsers';
 import { check, oneOf } from '@vcsuite/check';
-import { validateAction } from '../../components/lists/VcsActionList.ts.vue';
+import { validateAction } from '../../actions/actionValidation.js';
 import { sortByWeight } from '../buttonManager.js';
 import {
   createListItemBulkAction,

@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- Node 16
-- Npm 8
+- Node 24 or later
+- Npm 10 or later
 
 ## Setup
 
@@ -12,9 +12,16 @@ Run the following scripts using `npm run` to setup your development environment.
 - `start` serves a development server at http://localhost:8080. By default, the `app.config.json` is used to start the
   map. You can provide alternative `--module`s if you wish. `npm start -- --host -- --module "config/www.config.json" --module "config/dev.config.json"`
   will load the map with the above two modules loaded.
-- `lint` runs _eslint_ for linting.
-- `build` runs a build script, builds all javascript libraries to the `dist` folder. This is done for publishing the
-  @vcmap/ui npm package.
+- `lint` runs ESLint and Prettier checks. `type-check` runs `vue-tsc` against
+  the source without emitting files.
+- `build` builds the hosted application and its libraries into `dist`. It does
+  not build the npm package entry points in `lib`.
+- `build-library` builds the npm package into `lib`: it cleans `lib`, builds
+  ESM JavaScript, precompiled Vue components, a single automatically imported
+  stylesheet and JavaScript source maps with embedded sources, then emits and
+  post-processes the type declarations next to the JavaScript. Dependencies
+  remain external. No declarations are generated in the source tree.
+- `prepack` runs `build` and `build-library`.
 - `build-preview` builds all javascript libraries including all plugins to the dist folder.
 - `preview` serves the content of the `dist` folder at http://localhost:4173. Can be used to check the `build` application.
   Don't forget to run `build` and `build-preview` before using the preview command!

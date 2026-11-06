@@ -1,6 +1,7 @@
 import { expect, describe, beforeEach, afterEach, it } from 'vitest';
 import { OpenlayersMap } from '@vcmap/core';
-import { executeCallbacks, VcsUiApp } from '../../../index.js';
+import VcsUiApp from '../../../src/vcsUiApp.ts';
+import { executeCallbacks } from '../../../src/callback/vcsCallback.ts';
 import ActivateMapCallback from '../../../src/callback/activateMapCallback.ts';
 import { sleep } from '../../helpers.js';
 

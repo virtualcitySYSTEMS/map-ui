@@ -15,7 +15,7 @@ import type {
   ActionOptions,
   VcsAction,
   DestroyableAction,
-} from './actionHelper.ts';
+} from './actionHelper.js';
 import { createToggleAction } from './actionHelper.js';
 import type WindowManager from '../manager/window/windowManager.js';
 import { vcsAppSymbol } from '../pluginHelper.js';

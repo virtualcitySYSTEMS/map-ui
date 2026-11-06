@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { NotificationType, Notifier } from '../../index.js';
+import Notifier, { NotificationType } from '../../src/notifier/notifier.ts';
 import { sleep } from '../helpers.js';
 
 describe('Notifier', () => {
