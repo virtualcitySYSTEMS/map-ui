@@ -5,6 +5,10 @@
 - Fixed unwanted scrolling and clipped add-anchor buttons in the flight anchor list after the sticky-searchbar layout change
 - Fixed an issue where the label of features would not correctly persist when using `VcsFeatureStyleComponent`
 
+### Changes
+
+- `MapNavigation` reads heading and tilt of Cesium based maps (`CesiumMap` and `PanoramaMap`) directly from the camera instead of calling `getViewpointSync` on every frame
+
 # 6.3.15
 
 ### Changes

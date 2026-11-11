@@ -85,6 +85,7 @@
     startRotation,
     rotationMapControlSymbol,
     PanoramaMap,
+    BaseCesiumMap,
   } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
@@ -308,6 +309,12 @@
           headingRef.value = map.currentImage.viewDirectionAngle
             ? 90 - CesiumMath.toDegrees(map.currentImage.viewDirectionAngle)
             : directionToDegrees[map.currentImage.viewDirection];
+        } else if (map instanceof BaseCesiumMap) {
+          const camera = map.getCesiumWidget()?.camera;
+          if (camera) {
+            headingRef.value = CesiumMath.toDegrees(camera.heading);
+            tiltRef.value = CesiumMath.toDegrees(camera.pitch);
+          }
         } else {
           const vp = map.getViewpointSync();
           if (vp) {
