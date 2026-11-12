@@ -17,6 +17,8 @@ import {
   getFileMd5,
   getFilesInDirectory,
   libraries,
+  createImportMap,
+  createImportMapScript,
 } from './buildHelpers.js';
 
 const execPromise = promisify(exec);
@@ -218,6 +220,8 @@ for await (const [originalFilePath, newFilePath] of filesToCopy) {
 }
 
 console.log('Building app');
+const importMap = createImportMap('./');
+const importMapScript = createImportMapScript('./');
 let indexHTMLContent = await readFile('./index.html', { encoding: 'utf8' });
 // remove mdi icons link, will be later loaded from the ui.js
 indexHTMLContent = indexHTMLContent.replace(
@@ -228,6 +232,8 @@ indexHTMLContent = indexHTMLContent.replace(
 // replace @vcmap/ui with './assets/ui.js' and outsource to start.js
 // We do not want to have a script tag in the index.html, because of CSP Policies.
 // see https://content-security-policy.com/unsafe-inline/
+// The only exception is the import map, which cannot be loaded from a file. Hosts with a strict CSP allow it by
+// its hash, which is written to importmap.csp.txt
 const scriptRegex = /<script type="module">([\s\S]*?)<\/script>/;
 const match = indexHTMLContent.match(scriptRegex);
 if (match && match[1]) {
@@ -239,11 +245,23 @@ if (match && match[1]) {
   await writeFile(path.join(assetsFolder, 'start.js'), scriptContent, {
     encoding: 'utf8',
   });
+  // plugins are built with bare imports of the libraries. The import map must precede any module script.
   indexHTMLContent = indexHTMLContent.replace(
     scriptRegex,
-    '<script src="./assets/start.js" type="module"></script>',
+    `${importMapScript.html}
+    <script src="./assets/start.js" type="module"></script>`,
+  );
+  await writeFile(
+    path.join(distFolder, 'importmap.csp.txt'),
+    `${importMapScript.cspHash}\n`,
+    { encoding: 'utf8' },
   );
 }
+await writeFile(
+  path.join(distFolder, 'importmap.json'),
+  JSON.stringify(importMap, null, 2),
+  { encoding: 'utf8' },
+);
 await writeFile(path.join(distFolder, 'index.html'), indexHTMLContent, {
   encoding: 'utf8',
 });

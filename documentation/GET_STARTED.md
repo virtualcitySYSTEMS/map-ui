@@ -21,6 +21,12 @@ Run the following scripts using `npm run` to setup your development environment.
   stylesheet and JavaScript source maps with embedded sources, then emits and
   post-processes the type declarations next to the JavaScript. Dependencies
   remain external. No declarations are generated in the source tree.
+- `build-library:watch` builds the npm package into `lib` and rebuilds it on
+  changes (JavaScript via vite, declarations via `vue-tsc --watch`). Use this
+  when developing a plugin against a linked `@vcmap/ui` (`npm link`); the
+  plugin-cli dev server reloads on changes in `lib`. In watch mode, `lib` is not
+  cleaned beforehand, so outputs of deleted sources remain until the next
+  `build-library`.
 - `prepack` runs `build` and `build-library`.
 - `build-preview` builds all javascript libraries including all plugins to the dist folder.
 - `preview` serves the content of the `dist` folder at http://localhost:4173. Can be used to check the `build` application.

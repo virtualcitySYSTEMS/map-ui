@@ -326,6 +326,41 @@ export const libraries = {
   'vuetify/labs/components': 'vuetify',
 };
 
+/**
+ * Creates the import map, which resolves all externalized libraries (see `libraries`) to the stable library entries
+ * in the assets folder. Plugins are built with bare imports of these libraries and rely on this import map.
+ * The urls of an import map are resolved against the document, so provide a baseUrl, if the assets folder is not
+ * next to the document.
+ * @param {string} [baseUrl='./'] url of the folder containing the assets folder
+ * @returns {{ imports: Record<string, string> }}
+ */
+export function createImportMap(baseUrl = './') {
+  const prefix = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const imports = {};
+  Object.entries(libraries).forEach(([library, assetName]) => {
+    imports[library] = `${prefix}assets/${assetName}.js`;
+  });
+  return { imports };
+}
+
+/**
+ * Creates the inline import map script tag for an index.html and its CSP hash source. Import maps cannot be loaded
+ * from a file, so hosts with a strict CSP (e.g. `script-src 'self'`) must allow the inline map by its hash:
+ * `script-src 'self' 'sha256-…'`. The hash covers the exact text content of the tag, so always use the returned html.
+ * The hash only changes if the import map changes (e.g. libraries added, removed or reordered), which is a breaking
+ * change for such hosts.
+ * @param {string} [baseUrl='./'] url of the folder containing the assets folder
+ * @returns {{ html: string, cspHash: string }}
+ */
+export function createImportMapScript(baseUrl = './') {
+  const json = JSON.stringify(createImportMap(baseUrl));
+  const hash = createHash('sha256').update(json, 'utf8').digest('base64');
+  return {
+    html: `<script type="importmap">${json}</script>`,
+    cspHash: `'sha256-${hash}'`,
+  };
+}
+
 const toCopy = [
   'plugin-assets',
   'package.json',
@@ -341,17 +376,6 @@ async function buildInlinePlugin(
   minify,
   isDependend = false,
 ) {
-  // the relative path between plugins and libraries, is not known beforehand, so we calculate the distance.
-  // posixRelativePath is the relative path between the index.js of the plugin and the specific library.
-  const relativePluginPaths = {};
-  Object.entries(libraries).forEach(([key, value]) => {
-    const libraryPath = path.join('dist', 'assets', `${value}.js`);
-    const pluginPath = path.join(process.cwd(), `dist/plugins/${plugin}/`);
-    const relativePath = path.relative(pluginPath, libraryPath);
-    relativePluginPaths[key] = relativePath
-      .split(path.sep)
-      .join(path.posix.sep);
-  });
   const pluginDir = isDependend
     ? getProjectPath('plugins', 'node_modules', plugin)
     : getProjectPath('plugins', plugin);
@@ -375,7 +399,6 @@ async function buildInlinePlugin(
         output: {
           minify,
           codeSplitting: false, // Vite 8+ Rolldown: force single chunk instead of deprecated manualChunks
-          paths: relativePluginPaths,
         },
       },
     },

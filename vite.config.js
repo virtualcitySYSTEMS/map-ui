@@ -3,6 +3,7 @@ import { join, resolve, dirname } from 'node:path';
 import { lstat, readlink } from 'node:fs/promises';
 import commonViteConfig from './build/commonViteConfig.js';
 import getPluginProxies from './build/getPluginProxies.js';
+import devImportMap from './build/devImportMap.js';
 import { determineHostFromArgv } from './build/determineHost.js';
 
 const configMain = defineConfig(async ({ mode }) => {
@@ -90,6 +91,7 @@ const configMain = defineConfig(async ({ mode }) => {
 
   const config = {
     ...commonViteConfig,
+    plugins: [...commonViteConfig.plugins, devImportMap()],
     server: {
       https,
       strictPort: true,

@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "build": "node build/build.js",
     "build-library": "node build/buildLibrary.js",
+    "build-library:watch": "node build/buildLibrary.js --watch",
     "bundle": "node build/bundle.js",
     "lint:js": "eslint . --ext .vue,.js,.cjs,.mjs,.ts,.cts,.mts",
     "lint:prettier": "prettier --check .",
@@ -61,7 +62,6 @@
     "@vcsuite/eslint-config": "^4.1.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "^5.0.1",
-    "@vue/compiler-sfc": "3.5.40",
     "@vue/test-utils": "^2.4.11",
     "jest-canvas-mock": "^2.5.2",
     "jsdoc": "^4.0.3",
@@ -118,7 +118,9 @@
       "default": "./lib/index.js"
     },
     "./config/*.json": "./config/*.json",
+    "./importmap.json": "./dist/importmap.json",
     "./build/commonViteConfig.js": "./build/commonViteConfig.js",
+    "./build/devImportMap.js": "./build/devImportMap.js",
     "./build/buildHelpers.js": "./build/buildHelpers.js",
     "./build/getPluginProxies.js": "./build/getPluginProxies.js",
     "./build/determineHost.js": "./build/determineHost.js"
