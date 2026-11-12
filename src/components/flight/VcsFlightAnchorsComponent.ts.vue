@@ -355,6 +355,7 @@
   :deep(.v-list-item) {
     padding: 0 8px 0 16px;
   }
+  :deep(.vcs-list),
   :deep(.v-list) {
     overflow: visible;
   }

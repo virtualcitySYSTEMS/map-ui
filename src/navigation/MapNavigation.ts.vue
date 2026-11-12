@@ -94,6 +94,7 @@
     startRotation,
     rotationMapControlSymbol,
     PanoramaMap,
+    BaseCesiumMap,
   } from '@vcmap/core';
   import { VContainer, VRow } from 'vuetify/components';
   import { useDisplay } from 'vuetify';
@@ -305,17 +306,37 @@
       const tiltRef = ref(0);
       const mobileLandscape = isMobileLandscape();
 
+      /**
+       * Values are rounded, so that the refs only change, if the change is visible.
+       * Otherwise, every rendered frame triggers a re-render of compass & tilt slider.
+       */
+      const setHeadingAndTilt = (heading: number, tilt?: number): void => {
+        headingRef.value = Math.round(heading * 2) / 2;
+        if (tilt != null) {
+          tiltRef.value = Math.round(tilt);
+        }
+      };
+
       const handleRenderEvent = ({ map }: { map: VcsMap }): void => {
         viewMode.value = getViewModeForMap(map);
         if (map instanceof ObliqueMap && map.currentImage) {
-          headingRef.value = map.currentImage.viewDirectionAngle
-            ? 90 - CesiumMath.toDegrees(map.currentImage.viewDirectionAngle)
-            : directionToDegrees[map.currentImage.viewDirection];
+          setHeadingAndTilt(
+            map.currentImage.viewDirectionAngle
+              ? 90 - CesiumMath.toDegrees(map.currentImage.viewDirectionAngle)
+              : directionToDegrees[map.currentImage.viewDirection],
+          );
+        } else if (map instanceof BaseCesiumMap) {
+          const camera = map.getCesiumWidget()?.camera;
+          if (camera) {
+            setHeadingAndTilt(
+              CesiumMath.toDegrees(camera.heading),
+              CesiumMath.toDegrees(camera.pitch),
+            );
+          }
         } else {
           const vp = map.getViewpointSync();
           if (vp) {
-            headingRef.value = vp.heading;
-            tiltRef.value = vp.pitch;
+            setHeadingAndTilt(vp.heading, vp.pitch);
           }
         }
       };
