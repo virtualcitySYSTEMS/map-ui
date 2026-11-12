@@ -105,6 +105,12 @@
   .vcs-tilt-slider {
     margin-top: 6px;
     margin-bottom: 10px;
+    // value follows the camera on every frame. Transitions on top/height would
+    // restart each frame and force style recalc & layout on the main thread.
+    :deep(.v-slider-thumb),
+    :deep(.v-slider-track__fill) {
+      transition: none;
+    }
     :deep(.v-slider-thumb__surface) {
       border-radius: 3px;
       width: 16px;

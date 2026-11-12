@@ -1,3 +1,9 @@
+# 6.3.17
+
+### Fixes
+
+- Improved rendering performance while the camera moves: the compass and tilt slider of the `MapNavigation` no longer trigger style recalculation and layout on every frame in 3D and panorama mode. Depending on the dataset, this results in up to 30 % more FPS in Chromium-based browsers (e.g. Chrome, Edge).
+
 # 6.3.16
 
 ### Fixes

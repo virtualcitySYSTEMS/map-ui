@@ -2,7 +2,7 @@
   <v-sheet
     :style="{
       transform: `rotate(${compassRotation}deg)`,
-      transition: 'transform 0.2s ease',
+      transition: followsCamera ? undefined : 'transform 0.2s ease',
     }"
     @click="alignNorth"
     class="d-flex flex-column justify-center align-center position-relative rounded-circle user-select-none vcs-compass"
@@ -71,6 +71,11 @@
         xs,
         rotationValue,
         compassRotation: computed(() => -1 * rotationValue.value),
+        // in 3D & panorama, the heading follows the camera on every frame. A transition
+        // would restart each frame, so it is only used in discrete rotations (e.g. oblique).
+        followsCamera: computed(
+          () => props.viewMode === '3d' || props.viewMode === 'panorama',
+        ),
         height,
         width,
         alignNorth() {
