@@ -3,8 +3,8 @@
 ### Updated peer dependencies
 
 - Updated @vcmap/core to 7.0.0
-    - Updated Cesium to 1.142
-    - Updated OpenLayers to 10.10.0
+  - Updated Cesium to 1.142
+  - Updated OpenLayers to 10.10.0
 
 ### Breaking Changes
 
@@ -21,8 +21,8 @@
 - Changed `url` parameter of `getStateFromURL` to required
 - Changed `id` property of `ToolboxComponentOptions` to required
 - Changed plugins to be built with bare imports of the externalized libraries (`vue`, `@vcmap/core`, `@vcmap/ui`, etc.), which are resolved by an import map (see `importmap.json`). The built `index.html` contains this import map as an inline `<script type="importmap">`, since import maps cannot be loaded from a file.
-    - Hosts with a strict Content Security Policy (e.g. `script-src 'self'`) must allow the import map by its hash. Otherwise, all plugins fail to load. The hash is written to `importmap.csp.txt` next to the `index.html`. Add it to `script-src` (not only `default-src`), e.g. `Content-Security-Policy: script-src 'self' 'sha256-6a0mKB1sCqQbLPQsKU+tLZVoE/OxXdhOhea+MAWbbGY='`
-    - The hash only changes, if the import map changes. Such changes will be noted as breaking changes in this changelog.
+  - Hosts with a strict Content Security Policy (e.g. `script-src 'self'`) must allow the import map by its hash. Otherwise, all plugins fail to load. The hash is written to `importmap.csp.txt` next to the `index.html`. Add it to `script-src` (not only `default-src`), e.g. `Content-Security-Policy: script-src 'self' 'sha256-6a0mKB1sCqQbLPQsKU+tLZVoE/OxXdhOhea+MAWbbGY='`
+  - The hash only changes, if the import map changes. Such changes will be noted as breaking changes in this changelog.
 - Changed the npm package to ship the compiled library in `lib/` (JavaScript, styles and declarations) instead of the sources. `src/`, `index.js` and `tsconfig.json` are no longer included, and the `./src/styles/variables.scss` and `./src/assets/logo*.svg` exports were removed. Import from `@vcmap/ui` instead of deep paths, see [migration guide](./MIGRATION_V7.md).
 
 ### Changes
@@ -48,8 +48,6 @@
 ### Changes
 
 - `MapNavigation` reads heading and tilt of Cesium based maps (`CesiumMap` and `PanoramaMap`) directly from the camera instead of calling `getViewpointSync` on every frame
-
-
 
 # 6.3.15
 

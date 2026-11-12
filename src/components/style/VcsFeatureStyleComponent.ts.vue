@@ -69,7 +69,7 @@
   function setFeatureStyle(feature: Feature, style: Style): void {
     feature.setStyle(style);
     feature[originalStyle] = style;
-    const styleOptions = getStyleOptions(style) as VectorStyleItemOptions;;
+    const styleOptions = getStyleOptions(style) as VectorStyleItemOptions;
     const text = styleOptions.text?.text;
     if (text) {
       styleOptions.label = Array.isArray(text)
