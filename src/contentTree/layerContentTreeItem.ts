@@ -19,7 +19,7 @@ import {
 } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
-type LayerContentTreeItemOptions = ContentTreeItemOptions & {
+export type LayerContentTreeItemOptions = ContentTreeItemOptions & {
   layerName: string;
   /** optional flag to show the item even if it is not supported by the activeMap. */
   showWhenNotSupported?: boolean;

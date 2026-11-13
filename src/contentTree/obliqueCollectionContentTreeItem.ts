@@ -16,7 +16,7 @@ import {
 } from './contentTreeItem.js';
 import { executeCallbacks } from '../callback/vcsCallback.js';
 
-type ObliqueCollectionContentTreeItemOptions = ContentTreeItemOptions & {
+export type ObliqueCollectionContentTreeItemOptions = ContentTreeItemOptions & {
   collectionName: string;
   /** optional flag to show the item even if it is not supported by the activeMap. */
   showWhenNotSupported?: boolean;

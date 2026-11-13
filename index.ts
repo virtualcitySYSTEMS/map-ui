@@ -430,7 +430,11 @@ export type {
   contentTreeClassRegistry,
 } from './src/contentTree/contentTreeItem.js';
 export type { WMSEntry } from './src/contentTree/wmsGroupContentTreeItem.js';
-export type { setStyleAction } from './src/contentTree/layerContentTreeItem.js';
+export type {
+  setStyleAction,
+  LayerContentTreeItemOptions,
+} from './src/contentTree/layerContentTreeItem.js';
+export type { ObliqueCollectionContentTreeItemOptions } from './src/contentTree/obliqueCollectionContentTreeItem.js';
 export type { VcsObjectContentTreeItemProperties } from './src/contentTree/vcsObjectContentTreeItem.js';
 export type {
   isSlotPosition,
@@ -556,6 +560,7 @@ export type {
   CachedAppState,
 } from './src/state.js';
 export type {
+  VcsUiModuleConfig,
   PluginConfig,
   SerializedPluginConfig,
   PluginConfigEditorComponent,

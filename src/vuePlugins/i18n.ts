@@ -34,7 +34,7 @@ export function createVueI18n(): I18n {
   });
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     $st(key: string | number | undefined | null): string;
     $st(

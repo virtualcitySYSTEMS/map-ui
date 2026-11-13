@@ -82,7 +82,7 @@ import {
   getAttributions,
 } from './application/attributionsHelper.js';
 
-type VcsUiModuleConfig = VcsModuleConfig & {
+export type VcsUiModuleConfig = VcsModuleConfig & {
   plugins?: SerializedPluginConfig[];
   contentTree?: ContentTreeItemOptions[];
   uiConfig?: UiConfigurationItem<unknown>[];
