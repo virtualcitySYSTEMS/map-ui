@@ -21,8 +21,6 @@
   } from '@vcmap/core';
   import {
     GeometryType,
-    highlighted,
-    originalStyle,
     parseColor,
     getDefaultVectorStyleItemOptions,
     getImageStyleOptions,
@@ -32,6 +30,7 @@
     vectorStyleSymbol,
     VectorStyleItem,
     getStyleOptions,
+    getStylesArray,
   } from '@vcmap/core';
   import type { PropType, Ref } from 'vue';
   import { defineComponent, inject, onUnmounted, ref, watch } from 'vue';
@@ -45,20 +44,19 @@
   import type { EditorManager } from '../vector-properties/vectorPropertiesHelper.js';
 
   /**
-   * Determines the style that is applied to a feature, either from the layer or directly set on the feature. Does not return the highlight style.
+   * Determines the style that is applied to a feature, either directly set on the feature or from the layer.
+   * Does not return the highlight style, since the features of an editor manager are highlighted.
    * @param feature The feature for which the style should be determined
    * @param layer The features layer.
-   * @returns Either a reference to the features style or a clone of the layers style.
+   * @returns Either a reference to the features style or a clone of the layers style. Features with a style function or an array of styles use the layers style.
    */
   function getFeatureStyle(feature: Feature, layer: VectorLayer): Style {
-    const layerStyle = (layer.style.style as Style).clone();
-    let featureStyle: Style | undefined;
-    if (feature[highlighted]) {
-      featureStyle = feature[originalStyle] as Style;
-    } else {
-      featureStyle = feature.getStyle() as Style;
+    const featureStyle = feature.getOriginalStyle();
+    if (featureStyle instanceof Style) {
+      return featureStyle;
     }
-    return featureStyle || layerStyle;
+    const [layerStyle] = getStylesArray(layer.style.style, feature);
+    return layerStyle?.clone() ?? new Style({});
   }
 
   /**
@@ -68,7 +66,6 @@
    */
   function setFeatureStyle(feature: Feature, style: Style): void {
     feature.setStyle(style);
-    feature[originalStyle] = style;
     const styleOptions = getStyleOptions(style) as VectorStyleItemOptions;
     const text = styleOptions.text?.text;
     if (text) {
@@ -278,23 +275,9 @@
             props.featureProperties,
           );
           if (styleComponents.value.length > 0) {
-            const styles = manager.currentFeatures.value
-              .map((feature) => {
-                const layerStyle = (currentLayer.style.style as Style).clone();
-                let featureStyle: Style | undefined;
-                // not using f.getStyle because this would return the highlighted style (since its already highlighted).
-                if (feature[highlighted]) {
-                  featureStyle =
-                    feature[originalStyle] instanceof Style
-                      ? feature[originalStyle]
-                      : layerStyle;
-                } else {
-                  const style = feature.getStyle();
-                  featureStyle = style instanceof Style ? style : layerStyle;
-                }
-                return featureStyle;
-              })
-              .filter((style) => style instanceof Style);
+            const styles = manager.currentFeatures.value.map((feature) =>
+              getFeatureStyle(feature, currentLayer),
+            );
             styleComponents.value.forEach((componentId) => {
               setStyleOptions(styles, componentId, styleOptions.value);
             });

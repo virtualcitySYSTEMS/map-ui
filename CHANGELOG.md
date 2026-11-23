@@ -32,6 +32,9 @@
 
 ### Fixes
 
+- Fixed the feature info highlight style of features, which are already highlighted or hidden, being derived from the highlight style or an empty style, instead of the features own style.
+- Fixed `VcsFeatureStyleComponent` throwing on style edits of features with a style function or an array of styles, and on layers with a style function.
+
 # 6.3.17
 
 ### Fixes

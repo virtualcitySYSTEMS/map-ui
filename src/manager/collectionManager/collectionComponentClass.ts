@@ -468,16 +468,14 @@ class CollectionComponentClass<T extends object | VcsObject = object> {
    */
   private _insertListItem(listItem: CollectionComponentListItem): void {
     if (!this._listItems.value.some((i) => i.name === listItem.name)) {
-      if (this._collection instanceof IndexedCollection) {
-        const newItemIndex = this._collection.indexOfKey(listItem.name) || 0;
-        if (newItemIndex === this._collection.size - 1) {
+      const collection = this._collection;
+      if (collection instanceof IndexedCollection) {
+        const newItemIndex = collection.indexOfKey(listItem.name) || 0;
+        if (newItemIndex === collection.size - 1) {
           this._listItems.value.push(listItem);
         } else {
           const positionInChildren = this._listItems.value.findIndex((elem) => {
-            const treeViewItemIndex =
-              (this._collection as IndexedCollection<T>).indexOfKey(
-                elem.name,
-              ) || 0;
+            const treeViewItemIndex = collection.indexOfKey(elem.name) || 0;
             return newItemIndex < treeViewItemIndex;
           });
           if (positionInChildren >= 0) {

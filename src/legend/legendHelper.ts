@@ -346,12 +346,12 @@ export function getLegendEntries(app: VcsUiApp): {
     [...app.vectorClusterGroups].forEach(removeEntryForGroup);
     const vectorClusterGroups = layers
       .filter(
-        (layer) =>
+        (layer): layer is VectorLayer =>
           layer.active &&
           layer.isSupported(app.maps.activeMap!) &&
           layer instanceof VectorLayer,
       )
-      .map((layer) => (layer as VectorLayer).vectorClusterGroup);
+      .map((layer) => layer.vectorClusterGroup);
     const uniqueVectorClusterGroups = [...new Set(vectorClusterGroups)];
     uniqueVectorClusterGroups.forEach((groupName) => {
       const group = app.vectorClusterGroups.getByKey(groupName);

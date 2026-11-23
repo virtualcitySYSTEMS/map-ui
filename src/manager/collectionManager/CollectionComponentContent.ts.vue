@@ -38,7 +38,7 @@
     watch,
   } from 'vue';
   import { VSheet, VContainer, VPagination } from 'vuetify/components';
-  import type { IndexedCollection } from '@vcmap/core';
+  import { IndexedCollection } from '@vcmap/core';
   import { getLogger } from '@vcsuite/logger';
   import { createSelectionActions } from '../../components/lists/listHelper.js';
   import VcsList from '../../components/lists/VcsList.ts.vue';
@@ -148,10 +148,10 @@
           return actions.value;
         }),
         move(event: ItemMovedEvent): void {
-          moveItem(
-            collectionComponent.collection as IndexedCollection<object>,
-            event,
-          );
+          const { collection } = collectionComponent;
+          if (collection instanceof IndexedCollection) {
+            moveItem(collection, event);
+          }
         },
         openCollectionComponentList(): void {
           emit('openList', collectionComponent.id);

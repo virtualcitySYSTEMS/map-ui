@@ -15,7 +15,7 @@ type PositionDisplayInteractionOptions = {
 };
 
 function getEventType(move: boolean): EventType {
-  return move ? EventType.CLICK | EventType.MOVE : EventType.CLICK;
+  return move ? EventType.CLICKMOVE : EventType.CLICK;
 }
 
 class PositionDisplayInteraction extends AbstractInteraction {

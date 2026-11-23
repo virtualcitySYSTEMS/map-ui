@@ -4,9 +4,11 @@ import {
   Collection,
   type EventFeature,
   EventType,
+  FeatureVisibility,
   type Layer,
   ObliqueMap,
   PanoramaMap,
+  StyleItem,
   VcsEvent,
   type VcsMap,
   type VectorClusterGroup,
@@ -137,13 +139,21 @@ export function getHighlightStyle(
   layer: Layer,
   defaultFillColor: string,
 ): Style | VectorStyleItem {
-  if ((layer as VectorLayer)?.highlightStyle) {
-    return (layer as VectorLayer).highlightStyle!;
+  if (
+    'highlightStyle' in layer &&
+    layer.highlightStyle instanceof VectorStyleItem
+  ) {
+    return layer.highlightStyle;
   }
 
   const fillColor = Color.fromCssColorString(defaultFillColor).withAlpha(0.8);
   if (feature instanceof Feature) {
-    let style = feature.getStyle() ?? (layer as VectorLayer)?.style?.style;
+    // not using getStyle, since this would return the highlight style or the empty style of hidden features.
+    let style =
+      feature.getOriginalStyle() ??
+      ('style' in layer && layer.style instanceof StyleItem
+        ? layer.style.style
+        : undefined);
     if (typeof style === 'function') {
       style = style(feature, 1) as Style;
     }
@@ -245,9 +255,9 @@ export function getGroupedFeatureList(
               const firstPanoramaMap = app.maps.getByType(
                 PanoramaMap.className,
               )[0];
-              if (firstPanoramaMap) {
+              if (firstPanoramaMap instanceof PanoramaMap) {
                 await app.maps.activatePanoramaMap(
-                  firstPanoramaMap as PanoramaMap,
+                  firstPanoramaMap,
                   panoramaImage,
                 );
               }
@@ -649,14 +659,12 @@ class FeatureInfo extends Collection<AbstractFeatureInfoView> {
         this._clearHighlightingCb = (): void => {
           this._scratchLayer!.featureVisibility.unHighlight([featureId]);
         };
-      } else if ((layer as VectorLayer).vectorClusterGroup) {
+      } else if (layer instanceof VectorLayer && layer.vectorClusterGroup) {
         this._ensureScratchLayer();
         const clonedFeature = (feature as Feature).clone();
         const featureId = feature.getId()!;
         this._scratchLayer!.vectorProperties.setValuesForFeatures(
-          (layer as VectorLayer).vectorProperties.getValuesForFeatures([
-            clonedFeature,
-          ]),
+          layer.vectorProperties.getValuesForFeatures([clonedFeature]),
           [clonedFeature],
         );
         const eyeOffset = clonedFeature.get('olcs_eyeOffset') ?? [0, 0, 0];
@@ -675,9 +683,13 @@ class FeatureInfo extends Collection<AbstractFeatureInfoView> {
         this._clearHighlightingCb = (): void => {
           this._scratchLayer!.featureVisibility.unHighlight([featureId]);
         };
-      } else if ((layer as VectorLayer).featureVisibility) {
+      } else if (
+        'featureVisibility' in layer &&
+        layer.featureVisibility instanceof FeatureVisibility
+      ) {
         const featureId = feature.getId()!;
-        (layer as VectorLayer).featureVisibility.highlight({
+        const { featureVisibility } = layer;
+        featureVisibility.highlight({
           [featureId]: getHighlightStyle(
             feature,
             layer,
@@ -686,7 +698,7 @@ class FeatureInfo extends Collection<AbstractFeatureInfoView> {
           ),
         });
         this._clearHighlightingCb = (): void => {
-          (layer as VectorLayer).featureVisibility.unHighlight([featureId]);
+          featureVisibility.unHighlight([featureId]);
         };
       }
       this._windowId = usedFeatureInfoView.className; // use className for a type based position caching

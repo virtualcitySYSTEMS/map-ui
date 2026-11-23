@@ -18,7 +18,6 @@ import {
   Projection,
   type RelativeHeightReference,
   type VectorHeightInfo,
-  type VectorLayer,
   VectorProperties,
   cartesianToMercator,
   getGeometryHeight,
@@ -238,7 +237,10 @@ export function getBalloonPositionFromFeature(
   if (feature instanceof Feature && feature.getGeometry() instanceof Point) {
     const point = feature.getGeometry() as SimpleGeometry;
     const vectorProperties =
-      (layer as VectorLayer).vectorProperties ??
+      ('vectorProperties' in layer &&
+      layer.vectorProperties instanceof VectorProperties
+        ? layer.vectorProperties
+        : undefined) ??
       (layer.featureProvider as AbstractFeatureProvider)?.vectorProperties ??
       new VectorProperties({});
     const renderAs = vectorProperties.renderAs(feature);

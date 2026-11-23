@@ -28,9 +28,11 @@ export default function createObliqueFallbackWarnings(
     );
   };
 
-  (app.maps.getByType(ObliqueMap.className) as ObliqueMap[]).forEach(
-    setMapListener,
-  );
+  app.maps.getByType(ObliqueMap.className).forEach((map) => {
+    if (map instanceof ObliqueMap) {
+      setMapListener(map);
+    }
+  });
 
   const mapAddedListener = app.maps.added.addEventListener((map) => {
     if (map instanceof ObliqueMap) {

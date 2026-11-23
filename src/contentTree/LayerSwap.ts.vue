@@ -126,11 +126,11 @@
             ],
             blockOverflow: false,
           };
-          if (wmsGroupItemsMap[l.name]) {
+          if (wmsGroupItemsMap[l.name] && l instanceof WMSLayer) {
             return {
               ...item,
               children: getWmsChildren(
-                l as WMSLayer,
+                l,
                 app.contentTree.getByKey(
                   wmsGroupItemsMap[l.name],
                 ) as WMSGroupContentTreeItem,

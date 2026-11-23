@@ -1,6 +1,6 @@
 import {
   type AbstractInteraction,
-  type CesiumMap,
+  CesiumMap,
   type EventFeature,
   FeatureProviderInteraction,
   type InteractionEvent,
@@ -191,8 +191,8 @@ async function getDeepPickingFeatures(
       hitTolerance,
       drillLimit,
     );
-  } else if (event.map.className === 'CesiumMap') {
-    const cesiumMap = event.map as CesiumMap;
+  } else if (event.map instanceof CesiumMap) {
+    const cesiumMap = event.map;
     const scene = cesiumMap.getScene();
 
     if (!scene) {

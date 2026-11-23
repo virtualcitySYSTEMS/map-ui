@@ -58,6 +58,10 @@
     );
   }
 
+  function isTransformationMode(name: string): name is TransformationMode {
+    return (Object.values(TransformationMode) as string[]).includes(name);
+  }
+
   /**
    * @description A drawing window used for displaying selected features from editor sessions. A manager must be provided.
    * @vue-prop {Array<string>} [allowedVectorProperties=['altitudeMode', 'extrudedHeight', 'classificationType']] - The vector properties that should be displayed.
@@ -285,12 +289,8 @@
       currentTransformationMode,
       (mode) => {
         allowedActions.forEach((action) => {
-          if (
-            Object.values(TransformationMode).includes(
-              action.name as TransformationMode,
-            )
-          ) {
-            action.active = mode === (action.name as TransformationMode);
+          if (isTransformationMode(action.name)) {
+            action.active = mode === action.name;
           }
         });
       },
