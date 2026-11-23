@@ -24,11 +24,30 @@
   - Hosts with a strict Content Security Policy (e.g. `script-src 'self'`) must allow the import map by its hash. Otherwise, all plugins fail to load. The hash is written to `importmap.csp.txt` next to the `index.html`. Add it to `script-src` (not only `default-src`), e.g. `Content-Security-Policy: script-src 'self' 'sha256-6a0mKB1sCqQbLPQsKU+tLZVoE/OxXdhOhea+MAWbbGY='`
   - The hash only changes, if the import map changes. Such changes will be noted as breaking changes in this changelog.
 - Changed the npm package to ship the compiled library in `lib/` (JavaScript, styles and declarations) instead of the sources. `src/`, `index.js` and `tsconfig.json` are no longer included, and the `./src/styles/variables.scss` and `./src/assets/logo*.svg` exports were removed. Import from `@vcmap/ui` instead of deep paths, see [migration guide](./MIGRATION_V7.md).
+- Replaced `vue-i18n` by an own i18n implementation with a compatible API, see [migration guide](./MIGRATION_V7.md#i18n) and [documentation](./documentation/INTERNATIONALIZATION.md)
+  - Removed the dependencies `vue-i18n` and `@intlify/core-base`
+  - Added `VcsUiApp.vcsI18n`, the i18n instance of the app. The deprecated `VcsUiApp.vueI18n` and `VcsUiApp.vueI18nPlugin` return the same `VcsI18n` instance, `vueI18nPlugin.global` was removed
+  - Added `useVcsI18n`, the composition API counterpart of `useI18n` of vue-i18n: `const { t, locale } = useVcsI18n();` within the `setup` of a component
+  - Removed the template helpers `$te`, `$tm`, `$rt`, `$d` and `$n`, use `app.vcsI18n` or `Intl` instead. Of `$i18n`, only the read-only `$i18n.locale` remains
+  - Removed support for named datetime and number formats and the `<i18n-t>` component. Linked messages are written as `{#t 'other.key'}` instead of `@:other.key`.
+  - Changed any text within braces in messages to be a placeholder, e.g. `{foo bar}` renders the parameter `foo bar`. Use literals to render braces: `{'{'}`
+  - Removed support for pluralization. The `|` character in messages is rendered as is
+  - Changed the signature of `t`, `$t` and `$st` to `(key, values?)`. The plural, default message and options (`default`, `locale`, `plural`) arguments were removed
+  - Changed `t` and `$t` to be the same function as `$st` (added as `st` to the i18n instance): keys which are not strings are no longer translated, `null` and `undefined` are rendered as empty string, numbers are converted to strings. They never throw
+  - Removed support for scoped locales (`<v-locale-provider>`), all vuetify components use the locale of the app
+  - Removed `createSafeI18n`, `$st` is provided by the i18n instance itself
+  - Removed `createVueI18n`, use `createDefaultI18n` instead
+  - Changed `createVcsVuetify` to expect a `VcsI18n` instance
+  - Mutations of messages returned by `getLocaleMessage` and `tm` of the i18n instance (`app.vcsI18n`, previously `app.vueI18n`) are no longer rendered, use `setLocaleMessage` to change messages
+  - Changed the locale of the i18n instance (`app.vcsI18n.locale`, previously `app.vueI18n.locale`) to be read-only, the locale is set with `app.locale`. Setting vuetify's current locale is ignored and logs a warning
 
 ### Changes
 
 - Added support for TypeScript files, and started migration
 - Deprecated enums `LegendType`, `PlayerDirection`, `StyleRowType` and `WindowSlot`; use literal string keys instead
+- Deprecated `$i18n.locale`, it is read-only; use the locale of `useVcsI18n()` instead
+- Deprecated `VcsUiApp.vueI18n` and `VcsUiApp.vueI18nPlugin`, use `VcsUiApp.vcsI18n` instead, it is the same instance
+- Changed i18n messages to be rendered by `compileTemplate` of the `@vcmap/core` with single brace delimiters. Messages support the template syntax (ol style expressions, conditional blocks, `#t`). They never throw, invalid placeholders are rendered as is and a warning is logged
 
 ### Fixes
 

@@ -20,7 +20,6 @@ import {
   volatileModuleId,
 } from '@vcmap/core';
 import { type Logger, getLogger as getLoggerByName } from '@vcsuite/logger';
-import type { Composer, I18n } from 'vue-i18n';
 import type { createVuetify } from 'vuetify';
 import {
   deserializePlugin,
@@ -71,7 +70,12 @@ import Notifier from './notifier/notifier.js';
 import AbstractFeatureInfoView, {
   type FeatureInfoViewOptions,
 } from './featureInfo/abstractFeatureInfoView.js';
-import { createVueI18n, setupI18n } from './vuePlugins/i18n.js';
+import {
+  createAppLocale,
+  createDefaultI18n,
+  setupI18n,
+} from './vuePlugins/i18n.js';
+import type { VcsI18n } from './i18n/vcsI18n.js';
 import type VcsCallback from './callback/vcsCallback.js';
 import { callbackClassRegistry } from './callback/vcsCallback.js';
 import createSiteConfig from './siteConfig.js';
@@ -219,15 +223,18 @@ class VcsUiApp extends VcsApp {
 
   private _pluginListeners: Array<() => void> = [];
 
-  private _vueI18nPlugin: I18n = createVueI18n();
+  /**
+   * The locale of the i18n instance, reading the locale of the app.
+   */
+  private _appLocale = createAppLocale(this);
+
+  private _vcsI18n: VcsI18n = createDefaultI18n(this._appLocale.locale);
 
   private _vuetify: ReturnType<typeof createVcsVuetify> = createVcsVuetify(
-    this._vueI18nPlugin,
+    this._vcsI18n,
   );
 
-  private _vueI18n: Composer = this._vueI18nPlugin.global as Composer;
-
-  private _vueI18nDestroy: () => void = setupI18n(this);
+  private _vcsI18nDestroy: () => void = setupI18n(this);
 
   private _callbackClassRegistry = new OverrideClassRegistry<
     typeof VcsCallback
@@ -403,14 +410,29 @@ class VcsUiApp extends VcsApp {
   get i18n(): I18nCollection {
     return this._i18n;
   }
-  get vueI18nPlugin(): I18n {
-    return this._vueI18nPlugin;
+  /**
+   * The i18n instance to translate messages and to install as vue plugin.
+   * The messages are synchronized with the i18n collection, the locale with the locale of the app.
+   */
+  get vcsI18n(): VcsI18n {
+    return this._vcsI18n;
+  }
+  /**
+   * The same instance as vcsI18n.
+   * @deprecated use vcsI18n instead, will be removed in next major release
+   */
+  get vueI18nPlugin(): VcsI18n {
+    return this._vcsI18n;
+  }
+  /**
+   * The same instance as vcsI18n.
+   * @deprecated use vcsI18n instead, will be removed in next major release
+   */
+  get vueI18n(): VcsI18n {
+    return this._vcsI18n;
   }
   get vuetify(): ReturnType<typeof createVuetify> {
     return this._vuetify;
-  }
-  get vueI18n(): Composer {
-    return this._vueI18n;
   }
   get categoryManager(): CategoryManager {
     return this._categoryManager;
@@ -728,7 +750,8 @@ class VcsUiApp extends VcsApp {
     destroyCollection(this._contentTree);
     this._i18n.destroy();
     destroyCollection(this._search);
-    this._vueI18nDestroy();
+    this._vcsI18nDestroy();
+    this._appLocale.destroy();
     this._contentTreeClassRegistry.destroy();
     this._featureInfoClassRegistry.destroy();
     this._featureInfo.destroy();

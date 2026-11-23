@@ -108,7 +108,7 @@ export async function importIntoLayer(
   layer: VectorLayer,
   options: ImportIntoLayerOptions = {},
 ): Promise<boolean> {
-  const { vueI18n } = app;
+  const { vcsI18n } = app;
   const results = await Promise.all(
     files.map(async (file) => {
       const text = await file.text();
@@ -117,7 +117,7 @@ export async function importIntoLayer(
       } catch (e: unknown) {
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: vueI18n.t('components.import.failure', {
+          message: vcsI18n.t('components.import.failure', {
             fileName: file.name,
           }),
         });
@@ -136,7 +136,7 @@ export async function importIntoLayer(
   if (predicateDelta > 0) {
     app.notifier.add({
       type: NotificationType.WARNING,
-      message: vueI18n.t(
+      message: vcsI18n.t(
         options.predicateFailureMessage ?? 'components.import.predicateFailure',
         [predicateDelta],
       ),
@@ -151,7 +151,7 @@ export async function importIntoLayer(
   if (importedDelta > 0) {
     app.notifier.add({
       type: NotificationType.WARNING,
-      message: vueI18n.t(
+      message: vcsI18n.t(
         options.addFailureMessage ?? 'components.import.addFailure',
         [importedDelta],
       ),
@@ -161,7 +161,7 @@ export async function importIntoLayer(
   if (imported.length > 0) {
     app.notifier.add({
       type: NotificationType.SUCCESS,
-      message: vueI18n.t(
+      message: vcsI18n.t(
         options.featuresAddedMessage ?? 'components.import.featuresAdded',
         [imported.length],
       ),
@@ -169,7 +169,7 @@ export async function importIntoLayer(
   } else {
     app.notifier.add({
       type: NotificationType.ERROR,
-      message: vueI18n.t(
+      message: vcsI18n.t(
         options.nothingAddedMessage ?? 'components.import.nothingAdded',
       ),
     });

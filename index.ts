@@ -236,7 +236,7 @@ export { default as TiltSlider } from './src/navigation/TiltSlider.ts.vue';
 export { default as VcsCompass } from './src/navigation/VcsCompass.ts.vue';
 export { default as VcsZoomButton } from './src/navigation/VcsZoomButton.ts.vue';
 //
-export { createVueI18n, setupI18n } from './src/vuePlugins/i18n.js';
+export { createDefaultI18n, setupI18n } from './src/vuePlugins/i18n.js';
 export {
   default as I18nCollection,
   i18nPluginSymbol,
@@ -522,7 +522,8 @@ export type {
   overviewMapContainerId,
   overviewMapLayerSymbol,
 } from './src/navigation/overviewMap.js';
-export type { createSafeI18n } from './src/vuePlugins/i18n.js';
+export { useVcsI18n } from './src/i18n/vcsI18n.js';
+export type { VcsI18n } from './src/i18n/vcsI18n.js';
 export type {
   isObject,
   mergeDeep,

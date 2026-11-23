@@ -153,25 +153,25 @@ function handleError(
       case 1:
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: app.vueI18n.t('navigation.locator.errorAccess'),
+          message: app.vcsI18n.t('navigation.locator.errorAccess'),
         });
         break;
       case 2:
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: app.vueI18n.t('navigation.locator.errorCurrentPosition'),
+          message: app.vcsI18n.t('navigation.locator.errorCurrentPosition'),
         });
         break;
       case 3:
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: app.vueI18n.t('navigation.locator.errorConnection'),
+          message: app.vcsI18n.t('navigation.locator.errorConnection'),
         });
         break;
       default:
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: app.vueI18n.t('navigation.locator.errorPosition'),
+          message: app.vcsI18n.t('navigation.locator.errorPosition'),
         });
         break;
     }

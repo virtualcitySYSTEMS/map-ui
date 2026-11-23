@@ -33,8 +33,8 @@
 
 <script lang="ts">
   import { computed, defineComponent, ref, watch } from 'vue';
+  import { useLocale } from 'vuetify';
   import { VMenu, VDatePicker, VBtn } from 'vuetify/components';
-  import { useI18n } from 'vue-i18n';
   import VcsTextField from './VcsTextField.ts.vue';
 
   /**
@@ -68,7 +68,7 @@
     },
     emits: ['update:modelValue'],
     setup(props, { emit }) {
-      const i18n = useI18n();
+      const { current: currentLocale } = useLocale();
       const menuOpen = ref(false);
       const internal = ref(props.modelValue);
 
@@ -95,7 +95,7 @@
 
       const formatDate = (date: Date | null): string => {
         if (date) {
-          return new Intl.DateTimeFormat(i18n.locale.value, {
+          return new Intl.DateTimeFormat(currentLocale.value, {
             dateStyle: 'short',
           }).format(date);
         }
@@ -106,9 +106,7 @@
         menuOpen.value = false;
       };
       const formattedDate = computed({
-        get: () => {
-          return formatDate(localValue.value);
-        },
+        get: (): string => formatDate(localValue.value),
         set: () => {},
       });
 

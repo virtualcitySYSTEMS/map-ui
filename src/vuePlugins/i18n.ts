@@ -1,119 +1,87 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
+import { customRef, type Ref } from 'vue';
+import type { VcsApp } from '@vcmap/core';
 import {
-  createI18n,
-  type I18n,
-  type TranslateOptions,
-  type NamedValue,
-} from 'vue-i18n';
-import { is } from '@vcsuite/check';
-import { resolveValue } from '@intlify/core-base';
-import type { Plugin } from 'vue';
+  createVcsI18n,
+  type TranslateFunction,
+  type VcsI18n,
+} from '../i18n/vcsI18n.js';
 import type VcsUiApp from '../vcsUiApp.js';
 
 /**
- * creates a new VueI18n Instance.
+ * Creates a ref providing the locale of the app. The ref reads app.locale, so it is never out of sync with the app,
+ * also within localeChanged listeners. The localeChanged event only notifies the dependents of the ref.
+ * The ref is read-only: writes are ignored, set the locale on the app instead.
+ * Call destroy to remove the localeChanged listener.
  */
-export function createVueI18n(): I18n {
-  return createI18n({
-    legacy: false,
-    globalInjection: true,
-    locale: 'en',
-    missingWarn: false,
-    fallbackWarn: false,
-    fallbackLocale: ['en', 'de'],
-    messageResolver: (obj, path) => {
-      const value = resolveValue(obj, path);
-      return typeof value === 'string'
-        ? value.replaceAll(/@/g, "{'@'}")
-        : value;
+export function createAppLocale(
+  app: Pick<VcsApp, 'locale' | 'localeChanged'>,
+): { locale: Readonly<Ref<string>>; destroy: () => void } {
+  let destroy = (): void => {};
+  const locale = customRef<string>((track, trigger) => {
+    destroy = app.localeChanged.addEventListener(() => {
+      trigger();
+    });
+    return {
+      get(): string {
+        track();
+        return app.locale;
+      },
+      set(): void {},
+    };
+  });
+  return {
+    locale,
+    destroy: (): void => {
+      destroy();
     },
+  };
+}
+
+/**
+ * Creates a new i18n instance, with english and german as fallback locales.
+ * The locale defaults to english. Pass a ref to provide the locale: the instance follows the ref, which is changed by
+ * its owner. The VcsUiApp passes a ref following app.locale. To translate with the locale of the app, use app.vcsI18n
+ * instead of creating a new instance.
+ */
+export function createDefaultI18n(locale?: Readonly<Ref<string>>): VcsI18n {
+  return createVcsI18n({
+    locale: locale ?? 'en',
+    fallbackLocale: ['en', 'de'],
     messages: {
       en: {},
     },
-    postTranslation: (val, key) => (typeof val === 'string' ? val : key),
   });
 }
 
 declare module 'vue' {
   interface ComponentCustomProperties {
-    $st(key: string | number | undefined | null): string;
-    $st(
-      key: string | number | undefined | null,
-      plural: number,
-      options?: TranslateOptions,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      defaultMsg: string,
-      options?: TranslateOptions,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      list: unknown[],
-      options?: TranslateOptions,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      list: unknown[],
-      plural: number,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      list: unknown[],
-      defaultMsg: string,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      named: NamedValue,
-      options?: TranslateOptions,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      named: NamedValue,
-      plural: number,
-    ): string;
-    $st(
-      key: string | number | undefined | null,
-      named: NamedValue,
-      defaultMsg: string,
-    ): string;
+    /**
+     * Translates the key, see VcsI18n.t. Handles keys which are not strings: null and undefined are rendered
+     * as empty string, other keys (e.g. numbers) are rendered as string without being translated.
+     */
+    $t: TranslateFunction;
+    /**
+     * Safe translate, the same function as $t.
+     */
+    $st: TranslateFunction;
+    /**
+     * Read-only compatibility with vue-i18n, will be removed in next major release.
+     * @deprecated use the locale of useVcsI18n()
+     */
+    $i18n: { readonly locale: string };
   }
 }
 
 /**
- * creates a Vue Plugin with a new $st template helper which can handle undefined. Will just redirect to vueI18n,
- * if key is a string
- */
-export function createSafeI18n(): Plugin {
-  return {
-    install: (vApp): void => {
-      vApp.config.globalProperties.$st = (
-        key: string | number | undefined | null,
-        ...args: unknown[]
-      ): string => {
-        if (!is(key, String)) {
-          if (key !== null && key !== undefined) {
-            return String(key);
-          }
-          return '';
-        }
-        return vApp.config.globalProperties.$t(key, ...args);
-      };
-    },
-  } satisfies Plugin;
-}
-
-/**
  * sets the messages to the app's I18n Instance;
- * @param {import("../vcsUiApp.js").default} app
  */
 function setI18nMessages(app: VcsUiApp): void {
-  app.vueI18n.availableLocales.forEach((locale) => {
-    app.vueI18n.setLocaleMessage(locale, {});
+  app.vcsI18n.availableLocales.forEach((locale) => {
+    app.vcsI18n.setLocaleMessage(locale, {});
   });
   Object.entries(app.i18n.getMergedMessages()).forEach(
     ([locale, localeMessages]) => {
-      app.vueI18n.setLocaleMessage(
+      app.vcsI18n.setLocaleMessage(
         locale,
         localeMessages as Record<string, unknown>,
       );
@@ -121,21 +89,16 @@ function setI18nMessages(app: VcsUiApp): void {
   );
 }
 
+/**
+ * Synchronizes the messages of the app's i18n instance with the i18n collection of the app.
+ * The locale of the app's i18n instance follows the locale of the app, it is not set up by this function.
+ */
 export function setupI18n(app: VcsUiApp): () => void {
   setI18nMessages(app);
-  app.vueI18n.locale.value = app.locale;
-  const destroyFunctions = [
-    app.i18n.changed.addEventListener(() => {
-      setI18nMessages(app);
-    }),
-    app.localeChanged.addEventListener((locale) => {
-      app.vueI18n.locale.value = locale;
-    }),
-  ];
+  const destroyChanged = app.i18n.changed.addEventListener(() => {
+    setI18nMessages(app);
+  });
   return function tearDownI18nSetup() {
-    destroyFunctions.forEach((destroy) => {
-      destroy();
-    });
-    app.vueI18nPlugin.dispose();
+    destroyChanged();
   };
 }

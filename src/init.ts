@@ -11,7 +11,6 @@ import { VcsModule, type VcsModuleConfig } from '@vcmap/core';
 import { getLogger } from '@vcsuite/logger';
 import VcsAppComponentWrapper from './application/VcsAppWrapper.ts.vue';
 import VcsUiApp from './vcsUiApp.js';
-import { createSafeI18n } from './vuePlugins/i18n.js';
 
 /**
  * Base pattern to check VcsObjects
@@ -52,9 +51,7 @@ export default function initApp(mountTarget: string): VcsUiApp {
   const vueApp = createApp(VcsAppComponentWrapper, {
     appId: app.id,
   });
-  vueApp.use(app.vueI18nPlugin);
-  const safeI18nPlugin = createSafeI18n();
-  vueApp.use(safeI18nPlugin);
+  vueApp.use(app.vcsI18n);
   vueApp.use(app.vuetify);
   vueApp.mount(mountTarget);
 

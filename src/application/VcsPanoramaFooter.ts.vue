@@ -2,13 +2,11 @@
   import { ref, inject, onUnmounted, computed } from 'vue';
   import type { PanoramaImage, VcsMap } from '@vcmap/core';
   import { PanoramaMap } from '@vcmap/core';
-  import { useI18n } from 'vue-i18n';
   import type VcsUiApp from '../vcsUiApp.js';
 
   const app = inject('vcsApp') as VcsUiApp;
   const name = ref<string | undefined>(undefined);
   const currentImageTime = ref<Date | undefined>(undefined);
-  const i18n = useI18n();
   const hasLinks = computed(
     () =>
       !!app.uiConfig.config?.dataProtection ||
@@ -24,7 +22,7 @@
     if (!currentImageTime.value) {
       return '';
     }
-    return new Intl.DateTimeFormat(i18n.locale.value, {
+    return new Intl.DateTimeFormat(app.vcsI18n.locale.value, {
       dateStyle: 'short',
       timeStyle: 'short',
     }).format(currentImageTime.value);

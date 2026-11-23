@@ -30,9 +30,9 @@
       props.template,
       {
         ...toRaw(props.context),
-        currentVcsAppLocale: app?.vueI18n.locale.value,
+        currentVcsAppLocale: app?.vcsI18n.locale.value,
       },
-      (key) => app?.vueI18n.t(key) ?? key,
+      (key) => app?.vcsI18n.t(key) ?? key,
     );
   });
 </script>

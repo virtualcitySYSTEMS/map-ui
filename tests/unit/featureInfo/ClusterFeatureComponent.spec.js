@@ -10,7 +10,7 @@ import {
   expect,
 } from 'vitest';
 import { createVuetify } from 'vuetify';
-import { createSafeI18n, createVueI18n } from '../../../src/vuePlugins/i18n.ts';
+import { createDefaultI18n } from '../../../src/vuePlugins/i18n.ts';
 import ClusterFeatureComponent from '../../../src/featureInfo/ClusterFeatureComponent.ts.vue';
 import VcsUiApp from '../../../src/vcsUiApp.ts';
 import Icons from '../../../src/components/icons/+all.ts';
@@ -36,8 +36,7 @@ describe('ClusterFeatureComponent', () => {
     let component;
 
     beforeEach(async () => {
-      const vueI18n = createVueI18n();
-      const safeI18n = createSafeI18n();
+      const vcsI18n = createDefaultI18n();
       const vuetify = createVuetify({
         icons: {
           aliases: {
@@ -79,7 +78,7 @@ describe('ClusterFeatureComponent', () => {
       component = shallowMount(ClusterFeatureComponent, {
         props: { items, groups },
         global: {
-          plugins: [vueI18n, safeI18n, vuetify],
+          plugins: [vcsI18n, vuetify],
           provide: {
             vcsApp,
           },

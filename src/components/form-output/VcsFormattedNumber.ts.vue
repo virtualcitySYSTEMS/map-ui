@@ -132,7 +132,7 @@
         numberToLocaleString(
           props.modelValue,
           props.fractionDigits,
-          app.vueI18n.locale.value,
+          app.vcsI18n.locale.value,
           props.numberFormatOptions,
         ),
       );

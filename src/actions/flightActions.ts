@@ -470,7 +470,7 @@ export function createFlightMovieActions(
       removeLoadingOverlay?.();
       app.notifier.add({
         type: NotificationType.SUCCESS,
-        message: app.vueI18n.t('components.flight.record.success'),
+        message: app.vcsI18n.t('components.flight.record.success'),
       });
       const title = (instance.properties?.title as string) || 'flight';
       downloadBlob(blob, `${title}.webm`);
@@ -556,7 +556,7 @@ export async function importFlights(
   check(moduleId, maybe(String));
   check(importSuccessCb, maybe(Function));
 
-  const { vueI18n } = app;
+  const { vcsI18n } = app;
   const results = await Promise.all(
     files.map(async (file) => {
       const text = await file.text();
@@ -566,7 +566,7 @@ export async function importFlights(
         getLogger().error(getCaughtError(e).message);
         app.notifier.add({
           type: NotificationType.ERROR,
-          message: vueI18n.t('components.import.failure', {
+          message: vcsI18n.t('components.import.failure', {
             fileName: file.name,
           }),
         });
@@ -596,7 +596,7 @@ export async function importFlights(
   if (importedDelta > 0) {
     app.notifier.add({
       type: NotificationType.WARNING,
-      message: vueI18n.t('components.import.addFailure', [importedDelta]),
+      message: vcsI18n.t('components.import.addFailure', [importedDelta]),
     });
     return false;
   }
@@ -606,12 +606,12 @@ export async function importFlights(
     }
     app.notifier.add({
       type: NotificationType.SUCCESS,
-      message: vueI18n.t('components.import.featuresAdded', [imported.length]),
+      message: vcsI18n.t('components.import.featuresAdded', [imported.length]),
     });
   } else {
     app.notifier.add({
       type: NotificationType.ERROR,
-      message: vueI18n.t('components.import.nothingAdded'),
+      message: vcsI18n.t('components.import.nothingAdded'),
     });
     return false;
   }

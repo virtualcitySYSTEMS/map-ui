@@ -2,10 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import { reactive } from 'vue';
 import { createVuetify } from 'vuetify';
-import {
-  createSafeI18n,
-  createVueI18n,
-} from '../../../../src/vuePlugins/i18n.ts';
+import { createDefaultI18n } from '../../../../src/vuePlugins/i18n.ts';
 import VcsList from '../../../../src/components/lists/VcsList.ts.vue';
 import VcsTreeview from '../../../../src/components/lists/VcsTreeview.ts.vue';
 import VcsGroupedList from '../../../../src/components/lists/VcsGroupedList.ts.vue';
@@ -23,7 +20,7 @@ import VcsGroupedList from '../../../../src/components/lists/VcsGroupedList.ts.v
         props: { items: [], [searchbarProp]: true },
         attrs: { class: 'test-layout', style: 'max-height: 600px' },
         global: {
-          plugins: [createVuetify(), createVueI18n(), createSafeI18n()],
+          plugins: [createVuetify(), createDefaultI18n()],
         },
       });
     });
@@ -97,12 +94,11 @@ describe('VcsList', () => {
           title: 'foobaz',
         },
       ]);
-      const vueI18n = createVueI18n();
-      const safeI18n = createSafeI18n();
+      const vcsI18n = createDefaultI18n();
       component = shallowMount(VcsList, {
         props: { items },
         global: {
-          plugins: [vueI18n, safeI18n],
+          plugins: [vcsI18n],
         },
       });
     });

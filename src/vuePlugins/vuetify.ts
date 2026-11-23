@@ -8,11 +8,11 @@ import {
   useTheme,
 } from 'vuetify';
 import { VSvgIcon } from 'vuetify/components';
-import { type I18n, useI18n } from 'vue-i18n';
 import 'vuetify/styles';
-import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { type ComputedRef, type VNode, computed, h } from 'vue';
 import DOMPurify from 'dompurify';
+import type { VcsI18n } from '../i18n/vcsI18n.js';
+import { createVcsI18nVuetifyAdapter } from './vuetifyLocaleAdapter.js';
 import type VcsUiApp from '../vcsUiApp.js';
 import Icons from '../components/icons/+all.js';
 
@@ -204,7 +204,9 @@ const svgPathDataSet: IconSet = {
   component: VSvgIcon,
 };
 
-export function createVcsVuetify(i18n: I18n): ReturnType<typeof createVuetify> {
+export function createVcsVuetify(
+  i18n: VcsI18n,
+): ReturnType<typeof createVuetify> {
   const dark =
     window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
 
@@ -230,62 +232,21 @@ export function createVcsVuetify(i18n: I18n): ReturnType<typeof createVuetify> {
         style: { 'letter-spacing': '.0892857143em' },
         ripple: false,
       },
-      VList: {
-        density: 'compact',
-        class: 'pa-0 vcsList',
-      },
-      VListItem: {
-        density: 'compact',
-        ripple: false,
-      },
-      VRadio: {
-        density: 'compact',
-        ripple: false,
-      },
-      VRadioGroup: {
-        density: 'compact',
-        ripple: false,
-      },
-      VTextField: {
-        density: 'compact',
-      },
-      VFileInput: {
-        density: 'compact',
-      },
-      VTextarea: {
-        density: 'compact',
-      },
-      VCheckbox: {
-        density: 'compact',
-        ripple: false,
-      },
-      VDataTable: {
-        density: 'compact',
-      },
-      VSelect: {
-        density: 'compact',
-      },
-      VSlider: {
-        density: 'compact',
-        ripple: false,
-      },
-      VSwitch: {
-        density: 'compact',
-        ripple: false,
-      },
-      VColorPicker: {
-        elevation: 0,
-        tile: true,
-      },
-      VExpansionPanel: {
-        ripple: false,
-        elevation: 0,
-        tile: true,
-      },
-      VTooltip: {
-        openOnHover: allowTooltip,
-        maxWidth: 480,
-      },
+      VList: { density: 'compact', class: 'pa-0 vcsList' },
+      VListItem: { density: 'compact', ripple: false },
+      VRadio: { density: 'compact', ripple: false },
+      VRadioGroup: { density: 'compact', ripple: false },
+      VTextField: { density: 'compact' },
+      VFileInput: { density: 'compact' },
+      VTextarea: { density: 'compact' },
+      VCheckbox: { density: 'compact', ripple: false },
+      VDataTable: { density: 'compact' },
+      VSelect: { density: 'compact' },
+      VSlider: { density: 'compact', ripple: false },
+      VSwitch: { density: 'compact', ripple: false },
+      VColorPicker: { elevation: 0, tile: true },
+      VExpansionPanel: { ripple: false, elevation: 0, tile: true },
+      VTooltip: { openOnHover: allowTooltip, maxWidth: 480 },
     },
     theme,
     icons: {
@@ -296,7 +257,7 @@ export function createVcsVuetify(i18n: I18n): ReturnType<typeof createVuetify> {
         svgPathData: svgPathDataSet,
       },
     },
-    locale: { adapter: createVueI18nAdapter({ i18n, useI18n }) },
+    locale: { adapter: createVcsI18nVuetifyAdapter(i18n) },
   });
 }
 

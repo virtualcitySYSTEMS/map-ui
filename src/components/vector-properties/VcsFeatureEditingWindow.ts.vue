@@ -273,8 +273,8 @@
       is3D.value,
     );
 
-    const allowedActions: VcsAction[] = allowedModes.map((mode) => {
-      return reactive({
+    const allowedActions: VcsAction[] = allowedModes.map((mode) =>
+      reactive({
         name: mode,
         title: `components.editor.${mode}`,
         icon: editorTransformationIcons[mode],
@@ -282,8 +282,8 @@
         callback: (): void => {
           toggleTransformationSession(mode);
         },
-      });
-    });
+      }),
+    );
 
     const transformationModeWatcher = watch(
       currentTransformationMode,

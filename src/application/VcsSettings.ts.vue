@@ -24,8 +24,8 @@
     },
   });
   const setupI18n = (): void => {
-    languages.value = [...app.vueI18n.availableLocales].filter((lang) => {
-      return Object.keys(app.vueI18n.getLocaleMessage(lang)).length > 0;
+    languages.value = [...app.vcsI18n.availableLocales].filter((lang) => {
+      return Object.keys(app.vcsI18n.getLocaleMessage(lang)).length > 0;
     });
     if (!languages.value.includes(localLanguage.value)) {
       localLanguage.value = languages.value[0];

@@ -56,7 +56,7 @@
             string,
             unknown
           >;
-          imageInfo.viewDirection = app.vueI18n.t(
+          imageInfo.viewDirection = app.vcsI18n.t(
             i18nViewDirection[image.viewDirection],
           );
           return imageInfo;
@@ -103,7 +103,9 @@
             'footer.oblique.template';
           return renderTemplate(
             parseAndSanitizeMarkdown(
-              app.vueI18n.te(template) ? app.vueI18n.tm(template) : template,
+              app.vcsI18n.te(template)
+                ? (app.vcsI18n.tm(template) as string)
+                : template,
             ),
             getTranslatedImageInfo(currentImage.value) ?? {},
           );

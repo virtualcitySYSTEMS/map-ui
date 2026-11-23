@@ -165,7 +165,7 @@
               const { title, ...button } = i;
               if (
                 title &&
-                jaccardSimilarity(app.vueI18n.t(i.name), app.vueI18n.t(title)) >
+                jaccardSimilarity(app.vcsI18n.t(i.name), app.vcsI18n.t(title)) >
                   0.5
               ) {
                 return button;
