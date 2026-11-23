@@ -96,11 +96,11 @@
           const template =
             app.uiConfig.config.obliqueFooterTemplate ??
             'footer.oblique.template';
-          return renderTemplate(
-            parseAndSanitizeMarkdown(
+          return parseAndSanitizeMarkdown(
+            renderTemplate(
               app.vueI18n.te(template) ? app.vueI18n.tm(template) : template,
+              getTranslatedImageInfo(currentImage.value),
             ),
-            getTranslatedImageInfo(currentImage.value),
           );
         }
         return null;

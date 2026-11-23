@@ -1,3 +1,9 @@
+# 6.3.18
+
+### Fixes
+
+- Fixed a security issue (XSS) in the `VcsObliqueFooter`: image properties such as `name` were inserted into the footer template after sanitization, allowing markup from the oblique dataset to reach the DOM unsanitized. The template is now rendered first and the resulting markdown is sanitized afterwards. This applies to the default template as well as custom `obliqueFooterTemplate` configurations.
+
 # 6.3.17
 
 ### Fixes
